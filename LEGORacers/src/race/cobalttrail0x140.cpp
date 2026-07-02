@@ -543,7 +543,7 @@ void CobaltTrail0x140::FUN_004249b0()
 			destRect.m_right = destRect.m_left + markerWidth;
 
 			Rect sourceRect;
-			if (racer->m_unk0xd08 == 2 && racerIndex == 1) {
+			if (racer->m_controlMode == 2 && racerIndex == 1) {
 				sourceRect.m_left = 0x10;
 			}
 			else {
@@ -746,7 +746,7 @@ void CobaltTrail0x140::FUN_00424fb0()
 			destRect.m_right = destRect.m_left + markerWidth;
 			destRect.m_bottom = destRect.m_top + markerHeight;
 
-			if (racer->m_unk0xd08 == 2 && racerIndex == 1) {
+			if (racer->m_controlMode == 2 && racerIndex == 1) {
 				sourceRect.m_left = 0x10;
 			}
 			else {
@@ -1449,8 +1449,8 @@ void CobaltTrail0x140::FUN_004263a0()
 	}
 
 	FUN_004246d0(m_unk0x058.m_text, totalTime);
-	if (racer->m_unk0xd84) {
-		FUN_004246d0(m_unk0x04f.m_text, racer->m_unk0xd88);
+	if (racer->m_timeBehindDisplayMs) {
+		FUN_004246d0(m_unk0x04f.m_text, racer->m_timeBehind);
 	}
 
 	if (lapIndex != m_unk0x07c) {
@@ -1622,7 +1622,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			m_unk0x074 = 0;
 		}
 
-		if (m_unk0x02c->m_unk0xd84) {
+		if (m_unk0x02c->m_timeBehindDisplayMs) {
 			LegoS32 medalX = FUN_00425bf0(m_unk0x04f.m_text, m_unk0x0b4, m_unk0x0d4);
 			m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x21);
 			m_unk0x020->MeasureString(&m_unk0x014, &textWidth, &textHeight);

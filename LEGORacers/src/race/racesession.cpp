@@ -1068,7 +1068,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 			m_raceState.m_unk0x318[racerIndex] = racer;
 
 			cameraController->FUN_00428230(racer);
-			racer->FUN_00437540(cameraController, FALSE);
+			racer->InitializeSounds(cameraController, FALSE);
 			racer->FUN_0043a300(m_context->m_unk0x398, m_unk0x3354);
 			cameraController->FUN_00428540(1.0f);
 			cameraController->FUN_004283d0(0);
@@ -1854,7 +1854,7 @@ void RaceSession::FUN_00434c80()
 				m_unk0x3330++;
 				racer->FUN_0043a210(m_unk0x3330);
 
-				if (racer->m_unk0xd08 != 2 || (m_unk0x3350 && racerIndex == 0)) {
+				if (racer->m_controlMode != 2 || (m_unk0x3350 && racerIndex == 0)) {
 					LegoU32 playerIndex = 0;
 					RaceState::Racer** playerRacer = m_raceState.m_unk0x318;
 					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
@@ -1975,7 +1975,7 @@ void RaceSession::FUN_00434eb0()
 				m_unk0x3330++;
 				racer->FUN_0043a210(m_unk0x3330);
 
-				if (racer->m_unk0xd08 != 2) {
+				if (racer->m_controlMode != 2) {
 					LegoU32 playerIndex = 0;
 					RaceState::Racer** playerRacer = m_raceState.m_unk0x318;
 					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {

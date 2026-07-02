@@ -385,7 +385,7 @@ void RaceState::Racer::Physics::VTable0x04(LegoS32 p_elapsedMs)
 
 		if (m_unk0x36c == 4 && !m_unk0x3ec) {
 			LegoU32 racerFlags = m_unk0x6f0->m_unk0xd04;
-			if (!(racerFlags & Racer::c_flags0xd04Bit10) || !(racerFlags & Racer::c_flags0xd04Bit1)) {
+			if (!(racerFlags & Racer::c_flagEngineSounds) || !(racerFlags & Racer::c_flagPreStart)) {
 				GolOrientedEntity* entity0 = &m_unk0x0e4;
 				entity0->VTable0x04(&m_unk0x700);
 				GolMath::FUN_1002f5a0(m_unk0x0e4.GetOrientation(), &m_unk0x70c);
@@ -406,7 +406,7 @@ void RaceState::Racer::Physics::VTable0x04(LegoS32 p_elapsedMs)
 		}
 
 		LegoU32 racerFlags = m_unk0x6f0->m_unk0xd04;
-		if ((racerFlags & Racer::c_flags0xd04Bit10) && (racerFlags & Racer::c_flags0xd04Bit1)) {
+		if ((racerFlags & Racer::c_flagEngineSounds) && (racerFlags & Racer::c_flagPreStart)) {
 			entity->VTable0x08(m_unk0x700);
 			GolMath::FUN_00449340(&m_unk0x70c, &m_unk0x0e4.GetOrientation().m_m[0][0]);
 			m_unk0x008.m_x = 0.0f;
@@ -1301,7 +1301,7 @@ void RaceState::Racer::Physics::FUN_0042aad0(Field0x198* p_unk0x04, RaceEventRec
 
 	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x40) &&
 		!(m_flags0x6c0 & (c_flags0x6c0Bit3 | c_flags0x6c0Bit7)) && m_unk0x618 > g_unk0x004b0468 &&
-		m_unk0x6f0->m_unk0xd08 != 2) {
+		m_unk0x6f0->m_controlMode != 2) {
 		GolName name;
 		::memcpy(name, p_unk0x08->m_unk0x40, sizeof(GolName));
 		m_unk0x6f0->m_unk0x018.SetWheelParticle(p_unk0x04 - m_unk0x198, name);

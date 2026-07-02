@@ -1816,7 +1816,7 @@ LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_
 		GolVec3 direction;
 		p_racer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
 
-		if (p_racer->m_unk0xd08 != 2) {
+		if (p_racer->m_controlMode != 2) {
 			setup.m_targetPoint = m_targetPoints->FindTargetInCone(
 				&position,
 				&direction,
@@ -1881,7 +1881,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 			g_hookAimMaxDistanceSquared,
 			g_hookAimWideConeCosine
 		);
-		if (!target && p_racer->m_unk0xd08 != 2) {
+		if (!target && p_racer->m_controlMode != 2) {
 			entry = m_targetPoints->FindTargetInCone(
 				&position,
 				&direction,

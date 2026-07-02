@@ -582,7 +582,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 		else {
 			m_unk0x11c = racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::DriveController::c_flags0x014Bit0;
 			if (m_unk0x11c) {
-				switch (racer->m_turboTimerMs) {
+				switch (racer->m_turboLevel) {
 				case 0:
 					m_unk0x120 = -0.2f;
 					break;

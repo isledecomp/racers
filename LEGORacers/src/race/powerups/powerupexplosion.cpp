@@ -407,7 +407,8 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 			return;
 		}
 
-		if ((racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit7) && racer->m_unk0xd08 != 2) {
+		if ((racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit7) &&
+			racer->m_controlMode != 2) {
 			return;
 		}
 

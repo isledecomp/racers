@@ -961,7 +961,7 @@ public:
 		class DroppableBrick;
 
 		// SIZE 0x30
-		class Field0xd8c : public RaceResourceManager::Resource {
+		class SpatialSoundResource : public RaceResourceManager::Resource {
 		public:
 			undefined m_unk0x004[0x018 - 0x004]; // 0x004
 			GolVec3 m_unk0x018;                  // 0x018
@@ -1030,12 +1030,12 @@ public:
 		void FUN_00439340();
 		void FUN_004393d0();
 		void FUN_004371c0(Field0x371c0* p_unk0x04, Field0x371c0Vehicle* p_unk0x08);
-		void FUN_004374c0();
-		void FUN_00437740(LegoU32 p_elapsedMs);
-		void FUN_004377f0(LegoU32 p_elapsedMs);
-		void FUN_00437b50();
-		void FUN_00437be0();
-		void FUN_00437d40(LegoU32 p_elapsedMs);
+		void ResetRaceProgress();
+		void UpdateCarAnimation(LegoU32 p_elapsedMs);
+		void UpdateTimers(LegoU32 p_elapsedMs);
+		void UpdateDriftLean();
+		void UpdateSpatialSounds();
+		void UpdateEngineSound(LegoU32 p_elapsedMs);
 		void FUN_00438500();
 		LegoU32 ReturnAllWhiteBricks();
 		void Halt();
@@ -1060,7 +1060,7 @@ public:
 		void FUN_0043a300(LegoU32 p_unk0x04, LegoBool32 p_unk0x08);
 		void FUN_0043a360();
 		void FUN_0043a390();
-		void FUN_00437540(RaceCameraController* p_controller, LegoBool32 p_unk0x08);
+		void InitializeSounds(RaceCameraController* p_cameraController, LegoBool32 p_controlMode);
 		LegoU32 StartShield(LegoU32 p_unk0x04);
 		void EndDrift();
 		void AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs);
@@ -1091,13 +1091,13 @@ public:
 
 		enum {
 			c_flagShielded = 1 << 0,
-			c_flags0xd04Bit1 = 1 << 1,
+			c_flagPreStart = 1 << 1,
 			c_flagHalted = 1 << 3,
 			c_flagGhost = 1 << 4,
 			c_flagTurbo = 1 << 6,
 			c_flagDrifting = 1 << 7,
 			c_flags0xd04Bit8 = 1 << 8,
-			c_flags0xd04Bit10 = 1 << 10,
+			c_flagEngineSounds = 1 << 10,
 			c_flagCursed = 1 << 11,
 			c_flags0xd04Bit12 = 1 << 12,
 			c_flags0xd04Bit13 = 1 << 13,
@@ -1112,7 +1112,7 @@ public:
 			c_flags0xd04Bit25 = 0x02000000,
 			c_flags0xd04Bit26 = 0x04000000,
 			c_flags0xd04Bit27 = 0x08000000,
-			c_flags0xd04Bit28 = 0x10000000,
+			c_flagSpeedRamping = 0x10000000,
 			c_flags0xd04Bit29 = 0x20000000,
 			c_flags0xaa8Bit1 = 1 << 1,
 			c_flags0xaa8Bit3 = 1 << 3,
@@ -1156,15 +1156,15 @@ public:
 		LegoU32 m_heldPowerupColor;                // 0xccc
 		LegoU32 m_unk0xcd0;                        // 0xcd0
 		LegoU32 m_unk0xcd4;                        // 0xcd4
-		LegoU32 m_unk0xcd8;                        // 0xcd8
-		LegoU32 m_unk0xcdc;                        // 0xcdc
+		LegoU32 m_aiPowerupCheckMs;                // 0xcd8
+		LegoU32 m_aiPowerupCheckIntervalMs;        // 0xcdc
 		LegoU8 m_unk0xce0;                         // 0xce0
 		undefined m_unk0xce1[0xce4 - 0xce1];       // 0xce1
 		LegoU32 m_lapsCompleted;                   // 0xce4
-		LegoU32 m_unk0xce8;                        // 0xce8
+		LegoU32 m_lapTransitionCount;              // 0xce8
 		LegoU32 m_lapTimes[0x18 / 4];              // 0xcec
 		LegoU32 m_unk0xd04;                        // 0xd04
-		LegoU32 m_unk0xd08;                        // 0xd08
+		LegoU32 m_controlMode;                     // 0xd08
 		LegoU32 m_unk0xd0c;                        // 0xd0c
 		LegoU32 m_unk0xd10;                        // 0xd10
 		LegoU32 m_unk0xd14;                        // 0xd14
@@ -1177,60 +1177,60 @@ public:
 		LegoU8 m_unk0xd21;                         // 0xd21
 		LegoU8 m_unk0xd22;                         // 0xd22
 		LegoU8 m_unk0xd23;                         // 0xd23
-		LegoU32 m_unk0xd24;                        // 0xd24
-		LegoFloat m_unk0xd28;                      // 0xd28
-		LegoFloat m_unk0xd2c;                      // 0xd2c
-		LegoFloat m_unk0xd30;                      // 0xd30
-		undefined4 m_unk0xd34;                     // 0xd34
+		LegoU32 m_activeEngineSound;               // 0xd24
+		LegoFloat m_engineIdleVolume;              // 0xd28
+		LegoFloat m_engineDriveVolume;             // 0xd2c
+		LegoFloat m_engineFastVolume;              // 0xd30
+		undefined4 m_tauntCooldownMs;              // 0xd34
 		undefined4 m_unk0xd38;                     // 0xd38
 		undefined4 m_unk0xd3c;                     // 0xd3c
 		LegoU32 m_unk0xd40;                        // 0xd40
-		LegoU32 m_unk0xd44;                        // 0xd44
-		undefined4 m_unk0xd48;                     // 0xd48
-		undefined4 m_unk0xd4c;                     // 0xd4c
-		LegoU32 m_unk0xd50;                        // 0xd50
+		LegoU32 m_reactionCooldownMs;              // 0xd44
+		undefined4 m_speedRampTimerMs;             // 0xd48
+		undefined4 m_scrapeSoundCooldownMs;        // 0xd4c
+		LegoU32 m_airborneMs;                      // 0xd50
 		LegoFloat m_unk0xd54;                      // 0xd54
 		LegoU32 m_unk0xd58;                        // 0xd58
 		DroppableBrick* m_unk0xd5c[3];             // 0xd5c
-		LegoU32 m_turboTimerMs;                    // 0xd68
+		LegoU32 m_turboLevel;                      // 0xd68
 		LegoU32 m_shieldLevel;                     // 0xd6c
 		undefined4 m_unk0xd70;                     // 0xd70
 		undefined4 m_unk0xd74;                     // 0xd74
 		LegoU32 m_unk0xd78;                        // 0xd78
 		undefined4 m_curseTimerMs;                 // 0xd7c
 		LegoU32 m_curseTickMs;                     // 0xd80
-		LegoU32 m_unk0xd84;                        // 0xd84
-		LegoU32 m_unk0xd88;                        // 0xd88
+		LegoU32 m_timeBehindDisplayMs;             // 0xd84
+		LegoU32 m_timeBehind;                      // 0xd88
 		union {
-			Field0xd8c* m_unk0xd8c;                  // 0xd8c
+			SpatialSoundResource* m_turboSoundL0;    // 0xd8c
 			SpatialSoundInstance* m_soundD8c;        // 0xd8c
 			RaceResourceManager::Resource* m_resD8c; // 0xd8c
 		};
 		union {
-			Field0xd8c* m_unk0xd90;                  // 0xd90
+			SpatialSoundResource* m_turboSoundL1;    // 0xd90
 			SpatialSoundInstance* m_soundD90;        // 0xd90
 			RaceResourceManager::Resource* m_resD90; // 0xd90
 		};
 		union {
-			Field0xd8c* m_unk0xd94;                  // 0xd94
+			SpatialSoundResource* m_turboSoundL2;    // 0xd94
 			SpatialSoundInstance* m_soundD94;        // 0xd94
 			RaceResourceManager::Resource* m_resD94; // 0xd94
 		};
 		union {
-			Field0xd8c* m_unk0xd98;                  // 0xd98
+			SpatialSoundResource* m_ghostSound;      // 0xd98
 			SpatialSoundInstance* m_soundD98;        // 0xd98
 			RaceResourceManager::Resource* m_resD98; // 0xd98
 		};
 		union {
-			SpatialSoundInstance* m_unk0xd9c;          // 0xd9c
+			SpatialSoundInstance* m_engineIdleSound;   // 0xd9c
 			RaceResourceManager::Resource* m_soundD9c; // 0xd9c
 		};
 		union {
-			SpatialSoundInstance* m_unk0xda0;          // 0xda0
+			SpatialSoundInstance* m_engineDriveSound;  // 0xda0
 			RaceResourceManager::Resource* m_soundDa0; // 0xda0
 		};
 		union {
-			SpatialSoundInstance* m_unk0xda4;          // 0xda4
+			SpatialSoundInstance* m_engineFastSound;   // 0xda4
 			RaceResourceManager::Resource* m_soundDa4; // 0xda4
 		};
 		union {
@@ -1238,7 +1238,7 @@ public:
 			RaceResourceManager::Resource* m_soundDa8; // 0xda8
 		};
 		union {
-			Field0xd8c* m_unk0xdac;                  // 0xdac
+			SpatialSoundResource* m_curseSound;      // 0xdac
 			SpatialSoundInstance* m_soundDac;        // 0xdac
 			RaceResourceManager::Resource* m_resDac; // 0xdac
 		};

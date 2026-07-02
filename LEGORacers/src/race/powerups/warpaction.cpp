@@ -132,7 +132,7 @@ LegoU32 RacePowerupManager::WarpAction::Activate(
 
 		m_manager->CancelMagnetHold(p_racer);
 		m_racer = p_racer;
-		m_isDemoRacer = p_racer->m_unk0xd08 == 2;
+		m_isDemoRacer = p_racer->m_controlMode == 2;
 		p_racer->m_unk0xd04 |= c_racerFlags0xd04Bit21;
 
 		m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));

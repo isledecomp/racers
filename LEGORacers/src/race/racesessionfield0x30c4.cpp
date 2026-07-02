@@ -133,13 +133,13 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		racer->FUN_0043a3e0();
 
 		if (!m_context->m_playerSetupSlots[racerIndex].m_unk0x10) {
-			racer->m_unk0xd08 = 0;
+			racer->m_controlMode = 0;
 			racer->m_unk0xe2c = NULL;
 		}
 
 		racer->FUN_004371c0(NULL, NULL);
 		racer->m_unk0xc70.m_unk0x050 = m_raceState->GetUnk0x2a0();
-		racer->FUN_004374c0();
+		racer->ResetRaceProgress();
 		racer->FUN_00438500();
 	}
 }

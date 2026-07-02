@@ -1384,11 +1384,11 @@ void RaceState::Racer::CarVisuals::DrawTransparent(GolD3DRenderDevice* p_rendere
 // FUNCTION: LEGORACERS 0x0043fd30
 void RaceState::Racer::CarVisuals::StartTurboEffects()
 {
-	if (m_racer->m_unk0xd08 != 2) {
+	if (m_racer->m_controlMode != 2) {
 		StartDust();
 		StartCarSmoke();
 
-		if (m_racer->m_turboTimerMs > 0) {
+		if (m_racer->m_turboLevel > 0) {
 			UseTurboSkidMaterial();
 			StartSkidEffects();
 		}
@@ -1407,7 +1407,7 @@ void RaceState::Racer::CarVisuals::StartSlideSkid()
 {
 	m_flags |= c_flagSliding;
 
-	if (m_racer->m_unk0xd08 != 2) {
+	if (m_racer->m_controlMode != 2) {
 		StartSkidEffects();
 	}
 }

@@ -1,22 +1,22 @@
 #include "race/racesession.h"
 #include "race/timeracemanager.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::RaceReset, 0x2c)
+DECOMP_SIZE_ASSERT(RaceReset, 0x2c)
 
 // FUNCTION: LEGORACERS 0x0043a640
-RaceSession::RaceReset::RaceReset()
+RaceReset::RaceReset()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0043a650
-RaceSession::RaceReset::~RaceReset()
+RaceReset::~RaceReset()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0043a660
-void RaceSession::RaceReset::Reset()
+void RaceReset::Reset()
 {
 	m_context = NULL;
 	m_raceState = NULL;
@@ -32,7 +32,7 @@ void RaceSession::RaceReset::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0043a690
-void RaceSession::RaceReset::Initialize(const Params* p_source)
+void RaceReset::Initialize(const Params* p_source)
 {
 	m_context = p_source->m_context;
 	m_raceState = p_source->m_raceState;
@@ -48,7 +48,7 @@ void RaceSession::RaceReset::Initialize(const Params* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0043a6e0
-void RaceSession::RaceReset::FinishRace()
+void RaceReset::FinishRace()
 {
 	m_raceState->RecordBestTimes(m_context);
 	m_eventTable->ForceAllEvents();
@@ -73,7 +73,7 @@ void RaceSession::RaceReset::FinishRace()
 }
 
 // FUNCTION: LEGORACERS 0x0043a780
-void RaceSession::RaceReset::ResetRacers()
+void RaceReset::ResetRacers()
 {
 	m_raceState->StopProximitySound();
 

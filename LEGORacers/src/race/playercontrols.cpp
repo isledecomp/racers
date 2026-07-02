@@ -4,8 +4,8 @@
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::PlayerControls, 0x74)
-DECOMP_SIZE_ASSERT(RaceSession::PlayerControls::InputState, 0x70)
+DECOMP_SIZE_ASSERT(PlayerControls, 0x74)
+DECOMP_SIZE_ASSERT(PlayerControls::InputState, 0x70)
 
 extern const LegoChar* g_sideWinderForceFeedName;
 extern LegoFloat g_minSoundPan;
@@ -29,7 +29,7 @@ extern const LegoFloat g_unk0x004b0750 = 16.0f;
 extern const LegoFloat g_unk0x004b0754 = 1.0f;
 
 // FUNCTION: LEGORACERS 0x00430020
-RaceSession::PlayerControls::PlayerControls()
+PlayerControls::PlayerControls()
 {
 	m_racer = NULL;
 	m_input.m_inputFlags = 0;
@@ -41,13 +41,13 @@ RaceSession::PlayerControls::PlayerControls()
 }
 
 // FUNCTION: LEGORACERS 0x00430050
-RaceSession::PlayerControls::~PlayerControls()
+PlayerControls::~PlayerControls()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004300a0
-void RaceSession::PlayerControls::Destroy()
+void PlayerControls::Destroy()
 {
 	m_input.Destroy();
 
@@ -61,7 +61,7 @@ void RaceSession::PlayerControls::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004300d0
-void RaceSession::PlayerControls::Initialize(Racer* p_racer, InputDevice::Callback* p_fallback)
+void PlayerControls::Initialize(Racer* p_racer, InputDevice::Callback* p_fallback)
 {
 	m_racer = p_racer;
 	m_input.Initialize(this, p_fallback);
@@ -69,7 +69,7 @@ void RaceSession::PlayerControls::Initialize(Racer* p_racer, InputDevice::Callba
 }
 
 // FUNCTION: LEGORACERS 0x00430100
-void RaceSession::PlayerControls::Reset()
+void PlayerControls::Reset()
 {
 	m_input.m_boostWindowMs = 0;
 	m_input.m_throttleHoldMs = 0;
@@ -77,7 +77,7 @@ void RaceSession::PlayerControls::Reset()
 }
 
 // STUB: LEGORACERS 0x00430120
-void RaceSession::PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
+void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 {
 	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.001f;
 	LegoU32 inputFlags = m_input.m_inputFlags;
@@ -206,7 +206,7 @@ void RaceSession::PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00430390
-void RaceSession::PlayerControls::UpdateThrottle()
+void PlayerControls::UpdateThrottle()
 {
 	LegoFloat driveValue;
 	LegoFloat throttleValue = 0.0f;
@@ -278,7 +278,7 @@ void RaceSession::PlayerControls::UpdateThrottle()
 }
 
 // FUNCTION: LEGORACERS 0x00430530
-void RaceSession::PlayerControls::Update(LegoU32 p_elapsedMs)
+void PlayerControls::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 duration = m_input.m_boostWindowMs;
 	if (duration < p_elapsedMs) {
@@ -294,7 +294,7 @@ void RaceSession::PlayerControls::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00430570
-void RaceSession::PlayerControls::OnSteerLeft(LegoBool32 p_enabled)
+void PlayerControls::OnSteerLeft(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		m_input.m_inputFlags |= 1;
@@ -305,7 +305,7 @@ void RaceSession::PlayerControls::OnSteerLeft(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x00430590
-void RaceSession::PlayerControls::OnSteerRight(LegoBool32 p_enabled)
+void PlayerControls::OnSteerRight(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		m_input.m_inputFlags |= 2;
@@ -316,7 +316,7 @@ void RaceSession::PlayerControls::OnSteerRight(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x004305b0
-void RaceSession::PlayerControls::OnThrottle(LegoBool32 p_enabled)
+void PlayerControls::OnThrottle(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		m_input.m_inputFlags |= 4;
@@ -329,7 +329,7 @@ void RaceSession::PlayerControls::OnThrottle(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x004305e0
-void RaceSession::PlayerControls::OnBrake(LegoBool32 p_enabled)
+void PlayerControls::OnBrake(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		Racer* racer = m_racer;
@@ -345,7 +345,7 @@ void RaceSession::PlayerControls::OnBrake(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x00430620
-void RaceSession::PlayerControls::OnUsePowerup(LegoBool32 p_enabled)
+void PlayerControls::OnUsePowerup(LegoBool32 p_enabled)
 {
 	if (!(m_input.m_stateFlags & 3)) {
 		if (p_enabled) {
@@ -359,7 +359,7 @@ void RaceSession::PlayerControls::OnUsePowerup(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x00430650
-void RaceSession::PlayerControls::OnCycleCamera(LegoBool32 p_enabled)
+void PlayerControls::OnCycleCamera(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		m_racer->CycleCameraView();
@@ -371,7 +371,7 @@ void RaceSession::PlayerControls::OnCycleCamera(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x00430680
-void RaceSession::PlayerControls::OnCycleHud(LegoBool32 p_enabled)
+void PlayerControls::OnCycleHud(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		m_racer->CycleHudGadget();
@@ -383,7 +383,7 @@ void RaceSession::PlayerControls::OnCycleHud(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x004306b0
-void RaceSession::PlayerControls::OnDrift(LegoBool32 p_enabled)
+void PlayerControls::OnDrift(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		m_input.m_inputFlags |= 0x80;
@@ -394,7 +394,7 @@ void RaceSession::PlayerControls::OnDrift(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x004306d0
-void RaceSession::PlayerControls::OnLookBack(LegoBool32 p_enabled)
+void PlayerControls::OnLookBack(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		m_racer->StartLookBack();
@@ -407,7 +407,7 @@ void RaceSession::PlayerControls::OnLookBack(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x00430710
-void RaceSession::PlayerControls::TryStartBoost()
+void PlayerControls::TryStartBoost()
 {
 	LegoU32 flags = m_input.m_stateFlags;
 	flags &= ~1;
@@ -430,7 +430,7 @@ void RaceSession::PlayerControls::TryStartBoost()
 }
 
 // FUNCTION: LEGORACERS 0x00430760
-void RaceSession::PlayerControls::EnterAiControl()
+void PlayerControls::EnterAiControl()
 {
 	m_input.m_stateFlags |= 2;
 	m_racer->SwitchToAiControl();
@@ -442,7 +442,7 @@ void RaceSession::PlayerControls::EnterAiControl()
 }
 
 // FUNCTION: LEGORACERS 0x00430790
-void RaceSession::PlayerControls::TrackThrottleHold()
+void PlayerControls::TrackThrottleHold()
 {
 	LegoU32 flags = m_input.m_stateFlags;
 	if (flags & 1) {
@@ -470,7 +470,7 @@ void RaceSession::PlayerControls::TrackThrottleHold()
 }
 
 // FUNCTION: LEGORACERS 0x004307f0
-LegoS32 RaceSession::PlayerControls::DetectAnalogDevice()
+LegoS32 PlayerControls::DetectAnalogDevice()
 {
 	LegoS32 result = ::strcmp(m_input.m_devices[4]->GetDeviceName(), g_sideWinderForceFeedName);
 	if (!result) {
@@ -481,7 +481,7 @@ LegoS32 RaceSession::PlayerControls::DetectAnalogDevice()
 }
 
 // FUNCTION: LEGORACERS 0x00430840
-RaceSession::PlayerControls::InputState::InputState()
+PlayerControls::InputState::InputState()
 {
 	m_controls = NULL;
 	m_fallback = NULL;
@@ -495,13 +495,13 @@ RaceSession::PlayerControls::InputState::InputState()
 }
 
 // FUNCTION: LEGORACERS 0x00430890
-RaceSession::PlayerControls::InputState::~InputState()
+PlayerControls::InputState::~InputState()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004308a0
-void RaceSession::PlayerControls::InputState::Destroy()
+void PlayerControls::InputState::Destroy()
 {
 	UnacquireDevices();
 
@@ -516,10 +516,7 @@ void RaceSession::PlayerControls::InputState::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004308d0
-RaceSession::PlayerControls* RaceSession::PlayerControls::InputState::Initialize(
-	PlayerControls* p_parent,
-	InputDevice::Callback* p_fallback
-)
+PlayerControls* PlayerControls::InputState::Initialize(PlayerControls* p_parent, InputDevice::Callback* p_fallback)
 {
 	m_controls = p_parent;
 	m_fallback = p_fallback;
@@ -529,11 +526,7 @@ RaceSession::PlayerControls* RaceSession::PlayerControls::InputState::Initialize
 }
 
 // FUNCTION: LEGORACERS 0x004308f0
-LegoU32 RaceSession::PlayerControls::InputState::SetBinding(
-	DirectInputDevice* p_source,
-	undefined4 p_input,
-	LegoU32 p_index
-)
+LegoU32 PlayerControls::InputState::SetBinding(DirectInputDevice* p_source, undefined4 p_input, LegoU32 p_index)
 {
 	m_devices[p_index] = p_source;
 	m_inputs[p_index] = p_input;
@@ -542,14 +535,14 @@ LegoU32 RaceSession::PlayerControls::InputState::SetBinding(
 }
 
 // FUNCTION: LEGORACERS 0x00430910
-undefined4 RaceSession::PlayerControls::InputState::GetBinding(DirectInputDevice** p_source, LegoU32 p_index)
+undefined4 PlayerControls::InputState::GetBinding(DirectInputDevice** p_source, LegoU32 p_index)
 {
 	*p_source = m_devices[p_index];
 	return m_inputs[p_index];
 }
 
 // FUNCTION: LEGORACERS 0x00430930
-void RaceSession::PlayerControls::InputState::AcquireDevices()
+void PlayerControls::InputState::AcquireDevices()
 {
 	undefined4* input = m_inputs;
 	DirectInputDevice** current = m_devices;
@@ -570,7 +563,7 @@ void RaceSession::PlayerControls::InputState::AcquireDevices()
 }
 
 // FUNCTION: LEGORACERS 0x00430980
-void RaceSession::PlayerControls::InputState::UnacquireDevices()
+void PlayerControls::InputState::UnacquireDevices()
 {
 	DirectInputDevice** current = m_devices;
 	LegoS32 remaining = c_inputSlotCount;
@@ -585,7 +578,7 @@ void RaceSession::PlayerControls::InputState::UnacquireDevices()
 }
 
 // FUNCTION: LEGORACERS 0x004309c0
-InputDevice::Callback::ResultValue RaceSession::PlayerControls::InputState::OnKeyDown(
+InputDevice::Callback::ResultValue PlayerControls::InputState::OnKeyDown(
 	InputDevice* p_source,
 	undefined4 p_input,
 	undefined4 p_time
@@ -637,7 +630,7 @@ InputDevice::Callback::ResultValue RaceSession::PlayerControls::InputState::OnKe
 }
 
 // FUNCTION: LEGORACERS 0x00430af0
-InputDevice::Callback::ResultValue RaceSession::PlayerControls::InputState::OnKeyUp(
+InputDevice::Callback::ResultValue PlayerControls::InputState::OnKeyUp(
 	InputDevice* p_source,
 	undefined4 p_input,
 	undefined4 p_time
@@ -689,7 +682,7 @@ InputDevice::Callback::ResultValue RaceSession::PlayerControls::InputState::OnKe
 }
 
 // FUNCTION: LEGORACERS 0x00430c20
-void RaceSession::PlayerControls::InputState::ReleaseAllInputs()
+void PlayerControls::InputState::ReleaseAllInputs()
 {
 	m_controls->OnSteerLeft(FALSE);
 	m_controls->OnSteerRight(FALSE);
@@ -703,7 +696,7 @@ void RaceSession::PlayerControls::InputState::ReleaseAllInputs()
 }
 
 // FUNCTION: LEGORACERS 0x00430c80
-InputDevice::Callback::ResultValue RaceSession::InputEventSink::OnKeyRepeat(
+InputDevice::Callback::ResultValue InputEventSink::OnKeyRepeat(
 	InputDevice* p_source,
 	undefined4 p_input,
 	undefined4 p_time

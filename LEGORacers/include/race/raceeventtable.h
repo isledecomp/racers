@@ -37,13 +37,7 @@ public:
 public:
 	// VTABLE: LEGORACERS 0x004b1b4c
 	// SIZE 0x1fc
-	class EvbTxtParser : public GolTxtParser {
-		// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-		// RaceEventTable::EvbTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-		// RaceEventTable::EvbTxtParser::~EvbTxtParser
-	};
+	class EvbTxtParser : public GolTxtParser {};
 
 	// SIZE 0x34
 	struct Params {

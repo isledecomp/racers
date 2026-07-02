@@ -24,13 +24,7 @@ class MenuInputBindingTable : public MenuResourceTable {
 public:
 	// VTABLE: LEGORACERS 0x004b2198
 	// SIZE 0x1fc
-	class MidTxtParser : public GolTxtParser {
-		// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-		// MenuInputBindingTable::MidTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-		// MenuInputBindingTable::MidTxtParser::~MidTxtParser
-	};
+	class MidTxtParser : public GolTxtParser {};
 
 	// SIZE 0x38
 	class RegionBinding : public MenuWidget::CreateParams {

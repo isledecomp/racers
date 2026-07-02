@@ -3,21 +3,21 @@
 #include "golerror.h"
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::RaceTimerList, 0x0c)
-DECOMP_SIZE_ASSERT(RaceSession::RaceTimerList::Resource, 0x24)
-DECOMP_SIZE_ASSERT(RaceSession::RaceTimerList::TibTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(RaceTimerList, 0x0c)
+DECOMP_SIZE_ASSERT(RaceTimerList::Resource, 0x24)
+DECOMP_SIZE_ASSERT(RaceTimerList::TibTxtParser, 0x1fc)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x00464700
-LegoU32 RaceSession::RaceTimerList::FUN_00464700()
+LegoU32 RaceTimerList::FUN_00464700()
 {
 	return 8;
 }
 
 // FUNCTION: LEGORACERS 0x00464710
-RaceSession::RaceTimerList::Resource::Resource()
+RaceTimerList::Resource::Resource()
 {
 	m_eventTable = NULL;
 	m_event = NULL;
@@ -30,13 +30,13 @@ RaceSession::RaceTimerList::Resource::Resource()
 }
 
 // FUNCTION: LEGORACERS 0x00464740
-RaceSession::RaceTimerList::Resource::~Resource()
+RaceTimerList::Resource::~Resource()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00464750
-void RaceSession::RaceTimerList::Resource::Initialize(
+void RaceTimerList::Resource::Initialize(
 	LegoEventQueue* p_eventQueue,
 	RaceEventTable* p_eventTable,
 	LegoU32 p_onDurationMs,
@@ -74,7 +74,7 @@ void RaceSession::RaceTimerList::Resource::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00464800
-void RaceSession::RaceTimerList::Resource::Reset()
+void RaceTimerList::Resource::Reset()
 {
 	if (m_event) {
 		m_event->m_active = FALSE;
@@ -91,7 +91,7 @@ void RaceSession::RaceTimerList::Resource::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00464830
-void RaceSession::RaceTimerList::Resource::Update(LegoU32 p_elapsedMs)
+void RaceTimerList::Resource::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 remaining = m_delayMs;
 	if (0 < remaining) {
@@ -120,7 +120,7 @@ void RaceSession::RaceTimerList::Resource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004648d0
-void RaceSession::RaceTimerList::Resource::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void RaceTimerList::Resource::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	m_event = NULL;
 
@@ -178,7 +178,7 @@ void RaceSession::RaceTimerList::Resource::VTable0x00(LegoEventQueue::CallbackDa
 }
 
 // FUNCTION: LEGORACERS 0x00464a40
-LegoEventQueue::Event* RaceSession::RaceTimerList::Resource::Schedule(LegoU32 p_delayMs)
+LegoEventQueue::Event* RaceTimerList::Resource::Schedule(LegoU32 p_delayMs)
 {
 	LegoEventQueue::Callback* callback = this;
 	LegoEventQueue::Descriptor descriptor;
@@ -191,7 +191,7 @@ LegoEventQueue::Event* RaceSession::RaceTimerList::Resource::Schedule(LegoU32 p_
 }
 
 // FUNCTION: LEGORACERS 0x00464a80
-RaceSession::RaceTimerList::RaceTimerList()
+RaceTimerList::RaceTimerList()
 {
 	m_timers = NULL;
 	m_eventTable = 0;
@@ -199,13 +199,13 @@ RaceSession::RaceTimerList::RaceTimerList()
 }
 
 // FUNCTION: LEGORACERS 0x00464a90
-RaceSession::RaceTimerList::~RaceTimerList()
+RaceTimerList::~RaceTimerList()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00464aa0
-void RaceSession::RaceTimerList::Load(
+void RaceTimerList::Load(
 	LegoEventQueue* p_eventQueue,
 	RaceEventTable* p_eventTable,
 	const LegoChar* p_name,
@@ -303,7 +303,7 @@ void RaceSession::RaceTimerList::Load(
 }
 
 // FUNCTION: LEGORACERS 0x00464dd0
-LegoU32 RaceSession::RaceTimerList::Update(LegoU32 p_elapsedMs)
+LegoU32 RaceTimerList::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 result = m_count;
 
@@ -316,7 +316,7 @@ LegoU32 RaceSession::RaceTimerList::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00464e10
-void RaceSession::RaceTimerList::Destroy()
+void RaceTimerList::Destroy()
 {
 	if (m_timers) {
 		delete[] m_timers;

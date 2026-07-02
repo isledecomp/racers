@@ -43,7 +43,7 @@ extern LegoU32 g_raceLapCount;
 extern LegoU32 g_randomTableIndex;
 
 DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
-DECOMP_SIZE_ASSERT(RaceSession::InputEventSink, 0x04)
+DECOMP_SIZE_ASSERT(InputEventSink, 0x04)
 DECOMP_SIZE_ASSERT(RaceSession::RabTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004b07ec

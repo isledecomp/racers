@@ -5,10 +5,10 @@
 
 #include <stdlib.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::RacerCollisionWorlds, 0x3c)
+DECOMP_SIZE_ASSERT(RacerCollisionWorlds, 0x3c)
 
 // FUNCTION: LEGORACERS 0x0045e350
-RaceSession::RacerCollisionWorlds::RacerCollisionWorlds()
+RacerCollisionWorlds::RacerCollisionWorlds()
 {
 	for (LegoS32 i = 0; i < sizeOfArray(m_racers); i++) {
 		m_racers[i] = NULL;
@@ -20,13 +20,13 @@ RaceSession::RacerCollisionWorlds::RacerCollisionWorlds()
 }
 
 // FUNCTION: LEGORACERS 0x0045e3a0
-RaceSession::RacerCollisionWorlds::~RacerCollisionWorlds()
+RacerCollisionWorlds::~RacerCollisionWorlds()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045e3b0
-void RaceSession::RacerCollisionWorlds::Destroy()
+void RacerCollisionWorlds::Destroy()
 {
 	for (LegoS32 i = 0; i < sizeOfArray(m_racers); i++) {
 		m_racers[i] = NULL;
@@ -42,7 +42,7 @@ void RaceSession::RacerCollisionWorlds::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045e3f0
-void RaceSession::RacerCollisionWorlds::Initialize(GolWorldDatabase* p_worldDatabase, RaceState* p_raceState)
+void RacerCollisionWorlds::Initialize(GolWorldDatabase* p_worldDatabase, RaceState* p_raceState)
 {
 	m_worldCount = p_worldDatabase->GetBoundedEntityCount();
 	if (m_worldCount) {
@@ -63,7 +63,7 @@ void RaceSession::RacerCollisionWorlds::Initialize(GolWorldDatabase* p_worldData
 }
 
 // FUNCTION: LEGORACERS 0x0045e470
-void RaceSession::RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
+void RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 {
 	if (m_worldCount) {
 		while (p_elapsedMs > 0) {
@@ -108,7 +108,7 @@ void RaceSession::RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x0045e520
-void RaceSession::RacerCollisionWorlds::ActivateWorld(Racer* p_racer, LegoU32 p_worldIndex)
+void RacerCollisionWorlds::ActivateWorld(Racer* p_racer, LegoU32 p_worldIndex)
 {
 	Racer* target = p_racer;
 	RacerCollisionWorlds* field = this;
@@ -143,7 +143,7 @@ void RaceSession::RacerCollisionWorlds::ActivateWorld(Racer* p_racer, LegoU32 p_
 }
 
 // FUNCTION: LEGORACERS 0x0045e5b0
-LegoU32 RaceSession::RacerCollisionWorlds::Reset()
+LegoU32 RacerCollisionWorlds::Reset()
 {
 	LegoU32 result = 0;
 

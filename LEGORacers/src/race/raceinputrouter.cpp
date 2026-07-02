@@ -4,10 +4,10 @@
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::RaceInputRouter, 0x1c)
+DECOMP_SIZE_ASSERT(RaceInputRouter, 0x1c)
 
 // FUNCTION: LEGORACERS 0x00427900
-RaceSession::RaceInputRouter::RaceInputRouter()
+RaceInputRouter::RaceInputRouter()
 {
 	m_device = NULL;
 	for (LegoU32 i = 0; i < sizeOfArray(m_sinks); i++) {
@@ -19,13 +19,13 @@ RaceSession::RaceInputRouter::RaceInputRouter()
 }
 
 // FUNCTION: LEGORACERS 0x00427950
-RaceSession::RaceInputRouter::~RaceInputRouter()
+RaceInputRouter::~RaceInputRouter()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00427960
-void RaceSession::RaceInputRouter::Reset()
+void RaceInputRouter::Reset()
 {
 	m_device = NULL;
 	for (LegoU32 i = 0; i < sizeOfArray(m_sinks); i++) {
@@ -37,7 +37,7 @@ void RaceSession::RaceInputRouter::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00427980
-void RaceSession::RaceInputRouter::Initialize(DirectInputDevice* p_source, InputDevice::Callback* p_fallback)
+void RaceInputRouter::Initialize(DirectInputDevice* p_source, InputDevice::Callback* p_fallback)
 {
 	m_device = p_source;
 	m_fallback = p_fallback;
@@ -45,14 +45,14 @@ void RaceSession::RaceInputRouter::Initialize(DirectInputDevice* p_source, Input
 }
 
 // FUNCTION: LEGORACERS 0x004279a0
-void RaceSession::RaceInputRouter::AddSink(PlayerControls::InputState* p_sink)
+void RaceInputRouter::AddSink(PlayerControls::InputState* p_sink)
 {
 	m_sinks[m_sinkCount] = p_sink;
 	m_sinkCount++;
 }
 
 // FUNCTION: LEGORACERS 0x004279c0
-void RaceSession::RaceInputRouter::AcquireDevice()
+void RaceInputRouter::AcquireDevice()
 {
 	m_device->SetCallback(this);
 	if (!m_device->IsAcquired()) {
@@ -61,13 +61,13 @@ void RaceSession::RaceInputRouter::AcquireDevice()
 }
 
 // FUNCTION: LEGORACERS 0x004279f0
-void RaceSession::RaceInputRouter::UnacquireDevice()
+void RaceInputRouter::UnacquireDevice()
 {
 	m_device->Unacquire();
 }
 
 // FUNCTION: LEGORACERS 0x00427a00
-InputDevice::Callback::ResultValue RaceSession::RaceInputRouter::OnKeyDown(
+InputDevice::Callback::ResultValue RaceInputRouter::OnKeyDown(
 	InputDevice* p_source,
 	undefined4 p_input,
 	undefined4 p_time
@@ -113,7 +113,7 @@ InputDevice::Callback::ResultValue RaceSession::RaceInputRouter::OnKeyDown(
 }
 
 // FUNCTION: LEGORACERS 0x00427aa0
-InputDevice::Callback::ResultValue RaceSession::RaceInputRouter::OnKeyUp(
+InputDevice::Callback::ResultValue RaceInputRouter::OnKeyUp(
 	InputDevice* p_source,
 	undefined4 p_input,
 	undefined4 p_time
@@ -159,7 +159,7 @@ InputDevice::Callback::ResultValue RaceSession::RaceInputRouter::OnKeyUp(
 }
 
 // FUNCTION: LEGORACERS 0x00427b40
-void RaceSession::RaceInputRouter::ReleaseAllInputs()
+void RaceInputRouter::ReleaseAllInputs()
 {
 	LegoU32 i = 0;
 	if (m_sinkCount > 0) {

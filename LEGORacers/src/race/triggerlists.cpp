@@ -7,16 +7,16 @@
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::RacerTriggerList, 0x18)
-DECOMP_SIZE_ASSERT(RaceSession::RacerTriggerList::Entry, 0x58)
-DECOMP_SIZE_ASSERT(RaceSession::RacerTriggerList::EntryParams, 0x3c)
-DECOMP_SIZE_ASSERT(RaceSession::TriggerList, 0x14)
-DECOMP_SIZE_ASSERT(RaceSession::TriggerList::Entry, 0x3c)
-DECOMP_SIZE_ASSERT(RaceSession::TriggerList::EntryParams, 0x1c)
-DECOMP_SIZE_ASSERT(RaceSession::TriggerList::TrbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(RacerTriggerList, 0x18)
+DECOMP_SIZE_ASSERT(RacerTriggerList::Entry, 0x58)
+DECOMP_SIZE_ASSERT(RacerTriggerList::EntryParams, 0x3c)
+DECOMP_SIZE_ASSERT(TriggerList, 0x14)
+DECOMP_SIZE_ASSERT(TriggerList::Entry, 0x3c)
+DECOMP_SIZE_ASSERT(TriggerList::EntryParams, 0x1c)
+DECOMP_SIZE_ASSERT(TriggerList::TrbTxtParser, 0x1fc)
 
 // FUNCTION: LEGORACERS 0x00463ae0
-RaceSession::RacerTriggerList::Entry::Entry()
+RacerTriggerList::Entry::Entry()
 {
 	m_insideMask = 0;
 	m_previousInsideMask = 0;
@@ -28,13 +28,13 @@ RaceSession::RacerTriggerList::Entry::Entry()
 }
 
 // FUNCTION: LEGORACERS 0x00463b10
-RaceSession::RacerTriggerList::Entry::~Entry()
+RacerTriggerList::Entry::~Entry()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00463b60
-void RaceSession::RacerTriggerList::Entry::Initialize(const EntryParams* p_params)
+void RacerTriggerList::Entry::Initialize(const EntryParams* p_params)
 {
 	CallBaseInitialize(p_params);
 	m_raceState = p_params->m_raceState;
@@ -57,7 +57,7 @@ void RaceSession::RacerTriggerList::Entry::Initialize(const EntryParams* p_param
 }
 
 // FUNCTION: LEGORACERS 0x00463bd0
-void RaceSession::RacerTriggerList::Entry::Destroy()
+void RacerTriggerList::Entry::Destroy()
 {
 	CallBaseDestroy();
 	m_insideMask = 0;
@@ -70,7 +70,7 @@ void RaceSession::RacerTriggerList::Entry::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00463c00
-void RaceSession::RacerTriggerList::Entry::Update(LegoU32 p_elapsedMs)
+void RacerTriggerList::Entry::Update(LegoU32 p_elapsedMs)
 {
 	CallBaseUpdate(p_elapsedMs);
 	if (m_eventId != -1 && m_previousInsideMask) {
@@ -90,7 +90,7 @@ void RaceSession::RacerTriggerList::Entry::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00463c70
-void RaceSession::RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = NULL;
 	if (p_data->m_type == 2) {
@@ -121,7 +121,7 @@ void RaceSession::RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackDa
 }
 
 // FUNCTION: LEGORACERS 0x00463d10
-void RaceSession::RacerTriggerList::Entry::Reset()
+void RacerTriggerList::Entry::Reset()
 {
 	CallBaseReset();
 	m_insideMask = 0;
@@ -129,19 +129,19 @@ void RaceSession::RacerTriggerList::Entry::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00463d30
-RaceSession::RacerTriggerList::RacerTriggerList()
+RacerTriggerList::RacerTriggerList()
 {
 	m_racerEntries = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00463d70
-RaceSession::RacerTriggerList::~RacerTriggerList()
+RacerTriggerList::~RacerTriggerList()
 {
 	Destroy();
 }
 
 // STUB: LEGORACERS 0x00463dc0
-void RaceSession::RacerTriggerList::Load(
+void RacerTriggerList::Load(
 	RaceState* p_raceState,
 	RaceEventTable* p_eventTable,
 	RacePowerupManager* p_powerupManager,
@@ -240,7 +240,7 @@ void RaceSession::RacerTriggerList::Load(
 }
 
 // FUNCTION: LEGORACERS 0x004640a0
-void RaceSession::RacerTriggerList::Destroy()
+void RacerTriggerList::Destroy()
 {
 	if (m_racerEntries) {
 		delete[] m_racerEntries;
@@ -249,7 +249,7 @@ void RaceSession::RacerTriggerList::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004640c0
-LegoU32 RaceSession::RacerTriggerList::Update(LegoU32 p_elapsedMs)
+LegoU32 RacerTriggerList::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 i;
 	LegoU32 result = m_count;
@@ -263,7 +263,7 @@ LegoU32 RaceSession::RacerTriggerList::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00464100
-LegoU32 RaceSession::RacerTriggerList::Reset()
+LegoU32 RacerTriggerList::Reset()
 {
 	LegoU32 i;
 	LegoU32 result = m_count;
@@ -277,7 +277,7 @@ LegoU32 RaceSession::RacerTriggerList::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00464e40
-RaceSession::TriggerList::Entry::Entry()
+TriggerList::Entry::Entry()
 {
 	m_eventTable = NULL;
 	m_event = NULL;
@@ -286,13 +286,13 @@ RaceSession::TriggerList::Entry::Entry()
 }
 
 // FUNCTION: LEGORACERS 0x00464e70
-RaceSession::TriggerList::Entry::~Entry()
+TriggerList::Entry::~Entry()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00464e80
-void RaceSession::TriggerList::Entry::Initialize(const EntryParams* p_params)
+void TriggerList::Entry::Initialize(const EntryParams* p_params)
 {
 	m_eventTable = p_params->m_eventTable;
 	m_body.SetCenter(p_params->m_position);
@@ -305,7 +305,7 @@ void RaceSession::TriggerList::Entry::Initialize(const EntryParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x00464ed0
-void RaceSession::TriggerList::Entry::Destroy()
+void TriggerList::Entry::Destroy()
 {
 	m_eventTable = NULL;
 
@@ -319,7 +319,7 @@ void RaceSession::TriggerList::Entry::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00464ef0
-void RaceSession::TriggerList::Entry::Update(LegoU32)
+void TriggerList::Entry::Update(LegoU32)
 {
 	LegoU32 flags = m_flags0x38;
 	if ((flags & c_eventsActive) && !(flags & c_touchedThisFrame)) {
@@ -338,7 +338,7 @@ void RaceSession::TriggerList::Entry::Update(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x00464f40
-void RaceSession::TriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData*)
+void TriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData*)
 {
 	LegoU32 flags = m_flags0x38;
 	if (!(flags & c_eventsActive)) {
@@ -357,13 +357,13 @@ void RaceSession::TriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData*)
 }
 
 // FUNCTION: LEGORACERS 0x00464f90
-void RaceSession::TriggerList::Entry::Reset()
+void TriggerList::Entry::Reset()
 {
 	m_flags0x38 &= ~(c_touchedThisFrame | c_eventsActive);
 }
 
 // FUNCTION: LEGORACERS 0x00464fa0
-RaceSession::TriggerList::TriggerList()
+TriggerList::TriggerList()
 {
 	m_entries = NULL;
 	m_eventQueue = NULL;
@@ -372,13 +372,13 @@ RaceSession::TriggerList::TriggerList()
 }
 
 // FUNCTION: LEGORACERS 0x00464fe0
-RaceSession::TriggerList::~TriggerList()
+TriggerList::~TriggerList()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00464ff0
-void RaceSession::TriggerList::Load(
+void TriggerList::Load(
 	LegoEventQueue* p_eventQueue,
 	RaceEventTable* p_eventTable,
 	const LegoChar* p_name,
@@ -432,7 +432,7 @@ void RaceSession::TriggerList::Load(
 }
 
 // FUNCTION: LEGORACERS 0x004651e0
-void RaceSession::TriggerList::Destroy()
+void TriggerList::Destroy()
 {
 	if (m_entries) {
 		delete[] m_entries;
@@ -445,7 +445,7 @@ void RaceSession::TriggerList::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00465210
-GolFileParser* RaceSession::TriggerList::CreateParser(const LegoChar* p_name, LegoBool32 p_binary)
+GolFileParser* TriggerList::CreateParser(const LegoChar* p_name, LegoBool32 p_binary)
 {
 	GolFileParser* parser;
 	if (p_binary) {
@@ -476,14 +476,14 @@ GolFileParser* RaceSession::TriggerList::CreateParser(const LegoChar* p_name, Le
 }
 
 // FUNCTION: LEGORACERS 0x00465330
-void RaceSession::TriggerList::DestroyParser(GolFileParser* p_parser)
+void TriggerList::DestroyParser(GolFileParser* p_parser)
 {
 	p_parser->Dispose();
 	delete p_parser;
 }
 
 // FUNCTION: LEGORACERS 0x00465350
-void RaceSession::TriggerList::ParseTrigger(GolFileParser* p_parser, EntryParams* p_params)
+void TriggerList::ParseTrigger(GolFileParser* p_parser, EntryParams* p_params)
 {
 	switch (p_parser->GetCurrentToken()) {
 	case GolFileParser::e_unknown0x29:
@@ -507,7 +507,7 @@ void RaceSession::TriggerList::ParseTrigger(GolFileParser* p_parser, EntryParams
 }
 
 // FUNCTION: LEGORACERS 0x004653f0
-LegoEventQueue::Event* RaceSession::TriggerList::RegisterTrigger(Entry* p_entry, LegoBool32 p_projectiles)
+LegoEventQueue::Event* TriggerList::RegisterTrigger(Entry* p_entry, LegoBool32 p_projectiles)
 {
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_flags = 1;
@@ -529,7 +529,7 @@ LegoEventQueue::Event* RaceSession::TriggerList::RegisterTrigger(Entry* p_entry,
 }
 
 // FUNCTION: LEGORACERS 0x00465450
-LegoU32 RaceSession::TriggerList::Update(LegoU32 p_elapsedMs)
+LegoU32 TriggerList::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 i;
 	LegoU32 result = m_count;
@@ -543,7 +543,7 @@ LegoU32 RaceSession::TriggerList::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00465490
-LegoU32 RaceSession::TriggerList::Reset()
+LegoU32 TriggerList::Reset()
 {
 	LegoU32 i;
 	LegoU32 result = m_count;

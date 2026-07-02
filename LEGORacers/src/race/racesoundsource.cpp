@@ -2,10 +2,10 @@
 #include "audio/soundmanager.h"
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::RaceSoundSource, 0x14)
+DECOMP_SIZE_ASSERT(RaceSoundSource, 0x14)
 
 // FUNCTION: LEGORACERS 0x00443a50
-RaceSession::RaceSoundSource::RaceSoundSource()
+RaceSoundSource::RaceSoundSource()
 {
 	m_groups[0] = NULL;
 	m_groups[1] = NULL;
@@ -15,13 +15,13 @@ RaceSession::RaceSoundSource::RaceSoundSource()
 }
 
 // FUNCTION: LEGORACERS 0x00443a70
-RaceSession::RaceSoundSource::~RaceSoundSource()
+RaceSoundSource::~RaceSoundSource()
 {
 	DestroyGroups();
 }
 
 // FUNCTION: LEGORACERS 0x00443a80
-void RaceSession::RaceSoundSource::DestroyGroups()
+void RaceSoundSource::DestroyGroups()
 {
 	SoundGroup** current = m_groups;
 	LegoS32 remaining = sizeOfArray(m_groups);
@@ -39,7 +39,7 @@ void RaceSession::RaceSoundSource::DestroyGroups()
 }
 
 // FUNCTION: LEGORACERS 0x00443ac0
-void RaceSession::RaceSoundSource::Initialize(SoundManager* p_soundManager)
+void RaceSoundSource::Initialize(SoundManager* p_soundManager)
 {
 	if (m_soundManager) {
 		DestroyGroups();
@@ -52,13 +52,13 @@ void RaceSession::RaceSoundSource::Initialize(SoundManager* p_soundManager)
 }
 
 // FUNCTION: LEGORACERS 0x00443b00
-void RaceSession::RaceSoundSource::LoadSfxBank(const LegoChar* p_name)
+void RaceSoundSource::LoadSfxBank(const LegoChar* p_name)
 {
 	m_groups[0]->Load(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x00443b10
-void RaceSession::RaceSoundSource::LoadVoiceBanks(const LegoChar* p_name1, const LegoChar* p_name2)
+void RaceSoundSource::LoadVoiceBanks(const LegoChar* p_name1, const LegoChar* p_name2)
 {
 	m_groups[1]->Load(p_name1);
 
@@ -68,7 +68,7 @@ void RaceSession::RaceSoundSource::LoadVoiceBanks(const LegoChar* p_name1, const
 }
 
 // FUNCTION: LEGORACERS 0x00443b40
-void RaceSession::RaceSoundSource::LoadAmbientBank(const LegoChar* p_name)
+void RaceSoundSource::LoadAmbientBank(const LegoChar* p_name)
 {
 	m_groups[3]->Load(p_name);
 }

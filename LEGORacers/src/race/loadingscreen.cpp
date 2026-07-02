@@ -13,14 +13,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::LoadingScreen, 0x30)
-DECOMP_SIZE_ASSERT(RaceSession::LoadingScreen::LsbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(LoadingScreen, 0x30)
+DECOMP_SIZE_ASSERT(LoadingScreen::LsbTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004bed40
 const LegoChar* g_loadScreenName = "loadscrn";
 
 // FUNCTION: LEGORACERS 0x0042f3b0
-RaceSession::LoadingScreen::LoadingScreen()
+LoadingScreen::LoadingScreen()
 {
 	m_renderer = NULL;
 	m_golExport = NULL;
@@ -34,13 +34,13 @@ RaceSession::LoadingScreen::LoadingScreen()
 }
 
 // FUNCTION: LEGORACERS 0x0042f3e0
-RaceSession::LoadingScreen::~LoadingScreen()
+LoadingScreen::~LoadingScreen()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0042f430
-void RaceSession::LoadingScreen::Destroy()
+void LoadingScreen::Destroy()
 {
 	m_text.Reset();
 	GolImageDefinitionList* images = m_images;
@@ -65,7 +65,7 @@ void RaceSession::LoadingScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0042f480
-void RaceSession::LoadingScreen::Initialize(
+void LoadingScreen::Initialize(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
 	GolStringTable* p_stringTable,
@@ -173,13 +173,13 @@ void RaceSession::LoadingScreen::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x0042f790
-void RaceSession::LoadingScreen::SetProgress(LegoFloat p_progress)
+void LoadingScreen::SetProgress(LegoFloat p_progress)
 {
 	m_progress = p_progress;
 }
 
 // FUNCTION: LEGORACERS 0x0042f7a0
-void RaceSession::LoadingScreen::Draw()
+void LoadingScreen::Draw()
 {
 	m_renderer->VTable0x64(&m_text, m_font, m_textX, 25, 1.0f, 1.0f, NULL, 0);
 

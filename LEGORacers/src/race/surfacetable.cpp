@@ -5,18 +5,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::SurfaceTable, 0x14)
-DECOMP_SIZE_ASSERT(RaceSession::SurfaceTable::Entry, 0x5c)
-DECOMP_SIZE_ASSERT(RaceSession::SurfaceTable::TmbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(SurfaceTable, 0x14)
+DECOMP_SIZE_ASSERT(SurfaceTable::Entry, 0x5c)
+DECOMP_SIZE_ASSERT(SurfaceTable::TmbTxtParser, 0x1fc)
 
 // FUNCTION: LEGORACERS 0x00443c90
-RaceSession::SurfaceTable::Entry::Entry()
+SurfaceTable::Entry::Entry()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00443ca0
-void RaceSession::SurfaceTable::Entry::Reset()
+void SurfaceTable::Entry::Reset()
 {
 	m_name[0] = '\0';
 	m_flags = 0;
@@ -42,7 +42,7 @@ void RaceSession::SurfaceTable::Entry::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00443cf0
-void RaceSession::SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
+void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
 	if (m_flags & c_flagLoaded) {
 		Unload();
@@ -148,26 +148,26 @@ void RaceSession::SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 
 }
 
 // FUNCTION: LEGORACERS 0x00443f90
-void RaceSession::SurfaceTable::Entry::Unload()
+void SurfaceTable::Entry::Unload()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00443fa0
-RaceSession::SurfaceTable::SurfaceTable()
+SurfaceTable::SurfaceTable()
 {
 	m_count = 0;
 	m_entries = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00443fe0
-RaceSession::SurfaceTable::~SurfaceTable()
+SurfaceTable::~SurfaceTable()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00444030
-void RaceSession::SurfaceTable::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
+void SurfaceTable::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
 {
 	if (m_entries) {
 		Clear();
@@ -214,7 +214,7 @@ void RaceSession::SurfaceTable::Load(const LegoChar* p_name, LegoBool32 p_binary
 }
 
 // FUNCTION: LEGORACERS 0x00444210
-void RaceSession::SurfaceTable::Clear()
+void SurfaceTable::Clear()
 {
 	if (m_entries) {
 		delete[] m_entries;

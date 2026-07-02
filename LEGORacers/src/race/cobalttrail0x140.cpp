@@ -26,7 +26,7 @@ extern const LegoFloat g_unk0x004afde0 = 10.0f;
 
 extern const LegoFloat g_ghostAnimationRateScale;
 extern const LegoFloat g_ghostSpeedScale;
-extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset;
+extern const LegoFloat g_homingProjectileCollisionStartOffset;
 
 // GLOBAL: LEGORACERS 0x004b02a0
 extern const LegoFloat g_cobaltTrailBaseLength = 6.5f;
@@ -408,11 +408,11 @@ void CobaltTrail0x140::FUN_004247d0(LegoS32 p_x, LegoS32 p_y, LegoFloat p_direct
 	LegoFloat tailSide = p_directionY;
 	tailSide *= g_ghostSpeedScale;
 	LegoFloat tailForward = p_directionX;
-	tailForward *= g_raceSessionField0xf8CollisionStartOffset;
+	tailForward *= g_homingProjectileCollisionStartOffset;
 	vertices[4].m_x = tailSide - tailForward;
 
 	LegoFloat tailForwardY = p_directionY;
-	tailForwardY *= g_raceSessionField0xf8CollisionStartOffset;
+	tailForwardY *= g_homingProjectileCollisionStartOffset;
 	LegoFloat tailSideX = p_directionX;
 	tailSideX *= g_ghostSpeedScale;
 	vertices[4].m_y = -tailForwardY - tailSideX;

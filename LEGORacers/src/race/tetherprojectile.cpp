@@ -2,7 +2,7 @@
 #include "race/racesession.h"
 #include "render/golcommondrawstate.h"
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x238, 0x238)
+DECOMP_SIZE_ASSERT(RacePowerupManager::TetherProjectile, 0x238)
 
 extern const LegoFloat g_unk0x004b02e0;
 
@@ -28,7 +28,7 @@ extern const LegoFloat g_unk0x004b0ca0 = 250.0f;
 extern const LegoFloat g_unk0x004b0ca4 = 10.0f;
 
 // FUNCTION: LEGORACERS 0x00444250
-RacePowerupManager::Field0x238::Field0x238()
+RacePowerupManager::TetherProjectile::TetherProjectile()
 {
 	m_unk0x218 = 0;
 	m_unk0x21c = 0;
@@ -38,10 +38,10 @@ RacePowerupManager::Field0x238::Field0x238()
 }
 
 // FUNCTION: LEGORACERS 0x004442c0
-RaceSessionField0x6dcField0xa8* RacePowerupManager::Field0x238::VTable0x10(undefined4 p_flags)
+PowerupProjectile* RacePowerupManager::TetherProjectile::Destroy(undefined4 p_flags)
 {
-	Field0x238* result = this;
-	this->~Field0x238();
+	TetherProjectile* result = this;
+	this->~TetherProjectile();
 	if (p_flags & 1) {
 		::operator delete(result);
 	}
@@ -50,23 +50,23 @@ RaceSessionField0x6dcField0xa8* RacePowerupManager::Field0x238::VTable0x10(undef
 }
 
 // FUNCTION: LEGORACERS 0x004442e0
-RacePowerupManager::Field0x238::~Field0x238()
+RacePowerupManager::TetherProjectile::~TetherProjectile()
 {
-	VTable0x14();
+	Deactivate();
 }
 
 // FUNCTION: LEGORACERS 0x00444340
-void RacePowerupManager::Field0x238::VTable0x20(const SetupParams* p_params)
+void RacePowerupManager::TetherProjectile::VTable0x20(const SetupParams* p_params)
 {
 	m_unk0x218 = p_params->m_unk0x04;
 	m_unk0x21c = p_params->m_unk0x0c;
 	m_unk0x220 = 0;
 	m_unk0x0a4 = 0;
 
-	GolD3DRenderDevice* renderer = p_params->m_unk0x00->GetDrawState()->m_currentRenderer;
+	GolD3DRenderDevice* renderer = p_params->m_golExport->GetDrawState()->m_currentRenderer;
 
-	Field0x170::SetupParams params;
-	params.m_unk0x00 = p_params->m_unk0x00;
+	BeamMesh::SetupParams params;
+	params.m_golExport = p_params->m_golExport;
 	params.m_renderer = renderer;
 	params.m_material = p_params->m_material;
 	params.m_unk0x0c = 5;
@@ -88,38 +88,38 @@ void RacePowerupManager::Field0x238::VTable0x20(const SetupParams* p_params)
 	params.m_modelDistance = 360000.0f;
 	params.m_unk0x70 = 0;
 
-	m_unk0x0a8.FUN_00493c90(&params);
-	m_unk0x0a8.FUN_00494820(&p_params->m_unk0x10, &p_params->m_unk0x14, &p_params->m_unk0x18);
+	m_beam.FUN_00493c90(&params);
+	m_beam.FUN_00494820(&p_params->m_unk0x10, &p_params->m_unk0x14, &p_params->m_unk0x18);
 	m_unk0x234 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00444470
-void RacePowerupManager::Field0x238::VTable0x14()
+void RacePowerupManager::TetherProjectile::Deactivate()
 {
-	RaceSessionField0x6dcField0xa8::VTable0x14();
-	m_unk0x0a8.FUN_00493e60();
+	PowerupProjectile::Deactivate();
+	m_beam.FUN_00493e60();
 }
 
 // FUNCTION: LEGORACERS 0x00444490
-LegoS32 RacePowerupManager::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::TetherProjectile::Update(LegoU32 p_elapsedMs)
 {
 	if (m_unk0x234 & c_flags0x234Bit1) {
 		return FUN_00444690(p_elapsedMs);
 	}
 
-	if (m_unk0x004 == 2) {
+	if (m_state == 2) {
 		return FUN_00444820(p_elapsedMs);
 	}
 
-	RaceSessionField0x6dcField0xa8::VTable0x18(p_elapsedMs);
-	LegoS32 result = m_unk0x004;
+	PowerupProjectile::Update(p_elapsedMs);
+	LegoS32 result = m_state;
 	if (result == 1) {
 		LegoFloat elapsedMs = static_cast<LegoFloat>(m_unk0x050);
 		LegoFloat elapsed = elapsedMs / static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x054));
 		m_unk0x220 = (1.0f - elapsed) * m_unk0x21c;
 
 		GolVec3 position;
-		m_unk0x008->VTable0x04(&position);
+		m_worldEntity->VTable0x04(&position);
 		FUN_00444540(&position, elapsedMs, m_unk0x220);
 
 		result = 1;
@@ -129,7 +129,11 @@ LegoS32 RacePowerupManager::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x00444540
-void RacePowerupManager::Field0x238::FUN_00444540(const GolVec3* p_position, LegoFloat p_elapsedMs, LegoFloat p_amount)
+void RacePowerupManager::TetherProjectile::FUN_00444540(
+	const GolVec3* p_position,
+	LegoFloat p_elapsedMs,
+	LegoFloat p_amount
+)
 {
 	LegoFloat elapsedStep = p_elapsedMs;
 	elapsedStep *= g_unk0x004b02e0;
@@ -146,7 +150,7 @@ void RacePowerupManager::Field0x238::FUN_00444540(const GolVec3* p_position, Leg
 	step.m_x = deltaX * g_unk0x004b02e0;
 	step.m_y = deltaY * g_unk0x004b02e0;
 	step.m_z = p_position->m_z - origin.m_z;
-	m_unk0x0a8.FUN_00493ea0(&origin, &step);
+	m_beam.FUN_00493ea0(&origin, &step);
 
 	LegoFloat elapsed = 0.0f;
 	GolVec3 position = origin;
@@ -155,22 +159,22 @@ void RacePowerupManager::Field0x238::FUN_00444540(const GolVec3* p_position, Leg
 		position.m_x += step.m_x;
 		position.m_y += step.m_y;
 		position.m_z = (m_unk0x040 * 0.5f * elapsed * elapsed) + (m_unk0x03c * elapsed) + m_unk0x010.m_z;
-		m_unk0x0a8.FUN_00494870(&position, p_amount);
+		m_beam.FUN_00494870(&position, p_amount);
 		p_amount = -p_amount;
 	}
 
-	m_unk0x0a8.FUN_00494870(p_position, p_amount);
-	m_unk0x0a8.FUN_00494230();
+	m_beam.FUN_00494870(p_position, p_amount);
+	m_beam.FUN_00494230();
 }
 
 // FUNCTION: LEGORACERS 0x00444670
-void RacePowerupManager::Field0x238::VTable0x24(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::TetherProjectile::VTable0x24(GolD3DRenderDevice* p_renderer)
 {
-	m_unk0x0a8.FUN_00494850(p_renderer);
+	m_beam.FUN_00494850(p_renderer);
 }
 
 // STUB: LEGORACERS 0x00444690
-LegoS32 RacePowerupManager::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::TetherProjectile::FUN_00444690(LegoU32 p_elapsedMs)
 {
 	GolVec3 position;
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&position);
@@ -203,31 +207,31 @@ LegoS32 RacePowerupManager::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
 	step.m_x = delta.m_x * g_unk0x004b02e0;
 	step.m_y = delta.m_y * g_unk0x004b02e0;
 	step.m_z = delta.m_z * g_unk0x004b02e0;
-	m_unk0x0a8.FUN_00493ea0(&position, &step);
+	m_beam.FUN_00493ea0(&position, &step);
 
 	for (LegoU32 i = 0; i < 4; i++) {
 		position.m_x += step.m_x;
 		position.m_y += step.m_y;
 		position.m_z += step.m_z;
-		m_unk0x0a8.FUN_00494870(&position, amount);
+		m_beam.FUN_00494870(&position, amount);
 		amount = -amount;
 	}
 
-	m_unk0x0a8.FUN_00494870(target, amount);
-	m_unk0x0a8.FUN_00494230();
+	m_beam.FUN_00494870(target, amount);
+	m_beam.FUN_00494230();
 
 	return 1;
 }
 
 // STUB: LEGORACERS 0x00444820
-LegoS32 RacePowerupManager::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 {
 	GolVec3 targetPosition;
 	m_unk0x0a4->m_unk0x018.m_unk0x044->VTable0x04(&targetPosition);
 	targetPosition.m_z += g_unk0x004b0c90;
 
 	GolVec3 currentPosition;
-	m_unk0x008->VTable0x04(&currentPosition);
+	m_worldEntity->VTable0x04(&currentPosition);
 
 	if (!(m_unk0x234 & c_flags0x234Bit0)) {
 		if (GolMath::FUN_00449a90(
@@ -245,7 +249,7 @@ LegoS32 RacePowerupManager::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
 		currentPosition = targetPosition;
 	}
 
-	m_unk0x008->VTable0x08(currentPosition);
+	m_worldEntity->VTable0x08(currentPosition);
 
 	GolVec3 origin;
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&origin);
@@ -271,7 +275,7 @@ LegoS32 RacePowerupManager::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
 	step.m_x = delta.m_x * 0.2f;
 	step.m_y = delta.m_y * 0.2f;
 	step.m_z = delta.m_z * 0.2f;
-	m_unk0x0a8.FUN_00493ea0(&origin, &step);
+	m_beam.FUN_00493ea0(&origin, &step);
 
 	LegoFloat elapsedStep = static_cast<LegoFloat>(m_unk0x054) * 0.2f * 0.001f;
 	LegoFloat elapsed = 0.0f;
@@ -286,17 +290,17 @@ LegoS32 RacePowerupManager::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
 		blended.m_z =
 			(((m_unk0x040 * 0.5f * elapsed * elapsed) + (m_unk0x03c * elapsed) + m_unk0x010.m_z) * remainingAmount) +
 			(m_unk0x224 * position.m_z);
-		m_unk0x0a8.FUN_00494870(&blended, 0.0f);
+		m_beam.FUN_00494870(&blended, 0.0f);
 	}
 
-	m_unk0x0a8.FUN_00494870(&currentPosition, 0.0f);
-	m_unk0x0a8.FUN_00494230();
+	m_beam.FUN_00494870(&currentPosition, 0.0f);
+	m_beam.FUN_00494230();
 
 	return 2;
 }
 
 // FUNCTION: LEGORACERS 0x00444ac0
-void RacePowerupManager::Field0x238::FUN_00444ac0(GolVec3* p_unk0x04)
+void RacePowerupManager::TetherProjectile::FUN_00444ac0(GolVec3* p_unk0x04)
 {
 	m_unk0x228.m_x = p_unk0x04->m_x;
 	m_unk0x228.m_y = p_unk0x04->m_y;

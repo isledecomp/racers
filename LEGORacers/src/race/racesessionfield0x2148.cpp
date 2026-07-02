@@ -665,9 +665,9 @@ void RaceEventDispatcher0x08::ItemI::VTable0x04(void* p_racer)
 		}
 
 		target.m_source = NULL;
-		m_unk0x10->SetUnk0x1998(&target);
-		m_unk0x10->FUN_0045b260(racer, 3);
-		m_unk0x10->SetUnk0x1998(NULL);
+		m_unk0x10->SetAimTarget(&target);
+		m_unk0x10->ActivateWarp(racer, 3);
+		m_unk0x10->SetAimTarget(NULL);
 		m_unk0x0c = 2;
 	}
 }
@@ -827,9 +827,9 @@ void RaceEventDispatcher0x08::Item0x3f::VTable0x04(void*)
 		target.m_unk0x00.m_y = -target.m_unk0x00.m_y;
 	}
 
-	m_unk0x10->SetUnk0x1998(&target);
-	m_unk0x10->FUN_0045a9b0(NULL, 3);
-	m_unk0x10->SetUnk0x1998(NULL);
+	m_unk0x10->SetAimTarget(&target);
+	m_unk0x10->UseYellowPowerup(NULL, 3);
+	m_unk0x10->SetAimTarget(NULL);
 	m_unk0x0c = 2;
 }
 
@@ -997,9 +997,9 @@ void RaceEventDispatcher0x08::Item0x40::VTable0x14(undefined4 p_elapsedMs)
 		m_unk0x4c += elapsedMs;
 		if (m_unk0x4c >= c_actionCooldownMs) {
 			target.m_source = &m_unk0x10;
-			m_unk0x34->SetUnk0x1998(&target);
-			m_unk0x34->FUN_0045a950(NULL, 2);
-			m_unk0x34->SetUnk0x1998(NULL);
+			m_unk0x34->SetAimTarget(&target);
+			m_unk0x34->UseRedPowerup(NULL, 2);
+			m_unk0x34->SetAimTarget(NULL);
 			m_unk0x4c = 0;
 		}
 	}
@@ -1581,9 +1581,9 @@ void RaceEventDispatcher0x08::Item0x43::VTable0x14(undefined4 p_elapsedMs)
 
 	RacePowerupManager::ActionTarget target;
 	target.m_materialName = m_unk0x10;
-	m_unk0x34->SetUnk0x1998(&target);
-	m_unk0x34->FUN_0045a950(NULL, 0);
-	m_unk0x34->SetUnk0x1998(NULL);
+	m_unk0x34->SetAimTarget(&target);
+	m_unk0x34->UseRedPowerup(NULL, 0);
+	m_unk0x34->SetAimTarget(NULL);
 	m_unk0x3c = 0;
 }
 
@@ -3639,7 +3639,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 	m_unk0x0c = 2;
 	m_unk0x10.SetCenter(m_unk0xe0);
 
-	RaceSessionField0x6dcField0xa8::Params projectileParams;
+	PowerupProjectile::Params projectileParams;
 	projectileParams.m_unk0x04 = m_unk0x10c;
 	projectileParams.m_unk0x08 = -32.176f;
 	projectileParams.m_unk0x0c = NULL;
@@ -3675,7 +3675,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 // FUNCTION: LEGORACERS 0x0048fba0
 void RaceEventDispatcher0x08::Item0x33::VTable0x08(void*)
 {
-	m_unk0x38.VTable0x14();
+	m_unk0x38.Deactivate();
 
 	if (m_unk0x120 != NULL) {
 		RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
@@ -3696,12 +3696,12 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 
 	Item::VTable0x14(p_elapsedMs);
 
-	RaceSessionField0x6dcField0xa8* projectile = &m_unk0x38;
-	if (projectile->GetUnk0x004() != 0) {
-		if (projectile->VTable0x18(p_elapsedMs) == 3) {
+	PowerupProjectile* projectile = &m_unk0x38;
+	if (projectile->GetState() != 0) {
+		if (projectile->Update(p_elapsedMs) == 3) {
 			GolVec3 position = projectile->GetUnk0x028();
-			m_unk0x110->FUN_0045b470(&position, 0, 0);
-			projectile->VTable0x14();
+			m_unk0x110->SpawnExplosion(&position, 0, 0);
+			projectile->Deactivate();
 			m_unk0x04->FUN_00462580(7, 7, &position);
 
 			if (m_unk0x120 != NULL) {
@@ -3713,7 +3713,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 		}
 	}
 
-	if (projectile->GetUnk0x004() == 0) {
+	if (projectile->GetState() == 0) {
 		VTable0x08(NULL);
 	}
 
@@ -3722,7 +3722,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 	}
 
 	GolVec3 center;
-	projectile->GetUnk0x008()->FUN_100286d0(&center);
+	projectile->GetWorldEntity()->FUN_100286d0(&center);
 
 	GolVec3 velocity;
 	projectile->VTable0x1c(&velocity);
@@ -3759,7 +3759,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048fde0
 void RaceEventDispatcher0x08::Item0x33::VTable0x1c(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x0c != 1 && m_unk0x38.GetUnk0x004() == 1) {
+	if (m_unk0x0c != 1 && m_unk0x38.GetState() == 1) {
 		GolVec3 position;
 		m_unk0x10.FUN_100286d0(&position);
 		m_unk0x114->VTable0x08(position);

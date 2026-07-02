@@ -329,16 +329,16 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x258.cpp
   LEGORacers/src/race/racesessionfield0x3300.cpp
   LEGORacers/src/race/racesessionfield0x340.cpp
-  LEGORacers/src/race/racesessionfield0x6dc.cpp
+  LEGORacers/src/race/racepowerupmanager.cpp
   LEGORacers/src/race/racepowerupmanagerglobals.cpp
-  LEGORacers/src/race/racesessionfield0x6dcfield0x170.cpp
-  LEGORacers/src/race/racesessionfield0x6dcfield0x238.cpp
+  LEGORacers/src/race/beammesh.cpp
+  LEGORacers/src/race/tetherprojectile.cpp
   LEGORacers/src/util/racerbillboardrenderstate0x33c.cpp
-  LEGORacers/src/race/racesessionfield0x6dcfield0xa8.cpp
-  LEGORacers/src/race/racesessionfield0x6dcfield0xf8.cpp
+  LEGORacers/src/race/powerupprojectile.cpp
+  LEGORacers/src/race/homingprojectile.cpp
   LEGORacers/src/race/raceresourcemanager.cpp
-  LEGORacers/src/race/racesessionfield0x6dcfield0x270.cpp
-  LEGORacers/src/race/racesessionfield0x6dcresources.cpp
+  LEGORacers/src/race/powerupexplosion.cpp
+  LEGORacers/src/race/racepowerupactions.cpp
   LEGORacers/src/race/racestate.cpp
   LEGORacers/src/race/racestatefield0x00c.cpp
   LEGORacers/src/race/racestatefield0x004.cpp
@@ -346,7 +346,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racestatefield0xadc.cpp
   LEGORacers/src/race/racestatefield0x0f0.cpp
   LEGORacers/src/race/racestatefield0x2a0.cpp
-  LEGORacers/src/race/racestatefield0xd5c.cpp
+  LEGORacers/src/race/droppablebrick.cpp
   LEGORacers/src/race/racestatefield0xc70field0x000.cpp
   LEGORacers/src/race/cobalttrail0x140.cpp
   LEGORacers/src/race/slatebridge0x68.cpp

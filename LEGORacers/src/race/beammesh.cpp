@@ -16,8 +16,8 @@
 #include <math.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x170, 0x170)
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x98, 0x98)
+DECOMP_SIZE_ASSERT(RacePowerupManager::BeamMesh, 0x170)
+DECOMP_SIZE_ASSERT(RacePowerupManager::BeamEntity, 0x98)
 
 // GLOBAL: LEGORACERS 0x004b47a4
 extern const LegoFloat g_unk0x004b47a4 = 0.02f;
@@ -25,21 +25,21 @@ extern const LegoFloat g_unk0x004b47a4 = 0.02f;
 extern LegoFloat g_minSoundPan;
 
 // FUNCTION: LEGORACERS 0x00493ae0
-RacePowerupManager::Field0x170::Field0x170()
+RacePowerupManager::BeamMesh::BeamMesh()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00493b30
-RacePowerupManager::Field0x170::~Field0x170()
+RacePowerupManager::BeamMesh::~BeamMesh()
 {
 	FUN_00493e60();
 }
 
 // FUNCTION: LEGORACERS 0x00493b80
-void RacePowerupManager::Field0x170::Reset()
+void RacePowerupManager::BeamMesh::Reset()
 {
-	m_unk0x000 = NULL;
+	m_golExport = NULL;
 	m_unk0x004 = NULL;
 	m_unk0x008 = 0;
 	m_unk0x00c = 0;
@@ -81,7 +81,7 @@ void RacePowerupManager::Field0x170::Reset()
 }
 
 // STUB: LEGORACERS 0x00493c90
-void RacePowerupManager::Field0x170::FUN_00493c90(const SetupParams* p_params)
+void RacePowerupManager::BeamMesh::FUN_00493c90(const SetupParams* p_params)
 {
 	if (m_unk0x004 != NULL) {
 		FUN_00493e60();
@@ -89,7 +89,7 @@ void RacePowerupManager::Field0x170::FUN_00493c90(const SetupParams* p_params)
 
 	const SetupParams* params = p_params;
 
-	m_unk0x000 = params->m_unk0x00;
+	m_golExport = params->m_golExport;
 	m_unk0x014 = params->m_material;
 	m_unk0x0dc = params->m_unk0x0c;
 	m_unk0x0e0 = params->m_unk0x10;
@@ -127,27 +127,27 @@ void RacePowerupManager::Field0x170::FUN_00493c90(const SetupParams* p_params)
 
 	LegoU32 stride = segmentCount * m_unk0x0e8;
 	LegoU32 vertexCount = m_unk0x0dc * (2 * (0x40 / stride) + 5) + 2;
-	m_unk0x004 = m_unk0x000->VTable0x14();
+	m_unk0x004 = m_golExport->VTable0x14();
 	m_unk0x004->VTable0x18(params->m_renderer, 1, m_unk0x16c, doubledIndexCount, vertexCount, 1);
 
-	m_unk0x010 = m_unk0x000->VTable0x18();
+	m_unk0x010 = m_golExport->VTable0x18();
 	m_unk0x010->Allocate(m_unk0x0dc);
 	m_unk0x018.FUN_00494c50(m_unk0x004, m_unk0x010, params->m_unk0x70, params->m_modelDistance);
 	m_unk0x004->GetMaterialTable()->SetPosition(0, params->m_material);
 }
 
 // FUNCTION: LEGORACERS 0x00493e60
-void RacePowerupManager::Field0x170::FUN_00493e60()
+void RacePowerupManager::BeamMesh::FUN_00493e60()
 {
 	m_unk0x018.VTable0x54();
 
-	if (m_unk0x000 != NULL) {
+	if (m_golExport != NULL) {
 		if (m_unk0x010 != NULL) {
-			m_unk0x000->VTable0x4c(m_unk0x010);
+			m_golExport->VTable0x4c(m_unk0x010);
 		}
 
 		if (m_unk0x004 != NULL) {
-			m_unk0x000->VTable0x48(m_unk0x004);
+			m_golExport->VTable0x48(m_unk0x004);
 		}
 	}
 
@@ -155,7 +155,7 @@ void RacePowerupManager::Field0x170::FUN_00493e60()
 }
 
 // FUNCTION: LEGORACERS 0x00493ea0
-void RacePowerupManager::Field0x170::FUN_00493ea0(const GolVec3* p_position, const GolVec3* p_direction)
+void RacePowerupManager::BeamMesh::FUN_00493ea0(const GolVec3* p_position, const GolVec3* p_direction)
 {
 	GolVec3 up;
 	up.m_x = 0.0f;
@@ -205,7 +205,7 @@ void RacePowerupManager::Field0x170::FUN_00493ea0(const GolVec3* p_position, con
 }
 
 // FUNCTION: LEGORACERS 0x00494030
-void RacePowerupManager::Field0x170::FUN_00494030(const GolVec3* p_position)
+void RacePowerupManager::BeamMesh::FUN_00494030(const GolVec3* p_position)
 {
 	GolTransformBase* transform = m_unk0x010->VTable0x18(m_unk0x0d0);
 
@@ -234,7 +234,7 @@ void RacePowerupManager::Field0x170::FUN_00494030(const GolVec3* p_position)
 }
 
 // FUNCTION: LEGORACERS 0x00494140
-void RacePowerupManager::Field0x170::FUN_00494140(const GolVec3* p_position)
+void RacePowerupManager::BeamMesh::FUN_00494140(const GolVec3* p_position)
 {
 	GolVec3 delta;
 	delta.m_x = p_position->m_x - m_unk0x154.m_x;
@@ -267,7 +267,7 @@ void RacePowerupManager::Field0x170::FUN_00494140(const GolVec3* p_position)
 }
 
 // FUNCTION: LEGORACERS 0x00494230
-void RacePowerupManager::Field0x170::FUN_00494230()
+void RacePowerupManager::BeamMesh::FUN_00494230()
 {
 	if (m_unk0x0c8 != 0) {
 		FUN_004946b0();
@@ -284,7 +284,7 @@ void RacePowerupManager::Field0x170::FUN_00494230()
 }
 
 // FUNCTION: LEGORACERS 0x00494290
-void RacePowerupManager::Field0x170::FUN_00494290(
+void RacePowerupManager::BeamMesh::FUN_00494290(
 	const GolVec3* p_position,
 	const ColorRGBA* p_color,
 	LegoU32 p_textureColumn,
@@ -335,7 +335,7 @@ void RacePowerupManager::Field0x170::FUN_00494290(
 }
 
 // FUNCTION: LEGORACERS 0x00494480
-void RacePowerupManager::Field0x170::FUN_00494480()
+void RacePowerupManager::BeamMesh::FUN_00494480()
 {
 	GdbModelIndexArray0xc::Indices* indices = &m_unk0x00c[m_unk0x0c8];
 	m_unk0x0c8 += m_unk0x0e4 * 2;
@@ -357,7 +357,7 @@ void RacePowerupManager::Field0x170::FUN_00494480()
 }
 
 // STUB: LEGORACERS 0x004944e0
-void RacePowerupManager::Field0x170::FUN_004944e0()
+void RacePowerupManager::BeamMesh::FUN_004944e0()
 {
 	LegoU32 vertexCount = m_unk0x0bc - m_unk0x0c0;
 	LegoU32 triangleCount = m_unk0x0c8 - m_unk0x0c4;
@@ -400,7 +400,7 @@ void RacePowerupManager::Field0x170::FUN_004944e0()
 }
 
 // STUB: LEGORACERS 0x004946b0
-void RacePowerupManager::Field0x170::FUN_004946b0()
+void RacePowerupManager::BeamMesh::FUN_004946b0()
 {
 	LegoU32 vertexCount = m_unk0x0bc - m_unk0x0c0;
 	LegoU32 triangleCount = m_unk0x0c8 - m_unk0x0c4;
@@ -436,7 +436,7 @@ void RacePowerupManager::Field0x170::FUN_004946b0()
 }
 
 // FUNCTION: LEGORACERS 0x00494820
-void RacePowerupManager::Field0x170::FUN_00494820(
+void RacePowerupManager::BeamMesh::FUN_00494820(
 	const ColorRGBA* p_unk0x04,
 	const ColorRGBA* p_unk0x08,
 	const ColorRGBA* p_unk0x0c
@@ -448,7 +448,7 @@ void RacePowerupManager::Field0x170::FUN_00494820(
 }
 
 // FUNCTION: LEGORACERS 0x00494850
-void RacePowerupManager::Field0x170::FUN_00494850(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::BeamMesh::FUN_00494850(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x140 & 1) {
 		m_unk0x018.VTable0x1c(*p_renderer);
@@ -456,7 +456,7 @@ void RacePowerupManager::Field0x170::FUN_00494850(GolD3DRenderDevice* p_renderer
 }
 
 // FUNCTION: LEGORACERS 0x00494870
-void RacePowerupManager::Field0x170::FUN_00494870(const GolVec3* p_position, LegoFloat p_amount)
+void RacePowerupManager::BeamMesh::FUN_00494870(const GolVec3* p_position, LegoFloat p_amount)
 {
 	if (m_unk0x0e0 <= 1) {
 		FUN_00494140(p_position);
@@ -537,7 +537,7 @@ void RacePowerupManager::Field0x170::FUN_00494870(const GolVec3* p_position, Leg
 }
 
 // FUNCTION: LEGORACERS 0x00494ad0
-void RacePowerupManager::Field0x170::FUN_00494ad0(
+void RacePowerupManager::BeamMesh::FUN_00494ad0(
 	const GolVec3* p_fromPosition,
 	const GolVec3* p_toPosition,
 	const ColorRGBA* p_fromColor,
@@ -575,24 +575,24 @@ void RacePowerupManager::Field0x170::FUN_00494ad0(
 }
 
 // FUNCTION: LEGORACERS 0x00494be0
-void RacePowerupManager::Field0x170::FUN_00494be0(const GolVec3* p_offsets)
+void RacePowerupManager::BeamMesh::FUN_00494be0(const GolVec3* p_offsets)
 {
 	m_unk0x144 = p_offsets;
 	m_unk0x140 |= c_flags0x140Bit1;
 }
 
 // FUNCTION: LEGORACERS 0x00494c00
-RacePowerupManager::Field0x98::Field0x98()
+RacePowerupManager::BeamEntity::BeamEntity()
 {
 	m_unk0x90 = 0;
 	m_unk0x94 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c20
-RacePowerupManager::Field0x98* RacePowerupManager::Field0x98::FUN_00494c20(undefined4 p_flags)
+RacePowerupManager::BeamEntity* RacePowerupManager::BeamEntity::FUN_00494c20(undefined4 p_flags)
 {
-	Field0x98* result = this;
-	this->~Field0x98();
+	BeamEntity* result = this;
+	this->~BeamEntity();
 	if (p_flags & 1) {
 		::operator delete(result);
 	}
@@ -601,13 +601,13 @@ RacePowerupManager::Field0x98* RacePowerupManager::Field0x98::FUN_00494c20(undef
 }
 
 // FUNCTION: LEGORACERS 0x00494c40
-RacePowerupManager::Field0x98::~Field0x98()
+RacePowerupManager::BeamEntity::~BeamEntity()
 {
 	VTable0x54();
 }
 
 // FUNCTION: LEGORACERS 0x00494c50
-void RacePowerupManager::Field0x98::FUN_00494c50(
+void RacePowerupManager::BeamEntity::FUN_00494c50(
 	GolModelBase* p_model,
 	GolSceneNode* p_sceneNode,
 	undefined4 p_unk0x0c,
@@ -620,19 +620,19 @@ void RacePowerupManager::Field0x98::FUN_00494c50(
 }
 
 // FUNCTION: LEGORACERS 0x00494c80
-void RacePowerupManager::Field0x98::VTable0x54()
+void RacePowerupManager::BeamEntity::VTable0x54()
 {
 	m_unk0x90 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c90
-GolSceneNode* RacePowerupManager::Field0x98::VTable0x58(undefined4)
+GolSceneNode* RacePowerupManager::BeamEntity::VTable0x58(undefined4)
 {
 	return m_unk0x90;
 }
 
 // STUB: LEGORACERS 0x00494ca0
-void RacePowerupManager::Field0x98::VTable0x1c(GolRenderDevice& p_renderer)
+void RacePowerupManager::BeamEntity::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	if (m_unk0x94 != 0) {
 		GolVec3 cameraRight;

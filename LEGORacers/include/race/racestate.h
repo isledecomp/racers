@@ -958,7 +958,7 @@ public:
 			undefined m_unk0x880[0x888 - 0x880]; // 0x880
 		};
 
-		class Field0xd5c;
+		class DroppableBrick;
 
 		// SIZE 0x30
 		class Field0xd8c : public RaceResourceManager::Resource {
@@ -1037,7 +1037,7 @@ public:
 		void FUN_00437be0();
 		void FUN_00437d40(LegoU32 p_elapsedMs);
 		void FUN_00438500();
-		LegoU32 FUN_00439520();
+		LegoU32 ReturnAllWhiteBricks();
 		void FUN_00439570();
 		void FUN_004395a0();
 		void FUN_004395d0();
@@ -1049,7 +1049,7 @@ public:
 		void FUN_004397b0();
 		void FUN_004397c0(LegoBool32 p_unk0x04);
 		void FUN_00439240(LegoBool32 p_unk0x04);
-		Field0xd5c* FUN_00439490();
+		DroppableBrick* DropWhiteBrick();
 		LegoFloat FUN_0043a0a0();
 		void FUN_0043a0c0();
 		void FUN_0043a0e0();
@@ -1135,7 +1135,7 @@ public:
 		void FUN_00439fc0(RaceSessionField0x27f4::Entry* p_unk0x04, GolBoundingVolume::Field0x0c* p_unk0x08);
 
 	public:
-		LegoBool32 FUN_00439420(Field0xd5c* p_unk0x04);
+		LegoBool32 CollectWhiteBrick(DroppableBrick* p_unk0x04);
 
 		union {
 			Field0x004* m_unk0x004;                    // 0x004
@@ -1191,7 +1191,7 @@ public:
 		LegoU32 m_unk0xd50;                        // 0xd50
 		LegoFloat m_unk0xd54;                      // 0xd54
 		LegoU32 m_unk0xd58;                        // 0xd58
-		Field0xd5c* m_unk0xd5c[3];                 // 0xd5c
+		DroppableBrick* m_unk0xd5c[3];             // 0xd5c
 		LegoU32 m_unk0xd68;                        // 0xd68
 		LegoU32 m_unk0xd6c;                        // 0xd6c
 		undefined4 m_unk0xd70;                     // 0xd70

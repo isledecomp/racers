@@ -7,9 +7,9 @@
 #include "golname.h"
 #include "golworldentity.h"
 #include "material/materialtable0x0c.h"
+#include "race/powerupprojectile.h"
 #include "race/raceactionsource0x24.h"
 #include "race/racesessionfield0x27d4.h"
-#include "race/racesessionfield0x6dcfield0xa8.h"
 #include "race/racestate.h"
 #include "types.h"
 #include "util/legoeventqueue.h"
@@ -600,19 +600,19 @@ public:
 		// RaceEventDispatcher0x08::Item0x33::`scalar deleting destructor'
 
 	protected:
-		GolWorldEntity m_unk0x10;                 // 0x10
-		RaceSessionField0x6dcField0xa8 m_unk0x38; // 0x38
-		GolVec3 m_unk0xe0;                        // 0xe0
-		GolVec3 m_unk0xec;                        // 0xec
-		GolVec3 m_unk0xf8;                        // 0xf8
-		LegoFloat m_unk0x104;                     // 0x104
-		LegoS32 m_unk0x108;                       // 0x108
-		RaceSessionField0x32b4* m_unk0x10c;       // 0x10c
-		RacePowerupManager* m_unk0x110;           // 0x110
-		GolBillboard* m_unk0x114;                 // 0x114
-		GolExport* m_unk0x118;                    // 0x118
-		void* m_unk0x11c;                         // 0x11c
-		void* m_unk0x120;                         // 0x120
+		GolWorldEntity m_unk0x10;           // 0x10
+		PowerupProjectile m_unk0x38;        // 0x38
+		GolVec3 m_unk0xe0;                  // 0xe0
+		GolVec3 m_unk0xec;                  // 0xec
+		GolVec3 m_unk0xf8;                  // 0xf8
+		LegoFloat m_unk0x104;               // 0x104
+		LegoS32 m_unk0x108;                 // 0x108
+		RaceSessionField0x32b4* m_unk0x10c; // 0x10c
+		RacePowerupManager* m_unk0x110;     // 0x110
+		GolBillboard* m_unk0x114;           // 0x114
+		GolExport* m_unk0x118;              // 0x118
+		void* m_unk0x11c;                   // 0x11c
+		void* m_unk0x120;                   // 0x120
 	};
 
 	// VTABLE: LEGORACERS 0x004b4654

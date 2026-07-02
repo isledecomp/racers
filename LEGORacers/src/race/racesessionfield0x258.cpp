@@ -417,10 +417,10 @@ void RaceSession::Field0x258::FUN_00430710()
 		LegoU32 duration = m_unk0x004.m_unk0x060;
 		RaceState::Racer* racer = m_unk0x000;
 		if (duration >= 60) {
-			racer->m_unk0x008->FUN_0045b1e0(racer, TRUE);
+			racer->m_unk0x008->UseGreenPowerup(racer, TRUE);
 		}
 		else {
-			racer->m_unk0x008->FUN_0045b1e0(racer, FALSE);
+			racer->m_unk0x008->UseGreenPowerup(racer, FALSE);
 		}
 		m_unk0x004.m_unk0x060 = 0;
 	}
@@ -458,10 +458,10 @@ void RaceSession::Field0x258::FUN_00430790()
 		}
 
 		if (duration >= 60) {
-			m_unk0x000->m_unk0x008->FUN_0045b1e0(m_unk0x000, TRUE);
+			m_unk0x000->m_unk0x008->UseGreenPowerup(m_unk0x000, TRUE);
 		}
 		else {
-			m_unk0x000->m_unk0x008->FUN_0045b1e0(m_unk0x000, FALSE);
+			m_unk0x000->m_unk0x008->UseGreenPowerup(m_unk0x000, FALSE);
 		}
 
 		m_unk0x000->m_unk0x018.FUN_0043df90();

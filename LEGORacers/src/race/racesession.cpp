@@ -1241,7 +1241,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.93f);
 
-	powerupParams.m_unk0x00 = m_golExport;
+	powerupParams.m_golExport = m_golExport;
 	powerupParams.m_renderer = m_renderer;
 	powerupParams.m_raceState = &m_raceState;
 	powerupParams.m_unk0x0c = m_unk0x394;
@@ -1254,9 +1254,9 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	powerupParams.m_unk0x28 = &m_unk0x27fc;
 	powerupParams.m_unk0x2c = m_unk0x3a8;
 	powerupParams.m_unk0x30 = &m_unk0x2804;
-	powerupParams.m_unk0x34 = m_unk0x3354 ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
+	powerupParams.m_cameraFov = m_unk0x3354 ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
 	powerupParams.m_unk0x38 = m_context->m_unk0x20;
-	m_unk0x6dc.FUN_00457c20(&powerupParams);
+	m_unk0x6dc.Initialize(&powerupParams);
 
 	m_unk0x6dc.FUN_00457c90(&m_unk0xd1, &m_unk0xde, m_context->m_unk0x18);
 
@@ -1277,7 +1277,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		(&m_unk0xc4)[nameLength + 1] = 0;
 	}
 
-	m_unk0x6dc.FUN_00458810(&m_unk0xc4, m_context->m_unk0x18, p_mirror);
+	m_unk0x6dc.LoadPowerupFile(&m_unk0xc4, m_context->m_unk0x18, p_mirror);
 	m_unk0x6dc.FUN_00457cf0(!m_unk0x3354);
 	m_unk0x6dc.FUN_00458940();
 	m_unk0x6dc.FUN_0045b950();
@@ -2052,7 +2052,7 @@ void RaceSession::VTable0x30()
 		m_unk0x390->FUN_00416090(elapsedMs);
 		m_unk0x3a4->FUN_00416090(elapsedMs);
 		m_unk0x398->FUN_00416090(elapsedMs);
-		m_unk0x6dc.FUN_0045a490(elapsedMs);
+		m_unk0x6dc.Update(elapsedMs);
 		m_unk0x32c4.FUN_0045e470(elapsedMs);
 		m_unk0x2128.VTable0x08(elapsedMs);
 		m_unk0x2080.VTable0x08(elapsedMs);

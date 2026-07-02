@@ -5,42 +5,42 @@
 #include <float.h>
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0xf8, 0xf8)
+DECOMP_SIZE_ASSERT(RacePowerupManager::HomingProjectile, 0xf8)
 
 extern const LegoFloat g_unk0x004afde0;
 
 // GLOBAL: LEGORACERS 0x004b0170
-extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset = 5.0f;
+extern const LegoFloat g_homingProjectileCollisionStartOffset = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b0224
-extern const LegoFloat g_raceSessionField0xf8TargetHeightOffset = 5.0f;
+extern const LegoFloat g_raceSessionHomingProjectileTargetHeightOffset = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b022c
-extern const LegoFloat g_raceSessionField0xf8TargetSnapDistanceSquared = 3600.0f;
+extern const LegoFloat g_raceSessionHomingProjectileTargetSnapDistanceSquared = 3600.0f;
 
 // GLOBAL: LEGORACERS 0x004b0230
-extern const LegoFloat g_raceSessionField0xf8TargetDirectHitDistanceSquared = 9.0f;
+extern const LegoFloat g_raceSessionHomingProjectileTargetDirectHitDistanceSquared = 9.0f;
 
 // GLOBAL: LEGORACERS 0x004b0234
-extern const LegoFloat g_raceSessionField0xf8GroundProbeStartOffset = 2.0f;
+extern const LegoFloat g_raceSessionHomingProjectileGroundProbeStartOffset = 2.0f;
 
 // GLOBAL: LEGORACERS 0x004b0238
-const LegoFloat g_raceSessionField0xf8CollisionHitLift = 6.0f;
+const LegoFloat g_raceSessionHomingProjectileCollisionHitLift = 6.0f;
 
 // GLOBAL: LEGORACERS 0x004b023c
-extern const LegoFloat g_raceSessionField0xf8DescentRate = 6.0f;
+extern const LegoFloat g_raceSessionHomingProjectileDescentRate = 6.0f;
 
 // GLOBAL: LEGORACERS 0x004b0240
-const LegoFloat g_raceSessionField0xf8OscillationGrowth = 6.0f;
+const LegoFloat g_raceSessionHomingProjectileOscillationGrowth = 6.0f;
 
 // GLOBAL: LEGORACERS 0x004b0244
-const LegoFloat g_raceSessionField0xf8PathDistanceLimitSquared = 90000.0f;
+const LegoFloat g_raceSessionHomingProjectilePathDistanceLimitSquared = 90000.0f;
 
 // GLOBAL: LEGORACERS 0x004b0268
-extern const LegoFloat g_raceSessionField0xf8CollisionProbeDepth = 50.0f;
+extern const LegoFloat g_raceSessionHomingProjectileCollisionProbeDepth = 50.0f;
 
 // FUNCTION: LEGORACERS 0x00423590
-RacePowerupManager::Field0xf8::Field0xf8()
+RacePowerupManager::HomingProjectile::HomingProjectile()
 {
 	m_unk0x0c4.m_x = 0.0f;
 	m_unk0x0c4.m_y = 0.0f;
@@ -61,9 +61,9 @@ RacePowerupManager::Field0xf8::Field0xf8()
 }
 
 // FUNCTION: LEGORACERS 0x00423610
-RaceSessionField0x6dcField0xa8* RacePowerupManager::Field0xf8::VTable0x10(undefined4 p_flags)
+PowerupProjectile* RacePowerupManager::HomingProjectile::Destroy(undefined4 p_flags)
 {
-	Field0xf8* result = this;
+	HomingProjectile* result = this;
 	FUN_00423630();
 	if (p_flags & 1) {
 		::operator delete(result);
@@ -73,13 +73,13 @@ RaceSessionField0x6dcField0xa8* RacePowerupManager::Field0xf8::VTable0x10(undefi
 }
 
 // FUNCTION: LEGORACERS 0x00423630
-void RacePowerupManager::Field0xf8::FUN_00423630()
+void RacePowerupManager::HomingProjectile::FUN_00423630()
 {
-	RaceSessionField0x6dcField0xa8::~RaceSessionField0x6dcField0xa8();
+	PowerupProjectile::~PowerupProjectile();
 }
 
 // STUB: LEGORACERS 0x00423640
-void RacePowerupManager::Field0xf8::FUN_00423640(
+void RacePowerupManager::HomingProjectile::FUN_00423640(
 	LegoU32 p_elapsedMs,
 	RaceState* p_unk0x08,
 	LegoFloat p_unk0x0c,
@@ -124,7 +124,7 @@ void RacePowerupManager::Field0xf8::FUN_00423640(
 			if (pathField != NULL) {
 				point = pathField->m_unk0x10;
 				delta = point - m_unk0x0a8;
-				if (GOLVECTOR3_DOT(delta, delta) > g_raceSessionField0xf8PathDistanceLimitSquared ||
+				if (GOLVECTOR3_DOT(delta, delta) > g_raceSessionHomingProjectilePathDistanceLimitSquared ||
 					GOLVECTOR3_DOT(pathField->m_unk0x00, m_unk0x0d0) > 0.0f) {
 					m_unk0x0ec = NULL;
 				}
@@ -139,31 +139,31 @@ void RacePowerupManager::Field0xf8::FUN_00423640(
 			GolVec3 hit = point;
 			GolVec3 start = point;
 			GolVec3 end = point;
-			start.m_z += g_raceSessionField0xf8CollisionStartOffset;
-			end.m_z -= g_raceSessionField0xf8CollisionProbeDepth;
+			start.m_z += g_homingProjectileCollisionStartOffset;
+			end.m_z -= g_raceSessionHomingProjectileCollisionProbeDepth;
 
 			GolBoundingVolume::Field0x0c record;
 			if (m_unk0x00c->FUN_0041f730(&start, &end, &record, &hit)) {
 				m_unk0x0e8 = 1;
 				m_unk0x0dc.m_x = hit.m_x;
 				m_unk0x0dc.m_y = hit.m_y;
-				m_unk0x0dc.m_z = hit.m_z + g_raceSessionField0xf8CollisionHitLift;
+				m_unk0x0dc.m_z = hit.m_z + g_raceSessionHomingProjectileCollisionHitLift;
 			}
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00423980
-void RacePowerupManager::Field0xf8::FUN_00423980()
+void RacePowerupManager::HomingProjectile::FUN_00423980()
 {
-	m_unk0x008->VTable0x04(&m_unk0x0a8);
+	m_worldEntity->VTable0x04(&m_unk0x0a8);
 	m_unk0x0b4 = 0.0f;
 	m_unk0x0e8 = 0;
 	m_unk0x0f0 = 0;
 
 	GolVec3 forward;
 	GolVec3* direction = &m_unk0x0d0;
-	m_unk0x008->VTable0x48(direction, &forward);
+	m_worldEntity->VTable0x48(direction, &forward);
 	m_unk0x0f0 = 0;
 
 	RaceState::Racer* racer = m_unk0x09c;
@@ -190,17 +190,17 @@ void RacePowerupManager::Field0xf8::FUN_00423980()
 }
 
 // STUB: LEGORACERS 0x00423a20
-LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::HomingProjectile::Update(LegoU32 p_elapsedMs)
 {
-	LegoU32 state = m_unk0x004;
+	LegoU32 state = m_state;
 	if (state != 1) {
 		return state;
 	}
 
 	m_unk0x050 += p_elapsedMs;
 	if (static_cast<LegoU32>(m_unk0x050) >= m_unk0x058) {
-		m_unk0x004 = 4;
-		m_unk0x008->VTable0x04(&m_unk0x028);
+		m_state = 4;
+		m_worldEntity->VTable0x04(&m_unk0x028);
 		return 4;
 	}
 
@@ -215,7 +215,7 @@ LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 	RaceState::Racer* target = m_unk0x0a0;
 	if (target != NULL) {
 		target->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x01c);
-		m_unk0x01c.m_z += g_raceSessionField0xf8TargetHeightOffset;
+		m_unk0x01c.m_z += g_raceSessionHomingProjectileTargetHeightOffset;
 		m_unk0x0d0.m_x = m_unk0x01c.m_x - m_unk0x0a8.m_x;
 		m_unk0x0d0.m_y = m_unk0x01c.m_y - m_unk0x0a8.m_y;
 		m_unk0x0d0.m_z = m_unk0x01c.m_z - m_unk0x0a8.m_z;
@@ -228,7 +228,7 @@ LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 	}
 
 	GolVec3* direction = &m_unk0x0d0;
-	if (targetDistanceSquared < g_raceSessionField0xf8TargetSnapDistanceSquared) {
+	if (targetDistanceSquared < g_raceSessionHomingProjectileTargetSnapDistanceSquared) {
 		GolMath::NormalizeVector3(*direction, direction);
 
 		LegoFloat speed =
@@ -237,10 +237,10 @@ LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 		m_unk0x0c4.m_y = speed * direction->m_y;
 		m_unk0x0c4.m_z = speed * direction->m_z;
 
-		if (targetDistanceSquared < g_raceSessionField0xf8TargetDirectHitDistanceSquared) {
+		if (targetDistanceSquared < g_raceSessionHomingProjectileTargetDirectHitDistanceSquared) {
 			m_unk0x028 = m_unk0x01c;
-			m_unk0x008->VTable0x08(m_unk0x028);
-			m_unk0x004 = 4;
+			m_worldEntity->VTable0x08(m_unk0x028);
+			m_state = 4;
 			return 4;
 		}
 
@@ -253,8 +253,8 @@ LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 		targetDistanceSquared += (m_unk0x01c.m_x - nextPosition.m_x) * direction->m_x;
 		if (targetDistanceSquared <= 0.0f) {
 			m_unk0x028 = m_unk0x01c;
-			m_unk0x008->VTable0x08(m_unk0x028);
-			m_unk0x004 = 4;
+			m_worldEntity->VTable0x08(m_unk0x028);
+			m_state = 4;
 			return 4;
 		}
 	}
@@ -287,13 +287,13 @@ LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 		end.m_x = nextPosition.m_x;
 		end.m_y = nextPosition.m_y;
 		end.m_z = nextPosition.m_z;
-		start.m_z += g_raceSessionField0xf8GroundProbeStartOffset;
-		end.m_z -= g_raceSessionField0xf8CollisionHitLift;
+		start.m_z += g_raceSessionHomingProjectileGroundProbeStartOffset;
+		end.m_z -= g_raceSessionHomingProjectileCollisionHitLift;
 
 		if (m_unk0x00c->FUN_0041f730(&start, &end, &record, &m_unk0x028)) {
-			nextPosition.m_z = m_unk0x028.m_z + g_raceSessionField0xf8CollisionHitLift;
+			nextPosition.m_z = m_unk0x028.m_z + g_raceSessionHomingProjectileCollisionHitLift;
 			if (m_unk0x0a8.m_z > nextPosition.m_z) {
-				LegoFloat descentLimit = m_unk0x0a8.m_z - g_raceSessionField0xf8DescentRate * elapsedSeconds;
+				LegoFloat descentLimit = m_unk0x0a8.m_z - g_raceSessionHomingProjectileDescentRate * elapsedSeconds;
 				if (descentLimit > nextPosition.m_z) {
 					nextPosition.m_z = descentLimit;
 				}
@@ -304,23 +304,23 @@ LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 	m_unk0x0a8 = nextPosition;
 	FUN_00423ed0(elapsedSeconds, direction, &nextPosition);
 
-	m_unk0x008->VTable0x04(&previousPosition);
+	m_worldEntity->VTable0x04(&previousPosition);
 
 	if (m_unk0x00c->FUN_0041f730(&previousPosition, &nextPosition, &record, &m_unk0x028)) {
 		m_unk0x05c.m_x = record.m_unk0x24.m_x;
 		m_unk0x05c.m_y = record.m_unk0x24.m_y;
 		m_unk0x05c.m_z = record.m_unk0x24.m_z;
-		m_unk0x008->VTable0x08(m_unk0x028);
-		m_unk0x004 = 3;
+		m_worldEntity->VTable0x08(m_unk0x028);
+		m_state = 3;
 		return 3;
 	}
 
-	m_unk0x008->VTable0x08(nextPosition);
+	m_worldEntity->VTable0x08(nextPosition);
 	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x00423ea0
-void RacePowerupManager::Field0xf8::VTable0x1c(GolVec3* p_unk0x04)
+void RacePowerupManager::HomingProjectile::VTable0x1c(GolVec3* p_unk0x04)
 {
 	p_unk0x04->m_x = m_unk0x0c4.m_x;
 	p_unk0x04->m_y = m_unk0x0c4.m_y;
@@ -328,9 +328,13 @@ void RacePowerupManager::Field0xf8::VTable0x1c(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00423ed0
-void RacePowerupManager::Field0xf8::FUN_00423ed0(LegoFloat p_elapsedSeconds, GolVec3* p_unk0x08, GolVec3* p_unk0x0c)
+void RacePowerupManager::HomingProjectile::FUN_00423ed0(
+	LegoFloat p_elapsedSeconds,
+	GolVec3* p_unk0x08,
+	GolVec3* p_unk0x0c
+)
 {
-	m_unk0x0b4 += g_raceSessionField0xf8OscillationGrowth * p_elapsedSeconds;
+	m_unk0x0b4 += g_raceSessionHomingProjectileOscillationGrowth * p_elapsedSeconds;
 	if (m_unk0x0b8 <= m_unk0x0b4) {
 		m_unk0x0b4 = m_unk0x0b8;
 	}

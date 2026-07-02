@@ -3,7 +3,7 @@
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x270, 0x270)
+DECOMP_SIZE_ASSERT(RacePowerupManager::Explosion, 0x270)
 
 // GLOBAL: LEGORACERS 0x004b0150
 LegoFloat g_unk0x004b0150 = 80.0f;
@@ -16,13 +16,13 @@ LegoFloat g_unk0x004b015c = 180.0f;
 
 extern const LegoFloat g_violetShoalTwo;
 extern const LegoFloat g_unk0x004b0544;
-extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset;
+extern const LegoFloat g_homingProjectileCollisionStartOffset;
 
 // FUNCTION: LEGORACERS 0x004210b0
-RacePowerupManager::Field0x270::Field0x270()
+RacePowerupManager::Explosion::Explosion()
 {
 	m_unk0x204.FUN_004a00b0();
-	m_unk0x04 = 0;
+	m_state = 0;
 	m_unk0x030 = NULL;
 	m_unk0x0c4 = NULL;
 	m_unk0x200 = NULL;
@@ -53,25 +53,25 @@ RacePowerupManager::Field0x270::Field0x270()
 }
 
 // FUNCTION: LEGORACERS 0x004211e0
-RacePowerupManager::Field0x270::~Field0x270()
+RacePowerupManager::Explosion::~Explosion()
 {
 	FUN_004214b0();
 	m_unk0x204.Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00421250
-void RacePowerupManager::Field0x270::FUN_00421250(const Params* p_params)
+void RacePowerupManager::Explosion::Initialize(const Params* p_params)
 {
-	if (m_unk0x04 != 0) {
+	if (m_state != 0) {
 		FUN_004214b0();
 	}
 
-	m_unk0x030 = p_params->m_unk0x00;
+	m_unk0x030 = p_params->m_golExport;
 	m_unk0x200 = p_params->m_unk0x04;
-	m_unk0x210 = p_params->m_unk0x10;
-	m_unk0x214 = p_params->m_unk0x14;
+	m_unk0x210 = p_params->m_flashMaterial;
+	m_unk0x214 = p_params->m_scarMaterial;
 	m_unk0x218 = p_params->m_unk0x18;
-	m_unk0x224 = p_params->m_unk0x1c;
+	m_unk0x224 = p_params->m_manager;
 	m_unk0x228 = p_params->m_unk0x28;
 	m_unk0x0e0 = p_params->m_unk0x24;
 	m_unk0x230 = p_params->m_unk0x2c;
@@ -106,23 +106,23 @@ void RacePowerupManager::Field0x270::FUN_00421250(const Params* p_params)
 		m_unk0x0c4->VTable0x4c(p_params->m_unk0x0c, 0.1f, 0.2f, 250000.0f);
 	}
 
-	if (p_params->m_unk0x08 != NULL) {
-		m_unk0x034.VTable0x50(p_params->m_unk0x08->GetModel(0), 250000.0f);
-		m_unk0x034.FUN_00411680(p_params->m_unk0x08->FUN_00411640());
-		m_unk0x034.FUN_004116b0(p_params->m_unk0x08->FUN_00411660());
-		m_unk0x034.FUN_00411700(p_params->m_unk0x08->FUN_004116e0());
-		m_unk0x034.FUN_00411730(p_params->m_unk0x08->FUN_004116f0());
+	if (p_params->m_model != NULL) {
+		m_unk0x034.VTable0x50(p_params->m_model->GetModel(0), 250000.0f);
+		m_unk0x034.FUN_00411680(p_params->m_model->FUN_00411640());
+		m_unk0x034.FUN_004116b0(p_params->m_model->FUN_00411660());
+		m_unk0x034.FUN_00411700(p_params->m_model->FUN_004116e0());
+		m_unk0x034.FUN_00411730(p_params->m_model->FUN_004116f0());
 	}
 
 	GolD3DRenderDevice* renderer = m_unk0x030->GetDrawState()->m_currentRenderer;
 	m_unk0x204.Initialize(renderer, 1);
 	m_unk0x0e4.FUN_00414950(m_unk0x030, renderer, 10);
 	m_unk0x0e4.GetUnk0x010().SetPrimaryMaterialTable(&m_unk0x204);
-	m_unk0x04 = 1;
+	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x004214b0
-void RacePowerupManager::Field0x270::FUN_004214b0()
+void RacePowerupManager::Explosion::FUN_004214b0()
 {
 	FUN_004217b0();
 	m_unk0x0e4.FUN_004149f0();
@@ -136,24 +136,20 @@ void RacePowerupManager::Field0x270::FUN_004214b0()
 	}
 
 	m_unk0x0c8.Reset();
-	m_unk0x04 = 0;
+	m_state = 0;
 }
 
 // STUB: LEGORACERS 0x00421520
-void RacePowerupManager::Field0x270::FUN_00421520(
-	const GolVec3* p_position,
-	undefined4 p_unk0x08,
-	RaceState::Racer* p_racer
-)
+void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer)
 {
 	LegoFloat negativeLimit = -2048.0f;
 	if (p_position->m_x > 2048.0f || p_position->m_x < negativeLimit || p_position->m_y > 2048.0f ||
 		p_position->m_y < negativeLimit || p_position->m_z > 2048.0f || p_position->m_z < negativeLimit) {
-		m_unk0x04 = 1;
+		m_state = 1;
 		return;
 	}
 
-	m_unk0x04 = 2;
+	m_state = 2;
 	m_unk0x238 = m_unk0x230;
 	m_unk0x268 = p_unk0x08;
 	m_unk0x21c = p_racer;
@@ -179,7 +175,7 @@ void RacePowerupManager::Field0x270::FUN_00421520(
 	GolVec3 position;
 	position.m_x = p_position->m_x;
 	position.m_y = p_position->m_y;
-	position.m_z = p_position->m_z + g_raceSessionField0xf8CollisionStartOffset;
+	position.m_z = p_position->m_z + g_homingProjectileCollisionStartOffset;
 	m_unk0x0e4.m_unk0x0e8 = position;
 
 	GolVec3 forward;
@@ -221,30 +217,30 @@ void RacePowerupManager::Field0x270::FUN_00421520(
 		GolVec3 particlePosition;
 		particlePosition.m_x = position.m_x;
 		particlePosition.m_y = position.m_y;
-		particlePosition.m_z = position.m_z - g_raceSessionField0xf8CollisionStartOffset;
+		particlePosition.m_z = position.m_z - g_homingProjectileCollisionStartOffset;
 		m_unk0x228->FUN_00489d70("explode", &particlePosition, NULL, NULL);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004217b0
-void RacePowerupManager::Field0x270::FUN_004217b0()
+void RacePowerupManager::Explosion::FUN_004217b0()
 {
 	if (m_unk0x220 != NULL) {
 		m_unk0x220->m_active = 0;
 		m_unk0x220 = NULL;
 	}
 
-	m_unk0x04 = 1;
+	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x004217d0
-void RacePowerupManager::Field0x270::FUN_004217d0(LegoU32 p_elapsedMs)
+void RacePowerupManager::Explosion::FUN_004217d0(LegoU32 p_elapsedMs)
 {
-	if (m_unk0x04 == 2) {
+	if (m_state == 2) {
 		FUN_00421850(p_elapsedMs);
 	}
 
-	if (m_unk0x04 == 3) {
+	if (m_state == 3) {
 		LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.001f;
 		m_unk0x23c += elapsedSeconds * m_unk0x244;
 		if (m_unk0x23c < 0.0f) {
@@ -263,10 +259,10 @@ void RacePowerupManager::Field0x270::FUN_004217d0(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00421850
-void RacePowerupManager::Field0x270::FUN_00421850(LegoU32 p_elapsedMs)
+void RacePowerupManager::Explosion::FUN_00421850(LegoU32 p_elapsedMs)
 {
 	LegoS32 zero = 0;
-	if (m_unk0x04 != zero && m_unk0x04 != 1) {
+	if (m_state != zero && m_state != 1) {
 		LegoU32 duration = m_unk0x238;
 		if (p_elapsedMs >= duration) {
 			if (m_unk0x214 != NULL && m_unk0x268 != zero) {
@@ -276,7 +272,7 @@ void RacePowerupManager::Field0x270::FUN_00421850(LegoU32 p_elapsedMs)
 				}
 
 				LegoU32 finishDuration = m_unk0x234;
-				m_unk0x04 = 3;
+				m_state = 3;
 				LegoFloat width = m_unk0x25c;
 				LegoFloat width2 = m_unk0x25c;
 				m_unk0x238 = finishDuration;
@@ -350,13 +346,13 @@ void RacePowerupManager::Field0x270::FUN_00421850(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00421ae0
-void RacePowerupManager::Field0x270::FUN_00421ae0(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::Explosion::FUN_00421ae0(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x04 == 0 || m_unk0x04 == 1) {
+	if (m_state == 0 || m_state == 1) {
 		return;
 	}
 
-	if (m_unk0x04 == 2) {
+	if (m_state == 2) {
 		if (m_unk0x214 != 0 && m_unk0x268 != 0) {
 			p_renderer->SetAlphaOverride(static_cast<LegoS32>(g_unk0x004b015c), 2);
 			m_unk0x0e4.FUN_00415a40(p_renderer);
@@ -377,7 +373,7 @@ void RacePowerupManager::Field0x270::FUN_00421ae0(GolD3DRenderDevice* p_renderer
 		return;
 	}
 
-	if (m_unk0x04 == 3 && m_unk0x214 != 0 && m_unk0x268 != 0) {
+	if (m_state == 3 && m_unk0x214 != 0 && m_unk0x268 != 0) {
 		p_renderer->SetAlphaOverride(static_cast<LegoS32>(m_unk0x23c), 2);
 		m_unk0x0e4.FUN_00415a40(p_renderer);
 		p_renderer->ClearAlphaOverride();
@@ -385,7 +381,7 @@ void RacePowerupManager::Field0x270::FUN_00421ae0(GolD3DRenderDevice* p_renderer
 }
 
 // STUB: LEGORACERS 0x00421c00
-void RacePowerupManager::Field0x270::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	LegoU32 mode = m_unk0x22c;
 	if (!mode) {
@@ -458,14 +454,14 @@ void RacePowerupManager::Field0x270::VTable0x00(LegoEventQueue::CallbackData* p_
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::Field0x270::FUN_004513d0(GolD3DRenderDevice*)
+void RacePowerupManager::Explosion::FUN_004513d0(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004587b0
-RacePowerupManager::Field0x270* RacePowerupManager::Field0x270::VTable0x04(undefined4 p_flags)
+RacePowerupManager::Explosion* RacePowerupManager::Explosion::Destroy(undefined4 p_flags)
 {
-	Field0x270* result = this;
+	Explosion* result = this;
 	if (p_flags & 2) {
 		if (p_flags & 1) {
 			delete[] this;
@@ -474,7 +470,7 @@ RacePowerupManager::Field0x270* RacePowerupManager::Field0x270::VTable0x04(undef
 		return result;
 	}
 
-	this->~Field0x270();
+	this->~Explosion();
 	if (p_flags & 1) {
 		::operator delete(result);
 	}

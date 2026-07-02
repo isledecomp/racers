@@ -15,12 +15,12 @@
 #include "material/materialtable0x0c.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutsceneplayer.h"
+#include "race/powerupprojectile.h"
 #include "race/raceactionsource0x24.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesessionfield0x27d4.h"
 #include "race/racesessionfield0x27f4.h"
 #include "race/racesessionfield0x32b4.h"
-#include "race/racesessionfield0x6dcfield0xa8.h"
 #include "race/racestate.h"
 #include "race/racetrailmanager.h"
 #include "scene/golbillboard.h"
@@ -49,7 +49,28 @@ class RacePowerupManager {
 public:
 	// VTABLE: LEGORACERS 0x004b1884
 	// SIZE 0x1fc
-	class PwbTxtParser : public GolTxtParser {};
+	class PwbTxtParser : public GolTxtParser {
+	public:
+		// .pwb token meanings (cross-referenced with data/liblr1 PWB.cs)
+		enum {
+			e_colorBricks = 0x27,
+			e_position = 0x28,
+			e_colorRed = 0x2a,
+			e_colorYellow = 0x2b,
+			e_colorBlue = 0x2c,
+			e_colorGreen = 0x2d,
+			e_respawnMs = 0x2e,
+			e_whiteBricks = 0x2f,
+		};
+	};
+
+	// Brick color codes (PWB color tokens map to these; GetBrickColor returns them)
+	enum {
+		c_brickColorRed = 1,
+		c_brickColorBlue = 2,
+		c_brickColorGreen = 3,
+		c_brickColorYellow = 4,
+	};
 
 	// SIZE 0x1c
 	class ActionTarget {
@@ -96,11 +117,11 @@ public:
 	// SIZE 0x14
 	class ActionSetup {
 	public:
-		RaceState::Racer* m_racer;    // 0x00
-		RaceState::Racer* m_unk0x04;  // 0x04
-		Field0x050::Entry* m_unk0x08; // 0x08
-		ActionTarget* m_unk0x0c;      // 0x0c
-		LegoU32 m_unk0x10;            // 0x10
+		RaceState::Racer* m_racer;        // 0x00
+		RaceState::Racer* m_targetRacer;  // 0x04
+		Field0x050::Entry* m_targetPoint; // 0x08
+		ActionTarget* m_aimTarget;        // 0x0c
+		LegoU32 m_initialTimerMs;         // 0x10
 	};
 
 	// SIZE 0x04
@@ -132,11 +153,11 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b47a8
 	// SIZE 0x98
-	class Field0x98 : public GolModelEntity {
+	class BeamEntity : public GolModelEntity {
 	public:
-		Field0x98();
-		~Field0x98();
-		Field0x98* FUN_00494c20(undefined4 p_flags);
+		BeamEntity();
+		~BeamEntity();
+		BeamEntity* FUN_00494c20(undefined4 p_flags);
 		void VTable0x1c(GolRenderDevice& p_renderer) override; // vtable+0x1c
 		void FUN_00494c50(
 			GolModelBase* p_model,
@@ -153,7 +174,7 @@ public:
 	};
 
 	// SIZE 0x170
-	class Field0x170 {
+	class BeamMesh {
 	public:
 		enum {
 			c_flags0x140Bit0 = 1 << 0,
@@ -167,7 +188,7 @@ public:
 
 		// SIZE 0x74
 		struct SetupParams {
-			GolExport* m_unk0x00;                // 0x00
+			GolExport* m_golExport;              // 0x00
 			GolRenderDevice* m_renderer;         // 0x04
 			DuskwindBananaRelic0x24* m_material; // 0x08
 			LegoU32 m_unk0x0c;                   // 0x0c
@@ -181,8 +202,8 @@ public:
 			undefined4 m_unk0x70;                // 0x70
 		};
 
-		Field0x170();
-		~Field0x170();
+		BeamMesh();
+		~BeamMesh();
 		void Reset();
 		void FUN_00493c90(const SetupParams* p_params);
 		void FUN_00493e60();
@@ -214,13 +235,13 @@ public:
 		void FUN_00494be0(const GolVec3* p_offsets);
 
 	private:
-		GolExport* m_unk0x000;                      // 0x000
+		GolExport* m_golExport;                     // 0x000
 		GolModelBase* m_unk0x004;                   // 0x004
 		GdbVertexArray0xc* m_unk0x008;              // 0x008
 		GdbModelIndexArray0xc::Indices* m_unk0x00c; // 0x00c
 		GolSceneNode* m_unk0x010;                   // 0x010
 		DuskwindBananaRelic0x24* m_unk0x014;        // 0x014
-		Field0x98 m_unk0x018;                       // 0x018
+		BeamEntity m_unk0x018;                      // 0x018
 		LegoS32 m_unk0x0b0;                         // 0x0b0
 		LegoS32 m_unk0x0b4;                         // 0x0b4
 		LegoS32 m_unk0x0b8;                         // 0x0b8
@@ -249,15 +270,15 @@ public:
 		undefined4 m_unk0x16c;                      // 0x16c
 	};
 
-	class Field0x18ac;
+	class HomingMissileAction;
 
 	// VTABLE: LEGORACERS 0x004b0248
 	// SIZE 0xf8
-	class Field0xf8 : public RaceSessionField0x6dcField0xa8 {
+	class HomingProjectile : public PowerupProjectile {
 	public:
-		Field0xf8();
-		RaceSessionField0x6dcField0xa8* VTable0x10(undefined4 p_flags) override;
-		LegoS32 VTable0x18(LegoU32 p_elapsedMs) override;
+		HomingProjectile();
+		PowerupProjectile* Destroy(undefined4 p_flags) override;
+		LegoS32 Update(LegoU32 p_elapsedMs) override;
 		void VTable0x1c(GolVec3* p_unk0x04) override;
 		void FUN_00423630();
 		void FUN_00423640(
@@ -271,7 +292,7 @@ public:
 		void FUN_00423ed0(LegoFloat p_elapsedSeconds, GolVec3* p_unk0x08, GolVec3* p_unk0x0c);
 
 	protected:
-		friend class Field0x18ac;
+		friend class HomingMissileAction;
 
 		enum {
 			c_racerFlags0xd04InvalidTargetMask = 0x11,
@@ -295,11 +316,11 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b0ca8
 	// SIZE 0x238
-	class Field0x238 : public RaceSessionField0x6dcField0xa8 {
+	class TetherProjectile : public PowerupProjectile {
 	public:
 		// SIZE 0x20
 		struct SetupParams {
-			GolExport* m_unk0x00;                // 0x00
+			GolExport* m_golExport;              // 0x00
 			LegoFloat m_unk0x04;                 // 0x04
 			LegoFloat m_unk0x08;                 // 0x08
 			LegoFloat m_unk0x0c;                 // 0x0c
@@ -309,11 +330,11 @@ public:
 			DuskwindBananaRelic0x24* m_material; // 0x1c
 		};
 
-		Field0x238();
-		~Field0x238();
-		RaceSessionField0x6dcField0xa8* VTable0x10(undefined4) override;
-		void VTable0x14() override;
-		LegoS32 VTable0x18(LegoU32 p_elapsedMs) override;
+		TetherProjectile();
+		~TetherProjectile();
+		PowerupProjectile* Destroy(undefined4) override;
+		void Deactivate() override;
+		LegoS32 Update(LegoU32 p_elapsedMs) override;
 		virtual void VTable0x20(const SetupParams* p_params);    // vtable+0x20
 		virtual void VTable0x24(GolD3DRenderDevice* p_renderer); // vtable+0x24
 
@@ -334,80 +355,80 @@ public:
 		LegoS32 FUN_00444690(LegoU32 p_elapsedMs);
 		LegoS32 FUN_00444820(LegoU32 p_elapsedMs);
 
-		Field0x170 m_unk0x0a8; // 0x0a8
-		LegoFloat m_unk0x218;  // 0x218
-		LegoFloat m_unk0x21c;  // 0x21c
-		LegoFloat m_unk0x220;  // 0x220
-		LegoFloat m_unk0x224;  // 0x224
-		GolVec3 m_unk0x228;    // 0x228
-		LegoU32 m_unk0x234;    // 0x234
+		BeamMesh m_beam;      // 0x0a8
+		LegoFloat m_unk0x218; // 0x218
+		LegoFloat m_unk0x21c; // 0x21c
+		LegoFloat m_unk0x220; // 0x220
+		LegoFloat m_unk0x224; // 0x224
+		GolVec3 m_unk0x228;   // 0x228
+		LegoU32 m_unk0x234;   // 0x234
 	};
 
 	// SIZE 0x18
-	class Field0x1880 : public LegoEventQueue::Callback {
+	class PowerupAction : public LegoEventQueue::Callback {
 	public:
 		void VTable0x00(LegoEventQueue::CallbackData* p_param) override = 0; // vtable+0x00
-		virtual Field0x1880* VTable0x04(undefined4) = 0;                     // vtable+0x04
-		virtual void VTable0x08(LegoU32) = 0;                                // vtable+0x08
+		virtual PowerupAction* Destroy(undefined4 p_flags) = 0;              // vtable+0x04
+		virtual void Update(LegoU32 p_elapsedMs) = 0;                        // vtable+0x08
 		virtual void VTable0x0c(GolD3DRenderDevice*) = 0;                    // vtable+0x0c
 		virtual void VTable0x10(GolD3DRenderDevice*) = 0;                    // vtable+0x10
 		virtual void VTable0x14() = 0;                                       // vtable+0x14
-		virtual LegoS32 VTable0x18() = 0;                                    // vtable+0x18
-		virtual void VTable0x1c() = 0;                                       // vtable+0x1c
+		virtual LegoS32 GetBrickColor() = 0;                                 // vtable+0x18
+		virtual void Deactivate() = 0;                                       // vtable+0x1c
 
-		Field0x1880* GetNext() { return m_next; }
-		LegoS32 GetUnk0x04() const { return m_unk0x004; }
-		LegoU32 GetUnk0x008() const { return m_unk0x008; }
-		LegoU32 GetState() const { return m_state; }
-		void SetUnk0x04(LegoS32 p_unk0x04) { m_unk0x004 = p_unk0x04; }
-		void SetUnk0x010(RaceState::Racer::Field0x004* p_unk0x010) { m_unk0x010 = p_unk0x010; }
-		void SetNext(Field0x1880* p_next) { m_next = p_next; }
-		void SetState(LegoU32 p_state) { m_state = p_state; }
+		PowerupAction* GetNext() { return m_next; }
+		LegoS32 GetState() const { return m_state; }
+		LegoU32 GetStateTimer() const { return m_stateTimerMs; }
+		LegoU32 GetLevel() const { return m_level; }
+		void SetState(LegoS32 p_state) { m_state = p_state; }
+		void SetSoundSource(RaceState::Racer::Field0x004* p_soundSource) { m_soundSource = p_soundSource; }
+		void SetNext(PowerupAction* p_next) { m_next = p_next; }
+		void SetLevel(LegoU32 p_level) { m_level = p_level; }
 
 	protected:
 		friend class RacePowerupManager;
 
-		LegoS32 m_unk0x004;                       // 0x004
-		LegoU32 m_unk0x008;                       // 0x008
-		Field0x1880* m_next;                      // 0x00c
-		RaceState::Racer::Field0x004* m_unk0x010; // 0x010
-		LegoU32 m_state;                          // 0x014
+		LegoS32 m_state;                             // 0x004
+		LegoU32 m_stateTimerMs;                      // 0x008
+		PowerupAction* m_next;                       // 0x00c
+		RaceState::Racer::Field0x004* m_soundSource; // 0x010
+		LegoU32 m_level;                             // 0x014
 	};
 
 	// VTABLE: LEGORACERS 0x004b132c
 	// SIZE 0x18
-	class ResourceBase : public Field0x1880 {
+	class PowerupActionBase : public PowerupAction {
 	public:
-		ResourceBase();
-		~ResourceBase();
+		PowerupActionBase();
+		~PowerupActionBase();
 		void VTable0x00(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
-		Field0x1880* VTable0x04(undefined4 p_flags) override;            // vtable+0x04
-		void VTable0x08(LegoU32) override;                               // vtable+0x08
+		PowerupAction* Destroy(undefined4 p_flags) override;             // vtable+0x04
+		void Update(LegoU32) override;                                   // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice*) override;                   // vtable+0x0c
 		void VTable0x10(GolD3DRenderDevice*) override;                   // vtable+0x10
 		void VTable0x14() override = 0;                                  // vtable+0x14
-		LegoS32 VTable0x18() override = 0;                               // vtable+0x18
-		void VTable0x1c() override;                                      // vtable+0x1c
+		LegoS32 GetBrickColor() override = 0;                            // vtable+0x18
+		void Deactivate() override;                                      // vtable+0x1c
 	};
 
 	// SIZE 0x2c
-	class ResourceBase0x2c : public ResourceBase {
+	class HazardActionBase : public PowerupActionBase {
 	public:
 		enum {
 			c_racerFlags0xd04Bit0 = 1 << 0,
 		};
 
-		ResourceBase0x2c();
+		HazardActionBase();
 
 		// SYNTHETIC: LEGORACERS 0x00451960
-		// RacePowerupManager::ResourceBase0x2c::~ResourceBase0x2c
+		// RacePowerupManager::HazardActionBase::~HazardActionBase
 
 		// SYNTHETIC: LEGORACERS 0x00456300
-		// RacePowerupManager::ResourceBase0x2c::`scalar deleting destructor'
+		// RacePowerupManager::HazardActionBase::`scalar deleting destructor'
 
 		void VTable0x00(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
 		void VTable0x14() override;                                      // vtable+0x14
-		LegoS32 VTable0x18() override;                                   // vtable+0x18
+		LegoS32 GetBrickColor() override;                                // vtable+0x18
 		virtual void VTable0x20(RaceState::Racer* p_racer);              // vtable+0x20
 
 	protected:
@@ -421,17 +442,17 @@ public:
 	};
 
 	// SIZE 0x30
-	class ResourceBase0x30 : public ResourceBase {
+	class WeaponActionBase : public PowerupActionBase {
 	public:
-		ResourceBase0x30();
+		WeaponActionBase();
 		void VTable0x14() override;                         // vtable+0x14
-		LegoS32 VTable0x18() override;                      // vtable+0x18
+		LegoS32 GetBrickColor() override;                   // vtable+0x18
 		virtual void VTable0x20(RaceState::Racer* p_racer); // vtable+0x20
 		virtual void VTable0x24(GolVec3* p_unk0x04);        // vtable+0x24
 		virtual void VTable0x28(GolVec3* p_unk0x04);        // vtable+0x28
 
 	protected:
-		RaceSessionField0x6dcField0xa8* m_unk0x018; // 0x018
+		PowerupProjectile* m_unk0x018; // 0x018
 		union {
 			GolExport** m_unk0x01c;           // 0x01c
 			RacePowerupManager* m_owner0x01c; // 0x01c
@@ -444,20 +465,20 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b14b0
 	// SIZE 0x54
-	class Field0x68 : public LegoEventQueue::Callback {
+	class PickupBrick : public LegoEventQueue::Callback {
 	public:
 		void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-		virtual void VTable0x04(RaceState::Racer* p_racer) = 0;         // vtable+0x04
-		virtual ~Field0x68();                                           // vtable+0x08
-		virtual void VTable0x0c();                                      // vtable+0x0c
+		virtual void OnTouched(RaceState::Racer* p_racer) = 0;          // vtable+0x04
+		virtual ~PickupBrick();                                         // vtable+0x08
+		virtual void Respawn();                                         // vtable+0x0c
 		virtual void VTable0x10(GolD3DRenderDevice* p_renderer);        // vtable+0x10
 		virtual void VTable0x14(GolD3DRenderDevice* p_renderer);        // vtable+0x14
 
 		// SYNTHETIC: LEGORACERS 0x00453940
-		// RacePowerupManager::Field0x68::`scalar deleting destructor'
+		// RacePowerupManager::PickupBrick::`scalar deleting destructor'
 
-		Field0x68();
-		void FUN_004539b0(
+		PickupBrick();
+		void Initialize(
 			RacePowerupManager* p_owner,
 			RaceState::Racer::Field0x004* p_soundResource,
 			GolVec3* p_position,
@@ -465,12 +486,12 @@ public:
 			GolModelEntity* p_model1
 		);
 		void FUN_00453a10();
-		LegoS32 FUN_00453970();
+		LegoS32 Reset();
 
 		void SetFlags0x50Bit0() { m_flags0x50 |= c_flags0x50Bit0; }
 		void ClearFlags0x50Bit0() { m_flags0x50 &= ~c_flags0x50Bit0; }
-		void ClearUnk0x24() { m_unk0x08.ClearVelocityX(); }
-		GolWorldEntity* GetUnk0x08() { return &m_unk0x08; }
+		void ClearVelocityX() { m_worldEntity.ClearVelocityX(); }
+		GolWorldEntity* GetWorldEntity() { return &m_worldEntity; }
 
 	protected:
 		enum {
@@ -483,60 +504,60 @@ public:
 			c_flags0x50Bit0 = 1 << 0,
 			c_flags0x50Bit1 = 1 << 1,
 			c_flags0x50Bit2 = 1 << 2,
-			c_flags0x64Bit0 = 1 << 0,
-			c_flags0x64Bit1 = 1 << 1,
+			c_flagDropped = 1 << 0,
+			c_flagReturnHome = 1 << 1,
 			c_racerFlags0xd04Bit4 = 1 << 4,
 		};
 
-		void FUN_00453a20(LegoU32 p_elapsedMs);
+		void Update(LegoU32 p_elapsedMs);
 		void FUN_00453ad0(LegoBool32 p_unk0x04);
 
-		RacePowerupManager* m_unk0x04;           // 0x04
-		GolWorldEntity m_unk0x08;                // 0x08
-		LegoFloat m_unk0x30;                     // 0x30
-		GolModelEntity* m_unk0x34;               // 0x34
-		GolModelEntity* m_unk0x38;               // 0x38
-		LegoU32 m_unk0x3c;                       // 0x3c
-		LegoU32 m_unk0x40;                       // 0x40
-		RaceState::Racer::Field0x004* m_unk0x44; // 0x44
-		LegoU32 m_unk0x48;                       // 0x48
-		LegoU32 m_unk0x4c;                       // 0x4c
-		LegoU8 m_flags0x50;                      // 0x50
-		undefined m_unk0x51[0x54 - 0x51];        // 0x51
+		RacePowerupManager* m_manager;               // 0x04
+		GolWorldEntity m_worldEntity;                // 0x08
+		LegoFloat m_scale;                           // 0x30
+		GolModelEntity* m_model;                     // 0x34
+		GolModelEntity* m_blendModel;                // 0x38
+		LegoU32 m_state;                             // 0x3c
+		LegoU32 m_nextState;                         // 0x40
+		RaceState::Racer::Field0x004* m_soundSource; // 0x44
+		LegoU32 m_respawnMs;                         // 0x48
+		LegoU32 m_stateTimerMs;                      // 0x4c
+		LegoU8 m_flags0x50;                          // 0x50
+		undefined m_unk0x51[0x54 - 0x51];            // 0x51
 	};
 
 	// SIZE 0x68
-	class Field0x68Field0x028 : public Field0x68 {
+	class ColorBrick : public PickupBrick {
 	public:
-		Field0x68Field0x028();
-		~Field0x68Field0x028() override;
-		void VTable0x04(RaceState::Racer* p_racer) override;
-		void VTable0x0c() override;
+		ColorBrick();
+		~ColorBrick() override;
+		void OnTouched(RaceState::Racer* p_racer) override;
+		void Respawn() override;
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override;
 		void VTable0x14(GolD3DRenderDevice* p_renderer) override;
 
 		// SYNTHETIC: LEGORACERS 0x00458e20
-		// RacePowerupManager::Field0x68Field0x028::`vector deleting destructor'
+		// RacePowerupManager::ColorBrick::`vector deleting destructor'
 
-		void FUN_004576c0(LegoU32 p_unk0x04);
+		void SetColor(LegoU32 p_unk0x04);
 		void FUN_00457700();
-		void FUN_00457710(LegoU32 p_elapsedMs);
-		void FUN_004578e0(DuskwindBananaRelic0x24* p_unk0x04, DuskwindBananaRelic0x24* p_unk0x08);
-		void SetUnk0x48(LegoU32 p_unk0x48) { m_unk0x48 = p_unk0x48; }
+		void Update(LegoU32 p_elapsedMs);
+		void SetMaterials(DuskwindBananaRelic0x24* p_unk0x04, DuskwindBananaRelic0x24* p_unk0x08);
+		void SetRespawnMs(LegoU32 p_respawnMs) { m_respawnMs = p_respawnMs; }
 
 	private:
-		DuskwindBananaRelic0x24* m_unk0x54; // 0x54
-		DuskwindBananaRelic0x24* m_unk0x58; // 0x58
-		LegoU32 m_unk0x5c;                  // 0x5c
-		LegoU32 m_unk0x60;                  // 0x60
-		LegoU32 m_unk0x64;                  // 0x64
+		DuskwindBananaRelic0x24* m_brickMaterial; // 0x54
+		DuskwindBananaRelic0x24* m_trailMaterial; // 0x58
+		LegoU32 m_unk0x5c;                        // 0x5c
+		LegoU32 m_unk0x60;                        // 0x60
+		LegoU32 m_unk0x64;                        // 0x64
 	};
 
-	class Field0x68Field0x02c;
+	class WhiteBrick;
 
 	// VTABLE: LEGORACERS 0x004b15fc
 	// SIZE 0x84
-	class Field0x1890 : public ResourceBase0x2c {
+	class MagnetAction : public HazardActionBase {
 	public:
 		enum {
 			c_timer0x03e8 = 0x03e8,
@@ -552,17 +573,17 @@ public:
 			c_racerField0xc70Flags0x014Bit0 = 1 << 0,
 		};
 
-		Field0x1890();
-		~Field0x1890();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		MagnetAction();
+		~MagnetAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
+		void Deactivate() override;                               // vtable+0x1c
 		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
 
-		void FUN_00455810(
+		void Initialize(
 			RacePowerupManager* p_unk0x04,
 			RaceState* p_raceState,
 			RaceSessionField0x32b4* p_unk0x0c,
@@ -573,7 +594,7 @@ public:
 		);
 		void FUN_004557c0();
 		void FUN_004557e0();
-		void FUN_00455830(
+		void Activate(
 			RaceState::Racer* p_racer,
 			GolAnimatedEntity* p_unk0x08,
 			GolAnimatedEntity* p_unk0x0c,
@@ -603,7 +624,7 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b16e0
 	// SIZE 0x190
-	class Field0x1894 : public ResourceBase0x2c {
+	class OilSlickAction : public HazardActionBase {
 	public:
 		enum {
 			c_state0x02 = 2,
@@ -621,15 +642,15 @@ public:
 			c_randomBubbleOffsetRange = 7,
 		};
 
-		Field0x1894();
-		~Field0x1894();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		OilSlickAction();
+		~OilSlickAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
+		void Deactivate() override;                               // vtable+0x1c
 		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
-		void FUN_004571b0(
+		void Initialize(
 			RacePowerupManager* p_unk0x04,
 			RaceState* p_raceState,
 			GolCollidableEntity* p_unk0x0c,
@@ -639,11 +660,11 @@ public:
 			GolExport* p_export
 		);
 		void FUN_00457170();
-		void FUN_00457230(RaceState::Racer* p_racer);
+		void Activate(RaceState::Racer* p_racer);
 
 	private:
 		RacePowerupManager* m_unk0x02c; // 0x02c
-		GolWorldEntity m_unk0x030;      // 0x030
+		GolWorldEntity m_worldEntity;   // 0x030
 		union {
 			SpatialSoundInstance* m_unk0x058;          // 0x058
 			RaceResourceManager::Resource* m_sound058; // 0x058
@@ -657,7 +678,7 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b1448
 	// SIZE 0x17c
-	class Field0x1898 : public ResourceBase0x2c {
+	class DynamiteAction : public HazardActionBase {
 	public:
 		enum {
 			c_state0x02 = 2,
@@ -675,14 +696,14 @@ public:
 			c_randomOffsetCenter = 6,
 		};
 
-		Field0x1898();
-		~Field0x1898();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		DynamiteAction();
+		~DynamiteAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
-		void FUN_00452ee0(
+		void Deactivate() override;                               // vtable+0x1c
+		void Initialize(
 			RaceState* p_raceState,
 			RaceSessionField0x32b4* p_unk0x08,
 			RacePowerupManager* p_unk0x0c,
@@ -690,12 +711,12 @@ public:
 			GolModelEntity* p_model
 		);
 		void FUN_00452eb0();
-		LegoU32 FUN_00452f60(RaceState::Racer* p_racer, RaceState::Racer* p_unk0x08);
+		LegoU32 Activate(RaceState::Racer* p_racer, RaceState::Racer* p_unk0x08);
 
 	private:
-		GolModelEntity m_unk0x02c;                 // 0x02c
-		RaceSessionField0x6dcField0xa8 m_unk0x0bc; // 0x0bc
-		RacePowerupManager* m_unk0x164;            // 0x164
+		GolModelEntity m_unk0x02c;      // 0x02c
+		PowerupProjectile m_projectile; // 0x0bc
+		RacePowerupManager* m_unk0x164; // 0x164
 		union {
 			undefined4 m_unk0x168;                  // 0x168
 			CutsceneAnimation* m_cutsceneAnimation; // 0x168
@@ -711,7 +732,7 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b13fc
 	// SIZE 0x68
-	class Field0x189c : public ResourceBase0x2c {
+	class CurseAction : public HazardActionBase {
 	public:
 		enum {
 			c_state0x02 = 2,
@@ -726,19 +747,19 @@ public:
 			c_racerFlags0xd04Bit11 = 1 << 11,
 		};
 
-		Field0x189c();
-		~Field0x189c();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		CurseAction();
+		~CurseAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
+		void Deactivate() override;                               // vtable+0x1c
 		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
-		void FUN_00452530(RaceState* p_raceState, RaceSessionField0x32b4* p_unk0x08, RacePowerupManager* p_unk0x0c);
+		void Initialize(RaceState* p_raceState, RaceSessionField0x32b4* p_unk0x08, RacePowerupManager* p_unk0x0c);
 		void FUN_004524f0();
 		void FUN_00452510();
-		void FUN_00452550(
+		void Activate(
 			RaceState::Racer* p_racer,
 			GolAnimatedEntity* p_unk0x08,
 			GolAnimatedEntity* p_unk0x0c,
@@ -760,24 +781,24 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b13b8
 	// SIZE 0xe8
-	class Field0x18a0 : public ResourceBase0x30 {
+	class CannonballAction : public WeaponActionBase {
 	public:
 		enum {
 			c_racerFlags0xd04Bit0 = 1 << 0,
 			c_racerField0x018Flags0x384Bit1 = 1 << 1,
 		};
 
-		Field0x18a0();
-		~Field0x18a0();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		CannonballAction();
+		~CannonballAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
+		void Deactivate() override;                               // vtable+0x1c
 		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
-		void FUN_004519d0(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
+		void Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 		void FUN_00451a10();
-		LegoU32 FUN_00451a50(ActionSetup* p_unk0x04);
+		LegoU32 Activate(ActionSetup* p_unk0x04);
 
 	private:
 		// SIZE 0x24
@@ -789,9 +810,9 @@ public:
 			LegoU32 m_unk0x020;                  // 0x020
 		};
 
-		RaceSessionField0x6dcField0xa8 m_unk0x030; // 0x030
-		GolBillboard* m_unk0x0d8;                  // 0x0d8
-		CutsceneParticleRef* m_unk0x0dc;           // 0x0dc
+		PowerupProjectile m_projectile;  // 0x030
+		GolBillboard* m_unk0x0d8;        // 0x0d8
+		CutsceneParticleRef* m_unk0x0dc; // 0x0dc
 		union {
 			Field0x0e0* m_unk0x0e0;              // 0x0e0
 			const LegoChar* m_materialName0x0e0; // 0x0e0
@@ -804,23 +825,23 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b1518
 	// SIZE 0x290
-	class Field0x18a4 : public ResourceBase0x30 {
+	class GrapplingHookAction : public WeaponActionBase {
 	public:
 		enum {
 			c_racerFlags0xd04Bit0 = 1 << 0,
 		};
 
-		Field0x18a4();
-		~Field0x18a4();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		GrapplingHookAction();
+		~GrapplingHookAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
+		void Deactivate() override;                               // vtable+0x1c
 		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
-		void FUN_00453cd0(RacePowerupManager* p_unk0x04, RaceSessionField0x32b4* p_unk0x08, undefined4 p_unk0x0c);
+		void Initialize(RacePowerupManager* p_unk0x04, RaceSessionField0x32b4* p_unk0x08, undefined4 p_unk0x0c);
 		void FUN_00453d90();
-		LegoU32 FUN_00453de0(
+		LegoU32 Activate(
 			GolModelEntity* p_unk0x04,
 			RaceState::Racer* p_racer,
 			RaceState::Racer* p_unk0x0c,
@@ -831,7 +852,7 @@ public:
 		void FUN_00454690(SoundVector* p_position);
 
 	private:
-		Field0x238 m_unk0x030;                   // 0x030
+		TetherProjectile m_projectile;           // 0x030
 		GolWorldEntity* m_unk0x268;              // 0x268
 		CutsceneParticleRef* m_unk0x26c;         // 0x26c
 		GolBillboard* m_unk0x270;                // 0x270
@@ -841,7 +862,7 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b15a8
 	// SIZE 0x24c
-	class Field0x18a8 : public ResourceBase0x30 {
+	class LightningAction : public WeaponActionBase {
 	public:
 		enum {
 			c_state0x02 = 2,
@@ -867,31 +888,31 @@ public:
 			c_randomOffsetRange = 0x32,
 		};
 
-		Field0x18a8();
-		~Field0x18a8();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		LightningAction();
+		~LightningAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
+		void Deactivate() override;                               // vtable+0x1c
 		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
 		void VTable0x24(GolVec3* p_unk0x04) override;             // vtable+0x24
 		void VTable0x28(GolVec3* p_unk0x04) override;             // vtable+0x28
 
-		void FUN_004548f0(GolExport* p_export, RacePowerupManager* p_unk0x08);
+		void Initialize(GolExport* p_export, RacePowerupManager* p_unk0x08);
 		void FUN_00454a70();
 		void FUN_00454ab0();
 		void FUN_00454b20();
 		void FUN_00454b90();
 		void FUN_00454bb0();
-		void FUN_00454cb0(RaceState::Racer* p_racer, ActionTarget* p_unk0x08);
+		void Activate(RaceState::Racer* p_racer, ActionTarget* p_unk0x08);
 		void FUN_00454e50(LegoU32 p_elapsedMs);
 		void FUN_00455100();
 		void FUN_00455350();
 		void FUN_00455660();
 
 	private:
-		Field0x170 m_unk0x030;    // 0x030
+		BeamMesh m_beam;          // 0x030
 		GolVec3 m_unk0x1a0[4];    // 0x1a0
 		LegoFloat m_unk0x1d0[20]; // 0x1d0
 		LegoU32 m_unk0x220;       // 0x220
@@ -912,7 +933,7 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b1690
 	// SIZE 0x224
-	class Field0x18ac : public ResourceBase0x30 {
+	class HomingMissileAction : public WeaponActionBase {
 	public:
 		enum {
 			c_state0x02 = 2,
@@ -927,17 +948,17 @@ public:
 			c_sound0x33 = 0x33,
 		};
 
-		Field0x18ac();
-		~Field0x18ac();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		HomingMissileAction();
+		~HomingMissileAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
-		void VTable0x1c() override;                               // vtable+0x1c
+		void Deactivate() override;                               // vtable+0x1c
 		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
-		void FUN_00456510(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
+		void Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 		void FUN_00456540();
-		void FUN_00456560(
+		void Activate(
 			GolAnimatedEntity* p_unk0x04,
 			GolAnimatedEntity* p_unk0x08,
 			RaceState::Racer* p_racer,
@@ -946,7 +967,7 @@ public:
 		void FUN_00456680();
 
 	private:
-		Field0xf8 m_unk0x030;                // 0x030
+		HomingProjectile m_projectile;       // 0x030
 		GolAnimatedEntity m_unk0x128;        // 0x128
 		RaceTrailManager::Trail* m_unk0x21c; // 0x21c
 		LegoU32 m_unk0x220;                  // 0x220
@@ -954,7 +975,7 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b1938
 	// SIZE 0x2c
-	class Field0x18b0 : public ResourceBase {
+	class ShieldAction : public PowerupActionBase {
 	public:
 		enum {
 			c_state0x03 = 3,
@@ -982,18 +1003,18 @@ public:
 			RaceState::Racer* m_unk0x08; // 0x08
 		};
 
-		Field0x18b0();
-		~Field0x18b0();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		ShieldAction();
+		~ShieldAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
-		LegoS32 VTable0x18() override;                            // vtable+0x18
-		void VTable0x1c() override;                               // vtable+0x1c
+		LegoS32 GetBrickColor() override;                         // vtable+0x18
+		void Deactivate() override;                               // vtable+0x1c
 		RaceState::Racer* FUN_0045bc40();
-		void FUN_0045bcd0(RacePowerupManager* p_unk0x04);
+		void Initialize(RacePowerupManager* p_unk0x04);
 		void FUN_0045bd10();
-		void FUN_0045bd30(
+		void Activate(
 			RaceState::Racer* p_racer,
 			LegoU32 p_unk0x08,
 			GolAnimatedEntity* p_unk0x0c,
@@ -1018,7 +1039,7 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b1a30
 	// SIZE 0x34
-	class Field0x18b4 : public ResourceBase {
+	class TurboAction : public PowerupActionBase {
 	public:
 		enum {
 			c_state0x01 = 1,
@@ -1043,19 +1064,19 @@ public:
 			c_racerFlags0xd04Bit3 = 1 << 3,
 		};
 
-		Field0x18b4();
-		~Field0x18b4();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		TurboAction();
+		~TurboAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
-		LegoS32 VTable0x18() override;                            // vtable+0x18
-		void VTable0x1c() override;                               // vtable+0x1c
-		void FUN_0045c880(RacePowerupManager* p_unk0x04, CutsceneAnimation* p_unk0x08);
+		LegoS32 GetBrickColor() override;                         // vtable+0x18
+		void Deactivate() override;                               // vtable+0x1c
+		void Initialize(RacePowerupManager* p_unk0x04, CutsceneAnimation* p_unk0x08);
 		void FUN_0045c8b0();
 		void FUN_0045c8d0();
-		void FUN_0045c8f0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+		void Activate(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 		void FUN_0045cd70();
 		void FUN_0045cf90();
 
@@ -1073,27 +1094,27 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b1a88
 	// SIZE 0xe4
-	class Field0x18b8 : public ResourceBase {
+	class WarpAction : public PowerupActionBase {
 	public:
 		// SIZE 0x08
 		struct SetupParams {
-			RacePowerupManager* m_unk0x00; // 0x00
-			LegoFloat m_unk0x04;           // 0x04
+			RacePowerupManager* m_manager; // 0x00
+			LegoFloat m_cameraFov;         // 0x04
 		};
 
-		Field0x18b8();
-		~Field0x18b8();
-		Field0x1880* VTable0x04(undefined4 p_flags) override;     // vtable+0x04
-		void VTable0x08(LegoU32 p_elapsedMs) override;            // vtable+0x08
+		WarpAction();
+		~WarpAction();
+		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
-		LegoS32 VTable0x18() override;                            // vtable+0x18
-		void VTable0x1c() override;                               // vtable+0x1c
+		LegoS32 GetBrickColor() override;                         // vtable+0x18
+		void Deactivate() override;                               // vtable+0x1c
 		void FUN_0045d4b0();
-		void FUN_0045d510(const SetupParams* p_params);
+		void Initialize(const SetupParams* p_params);
 		void FUN_0045d540();
-		LegoU32 FUN_0045d560(RaceState::Racer* p_racer, GolModelEntity* p_unk0x08, ActionTarget* p_unk0x0c);
+		LegoU32 Activate(RaceState::Racer* p_racer, GolModelEntity* p_unk0x08, ActionTarget* p_unk0x0c);
 		void FUN_0045e080(GolWorldEntity* p_entity);
 
 	private:
@@ -1128,42 +1149,42 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b0164
 	// SIZE 0x270
-	class Field0x270 : public LegoEventQueue::Callback {
+	class Explosion : public LegoEventQueue::Callback {
 	public:
 		// SIZE 0x48
 		struct Params {
-			GolExport* m_unk0x00;                    // 0x00
-			GolCollidableEntity* m_unk0x04;          // 0x04
-			GolModelEntity* m_unk0x08;               // 0x08
-			DuskwindBananaRelic0x24* m_unk0x0c;      // 0x0c
-			DuskwindBananaRelic0x24* m_unk0x10;      // 0x10
-			DuskwindBananaRelic0x24* m_unk0x14;      // 0x14
-			LegoEventQueue* m_unk0x18;               // 0x18
-			RacePowerupManager* m_unk0x1c;           // 0x1c
-			MabMaterialAnimationItem0x18* m_unk0x20; // 0x20
-			LegoU32 m_unk0x24;                       // 0x24
-			CutsceneAnimation* m_unk0x28;            // 0x28
-			LegoU32 m_unk0x2c;                       // 0x2c
-			LegoU32 m_unk0x30;                       // 0x30
-			LegoFloat m_unk0x34;                     // 0x34
-			LegoFloat m_unk0x38;                     // 0x38
-			LegoFloat m_unk0x3c;                     // 0x3c
-			LegoFloat m_unk0x40;                     // 0x40
-			LegoU32 m_unk0x44;                       // 0x44
+			GolExport* m_golExport;                   // 0x00
+			GolCollidableEntity* m_unk0x04;           // 0x04
+			GolModelEntity* m_model;                  // 0x08
+			DuskwindBananaRelic0x24* m_unk0x0c;       // 0x0c
+			DuskwindBananaRelic0x24* m_flashMaterial; // 0x10
+			DuskwindBananaRelic0x24* m_scarMaterial;  // 0x14
+			LegoEventQueue* m_unk0x18;                // 0x18
+			RacePowerupManager* m_manager;            // 0x1c
+			MabMaterialAnimationItem0x18* m_unk0x20;  // 0x20
+			LegoU32 m_unk0x24;                        // 0x24
+			CutsceneAnimation* m_unk0x28;             // 0x28
+			LegoU32 m_unk0x2c;                        // 0x2c
+			LegoU32 m_unk0x30;                        // 0x30
+			LegoFloat m_unk0x34;                      // 0x34
+			LegoFloat m_unk0x38;                      // 0x38
+			LegoFloat m_unk0x3c;                      // 0x3c
+			LegoFloat m_unk0x40;                      // 0x40
+			LegoU32 m_unk0x44;                        // 0x44
 		};
 
-		Field0x270();
+		Explosion();
 		void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-		virtual Field0x270* VTable0x04(undefined4 p_flags);             // vtable+0x04
+		virtual Explosion* Destroy(undefined4 p_flags);                 // vtable+0x04
 
-		~Field0x270();
-		Field0x270* GetNext() { return m_next; }
-		LegoS32 GetUnk0x04() const { return m_unk0x04; }
+		~Explosion();
+		Explosion* GetNext() { return m_next; }
+		LegoS32 GetState() const { return m_state; }
 		LegoU32 GetUnk0x238() const { return m_unk0x238; }
-		void SetNext(Field0x270* p_next) { m_next = p_next; }
-		void FUN_00421250(const Params* p_params);
+		void SetNext(Explosion* p_next) { m_next = p_next; }
+		void Initialize(const Params* p_params);
 		void FUN_004214b0();
-		void FUN_00421520(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
+		void Spawn(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
 		void FUN_004217b0();
 		void FUN_004217d0(LegoU32 p_elapsedMs);
 		void FUN_00421850(LegoU32 p_elapsedMs);
@@ -1175,7 +1196,7 @@ public:
 			c_racerFlags0xd04Bit0 = 1 << 0,
 		};
 
-		LegoS32 m_unk0x04;                                   // 0x004
+		LegoS32 m_state;                                     // 0x004
 		GolWorldEntity m_unk0x008;                           // 0x008
 		GolExport* m_unk0x030;                               // 0x030
 		GolModelEntity m_unk0x034;                           // 0x034
@@ -1208,7 +1229,7 @@ public:
 		LegoFloat m_unk0x260;                                // 0x260
 		LegoFloat m_unk0x264;                                // 0x264
 		LegoS32 m_unk0x268;                                  // 0x268
-		Field0x270* m_next;                                  // 0x26c
+		Explosion* m_next;                                   // 0x26c
 	};
 
 	// SIZE 0x80
@@ -1257,11 +1278,11 @@ public:
 		void FUN_00451750(RacePowerupManager* p_unk0x04, GolD3DRenderDevice* p_renderer);
 		void FUN_004517c0(const GolVec3* p_position, const GolVec3* p_direction, RaceState::Racer* p_racer);
 
-		Entry m_entries[5];              // 0x00
-		GolAnimatedEntity* m_unk0x64[4]; // 0x64
-		RacePowerupManager* m_unk0x74;   // 0x74
-		undefined4 m_unk0x78;            // 0x78
-		undefined4 m_unk0x7c;            // 0x7c
+		Entry m_entries[5];                  // 0x00
+		GolAnimatedEntity* m_brickModels[4]; // 0x64
+		RacePowerupManager* m_unk0x74;       // 0x74
+		undefined4 m_unk0x78;                // 0x78
+		undefined4 m_unk0x7c;                // 0x7c
 	};
 
 	class Field0x1968 {
@@ -1289,35 +1310,35 @@ public:
 
 	RacePowerupManager();
 	~RacePowerupManager();
-	void FUN_0045a490(LegoU32 p_elapsedMs);
+	void Update(LegoU32 p_elapsedMs);
 	void FUN_0045a7b0(LegoBool32 p_unk0x04);
 	void FUN_0045a8a0();
-	void FUN_0045a950(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045a9b0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045b030(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045b1e0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	LegoU32 FUN_0045b260(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045b470(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
+	void UseRedPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void UseYellowPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void UseGreenPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	LegoU32 ActivateWarp(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void SpawnExplosion(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
 	void FUN_0045b4d0(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
-	void FUN_0045b4f0(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
+	void SpawnSpikeExplosion(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
 	void FUN_0045b550(const GolVec3* p_unk0x04, const GolVec3* p_position, RaceState::Racer* p_racer);
 	void FUN_0045b740(RaceState::Racer* p_racer);
 	void FUN_0045b900();
 	LegoBool32 FUN_0045b9a0(RaceState::Racer* p_racer);
 	void FUN_0045bb30();
-	LegoU32 GetUnk0x187c() const { return m_unk0x187c; }
+	LegoU32 GetUsedEffectEntityCount() const { return m_usedEffectEntityCount; }
 	undefined4 GetUnk0x19a0() const { return m_unk0x19a0; }
 	GolBillboard::Field0x2c* GetBillboardMaterialTable() { return &m_unk0x008; }
 	MabMaterialAnimationItem0x8* GetMaterialAnimationItems() const { return m_unk0x014.GetUnk0x04(); }
 	LegoU32 GetMaterialAnimationItemCount() const { return m_unk0x014.GetUnk0x08(); }
 	MabMaterialAnimationItem0x18* GetMaterialAnimationItems0x18() const { return m_unk0x014.GetUnk0x0c(); }
 	RaceState* GetRaceState() { return m_raceState; }
-	void SetUnk0x1998(ActionTarget* p_unk0x1998) { m_unk0x1998 = p_unk0x1998; }
+	void SetAimTarget(ActionTarget* p_aimTarget) { m_aimTarget = p_aimTarget; }
 
 private:
 	// SIZE 0x3c
 	struct Params {
-		GolExport* m_unk0x00;                    // 0x00
+		GolExport* m_golExport;                  // 0x00
 		GolD3DRenderDevice* m_renderer;          // 0x04
 		RaceState* m_raceState;                  // 0x08
 		GolCollidableEntity* m_unk0x0c;          // 0x0c
@@ -1330,48 +1351,48 @@ private:
 		MenuAnimationList* m_unk0x28;            // 0x28
 		GolWorldDatabase* m_unk0x2c;             // 0x2c
 		Field0x050* m_unk0x30;                   // 0x30
-		LegoFloat m_unk0x34;                     // 0x34
+		LegoFloat m_cameraFov;                   // 0x34
 		undefined4 m_unk0x38;                    // 0x38
 	};
 
 	friend class RaceSession;
-	friend class Field0x1890;
-	friend class Field0x189c;
-	friend class Field0x18a0;
-	friend class Field0x18a4;
-	friend class Field0x18a8;
-	friend class Field0x18ac;
-	friend class Field0x18b0;
-	friend class Field0x18b4;
-	friend class Field0x18b8;
+	friend class MagnetAction;
+	friend class CurseAction;
+	friend class CannonballAction;
+	friend class GrapplingHookAction;
+	friend class LightningAction;
+	friend class HomingMissileAction;
+	friend class ShieldAction;
+	friend class TurboAction;
+	friend class WarpAction;
 	friend class Field0x18bc;
-	friend class Field0x68Field0x028;
-	friend class RaceState::Racer::Field0xd5c;
+	friend class ColorBrick;
+	friend class RaceState::Racer::DroppableBrick;
 
-	void FUN_00457c20(const Params* p_params);
+	void Initialize(const Params* p_params);
 	void FUN_00457c90(const LegoChar* p_unk0x04, const LegoChar* p_unk0x08, LegoBool32 p_binary);
 	void FUN_00457cf0(LegoBool32 p_unk0x04);
 	void FUN_00457d30(LegoBool32 p_unk0x04);
-	void FUN_00458810(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
-	void FUN_00458a80(GolFileParser* p_parser, LegoBool32 p_mirror);
-	void FUN_00458e80(GolFileParser* p_parser, LegoBool32 p_mirror);
+	void LoadPowerupFile(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
+	void ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_mirror);
+	void ParseWhiteBricks(GolFileParser* p_parser, LegoBool32 p_mirror);
 	void FUN_00458940();
 	void FUN_004590f0();
 	void FUN_004164c0();
-	void FUN_00459b80();
+	void CreateExplosionPools();
 	void FUN_00457a90();
 	void FUN_00459e20();
 	void FUN_0045a3f0(LegoU32 p_elapsedMs);
 	void FUN_0045a340();
-	LegoU32 FUN_0045aa30(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	LegoU32 FUN_0045ab50(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045ac80(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045ace0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	LegoU32 FUN_0045ad30(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045adf0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045aeb0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	void FUN_0045af80(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	Field0x1880* FUN_0045b2e0(
+	LegoU32 FireCannonball(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	LegoU32 FireGrapplingHook(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void FireLightning(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void DropOilSlick(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	LegoU32 ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void ActivateMagnet(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void CastCurse(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void FireHomingMissiles(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	PowerupAction* ReclaimAction(
 		LegoU32 p_unk0x04,
 		LegoU32 p_unk0x08,
 		LegoS32 p_unk0x0c,
@@ -1383,100 +1404,92 @@ private:
 	void FUN_0045b6f0(RaceState::Racer* p_racer);
 	void FUN_0045b7a0(Field0x1958Resource* p_resource, LegoU32 p_unk0x08, LegoS32 p_unk0x0c);
 	void FUN_0045b950();
-	GolAnimatedEntity* FUN_0045b9e0();
-	LegoU32 FUN_0045ba40(GolAnimatedEntity* p_entity);
-	DuskwindBananaRelic0x24* FUN_0045ba90(LegoU32* p_unk0x04);
-	DuskwindBananaRelic0x24* FUN_0045bae0(LegoU32* p_unk0x04);
-	static Field0x270* __stdcall FUN_0045b3a0(Field0x270** p_head);
+	GolAnimatedEntity* AllocateEffectEntity();
+	LegoU32 ReleaseEffectEntity(GolAnimatedEntity* p_entity);
+	DuskwindBananaRelic0x24* GetBrickMaterial(LegoU32* p_unk0x04);
+	DuskwindBananaRelic0x24* GetTrailMaterial(LegoU32* p_unk0x04);
+	static Explosion* __stdcall ReclaimExplosion(Explosion** p_head);
 
 	enum {
-		c_unk0x1978Slot1A = 0,
-		c_unk0x1978Slot1B = 1,
-		c_unk0x1978Slot4A = 2,
-		c_unk0x1978Slot4B = 3,
-		c_unk0x1978Slot2A = 4,
-		c_unk0x1978Slot2B = 5,
-		c_unk0x1978Slot3A = 6,
-		c_unk0x1978Slot3B = 7,
-		c_unk0x1978MaterialPBrickP = 0,
-		c_unk0x1978MaterialPTrailP = 1,
-		c_unk0x1978MaterialPBrickM = 2,
-		c_unk0x1978MaterialPTrailM = 3,
-		c_unk0x1978MaterialPBrickS = 4,
-		c_unk0x1978MaterialPTrailS = 5,
-		c_unk0x1978MaterialPBrickT = 6,
-		c_unk0x1978MaterialPTrailT = 7,
-		c_unk0x1978SlotCount = 8,
+		c_brickMaterialRed = 0,
+		c_trailMaterialRed = 1,
+		c_brickMaterialYellow = 2,
+		c_trailMaterialYellow = 3,
+		c_brickMaterialBlue = 4,
+		c_trailMaterialBlue = 5,
+		c_brickMaterialGreen = 6,
+		c_trailMaterialGreen = 7,
+		c_brickMaterialCount = 8,
 		c_randomTableMask = 0x3ff,
 		c_randomOffsetRange = 100,
 		c_randomBurstMax = 3,
 	};
 
-	GolExport* m_unk0x000;                    // 0x000
-	GolD3DRenderDevice* m_renderer;           // 0x004
-	GolBillboard::Field0x2c m_unk0x008;       // 0x008
-	MabMaterialAnimation0x14 m_unk0x014;      // 0x014
-	Field0x68Field0x028* m_unk0x028;          // 0x028
-	Field0x68Field0x02c* m_unk0x02c;          // 0x02c
-	LegoEventQueue::Event** m_unk0x030;       // 0x030
-	LegoU32 m_unk0x034;                       // 0x034
-	LegoU32 m_unk0x038;                       // 0x038
-	RaceState::Racer::Field0x004* m_unk0x03c; // 0x03c
+	GolExport* m_golExport;                      // 0x000
+	GolD3DRenderDevice* m_renderer;              // 0x004
+	GolBillboard::Field0x2c m_unk0x008;          // 0x008
+	MabMaterialAnimation0x14 m_unk0x014;         // 0x014
+	ColorBrick* m_colorBricks;                   // 0x028
+	WhiteBrick* m_whiteBricks;                   // 0x02c
+	LegoEventQueue::Event** m_brickEvents;       // 0x030
+	LegoU32 m_colorBrickCount;                   // 0x034
+	LegoU32 m_whiteBrickCount;                   // 0x038
+	RaceState::Racer::Field0x004* m_soundSource; // 0x03c
 	union {
 		undefined4 m_unk0x040;                       // 0x040
 		CutsceneAnimation* m_cutsceneAnimation0x040; // 0x040
 	};
-	RaceTrailManager* m_trailManager;       // 0x044
-	void* m_unk0x048;                       // 0x048
-	MenuAnimationList* m_unk0x04c;          // 0x04c
-	Field0x050* m_unk0x050;                 // 0x050
-	LegoFloat m_unk0x054;                   // 0x054
-	undefined4 m_unk0x058;                  // 0x058
-	GolWorldDatabase* m_unk0x05c;           // 0x05c
-	GolWorldDatabase* m_unk0x060;           // 0x060
-	GolWorldDatabase* m_unk0x064;           // 0x064
-	RaceSessionField0x32b4* m_unk0x068;     // 0x068
-	GolCollidableEntity* m_unk0x06c;        // 0x06c
-	GolBoundedEntity* m_unk0x070;           // 0x070
-	RaceState* m_raceState;                 // 0x074
-	Field0x1880* m_unk0x078;                // 0x078
-	Field0x1880* m_unk0x07c;                // 0x07c
-	Field0x1880* m_unk0x080;                // 0x080
-	Field0x1880* m_unk0x084;                // 0x084
-	Field0x1880* m_unk0x088;                // 0x088
-	Field0x1880* m_unk0x08c;                // 0x08c
-	Field0x1880* m_unk0x090;                // 0x090
-	Field0x1880* m_unk0x094;                // 0x094
-	Field0x1880* m_unk0x098;                // 0x098
-	Field0x1880* m_unk0x09c;                // 0x09c
-	Field0x1880* m_unk0x0a0;                // 0x0a0
-	GolAnimatedEntity m_unk0x0a4[25];       // 0x0a4
-	LegoU32 m_unk0x1878;                    // 0x1878
-	LegoU32 m_unk0x187c;                    // 0x187c
-	Field0x1880* m_unk0x1880;               // 0x1880
-	LegoU8 m_unk0x1884[11];                 // 0x1884
-	undefined m_unk0x188f;                  // 0x188f
-	Field0x1890* m_unk0x1890;               // 0x1890
-	Field0x1894* m_unk0x1894;               // 0x1894
-	Field0x1898* m_unk0x1898;               // 0x1898
-	Field0x189c* m_unk0x189c;               // 0x189c
-	Field0x18a0* m_unk0x18a0;               // 0x18a0
-	Field0x18a4* m_unk0x18a4;               // 0x18a4
-	Field0x18a8* m_unk0x18a8;               // 0x18a8
-	Field0x18ac* m_unk0x18ac;               // 0x18ac
-	Field0x18b0* m_unk0x18b0;               // 0x18b0
-	Field0x18b4* m_unk0x18b4;               // 0x18b4
-	Field0x18b8* m_unk0x18b8;               // 0x18b8
-	Field0x18bc m_unk0x18bc;                // 0x18bc
-	Field0x270* m_unk0x193c;                // 0x193c
-	Field0x270* m_unk0x1940;                // 0x1940
-	Field0x270* m_unk0x1944;                // 0x1944
-	Field0x270* m_unk0x1948;                // 0x1948
-	LegoU8 m_unk0x194c;                     // 0x194c
-	LegoU8 m_unk0x194d;                     // 0x194d
-	undefined m_unk0x194e[0x1950 - 0x194e]; // 0x194e
-	Field0x270* m_unk0x1950;                // 0x1950
-	Field0x270* m_unk0x1954;                // 0x1954
+	RaceTrailManager* m_trailManager;            // 0x044
+	void* m_unk0x048;                            // 0x048
+	MenuAnimationList* m_unk0x04c;               // 0x04c
+	Field0x050* m_unk0x050;                      // 0x050
+	LegoFloat m_cameraFov;                       // 0x054
+	undefined4 m_unk0x058;                       // 0x058
+	GolWorldDatabase* m_unk0x05c;                // 0x05c
+	GolWorldDatabase* m_unk0x060;                // 0x060
+	GolWorldDatabase* m_unk0x064;                // 0x064
+	RaceSessionField0x32b4* m_unk0x068;          // 0x068
+	GolCollidableEntity* m_unk0x06c;             // 0x06c
+	GolBoundedEntity* m_unk0x070;                // 0x070
+	RaceState* m_raceState;                      // 0x074
+	PowerupAction* m_freeMagnetActions;          // 0x078
+	PowerupAction* m_freeOilSlickActions;        // 0x07c
+	PowerupAction* m_freeDynamiteActions;        // 0x080
+	PowerupAction* m_freeCurseActions;           // 0x084
+	PowerupAction* m_freeCannonballActions;      // 0x088
+	PowerupAction* m_freeGrapplingHookActions;   // 0x08c
+	PowerupAction* m_freeLightningActions;       // 0x090
+	PowerupAction* m_freeHomingMissileActions;   // 0x094
+	PowerupAction* m_freeShieldActions;          // 0x098
+	PowerupAction* m_freeTurboActions;           // 0x09c
+	PowerupAction* m_freeWarpActions;            // 0x0a0
+	GolAnimatedEntity m_effectEntities[25];      // 0x0a4
+	LegoU32 m_unk0x1878;                         // 0x1878
+	LegoU32 m_usedEffectEntityCount;             // 0x187c
+	PowerupAction* m_activeActions;              // 0x1880
+	LegoU8 m_actionPoolCounts[11];               // 0x1884
+	undefined m_unk0x188f;                       // 0x188f
+	MagnetAction* m_magnetActions;               // 0x1890
+	OilSlickAction* m_oilSlickActions;           // 0x1894
+	DynamiteAction* m_dynamiteActions;           // 0x1898
+	CurseAction* m_curseActions;                 // 0x189c
+	CannonballAction* m_cannonballActions;       // 0x18a0
+	GrapplingHookAction* m_grapplingHookActions; // 0x18a4
+	LightningAction* m_lightningActions;         // 0x18a8
+	HomingMissileAction* m_homingMissileActions; // 0x18ac
+	ShieldAction* m_shieldActions;               // 0x18b0
+	TurboAction* m_turboActions;                 // 0x18b4
+	WarpAction* m_warpActions;                   // 0x18b8
+	Field0x18bc m_unk0x18bc;                     // 0x18bc
+	Explosion* m_activeExplosions;               // 0x193c
+	Explosion* m_activeSpikeExplosions;          // 0x1940
+	Explosion* m_freeExplosions;                 // 0x1944
+	Explosion* m_freeSpikeExplosions;            // 0x1948
+	LegoU8 m_explosionPoolCount;                 // 0x194c
+	LegoU8 m_spikeExplosionPoolCount;            // 0x194d
+	undefined m_unk0x194e[0x1950 - 0x194e];      // 0x194e
+	Explosion* m_explosionPool;                  // 0x1950
+	Explosion* m_spikeExplosionPool;             // 0x1954
 	union {
 		Field0x1958Resource* m_unk0x1958;                // 0x1958
 		SpatialSoundInstance* m_sound0x1958;             // 0x1958
@@ -1497,44 +1510,44 @@ private:
 		SpatialSoundInstance* m_sound0x1964;             // 0x1964
 		RaceResourceManager::Resource* m_resource0x1964; // 0x1964
 	};
-	GolAnimatedEntity* m_unk0x1968;          // 0x1968
-	GolAnimatedEntity* m_unk0x196c;          // 0x196c
-	GolAnimatedEntity* m_unk0x1970;          // 0x1970
-	GolAnimatedEntity* m_unk0x1974;          // 0x1974
-	DuskwindBananaRelic0x24* m_unk0x1978[8]; // 0x1978
-	ActionTarget* m_unk0x1998;               // 0x1998
-	LegoFloat m_unk0x199c;                   // 0x199c
-	undefined4 m_unk0x19a0;                  // 0x19a0
+	GolAnimatedEntity* m_brickModel;              // 0x1968
+	GolAnimatedEntity* m_brickBlendModel;         // 0x196c
+	GolAnimatedEntity* m_unk0x1970;               // 0x1970
+	GolAnimatedEntity* m_unk0x1974;               // 0x1974
+	DuskwindBananaRelic0x24* m_brickMaterials[8]; // 0x1978
+	ActionTarget* m_aimTarget;                    // 0x1998
+	LegoFloat m_unk0x199c;                        // 0x199c
+	undefined4 m_unk0x19a0;                       // 0x19a0
 };
 
 // SIZE 0x68
-class RaceState::Racer::Field0xd5c : public RacePowerupManager::Field0x68 {
+class RaceState::Racer::DroppableBrick : public RacePowerupManager::PickupBrick {
 public:
-	LegoU8 FUN_00453790(GolVec3 p_unk0x04);
-	void FUN_004537f0();
-	LegoS32 FUN_00453840(GolVec3* p_unk0x04);
+	LegoU8 DropAt(GolVec3 p_unk0x04);
+	void ReturnHome();
+	LegoS32 SnapToGround(GolVec3* p_unk0x04);
 
 protected:
-	GolVec3 m_unk0x54;                // 0x54
-	LegoU32 m_unk0x60;                // 0x60
+	GolVec3 m_homePosition;           // 0x54
+	LegoU32 m_droppedTimeMs;          // 0x60
 	LegoU8 m_flags0x64;               // 0x64
 	undefined m_unk0x65[0x68 - 0x65]; // 0x65
 };
 
 // SIZE 0x68
-class RacePowerupManager::Field0x68Field0x02c : public RaceState::Racer::Field0xd5c {
+class RacePowerupManager::WhiteBrick : public RaceState::Racer::DroppableBrick {
 public:
-	Field0x68Field0x02c();
-	~Field0x68Field0x02c() override;
-	void VTable0x04(RaceState::Racer* p_racer) override;
-	void VTable0x0c() override;
+	WhiteBrick();
+	~WhiteBrick() override;
+	void OnTouched(RaceState::Racer* p_racer) override;
+	void Respawn() override;
 
 	// SYNTHETIC: LEGORACERS 0x00459090
-	// RacePowerupManager::Field0x68Field0x02c::`vector deleting destructor'
+	// RacePowerupManager::WhiteBrick::`vector deleting destructor'
 
-	void FUN_00453610();
-	void FUN_00453620();
-	void FUN_00453690(LegoU32 p_elapsedMs);
+	void Reset();
+	void CaptureHomePosition();
+	void Update(LegoU32 p_elapsedMs);
 };
 
 #endif // RACEPOWERUPMANAGER_H

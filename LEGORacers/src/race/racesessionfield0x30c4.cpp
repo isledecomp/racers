@@ -85,7 +85,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		}
 
 		racer->FUN_00439210(0);
-		racer->FUN_00439520();
+		racer->ReturnAllWhiteBricks();
 		racer->FUN_00439790();
 		racer->FUN_004395a0();
 		racer->FUN_00439660();

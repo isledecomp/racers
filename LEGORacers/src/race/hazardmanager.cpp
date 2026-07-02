@@ -1728,7 +1728,7 @@ void HazardManager::GhostHazard::OnActivate(void*)
 void HazardManager::GhostHazard::OnDeactivate(void*)
 {
 	if (m_trailParticle != NULL) {
-		m_particleAnimation->FUN_00489f30(m_trailParticle);
+		m_particleAnimation->FinishRef(m_trailParticle);
 		m_trailParticle = NULL;
 	}
 
@@ -1771,7 +1771,7 @@ void HazardManager::GhostHazard::Update(undefined4 p_elapsedMs)
 		m_trigger.SetCenter(worldPosition);
 
 		if (m_trailParticle == NULL) {
-			m_trailParticle = m_particleAnimation->FUN_00489d70("ghsttrl", NULL, NULL, NULL);
+			m_trailParticle = m_particleAnimation->SpawnParticle("ghsttrl", NULL, NULL, NULL);
 		}
 
 		if (m_trailParticle != NULL) {
@@ -2371,7 +2371,7 @@ void HazardManager::LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 					effectPosition.m_y = -effectPosition.m_y;
 				}
 
-				m_particleAnimation->FUN_00489d70("lavasmk", &effectPosition, NULL, NULL);
+				m_particleAnimation->SpawnParticle("lavasmk", &effectPosition, NULL, NULL);
 				m_smokeMs = c_smokeCooldownMs;
 			}
 		}
@@ -2920,7 +2920,7 @@ void HazardManager::SmokeVentHazard::OnActivate(void*)
 void HazardManager::SmokeVentHazard::OnDeactivate(void*)
 {
 	if (m_smokeParticle) {
-		m_particleAnimation->FUN_00489f30(m_smokeParticle);
+		m_particleAnimation->FinishRef(m_smokeParticle);
 		m_smokeParticle = NULL;
 	}
 
@@ -2950,7 +2950,7 @@ void HazardManager::SmokeVentHazard::Update(undefined4 p_elapsedMs)
 	GolVec3 position;
 	m_entity->VTable0x2c(vector, &position);
 
-	if (m_smokeParticle || (m_smokeParticle = m_particleAnimation->FUN_00489d70("smoke", NULL, NULL, NULL)) != NULL) {
+	if (m_smokeParticle || (m_smokeParticle = m_particleAnimation->SpawnParticle("smoke", NULL, NULL, NULL)) != NULL) {
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		LegoU32 offsetIndex = g_randomTable[g_randomTableIndex] & 3;
 		vector.m_x = g_smokeVentSmokeOffsets[offsetIndex].m_x;
@@ -3040,7 +3040,7 @@ void HazardManager::SnowfallHazard::OnActivate(void*)
 void HazardManager::SnowfallHazard::OnDeactivate(void*)
 {
 	if (m_snowParticle) {
-		m_particleAnimation->FUN_00489f30(m_snowParticle);
+		m_particleAnimation->FinishRef(m_snowParticle);
 		m_snowParticle = NULL;
 	}
 
@@ -3058,12 +3058,12 @@ void HazardManager::SnowfallHazard::Update(undefined4 p_elapsedMs)
 	Hazard::Update(p_elapsedMs);
 	m_resetMs += elapsedMs;
 	if (m_resetMs > c_snowResetMs && m_snowParticle) {
-		m_particleAnimation->FUN_00489f30(m_snowParticle);
+		m_particleAnimation->FinishRef(m_snowParticle);
 		m_snowParticle = NULL;
 	}
 
 	if (m_unk0x1c && !m_snowParticle) {
-		m_snowParticle = m_particleAnimation->FUN_00489d70("snow", NULL, NULL, NULL);
+		m_snowParticle = m_particleAnimation->SpawnParticle("snow", NULL, NULL, NULL);
 		if (m_snowParticle) {
 			m_resetMs = 0;
 		}
@@ -3076,7 +3076,7 @@ void HazardManager::SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, RaceStat
 	if (p_racer->m_visuals.m_hasColorTransform) {
 		m_unk0x1c = 0;
 		if (m_snowParticle) {
-			m_particleAnimation->FUN_00489f30(m_snowParticle);
+			m_particleAnimation->FinishRef(m_snowParticle);
 			m_snowParticle = NULL;
 		}
 	}
@@ -3130,7 +3130,7 @@ void HazardManager::SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, RaceStat
 void HazardManager::SnowfallHazard::ResetState()
 {
 	if (m_snowParticle) {
-		m_particleAnimation->FUN_00489f30(m_snowParticle);
+		m_particleAnimation->FinishRef(m_snowParticle);
 		m_snowParticle = NULL;
 	}
 

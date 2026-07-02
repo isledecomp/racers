@@ -91,7 +91,7 @@ void MenuSceneScreen::SceneWidget::FUN_00466bf0(MenuScreen::SceneRefBinding* p_c
 		GOL_FATALERROR_MESSAGE("Invalid cinema file, at least 1 cinema is required");
 	}
 
-	m_unk0x84.FUN_004a0730(
+	m_unk0x84.Load(
 		m_golExport,
 		m_renderer,
 		p_createParams->m_soundGroupBinding->GetSoundManager(),
@@ -126,7 +126,7 @@ void MenuSceneScreen::SceneWidget::FUN_00466d00(CutsceneDefinition::Frame* p_fra
 	m_unk0x2b0->FUN_00406330();
 	m_unk0x2b0->FUN_00406310();
 	m_unk0x2b0->FUN_00406490(&m_unk0x2b4);
-	m_unk0x84.FUN_004a3150();
+	m_unk0x84.StopAll();
 }
 
 // FUNCTION: LEGORACERS 0x00466d60
@@ -151,7 +151,7 @@ undefined4 MenuSceneScreen::SceneWidget::OnEvent(undefined4 p_elapsedMs)
 			m_unk0x2b0 = &m_unk0x58.GetFrames()[m_unk0x2ac];
 			m_unk0x2b0->FUN_00406330();
 			m_unk0x2b0->FUN_00406310();
-			m_unk0x84.FUN_004a3150();
+			m_unk0x84.StopAll();
 		}
 		else {
 			m_unk0x2c8 = TRUE;
@@ -159,7 +159,7 @@ undefined4 MenuSceneScreen::SceneWidget::OnEvent(undefined4 p_elapsedMs)
 	}
 
 	m_unk0x2b0->FUN_00406390(p_elapsedMs);
-	m_unk0x84.FUN_004a2dc0(p_elapsedMs);
+	m_unk0x84.Update(p_elapsedMs);
 
 	return FALSE;
 }
@@ -173,9 +173,9 @@ MenuWidget* MenuSceneScreen::SceneWidget::DrawSelf(Rect*, Rect*)
 
 	m_renderer->VTable0xe4();
 	m_unk0x2b0->FUN_004064c0(m_renderer, 0);
-	m_unk0x84.FUN_004a2f30(m_renderer);
-	m_unk0x84.FUN_004a3070(m_renderer);
-	m_unk0x84.FUN_004a30b0(m_renderer);
+	m_unk0x84.Draw(m_renderer);
+	m_unk0x84.DrawTransparent(m_renderer);
+	m_unk0x84.DrawOverlay(m_renderer);
 	m_renderer->VTable0xec(0);
 	m_renderer->VTable0xe8(0);
 

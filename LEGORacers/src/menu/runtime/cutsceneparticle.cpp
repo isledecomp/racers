@@ -206,7 +206,7 @@ void CutsceneParticle::FUN_00489690(GolVec3* p_vec)
 }
 
 // FUNCTION: LEGORACERS 0x004896d0
-void CutsceneParticle::ActivateRuntime(CutsceneAnimation::Runtime* p_runtime)
+void CutsceneParticle::ActivateRuntime(CutsceneAnimation::Emitter* p_runtime)
 {
 	m_unk0x000 = p_runtime;
 

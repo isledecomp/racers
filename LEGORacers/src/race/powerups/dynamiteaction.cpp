@@ -117,7 +117,7 @@ void RacePowerupManager::DynamiteAction::Deactivate()
 	m_projectile.Deactivate();
 
 	if (m_sparkParticle != NULL) {
-		m_cutsceneAnimation->FUN_00489f30(m_sparkParticle);
+		m_cutsceneAnimation->FinishRef(m_sparkParticle);
 		m_sparkParticle = NULL;
 	}
 
@@ -165,7 +165,7 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 			m_projectile.Deactivate();
 
 			if (m_sparkParticle != NULL) {
-				m_cutsceneAnimation->FUN_00489f30(m_sparkParticle);
+				m_cutsceneAnimation->FinishRef(m_sparkParticle);
 				m_sparkParticle = NULL;
 			}
 		}
@@ -258,7 +258,7 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 
 		m_state = c_stateThrown;
 		m_stateTimerMs = c_fuseDurationMs;
-		m_sparkParticle = m_cutsceneAnimation->FUN_00489d70("dynsprk", NULL, NULL, NULL);
+		m_sparkParticle = m_cutsceneAnimation->SpawnParticle("dynsprk", NULL, NULL, NULL);
 		if (m_sparkParticle != NULL) {
 			position.m_x -= 0.727681994f;
 			position.m_y += 0.155761003f;

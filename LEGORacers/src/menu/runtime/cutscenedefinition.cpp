@@ -14,7 +14,7 @@
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
 #include "render/gold3drenderdevice.h"
-#include "util/bluebellfog0x4.h"
+#include "util/cutsceneeventsink.h"
 #include "world/golworlddatabase.h"
 
 #include <stdlib.h>
@@ -259,7 +259,7 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x0c(GolD3DRenderDevice* p_ren
 }
 
 // FUNCTION: LEGORACERS 0x00404f40
-void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	if (m_unk0x24) {
 		m_unk0x64 = m_unk0x24->VTable0x20();
@@ -290,13 +290,13 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 
 		Event::VTable0x10(p_frame, p_event);
 		if (p_event) {
-			p_event->VTable0x10(p_frame, m_name, this);
+			p_event->OnModelStarted(p_frame, m_name, this);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00405020
-void CutsceneDefinition::Frame::ModelEvent::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::ModelEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	if (m_unk0x24) {
 		if (m_modelRefType == c_modelRefJointedModel && m_unk0x58 >= 0) {
@@ -305,7 +305,7 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x14(Frame* p_frame, BluebellF
 
 		Event::VTable0x14(p_frame, p_event);
 		if (p_event) {
-			p_event->VTable0x14(p_frame, m_name, this);
+			p_event->OnModelEnded(p_frame, m_name, this);
 		}
 	}
 }
@@ -356,7 +356,7 @@ LegoU32 CutsceneDefinition::Frame::CameraEvent::FUN_004050a0(CutsceneDefinition*
 }
 
 // FUNCTION: LEGORACERS 0x00405160
-void CutsceneDefinition::Frame::CameraEvent::VTable0x10(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::CameraEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	if (m_unk0x2c) {
 		if (!m_unk0x20) {
@@ -377,19 +377,19 @@ void CutsceneDefinition::Frame::CameraEvent::VTable0x10(Frame* p_frame, Bluebell
 
 		Event::VTable0x10(p_frame, p_event);
 		if (p_event) {
-			p_event->VTable0x08(p_frame, m_name, this);
+			p_event->OnCameraStarted(p_frame, m_name, this);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00405230
-void CutsceneDefinition::Frame::CameraEvent::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::CameraEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	if (m_unk0x20) {
 		p_frame->FUN_00406710(m_unk0x20);
 		Event::VTable0x14(p_frame, p_event);
 		if (p_event) {
-			p_event->VTable0x0c(p_frame, m_name, this);
+			p_event->OnCameraEnded(p_frame, m_name, this);
 		}
 	}
 }
@@ -461,7 +461,7 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 }
 
 // FUNCTION: LEGORACERS 0x00405410
-void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x10(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	m_unk0x3c |= 2;
 	m_unk0x38 = m_unk0x30;
@@ -469,19 +469,19 @@ void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x10(Frame* p_frame
 
 	Event::VTable0x10(p_frame, p_event);
 	if (p_event) {
-		p_event->VTable0x28(p_frame, m_name, this);
+		p_event->OnDirectionalLightStarted(p_frame, m_name, this);
 	}
 
 	m_unk0x40 = p_frame;
 }
 
 // FUNCTION: LEGORACERS 0x00405460
-void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	p_frame->FUN_004067f0(&m_unk0x20);
 	Event::VTable0x14(p_frame, p_event);
 	if (p_event) {
-		p_event->VTable0x2c(p_frame, m_name, this);
+		p_event->OnDirectionalLightEnded(p_frame, m_name, this);
 	}
 
 	m_unk0x40 = NULL;
@@ -552,20 +552,20 @@ void CutsceneDefinition::Frame::Event::VTable0x0c(GolD3DRenderDevice*)
 }
 
 // FUNCTION: LEGORACERS 0x00405590
-void CutsceneDefinition::Frame::Event::VTable0x10(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::Event::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	m_unk0x14 = 1;
 	if (p_event) {
-		p_event->VTable0x00(p_frame, m_name, this);
+		p_event->OnEventStarted(p_frame, m_name, this);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004055c0
-void CutsceneDefinition::Frame::Event::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::Event::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	m_unk0x14 = 0;
 	if (p_event) {
-		p_event->VTable0x04(p_frame, m_name, this);
+		p_event->OnEventEnded(p_frame, m_name, this);
 	}
 }
 
@@ -655,7 +655,7 @@ void CutsceneDefinition::Frame::AmbientLightEvent::FUN_00405630(GolFileParser* p
 }
 
 // FUNCTION: LEGORACERS 0x00405780
-void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x10(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	m_unk0x30 |= 2;
 	m_unk0x2c = m_unk0x24;
@@ -663,19 +663,19 @@ void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x10(Frame* p_frame, Bl
 
 	Event::VTable0x10(p_frame, p_event);
 	if (p_event) {
-		p_event->VTable0x20(p_frame, m_name, this);
+		p_event->OnAmbientLightStarted(p_frame, m_name, this);
 	}
 
 	m_unk0x34 = p_frame;
 }
 
 // FUNCTION: LEGORACERS 0x004057d0
-void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	p_frame->FUN_00406770(&m_unk0x20);
 	Event::VTable0x14(p_frame, p_event);
 	if (p_event) {
-		p_event->VTable0x24(p_frame, m_name, this);
+		p_event->OnAmbientLightEnded(p_frame, m_name, this);
 	}
 
 	m_unk0x34 = NULL;
@@ -1693,19 +1693,19 @@ void CutsceneDefinition::Frame::TransformEvent::FUN_004071a0()
 }
 
 // FUNCTION: LEGORACERS 0x004071b0
-void CutsceneDefinition::Frame::TransformEvent::VTable0x10(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::TransformEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	Event::VTable0x10(p_frame, p_event);
 	if (p_event) {
-		p_event->VTable0x18(p_frame, m_name, this);
+		p_event->OnTransformStarted(p_frame, m_name, this);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004071e0
-void CutsceneDefinition::Frame::TransformEvent::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
+void CutsceneDefinition::Frame::TransformEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	Event::VTable0x14(p_frame, p_event);
 	if (p_event) {
-		p_event->VTable0x1c(p_frame, m_name, this);
+		p_event->OnTransformEnded(p_frame, m_name, this);
 	}
 }

@@ -289,7 +289,7 @@ void RacePowerupManager::LightningAction::Deactivate()
 	}
 
 	if (m_owner0x01c != NULL && m_hitParticle != NULL) {
-		m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
+		m_owner0x01c->m_cutsceneAnimation->FinishRef(m_hitParticle);
 		m_hitParticle = NULL;
 	}
 
@@ -429,7 +429,7 @@ void RacePowerupManager::LightningAction::AdvanceState()
 		m_stateTimerMs = 0;
 
 		if (m_owner0x01c != NULL && m_hitParticle != NULL) {
-			m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
+			m_owner0x01c->m_cutsceneAnimation->FinishRef(m_hitParticle);
 			m_hitParticle = NULL;
 		}
 
@@ -621,10 +621,10 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 
 			CutsceneAnimation* cutsceneAnimation = m_owner0x01c->m_cutsceneAnimation;
 			if (m_hitParticle != NULL) {
-				cutsceneAnimation->FUN_00489f30(m_hitParticle);
+				cutsceneAnimation->FinishRef(m_hitParticle);
 			}
 
-			m_hitParticle = cutsceneAnimation->FUN_00489d70("lghthit", NULL, NULL, NULL);
+			m_hitParticle = cutsceneAnimation->SpawnParticle("lghthit", NULL, NULL, NULL);
 
 			SoundVector position;
 			racerCarVisuals->m_carEntity->VTable0x04(&position);
@@ -662,7 +662,7 @@ void RacePowerupManager::LightningAction::UpdateHitParticle()
 	}
 
 	if (m_targetRacer == NULL) {
-		m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
+		m_owner0x01c->m_cutsceneAnimation->FinishRef(m_hitParticle);
 		m_hitParticle = NULL;
 		return;
 	}

@@ -430,13 +430,13 @@ void RaceEventTable::ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 		m_unk0x3c = *p_unk0x04;
 	}
 
-	if (m_particleAnimation->FUN_00489d50(m_particleName)) {
+	if (m_particleAnimation->HasEmitter(m_particleName)) {
 		m_partAnimations = 1;
-		m_particle = m_particleAnimation->FUN_00489d70(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+		m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
 	}
-	else if (m_sharedParticleAnimation->FUN_00489d50(m_particleName)) {
+	else if (m_sharedParticleAnimation->HasEmitter(m_particleName)) {
 		m_partAnimations = 0;
-		m_particle = m_sharedParticleAnimation->FUN_00489d70(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+		m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
 	}
 
 	if (m_particle) {
@@ -452,10 +452,10 @@ void RaceEventTable::ParticleResource::OnEnd()
 {
 	if (m_particle) {
 		if (m_partAnimations) {
-			m_particleAnimation->FUN_00489f30(m_particle);
+			m_particleAnimation->FinishRef(m_particle);
 		}
 		else {
-			m_sharedParticleAnimation->FUN_00489f30(m_particle);
+			m_sharedParticleAnimation->FinishRef(m_particle);
 		}
 
 		m_particle = NULL;
@@ -475,13 +475,13 @@ void RaceEventTable::ParticleResource::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (!(m_flags0x1c & c_flags0x1cBit5)) {
-		if (m_particleAnimation->FUN_00489d50(m_particleName)) {
+		if (m_particleAnimation->HasEmitter(m_particleName)) {
 			m_partAnimations = 1;
-			m_particle = m_particleAnimation->FUN_00489d70(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+			m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
 		}
-		else if (m_sharedParticleAnimation->FUN_00489d50(m_particleName)) {
+		else if (m_sharedParticleAnimation->HasEmitter(m_particleName)) {
 			m_partAnimations = 0;
-			m_particle = m_sharedParticleAnimation->FUN_00489d70(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+			m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
 		}
 
 		if (m_particle) {

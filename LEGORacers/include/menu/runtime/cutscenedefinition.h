@@ -10,7 +10,7 @@
 #include "types.h"
 
 class GolCamera;
-class BluebellFog0x4;
+class CutsceneEventSink;
 class GolD3DRenderDevice;
 class GolExport;
 class GolFileParser;
@@ -66,12 +66,12 @@ public:
 		class Event {
 		public:
 			Event();
-			virtual ~Event();                                                 // vtable+0x00
-			virtual void VTable0x04(undefined4 p_elapsedMs);                  // vtable+0x04
-			virtual void VTable0x08(GolD3DRenderDevice* p_renderer);          // vtable+0x08
-			virtual void VTable0x0c(GolD3DRenderDevice* p_renderer);          // vtable+0x0c
-			virtual void VTable0x10(Frame* p_frame, BluebellFog0x4* p_event); // vtable+0x10
-			virtual void VTable0x14(Frame* p_frame, BluebellFog0x4* p_event); // vtable+0x14
+			virtual ~Event();                                                    // vtable+0x00
+			virtual void VTable0x04(undefined4 p_elapsedMs);                     // vtable+0x04
+			virtual void VTable0x08(GolD3DRenderDevice* p_renderer);             // vtable+0x08
+			virtual void VTable0x0c(GolD3DRenderDevice* p_renderer);             // vtable+0x0c
+			virtual void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event); // vtable+0x10
+			virtual void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event); // vtable+0x14
 
 			void Reset();
 
@@ -123,12 +123,12 @@ public:
 			};
 
 			ModelEvent();
-			~ModelEvent() override;                                            // vtable+0x00
-			void VTable0x04(undefined4 p_elapsedMs) override;                  // vtable+0x04
-			void VTable0x08(GolD3DRenderDevice* p_renderer) override;          // vtable+0x08
-			void VTable0x0c(GolD3DRenderDevice* p_renderer) override;          // vtable+0x0c
-			void VTable0x10(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x14
+			~ModelEvent() override;                                               // vtable+0x00
+			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
+			void VTable0x08(GolD3DRenderDevice* p_renderer) override;             // vtable+0x08
+			void VTable0x0c(GolD3DRenderDevice* p_renderer) override;             // vtable+0x0c
+			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
 
 			LegoU32 Reset();
 			LegoU32 FUN_00404a10(CutsceneDefinition* p_parent, GolFileParser* p_parser);
@@ -161,9 +161,9 @@ public:
 		class CameraEvent : public Event {
 		public:
 			CameraEvent();
-			void VTable0x04(undefined4 p_elapsedMs) override;                  // vtable+0x04
-			void VTable0x10(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x14
+			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
+			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
 
 			LegoU32 FUN_004050a0(CutsceneDefinition* p_parent, GolFileParser* p_parser);
 
@@ -185,9 +185,9 @@ public:
 		class AmbientLightEvent : public Event {
 		public:
 			AmbientLightEvent();
-			void VTable0x04(undefined4 p_elapsedMs) override;                  // vtable+0x04
-			void VTable0x10(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x14
+			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
+			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
 
 			void FUN_00405630(GolFileParser* p_parser);
 
@@ -212,9 +212,9 @@ public:
 		class DirectionalLightEvent : public Event {
 		public:
 			DirectionalLightEvent();
-			void VTable0x04(undefined4 p_elapsedMs) override;                  // vtable+0x04
-			void VTable0x10(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x14
+			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
+			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
 
 			LegoU32 FUN_00405280(GolFileParser* p_parser);
 
@@ -239,9 +239,9 @@ public:
 		class TransformEvent : public Event {
 		public:
 			TransformEvent();
-			~TransformEvent() override;                                        // vtable+0x00
-			void VTable0x10(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, BluebellFog0x4* p_event) override; // vtable+0x14
+			~TransformEvent() override;                                           // vtable+0x00
+			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
 
 			void Reset();
 			LegoU32 FUN_00407090(GolFileParser* p_parser);
@@ -350,8 +350,8 @@ public:
 	MabMaterialAnimationItem0x18* FUN_00406f60(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
 	LegoU32 FUN_00406f90(LegoFloat p_scale);
 
-	void SetUnk0x0c(BluebellFog0x4* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
-	BluebellFog0x4* GetUnk0x0c() const { return m_unk0x0c; }
+	void SetUnk0x0c(CutsceneEventSink* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
+	CutsceneEventSink* GetUnk0x0c() const { return m_unk0x0c; }
 	LegoU32 GetWorldDatabaseCount() const { return m_unk0x18; }
 	GolWorldDatabase* GetWorldDatabase(LegoU32 p_index) const { return m_unk0x1c[p_index]; }
 	LegoU32 GetFrameCount() const { return m_frameCount; }
@@ -361,7 +361,7 @@ public:
 	// CutsceneDefinition::`scalar deleting destructor'
 
 private:
-	BluebellFog0x4* m_unk0x0c;      // 0x0c
+	CutsceneEventSink* m_unk0x0c;   // 0x0c
 	GolExport* m_golExport;         // 0x10
 	GolD3DRenderDevice* m_renderer; // 0x14
 	LegoU32 m_unk0x18;              // 0x18

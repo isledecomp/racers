@@ -68,8 +68,8 @@ void RaceSession::RaceReset::FinishRace()
 	}
 
 	ResetRacers();
-	m_particleAnimation->FUN_00489f60();
-	m_sharedParticleAnimation->FUN_00489f60();
+	m_particleAnimation->StopAllParticles();
+	m_sharedParticleAnimation->StopAllParticles();
 }
 
 // FUNCTION: LEGORACERS 0x0043a780

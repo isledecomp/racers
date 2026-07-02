@@ -102,7 +102,7 @@ void RacePowerupManager::OilSlickAction::Activate(RaceState::Racer* p_racer)
 void RacePowerupManager::OilSlickAction::Deactivate()
 {
 	if (m_bubbleParticle != NULL) {
-		m_particleAnimation->FUN_00489f30(m_bubbleParticle);
+		m_particleAnimation->FinishRef(m_bubbleParticle);
 		m_bubbleParticle = NULL;
 	}
 
@@ -203,7 +203,7 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 
 	CutsceneAnimation* animation = m_particleAnimation;
 	m_collisionEvent = event;
-	m_bubbleParticle = animation->FUN_00489d70("oilbub", NULL, NULL, NULL);
+	m_bubbleParticle = animation->SpawnParticle("oilbub", NULL, NULL, NULL);
 	if (m_bubbleParticle != NULL && m_bubbleParticle->m_particle != NULL) {
 		m_bubbleParticle->m_particle->FUN_00489660(&position);
 	}

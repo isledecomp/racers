@@ -161,7 +161,7 @@ void RacePowerupManager::GrapplingHookAction::Deactivate()
 	m_projectile.CancelCollisionEvent();
 
 	if (m_smokeParticleRef != NULL) {
-		m_owner0x01c->m_cutsceneAnimation->FUN_00489f00(m_smokeParticleRef);
+		m_owner0x01c->m_cutsceneAnimation->ReleaseRef(m_smokeParticleRef);
 		m_smokeParticleRef = NULL;
 	}
 
@@ -311,7 +311,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	if (m_smokeParticleRef != NULL) {
 		CutsceneParticle* particle = m_smokeParticleRef->m_particle;
 		if (particle == NULL || particle->GetSpawnedCount() >= 3) {
-			m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_smokeParticleRef);
+			m_owner0x01c->m_cutsceneAnimation->FinishRef(m_smokeParticleRef);
 			m_smokeParticleRef = NULL;
 			return;
 		}
@@ -423,7 +423,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 
 	m_projectile.ResetRope();
 
-	m_smokeParticleRef = m_owner0x01c->m_cutsceneAnimation->FUN_00489d70("cannsmk", NULL, NULL, NULL);
+	m_smokeParticleRef = m_owner0x01c->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticleRef != NULL) {
 		m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
 		position.m_z += 4.0f;

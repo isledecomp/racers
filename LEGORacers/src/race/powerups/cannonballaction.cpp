@@ -135,7 +135,7 @@ void RacePowerupManager::CannonballAction::Deactivate()
 	m_projectile.Deactivate();
 
 	if (m_smokeParticle != NULL) {
-		m_owner0x01c->m_cutsceneAnimation->FUN_00489f00(m_smokeParticle);
+		m_owner0x01c->m_cutsceneAnimation->ReleaseRef(m_smokeParticle);
 		m_smokeParticle = NULL;
 	}
 
@@ -246,7 +246,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 			}
 		}
 		else {
-			m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_smokeParticle);
+			m_owner0x01c->m_cutsceneAnimation->FinishRef(m_smokeParticle);
 			m_smokeParticle = NULL;
 		}
 	}
@@ -376,7 +376,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 		m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &velocity, TRUE);
 	}
 
-	m_smokeParticle = m_owner0x01c->m_cutsceneAnimation->FUN_00489d70("cannsmk", NULL, NULL, NULL);
+	m_smokeParticle = m_owner0x01c->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticle != NULL) {
 		if (m_emplacement == NULL) {
 			m_ownerRacer->m_physics.m_carEntity->VTable0x48(&right, &forward);

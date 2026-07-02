@@ -220,7 +220,7 @@ void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 
 		particlePosition.m_x = position.m_x;
 		particlePosition.m_y = position.m_y;
 		particlePosition.m_z = position.m_z - g_homingProjectileCollisionStartOffset;
-		m_particleAnimation->FUN_00489d70("explode", &particlePosition, NULL, NULL);
+		m_particleAnimation->SpawnParticle("explode", &particlePosition, NULL, NULL);
 	}
 }
 

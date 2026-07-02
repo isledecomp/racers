@@ -224,17 +224,17 @@ void RaceState::Racer::CarVisuals::Destroy()
 	m_shadowMaterialTable.Clear();
 
 	if (m_tireSmokeParticle) {
-		m_particleAnimation->FUN_00489f00(m_tireSmokeParticle);
+		m_particleAnimation->ReleaseRef(m_tireSmokeParticle);
 		m_tireSmokeParticle = NULL;
 	}
 
 	if (m_carSmokeParticle) {
-		m_particleAnimation->FUN_00489f00(m_carSmokeParticle);
+		m_particleAnimation->ReleaseRef(m_carSmokeParticle);
 		m_carSmokeParticle = NULL;
 	}
 
 	if (m_dustParticle) {
-		m_particleAnimation->FUN_00489f00(m_dustParticle);
+		m_particleAnimation->ReleaseRef(m_dustParticle);
 		m_dustParticle = NULL;
 	}
 
@@ -242,10 +242,10 @@ void RaceState::Racer::CarVisuals::Destroy()
 		CutsceneParticleRef* particleRef = m_wheelParticles[i];
 		if (particleRef) {
 			if (m_wheelParticleFromRace[i]) {
-				m_particleAnimation->FUN_00489f00(particleRef);
+				m_particleAnimation->ReleaseRef(particleRef);
 			}
 			else {
-				m_sharedParticleAnimation->FUN_00489f00(particleRef);
+				m_sharedParticleAnimation->ReleaseRef(particleRef);
 			}
 
 			m_wheelParticles[i] = NULL;
@@ -306,7 +306,7 @@ void RaceState::Racer::CarVisuals::StartSkidEffects()
 		}
 
 		if (!m_tireSmokeParticle) {
-			m_tireSmokeParticle = m_particleAnimation->FUN_00489d70("tiresmk", NULL, NULL, NULL);
+			m_tireSmokeParticle = m_particleAnimation->SpawnParticle("tiresmk", NULL, NULL, NULL);
 
 			if (m_tireSmokeParticle) {
 				GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
@@ -346,7 +346,7 @@ void RaceState::Racer::CarVisuals::StopSkidEffects()
 	}
 
 	if (m_tireSmokeParticle) {
-		m_particleAnimation->FUN_00489f30(m_tireSmokeParticle);
+		m_particleAnimation->FinishRef(m_tireSmokeParticle);
 		m_tireSmokeParticle = NULL;
 	}
 
@@ -361,17 +361,17 @@ void RaceState::Racer::CarVisuals::SetWheelParticle(LegoU32 p_wheelIndex, const 
 			return;
 		}
 
-		m_particleAnimation->FUN_00489f00(m_wheelParticles[p_wheelIndex]);
+		m_particleAnimation->ReleaseRef(m_wheelParticles[p_wheelIndex]);
 		m_wheelParticles[p_wheelIndex] = NULL;
 	}
 
 	::memcpy(m_wheelParticleNames[p_wheelIndex], p_name, sizeof(GolName));
-	if (m_particleAnimation->FUN_00489d50(p_name)) {
-		m_wheelParticles[p_wheelIndex] = m_particleAnimation->FUN_00489d70(p_name, NULL, NULL, NULL);
+	if (m_particleAnimation->HasEmitter(p_name)) {
+		m_wheelParticles[p_wheelIndex] = m_particleAnimation->SpawnParticle(p_name, NULL, NULL, NULL);
 		m_wheelParticleFromRace[p_wheelIndex] = TRUE;
 	}
-	else if (m_sharedParticleAnimation->FUN_00489d50(p_name)) {
-		m_wheelParticles[p_wheelIndex] = m_sharedParticleAnimation->FUN_00489d70(p_name, NULL, NULL, NULL);
+	else if (m_sharedParticleAnimation->HasEmitter(p_name)) {
+		m_wheelParticles[p_wheelIndex] = m_sharedParticleAnimation->SpawnParticle(p_name, NULL, NULL, NULL);
 		m_wheelParticleFromRace[p_wheelIndex] = FALSE;
 	}
 
@@ -399,10 +399,10 @@ void RaceState::Racer::CarVisuals::ClearWheelParticle(LegoU32 p_wheelIndex)
 	if (m_wheelParticles[p_wheelIndex]) {
 		m_wheelParticleNames[p_wheelIndex][0] = 0;
 		if (m_wheelParticleFromRace[p_wheelIndex]) {
-			m_particleAnimation->FUN_00489f00(m_wheelParticles[p_wheelIndex]);
+			m_particleAnimation->ReleaseRef(m_wheelParticles[p_wheelIndex]);
 		}
 		else {
-			m_sharedParticleAnimation->FUN_00489f00(m_wheelParticles[p_wheelIndex]);
+			m_sharedParticleAnimation->ReleaseRef(m_wheelParticles[p_wheelIndex]);
 		}
 		m_wheelParticles[p_wheelIndex] = NULL;
 	}
@@ -422,7 +422,7 @@ void RaceState::Racer::CarVisuals::StartDust()
 		return;
 	}
 
-	ref = m_particleAnimation->FUN_00489d70("dust", NULL, NULL, NULL);
+	ref = m_particleAnimation->SpawnParticle("dust", NULL, NULL, NULL);
 	m_dustParticle = ref;
 	if (!ref) {
 		return;
@@ -449,7 +449,7 @@ void RaceState::Racer::CarVisuals::StartCarSmoke()
 		return;
 	}
 
-	ref = m_particleAnimation->FUN_00489d70("carsmke", NULL, NULL, NULL);
+	ref = m_particleAnimation->SpawnParticle("carsmke", NULL, NULL, NULL);
 	m_carSmokeParticle = ref;
 	if (!ref) {
 		return;
@@ -592,7 +592,7 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 					break;
 				}
 
-				m_particleAnimation->FUN_00489d70("carland", &position, NULL, NULL);
+				m_particleAnimation->SpawnParticle("carland", &position, NULL, NULL);
 			}
 
 			m_lastGroundedWheelCount = state;
@@ -601,7 +601,7 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 		if (m_dustParticle) {
 			CutsceneParticle* particle = m_dustParticle->m_particle;
 			if (particle && particle->GetSpawnedCount() >= 10) {
-				m_particleAnimation->FUN_00489f30(m_dustParticle);
+				m_particleAnimation->FinishRef(m_dustParticle);
 				m_dustParticle = NULL;
 			}
 			else {
@@ -628,7 +628,7 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 		if (m_carSmokeParticle) {
 			CutsceneParticle* particle = m_carSmokeParticle->m_particle;
 			if (particle && particle->GetSpawnedCount() >= 4) {
-				m_particleAnimation->FUN_00489f30(m_carSmokeParticle);
+				m_particleAnimation->FinishRef(m_carSmokeParticle);
 				m_carSmokeParticle = NULL;
 			}
 			else {

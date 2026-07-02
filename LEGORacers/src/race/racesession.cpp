@@ -978,7 +978,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	DrawLoadProgress(0.45f);
 
 	MabMaterialAnimation0x14* materialAnimation = m_materialAnimationDatabase->VTable0x4c(0);
-	m_sharedParticleAnimation.FUN_00489af0(
+	m_sharedParticleAnimation.Load(
 		4,
 		m_golExport,
 		m_renderer,
@@ -1237,7 +1237,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	resetParams.m_eventTable = &m_eventTable;
 	m_raceReset.Initialize(&resetParams);
 
-	m_particleAnimation.FUN_00489af0(
+	m_particleAnimation.Load(
 		10,
 		m_golExport,
 		m_renderer,
@@ -2064,8 +2064,8 @@ void RaceSession::Update()
 		m_racerCollisionWorlds.Update(elapsedMs);
 		m_triggers.Update(elapsedMs);
 		m_racerTriggers.Update(elapsedMs);
-		m_particleAnimation.FUN_00489fa0(elapsedMs);
-		m_sharedParticleAnimation.FUN_00489fa0(elapsedMs);
+		m_particleAnimation.Update(elapsedMs);
+		m_sharedParticleAnimation.Update(elapsedMs);
 		m_trailManager.Update(elapsedMs);
 		m_eventTable.Update(elapsedMs);
 		m_hazardManager.Update(elapsedMs);
@@ -2367,8 +2367,8 @@ void RaceSession::DrawScene(RaceState::Racer* p_racer)
 {
 	m_raceState.DrawRacerEntities(m_renderer, p_racer);
 	m_powerupManager.Draw(FALSE);
-	m_particleAnimation.FUN_00489ff0(m_renderer);
-	m_sharedParticleAnimation.FUN_00489ff0(m_renderer);
+	m_particleAnimation.Draw(m_renderer);
+	m_sharedParticleAnimation.Draw(m_renderer);
 	m_trailManager.DrawOpaque(m_renderer);
 
 	m_trackDatabase->VTable0x24(m_renderer);
@@ -2386,8 +2386,8 @@ void RaceSession::DrawTransparent()
 	m_raceState.DrawRacersTransparent(m_renderer);
 	m_hazardManager.Draw(m_renderer);
 	m_powerupManager.DrawTransparent();
-	m_particleAnimation.FUN_0048a040(m_renderer);
-	m_sharedParticleAnimation.FUN_0048a040(m_renderer);
+	m_particleAnimation.DrawTransparent(m_renderer);
+	m_sharedParticleAnimation.DrawTransparent(m_renderer);
 	m_trailManager.DrawTransparent(m_renderer);
 	m_decalManager.DrawTransparent(m_renderer);
 

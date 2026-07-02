@@ -1499,7 +1499,7 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 			secondRacer->m_scrapeSoundCooldownMs = 250;
 		}
 
-		m_visuals.m_particleAnimation->FUN_00489d70("carsprk", &collision->m_contactPoint, NULL, NULL);
+		m_visuals.m_particleAnimation->SpawnParticle("carsprk", &collision->m_contactPoint, NULL, NULL);
 
 		if (firstRacer->m_flags & c_flagShielded) {
 			secondRacer->PlayReaction(FALSE);

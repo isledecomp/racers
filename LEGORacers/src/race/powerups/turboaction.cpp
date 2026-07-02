@@ -290,7 +290,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_level == 2 && m_state == c_stateBoosting && m_smokeParticle == NULL && m_stateTimerMs < c_smokeWindowMs &&
 		!(m_manager->m_cheatFlags & c_flyskyhgh)) {
-		m_smokeParticle = m_particleAnimation->FUN_00489d70("trbsmke", NULL, NULL, NULL);
+		m_smokeParticle = m_particleAnimation->SpawnParticle("trbsmke", NULL, NULL, NULL);
 	}
 
 	if (m_smokeParticle != NULL) {
@@ -476,7 +476,7 @@ void RacePowerupManager::TurboAction::Deactivate()
 	m_state = c_stateReady;
 
 	if (m_smokeParticle != NULL) {
-		m_particleAnimation->FUN_00489f00(m_smokeParticle);
+		m_particleAnimation->ReleaseRef(m_smokeParticle);
 		m_smokeParticle = NULL;
 	}
 

@@ -99,9 +99,9 @@ void CutsceneVisual::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x004a3510
-void CutsceneVisual::VTable0x14()
+void CutsceneVisual::Start()
 {
-	if (!(m_flags & 0x40) && m_unk0x10 == 0) {
+	if (!(m_flags & 0x40) && m_disabled == 0) {
 		LegoU32 flags = m_flags | 0xc0;
 
 		m_unk0x1c = m_unk0x14;
@@ -113,7 +113,7 @@ void CutsceneVisual::VTable0x14()
 }
 
 // FUNCTION: LEGORACERS 0x004a3540
-void CutsceneVisual::VTable0x18()
+void CutsceneVisual::Stop()
 {
 	m_flags &= ~0x40;
 }

@@ -50,7 +50,7 @@ LegoBool32 MenuSceneScreen::Initialize(MenuGameContext* p_context, MenuScreenCre
 	}
 
 	CutscenePlayer* resourceHelper = &m_sceneWidget.m_unk0x84;
-	if (resourceHelper->GetUnk0x118() && p_context->m_context->m_languageIndex) {
+	if (resourceHelper->GetTextVisualCount() && p_context->m_context->m_languageIndex) {
 		LegoChar languageFile[12];
 		languageFile[0] = '\0';
 
@@ -91,7 +91,7 @@ LegoBool32 MenuSceneScreen::Initialize(MenuGameContext* p_context, MenuScreenCre
 
 		if (m_languageStrings.Load(languageFile)) {
 			resourceHelper->SetStringTable(&m_languageStrings);
-			resourceHelper->FUN_004a24e0();
+			resourceHelper->RefreshTextVisuals();
 		}
 	}
 

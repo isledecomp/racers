@@ -38,10 +38,6 @@ DECOMP_SIZE_ASSERT(CutscenePlayer::CebTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(CutsceneAnimation::EmbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(CutsceneEventSink, 0x04)
 DECOMP_SIZE_ASSERT(CutsceneEvent, 0x14)
-DECOMP_SIZE_ASSERT(CutsceneCameraTargetView, 0x2c)
-DECOMP_SIZE_ASSERT(CutsceneCameraEventView, 0x24)
-DECOMP_SIZE_ASSERT(CutsceneModelEventView, 0x28)
-DECOMP_SIZE_ASSERT(CutsceneTransformEventView, 0x44)
 DECOMP_SIZE_ASSERT(CutsceneEventLink, 0x0c)
 DECOMP_SIZE_ASSERT(CutsceneSoundEvent, 0x30)
 DECOMP_SIZE_ASSERT(CutsceneColorEvent, 0x48)
@@ -691,9 +687,9 @@ void CutsceneEventLink::Fire()
 }
 
 // FUNCTION: LEGORACERS 0x004a00f0
-void CutsceneEventLink::Fire(CutsceneCameraEventView* p_payload)
+void CutsceneEventLink::Fire(CutsceneDefinition::Frame::CameraEvent* p_payload)
 {
-	GolWorldEntity* value = p_payload->m_target->m_entity;
+	GolWorldEntity* value = p_payload->GetCamera()->m_trackedEntity;
 	if (value) {
 		if (m_isStart) {
 			m_event->StartOnJointed(value);
@@ -708,19 +704,19 @@ void CutsceneEventLink::Fire(CutsceneCameraEventView* p_payload)
 }
 
 // FUNCTION: LEGORACERS 0x004a0120
-void CutsceneEventLink::Fire(CutsceneModelEventView* p_payload)
+void CutsceneEventLink::Fire(CutsceneDefinition::Frame::ModelEvent* p_payload)
 {
-	if (p_payload->m_modelType == 2) {
+	if (p_payload->GetModelRefType() == 2) {
 		if (m_isStart) {
-			m_event->StartOnJointed(p_payload->m_entity);
+			m_event->StartOnJointed(p_payload->GetEntity());
 		}
 		else {
 			m_event->Stop();
 		}
 	}
-	else if (p_payload->m_modelType == 3 || p_payload->m_modelType == 1) {
+	else if (p_payload->GetModelRefType() == 3 || p_payload->GetModelRefType() == 1) {
 		if (m_isStart) {
-			m_event->StartOnModel(p_payload->m_entity);
+			m_event->StartOnModel(p_payload->GetEntity());
 		}
 		else {
 			m_event->Stop();
@@ -728,7 +724,7 @@ void CutsceneEventLink::Fire(CutsceneModelEventView* p_payload)
 	}
 	else {
 		if (m_isStart) {
-			m_event->StartOnBsp(p_payload->m_entity);
+			m_event->StartOnBsp(p_payload->GetEntity());
 		}
 		else {
 			m_event->Stop();
@@ -737,11 +733,11 @@ void CutsceneEventLink::Fire(CutsceneModelEventView* p_payload)
 }
 
 // FUNCTION: LEGORACERS 0x004a0180
-void CutsceneEventLink::Fire(CutsceneTransformEventView* p_payload)
+void CutsceneEventLink::Fire(CutsceneDefinition::Frame::TransformEvent* p_payload)
 {
-	GolVec3 vector0 = p_payload->m_position;
-	GolVec3 vector1 = p_payload->m_direction;
-	GolVec3 vector2 = p_payload->m_up;
+	GolVec3 vector0 = p_payload->GetPosition();
+	GolVec3 vector1 = p_payload->GetDirection();
+	GolVec3 vector2 = p_payload->GetUp();
 
 	if (m_isStart) {
 		m_event->StartAt(&vector0, &vector1, &vector2);
@@ -1834,7 +1830,8 @@ void CutscenePlayer::OnCameraStarted(void*, void* p_name, void* p_payload)
 		CutsceneEventLink* link =
 			static_cast<CutsceneEventLink*>(m_cameraStartedNames.GetName(static_cast<const LegoChar*>(p_name)));
 		if (link != NULL) {
-			CutsceneCameraEventView* payload = static_cast<CutsceneCameraEventView*>(p_payload);
+			CutsceneDefinition::Frame::CameraEvent* payload =
+				static_cast<CutsceneDefinition::Frame::CameraEvent*>(p_payload);
 
 			while (link != NULL) {
 				link->Fire(payload);
@@ -1851,7 +1848,8 @@ void CutscenePlayer::OnCameraEnded(void*, void* p_name, void* p_payload)
 		CutsceneEventLink* link =
 			static_cast<CutsceneEventLink*>(m_cameraEndedNames.GetName(static_cast<const LegoChar*>(p_name)));
 		if (link != NULL) {
-			CutsceneCameraEventView* payload = static_cast<CutsceneCameraEventView*>(p_payload);
+			CutsceneDefinition::Frame::CameraEvent* payload =
+				static_cast<CutsceneDefinition::Frame::CameraEvent*>(p_payload);
 
 			while (link != NULL) {
 				link->Fire(payload);
@@ -1868,7 +1866,8 @@ void CutscenePlayer::OnModelStarted(void*, void* p_name, void* p_payload)
 		CutsceneEventLink* link =
 			static_cast<CutsceneEventLink*>(m_modelStartedNames.GetName(static_cast<const LegoChar*>(p_name)));
 		if (link != NULL) {
-			CutsceneModelEventView* payload = static_cast<CutsceneModelEventView*>(p_payload);
+			CutsceneDefinition::Frame::ModelEvent* payload =
+				static_cast<CutsceneDefinition::Frame::ModelEvent*>(p_payload);
 
 			while (link != NULL) {
 				link->Fire(payload);
@@ -1885,7 +1884,8 @@ void CutscenePlayer::OnModelEnded(void*, void* p_name, void* p_payload)
 		CutsceneEventLink* link =
 			static_cast<CutsceneEventLink*>(m_modelEndedNames.GetName(static_cast<const LegoChar*>(p_name)));
 		if (link != NULL) {
-			CutsceneModelEventView* payload = static_cast<CutsceneModelEventView*>(p_payload);
+			CutsceneDefinition::Frame::ModelEvent* payload =
+				static_cast<CutsceneDefinition::Frame::ModelEvent*>(p_payload);
 
 			while (link != NULL) {
 				link->Fire(payload);
@@ -1902,7 +1902,8 @@ void CutscenePlayer::OnTransformStarted(void*, void* p_name, void* p_payload)
 		CutsceneEventLink* link =
 			static_cast<CutsceneEventLink*>(m_transformStartedNames.GetName(static_cast<const LegoChar*>(p_name)));
 		if (link != NULL) {
-			CutsceneTransformEventView* payload = static_cast<CutsceneTransformEventView*>(p_payload);
+			CutsceneDefinition::Frame::TransformEvent* payload =
+				static_cast<CutsceneDefinition::Frame::TransformEvent*>(p_payload);
 
 			while (link != NULL) {
 				link->Fire(payload);
@@ -1919,7 +1920,8 @@ void CutscenePlayer::OnTransformEnded(void*, void* p_name, void* p_payload)
 		CutsceneEventLink* link =
 			static_cast<CutsceneEventLink*>(m_transformEndedNames.GetName(static_cast<const LegoChar*>(p_name)));
 		if (link != NULL) {
-			CutsceneTransformEventView* payload = static_cast<CutsceneTransformEventView*>(p_payload);
+			CutsceneDefinition::Frame::TransformEvent* payload =
+				static_cast<CutsceneDefinition::Frame::TransformEvent*>(p_payload);
 
 			while (link != NULL) {
 				link->Fire(payload);

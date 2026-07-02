@@ -135,6 +135,7 @@ public:
 			void ResolveEntity();
 			void Destroy();
 			GolWorldEntity* GetEntity() const { return m_entity; }
+			ModelRefType GetModelRefType() const { return m_modelRefType; }
 			void SetEntity(GolWorldEntity* p_entity) { m_entity = p_entity; }
 			LegoU32 GetAnimationCount() const { return m_animationCount; }
 			Animation* GetAnimation(LegoU32 p_index) const { return &m_animations[p_index]; }
@@ -166,6 +167,7 @@ public:
 			void End(Frame* p_frame, CutsceneEventSink* p_event) override;   // vtable+0x14
 
 			LegoU32 Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser);
+			GolCamera* GetCamera() const { return m_camera; }
 
 			// SYNTHETIC: LEGORACERS 0x00406290 FOLDED
 			// CutsceneDefinition::Frame::CameraEvent::~CameraEvent
@@ -245,6 +247,9 @@ public:
 
 			void Reset();
 			LegoU32 Parse(GolFileParser* p_parser);
+			const GolVec3& GetPosition() const { return m_position; }
+			const GolVec3& GetDirection() const { return m_direction; }
+			const GolVec3& GetUp() const { return m_up; }
 			void Clear();
 
 			// SYNTHETIC: LEGORACERS 0x00405f20

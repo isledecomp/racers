@@ -43,7 +43,7 @@ DECOMP_SIZE_ASSERT(GolCamera, 0x344)
 const LegoFloat g_menuManagerMaxFloat = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b05d8
-LegoFloat g_unk0x4b05d8 = 1.0f / 255.0f;
+LegoFloat g_inv255 = 1.0f / 255.0f;
 
 // GLOBAL: LEGORACERS 0x004beb78
 LegoFloat g_unk0x4beb78[7] = {0.04f, 0.04f, 0.04f, 0.04f, 0.39f, 0.4f, 0.04f};
@@ -945,14 +945,14 @@ void MenuManager::ApplySettings()
 	m_gameContext.m_context->m_lapCount = state.GetLapCount();
 
 	if (m_gameContext.m_context->GetSoundManager() != NULL) {
-		musicVolume = state.GetMusicVolume() * g_unk0x4b05d8;
+		musicVolume = state.GetMusicVolume() * g_inv255;
 		m_gameContext.m_context->GetSoundManager()->SetMusicVolumeScale(1.0f);
 
 		if (m_gameContext.m_modelBuilder.m_musicInstance) {
 			m_gameContext.m_modelBuilder.m_musicInstance->SetVolume(musicVolume);
 		}
 		m_gameContext.m_context->GetSoundManager()->SetMusicVolumeScale(musicVolume);
-		m_gameContext.m_context->GetSoundManager()->SetVolumeScale(state.GetSoundVolume() * g_unk0x4b05d8);
+		m_gameContext.m_context->GetSoundManager()->SetVolumeScale(state.GetSoundVolume() * g_inv255);
 
 		if (state.GetStereo()) {
 			m_gameContext.m_context->GetSoundManager()->ClearMonoFlag();

@@ -9,7 +9,7 @@
 
 DECOMP_SIZE_ASSERT(OptionsScreenBase, 0x51ac)
 
-extern LegoFloat g_unk0x4b05d8;
+extern LegoFloat g_inv255;
 
 // FUNCTION: LEGORACERS 0x004829a0
 OptionsScreenBase::OptionsScreenBase()
@@ -26,102 +26,102 @@ OptionsScreenBase::~OptionsScreenBase()
 // FUNCTION: LEGORACERS 0x00482de0
 void OptionsScreenBase::Reset()
 {
-	m_unk0x368 = FALSE;
-	m_unk0x369 = FALSE;
+	m_page = FALSE;
+	m_nextPage = FALSE;
 	m_unk0x36c = 0;
-	m_unk0x370 = NULL;
+	m_gameState = NULL;
 	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00482e00
-void OptionsScreenBase::FUN_00482e00()
+void OptionsScreenBase::CreateHeaderWidgets()
 {
-	CreateImage(&m_unk0x374, 0x49, 0x49);
-	CreateTextLabel(&m_unk0x3d0, 0x3a, 0x3a, 0x10);
-	m_unk0x3d0.WrapText(20);
+	CreateImage(&m_photoImage, 0x49, 0x49);
+	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 0x10);
+	m_infoLabel.WrapText(20);
 }
 
 // FUNCTION: LEGORACERS 0x00482e40
-void OptionsScreenBase::FUN_00482e40()
+void OptionsScreenBase::CreateMainButtons()
 {
-	CreateTextButton(&m_unk0x448, 0xed, 0x42, 0x11);
-	VTable0x98();
-	CreateTextButton(&m_unk0x738, 0xef, 0x42, 0x13);
-	CreateTextButton(&m_unk0xa28, 0xf0, 0x42, 0x17);
-	CreateTextButton(&m_unk0xd18, 0xf1, 0x42, 0x18);
-	CreateTextButton(&m_unk0x12f8, 0xf2, 0x42, 0x9c);
-	CreateTextButton(&m_unk0x1008, 0x27, 0x42, 0x58);
-	CreateTextButton(&m_unk0x18d8, 0x3f, 0x43, 2);
+	CreateTextButton(&m_gameOptionsButton, 0xed, 0x42, 0x11);
+	CreateVideoWidgets();
+	CreateTextButton(&m_audioButton, 0xef, 0x42, 0x13);
+	CreateTextButton(&m_controls1Button, 0xf0, 0x42, 0x17);
+	CreateTextButton(&m_controls2Button, 0xf1, 0x42, 0x18);
+	CreateTextButton(&m_languageButton, 0xf2, 0x42, 0x9c);
+	CreateTextButton(&m_creditsButton, 0x27, 0x42, 0x58);
+	CreateTextButton(&m_backButton, 0x3f, 0x43, 2);
 }
 
 // FUNCTION: LEGORACERS 0x00482ef0
-void OptionsScreenBase::FUN_00482ef0()
+void OptionsScreenBase::CreateGameOptionWidgets()
 {
-	CreateCarousel(&m_unk0x2fb0, 0x3d, 0x3b);
-	CreateCarousel(&m_unk0x3044, 0x3d, 0x3b);
-	CreateSelector(&m_unk0x1bc8, &m_unk0x2fb0, 0xf3, 0x4c);
-	CreateSelector(&m_unk0x25bc, &m_unk0x3044, 0xf4, 0x4c);
-	CreateTextLabel(&m_unk0x3600[0], 0x100, 0x37, 0x59);
-	CreateTextLabel(&m_unk0x3600[1], 0x101, 0x37, 0x5a);
+	CreateCarousel(&m_racerCountCarousel, 0x3d, 0x3b);
+	CreateCarousel(&m_lapCountCarousel, 0x3d, 0x3b);
+	CreateSelector(&m_racerCountSelector, &m_racerCountCarousel, 0xf3, 0x4c);
+	CreateSelector(&m_lapCountSelector, &m_lapCountCarousel, 0xf4, 0x4c);
+	CreateTextLabel(&m_gameOptionLabels[0], 0x100, 0x37, 0x59);
+	CreateTextLabel(&m_gameOptionLabels[1], 0x101, 0x37, 0x5a);
 
 	LegoS32 i;
 	for (i = 0; i < 6; i++) {
-		CreateTextLabel(&m_unk0x30d8[i], 0x96, 0x37, static_cast<undefined2>(i + 0x60));
-		m_unk0x2fb0.AddItem(&m_unk0x30d8[i]);
+		CreateTextLabel(&m_racerCountLabels[i], 0x96, 0x37, static_cast<undefined2>(i + 0x60));
+		m_racerCountCarousel.AddItem(&m_racerCountLabels[i]);
 	}
 
-	m_unk0x2fb0.SetSelection(m_unk0x370->GetRacerCount());
-	OnWidgetValueChanged(&m_unk0x1bc8);
+	m_racerCountCarousel.SetSelection(m_gameState->GetRacerCount());
+	OnWidgetValueChanged(&m_racerCountSelector);
 
 	for (i = 0; i < 5; i++) {
-		CreateTextLabel(&m_unk0x33a8[i], 0x96, 0x37, static_cast<undefined2>(i + 0x61));
-		m_unk0x3044.AddItem(&m_unk0x33a8[i]);
+		CreateTextLabel(&m_lapCountLabels[i], 0x96, 0x37, static_cast<undefined2>(i + 0x61));
+		m_lapCountCarousel.AddItem(&m_lapCountLabels[i]);
 	}
 
-	m_unk0x3044.SetSelection(m_unk0x370->GetLapCount() - 1);
-	OnWidgetValueChanged(&m_unk0x25bc);
-	FUN_00483730();
+	m_lapCountCarousel.SetSelection(m_gameState->GetLapCount() - 1);
+	OnWidgetValueChanged(&m_lapCountSelector);
+	HideGameOptionWidgets();
 }
 
 // FUNCTION: LEGORACERS 0x00483030
-void OptionsScreenBase::FUN_00483030()
+void OptionsScreenBase::CreateAudioOptionWidgets()
 {
-	CreateOptionsRow(&m_unk0x4178, 0xf9, 0xec);
-	CreateOptionsRow(&m_unk0x4864, 0xfa, 0xec);
-	CreateCarousel(&m_unk0x40e4, 0xfb, 0x3b);
-	CreateSelector(&m_unk0x36f0, &m_unk0x40e4, 0xfc, 0x4c);
+	CreateOptionsRow(&m_musicVolumeSlider, 0xf9, 0xec);
+	CreateOptionsRow(&m_soundVolumeSlider, 0xfa, 0xec);
+	CreateCarousel(&m_stereoCarousel, 0xfb, 0x3b);
+	CreateSelector(&m_stereoSelector, &m_stereoCarousel, 0xfc, 0x4c);
 
-	m_unk0x4178.SetValue(static_cast<LegoS32>(m_unk0x370->GetMusicVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
-	m_unk0x4864.SetValue(static_cast<LegoS32>(m_unk0x370->GetSoundVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
-	OnWidgetValueChanged(&m_unk0x4178);
-	OnWidgetValueChanged(&m_unk0x4864);
+	m_musicVolumeSlider.SetValue(static_cast<LegoS32>(m_gameState->GetMusicVolume() * g_inv255 * 20.0f + 0.5f));
+	m_soundVolumeSlider.SetValue(static_cast<LegoS32>(m_gameState->GetSoundVolume() * g_inv255 * 20.0f + 0.5f));
+	OnWidgetValueChanged(&m_musicVolumeSlider);
+	OnWidgetValueChanged(&m_soundVolumeSlider);
 
 	for (LegoS32 i = 0; i < 3; i++) {
-		CreateTextLabel(&m_unk0x5040[i], static_cast<undefined2>(i + 0x104), 0x37, static_cast<undefined2>(i + 0x5d));
+		CreateTextLabel(&m_audioLabels[i], static_cast<undefined2>(i + 0x104), 0x37, static_cast<undefined2>(i + 0x5d));
 	}
 
-	CreateTextLabel(&m_unk0x4f50, 0x107, 0x37, 0xa7);
-	CreateTextLabel(&m_unk0x4fc8, 0x107, 0x37, 0xa8);
-	m_unk0x40e4.AddItem(&m_unk0x4f50);
-	m_unk0x40e4.AddItem(&m_unk0x4fc8);
-	OnWidgetValueChanged(&m_unk0x36f0);
-	FUN_00483800();
+	CreateTextLabel(&m_stereoLabel, 0x107, 0x37, 0xa7);
+	CreateTextLabel(&m_monoLabel, 0x107, 0x37, 0xa8);
+	m_stereoCarousel.AddItem(&m_stereoLabel);
+	m_stereoCarousel.AddItem(&m_monoLabel);
+	OnWidgetValueChanged(&m_stereoSelector);
+	HideAudioOptionWidgets();
 }
 
 // FUNCTION: LEGORACERS 0x004831a0
 void OptionsScreenBase::CreateWidgets()
 {
-	FUN_00482e00();
-	FUN_00482e40();
-	FUN_00482ef0();
-	FUN_00483030();
-	VTable0x9c();
+	CreateHeaderWidgets();
+	CreateMainButtons();
+	CreateGameOptionWidgets();
+	CreateAudioOptionWidgets();
+	ShowMainButtons();
 }
 
 // FUNCTION: LEGORACERS 0x004831d0
 LegoBool32 OptionsScreenBase::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	m_unk0x370 = &p_context->m_saveSystem.GetGameState();
+	m_gameState = &p_context->m_saveSystem.GetGameState();
 
 	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
@@ -157,35 +157,35 @@ void OptionsScreenBase::Navigate()
 // FUNCTION: LEGORACERS 0x004832d0
 void OptionsScreenBase::OnIconUnfocused(MenuWidget* p_widget)
 {
-	if (p_widget == &m_unk0x448) {
-		m_unk0x369 = 1;
+	if (p_widget == &m_gameOptionsButton) {
+		m_nextPage = 1;
 	}
-	else if (p_widget == &m_unk0x738) {
-		CreateTextButton(&m_unk0x15e8, 0x99, 0x46, 0x72);
-		ShowPopupDialog(&m_unk0x15e8, 0xbd);
+	else if (p_widget == &m_audioButton) {
+		CreateTextButton(&m_audioNoticePopup, 0x99, 0x46, 0x72);
+		ShowPopupDialog(&m_audioNoticePopup, 0xbd);
 	}
-	else if (p_widget == &m_unk0xa28) {
+	else if (p_widget == &m_controls1Button) {
 		m_nextMenuId = 0x0a;
 	}
-	else if (p_widget == &m_unk0xd18) {
+	else if (p_widget == &m_controls2Button) {
 		m_nextMenuId = 0x0b;
 	}
-	else if (p_widget == &m_unk0x12f8) {
+	else if (p_widget == &m_languageButton) {
 		m_nextMenuId = 0x2c;
 	}
-	else if (p_widget == &m_unk0x1008) {
+	else if (p_widget == &m_creditsButton) {
 		m_nextMenuId = 0x27;
 	}
-	else if (p_widget == &m_unk0x18d8) {
-		if (m_unk0x368 == 0) {
+	else if (p_widget == &m_backButton) {
+		if (m_page == 0) {
 			m_nextMenuId = 2;
 		}
 		else {
-			m_unk0x369 = 0;
+			m_nextPage = 0;
 		}
 	}
-	else if (p_widget == &m_unk0x15e8) {
-		m_unk0x369 = 2;
+	else if (p_widget == &m_audioNoticePopup) {
+		m_nextPage = 2;
 		m_dialog->DismissTop();
 	}
 
@@ -199,9 +199,9 @@ void OptionsScreenBase::OnIconUnfocused(MenuWidget* p_widget)
 // FUNCTION: LEGORACERS 0x004833e0
 void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 {
-	if (p_widget == &m_unk0x4178) {
-		LegoFloat volume = m_unk0x4178.GetValue() * 0.05f;
-		m_unk0x370->SetMusicVolume(static_cast<LegoU8>(volume * 255.0f));
+	if (p_widget == &m_musicVolumeSlider) {
+		LegoFloat volume = m_musicVolumeSlider.GetValue() * 0.05f;
+		m_gameState->SetMusicVolume(static_cast<LegoU8>(volume * 255.0f));
 
 		if (m_context->m_context->m_soundManager) {
 			m_context->m_context->m_soundManager->SetMusicVolumeScale(1.0f);
@@ -214,29 +214,29 @@ void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 			m_context->m_context->m_soundManager->SetMusicVolumeScale(volume);
 		}
 	}
-	else if (p_widget == &m_unk0x4864) {
-		LegoFloat volume = m_unk0x4864.GetValue() * 0.05f;
-		m_unk0x370->SetSoundVolume(static_cast<LegoU8>(volume * 255.0f));
+	else if (p_widget == &m_soundVolumeSlider) {
+		LegoFloat volume = m_soundVolumeSlider.GetValue() * 0.05f;
+		m_gameState->SetSoundVolume(static_cast<LegoU8>(volume * 255.0f));
 
 		SoundManager* soundManager = m_context->m_context->m_soundManager;
 		if (soundManager) {
 			soundManager->SetVolumeScale(volume);
 		}
 	}
-	else if (p_widget == &m_unk0x1bc8) {
-		m_context->m_context->m_racerCount = m_unk0x2fb0.GetSelectedIndex();
-		m_unk0x370->SetRacerCount(m_context->m_context->m_racerCount);
+	else if (p_widget == &m_racerCountSelector) {
+		m_context->m_context->m_racerCount = m_racerCountCarousel.GetSelectedIndex();
+		m_gameState->SetRacerCount(m_context->m_context->m_racerCount);
 	}
-	else if (p_widget == &m_unk0x25bc) {
-		m_context->m_context->m_lapCount = static_cast<LegoU8>(m_unk0x3044.GetSelectedIndex() + 1);
-		m_unk0x370->SetLapCount(m_context->m_context->m_lapCount);
+	else if (p_widget == &m_lapCountSelector) {
+		m_context->m_context->m_lapCount = static_cast<LegoU8>(m_lapCountCarousel.GetSelectedIndex() + 1);
+		m_gameState->SetLapCount(m_context->m_context->m_lapCount);
 	}
-	else if (p_widget == &m_unk0x36f0) {
-		m_unk0x370->SetStereo(m_unk0x40e4.GetSelectedIndex() == 0);
+	else if (p_widget == &m_stereoSelector) {
+		m_gameState->SetStereo(m_stereoCarousel.GetSelectedIndex() == 0);
 
 		SoundManager* soundManager = m_context->m_context->m_soundManager;
 		if (soundManager) {
-			if (m_unk0x370->GetStereo()) {
+			if (m_gameState->GetStereo()) {
 				soundManager->ClearMonoFlag();
 			}
 			else {
@@ -247,136 +247,136 @@ void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void OptionsScreenBase::VTable0x98()
+void OptionsScreenBase::CreateVideoWidgets()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004835a0
-void OptionsScreenBase::VTable0x9c()
+void OptionsScreenBase::ShowMainButtons()
 {
-	m_unk0x448.SetFlags(2);
-	m_unk0x738.SetFlags(2);
-	m_unk0xa28.SetFlags(2);
-	m_unk0xd18.SetFlags(2);
-	m_unk0x12f8.SetFlags(2);
-	m_unk0x1008.SetFlags(2);
+	m_gameOptionsButton.SetFlags(2);
+	m_audioButton.SetFlags(2);
+	m_controls1Button.SetFlags(2);
+	m_controls2Button.SetFlags(2);
+	m_languageButton.SetFlags(2);
+	m_creditsButton.SetFlags(2);
 
-	m_unk0x448.Select(4);
-	m_unk0x3d0.SetStringByIndex(0x10, TRUE);
-	m_unk0x3d0.WrapText(20);
-	m_unk0x18d8.SetTextByIndex(2);
+	m_gameOptionsButton.Select(4);
+	m_infoLabel.SetStringByIndex(0x10, TRUE);
+	m_infoLabel.WrapText(20);
+	m_backButton.SetTextByIndex(2);
 }
 
 // FUNCTION: LEGORACERS 0x00483640
-void OptionsScreenBase::VTable0xa0()
+void OptionsScreenBase::HideMainButtons()
 {
-	m_unk0x448.ClearFlags(2);
-	m_unk0x738.ClearFlags(2);
-	m_unk0xa28.ClearFlags(2);
-	m_unk0xd18.ClearFlags(2);
-	m_unk0x12f8.ClearFlags(2);
-	m_unk0x1008.ClearFlags(2);
+	m_gameOptionsButton.ClearFlags(2);
+	m_audioButton.ClearFlags(2);
+	m_controls1Button.ClearFlags(2);
+	m_controls2Button.ClearFlags(2);
+	m_languageButton.ClearFlags(2);
+	m_creditsButton.ClearFlags(2);
 }
 
 // FUNCTION: LEGORACERS 0x004836a0
-void OptionsScreenBase::FUN_004836a0()
+void OptionsScreenBase::ShowGameOptionWidgets()
 {
-	m_unk0x3d0.SetStringByIndex(0x11, TRUE);
-	m_unk0x3d0.WrapText(20);
-	m_unk0x18d8.SetTextByIndex(0x10);
+	m_infoLabel.SetStringByIndex(0x11, TRUE);
+	m_infoLabel.WrapText(20);
+	m_backButton.SetTextByIndex(0x10);
 
-	m_unk0x1bc8.SetFlags(2);
-	m_unk0x25bc.SetFlags(2);
-	m_unk0x3600[0].SetFlags(2);
-	m_unk0x3600[1].SetFlags(2);
+	m_racerCountSelector.SetFlags(2);
+	m_lapCountSelector.SetFlags(2);
+	m_gameOptionLabels[0].SetFlags(2);
+	m_gameOptionLabels[1].SetFlags(2);
 
-	OnWidgetValueChanged(&m_unk0x1bc8);
-	OnWidgetValueChanged(&m_unk0x25bc);
-	m_unk0x1bc8.Select(4);
+	OnWidgetValueChanged(&m_racerCountSelector);
+	OnWidgetValueChanged(&m_lapCountSelector);
+	m_racerCountSelector.Select(4);
 }
 
 // FUNCTION: LEGORACERS 0x00483730
-void OptionsScreenBase::FUN_00483730()
+void OptionsScreenBase::HideGameOptionWidgets()
 {
-	m_unk0x1bc8.ClearFlags(2);
-	m_unk0x25bc.ClearFlags(2);
-	m_unk0x3600[0].ClearFlags(2);
-	m_unk0x3600[1].ClearFlags(2);
+	m_racerCountSelector.ClearFlags(2);
+	m_lapCountSelector.ClearFlags(2);
+	m_gameOptionLabels[0].ClearFlags(2);
+	m_gameOptionLabels[1].ClearFlags(2);
 }
 
 // FUNCTION: LEGORACERS 0x00483770
-void OptionsScreenBase::FUN_00483770()
+void OptionsScreenBase::ShowAudioOptionWidgets()
 {
-	m_unk0x4178.SetFlags(2);
-	m_unk0x4864.SetFlags(2);
+	m_musicVolumeSlider.SetFlags(2);
+	m_soundVolumeSlider.SetFlags(2);
 
 	for (LegoS32 i = 0; i < 3; i++) {
-		m_unk0x5040[i].SetFlags(2);
+		m_audioLabels[i].SetFlags(2);
 	}
 
-	OnWidgetValueChanged(&m_unk0x36f0);
-	m_unk0x4178.Select(4);
-	m_unk0x3d0.SetStringByIndex(0x13, TRUE);
-	m_unk0x3d0.WrapText(20);
-	m_unk0x18d8.SetTextByIndex(0x10);
+	OnWidgetValueChanged(&m_stereoSelector);
+	m_musicVolumeSlider.Select(4);
+	m_infoLabel.SetStringByIndex(0x13, TRUE);
+	m_infoLabel.WrapText(20);
+	m_backButton.SetTextByIndex(0x10);
 }
 
 // FUNCTION: LEGORACERS 0x00483800
-void OptionsScreenBase::FUN_00483800()
+void OptionsScreenBase::HideAudioOptionWidgets()
 {
-	m_unk0x4178.ClearFlags(2);
-	m_unk0x4864.ClearFlags(2);
-	m_unk0x36f0.ClearFlags(2);
+	m_musicVolumeSlider.ClearFlags(2);
+	m_soundVolumeSlider.ClearFlags(2);
+	m_stereoSelector.ClearFlags(2);
 
 	for (LegoS32 i = 0; i < 3; i++) {
-		m_unk0x5040[i].ClearFlags(2);
+		m_audioLabels[i].ClearFlags(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00483850
-void OptionsScreenBase::VTable0xa4()
+void OptionsScreenBase::ApplyPageChange()
 {
-	switch (m_unk0x368) {
+	switch (m_page) {
 	case 0:
-		VTable0xa0();
+		HideMainButtons();
 		break;
 	case 1:
-		FUN_00483730();
+		HideGameOptionWidgets();
 		break;
 	case 2:
-		FUN_00483800();
+		HideAudioOptionWidgets();
 		break;
 	}
 
-	switch (m_unk0x369) {
+	switch (m_nextPage) {
 	case 0:
-		VTable0x9c();
+		ShowMainButtons();
 		break;
 	case 1:
-		FUN_004836a0();
+		ShowGameOptionWidgets();
 		break;
 	case 2:
-		FUN_00483770();
+		ShowAudioOptionWidgets();
 		break;
 	}
 
-	m_unk0x368 = m_unk0x369;
+	m_page = m_nextPage;
 }
 
 // FUNCTION: LEGORACERS 0x004838e0
 LegoBool32 OptionsScreenBase::Update(undefined4 p_elapsed)
 {
-	if (m_unk0x369 != m_unk0x368 && !(m_clickedWidget->GetAnimFlags() & 1)) {
-		VTable0xa4();
+	if (m_nextPage != m_page && !(m_clickedWidget->GetAnimFlags() & 1)) {
+		ApplyPageChange();
 	}
 
-	if (m_unk0x368 == 0) {
+	if (m_page == 0) {
 		if (m_inputManager->GetJoystickCount() <= 1 && !m_inputManager->IsKeyboardAvailable()) {
-			m_unk0xd18.Disable(5);
+			m_controls2Button.Disable(5);
 			return MenuGameScreen::Update(p_elapsed);
 		}
 
-		m_unk0xd18.Enable(5);
+		m_controls2Button.Enable(5);
 	}
 
 	return MenuGameScreen::Update(p_elapsed);

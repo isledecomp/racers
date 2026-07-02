@@ -25,10 +25,10 @@ public:
 
 	RacerModelSlot();
 
-	void Reset() override;                          // vtable+0x00
-	~RacerModelSlot() override;                     // vtable+0x04
-	LegoBool32 VTable0x0c() override;               // vtable+0x0c
-	LegoBool32 SetRect(LegoU32 p_elapsed) override; // vtable+0x10
+	void Reset() override;                         // vtable+0x00
+	~RacerModelSlot() override;                    // vtable+0x04
+	LegoBool32 Draw() override;                    // vtable+0x0c
+	LegoBool32 Update(LegoU32 p_elapsed) override; // vtable+0x10
 
 	LegoBool32 FUN_004875d0(CreateParams* p_createParams);
 	void FUN_00487600(GolWorldEntity* p_entity);

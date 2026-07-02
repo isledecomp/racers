@@ -71,7 +71,7 @@ void EditCarScreen::FUN_0047bfc0()
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
-	createParams.m_unk0x08 = &m_unk0x43c;
+	createParams.m_sceneView = &m_unk0x43c;
 	createParams.m_unk0x2c.m_x = 0.0f;
 	createParams.m_unk0x2c.m_y = 0.0f;
 	createParams.m_unk0x2c.m_z = 1.0f;

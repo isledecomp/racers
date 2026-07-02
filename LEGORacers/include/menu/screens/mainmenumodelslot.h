@@ -26,11 +26,11 @@ public:
 	};
 
 	MainMenuModelSlot();
-	void Reset() override;                   // vtable+0x00
-	~MainMenuModelSlot() override;           // vtable+0x04
-	LegoBool32 Destroy() override;           // vtable+0x08
-	LegoBool32 VTable0x0c() override;        // vtable+0x0c
-	LegoBool32 SetRect(undefined4) override; // vtable+0x10
+	void Reset() override;                  // vtable+0x00
+	~MainMenuModelSlot() override;          // vtable+0x04
+	LegoBool32 Destroy() override;          // vtable+0x08
+	LegoBool32 Draw() override;             // vtable+0x0c
+	LegoBool32 Update(undefined4) override; // vtable+0x10
 
 	GolAnimatedEntity* GetUnk0x1c() { return &m_unk0x1c; }
 	CmbModelPart0x34* GetUnk0x118() { return &m_unk0x118; }

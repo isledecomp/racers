@@ -27,26 +27,26 @@ MenuSceneView::~MenuSceneView()
 // FUNCTION: LEGORACERS 0x004657a0
 void MenuSceneView::Reset()
 {
-	m_unk0x88 = 5;
+	m_viewportClearMode = 5;
 	m_world = 0;
 	m_camera = 0;
 	m_blendedWorld = 0;
 	m_savedCamera = 0;
 	m_elements = NULL;
 	m_unk0x6c = 0;
-	m_unk0xb4 = 0;
-	m_unk0xb8 = 0;
-	m_unk0xbc = 0;
-	m_unk0xc0 = 0;
-	m_unk0xc4 = 0;
-	m_unk0xc8 = 0;
-	m_unk0xcc = 0;
-	m_unk0xd0 = 0;
-	m_unk0xd4 = 0;
-	m_unk0xd8 = 0;
-	m_unk0x90.m_y = 0.0f;
-	m_unk0x90.m_x = 0.0f;
-	m_unk0x90.m_z = -1.0f;
+	m_targetForwardSpeed = 0;
+	m_forwardSpeed = 0;
+	m_targetStrafeSpeed = 0;
+	m_strafeSpeed = 0;
+	m_yawRate = 0;
+	m_targetYawRate = 0;
+	m_pitchRate = 0;
+	m_targetPitchRate = 0;
+	m_zoomRate = 0;
+	m_targetZoomRate = 0;
+	m_forward.m_y = 0.0f;
+	m_forward.m_x = 0.0f;
+	m_forward.m_z = -1.0f;
 
 	MenuWidget::Reset();
 }
@@ -55,7 +55,7 @@ void MenuSceneView::Reset()
 LegoBool32 MenuSceneView::Create(CreateParams* p_createParams, undefined4 p_unk0x08)
 {
 	Destroy();
-	m_unk0x88 = p_createParams->m_unk0x78;
+	m_viewportClearMode = p_createParams->m_unk0x78;
 
 	if (p_createParams->m_parent) {
 		if (!p_createParams->m_rect.m_right) {
@@ -211,7 +211,7 @@ MenuSceneElement* MenuSceneView::AddElement(MenuSceneElement* p_unk0x04)
 		return p_unk0x04;
 	}
 
-	return p_unk0x04->FUN_0046b350(m_elements);
+	return p_unk0x04->Append(m_elements);
 }
 
 // FUNCTION: LEGORACERS 0x00465b60
@@ -237,18 +237,18 @@ void MenuSceneView::GetEntityScreenRect(GolWorldEntity* p_entity, Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x00465c00
-void MenuSceneView::UpdateElements(undefined4 p_elapsedMs)
+void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 {
 	if (m_camera->m_trackedEntity) {
 		return;
 	}
 
-	m_unk0xc0 = (m_unk0xbc - m_unk0xc0) * 0.03f + m_unk0xc0;
-	m_unk0xb8 = (m_unk0xb4 - m_unk0xb8) * 0.02f + m_unk0xb8;
-	m_unk0xc4 = m_unk0xc8 * 0.1f + m_unk0xc4 * 0.9f;
-	m_unk0xcc = m_unk0xd0 * 0.1f + m_unk0xcc * 0.9f;
-	LegoFloat turn = m_unk0xd8 * 0.3f + m_unk0xd4 * 0.7f;
-	m_unk0xd4 = turn;
+	m_strafeSpeed = (m_targetStrafeSpeed - m_strafeSpeed) * 0.03f + m_strafeSpeed;
+	m_forwardSpeed = (m_targetForwardSpeed - m_forwardSpeed) * 0.02f + m_forwardSpeed;
+	m_yawRate = m_targetYawRate * 0.1f + m_yawRate * 0.9f;
+	m_pitchRate = m_targetPitchRate * 0.1f + m_pitchRate * 0.9f;
+	LegoFloat turn = m_targetZoomRate * 0.3f + m_zoomRate * 0.7f;
+	m_zoomRate = turn;
 
 	if (turn != 0.0f) {
 		GolCamera* lens = m_camera;
@@ -259,11 +259,11 @@ void MenuSceneView::UpdateElements(undefined4 p_elapsedMs)
 		lens->m_fov = value;
 	}
 
-	GolVec3* forward = &m_unk0x90;
-	GolVec3* right = &m_unk0x9c;
+	GolVec3* forward = &m_forward;
+	GolVec3* right = &m_right;
 	m_camera->GetTransform()->VTable0x1c(right, forward);
 
-	GolVec3* axis = &m_unk0xa8;
+	GolVec3* axis = &m_up;
 	LegoFloat axisX = right->m_y;
 	axisX *= forward->m_z;
 	axisX -= forward->m_y * right->m_z;
@@ -279,38 +279,38 @@ void MenuSceneView::UpdateElements(undefined4 p_elapsedMs)
 	side *= forward->m_x;
 	axisZ -= side;
 	axis->m_z = axisZ;
-	m_unk0x90.m_x = 0.0f;
-	m_unk0x90.m_y = 0.0f;
-	m_unk0x90.m_z = -1.0f;
+	m_forward.m_x = 0.0f;
+	m_forward.m_y = 0.0f;
+	m_forward.m_z = -1.0f;
 
 	LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 	GolVec3 rotatedRight;
-	LegoFloat angle = m_unk0xc4;
+	LegoFloat angle = m_yawRate;
 	angle *= elapsed;
 	GolMath::FUN_004496a0(right, &rotatedRight, axis, angle);
-	angle = m_unk0xcc;
+	angle = m_pitchRate;
 	angle *= elapsed;
 	GolMath::FUN_004496a0(&rotatedRight, right, forward, angle);
 
 	GolVec3 position;
 	m_camera->GetTransform()->GetPosition(&position);
 	LegoFloat forwardDelta = -forward->m_x;
-	forwardDelta *= m_unk0xb8;
+	forwardDelta *= m_forwardSpeed;
 	LegoFloat rightDelta = -right->m_x;
-	rightDelta *= m_unk0xc0;
+	rightDelta *= m_strafeSpeed;
 	position.m_x += (forwardDelta + rightDelta) * elapsed;
 	GolCamera* lens = m_camera;
 
-	rightDelta = -m_unk0x9c.m_y;
-	rightDelta *= m_unk0xc0;
-	forwardDelta = -m_unk0x90.m_y;
-	forwardDelta *= m_unk0xb8;
+	rightDelta = -m_right.m_y;
+	rightDelta *= m_strafeSpeed;
+	forwardDelta = -m_forward.m_y;
+	forwardDelta *= m_forwardSpeed;
 	position.m_y += (rightDelta + forwardDelta) * elapsed;
 
-	rightDelta = -m_unk0x9c.m_z;
-	rightDelta *= m_unk0xc0;
-	forwardDelta = -m_unk0x90.m_z;
-	forwardDelta *= m_unk0xb8;
+	rightDelta = -m_right.m_z;
+	rightDelta *= m_strafeSpeed;
+	forwardDelta = -m_forward.m_z;
+	forwardDelta *= m_forwardSpeed;
 	position.m_z += (rightDelta + forwardDelta) * elapsed;
 	lens->GetTransform()->SetPosition(&position);
 
@@ -371,7 +371,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	m_savedCamera = m_renderer->GetUnk0x0c();
 	m_renderer->VTable0x20(m_camera);
 	m_renderer->VTable0x5c();
-	m_renderer->VTable0xec(m_unk0x88);
+	m_renderer->VTable0xec(m_viewportClearMode);
 	FUN_00465ea0();
 
 	if (m_unk0x6c || !m_elements) {
@@ -379,7 +379,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	}
 
 	for (MenuSceneElement* link = m_elements; link; link = link->GetNext()) {
-		link->VTable0x0c();
+		link->Draw();
 	}
 
 	if (m_unk0x6c && m_blendedWorld) {
@@ -418,7 +418,7 @@ MenuWidget* MenuSceneView::OnKeyUp(InputEventQueue::Event* p_item, undefined4 p_
 undefined4 MenuSceneView::OnEvent(undefined4 p_elapsedMs)
 {
 	for (MenuSceneElement* link = m_elements; link; link = link->GetNext()) {
-		link->SetRect(p_elapsedMs);
+		link->Update(p_elapsedMs);
 	}
 
 	if (m_unk0x6c) {
@@ -429,7 +429,7 @@ undefined4 MenuSceneView::OnEvent(undefined4 p_elapsedMs)
 		}
 	}
 
-	UpdateElements(p_elapsedMs);
+	UpdateFreeCamera(p_elapsedMs);
 	return 0;
 }
 

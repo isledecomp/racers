@@ -439,7 +439,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00477ae0(CreateParams* p_cr
 	m_unk0x250.m_y = p_createParams->m_unk0x1c.m_y;
 	m_unk0x250.m_z = p_createParams->m_unk0x1c.m_z;
 
-	if (MenuSceneElement::FUN_0046b300(p_createParams)) {
+	if (MenuSceneElement::Create(p_createParams)) {
 		FUN_00477cc0(p_createParams->m_unk0x2c);
 		FUN_00477dc0();
 		FUN_00477bf0();
@@ -449,28 +449,28 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00477ae0(CreateParams* p_cr
 		FUN_004784d0(FALSE);
 	}
 
-	return m_unk0x18;
+	return m_created;
 }
 
 // FUNCTION: LEGORACERS 0x00477b80
 LegoBool32 CarModelScreenBase::CarPartPlacement::Destroy()
 {
-	if (!m_unk0x18) {
+	if (!m_created) {
 		return TRUE;
 	}
 
 	if (m_unk0x1a4.HasModel()) {
-		m_unk0x0c->VTable0x48(m_unk0x234);
+		m_golExport->VTable0x48(m_unk0x234);
 	}
 
 	m_unk0xa8.VTable0x54();
 
 	if (m_unk0x19c) {
-		m_unk0x0c->VTable0x4c(m_unk0x19c);
+		m_golExport->VTable0x4c(m_unk0x19c);
 	}
 
 	if (m_unk0x238) {
-		m_unk0x0c->VTable0x48(m_unk0x238);
+		m_golExport->VTable0x48(m_unk0x238);
 	}
 
 	return MenuSceneElement::Destroy();
@@ -487,19 +487,19 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477bf0()
 	targetPosition.m_z = targetZ;
 	m_unk0x290 = 0;
 	m_unk0x288 = 0;
-	m_unk0x14->SetCameraLookAt(&m_unk0x27c, &targetPosition);
+	m_sceneView->SetCameraLookAt(&m_unk0x27c, &targetPosition);
 }
 
 // FUNCTION: LEGORACERS 0x00477c50
 void CarModelScreenBase::CarPartPlacement::FUN_00477c50()
 {
-	m_unk0x234 = m_unk0x0c->VTable0x14();
+	m_unk0x234 = m_golExport->VTable0x14();
 	if (m_unk0x234 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	LegoS32 maxHighPieceOffset = m_unk0x24->m_pieceLibrary.GetMaxHighPieceOffset();
-	m_unk0x234->VTable0x18(m_unk0x10, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
+	m_unk0x234->VTable0x18(m_renderer, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
 	m_unk0x1a4.VTable0x50(m_unk0x234, g_unk0x4b2e68);
 }
 
@@ -517,7 +517,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477cc0(undefined4)
 
 	m_unk0x24->m_modelBuilder.ApplyFaceExpression(m_unk0x238, &cosmetics);
 
-	m_unk0x19c = m_unk0x0c->VTable0x18();
+	m_unk0x19c = m_golExport->VTable0x18();
 	m_unk0x19c->VTable0x10(m_unk0x24->m_modelBuilder.GetBodySceneNode(&cosmetics));
 	if (m_unk0x19c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -700,7 +700,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478180(LegoFloat p_delta)
 	m_unk0x27c.m_y = ((maxPosition.m_y - minPosition.m_y) * interpolation) + minPosition.m_y;
 	m_unk0x27c.m_z = ((maxPosition.m_z - minPosition.m_z) * interpolation) + minPosition.m_z;
 	targetPosition.m_z = targetZ;
-	m_unk0x14->SetCameraLookAt(&m_unk0x27c, &targetPosition);
+	m_sceneView->SetCameraLookAt(&m_unk0x27c, &targetPosition);
 	return TRUE;
 }
 
@@ -751,7 +751,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_004783d0()
 	}
 
 	GolVec3 cameraPosition;
-	m_unk0x14->GetCamera()->GetTransform()->GetPosition(&cameraPosition);
+	m_sceneView->GetCamera()->GetTransform()->GetPosition(&cameraPosition);
 
 	LegoU32 closestIndex = 0;
 	GolVec3 position;
@@ -924,34 +924,34 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004787e0(
 }
 
 // FUNCTION: LEGORACERS 0x004788f0
-LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
+LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 {
 	ColorRGBA originalColor = {0x78, 0x78, 0x78, 0xff};
 	ColorRGBA highlightColor = {0xb4, 0xb4, 0xb4, 0xff};
-	GolRenderDevice::MaterialColor* material = m_unk0x10->GetCurrentMaterialColor();
+	GolRenderDevice::MaterialColor* material = m_renderer->GetCurrentMaterialColor();
 
 	if (material == NULL) {
 		m_unk0x23c.SetColor(originalColor);
-		m_unk0x10->VTable0x2c(&m_unk0x23c);
+		m_renderer->VTable0x2c(&m_unk0x23c);
 		material = &m_unk0x23c;
 	}
 
 	originalColor = material->GetColor();
 	if (m_unk0x294 == 2) {
 		material->SetColor(highlightColor);
-		m_unk0x10->VTable0x60();
+		m_renderer->VTable0x60();
 	}
 
-	m_unk0x58.VTable0x1c(*m_unk0x10);
+	m_unk0x58.VTable0x1c(*m_renderer);
 
 	if (m_unk0x294 == 2) {
 		material->SetColor(originalColor);
-		m_unk0x10->VTable0x60();
+		m_renderer->VTable0x60();
 	}
 
 	if (m_unk0x240) {
 		if (m_unk0x244) {
-			m_unk0x24->m_carBuildModel.FUN_0049bdd0(m_unk0x10, 0.1f);
+			m_unk0x24->m_carBuildModel.FUN_0049bdd0(m_renderer, 0.1f);
 		}
 
 		GolModelEntity* entity = &m_unk0x1a4;
@@ -963,14 +963,14 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 
 		if (m_unk0x294 == 1) {
 			material->SetColor(highlightColor);
-			m_unk0x10->VTable0x60();
+			m_renderer->VTable0x60();
 		}
 
 		if (!(m_unk0x248 & (c_flagCommittingPart | c_flagResettingView))) {
 			if ((m_unk0x278 & c_placementFeedbackMask) && m_unk0x290 != 2) {
-				m_unk0x10->SetAlphaOverride(0x40, 0);
-				m_unk0x10->VTable0x94(entity);
-				m_unk0x10->ClearAlphaOverride();
+				m_renderer->SetAlphaOverride(0x40, 0);
+				m_renderer->VTable0x94(entity);
+				m_renderer->ClearAlphaOverride();
 			}
 		}
 
@@ -1006,9 +1006,9 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 		entity->VTable0x08(position);
 
 		if (!(m_unk0x248 & (c_flagCommittingPart | c_flagResettingView)) && alpha > 0) {
-			m_unk0x10->SetAlphaOverride(alpha, 0);
-			m_unk0x10->VTable0x94(entity);
-			m_unk0x10->ClearAlphaOverride();
+			m_renderer->SetAlphaOverride(alpha, 0);
+			m_renderer->VTable0x94(entity);
+			m_renderer->ClearAlphaOverride();
 		}
 
 		if (m_unk0x248 & (c_flagCommittingPart | c_flagResettingView)) {
@@ -1021,14 +1021,14 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 		entity->VTable0x08(position);
 
 		if (m_unk0x290 != 2 || (m_unk0x248 & (c_flagCommittingPart | c_flagResettingView))) {
-			m_unk0x10->VTable0x94(entity);
+			m_renderer->VTable0x94(entity);
 		}
 
 		entity->VTable0x08(m_unk0x250);
 
 		if (m_unk0x294 == 1) {
 			material->SetColor(originalColor);
-			m_unk0x10->VTable0x60();
+			m_renderer->VTable0x60();
 		}
 	}
 
@@ -1040,7 +1040,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x00478be0
-LegoBool32 CarModelScreenBase::CarPartPlacement::SetRect(undefined4 p_elapsed)
+LegoBool32 CarModelScreenBase::CarPartPlacement::Update(undefined4 p_elapsed)
 {
 	FUN_00478c70(p_elapsed);
 
@@ -1241,7 +1241,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478fd0(LegoU32 p_elapsed)
 	position.m_y = targetPosition.m_y + (delta.m_y * interpolation);
 	position.m_z = targetPosition.m_z + (delta.m_z * interpolation);
 	lookAt.m_z = m_unk0x250.m_z + 4.0f;
-	m_unk0x14->SetCameraLookAt(&position, &lookAt);
+	m_sceneView->SetCameraLookAt(&position, &lookAt);
 }
 
 // FUNCTION: LEGORACERS 0x004790f0
@@ -1269,7 +1269,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_004790f0(LegoS32 p_elapsed)
 		);
 		m_unk0x24->m_carBuildModel.FUN_0049b740(TRUE);
 		m_unk0x24->m_carBuildModel.FUN_0049b920(1, 127);
-		m_unk0x1c->OnCarouselSettled(m_unk0x14);
+		m_unk0x1c->OnCarouselSettled(m_sceneView);
 
 		if (m_unk0x24->m_carBuildModel.GetUnk0xdc()) {
 			m_unk0x1c->VTable0xc4();
@@ -1299,7 +1299,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00479250(LegoS32 p_elapsed)
 		LegoU32 flags = m_unk0x248 & ~c_flagResettingView;
 		m_unk0x24c = 0;
 		m_unk0x248 = flags;
-		m_unk0x1c->OnCarouselSettled(m_unk0x14);
+		m_unk0x1c->OnCarouselSettled(m_sceneView);
 	}
 	else {
 		m_unk0x24c -= p_elapsed;

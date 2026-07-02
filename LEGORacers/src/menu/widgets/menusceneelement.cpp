@@ -17,22 +17,22 @@ MenuSceneElement::~MenuSceneElement()
 // FUNCTION: LEGORACERS 0x0046b2e0
 void MenuSceneElement::Reset()
 {
-	m_unk0x0c = 0;
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
-	m_unk0x08 = 0;
-	m_unk0x04 = 0;
-	m_unk0x18 = 0;
+	m_golExport = 0;
+	m_renderer = 0;
+	m_sceneView = 0;
+	m_next = 0;
+	m_prev = 0;
+	m_created = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046b300
-LegoBool32 MenuSceneElement::FUN_0046b300(CreateParams* p_createParams)
+LegoBool32 MenuSceneElement::Create(CreateParams* p_createParams)
 {
 	Destroy();
-	m_unk0x0c = p_createParams->m_golExport;
-	m_unk0x10 = p_createParams->m_renderer;
-	m_unk0x14 = p_createParams->m_unk0x08;
-	m_unk0x18 = TRUE;
+	m_golExport = p_createParams->m_golExport;
+	m_renderer = p_createParams->m_renderer;
+	m_sceneView = p_createParams->m_sceneView;
+	m_created = TRUE;
 
 	return TRUE;
 }
@@ -40,26 +40,26 @@ LegoBool32 MenuSceneElement::FUN_0046b300(CreateParams* p_createParams)
 // FUNCTION: LEGORACERS 0x0046b330
 LegoBool32 MenuSceneElement::Destroy()
 {
-	if (m_unk0x18) {
+	if (m_created) {
 		Reset();
 	}
 
-	return !m_unk0x18;
+	return !m_created;
 }
 
 // FUNCTION: LEGORACERS 0x0046b350
-MenuSceneElement* MenuSceneElement::FUN_0046b350(MenuSceneElement* p_parent)
+MenuSceneElement* MenuSceneElement::Append(MenuSceneElement* p_parent)
 {
 	MenuSceneElement* result = p_parent;
 
 	if (p_parent) {
-		m_unk0x04 = p_parent;
-		m_unk0x08 = p_parent->m_unk0x08;
-		p_parent->m_unk0x08 = this;
-		result = m_unk0x08;
+		m_prev = p_parent;
+		m_next = p_parent->m_next;
+		p_parent->m_next = this;
+		result = m_next;
 
 		if (result) {
-			result->m_unk0x04 = this;
+			result->m_prev = this;
 		}
 	}
 

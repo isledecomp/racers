@@ -65,11 +65,11 @@ public:
 		};
 
 		CarPartPlacement();
-		void Reset() override;                   // vtable+0x00
-		~CarPartPlacement() override;            // vtable+0x04
-		LegoBool32 Destroy() override;           // vtable+0x08
-		LegoBool32 VTable0x0c() override;        // vtable+0x0c
-		LegoBool32 SetRect(undefined4) override; // vtable+0x10
+		void Reset() override;                  // vtable+0x00
+		~CarPartPlacement() override;           // vtable+0x04
+		LegoBool32 Destroy() override;          // vtable+0x08
+		LegoBool32 Draw() override;             // vtable+0x0c
+		LegoBool32 Update(undefined4) override; // vtable+0x10
 		LegoBool32 FUN_00477ae0(CreateParams* p_createParams);
 		void FUN_00477e40(LegoS32 p_unk0x04);
 		LegoBool32 FUN_00477fc0(LegoFloat p_delta);

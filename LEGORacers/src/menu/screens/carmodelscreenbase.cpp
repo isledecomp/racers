@@ -64,7 +64,7 @@ void CarModelScreenBase::FUN_00477050()
 	::memset(&params, 0, sizeof(params));
 	params.m_golExport = m_golExport;
 	params.m_renderer = m_renderer;
-	params.m_unk0x08 = &m_unk0x1e30;
+	params.m_sceneView = &m_unk0x1e30;
 	params.m_soundGroupBinding = m_soundGroupBinding;
 	params.m_context = m_context;
 	params.m_screen = this;

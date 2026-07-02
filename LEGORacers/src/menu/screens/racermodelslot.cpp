@@ -49,7 +49,7 @@ LegoBool32 RacerModelSlot::FUN_004875d0(CreateParams* p_createParams)
 {
 	Destroy();
 	m_unk0x1c = *p_createParams;
-	return MenuSceneElement::FUN_0046b300(p_createParams);
+	return MenuSceneElement::Create(p_createParams);
 }
 
 // FUNCTION: LEGORACERS 0x00487600
@@ -137,33 +137,33 @@ LegoBool32 RacerModelSlot::FUN_004876f0(LegoS32 p_elapsed)
 }
 
 // FUNCTION: LEGORACERS 0x00487790
-LegoBool32 RacerModelSlot::VTable0x0c()
+LegoBool32 RacerModelSlot::Draw()
 {
 	GolVec3 center;
 
 	if (m_unk0x64 != NULL) {
 		m_unk0x64->VTable0x04(&center);
 		m_unk0x64->VTable0x08(center);
-		m_unk0x64->VTable0x1c(*m_unk0x10);
+		m_unk0x64->VTable0x1c(*m_renderer);
 	}
 
 	if (m_unk0x68 != NULL) {
 		m_unk0x68->VTable0x04(&center);
 		m_unk0x68->VTable0x08(center);
-		m_unk0x68->VTable0x1c(*m_unk0x10);
+		m_unk0x68->VTable0x1c(*m_renderer);
 	}
 
 	if (m_unk0x6c != NULL) {
 		m_unk0x6c->VTable0x04(&center);
 		m_unk0x6c->VTable0x08(center);
-		m_unk0x6c->VTable0x1c(*m_unk0x10);
+		m_unk0x6c->VTable0x1c(*m_renderer);
 	}
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00487820
-LegoBool32 RacerModelSlot::SetRect(LegoU32 p_elapsed)
+LegoBool32 RacerModelSlot::Update(LegoU32 p_elapsed)
 {
 	FUN_00487630(p_elapsed);
 	FUN_004876f0(p_elapsed);

@@ -73,7 +73,7 @@ void DriverLicenseScreen::FUN_0047b220()
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
-	createParams.m_unk0x08 = &m_unk0x1648;
+	createParams.m_sceneView = &m_unk0x1648;
 	createParams.m_unk0x0c = &m_context->m_modelBuilder;
 	createParams.m_position.m_x = -5.3593369f;
 	createParams.m_position.m_y = -3.1500180f;

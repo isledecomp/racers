@@ -57,7 +57,7 @@ public:
 protected:
 	void LoadWorlds(CreateParams* p_createParams, undefined4 p_unk0x08);
 	void SetupCamera(CreateParams* p_createParams);
-	void UpdateElements(undefined4 p_elapsedMs);
+	void UpdateFreeCamera(undefined4 p_elapsedMs);
 	void ClampToScreen(Rect* p_rect);
 	void FUN_00465ea0();
 
@@ -69,21 +69,21 @@ protected:
 	undefined4 m_unk0x6c;             // 0x6c
 	GolVec3 m_cameraEye;              // 0x70
 	GolVec3 m_cameraTarget;           // 0x7c
-	undefined4 m_unk0x88;             // 0x88
+	undefined4 m_viewportClearMode;   // 0x88
 	LegoFloat m_worldScale;           // 0x8c
-	GolVec3 m_unk0x90;                // 0x90
-	GolVec3 m_unk0x9c;                // 0x9c
-	GolVec3 m_unk0xa8;                // 0xa8
-	LegoFloat m_unk0xb4;              // 0xb4
-	LegoFloat m_unk0xb8;              // 0xb8
-	LegoFloat m_unk0xbc;              // 0xbc
-	LegoFloat m_unk0xc0;              // 0xc0
-	LegoFloat m_unk0xc4;              // 0xc4
-	LegoFloat m_unk0xc8;              // 0xc8
-	LegoFloat m_unk0xcc;              // 0xcc
-	LegoFloat m_unk0xd0;              // 0xd0
-	LegoFloat m_unk0xd4;              // 0xd4
-	LegoFloat m_unk0xd8;              // 0xd8
+	GolVec3 m_forward;                // 0x90
+	GolVec3 m_right;                  // 0x9c
+	GolVec3 m_up;                     // 0xa8
+	LegoFloat m_targetForwardSpeed;   // 0xb4
+	LegoFloat m_forwardSpeed;         // 0xb8
+	LegoFloat m_targetStrafeSpeed;    // 0xbc
+	LegoFloat m_strafeSpeed;          // 0xc0
+	LegoFloat m_yawRate;              // 0xc4
+	LegoFloat m_targetYawRate;        // 0xc8
+	LegoFloat m_pitchRate;            // 0xcc
+	LegoFloat m_targetPitchRate;      // 0xd0
+	LegoFloat m_zoomRate;             // 0xd4
+	LegoFloat m_targetZoomRate;       // 0xd8
 };
 
 #endif // OBSCURESIGIL0XDC

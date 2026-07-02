@@ -179,7 +179,7 @@ void RacerModelScreenBase::VTable0x98()
 
 			createParams.m_golExport = m_golExport;
 			createParams.m_renderer = m_renderer;
-			createParams.m_unk0x08 = &m_unk0x98c[i];
+			createParams.m_sceneView = &m_unk0x98c[i];
 			createParams.m_unk0x2c = slotPosition0;
 			m_unk0x1ddc[i].FUN_004875d0(&createParams);
 

@@ -49,7 +49,7 @@ void MainMenuScreen::FUN_00480e40()
 	::memset(&params, 0, sizeof(params));
 	params.m_golExport = m_golExport;
 	params.m_unk0x0c = &m_context->m_modelBuilder;
-	params.m_unk0x08 = &m_unk0x21f8;
+	params.m_sceneView = &m_unk0x21f8;
 	params.m_renderer = renderer;
 	params.m_position.m_x = 18.18122864f;
 	params.m_position.m_y = -10.62275887f;

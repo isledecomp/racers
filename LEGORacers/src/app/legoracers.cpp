@@ -62,7 +62,7 @@ LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
 	strncpy(m_context.m_raceSlots[0].m_raceName, "racec0r0", sizeof(m_context.m_raceSlots[0].m_raceName));
 	strncpy(m_context.m_raceSlots[0].m_folderName, "racec0r0", sizeof(m_context.m_raceSlots[0].m_folderName));
 	strncpy(m_context.m_circuitName, "c0", sizeof(m_context.m_circuitName));
-	m_context.m_unk0x18 = 1;
+	m_context.m_useBinaryFiles = 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042bb40

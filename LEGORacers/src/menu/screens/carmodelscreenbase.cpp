@@ -72,7 +72,7 @@ void CarModelScreenBase::FUN_00477050()
 	params.m_unk0x1c.m_y = 0.0f;
 	params.m_unk0x1c.m_z = 1.0f;
 	params.m_unk0x28 = 0.001f;
-	params.m_unk0x2c = m_context->m_context->m_unk0x18;
+	params.m_unk0x2c = m_context->m_context->m_useBinaryFiles;
 	m_unk0x2308.FUN_00477ae0(&params);
 
 	m_unk0x1e30.FUN_00465b40(&m_unk0x2308);

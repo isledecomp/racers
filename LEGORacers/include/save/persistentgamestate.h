@@ -16,9 +16,9 @@ struct PersistentGameState {
 	LegoU8 m_unk0x1e;                                  // 0x012
 	LegoU8 m_musicVolume;                              // 0x013
 	LegoU8 m_soundVolume;                              // 0x014
-	LegoU8 m_unk0x21;                                  // 0x015
+	LegoU8 m_stereo;                                   // 0x015
 	LegoU8 m_languageIndex;                            // 0x016
-	LegoU8 m_unk0x23;                                  // 0x017
+	LegoU8 m_lapCount;                                 // 0x017
 	LegoU8 m_partUnlockFlags;                          // 0x018
 	LegoU8 m_unlockedCircuits;                         // 0x019
 	LegoU16 m_unlockedRaces;                           // 0x01a

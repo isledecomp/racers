@@ -52,15 +52,15 @@ public:
 		m_state.m_soundVolume = p_soundVolume;
 		m_dirty = 1;
 	}
-	void SetUnk0x21(LegoU8 p_unk0x21)
+	void SetStereo(LegoU8 p_stereo)
 	{
-		m_state.m_unk0x21 = p_unk0x21;
+		m_state.m_stereo = p_stereo;
 		m_dirty = 1;
 	}
-	void SetUnk0x23(LegoU32 p_unk0x23)
+	void SetLapCount(LegoU32 p_lapCount)
 	{
 		m_dirty = 1;
-		m_state.m_unk0x23 = static_cast<LegoU8>(p_unk0x23);
+		m_state.m_lapCount = static_cast<LegoU8>(p_lapCount);
 	}
 	void SetInputBindingPlayer0Unk0x00(undefined4 p_unk0x00)
 	{
@@ -97,9 +97,9 @@ public:
 	LegoU8 GetRacerCount() const { return m_state.m_racerCount; }
 	LegoU8 GetMusicVolume() const { return m_state.m_musicVolume; }
 	LegoU8 GetSoundVolume() const { return m_state.m_soundVolume; }
-	LegoU8 GetUnk0x21() const { return m_state.m_unk0x21; }
+	LegoU8 GetStereo() const { return m_state.m_stereo; }
 	LegoU32 GetLanguageIndex() const { return m_state.m_languageIndex; }
-	LegoU8 GetUnk0x23() const { return m_state.m_unk0x23; }
+	LegoU8 GetLapCount() const { return m_state.m_lapCount; }
 	LegoU8 GetPartUnlockFlags() const;
 	LegoU8 GetUnlockedCircuits() const;
 

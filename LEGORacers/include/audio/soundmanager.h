@@ -37,15 +37,15 @@ public:
 	LegoFloat GetMusicVolumeScale() { return m_musicVolumeScale; }
 	void SetVolumeScale(LegoFloat p_volumeScale) { m_volumeScale = p_volumeScale; }
 	void SetMusicVolumeScale(LegoFloat p_musicVolumeScale) { m_musicVolumeScale = p_musicVolumeScale; }
-	void SetUnk0x04Flag0x04() { m_unk0x04 |= c_flagBit2; }
-	void ClearUnk0x04Flag0x04() { m_unk0x04 &= ~c_flagBit2; }
+	void SetMonoFlag() { m_flags |= c_flagMono; }
+	void ClearMonoFlag() { m_flags &= ~c_flagMono; }
 
 protected:
 	enum {
-		c_flagBit2 = 1 << 2,
+		c_flagMono = 1 << 2,
 	};
 
-	undefined4 m_unk0x04;          // 0x04
+	undefined4 m_flags;            // 0x04
 	SoundNode* m_soundNodes;       // 0x08
 	SoundNode* m_activeSoundNodes; // 0x0c
 	LegoFloat m_volumeScale;       // 0x10

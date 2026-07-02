@@ -78,7 +78,7 @@ void OptionsScreenBase::FUN_00482ef0()
 		m_unk0x3044.FUN_0046d9c0(&m_unk0x33a8[i]);
 	}
 
-	m_unk0x3044.VTable0x50(m_unk0x370->GetUnk0x23() - 1);
+	m_unk0x3044.VTable0x50(m_unk0x370->GetLapCount() - 1);
 	VTable0x44(&m_unk0x25bc);
 	FUN_00483730();
 }
@@ -228,19 +228,19 @@ void OptionsScreenBase::VTable0x44(MenuWidget* p_widget)
 		m_unk0x370->SetRacerCount(m_context->m_context->m_racerCount);
 	}
 	else if (p_widget == &m_unk0x25bc) {
-		m_context->m_context->m_unk0x2c = static_cast<LegoU8>(m_unk0x3044.GetUnk0x6c() + 1);
-		m_unk0x370->SetUnk0x23(m_context->m_context->m_unk0x2c);
+		m_context->m_context->m_lapCount = static_cast<LegoU8>(m_unk0x3044.GetUnk0x6c() + 1);
+		m_unk0x370->SetLapCount(m_context->m_context->m_lapCount);
 	}
 	else if (p_widget == &m_unk0x36f0) {
-		m_unk0x370->SetUnk0x21(m_unk0x40e4.GetUnk0x6c() == 0);
+		m_unk0x370->SetStereo(m_unk0x40e4.GetUnk0x6c() == 0);
 
 		SoundManager* soundManager = m_context->m_context->m_soundManager;
 		if (soundManager) {
-			if (m_unk0x370->GetUnk0x21()) {
-				soundManager->ClearUnk0x04Flag0x04();
+			if (m_unk0x370->GetStereo()) {
+				soundManager->ClearMonoFlag();
 			}
 			else {
-				soundManager->SetUnk0x04Flag0x04();
+				soundManager->SetMonoFlag();
 			}
 		}
 	}

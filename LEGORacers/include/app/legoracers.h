@@ -88,14 +88,14 @@ public:
 		LegoFloat m_cameraFov;                                              // 0x0c
 		LegoFloat m_cameraNearClip;                                         // 0x10
 		LegoFloat m_cameraFarClip;                                          // 0x14
-		undefined4 m_unk0x18;                                               // 0x18
+		undefined4 m_useBinaryFiles;                                        // 0x18
 		LegoU16 m_nextMenuId;                                               // 0x1c
 		LegoU8 m_flags;                                                     // 0x1e
 		undefined m_unk0x1f;                                                // 0x1f
-		LegoU32 m_unk0x20;                                                  // 0x20
+		LegoU32 m_cheatFlags;                                               // 0x20
 		undefined4 m_raceMode;                                              // 0x24
 		LegoU32 m_languageIndex;                                            // 0x28
-		undefined m_unk0x2c;                                                // 0x2c
+		undefined m_lapCount;                                               // 0x2c
 		GolName m_circuitName;                                              // 0x2d
 		undefined m_unk0x35[0x38 - 0x35];                                   // 0x35
 		RaceSlot m_raceSlots[4];                                            // 0x38

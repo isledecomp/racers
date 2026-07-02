@@ -1,3 +1,4 @@
+#include "app/cheatflags.h"
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
@@ -288,7 +289,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 	m_flame2Entity->VTable0x10(p_elapsedMs);
 
 	if (m_level == 2 && m_state == c_stateBoosting && m_smokeParticle == NULL && m_stateTimerMs < c_smokeWindowMs &&
-		!(m_manager->m_modeFlags & c_ownerFlags0x058Bit1)) {
+		!(m_manager->m_cheatFlags & c_flyskyhgh)) {
 		m_smokeParticle = m_particleAnimation->FUN_00489d70("trbsmke", NULL, NULL, NULL);
 	}
 
@@ -433,7 +434,7 @@ void RacePowerupManager::TurboAction::AdvanceState()
 		return;
 	}
 	case c_stateBoosting:
-		if (m_level == 2 && (m_manager->m_modeFlags & c_ownerFlags0x058Bit1)) {
+		if (m_level == 2 && (m_manager->m_cheatFlags & c_flyskyhgh)) {
 			m_stateTimerMs = c_boostDurationL2Ms;
 			m_state = c_stateBoosting;
 			return;

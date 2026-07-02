@@ -1057,7 +1057,6 @@ public:
 			c_soundEnd = 0x28,
 			c_soundWhoosh = 0x41,
 			c_soundEndL2 = 0x4b,
-			c_ownerFlags0x058Bit1 = 1 << 1,
 			c_racerFlags0xd04Bit3 = 1 << 3,
 		};
 
@@ -1351,7 +1350,7 @@ private:
 		GolWorldDatabase* m_trackDatabase;           // 0x2c
 		TargetPointList* m_targetPoints;             // 0x30
 		LegoFloat m_cameraFov;                       // 0x34
-		undefined4 m_modeFlags;                      // 0x38
+		undefined4 m_cheatFlags;                     // 0x38
 	};
 
 	friend class RaceSession;
@@ -1440,7 +1439,7 @@ private:
 	MenuAnimationList* m_animationList;               // 0x04c
 	TargetPointList* m_targetPoints;                  // 0x050
 	LegoFloat m_cameraFov;                            // 0x054
-	undefined4 m_modeFlags;                           // 0x058
+	undefined4 m_cheatFlags;                          // 0x058
 	GolWorldDatabase* m_worldDatabase;                // 0x05c
 	GolWorldDatabase* m_trackDatabase;                // 0x060
 	GolWorldDatabase* m_turbo3Database;               // 0x064

@@ -199,29 +199,29 @@ void MenuGameScreen::FUN_0047ff50(MenuGameContext* p_context, undefined4 p_binar
 	LegoColorTable* pieceResource;
 
 	if (p_binary) {
-		pieceLibrary->FUN_0049ee30("LPieceHi.leg", p_context->m_context->m_unk0x18);
+		pieceLibrary->FUN_0049ee30("LPieceHi.leg", p_context->m_context->m_useBinaryFiles);
 		pieceResource = &p_context->m_unk0x4224;
 		pieceResource->Initialize(golExport, renderer);
-		pieceResource->LoadMaterials("LPieceHi.WDF", p_context->m_context->m_unk0x18, TRUE);
+		pieceResource->LoadMaterials("LPieceHi.WDF", p_context->m_context->m_useBinaryFiles, TRUE);
 	}
 	else {
-		pieceLibrary->FUN_0049ee30("LPieceLo.leg", p_context->m_context->m_unk0x18);
+		pieceLibrary->FUN_0049ee30("LPieceLo.leg", p_context->m_context->m_useBinaryFiles);
 		pieceResource = &p_context->m_unk0x4224;
 		pieceResource->Initialize(golExport, renderer);
-		pieceResource->LoadMaterials("LPieceLo.WDF", p_context->m_context->m_unk0x18, TRUE);
+		pieceResource->LoadMaterials("LPieceLo.WDF", p_context->m_context->m_useBinaryFiles, TRUE);
 	}
 
-	pieceResource->LoadColors("L_Colors.LEG", p_context->m_context->m_unk0x18);
+	pieceResource->LoadColors("L_Colors.LEG", p_context->m_context->m_useBinaryFiles);
 	p_context->m_unk0x21f4.Initialize(golExport, renderer, pieceLibrary, pieceResource);
 	p_context->m_unk0x21f4.FindHighBasePiece();
-	p_context->m_unk0x21a4.Load("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_unk0x18);
+	p_context->m_unk0x21a4.Load("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_useBinaryFiles);
 
 	ChassisModelTable::Params params;
 	params.m_golExport = golExport;
 	params.m_renderer = renderer;
 	params.m_instantiateCount = -1;
 	params.m_filename = "chassis.cmf";
-	params.m_binary = p_context->m_context->m_unk0x18;
+	params.m_binary = p_context->m_context->m_useBinaryFiles;
 
 	p_context->m_chassisModels.FUN_0041db10(&params);
 	p_context->m_chassisModels.InstantiateAllModels();
@@ -263,7 +263,7 @@ void MenuGameScreen::FUN_00480110(LegoS32 p_entryCapacity)
 	chassisParams.m_renderer = renderer;
 	chassisParams.m_instantiateCount = p_entryCapacity;
 	chassisParams.m_filename = "chassis.cmf";
-	chassisParams.m_binary = m_context->m_context->m_unk0x18;
+	chassisParams.m_binary = m_context->m_context->m_useBinaryFiles;
 	m_context->m_chassisModels.FUN_0041db10(&chassisParams);
 
 	ChampionDefinitionList::LoadParams championParams;
@@ -271,7 +271,7 @@ void MenuGameScreen::FUN_00480110(LegoS32 p_entryCapacity)
 	championParams.m_renderer = renderer;
 	championParams.m_entryCapacity = p_entryCapacity;
 	championParams.m_fileName = "champs.ccf";
-	championParams.m_binary = m_context->m_context->m_unk0x18;
+	championParams.m_binary = m_context->m_context->m_useBinaryFiles;
 	m_context->m_championDefinitions.FUN_0041d370(&championParams);
 
 	if (g_hashTable) {
@@ -302,11 +302,11 @@ void MenuGameScreen::FUN_00480210(MenuGameContext* p_context, undefined4 p_unk0x
 	memset(&resourceParams, 0, sizeof(resourceParams));
 	memset(&menuResourceParams, 0, sizeof(menuResourceParams));
 
-	p_context->m_partCatalog.Load("bodypart.pcf", p_context->m_context->m_unk0x18);
+	p_context->m_partCatalog.Load("bodypart.pcf", p_context->m_context->m_useBinaryFiles);
 	resourceParams.m_golExport = p_context->m_context->m_golApp->GetGolExport();
 	resourceParams.m_renderer = p_context->m_context->m_golApp->GetRenderer();
 	resourceParams.m_partCatalog = &p_context->m_partCatalog;
-	resourceParams.m_binary = p_context->m_context->m_unk0x18;
+	resourceParams.m_binary = p_context->m_context->m_useBinaryFiles;
 	resourceParams.m_textureBinaryMode = TRUE;
 	p_context->m_partResources.Load(&resourceParams, p_unk0x08);
 
@@ -333,7 +333,7 @@ void MenuGameScreen::FUN_00480310()
 	params.m_renderer = m_context->m_context->m_golApp->GetRenderer();
 	params.m_entryCapacity = 0;
 	params.m_filename = "drivers.ddf";
-	params.m_binary = m_context->m_context->m_unk0x18;
+	params.m_binary = m_context->m_context->m_useBinaryFiles;
 	m_context->m_cosmeticTable.Load(&params);
 
 	if (g_hashTable) {

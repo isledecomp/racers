@@ -1,6 +1,7 @@
 #include "menu/menumanager.h"
 
 #include "amethystbreeze0x104.h"
+#include "app/cheatflags.h"
 #include "audio/musicinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
@@ -310,7 +311,7 @@ void MenuManager::LoadMenuImages()
 		m_fontTable = m_golExport->CreateFontTable();
 	}
 
-	m_imageTable->LoadImageDefinitions(m_renderer, "GImages", m_unk0x04.m_context->m_unk0x18);
+	m_imageTable->LoadImageDefinitions(m_renderer, "GImages", m_unk0x04.m_context->m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x0042d080
@@ -372,8 +373,8 @@ void MenuManager::LoadMenuData()
 	GolStringTable* raceStrings = &m_raceStrings;
 	CircuitDefinitionList* circuitList = &m_unk0x04.m_circuitList;
 
-	circuitList->Load(raceStrings, "LEGORace", m_unk0x04.m_context->m_unk0x18);
-	m_unk0x04.m_raceNames.Load(raceStrings, circuitList, "LEGORace", m_unk0x04.m_context->m_unk0x18);
+	circuitList->Load(raceStrings, "LEGORace", m_unk0x04.m_context->m_useBinaryFiles);
+	m_unk0x04.m_raceNames.Load(raceStrings, circuitList, "LEGORace", m_unk0x04.m_context->m_useBinaryFiles);
 	m_unk0x4bcc.Initialize();
 	m_unk0x04.m_menuAnimations.Allocate(2);
 
@@ -414,7 +415,7 @@ LegoBool32 MenuManager::LoadLocalizedMenuResources(LegoU32 p_languageIndex, Lego
 
 		menuTextStrings->Load("menutext.srf");
 		raceStrings->Load("circuit.srf");
-		m_fontTable->LoadFontDefinitions(m_renderer, "GFonts", m_unk0x04.m_context->m_unk0x18);
+		m_fontTable->LoadFontDefinitions(m_renderer, "GFonts", m_unk0x04.m_context->m_useBinaryFiles);
 
 		if (g_hashTable) {
 			g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -424,7 +425,7 @@ LegoBool32 MenuManager::LoadLocalizedMenuResources(LegoU32 p_languageIndex, Lego
 		params.m_renderer = m_renderer;
 		params.m_unk0x04 = 0;
 		params.m_fileName = "gstyles";
-		params.m_binary = m_unk0x04.m_context->m_unk0x18;
+		params.m_binary = m_unk0x04.m_context->m_useBinaryFiles;
 		p_forceReload = m_menuStyles.Load(&params);
 	}
 
@@ -445,7 +446,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	m_unk0x4d98.m_soundGroupBinding = &m_soundGroupBinding;
 	m_unk0x4d98.m_menuStyles = &m_menuStyles;
 	m_unk0x4d98.m_menuId = p_menuId;
-	m_unk0x4d98.m_unk0x2c = m_unk0x04.m_context->m_unk0x18;
+	m_unk0x4d98.m_unk0x2c = m_unk0x04.m_context->m_useBinaryFiles;
 	m_unk0x4d98.m_unk0x20 = &m_unk0x4bd0;
 	m_unk0x4d98.m_cursor = m_inputDispatcher.GetCursor();
 	m_unk0x4d98.m_menuNameStrings = &m_menuNameStrings;
@@ -563,7 +564,7 @@ void MenuManager::FUN_0042d730()
 
 	if (context->m_raceMode == LegoRacers::Context::c_raceModeCircuit ||
 		context->m_raceMode == LegoRacers::Context::c_raceModeTimeRace) {
-		context->m_unk0x20 = 0;
+		context->m_cheatFlags = 0;
 	}
 
 	for (LegoU32 saveIndex = 0; saveIndex < m_unk0x04.m_saveSystem.GetSessionSave().GetRecordCount(); saveIndex++) {
@@ -608,7 +609,7 @@ void MenuManager::FUN_0042d730()
 		context->m_circuitName[2] = '\0';
 	}
 
-	if ((context->m_unk0x20 & 0x20) && ::strcmp(context->m_circuitName, "c6") == 0) {
+	if ((context->m_cheatFlags & c_lnfrrrm) && ::strcmp(context->m_circuitName, "c6") == 0) {
 		context->m_raceSlots[0].m_mirror = 1;
 	}
 
@@ -663,10 +664,10 @@ void MenuManager::FUN_0042d730()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
 	}
 
-	m_unk0x04.m_pieceLibrary.FUN_0049ee30("LPieceLo.leg", context->m_unk0x18);
+	m_unk0x04.m_pieceLibrary.FUN_0049ee30("LPieceLo.leg", context->m_useBinaryFiles);
 	m_unk0x04.m_unk0x4224.Initialize(m_golExport, m_renderer);
-	m_unk0x04.m_unk0x4224.LoadMaterials("LPieceLo.WDF", context->m_unk0x18, FALSE);
-	m_unk0x04.m_unk0x4224.LoadColors("L_Colors.LEG", context->m_unk0x18);
+	m_unk0x04.m_unk0x4224.LoadMaterials("LPieceLo.WDF", context->m_useBinaryFiles, FALSE);
+	m_unk0x04.m_unk0x4224.LoadColors("L_Colors.LEG", context->m_useBinaryFiles);
 	m_unk0x04.m_unk0x21f4.Initialize(m_golExport, m_renderer, &m_unk0x04.m_pieceLibrary, &m_unk0x04.m_unk0x4224);
 
 	if (g_hashTable) {
@@ -820,13 +821,13 @@ void MenuManager::FUN_0042de90(LegoBool32 p_arg)
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
 	}
 
-	m_unk0x04.m_partCatalog.Load("bodypart.pcf", m_unk0x04.m_context->m_unk0x18);
+	m_unk0x04.m_partCatalog.Load("bodypart.pcf", m_unk0x04.m_context->m_useBinaryFiles);
 
 	DriverPartResources::LoadParams partParams;
 	partParams.m_golExport = m_unk0x04.m_context->m_golApp->GetGolExport();
 	partParams.m_renderer = m_unk0x04.m_context->m_golApp->GetRenderer();
 	partParams.m_partCatalog = &m_unk0x04.m_partCatalog;
-	partParams.m_binary = m_unk0x04.m_context->m_unk0x18;
+	partParams.m_binary = m_unk0x04.m_context->m_useBinaryFiles;
 	partParams.m_textureBinaryMode = p_arg == FALSE;
 	m_unk0x04.m_partResources.Load(&partParams, p_arg);
 
@@ -940,7 +941,7 @@ void MenuManager::FUN_0042e1f0()
 	GameState& state = m_unk0x04.m_saveSystem.GetGameState();
 
 	m_unk0x04.m_context->m_racerCount = state.GetRacerCount();
-	m_unk0x04.m_context->m_unk0x2c = state.GetUnk0x23();
+	m_unk0x04.m_context->m_lapCount = state.GetLapCount();
 
 	if (m_unk0x04.m_context->GetSoundManager() != NULL) {
 		musicVolume = state.GetMusicVolume() * g_unk0x4b05d8;
@@ -952,11 +953,11 @@ void MenuManager::FUN_0042e1f0()
 		m_unk0x04.m_context->GetSoundManager()->SetMusicVolumeScale(musicVolume);
 		m_unk0x04.m_context->GetSoundManager()->SetVolumeScale(state.GetSoundVolume() * g_unk0x4b05d8);
 
-		if (state.GetUnk0x21()) {
-			m_unk0x04.m_context->GetSoundManager()->ClearUnk0x04Flag0x04();
+		if (state.GetStereo()) {
+			m_unk0x04.m_context->GetSoundManager()->ClearMonoFlag();
 		}
 		else {
-			m_unk0x04.m_context->GetSoundManager()->SetUnk0x04Flag0x04();
+			m_unk0x04.m_context->GetSoundManager()->SetMonoFlag();
 		}
 	}
 

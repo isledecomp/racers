@@ -111,7 +111,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	DriverCosmetics cosmetics;
 	p_context->m_cosmeticTable.CopyCosmetics(g_unk0x004c214c[index], &cosmetics);
 	m_unk0x22dc.FUN_0047e210(&cosmetics);
-	m_unk0x22dc.GetUnk0x118()->VTable0x14("legoman", p_context->m_context->m_unk0x18);
+	m_unk0x22dc.GetUnk0x118()->VTable0x14("legoman", p_context->m_context->m_useBinaryFiles);
 	m_unk0x2438->FUN_0040dad0(0);
 	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() | 0x10000);
 	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() & ~0x40000);

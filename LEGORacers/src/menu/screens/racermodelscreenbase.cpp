@@ -87,7 +87,7 @@ void RacerModelScreenBase::FUN_00485bb0()
 		m_unk0x4fc[i].SetPrimaryMaterialTable(m_context->m_unk0x4224.GetMaterialTable());
 	}
 
-	m_modelParts.VTable0x14("rsanim", m_context->m_context->m_unk0x18);
+	m_modelParts.VTable0x14("rsanim", m_context->m_context->m_useBinaryFiles);
 }
 
 // STUB: LEGORACERS 0x00485c80

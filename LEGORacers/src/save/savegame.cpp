@@ -279,9 +279,9 @@ void SaveGame::WritePersistentGameState(PersistentGameState* p_state)
 	m_fileImage[c_persistentHeaderOffset + 0x12] = p_state->m_unk0x1e;
 	m_fileImage[c_persistentHeaderOffset + 0x13] = p_state->m_musicVolume;
 	m_fileImage[c_persistentHeaderOffset + 0x14] = p_state->m_soundVolume;
-	m_fileImage[c_persistentHeaderOffset + 0x15] = p_state->m_unk0x21;
+	m_fileImage[c_persistentHeaderOffset + 0x15] = p_state->m_stereo;
 	m_fileImage[c_persistentHeaderOffset + 0x16] = p_state->m_languageIndex;
-	m_fileImage[c_persistentHeaderOffset + 0x17] = p_state->m_unk0x23;
+	m_fileImage[c_persistentHeaderOffset + 0x17] = p_state->m_lapCount;
 
 	dest = &m_fileImage[c_inputBindingHeaderOffset + 1];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {

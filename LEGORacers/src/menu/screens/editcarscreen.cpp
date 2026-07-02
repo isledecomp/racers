@@ -231,7 +231,7 @@ void EditCarScreen::FUN_0047c400(MenuGameContext* p_context, MenuScreenCreatePar
 	g_editCarImageList->LoadImageDefinitions(
 		p_createParams->m_renderer,
 		"Builder",
-		static_cast<LegoBool32>(p_context->m_context->m_unk0x18)
+		static_cast<LegoBool32>(p_context->m_context->m_useBinaryFiles)
 	);
 }
 

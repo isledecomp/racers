@@ -60,7 +60,7 @@ void EditDriverScreen::FUN_0047d100(MenuGameContext* p_context, MenuScreenCreate
 	params.m_renderer = p_createParams->m_renderer;
 	params.m_golExport = p_createParams->m_golExport;
 	params.m_partCatalog = &p_context->m_partCatalog;
-	params.m_binary = p_context->m_context->m_unk0x18;
+	params.m_binary = p_context->m_context->m_useBinaryFiles;
 	params.m_partLibrary = p_context->m_partResources.GetPartLibrary();
 	m_headBuilder.Load(&params, 2);
 }
@@ -170,7 +170,7 @@ LegoBool32 EditDriverScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCr
 	materialColor.m_alp = 0xff;
 	FUN_0047fec0(&materialColor, &lightColor);
 
-	m_unk0x4600.GetUnk0x118()->VTable0x14("cbanim", p_context->m_context->m_unk0x18);
+	m_unk0x4600.GetUnk0x118()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
 	p_context->m_unk0x21f4.FUN_00499f00();
 	FUN_0047d100(p_context, p_createParams);
 	FUN_0047d840();

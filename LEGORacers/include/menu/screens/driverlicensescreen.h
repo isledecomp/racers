@@ -1,6 +1,7 @@
 #ifndef DRIVERLICENSESCREEN_H
 #define DRIVERLICENSESCREEN_H
 
+#include "app/cheatflags.h"
 #include "compat.h"
 #include "decomp.h"
 #include "golstring.h"
@@ -46,22 +47,6 @@ protected:
 	void FUN_0047b750();
 	undefined2* GetCheatBuffer() { return m_unk0x1f1c.GetUnk0x300(); }
 	DriverCosmetics& GetUnk0x2244() { return *m_unk0x1f1c.GetUnk0x328(); }
-
-	enum {
-		c_nslwj = 1 << 0,
-		c_flyskyhgh = 1 << 1,
-		c_pgllrd = 1 << 2,
-		c_pgllyll = 1 << 3,
-		c_pgllgrn = 1 << 4,
-		c_lnfrrrm = 1 << 5,
-		c_rpcrnly = 1 << 6,
-		c_mxpmx = 1 << 7,
-		c_fstfrwrd = 1 << 8,
-		c_nwhls = 1 << 9,
-		c_nchsss = 1 << 10,
-		c_ndrvr = 1 << 11,
-		c_nmrchts = 1 << 12
-	};
 
 	enum {
 		c_cheatBufferLength = 14,

@@ -1744,7 +1744,7 @@ private:
 	LegoU32 m_frameCount;                   // 0x333c
 	LegoU32 m_unk0x3340;                    // 0x3340
 	LegoFloat m_fps;                        // 0x3344
-	undefined m_unk0x3348;                  // 0x3348
+	undefined m_lapCount;                   // 0x3348
 	undefined m_unk0x3349[0x334c - 0x3349]; // 0x3349
 	undefined4 m_unk0x334c;                 // 0x334c
 	undefined4 m_unk0x3350;                 // 0x3350

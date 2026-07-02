@@ -10,7 +10,7 @@ LegoFloat g_defaultSoundManagerVolumeScale = 1.0f;
 // FUNCTION: LEGORACERS 0x00417a30
 SoundManager::SoundManager()
 {
-	m_unk0x04 = 0;
+	m_flags = 0;
 	m_activeSoundNodes = NULL;
 	m_soundNodes = NULL;
 	m_volumeScale = g_defaultSoundManagerVolumeScale;
@@ -26,7 +26,7 @@ SoundManager::~SoundManager()
 // FUNCTION: LEGORACERS 0x00417a90
 void SoundManager::Shutdown()
 {
-	m_unk0x04 = 0;
+	m_flags = 0;
 	m_activeSoundNodes = NULL;
 	m_volumeScale = g_defaultSoundManagerVolumeScale;
 	m_musicVolumeScale = g_defaultSoundManagerVolumeScale;

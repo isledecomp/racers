@@ -59,7 +59,7 @@ void RaceModeRunner::Initialize(LegoRacers::Context* p_context)
 		m_timeRaceManager.Initialize(
 			p_context->m_golApp->GetRenderer(),
 			p_context->m_golApp->GetGolExport(),
-			p_context->m_unk0x18,
+			p_context->m_useBinaryFiles,
 			p_context->m_raceSlots[0].m_mirror
 		);
 	}

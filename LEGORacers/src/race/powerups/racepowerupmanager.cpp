@@ -1,3 +1,4 @@
+#include "app/cheatflags.h"
 #include "audio/spatialsoundinstance.h"
 #include "cmbmodelpart0x34.h"
 #include "decomp.h"
@@ -556,7 +557,7 @@ void RacePowerupManager::Initialize(const Params* p_params)
 	m_animationList = p_params->m_animationList;
 	m_targetPoints = p_params->m_targetPoints;
 	m_cameraFov = p_params->m_cameraFov;
-	m_modeFlags = p_params->m_modeFlags;
+	m_cheatFlags = p_params->m_cheatFlags;
 }
 
 // FUNCTION: LEGORACERS 0x00457c90
@@ -853,11 +854,11 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 			token = p_parser->GetNextToken();
 		}
 
-		if (!(m_modeFlags & 0x44)) {
-			if (m_modeFlags & 8) {
+		if (!(m_cheatFlags & (c_pgllrd | c_rpcrnly))) {
+			if (m_cheatFlags & c_pgllyll) {
 				state = 4;
 			}
-			else if (m_modeFlags & 0x10) {
+			else if (m_cheatFlags & c_pgllgrn) {
 				state = i * sizeof(ColorBrick);
 			}
 		}

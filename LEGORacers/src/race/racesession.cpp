@@ -170,7 +170,7 @@ void RaceSession::FUN_00431bd0()
 	m_unk0x30c0 = 0;
 	m_unk0x335c = 0;
 	m_unk0x3360 = 0;
-	m_unk0x3348 = 0;
+	m_lapCount = 0;
 	m_timeRaceManager = NULL;
 }
 
@@ -183,7 +183,7 @@ void RaceSession::Initialize(
 )
 {
 	GolFileParser* parser;
-	if (p_context->m_unk0x18) {
+	if (p_context->m_useBinaryFiles) {
 		parser = new GolBinParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -343,7 +343,7 @@ void RaceSession::Initialize(
 		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
 	}
 
-	m_unk0x280c.FUN_0042f480(m_golExport, m_renderer, &m_unk0x30f0, m_unk0x2d7c, p_context->m_unk0x18);
+	m_unk0x280c.FUN_0042f480(m_golExport, m_renderer, &m_unk0x30f0, m_unk0x2d7c, p_context->m_useBinaryFiles);
 	m_golApp->ClearFlags(GolApp::c_flagBit14);
 	FUN_00435ba0(0.0f);
 
@@ -514,11 +514,11 @@ void RaceSession::FUN_004327f0(LegoRacers::Context* p_context)
 
 	if (m_unk0x3354) {
 		m_renderer->VTable0x34(3, &g_unk0x004bee64[1]);
-		m_unk0x3348 = m_context->m_unk0x2c;
+		m_lapCount = m_context->m_lapCount;
 	}
 	else {
 		m_renderer->VTable0x34(1, g_unk0x004bee64);
-		m_unk0x3348 = 3;
+		m_lapCount = 3;
 	}
 
 	if (!m_context->m_playerCount) {
@@ -705,7 +705,7 @@ void RaceSession::FUN_00432bc0()
 	m_unk0x2d80.CopyFromBufSelection(m_unk0x2d8c, 0x100);
 
 	m_unk0x2d74 = m_golExport->CreateFontTable();
-	m_unk0x2d74->LoadFontDefinitions(m_renderer, &m_unk0x17a, m_context->m_unk0x18);
+	m_unk0x2d74->LoadFontDefinitions(m_renderer, &m_unk0x17a, m_context->m_useBinaryFiles);
 	m_unk0x2d78 = m_unk0x2d74->GetItem(0);
 	m_unk0x2d7c = m_unk0x2d74->GetItem(0);
 }
@@ -728,7 +728,7 @@ void RaceSession::FUN_00432d70()
 void RaceSession::FUN_00432dc0()
 {
 	m_unk0x2f8c = m_golExport->VTable0x34();
-	m_unk0x2f8c->LoadImageDefinitions(m_renderer, &m_unk0x187, m_context->m_unk0x18);
+	m_unk0x2f8c->LoadImageDefinitions(m_renderer, &m_unk0x187, m_context->m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x00432df0
@@ -746,7 +746,7 @@ void RaceSession::FUN_00432df0()
 void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
 {
 	m_unk0x39c = m_golExport->VTable0x08();
-	m_unk0x39c->VTable0x14(m_renderer, &m_unk0x83, m_context->m_unk0x18, 1.0f);
+	m_unk0x39c->VTable0x14(m_renderer, &m_unk0x83, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_unk0x39c->FUN_00416140();
 	}
@@ -759,7 +759,7 @@ void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
 	}
 
 	m_unk0x390 = m_golExport->VTable0x08();
-	m_unk0x390->VTable0x14(m_renderer, &m_unk0x5c, m_context->m_unk0x18, 1.0f);
+	m_unk0x390->VTable0x14(m_renderer, &m_unk0x5c, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_unk0x390->FUN_00416140();
 	}
@@ -772,7 +772,7 @@ void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
 	FUN_00435ba0(0.26f);
 
 	m_unk0x3a0 = m_golExport->VTable0x08();
-	m_unk0x3a0->VTable0x14(m_renderer, &m_unk0x9d, m_context->m_unk0x18, 1.0f);
+	m_unk0x3a0->VTable0x14(m_renderer, &m_unk0x9d, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_unk0x3a0->FUN_00416140();
 	}
@@ -794,14 +794,14 @@ void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
 	FUN_00435ba0(0.38f);
 
 	m_unk0x398 = m_golExport->VTable0x08();
-	m_unk0x398->VTable0x14(m_renderer, &m_unk0x76, m_context->m_unk0x18, 1.0f);
+	m_unk0x398->VTable0x14(m_renderer, &m_unk0x76, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_unk0x398->FUN_00416140();
 	}
 	FUN_00435ba0(0.4f);
 
 	m_unk0x3a4 = m_golExport->VTable0x08();
-	m_unk0x3a4->VTable0x14(m_renderer, &m_unk0x90, m_context->m_unk0x18, 1.0f);
+	m_unk0x3a4->VTable0x14(m_renderer, &m_unk0x90, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_unk0x3a4->FUN_00416140();
 	}
@@ -860,7 +860,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 			fileName[6] = '.';
 			fileName[7] = 'r';
 			fileName[8] = 'r';
-			fileName[9] = m_context->m_unk0x18 ? 'b' : 'f';
+			fileName[9] = m_context->m_useBinaryFiles ? 'b' : 'f';
 			fileName[10] = '\0';
 
 			LegoU32 frontCount = 0;
@@ -914,7 +914,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 				}
 				fileName[5] = static_cast<LegoChar>(index + '0');
 
-				current->Load(fileName, m_context->m_unk0x18, p_mirror);
+				current->Load(fileName, m_context->m_useBinaryFiles, p_mirror);
 			}
 		}
 
@@ -929,7 +929,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 
 	if (!loaded) {
 		::strcpy(fileName, "r1_f_0");
-		::strcat(fileName, m_context->m_unk0x18 ? ".rrb" : ".rrf");
+		::strcat(fileName, m_context->m_useBinaryFiles ? ".rrb" : ".rrf");
 
 		LegoBool32 foundFallback = GolStream::FindFile(fileName) == GolStream::e_ioSuccess;
 		if (!foundFallback) {
@@ -943,7 +943,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 		}
 
 		if (foundFallback) {
-			m_routeRecords[0].Load(fileName, m_context->m_unk0x18, p_mirror);
+			m_routeRecords[0].Load(fileName, m_context->m_useBinaryFiles, p_mirror);
 		}
 	}
 }
@@ -963,7 +963,7 @@ void RaceSession::FUN_00433460()
 void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 {
 	if (m_unk0x1c8) {
-		m_unk0x27f4.FUN_0041e770(&m_unk0x1c8, m_context->m_unk0x18, p_mirror);
+		m_unk0x27f4.FUN_0041e770(&m_unk0x1c8, m_context->m_useBinaryFiles, p_mirror);
 		FUN_00435e70();
 	}
 
@@ -977,7 +977,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	FUN_00435ba0(0.45f);
 
 	MabMaterialAnimation0x14* materialAnimation = m_unk0x3a4->VTable0x4c(0);
-	m_unk0x248c.FUN_00489af0(4, m_golExport, m_renderer, materialAnimation, &m_unk0x139, m_context->m_unk0x18);
+	m_unk0x248c.FUN_00489af0(4, m_golExport, m_renderer, materialAnimation, &m_unk0x139, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.48f);
 
@@ -993,7 +993,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.54f);
 
-	m_raceState.FUN_0043bc10(&m_unk0x194, m_context->m_unk0x18, p_mirror);
+	m_raceState.FUN_0043bc10(&m_unk0x194, m_context->m_useBinaryFiles, p_mirror);
 
 	FUN_00435ba0(0.56f);
 
@@ -1016,13 +1016,13 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	racerContext.m_unk0x2c = &m_unk0x27e0;
 	racerContext.m_unk0x30 = TRUE;
 	racerContext.m_racerField0x010 = &m_unk0x27f4;
-	racerContext.m_flags0x3c = m_context->m_unk0x20;
+	racerContext.m_flags0x3c = m_context->m_cheatFlags;
 
 	racerParams.m_racerCount = m_context->m_racerCount;
 	racerParams.m_routeRecords = m_routeRecords;
 	racerParams.m_timeRaceManager = m_timeRaceManager;
 	racerParams.m_unk0x3c = m_unk0x3354;
-	racerParams.m_lapCount = m_unk0x3348;
+	racerParams.m_lapCount = m_lapCount;
 
 	LegoU32 racerIndex;
 	RaceRouteRecord* routeRecord = m_routeRecords;
@@ -1048,7 +1048,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		);
 	}
 
-	m_raceState.FUN_0043b190(&racerParams, &racerContext, m_context->m_unk0x18);
+	m_raceState.FUN_0043b190(&racerParams, &racerContext, m_context->m_useBinaryFiles);
 
 	if (p_mirror) {
 		m_raceState.SetUnk0x284Unk0x0c(g_mirroredRaceStateRouteScale);
@@ -1076,7 +1076,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 			cameraController->FUN_004282a0(&m_unk0x204, &m_unk0x210);
 		}
 
-		g_unk0x004bef70 = m_unk0x3348;
+		g_unk0x004bef70 = m_lapCount;
 	}
 
 	if (m_unk0x3350) {
@@ -1096,12 +1096,12 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.7f);
 
-	m_unk0x2f90.FUN_0041c550(m_renderer, m_golExport, &m_unk0x1a1, &m_unk0x69, m_context->m_unk0x18);
+	m_unk0x2f90.FUN_0041c550(m_renderer, m_golExport, &m_unk0x1a1, &m_unk0x69, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.75f);
 
 	if (m_unk0x1e2) {
-		m_unk0x2804.Load(&m_unk0x1e2, m_context->m_unk0x18, p_mirror);
+		m_unk0x2804.Load(&m_unk0x1e2, m_context->m_useBinaryFiles, p_mirror);
 	}
 
 	params.m_unk0x00 = m_unk0x390;
@@ -1115,7 +1115,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	params.m_unk0x20 = &m_unk0x2f90;
 	params.m_unk0x24 = &m_unk0x2804;
 	params.m_name = &m_unk0x105;
-	params.m_binary = m_context->m_unk0x18;
+	params.m_binary = m_context->m_useBinaryFiles;
 	params.m_mirror = p_mirror;
 	m_unk0x2098.FUN_0045efa0(&params);
 
@@ -1138,7 +1138,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	dispatcherContext.m_unk0x38 = &m_unk0x6dc;
 	dispatcherContext.m_unk0x3c = &m_trailManager;
 	dispatcherContext.m_unk0x40 = p_mirror;
-	m_unk0x2148.FUN_0048a4d0(&dispatcherContext, &m_unk0x1bb, m_context->m_unk0x18);
+	m_unk0x2148.FUN_0048a4d0(&dispatcherContext, &m_unk0x1bb, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.8f);
 
@@ -1151,7 +1151,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		m_unk0x3a0,
 		&m_unk0x32c4,
 		&m_unk0xf8,
-		m_context->m_unk0x18,
+		m_context->m_useBinaryFiles,
 		p_mirror
 	);
 
@@ -1161,14 +1161,18 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		m_raceState.GetEventQueue(),
 		m_unk0x2098.GetEventTable(),
 		&m_unk0x112,
-		m_context->m_unk0x18,
+		m_context->m_useBinaryFiles,
 		p_mirror
 	);
 
 	FUN_00435ba0(0.86f);
 
-	m_unk0x213c
-		.FUN_00464aa0(m_raceState.GetEventQueue(), m_unk0x2098.GetEventTable(), &m_unk0x11f, m_context->m_unk0x18);
+	m_unk0x213c.FUN_00464aa0(
+		m_raceState.GetEventQueue(),
+		m_unk0x2098.GetEventTable(),
+		&m_unk0x11f,
+		m_context->m_useBinaryFiles
+	);
 
 	FUN_00435ba0(0.88f);
 
@@ -1237,7 +1241,8 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	field0x30c4Params.m_unk0x28 = &m_unk0x2098;
 	m_unk0x30c4.FUN_0043a690(&field0x30c4Params);
 
-	m_unk0x2150.FUN_00489af0(10, m_golExport, m_renderer, m_unk0x39c->VTable0x4c(0), &m_unk0x12c, m_context->m_unk0x18);
+	m_unk0x2150
+		.FUN_00489af0(10, m_golExport, m_renderer, m_unk0x39c->VTable0x4c(0), &m_unk0x12c, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.93f);
 
@@ -1255,10 +1260,10 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	powerupParams.m_trackDatabase = m_unk0x3a8;
 	powerupParams.m_targetPoints = &m_unk0x2804;
 	powerupParams.m_cameraFov = m_unk0x3354 ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
-	powerupParams.m_modeFlags = m_context->m_unk0x20;
+	powerupParams.m_cheatFlags = m_context->m_cheatFlags;
 	m_unk0x6dc.Initialize(&powerupParams);
 
-	m_unk0x6dc.LoadDatabases(&m_unk0xd1, &m_unk0xde, m_context->m_unk0x18);
+	m_unk0x6dc.LoadDatabases(&m_unk0xd1, &m_unk0xde, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.97f);
 
@@ -1277,7 +1282,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		(&m_unk0xc4)[nameLength + 1] = 0;
 	}
 
-	m_unk0x6dc.LoadPowerupFile(&m_unk0xc4, m_context->m_unk0x18, p_mirror);
+	m_unk0x6dc.LoadPowerupFile(&m_unk0xc4, m_context->m_useBinaryFiles, p_mirror);
 	m_unk0x6dc.PreparePools(!m_unk0x3354);
 	m_unk0x6dc.CreatePools();
 	m_unk0x6dc.ClearBricksAudible();
@@ -1839,7 +1844,7 @@ void RaceSession::FUN_00434c80()
 	if (m_context->m_racerCount > 0) {
 		do {
 			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
-			if (racer->m_lapsCompleted >= m_unk0x3348 && !(racer->m_unk0xd04 & 0x1000)) {
+			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_unk0xd04 & 0x1000)) {
 				racer->m_unk0xd04 |= 0x1000;
 
 				if (m_standings) {
@@ -1960,7 +1965,7 @@ void RaceSession::FUN_00434eb0()
 	if (m_context->m_racerCount > 0) {
 		RaceState::Racer* racer = m_raceState.GetRacers();
 		do {
-			if (racer->m_lapsCompleted >= m_unk0x3348 && !(racer->m_unk0xd04 & 0x1000)) {
+			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_unk0xd04 & 0x1000)) {
 				racer->m_unk0xd04 |= 0x1000;
 
 				if (m_standings) {
@@ -2036,7 +2041,7 @@ void RaceSession::FUN_004351f0()
 void RaceSession::VTable0x30()
 {
 	LegoU32 elapsedMs = m_golApp->GetFrameDeltaMs();
-	if (m_context->m_unk0x20 & c_contextFlag0x20Bit8) {
+	if (m_context->m_cheatFlags & c_contextFlag0x20Bit8) {
 		elapsedMs =
 			static_cast<LegoU32>(static_cast<LegoFloat>(static_cast<LegoS32>(m_golApp->GetFrameDeltaMs())) * 1.75f);
 	}
@@ -2515,7 +2520,7 @@ void RaceSession::FUN_00435d20(LegoBool32 p_mirror)
 	}
 
 	Field0x27e0* field0x27e0 = &raceSession->m_unk0x27e0;
-	field0x27e0->FUN_00444030(&raceSession->m_unk0x1ae, raceSession->m_context->m_unk0x18, p_mirror);
+	field0x27e0->FUN_00444030(&raceSession->m_unk0x1ae, raceSession->m_context->m_useBinaryFiles, p_mirror);
 
 	for (LegoU32 i = 0; i < raceSession->m_unk0x3a0->GetUnk0x64(); i++) {
 		GolModelMaterialTable* materials = raceSession->m_unk0x3a0->GetUnk0xa8()[i].GetMaterialTable();

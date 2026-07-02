@@ -87,9 +87,9 @@ void GameState::Initialize()
 	m_state.m_unk0x1e = 0x80;
 	m_state.m_musicVolume = 0xff;
 	m_state.m_soundVolume = 0xff;
-	m_state.m_unk0x21 = 1;
+	m_state.m_stereo = 1;
 	m_state.m_languageIndex = GetRegistryLanguageIndex();
-	m_state.m_unk0x23 = 3;
+	m_state.m_lapCount = 3;
 	m_state.m_inputBindings.m_players[0].m_selectedRecordId = 0;
 	m_state.m_inputBindings.m_players[0].m_selectedRecordSource = 2;
 	m_state.m_inputBindings.m_players[0].m_selectedSaveIndex = 0;
@@ -240,9 +240,9 @@ void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex
 	m_state.m_unk0x1e = state.m_unk0x1e;
 	m_state.m_musicVolume = state.m_musicVolume;
 	m_state.m_soundVolume = state.m_soundVolume;
-	m_state.m_unk0x21 = state.m_unk0x21;
+	m_state.m_stereo = state.m_stereo;
 	m_state.m_languageIndex = state.m_languageIndex;
-	m_state.m_unk0x23 = state.m_unk0x23;
+	m_state.m_lapCount = state.m_lapCount;
 
 	LegoU8* destBindingEntry = &m_state.m_inputBindings.m_entries[0].m_deviceSubType;
 	LegoU8* sourceBindingEntry = &state.m_inputBindings.m_entries[0].m_deviceSubType;

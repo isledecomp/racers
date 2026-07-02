@@ -361,7 +361,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 	switch (m_state) {
 	case c_stateStarting: {
 		m_racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
-		m_racer->FUN_004395d0();
+		m_racer->EnterGhostMode();
 		m_racer->m_unk0x018.SetScale(1.0f);
 		m_racer->m_unk0x3e8.VTable0x44();
 		m_racer->m_unk0x3e8.VTable0x4c();
@@ -464,7 +464,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			}
 		}
 
-		m_racer->FUN_00439660();
+		m_racer->LeaveGhostMode();
 		m_state = c_stateDone;
 		break;
 	}

@@ -252,20 +252,20 @@ void RaceSession::Field0x258::FUN_00430390()
 			driveValue = 1.0f;
 
 			if (m_unk0x004.m_unk0x068 == 0.0f) {
-				m_unk0x000->FUN_00439870();
+				m_unk0x000->EndDrift();
 			}
 			else if (!(m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7)) {
 				if (reverseValue < 0.0f) {
-					m_unk0x000->FUN_004397c0(TRUE);
+					m_unk0x000->StartDrift(TRUE);
 				}
 				else {
-					m_unk0x000->FUN_004397c0(FALSE);
+					m_unk0x000->StartDrift(FALSE);
 				}
 			}
 		}
 	}
 	else if (m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7) {
-		m_unk0x000->FUN_00439870();
+		m_unk0x000->EndDrift();
 	}
 
 	if (!(m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7) && reverseValue < 0.0f && throttleValue > 0.0f) {
@@ -437,7 +437,7 @@ void RaceSession::Field0x258::FUN_00430760()
 
 	RaceState::Racer* racer = m_unk0x000;
 	if (racer->m_unk0xd04 & 0x80) {
-		racer->FUN_00439870();
+		racer->EndDrift();
 	}
 }
 

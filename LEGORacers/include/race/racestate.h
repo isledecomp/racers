@@ -1038,16 +1038,16 @@ public:
 		void FUN_00437d40(LegoU32 p_elapsedMs);
 		void FUN_00438500();
 		LegoU32 ReturnAllWhiteBricks();
-		void FUN_00439570();
-		void EndTurbo();
-		void FUN_004395d0();
-		void FUN_00439660();
+		void Halt();
+		void Resume();
+		void EnterGhostMode();
+		void LeaveGhostMode();
 		void StartTurbo(LegoU32 p_unk0x04);
 		void ClearActiveAction();
 		void EndShield();
 		void StartSpinOut();
 		void EndSpinOut();
-		void FUN_004397c0(LegoBool32 p_unk0x04);
+		void StartDrift(LegoBool32 p_left);
 		void PlayReaction(LegoBool32 p_unk0x04);
 		DroppableBrick* DropWhiteBrick();
 		LegoFloat FUN_0043a0a0();
@@ -1062,7 +1062,7 @@ public:
 		void FUN_0043a390();
 		void FUN_00437540(RaceCameraController* p_controller, LegoBool32 p_unk0x08);
 		LegoU32 StartShield(LegoU32 p_unk0x04);
-		void FUN_00439870();
+		void EndDrift();
 		void AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs);
 		void RemoveCurse();
 		void FUN_00439b70();
@@ -1090,15 +1090,15 @@ public:
 		);
 
 		enum {
-			c_flags0xd04Bit0 = 1 << 0,
+			c_flagShielded = 1 << 0,
 			c_flags0xd04Bit1 = 1 << 1,
-			c_flags0xd04Bit3 = 1 << 3,
-			c_flags0xd04Bit4 = 1 << 4,
-			c_flags0xd04Bit6 = 1 << 6,
-			c_flags0xd04Bit7 = 1 << 7,
+			c_flagHalted = 1 << 3,
+			c_flagGhost = 1 << 4,
+			c_flagTurbo = 1 << 6,
+			c_flagDrifting = 1 << 7,
 			c_flags0xd04Bit8 = 1 << 8,
 			c_flags0xd04Bit10 = 1 << 10,
-			c_flags0xd04Bit11 = 1 << 11,
+			c_flagCursed = 1 << 11,
 			c_flags0xd04Bit12 = 1 << 12,
 			c_flags0xd04Bit13 = 1 << 13,
 			c_flags0xd04Bit14 = 1 << 14,
@@ -1192,13 +1192,13 @@ public:
 		LegoFloat m_unk0xd54;                      // 0xd54
 		LegoU32 m_unk0xd58;                        // 0xd58
 		DroppableBrick* m_unk0xd5c[3];             // 0xd5c
-		LegoU32 m_unk0xd68;                        // 0xd68
+		LegoU32 m_turboTimerMs;                    // 0xd68
 		LegoU32 m_shieldLevel;                     // 0xd6c
 		undefined4 m_unk0xd70;                     // 0xd70
 		undefined4 m_unk0xd74;                     // 0xd74
 		LegoU32 m_unk0xd78;                        // 0xd78
-		undefined4 m_unk0xd7c;                     // 0xd7c
-		LegoU32 m_unk0xd80;                        // 0xd80
+		undefined4 m_curseTimerMs;                 // 0xd7c
+		LegoU32 m_curseTickMs;                     // 0xd80
 		LegoU32 m_unk0xd84;                        // 0xd84
 		LegoU32 m_unk0xd88;                        // 0xd88
 		union {

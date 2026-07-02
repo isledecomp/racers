@@ -135,7 +135,7 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 		m_manager->CancelTurbo(m_racer);
 		m_racer->ClearActiveAction();
 		if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) {
-			m_racer->EndTurbo();
+			m_racer->Resume();
 		}
 	}
 
@@ -272,7 +272,7 @@ void RacePowerupManager::TurboAction::StartBoost()
 		->PlaySpatialSoundById(c_soundWhoosh, &position, g_turboSoundMinDistance, g_turboSoundMaxDistance, 1.0f, 1.0f);
 
 	if (m_level == 2) {
-		m_racer->FUN_00439570();
+		m_racer->Halt();
 	}
 }
 
@@ -483,7 +483,7 @@ void RacePowerupManager::TurboAction::Deactivate()
 	if (m_racer != NULL) {
 		m_racer->ClearActiveAction();
 		if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) {
-			m_racer->EndTurbo();
+			m_racer->Resume();
 		}
 		m_racer = NULL;
 	}

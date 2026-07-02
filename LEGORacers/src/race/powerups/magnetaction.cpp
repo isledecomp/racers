@@ -274,7 +274,7 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 					}
 				}
 
-				m_heldRacer->FUN_00439570();
+				m_heldRacer->Halt();
 			}
 
 			if (m_heldRacer->m_unk0x3e8.m_unk0x744 == 0 && (m_flags0x80 & c_flagVictimStopped) &&

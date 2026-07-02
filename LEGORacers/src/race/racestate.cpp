@@ -343,7 +343,7 @@ void RaceState::Racer::Reset()
 	m_unk0xd40 = 1000;
 	m_unk0xd3c = 0;
 	m_unk0xd54 = 1.0f;
-	m_unk0xd68 = 0;
+	m_turboTimerMs = 0;
 	m_shieldLevel = 0;
 	m_unk0xd70 = 0;
 	m_unk0xd8c = NULL;
@@ -360,7 +360,7 @@ void RaceState::Racer::Reset()
 	m_unk0xd2c = 0;
 	m_unk0xd30 = 0;
 	m_unk0xd74 = 0;
-	m_unk0xd7c = 0;
+	m_curseTimerMs = 0;
 	m_unk0xd84 = 0;
 	m_unk0xd88 = 0;
 
@@ -885,14 +885,14 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 		m_unk0xd74 = countdown - p_elapsedMs;
 	}
 
-	countdown = m_unk0xd7c;
+	countdown = m_curseTimerMs;
 	if (p_elapsedMs > countdown) {
-		if (m_unk0xd04 & c_flags0xd04Bit11) {
+		if (m_unk0xd04 & c_flagCursed) {
 			RemoveCurse();
 		}
 	}
 	else {
-		m_unk0xd7c = countdown - p_elapsedMs;
+		m_curseTimerMs = countdown - p_elapsedMs;
 	}
 
 	countdown = m_unk0xd84;
@@ -979,7 +979,7 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 	}
 
 	LegoU32 flags = m_unk0xd04;
-	if ((flags & c_flags0xd04Bit27) && !(flags & c_flags0xd04Bit3)) {
+	if ((flags & c_flags0xd04Bit27) && !(flags & c_flagHalted)) {
 		m_unk0x008->UseGreenPowerup(this, 2);
 	}
 }
@@ -990,7 +990,7 @@ void RaceState::Racer::FUN_00437b50()
 	GolVec3 direction;
 
 	if (!(m_unk0xc70.m_unk0x014 & DriveController::c_flags0x014Bit2)) {
-		FUN_00439870();
+		EndDrift();
 		return;
 	}
 
@@ -1032,7 +1032,7 @@ void RaceState::Racer::FUN_00437be0()
 
 		if (resource) {
 			LegoU32 flags = m_unk0xd04;
-			if ((flags & c_flags0xd04Bit6) && i == m_unk0xd68 && i < 3) {
+			if ((flags & c_flagTurbo) && i == m_turboTimerMs && i < 3) {
 				if (!resource->VTable0x0c()) {
 					resource->VTable0x04(1);
 				}
@@ -1042,7 +1042,7 @@ void RaceState::Racer::FUN_00437be0()
 				resource->m_unk0x018 = position;
 				resource->m_unk0x024 = m_unk0x3e8.m_unk0x008;
 			}
-			else if ((flags & c_flags0xd04Bit4) && i == 3) {
+			else if ((flags & c_flagGhost) && i == 3) {
 				if (!resource->VTable0x0c()) {
 					resource->VTable0x04(1);
 				}
@@ -1322,8 +1322,8 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		LegoU32 flags = m_unk0xd04;
 		m_unk0xd04 = flags & ~c_flags0xd04Bit8;
 
-		if (!(flags & c_flags0xd04Bit7)) {
-			FUN_00439870();
+		if (!(flags & c_flagDrifting)) {
+			EndDrift();
 		}
 
 		if (m_unk0xd70 == 1) {
@@ -1349,11 +1349,11 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 	Racer* firstRacer = static_cast<Racer*>(firstTarget->m_owner);
 	Racer* secondRacer = static_cast<Racer*>(secondTarget->m_owner);
 
-	if (firstRacer->m_unk0xd04 & c_flags0xd04Bit4) {
+	if (firstRacer->m_unk0xd04 & c_flagGhost) {
 		return;
 	}
 
-	if (secondRacer && (secondRacer->m_unk0xd04 & c_flags0xd04Bit4)) {
+	if (secondRacer && (secondRacer->m_unk0xd04 & c_flagGhost)) {
 		return;
 	}
 
@@ -1504,7 +1504,7 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 		m_unk0x018.m_particleAnimation->FUN_00489d70("carsprk", &collision->m_unk0x04, NULL, NULL);
 
-		if (firstRacer->m_unk0xd04 & c_flags0xd04Bit0) {
+		if (firstRacer->m_unk0xd04 & c_flagShielded) {
 			secondRacer->PlayReaction(FALSE);
 		}
 		else {
@@ -1515,7 +1515,7 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		firstRacer->PlayReaction(FALSE);
 	}
 
-	if ((firstRacer->m_unk0xd04 & c_flags0xd04Bit0) && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit0)) {
+	if ((firstRacer->m_unk0xd04 & c_flagShielded) && !(secondRacer->m_unk0xd04 & c_flagShielded)) {
 		if (firstRacer->m_shieldLevel == 1) {
 			GolVec3 secondForward;
 			secondRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&secondForward);
@@ -1537,7 +1537,7 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		}
 	}
 
-	if ((secondRacer->m_unk0xd04 & c_flags0xd04Bit0) && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit0)) {
+	if ((secondRacer->m_unk0xd04 & c_flagShielded) && !(firstRacer->m_unk0xd04 & c_flagShielded)) {
 		if (secondRacer->m_shieldLevel == 1) {
 			GolVec3 firstForward;
 			firstRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&firstForward);
@@ -1559,16 +1559,16 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		}
 	}
 
-	if ((firstRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
-		firstRacer->m_unk0xd80 && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit0)) {
-		secondRacer->AttachCurse(&firstRacer->m_unk0x018.m_curseEntity, firstRacer->m_unk0xd7c);
+	if ((firstRacer->m_unk0xd04 & c_flagCursed) && !(secondRacer->m_unk0xd04 & c_flagCursed) &&
+		firstRacer->m_curseTickMs && !(secondRacer->m_unk0xd04 & c_flagShielded)) {
+		secondRacer->AttachCurse(&firstRacer->m_unk0x018.m_curseEntity, firstRacer->m_curseTimerMs);
 		firstRacer->RemoveCurse();
 	}
 	else if (
-		(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
-		secondRacer->m_unk0xd80 && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit0)
+		(secondRacer->m_unk0xd04 & c_flagCursed) && !(firstRacer->m_unk0xd04 & c_flagCursed) &&
+		secondRacer->m_curseTickMs && !(firstRacer->m_unk0xd04 & c_flagShielded)
 	) {
-		firstRacer->AttachCurse(&secondRacer->m_unk0x018.m_curseEntity, secondRacer->m_unk0xd7c);
+		firstRacer->AttachCurse(&secondRacer->m_unk0x018.m_curseEntity, secondRacer->m_curseTimerMs);
 		secondRacer->RemoveCurse();
 	}
 
@@ -1912,30 +1912,30 @@ LegoU32 RaceState::Racer::ReturnAllWhiteBricks()
 }
 
 // FUNCTION: LEGORACERS 0x00439570
-void RaceState::Racer::FUN_00439570()
+void RaceState::Racer::Halt()
 {
 	LegoU32 flags = m_unk0xd04;
-	if (!(flags & c_flags0xd04Bit3)) {
-		m_unk0xd04 = flags | c_flags0xd04Bit3;
+	if (!(flags & c_flagHalted)) {
+		m_unk0xd04 = flags | c_flagHalted;
 		m_unk0x3e8.VTable0x2c();
 		m_unk0x3e8.VTable0x30();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004395a0
-void RaceState::Racer::EndTurbo()
+void RaceState::Racer::Resume()
 {
 	LegoU32 flags = m_unk0xd04;
-	if (flags & c_flags0xd04Bit3) {
-		m_unk0xd04 = flags & ~c_flags0xd04Bit3;
+	if (flags & c_flagHalted) {
+		m_unk0xd04 = flags & ~c_flagHalted;
 		m_unk0x3e8.VTable0x34();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004395d0
-void RaceState::Racer::FUN_004395d0()
+void RaceState::Racer::EnterGhostMode()
 {
-	m_unk0xd04 |= c_flags0xd04Bit4;
+	m_unk0xd04 |= c_flagGhost;
 	RemoveCurse();
 	m_unk0x018.StopSkidEffects();
 	m_unk0x018.HideModels();
@@ -1958,9 +1958,9 @@ void RaceState::Racer::FUN_004395d0()
 }
 
 // FUNCTION: LEGORACERS 0x00439660
-void RaceState::Racer::FUN_00439660()
+void RaceState::Racer::LeaveGhostMode()
 {
-	m_unk0xd04 &= ~c_flags0xd04Bit4;
+	m_unk0xd04 &= ~c_flagGhost;
 
 	CarVisuals* field = &m_unk0x018;
 	field->ShowModels();
@@ -1978,7 +1978,7 @@ void RaceState::Racer::FUN_00439660()
 // FUNCTION: LEGORACERS 0x004396c0
 void RaceState::Racer::StartTurbo(LegoU32 p_unk0x04)
 {
-	m_unk0xd04 |= c_flags0xd04Bit6;
+	m_unk0xd04 |= c_flagTurbo;
 
 	if (m_unk0xd08 != 2) {
 		m_unk0x018.StartTurboEffects();
@@ -1988,7 +1988,7 @@ void RaceState::Racer::StartTurbo(LegoU32 p_unk0x04)
 		(m_unk0xc70.m_unk0x014 & ~DriveController::c_flags0x014Bit8) | DriveController::c_flags0x014Bit0;
 	m_unk0x3e8.FUN_00446fa0();
 	m_unk0x3e8.FUN_004292e0();
-	m_unk0xd68 = p_unk0x04;
+	m_turboTimerMs = p_unk0x04;
 
 	if (m_unk0x014) {
 		m_unk0x014->FUN_00422030(p_unk0x04);
@@ -1998,7 +1998,7 @@ void RaceState::Racer::StartTurbo(LegoU32 p_unk0x04)
 // FUNCTION: LEGORACERS 0x00439730
 void RaceState::Racer::ClearActiveAction()
 {
-	m_unk0xd04 &= ~c_flags0xd04Bit6;
+	m_unk0xd04 &= ~c_flagTurbo;
 	m_unk0x018.StopTurboEffects();
 	m_unk0xc70.m_unk0x014 &= ~(DriveController::c_flags0x014Bit0 | DriveController::c_flags0x014Bit8);
 	m_unk0x3e8.FUN_00429330();
@@ -2007,7 +2007,7 @@ void RaceState::Racer::ClearActiveAction()
 // FUNCTION: LEGORACERS 0x00439770
 LegoU32 RaceState::Racer::StartShield(LegoU32 p_unk0x04)
 {
-	m_unk0xd04 |= c_flags0xd04Bit0;
+	m_unk0xd04 |= c_flagShielded;
 	m_shieldLevel = p_unk0x04;
 	return p_unk0x04;
 }
@@ -2015,7 +2015,7 @@ LegoU32 RaceState::Racer::StartShield(LegoU32 p_unk0x04)
 // FUNCTION: LEGORACERS 0x00439790
 void RaceState::Racer::EndShield()
 {
-	m_unk0xd04 &= ~c_flags0xd04Bit0;
+	m_unk0xd04 &= ~c_flagShielded;
 }
 
 // FUNCTION: LEGORACERS 0x004397a0
@@ -2031,13 +2031,13 @@ void RaceState::Racer::EndSpinOut()
 }
 
 // FUNCTION: LEGORACERS 0x004397c0
-void RaceState::Racer::FUN_004397c0(LegoBool32 p_unk0x04)
+void RaceState::Racer::StartDrift(LegoBool32 p_unk0x04)
 {
-	if (!(m_unk0xd04 & c_flags0xd04Bit7) || p_unk0x04 != m_unk0xc70.m_unk0x030) {
+	if (!(m_unk0xd04 & c_flagDrifting) || p_unk0x04 != m_unk0xc70.m_unk0x030) {
 		m_unk0xc70.FUN_00420260(p_unk0x04);
 
 		if (m_unk0xc70.m_unk0x014 & DriveController::c_flags0x014Bit2) {
-			m_unk0xd04 |= c_flags0xd04Bit7;
+			m_unk0xd04 |= c_flagDrifting;
 
 			if (!m_unk0xd08 && !(m_unk0x3e8.m_flags0x6c0 & c_flags0xaa8Bit3)) {
 				SoundVector position;
@@ -2062,11 +2062,11 @@ void RaceState::Racer::FUN_004397c0(LegoBool32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00439870
-void RaceState::Racer::FUN_00439870()
+void RaceState::Racer::EndDrift()
 {
 	SoundVector position;
 
-	if (m_unk0xd04 & c_flags0xd04Bit7) {
+	if (m_unk0xd04 & c_flagDrifting) {
 		if (m_unk0xc70.m_unk0x014 & DriveController::c_flags0x014Bit2) {
 			m_unk0xc70.FUN_004202c0();
 		}
@@ -2092,7 +2092,7 @@ void RaceState::Racer::FUN_00439870()
 		}
 
 		LegoU32 flags0xd04 = m_unk0xd04;
-		flags0xd04 &= ~c_flags0xd04Bit7;
+		flags0xd04 &= ~c_flagDrifting;
 		m_unk0xd04 = flags0xd04;
 	}
 }
@@ -2101,9 +2101,9 @@ void RaceState::Racer::FUN_00439870()
 void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs)
 {
 	LegoU32 flags0xd04 = m_unk0xd04;
-	m_unk0xd7c = p_durationMs;
-	flags0xd04 |= c_flags0xd04Bit11;
-	m_unk0xd80 = 1000;
+	m_curseTimerMs = p_durationMs;
+	flags0xd04 |= c_flagCursed;
+	m_curseTickMs = 1000;
 	m_unk0xd04 = flags0xd04;
 
 	LegoU32 flags0xc70 = m_unk0xc70.m_unk0x014;
@@ -2173,8 +2173,8 @@ void RaceState::Racer::RemoveCurse()
 	}
 
 	LegoU32 flags0xd04 = m_unk0xd04;
-	m_unk0xd7c = 0;
-	flags0xd04 &= ~c_flags0xd04Bit11;
+	m_curseTimerMs = 0;
+	flags0xd04 &= ~c_flagCursed;
 	m_unk0xd04 = flags0xd04;
 
 	m_unk0xc70.m_unk0x014 &= ~DriveController::c_flags0x014Bit4;
@@ -2268,7 +2268,7 @@ void RaceState::Racer::FUN_00439cf0(LegoU32 p_elapsedMs)
 		LegoU32 flags = m_unk0xd04;
 		LegoBool32 isBlocked = FALSE;
 
-		if (flags & c_flags0xd04Bit4) {
+		if (flags & c_flagGhost) {
 			m_unk0xd78 = 0;
 			m_unk0xd04 = flags & ~(c_flags0xd04Bit13 | c_flags0xd04Bit14);
 			return;
@@ -2476,7 +2476,7 @@ void RaceState::Racer::StartMagnetHold()
 		}
 	}
 
-	EndTurbo();
+	Resume();
 }
 
 // FUNCTION: LEGORACERS 0x0043a1a0
@@ -2502,7 +2502,7 @@ void RaceState::Racer::EndMagnetHold()
 		}
 	}
 
-	EndTurbo();
+	Resume();
 }
 
 // FUNCTION: LEGORACERS 0x0043a210
@@ -3286,7 +3286,7 @@ void RaceState::FUN_0043c030(LegoU32 p_elapsedMs)
 	}
 
 	for (racer = m_unk0x0f0.m_racers; racer < end; racer++) {
-		if (racer->m_unk0xd04 & Racer::c_flags0xd04Bit7) {
+		if (racer->m_unk0xd04 & Racer::c_flagDrifting) {
 			racer->FUN_00437b50();
 		}
 	}

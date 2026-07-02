@@ -87,13 +87,13 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		racer->CollectColorBrick(0);
 		racer->ReturnAllWhiteBricks();
 		racer->EndShield();
-		racer->EndTurbo();
-		racer->FUN_00439660();
+		racer->Resume();
+		racer->LeaveGhostMode();
 		racer->ClearActiveAction();
 		racer->EndSpinOut();
 		racer->RemoveCurse();
 		racer->EndMagnetHold();
-		racer->FUN_00439870();
+		racer->EndDrift();
 		racer->FUN_0043a210(racerIndex + 1);
 
 		if (racer->m_unk0xd04 & RaceState::Racer::c_flags0xd04Bit21) {

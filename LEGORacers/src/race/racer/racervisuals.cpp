@@ -1388,7 +1388,7 @@ void RaceState::Racer::CarVisuals::StartTurboEffects()
 		StartDust();
 		StartCarSmoke();
 
-		if (m_racer->m_unk0xd68 > 0) {
+		if (m_racer->m_turboTimerMs > 0) {
 			UseTurboSkidMaterial();
 			StartSkidEffects();
 		}

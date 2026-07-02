@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "golmath.h"
 #include "golname.h"
-#include "race/racesessionfield0x27f4.h"
+#include "race/checkpointgraph.h"
 #include "types.h"
 
 // SIZE 0x20
@@ -52,8 +52,8 @@ public:
 
 	undefined m_unk0x00[0x14 - 0x00]; // 0x00
 	union {
-		RaceSessionField0x27f4::Entry* m_pathField; // 0x14
-		Target* m_target;                           // 0x14
+		CheckpointGraph::Entry* m_pathField; // 0x14
+		Target* m_target;                    // 0x14
 	};
 	LegoS32 m_unk0x18;    // 0x18
 	undefined4 m_unk0x1c; // 0x1c

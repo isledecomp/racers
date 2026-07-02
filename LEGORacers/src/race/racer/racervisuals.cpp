@@ -915,7 +915,7 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (field0xc70->m_unk0x010 < 0.0f && speed < 0.0f) {
+	if (field0xc70->m_driveValue < 0.0f && speed < 0.0f) {
 		if (activePart == c_animationPart2 || activePart == c_animationPart3) {
 			return;
 		}

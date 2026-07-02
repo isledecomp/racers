@@ -211,20 +211,20 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 				position.m_z = m_targetPosition.m_x - ((m_targetPosition.m_z - m_startPosition.m_z) * amount);
 			}
 			else {
-				if (!m_followingPath || m_racer->m_unk0x010 == NULL) {
+				if (!m_followingPath || m_racer->m_checkpointGraph == NULL) {
 					break;
 				}
 
 				LegoFloat distance = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_warpPathSpeed;
-				RaceSessionField0x27f4::Entry* pathEntry = m_racer->m_unk0xcc4;
+				CheckpointGraph::Entry* pathEntry = m_racer->m_checkpoint;
 				if (pathEntry != NULL) {
-					LegoU8 pathIndex = pathEntry->m_unk0x20.m_items[0];
-					pathEntry = m_racer->m_unk0x010->FUN_0041e940(pathIndex);
+					LegoU8 pathIndex = pathEntry->m_next.m_items[0];
+					pathEntry = m_racer->m_checkpointGraph->GetCheckpoint(pathIndex);
 				}
 
 				RaceState::Racer::CarVisuals* racerCarVisuals = &m_racer->m_unk0x018;
 				racerCarVisuals->m_carEntity->VTable0x04(&position);
-				m_racer->m_unk0x010->FUN_0041eaf0(&position, distance, pathEntry);
+				m_racer->m_checkpointGraph->FUN_0041eaf0(&position, distance, pathEntry);
 			}
 
 			m_racer->m_unk0x018.m_carEntity->VTable0x08(position);
@@ -422,14 +422,14 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			direction = m_targetDirection;
 		}
 		else {
-			RaceSessionField0x27f4::Entry* racerPathEntry = m_racer->m_unk0xcc4;
+			CheckpointGraph::Entry* racerPathEntry = m_racer->m_checkpoint;
 			if (racerPathEntry != NULL) {
-				LegoU8 pathIndex = racerPathEntry->m_unk0x20.m_items[0];
-				RaceSessionField0x27f4* path = m_racer->m_unk0x010;
-				RaceSessionField0x27f4::Entry* pathEntry = path->FUN_0041e940(pathIndex);
-				direction.m_x = pathEntry->m_unk0x00.m_x;
-				direction.m_y = pathEntry->m_unk0x00.m_y;
-				LegoFloat z = pathEntry->m_unk0x00.m_z;
+				LegoU8 pathIndex = racerPathEntry->m_next.m_items[0];
+				CheckpointGraph* path = m_racer->m_checkpointGraph;
+				CheckpointGraph::Entry* pathEntry = path->GetCheckpoint(pathIndex);
+				direction.m_x = pathEntry->m_planeNormal.m_x;
+				direction.m_y = pathEntry->m_planeNormal.m_y;
+				LegoFloat z = pathEntry->m_planeNormal.m_z;
 				direction.m_x = -direction.m_x;
 				direction.m_y = -direction.m_y;
 				direction.m_z = -z;

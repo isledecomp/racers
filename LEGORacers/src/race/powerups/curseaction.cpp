@@ -295,8 +295,8 @@ void RacePowerupManager::CurseAction::AdvanceState()
 		ComputeDropPosition(m_ownerRacer, &position, &record);
 
 		GolVec3 direction;
-		if (m_ownerRacer->m_unk0xcc4 != NULL) {
-			direction = m_ownerRacer->m_unk0xcc4->m_unk0x00;
+		if (m_ownerRacer->m_checkpoint != NULL) {
+			direction = m_ownerRacer->m_checkpoint->m_planeNormal;
 		}
 		else {
 			direction.m_x = 1.0f;

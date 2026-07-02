@@ -1,9 +1,9 @@
-#include "race/racesessionfield0x27f4.h"
+#include "race/checkpointgraph.h"
 
 #include <math.h>
 
 // FUNCTION: LEGORACERS 0x0041eaf0
-void RaceSessionField0x27f4::FUN_0041eaf0(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry)
+void CheckpointGraph::FUN_0041eaf0(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry)
 {
 	if (m_count == 0) {
 		return;
@@ -14,7 +14,7 @@ void RaceSessionField0x27f4::FUN_0041eaf0(GolVec3* p_position, LegoFloat p_dista
 	}
 
 	while (p_distance > 0.0f) {
-		GolVec3 target = p_entry->m_unk0x10;
+		GolVec3 target = p_entry->m_position;
 
 		LegoFloat deltaX = p_position->m_x - target.m_x;
 		LegoFloat deltaY = p_position->m_y - target.m_y;
@@ -41,6 +41,6 @@ void RaceSessionField0x27f4::FUN_0041eaf0(GolVec3* p_position, LegoFloat p_dista
 			p_distance = 0.0f;
 		}
 
-		p_entry = &m_entries[p_entry->m_unk0x20.m_items[0]];
+		p_entry = &m_entries[p_entry->m_next.m_items[0]];
 	}
 }

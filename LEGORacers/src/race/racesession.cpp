@@ -963,7 +963,7 @@ void RaceSession::FUN_00433460()
 void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 {
 	if (m_unk0x1c8) {
-		m_unk0x27f4.FUN_0041e770(&m_unk0x1c8, m_context->m_useBinaryFiles, p_mirror);
+		m_unk0x27f4.Load(&m_unk0x1c8, m_context->m_useBinaryFiles, p_mirror);
 		FUN_00435e70();
 	}
 
@@ -1081,7 +1081,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	if (m_unk0x3350) {
 		RaceState::Racer* racer = m_raceState.GetRacers();
-		racer->FUN_0043a0e0();
+		racer->SwitchToAiControl();
 		racer->m_unk0xd04 |= c_racerFlags0xd04Bit23;
 	}
 
@@ -1744,7 +1744,7 @@ void RaceSession::FUN_004349a0()
 					if (!m_unk0x335c) {
 						cobaltTrail->FUN_00426360();
 					}
-					(*racer)->FUN_004393d0();
+					(*racer)->StartEngine();
 					field0x340->FUN_00422130();
 
 					CobaltTrail0x140* nextCobaltTrail = cobaltTrail + 1;
@@ -2558,7 +2558,7 @@ void RaceSession::FUN_00435e70()
 				DuskwindBananaRelic0x24* material = materials->GetMaterial(materialIndex);
 				DuskWindName0x8 materialName = material->GetNameRecord();
 				if (materialName.m_unk0x0[0] >= '0' && materialName.m_unk0x0[0] <= '9') {
-					material->SetUnk0x14(m_unk0x27f4.FUN_0041e940(checkpointIndex));
+					material->SetUnk0x14(m_unk0x27f4.GetCheckpoint(checkpointIndex));
 					material->EnableFlag0x08Bit18();
 					checkpointIndex++;
 				}

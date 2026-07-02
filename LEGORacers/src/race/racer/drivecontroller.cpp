@@ -78,7 +78,7 @@ void RaceState::Racer::DriveController::Reset()
 	m_unk0x004 = NULL;
 	m_unk0x008 = 0.0f;
 	m_unk0x00c = 0.0f;
-	m_unk0x010 = 0.0f;
+	m_driveValue = 0.0f;
 	m_unk0x014 = 0;
 	m_unk0x02c = 0;
 	m_unk0x018 = 0.0f;
@@ -170,10 +170,10 @@ void RaceState::Racer::DriveController::FUN_0041fc00(LegoU32 p_elapsedMs)
 void RaceState::Racer::DriveController::FUN_0041fd60(LegoU32)
 {
 	if (m_unk0x000->m_unk0x618 > 0.0f) {
-		m_unk0x010 = -(g_unk0x004b0064 + g_unk0x004b0064);
+		m_driveValue = -(g_unk0x004b0064 + g_unk0x004b0064);
 	}
 	else {
-		m_unk0x010 = 0.0f;
+		m_driveValue = 0.0f;
 	}
 
 	FUN_0041fee0();
@@ -325,11 +325,11 @@ void RaceState::Racer::DriveController::FUN_00420130(LegoFloat p_unk0x04)
 
 	if ((p_unk0x04 < 0.0f && m_unk0x000->m_unk0x618 > 0.0f) || (p_unk0x04 > 0.0f && m_unk0x000->m_unk0x618 < 0.0f)) {
 		LegoFloat value = g_unk0x004b0064 * p_unk0x04;
-		m_unk0x010 = value * g_unk0x004b0068;
+		m_driveValue = value * g_unk0x004b0068;
 		return;
 	}
 
-	m_unk0x010 = g_unk0x004b0064 * p_unk0x04;
+	m_driveValue = g_unk0x004b0064 * p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x004201e0
@@ -337,10 +337,10 @@ void RaceState::Racer::DriveController::FUN_004201e0()
 {
 	LegoU32 flags = m_unk0x014;
 
-	if ((flags & c_flags0x014Bit3) && m_unk0x010 > 0.0f) {
-		LegoFloat value = m_unk0x010;
+	if ((flags & c_flags0x014Bit3) && m_driveValue > 0.0f) {
+		LegoFloat value = m_driveValue;
 		value *= 8.0f;
-		m_unk0x010 = value;
+		m_driveValue = value;
 	}
 
 	if (flags & c_flags0x014Bit0) {
@@ -353,10 +353,10 @@ void RaceState::Racer::DriveController::FUN_004201e0()
 	}
 	else {
 		if (!(flags & c_flags0x014Bit1)) {
-			m_unk0x000->VTable0x14(m_unk0x010);
+			m_unk0x000->VTable0x14(m_driveValue);
 		}
 		else {
-			LegoFloat value = m_unk0x010;
+			LegoFloat value = m_driveValue;
 			value *= g_unk0x004b0074;
 			m_unk0x000->VTable0x14(value);
 		}
@@ -436,7 +436,7 @@ void RaceState::Racer::DriveController::FUN_00420380()
 
 	m_unk0x024 = 0;
 	m_unk0x00c = 0.0f;
-	m_unk0x010 = 0.0f;
+	m_driveValue = 0.0f;
 	m_unk0x000->FUN_00446ef0(0.0f);
 	m_unk0x000->VTable0x14(0.0f);
 }
@@ -510,12 +510,12 @@ void RaceState::Racer::DriveController::FUN_004203b0(LegoU32 p_elapsedMs)
 
 	LegoU8 flags0x014 = static_cast<LegoU8>(m_unk0x014);
 	if (flags0x014 & c_flags0x014Bit5) {
-		m_unk0x010 = g_unk0x004b0094;
+		m_driveValue = g_unk0x004b0094;
 		m_unk0x00c = -m_unk0x00c;
-		m_unk0x010 = -g_unk0x004b0064;
+		m_driveValue = -g_unk0x004b0064;
 	}
 	else {
-		m_unk0x010 = g_unk0x004b0094;
+		m_driveValue = g_unk0x004b0094;
 	}
 
 	LegoBool32 updatePath = FALSE;

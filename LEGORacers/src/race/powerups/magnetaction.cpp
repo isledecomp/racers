@@ -446,8 +446,8 @@ void RacePowerupManager::MagnetAction::Deploy()
 	m_insideEntity->SetFlags(m_insideEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_insideEntity->FUN_0040dad0(0);
 
-	if (m_ownerRacer->m_unk0xcc4 != NULL) {
-		m_direction = m_ownerRacer->m_unk0xcc4->m_unk0x00;
+	if (m_ownerRacer->m_checkpoint != NULL) {
+		m_direction = m_ownerRacer->m_checkpoint->m_planeNormal;
 	}
 	else {
 		m_direction.m_x = 1.0f;

@@ -196,7 +196,7 @@ void RaceSession::Field0x2098::Resource0x2c::VTable0x00(RaceState::Racer* p_race
 {
 	FUN_0045edd0(1, 1);
 	if (p_racer) {
-		p_racer->FUN_00439e60(&m_unk0x20);
+		p_racer->SetLookTarget(&m_unk0x20);
 	}
 }
 
@@ -205,7 +205,7 @@ void RaceSession::Field0x2098::Resource0x2c::VTable0x08(RaceState::Racer* p_race
 {
 	FUN_0045edd0(m_state0x18, 3);
 	if (p_racer) {
-		p_racer->FUN_00439e90();
+		p_racer->ClearLookTarget();
 	}
 
 	m_state0x18 = c_state0x18Four;

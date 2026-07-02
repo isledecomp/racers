@@ -1110,7 +1110,7 @@ LegoU32 RaceState::Racer::Physics::VTable0x0c(
 
 		LegoS32 eventKind = p_unk0x08->m_unk0x18;
 		if (static_cast<LegoChar>(eventKind) >= '0' && static_cast<LegoChar>(eventKind) <= '9') {
-			m_unk0x6f0->FUN_00439fc0(p_unk0x08->m_pathField, p_unk0x10);
+			m_unk0x6f0->OnCheckpointCrossed(p_unk0x08->m_pathField, p_unk0x10);
 			return FALSE;
 		}
 	}

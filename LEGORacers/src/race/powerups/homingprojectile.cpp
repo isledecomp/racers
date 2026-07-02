@@ -119,22 +119,22 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 	}
 
 	if (!m_hasWaypoint && m_pathEntry != NULL) {
-		RaceSessionField0x27f4::Entry* pathField = m_pathEntry;
-		GolVec3 point = pathField->m_unk0x10;
+		CheckpointGraph::Entry* pathField = m_pathEntry;
+		GolVec3 point = pathField->m_position;
 		for (;;) {
 			GolVec3 delta = point - m_position;
 			if (GOLVECTOR3_DOT(delta, m_direction) > 0.0f &&
-				GOLVECTOR3_DOT(pathField->m_unk0x00, m_position) + pathField->m_unk0x0c >= g_unk0x004afde0) {
+				GOLVECTOR3_DOT(pathField->m_planeNormal, m_position) + pathField->m_planeDistance >= g_unk0x004afde0) {
 				break;
 			}
 
-			pathField = m_ownerRacer->m_unk0x010->FUN_0041e940(pathField->m_unk0x20.m_items[0]);
+			pathField = m_ownerRacer->m_checkpointGraph->GetCheckpoint(pathField->m_next.m_items[0]);
 			m_pathEntry = pathField;
 			if (pathField != NULL) {
-				point = pathField->m_unk0x10;
+				point = pathField->m_position;
 				delta = point - m_position;
 				if (GOLVECTOR3_DOT(delta, delta) > g_homingProjectilePathDistanceLimitSquared ||
-					GOLVECTOR3_DOT(pathField->m_unk0x00, m_direction) > 0.0f) {
+					GOLVECTOR3_DOT(pathField->m_planeNormal, m_direction) > 0.0f) {
 					m_pathEntry = NULL;
 				}
 			}
@@ -177,13 +177,13 @@ void RacePowerupManager::HomingProjectile::StartHoming()
 
 	RaceState::Racer* racer = m_ownerRacer;
 	if (racer != NULL) {
-		RaceSessionField0x27f4::Entry* pathField = racer->m_unk0xcc4;
+		CheckpointGraph::Entry* pathField = racer->m_checkpoint;
 		m_pathEntry = pathField;
 		if (pathField != NULL) {
-			forward.m_x = pathField->m_unk0x00.m_x;
-			forward.m_y = pathField->m_unk0x00.m_y;
+			forward.m_x = pathField->m_planeNormal.m_x;
+			forward.m_y = pathField->m_planeNormal.m_y;
 			LegoFloat dot = direction->m_z;
-			dot *= pathField->m_unk0x00.m_z;
+			dot *= pathField->m_planeNormal.m_z;
 			LegoFloat yDot = direction->m_y;
 			yDot *= forward.m_y;
 			dot += yDot;

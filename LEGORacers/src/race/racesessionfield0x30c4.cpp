@@ -134,7 +134,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 
 		if (!m_context->m_playerSetupSlots[racerIndex].m_unk0x10) {
 			racer->m_controlMode = 0;
-			racer->m_unk0xe2c = NULL;
+			racer->m_routeRecord = NULL;
 		}
 
 		racer->FUN_004371c0(NULL, NULL);

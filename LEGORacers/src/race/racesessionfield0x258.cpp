@@ -433,7 +433,7 @@ void RaceSession::Field0x258::FUN_00430710()
 void RaceSession::Field0x258::FUN_00430760()
 {
 	m_unk0x004.m_unk0x05c |= 2;
-	m_unk0x000->FUN_0043a0e0();
+	m_unk0x000->SwitchToAiControl();
 
 	RaceState::Racer* racer = m_unk0x000;
 	if (racer->m_unk0xd04 & 0x80) {

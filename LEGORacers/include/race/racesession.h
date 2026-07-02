@@ -21,6 +21,7 @@
 #include "mabmaterialanimationitem0x18.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutsceneplayer.h"
+#include "race/checkpointgraph.h"
 #include "race/cobalttrail0x140.h"
 #include "race/powerups/powerupprojectile.h"
 #include "race/powerups/racepowerupmanager.h"
@@ -31,7 +32,6 @@
 #include "race/racer/racerouterecord.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesessionfield0x27d4.h"
-#include "race/racesessionfield0x27f4.h"
 #include "race/racesessionfield0x32b4.h"
 #include "race/racestate.h"
 #include "race/racetrailmanager.h"
@@ -1705,7 +1705,7 @@ private:
 	RaceTrailManager m_trailManager;        // 0x27c8
 	RaceSessionField0x27d4 m_unk0x27d4;     // 0x27d4
 	Field0x27e0 m_unk0x27e0;                // 0x27e0
-	RaceSessionField0x27f4 m_unk0x27f4;     // 0x27f4
+	CheckpointGraph m_unk0x27f4;            // 0x27f4
 	MenuAnimationList m_unk0x27fc;          // 0x27fc
 	Field0x2804 m_unk0x2804;                // 0x2804
 	Field0x280c m_unk0x280c;                // 0x280c

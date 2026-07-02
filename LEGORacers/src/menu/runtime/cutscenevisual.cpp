@@ -20,18 +20,18 @@ CutsceneVisual::~CutsceneVisual()
 void CutsceneVisual::Reset()
 {
 	m_color.m_alp = 0xff;
-	m_unk0x14 = 0.0f;
-	m_unk0x18 = 0.0f;
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0.0f;
-	m_unk0x28 = 0.0f;
-	m_unk0x2c = 0;
-	m_unk0x30 = 0;
-	m_unk0x34 = 0.0f;
-	m_unk0x38 = 0.0f;
-	m_unk0x3c = 0.0f;
-	m_unk0x40 = 0.0f;
+	m_startX = 0.0f;
+	m_startY = 0.0f;
+	m_x = 0;
+	m_y = 0;
+	m_startWidth = 0.0f;
+	m_startHeight = 0.0f;
+	m_width = 0;
+	m_height = 0;
+	m_rateX = 0.0f;
+	m_rateY = 0.0f;
+	m_rateWidth = 0.0f;
+	m_rateHeight = 0.0f;
 	m_color.m_red = 0;
 	m_color.m_grn = 0;
 	m_color.m_blu = 0;
@@ -48,11 +48,11 @@ void CutsceneVisual::ParseVisualToken(
 {
 	switch (p_token) {
 	case GolFileParser::e_unknown0x43:
-		m_unk0x14 = p_parser->ReadFloat();
+		m_startX = p_parser->ReadFloat();
 		m_flags = (m_flags & ~1) | 4;
 		break;
 	case GolFileParser::e_unknown0x44:
-		m_unk0x18 = p_parser->ReadFloat();
+		m_startY = p_parser->ReadFloat();
 		m_flags = (m_flags & ~2) | 8;
 		break;
 	case GolFileParser::e_unknown0x45:
@@ -62,24 +62,24 @@ void CutsceneVisual::ParseVisualToken(
 		m_flags = (m_flags & ~8) | 2;
 		break;
 	case GolFileParser::e_unknown0x47:
-		m_unk0x24 = p_parser->ReadFloat();
+		m_startWidth = p_parser->ReadFloat();
 		m_flags |= 0x10;
 		break;
 	case GolFileParser::e_unknown0x48:
-		m_unk0x28 = p_parser->ReadFloat();
+		m_startHeight = p_parser->ReadFloat();
 		m_flags |= 0x20;
 		break;
 	case GolFileParser::e_unknown0x49:
-		m_unk0x34 = p_parser->ReadFloat();
+		m_rateX = p_parser->ReadFloat();
 		break;
 	case GolFileParser::e_unknown0x4a:
-		m_unk0x38 = p_parser->ReadFloat();
+		m_rateY = p_parser->ReadFloat();
 		break;
 	case GolFileParser::e_unknown0x4b:
-		m_unk0x3c = p_parser->ReadFloat();
+		m_rateWidth = p_parser->ReadFloat();
 		break;
 	case GolFileParser::e_unknown0x4c:
-		m_unk0x40 = p_parser->ReadFloat();
+		m_rateHeight = p_parser->ReadFloat();
 		break;
 	case GolFileParser::e_unknown0x66:
 		m_color.m_red = p_parser->ReadInteger();
@@ -104,10 +104,10 @@ void CutsceneVisual::Start()
 	if (!(m_flags & 0x40) && m_disabled == 0) {
 		LegoU32 flags = m_flags | 0xc0;
 
-		m_unk0x1c = m_unk0x14;
-		m_unk0x20 = m_unk0x18;
-		m_unk0x2c = m_unk0x24;
-		m_unk0x30 = m_unk0x28;
+		m_x = m_startX;
+		m_y = m_startY;
+		m_width = m_startWidth;
+		m_height = m_startHeight;
 		m_flags = flags;
 	}
 }
@@ -119,18 +119,18 @@ void CutsceneVisual::Stop()
 }
 
 // FUNCTION: LEGORACERS 0x004a3550
-void CutsceneVisual::FUN_004a3550(LegoFloat p_elapsedSeconds)
+void CutsceneVisual::Update(LegoFloat p_elapsedSeconds)
 {
 	if ((m_flags & 0x40) && !(m_flags & 0x80)) {
-		m_unk0x1c += m_unk0x34 * p_elapsedSeconds;
-		m_unk0x20 += m_unk0x38 * p_elapsedSeconds;
-		m_unk0x2c += m_unk0x3c * p_elapsedSeconds;
-		m_unk0x30 += m_unk0x40 * p_elapsedSeconds;
+		m_x += m_rateX * p_elapsedSeconds;
+		m_y += m_rateY * p_elapsedSeconds;
+		m_width += m_rateWidth * p_elapsedSeconds;
+		m_height += m_rateHeight * p_elapsedSeconds;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a35a0
-void CutsceneVisual::FUN_004a35a0(GolD3DRenderDevice* p_renderer)
+void CutsceneVisual::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & 0x40) {
 		LegoS32 sourceWidth;
@@ -141,23 +141,23 @@ void CutsceneVisual::FUN_004a35a0(GolD3DRenderDevice* p_renderer)
 		LegoFloat height = static_cast<LegoFloat>(renderTargetHeight);
 
 		if (m_flags & c_flagLayoutPending) {
-			FUN_004a36e0(p_renderer, width, height);
+			ComputeLayout(p_renderer, width, height);
 		}
 
-		if (m_unk0x1c >= 0.0f && m_unk0x20 >= 0.0f) {
-			LegoFloat scaledX = m_unk0x1c;
+		if (m_x >= 0.0f && m_y >= 0.0f) {
+			LegoFloat scaledX = m_x;
 			scaledX *= width;
 			LegoS32 x = static_cast<LegoS32>(scaledX);
 
-			LegoFloat scaledY = m_unk0x20;
+			LegoFloat scaledY = m_y;
 			scaledY *= height;
 			LegoS32 y = static_cast<LegoS32>(scaledY);
 
-			LegoFloat scaledWidth = m_unk0x2c;
+			LegoFloat scaledWidth = m_width;
 			scaledWidth *= width;
 			LegoS32 drawWidth = static_cast<LegoS32>(scaledWidth);
 
-			LegoFloat scaledHeight = m_unk0x30;
+			LegoFloat scaledHeight = m_height;
 			scaledHeight *= height;
 			LegoS32 drawHeight = static_cast<LegoS32>(scaledHeight);
 
@@ -176,7 +176,7 @@ void CutsceneVisual::FUN_004a35a0(GolD3DRenderDevice* p_renderer)
 }
 
 // STUB: LEGORACERS 0x004a36e0
-void CutsceneVisual::FUN_004a36e0(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height)
+void CutsceneVisual::ComputeLayout(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height)
 {
 	const Rect* viewport = &p_renderer->GetUnk0x0c()->m_viewport;
 	LegoS32 viewportX = viewport->m_left;
@@ -192,32 +192,32 @@ void CutsceneVisual::FUN_004a36e0(GolD3DRenderDevice* p_renderer, LegoFloat p_wi
 	LegoBool32 hasHeight;
 	LegoBool32 hasWidth = flags & c_flagWidth;
 	if (hasWidth) {
-		LegoFloat width = m_unk0x2c;
+		LegoFloat width = m_width;
 		imageWidth = static_cast<LegoS32>(width * p_width);
 	}
 
 	hasHeight = flags & c_flagHeight;
 	if (hasHeight) {
-		LegoFloat height = m_unk0x30;
+		LegoFloat height = m_height;
 		imageHeight = static_cast<LegoS32>(height * p_height);
 	}
 
 	viewportY += (viewportHeight - imageHeight) / 2;
 	if (!(flags & c_flagPositionX)) {
 		viewportX += (viewportWidth - imageWidth) / 2;
-		m_unk0x1c = static_cast<LegoFloat>(viewportX) / p_width;
+		m_x = static_cast<LegoFloat>(viewportX) / p_width;
 	}
 
 	if (!(flags & c_flagPositionY)) {
-		m_unk0x20 = static_cast<LegoFloat>(viewportY) / p_height;
+		m_y = static_cast<LegoFloat>(viewportY) / p_height;
 	}
 
 	if (!hasWidth) {
-		m_unk0x2c = static_cast<LegoFloat>(imageWidth) / p_width;
+		m_width = static_cast<LegoFloat>(imageWidth) / p_width;
 	}
 
 	if (!hasHeight) {
-		m_unk0x30 = static_cast<LegoFloat>(imageHeight) / p_height;
+		m_height = static_cast<LegoFloat>(imageHeight) / p_height;
 	}
 
 	m_flags = flags & ~c_flagLayoutPending;

@@ -129,28 +129,28 @@ public:
 	void Reset();
 	void Parse(GolFileParser* p_parser, CutscenePlayer* p_owner);
 	LegoBool32 ParseToken(GolFileParser* p_parser, CutscenePlayer* p_owner, GolFileParser::ParserTokenType p_token);
-	void FUN_004a4050();
-	void FUN_004a40f0();
+	void Clear();
+	void Update();
 
 	// SYNTHETIC: LEGORACERS 0x004a1d60
 	// CutsceneSoundEvent::`vector deleting destructor'
 
 protected:
-	SoundGroup* m_unk0x14;    // 0x14
-	SoundInstance* m_unk0x18; // 0x18
-	LegoFloat m_unk0x1c;      // 0x1c
-	LegoU32 m_unk0x20;        // 0x20
-	LegoFloat m_unk0x24;      // 0x24
-	LegoFloat m_unk0x28;      // 0x28
-	LegoU16 m_unk0x2c;        // 0x2c
-	LegoU16 m_unk0x2e;        // 0x2e
+	SoundGroup* m_soundGroup;   // 0x14
+	SoundInstance* m_instance;  // 0x18
+	LegoFloat m_volume;         // 0x1c
+	LegoU32 m_priority;         // 0x20
+	LegoFloat m_frequencyScale; // 0x24
+	LegoFloat m_pan;            // 0x28
+	LegoU16 m_looping;          // 0x2c
+	LegoU16 m_soundIndex;       // 0x2e
 };
 
 // VTABLE: LEGORACERS 0x004b4b34
 // SIZE 0x48
-class CutsceneMoveEvent : public CutsceneEvent {
+class CutsceneColorEvent : public CutsceneEvent {
 public:
-	CutsceneMoveEvent();
+	CutsceneColorEvent();
 
 	void Start() override;                             // vtable+0x14
 	void Stop() override;                              // vtable+0x18
@@ -158,26 +158,26 @@ public:
 
 	void Reset();
 	void Parse(GolFileParser* p_parser, CutscenePlayer* p_owner);
-	void FUN_004a4d10(LegoFloat p_elapsedSeconds);
-	void FUN_004a4da0();
+	void Update(LegoFloat p_elapsedSeconds);
+	void ApplyColorTransform();
 
 	// SYNTHETIC: LEGORACERS 0x004a1ba0
-	// CutsceneMoveEvent::`vector deleting destructor'
+	// CutsceneColorEvent::`vector deleting destructor'
 
 private:
-	LegoBool32 m_active;      // 0x14
-	LegoS32 m_baseX;          // 0x18
-	LegoS32 m_baseY;          // 0x1c
-	LegoS32 m_baseZ;          // 0x20
-	LegoS32 m_offsetStartX;   // 0x24
-	LegoS32 m_offsetStartY;   // 0x28
-	LegoS32 m_offsetStartZ;   // 0x2c
-	LegoFloat m_offsetX;      // 0x30
-	LegoFloat m_offsetY;      // 0x34
-	LegoFloat m_offsetZ;      // 0x38
-	LegoFloat m_offsetDeltaX; // 0x3c
-	LegoFloat m_offsetDeltaY; // 0x40
-	LegoFloat m_offsetDeltaZ; // 0x44
+	LegoBool32 m_active;       // 0x14
+	LegoS32 m_shiftRed;        // 0x18
+	LegoS32 m_shiftGrn;        // 0x1c
+	LegoS32 m_shiftBlu;        // 0x20
+	LegoS32 m_offsetStartRed;  // 0x24
+	LegoS32 m_offsetStartGrn;  // 0x28
+	LegoS32 m_offsetStartBlu;  // 0x2c
+	LegoFloat m_offsetRed;     // 0x30
+	LegoFloat m_offsetGrn;     // 0x34
+	LegoFloat m_offsetBlu;     // 0x38
+	LegoFloat m_offsetRateRed; // 0x3c
+	LegoFloat m_offsetRateGrn; // 0x40
+	LegoFloat m_offsetRateBlu; // 0x44
 };
 
 struct CutsceneParticleRef {
@@ -206,21 +206,21 @@ public:
 
 	void Reset();
 	void Parse(GolFileParser* p_parser, CutscenePlayer* p_owner);
-	void FUN_004a3db0();
-	void FUN_004a3df0(LegoU32 p_elapsedMs);
+	void Spawn();
+	void Update(LegoU32 p_elapsedMs);
 
 	// SYNTHETIC: LEGORACERS 0x004a1f20
 	// CutsceneAnimationEvent::`vector deleting destructor'
 
 private:
-	CutsceneAnimation* m_unk0x14;   // 0x14
-	CutsceneParticleRef* m_unk0x18; // 0x18
-	GolName m_unk0x1c;              // 0x1c
-	GolVec3 m_unk0x24;              // 0x24
-	GolVec3 m_unk0x30;              // 0x30
-	GolVec3 m_unk0x3c;              // 0x3c
-	LegoU32 m_unk0x48;              // 0x48
-	LegoU32 m_unk0x4c;              // 0x4c
+	CutsceneAnimation* m_animation;     // 0x14
+	CutsceneParticleRef* m_particleRef; // 0x18
+	GolName m_emitterName;              // 0x1c
+	GolVec3 m_position;                 // 0x24
+	GolVec3 m_direction;                // 0x30
+	GolVec3 m_up;                       // 0x3c
+	LegoU32 m_flags;                    // 0x48
+	LegoU32 m_jointIndex;               // 0x4c
 };
 
 // VTABLE: LEGORACERS 0x004b4ad8
@@ -228,10 +228,10 @@ private:
 class CutsceneStreamingSoundEvent : public CutsceneSoundEvent {
 public:
 	enum Flags {
-		c_flagInUse = 1 << 0,
-		c_flagBit1 = 1 << 1,
-		c_flagBit2 = 1 << 2,
-		c_flagBit3 = 1 << 3,
+		c_flagHasPosition = 1 << 0,
+		c_flagTrackEntity = 1 << 1,
+		c_flagTrackJoint = 1 << 2,
+		c_flagWasPlaying = 1 << 3,
 	};
 
 	CutsceneStreamingSoundEvent();
@@ -244,17 +244,17 @@ public:
 
 	void Reset();
 	void Parse(GolFileParser* p_parser, CutscenePlayer* p_owner);
-	void FUN_004a42a0();
-	void FUN_004a43a0(const GolVec3* p_position);
-	void FUN_004a44f0();
+	void Clear();
+	void CreateInstance(const GolVec3* p_position);
+	void Update();
 
 private:
-	StreamingSoundInstance* m_unk0x30; // 0x30
-	LegoFloat m_unk0x34;               // 0x34
-	LegoFloat m_unk0x38;               // 0x38
-	GolVec3 m_unk0x3c;                 // 0x3c
-	LegoU32 m_unk0x48;                 // 0x48
-	LegoU32 m_unk0x4c;                 // 0x4c
+	StreamingSoundInstance* m_streamInstance; // 0x30
+	LegoFloat m_minDistance;                  // 0x34
+	LegoFloat m_maxDistance;                  // 0x38
+	GolVec3 m_position;                       // 0x3c
+	LegoU32 m_flags;                          // 0x48
+	LegoU32 m_jointIndex;                     // 0x4c
 };
 
 // VTABLE: LEGORACERS 0x004b4b18
@@ -281,20 +281,20 @@ public:
 	// CutsceneMenuAnimationEvent::~CutsceneMenuAnimationEvent
 
 private:
-	MenuAnimationList* m_unk0x14;        // 0x14
-	DuskwindBananaRelic0x24* m_unk0x18;  // 0x18
-	MenuAnimationList::Entry* m_unk0x1c; // 0x1c
+	MenuAnimationList* m_animationList;      // 0x14
+	DuskwindBananaRelic0x24* m_material;     // 0x18
+	MenuAnimationList::Entry* m_activeEntry; // 0x1c
 	union {
 		struct {
-			LegoU8 m_unk0x20; // 0x20
-			LegoU8 m_unk0x21; // 0x21
-			LegoU8 m_unk0x22; // 0x22
-			LegoU8 m_unk0x23; // 0x23
+			LegoU8 m_red;   // 0x20
+			LegoU8 m_grn;   // 0x21
+			LegoU8 m_blu;   // 0x22
+			LegoU8 m_alpha; // 0x23
 		};
 		LegoU32 m_colorPacked; // 0x20
 	};
-	LegoU32 m_unk0x24;                // 0x24
-	LegoU8 m_unk0x28;                 // 0x28
+	LegoU32 m_durationMs;             // 0x24
+	LegoU8 m_mode;                    // 0x28
 	undefined m_unk0x29[0x2c - 0x29]; // 0x29
 };
 
@@ -320,9 +320,9 @@ public:
 
 	void Reset();
 	void Clear();
-	void FUN_004a3550(LegoFloat p_elapsedSeconds);
-	void FUN_004a35a0(GolD3DRenderDevice* p_renderer);
-	void FUN_004a36e0(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height);
+	void Update(LegoFloat p_elapsedSeconds);
+	void Draw(GolD3DRenderDevice* p_renderer);
+	void ComputeLayout(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height);
 	void ParseVisualToken(
 		GolFileParser* p_parser,
 		GolFileParser::ParserTokenType p_token,
@@ -335,26 +335,29 @@ public:
 
 protected:
 	enum Flags {
+		c_flagCenterX = 1 << 0,
+		c_flagCenterY = 1 << 1,
 		c_flagPositionX = 1 << 2,
 		c_flagPositionY = 1 << 3,
 		c_flagWidth = 1 << 4,
 		c_flagHeight = 1 << 5,
 		c_flagActive = 1 << 6,
-		c_flagLayoutPending = 1 << 7
+		c_flagLayoutPending = 1 << 7,
+		c_flagHasColor = 1 << 8
 	};
 
-	LegoFloat m_unk0x14;        // 0x14
-	LegoFloat m_unk0x18;        // 0x18
-	LegoFloat m_unk0x1c;        // 0x1c
-	LegoFloat m_unk0x20;        // 0x20
-	LegoFloat m_unk0x24;        // 0x24
-	LegoFloat m_unk0x28;        // 0x28
-	LegoFloat m_unk0x2c;        // 0x2c
-	LegoFloat m_unk0x30;        // 0x30
-	LegoFloat m_unk0x34;        // 0x34
-	LegoFloat m_unk0x38;        // 0x38
-	LegoFloat m_unk0x3c;        // 0x3c
-	LegoFloat m_unk0x40;        // 0x40
+	LegoFloat m_startX;         // 0x14
+	LegoFloat m_startY;         // 0x18
+	LegoFloat m_x;              // 0x1c
+	LegoFloat m_y;              // 0x20
+	LegoFloat m_startWidth;     // 0x24
+	LegoFloat m_startHeight;    // 0x28
+	LegoFloat m_width;          // 0x2c
+	LegoFloat m_height;         // 0x30
+	LegoFloat m_rateX;          // 0x34
+	LegoFloat m_rateY;          // 0x38
+	LegoFloat m_rateWidth;      // 0x3c
+	LegoFloat m_rateHeight;     // 0x40
 	LegoU32 m_flags;            // 0x44
 	GolName m_fontName;         // 0x48
 	LegoU32 m_stringTableIndex; // 0x50
@@ -385,14 +388,14 @@ public:
 	void Reset();
 	void Clear();
 	void Parse(GolFileParser* p_parser, CutscenePlayer* p_owner, GolRenderDevice* p_renderer);
-	void FUN_004a3910(GolD3DRenderDevice* p_renderer);
+	void ResolveImage(GolD3DRenderDevice* p_renderer);
 
 	// SYNTHETIC: LEGORACERS 0x004a2690
 	// CutsceneImageVisual::`vector deleting destructor'
 
 private:
-	UtopianPan0xa4* m_unk0x58; // 0x58
-	GolName m_unk0x5c;         // 0x5c
+	UtopianPan0xa4* m_image; // 0x58
+	GolName m_imageName;     // 0x5c
 };
 
 // VTABLE: LEGORACERS 0x004b4af4
@@ -647,7 +650,7 @@ private:
 	LegoChar* m_imageListNames;                     // 0x0a4
 	GolNameTable m_moveEventNames;                  // 0x0a8
 	LegoU32 m_moveEventCount;                       // 0x0b4
-	CutsceneMoveEvent* m_moveEvents;                // 0x0b8
+	CutsceneColorEvent* m_moveEvents;               // 0x0b8
 	GolNameTable m_soundEventNames;                 // 0x0bc
 	LegoU32 m_soundEventCount;                      // 0x0c8
 	CutsceneSoundEvent* m_soundEvents;              // 0x0cc

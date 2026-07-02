@@ -44,7 +44,7 @@ DECOMP_SIZE_ASSERT(CutsceneModelEventView, 0x28)
 DECOMP_SIZE_ASSERT(CutsceneTransformEventView, 0x44)
 DECOMP_SIZE_ASSERT(CutsceneEventLink, 0x0c)
 DECOMP_SIZE_ASSERT(CutsceneSoundEvent, 0x30)
-DECOMP_SIZE_ASSERT(CutsceneMoveEvent, 0x48)
+DECOMP_SIZE_ASSERT(CutsceneColorEvent, 0x48)
 DECOMP_SIZE_ASSERT(CutsceneAnimationEvent, 0x50)
 DECOMP_SIZE_ASSERT(CutsceneStreamingSoundEvent, 0x50)
 DECOMP_SIZE_ASSERT(CutsceneMenuAnimationEvent, 0x2c)
@@ -1447,7 +1447,7 @@ void CutscenePlayer::ParseMoveEvents(GolFileParser* p_parser)
 	p_parser->ReadLeftCurly();
 
 	m_moveEventNames.Allocate(m_moveEventCount);
-	m_moveEvents = new CutsceneMoveEvent[m_moveEventCount];
+	m_moveEvents = new CutsceneColorEvent[m_moveEventCount];
 	if (m_moveEvents == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -1686,7 +1686,7 @@ void CutscenePlayer::ParseImageVisuals(GolFileParser* p_parser)
 void CutscenePlayer::LoadImageVisuals()
 {
 	for (LegoU32 i = 0; i < m_imageVisualCount; i++) {
-		m_imageVisuals[i].FUN_004a3910(m_renderer);
+		m_imageVisuals[i].ResolveImage(m_renderer);
 	}
 }
 
@@ -1997,15 +1997,15 @@ void CutscenePlayer::Update(LegoU32 p_elapsedMs)
 		LegoU32 i;
 
 		for (i = 0; i < m_moveEventCount; i++) {
-			m_moveEvents[i].FUN_004a4d10(elapsedSeconds);
+			m_moveEvents[i].Update(elapsedSeconds);
 		}
 
 		for (i = 0; i < m_soundEventCount; i++) {
-			m_soundEvents[i].FUN_004a40f0();
+			m_soundEvents[i].Update();
 		}
 
 		for (i = 0; i < m_streamEventCount; i++) {
-			m_streamEvents[i].FUN_004a44f0();
+			m_streamEvents[i].Update();
 		}
 
 		for (i = 0; i < m_animationCount; i++) {
@@ -2014,15 +2014,15 @@ void CutscenePlayer::Update(LegoU32 p_elapsedMs)
 		}
 
 		for (i = 0; i < m_textVisualCount; i++) {
-			m_textVisuals[i].FUN_004a3550(elapsedSeconds);
+			m_textVisuals[i].Update(elapsedSeconds);
 		}
 
 		for (i = 0; i < m_imageVisualCount; i++) {
-			m_imageVisuals[i].FUN_004a3550(elapsedSeconds);
+			m_imageVisuals[i].Update(elapsedSeconds);
 		}
 
 		for (i = 0; i < m_animEventCount; i++) {
-			m_animEvents[i].FUN_004a3df0(p_elapsedMs);
+			m_animEvents[i].Update(p_elapsedMs);
 		}
 
 		if (m_menuAnimations != NULL) {
@@ -2106,11 +2106,11 @@ void CutscenePlayer::DrawOverlay(GolD3DRenderDevice* p_renderer)
 
 		LegoU32 i;
 		for (i = 0; i < m_imageVisualCount; i++) {
-			m_imageVisuals[i].FUN_004a35a0(p_renderer);
+			m_imageVisuals[i].Draw(p_renderer);
 		}
 
 		for (i = 0; i < m_textVisualCount; i++) {
-			m_textVisuals[i].FUN_004a35a0(p_renderer);
+			m_textVisuals[i].Draw(p_renderer);
 		}
 
 		if (m_menuAnimations != NULL) {
@@ -2190,8 +2190,8 @@ CutsceneImageVisual::~CutsceneImageVisual()
 // FUNCTION: LEGORACERS 0x004a3880
 void CutsceneImageVisual::Reset()
 {
-	m_unk0x58 = NULL;
-	m_unk0x5c[0] = '\0';
+	m_image = NULL;
+	m_imageName[0] = '\0';
 	CutsceneVisual::Reset();
 }
 
@@ -2208,25 +2208,25 @@ void CutsceneImageVisual::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner
 				ParseVisualToken(p_parser, token, p_owner, p_renderer);
 			}
 			else {
-				::strncpy(m_unk0x5c, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+				::strncpy(m_imageName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 			}
 
 			token = p_parser->GetNextToken();
 		} while (token != GolFileParser::e_rightCurly);
 	}
 
-	if (m_unk0x5c[0] == '\0') {
+	if (m_imageName[0] == '\0') {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a3910
-void CutsceneImageVisual::FUN_004a3910(GolD3DRenderDevice* p_renderer)
+void CutsceneImageVisual::ResolveImage(GolD3DRenderDevice* p_renderer)
 {
-	m_unk0x58 = p_renderer->FindImageByName(m_unk0x5c);
-	if (m_unk0x58 == NULL) {
+	m_image = p_renderer->FindImageByName(m_imageName);
+	if (m_image == NULL) {
 		LegoChar text[64];
-		::strncpy(text, m_unk0x5c, sizeof(GolName));
+		::strncpy(text, m_imageName, sizeof(GolName));
 		text[sizeof(GolName)] = '\0';
 		::strcat(text, ": Unable to find image");
 		GOL_FATALERROR_MESSAGE(text);
@@ -2243,8 +2243,8 @@ void CutsceneImageVisual::Clear()
 // FUNCTION: LEGORACERS 0x004a39b0
 void CutsceneImageVisual::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
 {
-	*p_width = m_unk0x58->GetWidth();
-	*p_height = m_unk0x58->GetHeight();
+	*p_width = m_image->GetWidth();
+	*p_height = m_image->GetHeight();
 }
 
 // FUNCTION: LEGORACERS 0x004a39d0
@@ -2265,10 +2265,10 @@ void CutsceneImageVisual::VTable0x20(
 	destRect.m_bottom = p_y + p_height;
 
 	if (m_flags & 0x100) {
-		m_unk0x58->m_unk0x4a.m_u32 = m_colorPacked;
+		m_image->m_unk0x4a.m_u32 = m_colorPacked;
 	}
 
-	p_renderer->VTable0x78(m_unk0x58, 0, &destRect, NULL);
+	p_renderer->VTable0x78(m_image, 0, &destRect, NULL);
 
 	if (m_flags & 0x100) {
 		union {
@@ -2280,7 +2280,7 @@ void CutsceneImageVisual::VTable0x20(
 		color.m_color.m_grn = 0xff;
 		color.m_color.m_blu = 0xff;
 		color.m_color.m_alp = 0xff;
-		m_unk0x58->m_unk0x4a.m_u32 = color.m_colorPacked;
+		m_image->m_unk0x4a.m_u32 = color.m_colorPacked;
 	}
 }
 
@@ -2293,19 +2293,19 @@ CutsceneAnimationEvent::CutsceneAnimationEvent()
 // FUNCTION: LEGORACERS 0x004a3aa0
 void CutsceneAnimationEvent::Reset()
 {
-	m_unk0x14 = NULL;
-	m_unk0x18 = NULL;
-	m_unk0x1c[0] = '\0';
-	m_unk0x24.m_x = 0.0f;
-	m_unk0x24.m_y = 0.0f;
-	m_unk0x24.m_z = 0.0f;
-	m_unk0x30.m_x = 0.0f;
-	m_unk0x30.m_y = 0.0f;
-	m_unk0x30.m_z = 0.0f;
-	m_unk0x3c.m_x = 0.0f;
-	m_unk0x3c.m_y = 0.0f;
-	m_unk0x3c.m_z = 0.0f;
-	m_unk0x48 = 0;
+	m_animation = NULL;
+	m_particleRef = NULL;
+	m_emitterName[0] = '\0';
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
+	m_direction.m_x = 0.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
+	m_up.m_x = 0.0f;
+	m_up.m_y = 0.0f;
+	m_up.m_z = 0.0f;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a3ad0
@@ -2322,31 +2322,31 @@ void CutsceneAnimationEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_ow
 				p_parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
 			}
 
-			m_unk0x14 = p_owner->GetAnimationByIndex(index);
-			::strncpy(m_unk0x1c, p_parser->ReadString(), sizeof(GolName));
+			m_animation = p_owner->GetAnimationByIndex(index);
+			::strncpy(m_emitterName, p_parser->ReadString(), sizeof(GolName));
 			break;
 		}
 		case GolFileParser::e_unknown0x39:
-			m_unk0x24.m_x = p_parser->ReadFloat();
-			m_unk0x24.m_y = p_parser->ReadFloat();
-			m_unk0x24.m_z = p_parser->ReadFloat();
-			m_unk0x48 |= 1;
+			m_position.m_x = p_parser->ReadFloat();
+			m_position.m_y = p_parser->ReadFloat();
+			m_position.m_z = p_parser->ReadFloat();
+			m_flags |= 1;
 			break;
 		case GolFileParser::e_unknown0x3e:
-			m_unk0x30.m_x = p_parser->ReadFloat();
-			m_unk0x30.m_y = p_parser->ReadFloat();
-			m_unk0x30.m_z = p_parser->ReadFloat();
-			m_unk0x3c.m_x = p_parser->ReadFloat();
-			m_unk0x3c.m_y = p_parser->ReadFloat();
-			m_unk0x3c.m_z = p_parser->ReadFloat();
-			m_unk0x48 |= 2;
+			m_direction.m_x = p_parser->ReadFloat();
+			m_direction.m_y = p_parser->ReadFloat();
+			m_direction.m_z = p_parser->ReadFloat();
+			m_up.m_x = p_parser->ReadFloat();
+			m_up.m_y = p_parser->ReadFloat();
+			m_up.m_z = p_parser->ReadFloat();
+			m_flags |= 2;
 			break;
 		case GolFileParser::e_unknown0x3a:
-			m_unk0x48 |= 4;
+			m_flags |= 4;
 			break;
 		case GolFileParser::e_unknown0x3b:
-			m_unk0x4c = p_parser->ReadInteger();
-			m_unk0x48 |= 8;
+			m_jointIndex = p_parser->ReadInteger();
+			m_flags |= 8;
 			break;
 		default:
 			ParseCommonToken(p_parser, p_owner, token);
@@ -2360,7 +2360,7 @@ void CutsceneAnimationEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_ow
 // FUNCTION: LEGORACERS 0x004a3c20
 void CutsceneAnimationEvent::Start()
 {
-	if (m_unk0x18 == NULL) {
+	if (m_particleRef == NULL) {
 		GolVec3 v1, v2, v3;
 		v1.m_x = 0.0f;
 		v1.m_y = 0.0f;
@@ -2379,41 +2379,41 @@ void CutsceneAnimationEvent::Start()
 // FUNCTION: LEGORACERS 0x004a3c90
 void CutsceneAnimationEvent::StartAt(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c)
 {
-	if (m_unk0x18 == NULL) {
-		if ((m_unk0x48 & 8) && m_animatedEntity) {
-			GetJointPosition(m_unk0x4c, &m_unk0x24);
-			GetJointAxes(m_unk0x4c, &m_unk0x30, &m_unk0x3c);
-			FUN_004a3db0();
+	if (m_particleRef == NULL) {
+		if ((m_flags & 8) && m_animatedEntity) {
+			GetJointPosition(m_jointIndex, &m_position);
+			GetJointAxes(m_jointIndex, &m_direction, &m_up);
+			Spawn();
 			return;
 		}
 
-		if (!(m_unk0x48 & 1)) {
+		if (!(m_flags & 1)) {
 			if (m_parsedEntity != NULL) {
-				m_parsedEntity->VTable0x04(&m_unk0x24);
+				m_parsedEntity->VTable0x04(&m_position);
 			}
 			else {
-				m_unk0x24 = *p_a;
+				m_position = *p_a;
 			}
 		}
 
-		if (!(m_unk0x48 & 2)) {
+		if (!(m_flags & 2)) {
 			if (m_parsedEntity != NULL) {
-				m_parsedEntity->VTable0x48(&m_unk0x30, &m_unk0x3c);
+				m_parsedEntity->VTable0x48(&m_direction, &m_up);
 			}
 			else {
-				m_unk0x30 = *p_b;
-				m_unk0x3c = *p_c;
+				m_direction = *p_b;
+				m_up = *p_c;
 			}
 		}
 
-		FUN_004a3db0();
+		Spawn();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a3d70
 void CutsceneAnimationEvent::StartOnBsp(GolWorldEntity* p_arg)
 {
-	if (m_unk0x18 == NULL) {
+	if (m_particleRef == NULL) {
 		if (m_parsedEntity == NULL) {
 			m_parsedEntity = p_arg;
 		}
@@ -2425,7 +2425,7 @@ void CutsceneAnimationEvent::StartOnBsp(GolWorldEntity* p_arg)
 // FUNCTION: LEGORACERS 0x004a3d90
 void CutsceneAnimationEvent::StartOnJointed(GolWorldEntity* p_arg)
 {
-	if (m_unk0x18 == NULL) {
+	if (m_particleRef == NULL) {
 		if (m_animatedEntity == NULL) {
 			m_animatedEntity = static_cast<GolAnimatedEntity*>(p_arg);
 		}
@@ -2435,33 +2435,33 @@ void CutsceneAnimationEvent::StartOnJointed(GolWorldEntity* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a3db0
-void CutsceneAnimationEvent::FUN_004a3db0()
+void CutsceneAnimationEvent::Spawn()
 {
-	m_unk0x18 = m_unk0x14->SpawnParticle(m_unk0x1c, &m_unk0x24, &m_unk0x30, &m_unk0x3c);
+	m_particleRef = m_animation->SpawnParticle(m_emitterName, &m_position, &m_direction, &m_up);
 }
 
 // FUNCTION: LEGORACERS 0x004a3dd0
 void CutsceneAnimationEvent::Stop()
 {
-	if (m_unk0x18) {
-		m_unk0x14->ReleaseRef(m_unk0x18);
-		m_unk0x18 = NULL;
+	if (m_particleRef) {
+		m_animation->ReleaseRef(m_particleRef);
+		m_particleRef = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a3df0
-void CutsceneAnimationEvent::FUN_004a3df0(LegoU32)
+void CutsceneAnimationEvent::Update(LegoU32)
 {
 	GolVec3 v0, v1, v2;
 
-	if (m_unk0x18 && (m_unk0x48 & 8) && m_animatedEntity) {
-		CutsceneEvent::GetJointPosition(m_unk0x4c, &v0);
-		GetJointAxes(m_unk0x4c, &v1, &v2);
-		if (m_unk0x18->m_particle) {
-			m_unk0x18->m_particle->FUN_00489660(&v0);
+	if (m_particleRef && (m_flags & 8) && m_animatedEntity) {
+		CutsceneEvent::GetJointPosition(m_jointIndex, &v0);
+		GetJointAxes(m_jointIndex, &v1, &v2);
+		if (m_particleRef->m_particle) {
+			m_particleRef->m_particle->FUN_00489660(&v0);
 		}
-		if (m_unk0x18->m_particle) {
-			m_unk0x18->m_particle->FUN_00489540(&v1, &v2);
+		if (m_particleRef->m_particle) {
+			m_particleRef->m_particle->FUN_00489540(&v1, &v2);
 		}
 	}
 }
@@ -2475,21 +2475,21 @@ CutsceneSoundEvent::CutsceneSoundEvent()
 // FUNCTION: LEGORACERS 0x004a3ec0
 void CutsceneSoundEvent::Reset()
 {
-	m_unk0x14 = NULL;
-	m_unk0x18 = NULL;
-	m_unk0x1c = g_crimsonPebbleEvent0x30DefaultVolume;
-	m_unk0x20 = 0;
-	m_unk0x24 = g_crimsonPebbleEvent0x30DefaultFrequencyScale;
-	m_unk0x28 = g_crimsonPebbleEvent0x30DefaultPan;
-	m_unk0x2c = 0;
-	m_unk0x2e = 0;
+	m_soundGroup = NULL;
+	m_instance = NULL;
+	m_volume = g_crimsonPebbleEvent0x30DefaultVolume;
+	m_priority = 0;
+	m_frequencyScale = g_crimsonPebbleEvent0x30DefaultFrequencyScale;
+	m_pan = g_crimsonPebbleEvent0x30DefaultPan;
+	m_looping = 0;
+	m_soundIndex = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a3ef0
 void CutsceneSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 {
-	if (m_unk0x14 != NULL) {
-		FUN_004a4050();
+	if (m_soundGroup != NULL) {
+		Clear();
 	}
 
 	p_parser->ReadLeftCurly();
@@ -2503,7 +2503,7 @@ void CutsceneSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 		token = p_parser->GetNextToken();
 	}
 
-	if (m_unk0x14 == NULL) {
+	if (m_soundGroup == NULL) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 }
@@ -2522,24 +2522,24 @@ LegoBool32 CutsceneSoundEvent::ParseToken(
 			p_parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
 		}
 
-		m_unk0x14 = p_owner->GetSoundGroupByIndex(index);
-		m_unk0x2e = static_cast<LegoU16>(p_parser->ReadInteger());
+		m_soundGroup = p_owner->GetSoundGroupByIndex(index);
+		m_soundIndex = static_cast<LegoU16>(p_parser->ReadInteger());
 		return TRUE;
 	}
 	case GolFileParser::e_unknown0x31:
-		m_unk0x20 = p_parser->ReadInteger();
+		m_priority = p_parser->ReadInteger();
 		return TRUE;
 	case GolFileParser::e_unknown0x32:
-		m_unk0x1c = p_parser->ReadFloat();
+		m_volume = p_parser->ReadFloat();
 		return TRUE;
 	case GolFileParser::e_unknown0x33:
-		m_unk0x24 = p_parser->ReadFloat();
+		m_frequencyScale = p_parser->ReadFloat();
 		return TRUE;
 	case GolFileParser::e_unknown0x34:
-		m_unk0x28 = p_parser->ReadFloat();
+		m_pan = p_parser->ReadFloat();
 		return TRUE;
 	case GolFileParser::e_unknown0x35:
-		m_unk0x2c = 1;
+		m_looping = 1;
 		return TRUE;
 	default:
 		return FALSE;
@@ -2547,7 +2547,7 @@ LegoBool32 CutsceneSoundEvent::ParseToken(
 }
 
 // FUNCTION: LEGORACERS 0x004a4050
-void CutsceneSoundEvent::FUN_004a4050()
+void CutsceneSoundEvent::Clear()
 {
 	Reset();
 	CutsceneEvent::Reset();
@@ -2556,30 +2556,30 @@ void CutsceneSoundEvent::FUN_004a4050()
 // FUNCTION: LEGORACERS 0x004a4070
 void CutsceneSoundEvent::Start()
 {
-	if (m_unk0x18 == NULL) {
-		m_unk0x18 = m_unk0x14->CreateSoundInstance(m_unk0x2e);
-		m_unk0x18->Play(m_unk0x2c);
-		m_unk0x18->SetVolume(m_unk0x1c);
-		m_unk0x18->SetPan(m_unk0x28);
-		m_unk0x18->SetFrequencyScale(m_unk0x24);
-		m_unk0x18->SetPriority(m_unk0x20);
+	if (m_instance == NULL) {
+		m_instance = m_soundGroup->CreateSoundInstance(m_soundIndex);
+		m_instance->Play(m_looping);
+		m_instance->SetVolume(m_volume);
+		m_instance->SetPan(m_pan);
+		m_instance->SetFrequencyScale(m_frequencyScale);
+		m_instance->SetPriority(m_priority);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a40d0
 void CutsceneSoundEvent::Stop()
 {
-	if (m_unk0x18 != NULL) {
-		m_unk0x14->DestroySoundInstance(m_unk0x18);
-		m_unk0x18 = NULL;
+	if (m_instance != NULL) {
+		m_soundGroup->DestroySoundInstance(m_instance);
+		m_instance = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a40f0
-void CutsceneSoundEvent::FUN_004a40f0()
+void CutsceneSoundEvent::Update()
 {
-	if (m_unk0x18 != NULL) {
-		if (!m_unk0x18->IsPlaying()) {
+	if (m_instance != NULL) {
+		if (!m_instance->IsPlaying()) {
 			Stop();
 		}
 	}
@@ -2594,14 +2594,14 @@ CutsceneStreamingSoundEvent::CutsceneStreamingSoundEvent()
 // FUNCTION: LEGORACERS 0x004a4160
 void CutsceneStreamingSoundEvent::Reset()
 {
-	m_unk0x30 = NULL;
-	m_unk0x34 = 100.0f;
-	m_unk0x38 = 500.0f;
-	m_unk0x3c.m_x = 0.0f;
-	m_unk0x3c.m_y = 0.0f;
-	m_unk0x3c.m_z = 0.0f;
-	m_unk0x48 = 0;
-	m_unk0x4c = 0;
+	m_streamInstance = NULL;
+	m_minDistance = 100.0f;
+	m_maxDistance = 500.0f;
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
+	m_flags = 0;
+	m_jointIndex = 0;
 	CutsceneSoundEvent::Reset();
 	CutsceneEvent::Reset();
 }
@@ -2609,8 +2609,8 @@ void CutsceneStreamingSoundEvent::Reset()
 // FUNCTION: LEGORACERS 0x004a41a0
 void CutsceneStreamingSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 {
-	if (m_unk0x14 != NULL) {
-		FUN_004a42a0();
+	if (m_soundGroup != NULL) {
+		Clear();
 	}
 
 	p_parser->ReadLeftCurly();
@@ -2619,23 +2619,23 @@ void CutsceneStreamingSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer*
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case GolFileParser::e_unknown0x37:
-			m_unk0x34 = p_parser->ReadFloat();
+			m_minDistance = p_parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x38:
-			m_unk0x38 = p_parser->ReadFloat();
+			m_maxDistance = p_parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x39:
-			m_unk0x3c.m_x = p_parser->ReadFloat();
-			m_unk0x3c.m_y = p_parser->ReadFloat();
-			m_unk0x3c.m_z = p_parser->ReadFloat();
-			m_unk0x48 |= 1;
+			m_position.m_x = p_parser->ReadFloat();
+			m_position.m_y = p_parser->ReadFloat();
+			m_position.m_z = p_parser->ReadFloat();
+			m_flags |= 1;
 			break;
 		case GolFileParser::e_unknown0x3a:
-			m_unk0x48 = (m_unk0x48 & ~4) | 2;
+			m_flags = (m_flags & ~4) | 2;
 			break;
 		case GolFileParser::e_unknown0x3b:
-			m_unk0x4c = p_parser->ReadInteger();
-			m_unk0x48 = (m_unk0x48 & ~2) | 4;
+			m_jointIndex = p_parser->ReadInteger();
+			m_flags = (m_flags & ~2) | 4;
 			break;
 		default:
 			if (!ParseToken(p_parser, p_owner, token)) {
@@ -2647,13 +2647,13 @@ void CutsceneStreamingSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer*
 		token = p_parser->GetNextToken();
 	}
 
-	if (m_unk0x14 == NULL) {
+	if (m_soundGroup == NULL) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a42a0
-void CutsceneStreamingSoundEvent::FUN_004a42a0()
+void CutsceneStreamingSoundEvent::Clear()
 {
 	Reset();
 }
@@ -2661,19 +2661,19 @@ void CutsceneStreamingSoundEvent::FUN_004a42a0()
 // FUNCTION: LEGORACERS 0x004a42b0
 void CutsceneStreamingSoundEvent::Start()
 {
-	if (m_unk0x30 == NULL) {
+	if (m_streamInstance == NULL) {
 		GolVec3 velocity;
 		GolVec3 position;
 		velocity.m_x = 0.0f;
 		velocity.m_y = 0.0f;
 		velocity.m_z = 0.0f;
 
-		if ((m_unk0x48 & c_flagBit2) && m_animatedEntity != NULL) {
-			GetJointPosition(m_unk0x4c, &position);
+		if ((m_flags & c_flagTrackJoint) && m_animatedEntity != NULL) {
+			GetJointPosition(m_jointIndex, &position);
 			m_animatedEntity->GetVelocity(&velocity);
 		}
-		else if (m_unk0x48 & c_flagInUse) {
-			position = m_unk0x3c;
+		else if (m_flags & c_flagHasPosition) {
+			position = m_position;
 		}
 		else if (m_parsedEntity != NULL) {
 			m_parsedEntity->VTable0x04(&position);
@@ -2685,39 +2685,39 @@ void CutsceneStreamingSoundEvent::Start()
 			position.m_z = 0.0f;
 		}
 
-		FUN_004a43a0(&position);
-		m_unk0x30->SetVelocity(velocity);
+		CreateInstance(&position);
+		m_streamInstance->SetVelocity(velocity);
 	}
 }
 
 // STUB: LEGORACERS 0x004a43a0
-void CutsceneStreamingSoundEvent::FUN_004a43a0(const GolVec3* p_position)
+void CutsceneStreamingSoundEvent::CreateInstance(const GolVec3* p_position)
 {
-	if (m_unk0x30 == NULL) {
-		m_unk0x30 = m_unk0x14->CreateStreamingSoundInstance(m_unk0x2e);
-		m_unk0x30->Play(m_unk0x2c);
-		m_unk0x30->SetVolume(m_unk0x1c);
-		m_unk0x30->SetFrequencyScale(m_unk0x24);
-		LegoFloat maxDistance = m_unk0x38;
-		LegoFloat minDistance = m_unk0x34;
-		m_unk0x30->SetDistanceRange(minDistance, maxDistance);
+	if (m_streamInstance == NULL) {
+		m_streamInstance = m_soundGroup->CreateStreamingSoundInstance(m_soundIndex);
+		m_streamInstance->Play(m_looping);
+		m_streamInstance->SetVolume(m_volume);
+		m_streamInstance->SetFrequencyScale(m_frequencyScale);
+		LegoFloat maxDistance = m_maxDistance;
+		LegoFloat minDistance = m_minDistance;
+		m_streamInstance->SetDistanceRange(minDistance, maxDistance);
 
-		m_unk0x48 &= ~c_flagBit3;
-		if (m_unk0x48 & c_flagInUse) {
-			m_unk0x30->SetPosition(&m_unk0x3c);
+		m_flags &= ~c_flagWasPlaying;
+		if (m_flags & c_flagHasPosition) {
+			m_streamInstance->SetPosition(&m_position);
 			return;
 		}
 
-		m_unk0x30->SetPosition(p_position);
+		m_streamInstance->SetPosition(p_position);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4450
 void CutsceneStreamingSoundEvent::StartAt(const GolVec3* p_a, const GolVec3*, const GolVec3*)
 {
-	if (m_unk0x30 == NULL) {
-		if (m_parsedEntity == NULL && !(m_unk0x48 & 1)) {
-			FUN_004a43a0(p_a);
+	if (m_streamInstance == NULL) {
+		if (m_parsedEntity == NULL && !(m_flags & 1)) {
+			CreateInstance(p_a);
 		}
 		else {
 			Start();
@@ -2728,7 +2728,7 @@ void CutsceneStreamingSoundEvent::StartAt(const GolVec3* p_a, const GolVec3*, co
 // FUNCTION: LEGORACERS 0x004a4480
 void CutsceneStreamingSoundEvent::StartOnBsp(GolWorldEntity* p_arg)
 {
-	if (m_unk0x30 == NULL) {
+	if (m_streamInstance == NULL) {
 		if (m_parsedEntity == NULL) {
 			m_parsedEntity = p_arg;
 		}
@@ -2740,7 +2740,7 @@ void CutsceneStreamingSoundEvent::StartOnBsp(GolWorldEntity* p_arg)
 // FUNCTION: LEGORACERS 0x004a44a0
 void CutsceneStreamingSoundEvent::StartOnJointed(GolWorldEntity* p_arg)
 {
-	if (m_unk0x30 == NULL) {
+	if (m_streamInstance == NULL) {
 		if (m_animatedEntity == NULL) {
 			m_animatedEntity = static_cast<GolAnimatedEntity*>(p_arg);
 			m_parsedEntity = p_arg;
@@ -2753,39 +2753,39 @@ void CutsceneStreamingSoundEvent::StartOnJointed(GolWorldEntity* p_arg)
 // FUNCTION: LEGORACERS 0x004a44c0
 void CutsceneStreamingSoundEvent::Stop()
 {
-	if (m_unk0x30) {
-		m_unk0x48 &= ~c_flagBit3;
-		m_unk0x14->DestroyStreamingSoundInstance(m_unk0x30);
-		m_unk0x30 = NULL;
+	if (m_streamInstance) {
+		m_flags &= ~c_flagWasPlaying;
+		m_soundGroup->DestroyStreamingSoundInstance(m_streamInstance);
+		m_streamInstance = NULL;
 	}
 }
 
 // STUB: LEGORACERS 0x004a44f0
-void CutsceneStreamingSoundEvent::FUN_004a44f0()
+void CutsceneStreamingSoundEvent::Update()
 {
-	if (m_unk0x30) {
-		if (!m_unk0x30->IsPlaying()) {
-			if (m_unk0x48 & c_flagBit3) {
+	if (m_streamInstance) {
+		if (!m_streamInstance->IsPlaying()) {
+			if (m_flags & c_flagWasPlaying) {
 				Stop();
 				return;
 			}
 		}
 		else {
-			m_unk0x48 |= c_flagBit3;
+			m_flags |= c_flagWasPlaying;
 		}
 
 		GolVec3 position;
 		GolVec3 velocity;
 		GolWorldEntity* entity;
 
-		if (m_unk0x48 & c_flagBit2) {
-			GetJointPosition(m_unk0x4c, &position);
-			m_unk0x30->SetPosition(&position);
+		if (m_flags & c_flagTrackJoint) {
+			GetJointPosition(m_jointIndex, &position);
+			m_streamInstance->SetPosition(&position);
 			entity = m_animatedEntity;
 		}
-		else if (m_unk0x48 & c_flagBit1) {
+		else if (m_flags & c_flagTrackEntity) {
 			m_parsedEntity->VTable0x04(&position);
-			m_unk0x30->SetPosition(&position);
+			m_streamInstance->SetPosition(&position);
 			entity = m_parsedEntity;
 		}
 		else {
@@ -2793,7 +2793,7 @@ void CutsceneStreamingSoundEvent::FUN_004a44f0()
 		}
 
 		entity->GetVelocity(&velocity);
-		m_unk0x30->SetVelocity(velocity);
+		m_streamInstance->SetVelocity(velocity);
 	}
 }
 
@@ -2806,15 +2806,15 @@ CutsceneMenuAnimationEvent::CutsceneMenuAnimationEvent()
 // FUNCTION: LEGORACERS 0x004a49c0
 void CutsceneMenuAnimationEvent::Reset()
 {
-	m_unk0x14 = NULL;
-	m_unk0x18 = NULL;
-	m_unk0x1c = NULL;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
-	m_unk0x20 = 0;
-	m_unk0x21 = 0;
-	m_unk0x22 = 0;
-	m_unk0x23 = 0;
+	m_animationList = NULL;
+	m_material = NULL;
+	m_activeEntry = NULL;
+	m_durationMs = 0;
+	m_mode = 0;
+	m_red = 0;
+	m_grn = 0;
+	m_blu = 0;
+	m_alpha = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a49e0
@@ -2828,23 +2828,23 @@ void CutsceneMenuAnimationEvent::Parse(
 	GolName materialName;
 
 	materialName[0] = '\0';
-	m_unk0x14 = p_animationList;
+	m_animationList = p_animationList;
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case GolFileParser::e_unknown0x61:
-			m_unk0x24 = p_parser->ReadInteger();
+			m_durationMs = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x62: {
 			GolFileParser::ParserTokenType mode = p_parser->GetNextToken();
 			switch (mode) {
 			case GolFileParser::e_unknown0x63:
-				m_unk0x28 |= 1;
+				m_mode |= 1;
 				break;
 			case GolFileParser::e_unknown0x64:
-				m_unk0x28 |= 2;
+				m_mode |= 2;
 				break;
 			default:
 				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -2856,9 +2856,9 @@ void CutsceneMenuAnimationEvent::Parse(
 			::strncpy(materialName, p_parser->ReadString(), sizeof(GolName));
 			break;
 		case GolFileParser::e_unknown0x66:
-			m_unk0x20 = static_cast<LegoU8>(p_parser->ReadInteger());
-			m_unk0x21 = static_cast<LegoU8>(p_parser->ReadInteger());
-			m_unk0x22 = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_red = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
 			break;
 		default:
 			ParseCommonToken(p_parser, p_owner, token);
@@ -2869,61 +2869,61 @@ void CutsceneMenuAnimationEvent::Parse(
 	}
 
 	if (materialName[0] != '\0') {
-		m_unk0x18 = p_renderer->FindMaterialByName(materialName);
+		m_material = p_renderer->FindMaterialByName(materialName);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4af0
 void CutsceneMenuAnimationEvent::Start()
 {
-	if (m_unk0x28 & 1) {
-		m_unk0x1c = m_unk0x14->Activate(m_unk0x24, TRUE, m_unk0x18, NULL);
+	if (m_mode & 1) {
+		m_activeEntry = m_animationList->Activate(m_durationMs, TRUE, m_material, NULL);
 	}
-	else if (m_unk0x28 & 2) {
-		m_unk0x1c = m_unk0x14->Activate(m_unk0x24, FALSE, m_unk0x18, NULL);
+	else if (m_mode & 2) {
+		m_activeEntry = m_animationList->Activate(m_durationMs, FALSE, m_material, NULL);
 	}
 
-	if (m_unk0x1c != NULL) {
-		m_unk0x1c->SetColor(m_colorPacked);
+	if (m_activeEntry != NULL) {
+		m_activeEntry->SetColor(m_colorPacked);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4b40
 void CutsceneMenuAnimationEvent::Stop()
 {
-	if (m_unk0x1c != NULL) {
-		m_unk0x14->Deactivate(m_unk0x1c);
-		m_unk0x1c = NULL;
+	if (m_activeEntry != NULL) {
+		m_animationList->Deactivate(m_activeEntry);
+		m_activeEntry = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4b60
-CutsceneMoveEvent::CutsceneMoveEvent()
+CutsceneColorEvent::CutsceneColorEvent()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a4bb0
-void CutsceneMoveEvent::Reset()
+void CutsceneColorEvent::Reset()
 {
 	m_entity = NULL;
 	m_active = FALSE;
-	m_baseX = 0;
-	m_baseY = 0;
-	m_baseZ = 0;
-	m_offsetStartX = 0;
-	m_offsetStartY = 0;
-	m_offsetStartZ = 0;
-	m_offsetX = 0.0f;
-	m_offsetY = 0.0f;
-	m_offsetZ = 0.0f;
-	m_offsetDeltaX = 0.0f;
-	m_offsetDeltaY = 0.0f;
-	m_offsetDeltaZ = 0.0f;
+	m_shiftRed = 0;
+	m_shiftGrn = 0;
+	m_shiftBlu = 0;
+	m_offsetStartRed = 0;
+	m_offsetStartGrn = 0;
+	m_offsetStartBlu = 0;
+	m_offsetRed = 0.0f;
+	m_offsetGrn = 0.0f;
+	m_offsetBlu = 0.0f;
+	m_offsetRateRed = 0.0f;
+	m_offsetRateGrn = 0.0f;
+	m_offsetRateBlu = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x004a4be0
-void CutsceneMoveEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
+void CutsceneColorEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 {
 	p_parser->ReadLeftCurly();
 
@@ -2931,19 +2931,19 @@ void CutsceneMoveEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case GolFileParser::e_unknown0x2c:
-			m_baseX = p_parser->ReadInteger();
-			m_baseY = p_parser->ReadInteger();
-			m_baseZ = p_parser->ReadInteger();
+			m_shiftRed = p_parser->ReadInteger();
+			m_shiftGrn = p_parser->ReadInteger();
+			m_shiftBlu = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2d:
-			m_offsetStartX = p_parser->ReadInteger();
-			m_offsetStartY = p_parser->ReadInteger();
-			m_offsetStartZ = p_parser->ReadInteger();
+			m_offsetStartRed = p_parser->ReadInteger();
+			m_offsetStartGrn = p_parser->ReadInteger();
+			m_offsetStartBlu = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2e:
-			m_offsetDeltaX = p_parser->ReadFloat();
-			m_offsetDeltaY = p_parser->ReadFloat();
-			m_offsetDeltaZ = p_parser->ReadFloat();
+			m_offsetRateRed = p_parser->ReadFloat();
+			m_offsetRateGrn = p_parser->ReadFloat();
+			m_offsetRateBlu = p_parser->ReadFloat();
 			break;
 		default:
 			ParseCommonToken(p_parser, p_owner, token);
@@ -2955,19 +2955,19 @@ void CutsceneMoveEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 }
 
 // FUNCTION: LEGORACERS 0x004a4ca0
-void CutsceneMoveEvent::Start()
+void CutsceneColorEvent::Start()
 {
 	if (!m_active && m_entity != NULL) {
 		m_active = TRUE;
-		m_offsetX = static_cast<LegoFloat>(m_offsetStartX);
-		m_offsetY = static_cast<LegoFloat>(m_offsetStartY);
-		m_offsetZ = static_cast<LegoFloat>(m_offsetStartZ);
-		FUN_004a4da0();
+		m_offsetRed = static_cast<LegoFloat>(m_offsetStartRed);
+		m_offsetGrn = static_cast<LegoFloat>(m_offsetStartGrn);
+		m_offsetBlu = static_cast<LegoFloat>(m_offsetStartBlu);
+		ApplyColorTransform();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4cd0
-void CutsceneMoveEvent::StartOnModel(GolWorldEntity* p_arg)
+void CutsceneColorEvent::StartOnModel(GolWorldEntity* p_arg)
 {
 	if (!m_active) {
 		if (m_entity == NULL) {
@@ -2979,7 +2979,7 @@ void CutsceneMoveEvent::StartOnModel(GolWorldEntity* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a4cf0
-void CutsceneMoveEvent::Stop()
+void CutsceneColorEvent::Stop()
 {
 	if (m_active) {
 		m_active = FALSE;
@@ -2990,35 +2990,35 @@ void CutsceneMoveEvent::Stop()
 }
 
 // FUNCTION: LEGORACERS 0x004a4d10
-void CutsceneMoveEvent::FUN_004a4d10(LegoFloat p_elapsedSeconds)
+void CutsceneColorEvent::Update(LegoFloat p_elapsedSeconds)
 {
 	if (m_active) {
 		if (m_entity != 0) {
-			LegoFloat deltaX = m_offsetDeltaX * p_elapsedSeconds;
-			LegoFloat deltaY = m_offsetDeltaY * p_elapsedSeconds;
-			LegoFloat deltaZ = m_offsetDeltaZ * p_elapsedSeconds;
+			LegoFloat deltaX = m_offsetRateRed * p_elapsedSeconds;
+			LegoFloat deltaY = m_offsetRateGrn * p_elapsedSeconds;
+			LegoFloat deltaZ = m_offsetRateBlu * p_elapsedSeconds;
 
 			if (static_cast<LegoS32>(deltaX) || static_cast<LegoS32>(deltaY) || static_cast<LegoS32>(deltaZ)) {
-				m_offsetX += deltaX;
-				m_offsetY += deltaY;
-				m_offsetZ += deltaZ;
-				FUN_004a4da0();
+				m_offsetRed += deltaX;
+				m_offsetGrn += deltaY;
+				m_offsetBlu += deltaZ;
+				ApplyColorTransform();
 			}
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4da0
-void CutsceneMoveEvent::FUN_004a4da0()
+void CutsceneColorEvent::ApplyColorTransform()
 {
 	ColorTransform0x20 transform;
-	transform.m_redShift = m_baseX;
-	transform.m_grnShift = m_baseY;
-	transform.m_bluShift = m_baseZ;
+	transform.m_redShift = m_shiftRed;
+	transform.m_grnShift = m_shiftGrn;
+	transform.m_bluShift = m_shiftBlu;
 	transform.m_alpShift = 0;
-	transform.m_redOffset = static_cast<LegoS32>(m_offsetX);
-	transform.m_grnOffset = static_cast<LegoS32>(m_offsetY);
-	transform.m_bluOffset = static_cast<LegoS32>(m_offsetZ);
+	transform.m_redOffset = static_cast<LegoS32>(m_offsetRed);
+	transform.m_grnOffset = static_cast<LegoS32>(m_offsetGrn);
+	transform.m_bluOffset = static_cast<LegoS32>(m_offsetBlu);
 	transform.m_alpOffset = 0;
 
 	m_entity->VTable0x24(&transform);

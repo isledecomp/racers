@@ -295,8 +295,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/timeracemanager.cpp
   LEGORacers/src/util/stackoflegou16.cpp
   LEGORacers/src/util/legoeventqueue.cpp
-  LEGORacers/src/util/legoeventqueuefield0x10.cpp
-  LEGORacers/src/util/legoeventqueuefield0x30.cpp
+  LEGORacers/src/util/legoeventqueuerigidbody.cpp
+  LEGORacers/src/util/legoeventqueuecollision.cpp
   LEGORacers/src/util/legoeventqueueevent.cpp
   LEGORacers/src/util/decalgeometry.cpp
   LEGORacers/src/menu/menudialogscreen.cpp
@@ -353,17 +353,16 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/pickupbrick.cpp
   LEGORacers/src/race/powerups/colorbrick.cpp
   LEGORacers/src/race/powerups/whitebrick.cpp
-  LEGORacers/src/race/racer/racervisuals.cpp
+  LEGORacers/src/race/racer/carvisuals.cpp
   LEGORacers/src/race/racer/racer.cpp
   LEGORacers/src/race/racestate.cpp
   LEGORacers/src/race/racestatequeries.cpp
   LEGORacers/src/race/racer/racersoundsource.cpp
   LEGORacers/src/race/racer/racerphysics.cpp
-  LEGORacers/src/race/racestatefield0xadc.cpp
   LEGORacers/src/race/raceroster.cpp
   LEGORacers/src/race/racer/routecursor.cpp
   LEGORacers/src/race/powerups/droppablebrick.cpp
-  LEGORacers/src/race/racer/drivecontrollerfield0x000.cpp
+  LEGORacers/src/race/racer/racerphysicssteering.cpp
   LEGORacers/src/race/racehud.cpp
   LEGORacers/src/race/racedialog.cpp
   LEGORacers/src/race/circuitracerunner.cpp

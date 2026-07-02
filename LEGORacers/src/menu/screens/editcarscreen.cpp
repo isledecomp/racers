@@ -78,7 +78,7 @@ void EditCarScreen::FUN_0047bfc0()
 	createParams.m_unk0x40 = 0.001f;
 
 	m_unk0x35b0.FUN_004875d0(&createParams);
-	m_unk0x43c.FUN_00465b40(&m_unk0x35b0);
+	m_unk0x43c.AddElement(&m_unk0x35b0);
 }
 
 // FUNCTION: LEGORACERS 0x0047c080

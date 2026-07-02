@@ -55,7 +55,7 @@ void MainMenuScreen::FUN_00480e40()
 	params.m_position.m_y = -10.62275887f;
 	params.m_position.m_z = 0.025708f;
 	m_unk0x22dc.FUN_0047e0a0(&params);
-	m_unk0x21f8.FUN_00465b40(&m_unk0x22dc);
+	m_unk0x21f8.AddElement(&m_unk0x22dc);
 
 	vector1.m_x = 0.97237003f;
 	vector1.m_y = -0.233445f;

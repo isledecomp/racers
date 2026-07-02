@@ -487,7 +487,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477bf0()
 	targetPosition.m_z = targetZ;
 	m_unk0x290 = 0;
 	m_unk0x288 = 0;
-	m_unk0x14->FUN_00465ab0(&m_unk0x27c, &targetPosition);
+	m_unk0x14->SetCameraLookAt(&m_unk0x27c, &targetPosition);
 }
 
 // FUNCTION: LEGORACERS 0x00477c50
@@ -700,7 +700,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478180(LegoFloat p_delta)
 	m_unk0x27c.m_y = ((maxPosition.m_y - minPosition.m_y) * interpolation) + minPosition.m_y;
 	m_unk0x27c.m_z = ((maxPosition.m_z - minPosition.m_z) * interpolation) + minPosition.m_z;
 	targetPosition.m_z = targetZ;
-	m_unk0x14->FUN_00465ab0(&m_unk0x27c, &targetPosition);
+	m_unk0x14->SetCameraLookAt(&m_unk0x27c, &targetPosition);
 	return TRUE;
 }
 
@@ -751,7 +751,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_004783d0()
 	}
 
 	GolVec3 cameraPosition;
-	m_unk0x14->GetUnk0x64()->GetTransform()->GetPosition(&cameraPosition);
+	m_unk0x14->GetCamera()->GetTransform()->GetPosition(&cameraPosition);
 
 	LegoU32 closestIndex = 0;
 	GolVec3 position;
@@ -1241,7 +1241,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478fd0(LegoU32 p_elapsed)
 	position.m_y = targetPosition.m_y + (delta.m_y * interpolation);
 	position.m_z = targetPosition.m_z + (delta.m_z * interpolation);
 	lookAt.m_z = m_unk0x250.m_z + 4.0f;
-	m_unk0x14->FUN_00465ab0(&position, &lookAt);
+	m_unk0x14->SetCameraLookAt(&position, &lookAt);
 }
 
 // FUNCTION: LEGORACERS 0x004790f0

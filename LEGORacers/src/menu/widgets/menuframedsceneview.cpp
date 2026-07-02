@@ -44,7 +44,7 @@ LegoBool32 MenuFramedSceneView::FUN_004661f0(CreateParams* p_createParams, undef
 			m_unk0xdc.GetUnk0x58()->GetRect()->m_bottom - m_unk0xdc.GetUnk0x58()->GetRect()->m_top;
 		p_createParams->m_parent = m_unk0xdc.GetUnk0x58();
 
-		return MenuSceneView::FUN_00465820(p_createParams, p_unk0x08);
+		return MenuSceneView::Create(p_createParams, p_unk0x08);
 	}
 
 	return FALSE;

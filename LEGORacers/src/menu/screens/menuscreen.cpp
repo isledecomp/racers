@@ -720,9 +720,9 @@ LegoBool32 MenuScreen::CreateSceneView(MenuSceneView* p_unk0x04, undefined4 p_un
 	MenuSceneView::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
 	createParams.m_unk0x7c = p_unk0x08;
-	createParams.m_unk0x5c = 1.0f;
-	createParams.m_unk0x80 = VTable0x6c();
-	return p_unk0x04->FUN_00465820(&createParams, m_unk0x288);
+	createParams.m_worldScale = 1.0f;
+	createParams.m_aspectScale = VTable0x6c();
+	return p_unk0x04->Create(&createParams, m_unk0x288);
 }
 
 // FUNCTION: LEGORACERS 0x0046c510
@@ -742,8 +742,8 @@ LegoBool32 MenuScreen::CreateFramedSceneView(MenuFramedSceneView* p_unk0x04, und
 	}
 
 	createParams.m_unk0x7c = p_unk0x08;
-	createParams.m_unk0x5c = 1.0f;
-	createParams.m_unk0x80 = VTable0x6c();
+	createParams.m_worldScale = 1.0f;
+	createParams.m_aspectScale = VTable0x6c();
 	return p_unk0x04->FUN_004661f0(&createParams, m_unk0x288);
 }
 

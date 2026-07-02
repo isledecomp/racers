@@ -124,7 +124,7 @@ void MultiplayerPickScreen::FUN_00481b10(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00481b60
 void MultiplayerPickScreen::FUN_00481b60(LegoS32 p_index)
 {
-	GolWorldDatabase** database = m_unk0x98c[p_index].GetUnk0x5cAddress();
+	GolWorldDatabase** database = m_unk0x98c[p_index].GetWorldAddress();
 	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
 
 	ColorRGBA color = materialColor->GetColor();
@@ -144,7 +144,7 @@ void MultiplayerPickScreen::FUN_00481b60(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00481bf0
 void MultiplayerPickScreen::FUN_00481bf0(LegoS32 p_index)
 {
-	GolWorldDatabase** database = m_unk0x98c[p_index].GetUnk0x5cAddress();
+	GolWorldDatabase** database = m_unk0x98c[p_index].GetWorldAddress();
 	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
 
 	ColorRGBA color = materialColor->GetColor();

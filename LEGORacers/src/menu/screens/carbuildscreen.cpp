@@ -757,9 +757,9 @@ void CarBuildScreen::FUN_00474940()
 	}
 
 	Rect rect;
-	m_unk0x1e30.FUN_00465b60(m_unk0x2308.GetUnk0x58(), &rect);
+	m_unk0x1e30.GetEntityScreenRect(m_unk0x2308.GetUnk0x58(), &rect);
 	m_unk0x37e0.SetRect(&rect);
-	m_unk0x1e30.FUN_00465b60(m_unk0x2308.GetUnk0x1a4(), &rect);
+	m_unk0x1e30.GetEntityScreenRect(m_unk0x2308.GetUnk0x1a4(), &rect);
 	m_unk0x35c4.SetRect(&rect);
 
 	LegoS32 x = cursor->m_cursorX + cursor->m_originX;

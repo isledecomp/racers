@@ -187,8 +187,8 @@ void RacerModelScreenBase::VTable0x98()
 			createParams.m_unk0x44 = TRUE;
 			m_unk0x205c[i].FUN_004875d0(&createParams);
 
-			m_unk0x98c[i].FUN_00465b40(&m_unk0x1ddc[i]);
-			m_unk0x98c[i].FUN_00465b40(&m_unk0x205c[i]);
+			m_unk0x98c[i].AddElement(&m_unk0x1ddc[i]);
+			m_unk0x98c[i].AddElement(&m_unk0x205c[i]);
 
 			i++;
 		} while (i < m_unk0x26fc);
@@ -428,7 +428,7 @@ void RacerModelScreenBase::FUN_004865c0()
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		GolWorldEntity* target = m_unk0x1ddc[i].GetUnk0x68();
 		if (target != NULL) {
-			GolWorldDatabase* database = m_unk0x98c[i].GetUnk0x60();
+			GolWorldDatabase* database = m_unk0x98c[i].GetBlendedWorld();
 			GolAnimatedEntity* source;
 			if (database->GetUnk0xc0NameEntries() == NULL) {
 				source = NULL;

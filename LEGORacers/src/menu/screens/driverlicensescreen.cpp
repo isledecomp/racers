@@ -80,7 +80,7 @@ void DriverLicenseScreen::FUN_0047b220()
 	createParams.m_position.m_z = 0.0f;
 
 	m_unk0x224c.FUN_0047e0a0(&createParams);
-	m_unk0x1648.FUN_00465b40(&m_unk0x224c);
+	m_unk0x1648.AddElement(&m_unk0x224c);
 
 	GolVec3 direction;
 	direction.m_x = 1.0f;

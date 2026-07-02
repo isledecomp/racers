@@ -117,7 +117,7 @@ void EditDriverScreen::FUN_0047d230()
 	createParams.m_position.m_z = 0.026000001f;
 
 	m_unk0x4600.FUN_0047e0a0(&createParams);
-	m_unk0x31b0.FUN_00465b40(&m_unk0x4600);
+	m_unk0x31b0.AddElement(&m_unk0x4600);
 }
 
 // FUNCTION: LEGORACERS 0x0047d2f0

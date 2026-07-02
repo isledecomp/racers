@@ -75,7 +75,7 @@ void CarModelScreenBase::FUN_00477050()
 	params.m_unk0x2c = m_context->m_context->m_useBinaryFiles;
 	m_unk0x2308.FUN_00477ae0(&params);
 
-	m_unk0x1e30.FUN_00465b40(&m_unk0x2308);
+	m_unk0x1e30.AddElement(&m_unk0x2308);
 	m_unk0x2308.FUN_00478180(0.0f);
 }
 

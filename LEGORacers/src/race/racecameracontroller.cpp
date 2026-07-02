@@ -12,7 +12,7 @@ DECOMP_SIZE_ASSERT(RaceCameraController, 0x150)
 DECOMP_SIZE_ASSERT(RaceCameraController::Profile, 0x18)
 
 // GLOBAL: LEGORACERS 0x004b0328
-const RaceCameraController::Profile g_unk0x004b0328[8] = {
+const RaceCameraController::Profile g_cameraProfiles[8] = {
 	{1, {0, 0, 0}, 5.0f, 35.0f, 20.0f, 0.1f, 0.25f},
 	{1, {0, 0, 0}, 8.0f, 25.0f, 30.0f, 0.1f, 0.25f},
 	{1, {0, 0, 0}, 8.0f, 45.0f, 10.0f, 0.05f, 0.25f},
@@ -30,46 +30,46 @@ extern const LegoFloat g_unk0x004b03e8 = 250.0f;
 extern const LegoFloat g_unk0x004b03ec = 0.017453292f;
 
 // FUNCTION: LEGORACERS 0x00427b70
-void RaceCameraController::FUN_00427b70(LegoFloat p_unk0x04)
+void RaceCameraController::SetPositionLag(LegoFloat p_unk0x04)
 {
-	m_unk0x0f8 = (1.0f - p_unk0x04) / (g_unk0x004b03e8 * p_unk0x04);
+	m_positionLag = (1.0f - p_unk0x04) / (g_unk0x004b03e8 * p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x00427b90
-void RaceCameraController::FUN_00427b90(LegoFloat p_unk0x04)
+void RaceCameraController::SetRotationLag(LegoFloat p_unk0x04)
 {
-	m_unk0x0fc = (1.0f - p_unk0x04) / (g_unk0x004b03e8 * p_unk0x04);
+	m_rotationLag = (1.0f - p_unk0x04) / (g_unk0x004b03e8 * p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x00427bb0
-void RaceCameraController::FUN_00427bb0(LegoFloat p_unk0x04)
+void RaceCameraController::SetPitchAngle(LegoFloat p_unk0x04)
 {
-	GolMath::FUN_00449170(g_unk0x004b03ec * p_unk0x04, &m_unk0x110, &m_unk0x114);
+	GolMath::FUN_00449170(g_unk0x004b03ec * p_unk0x04, &m_pitchSine, &m_pitchCosine);
 }
 
 // FUNCTION: LEGORACERS 0x00427be0
-void RaceCameraController::FUN_00427be0(LegoFloat p_unk0x04)
+void RaceCameraController::SetHeightAngle(LegoFloat p_unk0x04)
 {
-	m_unk0x10c = static_cast<LegoFloat>(sin(g_unk0x004b03ec * p_unk0x04));
+	m_heightSine = static_cast<LegoFloat>(sin(g_unk0x004b03ec * p_unk0x04));
 }
 
 // STUB: LEGORACERS 0x00427c00
-void RaceCameraController::FUN_00427c00()
+void RaceCameraController::UpdateListener()
 {
-	if (m_unk0x14c == NULL || m_unk0x0d4 == NULL) {
+	if (m_listenerNode == NULL || m_racer == NULL) {
 		return;
 	}
 
-	GolVec3 velocity = m_unk0x0d4->m_physics.m_velocity;
+	GolVec3 velocity = m_racer->m_physics.m_velocity;
 	GolVec3 right;
 	GolVec3 forward;
-	m_unk0x0d4->m_visuals.m_carEntity->VTable0x48(&right, &forward);
+	m_racer->m_visuals.m_carEntity->VTable0x48(&right, &forward);
 
 	GolVec3 position;
-	m_unk0x0d4->m_visuals.m_carEntity->VTable0x04(&position);
+	m_racer->m_visuals.m_carEntity->VTable0x04(&position);
 
 	{
-		SoundNode* soundNode = m_unk0x14c;
+		SoundNode* soundNode = m_listenerNode;
 		soundNode->m_velocity.m_x = velocity.m_x;
 		soundNode->m_velocity.m_y = velocity.m_y;
 		soundNode->m_velocity.m_z = velocity.m_z;
@@ -77,7 +77,7 @@ void RaceCameraController::FUN_00427c00()
 	}
 
 	{
-		SoundNode* soundNode = m_unk0x14c;
+		SoundNode* soundNode = m_listenerNode;
 		SoundVector* rightVector = &soundNode->m_right;
 		SoundVector* forwardVector = &soundNode->m_forward;
 		rightVector->m_x = right.m_x;
@@ -96,7 +96,7 @@ void RaceCameraController::FUN_00427c00()
 	}
 
 	{
-		SoundNode* soundNode = m_unk0x14c;
+		SoundNode* soundNode = m_listenerNode;
 		soundNode->m_position.m_x = position.m_x;
 		soundNode->m_position.m_y = position.m_y;
 		soundNode->m_position.m_z = position.m_z;
@@ -105,7 +105,7 @@ void RaceCameraController::FUN_00427c00()
 }
 
 // STUB: LEGORACERS 0x00427d30
-void RaceCameraController::FUN_00427d30()
+void RaceCameraController::UpdateFollow()
 {
 	GolCamera* camera = m_camera;
 	if (camera == NULL) {
@@ -114,43 +114,43 @@ void RaceCameraController::FUN_00427d30()
 
 	GolVec3 right;
 	GolVec3 forward;
-	if (m_unk0x002 == 1 && m_lookBack) {
+	if (m_mode == 1 && m_lookBack) {
 		GolVec3 position;
-		position.m_x = m_unk0x0e4.m_x + m_unk0x0e4.m_x - m_unk0x048.m_position.m_x;
-		position.m_y = m_unk0x0e4.m_y + m_unk0x0e4.m_y - m_unk0x048.m_position.m_y;
-		position.m_z = m_unk0x048.m_position.m_z;
+		position.m_x = m_lastRacerPosition.m_x + m_lastRacerPosition.m_x - m_smoothedTransform.m_position.m_x;
+		position.m_y = m_lastRacerPosition.m_y + m_lastRacerPosition.m_y - m_smoothedTransform.m_position.m_y;
+		position.m_z = m_smoothedTransform.m_position.m_z;
 		camera->GetTransform()->SetPosition(&position);
 		camera->m_flags |= GolCamera::c_flagBit0;
 
-		right.m_x = -m_unk0x048.m_orientation.m_rows[2].m_x;
-		right.m_y = -m_unk0x048.m_orientation.m_rows[2].m_y;
-		forward.m_x = -m_unk0x048.m_orientation.m_rows[1].m_x;
-		forward.m_y = -m_unk0x048.m_orientation.m_rows[1].m_y;
-		right.m_z = m_unk0x048.m_orientation.m_rows[2].m_z;
-		forward.m_z = m_unk0x048.m_orientation.m_rows[1].m_z;
+		right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
+		right.m_y = -m_smoothedTransform.m_orientation.m_rows[2].m_y;
+		forward.m_x = -m_smoothedTransform.m_orientation.m_rows[1].m_x;
+		forward.m_y = -m_smoothedTransform.m_orientation.m_rows[1].m_y;
+		right.m_z = m_smoothedTransform.m_orientation.m_rows[2].m_z;
+		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
 
 		camera->GetTransform()->VTable0x24(&right, &forward);
 		camera->m_flags |= GolCamera::c_flagBit0;
 		return;
 	}
-	if (m_unk0x002 == 2 && m_lookBack) {
-		camera->GetTransform()->SetPosition(&m_unk0x048.m_position);
+	if (m_mode == 2 && m_lookBack) {
+		camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
 		camera->m_flags |= GolCamera::c_flagBit0;
 
-		forward.m_x = m_unk0x048.m_orientation.m_rows[1].m_x;
-		right.m_x = -m_unk0x048.m_orientation.m_rows[2].m_x;
-		right.m_y = -m_unk0x048.m_orientation.m_rows[2].m_y;
-		forward.m_y = m_unk0x048.m_orientation.m_rows[1].m_y;
-		right.m_z = -m_unk0x048.m_orientation.m_rows[2].m_z;
-		forward.m_z = m_unk0x048.m_orientation.m_rows[1].m_z;
+		forward.m_x = m_smoothedTransform.m_orientation.m_rows[1].m_x;
+		right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
+		right.m_y = -m_smoothedTransform.m_orientation.m_rows[2].m_y;
+		forward.m_y = m_smoothedTransform.m_orientation.m_rows[1].m_y;
+		right.m_z = -m_smoothedTransform.m_orientation.m_rows[2].m_z;
+		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
 
 		camera->GetTransform()->VTable0x24(&right, &forward);
 		camera->m_flags |= GolCamera::c_flagBit0;
 		return;
 	}
-	camera->GetTransform()->SetPosition(&m_unk0x048.m_position);
+	camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
 	camera->m_flags |= GolCamera::c_flagBit0;
-	camera->GetTransform()->VTable0x24(&m_unk0x048.m_orientation.m_rows[2], &m_unk0x048.m_orientation.m_rows[1]);
+	camera->GetTransform()->VTable0x24(&m_smoothedTransform.m_orientation.m_rows[2], &m_smoothedTransform.m_orientation.m_rows[1]);
 	camera->m_flags |= GolCamera::c_flagBit0;
 }
 
@@ -160,27 +160,27 @@ extern const LegoFloat g_halfPi;
 extern const LegoFloat g_hazardPi;
 
 // FUNCTION: LEGORACERS 0x00427e80
-void RaceCameraController::FUN_00427e80()
+void RaceCameraController::UpdateShake()
 {
-	if (static_cast<LegoU32>(m_unk0x0d0) > m_unk0x140) {
-		m_unk0x140 = 0;
+	if (static_cast<LegoU32>(m_elapsedMs) > m_shakeMs) {
+		m_shakeMs = 0;
 	}
 	else {
-		m_unk0x140 -= m_unk0x0d0;
+		m_shakeMs -= m_elapsedMs;
 	}
 
-	if (m_unk0x0d4->m_flags & 0x10) {
-		m_unk0x13c = 0.0f;
-		m_unk0x140 = 0;
+	if (m_racer->m_flags & 0x10) {
+		m_shakeAmount = 0.0f;
+		m_shakeMs = 0;
 	}
-	else if (!m_unk0x140) {
-		m_unk0x140 = 500;
+	else if (!m_shakeMs) {
+		m_shakeMs = 500;
 		m_unk0x138 = m_camera->m_fov;
 
-		if (m_unk0x0d4->m_flags & 0x800) {
-			if ((m_unk0x13c > 0.0f || m_unk0x138 <= 40.0f) && m_unk0x138 < 80.0f) {
+		if (m_racer->m_flags & 0x800) {
+			if ((m_shakeAmount > 0.0f || m_unk0x138 <= 40.0f) && m_unk0x138 < 80.0f) {
 				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
-				m_unk0x13c =
+				m_shakeAmount =
 					-(static_cast<LegoFloat>(
 						  static_cast<LegoU16>(g_randomTable[g_randomTableIndex]) %
 						  static_cast<LegoS32>(80.0f - m_unk0x138)
@@ -189,7 +189,7 @@ void RaceCameraController::FUN_00427e80()
 			}
 			else {
 				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
-				m_unk0x13c = static_cast<LegoFloat>(
+				m_shakeAmount = static_cast<LegoFloat>(
 								 static_cast<LegoU16>(g_randomTable[g_randomTableIndex]) %
 								 static_cast<LegoS32>(m_unk0x138 - 40.0f)
 							 ) *
@@ -198,25 +198,25 @@ void RaceCameraController::FUN_00427e80()
 		}
 		else {
 			if (m_camera->m_fov != m_targetFov) {
-				m_unk0x13c = (m_unk0x138 - m_targetFov) * 0.5f;
+				m_shakeAmount = (m_unk0x138 - m_targetFov) * 0.5f;
 			}
 			else {
-				m_unk0x13c = 0.0f;
-				m_unk0x140 = 0;
+				m_shakeAmount = 0.0f;
+				m_shakeMs = 0;
 			}
 		}
 	}
 
-	if (m_unk0x140) {
+	if (m_shakeMs) {
 		LegoS32 remaining = 500;
 		GolCamera* camera = m_camera;
-		remaining -= m_unk0x140;
+		remaining -= m_shakeMs;
 		LegoFloat phase = static_cast<LegoFloat>(remaining);
 		phase *= 0.02f;
 		phase *= 0.1f;
 		phase *= g_hazardPi;
 		LegoFloat angle = static_cast<LegoFloat>(cos(phase));
-		LegoFloat fov = angle * m_unk0x13c + (m_unk0x138 - m_unk0x13c);
+		LegoFloat fov = angle * m_shakeAmount + (m_unk0x138 - m_shakeAmount);
 		camera->m_flags |= GolCamera::c_flagBit1;
 		camera->m_fov = fov;
 		m_renderer->VTable0x5c();
@@ -231,51 +231,51 @@ void RaceCameraController::FUN_00427e80()
 }
 
 // FUNCTION: LEGORACERS 0x004280a0
-void RaceCameraController::FUN_004280a0()
+void RaceCameraController::ApplySmoothing()
 {
-	GolMath::FUN_1002f5a0(m_unk0x008.m_orientation, &m_unk0x038);
+	GolMath::FUN_1002f5a0(m_rawTransform.m_orientation, &m_rawRotation);
 
 	if (m_unk0x001 & 1) {
-		m_unk0x048 = m_unk0x008;
-		m_unk0x078 = m_unk0x038;
+		m_smoothedTransform = m_rawTransform;
+		m_smoothedRotation = m_rawRotation;
 	}
 	else {
-		LegoFloat positionAmount = 1.0f / (m_unk0x0f8 * m_unk0x0cc + 1.0f);
+		LegoFloat positionAmount = 1.0f / (m_positionLag * m_elapsed + 1.0f);
 		GolVec3 positionDelta;
-		positionDelta.m_x = m_unk0x088.m_position.m_x - m_unk0x008.m_position.m_x;
-		positionDelta.m_y = m_unk0x088.m_position.m_y - m_unk0x008.m_position.m_y;
-		positionDelta.m_z = m_unk0x088.m_position.m_z - m_unk0x008.m_position.m_z;
+		positionDelta.m_x = m_previousTransform.m_position.m_x - m_rawTransform.m_position.m_x;
+		positionDelta.m_y = m_previousTransform.m_position.m_y - m_rawTransform.m_position.m_y;
+		positionDelta.m_z = m_previousTransform.m_position.m_z - m_rawTransform.m_position.m_z;
 
 		GolVec3 scaledPositionDelta;
 		scaledPositionDelta.m_x = positionDelta.m_x * positionAmount;
 		scaledPositionDelta.m_y = positionDelta.m_y * positionAmount;
 		scaledPositionDelta.m_z = positionDelta.m_z * positionAmount;
-		m_unk0x048.m_position.m_x = scaledPositionDelta.m_x + m_unk0x008.m_position.m_x;
-		m_unk0x048.m_position.m_y = scaledPositionDelta.m_y + m_unk0x008.m_position.m_y;
-		m_unk0x048.m_position.m_z = scaledPositionDelta.m_z + m_unk0x008.m_position.m_z;
+		m_smoothedTransform.m_position.m_x = scaledPositionDelta.m_x + m_rawTransform.m_position.m_x;
+		m_smoothedTransform.m_position.m_y = scaledPositionDelta.m_y + m_rawTransform.m_position.m_y;
+		m_smoothedTransform.m_position.m_z = scaledPositionDelta.m_z + m_rawTransform.m_position.m_z;
 
-		LegoFloat rotationAmount = 1.0f / (m_unk0x0fc * m_unk0x0cc + 1.0f);
-		GolMath::FUN_1002f890(m_unk0x038, m_unk0x0b8, rotationAmount, &m_unk0x078);
-		GolMath::FUN_00449340(&m_unk0x078, &m_unk0x048.m_m[0][0]);
+		LegoFloat rotationAmount = 1.0f / (m_rotationLag * m_elapsed + 1.0f);
+		GolMath::FUN_1002f890(m_rawRotation, m_previousRotation, rotationAmount, &m_smoothedRotation);
+		GolMath::FUN_00449340(&m_smoothedRotation, &m_smoothedTransform.m_m[0][0]);
 	}
 
-	FUN_00427d30();
-	FUN_00427c00();
+	UpdateFollow();
+	UpdateListener();
 }
 
 // FUNCTION: LEGORACERS 0x004281b0
 void RaceCameraController::Reset()
 {
-	m_unk0x0d4 = NULL;
-	m_unk0x000 = TRUE;
-	FUN_004283f0(0, FALSE);
+	m_racer = NULL;
+	m_dirty = TRUE;
+	SetView(0, FALSE);
 	m_unk0x100 = 0.09f;
 	m_unk0x104 = 0.0044444446f;
 	m_unk0x108 = 0.016666668f;
-	m_unk0x140 = 0;
-	m_unk0x14c = NULL;
+	m_shakeMs = 0;
+	m_listenerNode = NULL;
 	m_lookBack = FALSE;
-	m_unk0x005 = FALSE;
+	m_alternate = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00428200
@@ -285,7 +285,7 @@ RaceCameraController::RaceCameraController()
 }
 
 // FUNCTION: LEGORACERS 0x00428210
-void RaceCameraController::FUN_00428210(GolCamera* p_camera, GolD3DRenderDevice* p_renderer)
+void RaceCameraController::Initialize(GolCamera* p_camera, GolD3DRenderDevice* p_renderer)
 {
 	m_camera = p_camera;
 	m_renderer = p_renderer;
@@ -293,15 +293,15 @@ void RaceCameraController::FUN_00428210(GolCamera* p_camera, GolD3DRenderDevice*
 }
 
 // FUNCTION: LEGORACERS 0x00428230
-void RaceCameraController::FUN_00428230(RaceState::Racer* p_unk0x04)
+void RaceCameraController::SetRacer(RaceState::Racer* p_unk0x04)
 {
-	if (m_unk0x0d4 != p_unk0x04) {
-		m_unk0x0d4 = p_unk0x04;
-		m_unk0x0d4->m_visuals.m_carEntity->VTable0x04(&m_unk0x0e4);
-		LegoU32 flags = m_unk0x0d4->m_driveController.m_flags;
+	if (m_racer != p_unk0x04) {
+		m_racer = p_unk0x04;
+		m_racer->m_visuals.m_carEntity->VTable0x04(&m_lastRacerPosition);
+		LegoU32 flags = m_racer->m_driveController.m_flags;
 		m_unk0x120 = 1.0f;
 		m_unk0x11c = flags & 1;
-		GolAnimatedEntity* entity = m_unk0x0d4->m_visuals.m_carEntity;
+		GolAnimatedEntity* entity = m_racer->m_visuals.m_carEntity;
 		m_unk0x0d8.m_x = entity->GetOrientation().m_rows[0].m_x;
 		m_unk0x0d8.m_y = entity->GetOrientation().m_rows[0].m_y;
 		m_unk0x0d8.m_z = entity->GetOrientation().m_rows[0].m_z;
@@ -309,14 +309,14 @@ void RaceCameraController::FUN_00428230(RaceState::Racer* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x004282a0
-void RaceCameraController::FUN_004282a0(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
+void RaceCameraController::SetOrientation(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
 {
-	FUN_004282d0(p_unk0x04, p_unk0x08, &m_unk0x048.m_orientation);
-	m_unk0x088.m_orientation = m_unk0x048.m_orientation;
+	BuildOrientation(p_unk0x04, p_unk0x08, &m_smoothedTransform.m_orientation);
+	m_previousTransform.m_orientation = m_smoothedTransform.m_orientation;
 }
 
 // FUNCTION: LEGORACERS 0x004282d0
-void RaceCameraController::FUN_004282d0(GolVec3* p_unk0x04, GolVec3* p_unk0x08, GolMatrix3* p_unk0x0c)
+void RaceCameraController::BuildOrientation(GolVec3* p_unk0x04, GolVec3* p_unk0x08, GolMatrix3* p_unk0x0c)
 {
 	GolVec3* source = p_unk0x04;
 	GolVec3* up = &p_unk0x0c->m_rows[1];
@@ -349,78 +349,78 @@ void RaceCameraController::FUN_004282d0(GolVec3* p_unk0x04, GolVec3* p_unk0x08, 
 }
 
 // FUNCTION: LEGORACERS 0x00428390
-void RaceCameraController::FUN_00428390(GolVec3* p_unk0x04)
+void RaceCameraController::SnapPosition(GolVec3* p_unk0x04)
 {
-	m_unk0x088.m_position = *p_unk0x04;
-	m_unk0x048.m_position = *p_unk0x04;
+	m_previousTransform.m_position = *p_unk0x04;
+	m_smoothedTransform.m_position = *p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x004283d0
-void RaceCameraController::FUN_004283d0(LegoU8 p_unk0x04)
+void RaceCameraController::SetMode(LegoU8 p_unk0x04)
 {
-	if (m_unk0x002 != p_unk0x04) {
-		m_unk0x002 = p_unk0x04;
+	if (m_mode != p_unk0x04) {
+		m_mode = p_unk0x04;
 		m_unk0x0c8 = 0;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004283f0
-void RaceCameraController::FUN_004283f0(LegoS32 p_unk0x04, LegoBool32 p_unk0x08)
+void RaceCameraController::SetView(LegoS32 p_unk0x04, LegoBool32 p_unk0x08)
 {
 	LegoS32 profileIndex = p_unk0x04;
-	m_unk0x005 = p_unk0x08;
+	m_alternate = p_unk0x08;
 	if (p_unk0x08 && profileIndex < 3) {
 		profileIndex += 5;
 	}
 
-	FUN_004283d0(g_unk0x004b0328[profileIndex].m_unk0x00);
+	SetMode(g_cameraProfiles[profileIndex].m_unk0x00);
 
-	if (m_unk0x002 == 3) {
-		m_unk0x124 = m_unk0x10c;
-		m_unk0x128 = m_unk0x110;
-		m_unk0x12c = m_unk0x114;
-		m_unk0x130 = m_unk0x118;
+	if (m_mode == 3) {
+		m_blendHeightSine = m_heightSine;
+		m_blendPitchSine = m_pitchSine;
+		m_blendPitchCosine = m_pitchCosine;
+		m_blendFollowDistance = m_followDistance;
 	}
 
-	FUN_00427bb0(g_unk0x004b0328[profileIndex].m_unk0x04);
-	FUN_00427be0(g_unk0x004b0328[profileIndex].m_unk0x08);
-	m_unk0x118 = g_unk0x004b0328[profileIndex].GetUnk0x0c();
-	FUN_00427b70(g_unk0x004b0328[profileIndex].m_unk0x10);
-	FUN_00427b90(g_unk0x004b0328[profileIndex].m_unk0x14);
+	SetPitchAngle(g_cameraProfiles[profileIndex].m_unk0x04);
+	SetHeightAngle(g_cameraProfiles[profileIndex].m_unk0x08);
+	m_followDistance = g_cameraProfiles[profileIndex].GetUnk0x0c();
+	SetPositionLag(g_cameraProfiles[profileIndex].m_unk0x10);
+	SetRotationLag(g_cameraProfiles[profileIndex].m_unk0x14);
 
-	if (m_unk0x002 == 3) {
-		m_unk0x124 -= m_unk0x10c;
-		m_unk0x128 -= m_unk0x110;
-		m_unk0x12c -= m_unk0x114;
-		m_unk0x130 -= m_unk0x118;
+	if (m_mode == 3) {
+		m_blendHeightSine -= m_heightSine;
+		m_blendPitchSine -= m_pitchSine;
+		m_blendPitchCosine -= m_pitchCosine;
+		m_blendFollowDistance -= m_followDistance;
 	}
 
 	m_lookBack = FALSE;
 }
 
 // STUB: LEGORACERS 0x00428500
-GolVec3* RaceCameraController::FUN_00428500(GolVec3* p_unk0x04)
+GolVec3* RaceCameraController::GetViewDirection(GolVec3* p_unk0x04)
 {
-	if (m_unk0x002 == 3) {
+	if (m_mode == 3) {
 		GolVec3* source = &m_unk0x0d8;
 		p_unk0x04->m_x = source->m_x;
 		p_unk0x04->m_y = source->m_y;
 		p_unk0x04->m_z = source->m_z;
 	}
 	else {
-		p_unk0x04->m_x = m_unk0x048.m_orientation.m_rows[2].m_x;
-		p_unk0x04->m_y = m_unk0x048.m_orientation.m_rows[2].m_y;
-		p_unk0x04->m_z = m_unk0x048.m_orientation.m_rows[2].m_z;
+		p_unk0x04->m_x = m_smoothedTransform.m_orientation.m_rows[2].m_x;
+		p_unk0x04->m_y = m_smoothedTransform.m_orientation.m_rows[2].m_y;
+		p_unk0x04->m_z = m_smoothedTransform.m_orientation.m_rows[2].m_z;
 	}
 
 	return p_unk0x04;
 }
 
 // STUB: LEGORACERS 0x00428540
-void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
+void RaceCameraController::Update(LegoFloat p_unk0x04)
 {
-	if (m_unk0x0d4 == NULL) {
-		m_unk0x000 = TRUE;
+	if (m_racer == NULL) {
+		m_dirty = TRUE;
 		return;
 	}
 
@@ -430,39 +430,39 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 	}
 
 	if (p_unk0x04 <= 0.0f) {
-		if (!(m_unk0x000 & 1)) {
+		if (!(m_dirty & 1)) {
 			return;
 		}
 		p_unk0x04 = 0.0f;
 	}
 
-	m_unk0x001 = m_unk0x000;
-	m_unk0x000 &= 0xf0;
+	m_unk0x001 = m_dirty;
+	m_dirty &= 0xf0;
 	if (p_unk0x04 <= 100.0f) {
-		m_unk0x0cc = p_unk0x04;
+		m_elapsed = p_unk0x04;
 	}
 	else {
-		m_unk0x0cc = 100.0f;
+		m_elapsed = 100.0f;
 	}
 
-	m_unk0x0d0 = static_cast<LegoS32>(m_unk0x0cc);
-	FUN_00427e80();
+	m_elapsedMs = static_cast<LegoS32>(m_elapsed);
+	UpdateShake();
 
-	if (m_unk0x002) {
-		m_unk0x088 = m_unk0x048;
-		m_unk0x0b8 = m_unk0x078;
+	if (m_mode) {
+		m_previousTransform = m_smoothedTransform;
+		m_previousRotation = m_smoothedRotation;
 	}
 
-	switch (m_unk0x002) {
+	switch (m_mode) {
 	case 0: {
-		m_unk0x0d4->m_visuals.m_carEntity->VTable0x04(&m_unk0x0e4);
+		m_racer->m_visuals.m_carEntity->VTable0x04(&m_lastRacerPosition);
 
 		if (m_unk0x0c8 == 0.0f) {
-			GolMath::FUN_1002f5a0(m_unk0x088.m_orientation, &m_unk0x0b8);
-			GolMath::FUN_1002f5a0(m_unk0x008.m_orientation, &m_unk0x038);
+			GolMath::FUN_1002f5a0(m_previousTransform.m_orientation, &m_previousRotation);
+			GolMath::FUN_1002f5a0(m_rawTransform.m_orientation, &m_rawRotation);
 		}
 
-		m_unk0x0c8 += m_unk0x0cc;
+		m_unk0x0c8 += m_elapsed;
 		LegoFloat amount;
 		if (m_unk0x0c8 <= 2000.0f) {
 			amount = m_unk0x0c8 * 0.00050000002f;
@@ -472,21 +472,21 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 			amount = 1.0f;
 		}
 
-		m_unk0x048.m_position.m_x =
-			(m_unk0x008.m_position.m_x - m_unk0x088.m_position.m_x) * amount + m_unk0x088.m_position.m_x;
-		m_unk0x048.m_position.m_y =
-			(m_unk0x008.m_position.m_y - m_unk0x088.m_position.m_y) * amount + m_unk0x088.m_position.m_y;
-		m_unk0x048.m_position.m_z =
-			(m_unk0x008.m_position.m_z - m_unk0x088.m_position.m_z) * amount + m_unk0x088.m_position.m_z;
-		GolMath::FUN_1002f890(m_unk0x0b8, m_unk0x038, amount, &m_unk0x078);
-		GolMath::FUN_00449340(&m_unk0x078, &m_unk0x048.m_m[0][0]);
-		FUN_00427d30();
-		FUN_00427c00();
+		m_smoothedTransform.m_position.m_x =
+			(m_rawTransform.m_position.m_x - m_previousTransform.m_position.m_x) * amount + m_previousTransform.m_position.m_x;
+		m_smoothedTransform.m_position.m_y =
+			(m_rawTransform.m_position.m_y - m_previousTransform.m_position.m_y) * amount + m_previousTransform.m_position.m_y;
+		m_smoothedTransform.m_position.m_z =
+			(m_rawTransform.m_position.m_z - m_previousTransform.m_position.m_z) * amount + m_previousTransform.m_position.m_z;
+		GolMath::FUN_1002f890(m_previousRotation, m_rawRotation, amount, &m_smoothedRotation);
+		GolMath::FUN_00449340(&m_smoothedRotation, &m_smoothedTransform.m_m[0][0]);
+		UpdateFollow();
+		UpdateListener();
 		return;
 	}
 	case 1:
 	case 3: {
-		RaceState::Racer* racer = m_unk0x0d4;
+		RaceState::Racer* racer = m_racer;
 		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
 		GolVec3 targetPosition;
 		entity->VTable0x04(&targetPosition);
@@ -542,7 +542,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 					}
 				}
 
-				m_unk0x0f4 = turnAmount + 1.0f / (m_unk0x104 * m_unk0x0cc + 1.0f) * (m_unk0x0f4 - turnAmount);
+				m_unk0x0f4 = turnAmount + 1.0f / (m_unk0x104 * m_elapsed + 1.0f) * (m_unk0x0f4 - turnAmount);
 
 				LegoFloat turnSin;
 				LegoFloat turnCos;
@@ -552,8 +552,8 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 				desiredDirection.m_x = turnCos * desiredDirection.m_x - turnSin * desiredDirection.m_y;
 				desiredDirection.m_y = turnCos * desiredDirection.m_y + turnSin * oldX;
 
-				LegoFloat currentAngle = FUN_00428f40(m_unk0x0d8.m_x, m_unk0x0d8.m_y);
-				LegoFloat desiredAngle = FUN_00428f40(desiredDirection.m_x, desiredDirection.m_y);
+				LegoFloat currentAngle = LerpAngle(m_unk0x0d8.m_x, m_unk0x0d8.m_y);
+				LegoFloat desiredAngle = LerpAngle(desiredDirection.m_x, desiredDirection.m_y);
 				LegoFloat delta = currentAngle - desiredAngle;
 				if (delta < -0.014f || delta > 0.014f) {
 					while (delta < -3.1415927f) {
@@ -563,18 +563,18 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 						delta -= 6.2831855f;
 					}
 
-					LegoFloat angleAmount = 1.0f / (m_unk0x108 * m_unk0x0cc + 1.0f);
+					LegoFloat angleAmount = 1.0f / (m_unk0x108 * m_elapsed + 1.0f);
 					LegoFloat angle = delta * angleAmount + desiredAngle;
 					GolMath::FUN_00449170(angle, &desiredDirection.m_y, &desiredDirection.m_x);
 				}
 			}
 
-			LegoFloat positionAmount = 1.0f / (m_unk0x100 * m_unk0x0cc + 1.0f);
-			targetPosition.m_x = (m_unk0x0e4.m_x - targetPosition.m_x) * positionAmount + targetPosition.m_x;
-			targetPosition.m_y = (m_unk0x0e4.m_y - targetPosition.m_y) * positionAmount + targetPosition.m_y;
-			targetPosition.m_z = (m_unk0x0e4.m_z - targetPosition.m_z) * positionAmount + targetPosition.m_z;
+			LegoFloat positionAmount = 1.0f / (m_unk0x100 * m_elapsed + 1.0f);
+			targetPosition.m_x = (m_lastRacerPosition.m_x - targetPosition.m_x) * positionAmount + targetPosition.m_x;
+			targetPosition.m_y = (m_lastRacerPosition.m_y - targetPosition.m_y) * positionAmount + targetPosition.m_y;
+			targetPosition.m_z = (m_lastRacerPosition.m_z - targetPosition.m_z) * positionAmount + targetPosition.m_z;
 		}
-		m_unk0x0e4 = targetPosition;
+		m_lastRacerPosition = targetPosition;
 
 		if (m_unk0x11c) {
 			m_unk0x11c = racer->m_driveController.m_flags & RaceState::Racer::DriveController::c_flagTurbo;
@@ -603,20 +603,20 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 
 		LegoFloat cameraDistance;
 		if (m_unk0x120 >= 1.0f) {
-			cameraDistance = m_unk0x118;
+			cameraDistance = m_followDistance;
 		}
 		else {
 			LegoFloat transitionStep;
-			if (m_unk0x005) {
-				transitionStep = m_unk0x0cc * 0.0040000002f;
+			if (m_alternate) {
+				transitionStep = m_elapsed * 0.0040000002f;
 			}
 			else {
-				transitionStep = m_unk0x0cc * 0.0020000001f;
+				transitionStep = m_elapsed * 0.0020000001f;
 			}
 			m_unk0x120 += transitionStep;
 
 			if (m_unk0x120 <= 1.0f) {
-				cameraDistance = m_unk0x120 * m_unk0x118;
+				cameraDistance = m_unk0x120 * m_followDistance;
 				if (m_unk0x120 < 0.0f) {
 					cameraDistance = -cameraDistance;
 				}
@@ -626,7 +626,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 			}
 			else {
 				m_unk0x120 = 1.0f;
-				cameraDistance = m_unk0x118;
+				cameraDistance = m_followDistance;
 			}
 		}
 
@@ -647,17 +647,17 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 		m_unk0x0d8.m_x = direction2D.m_x;
 		m_unk0x0d8.m_y = direction2D.m_y;
 
-		LegoFloat verticalOffset = m_unk0x10c;
+		LegoFloat verticalOffset = m_heightSine;
 		LegoFloat height;
 		GolVec3 cameraOffset;
-		if (m_unk0x002 == 3) {
-			m_unk0x0c8 += m_unk0x0cc;
+		if (m_mode == 3) {
+			m_unk0x0c8 += m_elapsed;
 			if (m_unk0x0c8 <= 2000.0f) {
 				LegoFloat profileAmount = 1.0f - m_unk0x0c8 * 0.00050000002f;
-				cameraDistance = m_unk0x130 * profileAmount + m_unk0x118;
-				height = m_unk0x128 * profileAmount + m_unk0x110;
-				verticalOffset = m_unk0x124 * profileAmount + m_unk0x10c;
-				LegoFloat sideDistance = m_unk0x12c * profileAmount + m_unk0x114;
+				cameraDistance = m_blendFollowDistance * profileAmount + m_followDistance;
+				height = m_blendPitchSine * profileAmount + m_pitchSine;
+				verticalOffset = m_blendHeightSine * profileAmount + m_heightSine;
+				LegoFloat sideDistance = m_blendPitchCosine * profileAmount + m_pitchCosine;
 
 				LegoFloat turnSin;
 				LegoFloat turnCos;
@@ -667,56 +667,56 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 			}
 			else {
 				m_unk0x0c8 = 2000.0f;
-				cameraDistance = m_unk0x118;
-				cameraOffset.m_x = -(m_unk0x114 * m_unk0x0d8.m_x);
-				cameraOffset.m_y = -(m_unk0x0d8.m_y * m_unk0x114);
-				height = m_unk0x110;
+				cameraDistance = m_followDistance;
+				cameraOffset.m_x = -(m_pitchCosine * m_unk0x0d8.m_x);
+				cameraOffset.m_y = -(m_unk0x0d8.m_y * m_pitchCosine);
+				height = m_pitchSine;
 			}
 		}
 		else {
-			cameraOffset.m_x = m_unk0x114 * m_unk0x0d8.m_x;
-			cameraOffset.m_y = m_unk0x0d8.m_y * m_unk0x114;
-			height = m_unk0x110;
+			cameraOffset.m_x = m_pitchCosine * m_unk0x0d8.m_x;
+			cameraOffset.m_y = m_unk0x0d8.m_y * m_pitchCosine;
+			height = m_pitchSine;
 		}
 
 		cameraOffset.m_z = -height;
 		if (m_unk0x001 & 1) {
-			m_unk0x008.m_position.m_x = m_unk0x0e4.m_x - cameraOffset.m_x * cameraDistance;
-			m_unk0x008.m_position.m_y = m_unk0x0e4.m_y - cameraOffset.m_y * cameraDistance;
-			m_unk0x008.m_position.m_z = m_unk0x0e4.m_z - (cameraOffset.m_z - verticalOffset) * cameraDistance;
+			m_rawTransform.m_position.m_x = m_lastRacerPosition.m_x - cameraOffset.m_x * cameraDistance;
+			m_rawTransform.m_position.m_y = m_lastRacerPosition.m_y - cameraOffset.m_y * cameraDistance;
+			m_rawTransform.m_position.m_z = m_lastRacerPosition.m_z - (cameraOffset.m_z - verticalOffset) * cameraDistance;
 		}
 		else {
-			m_unk0x008.m_position.m_x = m_unk0x0e4.m_x - m_unk0x088.m_orientation.m_rows[2].m_x * cameraDistance;
-			m_unk0x008.m_position.m_y = m_unk0x0e4.m_y - m_unk0x088.m_orientation.m_rows[2].m_y * cameraDistance;
-			m_unk0x008.m_position.m_z =
-				m_unk0x0e4.m_z - (m_unk0x088.m_orientation.m_rows[2].m_z - verticalOffset) * cameraDistance;
+			m_rawTransform.m_position.m_x = m_lastRacerPosition.m_x - m_previousTransform.m_orientation.m_rows[2].m_x * cameraDistance;
+			m_rawTransform.m_position.m_y = m_lastRacerPosition.m_y - m_previousTransform.m_orientation.m_rows[2].m_y * cameraDistance;
+			m_rawTransform.m_position.m_z =
+				m_lastRacerPosition.m_z - (m_previousTransform.m_orientation.m_rows[2].m_z - verticalOffset) * cameraDistance;
 		}
 
-		FUN_004282d0(&cameraOffset, &up, &m_unk0x008.m_orientation);
-		FUN_004280a0();
+		BuildOrientation(&cameraOffset, &up, &m_rawTransform.m_orientation);
+		ApplySmoothing();
 		return;
 	}
 	case 2: {
-		RaceState::Racer* racer = m_unk0x0d4;
+		RaceState::Racer* racer = m_racer;
 		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
-		entity->VTable0x04(&m_unk0x0e4);
+		entity->VTable0x04(&m_lastRacerPosition);
 
 		GolVec3 right = entity->GetOrientation().m_rows[0];
 		GolVec3 up = entity->GetOrientation().m_rows[2];
 		up.m_x = -up.m_x;
 		up.m_y = -up.m_y;
 		up.m_z = -up.m_z;
-		FUN_004282d0(&right, &up, &m_unk0x008.m_orientation);
+		BuildOrientation(&right, &up, &m_rawTransform.m_orientation);
 
-		entity->VTable0x04(&m_unk0x008.m_position);
-		if (m_unk0x005) {
-			m_unk0x008.m_position.m_z += 6.0f;
+		entity->VTable0x04(&m_rawTransform.m_position);
+		if (m_alternate) {
+			m_rawTransform.m_position.m_z += 6.0f;
 		}
 		else {
-			m_unk0x008.m_position.m_z += 10.0f;
+			m_rawTransform.m_position.m_z += 10.0f;
 		}
 
-		FUN_004280a0();
+		ApplySmoothing();
 		return;
 	}
 	default:
@@ -725,7 +725,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00428f40
-LegoFloat RaceCameraController::FUN_00428f40(LegoFloat p_unk0x04, LegoFloat p_unk0x08)
+LegoFloat RaceCameraController::LerpAngle(LegoFloat p_unk0x04, LegoFloat p_unk0x08)
 {
 	LegoFloat absY;
 	if (p_unk0x08 < 0.0f) {

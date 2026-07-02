@@ -85,41 +85,41 @@ void RaceSession::FUN_00431bd0()
 	m_soundManager = NULL;
 	m_golExport = NULL;
 	m_renderer = NULL;
-	m_unk0x21c = NULL;
+	m_inputManager = NULL;
 	m_standings = NULL;
-	m_unk0x1c = 0;
-	m_unk0x5c = 0;
-	m_unk0x69 = 0;
-	m_unk0x76 = 0;
-	m_unk0x83 = 0;
+	m_displayName = 0;
+	m_trackModelName = 0;
+	m_worldName = 0;
+	m_sharedModelName = 0;
+	m_effectsModelName = 0;
 	m_unk0x90 = 0;
 	m_unk0x9d = 0;
-	m_unk0xaa = 0;
-	m_unk0xb7 = 0;
-	m_unk0xc4 = 0;
-	m_unk0xde = 0;
-	m_unk0xd1 = 0;
+	m_collisionWorldName = 0;
+	m_triggerWorldName = 0;
+	m_powerupFileName = 0;
+	m_turboDatabaseName = 0;
+	m_powerupDatabaseName = 0;
 	m_unk0xeb = 0;
 	m_unk0xf8 = 0;
-	m_unk0x105 = 0;
+	m_eventFileName = 0;
 	m_unk0x112 = 0;
-	m_unk0x11f = 0;
-	m_unk0x12c = 0;
-	m_unk0x146 = 0;
-	m_unk0x153 = 0;
-	m_unk0x160 = 0;
-	m_unk0x16d = 0;
-	m_unk0x17a = 0;
-	m_unk0x187 = 0;
-	m_unk0x194 = 0;
-	m_unk0x1a1 = 0;
+	m_timerFileName = 0;
+	m_particleAnimationName = 0;
+	m_soundFileName = 0;
+	m_voiceFileName = 0;
+	m_soundBankName = 0;
+	m_musicFileName = 0;
+	m_fontFileName = 0;
+	m_imageFileName = 0;
+	m_startPositionsFileName = 0;
+	m_skyName = 0;
 	m_unk0x1ae = 0;
-	m_unk0x1bb = 0;
-	m_unk0x1c8 = 0;
-	m_unk0x1d5 = 0;
-	m_unk0x1ef = 0;
-	m_unk0x1e2 = 0;
-	m_unk0x3ac = NULL;
+	m_hazardFileName = 0;
+	m_checkpointFileName = 0;
+	m_extraTriggerWorldName = 0;
+	m_cameraName = 0;
+	m_targetFileName = 0;
+	m_trackCamera = NULL;
 	m_unk0x1f8.m_x = 0.0f;
 	m_unk0x1f8.m_y = 0.0f;
 	m_unk0x1f8.m_z = 0.0f;
@@ -133,29 +133,29 @@ void RaceSession::FUN_00431bd0()
 	m_unk0x2ac0 = -1023.0f;
 	m_unk0x2ac4 = 1023.0f;
 	m_unk0x2ac8 = -1023.0f;
-	m_unk0x390 = NULL;
-	m_unk0x394 = NULL;
-	m_unk0x39c = NULL;
-	m_unk0x398 = NULL;
-	m_unk0x3a0 = NULL;
-	m_unk0x3b0 = NULL;
-	m_unk0x3b4 = NULL;
-	m_unk0x3b8 = NULL;
-	m_unk0x2d74 = 0;
+	m_trackDatabase = NULL;
+	m_trackCollidable = NULL;
+	m_effectsDatabase = NULL;
+	m_sharedDatabase = NULL;
+	m_triggerDatabase = NULL;
+	m_collisionWorld = NULL;
+	m_triggerWorldEntity = NULL;
+	m_extraTriggerWorldEntity = NULL;
+	m_fontTable = 0;
 	m_unk0x2d78 = 0;
 	m_unk0x2d7c = 0;
-	m_unk0x2f8c = 0;
-	m_unk0x3314 = NULL;
-	m_unk0x3320 = NULL;
+	m_hudImages = 0;
+	m_musicGroup = NULL;
+	m_music = NULL;
 	m_unk0x3324 = g_unk0x004b07ec;
 	m_unk0x3a4 = NULL;
 	m_unk0x3a8 = 0;
 	m_unk0x3330 = 0;
 	m_unk0x3358 = 0;
 
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2acc); i++) {
-		m_unk0x3318[i] = NULL;
-		m_unk0x2acc[i] = NULL;
+	for (LegoS32 i = 0; i < sizeOfArray(m_cameras); i++) {
+		m_listenerNodes[i] = NULL;
+		m_cameras[i] = NULL;
 		m_raceState.m_playerRacers[i] = NULL;
 	}
 
@@ -200,20 +200,20 @@ void RaceSession::Initialize(
 
 	parser->OpenFileForRead(p_raceName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_rabToken0x35));
-	strcpy(&m_unk0x1c, parser->ReadStringWithMaxLength(0x3f));
+	strcpy(&m_displayName, parser->ReadStringWithMaxLength(0x3f));
 	parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case c_rabToken0x27:
-			strcpy(&m_unk0x69, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_worldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x42:
-			strcpy(&m_unk0x1a1, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_skyName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3b:
-			strcpy(&m_unk0x76, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_sharedModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x28:
 			m_unk0x204.m_x = parser->ReadFloat();
@@ -229,67 +229,67 @@ void RaceSession::Initialize(
 			m_unk0x1f8.m_z = parser->ReadFloat();
 			break;
 		case c_rabToken0x49:
-			strncpy(&m_unk0x1ef, parser->ReadStringWithMaxLength(8), 8);
+			strncpy(&m_cameraName, parser->ReadStringWithMaxLength(8), 8);
 			break;
 		case c_rabToken0x40:
-			strcpy(&m_unk0x83, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_effectsModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2b:
 			strcpy(&m_unk0x9d, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0xaa, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0xb7, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_collisionWorldName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_triggerWorldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2c:
-			strcpy(&m_unk0x105, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_eventFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2d:
-			strcpy(&m_unk0x17a, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_fontFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2e:
-			strcpy(&m_unk0x5c, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_trackModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2f:
-			strcpy(&m_unk0x187, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_imageFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x30:
-			strcpy(&m_unk0x16d, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_musicFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x31:
 		case c_rabToken0x32:
 			parser->ReadStringWithMaxLength(0x0c);
 			break;
 		case c_rabToken0x33:
-			strcpy(&m_unk0xc4, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0xde, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0xd1, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_powerupFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_turboDatabaseName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_powerupDatabaseName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x34:
 			strcpy(&m_unk0xeb, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x41:
-			strcpy(&m_unk0x194, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_startPositionsFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3c:
-			strcpy(&m_unk0x146, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_soundFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3d:
-			strcpy(&m_unk0x153, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_voiceFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3f:
-			strcpy(&m_unk0x160, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_soundBankName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x37:
 			strcpy(&m_unk0x112, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x38:
-			strcpy(&m_unk0x11f, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_timerFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x45:
 			strcpy(&m_unk0x90, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3a:
-			strcpy(&m_unk0x12c, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0x139, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_particleAnimationName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_sharedParticleAnimationName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x39:
 			strcpy(&m_unk0xf8, parser->ReadStringWithMaxLength(0x0c));
@@ -298,11 +298,11 @@ void RaceSession::Initialize(
 			strcpy(&m_unk0x1ae, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x44:
-			strcpy(&m_unk0x1bb, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_hazardFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x48:
-			strcpy(&m_unk0x1c8, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0x1d5, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_checkpointFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_extraTriggerWorldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x46:
 			m_unk0x2abc = parser->ReadFloat();
@@ -311,7 +311,7 @@ void RaceSession::Initialize(
 			m_unk0x2ac8 = parser->ReadFloat();
 			break;
 		case c_rabToken0x4a:
-			strcpy(&m_unk0x1e2, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_targetFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		default:
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -343,7 +343,7 @@ void RaceSession::Initialize(
 		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
 	}
 
-	m_unk0x280c.FUN_0042f480(m_golExport, m_renderer, &m_unk0x30f0, m_unk0x2d7c, p_context->m_useBinaryFiles);
+	m_unk0x280c.FUN_0042f480(m_golExport, m_renderer, &m_stringTable, m_unk0x2d7c, p_context->m_useBinaryFiles);
 	m_golApp->ClearFlags(GolApp::c_flagBit14);
 	FUN_00435ba0(0.0f);
 
@@ -502,7 +502,7 @@ void RaceSession::FUN_004327f0(LegoRacers::Context* p_context)
 	m_soundManager = m_context->m_soundManager;
 	m_golExport = m_golApp->GetGolExport();
 	m_renderer = m_golApp->GetRenderer();
-	m_unk0x21c = m_golApp->GetInputManager();
+	m_inputManager = m_golApp->GetInputManager();
 
 	LegoU32 one = 1;
 	if (m_context->m_playerCount > one) {
@@ -543,7 +543,7 @@ void RaceSession::FUN_004328d0()
 	m_soundManager = NULL;
 	m_golExport = NULL;
 	m_renderer = NULL;
-	m_unk0x21c = NULL;
+	m_inputManager = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x004328f0
@@ -555,11 +555,11 @@ void RaceSession::FUN_004328f0()
 	firstVoice[0] = '\0';
 	secondVoice[0] = '\0';
 
-	m_unk0x3314 = m_soundManager->CreateMusicGroup();
-	m_unk0x3314->Load(&m_unk0x16d);
+	m_musicGroup = m_soundManager->CreateMusicGroup();
+	m_musicGroup->Load(&m_musicFileName);
 
-	m_unk0x3300.FUN_00443ac0(m_soundManager);
-	m_unk0x3300.FUN_00443b40(&m_unk0x160);
+	m_soundSource.FUN_00443ac0(m_soundManager);
+	m_soundSource.FUN_00443b40(&m_soundBankName);
 
 	LegoU32 index = FUN_00432a50(0, firstVoice);
 	if (m_timeRaceManager) {
@@ -569,7 +569,7 @@ void RaceSession::FUN_004328f0()
 		FUN_00432a50(index + 1, secondVoice);
 	}
 	else {
-		strcpy(secondVoice, &m_unk0x153);
+		strcpy(secondVoice, &m_voiceFileName);
 	}
 
 	GolHashTable* hashTable = g_hashTable;
@@ -577,7 +577,7 @@ void RaceSession::FUN_004328f0()
 		hashTable->SetCurrentEntry(hashTable->AddString("GAMEDATA\\VOICES"));
 	}
 
-	m_unk0x3300.FUN_00443b10(firstVoice, secondVoice);
+	m_soundSource.FUN_00443b10(firstVoice, secondVoice);
 
 	const LegoChar* commonDataDirectory = m_context->m_commonDataDirectory;
 	hashTable = g_hashTable;
@@ -585,12 +585,12 @@ void RaceSession::FUN_004328f0()
 		hashTable->SetCurrentEntry(hashTable->AddString(commonDataDirectory));
 	}
 
-	m_unk0x3300.FUN_00443b00(&m_unk0x146);
+	m_soundSource.FUN_00443b00(&m_soundFileName);
 
 	for (LegoU32 i = 0; i < m_context->m_playerCount; i++) {
-		m_unk0x3318[i] = m_soundManager->CreateSoundNode();
-		m_soundManager->AddActiveSoundNode(m_unk0x3318[i]);
-		m_unk0x2ad4[i].m_unk0x14c = m_unk0x3318[i];
+		m_listenerNodes[i] = m_soundManager->CreateSoundNode();
+		m_soundManager->AddActiveSoundNode(m_listenerNodes[i]);
+		m_cameraControllers[i].m_listenerNode = m_listenerNodes[i];
 	}
 }
 
@@ -631,25 +631,25 @@ LegoU32 RaceSession::FUN_00432a50(LegoU32 p_index, LegoChar* p_buffer)
 void RaceSession::FUN_00432b30()
 {
 	if (m_soundManager) {
-		for (LegoS32 i = 0; i < sizeOfArray(m_unk0x3318); i++) {
-			if (m_unk0x3318[i]) {
-				m_soundManager->DestroySoundNode(m_unk0x3318[i]);
-				m_unk0x3318[i] = NULL;
+		for (LegoS32 i = 0; i < sizeOfArray(m_listenerNodes); i++) {
+			if (m_listenerNodes[i]) {
+				m_soundManager->DestroySoundNode(m_listenerNodes[i]);
+				m_listenerNodes[i] = NULL;
 			}
 		}
 
-		m_unk0x3300.FUN_00443a80();
+		m_soundSource.FUN_00443a80();
 
-		if (m_unk0x3320) {
-			m_unk0x3320->Stop();
-			m_unk0x3314->DestroyMusicInstance(m_unk0x3320);
-			m_unk0x3320 = NULL;
+		if (m_music) {
+			m_music->Stop();
+			m_musicGroup->DestroyMusicInstance(m_music);
+			m_music = NULL;
 		}
 
-		MusicGroup* musicGroup = m_unk0x3314;
+		MusicGroup* musicGroup = m_musicGroup;
 		if (musicGroup) {
 			m_soundManager->DestroyMusicGroup(musicGroup);
-			m_unk0x3314 = NULL;
+			m_musicGroup = NULL;
 		}
 	}
 }
@@ -698,46 +698,46 @@ void RaceSession::FUN_00432bc0()
 		hashTable->SetCurrentEntry(hashTable->AddString(commonDataPath));
 	}
 
-	m_unk0x30f0.UseOwnedBuffers();
-	m_unk0x30f0.Load("game.srf");
+	m_stringTable.UseOwnedBuffers();
+	m_stringTable.Load("game.srf");
 
 	m_raceState.m_driverTable.LoadStrings();
 	m_unk0x2d80.CopyFromBufSelection(m_unk0x2d8c, 0x100);
 
-	m_unk0x2d74 = m_golExport->CreateFontTable();
-	m_unk0x2d74->LoadFontDefinitions(m_renderer, &m_unk0x17a, m_context->m_useBinaryFiles);
-	m_unk0x2d78 = m_unk0x2d74->GetItem(0);
-	m_unk0x2d7c = m_unk0x2d74->GetItem(0);
+	m_fontTable = m_golExport->CreateFontTable();
+	m_fontTable->LoadFontDefinitions(m_renderer, &m_fontFileName, m_context->m_useBinaryFiles);
+	m_unk0x2d78 = m_fontTable->GetItem(0);
+	m_unk0x2d7c = m_fontTable->GetItem(0);
 }
 
 // FUNCTION: LEGORACERS 0x00432d70
 void RaceSession::FUN_00432d70()
 {
-	if (m_golExport && m_unk0x2d74) {
-		m_golExport->DestroyFontTable(m_unk0x2d74);
-		m_unk0x2d74 = NULL;
+	if (m_golExport && m_fontTable) {
+		m_golExport->DestroyFontTable(m_fontTable);
+		m_fontTable = NULL;
 	}
 
 	m_unk0x2d80.Reset();
 
-	GolStringTable* stringTable = &m_unk0x30f0;
+	GolStringTable* stringTable = &m_stringTable;
 	stringTable->ReleaseOwnedBuffers();
 }
 
 // FUNCTION: LEGORACERS 0x00432dc0
 void RaceSession::FUN_00432dc0()
 {
-	m_unk0x2f8c = m_golExport->VTable0x34();
-	m_unk0x2f8c->LoadImageDefinitions(m_renderer, &m_unk0x187, m_context->m_useBinaryFiles);
+	m_hudImages = m_golExport->VTable0x34();
+	m_hudImages->LoadImageDefinitions(m_renderer, &m_imageFileName, m_context->m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x00432df0
 void RaceSession::FUN_00432df0()
 {
 	if (m_golExport) {
-		if (m_unk0x2f8c) {
-			m_golExport->VTable0x68(m_unk0x2f8c);
-			m_unk0x2f8c = NULL;
+		if (m_hudImages) {
+			m_golExport->VTable0x68(m_hudImages);
+			m_hudImages = NULL;
 		}
 	}
 }
@@ -745,10 +745,10 @@ void RaceSession::FUN_00432df0()
 // FUNCTION: LEGORACERS 0x00432e20
 void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
 {
-	m_unk0x39c = m_golExport->VTable0x08();
-	m_unk0x39c->VTable0x14(m_renderer, &m_unk0x83, m_context->m_useBinaryFiles, 1.0f);
+	m_effectsDatabase = m_golExport->VTable0x08();
+	m_effectsDatabase->VTable0x14(m_renderer, &m_effectsModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_unk0x39c->FUN_00416140();
+		m_effectsDatabase->FUN_00416140();
 	}
 	FUN_00435ba0(0.1f);
 
@@ -758,45 +758,45 @@ void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
 		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
 	}
 
-	m_unk0x390 = m_golExport->VTable0x08();
-	m_unk0x390->VTable0x14(m_renderer, &m_unk0x5c, m_context->m_useBinaryFiles, 1.0f);
+	m_trackDatabase = m_golExport->VTable0x08();
+	m_trackDatabase->VTable0x14(m_renderer, &m_trackModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_unk0x390->FUN_00416140();
+		m_trackDatabase->FUN_00416140();
 	}
 	FUN_00435ba0(0.24f);
 
-	m_unk0x394 = m_unk0x390->GetUnk0xa4();
-	if (m_unk0x1ef) {
-		m_unk0x3ac = m_unk0x390->FindUnk0xe4(&m_unk0x1ef);
+	m_trackCollidable = m_trackDatabase->GetUnk0xa4();
+	if (m_cameraName) {
+		m_trackCamera = m_trackDatabase->FindUnk0xe4(&m_cameraName);
 	}
 	FUN_00435ba0(0.26f);
 
-	m_unk0x3a0 = m_golExport->VTable0x08();
-	m_unk0x3a0->VTable0x14(m_renderer, &m_unk0x9d, m_context->m_useBinaryFiles, 1.0f);
+	m_triggerDatabase = m_golExport->VTable0x08();
+	m_triggerDatabase->VTable0x14(m_renderer, &m_unk0x9d, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_unk0x3a0->FUN_00416140();
+		m_triggerDatabase->FUN_00416140();
 	}
 	FUN_00435d20(p_mirror);
 	FUN_00435ba0(0.34f);
 
 	LegoChar name[sizeof(GolName)];
-	::strncpy(name, &m_unk0xaa, sizeof(name));
-	m_unk0x3b0 = m_unk0x3a0->FindUnk0xd8(name);
+	::strncpy(name, &m_collisionWorldName, sizeof(name));
+	m_collisionWorld = m_triggerDatabase->FindUnk0xd8(name);
 	FUN_00435ba0(0.36f);
 
-	::strncpy(name, &m_unk0xb7, sizeof(name));
-	m_unk0x3b4 = m_unk0x3a0->FindUnk0xd8(name);
+	::strncpy(name, &m_triggerWorldName, sizeof(name));
+	m_triggerWorldEntity = m_triggerDatabase->FindUnk0xd8(name);
 
-	if (m_unk0x1d5) {
-		::strncpy(name, &m_unk0x1d5, sizeof(name));
-		m_unk0x3b8 = m_unk0x3a0->FindUnk0xd8(name);
+	if (m_extraTriggerWorldName) {
+		::strncpy(name, &m_extraTriggerWorldName, sizeof(name));
+		m_extraTriggerWorldEntity = m_triggerDatabase->FindUnk0xd8(name);
 	}
 	FUN_00435ba0(0.38f);
 
-	m_unk0x398 = m_golExport->VTable0x08();
-	m_unk0x398->VTable0x14(m_renderer, &m_unk0x76, m_context->m_useBinaryFiles, 1.0f);
+	m_sharedDatabase = m_golExport->VTable0x08();
+	m_sharedDatabase->VTable0x14(m_renderer, &m_sharedModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_unk0x398->FUN_00416140();
+		m_sharedDatabase->FUN_00416140();
 	}
 	FUN_00435ba0(0.4f);
 
@@ -812,34 +812,34 @@ void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
 void RaceSession::FUN_004330e0()
 {
 	if (m_golExport) {
-		if (m_unk0x3a0) {
-			m_golExport->VTable0x3c(m_unk0x3a0);
+		if (m_triggerDatabase) {
+			m_golExport->VTable0x3c(m_triggerDatabase);
 		}
 		if (m_unk0x3a4) {
 			m_golExport->VTable0x3c(m_unk0x3a4);
 		}
-		if (m_unk0x398) {
-			m_golExport->VTable0x3c(m_unk0x398);
+		if (m_sharedDatabase) {
+			m_golExport->VTable0x3c(m_sharedDatabase);
 		}
-		if (m_unk0x390) {
-			m_golExport->VTable0x3c(m_unk0x390);
+		if (m_trackDatabase) {
+			m_golExport->VTable0x3c(m_trackDatabase);
 		}
-		if (m_unk0x39c) {
-			m_golExport->VTable0x3c(m_unk0x39c);
+		if (m_effectsDatabase) {
+			m_golExport->VTable0x3c(m_effectsDatabase);
 		}
 	}
 
 	GolNameTable* field0x27e0 = &m_unk0x27e0;
 	field0x27e0->Clear();
 
-	m_unk0x39c = NULL;
-	m_unk0x398 = NULL;
-	m_unk0x3a0 = NULL;
-	m_unk0x390 = NULL;
-	m_unk0x3b0 = NULL;
-	m_unk0x3b4 = NULL;
-	m_unk0x3b8 = NULL;
-	m_unk0x3ac = NULL;
+	m_effectsDatabase = NULL;
+	m_sharedDatabase = NULL;
+	m_triggerDatabase = NULL;
+	m_trackDatabase = NULL;
+	m_collisionWorld = NULL;
+	m_triggerWorldEntity = NULL;
+	m_extraTriggerWorldEntity = NULL;
+	m_trackCamera = NULL;
 }
 
 // STUB: LEGORACERS 0x00433190
@@ -962,8 +962,8 @@ void RaceSession::FUN_00433460()
 // STUB: LEGORACERS 0x00433480
 void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 {
-	if (m_unk0x1c8) {
-		m_unk0x27f4.Load(&m_unk0x1c8, m_context->m_useBinaryFiles, p_mirror);
+	if (m_checkpointFileName) {
+		m_checkpointGraph.Load(&m_checkpointFileName, m_context->m_useBinaryFiles, p_mirror);
 		FUN_00435e70();
 	}
 
@@ -977,23 +977,30 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	FUN_00435ba0(0.45f);
 
 	MabMaterialAnimation0x14* materialAnimation = m_unk0x3a4->VTable0x4c(0);
-	m_unk0x248c.FUN_00489af0(4, m_golExport, m_renderer, materialAnimation, &m_unk0x139, m_context->m_useBinaryFiles);
+	m_sharedParticleAnimation.FUN_00489af0(
+		4,
+		m_golExport,
+		m_renderer,
+		materialAnimation,
+		&m_sharedParticleAnimationName,
+		m_context->m_useBinaryFiles
+	);
 
 	FUN_00435ba0(0.48f);
 
-	m_unk0x27fc.Allocate(2);
-	m_unk0x27fc.Activate(500, TRUE, NULL, NULL);
+	m_animationList.Allocate(2);
+	m_animationList.Activate(500, TRUE, NULL, NULL);
 
 	m_trailManager.FUN_00493850(m_renderer, m_golExport, 6);
 
 	FUN_00435ba0(0.51f);
 
-	m_unk0x27d4.FUN_00492680(m_renderer, m_golExport, m_unk0x394, 4);
+	m_decalManager.FUN_00492680(m_renderer, m_golExport, m_trackCollidable, 4);
 	FUN_00433190(p_mirror);
 
 	FUN_00435ba0(0.54f);
 
-	m_raceState.LoadStartPositions(&m_unk0x194, m_context->m_useBinaryFiles, p_mirror);
+	m_raceState.LoadStartPositions(&m_startPositionsFileName, m_context->m_useBinaryFiles, p_mirror);
 
 	FUN_00435ba0(0.56f);
 
@@ -1004,18 +1011,18 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	racerContext.m_renderer = m_renderer;
 	racerContext.m_golExport = m_golExport;
-	racerContext.m_trackCollidable = m_unk0x394;
-	racerContext.m_trackWorld = m_unk0x3b0;
-	racerContext.m_triggerWorld = m_unk0x3b8;
-	racerContext.m_soundSource = &m_unk0x3300;
-	racerContext.m_powerupManager = &m_unk0x6dc;
-	racerContext.m_particleAnimation = &m_unk0x2150;
-	racerContext.m_sharedParticleAnimation = &m_unk0x248c;
-	racerContext.m_decalManager = &m_unk0x27d4;
+	racerContext.m_trackCollidable = m_trackCollidable;
+	racerContext.m_trackWorld = m_collisionWorld;
+	racerContext.m_triggerWorld = m_extraTriggerWorldEntity;
+	racerContext.m_soundSource = &m_soundSource;
+	racerContext.m_powerupManager = &m_powerupManager;
+	racerContext.m_particleAnimation = &m_particleAnimation;
+	racerContext.m_sharedParticleAnimation = &m_sharedParticleAnimation;
+	racerContext.m_decalManager = &m_decalManager;
 	racerContext.m_eventTable = &m_eventTable;
 	racerContext.m_unk0x2c = &m_unk0x27e0;
 	racerContext.m_shadowsEnabled = TRUE;
-	racerContext.m_checkpointGraph = &m_unk0x27f4;
+	racerContext.m_checkpointGraph = &m_checkpointGraph;
 	racerContext.m_cheatFlags = m_context->m_cheatFlags;
 
 	racerParams.m_racerCount = m_context->m_racerCount;
@@ -1064,16 +1071,16 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
 		if (m_context->m_playerSetupSlots[racerIndex].m_unk0x10 == 0) {
 			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
-			RaceCameraController* cameraController = &m_unk0x2ad4[racerIndex];
+			RaceCameraController* cameraController = &m_cameraControllers[racerIndex];
 			m_raceState.m_playerRacers[racerIndex] = racer;
 
-			cameraController->FUN_00428230(racer);
+			cameraController->SetRacer(racer);
 			racer->InitializeSounds(cameraController, FALSE);
 			racer->SetCameraView(m_context->m_unk0x398, m_unk0x3354);
-			cameraController->FUN_00428540(1.0f);
-			cameraController->FUN_004283d0(0);
-			cameraController->FUN_00428390(&m_unk0x1f8);
-			cameraController->FUN_004282a0(&m_unk0x204, &m_unk0x210);
+			cameraController->Update(1.0f);
+			cameraController->SetMode(0);
+			cameraController->SnapPosition(&m_unk0x1f8);
+			cameraController->SetOrientation(&m_unk0x204, &m_unk0x210);
 		}
 
 		g_raceLapCount = m_lapCount;
@@ -1096,25 +1103,25 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.7f);
 
-	m_unk0x2f90.FUN_0041c550(m_renderer, m_golExport, &m_unk0x1a1, &m_unk0x69, m_context->m_useBinaryFiles);
+	m_skyState.FUN_0041c550(m_renderer, m_golExport, &m_skyName, &m_worldName, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.75f);
 
-	if (m_unk0x1e2) {
-		m_unk0x2804.Load(&m_unk0x1e2, m_context->m_useBinaryFiles, p_mirror);
+	if (m_targetFileName) {
+		m_targetPoints.Load(&m_targetFileName, m_context->m_useBinaryFiles, p_mirror);
 	}
 
-	params.m_trackDatabase = m_unk0x390;
-	params.m_sharedDatabase = m_unk0x398;
-	params.m_unk0x08 = m_unk0x3a0;
+	params.m_trackDatabase = m_trackDatabase;
+	params.m_sharedDatabase = m_sharedDatabase;
+	params.m_unk0x08 = m_triggerDatabase;
 	params.m_unk0x0c = m_unk0x3a4;
-	params.m_soundSource = &m_unk0x3300;
-	params.m_hazardManager = &m_unk0x2148;
-	params.m_particleAnimation = &m_unk0x2150;
-	params.m_sharedParticleAnimation = &m_unk0x248c;
-	params.m_skyState = &m_unk0x2f90;
-	params.m_targetPoints = &m_unk0x2804;
-	params.m_name = &m_unk0x105;
+	params.m_soundSource = &m_soundSource;
+	params.m_hazardManager = &m_hazardManager;
+	params.m_particleAnimation = &m_particleAnimation;
+	params.m_sharedParticleAnimation = &m_sharedParticleAnimation;
+	params.m_skyState = &m_skyState;
+	params.m_targetPoints = &m_targetPoints;
+	params.m_name = &m_eventFileName;
 	params.m_binary = m_context->m_useBinaryFiles;
 	params.m_mirror = p_mirror;
 	m_eventTable.Load(&params);
@@ -1123,32 +1130,32 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	dispatcherContext.m_eventQueue = &m_raceState.m_roster;
 	dispatcherContext.m_unk0x04 = m_context;
-	dispatcherContext.m_soundSource = &m_unk0x3300;
+	dispatcherContext.m_soundSource = &m_soundSource;
 	dispatcherContext.m_eventTable = &m_eventTable;
-	dispatcherContext.m_trackDatabase = m_unk0x390;
-	dispatcherContext.m_sharedDatabase = m_unk0x398;
-	dispatcherContext.m_unk0x18 = m_unk0x3a0;
-	dispatcherContext.m_particleAnimation = &m_unk0x248c;
-	dispatcherContext.m_trackCollidable = m_unk0x394;
+	dispatcherContext.m_trackDatabase = m_trackDatabase;
+	dispatcherContext.m_sharedDatabase = m_sharedDatabase;
+	dispatcherContext.m_unk0x18 = m_triggerDatabase;
+	dispatcherContext.m_particleAnimation = &m_sharedParticleAnimation;
+	dispatcherContext.m_trackCollidable = m_trackCollidable;
 	dispatcherContext.m_golExport = m_golExport;
 	dispatcherContext.m_renderer = m_renderer;
 	dispatcherContext.m_colliderTable = &m_unk0x27e0;
 	dispatcherContext.m_raceState = &m_raceState;
-	dispatcherContext.m_skyState = &m_unk0x32b4;
-	dispatcherContext.m_powerupManager = &m_unk0x6dc;
+	dispatcherContext.m_skyState = &m_triggerWorld;
+	dispatcherContext.m_powerupManager = &m_powerupManager;
 	dispatcherContext.m_unk0x3c = &m_trailManager;
 	dispatcherContext.m_mirror = p_mirror;
-	m_unk0x2148.LoadHazards(&dispatcherContext, &m_unk0x1bb, m_context->m_useBinaryFiles);
+	m_hazardManager.LoadHazards(&dispatcherContext, &m_hazardFileName, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.8f);
 
-	m_unk0x32c4.FUN_0045e3f0(m_unk0x3a0, &m_raceState);
-	m_unk0x32b4.Initialize(m_unk0x3a0, &m_unk0xaa, &m_eventTable, &m_unk0x27e0);
+	m_unk0x32c4.FUN_0045e3f0(m_triggerDatabase, &m_raceState);
+	m_triggerWorld.Initialize(m_triggerDatabase, &m_collisionWorldName, &m_eventTable, &m_unk0x27e0);
 	m_unk0x2080.FUN_00463dc0(
 		&m_raceState,
 		&m_eventTable,
-		&m_unk0x6dc,
-		m_unk0x3a0,
+		&m_powerupManager,
+		m_triggerDatabase,
 		&m_unk0x32c4,
 		&m_unk0xf8,
 		m_context->m_useBinaryFiles,
@@ -1162,7 +1169,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.86f);
 
-	m_unk0x213c.FUN_00464aa0(m_raceState.GetEventQueue(), &m_eventTable, &m_unk0x11f, m_context->m_useBinaryFiles);
+	m_unk0x213c.FUN_00464aa0(m_raceState.GetEventQueue(), &m_eventTable, &m_timerFileName, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.88f);
 
@@ -1174,37 +1181,37 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		}
 	}
 
-	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x283c); i++) {
-		m_unk0x283c[i].FUN_00425d80(
+	for (LegoU32 i = 0; i < sizeOfArray(m_trails); i++) {
+		m_trails[i].FUN_00425d80(
 			m_renderer,
-			m_unk0x2d74,
+			m_fontTable,
 			&m_unk0x2d80,
-			m_unk0x2f8c,
+			m_hudImages,
 			&m_raceState,
 			m_timeRaceManager,
-			&m_unk0x30f0,
-			&m_unk0x3300,
+			&m_stringTable,
+			&m_soundSource,
 			m_timeRaceManager != NULL,
 			m_unk0x335c
 		);
-		m_unk0x283c[i].FUN_00426280(material, m_unk0x2abc, m_unk0x2ac4, m_unk0x2ac0, m_unk0x2ac8, p_mirror);
+		m_trails[i].FUN_00426280(material, m_unk0x2abc, m_unk0x2ac4, m_unk0x2ac0, m_unk0x2ac8, p_mirror);
 	}
 
 	if (m_unk0x3354) {
-		m_unk0x283c[0].FUN_004262c0(m_raceState.m_playerRacers[0]);
-		m_unk0x283c[0].FUN_004262d0(-1);
-		m_unk0x283c[0].FUN_00425e90(2);
+		m_trails[0].FUN_004262c0(m_raceState.m_playerRacers[0]);
+		m_trails[0].FUN_004262d0(-1);
+		m_trails[0].FUN_00425e90(2);
 
-		m_unk0x283c[1].FUN_004262c0(m_raceState.m_playerRacers[1]);
-		m_unk0x283c[1].FUN_004262d0(-1);
-		m_unk0x283c[1].FUN_00425e90(3);
+		m_trails[1].FUN_004262c0(m_raceState.m_playerRacers[1]);
+		m_trails[1].FUN_004262d0(-1);
+		m_trails[1].FUN_00425e90(3);
 	}
 	else {
-		m_unk0x283c[0].FUN_004262c0(
+		m_trails[0].FUN_004262c0(
 			m_context->m_playerCount == 1 ? m_raceState.m_playerRacers[0] : m_raceState.GetRacers()
 		);
-		m_unk0x283c[0].FUN_004262d0(-1);
-		m_unk0x283c[0].FUN_00425e90(1);
+		m_trails[0].FUN_004262d0(-1);
+		m_trails[0].FUN_00425e90(1);
 	}
 
 	FUN_00435ba0(0.9f);
@@ -1215,15 +1222,15 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	}
 
 	if (!m_unk0x3350) {
-		m_unk0x3058.FUN_004272c0(m_unk0x2d7c, m_renderer, &m_unk0x30f0, m_context->m_inputBindings[0].m_events[2]);
+		m_unk0x3058.FUN_004272c0(m_unk0x2d7c, m_renderer, &m_stringTable, m_context->m_inputBindings[0].m_events[2]);
 	}
 
 	field0x30c4Params.m_context = m_context;
 	field0x30c4Params.m_raceState = &m_raceState;
-	field0x30c4Params.m_unk0x08 = &m_unk0x6dc;
-	field0x30c4Params.m_unk0x0c = &m_unk0x2148;
-	field0x30c4Params.m_unk0x10 = &m_unk0x2150;
-	field0x30c4Params.m_unk0x14 = &m_unk0x248c;
+	field0x30c4Params.m_unk0x08 = &m_powerupManager;
+	field0x30c4Params.m_unk0x0c = &m_hazardManager;
+	field0x30c4Params.m_unk0x10 = &m_particleAnimation;
+	field0x30c4Params.m_unk0x14 = &m_sharedParticleAnimation;
 	field0x30c4Params.m_timeRaceManager = m_timeRaceManager;
 	field0x30c4Params.m_unk0x1c = &m_unk0x2080;
 	field0x30c4Params.m_unk0x20 = &m_unk0x2128;
@@ -1231,29 +1238,35 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	field0x30c4Params.m_unk0x28 = &m_eventTable;
 	m_unk0x30c4.FUN_0043a690(&field0x30c4Params);
 
-	m_unk0x2150
-		.FUN_00489af0(10, m_golExport, m_renderer, m_unk0x39c->VTable0x4c(0), &m_unk0x12c, m_context->m_useBinaryFiles);
+	m_particleAnimation.FUN_00489af0(
+		10,
+		m_golExport,
+		m_renderer,
+		m_effectsDatabase->VTable0x4c(0),
+		&m_particleAnimationName,
+		m_context->m_useBinaryFiles
+	);
 
 	FUN_00435ba0(0.93f);
 
 	powerupParams.m_golExport = m_golExport;
 	powerupParams.m_renderer = m_renderer;
 	powerupParams.m_raceState = &m_raceState;
-	powerupParams.m_collidable = m_unk0x394;
-	powerupParams.m_boundedEntity = m_unk0x3b4;
-	powerupParams.m_collisionWorld = &m_unk0x32b4;
-	powerupParams.m_soundSource = &m_unk0x3300;
-	powerupParams.m_cutsceneAnimation = &m_unk0x2150;
+	powerupParams.m_collidable = m_trackCollidable;
+	powerupParams.m_boundedEntity = m_triggerWorldEntity;
+	powerupParams.m_collisionWorld = &m_triggerWorld;
+	powerupParams.m_soundSource = &m_soundSource;
+	powerupParams.m_cutsceneAnimation = &m_particleAnimation;
 	powerupParams.m_trailManager = &m_trailManager;
 	powerupParams.m_unk0x24 = &m_unk0x2080;
-	powerupParams.m_animationList = &m_unk0x27fc;
+	powerupParams.m_animationList = &m_animationList;
 	powerupParams.m_trackDatabase = m_unk0x3a8;
-	powerupParams.m_targetPoints = &m_unk0x2804;
+	powerupParams.m_targetPoints = &m_targetPoints;
 	powerupParams.m_cameraFov = m_unk0x3354 ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
 	powerupParams.m_cheatFlags = m_context->m_cheatFlags;
-	m_unk0x6dc.Initialize(&powerupParams);
+	m_powerupManager.Initialize(&powerupParams);
 
-	m_unk0x6dc.LoadDatabases(&m_unk0xd1, &m_unk0xde, m_context->m_useBinaryFiles);
+	m_powerupManager.LoadDatabases(&m_powerupDatabaseName, &m_turboDatabaseName, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.97f);
 
@@ -1263,19 +1276,19 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	}
 
 	if (m_timeRaceManager) {
-		LegoU32 nameLength = ::strlen(&m_unk0xc4);
-		(&m_unk0xc4)[nameLength - 4] = '2';
-		(&m_unk0xc4)[nameLength - 3] = '.';
-		(&m_unk0xc4)[nameLength - 2] = 'P';
-		(&m_unk0xc4)[nameLength - 1] = 'W';
-		(&m_unk0xc4)[nameLength] = 'F';
-		(&m_unk0xc4)[nameLength + 1] = 0;
+		LegoU32 nameLength = ::strlen(&m_powerupFileName);
+		(&m_powerupFileName)[nameLength - 4] = '2';
+		(&m_powerupFileName)[nameLength - 3] = '.';
+		(&m_powerupFileName)[nameLength - 2] = 'P';
+		(&m_powerupFileName)[nameLength - 1] = 'W';
+		(&m_powerupFileName)[nameLength] = 'F';
+		(&m_powerupFileName)[nameLength + 1] = 0;
 	}
 
-	m_unk0x6dc.LoadPowerupFile(&m_unk0xc4, m_context->m_useBinaryFiles, p_mirror);
-	m_unk0x6dc.PreparePools(!m_unk0x3354);
-	m_unk0x6dc.CreatePools();
-	m_unk0x6dc.ClearBricksAudible();
+	m_powerupManager.LoadPowerupFile(&m_powerupFileName, m_context->m_useBinaryFiles, p_mirror);
+	m_powerupManager.PreparePools(!m_unk0x3354);
+	m_powerupManager.CreatePools();
+	m_powerupManager.ClearBricksAudible();
 
 	FUN_00434930();
 }
@@ -1302,7 +1315,7 @@ void RaceSession::FUN_00434000()
 	}
 
 	m_unk0x3058.Destroy();
-	m_unk0x6dc.Destroy();
+	m_powerupManager.Destroy();
 
 	if (m_golExport) {
 		if (m_unk0x3a8) {
@@ -1315,21 +1328,21 @@ void RaceSession::FUN_00434000()
 	m_unk0x2128.Destroy();
 	m_unk0x2080.Destroy();
 	m_unk0x32c4.Destroy();
-	m_unk0x2148.Destroy();
+	m_hazardManager.Destroy();
 	m_eventTable.Destroy();
-	m_unk0x2804.Reset();
-	m_unk0x2f90.Clear();
+	m_targetPoints.Reset();
+	m_skyState.Clear();
 	m_raceState.Destroy();
-	m_unk0x27f4.Reset();
-	m_unk0x27d4.Destroy();
+	m_checkpointGraph.Reset();
+	m_decalManager.Destroy();
 	m_trailManager.Destroy();
-	m_unk0x27fc.Reset();
-	m_unk0x248c.Clear();
-	m_unk0x2150.Clear();
+	m_animationList.Reset();
+	m_sharedParticleAnimation.Clear();
+	m_particleAnimation.Clear();
 
-	RaceCameraController* field0x2ad4 = m_unk0x2ad4;
+	RaceCameraController* field0x2ad4 = m_cameraControllers;
 	RaceState::Racer** racer = m_raceState.m_playerRacers;
-	LegoS32 remaining = sizeOfArray(m_unk0x2ad4);
+	LegoS32 remaining = sizeOfArray(m_cameraControllers);
 	do {
 		*racer = NULL;
 		field0x2ad4->Reset();
@@ -1349,7 +1362,7 @@ void RaceSession::FUN_00434170()
 	if (m_context->m_playerCount > 0) {
 		do {
 			GolCamera* camera = m_golExport->VTable0x20();
-			m_unk0x2acc[i] = camera;
+			m_cameras[i] = camera;
 
 			if (m_unk0x3354) {
 				camera->FUN_00404710(
@@ -1368,12 +1381,12 @@ void RaceSession::FUN_00434170()
 				);
 			}
 
-			GolCamera* currentCamera = m_unk0x2acc[i];
+			GolCamera* currentCamera = m_cameras[i];
 			currentCamera->GetTransform()->SetPosition(&m_unk0x1f8);
 			currentCamera->m_flags |= GolCamera::c_flagBit0;
 
-			m_unk0x2acc[i]->GetTransform()->VTable0x24(&m_unk0x204, &m_unk0x210);
-			m_unk0x2acc[i]->m_flags |= GolCamera::c_flagBit0;
+			m_cameras[i]->GetTransform()->VTable0x24(&m_unk0x204, &m_unk0x210);
+			m_cameras[i]->m_flags |= GolCamera::c_flagBit0;
 
 			Rect viewport;
 			if (!m_unk0x3354) {
@@ -1399,28 +1412,28 @@ void RaceSession::FUN_00434170()
 				}
 			}
 
-			m_unk0x2acc[i]->VTable0x0c(&viewport);
+			m_cameras[i]->VTable0x0c(&viewport);
 
-			RaceCameraController* field0x2ad4 = &m_unk0x2ad4[i];
-			field0x2ad4->FUN_00428210(m_unk0x2acc[i], m_renderer);
-			field0x2ad4->m_unk0x000 = TRUE;
+			RaceCameraController* field0x2ad4 = &m_cameraControllers[i];
+			field0x2ad4->Initialize(m_cameras[i], m_renderer);
+			field0x2ad4->m_dirty = TRUE;
 
 			i++;
 		} while (i < m_context->m_playerCount);
 	}
 
-	m_renderer->VTable0x20(m_unk0x2acc[0]);
+	m_renderer->VTable0x20(m_cameras[0]);
 }
 
 // FUNCTION: LEGORACERS 0x00434300
 void RaceSession::FUN_00434300()
 {
 	if (m_golExport) {
-		for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2acc); i++) {
-			if (m_unk0x2acc[i]) {
-				m_golExport->VTable0x54(m_unk0x2acc[i]);
+		for (LegoS32 i = 0; i < sizeOfArray(m_cameras); i++) {
+			if (m_cameras[i]) {
+				m_golExport->VTable0x54(m_cameras[i]);
 			}
-			m_unk0x2acc[i] = NULL;
+			m_cameras[i] = NULL;
 		}
 	}
 }
@@ -1428,26 +1441,26 @@ void RaceSession::FUN_00434300()
 // FUNCTION: LEGORACERS 0x00434340
 void RaceSession::FUN_00434340()
 {
-	if (m_unk0x3ac) {
-		m_unk0x3ac->m_trackedEntity->FUN_0040dad0(0);
-		m_unk0x3ac->m_trackedEntity->SetFlags(
-			m_unk0x3ac->m_trackedEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation
+	if (m_trackCamera) {
+		m_trackCamera->m_trackedEntity->FUN_0040dad0(0);
+		m_trackCamera->m_trackedEntity->SetFlags(
+			m_trackCamera->m_trackedEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation
 		);
 
-		GolAnimatedEntity* entity = m_unk0x3ac->m_trackedEntity;
+		GolAnimatedEntity* entity = m_trackCamera->m_trackedEntity;
 		entity->FUN_0040d650();
 		entity->SetActiveValue(0.0f);
 
 		LegoU32 i = 0;
-		m_unk0x3ac->m_trackedEntity->SetFlags(
-			m_unk0x3ac->m_trackedEntity->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart
+		m_trackCamera->m_trackedEntity->SetFlags(
+			m_trackCamera->m_trackedEntity->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart
 		);
 
 		LegoU32 playerCount = m_context->m_playerCount;
 		if (playerCount > 0) {
-			GolCamera** camera = m_unk0x2acc;
+			GolCamera** camera = m_cameras;
 			do {
-				(*camera)->SetTrackedEntity(m_unk0x3ac->m_trackedEntity, m_unk0x3ac->m_trackedNodeIndex);
+				(*camera)->SetTrackedEntity(m_trackCamera->m_trackedEntity, m_trackCamera->m_trackedNodeIndex);
 				i++;
 				camera++;
 			} while (i < m_context->m_playerCount);
@@ -1462,14 +1475,14 @@ void RaceSession::FUN_004343e0()
 	InputEventQueue* inputEvents = &session->m_inputEvents;
 	inputEvents->Allocate(32);
 
-	MouseInputDevice* mouse = session->m_unk0x21c->GetMouse();
+	MouseInputDevice* mouse = session->m_inputManager->GetMouse();
 	if (mouse) {
 		mouse->SetCallback(inputEvents);
 		mouse->SetExclusiveMode();
 		mouse->Acquire();
 	}
 
-	KeyboardInputDevice* keyboard = session->m_unk0x21c->GetKeyboard();
+	KeyboardInputDevice* keyboard = session->m_inputManager->GetKeyboard();
 	if (keyboard) {
 		session->m_unk0x23c.FUN_00427980(keyboard, inputEvents);
 		session->m_unk0x23c.FUN_004279c0();
@@ -1484,7 +1497,7 @@ void RaceSession::FUN_004343e0()
 	}
 
 	if (playerCount > 0) {
-		Field0x258* field0x258 = session->m_unk0x258;
+		Field0x258* field0x258 = session->m_playerControls;
 		RaceState::Racer** racer = session->m_raceState.m_playerRacers;
 		LegoU32 playerIndex = 0;
 
@@ -1499,7 +1512,7 @@ void RaceSession::FUN_004343e0()
 
 			InputBindingState::Entry* binding = &session->m_context->m_inputBindings[playerIndex];
 			if (binding->m_deviceType == DIDEVTYPE_JOYSTICK && binding->m_deviceId < 16) {
-				JoystickInputDevice* joystick = session->m_unk0x21c->FindJoystickByDeviceId(binding->m_deviceId);
+				JoystickInputDevice* joystick = session->m_inputManager->FindJoystickByDeviceId(binding->m_deviceId);
 				if (joystick && joystick->GetDeviceSubType() == binding->m_deviceSubType) {
 					joystick->SetCallback(inputEvents);
 					bindingAcquired = TRUE;
@@ -1617,8 +1630,8 @@ void RaceSession::FUN_004343e0()
 					GOL_FATALERROR_MESSAGE("Could not acquire controller for player");
 				}
 
-				session->m_unk0x340[playerIndex].FUN_00421e00(inputSink->m_unk0x02c[4]);
-				(*racer)->m_forceFeedback = &session->m_unk0x340[playerIndex];
+				session->m_forceFeedback[playerIndex].Initialize(inputSink->m_unk0x02c[4]);
+				(*racer)->m_forceFeedback = &session->m_forceFeedback[playerIndex];
 				field0x258->FUN_004307f0();
 			}
 
@@ -1629,14 +1642,14 @@ void RaceSession::FUN_004343e0()
 		} while (playerCount);
 	}
 
-	session->m_unk0x21c->PollDevices(0);
+	session->m_inputManager->PollDevices(0);
 	inputEvents->ClearQueue();
 }
 
 // FUNCTION: LEGORACERS 0x004348a0
 void RaceSession::FUN_004348a0()
 {
-	InputManager* inputManager = m_unk0x21c;
+	InputManager* inputManager = m_inputManager;
 	if (!inputManager) {
 		m_inputEvents.Reset();
 		return;
@@ -1648,10 +1661,10 @@ void RaceSession::FUN_004348a0()
 		source->Unacquire();
 	}
 
-	Field0x258* field0x258 = m_unk0x258;
-	RaceForceFeedback* field0x340 = m_unk0x340;
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x258); i++) {
-		field0x340->FUN_00421de0();
+	Field0x258* field0x258 = m_playerControls;
+	RaceForceFeedback* field0x340 = m_forceFeedback;
+	for (LegoS32 i = 0; i < sizeOfArray(m_playerControls); i++) {
+		field0x340->Destroy();
 		field0x258->FUN_004300a0();
 		field0x340++;
 		field0x258++;
@@ -1665,29 +1678,29 @@ void RaceSession::FUN_004348a0()
 // FUNCTION: LEGORACERS 0x00434930
 void RaceSession::FUN_00434930()
 {
-	if (m_unk0x3320) {
-		m_unk0x3320->Stop();
-		m_unk0x3314->DestroyMusicInstance(m_unk0x3320);
-		m_unk0x3320 = NULL;
+	if (m_music) {
+		m_music->Stop();
+		m_musicGroup->DestroyMusicInstance(m_music);
+		m_music = NULL;
 	}
 
-	m_unk0x3320 = m_unk0x3314->CreateMusicInstance(0);
+	m_music = m_musicGroup->CreateMusicInstance(0);
 
-	if (m_unk0x3320) {
-		m_unk0x3320->SetVolume(m_unk0x3324);
-		m_unk0x3320->Play(FALSE);
+	if (m_music) {
+		m_music->SetVolume(m_unk0x3324);
+		m_music->Play(FALSE);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004349a0
 void RaceSession::FUN_004349a0()
 {
-	if (m_unk0x3ac && m_unk0x2acc[0] && m_unk0x2acc[0]->m_trackedEntity &&
-		m_unk0x2acc[0]->m_trackedEntity->FUN_0040e360()) {
+	if (m_trackCamera && m_cameras[0] && m_cameras[0]->m_trackedEntity &&
+		m_cameras[0]->m_trackedEntity->FUN_0040e360()) {
 		GolVec3 position;
 		GolVec3 forward;
 		GolVec3 right;
-		GolCamera** camera = m_unk0x2acc;
+		GolCamera** camera = m_cameras;
 
 		GolCamera* currentCamera = *camera;
 		GolVec3* positionPtr = &position;
@@ -1698,17 +1711,17 @@ void RaceSession::FUN_004349a0()
 		GolVec3* forwardPtr = &forward;
 		currentCamera->m_transform->VTable0x1c(forwardPtr, rightPtr);
 
-		RaceCameraController* field0x2ad4 = m_unk0x2ad4;
-		LegoS32 remaining = sizeOfArray(m_unk0x2ad4);
+		RaceCameraController* field0x2ad4 = m_cameraControllers;
+		LegoS32 remaining = sizeOfArray(m_cameraControllers);
 		do {
 			if (*camera) {
 				(*camera)->ClearTrackedEntity();
 				positionPtr = &position;
-				field0x2ad4->FUN_00428390(positionPtr);
+				field0x2ad4->SnapPosition(positionPtr);
 
 				rightPtr = &right;
 				forwardPtr = &forward;
-				field0x2ad4->FUN_004282a0(forwardPtr, rightPtr);
+				field0x2ad4->SetOrientation(forwardPtr, rightPtr);
 			}
 
 			camera++;
@@ -1719,15 +1732,15 @@ void RaceSession::FUN_004349a0()
 	}
 
 	if (m_elapsedMs >= 2000) {
-		GolCamera* camera = m_unk0x2acc[0];
+		GolCamera* camera = m_cameras[0];
 		if (!camera || !camera->m_trackedEntity) {
 			m_elapsedMs = 0;
 			m_state = 2;
 
 			LegoU32 i = 0;
 			if (m_context->m_playerCount > 0) {
-				CobaltTrail0x140* cobaltTrail = m_unk0x283c;
-				RaceForceFeedback* field0x340 = m_unk0x340;
+				CobaltTrail0x140* cobaltTrail = m_trails;
+				RaceForceFeedback* field0x340 = m_forceFeedback;
 				RaceState::Racer** racer = m_raceState.m_playerRacers;
 				do {
 					(*racer)->ReapplyCameraView();
@@ -1735,7 +1748,7 @@ void RaceSession::FUN_004349a0()
 						cobaltTrail->FUN_00426360();
 					}
 					(*racer)->StartEngine();
-					field0x340->FUN_00422130();
+					field0x340->StartEngineEffect();
 
 					CobaltTrail0x140* nextCobaltTrail = cobaltTrail + 1;
 					i++;
@@ -1767,7 +1780,7 @@ void RaceSession::FUN_00434b00()
 
 	LegoU32 i = 0;
 	if (m_context->m_playerCount > 0) {
-		Field0x258* field0x258 = m_unk0x258;
+		Field0x258* field0x258 = m_playerControls;
 		do {
 			if (field0x258->m_unk0x000) {
 				field0x258->FUN_00430710();
@@ -1778,23 +1791,23 @@ void RaceSession::FUN_00434b00()
 		} while (i < m_context->m_playerCount);
 	}
 
-	m_unk0x6dc.SetBricksAudible();
+	m_powerupManager.SetBricksAudible();
 
 	if (m_timeRaceManager) {
 		m_timeRaceManager->FUN_00422eb0(m_raceState.m_playerRacers[0]);
 	}
 
-	if (m_unk0x3320) {
-		m_unk0x3320->Stop();
-		m_unk0x3314->DestroyMusicInstance(m_unk0x3320);
+	if (m_music) {
+		m_music->Stop();
+		m_musicGroup->DestroyMusicInstance(m_music);
 
 		LegoU32 musicIndex = 1;
-		MusicGroup* musicGroup = m_unk0x3314;
+		MusicGroup* musicGroup = m_musicGroup;
 		if (musicGroup->GetMusicCount() > 4 && !m_standings) {
 			LegoU32 randomValue = 0;
 			LegoU32 randomState = g_randomTableIndex;
 			g_randomTableIndex = (randomState + 1) & 0x3ff;
-			musicGroup = m_unk0x3314;
+			musicGroup = m_musicGroup;
 			randomValue = g_randomTable[g_randomTableIndex];
 			LegoU32 randomIndex = randomValue % (musicGroup->GetMusicCount() - 3);
 			switch (randomIndex) {
@@ -1816,10 +1829,10 @@ void RaceSession::FUN_00434b00()
 			}
 		}
 
-		m_unk0x3320 = m_unk0x3314->CreateMusicInstance(musicIndex);
-		if (m_unk0x3320) {
-			m_unk0x3320->SetVolume(m_unk0x3324);
-			m_unk0x3320->Play(TRUE);
+		m_music = m_musicGroup->CreateMusicInstance(musicIndex);
+		if (m_music) {
+			m_music->SetVolume(m_unk0x3324);
+			m_music->Play(TRUE);
 		}
 	}
 
@@ -1852,49 +1865,49 @@ void RaceSession::FUN_00434c80()
 						playerIndex++;
 					}
 
-					m_unk0x283c[playerIndex].FUN_00426370();
+					m_trails[playerIndex].FUN_00426370();
 					m_elapsedMs = 0;
 					m_state = 4;
 					if (m_unk0x335c) {
 						m_elapsedMs = 9000;
 					}
 
-					if (m_unk0x258[playerIndex].m_unk0x000) {
-						m_unk0x258[playerIndex].FUN_00430760();
+					if (m_playerControls[playerIndex].m_unk0x000) {
+						m_playerControls[playerIndex].FUN_00430760();
 					}
 
-					m_unk0x6dc.CancelWarp(racer);
+					m_powerupManager.CancelWarp(racer);
 
 					if (!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000) &&
 						!m_unk0x335c) {
-						m_unk0x2ad4[playerIndex].FUN_004283f0(4, m_unk0x3354);
+						m_cameraControllers[playerIndex].SetView(4, m_unk0x3354);
 					}
 
 					if (m_timeRaceManager) {
 						m_timeRaceManager->UpdateBestRun();
 					}
 
-					if (m_unk0x3320) {
-						m_unk0x3320->Stop();
-						m_unk0x3314->DestroyMusicInstance(m_unk0x3320);
+					if (m_music) {
+						m_music->Stop();
+						m_musicGroup->DestroyMusicInstance(m_music);
 
 						if (racer->m_lapTimes[5] == 1) {
-							m_unk0x3320 = m_unk0x3314->CreateMusicInstance(3);
+							m_music = m_musicGroup->CreateMusicInstance(3);
 						}
 						else {
-							m_unk0x3320 = m_unk0x3314->CreateMusicInstance(2);
+							m_music = m_musicGroup->CreateMusicInstance(2);
 						}
 
-						if (m_unk0x3320) {
-							m_unk0x3320->SetVolume(m_unk0x3324);
-							m_unk0x3320->Play(FALSE);
+						if (m_music) {
+							m_music->SetVolume(m_unk0x3324);
+							m_music->Play(FALSE);
 						}
 					}
 
 					if (m_standings) {
 						m_standings->m_unk0x00 = m_unk0x2d7c;
 						m_standings->m_unk0x08 = &m_raceState;
-						m_standings->m_unk0x0c = &m_unk0x30f0;
+						m_standings->m_unk0x0c = &m_stringTable;
 					}
 
 					FUN_00434eb0();
@@ -1911,8 +1924,8 @@ void RaceSession::FUN_00434c80()
 void RaceSession::FUN_00434eb0()
 {
 	if (m_elapsedMs > 9000) {
-		if (!m_unk0x27fc.HasActive() && !m_standings) {
-			m_unk0x27fc.Activate(1000, FALSE, NULL, NULL);
+		if (!m_animationList.HasActive() && !m_standings) {
+			m_animationList.Activate(1000, FALSE, NULL, NULL);
 		}
 	}
 
@@ -1973,14 +1986,14 @@ void RaceSession::FUN_00434eb0()
 						playerIndex++;
 					}
 
-					if (m_unk0x258[playerIndex].m_unk0x000) {
-						m_unk0x258[playerIndex].FUN_00430760();
+					if (m_playerControls[playerIndex].m_unk0x000) {
+						m_playerControls[playerIndex].FUN_00430760();
 					}
 
-					m_unk0x6dc.CancelWarp(racer);
+					m_powerupManager.CancelWarp(racer);
 
 					if (!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000)) {
-						m_unk0x2ad4[playerIndex].FUN_004283f0(4, m_unk0x3354);
+						m_cameraControllers[playerIndex].SetView(4, m_unk0x3354);
 					}
 				}
 			}
@@ -1988,7 +2001,7 @@ void RaceSession::FUN_00434eb0()
 			if ((racer->m_flags & 0x1000) && racer->m_cameraController &&
 				!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000) &&
 				racer->m_cameraViewIndex != 4 && !m_unk0x335c) {
-				racer->m_cameraController->FUN_004283f0(4, m_unk0x3354);
+				racer->m_cameraController->SetView(4, m_unk0x3354);
 			}
 
 			racerIndex++;
@@ -2005,8 +2018,8 @@ void RaceSession::FUN_00434eb0()
 void RaceSession::FUN_00435180()
 {
 	if (m_elapsedMs > 4000) {
-		if (!m_unk0x27fc.HasActive()) {
-			m_unk0x27fc.Activate(1000, FALSE, NULL, NULL);
+		if (!m_animationList.HasActive()) {
+			m_animationList.Activate(1000, FALSE, NULL, NULL);
 		}
 	}
 
@@ -2022,8 +2035,8 @@ void RaceSession::FUN_00435180()
 // FUNCTION: LEGORACERS 0x004351f0
 void RaceSession::FUN_004351f0()
 {
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x283c); i++) {
-		m_unk0x283c[i].FUN_00426390(m_golApp->GetFrameDeltaMs());
+	for (LegoS32 i = 0; i < sizeOfArray(m_trails); i++) {
+		m_trails[i].FUN_00426390(m_golApp->GetFrameDeltaMs());
 	}
 }
 
@@ -2045,28 +2058,28 @@ void RaceSession::VTable0x30()
 			m_unk0x334c -= elapsedMs;
 		}
 
-		m_unk0x390->FUN_00416090(elapsedMs);
+		m_trackDatabase->FUN_00416090(elapsedMs);
 		m_unk0x3a4->FUN_00416090(elapsedMs);
-		m_unk0x398->FUN_00416090(elapsedMs);
-		m_unk0x6dc.Update(elapsedMs);
+		m_sharedDatabase->FUN_00416090(elapsedMs);
+		m_powerupManager.Update(elapsedMs);
 		m_unk0x32c4.FUN_0045e470(elapsedMs);
 		m_unk0x2128.VTable0x08(elapsedMs);
 		m_unk0x2080.VTable0x08(elapsedMs);
-		m_unk0x2150.FUN_00489fa0(elapsedMs);
-		m_unk0x248c.FUN_00489fa0(elapsedMs);
+		m_particleAnimation.FUN_00489fa0(elapsedMs);
+		m_sharedParticleAnimation.FUN_00489fa0(elapsedMs);
 		m_trailManager.FUN_00493a20(elapsedMs);
 		m_eventTable.Update(elapsedMs);
-		m_unk0x2148.Update(elapsedMs);
+		m_hazardManager.Update(elapsedMs);
 		m_unk0x213c.FUN_00464dd0(elapsedMs);
-		m_unk0x27fc.Update(elapsedMs);
+		m_animationList.Update(elapsedMs);
 		m_soundManager->Update(elapsedMs);
 
 		LegoU32 i;
 		if (!m_unk0x3350) {
 			for (i = 0; i < m_context->m_playerCount; i++) {
 				LegoFloat unk0xa00 = m_raceState.m_playerRacers[i]->m_physics.m_forwardSpeed;
-				m_unk0x340[i].FUN_00421e30(elapsedMs, unk0xa00);
-				m_unk0x258[i].FUN_00430530(elapsedMs);
+				m_forceFeedback[i].Update(elapsedMs, unk0xa00);
+				m_playerControls[i].FUN_00430530(elapsedMs);
 			}
 		}
 
@@ -2089,7 +2102,7 @@ void RaceSession::VTable0x30()
 			m_raceState.UpdateRacers(stepMs);
 
 			for (i = 0; i < m_context->m_playerCount; i++) {
-				m_unk0x2ad4[i].FUN_00428540(static_cast<LegoFloat>(stepMs));
+				m_cameraControllers[i].Update(static_cast<LegoFloat>(stepMs));
 			}
 
 			remainingMs = remainingAfterStep;
@@ -2098,9 +2111,9 @@ void RaceSession::VTable0x30()
 			}
 		}
 
-		m_unk0x27d4.FUN_00492870(elapsedMs);
-		m_unk0x2148.UpdatePerRacer(m_unk0x2acc[0], m_unk0x2ad4[0].m_unk0x0d4);
-		m_unk0x2f90.FUN_0041ccb0(elapsedMs);
+		m_decalManager.FUN_00492870(elapsedMs);
+		m_hazardManager.UpdatePerRacer(m_cameras[0], m_cameraControllers[0].m_racer);
+		m_skyState.FUN_0041ccb0(elapsedMs);
 
 		if (m_state == 2 || m_state == 3 || m_state == 4) {
 			FUN_004351f0();
@@ -2111,21 +2124,21 @@ void RaceSession::VTable0x30()
 // FUNCTION: LEGORACERS 0x004354d0
 void RaceSession::FUN_004354d0()
 {
-	if (m_unk0x6dc.GetUnk0x19a0()) {
-		m_unk0x6dc.Draw(FALSE);
+	if (m_powerupManager.GetUnk0x19a0()) {
+		m_powerupManager.Draw(FALSE);
 		return;
 	}
 
 	GolAppEventHandler::OnCloseRequested();
-	m_renderer->VTable0x20(m_unk0x2acc[0]);
+	m_renderer->VTable0x20(m_cameras[0]);
 	VTable0x34();
 
 	if (m_unk0x3354) {
-		m_raceState.m_playerRacers[0]->m_visuals.UpdateShadow(m_unk0x2acc[0]);
-		m_raceState.m_playerRacers[1]->m_visuals.UpdateShadow(m_unk0x2acc[1]);
+		m_raceState.m_playerRacers[0]->m_visuals.UpdateShadow(m_cameras[0]);
+		m_raceState.m_playerRacers[1]->m_visuals.UpdateShadow(m_cameras[1]);
 	}
 	else {
-		m_raceState.UpdateShadows(m_unk0x2acc[0]);
+		m_raceState.UpdateShadows(m_cameras[0]);
 	}
 
 	LegoU32 viewportIndex = 1;
@@ -2137,16 +2150,16 @@ void RaceSession::FUN_004354d0()
 	}
 
 	if (m_raceState.m_playerRacers[0]->m_flags & RaceState::Racer::c_flagGhost) {
-		m_unk0x6dc.Draw(viewportIndex);
+		m_powerupManager.Draw(viewportIndex);
 	}
 	else {
 		GolVec3 cameraPosition;
-		GolCamera* camera = m_unk0x2acc[0];
+		GolCamera* camera = m_cameras[0];
 		GolVec3* position = &cameraPosition;
 		camera->m_transform->GetPosition(position);
 
 		position = &cameraPosition;
-		m_unk0x2f90.FUN_0041d040(position);
+		m_skyState.FUN_0041d040(position);
 
 		switch (m_state) {
 		case 1:
@@ -2168,21 +2181,21 @@ void RaceSession::FUN_004354d0()
 	}
 
 	while (viewportIndex < m_context->m_playerCount) {
-		m_renderer->VTable0x20(m_unk0x2acc[viewportIndex]);
+		m_renderer->VTable0x20(m_cameras[viewportIndex]);
 		m_renderer->VTable0x5c();
 		m_renderer->VTable0xec(viewportIndex + 1);
 
 		if (m_raceState.m_playerRacers[viewportIndex]->m_flags & RaceState::Racer::c_flagGhost) {
-			m_unk0x6dc.Draw(FALSE);
+			m_powerupManager.Draw(FALSE);
 		}
 		else {
 			GolVec3 cameraPosition;
-			GolCamera* camera = m_unk0x2acc[viewportIndex];
+			GolCamera* camera = m_cameras[viewportIndex];
 			GolVec3* position = &cameraPosition;
 			camera->m_transform->GetPosition(position);
 
 			position = &cameraPosition;
-			m_unk0x2f90.FUN_0041d040(position);
+			m_skyState.FUN_0041d040(position);
 
 			switch (m_state) {
 			case 1:
@@ -2238,7 +2251,7 @@ void RaceSession::FUN_004354d0()
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
 void RaceSession::DrawRacerViewportForState1(RaceState::Racer* p_racer)
 {
-	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	m_skyState.FUN_0041d0f0(m_renderer);
 	VTable0x38(p_racer);
 	VTable0x3c();
 }
@@ -2246,7 +2259,7 @@ void RaceSession::DrawRacerViewportForState1(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
 void RaceSession::DrawRacerViewportForState2(RaceState::Racer* p_racer)
 {
-	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	m_skyState.FUN_0041d0f0(m_renderer);
 	VTable0x38(p_racer);
 	VTable0x3c();
 }
@@ -2254,7 +2267,7 @@ void RaceSession::DrawRacerViewportForState2(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
 void RaceSession::DrawRacerViewportForState3(RaceState::Racer* p_racer)
 {
-	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	m_skyState.FUN_0041d0f0(m_renderer);
 	VTable0x38(p_racer);
 	VTable0x3c();
 }
@@ -2262,7 +2275,7 @@ void RaceSession::DrawRacerViewportForState3(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
 void RaceSession::DrawRacerViewportForState4(RaceState::Racer* p_racer)
 {
-	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	m_skyState.FUN_0041d0f0(m_renderer);
 	VTable0x38(p_racer);
 	VTable0x3c();
 }
@@ -2270,7 +2283,7 @@ void RaceSession::DrawRacerViewportForState4(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
 void RaceSession::DrawRacerViewportForState5(RaceState::Racer* p_racer)
 {
-	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	m_skyState.FUN_0041d0f0(m_renderer);
 	VTable0x38(p_racer);
 	VTable0x3c();
 }
@@ -2279,7 +2292,7 @@ void RaceSession::DrawRacerViewportForState5(RaceState::Racer* p_racer)
 void RaceSession::FUN_004357e0()
 {
 	FUN_00435ab0();
-	m_unk0x27fc.Draw(m_renderer);
+	m_animationList.Draw(m_renderer);
 	FUN_00435920();
 }
 
@@ -2288,7 +2301,7 @@ void RaceSession::FUN_00435800()
 {
 	VTable0x40();
 	FUN_00435ab0();
-	m_unk0x27fc.Draw(m_renderer);
+	m_animationList.Draw(m_renderer);
 	FUN_00435920();
 }
 
@@ -2298,7 +2311,7 @@ void RaceSession::FUN_00435830()
 	VTable0x40();
 	FUN_00435ab0();
 	GolAppEventHandler::OnCloseRequested();
-	m_unk0x27fc.Draw(m_renderer);
+	m_animationList.Draw(m_renderer);
 	FUN_00435920();
 }
 
@@ -2308,14 +2321,14 @@ void RaceSession::FUN_00435860()
 	VTable0x40();
 	if (m_standings && m_running && m_elapsedMs > 5000) {
 		for (LegoU32 i = 0; i < m_context->m_playerCount; i++) {
-			m_unk0x283c[i].m_unk0x070 = 0;
+			m_trails[i].m_unk0x070 = 0;
 		}
 
 		m_standings->FUN_00440350(FALSE);
 	}
 
 	FUN_00435ab0();
-	m_unk0x27fc.Draw(m_renderer);
+	m_animationList.Draw(m_renderer);
 	FUN_00435920();
 }
 
@@ -2327,7 +2340,7 @@ void RaceSession::FUN_004358e0()
 	}
 
 	FUN_00435ab0();
-	m_unk0x27fc.Draw(m_renderer);
+	m_animationList.Draw(m_renderer);
 	FUN_00435920();
 }
 
@@ -2354,30 +2367,30 @@ void RaceSession::VTable0x34()
 void RaceSession::VTable0x38(RaceState::Racer* p_racer)
 {
 	m_raceState.DrawRacerEntities(m_renderer, p_racer);
-	m_unk0x6dc.Draw(FALSE);
-	m_unk0x2150.FUN_00489ff0(m_renderer);
-	m_unk0x248c.FUN_00489ff0(m_renderer);
+	m_powerupManager.Draw(FALSE);
+	m_particleAnimation.FUN_00489ff0(m_renderer);
+	m_sharedParticleAnimation.FUN_00489ff0(m_renderer);
 	m_trailManager.FUN_00493a60(m_renderer);
 
-	m_unk0x390->VTable0x24(m_renderer);
-	m_unk0x390->VTable0x20(m_renderer);
-	m_unk0x390->VTable0x28(m_renderer);
-	m_unk0x390->VTable0x1c(m_renderer);
+	m_trackDatabase->VTable0x24(m_renderer);
+	m_trackDatabase->VTable0x20(m_renderer);
+	m_trackDatabase->VTable0x28(m_renderer);
+	m_trackDatabase->VTable0x1c(m_renderer);
 
-	m_unk0x27d4.FUN_004928b0(m_renderer);
+	m_decalManager.FUN_004928b0(m_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x00435a00
 void RaceSession::VTable0x3c()
 {
-	m_unk0x398->FUN_00416040();
+	m_sharedDatabase->FUN_00416040();
 	m_raceState.DrawRacersTransparent(m_renderer);
-	m_unk0x2148.Draw(m_renderer);
-	m_unk0x6dc.DrawTransparent();
-	m_unk0x2150.FUN_0048a040(m_renderer);
-	m_unk0x248c.FUN_0048a040(m_renderer);
+	m_hazardManager.Draw(m_renderer);
+	m_powerupManager.DrawTransparent();
+	m_particleAnimation.FUN_0048a040(m_renderer);
+	m_sharedParticleAnimation.FUN_0048a040(m_renderer);
 	m_trailManager.FUN_00493aa0(m_renderer);
-	m_unk0x27d4.FUN_004928f0(m_renderer);
+	m_decalManager.FUN_004928f0(m_renderer);
 
 	if (m_timeRaceManager) {
 		m_timeRaceManager->FUN_00422960(m_renderer);
@@ -2387,8 +2400,8 @@ void RaceSession::VTable0x3c()
 // FUNCTION: LEGORACERS 0x00435a90
 void RaceSession::VTable0x40()
 {
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x283c); i++) {
-		m_unk0x283c[i].FUN_004263a0();
+	for (LegoS32 i = 0; i < sizeOfArray(m_trails); i++) {
+		m_trails[i].FUN_004263a0();
 	}
 }
 
@@ -2398,7 +2411,7 @@ void RaceSession::FUN_00435ab0()
 	if (m_unk0x3350 && m_unk0x334c > c_overlayDrawDelayMs) {
 		GolString string;
 		const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
-		string.CopyFromBufSelection(m_unk0x30f0.GetStringBuffer(c_overlayStringId), 0);
+		string.CopyFromBufSelection(m_stringTable.GetStringBuffer(c_overlayStringId), 0);
 
 		LegoS32 textWidth;
 		LegoS32 textHeight;
@@ -2497,8 +2510,8 @@ void RaceSession::FUN_00435d20(LegoBool32 p_mirror)
 
 	if (!raceSession->m_unk0x1ae) {
 		LegoU32 zero = 0;
-		for (LegoU32 i = zero; i < raceSession->m_unk0x3a0->GetUnk0x64(); i++) {
-			GolModelMaterialTable* materials = raceSession->m_unk0x3a0->GetUnk0xa8()[i].GetMaterialTable();
+		for (LegoU32 i = zero; i < raceSession->m_triggerDatabase->GetUnk0x64(); i++) {
+			GolModelMaterialTable* materials = raceSession->m_triggerDatabase->GetUnk0xa8()[i].GetMaterialTable();
 
 			for (LegoU32 j = zero; j < materials->m_count; j++) {
 				DuskwindBananaRelic0x24* material = materials->GetMaterial(j);
@@ -2512,8 +2525,8 @@ void RaceSession::FUN_00435d20(LegoBool32 p_mirror)
 	Field0x27e0* field0x27e0 = &raceSession->m_unk0x27e0;
 	field0x27e0->FUN_00444030(&raceSession->m_unk0x1ae, raceSession->m_context->m_useBinaryFiles, p_mirror);
 
-	for (LegoU32 i = 0; i < raceSession->m_unk0x3a0->GetUnk0x64(); i++) {
-		GolModelMaterialTable* materials = raceSession->m_unk0x3a0->GetUnk0xa8()[i].GetMaterialTable();
+	for (LegoU32 i = 0; i < raceSession->m_triggerDatabase->GetUnk0x64(); i++) {
+		GolModelMaterialTable* materials = raceSession->m_triggerDatabase->GetUnk0xa8()[i].GetMaterialTable();
 
 		for (LegoU32 j = 0; j < materials->m_count; j++) {
 			DuskwindBananaRelic0x24* material = materials->GetMaterial(j);
@@ -2538,8 +2551,8 @@ void RaceSession::FUN_00435e70()
 	LegoU32 materialIndex;
 	LegoU32 checkpointIndex;
 
-	if (m_unk0x3b8) {
-		GolModelMaterialTable* materials = m_unk0x3b8->GetUnk0x58()->GetUnk0x18();
+	if (m_extraTriggerWorldEntity) {
+		GolModelMaterialTable* materials = m_extraTriggerWorldEntity->GetUnk0x58()->GetUnk0x18();
 		materialIndex = 0;
 		checkpointIndex = 0;
 
@@ -2548,7 +2561,7 @@ void RaceSession::FUN_00435e70()
 				DuskwindBananaRelic0x24* material = materials->GetMaterial(materialIndex);
 				DuskWindName0x8 materialName = material->GetNameRecord();
 				if (materialName.m_unk0x0[0] >= '0' && materialName.m_unk0x0[0] <= '9') {
-					material->SetUnk0x14(m_unk0x27f4.GetCheckpoint(checkpointIndex));
+					material->SetUnk0x14(m_checkpointGraph.GetCheckpoint(checkpointIndex));
 					material->EnableFlag0x08Bit18();
 					checkpointIndex++;
 				}
@@ -2610,13 +2623,13 @@ void RaceSession::FUN_00436010()
 {
 	LegoU32 playerIndex = 0;
 	if (m_context->m_playerCount > 0) {
-		Field0x258* field0x258 = m_unk0x258;
-		RaceForceFeedback* field0x340 = m_unk0x340;
+		Field0x258* field0x258 = m_playerControls;
+		RaceForceFeedback* field0x340 = m_forceFeedback;
 
 		do {
 			field0x258->m_unk0x004.m_unk0x054 = 0;
 			field0x258->m_unk0x004.FUN_00430c20();
-			field0x340->FUN_00422170();
+			field0x340->Pause();
 
 			playerIndex++;
 			field0x258++;
@@ -2627,8 +2640,8 @@ void RaceSession::FUN_00436010()
 	m_unk0x23c.m_unk0x18 = 0;
 	m_unk0x23c.FUN_00427b40();
 
-	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x283c); i++) {
-		m_unk0x283c[i].m_unk0x13c = 0;
+	for (LegoU32 i = 0; i < sizeOfArray(m_trails); i++) {
+		m_trails[i].m_unk0x13c = 0;
 	}
 
 	if (m_standings) {
@@ -2657,7 +2670,7 @@ void RaceSession::FUN_00436010()
 		break;
 	}
 
-	MusicInstance* musicInstance = m_unk0x3320;
+	MusicInstance* musicInstance = m_music;
 	if (musicInstance) {
 		musicInstance->Pause();
 	}
@@ -2669,8 +2682,8 @@ void RaceSession::FUN_00436010()
 void RaceSession::FUN_00436160()
 {
 	LegoU32 selectionIndex = m_unk0x3058.GetUnk0x50();
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x283c); i++) {
-		m_unk0x283c[i].m_unk0x13c = 1;
+	for (LegoS32 i = 0; i < sizeOfArray(m_trails); i++) {
+		m_trails[i].m_unk0x13c = 1;
 	}
 
 	if (m_standings) {
@@ -2729,15 +2742,15 @@ void RaceSession::FUN_00436160()
 		m_unk0x30c0 = 0;
 
 		for (LegoU32 i = 0; i < m_context->m_playerCount; i++) {
-			m_unk0x258[i].m_unk0x004.m_unk0x054 = 1;
-			m_unk0x340[i].FUN_004221a0();
+			m_playerControls[i].m_unk0x004.m_unk0x054 = 1;
+			m_forceFeedback[i].Resume();
 		}
 
 		m_unk0x23c.m_unk0x18 = 1;
 		m_soundManager->Resume();
 
-		if (m_unk0x3320) {
-			m_unk0x3320->Resume();
+		if (m_music) {
+			m_music->Resume();
 		}
 	}
 }
@@ -2751,7 +2764,7 @@ void RaceSession::FUN_004362e0()
 	}
 
 	m_unk0x30c4.FUN_0043a6e0();
-	m_unk0x27d4.FUN_00492840();
+	m_decalManager.FUN_00492840();
 
 	m_elapsedMs = 0;
 	m_state = 1;
@@ -2759,26 +2772,26 @@ void RaceSession::FUN_004362e0()
 	LegoU32 playerIndex = 0;
 	if (m_context->m_playerCount > 0) {
 		do {
-			RaceCameraController* field0x2ad4 = &m_unk0x2ad4[playerIndex];
+			RaceCameraController* field0x2ad4 = &m_cameraControllers[playerIndex];
 
-			m_unk0x258[playerIndex].FUN_00430100();
-			m_unk0x340[playerIndex].FUN_00422150();
+			m_playerControls[playerIndex].FUN_00430100();
+			m_forceFeedback[playerIndex].StopEngineEffect();
 			m_raceState.m_playerRacers[playerIndex]->SetCameraView(m_context->m_unk0x398, m_unk0x3354);
-			field0x2ad4->FUN_00428540(1.0f);
-			field0x2ad4->FUN_004283d0(0);
-			field0x2ad4->FUN_00428390(&m_unk0x1f8);
-			field0x2ad4->FUN_004282a0(&m_unk0x204, &m_unk0x210);
+			field0x2ad4->Update(1.0f);
+			field0x2ad4->SetMode(0);
+			field0x2ad4->SnapPosition(&m_unk0x1f8);
+			field0x2ad4->SetOrientation(&m_unk0x204, &m_unk0x210);
 
 			LegoFloat fov;
 			if (m_unk0x3354) {
-				GolCamera* currentCamera = m_unk0x2acc[playerIndex];
+				GolCamera* currentCamera = m_cameras[playerIndex];
 				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagBit1;
 				currentCamera->m_fov = m_context->m_cameraFov - g_unk0x004b08bc;
 				currentCamera->m_flags = cameraFlags;
 				fov = m_context->m_cameraFov - g_unk0x004b08bc;
 			}
 			else {
-				GolCamera* currentCamera = m_unk0x2acc[playerIndex];
+				GolCamera* currentCamera = m_cameras[playerIndex];
 				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagBit1;
 				LegoFloat cameraFov = m_context->m_cameraFov;
 				currentCamera->m_fov = cameraFov;
@@ -2787,9 +2800,9 @@ void RaceSession::FUN_004362e0()
 			}
 
 			field0x2ad4->m_targetFov = fov;
-			field0x2ad4->m_unk0x140 = 0;
-			MenuAnimationList* animationList = &m_unk0x27fc;
-			field0x2ad4->m_unk0x000 = TRUE;
+			field0x2ad4->m_shakeMs = 0;
+			MenuAnimationList* animationList = &m_animationList;
+			field0x2ad4->m_dirty = TRUE;
 
 			animationList->FUN_00494fe0();
 
@@ -2797,10 +2810,10 @@ void RaceSession::FUN_004362e0()
 		} while (playerIndex < m_context->m_playerCount);
 	}
 
-	m_unk0x283c[0].FUN_004262d0(-1);
+	m_trails[0].FUN_004262d0(-1);
 
 	if (m_unk0x3354) {
-		m_unk0x283c[1].FUN_004262d0(-1);
+		m_trails[1].FUN_004262d0(-1);
 	}
 
 	FUN_00434340();

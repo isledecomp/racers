@@ -941,7 +941,7 @@ void RaceState::Racer::UpdateTimers(LegoU32 p_elapsedMs)
 
 	if (m_physics.m_wallContact) {
 		if (m_forceFeedback) {
-			m_forceFeedback->FUN_00422100();
+			m_forceFeedback->PlayScrapeRumble();
 		}
 
 		if (!m_scrapeSoundCooldownMs) {
@@ -1453,7 +1453,7 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 	firstRacer->m_physics.ApplyDirectionalImpulse(&collisionNormal, impulseScale);
 	if (firstRacer->m_forceFeedback) {
-		firstRacer->m_forceFeedback->FUN_004220e0();
+		firstRacer->m_forceFeedback->PlayLightRumble();
 	}
 
 	if (!secondRacer) {
@@ -1462,7 +1462,7 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 	secondRacer->m_physics.ApplyDirectionalImpulse(&collisionNormal, -impulseScale);
 	if (secondRacer->m_forceFeedback) {
-		secondRacer->m_forceFeedback->FUN_004220e0();
+		secondRacer->m_forceFeedback->PlayLightRumble();
 	}
 
 	if (firstRacer->m_controlMode == 2 && secondRacer->m_controlMode == 2) {
@@ -1950,7 +1950,7 @@ void RaceState::Racer::EnterGhostMode()
 	}
 
 	if (m_forceFeedback) {
-		m_forceFeedback->FUN_00422030(3);
+		m_forceFeedback->PlayTurboRumble(3);
 	}
 }
 
@@ -1988,7 +1988,7 @@ void RaceState::Racer::StartTurbo(LegoU32 p_level)
 	m_turboLevel = p_level;
 
 	if (m_forceFeedback) {
-		m_forceFeedback->FUN_00422030(p_level);
+		m_forceFeedback->PlayTurboRumble(p_level);
 	}
 }
 
@@ -2563,8 +2563,8 @@ void RaceState::Racer::AbsorbShieldHit()
 void RaceState::Racer::SetCameraView(LegoU32 p_viewIndex, LegoBool32 p_flag)
 {
 	if (m_cameraController) {
-		m_cameraController->FUN_004283f0(p_viewIndex, p_flag);
-		m_cameraController->m_unk0x000 = TRUE;
+		m_cameraController->SetView(p_viewIndex, p_flag);
+		m_cameraController->m_dirty = TRUE;
 		m_cameraViewIndex = p_viewIndex;
 
 		if (p_flag) {
@@ -2580,8 +2580,8 @@ void RaceState::Racer::SetCameraView(LegoU32 p_viewIndex, LegoBool32 p_flag)
 void RaceState::Racer::ReapplyCameraView()
 {
 	if (m_cameraController) {
-		m_cameraController->FUN_004283f0(m_cameraViewIndex, m_flags & 0x00400000);
-		m_cameraController->m_unk0x000 = TRUE;
+		m_cameraController->SetView(m_cameraViewIndex, m_flags & 0x00400000);
+		m_cameraController->m_dirty = TRUE;
 	}
 }
 
@@ -2597,8 +2597,8 @@ void RaceState::Racer::CycleCameraView()
 			index++;
 			index &= 3;
 			m_cameraViewIndex = index;
-			controller->FUN_004283f0(index, enabled);
-			m_cameraController->m_unk0x000 = TRUE;
+			controller->SetView(index, enabled);
+			m_cameraController->m_dirty = TRUE;
 		}
 	}
 }
@@ -2607,7 +2607,7 @@ void RaceState::Racer::CycleCameraView()
 void RaceState::Racer::InvalidateCamera()
 {
 	if (m_cameraController) {
-		m_cameraController->m_unk0x000 = TRUE;
+		m_cameraController->m_dirty = TRUE;
 	}
 }
 

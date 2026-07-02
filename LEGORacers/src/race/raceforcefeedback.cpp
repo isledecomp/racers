@@ -11,40 +11,40 @@ static const LegoFloat g_unk0x004b0180 = 1000000.0f;
 RaceForceFeedback::RaceForceFeedback()
 {
 	m_device = NULL;
-	m_unk0x04 = 0;
-	m_unk0x08 = 0;
-	m_unk0x0c = 0;
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_effect = NULL;
+	m_totalMs = 0;
+	m_phaseMs = 0;
+	m_onMs = 0;
+	m_offMs = 0;
+	m_surfaceIntensity = 0;
+	m_state = 0;
+	m_surfaceMode = 0;
+	m_engineEffectActive = 0;
+	m_engineEffect = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00421dd0
 RaceForceFeedback::~RaceForceFeedback()
 {
-	FUN_00421de0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00421de0
-void RaceForceFeedback::FUN_00421de0()
+void RaceForceFeedback::Destroy()
 {
-	LPDIRECTINPUTEFFECT effect = m_effect;
+	LPDIRECTINPUTEFFECT effect = m_engineEffect;
 	m_device = NULL;
 
 	if (effect) {
 		effect->Stop();
-		m_effect = NULL;
+		m_engineEffect = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00421e00
-void RaceForceFeedback::FUN_00421e00(DirectInputDevice* p_device)
+void RaceForceFeedback::Initialize(DirectInputDevice* p_device)
 {
 	if (m_device) {
-		FUN_00421de0();
+		Destroy();
 	}
 
 	m_device = p_device;
@@ -52,90 +52,90 @@ void RaceForceFeedback::FUN_00421e00(DirectInputDevice* p_device)
 		m_device = NULL;
 	}
 
-	FUN_004221d0();
+	CreateEngineEffect();
 }
 
 // FUNCTION: LEGORACERS 0x00421e30
-void RaceForceFeedback::FUN_00421e30(LegoU32 p_elapsedMs, LegoFloat p_unk0x08)
+void RaceForceFeedback::Update(LegoU32 p_elapsedMs, LegoFloat p_unk0x08)
 {
-	FUN_004222b0(p_unk0x08);
-	if (m_device && m_unk0x18) {
-		if (m_unk0x1c) {
-			FUN_00421f80(p_unk0x08);
+	UpdateEngineEffect(p_unk0x08);
+	if (m_device && m_state) {
+		if (m_surfaceMode) {
+			UpdateSurfacePulse(p_unk0x08);
 		}
 
-		if (p_elapsedMs >= m_unk0x04) {
-			m_unk0x04 = 0;
-			FUN_00421ef0();
+		if (p_elapsedMs >= m_totalMs) {
+			m_totalMs = 0;
+			Stop();
 			return;
 		}
 
-		m_unk0x04 -= p_elapsedMs;
+		m_totalMs -= p_elapsedMs;
 
-		if (p_elapsedMs > m_unk0x08) {
-			m_unk0x08 = 0;
+		if (p_elapsedMs > m_phaseMs) {
+			m_phaseMs = 0;
 		}
 		else {
-			m_unk0x08 -= p_elapsedMs;
+			m_phaseMs -= p_elapsedMs;
 		}
 
-		if (!m_unk0x08) {
-			if (m_unk0x18 == 2 && m_unk0x0c) {
+		if (!m_phaseMs) {
+			if (m_state == 2 && m_onMs) {
 				m_device->StartForceFeedbackEffect();
-				m_unk0x18 = 1;
-				m_unk0x08 = m_unk0x0c;
+				m_state = 1;
+				m_phaseMs = m_onMs;
 			}
 			else {
 				m_device->StopForceFeedbackEffect();
-				m_unk0x18 = 2;
-				m_unk0x08 = m_unk0x10;
+				m_state = 2;
+				m_phaseMs = m_offMs;
 			}
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00421ef0
-void RaceForceFeedback::FUN_00421ef0()
+void RaceForceFeedback::Stop()
 {
-	if (m_device && m_unk0x18) {
+	if (m_device && m_state) {
 		m_device->StopForceFeedbackEffect();
 
-		LegoFloat value = m_unk0x14;
-		m_unk0x04 = 0;
-		m_unk0x08 = 0;
-		m_unk0x0c = 0;
-		m_unk0x10 = 0;
-		m_unk0x18 = 0;
+		LegoFloat value = m_surfaceIntensity;
+		m_totalMs = 0;
+		m_phaseMs = 0;
+		m_onMs = 0;
+		m_offMs = 0;
+		m_state = 0;
 
 		if (value != 0.0f) {
-			FUN_00421f40();
+			StartSurfaceRumble();
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00421f30
-void RaceForceFeedback::FUN_00421f30()
+void RaceForceFeedback::StartPulses()
 {
-	m_unk0x18 = 2;
-	m_unk0x1c = 0;
+	m_state = 2;
+	m_surfaceMode = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00421f40
-LegoS32 RaceForceFeedback::FUN_00421f40()
+LegoS32 RaceForceFeedback::StartSurfaceRumble()
 {
-	LegoFloat value = m_unk0x14 * 20.0f;
-	m_unk0x1c = 1;
-	m_unk0x04 = 0xffffffff;
+	LegoFloat value = m_surfaceIntensity * 20.0f;
+	m_surfaceMode = 1;
+	m_totalMs = 0xffffffff;
 	LegoS32 result = static_cast<LegoS32>(value);
-	m_unk0x0c = result;
-	m_unk0x10 = 50;
-	m_unk0x08 = 0;
-	m_unk0x18 = 2;
+	m_onMs = result;
+	m_offMs = 50;
+	m_phaseMs = 0;
+	m_state = 2;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00421f80
-LegoS32 RaceForceFeedback::FUN_00421f80(LegoFloat p_unk0x04)
+LegoS32 RaceForceFeedback::UpdateSurfacePulse(LegoFloat p_unk0x04)
 {
 	if (p_unk0x04 < 0.0f) {
 		p_unk0x04 = -p_unk0x04;
@@ -151,127 +151,127 @@ LegoS32 RaceForceFeedback::FUN_00421f80(LegoFloat p_unk0x04)
 	}
 
 	value *= 20.0f;
-	LegoS32 result = static_cast<LegoS32>(value * m_unk0x14);
-	m_unk0x0c = result;
+	LegoS32 result = static_cast<LegoS32>(value * m_surfaceIntensity);
+	m_onMs = result;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00421fe0
-void RaceForceFeedback::FUN_00421fe0(LegoFloat p_unk0x04)
+void RaceForceFeedback::SetSurfaceIntensity(LegoFloat p_unk0x04)
 {
-	m_unk0x14 = p_unk0x04;
+	m_surfaceIntensity = p_unk0x04;
 
 	if (p_unk0x04 == 0.0f) {
-		if (m_unk0x1c) {
-			m_unk0x1c = 0;
-			FUN_00421ef0();
+		if (m_surfaceMode) {
+			m_surfaceMode = 0;
+			Stop();
 			return;
 		}
 	}
 
-	if (!m_unk0x18) {
-		m_unk0x1c = 1;
-		FUN_00421f40();
+	if (!m_state) {
+		m_surfaceMode = 1;
+		StartSurfaceRumble();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00422030
-void RaceForceFeedback::FUN_00422030(LegoU32 p_unk0x04)
+void RaceForceFeedback::PlayTurboRumble(LegoU32 p_unk0x04)
 {
 	LegoU32 zero = 0;
 
 	if (m_device) {
 		switch (p_unk0x04) {
 		case 0:
-			m_unk0x04 = 1000;
-			m_unk0x0c = 500;
-			m_unk0x10 = zero;
+			m_totalMs = 1000;
+			m_onMs = 500;
+			m_offMs = zero;
 			break;
 		case 1:
-			m_unk0x04 = 1500;
-			m_unk0x0c = 750;
-			m_unk0x10 = zero;
+			m_totalMs = 1500;
+			m_onMs = 750;
+			m_offMs = zero;
 			break;
 		case 2:
-			m_unk0x04 = 5000;
-			m_unk0x0c = 500;
-			m_unk0x10 = 100;
+			m_totalMs = 5000;
+			m_onMs = 500;
+			m_offMs = 100;
 			break;
 		case 3:
-			m_unk0x04 = 1000;
-			m_unk0x10 = zero;
-			m_unk0x0c = 1000;
+			m_totalMs = 1000;
+			m_offMs = zero;
+			m_onMs = 1000;
 			break;
 		}
 
-		FUN_00421f30();
+		StartPulses();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004220c0
-void RaceForceFeedback::FUN_004220c0()
+void RaceForceFeedback::PlayReactionRumble()
 {
 	if (m_device) {
-		m_unk0x10 = 0;
-		m_unk0x04 = 500;
-		m_unk0x0c = 500;
-		FUN_00421f30();
+		m_offMs = 0;
+		m_totalMs = 500;
+		m_onMs = 500;
+		StartPulses();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004220e0
-void RaceForceFeedback::FUN_004220e0()
+void RaceForceFeedback::PlayLightRumble()
 {
 	if (m_device) {
-		m_unk0x10 = 0;
-		m_unk0x04 = 150;
-		m_unk0x0c = 150;
-		FUN_00421f30();
+		m_offMs = 0;
+		m_totalMs = 150;
+		m_onMs = 150;
+		StartPulses();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00422100
-void RaceForceFeedback::FUN_00422100()
+void RaceForceFeedback::PlayScrapeRumble()
 {
-	if (m_device && !m_unk0x18) {
-		m_unk0x10 = 0;
-		m_unk0x04 = 100;
-		m_unk0x0c = 100;
-		FUN_00421f30();
+	if (m_device && !m_state) {
+		m_offMs = 0;
+		m_totalMs = 100;
+		m_onMs = 100;
+		StartPulses();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00422130
-void RaceForceFeedback::FUN_00422130()
+void RaceForceFeedback::StartEngineEffect()
 {
-	m_unk0x20 = 1;
+	m_engineEffectActive = 1;
 
-	LPDIRECTINPUTEFFECT effect = m_effect;
+	LPDIRECTINPUTEFFECT effect = m_engineEffect;
 	if (effect) {
 		effect->Start(1, 0);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00422150
-void RaceForceFeedback::FUN_00422150()
+void RaceForceFeedback::StopEngineEffect()
 {
-	m_unk0x20 = 0;
+	m_engineEffectActive = 0;
 
-	LPDIRECTINPUTEFFECT effect = m_effect;
+	LPDIRECTINPUTEFFECT effect = m_engineEffect;
 	if (effect) {
 		effect->Stop();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00422170
-void RaceForceFeedback::FUN_00422170()
+void RaceForceFeedback::Pause()
 {
 	if (m_device) {
 		m_device->StopForceFeedbackEffect();
 
-		LPDIRECTINPUTEFFECT effect = m_effect;
+		LPDIRECTINPUTEFFECT effect = m_engineEffect;
 		if (effect) {
-			if (m_unk0x20) {
+			if (m_engineEffectActive) {
 				effect->Stop();
 			}
 		}
@@ -279,16 +279,16 @@ void RaceForceFeedback::FUN_00422170()
 }
 
 // FUNCTION: LEGORACERS 0x004221a0
-void RaceForceFeedback::FUN_004221a0()
+void RaceForceFeedback::Resume()
 {
 	if (m_device) {
-		if (m_unk0x18 == 1) {
+		if (m_state == 1) {
 			m_device->StartForceFeedbackEffect();
 		}
 
-		LPDIRECTINPUTEFFECT effect = m_effect;
+		LPDIRECTINPUTEFFECT effect = m_engineEffect;
 		if (effect) {
-			if (m_unk0x20) {
+			if (m_engineEffectActive) {
 				effect->Start(1, 0);
 			}
 		}
@@ -296,7 +296,7 @@ void RaceForceFeedback::FUN_004221a0()
 }
 
 // FUNCTION: LEGORACERS 0x004221d0
-void RaceForceFeedback::FUN_004221d0()
+void RaceForceFeedback::CreateEngineEffect()
 {
 	DWORD axes[2];
 	LONG direction[2];
@@ -341,28 +341,28 @@ void RaceForceFeedback::FUN_004221d0()
 			effectParams.cbTypeSpecificParams = sizeof(periodicParams);
 			effectParams.lpvTypeSpecificParams = periodicParamsPtr;
 
-			HRESULT result = device->GetDevice()->CreateEffect(GUID_Sine, &effectParams, &self->m_effect, NULL);
+			HRESULT result = device->GetDevice()->CreateEffect(GUID_Sine, &effectParams, &self->m_engineEffect, NULL);
 			if (FAILED(result)) {
-				self->m_effect = NULL;
+				self->m_engineEffect = NULL;
 			}
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004222b0
-undefined4 RaceForceFeedback::FUN_004222b0(LegoFloat p_unk0x04)
+undefined4 RaceForceFeedback::UpdateEngineEffect(LegoFloat p_unk0x04)
 {
 	undefined4 result = (undefined4) m_device;
 	if (!m_device) {
 		return result;
 	}
 
-	LPDIRECTINPUTEFFECT effect = m_effect;
+	LPDIRECTINPUTEFFECT effect = m_engineEffect;
 	if (!effect) {
 		return result;
 	}
 
-	if (!m_unk0x20) {
+	if (!m_engineEffectActive) {
 		return result;
 	}
 

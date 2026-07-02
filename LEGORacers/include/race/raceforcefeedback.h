@@ -14,37 +14,37 @@ public:
 	RaceForceFeedback();
 	~RaceForceFeedback();
 
-	void FUN_00421e00(DirectInputDevice* p_device);
-	void FUN_00421fe0(LegoFloat p_unk0x04);
-	void FUN_00422030(LegoU32 p_unk0x04);
-	void FUN_004220c0();
-	void FUN_004220e0();
-	void FUN_00422100();
-	void FUN_00422130();
-	void FUN_00422150();
-	void FUN_00422170();
-	void FUN_004221a0();
+	void Initialize(DirectInputDevice* p_device);
+	void SetSurfaceIntensity(LegoFloat p_unk0x04);
+	void PlayTurboRumble(LegoU32 p_unk0x04);
+	void PlayReactionRumble();
+	void PlayLightRumble();
+	void PlayScrapeRumble();
+	void StartEngineEffect();
+	void StopEngineEffect();
+	void Pause();
+	void Resume();
 
 private:
-	void FUN_00421de0();
-	void FUN_00421e30(LegoU32 p_elapsedMs, LegoFloat p_unk0x08);
-	void FUN_00421ef0();
-	void FUN_00421f30();
-	LegoS32 FUN_00421f40();
-	LegoS32 FUN_00421f80(LegoFloat p_unk0x04);
-	void FUN_004221d0();
-	undefined4 FUN_004222b0(LegoFloat p_unk0x04);
+	void Destroy();
+	void Update(LegoU32 p_elapsedMs, LegoFloat p_unk0x08);
+	void Stop();
+	void StartPulses();
+	LegoS32 StartSurfaceRumble();
+	LegoS32 UpdateSurfacePulse(LegoFloat p_unk0x04);
+	void CreateEngineEffect();
+	undefined4 UpdateEngineEffect(LegoFloat p_unk0x04);
 
-	DirectInputDevice* m_device;  // 0x00
-	LegoU32 m_unk0x04;            // 0x04
-	LegoU32 m_unk0x08;            // 0x08
-	LegoS32 m_unk0x0c;            // 0x0c
-	LegoU32 m_unk0x10;            // 0x10
-	LegoFloat m_unk0x14;          // 0x14
-	LegoU32 m_unk0x18;            // 0x18
-	LegoU32 m_unk0x1c;            // 0x1c
-	LegoU32 m_unk0x20;            // 0x20
-	LPDIRECTINPUTEFFECT m_effect; // 0x24
+	DirectInputDevice* m_device;        // 0x00
+	LegoU32 m_totalMs;                  // 0x04
+	LegoU32 m_phaseMs;                  // 0x08
+	LegoS32 m_onMs;                     // 0x0c
+	LegoU32 m_offMs;                    // 0x10
+	LegoFloat m_surfaceIntensity;       // 0x14
+	LegoU32 m_state;                    // 0x18
+	LegoU32 m_surfaceMode;              // 0x1c
+	LegoU32 m_engineEffectActive;       // 0x20
+	LPDIRECTINPUTEFFECT m_engineEffect; // 0x24
 
 	friend class RaceSession;
 };

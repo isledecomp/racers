@@ -888,7 +888,7 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		m_lastSpeed = 0.0f;
 
 		if (m_racer->m_forceFeedback != NULL) {
-			m_racer->m_forceFeedback->FUN_004220c0();
+			m_racer->m_forceFeedback->PlayReactionRumble();
 		}
 		return;
 	}
@@ -906,7 +906,7 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 
 		if (m_racer->m_forceFeedback != NULL) {
-			m_racer->m_forceFeedback->FUN_004220c0();
+			m_racer->m_forceFeedback->PlayReactionRumble();
 		}
 		return;
 	}

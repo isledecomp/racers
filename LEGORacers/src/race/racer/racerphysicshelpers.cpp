@@ -1236,13 +1236,13 @@ void RaceState::Racer::Physics::ApplyWheelSurface(WheelProbe* p_probe, RaceEvent
 		LegoFloat value = p_target->m_rollingResistance;
 		p_probe->m_rollingResistance = value;
 		if (m_ownerRacer->m_forceFeedback) {
-			m_ownerRacer->m_forceFeedback->FUN_00421fe0(value);
+			m_ownerRacer->m_forceFeedback->SetSurfaceIntensity(value);
 		}
 	}
 	else {
 		p_probe->m_rollingResistance = 0.0f;
 		if (m_ownerRacer->m_forceFeedback) {
-			m_ownerRacer->m_forceFeedback->FUN_00421fe0(0.0f);
+			m_ownerRacer->m_forceFeedback->SetSurfaceIntensity(0.0f);
 		}
 	}
 
@@ -1314,7 +1314,7 @@ void RaceState::Racer::Physics::ResetWheelSurface(WheelProbe* p_probe)
 	LegoU32 index = p_probe - m_wheelProbes;
 	m_ownerRacer->m_visuals.ClearWheelParticle(index);
 	if (m_ownerRacer->m_forceFeedback) {
-		m_ownerRacer->m_forceFeedback->FUN_00421fe0(0.0f);
+		m_ownerRacer->m_forceFeedback->SetSurfaceIntensity(0.0f);
 	}
 }
 

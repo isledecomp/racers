@@ -281,8 +281,8 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	entity->VTable0x08(position);
 	entity->VTable0x40(direction, up);
 
-	m_racer->m_cameraController->m_unk0x000 = TRUE;
-	m_racer->m_cameraController->FUN_00428540(0.0f);
+	m_racer->m_cameraController->m_dirty = TRUE;
+	m_racer->m_cameraController->Update(0.0f);
 
 	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
 	phase *= g_hazardPi;

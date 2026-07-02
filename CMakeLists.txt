@@ -313,7 +313,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x27d4.cpp
   LEGORacers/src/race/racesessionfield0x27d4field0x004.cpp
   LEGORacers/src/race/racer/drivecontroller.cpp
-  LEGORacers/src/race/racesessionfield0x2ad4.cpp
+  LEGORacers/src/race/racecameracontroller.cpp
   LEGORacers/src/race/racer/racerphysicshelpers.cpp
   LEGORacers/src/race/racesessionfield0x27e0.cpp
   LEGORacers/src/race/checkpointgraph.cpp
@@ -328,7 +328,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x32c4.cpp
   LEGORacers/src/race/racesessionfield0x258.cpp
   LEGORacers/src/race/racesessionfield0x3300.cpp
-  LEGORacers/src/race/racesessionfield0x340.cpp
+  LEGORacers/src/race/raceforcefeedback.cpp
   LEGORacers/src/race/powerups/racepowerupmanager.cpp
   LEGORacers/src/race/powerups/racepowerupmanagerglobals.cpp
   LEGORacers/src/race/powerups/beammesh.cpp

@@ -1023,8 +1023,8 @@ public:
 			c_flags0xd04Bit21 = 0x00200000,
 		};
 
-		void FUN_00439100();
-		LegoU32 CollectColorBrick(LegoU32 p_unk0x04);
+		void AiUsePowerup();
+		LegoU32 CollectColorBrick(LegoU32 p_brickColor);
 		LegoU32 GetHeldPowerupColor() const { return m_heldPowerupColor; }
 		LegoU32 GetUnk0xd04() const { return m_unk0xd04; }
 		void FUN_00439340();
@@ -1108,10 +1108,10 @@ public:
 			c_flags0xd04Bit19 = 0x00080000,
 			c_flags0xd04Bit20 = 0x00100000,
 			c_flags0xd04Bit22 = 0x00400000,
-			c_flags0xd04Bit24 = 0x01000000,
-			c_flags0xd04Bit25 = 0x02000000,
+			c_flagCheatRedOnly = 0x01000000,
+			c_flagCheatMaxPowerups = 0x02000000,
 			c_flags0xd04Bit26 = 0x04000000,
-			c_flags0xd04Bit27 = 0x08000000,
+			c_flagCheatFastForward = 0x08000000,
 			c_flagSpeedRamping = 0x10000000,
 			c_flags0xd04Bit29 = 0x20000000,
 			c_flags0xaa8Bit1 = 1 << 1,
@@ -1128,7 +1128,7 @@ public:
 		};
 
 		void ApplyShove(GolVec3* p_impulse);
-		void FUN_00438f20();
+		void AiConsiderPowerup();
 		void FUN_00439c90();
 		void FUN_00439cf0(LegoU32 p_elapsedMs);
 		void FUN_00439ea0(LegoU32 p_elapsedMs);
@@ -1148,8 +1148,8 @@ public:
 		RaceSessionField0x27f4::Entry* m_unk0xcc4; // 0xcc4
 		undefined4 m_unk0xcc8;                     // 0xcc8
 		LegoU32 m_heldPowerupColor;                // 0xccc
-		LegoU32 m_unk0xcd0;                        // 0xcd0
-		LegoU32 m_unk0xcd4;                        // 0xcd4
+		LegoU32 m_aiChargeColor;                   // 0xcd0
+		LegoU32 m_aiChargeTarget;                  // 0xcd4
 		LegoU32 m_aiPowerupCheckMs;                // 0xcd8
 		LegoU32 m_aiPowerupCheckIntervalMs;        // 0xcdc
 		LegoU8 m_unk0xce0;                         // 0xce0
@@ -1163,10 +1163,10 @@ public:
 		LegoU32 m_unk0xd10;                        // 0xd10
 		LegoU32 m_unk0xd14;                        // 0xd14
 		LegoS32 m_unk0xd18;                        // 0xd18
-		LegoU8 m_unk0xd1c;                         // 0xd1c
-		LegoU8 m_unk0xd1d;                         // 0xd1d
-		LegoU8 m_unk0xd1e;                         // 0xd1e
-		LegoU8 m_unk0xd1f;                         // 0xd1f
+		LegoU8 m_aiRedUseChance;                   // 0xd1c
+		LegoU8 m_aiYellowUseChance;                // 0xd1d
+		LegoU8 m_aiGreenUseChance;                 // 0xd1e
+		LegoU8 m_aiBlueUseChance;                  // 0xd1f
 		LegoU8 m_unk0xd20;                         // 0xd20
 		LegoU8 m_unk0xd21;                         // 0xd21
 		LegoU8 m_unk0xd22;                         // 0xd22
@@ -1178,14 +1178,14 @@ public:
 		undefined4 m_tauntCooldownMs;              // 0xd34
 		undefined4 m_unk0xd38;                     // 0xd38
 		undefined4 m_unk0xd3c;                     // 0xd3c
-		LegoU32 m_unk0xd40;                        // 0xd40
+		LegoU32 m_voiceBank;                       // 0xd40
 		LegoU32 m_reactionCooldownMs;              // 0xd44
 		undefined4 m_speedRampTimerMs;             // 0xd48
 		undefined4 m_scrapeSoundCooldownMs;        // 0xd4c
 		LegoU32 m_airborneMs;                      // 0xd50
 		LegoFloat m_unk0xd54;                      // 0xd54
-		LegoU32 m_unk0xd58;                        // 0xd58
-		DroppableBrick* m_unk0xd5c[3];             // 0xd5c
+		LegoU32 m_whiteBrickCount;                 // 0xd58
+		DroppableBrick* m_whiteBricks[3];          // 0xd5c
 		LegoU32 m_turboLevel;                      // 0xd68
 		LegoU32 m_shieldLevel;                     // 0xd6c
 		undefined4 m_shoveReleaseAction;           // 0xd70

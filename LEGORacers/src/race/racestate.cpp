@@ -340,7 +340,7 @@ void RaceState::Racer::Reset()
 	m_reactionCooldownMs = 0;
 	m_scrapeSoundCooldownMs = 0;
 	m_airborneMs = 0;
-	m_unk0xd40 = 1000;
+	m_voiceBank = 1000;
 	m_unk0xd3c = 0;
 	m_unk0xd54 = 1.0f;
 	m_turboLevel = 0;
@@ -367,10 +367,10 @@ void RaceState::Racer::Reset()
 	LegoU8 invalidIndex = 0xff;
 	m_unk0xd78 = 0;
 	m_unk0xdf8.m_x = 0;
-	m_unk0xd1c = invalidIndex;
-	m_unk0xd1d = invalidIndex;
-	m_unk0xd1e = invalidIndex;
-	m_unk0xd1f = invalidIndex;
+	m_aiRedUseChance = invalidIndex;
+	m_aiYellowUseChance = invalidIndex;
+	m_aiGreenUseChance = invalidIndex;
+	m_aiBlueUseChance = invalidIndex;
 	m_unk0xd20 = invalidIndex;
 	m_unk0xd21 = invalidIndex;
 	m_unk0xdf8.m_y = 0;
@@ -393,16 +393,16 @@ void RaceState::Racer::Reset()
 	m_unk0xe30 = NULL;
 	m_unk0xd18 = 0xffffffff;
 	m_unk0xdb0 = 0;
-	m_unk0xd58 = 0;
-	m_unk0xd5c[0] = field0xd5c;
-	m_unk0xd5c[1] = field0xd5c;
-	m_unk0xd5c[2] = field0xd5c;
+	m_whiteBrickCount = 0;
+	m_whiteBricks[0] = field0xd5c;
+	m_whiteBricks[1] = field0xd5c;
+	m_whiteBricks[2] = field0xd5c;
 	m_cameraController = NULL;
 	m_unk0xdb8 = 0;
 	m_unk0x014 = 0;
 	m_unk0xdbc = 0;
-	m_unk0xcd0 = 0;
-	m_unk0xcd4 = 0;
+	m_aiChargeColor = 0;
+	m_aiChargeTarget = 0;
 	m_unk0xce0 = 0;
 	m_speedRampTimerMs = 0;
 }
@@ -428,8 +428,8 @@ void RaceState::Racer::FUN_00436df0(
 	m_raceState = p_raceState;
 	m_lapTimes[5] = p_racerIndex + 1;
 	m_unk0xd54 = p_params->m_unk0x78;
-	m_unk0xcd0 = p_params->m_unk0x7c;
-	m_unk0xcd4 = p_params->m_unk0x80;
+	m_aiChargeColor = p_params->m_unk0x7c;
+	m_aiChargeTarget = p_params->m_unk0x80;
 	m_unk0xce0 = p_params->m_unk0x72;
 
 	if (p_params->m_stringChars) {
@@ -441,7 +441,7 @@ void RaceState::Racer::FUN_00436df0(
 	}
 
 	LegoU32 soundBase = p_params->m_unk0x74;
-	m_unk0xd40 = soundBase;
+	m_voiceBank = soundBase;
 	if (soundBase == 1000) {
 		m_unk0xd23 = 26;
 	}
@@ -469,7 +469,7 @@ void RaceState::Racer::FUN_00436df0(
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
-	m_unk0xd1c = static_cast<LegoU8>(colorScale * 255.0f);
+	m_aiRedUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
 	colorValue = p_params->m_unk0x6c[1];
 	colorScale = static_cast<LegoFloat>(colorValue);
@@ -479,7 +479,7 @@ void RaceState::Racer::FUN_00436df0(
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
-	m_unk0xd1d = static_cast<LegoU8>(colorScale * 255.0f);
+	m_aiYellowUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
 	colorValue = p_params->m_unk0x6c[2];
 	colorScale = static_cast<LegoFloat>(colorValue);
@@ -489,7 +489,7 @@ void RaceState::Racer::FUN_00436df0(
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
-	m_unk0xd1e = static_cast<LegoU8>(colorScale * 255.0f);
+	m_aiGreenUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
 	colorValue = p_params->m_unk0x6c[3];
 	colorScale = static_cast<LegoFloat>(colorValue);
@@ -499,7 +499,7 @@ void RaceState::Racer::FUN_00436df0(
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
-	m_unk0xd1f = static_cast<LegoU8>(colorScale * 255.0f);
+	m_aiBlueUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
 	colorValue = p_params->m_unk0x6c[4];
 	colorScale = static_cast<LegoFloat>(colorValue);
@@ -521,10 +521,10 @@ void RaceState::Racer::FUN_00436df0(
 	}
 	m_unk0xd21 = static_cast<LegoU8>(colorScale * 255.0f);
 
-	LegoS32 unk0xd22 = m_unk0xd1f;
-	unk0xd22 = m_unk0xd1d - unk0xd22;
-	unk0xd22 -= m_unk0xd1e;
-	unk0xd22 += m_unk0xd1c;
+	LegoS32 unk0xd22 = m_aiBlueUseChance;
+	unk0xd22 = m_aiYellowUseChance - unk0xd22;
+	unk0xd22 -= m_aiGreenUseChance;
+	unk0xd22 += m_aiRedUseChance;
 	if (unk0xd22 < 0) {
 		m_unk0xd22 = 0;
 	}
@@ -555,13 +555,13 @@ void RaceState::Racer::FUN_00436df0(
 		m_unk0xd04 |= c_flags0xd04Bit26;
 	}
 	if (p_context->m_flags0x3c & 0x40) {
-		m_unk0xd04 |= c_flags0xd04Bit24;
+		m_unk0xd04 |= c_flagCheatRedOnly;
 	}
 	if (p_context->m_flags0x3c & 0x80) {
-		m_unk0xd04 |= c_flags0xd04Bit25;
+		m_unk0xd04 |= c_flagCheatMaxPowerups;
 	}
 	if (p_context->m_flags0x3c & state) {
-		m_unk0xd04 |= c_flags0xd04Bit27;
+		m_unk0xd04 |= c_flagCheatFastForward;
 	}
 
 	m_unk0x018.Initialize(p_field0x018Params, p_context);
@@ -838,7 +838,7 @@ void RaceState::Racer::UpdateTimers(LegoU32 p_elapsedMs)
 		m_aiPowerupCheckIntervalMs = 150;
 
 		if (m_controlMode == 2 && m_heldPowerupColor) {
-			FUN_00438f20();
+			AiConsiderPowerup();
 		}
 	}
 
@@ -979,7 +979,7 @@ void RaceState::Racer::UpdateTimers(LegoU32 p_elapsedMs)
 	}
 
 	LegoU32 flags = m_unk0xd04;
-	if ((flags & c_flags0xd04Bit27) && !(flags & c_flagHalted)) {
+	if ((flags & c_flagCheatFastForward) && !(flags & c_flagHalted)) {
 		m_unk0x008->UseGreenPowerup(this, 2);
 	}
 }
@@ -1608,32 +1608,32 @@ void RaceState::Racer::ApplyShove(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00438f20
-void RaceState::Racer::FUN_00438f20()
+void RaceState::Racer::AiConsiderPowerup()
 {
 	if (m_unk0x008->GetUsedEffectEntityCount() >= 20) {
 		m_aiPowerupCheckIntervalMs = 1000;
 	}
 	else {
-		LegoU32 state = m_unk0xcd0;
-		if (state && state == m_heldPowerupColor && m_unk0xd58 < m_unk0xcd4) {
+		LegoU32 state = m_aiChargeColor;
+		if (state && state == m_heldPowerupColor && m_whiteBrickCount < m_aiChargeTarget) {
 			m_aiPowerupCheckIntervalMs = 1000;
 		}
 		else {
 			switch (m_heldPowerupColor) {
 			case 3:
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1e) {
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_aiGreenUseChance) {
 					m_aiPowerupCheckIntervalMs = 1000;
 				}
 				else {
-					if ((m_unk0xd04 & c_flags0xd04Bit12) && m_unk0xd58 == 3) {
+					if ((m_unk0xd04 & c_flags0xd04Bit12) && m_whiteBrickCount == 3) {
 						return;
 					}
 					if (m_unk0x3e8.m_flags0x6c0 & c_flags0xaa8Bit1) {
 						return;
 					}
 
-					FUN_00439100();
+					AiUsePowerup();
 				}
 				return;
 			case 1: {
@@ -1653,30 +1653,30 @@ void RaceState::Racer::FUN_00438f20()
 					return;
 				}
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1c) {
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_aiRedUseChance) {
 					m_aiPowerupCheckIntervalMs = 1000;
 				}
 				else {
-					FUN_00439100();
+					AiUsePowerup();
 				}
 				return;
 			}
 			case 4:
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1d) {
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_aiYellowUseChance) {
 					m_aiPowerupCheckIntervalMs = 1000;
 				}
 				else {
-					FUN_00439100();
+					AiUsePowerup();
 				}
 				return;
 			case 2:
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1f) {
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_aiBlueUseChance) {
 					m_aiPowerupCheckIntervalMs = 1000;
 				}
 				else {
-					FUN_00439100();
+					AiUsePowerup();
 				}
 				return;
 			default:
@@ -1687,7 +1687,7 @@ void RaceState::Racer::FUN_00438f20()
 }
 
 // FUNCTION: LEGORACERS 0x00439100
-void RaceState::Racer::FUN_00439100()
+void RaceState::Racer::AiUsePowerup()
 {
 	LegoU32 state = m_heldPowerupColor;
 	if (!state) {
@@ -1696,19 +1696,19 @@ void RaceState::Racer::FUN_00439100()
 	}
 
 	LegoU32 flags = m_unk0xd04;
-	LegoU32 index = m_unk0xd58;
+	LegoU32 index = m_whiteBrickCount;
 
-	if (flags & c_flags0xd04Bit24) {
+	if (flags & c_flagCheatRedOnly) {
 		m_unk0x008->UseRedPowerup(this, 1);
 	}
 	else {
-		if (flags & c_flags0xd04Bit25) {
+		if (flags & c_flagCheatMaxPowerups) {
 			index = 3;
 		}
 
 		switch (state) {
 		case 3:
-			if (!((flags & c_flags0xd04Bit27) && index != 3)) {
+			if (!((flags & c_flagCheatFastForward) && index != 3)) {
 				m_unk0x008->UseGreenPowerup(this, index);
 			}
 			break;
@@ -1754,7 +1754,7 @@ void RaceState::Racer::PlayReaction(LegoBool32 p_unk0x04)
 			LegoU32 randomValue = g_randomTable[randomIndex];
 			g_randomTableIndex = randomIndex;
 			m_soundSource->PlaySpatialSoundById(
-				randomValue % c_feedbackVariantCount + m_unk0xd40 + c_feedbackHighOffset,
+				randomValue % c_feedbackVariantCount + m_voiceBank + c_feedbackHighOffset,
 				&position,
 				100.0f,
 				400.0f,
@@ -1767,7 +1767,7 @@ void RaceState::Racer::PlayReaction(LegoBool32 p_unk0x04)
 			g_randomTableIndex = randomIndex;
 			LegoU32 randomValue = g_randomTable[randomIndex];
 			m_soundSource->PlaySpatialSoundById(
-				m_unk0xd40 + randomValue % c_feedbackVariantCount,
+				m_voiceBank + randomValue % c_feedbackVariantCount,
 				&position,
 				100.0f,
 				400.0f,
@@ -1804,7 +1804,7 @@ void RaceState::Racer::FUN_00439340()
 	if (value == 2) {
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		value = g_randomTable[g_randomTableIndex];
-		if ((value & 0xff) < m_unk0xd1e) {
+		if ((value & 0xff) < m_aiGreenUseChance) {
 			m_unk0x008->UseGreenPowerup(this, 0);
 		}
 	}
@@ -1824,9 +1824,9 @@ void RaceState::Racer::FUN_004393d0()
 // FUNCTION: LEGORACERS 0x00439420
 LegoBool32 RaceState::Racer::CollectWhiteBrick(DroppableBrick* p_unk0x04)
 {
-	if (m_unk0xd58 != sizeOfArray(m_unk0xd5c)) {
+	if (m_whiteBrickCount != sizeOfArray(m_whiteBricks)) {
 		LegoU32 index = 0;
-		DroppableBrick** current = m_unk0xd5c;
+		DroppableBrick** current = m_whiteBricks;
 
 		while (TRUE) {
 			if (!*current) {
@@ -1836,18 +1836,18 @@ LegoBool32 RaceState::Racer::CollectWhiteBrick(DroppableBrick* p_unk0x04)
 			index++;
 			current++;
 
-			if (index >= sizeOfArray(m_unk0xd5c)) {
+			if (index >= sizeOfArray(m_whiteBricks)) {
 				return FALSE;
 			}
 		}
 
-		m_unk0xd5c[index] = p_unk0x04;
-		m_soundSource->PlaySoundById(m_unk0xd58 + 11);
+		m_whiteBricks[index] = p_unk0x04;
+		m_soundSource->PlaySoundById(m_whiteBrickCount + 11);
 
-		LegoU32 count = m_unk0xd58 + 1;
-		m_unk0xd58 = count;
+		LegoU32 count = m_whiteBrickCount + 1;
+		m_whiteBrickCount = count;
 
-		if (count == sizeOfArray(m_unk0xd5c)) {
+		if (count == sizeOfArray(m_whiteBricks)) {
 			PlayReaction(TRUE);
 		}
 
@@ -1863,20 +1863,20 @@ RaceState::Racer::DroppableBrick* RaceState::Racer::DropWhiteBrick()
 	DroppableBrick* result;
 	LegoU32 index;
 
-	if (!m_unk0xd58) {
+	if (!m_whiteBrickCount) {
 		return NULL;
 	}
 
 	index = 0;
-	DroppableBrick** current = m_unk0xd5c;
-	while (index < sizeOfArray(m_unk0xd5c)) {
+	DroppableBrick** current = m_whiteBricks;
+	while (index < sizeOfArray(m_whiteBricks)) {
 		if (*current) {
-			result = m_unk0xd5c[index];
-			m_unk0xd5c[index] = NULL;
+			result = m_whiteBricks[index];
+			m_whiteBricks[index] = NULL;
 
 			GolVec3 position;
 			m_unk0x018.m_carEntity->VTable0x04(&position);
-			m_unk0xd58--;
+			m_whiteBrickCount--;
 			result->DropAt(position);
 			return result;
 		}
@@ -1891,16 +1891,16 @@ RaceState::Racer::DroppableBrick* RaceState::Racer::DropWhiteBrick()
 // FUNCTION: LEGORACERS 0x00439520
 LegoU32 RaceState::Racer::ReturnAllWhiteBricks()
 {
-	LegoU32 result = m_unk0xd58;
+	LegoU32 result = m_whiteBrickCount;
 
 	if (result) {
-		DroppableBrick** current = m_unk0xd5c;
-		LegoS32 remaining = sizeOfArray(m_unk0xd5c);
+		DroppableBrick** current = m_whiteBricks;
+		LegoS32 remaining = sizeOfArray(m_whiteBricks);
 		do {
 			if (*current) {
 				(*current)->ReturnHome();
-				result = m_unk0xd58 - 1;
-				m_unk0xd58 = result;
+				result = m_whiteBrickCount - 1;
+				m_whiteBrickCount = result;
 				*current = NULL;
 			}
 

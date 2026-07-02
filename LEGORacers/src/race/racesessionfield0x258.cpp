@@ -350,7 +350,7 @@ void RaceSession::Field0x258::FUN_00430620(LegoBool32 p_enabled)
 	if (!(m_unk0x004.m_unk0x05c & 3)) {
 		if (p_enabled) {
 			m_unk0x004.m_unk0x058 |= 0x10;
-			m_unk0x000->FUN_00439100();
+			m_unk0x000->AiUsePowerup();
 		}
 		else {
 			m_unk0x004.m_unk0x058 &= ~0x10;

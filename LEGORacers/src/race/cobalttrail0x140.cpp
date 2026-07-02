@@ -1649,7 +1649,7 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 	}
 
-	LegoS32 itemLevel = m_unk0x02c->m_unk0xd58;
+	LegoS32 itemLevel = m_unk0x02c->m_whiteBrickCount;
 	LegoS32 itemType = m_unk0x02c->m_heldPowerupColor - 1;
 	UtopianPan0xa4* itemResource;
 	FourBytes itemColor;

@@ -28,7 +28,7 @@ class MabMaterialAnimationItem0x18;
 class GolAnimatedEntity;
 class CutsceneParticle;
 class GolRenderDevice;
-class UtopianPan0xa4;
+class GolImage;
 class CutsceneDefinition;
 class SoundManager;
 class SoundGroup;
@@ -36,7 +36,7 @@ class SoundInstance;
 class StreamingSoundInstance;
 class MenuAnimationList;
 class GolCamera;
-class AwakeKite0x20;
+class GolImageDefinitionList;
 class GolMaterial;
 struct Rect;
 
@@ -394,8 +394,8 @@ public:
 	// CutsceneImageVisual::`vector deleting destructor'
 
 private:
-	UtopianPan0xa4* m_image; // 0x58
-	GolName m_imageName;     // 0x5c
+	GolImage* m_image;   // 0x58
+	GolName m_imageName; // 0x5c
 };
 
 // VTABLE: LEGORACERS 0x004b4af4
@@ -646,7 +646,7 @@ private:
 	GolFontTable** m_fontTables;                    // 0x094
 	LegoChar* m_fontTableNames;                     // 0x098
 	LegoU32 m_imageListCount;                       // 0x09c
-	AwakeKite0x20** m_imageLists;                   // 0x0a0
+	GolImageDefinitionList** m_imageLists;          // 0x0a0
 	LegoChar* m_imageListNames;                     // 0x0a4
 	GolNameTable m_moveEventNames;                  // 0x0a8
 	LegoU32 m_moveEventCount;                       // 0x0b4

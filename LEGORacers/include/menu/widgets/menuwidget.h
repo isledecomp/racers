@@ -18,7 +18,7 @@ class GolFontBase;
 class GolExport;
 class GolString;
 class SoundGroupBinding;
-class UtopianPan0xa4;
+class GolImage;
 
 // VTABLE: LEGORACERS 0x004b29b4
 // SIZE 0x58
@@ -75,7 +75,7 @@ public:
 	LegoBool32 ClipRect(Rect*, Rect*);
 	void FUN_00472c80(const Rect*, Rect*) const;
 	void MeasureText(GolFontBase*, GolString*, Rect*, Rect*, LegoS32);
-	void DrawImage(Rect*, Rect*, UtopianPan0xa4*);
+	void DrawImage(Rect*, Rect*, GolImage*);
 	void DrawString(Rect*, Rect*, GolFontBase*, GolString*, LegoS32, LegoS32);
 	Rect* TranslateRectByOffset(Rect*);
 	LegoBool32 PointInRect(Rect*, LegoS32, LegoS32);

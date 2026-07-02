@@ -84,7 +84,7 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 
-		UtopianPan0xa4* item = GetItem(i);
+		GolImage* item = GetItem(i);
 
 		FourBytes name[2];
 		strncpy(&name[0].m_bytes[0], parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
@@ -107,16 +107,16 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				flags |= UtopianPan0xa4::c_flagBit2;
+				flags |= GolImage::c_flagBit2;
 				break;
 			case GolFileParser::e_unknown0x29:
-				flags = (flags & UtopianPan0xa4::c_flagsWithoutBit4) | UtopianPan0xa4::c_flagBit3;
+				flags = (flags & GolImage::c_flagsWithoutBit4) | GolImage::c_flagBit3;
 				break;
 			case GolFileParser::e_unknown0x2a:
-				flags = (flags & UtopianPan0xa4::c_flagsWithoutBit3) | UtopianPan0xa4::c_flagBit4;
+				flags = (flags & GolImage::c_flagsWithoutBit3) | GolImage::c_flagBit4;
 				break;
 			case GolFileParser::e_unknown0x2b:
-				flags |= UtopianPan0xa4::c_flagBit5;
+				flags |= GolImage::c_flagBit5;
 				colorKey.m_red = parser->ReadInteger();
 				colorKey.m_grn = parser->ReadInteger();
 				colorKey.m_blu = parser->ReadInteger();
@@ -137,19 +137,19 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 		item->m_name[1] = name[1];
 
 		if (p_renderer->VTable0x110()) {
-			flags = flags | UtopianPan0xa4::c_flagBit6;
+			flags = flags | GolImage::c_flagBit6;
 		}
 
-		if ((flags & UtopianPan0xa4::c_flagBit5) && (p_renderer->GetFlags() & GolD3DRenderDevice::c_flagBit9)) {
-			flags = flags | UtopianPan0xa4::c_flagBit7;
+		if ((flags & GolImage::c_flagBit5) && (p_renderer->GetFlags() & GolD3DRenderDevice::c_flagBit9)) {
+			flags = flags | GolImage::c_flagBit7;
 		}
 
 		item->m_flags = flags;
 		item->m_unk0x4a = local34;
 
-		if (flags & UtopianPan0xa4::c_flagBit5) {
+		if (flags & GolImage::c_flagBit5) {
 			item->m_colorKey = colorKey;
-			item->m_flags = flags | UtopianPan0xa4::c_flagBit11;
+			item->m_flags = flags | GolImage::c_flagBit11;
 		}
 
 		item->m_renderer = p_renderer;
@@ -164,8 +164,8 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 	}
 
 	for (LegoU32 j = 0; j < m_numItems; j++) {
-		UtopianPan0xa4* entry = GetItem(j);
-		if (!(entry->m_unk0x3c & UtopianPan0xa4::c_stateFlagBit0)) {
+		GolImage* entry = GetItem(j);
+		if (!(entry->m_unk0x3c & GolImage::c_stateFlagBit0)) {
 			entry->VTable0x10();
 		}
 	}

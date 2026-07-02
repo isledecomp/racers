@@ -4,7 +4,7 @@
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golfontbase.h"
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
@@ -43,7 +43,7 @@ RaceSession::LoadingScreen::~LoadingScreen()
 void RaceSession::LoadingScreen::Destroy()
 {
 	m_text.Reset();
-	AwakeKite0x20* images = m_images;
+	GolImageDefinitionList* images = m_images;
 	m_renderer = NULL;
 	m_font = 0;
 
@@ -164,10 +164,10 @@ void RaceSession::LoadingScreen::Initialize(
 	m_images = m_golExport->VTable0x34();
 	m_images->LoadImageDefinitions(m_renderer, g_loadScreenName, p_binary);
 
-	UtopianPan0xa4* image = NULL;
+	GolImage* image = NULL;
 	GolNameTable::Entry* nameEntries = m_images->GetNameEntries();
 	if (nameEntries) {
-		image = static_cast<UtopianPan0xa4*>(m_images->GetName("tick"));
+		image = static_cast<GolImage*>(m_images->GetName("tick"));
 	}
 	m_tickImage = image;
 }

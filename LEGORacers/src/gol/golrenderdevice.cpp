@@ -3,7 +3,7 @@
 #include "font/golfont.h"
 #include "font/golfontlibrary.h"
 #include "golmateriallibrary.h"
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 #include "material/golimagelist.h"
 #include "material/goltexturelist.h"
 #include "scene/golbillboard.h"
@@ -28,13 +28,13 @@ GolFont* GolRenderDevice::FindFontByName(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x004131a0
-UtopianPan0xa4* GolRenderDevice::FindImageByName(const LegoChar* p_name)
+GolImage* GolRenderDevice::FindImageByName(const LegoChar* p_name)
 {
 	GolImageList* node = m_imageLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			UtopianPan0xa4* value = static_cast<UtopianPan0xa4*>(node->GetName(p_name));
+			GolImage* value = static_cast<GolImage*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}

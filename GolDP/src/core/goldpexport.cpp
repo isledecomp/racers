@@ -10,7 +10,7 @@
 #include "golscenenode.h"
 #include "image/whitebaffoon0x50.h"
 #include "material/amberhaze0x20.h"
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 #include "material/purpleribbon0x24.h"
 #include "mesh/golmodel.h"
 #include "scene/golbillboardex.h"
@@ -115,7 +115,7 @@ GolCamera* GolDPExport::VTable0x20()
 // FUNCTION: GOLDP 0x100153b0
 WhiteBaffoon0x50* GolDPExport::VTable0x28()
 {
-	UtopianPan0xa4* result = new UtopianPan0xa4;
+	GolImage* result = new GolImage;
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -145,9 +145,9 @@ GolWorldEntity* GolDPExport::VTable0x30()
 }
 
 // FUNCTION: GOLDP 0x10015500
-AwakeKite0x20* GolDPExport::VTable0x34()
+GolImageDefinitionList* GolDPExport::VTable0x34()
 {
-	AwakeKite0x20* result = new AwakeKite0x20;
+	GolImageDefinitionList* result = new GolImageDefinitionList;
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -253,7 +253,7 @@ void GolDPExport::VTable0x58(undefined4*)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x68(AwakeKite0x20* p_obj)
+void GolDPExport::VTable0x68(GolImageDefinitionList* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;

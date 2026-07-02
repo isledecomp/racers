@@ -11,7 +11,7 @@ typedef void GolExitCBFN();
 
 class GolMaterialLibrary;
 class GolCamera;
-class AwakeKite0x20;
+class GolImageDefinitionList;
 class GolBoundingShape;
 class GolWorldEntity;
 class GolDrawState;
@@ -61,7 +61,7 @@ public:
 	virtual WhiteBaffoon0x50* VTable0x28() = 0;                // vtable+0x28
 	virtual GolFontBase* CreateFont() = 0;                     // vtable+0x2c
 	virtual GolWorldEntity* VTable0x30() = 0;                  // vtable+0x30
-	virtual AwakeKite0x20* VTable0x34() = 0;                   // vtable+0x34
+	virtual GolImageDefinitionList* VTable0x34() = 0;          // vtable+0x34
 	virtual GolFontTable* CreateFontTable() = 0;               // vtable+0x38
 	virtual void VTable0x3c(GolWorldDatabase*) = 0;            // vtable+0x3c
 	virtual void DestroyTextureList(GolTextureList*) = 0;      // vtable+0x40
@@ -74,7 +74,7 @@ public:
 	virtual void VTable0x5c(WhiteBaffoon0x50*) = 0;            // vtable+0x5c
 	virtual void DestroyFont(GolFontBase*) = 0;                // vtable+0x60
 	virtual void VTable0x64(GolWorldEntity*) = 0;              // vtable+0x64
-	virtual void VTable0x68(AwakeKite0x20*) = 0;               // vtable+0x68
+	virtual void VTable0x68(GolImageDefinitionList*) = 0;      // vtable+0x68
 	virtual void DestroyFontTable(GolNameTable*) = 0;          // vtable+0x6c
 };
 

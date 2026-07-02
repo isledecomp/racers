@@ -27,7 +27,7 @@ public:
 	WhiteBaffoon0x50* VTable0x28() override;                   // vtable+0x28
 	GolFontBase* CreateFont() override;                        // vtable+0x2c
 	GolWorldEntity* VTable0x30() override;                     // vtable+0x30
-	AwakeKite0x20* VTable0x34() override;                      // vtable+0x34
+	GolImageDefinitionList* VTable0x34() override;             // vtable+0x34
 	GolFontTable* CreateFontTable() override;                  // vtable+0x38
 	void VTable0x3c(GolWorldDatabase*) override;               // vtable+0x3c
 	void DestroyTextureList(GolTextureList*) override;         // vtable+0x40
@@ -40,7 +40,7 @@ public:
 	void VTable0x5c(WhiteBaffoon0x50*) override;               // vtable+0x5c
 	void DestroyFont(GolFontBase*) override;                   // vtable+0x60
 	void VTable0x64(GolWorldEntity*) override;                 // vtable+0x64
-	void VTable0x68(AwakeKite0x20*) override;                  // vtable+0x68
+	void VTable0x68(GolImageDefinitionList*) override;         // vtable+0x68
 	void DestroyFontTable(GolNameTable* p_fontTable) override; // vtable+0x6c
 
 private:

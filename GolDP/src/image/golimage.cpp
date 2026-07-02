@@ -1,4 +1,4 @@
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 
 #include "device/golpalettebase.h"
 #include "golbmpfile.h"
@@ -12,8 +12,8 @@
 #include "surface/purpledune0x7c.h"
 #include "surface/slatepeak0x58.h"
 
-DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
-DECOMP_SIZE_ASSERT(UtopianPan0xa4::UtopianPanImageName, 0x09)
+DECOMP_SIZE_ASSERT(GolImage, 0xa4)
+DECOMP_SIZE_ASSERT(GolImage::UtopianPanImageName, 0x09)
 
 extern const ColorRGBA g_unk0x10057668;
 
@@ -30,7 +30,7 @@ GolTgaFile g_unk0x10063ca0;
 GolBmpFile g_unk0x10064280;
 
 // FUNCTION: GOLDP 0x10004fd0
-UtopianPan0xa4::UtopianPan0xa4()
+GolImage::GolImage()
 {
 	m_unk0x04 = 0;
 	m_unk0x08 = 0;
@@ -38,7 +38,7 @@ UtopianPan0xa4::UtopianPan0xa4()
 }
 
 // FUNCTION: GOLDP 0x10005040
-UtopianPan0xa4::~UtopianPan0xa4()
+GolImage::~GolImage()
 {
 	FUN_100051c0();
 	m_unk0x58.VTable0x38();
@@ -46,7 +46,7 @@ UtopianPan0xa4::~UtopianPan0xa4()
 }
 
 // FUNCTION: GOLDP 0x100050b0
-void UtopianPan0xa4::VTable0x10()
+void GolImage::VTable0x10()
 {
 	GolSurfaceFormat imageFormat;
 	UtopianPanImageName imageName;
@@ -83,7 +83,7 @@ void UtopianPan0xa4::VTable0x10()
 }
 
 // FUNCTION: GOLDP 0x100051c0
-void UtopianPan0xa4::FUN_100051c0()
+void GolImage::FUN_100051c0()
 {
 	if (m_unk0x54 != NULL) {
 		delete[] m_unk0x54;
@@ -104,7 +104,7 @@ void UtopianPan0xa4::FUN_100051c0()
 }
 
 // FUNCTION: GOLDP 0x10005210
-void UtopianPan0xa4::FUN_10005210()
+void GolImage::FUN_10005210()
 {
 	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
 
@@ -114,7 +114,7 @@ void UtopianPan0xa4::FUN_10005210()
 }
 
 // FUNCTION: GOLDP 0x10005260
-void UtopianPan0xa4::Reset()
+void GolImage::Reset()
 {
 	FUN_100051c0();
 	m_unk0x58.VTable0x38();
@@ -122,7 +122,7 @@ void UtopianPan0xa4::Reset()
 }
 
 // FUNCTION: GOLDP 0x10005280
-void UtopianPan0xa4::VTable0x00()
+void GolImage::VTable0x00()
 {
 	m_unk0x04 = new LegoS32[m_unk0x2c];
 	if (m_unk0x04 == NULL) {
@@ -131,7 +131,7 @@ void UtopianPan0xa4::VTable0x00()
 }
 
 // FUNCTION: GOLDP 0x100052b0
-void UtopianPan0xa4::VTable0x04()
+void GolImage::VTable0x04()
 {
 	m_unk0x08 = new LegoS32[m_unk0x30];
 	if (m_unk0x08 == NULL) {
@@ -140,7 +140,7 @@ void UtopianPan0xa4::VTable0x04()
 }
 
 // FUNCTION: GOLDP 0x100052e0
-void UtopianPan0xa4::VTable0x08()
+void GolImage::VTable0x08()
 {
 	LegoU32 count = m_unk0x30 * m_unk0x2c;
 
@@ -156,7 +156,7 @@ void UtopianPan0xa4::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x100053d0
-void UtopianPan0xa4::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_textureFormat)
+void GolImage::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_textureFormat)
 {
 	LegoU32 index = p_row * m_unk0x30 + p_column;
 
@@ -170,11 +170,7 @@ void UtopianPan0xa4::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceForma
 }
 
 // FUNCTION: GOLDP 0x10005440
-void UtopianPan0xa4::FUN_10005440(
-	GolRenderDevice* p_renderer,
-	DuskwindBananaRelic0x30* p_material,
-	GoldDune0x38* p_texture
-)
+void GolImage::FUN_10005440(GolRenderDevice* p_renderer, DuskwindBananaRelic0x30* p_material, GoldDune0x38* p_texture)
 {
 	LegoU32 flags = (m_unk0x3c & c_flagBit1) ? 0x92a8a : 0x92a8c;
 	if (m_unk0x3c & c_flagBit4) {
@@ -205,12 +201,7 @@ void UtopianPan0xa4::FUN_10005440(
 }
 
 // FUNCTION: GOLDP 0x100054d0
-void UtopianPan0xa4::FUN_100054d0(
-	GolD3DRenderDevice* p_renderer,
-	undefined4 p_unk0x08,
-	Rect* p_destRect,
-	Rect* p_clipRect
-)
+void GolImage::FUN_100054d0(GolD3DRenderDevice* p_renderer, undefined4 p_unk0x08, Rect* p_destRect, Rect* p_clipRect)
 {
 	Rect sourceRect;
 	sourceRect.m_left = 0;
@@ -222,7 +213,7 @@ void UtopianPan0xa4::FUN_100054d0(
 }
 
 // STUB: GOLDP 0x10005510
-void UtopianPan0xa4::FUN_10005510(
+void GolImage::FUN_10005510(
 	GolD3DRenderDevice* p_renderer,
 	undefined4,
 	Rect* p_destRect,
@@ -408,13 +399,13 @@ void UtopianPan0xa4::FUN_10005510(
 }
 
 // FUNCTION: GOLDP 0x10005ae0
-PurpleDune0x7c* UtopianPan0xa4::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
+PurpleDune0x7c* GolImage::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
 {
 	return &m_unk0x50[p_row * m_unk0x30 + p_column];
 }
 
 // STUB: GOLDP 0x10005b00
-void UtopianPan0xa4::FUN_10005b00()
+void GolImage::FUN_10005b00()
 {
 	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
 

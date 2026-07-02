@@ -33,7 +33,7 @@ class MenuTriangle;
 class OptionsRowBase;
 class SharedMenuStyleTable;
 class SoundGroupBinding;
-class AwakeKite0x20;
+class GolImageDefinitionList;
 
 // VTABLE: LEGORACERS 0x004b2308
 // SIZE 0x290
@@ -160,7 +160,7 @@ protected:
 	MenuInputBindingTable m_bindingTable;   // 0x058
 	GolExport* m_golExport;                 // 0x0b4
 	GolD3DRenderDevice* m_renderer;         // 0x0b8
-	AwakeKite0x20* m_imageList;             // 0x0bc
+	GolImageDefinitionList* m_imageList;    // 0x0bc
 	GolFontTable* m_fontTable;              // 0x0c0
 	MenuInputDispatcher::Cursor* m_cursor;  // 0x0c4
 	InputEventQueue* m_inputEvents;         // 0x0c8

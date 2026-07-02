@@ -1,6 +1,6 @@
 #include "menu/menuinputdispatcher.h"
 
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 #include "input/inputmanager.h"
 #include "input/mousedevice.h"
 #include "menu/screens/menugamescreen.h"
@@ -276,7 +276,7 @@ void MenuInputDispatcher::DispatchMouseMove(MouseInputDevice* p_mouse)
 {
 	MenuIcon* icon = m_activeScreen->GetRootIcon();
 	MenuWidget* active = icon->FindFocusedLeaf();
-	UtopianPan0xa4* cursorImage = m_cursor.m_cursorImage;
+	GolImage* cursorImage = m_cursor.m_cursorImage;
 	LegoS32 right = m_screenWidth - (cursorImage->m_width >> 2);
 	LegoS32 bottom = m_screenHeight - (cursorImage->m_height >> 2);
 	Rect* bounds = &m_cursor.m_bounds;

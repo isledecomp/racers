@@ -12,7 +12,7 @@ class MenuScreenCreateParams;
 class MenuTextButton;
 class MenuWidget;
 class GolFont;
-class UtopianPan0xa4;
+class GolImage;
 class CarPartCarousel;
 
 // VTABLE: LEGORACERS 0x004b3518
@@ -38,7 +38,7 @@ public:
 		class ButtonBinding : public MenuInputBindingTable::IconBinding {
 		public:
 			GolFont* m_stateFonts[6];          // 0x84
-			UtopianPan0xa4* m_stateImages[6];  // 0x9c
+			GolImage* m_stateImages[6];        // 0x9c
 			VisualStateColor m_stateColors[6]; // 0xb4
 			undefined m_unk0xcc[0xd0 - 0xcc];  // 0xcc
 			VisualStateColor m_unk0xd0;        // 0xd0

@@ -16,7 +16,7 @@ struct Rect;
 
 // SIZE 0xa4
 // VTABLE: GOLDP 0x10056340
-class UtopianPan0xa4 : public WhiteBaffoon0x50 {
+class GolImage : public WhiteBaffoon0x50 {
 public:
 	// SIZE 0x09
 	struct UtopianPanImageName {
@@ -26,14 +26,14 @@ public:
 		};
 	};
 
-	UtopianPan0xa4();
+	GolImage();
 
 	void VTable0x00() override;                                                                   // vtable+0x00
 	void VTable0x04() override;                                                                   // vtable+0x04
 	void VTable0x08() override;                                                                   // vtable+0x08
 	void VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_textureFormat) override; // vtable+0x0c
 	void VTable0x10() override;                                                                   // vtable+0x10
-	~UtopianPan0xa4() override;                                                                   // vtable+0x14
+	~GolImage() override;                                                                         // vtable+0x14
 	void Reset() override;                                                                        // vtable+0x18
 	PurpleDune0x7c* VTable0x1c(LegoU32 p_row, LegoU32 p_column) override;                         // vtable+0x1c
 
@@ -45,7 +45,7 @@ public:
 	void FUN_10005b00();
 
 	// SYNTHETIC: GOLDP 0x10005e60
-	// UtopianPan0xa4::`vector deleting destructor'
+	// GolImage::`vector deleting destructor'
 
 protected:
 	PurpleDune0x7c* m_unk0x50;          // 0x50

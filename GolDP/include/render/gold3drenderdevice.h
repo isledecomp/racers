@@ -108,10 +108,10 @@ public:
 		Rect*,
 		undefined4
 	) override; // vtable+0x6c
-	void VTable0x70(UtopianPan0xa4*, undefined4, LegoS32, LegoS32, LegoS32,
+	void VTable0x70(GolImage*, undefined4, LegoS32, LegoS32, LegoS32,
 					LegoS32) override; // vtable+0x70
 	void VTable0x74(
-		UtopianPan0xa4*,
+		GolImage*,
 		undefined4,
 		LegoS32,
 		LegoS32,
@@ -121,10 +121,10 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) override;                                                          // vtable+0x74
-	void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, Rect*) override; // vtable+0x78
+	) override;                                                    // vtable+0x74
+	void VTable0x78(GolImage*, undefined4, Rect*, Rect*) override; // vtable+0x78
 	void VTable0x7c(
-		UtopianPan0xa4* p_image,
+		GolImage* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,
 		Rect* p_sourceRect,
@@ -198,7 +198,7 @@ public:
 	friend class GolD3DRenderSurface;
 	friend class GolModel;
 	friend class GolFont;
-	friend class UtopianPan0xa4;
+	friend class GolImage;
 	friend class GolBillboard;
 
 private:

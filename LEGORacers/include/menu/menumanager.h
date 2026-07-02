@@ -108,7 +108,7 @@ private:
 	MenuInputDispatcher m_inputDispatcher;       // 0x4c74
 	GolExport* m_golExport;                      // 0x4cd4
 	GolD3DRenderDevice* m_renderer;              // 0x4cd8
-	AwakeKite0x20* m_imageTable;                 // 0x4cdc
+	GolImageDefinitionList* m_imageTable;        // 0x4cdc
 	GolFontTable* m_fontTable;                   // 0x4ce0
 	GolStringTable m_menuNameStrings;            // 0x4ce4
 	GolStringTable m_menuTextStrings;            // 0x4cf8

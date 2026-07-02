@@ -146,7 +146,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/render/golrasterizers1.cpp
   GolDP/src/render/golrasterizers2.cpp
-  GolDP/src/image/utopianpan0xa4.cpp
+  GolDP/src/image/golimage.cpp
   GolDP/src/image/whitebaffoon0x50.cpp
   GolDP/src/render/golrenderdevice.cpp
   GolDP/src/render/gold3drendersurface.cpp
@@ -208,13 +208,13 @@ add_library(goldp SHARED
   GolDP/src/render/golrenderdevice.cpp
   GolDP/src/render/gold3drenderdevice.cpp
   GolDP/src/render/gold3drendersurface.cpp
-  GolDP/src/material/awakekite0x20.cpp
+  GolDP/src/material/golimagedefinitionlist.cpp
   GolDP/src/material/golimagelist.cpp
   GolDP/src/font/golfonttable.cpp
   GolDP/src/font/golfont.cpp
   GolDP/src/surface/moltenquillphantom0x34.cpp
   GolDP/src/image/whitebaffoon0x50.cpp
-  GolDP/src/image/utopianpan0xa4.cpp
+  GolDP/src/image/golimage.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
   GolDP/src/surface/goldepthbuffer.cpp
   GolDP/src/render/golsoftwarerenderer.cpp

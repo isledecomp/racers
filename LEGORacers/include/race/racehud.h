@@ -9,14 +9,14 @@
 #include "types.h"
 
 class GolMaterial;
-class AwakeKite0x20;
+class GolImageDefinitionList;
 class GolD3DRenderDevice;
 class GolFontBase;
 class GolNameTable;
 class GolStringTable;
 class RaceSession;
 class TimeRaceManager;
-class UtopianPan0xa4;
+class GolImage;
 
 // SIZE 0x140
 class RaceHud {
@@ -81,7 +81,7 @@ private:
 		GolD3DRenderDevice* p_renderer,
 		GolNameTable* p_nameTable,
 		GolString* p_string,
-		AwakeKite0x20* p_resourceTable,
+		GolImageDefinitionList* p_resourceTable,
 		RaceState* p_raceState,
 		TimeRaceManager* p_timeRaceManager,
 		GolStringTable* p_stringTable,
@@ -96,7 +96,7 @@ private:
 
 	GolD3DRenderDevice* m_renderer;     // 0x000
 	RacerSoundSource* m_soundSource;    // 0x004
-	AwakeKite0x20* m_images;            // 0x008
+	GolImageDefinitionList* m_images;   // 0x008
 	GolStringTable* m_stringTable;      // 0x00c
 	GolString* m_scratchString;         // 0x010
 	GolString m_labelString;            // 0x014

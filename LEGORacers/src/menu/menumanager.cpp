@@ -19,7 +19,7 @@
 #include "golstream.h"
 #include "input/inputmanager.h"
 #include "input/keyboarddevice.h"
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 #include "material/goltexturelist.h"
 #include "menu/menuscreenid.h"
 #include "menu/screens/menugamescreen.h"

@@ -1,6 +1,6 @@
 #include "menu/widgets/menuimage.h"
 
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 
 DECOMP_SIZE_ASSERT(MenuImage, 0x5c)
 DECOMP_SIZE_ASSERT(MenuImage::CreateParams, 0x3c)

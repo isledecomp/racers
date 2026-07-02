@@ -20,10 +20,10 @@
 #include "golstream.h"
 #include "goltxtparser.h"
 #include "golworldentity.h"
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutscenedefinition.h"
 #include "menu/runtime/cutsceneparticle.h"
@@ -1394,7 +1394,7 @@ void CutscenePlayer::ParseImageListNames(GolFileParser* p_parser)
 	p_parser->ReadRightBracket();
 	p_parser->ReadLeftCurly();
 
-	m_imageLists = new AwakeKite0x20*[m_imageListCount];
+	m_imageLists = new GolImageDefinitionList*[m_imageListCount];
 	m_imageListNames = new LegoChar[m_imageListCount * 9];
 	if (m_imageLists == NULL || m_imageListNames == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);

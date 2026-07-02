@@ -1,18 +1,18 @@
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
 
-DECOMP_SIZE_ASSERT(AwakeKite0x20, 0x20)
+DECOMP_SIZE_ASSERT(GolImageDefinitionList, 0x20)
 
 // FUNCTION: GOLDP 0x10005d10
-AwakeKite0x20::AwakeKite0x20()
+GolImageDefinitionList::GolImageDefinitionList()
 {
 	m_items = NULL;
 }
 
 // FUNCTION: GOLDP 0x10005d50
-AwakeKite0x20::~AwakeKite0x20()
+GolImageDefinitionList::~GolImageDefinitionList()
 {
 	if (m_items) {
 		delete[] m_items;
@@ -23,16 +23,16 @@ AwakeKite0x20::~AwakeKite0x20()
 }
 
 // FUNCTION: GOLDP 0x10005dc0
-void AwakeKite0x20::AllocateItems()
+void GolImageDefinitionList::AllocateItems()
 {
-	m_items = new UtopianPan0xa4[m_numItems];
+	m_items = new GolImage[m_numItems];
 	if (m_items == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
 
 // FUNCTION: GOLDP 0x10005ec0
-void AwakeKite0x20::Clear()
+void GolImageDefinitionList::Clear()
 {
 	if (m_items) {
 		delete[] m_items;
@@ -43,13 +43,13 @@ void AwakeKite0x20::Clear()
 }
 
 // FUNCTION: GOLDP 0x10005ef0
-UtopianPan0xa4* AwakeKite0x20::GetItem(undefined4 p_index)
+GolImage* GolImageDefinitionList::GetItem(undefined4 p_index)
 {
 	return &m_items[p_index];
 }
 
 // FUNCTION: GOLDP 0x10005f10
-void AwakeKite0x20::VTable0x10()
+void GolImageDefinitionList::VTable0x10()
 {
 	LegoU32 i;
 
@@ -63,7 +63,7 @@ void AwakeKite0x20::VTable0x10()
 }
 
 // FUNCTION: GOLDP 0x10005f50
-void AwakeKite0x20::VTable0x14()
+void GolImageDefinitionList::VTable0x14()
 {
 	LegoU32 i;
 

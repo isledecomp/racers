@@ -462,11 +462,11 @@ void MenuInputBindingTable::ParseMultiStateBinding(MultiStateBinding* p_entry)
 	}
 
 	if (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
-		UtopianPan0xa4** image = p_entry->m_utopianunk0xa0;
+		GolImage** image = p_entry->m_utopianunk0xa0;
 		do {
 			switch (m_parser->GetCurrentToken()) {
 			case GolFileParser::e_unknown0x28: {
-				UtopianPan0xa4** imageCursor = image;
+				GolImage** imageCursor = image;
 				for (LegoS32 i = 0; i < 6; i++) {
 					*imageCursor = m_renderer->FindImageByName(m_parser->ReadString());
 					imageCursor += 3;

@@ -1,6 +1,6 @@
 #include "menu/widgets/menuframe.h"
 
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 
 #include <string.h>
 
@@ -50,7 +50,7 @@ LegoBool32 MenuFrame::CreateFill(CreateParams* p_createParams)
 		createParams.m_flags |= 1;
 		createParams.m_unk0x20 = 0x400;
 
-		UtopianPan0xa4* image = p_createParams->m_images[i];
+		GolImage* image = p_createParams->m_images[i];
 		createParams.m_unk0x38 = image;
 		m_images[i] = image;
 		createParams.m_unk0x22 = p_createParams->m_unk0x22;

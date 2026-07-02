@@ -16,7 +16,7 @@
 class GolD3DRenderDevice;
 class GolFont;
 class GolStringTable;
-class UtopianPan0xa4;
+class GolImage;
 
 // VTABLE: LEGORACERS 0x004b2180
 // SIZE 0x5c
@@ -83,13 +83,13 @@ public:
 	// SIZE 0x9c
 	class ButtonBinding : public IconBinding {
 	public:
-		UtopianPan0xa4* m_unk0x84[6]; // 0x84
+		GolImage* m_unk0x84[6]; // 0x84
 	};
 
 	// SIZE 0xa0
 	class HotspotBinding : public ButtonBinding {
 	public:
-		UtopianPan0xa4* m_unk0x9c; // 0x9c
+		GolImage* m_unk0x9c; // 0x9c
 	};
 
 	// SIZE 0xa0
@@ -108,7 +108,7 @@ public:
 	public:
 		MenuImage::CreateParams* m_unk0x8c; // 0x8c
 		MenuImage::CreateParams* m_unk0x90; // 0x90
-		UtopianPan0xa4* m_unk0x94[6];       // 0x94
+		GolImage* m_unk0x94[6];             // 0x94
 		MenuIcon::SoundIdPair m_unk0xac;    // 0xac
 		LegoS32 m_unk0xb0;                  // 0xb0
 		LegoS32 m_unk0xb4;                  // 0xb4
@@ -120,16 +120,16 @@ public:
 		// SIZE 0x0c
 		class ImageTriplet {
 		public:
-			UtopianPan0xa4* m_unk0x00; // 0x00
-			UtopianPan0xa4* m_unk0x04; // 0x04
-			UtopianPan0xa4* m_unk0x08; // 0x08
+			GolImage* m_unk0x00; // 0x00
+			GolImage* m_unk0x04; // 0x04
+			GolImage* m_unk0x08; // 0x08
 		};
 
 		undefined4 m_unk0x84;  // 0x84
 		GolFont* m_unk0x88[6]; // 0x88
 		union {
-			ImageTriplet m_unk0xa0[6];            // 0xa0
-			UtopianPan0xa4* m_utopianunk0xa0[18]; // 0xa0
+			ImageTriplet m_unk0xa0[6];      // 0xa0
+			GolImage* m_utopianunk0xa0[18]; // 0xa0
 		};
 		undefined4 m_unk0xe8; // 0xe8
 	};

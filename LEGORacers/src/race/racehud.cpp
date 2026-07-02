@@ -4,8 +4,8 @@
 #include "golfontbase.h"
 #include "golmath.h"
 #include "golnametable.h"
-#include "image/utopianpan0xa4.h"
-#include "material/awakekite0x20.h"
+#include "image/golimage.h"
+#include "material/golimagedefinitionlist.h"
 #include "race/racecameracontroller.h"
 #include "race/racer/racersoundsource.h"
 #include "race/timeracemanager.h"
@@ -527,7 +527,7 @@ void RaceHud::DrawFixedMap()
 		ClipTriangleTop(&vertices[3], &vertices[0], &vertices[2]);
 	}
 
-	UtopianPan0xa4* markerResource = m_images->GetItem(10);
+	GolImage* markerResource = m_images->GetItem(10);
 	LegoS32 halfMarkerWidth = markerWidth >> 1;
 	LegoS32 halfMarkerHeight = markerHeight >> 1;
 	LegoS32 markerOriginX = mapOriginX - halfMarkerWidth;
@@ -671,7 +671,7 @@ void RaceHud::DrawRotatingMap()
 	m_clipBottom = static_cast<LegoFloat>(mapBottom);
 	m_clipRight = static_cast<LegoFloat>(mapRight);
 
-	UtopianPan0xa4* markerResource = m_images->GetItem(10);
+	GolImage* markerResource = m_images->GetItem(10);
 
 	GolVec3 currentPosition;
 	m_racer->m_visuals.m_carEntity->VTable0x04(&currentPosition);
@@ -856,7 +856,7 @@ void RaceHud::DrawRotatingMap()
 // FUNCTION: LEGORACERS 0x004258e0
 void RaceHud::DrawSpeedometer()
 {
-	UtopianPan0xa4* resource0 = m_images->GetItem(0);
+	GolImage* resource0 = m_images->GetItem(0);
 	LegoS32 resource0Width = resource0->GetWidth();
 	LegoS32 width0 = static_cast<LegoS32>(
 		static_cast<double>(resource0Width) * static_cast<double>(m_mapScale) * static_cast<double>(m_textScaleX)
@@ -932,7 +932,7 @@ void RaceHud::DrawSpeedometer()
 	m_renderer->DrawTriangle(&vertices[1], &vertices[0], &vertices[3], NULL, 0);
 	m_renderer->DrawTriangle(&vertices[2], &vertices[3], &vertices[4], NULL, 0);
 
-	UtopianPan0xa4* resource1 = m_images->GetItem(1);
+	GolImage* resource1 = m_images->GetItem(1);
 	LegoS32 resource1Width = resource1->GetWidth();
 	LegoS32 width1 = static_cast<LegoS32>(
 		static_cast<double>(resource1Width) * static_cast<double>(m_mapScale) * static_cast<double>(m_textScaleX)
@@ -1036,7 +1036,7 @@ LegoS32 RaceHud::Initialize(
 	GolD3DRenderDevice* p_renderer,
 	GolNameTable* p_nameTable,
 	GolString* p_string,
-	AwakeKite0x20* p_resourceTable,
+	GolImageDefinitionList* p_resourceTable,
 	RaceState* p_raceState,
 	TimeRaceManager* p_timeRaceManager,
 	GolStringTable* p_stringTable,
@@ -1171,7 +1171,7 @@ LegoS32 RaceHud::SetLayout(LegoS32 p_mode)
 	m_wrongWayX = m_centerX - (static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScaleX) >> 1);
 	m_wrongWayY = m_viewport.m_top + ((m_viewport.m_bottom - m_viewport.m_top) / 5);
 
-	UtopianPan0xa4* resource = m_images->GetItem(11);
+	GolImage* resource = m_images->GetItem(11);
 	m_powerupX = m_viewport.m_left + (static_cast<LegoU32>(width) >> 5);
 
 	p_mode = static_cast<LegoS32>(
@@ -1657,7 +1657,7 @@ void RaceHud::Draw()
 
 	LegoS32 itemLevel = m_racer->m_whiteBrickCount;
 	LegoS32 itemType = m_racer->m_heldPowerupColor - 1;
-	UtopianPan0xa4* itemResource;
+	GolImage* itemResource;
 	FourBytes itemColor;
 	itemColor.m_uBytes[3] = 0xff;
 
@@ -1695,7 +1695,7 @@ void RaceHud::Draw()
 	}
 
 	if (itemResource || itemLevel) {
-		UtopianPan0xa4* background = m_images->GetItem(11);
+		GolImage* background = m_images->GetItem(11);
 		LegoS32 width = static_cast<LegoS32>(
 			static_cast<double>(static_cast<LegoS32>(background->GetWidth())) * m_imageScale * m_textScaleX
 		);
@@ -1704,7 +1704,7 @@ void RaceHud::Draw()
 		);
 		m_renderer->VTable0x70(background, 0, m_powerupX, m_powerupY, width, height);
 
-		UtopianPan0xa4* colorResource = m_images->GetItem(12);
+		GolImage* colorResource = m_images->GetItem(12);
 		colorResource->m_unk0x4a = itemColor;
 		m_renderer->VTable0x70(colorResource, 0, m_powerupX, m_powerupY, width, height);
 
@@ -1726,7 +1726,7 @@ void RaceHud::Draw()
 		}
 
 		if (itemLevel) {
-			UtopianPan0xa4* levelResource = m_images->GetItem(itemLevel + 12);
+			GolImage* levelResource = m_images->GetItem(itemLevel + 12);
 			LegoS32 levelWidth = static_cast<LegoS32>(
 				static_cast<double>(static_cast<LegoS32>(levelResource->GetWidth())) * m_imageScale * m_textScaleX
 			);

@@ -1,6 +1,6 @@
 #include "menu/widgets/menuclippedimage.h"
 
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 
 DECOMP_SIZE_ASSERT(MenuClippedImage, 0x7c)
 

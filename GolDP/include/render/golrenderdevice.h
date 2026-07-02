@@ -28,7 +28,7 @@ class GolBillboard;
 struct Rect;
 class GolTextureList;
 class SlatePeak0x58;
-class UtopianPan0xa4;
+class GolImage;
 class GoldDune0x38;
 
 // VTABLE: GOLDP 0x10057338
@@ -145,10 +145,10 @@ public:
 		Rect*,
 		undefined4
 	) = 0; // vtable+0x6c
-	virtual void VTable0x70(UtopianPan0xa4*, undefined4, LegoS32, LegoS32, LegoS32,
+	virtual void VTable0x70(GolImage*, undefined4, LegoS32, LegoS32, LegoS32,
 							LegoS32) = 0; // vtable+0x70
 	virtual void VTable0x74(
-		UtopianPan0xa4*,
+		GolImage*,
 		undefined4,
 		LegoS32,
 		LegoS32,
@@ -158,10 +158,10 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) = 0;                                                                  // vtable+0x74
-	virtual void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, Rect*) = 0; // vtable+0x78
+	) = 0;                                                            // vtable+0x74
+	virtual void VTable0x78(GolImage*, undefined4, Rect*, Rect*) = 0; // vtable+0x78
 	virtual void VTable0x7c(
-		UtopianPan0xa4* p_image,
+		GolImage* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,
 		Rect* p_sourceRect,
@@ -234,7 +234,7 @@ public:
 
 #ifdef BUILDING_LEGORACERS
 	GolFont* FindFontByName(const LegoChar* p_name);
-	UtopianPan0xa4* FindImageByName(const LegoChar* p_name);
+	GolImage* FindImageByName(const LegoChar* p_name);
 #endif
 
 	// SYNTHETIC: GOLDP 0x100288b0

@@ -346,7 +346,7 @@ void MenuStyleTable::ParseMultiStateStyle(MultiStateStyle* p_entry)
 		return;
 	}
 
-	UtopianPan0xa4** image = p_entry->m_utopianunk0xa8;
+	GolImage** image = p_entry->m_utopianunk0xa8;
 	do {
 		LegoS32 i;
 
@@ -363,7 +363,7 @@ void MenuStyleTable::ParseMultiStateStyle(MultiStateStyle* p_entry)
 			}
 			break;
 		case GolFileParser::e_unknown0x28: {
-			UtopianPan0xa4** imageCursor = image;
+			GolImage** imageCursor = image;
 			for (i = 0; i < 6; i++) {
 				*imageCursor = m_renderer->FindImageByName(m_parser->ReadString());
 				imageCursor += 3;

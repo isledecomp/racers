@@ -15,7 +15,7 @@ class MenuGameScreen;
 class InputManager;
 class MouseInputDevice;
 class MenuIcon;
-class UtopianPan0xa4;
+class GolImage;
 
 // VTABLE: LEGORACERS 0x004b2164
 // SIZE 0x60
@@ -40,7 +40,7 @@ public:
 	struct InitStruct {
 		GolExport* m_golExport;         // 0x00
 		GolD3DRenderDevice* m_renderer; // 0x04
-		UtopianPan0xa4* m_cursorImage;  // 0x08
+		GolImage* m_cursorImage;        // 0x08
 		InputManager* m_inputManager;   // 0x0c
 		InputEventQueue* m_inputEvents; // 0x10
 		undefined4 m_unk0x14;           // 0x14
@@ -54,7 +54,7 @@ public:
 			InputManager* m_inputManager;   // 0x00
 			GolExport* m_golExport;         // 0x04
 			GolD3DRenderDevice* m_renderer; // 0x08
-			UtopianPan0xa4* m_cursorImage;  // 0x0c
+			GolImage* m_cursorImage;        // 0x0c
 			Rect* m_bounds;                 // 0x10
 			LegoS32 m_initialCursorX;       // 0x14
 			LegoS32 m_initialCursorY;       // 0x18
@@ -76,7 +76,7 @@ public:
 		InputManager* m_inputManager;     // 0x00
 		GolExport* m_golExport;           // 0x04
 		GolD3DRenderDevice* m_renderer;   // 0x08
-		UtopianPan0xa4* m_cursorImage;    // 0x0c
+		GolImage* m_cursorImage;          // 0x0c
 		Rect m_bounds;                    // 0x10
 		Rect m_sourceRect;                // 0x20
 		LegoS32 m_cursorX;                // 0x30

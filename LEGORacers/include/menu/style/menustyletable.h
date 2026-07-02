@@ -13,7 +13,7 @@
 class GolD3DRenderDevice;
 class GolFont;
 class SharedMenuStyleTable;
-class UtopianPan0xa4;
+class GolImage;
 
 // VTABLE: LEGORACERS 0x004b27cc
 // SIZE 0x50
@@ -22,7 +22,7 @@ public:
 	// SIZE 0x0c
 	class ImageStyle {
 	public:
-		UtopianPan0xa4* m_image;  // 0x00
+		GolImage* m_image;        // 0x00
 		VisualStateColor m_color; // 0x04
 		LegoBool32 m_hasColor;    // 0x08
 	};
@@ -49,10 +49,10 @@ public:
 	// SIZE 0x2c
 	class FrameStyle {
 	public:
-		UtopianPan0xa4* m_images[8]; // 0x00
-		VisualStateColor m_color0;   // 0x20
-		VisualStateColor m_color1;   // 0x24
-		LegoBool32 m_hasColors;      // 0x28
+		GolImage* m_images[8];     // 0x00
+		VisualStateColor m_color0; // 0x20
+		VisualStateColor m_color1; // 0x24
+		LegoBool32 m_hasColors;    // 0x28
 	};
 
 	// SIZE 0x90
@@ -68,14 +68,14 @@ public:
 	// SIZE 0xa8
 	class ButtonStyle : public IconStyle {
 	public:
-		UtopianPan0xa4* m_stateImages[6]; // 0x90
+		GolImage* m_stateImages[6]; // 0x90
 	};
 
 	// SIZE 0x104
 	class TextButtonStyle : public IconStyle {
 	public:
 		GolFont* m_stateFonts[6];          // 0x90
-		UtopianPan0xa4* m_stateImages[6];  // 0xa8
+		GolImage* m_stateImages[6];        // 0xa8
 		VisualStateColor m_stateColors[6]; // 0xc0
 		VisualStateColor m_unk0xd8;        // 0xd8
 		Rect m_unk0xdc;                    // 0xdc
@@ -90,15 +90,15 @@ public:
 		// SIZE 0x0c
 		class ImageTriplet {
 		public:
-			UtopianPan0xa4* m_unk0x00; // 0x00
-			UtopianPan0xa4* m_unk0x04; // 0x04
-			UtopianPan0xa4* m_unk0x08; // 0x08
+			GolImage* m_unk0x00; // 0x00
+			GolImage* m_unk0x04; // 0x04
+			GolImage* m_unk0x08; // 0x08
 		};
 
 		GolFont* m_stateFonts[6]; // 0x90
 		union {
-			ImageTriplet m_unk0xa8[6];            // 0xa8
-			UtopianPan0xa4* m_utopianunk0xa8[18]; // 0xa8
+			ImageTriplet m_unk0xa8[6];      // 0xa8
+			GolImage* m_utopianunk0xa8[18]; // 0xa8
 		};
 		Rect m_rect; // 0xf0
 	};
@@ -107,7 +107,7 @@ public:
 	class HotspotStyle : public IconStyle {
 	public:
 		undefined m_unk0x90[0xa8 - 0x90]; // 0x90
-		UtopianPan0xa4* m_image;          // 0xa8
+		GolImage* m_image;                // 0xa8
 		LegoS32 m_hotspotCount;           // 0xac
 		undefined4 m_hotspotIds[8];       // 0xb0
 		Rect m_hotspotRects[8];           // 0xd0
@@ -129,7 +129,7 @@ public:
 	public:
 		ImageStyle* m_unk0x98;            // 0x98
 		ImageStyle* m_unk0x9c;            // 0x9c
-		UtopianPan0xa4* m_stateImages[6]; // 0xa0
+		GolImage* m_stateImages[6];       // 0xa0
 		MenuIcon::SoundIdPair m_soundIds; // 0xb8
 
 		ButtonStyle* GetUnk0x90() const { return static_cast<ButtonStyle*>(m_unk0x90); }

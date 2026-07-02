@@ -14,7 +14,7 @@
 #include "golmodelbase.h"
 #include "golmodelentity.h"
 #include "golsurfaceformat.h"
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 #include "mesh/gdbvertexarraytypetwo0x20.h"
 #include "mesh/golmodel.h"
 #include "render/gold3drendersurface.h"
@@ -1580,7 +1580,7 @@ SlatePeak0x58* GolD3DRenderDevice::GetRenderTargetInfo()
 
 // FUNCTION: GOLDP 0x10009960
 void GolD3DRenderDevice::VTable0x7c(
-	UtopianPan0xa4* p_image,
+	GolImage* p_image,
 	undefined4 p_unk0x08,
 	Rect* p_destRect,
 	Rect* p_sourceRect,
@@ -1591,14 +1591,14 @@ void GolD3DRenderDevice::VTable0x7c(
 }
 
 // FUNCTION: GOLDP 0x10009990
-void GolD3DRenderDevice::VTable0x78(UtopianPan0xa4* p_image, undefined4 p_unk0x08, Rect* p_destRect, Rect* p_clipRect)
+void GolD3DRenderDevice::VTable0x78(GolImage* p_image, undefined4 p_unk0x08, Rect* p_destRect, Rect* p_clipRect)
 {
 	p_image->FUN_100054d0(this, p_unk0x08, p_destRect, p_clipRect);
 }
 
 // FUNCTION: GOLDP 0x100099b0
 void GolD3DRenderDevice::VTable0x74(
-	UtopianPan0xa4* p_image,
+	GolImage* p_image,
 	undefined4 p_unk0x08,
 	LegoS32 p_destLeft,
 	LegoS32 p_destTop,
@@ -1627,7 +1627,7 @@ void GolD3DRenderDevice::VTable0x74(
 
 // FUNCTION: GOLDP 0x10009a20
 void GolD3DRenderDevice::VTable0x70(
-	UtopianPan0xa4* p_image,
+	GolImage* p_image,
 	undefined4 p_unk0x08,
 	LegoS32 p_destLeft,
 	LegoS32 p_destTop,

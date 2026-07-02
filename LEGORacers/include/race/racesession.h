@@ -62,8 +62,8 @@ class GolSceneNode;
 class GolBoundedEntity;
 class GolCollidableEntity;
 class GdbVertexArray0xc;
-class AwakeKite0x20;
-class UtopianPan0xa4;
+class GolImageDefinitionList;
+class GolImage;
 class GolMaterial;
 class MusicGroup;
 class MusicInstance;
@@ -666,16 +666,16 @@ public:
 		void Draw();
 
 	private:
-		GolD3DRenderDevice* m_renderer; // 0x00
-		GolExport* m_golExport;         // 0x04
-		AwakeKite0x20* m_images;        // 0x08
-		UtopianPan0xa4* m_tickImage;    // 0x0c
-		LegoFloat m_progress;           // 0x10
-		LegoS32 m_dotCount;             // 0x14
-		LegoS32* m_dotPositions;        // 0x18
-		GolString m_text;               // 0x1c
-		GolFontBase* m_font;            // 0x28
-		LegoS32 m_textX;                // 0x2c
+		GolD3DRenderDevice* m_renderer;   // 0x00
+		GolExport* m_golExport;           // 0x04
+		GolImageDefinitionList* m_images; // 0x08
+		GolImage* m_tickImage;            // 0x0c
+		LegoFloat m_progress;             // 0x10
+		LegoS32 m_dotCount;               // 0x14
+		LegoS32* m_dotPositions;          // 0x18
+		GolString m_text;                 // 0x1c
+		GolFontBase* m_font;              // 0x28
+		LegoS32 m_textX;                  // 0x2c
 	};
 
 	// SIZE 0x08
@@ -983,7 +983,7 @@ private:
 	GolFontBase* m_loadingFont;                    // 0x2d7c
 	GolString m_hudScratchString;                  // 0x2d80
 	undefined2 m_hudScratchBuffer[0x100];          // 0x2d8c
-	AwakeKite0x20* m_hudImages;                    // 0x2f8c
+	GolImageDefinitionList* m_hudImages;           // 0x2f8c
 	RaceSkyState m_skyState;                       // 0x2f90
 	RaceDialog m_dialog;                           // 0x3058
 	undefined4 m_pauseState;                       // 0x30c0

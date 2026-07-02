@@ -8,7 +8,7 @@
 #include "golstring.h"
 #include "golstringtable.h"
 #include "input/inputmanager.h"
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 #include "menu/menudialog.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/screens/menuscenescreen.h"

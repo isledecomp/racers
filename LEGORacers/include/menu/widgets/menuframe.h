@@ -8,7 +8,7 @@
 #include "menu/widgets/menutriangle.h"
 #include "render/rectangle.h"
 
-class UtopianPan0xa4;
+class GolImage;
 
 // VTABLE: LEGORACERS 0x004b267c
 // SIZE 0x3fc
@@ -17,7 +17,7 @@ public:
 	// SIZE 0x60
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		UtopianPan0xa4* m_images[8];  // 0x38
+		GolImage* m_images[8];        // 0x38
 		VisualStateColor m_fillColor; // 0x58
 		LegoBool32 m_hasFillColor;    // 0x5c
 	};
@@ -45,7 +45,7 @@ private:
 protected:
 	MenuTriangle m_fill;         // 0x058
 	MenuImage m_borderImages[8]; // 0x0fc
-	UtopianPan0xa4* m_images[8]; // 0x3dc
+	GolImage* m_images[8];       // 0x3dc
 };
 
 #endif // MENUFRAME_H

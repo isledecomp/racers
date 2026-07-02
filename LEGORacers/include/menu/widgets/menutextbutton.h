@@ -10,7 +10,7 @@
 class GolFont;
 class GolString;
 class GolStringTable;
-class UtopianPan0xa4;
+class GolImage;
 
 // VTABLE: LEGORACERS 0x004b38b0
 // SIZE 0x2f0
@@ -20,7 +20,7 @@ public:
 	class CreateParams : public MenuIcon::CreateParams {
 	public:
 		GolFont* m_stateFonts[6];          // 0x84
-		UtopianPan0xa4* m_stateImages[6];  // 0x9c
+		GolImage* m_stateImages[6];        // 0x9c
 		VisualStateColor m_stateColors[6]; // 0xb4
 		GolStringTable* m_stringTable;     // 0xcc
 		undefined4 m_unk0xd0;              // 0xd0
@@ -52,7 +52,7 @@ private:
 	MenuStyleTable::TextButtonStyle* m_styleEntry; // 0x1a8
 	MenuStyleTable::TextStyle m_textStyle;         // 0x1ac
 	GolFont* m_stateFonts[6];                      // 0x1c0
-	UtopianPan0xa4* m_stateImages[6];              // 0x1d8
+	GolImage* m_stateImages[6];                    // 0x1d8
 	VisualStateColor m_stateImageColors[6];        // 0x1f0
 	MenuImage m_image;                             // 0x208
 	MenuTextLabel m_label;                         // 0x264

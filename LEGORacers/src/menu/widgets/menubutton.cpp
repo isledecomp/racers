@@ -1,6 +1,6 @@
 #include "menu/widgets/menubutton.h"
 
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 
 #include <string.h>
 
@@ -34,7 +34,7 @@ LegoBool32 MenuButton::FUN_00466370(MenuImage* p_unk0x04, CreateParams* p_create
 	MenuImage::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
 
-	UtopianPan0xa4* image = p_createParams->m_images[0];
+	GolImage* image = p_createParams->m_images[0];
 	::memcpy(&createParams, p_createParams, sizeof(MenuWidget::CreateParams));
 	createParams.m_unk0x20 = m_id;
 	createParams.m_unk0x22 = m_stateColors[0];

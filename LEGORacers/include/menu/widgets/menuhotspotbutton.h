@@ -6,7 +6,7 @@
 #include "menu/style/menustyletable.h"
 #include "menu/widgets/menubutton.h"
 
-class UtopianPan0xa4;
+class GolImage;
 
 // VTABLE: LEGORACERS 0x004b1ef0
 // SIZE 0x228
@@ -15,7 +15,7 @@ public:
 	// SIZE 0xa0
 	class CreateParams : public MenuButton::CreateParams {
 	public:
-		UtopianPan0xa4* m_unk0x9c; // 0x9c
+		GolImage* m_unk0x9c; // 0x9c
 	};
 
 	MenuHotspotButton();
@@ -48,7 +48,7 @@ protected:
 	MenuWidget* FUN_00466800(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y);
 
 	MenuStyleTable::HotspotStyle* m_unk0x21c; // 0x21c
-	UtopianPan0xa4* m_unk0x220;               // 0x220
+	GolImage* m_unk0x220;                     // 0x220
 	undefined4 m_hotspotIndex;                // 0x224
 };
 

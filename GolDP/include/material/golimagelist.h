@@ -3,7 +3,7 @@
 
 #include "golhashtable.h"
 #include "golnametable.h"
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 #include "scene/golbillboard.h"
 
 class GolD3DRenderDevice;
@@ -28,7 +28,7 @@ public:
 		LegoBool32 p_binary
 	);                                                                           // vtable+0x18
 	virtual void VTable0x1c(GolD3DRenderDevice* p_renderer, LegoU32 p_numItems); // vtable+0x1c
-	virtual UtopianPan0xa4* GetItem(undefined4 p_index) = 0;                     // vtable+0x20
+	virtual GolImage* GetItem(undefined4 p_index) = 0;                           // vtable+0x20
 
 	GolImageList* GetNext() const { return m_next; }
 	void SetNext(GolImageList* p_next) { m_next = p_next; }

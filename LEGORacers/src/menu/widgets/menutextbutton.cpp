@@ -2,7 +2,7 @@
 
 #include "font/golfont.h"
 #include "golstringtable.h"
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 
 #include <string.h>
 

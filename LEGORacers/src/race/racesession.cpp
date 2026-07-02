@@ -26,7 +26,7 @@
 #include "input/joystickdevice.h"
 #include "input/keyboarddevice.h"
 #include "input/mousedevice.h"
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 #include "race/circuitstandings.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"

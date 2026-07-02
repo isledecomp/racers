@@ -2,7 +2,7 @@
 
 #include "golfontbase.h"
 #include "golstring.h"
-#include "image/utopianpan0xa4.h"
+#include "image/golimage.h"
 #include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(MenuWidget, 0x58)
@@ -276,7 +276,7 @@ void MenuWidget::MeasureText(
 }
 
 // FUNCTION: LEGORACERS 0x00472d70
-void MenuWidget::DrawImage(Rect* p_destRect, Rect* p_sourceRect, UtopianPan0xa4* p_image)
+void MenuWidget::DrawImage(Rect* p_destRect, Rect* p_sourceRect, GolImage* p_image)
 {
 	p_image->m_unk0x4a.m_u32 = m_colorPacked;
 	m_renderer->VTable0x7c(p_image, 0, p_destRect, p_sourceRect, NULL);

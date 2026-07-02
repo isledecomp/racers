@@ -7,7 +7,7 @@
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "golstream.h"
-#include "material/awakekite0x20.h"
+#include "material/golimagedefinitionlist.h"
 #include "menu/menudialog.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
@@ -25,7 +25,7 @@ DECOMP_SIZE_ASSERT(EditCarScreen, 0x36c4)
 static const LegoFloat g_editCarMaxFloat = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004c766c
-static AwakeKite0x20* g_editCarImageList = NULL;
+static GolImageDefinitionList* g_editCarImageList = NULL;
 
 // FUNCTION: LEGORACERS 0x0047bc50
 EditCarScreen::EditCarScreen()

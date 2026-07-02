@@ -195,14 +195,14 @@ public:
 					LegoU8 m_packedTypeAndLength; // 0x0b
 				};
 
-				LegoS32 m_unk0x000;    // 0x00
-				PathPoint* m_unk0x004; // 0x04
-				GolVec3 m_unk0x008;    // 0x08
-				GolQuat m_unk0x014;    // 0x14
-				GolVec3 m_unk0x024;    // 0x24
-				GolQuat m_unk0x030;    // 0x30
-				LegoS32 m_unk0x040;    // 0x40
-				LegoS32 m_unk0x044;    // 0x44
+				LegoS32 m_pathPointCount; // 0x00
+				PathPoint* m_pathPoints;  // 0x04
+				GolVec3 m_unk0x008;       // 0x08
+				GolQuat m_unk0x014;       // 0x14
+				GolVec3 m_unk0x024;       // 0x24
+				GolQuat m_unk0x030;       // 0x30
+				LegoS32 m_unk0x040;       // 0x40
+				LegoS32 m_unk0x044;       // 0x44
 			};
 		};
 
@@ -1068,7 +1068,7 @@ public:
 		void FUN_00439b70();
 		LegoU32 FUN_00439ba0();
 		void FUN_00439c40();
-		void FUN_00439c70(Field0x00c::StandingsDeltaEntry* p_entries);
+		void ComputeStandingsDeltas(Field0x00c::StandingsDeltaEntry* p_entries);
 		void FUN_00439e60(GolVec3* p_unk0x04);
 		void FUN_00439e90();
 		void FUN_0043a3e0();
@@ -1365,39 +1365,39 @@ public:
 	Racer* GetCurrentRacer() { return m_unk0x0f0.m_racer080; }
 	GolMaterialLibrary* GetMaterialLibrary() const { return m_unk0x284.m_unk0x14; }
 	Racer* GetUnk0x318() { return m_unk0x318[0]; }
-	Racer::Field0x00c::Entry* FUN_0043d070(Racer* p_racer);
-	Racer* FUN_0043c6e0(
-		GolVec3* p_unk0x04,
-		GolVec3* p_unk0x08,
-		LegoFloat p_unk0x0c,
-		LegoFloat p_unk0x10,
-		LegoFloat p_unk0x14
+	Racer::Field0x00c::Entry* FindNearestRouteRecord(Racer* p_racer);
+	Racer* FindRacerInCone(
+		GolVec3* p_position,
+		GolVec3* p_direction,
+		LegoFloat p_minDistanceSquared,
+		LegoFloat p_maxDistanceSquared,
+		LegoFloat p_coneCosine
 	);
-	Racer* FUN_0043c7f0(
+	Racer* FindNextRacerInCone(
 		Racer* p_racer,
-		GolVec3* p_unk0x08,
-		GolVec3* p_unk0x0c,
-		LegoFloat p_unk0x10,
-		LegoFloat p_unk0x14,
-		LegoFloat p_unk0x18
+		GolVec3* p_position,
+		GolVec3* p_direction,
+		LegoFloat p_minDistanceSquared,
+		LegoFloat p_maxDistanceSquared,
+		LegoFloat p_coneCosine
 	);
-	Racer* FUN_0043c910(
-		GolVec3* p_unk0x04,
-		GolVec3* p_unk0x08,
-		LegoFloat p_unk0x0c,
-		LegoFloat p_unk0x10,
-		LegoFloat p_unk0x14
+	Racer* FindFarthestRacerInCone(
+		GolVec3* p_position,
+		GolVec3* p_direction,
+		LegoFloat p_minDistanceSquared,
+		LegoFloat p_maxDistanceSquared,
+		LegoFloat p_coneCosine
 	);
-	Racer* FUN_0043ca60(
-		GolVec3* p_unk0x04,
-		GolVec3* p_unk0x08,
-		LegoFloat p_unk0x0c,
-		LegoFloat p_unk0x10,
-		LegoFloat p_unk0x14
+	Racer* FindNearestRacerInCone(
+		GolVec3* p_position,
+		GolVec3* p_direction,
+		LegoFloat p_minDistanceSquared,
+		LegoFloat p_maxDistanceSquared,
+		LegoFloat p_coneCosine
 	);
-	Racer* FUN_0043cbb0(GolVec3* p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c);
-	LegoU32 FUN_0043cda0(Racer* p_racer);
-	void FUN_0043cf30(Racer* p_racer, Racer::Field0x00c::StandingsDeltaEntry* p_entries);
+	Racer* FindNearestRacerInRange(GolVec3* p_position, LegoFloat p_minDistanceSquared, LegoFloat p_maxDistanceSquared);
+	LegoU32 GetTimeBehind(Racer* p_racer);
+	void ComputeStandingsDeltas(Racer* p_racer, Racer::Field0x00c::StandingsDeltaEntry* p_entries);
 	const GolVec3& GetUnk0x0a4(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x0a4[p_index]; }
 	const GolVec3& GetUnk0x0ec(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x0ec[p_index]; }
 	const GolVec3& GetUnk0x134(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x134[p_index]; }

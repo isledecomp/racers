@@ -97,7 +97,7 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 		m_retargetTimerMs = 0;
 		target =
 			p_raceState
-				->FUN_0043c6e0(&m_position, &m_direction, p_minDistanceSquared, p_maxDistanceSquared, p_coneCosine);
+				->FindRacerInCone(&m_position, &m_direction, p_minDistanceSquared, p_maxDistanceSquared, p_coneCosine);
 		m_targetRacer = target;
 
 		while (target != noTarget) {
@@ -106,7 +106,7 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 				break;
 			}
 
-			target = p_raceState->FUN_0043c7f0(
+			target = p_raceState->FindNextRacerInCone(
 				target,
 				&m_position,
 				&m_direction,

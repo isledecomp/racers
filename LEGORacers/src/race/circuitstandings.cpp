@@ -235,7 +235,7 @@ void CircuitStandings::FUN_00440350(LegoBool32 p_showCircuitPoints)
 		}
 
 		RaceState::Racer* leaderRacer = &racers[leaderIndex];
-		leaderRacer->FUN_00439c70(deltaEntries);
+		leaderRacer->ComputeStandingsDeltas(deltaEntries);
 
 		LegoS32 sign = 1;
 		LegoS32 rank = 0;

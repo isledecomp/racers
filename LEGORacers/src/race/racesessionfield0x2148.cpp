@@ -1775,7 +1775,7 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x14(undefined4 p_elapsedMs)
 
 		if (m_unk0x6c > c_racerSearchIntervalMs) {
 			m_unk0x6c = 0;
-			if (m_unk0x58->FUN_0043cbb0(&position, 0.0f, g_item0x2bRacerSearchDistanceSquared) != NULL) {
+			if (m_unk0x58->FindNearestRacerInRange(&position, 0.0f, g_item0x2bRacerSearchDistanceSquared) != NULL) {
 				m_unk0x54->PlaySpatialSoundById(
 					c_soundId0xbc5,
 					&position,

@@ -922,7 +922,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 	}
 
 	for (i = 0; i < sizeOfArray(m_routeRecords); i++) {
-		if (m_routeRecords[i].m_unk0x004) {
+		if (m_routeRecords[i].m_pathPoints) {
 			loaded = TRUE;
 		}
 	}
@@ -1030,7 +1030,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		LegoRacers::Context::PlayerSetupSlot* slot = &m_context->m_playerSetupSlots[racerIndex];
 		racerParams.m_unk0x04[racerIndex] = slot;
 
-		if ((slot->m_unk0x10 == 2 || m_unk0x3350) && routeRecord->m_unk0x004) {
+		if ((slot->m_unk0x10 == 2 || m_unk0x3350) && routeRecord->m_pathPoints) {
 			racerParams.m_unk0x20[racerIndex] = routeRecord;
 		}
 		else {

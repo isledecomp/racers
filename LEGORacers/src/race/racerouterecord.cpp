@@ -23,7 +23,7 @@ RaceRouteRecord::~RaceRouteRecord()
 // FUNCTION: LEGORACERS 0x004a4e30
 void RaceRouteRecord::FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_binary, LegoBool32 p_mirror)
 {
-	if (m_unk0x004) {
+	if (m_pathPoints) {
 		FUN_004a50a0();
 	}
 
@@ -99,7 +99,7 @@ void RaceRouteRecord::FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_bina
 		token = parser->GetNextToken();
 	}
 
-	if (static_cast<LegoU32>(m_unk0x044) >= static_cast<LegoU32>(m_unk0x000)) {
+	if (static_cast<LegoU32>(m_unk0x044) >= static_cast<LegoU32>(m_pathPointCount)) {
 		parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
 	}
 
@@ -110,8 +110,8 @@ void RaceRouteRecord::FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_bina
 // FUNCTION: LEGORACERS 0x004a50a0
 void RaceRouteRecord::FUN_004a50a0()
 {
-	if (m_unk0x004) {
-		delete[] m_unk0x004;
+	if (m_pathPoints) {
+		delete[] m_pathPoints;
 	}
 
 	FUN_004a50c0();
@@ -120,8 +120,8 @@ void RaceRouteRecord::FUN_004a50a0()
 // FUNCTION: LEGORACERS 0x004a50c0
 void RaceRouteRecord::FUN_004a50c0()
 {
-	m_unk0x000 = 0;
-	m_unk0x004 = NULL;
+	m_pathPointCount = 0;
+	m_pathPoints = NULL;
 	m_unk0x008.m_x = 0;
 	m_unk0x008.m_y = 0;
 	m_unk0x008.m_z = 0;
@@ -143,14 +143,14 @@ void RaceRouteRecord::FUN_004a50c0()
 // FUNCTION: LEGORACERS 0x004a5100
 void RaceRouteRecord::FUN_004a5100(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
-	m_unk0x000 = p_parser->ReadBracketedCountAndLeftCurly();
-	m_unk0x004 = new RaceState::Racer::Field0x00c::Entry::PathPoint[m_unk0x000];
-	if (!m_unk0x004) {
+	m_pathPointCount = p_parser->ReadBracketedCountAndLeftCurly();
+	m_pathPoints = new RaceState::Racer::Field0x00c::Entry::PathPoint[m_pathPointCount];
+	if (!m_pathPoints) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}
 
-	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_unk0x000); i++) {
-		m_unk0x004[i].FUN_004a5e10(p_parser, p_mirror);
+	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_pathPointCount); i++) {
+		m_pathPoints[i].FUN_004a5e10(p_parser, p_mirror);
 	}
 
 	p_parser->ReadRightCurly();

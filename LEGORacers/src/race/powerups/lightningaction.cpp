@@ -529,7 +529,7 @@ void RacePowerupManager::LightningAction::FindVictim()
 	position.m_z += g_lightningSourceHeightOffset;
 
 	RaceState* raceState = m_owner0x01c->m_raceState;
-	racer = raceState->FUN_0043c6e0(
+	racer = raceState->FindRacerInCone(
 		&position,
 		&m_source->m_right,
 		g_lightningChainMinDistanceSquared,
@@ -555,7 +555,7 @@ void RacePowerupManager::LightningAction::FindVictim()
 			}
 		}
 
-		racer = raceState->FUN_0043c7f0(
+		racer = raceState->FindNextRacerInCone(
 			racer,
 			&position,
 			&m_source->m_right,

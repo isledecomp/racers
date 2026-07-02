@@ -923,7 +923,7 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 	velocity = m_unk0x3e8.m_unk0x008;
 
 	if (!m_unk0xd34 && m_unk0xd08 == 2) {
-		if (m_unk0x00c->FUN_0043ca60(&m_actionSource, &m_actionSource.m_right, 0.0f, 169.0f, 0.30000001f)) {
+		if (m_unk0x00c->FindNearestRacerInCone(&m_actionSource, &m_actionSource.m_right, 0.0f, 169.0f, 0.30000001f)) {
 			FUN_00439c90();
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			m_unk0xd34 = g_randomTable[g_randomTableIndex] * 8 + 2000;
@@ -1642,8 +1642,13 @@ void RaceState::Racer::FUN_00438f20()
 				GolVec3 direction;
 				m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
 
-				if (!m_unk0x00c
-						 ->FUN_0043ca60(&position, &direction, g_unk0x004b0974, g_unk0x004b0978, g_unk0x004b097c)) {
+				if (!m_unk0x00c->FindNearestRacerInCone(
+						&position,
+						&direction,
+						g_unk0x004b0974,
+						g_unk0x004b0978,
+						g_unk0x004b097c
+					)) {
 					return;
 				}
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
@@ -2201,7 +2206,7 @@ LegoU32 RaceState::Racer::FUN_00439ba0()
 				if (lapTransitionCount > result) {
 					RaceState* raceState = m_unk0x00c;
 					m_lapsCompleted = result + 1;
-					result = raceState->FUN_0043cda0(this);
+					result = raceState->GetTimeBehind(this);
 					m_unk0xd88 = result;
 
 					if (result) {
@@ -2236,9 +2241,9 @@ void RaceState::Racer::FUN_00439c40()
 }
 
 // FUNCTION: LEGORACERS 0x00439c70
-void RaceState::Racer::FUN_00439c70(Field0x00c::StandingsDeltaEntry* p_entries)
+void RaceState::Racer::ComputeStandingsDeltas(Field0x00c::StandingsDeltaEntry* p_entries)
 {
-	m_unk0x00c->FUN_0043cf30(this, p_entries);
+	m_unk0x00c->ComputeStandingsDeltas(this, p_entries);
 }
 
 // FUNCTION: LEGORACERS 0x00439c90
@@ -2439,7 +2444,7 @@ void RaceState::Racer::FUN_0043a0e0()
 	m_unk0xd08 = 2;
 
 	if (!unk0xe2c) {
-		unk0xe2c = m_unk0x00c->FUN_0043d070(this);
+		unk0xe2c = m_unk0x00c->FindNearestRouteRecord(this);
 		m_unk0xe2c = unk0xe2c;
 
 		if (unk0xe2c) {
@@ -4409,7 +4414,7 @@ void RaceState::Racer::Field0x018::FUN_0043ec10(LegoU32 p_elapsedMs)
 
 		Racer* racer = m_racer;
 		RaceState* raceState = racer->m_unk0x00c;
-		Racer* nearbyRacer = raceState->FUN_0043cbb0(&position, 2.0f, g_unk0x004b0b24);
+		Racer* nearbyRacer = raceState->FindNearestRacerInRange(&position, 2.0f, g_unk0x004b0b24);
 		m_unk0x380 = nearbyRacer;
 
 		if (nearbyRacer != NULL) {

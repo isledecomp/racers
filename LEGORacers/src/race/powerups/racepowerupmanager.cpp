@@ -1826,7 +1826,7 @@ LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_
 		}
 
 		if (!setup.m_targetPoint) {
-			setup.m_targetRacer = m_raceState->FUN_0043ca60(
+			setup.m_targetRacer = m_raceState->FindNearestRacerInCone(
 				&position,
 				&direction,
 				g_aimMinDistanceSquared,
@@ -1865,7 +1865,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 	GolVec3 direction;
 	p_racer->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
 
-	RaceState::Racer* target = m_raceState->FUN_0043c910(
+	RaceState::Racer* target = m_raceState->FindFarthestRacerInCone(
 		&position,
 		&direction,
 		g_hookAimMinDistanceSquared,
@@ -1873,7 +1873,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 		g_hookAimFarConeCosine
 	);
 	if (!target) {
-		target = m_raceState->FUN_0043ca60(
+		target = m_raceState->FindNearestRacerInCone(
 			&position,
 			&direction,
 			g_hookAimMinDistanceSquared,
@@ -1969,7 +1969,7 @@ LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_l
 	direction.m_y = -direction.m_y;
 	direction.m_z = -direction.m_z;
 
-	RaceState::Racer* target = m_raceState->FUN_0043ca60(
+	RaceState::Racer* target = m_raceState->FindNearestRacerInCone(
 		&position,
 		&direction,
 		g_dynamiteAimMinDistanceSquared,

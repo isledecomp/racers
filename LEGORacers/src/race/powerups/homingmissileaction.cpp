@@ -146,7 +146,7 @@ void RacePowerupManager::HomingMissileAction::LaunchProjectile()
 
 	RaceState* raceState = m_owner0x01c->m_raceState;
 	LegoU32 i = 0;
-	m_targetRacer = raceState->FUN_0043c6e0(
+	m_targetRacer = raceState->FindRacerInCone(
 		&position,
 		&direction,
 		g_missileTargetMinDistanceSquared,
@@ -159,7 +159,7 @@ void RacePowerupManager::HomingMissileAction::LaunchProjectile()
 			break;
 		}
 
-		m_targetRacer = raceState->FUN_0043c7f0(
+		m_targetRacer = raceState->FindNextRacerInCone(
 			m_targetRacer,
 			&position,
 			&direction,

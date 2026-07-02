@@ -51,27 +51,27 @@ extern const LegoFloat g_ghostSampleFractionScale;
 extern const LegoFloat g_item0x40RadiansToTableIndex;
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_violetShoalTwo;
-extern LegoU32 g_unk0x004bef68;
-extern LegoU32 g_unk0x004bef6c;
+extern LegoU32 g_impostorFlags0;
+extern LegoU32 g_impostorFlags1;
 extern LegoFloat g_cosineTable[1024];
 
 // GLOBAL: LEGORACERS 0x004b02e0
 extern const LegoFloat g_unk0x004b02e0 = 0.2f;
 
 // GLOBAL: LEGORACERS 0x004b0424
-static const LegoFloat g_unk0x004b0424 = 100.0f;
+static const LegoFloat g_statMax = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004b0544
 extern const LegoFloat g_unk0x004b0544 = 0.050000001f;
 
 // GLOBAL: LEGORACERS 0x004b094c
-extern const LegoFloat g_unk0x004b094c = 0.40000001f;
+extern const LegoFloat g_enginePitchFloor = 0.40000001f;
 
 // GLOBAL: LEGORACERS 0x004b0950
-extern const LegoFloat g_unk0x004b0950 = 0.1f;
+extern const LegoFloat g_enginePitchDriveBand = 0.1f;
 
 // GLOBAL: LEGORACERS 0x004b0954
-extern const LegoFloat g_unk0x004b0954 = 0.17f;
+extern const LegoFloat g_enginePitchSpeedRange = 0.17f;
 
 // GLOBAL: LEGORACERS 0x004b0958
 extern const LegoFloat g_shieldSoundMinDistance = 30.0f;
@@ -89,100 +89,100 @@ extern const LegoFloat g_shieldHitSoundMaxDistance = 600.0f;
 extern const LegoFloat g_collisionRestitution = 0.75f;
 
 // GLOBAL: LEGORACERS 0x004b0988
-extern const LegoFloat g_unk0x004b0988 = 0.015f;
+extern const LegoFloat g_engineDriveMinSpeed = 0.015f;
 
 // GLOBAL: LEGORACERS 0x004b098c
-extern const LegoFloat g_unk0x004b098c = 0.69999999f;
+extern const LegoFloat g_engineVolumeNormal = 0.69999999f;
 
 // GLOBAL: LEGORACERS 0x004b0990
-extern const LegoFloat g_unk0x004b0990 = 0.5f;
+extern const LegoFloat g_engineVolumeFinished = 0.5f;
 
 // GLOBAL: LEGORACERS 0x004b0994
-extern const LegoFloat g_unk0x004b0994 = 2.2439947f;
+extern const LegoFloat g_engineFadeVolumeScale = 2.2439947f;
 
 // GLOBAL: LEGORACERS 0x004b0998
-extern const LegoFloat g_unk0x004b0998 = 0.059999999f;
+extern const LegoFloat g_engineVolumeRampScale = 0.059999999f;
 
 // GLOBAL: LEGORACERS 0x004b099c
-extern const LegoFloat g_unk0x004b099c = 0.030000029f;
+extern const LegoFloat g_engineVolumeRampRate = 0.030000029f;
 
 // GLOBAL: LEGORACERS 0x004b09a0
-extern const LegoFloat g_unk0x004b09a0 = 0.0099999998f;
+extern const LegoFloat g_brakeSoundMinSpeed = 0.0099999998f;
 
 // GLOBAL: LEGORACERS 0x004b09a4
-extern const LegoFloat g_unk0x004b09a4 = 1.0f;
+extern const LegoFloat g_brakePitchScale = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b0974
-extern const LegoFloat g_unk0x004b0974 = 100.0f;
+extern const LegoFloat g_aiRedTargetMinDistanceSquared = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004b0978
-extern const LegoFloat g_unk0x004b0978 = 62500.0f;
+extern const LegoFloat g_aiRedTargetMaxDistanceSquared = 62500.0f;
 
 // GLOBAL: LEGORACERS 0x004b097c
-extern const LegoFloat g_unk0x004b097c = 0.95999998f;
+extern const LegoFloat g_aiRedTargetConeCosine = 0.95999998f;
 
 // GLOBAL: LEGORACERS 0x004b0980
 extern const LegoFloat g_shieldShoveConeCosine = 0.69999999f;
 
 // GLOBAL: LEGORACERS 0x004b0984
-extern const LegoFloat g_unk0x004b0984 = 0.2f;
+extern const LegoFloat g_statChanceBase = 0.2f;
 
 // GLOBAL: LEGORACERS 0x004b09a8
-extern const LegoFloat g_unk0x004b09a8 = 3.5f;
+extern const LegoFloat g_bodyPointZ = 3.5f;
 
 // GLOBAL: LEGORACERS 0x004b09ac
-static const LegoFloat g_unk0x004b09ac = 0.0111111114f;
+static const LegoFloat g_statChanceStep = 0.0111111114f;
 
 // GLOBAL: LEGORACERS 0x004b09b8
-extern const LegoFloat g_unk0x004b09b8 = 30.0f;
+extern const LegoFloat g_aiAggressionRange = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b09bc
-extern const LegoFloat g_unk0x004b09bc = 0.001953125f;
+extern const LegoFloat g_aiAggressionScale = 0.001953125f;
 
 // GLOBAL: LEGORACERS 0x004b09c4
-extern const LegoFloat g_unk0x004b09c4 = 9.9999997e-05f;
+extern const LegoFloat g_carAnimationMaxSpeed = 9.9999997e-05f;
 
 // GLOBAL: LEGORACERS 0x004b09c8
-extern const LegoFloat g_unk0x004b09c8 = -9.9999997e-05f;
+extern const LegoFloat g_carAnimationMinSpeed = -9.9999997e-05f;
 
 // GLOBAL: LEGORACERS 0x004b09d0
-extern const LegoFloat g_unk0x004b09d0 = 1.5f;
+extern const LegoFloat g_engineIdleRampScale = 1.5f;
 
 // GLOBAL: LEGORACERS 0x004b09d4
 extern const LegoFloat g_shieldShoveStrength = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b09dc
-extern const LegoFloat g_unk0x004b09dc = 0.050000001f;
+extern const LegoFloat g_rubberBandScale = 0.050000001f;
 
 // GLOBAL: LEGORACERS 0x004b0a08
-extern const LegoFloat g_unk0x004b0a08 = 0.40000001f;
+extern const LegoFloat g_proximityPitchFloor = 0.40000001f;
 
 // GLOBAL: LEGORACERS 0x004b0a0c
-extern const LegoFloat g_unk0x004b0a0c = 0.1f;
+extern const LegoFloat g_proximityPitchBand = 0.1f;
 
 // GLOBAL: LEGORACERS 0x004b0a10
-extern const LegoFloat g_unk0x004b0a10 = 0.17f;
+extern const LegoFloat g_proximityPitchSpeedRange = 0.17f;
 
 // GLOBAL: LEGORACERS 0x004b0a14
-extern const LegoFloat g_unk0x004b0a14 = 250000.0f;
+extern const LegoFloat g_carModelScale = 250000.0f;
 
 // GLOBAL: LEGORACERS 0x004b0a18
-extern const LegoFloat g_unk0x004b0a18 = 30.0f;
+extern const LegoFloat g_proximitySoundMinDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b0a1c
 extern const LegoFloat g_unk0x004b0a1c = 2.0f;
 
 // GLOBAL: LEGORACERS 0x004b0a20
-extern const LegoFloat g_unk0x004b0a20 = 200.0f;
+extern const LegoFloat g_proximitySoundMaxDistance = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b0ac0
-extern const LegoFloat g_unk0x004b0ac0 = -1.0f;
+extern const LegoFloat g_hiddenModelDistance = -1.0f;
 
 // GLOBAL: LEGORACERS 0x004b0af0
 extern const LegoFloat g_unk0x004b0af0 = 15.0f;
 
 // GLOBAL: LEGORACERS 0x004b0af4
-extern const LegoFloat g_unk0x004b0af4 = 6.0f;
+extern const LegoFloat g_shadowProbeHeight = 6.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b24
 extern const LegoFloat g_unk0x004b0b24 = 40000.0f;
@@ -200,10 +200,10 @@ extern const LegoFloat g_unk0x004b0b30 = 0.0099999998f;
 extern const LegoFloat g_unk0x004b0b34 = 0.029999999f;
 
 // GLOBAL: LEGORACERS 0x004b0b38
-extern const LegoFloat g_unk0x004b0b38 = 2500.0f;
+extern const LegoFloat g_shadowFadeNearSquared = 2500.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b3c
-extern const LegoFloat g_unk0x004b0b3c = 10000.0f;
+extern const LegoFloat g_shadowFadeFarSquared = 10000.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b40
 extern const LegoFloat g_unk0x004b0b40 = -0.60000002f;
@@ -221,10 +221,10 @@ extern const LegoFloat g_twoPi;
 extern const LegoFloat g_pathMinSegmentLengthSquared;
 
 // GLOBAL: LEGORACERS 0x004c67a4
-LegoFloat g_unk0x004c67a4 = ((1.0f - g_unk0x004b0984) * g_unk0x004b0424) * g_unk0x004b09ac;
+LegoFloat g_statChanceScale = ((1.0f - g_statChanceBase) * g_statMax) * g_statChanceStep;
 
 // GLOBAL: LEGORACERS 0x004c67a8
-LegoFloat g_unk0x004c67a8 = g_unk0x004b0a20 * g_unk0x004b0a20;
+LegoFloat g_proximitySoundMaxDistanceSquared = g_proximitySoundMaxDistance * g_proximitySoundMaxDistance;
 
 // GLOBAL: LEGORACERS 0x004c67ac
 undefined4 g_unk0x004c67ac;
@@ -236,10 +236,10 @@ RaceState::RacerProgressEntry RaceState::g_racerProgressEntries[RaceState::c_rac
 const LegoChar* g_racerDatabaseNames[3] = {"drivers", "champs", "chassis"};
 
 // GLOBAL: LEGORACERS 0x004bef70
-LegoU32 g_unk0x004bef70 = 3;
+LegoU32 g_raceLapCount = 3;
 
 // GLOBAL: LEGORACERS 0x004c6b34
-LegoFloat g_unk0x004c6b34 = g_twoPi * g_pathMinSegmentLengthSquared;
+LegoFloat g_cursePhaseScale = g_twoPi * g_pathMinSegmentLengthSquared;
 
 // FUNCTION: LEGORACERS 0x00436990
 RaceState::Racer::Racer()
@@ -291,9 +291,9 @@ void RaceState::Racer::Destroy()
 		m_engineFastSound = NULL;
 	}
 
-	if (m_unk0xda8) {
-		m_soundSource->ReleaseSound(m_soundDa8);
-		m_unk0xda8 = NULL;
+	if (m_brakeSound) {
+		m_soundSource->ReleaseSound(m_brakeSoundResource);
+		m_brakeSound = NULL;
 	}
 
 	if (m_curseSound) {
@@ -349,7 +349,7 @@ void RaceState::Racer::Reset()
 	m_engineIdleSound = NULL;
 	m_engineDriveSound = NULL;
 	m_engineFastSound = NULL;
-	m_unk0xda8 = NULL;
+	m_brakeSound = NULL;
 	m_curseSound = NULL;
 	m_activeEngineSound = 0;
 	m_engineIdleVolume = 0;
@@ -459,9 +459,9 @@ void RaceState::Racer::Initialize(
 
 	LegoU32 colorValue = p_params->m_driverStats[0];
 	LegoFloat colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_statChanceScale;
 	colorScale *= g_carBuildPreviewMouseScale;
-	colorScale += g_unk0x004b0984;
+	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
@@ -469,9 +469,9 @@ void RaceState::Racer::Initialize(
 
 	colorValue = p_params->m_driverStats[1];
 	colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_statChanceScale;
 	colorScale *= g_carBuildPreviewMouseScale;
-	colorScale += g_unk0x004b0984;
+	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
@@ -479,9 +479,9 @@ void RaceState::Racer::Initialize(
 
 	colorValue = p_params->m_driverStats[2];
 	colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_statChanceScale;
 	colorScale *= g_carBuildPreviewMouseScale;
-	colorScale += g_unk0x004b0984;
+	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
@@ -489,9 +489,9 @@ void RaceState::Racer::Initialize(
 
 	colorValue = p_params->m_driverStats[3];
 	colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_statChanceScale;
 	colorScale *= g_carBuildPreviewMouseScale;
-	colorScale += g_unk0x004b0984;
+	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
@@ -499,9 +499,9 @@ void RaceState::Racer::Initialize(
 
 	colorValue = p_params->m_driverStats[4];
 	colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_statChanceScale;
 	colorScale *= g_carBuildPreviewMouseScale;
-	colorScale += g_unk0x004b0984;
+	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
@@ -509,9 +509,9 @@ void RaceState::Racer::Initialize(
 
 	colorValue = p_params->m_driverStats[5];
 	colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_statChanceScale;
 	colorScale *= g_carBuildPreviewMouseScale;
-	colorScale += g_unk0x004b0984;
+	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
 	}
@@ -526,8 +526,8 @@ void RaceState::Racer::Initialize(
 	}
 	else {
 		LegoFloat d22Scale = static_cast<LegoFloat>(unk0xd22);
-		d22Scale *= g_unk0x004b09bc;
-		d22Scale *= g_unk0x004b09b8;
+		d22Scale *= g_aiAggressionScale;
+		d22Scale *= g_aiAggressionRange;
 		m_aiAggression = static_cast<LegoU8>(d22Scale);
 	}
 
@@ -669,22 +669,22 @@ void RaceState::Racer::InitializePhysics(RacerContext* p_context, SetupParams* p
 	GolVec3 corner;
 	corner.m_x = halfWidth;
 	corner.m_y = -halfHeight;
-	corner.m_z = g_unk0x004b09a8;
+	corner.m_z = g_bodyPointZ;
 	field0x3e8->SetBodyPoint(0, &corner);
 
 	corner.m_x = halfWidth;
 	corner.m_y = halfHeight;
-	corner.m_z = g_unk0x004b09a8;
+	corner.m_z = g_bodyPointZ;
 	field0x3e8->SetBodyPoint(1, &corner);
 
 	corner.m_x = -halfWidth;
 	corner.m_y = -halfHeight;
-	corner.m_z = g_unk0x004b09a8;
+	corner.m_z = g_bodyPointZ;
 	field0x3e8->SetBodyPoint(2, &corner);
 
 	corner.m_x = -halfWidth;
 	corner.m_y = halfHeight;
-	corner.m_z = g_unk0x004b09a8;
+	corner.m_z = g_bodyPointZ;
 	field0x3e8->SetBodyPoint(3, &corner);
 
 	m_driveController.Initialize(field0x3e8);
@@ -790,7 +790,7 @@ void RaceState::Racer::UpdateCarAnimation(LegoU32 p_elapsedMs)
 	LegoFloat value = m_physics.m_forwardSpeed;
 	CarVisuals* field;
 
-	if (value > g_unk0x004b09c8 && value < g_unk0x004b09c4) {
+	if (value > g_carAnimationMinSpeed && value < g_carAnimationMaxSpeed) {
 		value = 0.0f;
 	}
 	else if (value < 0.0f) {
@@ -808,8 +808,8 @@ setSpeed:
 	LegoFloat speed = value * g_ghostAnimationRateScale;
 	entity->SetUnk0xb8(speed);
 
-	if (field->m_unk0x040) {
-		field->m_unk0x040->SetUnk0xb8(speed);
+	if (field->m_secondaryEntity) {
+		field->m_secondaryEntity->SetUnk0xb8(speed);
 	}
 
 	field->Update(p_elapsedMs);
@@ -1036,8 +1036,8 @@ void RaceState::Racer::UpdateSpatialSounds()
 
 				GolVec3 position;
 				m_visuals.m_carEntity->VTable0x04(&position);
-				resource->m_unk0x018 = position;
-				resource->m_unk0x024 = m_physics.m_velocity;
+				resource->m_position = position;
+				resource->m_velocity = m_physics.m_velocity;
 			}
 			else if ((flags & c_flagGhost) && i == 3) {
 				if (!resource->VTable0x0c()) {
@@ -1053,7 +1053,7 @@ void RaceState::Racer::UpdateSpatialSounds()
 	if (m_curseSound) {
 		GolVec3 position;
 		m_visuals.m_curseEntity.VTable0x04(&position);
-		m_curseSound->m_unk0x018 = position;
+		m_curseSound->m_position = position;
 	}
 }
 
@@ -1072,7 +1072,7 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 
 	if (m_engineIdleSound && m_engineDriveSound && m_engineFastSound) {
 		if (m_physics.m_thrust == 0.0f && !(m_driveController.m_flags & DriveController::c_flagTurbo)) {
-			if (m_physics.m_speed > g_unk0x004b0988) {
+			if (m_physics.m_speed > g_engineDriveMinSpeed) {
 				if (!m_engineFastSound->IsPlaying()) {
 					m_engineFastSound->Play(TRUE);
 					m_activeEngineSound = 2;
@@ -1088,9 +1088,9 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 			m_activeEngineSound = 1;
 		}
 
-		LegoFloat elapsedStep = static_cast<LegoFloat>(p_elapsedMs) * g_unk0x004b099c;
-		elapsedStep *= g_unk0x004b0998;
-		LegoFloat targetVolume = (m_flags & c_flagFinished) ? g_unk0x004b0990 : g_unk0x004b098c;
+		LegoFloat elapsedStep = static_cast<LegoFloat>(p_elapsedMs) * g_engineVolumeRampRate;
+		elapsedStep *= g_engineVolumeRampScale;
+		LegoFloat targetVolume = (m_flags & c_flagFinished) ? g_engineVolumeFinished : g_engineVolumeNormal;
 
 		switch (m_activeEngineSound) {
 		case 2:
@@ -1136,7 +1136,7 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		case 0:
 			if (m_engineIdleVolume < targetVolume) {
 				LegoFloat increment = elapsedStep;
-				increment *= g_unk0x004b09d0;
+				increment *= g_engineIdleRampScale;
 				m_engineIdleVolume += increment;
 			}
 			if (m_engineIdleVolume > targetVolume) {
@@ -1165,7 +1165,7 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		}
 		else {
 			LegoFloat volume = m_engineIdleVolume;
-			volume *= g_unk0x004b0994;
+			volume *= g_engineFadeVolumeScale;
 			volume *= g_negativeRadiansToTableIndex;
 			LegoS32 index = (c_volumeTableBase - static_cast<LegoS32>(volume)) & c_volumeTableMask;
 			volume = g_cosineTable[index];
@@ -1181,7 +1181,7 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		}
 		else {
 			LegoFloat volume = m_engineDriveVolume;
-			volume *= g_unk0x004b0994;
+			volume *= g_engineFadeVolumeScale;
 			volume *= g_negativeRadiansToTableIndex;
 			LegoS32 index = (c_volumeTableBase - static_cast<LegoS32>(volume)) & c_volumeTableMask;
 			volume = g_cosineTable[index];
@@ -1197,7 +1197,7 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		}
 		else {
 			LegoFloat volume = m_engineFastVolume;
-			volume *= g_unk0x004b0994;
+			volume *= g_engineFadeVolumeScale;
 			volume *= g_negativeRadiansToTableIndex;
 			LegoS32 index = (c_volumeTableBase - static_cast<LegoS32>(volume)) & c_volumeTableMask;
 			volume = g_cosineTable[index];
@@ -1217,13 +1217,13 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		m_engineIdleSound->SetVelocity(velocity);
 		m_engineIdleSound->SetFrequencyScale(frequencyScale);
 
-		frequencyScale = m_physics.m_speed / g_unk0x004b0954;
+		frequencyScale = m_physics.m_speed / g_enginePitchSpeedRange;
 		LegoBool32 boostSoundElapsed = m_airborneMs > c_boostSoundElapsedThreshold;
-		frequencyScale *= 1.0f - g_unk0x004b094c - g_unk0x004b0950;
+		frequencyScale *= 1.0f - g_enginePitchFloor - g_enginePitchDriveBand;
 		frequencyScale *= m_enginePitchScale;
-		frequencyScale += g_unk0x004b094c;
+		frequencyScale += g_enginePitchFloor;
 		if (boostSoundElapsed) {
-			frequencyScale += g_unk0x004b0950;
+			frequencyScale += g_enginePitchDriveBand;
 		}
 		if (frequencyScale < 0.0f) {
 			frequencyScale = 0.0f;
@@ -1236,10 +1236,10 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		m_engineDriveSound->SetVelocity(velocity);
 		m_engineDriveSound->SetFrequencyScale(frequencyScale);
 
-		frequencyScale = m_physics.m_speed / g_unk0x004b0954;
-		frequencyScale *= 1.0f - g_unk0x004b094c;
+		frequencyScale = m_physics.m_speed / g_enginePitchSpeedRange;
+		frequencyScale *= 1.0f - g_enginePitchFloor;
 		frequencyScale *= m_enginePitchScale;
-		frequencyScale += g_unk0x004b094c;
+		frequencyScale += g_enginePitchFloor;
 		if (frequencyScale < 0.0f) {
 			frequencyScale = 0.0f;
 		}
@@ -1252,40 +1252,40 @@ void RaceState::Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		m_engineFastSound->SetFrequencyScale(frequencyScale);
 	}
 
-	if (m_unk0xda8) {
-		if (m_physics.m_forwardSpeed >= g_unk0x004b09a0 && m_physics.m_thrust < 0.0f) {
-			m_unk0xda8->SetPosition(position);
-			m_unk0xda8->SetVelocity(velocity);
+	if (m_brakeSound) {
+		if (m_physics.m_forwardSpeed >= g_brakeSoundMinSpeed && m_physics.m_thrust < 0.0f) {
+			m_brakeSound->SetPosition(position);
+			m_brakeSound->SetVelocity(velocity);
 			frequencyScale = m_physics.m_speed;
-			frequencyScale = g_unk0x004b0954 - frequencyScale;
-			frequencyScale *= g_unk0x004b09a4;
+			frequencyScale = g_enginePitchSpeedRange - frequencyScale;
+			frequencyScale *= g_brakePitchScale;
 			frequencyScale = 1.0f - frequencyScale;
-			m_unk0xda8->SetFrequencyScale(frequencyScale);
+			m_brakeSound->SetFrequencyScale(frequencyScale);
 			return;
 		}
 
-		m_soundSource->ReleaseSound(m_soundDa8);
-		m_unk0xda8 = NULL;
+		m_soundSource->ReleaseSound(m_brakeSoundResource);
+		m_brakeSound = NULL;
 		return;
 	}
 
-	if (m_physics.m_forwardSpeed > g_unk0x004b09a0 && m_physics.m_thrust < 0.0f) {
+	if (m_physics.m_forwardSpeed > g_brakeSoundMinSpeed && m_physics.m_thrust < 0.0f) {
 		m_soundSource
 			->PlaySpatialSoundById(2, &position, g_shieldSoundMinDistance, g_shieldSoundMaxDistance, 1.0f, 1.0f);
-		m_unk0xda8 = m_soundSource->AcquireSoundById(3);
+		m_brakeSound = m_soundSource->AcquireSoundById(3);
 
-		if (m_unk0xda8) {
-			m_unk0xda8->Play(TRUE);
+		if (m_brakeSound) {
+			m_brakeSound->Play(TRUE);
 			LegoFloat maxDistance = g_shieldSoundMaxDistance;
 			LegoFloat minDistance = g_shieldSoundMinDistance;
-			m_unk0xda8->SetDistanceRangeWithMinSquared(minDistance * minDistance, maxDistance);
-			m_unk0xda8->SetPosition(position);
-			m_unk0xda8->SetVelocity(velocity);
+			m_brakeSound->SetDistanceRangeWithMinSquared(minDistance * minDistance, maxDistance);
+			m_brakeSound->SetPosition(position);
+			m_brakeSound->SetVelocity(velocity);
 			frequencyScale = m_physics.m_speed;
-			frequencyScale = g_unk0x004b0954 - frequencyScale;
-			frequencyScale *= g_unk0x004b09a4;
+			frequencyScale = g_enginePitchSpeedRange - frequencyScale;
+			frequencyScale *= g_brakePitchScale;
 			frequencyScale = 1.0f - frequencyScale;
-			m_unk0xda8->SetFrequencyScale(frequencyScale);
+			m_brakeSound->SetFrequencyScale(frequencyScale);
 		}
 	}
 }
@@ -1643,9 +1643,9 @@ void RaceState::Racer::AiConsiderPowerup()
 				if (!m_raceState->FindNearestRacerInCone(
 						&position,
 						&direction,
-						g_unk0x004b0974,
-						g_unk0x004b0978,
-						g_unk0x004b097c
+						g_aiRedTargetMinDistanceSquared,
+						g_aiRedTargetMaxDistanceSquared,
+						g_aiRedTargetConeCosine
 					)) {
 					return;
 				}
@@ -1730,23 +1730,23 @@ void RaceState::Racer::AiUsePowerup()
 }
 
 // FUNCTION: LEGORACERS 0x00439210
-LegoU32 RaceState::Racer::CollectColorBrick(LegoU32 p_unk0x04)
+LegoU32 RaceState::Racer::CollectColorBrick(LegoU32 p_brickColor)
 {
 	m_aiPowerupCheckMs = 0;
-	m_heldPowerupColor = p_unk0x04;
+	m_heldPowerupColor = p_brickColor;
 	m_aiPowerupCheckIntervalMs = 300;
-	return p_unk0x04;
+	return p_brickColor;
 }
 
 // FUNCTION: LEGORACERS 0x00439240
-void RaceState::Racer::PlayReaction(LegoBool32 p_unk0x04)
+void RaceState::Racer::PlayReaction(LegoBool32 p_positive)
 {
 	if (m_reactionCooldownMs <= 0) {
 		SoundVector position;
 		m_visuals.m_carEntity->VTable0x04(&position);
 
 		LegoU32 randomIndex;
-		if (p_unk0x04) {
+		if (p_positive) {
 			randomIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoU32 randomValue = g_randomTable[randomIndex];
 			g_randomTableIndex = randomIndex;
@@ -1973,7 +1973,7 @@ void RaceState::Racer::LeaveGhostMode()
 }
 
 // FUNCTION: LEGORACERS 0x004396c0
-void RaceState::Racer::StartTurbo(LegoU32 p_unk0x04)
+void RaceState::Racer::StartTurbo(LegoU32 p_level)
 {
 	m_flags |= c_flagTurbo;
 
@@ -1985,10 +1985,10 @@ void RaceState::Racer::StartTurbo(LegoU32 p_unk0x04)
 		(m_driveController.m_flags & ~DriveController::c_flagTurboWeakened) | DriveController::c_flagTurbo;
 	m_physics.SnapFacingDirection();
 	m_physics.StartBoost();
-	m_turboLevel = p_unk0x04;
+	m_turboLevel = p_level;
 
 	if (m_forceFeedback) {
-		m_forceFeedback->FUN_00422030(p_unk0x04);
+		m_forceFeedback->FUN_00422030(p_level);
 	}
 }
 
@@ -2002,11 +2002,11 @@ void RaceState::Racer::ClearActiveAction()
 }
 
 // FUNCTION: LEGORACERS 0x00439770
-LegoU32 RaceState::Racer::StartShield(LegoU32 p_unk0x04)
+LegoU32 RaceState::Racer::StartShield(LegoU32 p_level)
 {
 	m_flags |= c_flagShielded;
-	m_shieldLevel = p_unk0x04;
-	return p_unk0x04;
+	m_shieldLevel = p_level;
+	return p_level;
 }
 
 // FUNCTION: LEGORACERS 0x00439790
@@ -2028,10 +2028,10 @@ void RaceState::Racer::EndSpinOut()
 }
 
 // FUNCTION: LEGORACERS 0x004397c0
-void RaceState::Racer::StartDrift(LegoBool32 p_unk0x04)
+void RaceState::Racer::StartDrift(LegoBool32 p_left)
 {
-	if (!(m_flags & c_flagDrifting) || p_unk0x04 != m_driveController.m_slideLeft) {
-		m_driveController.EngageSlide(p_unk0x04);
+	if (!(m_flags & c_flagDrifting) || p_left != m_driveController.m_slideLeft) {
+		m_driveController.EngageSlide(p_left);
 
 		if (m_driveController.m_flags & DriveController::c_flagSliding) {
 			m_flags |= c_flagDrifting;
@@ -2095,7 +2095,7 @@ void RaceState::Racer::EndDrift()
 }
 
 // FUNCTION: LEGORACERS 0x00439900
-void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs)
+void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 {
 	LegoU32 flags0xd04 = m_flags;
 	m_curseTimerMs = p_durationMs;
@@ -2113,27 +2113,27 @@ void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durat
 	m_visuals.m_reactionFlags = flags0x384;
 
 	entity->FUN_0040d550(
-		p_unk0x04->GetModel(0),
-		p_unk0x04->VTable0x58(0),
-		p_unk0x04->GetModelPart(0),
-		p_unk0x04->GetModelDistance(0)
+		p_curseEntity->GetModel(0),
+		p_curseEntity->VTable0x58(0),
+		p_curseEntity->GetModelPart(0),
+		p_curseEntity->GetModelDistance(0)
 	);
 
 	for (LegoU32 i = 1; i < 3; i++) {
-		if (p_unk0x04->GetModel(i)) {
+		if (p_curseEntity->GetModel(i)) {
 			entity->FUN_10023940(
-				p_unk0x04->GetModel(i),
-				p_unk0x04->VTable0x58(i),
-				p_unk0x04->GetModelPart(i),
-				p_unk0x04->GetModelDistance(i)
+				p_curseEntity->GetModel(i),
+				p_curseEntity->VTable0x58(i),
+				p_curseEntity->GetModelPart(i),
+				p_curseEntity->GetModelDistance(i)
 			);
 		}
 	}
 
 	entity->FUN_0040dad0(0);
 	entity->SetPartAnimationEnabled(TRUE);
-	entity->CopyOrientationFrom(*p_unk0x04);
-	entity->CopyPositionFrom(*p_unk0x04);
+	entity->CopyOrientationFrom(*p_curseEntity);
+	entity->CopyPositionFrom(*p_curseEntity);
 
 	m_soundDac = m_soundSource->AcquireSoundById(8);
 	if (m_soundDac) {
@@ -2144,7 +2144,7 @@ void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durat
 		);
 
 		GolVec3 position;
-		p_unk0x04->VTable0x04(&position);
+		p_curseEntity->VTable0x04(&position);
 		m_soundDac->SetPosition(position);
 	}
 
@@ -2511,21 +2511,21 @@ void RaceState::Racer::EndMagnetHold()
 }
 
 // FUNCTION: LEGORACERS 0x0043a210
-void RaceState::Racer::SetStandingsPosition(LegoU32 p_unk0x04)
+void RaceState::Racer::SetStandingsPosition(LegoU32 p_position)
 {
 	if (!(m_flags & c_flagPreStart)) {
 		LegoU32 unk0xd00 = m_lapTimes[5];
-		if (p_unk0x04 < unk0xd00) {
+		if (p_position < unk0xd00) {
 			PlayReaction(TRUE);
 		}
-		else if (p_unk0x04 > unk0xd00) {
+		else if (p_position > unk0xd00) {
 			PlayReaction(FALSE);
 		}
 
-		m_lapTimes[5] = p_unk0x04;
+		m_lapTimes[5] = p_position;
 	}
 	else {
-		m_lapTimes[5] = p_unk0x04;
+		m_lapTimes[5] = p_position;
 	}
 }
 
@@ -2560,14 +2560,14 @@ void RaceState::Racer::AbsorbShieldHit()
 }
 
 // FUNCTION: LEGORACERS 0x0043a300
-void RaceState::Racer::SetCameraView(LegoU32 p_unk0x04, LegoBool32 p_unk0x08)
+void RaceState::Racer::SetCameraView(LegoU32 p_viewIndex, LegoBool32 p_flag)
 {
 	if (m_cameraController) {
-		m_cameraController->FUN_004283f0(p_unk0x04, p_unk0x08);
+		m_cameraController->FUN_004283f0(p_viewIndex, p_flag);
 		m_cameraController->m_unk0x000 = TRUE;
-		m_cameraViewIndex = p_unk0x04;
+		m_cameraViewIndex = p_viewIndex;
 
-		if (p_unk0x08) {
+		if (p_flag) {
 			m_flags |= c_flagBit22;
 		}
 		else {
@@ -2641,7 +2641,7 @@ void RaceState::RaceSetup::Reset()
 	m_racers = NULL;
 	m_racerCount = 0;
 	m_updateDelayMs = 0;
-	m_unk0x0c = 0.0f;
+	m_rubberBandBoost = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x0043a440
@@ -2720,8 +2720,8 @@ LegoU32 RaceState::RaceSetup::Update(LegoU32 p_elapsedMs)
 					if (racerIndex) {
 						if (!(m_racers[racerIndex].m_flags & c_rubberBandFlags)) {
 							if (m_racers[racerIndex].GetRaceProgress() > bestProgress) {
-								LegoFloat adjustment = 1.0f - g_unk0x004b09dc;
-								adjustment += m_unk0x0c;
+								LegoFloat adjustment = 1.0f - g_rubberBandScale;
+								adjustment += m_rubberBandBoost;
 								Racer::Physics* field0x3e8 = &m_racers[racerIndex].m_physics;
 								LegoU32 flags0xaa8 = field0x3e8->m_flags;
 								field0x3e8->m_routeBaseSpeed = adjustment;
@@ -2730,7 +2730,7 @@ LegoU32 RaceState::RaceSetup::Update(LegoU32 p_elapsedMs)
 								}
 							}
 							else if (m_racers[racerIndex].GetRaceProgress() < bestProgress) {
-								LegoFloat adjustment = g_unk0x004b09dc + m_unk0x0c;
+								LegoFloat adjustment = g_rubberBandScale + m_rubberBandBoost;
 								adjustment += 1.0f;
 								Racer::Physics* field0x3e8 = &m_racers[racerIndex].m_physics;
 								LegoU32 flags0xaa8 = field0x3e8->m_flags;
@@ -2803,8 +2803,8 @@ void RaceState::Reset()
 
 	m_roster.m_customCarCount = 0;
 	m_roster.m_routeRecords = NULL;
-	m_setup.m_unk0x10 = 0;
-	m_setup.m_unk0x14 = 0;
+	m_setup.m_textureList = 0;
+	m_setup.m_materialLibrary = 0;
 	m_setup.m_lapCount = 0;
 }
 
@@ -2813,14 +2813,14 @@ void RaceState::Destroy()
 {
 	m_setup.Destroy();
 
-	if (m_setup.m_unk0x14) {
-		m_roster.m_golExport->DestroyMaterialList(m_setup.m_unk0x14);
-		m_setup.m_unk0x14 = NULL;
+	if (m_setup.m_materialLibrary) {
+		m_roster.m_golExport->DestroyMaterialList(m_setup.m_materialLibrary);
+		m_setup.m_materialLibrary = NULL;
 	}
 
-	if (m_setup.m_unk0x10) {
-		m_roster.m_golExport->DestroyTextureList(m_setup.m_unk0x10);
-		m_setup.m_unk0x10 = NULL;
+	if (m_setup.m_textureList) {
+		m_roster.m_golExport->DestroyTextureList(m_setup.m_textureList);
+		m_setup.m_textureList = NULL;
 	}
 
 	LegoS32 i;
@@ -2893,10 +2893,10 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_setup.m_unk0x10 = m_roster.m_golExport->CreateTextureList();
-	m_setup.m_unk0x14 = m_roster.m_golExport->CreateMaterialList();
-	m_setup.m_unk0x10->VTable0x1c(p_context->m_renderer, m_roster.m_racerCount);
-	m_setup.m_unk0x14->VTable0x1c(p_context->m_renderer, m_roster.m_racerCount);
+	m_setup.m_textureList = m_roster.m_golExport->CreateTextureList();
+	m_setup.m_materialLibrary = m_roster.m_golExport->CreateMaterialList();
+	m_setup.m_textureList->VTable0x1c(p_context->m_renderer, m_roster.m_racerCount);
+	m_setup.m_materialLibrary->VTable0x1c(p_context->m_renderer, m_roster.m_racerCount);
 
 	DriverCosmeticTable::LoadParams driverParams;
 	driverParams.m_golExport = p_context->m_golExport;
@@ -2923,15 +2923,15 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 	m_chassisTable.FUN_0041db10(&chassisParams);
 
 	for (LegoU32 i = 0; i < m_roster.m_racerCount; i++) {
-		p_context->m_routeRecord = p_params->m_unk0x20[i];
-		CreateRacer(p_params->m_unk0x04[i], p_context, i, p_params->m_unk0x3c);
+		p_context->m_routeRecord = p_params->m_racerRoutes[i];
+		CreateRacer(p_params->m_slots[i], p_context, i, p_params->m_unk0x3c);
 	}
 
 	m_chassisTable.FUN_0041dae0();
 	m_championList.ClearDefinitions();
 	m_driverTable.ClearEntries();
-	m_setup.m_unk0x10->LoadTextures();
-	m_setup.m_unk0x14->FUN_10026970();
+	m_setup.m_textureList->LoadTextures();
+	m_setup.m_materialLibrary->FUN_10026970();
 	m_setup.Initialize(m_roster.m_racers, m_roster.m_racerCount);
 }
 
@@ -2955,36 +2955,37 @@ void RaceState::CreateRacer(
 			static_cast<DriverCosmeticTable::Entry*>(m_driverTable.GetName(p_slot->m_driverName));
 
 		initParams.m_driverEntity = m_driverTable.LoadEntry(p_slot->m_driverName);
-		championDefinition =
-			static_cast<ChampionDefinitionList::ChampionDefinition*>(m_championList.GetName(driverEntry->m_unk0x1a));
-		initParams.m_bodyModel = m_championList.FUN_0041d780(driverEntry->m_unk0x1a);
-		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(championDefinition->m_unk0x18));
-		m_chassisTable.InstantiateModels(chassisItem, &initParams.m_carEntity, &initParams.m_unk0x04);
+		championDefinition = static_cast<ChampionDefinitionList::ChampionDefinition*>(
+			m_championList.GetName(driverEntry->m_championName)
+		);
+		initParams.m_bodyModel = m_championList.FUN_0041d780(driverEntry->m_championName);
+		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(championDefinition->m_chassisName));
+		m_chassisTable.InstantiateModels(chassisItem, &initParams.m_carEntity, &initParams.m_secondaryModel);
 
-		racerParams.m_handlingStat = chassisItem->m_unk0x100;
-		racerParams.m_accelerationStat = chassisItem->m_unk0x101;
-		racerParams.m_topSpeedStat = chassisItem->m_unk0x102;
-		racerParams.m_driverStats[0] = driverEntry->m_unk0x24;
-		racerParams.m_driverStats[1] = driverEntry->m_unk0x25;
-		racerParams.m_driverStats[2] = driverEntry->m_unk0x26;
-		racerParams.m_driverStats[3] = driverEntry->m_unk0x27;
-		racerParams.m_driverStats[4] = driverEntry->m_unk0x28;
-		racerParams.m_driverStats[5] = driverEntry->m_unk0x29;
-		racerParams.m_voiceBank = driverEntry->m_unk0x2a * 12 + 1100;
+		racerParams.m_handlingStat = chassisItem->m_handlingStat;
+		racerParams.m_accelerationStat = chassisItem->m_accelerationStat;
+		racerParams.m_topSpeedStat = chassisItem->m_topSpeedStat;
+		racerParams.m_driverStats[0] = driverEntry->m_redStat;
+		racerParams.m_driverStats[1] = driverEntry->m_yellowStat;
+		racerParams.m_driverStats[2] = driverEntry->m_greenStat;
+		racerParams.m_driverStats[3] = driverEntry->m_blueStat;
+		racerParams.m_driverStats[4] = driverEntry->m_stat4;
+		racerParams.m_driverStats[5] = driverEntry->m_stat5;
+		racerParams.m_voiceBank = driverEntry->m_voiceBankIndex * 12 + 1100;
 
-		switch (driverEntry->m_unk0x22) {
+		switch (driverEntry->m_aiChargeColor) {
 		case 1:
 		case 2:
 		case 3:
 		case 4:
-			racerParams.m_aiChargeColor = driverEntry->m_unk0x22;
+			racerParams.m_aiChargeColor = driverEntry->m_aiChargeColor;
 			break;
 		default:
 			racerParams.m_aiChargeColor = 0;
 			break;
 		}
 
-		racerParams.m_aiChargeTarget = driverEntry->m_unk0x23;
+		racerParams.m_aiChargeTarget = driverEntry->m_aiChargeTarget;
 		racerParams.m_displayNameWide = m_driverTable.GetStringBuffer(p_slot->m_driverName);
 	}
 	else {
@@ -3002,7 +3003,7 @@ void RaceState::CreateRacer(
 		p_slot->m_textures->LoadTextures();
 		p_slot->m_materials->FUN_10026970();
 		initParams.m_bodyModel = m_roster.m_customCarModels[customIndex];
-		initParams.m_bodyModel->VTable0x50(p_slot->m_model, g_unk0x004b0a14);
+		initParams.m_bodyModel->VTable0x50(p_slot->m_model, g_carModelScale);
 
 		if (p_slot->m_altModel == NULL) {
 			LegoChar fallbackName[3];
@@ -3020,15 +3021,15 @@ void RaceState::CreateRacer(
 				p_slot->m_altModel,
 				m_driverTable.m_rootNode,
 				&m_driverTable.m_modelParts,
-				g_unk0x004b0a14
+				g_carModelScale
 			);
 		}
 
 		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(p_slot->m_chassisName));
-		m_chassisTable.InstantiateModels(chassisItem, &initParams.m_carEntity, &initParams.m_unk0x04);
-		racerParams.m_handlingStat = chassisItem->m_unk0x100;
-		racerParams.m_accelerationStat = chassisItem->m_unk0x101;
-		racerParams.m_topSpeedStat = chassisItem->m_unk0x102;
+		m_chassisTable.InstantiateModels(chassisItem, &initParams.m_carEntity, &initParams.m_secondaryModel);
+		racerParams.m_handlingStat = chassisItem->m_handlingStat;
+		racerParams.m_accelerationStat = chassisItem->m_accelerationStat;
+		racerParams.m_topSpeedStat = chassisItem->m_topSpeedStat;
 
 		for (LegoU32 i = 0; i < sizeOfArray(racerParams.m_driverStats); i++) {
 			racerParams.m_driverStats[i] = 100;
@@ -3039,44 +3040,44 @@ void RaceState::CreateRacer(
 		m_roster.m_customCarCount = customIndex + 1;
 	}
 
-	initParams.m_driverMountOffset = chassisItem->m_unk0xc4;
+	initParams.m_driverMountOffset = chassisItem->m_driverMountOffset;
 	initParams.m_racer = &m_roster.m_racers[p_racerIndex];
-	initParams.m_shadowWidth = chassisItem->m_unk0xdc.m_x;
-	initParams.m_shadowLength = chassisItem->m_unk0xdc.m_y;
-	initParams.m_frontSkidWidth = chassisItem->m_unk0xe4.m_x;
-	initParams.m_rearSkidWidth = chassisItem->m_unk0xe4.m_y;
+	initParams.m_shadowWidth = chassisItem->m_shadowSize.m_x;
+	initParams.m_shadowLength = chassisItem->m_shadowSize.m_y;
+	initParams.m_frontSkidWidth = chassisItem->m_skidWidths.m_x;
+	initParams.m_rearSkidWidth = chassisItem->m_skidWidths.m_y;
 	::strncpy(initParams.m_materialName, "carshad", sizeof(initParams.m_materialName));
 	initParams.m_materialName[sizeof(initParams.m_materialName) - 1] = static_cast<LegoChar>('0' + p_racerIndex);
 
 	for (LegoU32 i = 0; i < sizeOfArray(initParams.m_wheelOffsets); i++) {
-		initParams.m_wheelOffsets[i] = chassisItem->m_unk0x58[i];
+		initParams.m_wheelOffsets[i] = chassisItem->m_wheelOffsets[i];
 	}
 
-	racerParams.m_anchorWheelPosition = chassisItem->m_unk0x88[1];
-	racerParams.m_rearWheelY0 = chassisItem->m_unk0x88[2].m_y;
-	racerParams.m_rearWheelX = chassisItem->m_unk0x88[3].m_x;
-	racerParams.m_rearWheelY1 = chassisItem->m_unk0x88[3].m_y;
+	racerParams.m_anchorWheelPosition = chassisItem->m_wheelPositions[1];
+	racerParams.m_rearWheelY0 = chassisItem->m_wheelPositions[2].m_y;
+	racerParams.m_rearWheelX = chassisItem->m_wheelPositions[3].m_x;
+	racerParams.m_rearWheelY1 = chassisItem->m_wheelPositions[3].m_y;
 
 	racerParams.m_lapCount = m_setup.m_lapCount;
 	racerParams.m_eventTable = p_context->m_eventTable;
 	racerParams.m_unk0x64 = p_context->m_unk0x2c;
 	racerParams.m_trackWorld = p_context->m_trackWorld;
-	racerParams.m_enginePitchScale = chassisItem->m_unk0xec;
+	racerParams.m_enginePitchScale = chassisItem->m_enginePitchScale;
 
 	if (championDefinition) {
-		racerParams.m_centerOfMass.m_x = championDefinition->m_unk0x24;
-		racerParams.m_centerOfMass.m_y = championDefinition->m_unk0x28;
-		racerParams.m_centerOfMass.m_z = championDefinition->m_unk0x2c;
-		racerParams.m_mass = championDefinition->m_unk0x20;
+		racerParams.m_centerOfMass.m_x = championDefinition->m_centerOfMassX;
+		racerParams.m_centerOfMass.m_y = championDefinition->m_centerOfMassY;
+		racerParams.m_centerOfMass.m_z = championDefinition->m_centerOfMassZ;
+		racerParams.m_mass = championDefinition->m_mass;
 		racerParams.m_weight = 0.0f;
 	}
 	else {
 		racerParams.m_centerOfMass.m_x =
-			p_slot->m_unk0x18 * g_carBuildModelTextureCoordinateScale + chassisItem->m_unk0xb8.m_x;
+			p_slot->m_unk0x18 * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_x;
 		racerParams.m_centerOfMass.m_y =
-			p_slot->m_unk0x1c * g_carBuildModelTextureCoordinateScale + chassisItem->m_unk0xb8.m_y;
-		racerParams.m_centerOfMass.m_z = chassisItem->m_unk0xb8.m_z;
-		racerParams.m_mass = chassisItem->m_unk0xd0 + p_slot->m_unk0x14;
+			p_slot->m_unk0x1c * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_y;
+		racerParams.m_centerOfMass.m_z = chassisItem->m_centerOfMass.m_z;
+		racerParams.m_mass = chassisItem->m_baseMass + p_slot->m_unk0x14;
 		racerParams.m_weight = p_slot->m_unk0x14;
 	}
 
@@ -3099,11 +3100,11 @@ void RaceState::CreateRacer(
 
 	m_roster.m_racers[p_racerIndex].Initialize(p_context, &initParams, &racerParams, this, p_racerIndex);
 
-	PurpleDune0x7c* shadowTexture = m_setup.m_unk0x10->GetItem(p_racerIndex);
-	DuskwindBananaRelic0x24* shadowMaterial = m_setup.m_unk0x14->GetItem(p_racerIndex);
-	shadowTexture->SetNameFromBuffer(chassisItem->m_unk0x50);
+	PurpleDune0x7c* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
+	DuskwindBananaRelic0x24* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
+	shadowTexture->SetNameFromBuffer(chassisItem->m_shadowName);
 	shadowTexture->SetTextureFlags(GoldDune0x38::c_unk0x36Bit2 | GoldDune0x38::c_unk0x36Bit3);
-	shadowMaterial->SetName(chassisItem->m_unk0x50);
+	shadowMaterial->SetName(chassisItem->m_shadowName);
 
 	DuskWindBananaRelicParams shadowMaterialParams;
 	::memset(&shadowMaterialParams, 0, sizeof(shadowMaterialParams));
@@ -3453,7 +3454,7 @@ void RaceState::UpdateStandings()
 			}
 		}
 
-		if (nearestDistanceSquared >= g_unk0x004b0a20 * g_unk0x004b0a20) {
+		if (nearestDistanceSquared >= g_proximitySoundMaxDistance * g_proximitySoundMaxDistance) {
 			if (sound->IsPlaying()) {
 				sound->Stop();
 				return;
@@ -3474,10 +3475,10 @@ void RaceState::UpdateStandings()
 			velocity.m_z *= 2.0f;
 			sound->SetVelocity(velocity);
 
-			LegoFloat frequencyScale = nearestRacer->m_physics.m_speed / g_unk0x004b0a10;
-			frequencyScale *= 1.0f - g_unk0x004b0a08 - g_unk0x004b0a0c;
+			LegoFloat frequencyScale = nearestRacer->m_physics.m_speed / g_proximityPitchSpeedRange;
+			frequencyScale *= 1.0f - g_proximityPitchFloor - g_proximityPitchBand;
 			frequencyScale *= nearestRacer->m_enginePitchScale;
-			frequencyScale += g_unk0x004b0a08;
+			frequencyScale += g_proximityPitchFloor;
 
 			if (frequencyScale < 0.0f) {
 				frequencyScale = 0.0f;
@@ -3517,8 +3518,8 @@ void RaceState::StartRace()
 	SpatialSoundInstance* sound = m_roster.m_soundSource->AcquireSoundById(0x4f);
 	m_roster.m_proximitySound = sound;
 	if (sound) {
-		LegoFloat maxDistance = g_unk0x004b0a20;
-		sound->m_minDistanceSquared = g_unk0x004b0a18 * g_unk0x004b0a18;
+		LegoFloat maxDistance = g_proximitySoundMaxDistance;
+		sound->m_minDistanceSquared = g_proximitySoundMinDistance * g_proximitySoundMinDistance;
 		sound->m_maxDistanceSquared = maxDistance * maxDistance;
 		m_roster.m_proximitySound->SetVolume(0.8f);
 	}

@@ -224,7 +224,7 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 
 				RaceState::Racer::CarVisuals* racerCarVisuals = &m_racer->m_visuals;
 				racerCarVisuals->m_carEntity->VTable0x04(&position);
-				m_racer->m_checkpointGraph->FUN_0041eaf0(&position, distance, pathEntry);
+				m_racer->m_checkpointGraph->AdvanceAlongGraph(&position, distance, pathEntry);
 			}
 
 			m_racer->m_visuals.m_carEntity->VTable0x08(position);

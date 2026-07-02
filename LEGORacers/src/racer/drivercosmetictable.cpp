@@ -152,16 +152,16 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			m_entries[i].m_materialName[0] = '\0';
 			m_entries[i].m_textureName[0] = '\0';
 			m_entries[i].m_modelName[0] = '\0';
-			m_entries[i].m_unk0x1a[0] = '\0';
-			m_entries[i].m_unk0x22 = 0;
-			m_entries[i].m_unk0x23 = 0;
-			m_entries[i].m_unk0x24 = 0;
-			m_entries[i].m_unk0x25 = 0;
-			m_entries[i].m_unk0x26 = 0;
-			m_entries[i].m_unk0x27 = 0;
-			m_entries[i].m_unk0x28 = 0;
-			m_entries[i].m_unk0x29 = 0;
-			m_entries[i].m_unk0x2a = 0;
+			m_entries[i].m_championName[0] = '\0';
+			m_entries[i].m_aiChargeColor = 0;
+			m_entries[i].m_aiChargeTarget = 0;
+			m_entries[i].m_redStat = 0;
+			m_entries[i].m_yellowStat = 0;
+			m_entries[i].m_greenStat = 0;
+			m_entries[i].m_blueStat = 0;
+			m_entries[i].m_stat4 = 0;
+			m_entries[i].m_stat5 = 0;
+			m_entries[i].m_voiceBankIndex = 0;
 			m_entries[i].m_cosmetics.m_hatIndex = 0;
 			m_entries[i].m_cosmetics.m_faceIndex = 0;
 			m_entries[i].m_cosmetics.m_torsoIndex = 0;
@@ -201,31 +201,31 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 					break;
 				case GolFileParser::e_unknown0x2b:
 					::strncpy(
-						m_entries[i].m_unk0x1a,
-						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_unk0x1a)),
-						sizeOfArray(m_entries[i].m_unk0x1a)
+						m_entries[i].m_championName,
+						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_championName)),
+						sizeOfArray(m_entries[i].m_championName)
 					);
 					break;
 				case GolFileParser::e_unknown0x2c:
-					m_entries[i].m_unk0x24 = parser->ReadInteger();
+					m_entries[i].m_redStat = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x2d:
-					m_entries[i].m_unk0x25 = parser->ReadInteger();
+					m_entries[i].m_yellowStat = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x2e:
-					m_entries[i].m_unk0x26 = parser->ReadInteger();
+					m_entries[i].m_greenStat = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x2f:
-					m_entries[i].m_unk0x27 = parser->ReadInteger();
+					m_entries[i].m_blueStat = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x30:
-					m_entries[i].m_unk0x28 = parser->ReadInteger();
+					m_entries[i].m_stat4 = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x31:
-					m_entries[i].m_unk0x29 = parser->ReadInteger();
+					m_entries[i].m_stat5 = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x34:
-					m_entries[i].m_unk0x2a = parser->ReadInteger();
+					m_entries[i].m_voiceBankIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x35:
 					m_entries[i].m_cosmetics.m_hatIndex = parser->ReadInteger();
@@ -243,8 +243,8 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 					m_entries[i].m_cosmetics.m_expressionIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x3a:
-					m_entries[i].m_unk0x22 = parser->ReadInteger();
-					m_entries[i].m_unk0x23 = parser->ReadInteger();
+					m_entries[i].m_aiChargeColor = parser->ReadInteger();
+					m_entries[i].m_aiChargeTarget = parser->ReadInteger();
 					break;
 				default:
 					parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);

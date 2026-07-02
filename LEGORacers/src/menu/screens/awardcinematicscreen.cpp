@@ -585,7 +585,7 @@ LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
 					static_cast<DriverCosmeticTable::Entry*>(m_context->m_cosmeticTable.GetName(driverName));
 				ChampionDefinitionList::ChampionDefinition* championDefinition =
 					static_cast<ChampionDefinitionList::ChampionDefinition*>(
-						m_context->m_championDefinitions.GetName(driverEntry->m_unk0x1a)
+						m_context->m_championDefinitions.GetName(driverEntry->m_championName)
 					);
 
 				SaveGame* quickBuildSave = &m_context->m_saveSystem.GetQuickBuildSave();
@@ -593,7 +593,7 @@ LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
 					record = quickBuildSave->GetRecord(i);
 
 					record->GetChassisName(name);
-					if (::strncmp(name, championDefinition->m_unk0x18, sizeof(GolName)) == 0) {
+					if (::strncmp(name, championDefinition->m_chassisName, sizeof(GolName)) == 0) {
 						record->GetName(name);
 						if (::strncmp(name, "CHAMP", sizeof(name)) == 0) {
 							found = TRUE;

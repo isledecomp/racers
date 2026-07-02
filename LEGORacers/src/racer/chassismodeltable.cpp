@@ -160,9 +160,9 @@ LegoU32 ChassisModelTable::FUN_0041db10(const Params* p_params)
 		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 		parser->ReadLeftCurly();
-		m_items[i].m_unk0x100 = '2';
-		m_items[i].m_unk0x102 = '2';
-		m_items[i].m_unk0x101 = 'P';
+		m_items[i].m_handlingStat = '2';
+		m_items[i].m_topSpeedStat = '2';
+		m_items[i].m_accelerationStat = 'P';
 		GolFileParser::ParserTokenType token;
 		while ((token = parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
@@ -174,43 +174,43 @@ LegoU32 ChassisModelTable::FUN_0041db10(const Params* p_params)
 				break;
 			case GolFileParser::e_unknown0x39:
 				::strncpy(
-					m_items[i].m_unk0x50,
-					parser->ReadStringWithMaxLength(sizeof(m_items[i].m_unk0x50)),
-					sizeof(m_items[i].m_unk0x50)
+					m_items[i].m_shadowName,
+					parser->ReadStringWithMaxLength(sizeof(m_items[i].m_shadowName)),
+					sizeof(m_items[i].m_shadowName)
 				);
 				break;
 			case GolFileParser::e_unknown0x2a:
-				m_items[i].m_unk0xb8.m_x = parser->ReadFloat();
-				m_items[i].m_unk0xb8.m_y = parser->ReadFloat();
-				m_items[i].m_unk0xb8.m_z = parser->ReadFloat();
+				m_items[i].m_centerOfMass.m_x = parser->ReadFloat();
+				m_items[i].m_centerOfMass.m_y = parser->ReadFloat();
+				m_items[i].m_centerOfMass.m_z = parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2b:
-				m_items[i].m_unk0xc4.m_x = parser->ReadFloat();
-				m_items[i].m_unk0xc4.m_y = parser->ReadFloat();
-				m_items[i].m_unk0xc4.m_z = parser->ReadFloat();
+				m_items[i].m_driverMountOffset.m_x = parser->ReadFloat();
+				m_items[i].m_driverMountOffset.m_y = parser->ReadFloat();
+				m_items[i].m_driverMountOffset.m_z = parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2c:
-				m_items[i].m_unk0xd0 = parser->ReadFloat();
+				m_items[i].m_baseMass = parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2d:
 				m_items[i].m_unk0xd4.m_x = parser->ReadFloat();
 				m_items[i].m_unk0xd4.m_y = parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2e:
-				m_items[i].m_unk0xdc.m_x = parser->ReadFloat();
-				m_items[i].m_unk0xdc.m_y = parser->ReadFloat();
+				m_items[i].m_shadowSize.m_x = parser->ReadFloat();
+				m_items[i].m_shadowSize.m_y = parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2f:
-				m_items[i].m_unk0xec = parser->ReadFloat();
+				m_items[i].m_enginePitchScale = parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x30: {
 				parser->ReadLeftCurly();
-				m_items[i].m_unk0xe4.m_x = parser->ReadFloat();
-				m_items[i].m_unk0xe4.m_y = parser->ReadFloat();
+				m_items[i].m_skidWidths.m_x = parser->ReadFloat();
+				m_items[i].m_skidWidths.m_y = parser->ReadFloat();
 				for (LegoS32 j = 0; j < 4; j++) {
-					m_items[i].m_unk0x58[j].m_x = parser->ReadFloat();
-					m_items[i].m_unk0x58[j].m_y = parser->ReadFloat();
-					m_items[i].m_unk0x58[j].m_z = parser->ReadFloat();
+					m_items[i].m_wheelOffsets[j].m_x = parser->ReadFloat();
+					m_items[i].m_wheelOffsets[j].m_y = parser->ReadFloat();
+					m_items[i].m_wheelOffsets[j].m_z = parser->ReadFloat();
 				}
 				parser->ReadRightCurly();
 				break;
@@ -218,9 +218,9 @@ LegoU32 ChassisModelTable::FUN_0041db10(const Params* p_params)
 			case GolFileParser::e_unknown0x31: {
 				parser->ReadLeftCurly();
 				for (LegoS32 j = 0; j < 4; j++) {
-					m_items[i].m_unk0x88[j].m_x = parser->ReadFloat();
-					m_items[i].m_unk0x88[j].m_y = parser->ReadFloat();
-					m_items[i].m_unk0x88[j].m_z = parser->ReadFloat();
+					m_items[i].m_wheelPositions[j].m_x = parser->ReadFloat();
+					m_items[i].m_wheelPositions[j].m_y = parser->ReadFloat();
+					m_items[i].m_wheelPositions[j].m_z = parser->ReadFloat();
 				}
 				parser->ReadRightCurly();
 				break;
@@ -232,13 +232,13 @@ LegoU32 ChassisModelTable::FUN_0041db10(const Params* p_params)
 				m_items[i].m_unk0xf4 = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x3a:
-				m_items[i].m_unk0x100 = static_cast<LegoU8>(parser->ReadInteger());
+				m_items[i].m_handlingStat = static_cast<LegoU8>(parser->ReadInteger());
 				break;
 			case GolFileParser::e_unknown0x3b:
-				m_items[i].m_unk0x102 = static_cast<LegoU8>(parser->ReadInteger());
+				m_items[i].m_topSpeedStat = static_cast<LegoU8>(parser->ReadInteger());
 				break;
 			case GolFileParser::e_unknown0x3c:
-				m_items[i].m_unk0x101 = static_cast<LegoU8>(parser->ReadInteger());
+				m_items[i].m_accelerationStat = static_cast<LegoU8>(parser->ReadInteger());
 				break;
 			default:
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);

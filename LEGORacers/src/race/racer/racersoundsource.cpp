@@ -9,62 +9,62 @@ DECOMP_SIZE_ASSERT(RaceState::Racer::SoundSource, 0x14)
 extern SpatialSoundInstance g_nullStreamingSoundInstance;
 
 // FUNCTION: LEGORACERS 0x00443b50
-void RaceState::Racer::SoundSource::PlaySoundById(LegoU32 p_unk0x04)
+void RaceState::Racer::SoundSource::PlaySoundById(LegoU32 p_soundId)
 {
 	if (m_soundManager) {
 		SoundGroup* soundGroup = NULL;
-		LegoU32 index = FUN_00443c30(p_unk0x04, &soundGroup);
+		LegoU32 index = ResolveSoundId(p_soundId, &soundGroup);
 		soundGroup->PlaySoundByIndex(index);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00443b80
 void RaceState::Racer::SoundSource::PlaySpatialSoundById(
-	LegoU32 p_unk0x04,
-	SoundVector* p_unk0x08,
-	LegoFloat p_unk0x0c,
-	LegoFloat p_unk0x10,
-	LegoFloat p_unk0x14,
-	LegoFloat p_unk0x18
+	LegoU32 p_soundId,
+	SoundVector* p_position,
+	LegoFloat p_minDistance,
+	LegoFloat p_maxDistance,
+	LegoFloat p_volume,
+	LegoFloat p_frequencyScale
 )
 {
 	if (m_soundManager) {
 		SoundGroup* soundGroup = NULL;
-		LegoU32 index = FUN_00443c30(p_unk0x04, &soundGroup);
-		soundGroup->PlaySpatialSound(index, p_unk0x08, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18);
+		LegoU32 index = ResolveSoundId(p_soundId, &soundGroup);
+		soundGroup->PlaySpatialSound(index, p_position, p_minDistance, p_maxDistance, p_volume, p_frequencyScale);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00443bd0
-SpatialSoundInstance* RaceState::Racer::SoundSource::AcquireSoundById(LegoU32 p_unk0x04)
+SpatialSoundInstance* RaceState::Racer::SoundSource::AcquireSoundById(LegoU32 p_soundId)
 {
 	if (!m_soundManager) {
 		return &g_nullStreamingSoundInstance;
 	}
 
 	SoundGroup* soundGroup = NULL;
-	LegoU32 index = FUN_00443c30(p_unk0x04, &soundGroup);
+	LegoU32 index = ResolveSoundId(p_soundId, &soundGroup);
 	return soundGroup->CreateStreamingSoundInstance(index);
 }
 
 // FUNCTION: LEGORACERS 0x00443c30
-LegoU32 RaceState::Racer::SoundSource::FUN_00443c30(LegoU32 p_unk0x04, SoundGroup** p_soundGroup)
+LegoU32 RaceState::Racer::SoundSource::ResolveSoundId(LegoU32 p_soundId, SoundGroup** p_soundGroup)
 {
-	if (p_unk0x04 < 1000) {
+	if (p_soundId < 1000) {
 		*p_soundGroup = m_groups[0];
-		return p_unk0x04;
+		return p_soundId;
 	}
 
-	if (p_unk0x04 < 1100) {
+	if (p_soundId < 1100) {
 		*p_soundGroup = m_groups[1];
-		return p_unk0x04 - 1000;
+		return p_soundId - 1000;
 	}
 
-	if (p_unk0x04 < 3000) {
+	if (p_soundId < 3000) {
 		*p_soundGroup = m_groups[2];
-		return p_unk0x04 - 1100;
+		return p_soundId - 1100;
 	}
 
 	*p_soundGroup = m_groups[3];
-	return p_unk0x04 - 3000;
+	return p_soundId - 3000;
 }

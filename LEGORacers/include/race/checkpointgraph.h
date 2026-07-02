@@ -59,7 +59,7 @@ public:
 	void FUN_0041e950();
 	LegoU32 FUN_0041ea60();
 	LegoU32 FUN_0041ea90(LegoU32 p_unk0x04, LegoU32* p_unk0x08);
-	void FUN_0041eaf0(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry);
+	void AdvanceAlongGraph(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry);
 
 private:
 	Entry* m_entries; // 0x00

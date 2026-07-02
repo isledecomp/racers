@@ -26,10 +26,10 @@ LegoU32 g_unk0x004be230 = 2;
 const GolMatrix3 g_unk0x004be234 = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 
 // GLOBAL: LEGORACERS 0x004bef68
-LegoU32 g_unk0x004bef68 = 1;
+LegoU32 g_impostorFlags0 = 1;
 
 // GLOBAL: LEGORACERS 0x004bef6c
-LegoU32 g_unk0x004bef6c = 2;
+LegoU32 g_impostorFlags1 = 2;
 
 // GLOBAL: LEGORACERS 0x004c67f8
 RacerBillboardRenderState0x33c g_racerBillboardRenderState0x33c;

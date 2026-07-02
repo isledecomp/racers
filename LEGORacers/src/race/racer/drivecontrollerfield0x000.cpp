@@ -47,13 +47,13 @@ inline static LegoFloat GetCosineTableValue(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0042a730
-void RaceState::Racer::Physics::AttachRouteAtLoop(RaceRouteRecord* p_entry)
+void RaceState::Racer::Physics::AttachRouteAtLoop(RaceRouteRecord* p_record)
 {
 	m_routeMode = TRUE;
-	m_routeCursor.AttachAtLoop(p_entry);
+	m_routeCursor.AttachAtLoop(p_record);
 
-	GolVec3 position = p_entry->m_loopPosition;
-	GolQuat rotation = p_entry->m_loopRotation;
+	GolVec3 position = p_record->m_loopPosition;
+	GolQuat rotation = p_record->m_loopRotation;
 
 	m_carEntity->VTable0x08(position);
 	GolMath::FUN_00449340(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
@@ -100,7 +100,7 @@ LegoBool32 RaceState::Racer::Physics::CanPowerslide()
 }
 
 // FUNCTION: LEGORACERS 0x0042aea0
-LegoBool32 RaceState::Racer::Physics::CanSteer(LegoFloat p_unk0x04)
+LegoBool32 RaceState::Racer::Physics::CanSteer(LegoFloat p_turnRadius)
 {
 	GolOrientedEntity* entity = m_carEntity;
 	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
@@ -113,7 +113,7 @@ LegoBool32 RaceState::Racer::Physics::CanSteer(LegoFloat p_unk0x04)
 		return FALSE;
 	}
 
-	if ((p_unk0x04 < 0.0f && m_turnRadius > 0.0f) || (p_unk0x04 > 0.0f && m_turnRadius < 0.0f)) {
+	if ((p_turnRadius < 0.0f && m_turnRadius > 0.0f) || (p_turnRadius > 0.0f && m_turnRadius < 0.0f)) {
 		return FALSE;
 	}
 
@@ -173,25 +173,25 @@ LegoFloat RaceState::Racer::Physics::ComputeMinTurnRadius()
 }
 
 // FUNCTION: LEGORACERS 0x00446ef0
-void RaceState::Racer::Physics::SetTurnRadius(LegoFloat p_unk0x04)
+void RaceState::Racer::Physics::SetTurnRadius(LegoFloat p_turnRadius)
 {
-	if (p_unk0x04 > 0.0f) {
-		if (p_unk0x04 < g_minTurnRadius) {
+	if (p_turnRadius > 0.0f) {
+		if (p_turnRadius < g_minTurnRadius) {
 			m_turnRadius = g_minTurnRadius;
 		}
-		else if (p_unk0x04 <= g_maxTurnRadius) {
-			m_turnRadius = p_unk0x04;
+		else if (p_turnRadius <= g_maxTurnRadius) {
+			m_turnRadius = p_turnRadius;
 		}
 		else {
 			m_turnRadius = 0.0f;
 		}
 	}
-	else if (p_unk0x04 < 0.0f) {
-		if (p_unk0x04 > -g_minTurnRadius) {
+	else if (p_turnRadius < 0.0f) {
+		if (p_turnRadius > -g_minTurnRadius) {
 			m_turnRadius = -g_minTurnRadius;
 		}
-		else if (p_unk0x04 >= -g_maxTurnRadius) {
-			m_turnRadius = p_unk0x04;
+		else if (p_turnRadius >= -g_maxTurnRadius) {
+			m_turnRadius = p_turnRadius;
 		}
 		else {
 			m_turnRadius = 0.0f;
@@ -203,16 +203,16 @@ void RaceState::Racer::Physics::SetTurnRadius(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00447f30
-void RaceState::Racer::CarBody::StartSteering(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+void RaceState::Racer::CarBody::StartSteering(LegoFloat p_gain, LegoFloat p_slipRatio, LegoFloat p_maxAngle)
 {
 	LegoU32 flags = m_flags;
-	LegoFloat angle = p_unk0x0c;
-	m_steeringGain = p_unk0x04;
+	LegoFloat angle = p_maxAngle;
+	m_steeringGain = p_gain;
 
 	flags |= c_flagSteering;
-	m_slipRatio = p_unk0x08;
+	m_slipRatio = p_slipRatio;
 	m_flags = flags;
-	m_facingLagMax = p_unk0x0c;
+	m_facingLagMax = p_maxAngle;
 	m_steeringAlignmentMin = GetCosineTableValue(static_cast<LegoS32>(angle * g_item0x40RadiansToTableIndex) & 0x3ff);
 
 	if (m_skidSoundResource != NULL) {
@@ -275,14 +275,14 @@ LegoFloat RaceState::Racer::Physics::GetAverageLateralGrip()
 }
 
 // FUNCTION: LEGORACERS 0x00449070
-undefined4 RaceState::Racer::Physics::StartPowerslide(undefined4 p_unk0x04)
+undefined4 RaceState::Racer::Physics::StartPowerslide(undefined4 p_factorBits)
 {
 	LegoU32 flags = m_flags;
 	flags |= c_flagPowerslide;
 	m_flags = flags;
 
-	m_powerslideFactorBits = p_unk0x04;
-	return p_unk0x04;
+	m_powerslideFactorBits = p_factorBits;
+	return p_factorBits;
 }
 
 // FUNCTION: LEGORACERS 0x00449090

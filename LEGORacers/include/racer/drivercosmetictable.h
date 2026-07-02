@@ -43,16 +43,16 @@ public:
 		GolName m_materialName;      // 0x02
 		GolName m_textureName;       // 0x0a
 		GolName m_modelName;         // 0x12
-		GolName m_unk0x1a;           // 0x1a
-		LegoU8 m_unk0x22;            // 0x22
-		LegoU8 m_unk0x23;            // 0x23
-		LegoU8 m_unk0x24;            // 0x24
-		LegoU8 m_unk0x25;            // 0x25
-		LegoU8 m_unk0x26;            // 0x26
-		LegoU8 m_unk0x27;            // 0x27
-		LegoU8 m_unk0x28;            // 0x28
-		LegoU8 m_unk0x29;            // 0x29
-		LegoU8 m_unk0x2a;            // 0x2a
+		GolName m_championName;      // 0x1a
+		LegoU8 m_aiChargeColor;      // 0x22
+		LegoU8 m_aiChargeTarget;     // 0x23
+		LegoU8 m_redStat;            // 0x24
+		LegoU8 m_yellowStat;         // 0x25
+		LegoU8 m_greenStat;          // 0x26
+		LegoU8 m_blueStat;           // 0x27
+		LegoU8 m_stat4;              // 0x28
+		LegoU8 m_stat5;              // 0x29
+		LegoU8 m_voiceBankIndex;     // 0x2a
 		DriverCosmetics m_cosmetics; // 0x2b
 	};
 

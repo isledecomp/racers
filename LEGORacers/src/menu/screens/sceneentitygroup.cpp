@@ -69,7 +69,7 @@ void AwardCinematicScreen::SceneEntityGroup::VTable0x08(const GolVec3& p_center)
 				ChassisModelTable::Item* item =
 					static_cast<ChassisModelTable::Item*>(m_chassisModels->GetName(m_chassisName));
 				GolVec3 center;
-				m_unk0x40->VTable0x2c(item->m_unk0xc4, &center);
+				m_unk0x40->VTable0x2c(item->m_driverMountOffset, &center);
 				m_unk0x44->VTable0x08(center);
 			}
 		}
@@ -88,7 +88,7 @@ void AwardCinematicScreen::SceneEntityGroup::VTable0x40(const GolVec3& p_directi
 				const LegoChar* name = m_chassisName;
 				ChassisModelTable::Item* item = static_cast<ChassisModelTable::Item*>(nameTable->GetName(name));
 				GolVec3 center;
-				m_unk0x40->VTable0x2c(item->m_unk0xc4, &center);
+				m_unk0x40->VTable0x2c(item->m_driverMountOffset, &center);
 				m_unk0x44->VTable0x08(center);
 			}
 		}

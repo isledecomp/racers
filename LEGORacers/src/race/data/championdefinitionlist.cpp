@@ -140,11 +140,11 @@ void ChampionDefinitionList::FUN_0041d370(const LoadParams* p_params)
 			m_definitions[i].m_unk0x00[0] = '\0';
 			m_definitions[i].m_unk0x08[0] = '\0';
 			m_definitions[i].m_unk0x10[0] = '\0';
-			m_definitions[i].m_unk0x18[0] = '\0';
-			m_definitions[i].m_unk0x20 = 0.0f;
-			m_definitions[i].m_unk0x24 = 0.0f;
-			m_definitions[i].m_unk0x28 = 0.0f;
-			m_definitions[i].m_unk0x2c = 0.0f;
+			m_definitions[i].m_chassisName[0] = '\0';
+			m_definitions[i].m_mass = 0.0f;
+			m_definitions[i].m_centerOfMassX = 0.0f;
+			m_definitions[i].m_centerOfMassY = 0.0f;
+			m_definitions[i].m_centerOfMassZ = 0.0f;
 
 			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 			::strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
@@ -176,18 +176,18 @@ void ChampionDefinitionList::FUN_0041d370(const LoadParams* p_params)
 					break;
 				case GolFileParser::e_unknown0x2b:
 					::strncpy(
-						m_definitions[i].m_unk0x18,
-						parser->ReadStringWithMaxLength(sizeof(m_definitions[i].m_unk0x18)),
-						sizeof(m_definitions[i].m_unk0x18)
+						m_definitions[i].m_chassisName,
+						parser->ReadStringWithMaxLength(sizeof(m_definitions[i].m_chassisName)),
+						sizeof(m_definitions[i].m_chassisName)
 					);
 					break;
 				case GolFileParser::e_unknown0x2c:
-					m_definitions[i].m_unk0x20 = parser->ReadFloat();
+					m_definitions[i].m_mass = parser->ReadFloat();
 					break;
 				case GolFileParser::e_unknown0x2d:
-					m_definitions[i].m_unk0x24 = parser->ReadFloat();
-					m_definitions[i].m_unk0x28 = parser->ReadFloat();
-					m_definitions[i].m_unk0x2c = parser->ReadFloat();
+					m_definitions[i].m_centerOfMassX = parser->ReadFloat();
+					m_definitions[i].m_centerOfMassY = parser->ReadFloat();
+					m_definitions[i].m_centerOfMassZ = parser->ReadFloat();
 					break;
 				default:
 					parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);

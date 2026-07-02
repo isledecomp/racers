@@ -25,14 +25,14 @@ public:
 
 	// SIZE 0x30
 	struct ChampionDefinition {
-		GolName m_unk0x00;   // 0x00
-		GolName m_unk0x08;   // 0x08
-		GolName m_unk0x10;   // 0x10
-		GolName m_unk0x18;   // 0x18
-		LegoFloat m_unk0x20; // 0x20
-		LegoFloat m_unk0x24; // 0x24
-		LegoFloat m_unk0x28; // 0x28
-		LegoFloat m_unk0x2c; // 0x2c
+		GolName m_unk0x00;         // 0x00
+		GolName m_unk0x08;         // 0x08
+		GolName m_unk0x10;         // 0x10
+		GolName m_chassisName;     // 0x18
+		LegoFloat m_mass;          // 0x20
+		LegoFloat m_centerOfMassX; // 0x24
+		LegoFloat m_centerOfMassY; // 0x28
+		LegoFloat m_centerOfMassZ; // 0x2c
 	};
 
 	// SIZE 0x14

@@ -125,19 +125,19 @@ public:
 		// SIZE 0x14
 		class SoundSource : public RaceResourceManager {
 		public:
-			void PlaySoundById(LegoU32 p_unk0x04);
+			void PlaySoundById(LegoU32 p_soundId);
 			void PlaySpatialSoundById(
-				LegoU32 p_unk0x04,
-				SoundVector* p_unk0x08,
-				LegoFloat p_unk0x0c,
-				LegoFloat p_unk0x10,
-				LegoFloat p_unk0x14,
-				LegoFloat p_unk0x18
+				LegoU32 p_soundId,
+				SoundVector* p_position,
+				LegoFloat p_minDistance,
+				LegoFloat p_maxDistance,
+				LegoFloat p_volume,
+				LegoFloat p_frequencyScale
 			);
-			SpatialSoundInstance* AcquireSoundById(LegoU32 p_unk0x04);
+			SpatialSoundInstance* AcquireSoundById(LegoU32 p_soundId);
 
 		private:
-			LegoU32 FUN_00443c30(LegoU32 p_unk0x04, SoundGroup** p_soundGroup);
+			LegoU32 ResolveSoundId(LegoU32 p_unk0x04, SoundGroup** p_soundGroup);
 
 		protected:
 			SoundGroup* m_groups[4]; // 0x04
@@ -157,18 +157,18 @@ public:
 			// SIZE 0x68
 			class InitParams {
 			public:
-				GolModelEntity* m_bodyModel;       // 0x00
-				GolAnimatedEntity* m_unk0x04;      // 0x04
-				GolAnimatedEntity* m_carEntity;    // 0x08
-				GolAnimatedEntity* m_driverEntity; // 0x0c
-				GolVec3 m_driverMountOffset;       // 0x10
-				Racer* m_racer;                    // 0x1c
-				LegoFloat m_shadowWidth;           // 0x20
-				LegoFloat m_shadowLength;          // 0x24
-				LegoFloat m_frontSkidWidth;        // 0x28
-				LegoFloat m_rearSkidWidth;         // 0x2c
-				GolName m_materialName;            // 0x30
-				GolVec3 m_wheelOffsets[4];         // 0x38
+				GolModelEntity* m_bodyModel;         // 0x00
+				GolAnimatedEntity* m_secondaryModel; // 0x04
+				GolAnimatedEntity* m_carEntity;      // 0x08
+				GolAnimatedEntity* m_driverEntity;   // 0x0c
+				GolVec3 m_driverMountOffset;         // 0x10
+				Racer* m_racer;                      // 0x1c
+				LegoFloat m_shadowWidth;             // 0x20
+				LegoFloat m_shadowLength;            // 0x24
+				LegoFloat m_frontSkidWidth;          // 0x28
+				LegoFloat m_rearSkidWidth;           // 0x2c
+				GolName m_materialName;              // 0x30
+				GolVec3 m_wheelOffsets[4];           // 0x38
 			};
 
 			enum {
@@ -261,7 +261,7 @@ public:
 			LegoU32 m_flags;                                   // 0x000
 			GolWorldEntityGroup0x38 m_entityGroup;             // 0x004
 			GolModelEntity* m_bodyModelEntity;                 // 0x03c
-			GolAnimatedEntity* m_unk0x040;                     // 0x040
+			GolAnimatedEntity* m_secondaryEntity;              // 0x040
 			GolAnimatedEntity* m_carEntity;                    // 0x044
 			GolAnimatedEntity* m_driverEntity;                 // 0x048
 			GolVec3 m_driverMountOffset;                       // 0x04c
@@ -824,8 +824,8 @@ public:
 		class SpatialSoundResource : public RaceResourceManager::Resource {
 		public:
 			undefined m_unk0x004[0x018 - 0x004]; // 0x004
-			GolVec3 m_unk0x018;                  // 0x018
-			GolVec3 m_unk0x024;                  // 0x024
+			GolVec3 m_position;                  // 0x018
+			GolVec3 m_velocity;                  // 0x024
 		};
 
 		// Steering/throttle layer between racer control input (or the AI
@@ -1090,8 +1090,8 @@ public:
 			RaceResourceManager::Resource* m_soundDa4; // 0xda4
 		};
 		union {
-			SpatialSoundInstance* m_unk0xda8;          // 0xda8
-			RaceResourceManager::Resource* m_soundDa8; // 0xda8
+			SpatialSoundInstance* m_brakeSound;                  // 0xda8
+			RaceResourceManager::Resource* m_brakeSoundResource; // 0xda8
 		};
 		union {
 			SpatialSoundResource* m_curseSound;      // 0xdac
@@ -1141,14 +1141,14 @@ public:
 			undefined4 m_unk0x24;             // 0x24
 		};
 
-		void FUN_0043d200();
-		void FUN_0043d270();
-		void FUN_0043d3f0();
+		void PruneBodyEvents();
+		void TestRacerCollisions();
+		void SortBodyEvents();
 
-		LegoEventQueue::Event* m_unk0x048; // 0x048
-		RaceState* m_raceState;            // 0x04c
-		Racer* m_racers;                   // 0x050
-		LegoU32 m_racerCount;              // 0x054
+		LegoEventQueue::Event* m_bodyEvents; // 0x048
+		RaceState* m_raceState;              // 0x04c
+		Racer* m_racers;                     // 0x050
+		LegoU32 m_racerCount;                // 0x054
 		union {
 			undefined4 m_unk0x058;         // 0x058
 			CheckpointGraph* m_field0x010; // 0x058
@@ -1203,9 +1203,9 @@ public:
 		Racer* m_racers;                  // 0x00
 		LegoU32 m_racerCount;             // 0x04
 		LegoU32 m_updateDelayMs;          // 0x08
-		LegoFloat m_unk0x0c;              // 0x0c
-		GolTextureList* m_unk0x10;        // 0x10
-		GolMaterialLibrary* m_unk0x14;    // 0x14
+		LegoFloat m_rubberBandBoost;      // 0x0c
+		GolTextureList* m_textureList;        // 0x10
+		GolMaterialLibrary* m_materialLibrary;    // 0x14
 		LegoU8 m_lapCount;                // 0x18
 		undefined m_unk0x19[0x1c - 0x19]; // 0x19
 	};
@@ -1220,8 +1220,8 @@ public:
 	Racer* GetRacer(LegoU32 p_index) { return &m_roster.m_racers[p_index]; }
 	LegoU32 GetRacerCount() const { return m_roster.m_racerCount; }
 	Racer* GetCurrentRacer() { return m_roster.m_racer080; }
-	GolMaterialLibrary* GetMaterialLibrary() const { return m_setup.m_unk0x14; }
-	Racer* GetUnk0x318() { return m_unk0x318[0]; }
+	GolMaterialLibrary* GetMaterialLibrary() const { return m_setup.m_materialLibrary; }
+	Racer* GetPlayerRacer() { return m_playerRacers[0]; }
 	RaceRouteRecord* FindNearestRouteRecord(Racer* p_racer);
 	Racer* FindRacerInCone(
 		GolVec3* p_position,
@@ -1276,14 +1276,14 @@ private:
 	// SIZE 0x44
 	class CreateRacersParams {
 	public:
-		LegoU32 m_racerCount;                               // 0x00
-		LegoRacers::Context::PlayerSetupSlot* m_unk0x04[6]; // 0x04
-		RaceRouteRecord* m_routeRecords;                    // 0x1c
-		RaceRouteRecord* m_unk0x20[6];                      // 0x20
-		TimeRaceManager* m_timeRaceManager;                 // 0x38
-		undefined4 m_unk0x3c;                               // 0x3c
-		LegoU8 m_lapCount;                                  // 0x40
-		undefined m_unk0x41[0x44 - 0x41];                   // 0x41
+		LegoU32 m_racerCount;                             // 0x00
+		LegoRacers::Context::PlayerSetupSlot* m_slots[6]; // 0x04
+		RaceRouteRecord* m_routeRecords;                  // 0x1c
+		RaceRouteRecord* m_racerRoutes[6];                // 0x20
+		TimeRaceManager* m_timeRaceManager;               // 0x38
+		undefined4 m_unk0x3c;                             // 0x3c
+		LegoU8 m_lapCount;                                // 0x40
+		undefined m_unk0x41[0x44 - 0x41];                 // 0x41
 	};
 
 	// SIZE 0x40
@@ -1323,7 +1323,7 @@ private:
 	void StartRace();
 	void DrawRacerEntities(GolRenderDevice* p_renderer, Racer* p_racer);
 	void SetCurrentRacer(Racer* p_racer) { m_roster.m_racer080 = p_racer; }
-	void SetUnk0x284Unk0x0c(LegoFloat p_unk0x0c) { m_setup.m_unk0x0c = p_unk0x0c; }
+	void SetRubberBandBoost(LegoFloat p_boost) { m_setup.m_rubberBandBoost = p_boost; }
 	void Reset();
 	void Destroy();
 
@@ -1333,7 +1333,7 @@ private:
 	RaceRoster m_roster;                                     // 0x0f0
 	RaceSetup m_setup;                                       // 0x284
 	Racer::Physics::RouteCursorInstance m_sharedRouteCursor; // 0x2a0
-	Racer* m_unk0x318[2];                                    // 0x318
+	Racer* m_playerRacers[2];                                // 0x318
 };
 
 #endif // RACESTATE_H

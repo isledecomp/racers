@@ -479,7 +479,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		sourceAnimated = p_racer->m_visuals.m_unk0x040;
+		sourceAnimated = p_racer->m_visuals.m_secondaryEntity;
 		if (sourceAnimated) {
 			m_unk0x20c.FUN_0040d550(
 				sourceAnimated->GetModel(0),

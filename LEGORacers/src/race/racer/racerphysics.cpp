@@ -40,18 +40,18 @@ void RaceState::Racer::CarBody::ComputeSlideBankTarget()
 }
 
 // FUNCTION: LEGORACERS 0x004488e0
-LegoU32 RaceState::Racer::CarBody::AddCollisionWorld(GolBoundedEntity* p_unk0x04)
+LegoU32 RaceState::Racer::CarBody::AddCollisionWorld(GolBoundedEntity* p_world)
 {
 	LegoU32 result = m_collisionWorldCount;
 	LegoU32 i = 0;
 	for (; i < result; i++) {
-		if (m_collisionWorlds[i] == p_unk0x04) {
+		if (m_collisionWorlds[i] == p_world) {
 			return result;
 		}
 	}
 
 	if (result < sizeOfArray(m_collisionWorlds)) {
-		m_collisionWorlds[result] = p_unk0x04;
+		m_collisionWorlds[result] = p_world;
 		result = m_collisionWorldCount + 1;
 		m_collisionWorldCount = result;
 	}
@@ -60,13 +60,13 @@ LegoU32 RaceState::Racer::CarBody::AddCollisionWorld(GolBoundedEntity* p_unk0x04
 }
 
 // FUNCTION: LEGORACERS 0x00448930
-void RaceState::Racer::CarBody::RemoveCollisionWorld(GolBoundedEntity* p_unk0x04)
+void RaceState::Racer::CarBody::RemoveCollisionWorld(GolBoundedEntity* p_world)
 {
 	LegoU32 count = m_collisionWorldCount;
 	LegoU32 index = 0;
 	if (count > 0) {
 		for (; index < count; index++) {
-			if (m_collisionWorlds[index] == p_unk0x04) {
+			if (m_collisionWorlds[index] == p_world) {
 				LegoU32 nextIndex = index + 1;
 				if (nextIndex < count) {
 					GolBoundedEntity** entry = &m_collisionWorlds[nextIndex - 1];
@@ -123,8 +123,8 @@ void RaceState::Racer::CarBody::AgePlaneCache()
 
 // FUNCTION: LEGORACERS 0x00448a70
 RaceState::Racer::Physics::CollisionCacheRecord* RaceState::Racer::CarBody::CachePlane(
-	GolBoundingVolume::Field0x0c* p_unk0x04,
-	RaceEventRecord* p_unk0x08
+	GolBoundingVolume::Field0x0c* p_plane,
+	RaceEventRecord* p_record
 )
 {
 	CollisionCacheRecord* result;
@@ -148,20 +148,20 @@ RaceState::Racer::Physics::CollisionCacheRecord* RaceState::Racer::CarBody::Cach
 		}
 	}
 
-	result->m_plane = *p_unk0x04;
-	result->m_record = p_unk0x08;
+	result->m_plane = *p_plane;
+	result->m_record = p_record;
 	result->m_age = 0;
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00448ae0
-LegoBool32 RaceState::Racer::CarBody::TestCachedPlanes(WheelProbe* p_unk0x04)
+LegoBool32 RaceState::Racer::CarBody::TestCachedPlanes(WheelProbe* p_probe)
 {
-	if (p_unk0x04->m_cachedPlane != NULL) {
-		if (TestCachedPlane(p_unk0x04, p_unk0x04->m_cachedPlane)) {
-			p_unk0x04->m_cachedPlane->m_age = 0;
-			p_unk0x04->m_hitRecord = p_unk0x04->m_cachedPlane->m_record;
+	if (p_probe->m_cachedPlane != NULL) {
+		if (TestCachedPlane(p_probe, p_probe->m_cachedPlane)) {
+			p_probe->m_cachedPlane->m_age = 0;
+			p_probe->m_hitRecord = p_probe->m_cachedPlane->m_record;
 
 			return TRUE;
 		}
@@ -170,9 +170,9 @@ LegoBool32 RaceState::Racer::CarBody::TestCachedPlanes(WheelProbe* p_unk0x04)
 	CollisionCacheRecord* entry = m_planeCache;
 	CollisionCacheRecord* end = &m_planeCache[m_planeCacheCount];
 	while (entry < end) {
-		if (p_unk0x04->m_cachedPlane != entry && TestCachedPlane(p_unk0x04, entry)) {
-			p_unk0x04->m_cachedPlane = entry;
-			p_unk0x04->m_hitRecord = entry->m_record;
+		if (p_probe->m_cachedPlane != entry && TestCachedPlane(p_probe, entry)) {
+			p_probe->m_cachedPlane = entry;
+			p_probe->m_hitRecord = entry->m_record;
 			entry->m_age = 0;
 
 			return TRUE;
@@ -185,17 +185,17 @@ LegoBool32 RaceState::Racer::CarBody::TestCachedPlanes(WheelProbe* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00448b80
-LegoBool32 RaceState::Racer::CarBody::TestCachedPlane(WheelProbe* p_unk0x04, CollisionCacheRecord* p_unk0x08)
+LegoBool32 RaceState::Racer::CarBody::TestCachedPlane(WheelProbe* p_probe, CollisionCacheRecord* p_record)
 {
 	GolVec3 scaled;
-	LegoFloat start = p_unk0x08->m_plane.m_normal.m_z * p_unk0x04->m_rayStart.m_z;
-	start += p_unk0x08->m_plane.m_normal.m_y * p_unk0x04->m_rayStart.m_y;
-	start += p_unk0x04->m_rayStart.m_x * p_unk0x08->m_plane.m_normal.m_x;
-	start += p_unk0x08->m_plane.m_unk0x30;
-	LegoFloat end = p_unk0x08->m_plane.m_normal.m_z * p_unk0x04->m_rayEnd.m_z;
-	end += p_unk0x04->m_rayEnd.m_y * p_unk0x08->m_plane.m_normal.m_y;
-	end += p_unk0x04->m_rayEnd.m_x * p_unk0x08->m_plane.m_normal.m_x;
-	end += p_unk0x08->m_plane.m_unk0x30;
+	LegoFloat start = p_record->m_plane.m_normal.m_z * p_probe->m_rayStart.m_z;
+	start += p_record->m_plane.m_normal.m_y * p_probe->m_rayStart.m_y;
+	start += p_probe->m_rayStart.m_x * p_record->m_plane.m_normal.m_x;
+	start += p_record->m_plane.m_unk0x30;
+	LegoFloat end = p_record->m_plane.m_normal.m_z * p_probe->m_rayEnd.m_z;
+	end += p_probe->m_rayEnd.m_y * p_record->m_plane.m_normal.m_y;
+	end += p_probe->m_rayEnd.m_x * p_record->m_plane.m_normal.m_x;
+	end += p_record->m_plane.m_unk0x30;
 
 	LegoBool32 startNonNegative = start >= 0.0f;
 	LegoBool32 endNonNegative = end >= 0.0f;
@@ -210,23 +210,23 @@ LegoBool32 RaceState::Racer::CarBody::TestCachedPlane(WheelProbe* p_unk0x04, Col
 		start = -start;
 	}
 
-	GolVec3* point = &p_unk0x04->m_hitPoint;
-	point->m_x = p_unk0x04->m_rayEnd.m_x - p_unk0x04->m_rayStart.m_x;
-	point->m_y = p_unk0x04->m_rayEnd.m_y - p_unk0x04->m_rayStart.m_y;
-	point->m_z = p_unk0x04->m_rayEnd.m_z - p_unk0x04->m_rayStart.m_z;
+	GolVec3* point = &p_probe->m_hitPoint;
+	point->m_x = p_probe->m_rayEnd.m_x - p_probe->m_rayStart.m_x;
+	point->m_y = p_probe->m_rayEnd.m_y - p_probe->m_rayStart.m_y;
+	point->m_z = p_probe->m_rayEnd.m_z - p_probe->m_rayStart.m_z;
 
 	LegoFloat amount = start / (start + end);
 	scaled.m_x = amount * point->m_x;
 	scaled.m_y = point->m_y;
 	scaled.m_y *= amount;
 	scaled.m_z = amount;
-	scaled.m_z *= p_unk0x04->m_hitPoint.m_z;
+	scaled.m_z *= p_probe->m_hitPoint.m_z;
 
-	point->m_x = scaled.m_x + p_unk0x04->m_rayStart.m_x;
-	point->m_y = scaled.m_y + p_unk0x04->m_rayStart.m_y;
-	point->m_z = scaled.m_z + p_unk0x04->m_rayStart.m_z;
+	point->m_x = scaled.m_x + p_probe->m_rayStart.m_x;
+	point->m_y = scaled.m_y + p_probe->m_rayStart.m_y;
+	point->m_z = scaled.m_z + p_probe->m_rayStart.m_z;
 
-	return GolMath::FUN_004497f0(point, p_unk0x08->m_plane.GetFloatData());
+	return GolMath::FUN_004497f0(point, p_record->m_plane.GetFloatData());
 }
 
 // FUNCTION: LEGORACERS 0x00448c70
@@ -268,26 +268,26 @@ void RaceState::Racer::CarBody::ComputeWheelPositions()
 
 // STUB: LEGORACERS 0x00448d90
 void RaceState::Racer::CarBody::ComputeWheelRaysLocal(
-	GolBoundedEntity* p_unk0x04,
-	LegoFloat p_unk0x08,
-	LegoFloat p_unk0x0c
+	GolBoundedEntity* p_world,
+	LegoFloat p_sweepHeight,
+	LegoFloat p_sweepDistance
 )
 {
-	const GolMatrix3& resourceOrientation = p_unk0x04->GetOrientation();
+	const GolMatrix3& resourceOrientation = p_world->GetOrientation();
 	GolVec3 zHeight;
-	zHeight.m_x = resourceOrientation.m_m[0][2] * p_unk0x0c;
-	zHeight.m_y = resourceOrientation.m_m[1][2] * p_unk0x0c;
-	zHeight.m_z = resourceOrientation.m_m[2][2] * p_unk0x0c;
+	zHeight.m_x = resourceOrientation.m_m[0][2] * p_sweepDistance;
+	zHeight.m_y = resourceOrientation.m_m[1][2] * p_sweepDistance;
+	zHeight.m_z = resourceOrientation.m_m[2][2] * p_sweepDistance;
 
 	GolVec3 zDistance;
-	zDistance.m_x = resourceOrientation.m_m[0][2] * p_unk0x08;
-	zDistance.m_y = resourceOrientation.m_m[1][2] * p_unk0x08;
-	zDistance.m_z = resourceOrientation.m_m[2][2] * p_unk0x08;
+	zDistance.m_x = resourceOrientation.m_m[0][2] * p_sweepHeight;
+	zDistance.m_y = resourceOrientation.m_m[1][2] * p_sweepHeight;
+	zDistance.m_z = resourceOrientation.m_m[2][2] * p_sweepHeight;
 
 	WheelProbe* entries = m_wheelProbes;
 
 	GolVec3 center;
-	p_unk0x04->VTable0x30(entries[1].m_wheelPosition, &center);
+	p_world->VTable0x30(entries[1].m_wheelPosition, &center);
 
 	entries[1].m_rayStart.m_x = center.m_x + zHeight.m_x;
 	entries[1].m_rayStart.m_y = center.m_y + zHeight.m_y;
@@ -307,10 +307,10 @@ void RaceState::Racer::CarBody::ComputeWheelRaysLocal(
 	row1.m_z = m_physicsEntity.GetOrientation().m_m[1][2];
 
 	GolVec3 localRow0;
-	p_unk0x04->VTable0x38(row0, &localRow0);
+	p_world->VTable0x38(row0, &localRow0);
 
 	GolVec3 localRow1;
-	p_unk0x04->VTable0x38(row1, &localRow1);
+	p_world->VTable0x38(row1, &localRow1);
 
 	localRow0.m_x *= m_wheelbase;
 	localRow0.m_y *= m_wheelbase;

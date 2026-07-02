@@ -56,23 +56,23 @@ public:
 		GolName m_modelNames[2];             // 0x020
 		GolName m_modelPartNames[2];         // 0x030
 		GolName m_nodeNames[2];              // 0x040
-		GolName m_unk0x50;                   // 0x050
-		GolVec3 m_unk0x58[4];                // 0x058
-		GolVec3 m_unk0x88[4];                // 0x088
-		GolVec3 m_unk0xb8;                   // 0x0b8
-		GolVec3 m_unk0xc4;                   // 0x0c4
-		LegoFloat m_unk0xd0;                 // 0x0d0
+		GolName m_shadowName;                // 0x050
+		GolVec3 m_wheelOffsets[4];           // 0x058
+		GolVec3 m_wheelPositions[4];         // 0x088
+		GolVec3 m_centerOfMass;              // 0x0b8
+		GolVec3 m_driverMountOffset;         // 0x0c4
+		LegoFloat m_baseMass;                // 0x0d0
 		GolVec2 m_unk0xd4;                   // 0x0d4
-		GolVec2 m_unk0xdc;                   // 0x0dc
-		GolVec2 m_unk0xe4;                   // 0x0e4
-		LegoFloat m_unk0xec;                 // 0x0ec
+		GolVec2 m_shadowSize;                // 0x0dc
+		GolVec2 m_skidWidths;                // 0x0e4
+		LegoFloat m_enginePitchScale;        // 0x0ec
 		LegoS32 m_unk0xf0;                   // 0x0f0
 		LegoS32 m_unk0xf4;                   // 0x0f4
 		GolAnimatedEntity* m_primaryModel;   // 0x0f8
 		GolAnimatedEntity* m_secondaryModel; // 0x0fc
-		LegoU8 m_unk0x100;                   // 0x100
-		LegoU8 m_unk0x101;                   // 0x101
-		LegoU8 m_unk0x102;                   // 0x102
+		LegoU8 m_handlingStat;               // 0x100
+		LegoU8 m_accelerationStat;           // 0x101
+		LegoU8 m_topSpeedStat;               // 0x102
 		undefined m_unk0x103[0x104 - 0x103];
 	};
 

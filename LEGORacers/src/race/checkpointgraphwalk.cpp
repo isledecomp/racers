@@ -3,7 +3,7 @@
 #include <math.h>
 
 // FUNCTION: LEGORACERS 0x0041eaf0
-void CheckpointGraph::FUN_0041eaf0(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry)
+void CheckpointGraph::AdvanceAlongGraph(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry)
 {
 	if (m_count == 0) {
 		return;

@@ -112,8 +112,8 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		field->SetScale(1.0f);
 
 		field->m_carEntity->SetUnk0xb8(0.0f);
-		if (field->m_unk0x040) {
-			field->m_unk0x040->SetUnk0xb8(0.0f);
+		if (field->m_secondaryEntity) {
+			field->m_secondaryEntity->SetUnk0xb8(0.0f);
 		}
 
 		field->ResetDriverAnimation();

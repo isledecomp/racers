@@ -97,7 +97,7 @@ void NewRacerScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00482350
-void NewRacerScreen::VTable0x38(MenuWidget* p_unk0x04)
+void NewRacerScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x47c) {
 		m_unk0x284->FUN_00468cf0();

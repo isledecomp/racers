@@ -13,7 +13,7 @@ class GarageScreen : public RacerPickScreenBase {
 public:
 	GarageScreen();
 
-	void VTable0x38(MenuWidget*) override;                                     // vtable+0x38
+	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void VTable0x4c() override;                                                // vtable+0x4c
 	void Reset() override;                                                     // vtable+0x54
 	~GarageScreen() override;                                                  // vtable+0x68

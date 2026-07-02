@@ -162,7 +162,7 @@ void MultiplayerPickScreen::FUN_00481bf0(LegoS32 p_index)
 }
 
 // STUB: LEGORACERS 0x00481c80
-LegoBool32 MultiplayerPickScreen::VTable0x18(
+LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 	MenuWidget* p_source,
 	InputEventQueue::Event* p_event,
 	undefined4,

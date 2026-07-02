@@ -68,7 +68,7 @@ LegoBool32 MenuWidget::FUN_00472a60(CreateParams* p_createParams)
 	m_flags |= 0x11;
 
 	if (m_notifyHandler) {
-		m_notifyHandler->VTable0x00(this);
+		m_notifyHandler->OnWidgetCreated(this);
 	}
 
 	return TRUE;
@@ -80,7 +80,7 @@ LegoBool32 MenuWidget::Destroy()
 	if (m_flags & 1) {
 		RemoveFromParent();
 		if (m_notifyHandler) {
-			m_notifyHandler->VTable0x04(this);
+			m_notifyHandler->OnWidgetDestroyed(this);
 		}
 
 		Reset();
@@ -171,7 +171,7 @@ void MenuWidget::SetFocus()
 	node->m_flags |= 8;
 
 	if (node->m_notifyHandler) {
-		node->m_notifyHandler->VTable0x20(node);
+		node->m_notifyHandler->OnWidgetFocused(node);
 	}
 
 	while (node) {
@@ -193,7 +193,7 @@ void MenuWidget::ClearFocus()
 		node->m_flags = flags & 0xf7;
 
 		if (node->m_notifyHandler) {
-			node->m_notifyHandler->VTable0x24(node);
+			node->m_notifyHandler->OnWidgetUnfocused(node);
 		}
 
 		while (node) {
@@ -415,11 +415,11 @@ void MenuWidget::SetRect(Rect* p_rect)
 	if (m_notifyHandler) {
 		if ((((m_rect.m_right - p_rect->m_right) - m_rect.m_left) + p_rect->m_left != 0) ||
 			(((m_rect.m_bottom - m_rect.m_top) - p_rect->m_bottom) + p_rect->m_top != 0)) {
-			m_notifyHandler->VTable0x0c(this);
+			m_notifyHandler->OnWidgetResized(this);
 		}
 
 		if ((m_rect.m_left - p_rect->m_left) || (m_rect.m_top - p_rect->m_top)) {
-			m_notifyHandler->VTable0x08(this);
+			m_notifyHandler->OnWidgetMoved(this);
 		}
 	}
 

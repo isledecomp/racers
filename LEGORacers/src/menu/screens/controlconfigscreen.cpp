@@ -163,7 +163,7 @@ void ControlConfigScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047abb0
-void ControlConfigScreen::VTable0x44(MenuWidget* p_unk0x04)
+void ControlConfigScreen::OnWidgetValueChanged(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x814) {
 		m_unk0x3a0 = m_unk0x780.GetUnk0x6c();
@@ -171,7 +171,7 @@ void ControlConfigScreen::VTable0x44(MenuWidget* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0047abd0
-void ControlConfigScreen::VTable0x34(MenuIcon* p_source)
+void ControlConfigScreen::OnIconFocused(MenuIcon* p_source)
 {
 	LegoS32 eventIndex = p_source->GetId() - m_unk0x144c[0].GetId();
 
@@ -186,7 +186,7 @@ void ControlConfigScreen::VTable0x34(MenuIcon* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047ac60
-void ControlConfigScreen::VTable0x38(MenuWidget* p_unk0x04)
+void ControlConfigScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x47c) {
 		m_unk0x360 = 8;
@@ -197,7 +197,7 @@ void ControlConfigScreen::VTable0x38(MenuWidget* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0047ac90
-LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* p_item, undefined4, undefined4)
+LegoBool32 ControlConfigScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event* p_item, undefined4, undefined4)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 source = keyCode & InputDevice::c_sourceMask;
@@ -235,7 +235,7 @@ LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* 
 }
 
 // FUNCTION: LEGORACERS 0x0047ad90
-LegoBool32 ControlConfigScreen::VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 ControlConfigScreen::HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	if (m_unk0x364) {
 		return TRUE;

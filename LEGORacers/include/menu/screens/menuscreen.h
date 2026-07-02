@@ -50,38 +50,38 @@ public:
 
 	MenuScreen();
 
-	void VTable0x00(MenuWidget*) override;                                                        // vtable+0x00
-	void VTable0x04(MenuWidget*) override;                                                        // vtable+0x04
-	void VTable0x08(MenuWidget*) override;                                                        // vtable+0x08
-	void VTable0x0c(MenuWidget*) override;                                                        // vtable+0x0c
-	void VTable0x10(MenuWidget*) override;                                                        // vtable+0x10
-	undefined4 VTable0x14(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x14
-	LegoBool32 VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
-	LegoBool32 VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x1c
-	void VTable0x20(MenuWidget*) override;                                                        // vtable+0x20
-	void VTable0x24(MenuWidget*) override;                                                        // vtable+0x24
-	undefined4 VTable0x28(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x28
-	void VTable0x2c(MenuIcon*) override;                                                          // vtable+0x2c
-	void VTable0x30(MenuIcon*) override;                                                          // vtable+0x30
-	void VTable0x34(MenuIcon*) override;                                                          // vtable+0x34
-	void VTable0x38(MenuWidget*) override;                                                        // vtable+0x38
-	void VTable0x3c(MenuIcon*) override;                                                          // vtable+0x3c
-	void VTable0x40(MenuIcon*) override;                                                          // vtable+0x40
-	void VTable0x44(MenuWidget*) override;                                                        // vtable+0x44
-	void VTable0x48(MenuWidget*) override;                                                        // vtable+0x48
-	virtual void VTable0x4c() = 0;                                                                // vtable+0x4c
-	virtual undefined4 VTable0x50();                                                              // vtable+0x50
-	virtual void Reset();                                                                         // vtable+0x54
-	virtual LegoBool32 VTable0x58(MenuScreenCreateParams*);                                       // vtable+0x58
-	virtual MenuStyleTable* GetMenuStyles();                                                      // vtable+0x5c
-	virtual MenuStyleTable* VTable0x60();                                                         // vtable+0x60
-	virtual MenuInputBindingTable* GetMenuInputBindings();                                        // vtable+0x64
-	virtual ~MenuScreen();                                                                        // vtable+0x68
-	virtual LegoFloat VTable0x6c();                                                               // vtable+0x6c
-	virtual LegoBool32 Initialize(MenuScreenCreateParams*);                                       // vtable+0x70
-	virtual LegoBool32 Destroy();                                                                 // vtable+0x74
-	virtual LegoBool32 VTable0x78(undefined4);                                                    // vtable+0x78
-	virtual LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2);                                    // vtable+0x7c
+	void OnWidgetCreated(MenuWidget*) override;                                                      // vtable+0x00
+	void OnWidgetDestroyed(MenuWidget*) override;                                                    // vtable+0x04
+	void OnWidgetMoved(MenuWidget*) override;                                                        // vtable+0x08
+	void OnWidgetResized(MenuWidget*) override;                                                      // vtable+0x0c
+	void OnCarouselSettled(MenuWidget*) override;                                                    // vtable+0x10
+	undefined4 OnWidgetKeyUp(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x14
+	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
+	LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x1c
+	void OnWidgetFocused(MenuWidget*) override;                                                      // vtable+0x20
+	void OnWidgetUnfocused(MenuWidget*) override;                                                    // vtable+0x24
+	undefined4 OnWidgetKeyDown(MenuWidget*, void*, undefined4, undefined4) override;                 // vtable+0x28
+	void OnIconEnabled(MenuIcon*) override;                                                          // vtable+0x2c
+	void OnIconDisabled(MenuIcon*) override;                                                         // vtable+0x30
+	void OnIconFocused(MenuIcon*) override;                                                          // vtable+0x34
+	void OnIconUnfocused(MenuWidget*) override;                                                      // vtable+0x38
+	void OnIconSelected(MenuIcon*) override;                                                         // vtable+0x3c
+	void OnIconDeselected(MenuIcon*) override;                                                       // vtable+0x40
+	void OnWidgetValueChanged(MenuWidget*) override;                                                 // vtable+0x44
+	void OnSelectorSettled(MenuWidget*) override;                                                    // vtable+0x48
+	virtual void VTable0x4c() = 0;                                                                   // vtable+0x4c
+	virtual undefined4 VTable0x50();                                                                 // vtable+0x50
+	virtual void Reset();                                                                            // vtable+0x54
+	virtual LegoBool32 VTable0x58(MenuScreenCreateParams*);                                          // vtable+0x58
+	virtual MenuStyleTable* GetMenuStyles();                                                         // vtable+0x5c
+	virtual MenuStyleTable* VTable0x60();                                                            // vtable+0x60
+	virtual MenuInputBindingTable* GetMenuInputBindings();                                           // vtable+0x64
+	virtual ~MenuScreen();                                                                           // vtable+0x68
+	virtual LegoFloat VTable0x6c();                                                                  // vtable+0x6c
+	virtual LegoBool32 Initialize(MenuScreenCreateParams*);                                          // vtable+0x70
+	virtual LegoBool32 Destroy();                                                                    // vtable+0x74
+	virtual LegoBool32 VTable0x78(undefined4);                                                       // vtable+0x78
+	virtual LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2);                                       // vtable+0x7c
 
 	LegoBool32 FUN_0046b630();
 	LegoBool32 FUN_0046b6e0(MenuScreenCreateParams*);

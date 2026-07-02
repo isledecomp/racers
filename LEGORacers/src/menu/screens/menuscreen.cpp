@@ -49,77 +49,77 @@ undefined4 MenuScreen::VTable0x50()
 // Keep the empty menu callbacks in the original input-device empty-void fold group.
 #pragma code_seg(".text$fold_44f590")
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x00(MenuWidget*)
+void MenuScreen::OnWidgetCreated(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x04(MenuWidget*)
+void MenuScreen::OnWidgetDestroyed(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x08(MenuWidget*)
+void MenuScreen::OnWidgetMoved(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x0c(MenuWidget*)
+void MenuScreen::OnWidgetResized(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x10(MenuWidget*)
+void MenuScreen::OnCarouselSettled(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x20(MenuWidget*)
+void MenuScreen::OnWidgetFocused(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x24(MenuWidget*)
+void MenuScreen::OnWidgetUnfocused(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x2c(MenuIcon*)
+void MenuScreen::OnIconEnabled(MenuIcon*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x30(MenuIcon*)
+void MenuScreen::OnIconDisabled(MenuIcon*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x34(MenuIcon*)
+void MenuScreen::OnIconFocused(MenuIcon*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x38(MenuWidget*)
+void MenuScreen::OnIconUnfocused(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x3c(MenuIcon*)
+void MenuScreen::OnIconSelected(MenuIcon*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x40(MenuIcon*)
+void MenuScreen::OnIconDeselected(MenuIcon*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x44(MenuWidget*)
+void MenuScreen::OnWidgetValueChanged(MenuWidget*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
-void MenuScreen::VTable0x48(MenuWidget*)
+void MenuScreen::OnSelectorSettled(MenuWidget*)
 {
 }
 #pragma code_seg()
@@ -887,25 +887,25 @@ LegoFloat MenuScreen::VTable0x6c()
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 MenuScreen::VTable0x14(MenuWidget*, void*, undefined4, undefined4)
+undefined4 MenuScreen::OnWidgetKeyUp(MenuWidget*, void*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-LegoBool32 MenuScreen::VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MenuScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-LegoBool32 MenuScreen::VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MenuScreen::HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 MenuScreen::VTable0x28(MenuWidget*, void*, undefined4, undefined4)
+undefined4 MenuScreen::OnWidgetKeyDown(MenuWidget*, void*, undefined4, undefined4)
 {
 	return 0;
 }

@@ -14,30 +14,30 @@ class CarBuildScreen : public CarModelScreenBase {
 public:
 	CarBuildScreen();
 
-	LegoBool32 VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
-	LegoBool32 VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x1c
-	void VTable0x20(MenuWidget*) override;                                                        // vtable+0x20
-	void VTable0x24(MenuWidget*) override;                                                        // vtable+0x24
-	undefined4 VTable0x28(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x28
-	void VTable0x34(MenuIcon*) override;                                                          // vtable+0x34
-	void VTable0x38(MenuWidget*) override;                                                        // vtable+0x38
-	void VTable0x44(MenuWidget*) override;                                                        // vtable+0x44
-	void VTable0x4c() override;                                                                   // vtable+0x4c
-	void Reset() override;                                                                        // vtable+0x54
-	~CarBuildScreen() override;                                                                   // vtable+0x68
-	LegoBool32 VTable0x78(undefined4) override;                                                   // vtable+0x78
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override;                    // vtable+0x8c
-	GolString* VTable0x98(undefined4) override;                                                   // vtable+0x98
-	GolFont* VTable0x9c(undefined4) override;                                                     // vtable+0x9c
-	void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override;                             // vtable+0xa0
-	void VTable0xa4() override;                                                                   // vtable+0xa4
-	void VTable0xa8() override;                                                                   // vtable+0xa8
-	void VTable0xac() override;                                                                   // vtable+0xac
-	void VTable0xb0() override;                                                                   // vtable+0xb0
-	void VTable0xb4() override;                                                                   // vtable+0xb4
-	void VTable0xb8() override;                                                                   // vtable+0xb8
-	void VTable0xbc() override;                                                                   // vtable+0xbc
-	void VTable0xc0() override;                                                                   // vtable+0xc0
+	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
+	LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x1c
+	void OnWidgetFocused(MenuWidget*) override;                                                      // vtable+0x20
+	void OnWidgetUnfocused(MenuWidget*) override;                                                    // vtable+0x24
+	undefined4 OnWidgetKeyDown(MenuWidget*, void*, undefined4, undefined4) override;                 // vtable+0x28
+	void OnIconFocused(MenuIcon*) override;                                                          // vtable+0x34
+	void OnIconUnfocused(MenuWidget*) override;                                                      // vtable+0x38
+	void OnWidgetValueChanged(MenuWidget*) override;                                                 // vtable+0x44
+	void VTable0x4c() override;                                                                      // vtable+0x4c
+	void Reset() override;                                                                           // vtable+0x54
+	~CarBuildScreen() override;                                                                      // vtable+0x68
+	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
+	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override;                       // vtable+0x8c
+	GolString* VTable0x98(undefined4) override;                                                      // vtable+0x98
+	GolFont* VTable0x9c(undefined4) override;                                                        // vtable+0x9c
+	void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override;                                // vtable+0xa0
+	void VTable0xa4() override;                                                                      // vtable+0xa4
+	void VTable0xa8() override;                                                                      // vtable+0xa8
+	void VTable0xac() override;                                                                      // vtable+0xac
+	void VTable0xb0() override;                                                                      // vtable+0xb0
+	void VTable0xb4() override;                                                                      // vtable+0xb4
+	void VTable0xb8() override;                                                                      // vtable+0xb8
+	void VTable0xbc() override;                                                                      // vtable+0xbc
+	void VTable0xc0() override;                                                                      // vtable+0xc0
 
 	// SYNTHETIC: LEGORACERS 0x00473790
 	// CarBuildScreen::`scalar deleting destructor'

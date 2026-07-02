@@ -16,7 +16,7 @@ class OptionsScreen : public OptionsScreenBase {
 public:
 	OptionsScreen();
 
-	void VTable0x38(MenuWidget*) override;                                     // vtable+0x38
+	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void Reset() override;                                                     // vtable+0x54
 	~OptionsScreen() override;                                                 // vtable+0x68
 	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c

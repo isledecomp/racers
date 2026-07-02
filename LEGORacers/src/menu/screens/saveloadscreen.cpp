@@ -202,7 +202,7 @@ void SaveLoadScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00487220
-void SaveLoadScreen::VTable0x38(MenuWidget* p_unk0x04)
+void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x1a88) {
 		switch (m_unk0x368) {

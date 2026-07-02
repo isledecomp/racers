@@ -45,11 +45,11 @@ public:
 
 		DialogScreen();
 		~DialogScreen() override; // vtable+0x68
-		LegoBool32 VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4,
-							  undefined4) override; // vtable+0x18
-		LegoBool32 VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4,
-							  undefined4) override;                 // vtable+0x1c
-		void VTable0x38(MenuWidget*) override;                      // vtable+0x38
+		LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4,
+								 undefined4) override; // vtable+0x18
+		LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4,
+							   undefined4) override;                // vtable+0x1c
+		void OnIconUnfocused(MenuWidget*) override;                 // vtable+0x38
 		void VTable0x4c() override;                                 // vtable+0x4c
 		undefined4 VTable0x50() override;                           // vtable+0x50
 		void Reset() override;                                      // vtable+0x54

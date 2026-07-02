@@ -266,7 +266,7 @@ void EditCarScreen::FUN_0047c450()
 	}
 	else {
 		m_unk0x2384.VTable0x50(0);
-		VTable0x44(&m_unk0x2418);
+		OnWidgetValueChanged(&m_unk0x2418);
 	}
 }
 
@@ -384,14 +384,14 @@ LegoBool32 EditCarScreen::FUN_0047c900()
 }
 
 // FUNCTION: LEGORACERS 0x0047c980
-void EditCarScreen::VTable0x38(MenuWidget* p_source)
+void EditCarScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x914) {
 		m_unk0x360 = c_menuCarBuild;
 	}
 	else if (p_source == &m_unk0xc04) {
 		if (m_unk0x3678->IsCarSaved()) {
-			VTable0x38(&m_unk0x1da4);
+			OnIconUnfocused(&m_unk0x1da4);
 		}
 		else {
 			FUN_0047fdc0(&m_unk0x1da4, 0x99, 0x46, 0x20);
@@ -401,7 +401,7 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0xef4) {
 		if (m_unk0x3678->IsCarSaved()) {
-			VTable0x38(&m_unk0x2094);
+			OnIconUnfocused(&m_unk0x2094);
 		}
 		else {
 			FUN_0047fdc0(&m_unk0x2094, 0x99, 0x46, 0x20);
@@ -428,7 +428,7 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 			FUN_0046c6f0(&m_unk0x17c4, &m_unk0x1ab4, 0x7b);
 		}
 		else {
-			VTable0x38(&m_unk0x17c4);
+			OnIconUnfocused(&m_unk0x17c4);
 		}
 	}
 	else if (p_source == &m_unk0x17c4) {
@@ -447,7 +447,7 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 		}
 	}
 	else if (p_source == &m_unk0x2094) {
-		VTable0x44(&m_unk0x2418);
+		OnWidgetValueChanged(&m_unk0x2418);
 		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
@@ -460,7 +460,7 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047cbc0
-void EditCarScreen::VTable0x44(MenuWidget* p_source)
+void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	if (p_source != &m_unk0x2418) {
 		return;

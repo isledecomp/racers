@@ -33,7 +33,7 @@ const LegoChar* g_cheatNames[] = {
 };
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void DriverLicenseScreen::VTable0x44(MenuWidget*)
+void DriverLicenseScreen::OnWidgetValueChanged(MenuWidget*)
 {
 }
 
@@ -275,7 +275,7 @@ void DriverLicenseScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047b850
-void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
+void DriverLicenseScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	LegoBool32 updateRecord = FALSE;
 
@@ -328,7 +328,7 @@ void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047b9c0
-void DriverLicenseScreen::VTable0x40(MenuIcon* p_source)
+void DriverLicenseScreen::OnIconDeselected(MenuIcon* p_source)
 {
 	if (p_source == &m_unk0x1f1c) {
 		m_unk0x1b20.ClearFlags(2);
@@ -336,7 +336,7 @@ void DriverLicenseScreen::VTable0x40(MenuIcon* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047b9e0
-void DriverLicenseScreen::VTable0x3c(MenuIcon* p_source)
+void DriverLicenseScreen::OnIconSelected(MenuIcon* p_source)
 {
 	if (p_source == &m_unk0x1f1c) {
 		m_unk0x1b20.SetFlags(2);

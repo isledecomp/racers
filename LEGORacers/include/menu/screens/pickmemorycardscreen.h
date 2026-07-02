@@ -14,7 +14,7 @@ class PickMemoryCardScreen : public MenuGameScreen {
 public:
 	PickMemoryCardScreen();
 
-	void VTable0x38(MenuWidget*) override;                                     // vtable+0x38
+	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void VTable0x4c() override;                                                // vtable+0x4c
 	~PickMemoryCardScreen() override;                                          // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74

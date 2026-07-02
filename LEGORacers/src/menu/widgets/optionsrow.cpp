@@ -87,7 +87,7 @@ void OptionsRowBase::VTable0x78()
 	if (m_unk0x6c0) {
 		VTable0x90(m_unk0x6c0 - 1);
 		if (m_eventHandler) {
-			m_eventHandler->VTable0x44(this);
+			m_eventHandler->OnWidgetValueChanged(this);
 		}
 
 		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
@@ -103,7 +103,7 @@ void OptionsRowBase::VTable0x7c()
 	if (m_unk0x6c0 != m_unk0x6bc - 1) {
 		VTable0x90(m_unk0x6c0 + 1);
 		if (m_eventHandler) {
-			m_eventHandler->VTable0x44(this);
+			m_eventHandler->OnWidgetValueChanged(this);
 		}
 
 		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
@@ -299,7 +299,7 @@ void OptionsRow::VTable0x90(LegoS32 p_unk0x04)
 
 		m_unk0x6c0 = p_unk0x04;
 		if (m_eventHandler) {
-			m_eventHandler->VTable0x44(this);
+			m_eventHandler->OnWidgetValueChanged(this);
 		}
 	}
 }

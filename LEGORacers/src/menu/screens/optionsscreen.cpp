@@ -73,7 +73,7 @@ void OptionsScreen::VTable0x98()
 	}
 
 	m_unk0x578c.VTable0x50(selectedDriverIndex);
-	VTable0x44(&m_unk0x5820);
+	OnWidgetValueChanged(&m_unk0x5820);
 
 	for (i = 0; i < 2; i++) {
 		CreateTextLabel(&m_unk0x6660[i], static_cast<undefined2>(i + 0x102), 0x37, static_cast<undefined2>(i + 0x5b));
@@ -89,7 +89,7 @@ LegoBool32 OptionsScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreat
 }
 
 // FUNCTION: LEGORACERS 0x00475990
-void OptionsScreen::VTable0x38(MenuWidget* p_widget)
+void OptionsScreen::OnIconUnfocused(MenuWidget* p_widget)
 {
 	if (p_widget == &m_unk0x51ac) {
 		FUN_0047fdc0(&m_unk0x549c, 0x99, 0x46, 0x72);
@@ -100,7 +100,7 @@ void OptionsScreen::VTable0x38(MenuWidget* p_widget)
 		m_unk0x284->FUN_00468cf0();
 	}
 
-	OptionsScreenBase::VTable0x38(p_widget);
+	OptionsScreenBase::OnIconUnfocused(p_widget);
 	if (m_unk0x360 != 0xffff) {
 		m_unk0x364 = TRUE;
 	}

@@ -71,7 +71,7 @@ void MenuHotspotButton::FUN_00466690(LegoU32 p_code)
 				m_unk0x224 = id;
 
 				if (m_eventHandler) {
-					m_eventHandler->VTable0x44(this);
+					m_eventHandler->OnWidgetValueChanged(this);
 				}
 			}
 		}

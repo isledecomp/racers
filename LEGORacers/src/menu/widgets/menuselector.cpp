@@ -417,7 +417,7 @@ void MenuSelector::VTable0x78()
 	m_unk0x9e8->VTable0x58();
 
 	if (m_unk0x9e8->GetUnk0x6c() != previousIndex && m_eventHandler) {
-		m_eventHandler->VTable0x44(this);
+		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
 	m_unk0x9f0 = m_unk0x9e8->GetUnk0x54() & 1;
@@ -434,7 +434,7 @@ void MenuSelector::VTable0x7c()
 	m_unk0x9e8->VTable0x54();
 
 	if (m_unk0x9e8->GetUnk0x6c() != previousIndex && m_eventHandler) {
-		m_eventHandler->VTable0x44(this);
+		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
 	m_unk0x9f0 = m_unk0x9e8->GetUnk0x54() & 1;
@@ -446,7 +446,7 @@ undefined4 MenuSelector::OnEvent(undefined4)
 	LegoU32 index = m_stateFlags & c_flagBit1;
 
 	if (m_unk0x9f0 && !(m_unk0x9e8->GetUnk0x54() & 1) && m_eventHandler) {
-		m_eventHandler->VTable0x48(this);
+		m_eventHandler->OnSelectorSettled(this);
 		m_unk0x9f0 = 0;
 	}
 

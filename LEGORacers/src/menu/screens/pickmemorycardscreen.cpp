@@ -49,7 +49,7 @@ LegoBool32 PickMemoryCardScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004849e0
-void PickMemoryCardScreen::VTable0x38(MenuWidget* p_source)
+void PickMemoryCardScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x4f4) {
 		m_context->m_modelBuilder.SetUnk0x84(0);

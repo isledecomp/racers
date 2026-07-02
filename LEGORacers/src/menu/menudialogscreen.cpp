@@ -185,7 +185,7 @@ void MenuDialog::DialogScreen::FUN_00468590()
 }
 
 // FUNCTION: LEGORACERS 0x00468670
-void MenuDialog::DialogScreen::VTable0x38(MenuWidget* p_unk0x04)
+void MenuDialog::DialogScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == m_unk0x740) {
 		m_unk0x2c0 = 2;
@@ -198,7 +198,7 @@ void MenuDialog::DialogScreen::VTable0x38(MenuWidget* p_unk0x04)
 	}
 
 	if (m_unk0x298) {
-		m_unk0x298->VTable0x38(p_unk0x04);
+		m_unk0x298->OnIconUnfocused(p_unk0x04);
 	}
 	else {
 		FUN_004687a0();
@@ -289,13 +289,13 @@ void MenuDialog::DialogScreen::FUN_004687a0()
 }
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
-LegoBool32 MenuDialog::DialogScreen::VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MenuDialog::DialogScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return m_unk0x2bc != 2;
 }
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
-LegoBool32 MenuDialog::DialogScreen::VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MenuDialog::DialogScreen::HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return m_unk0x2bc != 2;
 }

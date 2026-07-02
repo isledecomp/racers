@@ -1269,7 +1269,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_004790f0(LegoS32 p_elapsed)
 		);
 		m_unk0x24->m_carBuildModel.FUN_0049b740(TRUE);
 		m_unk0x24->m_carBuildModel.FUN_0049b920(1, 127);
-		m_unk0x1c->VTable0x10(m_unk0x14);
+		m_unk0x1c->OnCarouselSettled(m_unk0x14);
 
 		if (m_unk0x24->m_carBuildModel.GetUnk0xdc()) {
 			m_unk0x1c->VTable0xc4();
@@ -1299,7 +1299,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00479250(LegoS32 p_elapsed)
 		LegoU32 flags = m_unk0x248 & ~c_flagResettingView;
 		m_unk0x24c = 0;
 		m_unk0x248 = flags;
-		m_unk0x1c->VTable0x10(m_unk0x14);
+		m_unk0x1c->OnCarouselSettled(m_unk0x14);
 	}
 	else {
 		m_unk0x24c -= p_elapsed;

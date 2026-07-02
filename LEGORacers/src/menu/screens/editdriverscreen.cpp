@@ -344,7 +344,7 @@ void EditDriverScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047da50
-LegoBool32 EditDriverScreen::VTable0x18(MenuWidget* p_unk0x04, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 EditDriverScreen::HandleKeyDown(MenuWidget* p_unk0x04, InputEventQueue::Event*, undefined4, undefined4)
 {
 	if (m_unk0x364) {
 		return TRUE;
@@ -352,7 +352,7 @@ LegoBool32 EditDriverScreen::VTable0x18(MenuWidget* p_unk0x04, InputEventQueue::
 
 	for (LegoS32 i = 0; i < 4; i++) {
 		if (p_unk0x04 == &m_unk0x420[i]) {
-			VTable0x44(&m_unk0x9e0[i]);
+			OnWidgetValueChanged(&m_unk0x9e0[i]);
 			return TRUE;
 		}
 	}
@@ -361,7 +361,7 @@ LegoBool32 EditDriverScreen::VTable0x18(MenuWidget* p_unk0x04, InputEventQueue::
 }
 
 // FUNCTION: LEGORACERS 0x0047dab0
-void EditDriverScreen::VTable0x44(MenuWidget* p_source)
+void EditDriverScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	m_unk0x4764 = TRUE;
 
@@ -406,7 +406,7 @@ void EditDriverScreen::VTable0x44(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047dbf0
-void EditDriverScreen::VTable0x38(MenuWidget* p_source)
+void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x3700) {
 		LegoS32 i;
@@ -435,7 +435,7 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 			FUN_0046c6f0(&m_unk0x3fd0, &m_unk0x42c0, 0x77);
 		}
 		else {
-			VTable0x38(&m_unk0x3fd0);
+			OnIconUnfocused(&m_unk0x3fd0);
 		}
 	}
 	else if (p_source == &m_unk0x3ce0) {

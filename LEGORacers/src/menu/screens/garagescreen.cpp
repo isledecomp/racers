@@ -299,7 +299,7 @@ void GarageScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047ee50
-void GarageScreen::VTable0x38(MenuWidget* p_source)
+void GarageScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x5848) {
 		if (!m_unk0x6408) {

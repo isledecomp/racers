@@ -357,7 +357,7 @@ undefined4 MenuCarouselNavigator::OnEvent(undefined4 p_unk0x04)
 			VTable0x40();
 
 			if (m_notifyHandler) {
-				m_notifyHandler->VTable0x10(this);
+				m_notifyHandler->OnCarouselSettled(this);
 			}
 
 			return 0;

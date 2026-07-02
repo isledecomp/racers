@@ -21,7 +21,7 @@ void CarBuildScreenBase::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00474c70
-undefined4 CarBuildScreenBase::VTable0x14(MenuWidget* p_vantage, void* p_item, undefined4, undefined4)
+undefined4 CarBuildScreenBase::OnWidgetKeyUp(MenuWidget* p_vantage, void* p_item, undefined4, undefined4)
 {
 	EventItem* item = static_cast<EventItem*>(p_item);
 
@@ -74,7 +74,7 @@ undefined4 CarBuildScreenBase::VTable0x14(MenuWidget* p_vantage, void* p_item, u
 }
 
 // FUNCTION: LEGORACERS 0x00474e00 FOLDED
-LegoBool32 CarBuildScreenBase::VTable0x18(
+LegoBool32 CarBuildScreenBase::HandleKeyDown(
 	MenuWidget* p_unk0x04,
 	InputEventQueue::Event* p_unk0x08,
 	undefined4 p_unk0x0c,
@@ -85,11 +85,11 @@ LegoBool32 CarBuildScreenBase::VTable0x18(
 		FUN_00474e40();
 	}
 
-	return MenuGameScreen::VTable0x18(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10);
+	return MenuGameScreen::HandleKeyDown(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10);
 }
 
 // FUNCTION: LEGORACERS 0x00474e00 FOLDED
-LegoBool32 CarBuildScreenBase::VTable0x1c(
+LegoBool32 CarBuildScreenBase::HandleKeyUp(
 	MenuWidget* p_unk0x04,
 	InputEventQueue::Event* p_unk0x08,
 	undefined4 p_unk0x0c,
@@ -100,7 +100,7 @@ LegoBool32 CarBuildScreenBase::VTable0x1c(
 		FUN_00474e40();
 	}
 
-	return MenuGameScreen::VTable0x1c(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10);
+	return MenuGameScreen::HandleKeyUp(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10);
 }
 
 // FUNCTION: LEGORACERS 0x00474e40

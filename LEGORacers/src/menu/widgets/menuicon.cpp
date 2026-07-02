@@ -227,7 +227,7 @@ void MenuIcon::SetSelected(undefined4 p_flags)
 			MenuScreenInterface* eventHandler = icon->m_eventHandler;
 			if (eventHandler) {
 				if (!(p_flags & 1)) {
-					eventHandler->VTable0x3c(this);
+					eventHandler->OnIconSelected(this);
 				}
 			}
 
@@ -257,7 +257,7 @@ void MenuIcon::ClearSelected(undefined4 p_flags)
 			MenuScreenInterface* eventHandler = icon->m_eventHandler;
 			if (eventHandler) {
 				if (!(p_flags & 1)) {
-					eventHandler->VTable0x40(this);
+					eventHandler->OnIconDeselected(this);
 				}
 			}
 
@@ -309,7 +309,7 @@ void MenuIcon::Enable(undefined4 p_flags)
 		RefreshVisualState();
 
 		if (m_eventHandler && !(p_flags & 1)) {
-			m_eventHandler->VTable0x2c(this);
+			m_eventHandler->OnIconEnabled(this);
 		}
 	}
 }
@@ -331,7 +331,7 @@ void MenuIcon::Disable(undefined4 p_flags)
 		RefreshVisualState();
 
 		if (m_eventHandler && !flags) {
-			m_eventHandler->VTable0x30(this);
+			m_eventHandler->OnIconDisabled(this);
 		}
 	}
 }
@@ -408,7 +408,7 @@ void MenuIcon::Focus(undefined4 p_flags)
 	RefreshVisualState();
 
 	if (m_eventHandler && !flags) {
-		m_eventHandler->VTable0x34(this);
+		m_eventHandler->OnIconFocused(this);
 	}
 
 	if (!(flags & 4)) {
@@ -437,7 +437,7 @@ void MenuIcon::Unfocus(undefined4 p_flags)
 		RefreshVisualState();
 
 		if (m_eventHandler && !flags) {
-			m_eventHandler->VTable0x38(this);
+			m_eventHandler->OnIconUnfocused(this);
 		}
 
 		if (!(flags & 4)) {
@@ -646,7 +646,7 @@ MenuWidget* MenuIcon::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y
 
 	if (flag & m_flags) {
 		if (m_notifyHandler) {
-			m_notifyHandler->VTable0x28(this, p_item, p_x, p_y);
+			m_notifyHandler->OnWidgetKeyDown(this, p_item, p_x, p_y);
 		}
 
 		return this;
@@ -663,7 +663,7 @@ MenuWidget* MenuIcon::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y
 	}
 
 	if (m_notifyHandler) {
-		m_notifyHandler->VTable0x14(this, p_item, p_x, p_y);
+		m_notifyHandler->OnWidgetKeyUp(this, p_item, p_x, p_y);
 	}
 
 	return this;

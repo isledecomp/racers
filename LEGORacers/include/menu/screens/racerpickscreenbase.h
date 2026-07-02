@@ -15,8 +15,8 @@ class RacerPickScreenBase : public RacerModelScreenBase {
 public:
 	RacerPickScreenBase();
 
-	void VTable0x10(MenuWidget*) override;                                                  // vtable+0x10
-	void VTable0x44(MenuWidget*) override;                                                  // vtable+0x44
+	void OnCarouselSettled(MenuWidget*) override;                                           // vtable+0x10
+	void OnWidgetValueChanged(MenuWidget*) override;                                        // vtable+0x44
 	void VTable0x4c() override;                                                             // vtable+0x4c
 	void Reset() override;                                                                  // vtable+0x54
 	~RacerPickScreenBase() override;                                                        // vtable+0x68

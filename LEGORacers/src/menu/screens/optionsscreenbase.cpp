@@ -71,7 +71,7 @@ void OptionsScreenBase::FUN_00482ef0()
 	}
 
 	m_unk0x2fb0.VTable0x50(m_unk0x370->GetRacerCount());
-	VTable0x44(&m_unk0x1bc8);
+	OnWidgetValueChanged(&m_unk0x1bc8);
 
 	for (i = 0; i < 5; i++) {
 		CreateTextLabel(&m_unk0x33a8[i], 0x96, 0x37, static_cast<undefined2>(i + 0x61));
@@ -79,7 +79,7 @@ void OptionsScreenBase::FUN_00482ef0()
 	}
 
 	m_unk0x3044.VTable0x50(m_unk0x370->GetLapCount() - 1);
-	VTable0x44(&m_unk0x25bc);
+	OnWidgetValueChanged(&m_unk0x25bc);
 	FUN_00483730();
 }
 
@@ -93,8 +93,8 @@ void OptionsScreenBase::FUN_00483030()
 
 	m_unk0x4178.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetMusicVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
 	m_unk0x4864.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetSoundVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
-	VTable0x44(&m_unk0x4178);
-	VTable0x44(&m_unk0x4864);
+	OnWidgetValueChanged(&m_unk0x4178);
+	OnWidgetValueChanged(&m_unk0x4864);
 
 	for (LegoS32 i = 0; i < 3; i++) {
 		CreateTextLabel(&m_unk0x5040[i], static_cast<undefined2>(i + 0x104), 0x37, static_cast<undefined2>(i + 0x5d));
@@ -104,7 +104,7 @@ void OptionsScreenBase::FUN_00483030()
 	CreateTextLabel(&m_unk0x4fc8, 0x107, 0x37, 0xa8);
 	m_unk0x40e4.FUN_0046d9c0(&m_unk0x4f50);
 	m_unk0x40e4.FUN_0046d9c0(&m_unk0x4fc8);
-	VTable0x44(&m_unk0x36f0);
+	OnWidgetValueChanged(&m_unk0x36f0);
 	FUN_00483800();
 }
 
@@ -155,7 +155,7 @@ void OptionsScreenBase::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x004832d0
-void OptionsScreenBase::VTable0x38(MenuWidget* p_widget)
+void OptionsScreenBase::OnIconUnfocused(MenuWidget* p_widget)
 {
 	if (p_widget == &m_unk0x448) {
 		m_unk0x369 = 1;
@@ -197,7 +197,7 @@ void OptionsScreenBase::VTable0x38(MenuWidget* p_widget)
 }
 
 // FUNCTION: LEGORACERS 0x004833e0
-void OptionsScreenBase::VTable0x44(MenuWidget* p_widget)
+void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 {
 	if (p_widget == &m_unk0x4178) {
 		LegoFloat volume = m_unk0x4178.GetUnk0x6c0() * 0.05f;
@@ -290,8 +290,8 @@ void OptionsScreenBase::FUN_004836a0()
 	m_unk0x3600[0].SetFlags(2);
 	m_unk0x3600[1].SetFlags(2);
 
-	VTable0x44(&m_unk0x1bc8);
-	VTable0x44(&m_unk0x25bc);
+	OnWidgetValueChanged(&m_unk0x1bc8);
+	OnWidgetValueChanged(&m_unk0x25bc);
 	m_unk0x1bc8.Select(4);
 }
 
@@ -314,7 +314,7 @@ void OptionsScreenBase::FUN_00483770()
 		m_unk0x5040[i].SetFlags(2);
 	}
 
-	VTable0x44(&m_unk0x36f0);
+	OnWidgetValueChanged(&m_unk0x36f0);
 	m_unk0x4178.Select(4);
 	m_unk0x3d0.VTable0x44(0x13, TRUE);
 	m_unk0x3d0.FUN_0046f6b0(20);

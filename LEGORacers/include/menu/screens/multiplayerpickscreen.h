@@ -17,13 +17,13 @@ class MultiplayerPickScreen : public RacerModelScreenBase {
 public:
 	MultiplayerPickScreen();
 
-	LegoBool32 VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
-	void VTable0x4c() override;                                                                   // vtable+0x4c
-	void Reset() override;                                                                        // vtable+0x54
-	~MultiplayerPickScreen() override;                                                            // vtable+0x68
-	LegoBool32 VTable0x78(undefined4) override;                                                   // vtable+0x78
-	void VTable0x84() override;                                                                   // vtable+0x84
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override;                    // vtable+0x8c
+	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
+	void VTable0x4c() override;                                                                      // vtable+0x4c
+	void Reset() override;                                                                           // vtable+0x54
+	~MultiplayerPickScreen() override;                                                               // vtable+0x68
+	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
+	void VTable0x84() override;                                                                      // vtable+0x84
+	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override;                       // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x004816f0
 	// MultiplayerPickScreen::`scalar deleting destructor'

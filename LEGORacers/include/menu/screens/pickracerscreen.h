@@ -13,8 +13,8 @@ class PickRacerScreen : public RacerPickScreenBase {
 public:
 	PickRacerScreen();
 
-	void VTable0x38(MenuWidget*) override;                                     // vtable+0x38
-	void VTable0x44(MenuWidget*) override;                                     // vtable+0x44
+	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
+	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
 	void VTable0x4c() override;                                                // vtable+0x4c
 	~PickRacerScreen() override;                                               // vtable+0x68
 	void VTable0x84() override;                                                // vtable+0x84

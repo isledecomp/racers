@@ -129,21 +129,21 @@ LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 		return FALSE;
 	}
 
-	VTable0x44(&m_unk0xbe8);
+	OnWidgetValueChanged(&m_unk0xbe8);
 	m_unk0x19dc.Select(0);
 	m_unk0x2e08 = 2500;
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00487d10
-void RaceModeSetupScreen::VTable0x3c(MenuIcon* p_unk0x04)
+void RaceModeSetupScreen::OnIconSelected(MenuIcon* p_unk0x04)
 {
 	m_unk0x358 = p_unk0x04;
 	FUN_00488010();
 }
 
 // FUNCTION: LEGORACERS 0x00487d40
-void RaceModeSetupScreen::VTable0x38(MenuWidget* p_source)
+void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	MenuWidget* source = p_source;
 	if (source == &m_unk0x19dc) {
@@ -182,7 +182,7 @@ void RaceModeSetupScreen::VTable0x38(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00487e10
-void RaceModeSetupScreen::VTable0x44(MenuWidget* p_source)
+void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	GolString string;
 	LegoBool32 isComplete = FALSE;

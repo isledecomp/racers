@@ -25,15 +25,15 @@ public:
 	// FUNCTION: LEGORACERS 0x00476e80
 	// CarBuildScreenBase::~CarBuildScreenBase
 
-	undefined4 VTable0x14(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x14
-	LegoBool32 VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
-	LegoBool32 VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x1c
-	void Reset() override;                                                                        // vtable+0x54
-	LegoBool32 VTable0x78(undefined4) override;                                                   // vtable+0x78
-	LegoBool32 VTable0x7c(Rect*, Rect*) override;                                                 // vtable+0x7c
-	virtual GolString* VTable0x98(undefined4) = 0;                                                // vtable+0x98
-	virtual GolFont* VTable0x9c(undefined4) = 0;                                                  // vtable+0x9c
-	virtual void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) = 0;                          // vtable+0xa0
+	undefined4 OnWidgetKeyUp(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x14
+	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
+	LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x1c
+	void Reset() override;                                                                           // vtable+0x54
+	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
+	LegoBool32 VTable0x7c(Rect*, Rect*) override;                                                    // vtable+0x7c
+	virtual GolString* VTable0x98(undefined4) = 0;                                                   // vtable+0x98
+	virtual GolFont* VTable0x9c(undefined4) = 0;                                                     // vtable+0x9c
+	virtual void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) = 0;                             // vtable+0xa0
 
 	// SYNTHETIC: LEGORACERS 0x00476ed0
 	// CarBuildScreenBase::`scalar deleting destructor'

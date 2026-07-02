@@ -57,13 +57,13 @@ LegoBool32 CircuitRaceScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenC
 		return FALSE;
 	}
 
-	VTable0x44(&m_unk0xbe8);
+	OnWidgetValueChanged(&m_unk0xbe8);
 	m_unk0x1f24.Select(0);
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0047a090
-void CircuitRaceScreen::VTable0x38(MenuWidget* p_source)
+void CircuitRaceScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x1f24) {
 		m_unk0x360 = 0x1e;
@@ -80,7 +80,7 @@ void CircuitRaceScreen::VTable0x38(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047a0e0
-void CircuitRaceScreen::VTable0x44(MenuWidget*)
+void CircuitRaceScreen::OnWidgetValueChanged(MenuWidget*)
 {
 	m_context->m_context->m_raceMode = LegoRacers::Context::c_raceModeCircuit;
 

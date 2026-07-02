@@ -485,7 +485,7 @@ MenuWidget* MenuModelCarousel::OnKeyDown(InputEventQueue::Event* p_event, undefi
 			VTable0x50(index);
 
 			if (m_notifyHandler) {
-				m_notifyHandler->VTable0x18(this, p_event, p_x, p_y);
+				m_notifyHandler->HandleKeyDown(this, p_event, p_x, p_y);
 			}
 
 			return this;

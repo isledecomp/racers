@@ -19,8 +19,8 @@ class OptionsScreenBase : public MenuGameScreen {
 public:
 	OptionsScreenBase();
 
-	void VTable0x38(MenuWidget*) override;                                     // vtable+0x38
-	void VTable0x44(MenuWidget*) override;                                     // vtable+0x44
+	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
+	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
 	void VTable0x4c() override;                                                // vtable+0x4c
 	void Reset() override;                                                     // vtable+0x54
 	~OptionsScreenBase() override;                                             // vtable+0x68

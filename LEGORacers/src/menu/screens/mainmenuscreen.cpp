@@ -133,7 +133,7 @@ LegoBool32 MainMenuScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00481150
-void MainMenuScreen::VTable0x38(MenuWidget* p_unk0x04)
+void MainMenuScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x788) {
 		m_unk0x360 = 5;
@@ -188,7 +188,7 @@ void MainMenuScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x004812f0
-LegoBool32 MainMenuScreen::VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MainMenuScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	LegoBool32 result = m_unk0x364;
 	if (result) {
@@ -199,7 +199,7 @@ LegoBool32 MainMenuScreen::VTable0x18(MenuWidget*, InputEventQueue::Event*, unde
 }
 
 // FUNCTION: LEGORACERS 0x00481310
-LegoBool32 MainMenuScreen::VTable0x1c(MenuWidget* p_icon, InputEventQueue::Event* p_item, undefined4, undefined4)
+LegoBool32 MainMenuScreen::HandleKeyUp(MenuWidget* p_icon, InputEventQueue::Event* p_item, undefined4, undefined4)
 {
 	if (m_unk0x364) {
 		return TRUE;

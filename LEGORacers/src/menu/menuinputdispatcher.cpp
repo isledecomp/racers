@@ -244,7 +244,7 @@ LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_
 	undefined4 y = m_cursor.m_originY + m_cursor.m_cursorY;
 
 	if (p_item->m_isPressed) {
-		if (m_activeScreen->VTable0x18(icon, p_item, x, y)) {
+		if (m_activeScreen->HandleKeyDown(icon, p_item, x, y)) {
 			return TRUE;
 		}
 		if (active) {
@@ -256,7 +256,7 @@ LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_
 		}
 	}
 	else {
-		if (m_activeScreen->VTable0x1c(icon, p_item, x, y)) {
+		if (m_activeScreen->HandleKeyUp(icon, p_item, x, y)) {
 			return TRUE;
 		}
 		if (active) {
@@ -290,7 +290,7 @@ void MenuInputDispatcher::DispatchMouseMove(MouseInputDevice* p_mouse)
 	undefined4 x = cursor->m_originX + cursor->m_cursorX;
 	undefined4 y = cursor->m_originY + cursor->m_cursorY;
 
-	if (!m_activeScreen->VTable0x14(icon, cursor, x, y)) {
+	if (!m_activeScreen->OnWidgetKeyUp(icon, cursor, x, y)) {
 		if (active) {
 			if (active->OnCursorEvent(cursor, (LegoS32) p_mouse->GetAxisValue(1), (LegoS32) p_mouse->GetAxisValue(2))) {
 				return;

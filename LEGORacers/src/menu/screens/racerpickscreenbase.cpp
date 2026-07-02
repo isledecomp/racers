@@ -62,7 +62,7 @@ LegoBool32 RacerPickScreenBase::VTable0xa0(
 
 		if (m_unk0x2704[i]) {
 			FUN_004890c0(i);
-			VTable0x44(&m_unk0x2c0c[i]);
+			OnWidgetValueChanged(&m_unk0x2c0c[i]);
 		}
 	}
 
@@ -104,7 +104,7 @@ void RacerPickScreenBase::FUN_004890c0(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00489130
-void RacerPickScreenBase::VTable0x44(MenuWidget* p_source)
+void RacerPickScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		if (&m_unk0x2c0c[i] == p_source) {
@@ -126,7 +126,7 @@ void RacerPickScreenBase::VTable0x44(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x004891a0
-void RacerPickScreenBase::VTable0x10(MenuWidget* p_source)
+void RacerPickScreenBase::OnCarouselSettled(MenuWidget* p_source)
 {
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		if (&m_unk0x270c[i] == p_source) {

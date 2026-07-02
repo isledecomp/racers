@@ -128,7 +128,7 @@ LegoBool32 CarModelScreenBase::VTable0x8c(MenuGameContext* p_unk0x04, MenuScreen
 	}
 
 	FUN_00477290();
-	VTable0x44(&m_unk0xfec);
+	OnWidgetValueChanged(&m_unk0xfec);
 
 	return TRUE;
 }
@@ -224,7 +224,7 @@ void CarModelScreenBase::VTable0xc4()
 }
 
 // FUNCTION: LEGORACERS 0x00477630
-void CarModelScreenBase::VTable0x38(MenuWidget* p_unk0x04)
+void CarModelScreenBase::OnIconUnfocused(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x25d8) {
 		m_unk0x284->FUN_00468cf0();
@@ -232,7 +232,7 @@ void CarModelScreenBase::VTable0x38(MenuWidget* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00477650
-void CarModelScreenBase::VTable0x44(MenuWidget* p_source)
+void CarModelScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	if (m_unk0x2ae0 == 6) {
 		return;
@@ -258,7 +258,7 @@ void CarModelScreenBase::VTable0x44(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00477700
-void CarModelScreenBase::VTable0x10(MenuWidget* p_source)
+void CarModelScreenBase::OnCarouselSettled(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x1e30) {
 		switch (m_unk0x2adc) {

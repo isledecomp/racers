@@ -124,7 +124,7 @@ MenuWidget* MenuTextField::OnCursorEvent(void* p_item, undefined4 p_x, undefined
 
 	if (flag & m_flags) {
 		if (m_notifyHandler) {
-			m_notifyHandler->VTable0x28(this, p_item, p_x, p_y);
+			m_notifyHandler->OnWidgetKeyDown(this, p_item, p_x, p_y);
 		}
 
 		return this;
@@ -141,7 +141,7 @@ MenuWidget* MenuTextField::OnCursorEvent(void* p_item, undefined4 p_x, undefined
 	}
 
 	if (m_notifyHandler) {
-		m_notifyHandler->VTable0x14(this, p_item, p_x, p_y);
+		m_notifyHandler->OnWidgetKeyUp(this, p_item, p_x, p_y);
 	}
 
 	return this;
@@ -191,7 +191,7 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 				m_length--;
 				*m_text.FromCursor(m_length) = 0;
 				m_text.FirstLine();
-				m_eventHandler->VTable0x44(this);
+				m_eventHandler->OnWidgetValueChanged(this);
 				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[2]);
 				return this;
 			}
@@ -214,7 +214,7 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 				*m_text.FromCursor(m_length) = character;
 				m_length++;
 				m_text.FirstLine();
-				m_eventHandler->VTable0x44(this);
+				m_eventHandler->OnWidgetValueChanged(this);
 				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
 				return this;
 			}

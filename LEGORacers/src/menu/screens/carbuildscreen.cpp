@@ -520,7 +520,7 @@ LegoBool32 CarBuildScreen::FUN_00474470(
 	}
 
 	if (p_source == &m_partCarousel) {
-		VTable0x44(&m_unk0xfec);
+		OnWidgetValueChanged(&m_unk0xfec);
 		return TRUE;
 	}
 
@@ -528,7 +528,7 @@ LegoBool32 CarBuildScreen::FUN_00474470(
 }
 
 // FUNCTION: LEGORACERS 0x004744c0
-LegoBool32 CarBuildScreen::VTable0x18(
+LegoBool32 CarBuildScreen::HandleKeyDown(
 	MenuWidget* p_source,
 	InputEventQueue::Event* p_event,
 	undefined4 p_unk0x0c,
@@ -537,7 +537,7 @@ LegoBool32 CarBuildScreen::VTable0x18(
 {
 	if (m_unk0x2ae0 != 6) {
 		if (!m_unk0x364) {
-			CarBuildScreenBase::VTable0x18(p_source, p_event, p_unk0x0c, p_unk0x10);
+			CarBuildScreenBase::HandleKeyDown(p_source, p_event, p_unk0x0c, p_unk0x10);
 			if (p_source != GetUnk0xd8() || !FUN_00473ee0(p_source, p_event, p_unk0x0c, p_unk0x10)) {
 				switch (m_unk0x2ae0) {
 				case 1:
@@ -557,7 +557,7 @@ LegoBool32 CarBuildScreen::VTable0x18(
 }
 
 // FUNCTION: LEGORACERS 0x00474550
-LegoBool32 CarBuildScreen::VTable0x1c(
+LegoBool32 CarBuildScreen::HandleKeyUp(
 	MenuWidget* p_source,
 	InputEventQueue::Event* p_event,
 	undefined4 p_unk0x0c,
@@ -568,7 +568,7 @@ LegoBool32 CarBuildScreen::VTable0x1c(
 		return TRUE;
 	}
 
-	CarBuildScreenBase::VTable0x1c(p_source, p_event, p_unk0x0c, p_unk0x10);
+	CarBuildScreenBase::HandleKeyUp(p_source, p_event, p_unk0x0c, p_unk0x10);
 	if (p_source == GetUnk0xd8() && FUN_00474330(p_source, p_event, p_unk0x0c, p_unk0x10)) {
 		return TRUE;
 	}
@@ -581,7 +581,7 @@ LegoBool32 CarBuildScreen::VTable0x1c(
 }
 
 // FUNCTION: LEGORACERS 0x004745e0
-void CarBuildScreen::VTable0x20(MenuWidget* p_source)
+void CarBuildScreen::OnWidgetFocused(MenuWidget* p_source)
 {
 	if (p_source == GetUnk0xd8()) {
 		switch (m_unk0x2ae4) {
@@ -604,7 +604,7 @@ void CarBuildScreen::VTable0x20(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00474640
-void CarBuildScreen::VTable0x24(MenuWidget* p_source)
+void CarBuildScreen::OnWidgetUnfocused(MenuWidget* p_source)
 {
 	if (p_source == GetUnk0xd8()) {
 		switch (m_unk0x2ae0) {
@@ -629,7 +629,7 @@ void CarBuildScreen::VTable0x24(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x004746c0
-undefined4 CarBuildScreen::VTable0x28(MenuWidget* p_source, void*, undefined4 p_unk0x0c, undefined4 p_unk0x10)
+undefined4 CarBuildScreen::OnWidgetKeyDown(MenuWidget* p_source, void*, undefined4 p_unk0x0c, undefined4 p_unk0x10)
 {
 	if (p_source == GetUnk0xd8()) {
 		switch (m_unk0x2ae0) {
@@ -646,7 +646,7 @@ undefined4 CarBuildScreen::VTable0x28(MenuWidget* p_source, void*, undefined4 p_
 }
 
 // FUNCTION: LEGORACERS 0x00474710
-void CarBuildScreen::VTable0x34(MenuIcon* p_icon)
+void CarBuildScreen::OnIconFocused(MenuIcon* p_icon)
 {
 	m_unk0x35c = NULL;
 	if (p_icon == &m_unk0x2b20) {
@@ -658,7 +658,7 @@ void CarBuildScreen::VTable0x34(MenuIcon* p_icon)
 }
 
 // FUNCTION: LEGORACERS 0x00474750
-void CarBuildScreen::VTable0x38(MenuWidget* p_source)
+void CarBuildScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (m_unk0x2ae0 != 6) {
 		m_unk0x35c = p_source;
@@ -689,11 +689,11 @@ void CarBuildScreen::VTable0x38(MenuWidget* p_source)
 		}
 	}
 
-	CarModelScreenBase::VTable0x38(p_source);
+	CarModelScreenBase::OnIconUnfocused(p_source);
 }
 
 // FUNCTION: LEGORACERS 0x00474820
-void CarBuildScreen::VTable0x44(MenuWidget* p_source)
+void CarBuildScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	LegoU32 sound = 0;
 
@@ -744,7 +744,7 @@ void CarBuildScreen::VTable0x44(MenuWidget* p_source)
 		m_soundGroupBinding->PlaySoundByIndex(sound & 0xffff);
 	}
 	else {
-		CarModelScreenBase::VTable0x44(p_source);
+		CarModelScreenBase::OnWidgetValueChanged(p_source);
 	}
 }
 

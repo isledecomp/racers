@@ -22,10 +22,10 @@ class DriverLicenseScreen : public MenuGameScreen {
 public:
 	DriverLicenseScreen();
 
-	void VTable0x38(MenuWidget*) override;                                     // vtable+0x38
-	void VTable0x3c(MenuIcon*) override;                                       // vtable+0x3c
-	void VTable0x40(MenuIcon*) override;                                       // vtable+0x40
-	void VTable0x44(MenuWidget*) override;                                     // vtable+0x44
+	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
+	void OnIconSelected(MenuIcon*) override;                                   // vtable+0x3c
+	void OnIconDeselected(MenuIcon*) override;                                 // vtable+0x40
+	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
 	void VTable0x4c() override;                                                // vtable+0x4c
 	void Reset() override;                                                     // vtable+0x54
 	~DriverLicenseScreen() override;                                           // vtable+0x68

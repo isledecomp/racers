@@ -24,27 +24,27 @@ union MenuEventResult {
 // VTABLE: LEGORACERS 0x004b2388
 class MenuScreenInterface {
 public:
-	virtual void VTable0x00(MenuWidget*) = 0;                                      // vtable+0x00
-	virtual void VTable0x04(MenuWidget*) = 0;                                      // vtable+0x04
-	virtual void VTable0x08(MenuWidget*) = 0;                                      // vtable+0x08
-	virtual void VTable0x0c(MenuWidget*) = 0;                                      // vtable+0x0c
-	virtual void VTable0x10(MenuWidget*) = 0;                                      // vtable+0x10
-	virtual undefined4 VTable0x14(MenuWidget*, void*, undefined4, undefined4) = 0; // vtable+0x14
-	virtual LegoBool32 VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4,
-								  undefined4) = 0; // vtable+0x18
-	virtual LegoBool32 VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4,
-								  undefined4) = 0;                                 // vtable+0x1c
-	virtual void VTable0x20(MenuWidget*) = 0;                                      // vtable+0x20
-	virtual void VTable0x24(MenuWidget*) = 0;                                      // vtable+0x24
-	virtual undefined4 VTable0x28(MenuWidget*, void*, undefined4, undefined4) = 0; // vtable+0x28
-	virtual void VTable0x2c(MenuIcon*) = 0;                                        // vtable+0x2c
-	virtual void VTable0x30(MenuIcon*) = 0;                                        // vtable+0x30
-	virtual void VTable0x34(MenuIcon*) = 0;                                        // vtable+0x34
-	virtual void VTable0x38(MenuWidget*) = 0;                                      // vtable+0x38
-	virtual void VTable0x3c(MenuIcon*) = 0;                                        // vtable+0x3c
-	virtual void VTable0x40(MenuIcon*) = 0;                                        // vtable+0x40
-	virtual void VTable0x44(MenuWidget*) = 0;                                      // vtable+0x44
-	virtual void VTable0x48(MenuWidget*) = 0;                                      // vtable+0x48
+	virtual void OnWidgetCreated(MenuWidget*) = 0;                                    // vtable+0x00
+	virtual void OnWidgetDestroyed(MenuWidget*) = 0;                                  // vtable+0x04
+	virtual void OnWidgetMoved(MenuWidget*) = 0;                                      // vtable+0x08
+	virtual void OnWidgetResized(MenuWidget*) = 0;                                    // vtable+0x0c
+	virtual void OnCarouselSettled(MenuWidget*) = 0;                                  // vtable+0x10
+	virtual undefined4 OnWidgetKeyUp(MenuWidget*, void*, undefined4, undefined4) = 0; // vtable+0x14
+	virtual LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4,
+									 undefined4) = 0; // vtable+0x18
+	virtual LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4,
+								   undefined4) = 0;                                     // vtable+0x1c
+	virtual void OnWidgetFocused(MenuWidget*) = 0;                                      // vtable+0x20
+	virtual void OnWidgetUnfocused(MenuWidget*) = 0;                                    // vtable+0x24
+	virtual undefined4 OnWidgetKeyDown(MenuWidget*, void*, undefined4, undefined4) = 0; // vtable+0x28
+	virtual void OnIconEnabled(MenuIcon*) = 0;                                          // vtable+0x2c
+	virtual void OnIconDisabled(MenuIcon*) = 0;                                         // vtable+0x30
+	virtual void OnIconFocused(MenuIcon*) = 0;                                          // vtable+0x34
+	virtual void OnIconUnfocused(MenuWidget*) = 0;                                      // vtable+0x38
+	virtual void OnIconSelected(MenuIcon*) = 0;                                         // vtable+0x3c
+	virtual void OnIconDeselected(MenuIcon*) = 0;                                       // vtable+0x40
+	virtual void OnWidgetValueChanged(MenuWidget*) = 0;                                 // vtable+0x44
+	virtual void OnSelectorSettled(MenuWidget*) = 0;                                    // vtable+0x48
 };
 
 #endif // MENUSCREENINTERFACE_H

@@ -58,7 +58,7 @@ LegoBool32 MenuSelectorBase::CreateDefault(
 	const MenuStyleTable::SelectorStyleBase* p_styleEntry
 )
 {
-	if (Create(p_createParams, p_styleEntry)) {
+	if (MenuIcon::Create(p_createParams, p_styleEntry)) {
 		return Create(p_createParams, p_styleEntry);
 	}
 

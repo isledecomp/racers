@@ -420,7 +420,7 @@ void RaceState::Racer::FUN_00436df0(
 		Destroy();
 	}
 
-	m_unk0xe04 = p_racerIndex;
+	m_materialIndex = p_racerIndex;
 	m_unk0xe2c = p_context->m_unk0x34;
 	m_resourceManager004 = p_context->m_resourceMgr;
 	m_unk0x008 = p_context->m_unk0x18;

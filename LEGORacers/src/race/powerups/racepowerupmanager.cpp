@@ -18,8 +18,8 @@ DECOMP_SIZE_ASSERT(RacePowerupManager::ColorBrick, 0x68)
 DECOMP_SIZE_ASSERT(RacePowerupManager::WhiteBrick, 0x68)
 DECOMP_SIZE_ASSERT(RacePowerupManager::PwbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x1958Resource, 0x30)
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x18bc, 0x80)
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x18bc::Entry, 0x14)
+DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris, 0x80)
+DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris::Entry, 0x14)
 DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x050::Entry, 0x14)
 DECOMP_SIZE_ASSERT(RacePowerupManager::MagnetAction, 0x84)
 DECOMP_SIZE_ASSERT(RacePowerupManager::OilSlickAction, 0x190)
@@ -168,39 +168,39 @@ void RacePowerupManager::WeaponActionBase::OnHitRacer(RaceState::Racer*)
 }
 
 // FUNCTION: LEGORACERS 0x004513f0
-RacePowerupManager::Field0x18bc::Entry::Entry()
+RacePowerupManager::BrickDebris::Entry::Entry()
 {
-	m_unk0x0c = 0;
-	m_unk0x10 = 0;
+	m_entity = 0;
+	m_state = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00451410
-RacePowerupManager::Field0x18bc::Entry::~Entry()
+RacePowerupManager::BrickDebris::Entry::~Entry()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00451460
-void RacePowerupManager::Field0x18bc::Entry::Reset()
+void RacePowerupManager::BrickDebris::Entry::Reset()
 {
-	m_unk0x00.Clear();
-	m_unk0x0c = 0;
-	m_unk0x10 = 0;
+	m_materialTable.Clear();
+	m_entity = 0;
+	m_state = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00451480
-void RacePowerupManager::Field0x18bc::Entry::FUN_00451480(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::BrickDebris::Entry::Initialize(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x10) {
+	if (m_state) {
 		Reset();
 	}
 
-	m_unk0x00.Initialize(p_renderer, 1);
-	m_unk0x10 = 1;
+	m_materialTable.Initialize(p_renderer, 1);
+	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x004514b0
-void RacePowerupManager::Field0x18bc::Entry::FUN_004514b0(
+void RacePowerupManager::BrickDebris::Entry::Spawn(
 	GolAnimatedEntity* p_sourceEntity,
 	GolAnimatedEntity* p_entity,
 	const GolVec3* p_position,
@@ -209,8 +209,8 @@ void RacePowerupManager::Field0x18bc::Entry::FUN_004514b0(
 	void* p_billboardPosition
 )
 {
-	m_unk0x0c = p_entity;
-	m_unk0x0c->FUN_0040d550(
+	m_entity = p_entity;
+	m_entity->FUN_0040d550(
 		p_sourceEntity->GetModel(0),
 		p_sourceEntity->VTable0x58(0),
 		p_sourceEntity->GetModelPart(0),
@@ -220,7 +220,7 @@ void RacePowerupManager::Field0x18bc::Entry::FUN_004514b0(
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
 		if (p_sourceEntity->GetModel(i)) {
-			m_unk0x0c->FUN_10023940(
+			m_entity->FUN_10023940(
 				p_sourceEntity->GetModel(i),
 				p_sourceEntity->VTable0x58(i),
 				p_sourceEntity->GetModelPart(i),
@@ -230,71 +230,71 @@ void RacePowerupManager::Field0x18bc::Entry::FUN_004514b0(
 	}
 
 	p_partIndex %= p_sourceEntity->GetModelPart(0)->GetPartCount();
-	m_unk0x0c->FUN_0040dad0(p_partIndex);
+	m_entity->FUN_0040dad0(p_partIndex);
 
-	LegoU32 flags = m_unk0x0c->GetFlags();
+	LegoU32 flags = m_entity->GetFlags();
 	flags |= GolAnimatedEntity::c_flagPartAnimation;
-	m_unk0x0c->SetFlags(flags);
+	m_entity->SetFlags(flags);
 
-	flags = m_unk0x0c->GetFlags();
+	flags = m_entity->GetFlags();
 	flags &= ~GolAnimatedEntity::c_flagLoopCurrentPart;
-	m_unk0x0c->SetFlags(flags);
+	m_entity->SetFlags(flags);
 
 	if (p_billboardPosition) {
-		m_unk0x00.SetPosition(0, p_billboardPosition);
-		m_unk0x0c->SetPrimaryMaterialTable(&m_unk0x00);
+		m_materialTable.SetPosition(0, p_billboardPosition);
+		m_entity->SetPrimaryMaterialTable(&m_materialTable);
 	}
 
 	GolVec3 up;
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
-	m_unk0x0c->VTable0x08(*p_position);
-	m_unk0x0c->VTable0x40(*p_direction, up);
-	m_unk0x10 = 2;
+	m_entity->VTable0x08(*p_position);
+	m_entity->VTable0x40(*p_direction, up);
+	m_state = 2;
 }
 
 // FUNCTION: LEGORACERS 0x004515d0
-void RacePowerupManager::Field0x18bc::Entry::FUN_004515d0(LegoU32 p_elapsedMs)
+void RacePowerupManager::BrickDebris::Entry::Update(LegoU32 p_elapsedMs)
 {
-	if (m_unk0x10 == 2) {
-		m_unk0x0c->VTable0x10(p_elapsedMs);
-		if (m_unk0x0c->FUN_0040e360()) {
-			m_unk0x0c->VTable0x54();
-			m_unk0x10 = 3;
+	if (m_state == 2) {
+		m_entity->VTable0x10(p_elapsedMs);
+		if (m_entity->FUN_0040e360()) {
+			m_entity->VTable0x54();
+			m_state = 3;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00451610
-void RacePowerupManager::Field0x18bc::Entry::FUN_00451610(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::BrickDebris::Entry::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x10 == 2) {
-		p_renderer->VTable0x94(m_unk0x0c);
+	if (m_state == 2) {
+		p_renderer->VTable0x94(m_entity);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00451630
-void RacePowerupManager::Field0x18bc::Entry::FUN_00451630()
+void RacePowerupManager::BrickDebris::Entry::Release()
 {
-	m_unk0x0c = NULL;
-	m_unk0x10 = 1;
+	m_entity = NULL;
+	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x00451640
-RacePowerupManager::Field0x18bc::Field0x18bc()
+RacePowerupManager::BrickDebris::BrickDebris()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004516a0
-RacePowerupManager::Field0x18bc::~Field0x18bc()
+RacePowerupManager::BrickDebris::~BrickDebris()
 {
-	FUN_00451700();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00451700
-LegoS32 RacePowerupManager::Field0x18bc::FUN_00451700()
+LegoS32 RacePowerupManager::BrickDebris::Destroy()
 {
 	LegoS32 i;
 
@@ -306,27 +306,27 @@ LegoS32 RacePowerupManager::Field0x18bc::FUN_00451700()
 }
 
 // FUNCTION: LEGORACERS 0x00451730
-LegoS32 RacePowerupManager::Field0x18bc::Reset()
+LegoS32 RacePowerupManager::BrickDebris::Reset()
 {
 	m_brickModels[0] = NULL;
 	m_brickModels[1] = NULL;
 	m_brickModels[2] = NULL;
 	m_brickModels[3] = NULL;
-	m_unk0x74 = 0;
-	m_unk0x78 = 0;
-	m_unk0x7c = 0;
+	m_manager = 0;
+	m_nextModelIndex = 0;
+	m_nextPartIndex = 0;
 
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00451750
-void RacePowerupManager::Field0x18bc::FUN_00451750(RacePowerupManager* p_unk0x04, GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_unk0x04, GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x74) {
-		FUN_00451700();
+	if (m_manager) {
+		Destroy();
 	}
 
-	m_unk0x74 = p_unk0x04;
+	m_manager = p_unk0x04;
 
 	const LegoChar* name = "brick1\0\0brick2\0\0brick3\0\0brick4\0";
 	const LegoChar* endName = name + (sizeof(GolName) * 4);
@@ -350,13 +350,13 @@ void RacePowerupManager::Field0x18bc::FUN_00451750(RacePowerupManager* p_unk0x04
 	Entry* entry = m_entries;
 	LegoS32 i;
 	for (i = 5; i != 0; i--) {
-		entry->FUN_00451480(p_renderer);
+		entry->Initialize(p_renderer);
 		entry++;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004517c0
-void RacePowerupManager::Field0x18bc::FUN_004517c0(
+void RacePowerupManager::BrickDebris::Spawn(
 	const GolVec3* p_position,
 	const GolVec3* p_direction,
 	RaceState::Racer* p_racer
@@ -368,7 +368,7 @@ void RacePowerupManager::Field0x18bc::FUN_004517c0(
 
 	entryIndex = 0;
 	while (TRUE) {
-		if (m_entries[entryIndex].m_unk0x10 != 2) {
+		if (m_entries[entryIndex].m_state != 2) {
 			break;
 		}
 
@@ -379,36 +379,36 @@ void RacePowerupManager::Field0x18bc::FUN_004517c0(
 	}
 
 	if (entryIndex != sizeOfArray(m_entries)) {
-		GolAnimatedEntity* entity = m_unk0x74->AllocateEffectEntity();
+		GolAnimatedEntity* entity = m_manager->AllocateEffectEntity();
 		if (entity) {
-			LegoU32 sourceIndex = m_unk0x78;
-			m_unk0x78 = sourceIndex + 1;
-			if (m_unk0x78 == 4) {
-				m_unk0x78 = 0;
+			LegoU32 sourceIndex = m_nextModelIndex;
+			m_nextModelIndex = sourceIndex + 1;
+			if (m_nextModelIndex == 4) {
+				m_nextModelIndex = 0;
 			}
 
 			if (p_racer) {
-				material = m_unk0x74->m_raceState->GetMaterialLibrary()->GetItem(p_racer->m_unk0xe04);
+				material = m_manager->m_raceState->GetMaterialLibrary()->GetItem(p_racer->m_materialIndex);
 			}
 
 			m_entries[entryIndex]
-				.FUN_004514b0(m_brickModels[sourceIndex], entity, p_position, p_direction, m_unk0x7c, material);
-			m_unk0x7c++;
+				.Spawn(m_brickModels[sourceIndex], entity, p_position, p_direction, m_nextPartIndex, material);
+			m_nextPartIndex++;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00451860
-void RacePowerupManager::Field0x18bc::FUN_00451860(LegoU32 p_elapsedMs)
+void RacePowerupManager::BrickDebris::Update(LegoU32 p_elapsedMs)
 {
 	Entry* entry = m_entries;
 	LegoS32 i;
 
 	for (i = 5; i != 0; i--) {
-		entry->FUN_004515d0(p_elapsedMs);
-		if (entry->GetUnk0x10() == 3) {
-			m_unk0x74->ReleaseEffectEntity(entry->GetUnk0x0c());
-			entry->FUN_00451630();
+		entry->Update(p_elapsedMs);
+		if (entry->GetState() == 3) {
+			m_manager->ReleaseEffectEntity(entry->GetEntity());
+			entry->Release();
 		}
 
 		entry++;
@@ -416,25 +416,25 @@ void RacePowerupManager::Field0x18bc::FUN_00451860(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004518a0
-void RacePowerupManager::Field0x18bc::FUN_004518a0(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::BrickDebris::Draw(GolD3DRenderDevice* p_renderer)
 {
 	Entry* entry = m_entries;
 	LegoS32 i;
 
 	for (i = 5; i != 0; i--) {
-		entry->FUN_00451610(p_renderer);
+		entry->Draw(p_renderer);
 		entry++;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004518d0
-void RacePowerupManager::Field0x18bc::FUN_004518d0()
+void RacePowerupManager::BrickDebris::ReleaseAll()
 {
 	Entry* entry = m_entries;
 	LegoS32 i;
 
 	for (i = 5; i != 0; i--) {
-		entry->FUN_00451630();
+		entry->Release();
 		entry++;
 	}
 }
@@ -575,7 +575,7 @@ void RacePowerupManager::FUN_00457cf0(LegoBool32 p_unk0x04)
 {
 	FUN_00457d30(p_unk0x04);
 	m_unk0x008.Initialize(m_renderer, m_actionPoolCounts[5] + m_actionPoolCounts[0]);
-	m_unk0x18bc.FUN_00451750(this, m_renderer);
+	m_brickDebris.Initialize(this, m_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x00457d30
@@ -1519,7 +1519,7 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 		node0x270->Update(p_elapsedMs);
 	}
 
-	m_unk0x18bc.FUN_00451860(p_elapsedMs);
+	m_brickDebris.Update(p_elapsedMs);
 
 	node0x1880 = m_activeActions;
 	PowerupAction* previous0x1880 = NULL;
@@ -1701,7 +1701,7 @@ void RacePowerupManager::Draw(LegoBool32 p_unk0x04)
 		}
 	}
 
-	m_unk0x18bc.FUN_004518a0(m_renderer);
+	m_brickDebris.Draw(m_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x0045a8a0
@@ -2336,14 +2336,18 @@ void RacePowerupManager::SpawnSpikeExplosion(const GolVec3* p_position, undefine
 }
 
 // FUNCTION: LEGORACERS 0x0045b550
-void RacePowerupManager::FUN_0045b550(const GolVec3* p_unk0x04, const GolVec3* p_position, RaceState::Racer* p_racer)
+void RacePowerupManager::SpawnBrickDebris(
+	const GolVec3* p_unk0x04,
+	const GolVec3* p_position,
+	RaceState::Racer* p_racer
+)
 {
 	GolVec3 position;
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 	LegoU32 count = (static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomBurstMax) + 1;
 	if (count != 0) {
-		Field0x18bc* field0x18bc = &m_unk0x18bc;
+		BrickDebris* brickDebris = &m_brickDebris;
 		LegoU32 remaining = count;
 
 		do {
@@ -2356,7 +2360,7 @@ void RacePowerupManager::FUN_0045b550(const GolVec3* p_unk0x04, const GolVec3* p
 			LegoS32 offsetY = g_randomTable[g_randomTableIndex] % c_randomOffsetRange;
 
 			position.m_y = p_position->m_y + offsetY * 0.0040000002f - g_unk0x004b02e0;
-			field0x18bc->FUN_004517c0(p_unk0x04, &position, p_racer);
+			brickDebris->Spawn(p_unk0x04, &position, p_racer);
 		} while (--remaining != 0);
 	}
 }
@@ -2604,7 +2608,7 @@ void RacePowerupManager::FUN_0045bb30()
 		node0x1940 = node0x1940->GetNext();
 	}
 
-	m_unk0x18bc.FUN_004518d0();
+	m_brickDebris.ReleaseAll();
 
 	PowerupAction* node0x1880 = m_activeActions;
 	while (node0x1880 != NULL) {

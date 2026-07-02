@@ -1258,7 +1258,7 @@ public:
 	};
 
 	// SIZE 0x80
-	class Field0x18bc {
+	class BrickDebris {
 	public:
 		// SIZE 0x14
 		class Entry {
@@ -1266,11 +1266,11 @@ public:
 			Entry();
 			~Entry();
 			void Reset();
-			void FUN_004515d0(LegoU32 p_elapsedMs);
-			void FUN_00451610(GolD3DRenderDevice* p_renderer);
-			void FUN_00451630();
-			void FUN_00451480(GolD3DRenderDevice* p_renderer);
-			void FUN_004514b0(
+			void Update(LegoU32 p_elapsedMs);
+			void Draw(GolD3DRenderDevice* p_renderer);
+			void Release();
+			void Initialize(GolD3DRenderDevice* p_renderer);
+			void Spawn(
 				GolAnimatedEntity* p_sourceEntity,
 				GolAnimatedEntity* p_entity,
 				const GolVec3* p_position,
@@ -1278,36 +1278,36 @@ public:
 				LegoU32 p_partIndex,
 				void* p_billboardPosition
 			);
-			GolAnimatedEntity* GetUnk0x0c() { return m_unk0x0c; }
-			LegoS32 GetUnk0x10() const { return m_unk0x10; }
+			GolAnimatedEntity* GetEntity() { return m_entity; }
+			LegoS32 GetState() const { return m_state; }
 
 		private:
-			friend class Field0x18bc;
+			friend class BrickDebris;
 
-			GolBillboard::Field0x2c m_unk0x00; // 0x00
-			GolAnimatedEntity* m_unk0x0c;      // 0x0c
-			LegoS32 m_unk0x10;                 // 0x10
+			GolBillboard::Field0x2c m_materialTable; // 0x00
+			GolAnimatedEntity* m_entity;             // 0x0c
+			LegoS32 m_state;                         // 0x10
 		};
 
-		Field0x18bc();
-		~Field0x18bc();
-		LegoS32 FUN_00451700();
+		BrickDebris();
+		~BrickDebris();
+		LegoS32 Destroy();
 		LegoS32 Reset();
-		void FUN_00451860(LegoU32 p_elapsedMs);
-		void FUN_004518a0(GolD3DRenderDevice* p_renderer);
-		void FUN_004518d0();
+		void Update(LegoU32 p_elapsedMs);
+		void Draw(GolD3DRenderDevice* p_renderer);
+		void ReleaseAll();
 
 	private:
 		friend class RacePowerupManager;
 
-		void FUN_00451750(RacePowerupManager* p_unk0x04, GolD3DRenderDevice* p_renderer);
-		void FUN_004517c0(const GolVec3* p_position, const GolVec3* p_direction, RaceState::Racer* p_racer);
+		void Initialize(RacePowerupManager* p_unk0x04, GolD3DRenderDevice* p_renderer);
+		void Spawn(const GolVec3* p_position, const GolVec3* p_direction, RaceState::Racer* p_racer);
 
 		Entry m_entries[5];                  // 0x00
 		GolAnimatedEntity* m_brickModels[4]; // 0x64
-		RacePowerupManager* m_unk0x74;       // 0x74
-		undefined4 m_unk0x78;                // 0x78
-		undefined4 m_unk0x7c;                // 0x7c
+		RacePowerupManager* m_manager;       // 0x74
+		undefined4 m_nextModelIndex;         // 0x78
+		undefined4 m_nextPartIndex;          // 0x7c
 	};
 
 	class Field0x1968 {
@@ -1346,7 +1346,7 @@ public:
 	void SpawnExplosion(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
 	void FUN_0045b4d0(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
 	void SpawnSpikeExplosion(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
-	void FUN_0045b550(const GolVec3* p_unk0x04, const GolVec3* p_position, RaceState::Racer* p_racer);
+	void SpawnBrickDebris(const GolVec3* p_unk0x04, const GolVec3* p_position, RaceState::Racer* p_racer);
 	void CancelWarp(RaceState::Racer* p_racer);
 	void FUN_0045b900();
 	LegoBool32 FUN_0045b9a0(RaceState::Racer* p_racer);
@@ -1390,7 +1390,7 @@ private:
 	friend class ShieldAction;
 	friend class TurboAction;
 	friend class WarpAction;
-	friend class Field0x18bc;
+	friend class BrickDebris;
 	friend class ColorBrick;
 	friend class RaceState::Racer::DroppableBrick;
 
@@ -1505,7 +1505,7 @@ private:
 	ShieldAction* m_shieldActions;               // 0x18b0
 	TurboAction* m_turboActions;                 // 0x18b4
 	WarpAction* m_warpActions;                   // 0x18b8
-	Field0x18bc m_unk0x18bc;                     // 0x18bc
+	BrickDebris m_brickDebris;                   // 0x18bc
 	Explosion* m_activeExplosions;               // 0x193c
 	Explosion* m_activeSpikeExplosions;          // 0x1940
 	Explosion* m_freeExplosions;                 // 0x1944

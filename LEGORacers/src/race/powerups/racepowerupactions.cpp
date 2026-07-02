@@ -505,7 +505,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 					direction.m_y = -direction.m_y;
 					direction.m_z = 0.0f;
 					GolMath::NormalizeVector3(direction, &direction);
-					m_owner0x01c->FUN_0045b550(&position, &direction, m_projectile.GetHitRacer());
+					m_owner0x01c->SpawnBrickDebris(&position, &direction, m_projectile.GetHitRacer());
 				}
 
 				AdvanceState();
@@ -3382,7 +3382,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 					direction.m_y = -direction.m_y;
 					direction.m_z = 0.0f;
 					GolMath::NormalizeVector3(direction, &direction);
-					m_owner0x01c->FUN_0045b550(&position, &direction, m_projectile.GetHitRacer());
+					m_owner0x01c->SpawnBrickDebris(&position, &direction, m_projectile.GetHitRacer());
 				}
 
 				AdvanceState();

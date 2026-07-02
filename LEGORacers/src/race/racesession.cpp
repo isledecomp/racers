@@ -1843,7 +1843,7 @@ void RaceSession::FUN_00434c80()
 				racer->m_unk0xd04 |= 0x1000;
 
 				if (m_standings) {
-					m_standings->FUN_004402c0(racer->m_unk0xe04, m_unk0x3330);
+					m_standings->FUN_004402c0(racer->m_materialIndex, m_unk0x3330);
 				}
 
 				m_unk0x3330++;
@@ -1939,7 +1939,7 @@ void RaceSession::FUN_00434eb0()
 			do {
 				if (!(racer->m_unk0xd04 & 0x1000)) {
 					if (m_standings) {
-						m_standings->FUN_004402c0(racer->m_unk0xe04, m_unk0x3330);
+						m_standings->FUN_004402c0(racer->m_materialIndex, m_unk0x3330);
 					}
 
 					m_unk0x3330++;
@@ -1964,7 +1964,7 @@ void RaceSession::FUN_00434eb0()
 				racer->m_unk0xd04 |= 0x1000;
 
 				if (m_standings) {
-					m_standings->FUN_004402c0(racer->m_unk0xe04, m_unk0x3330);
+					m_standings->FUN_004402c0(racer->m_materialIndex, m_unk0x3330);
 				}
 
 				m_unk0x3330++;

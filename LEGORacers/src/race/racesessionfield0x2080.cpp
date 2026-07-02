@@ -111,7 +111,7 @@ void RaceSession::Field0x2080::Entry::VTable0x00(LegoEventQueue::CallbackData* p
 
 	CallBaseVTable0x00(p_data);
 	if (racer) {
-		LegoU32 bit = 1 << racer->m_unk0xe04;
+		LegoU32 bit = 1 << racer->m_materialIndex;
 		LegoU32 previousFlags = m_unk0x40;
 		m_unk0x3c |= bit;
 		if (!(previousFlags & bit) && m_unk0x34 != -1) {

@@ -1249,7 +1249,7 @@ public:
 		undefined m_unk0xdbe[0xdec - 0xdbe];      // 0xdbe
 		GolString m_displayName;                  // 0xdec
 		GolVec3 m_unk0xdf8;                       // 0xdf8
-		LegoU32 m_unk0xe04;                       // 0xe04
+		LegoU32 m_materialIndex;                  // 0xe04
 		RaceActionSource0x24 m_actionSource;      // 0xe08
 		Field0x00c::Entry* m_unk0xe2c;            // 0xe2c
 		CobaltTrail0x140* m_unk0xe30;             // 0xe30

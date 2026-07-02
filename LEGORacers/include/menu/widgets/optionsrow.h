@@ -21,13 +21,13 @@ public:
 	undefined4 TranslateNavigationEvent(undefined4) override;                        // vtable+0x74
 	void StepPrevious() override;                                                    // vtable+0x78
 	void StepNext() override;                                                        // vtable+0x7c
-	virtual void VTable0x80() = 0;                                                   // vtable+0x80
-	virtual void VTable0x84() = 0;                                                   // vtable+0x84
-	virtual void VTable0x88() = 0;                                                   // vtable+0x88
-	virtual void VTable0x8c() = 0;                                                   // vtable+0x8c
-	virtual void VTable0x90(LegoS32) = 0;                                            // vtable+0x90
+	virtual void LayoutButtons() = 0;                                                // vtable+0x80
+	virtual void LayoutTrack() = 0;                                                  // vtable+0x84
+	virtual void LayoutThumb() = 0;                                                  // vtable+0x88
+	virtual void SnapThumbToValue() = 0;                                             // vtable+0x8c
+	virtual void SetValue(LegoS32) = 0;                                              // vtable+0x90
 
-	LegoS32 GetUnk0x6c0() const { return m_unk0x6c0; }
+	LegoS32 GetValue() const { return m_value; }
 
 	// SYNTHETIC: LEGORACERS 0x0046ded0
 	// OptionsRowBase::`scalar deleting destructor'
@@ -35,21 +35,21 @@ public:
 protected:
 	friend class MenuScreen;
 
-	LegoBool32 FUN_0046dfb0(
+	LegoBool32 Create(
 		MenuInputBindingTable::CompositeBinding* p_createParams,
 		MenuStyleTable::CompositeStyle* p_styleEntry
 	);
 
-	MenuImage m_unk0x5ec;                // 0x5ec
-	MenuImage m_unk0x648;                // 0x648
+	MenuImage m_thumb;                   // 0x5ec
+	MenuImage m_track;                   // 0x648
 	undefined m_unk0x6a4[0x6bc - 0x6a4]; // 0x6a4
-	LegoS32 m_unk0x6bc;                  // 0x6bc
-	LegoS32 m_unk0x6c0;                  // 0x6c0
-	LegoS32 m_unk0x6c4;                  // 0x6c4
-	LegoS32 m_unk0x6c8;                  // 0x6c8
-	LegoFloat m_unk0x6cc;                // 0x6cc
-	Rect m_unk0x6d0;                     // 0x6d0
-	MenuIcon::SoundIdPair m_unk0x6e0;    // 0x6e0
+	LegoS32 m_stepCount;                 // 0x6bc
+	LegoS32 m_value;                     // 0x6c0
+	LegoS32 m_trackMinX;                 // 0x6c4
+	LegoS32 m_trackMaxX;                 // 0x6c8
+	LegoFloat m_stepWidth;               // 0x6cc
+	Rect m_trackRect;                    // 0x6d0
+	MenuIcon::SoundIdPair m_soundIds;    // 0x6e0
 };
 
 // VTABLE: LEGORACERS 0x004b25a8
@@ -60,18 +60,18 @@ public:
 	~OptionsRow() override;                                                        // vtable+0x04
 	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;             // vtable+0x2c
 	undefined4 MapCursorToNavigation(undefined4, undefined4, undefined4) override; // vtable+0x70
-	void VTable0x80() override;                                                    // vtable+0x80
-	void VTable0x84() override;                                                    // vtable+0x84
-	void VTable0x88() override;                                                    // vtable+0x88
-	void VTable0x8c() override;                                                    // vtable+0x8c
-	void VTable0x90(LegoS32) override;                                             // vtable+0x90
+	void LayoutButtons() override;                                                 // vtable+0x80
+	void LayoutTrack() override;                                                   // vtable+0x84
+	void LayoutThumb() override;                                                   // vtable+0x88
+	void SnapThumbToValue() override;                                              // vtable+0x8c
+	void SetValue(LegoS32) override;                                               // vtable+0x90
 
 	// SYNTHETIC: LEGORACERS 0x0046e440
 	// OptionsRow::`scalar deleting destructor'
 
 private:
 	friend class OptionsRowBase;
-	void FUN_0046e4b0();
+	void ComputeThumbRange();
 
 	undefined m_unk0x6e4[0x6ec - 0x6e4]; // 0x6e4
 };

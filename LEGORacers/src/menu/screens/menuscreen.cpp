@@ -706,7 +706,7 @@ LegoBool32 MenuScreen::CreateOptionsRow(OptionsRowBase* p_widget, undefined2 p_c
 	MenuInputBindingTable::CompositeBinding createParams = *sourceParams;
 	ApplyCompositeDefaults(&createParams, styleEntry);
 
-	return p_widget->FUN_0046dfb0(&createParams, styleEntry);
+	return p_widget->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c480

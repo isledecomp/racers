@@ -27,18 +27,18 @@ OptionsRowBase::~OptionsRowBase()
 // FUNCTION: LEGORACERS 0x0046df60
 void OptionsRowBase::Reset()
 {
-	m_unk0x6c0 = 0;
-	m_unk0x6c8 = 0;
-	m_unk0x6c4 = 0;
-	m_unk0x6cc = 0.0f;
+	m_value = 0;
+	m_trackMaxX = 0;
+	m_trackMinX = 0;
+	m_stepWidth = 0.0f;
 	m_styleEntry = NULL;
-	m_unk0x648.Destroy();
-	m_unk0x5ec.Destroy();
+	m_track.Destroy();
+	m_thumb.Destroy();
 	MenuIcon::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0046dfb0
-LegoBool32 OptionsRowBase::FUN_0046dfb0(
+LegoBool32 OptionsRowBase::Create(
 	MenuInputBindingTable::CompositeBinding* p_createParams,
 	MenuStyleTable::CompositeStyle* p_styleEntry
 )
@@ -46,24 +46,24 @@ LegoBool32 OptionsRowBase::FUN_0046dfb0(
 	Destroy();
 
 	m_styleEntry = p_styleEntry;
-	m_unk0x6c0 = p_createParams->m_unk0xb0;
-	m_unk0x6bc = p_createParams->m_unk0xb4;
+	m_value = p_createParams->m_unk0xb0;
+	m_stepCount = p_createParams->m_unk0xb4;
 
 	MenuIcon::SoundIdPair* soundIds = &p_createParams->m_unk0xac;
 	if (!p_createParams->m_unk0x7c) {
 		soundIds = &p_styleEntry->m_soundIds;
 	}
 
-	m_unk0x6e0 = *soundIds;
+	m_soundIds = *soundIds;
 
 	if (CreateDefault(p_createParams, p_styleEntry)) {
 		p_createParams->m_unk0x90->m_parent = this;
 		p_createParams->m_unk0x8c->m_parent = this;
 
-		if (m_unk0x648.FUN_0046f150(p_createParams->m_unk0x90) && m_unk0x5ec.FUN_0046f150(p_createParams->m_unk0x8c)) {
-			VTable0x80();
-			VTable0x84();
-			VTable0x88();
+		if (m_track.FUN_0046f150(p_createParams->m_unk0x90) && m_thumb.FUN_0046f150(p_createParams->m_unk0x8c)) {
+			LayoutButtons();
+			LayoutTrack();
+			LayoutThumb();
 			SetColor(&m_visualState);
 			return TRUE;
 		}
@@ -76,41 +76,41 @@ LegoBool32 OptionsRowBase::FUN_0046dfb0(
 // FUNCTION: LEGORACERS 0x0046e090
 void OptionsRowBase::SetColor(VisualStateColor* p_visualState)
 {
-	m_unk0x648.SetColor(p_visualState);
-	m_unk0x5ec.SetColor(p_visualState);
+	m_track.SetColor(p_visualState);
+	m_thumb.SetColor(p_visualState);
 	MenuWidget::SetColor(p_visualState);
 }
 
 // FUNCTION: LEGORACERS 0x0046e0d0
 void OptionsRowBase::StepPrevious()
 {
-	if (m_unk0x6c0) {
-		VTable0x90(m_unk0x6c0 - 1);
+	if (m_value) {
+		SetValue(m_value - 1);
 		if (m_eventHandler) {
 			m_eventHandler->OnWidgetValueChanged(this);
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
 		return;
 	}
 
-	m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x02);
+	m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x02);
 }
 
 // FUNCTION: LEGORACERS 0x0046e130
 void OptionsRowBase::StepNext()
 {
-	if (m_unk0x6c0 != m_unk0x6bc - 1) {
-		VTable0x90(m_unk0x6c0 + 1);
+	if (m_value != m_stepCount - 1) {
+		SetValue(m_value + 1);
 		if (m_eventHandler) {
 			m_eventHandler->OnWidgetValueChanged(this);
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
 		return;
 	}
 
-	m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x02);
+	m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x02);
 }
 
 // FUNCTION: LEGORACERS 0x0046e190
@@ -152,11 +152,11 @@ MenuWidget* OptionsRowBase::OnKeyDown(InputEventQueue::Event* p_event, undefined
 			if ((result & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
 				undefined4 x = p_x;
 				undefined4 y = p_y;
-				m_unk0x5ec.ScreenToLocal(x, y);
+				m_thumb.ScreenToLocal(x, y);
 
-				if (m_unk0x5ec.HitTest(x, y)) {
+				if (m_thumb.HitTest(x, y)) {
 					m_activeKeyCode = p_event->m_keyCode;
-					m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
+					m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
 					SetFocus();
 					Focus(0);
 					return this;
@@ -196,8 +196,8 @@ MenuWidget* OptionsRowBase::OnKeyUp(InputEventQueue::Event* p_event, undefined4 
 	}
 
 	if ((result & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
-		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
-		VTable0x8c();
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
+		SnapThumbToValue();
 		ClearFocus();
 	}
 
@@ -218,20 +218,19 @@ OptionsRow::~OptionsRow()
 }
 
 // FUNCTION: LEGORACERS 0x0046e4b0
-void OptionsRow::FUN_0046e4b0()
+void OptionsRow::ComputeThumbRange()
 {
-	m_unk0x6c4 =
-		m_prevButton.GetRect()->m_right + ((m_unk0x5ec.GetRect()->m_right - m_unk0x5ec.GetRect()->m_left) >> 1);
-	m_unk0x6c8 = m_nextButton.GetRect()->m_left - ((m_unk0x5ec.GetRect()->m_right - m_unk0x5ec.GetRect()->m_left) >> 1);
-	m_unk0x6cc = static_cast<LegoFloat>(m_unk0x6c8 - m_unk0x6c4);
+	m_trackMinX = m_prevButton.GetRect()->m_right + ((m_thumb.GetRect()->m_right - m_thumb.GetRect()->m_left) >> 1);
+	m_trackMaxX = m_nextButton.GetRect()->m_left - ((m_thumb.GetRect()->m_right - m_thumb.GetRect()->m_left) >> 1);
+	m_stepWidth = static_cast<LegoFloat>(m_trackMaxX - m_trackMinX);
 
-	if (m_unk0x6bc > 2) {
-		m_unk0x6cc = m_unk0x6cc / static_cast<LegoFloat>(m_unk0x6bc - 1);
+	if (m_stepCount > 2) {
+		m_stepWidth = m_stepWidth / static_cast<LegoFloat>(m_stepCount - 1);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046e530
-void OptionsRow::VTable0x80()
+void OptionsRow::LayoutButtons()
 {
 	Rect rect;
 	rect.m_top = 0;
@@ -246,59 +245,59 @@ void OptionsRow::VTable0x80()
 }
 
 // FUNCTION: LEGORACERS 0x0046e5b0
-void OptionsRow::VTable0x84()
+void OptionsRow::LayoutTrack()
 {
 	Rect rect;
 	rect.m_left = m_prevButton.GetRect()->m_right + 1;
 	rect.m_right = m_nextButton.GetRect()->m_left - 1;
 
-	LegoS32 height = m_unk0x648.GetRect()->m_bottom - m_unk0x648.GetRect()->m_top;
+	LegoS32 height = m_track.GetRect()->m_bottom - m_track.GetRect()->m_top;
 	rect.m_top = ((m_rect.m_bottom - m_rect.m_top) >> 1) - (height >> 1);
 	rect.m_bottom = rect.m_top + height;
 
-	m_unk0x648.SetRect(&rect);
-	m_unk0x6d0 = *m_unk0x648.GetGlobalRect();
+	m_track.SetRect(&rect);
+	m_trackRect = *m_track.GetGlobalRect();
 }
 
 // FUNCTION: LEGORACERS 0x0046e630
-void OptionsRow::VTable0x88()
+void OptionsRow::LayoutThumb()
 {
 	Rect rect;
 	rect.m_left = m_prevButton.GetRect()->m_right;
-	rect.m_right = m_unk0x5ec.GetRect()->m_right + rect.m_left;
+	rect.m_right = m_thumb.GetRect()->m_right + rect.m_left;
 
-	LegoS32 height = m_unk0x5ec.GetRect()->m_bottom - m_unk0x5ec.GetRect()->m_top;
+	LegoS32 height = m_thumb.GetRect()->m_bottom - m_thumb.GetRect()->m_top;
 	rect.m_top = ((m_rect.m_bottom - m_rect.m_top) >> 1) - (height >> 1);
 	rect.m_bottom = rect.m_top + height;
 
-	m_unk0x5ec.SetRect(&rect);
-	FUN_0046e4b0();
-	VTable0x90(m_unk0x6c0);
+	m_thumb.SetRect(&rect);
+	ComputeThumbRange();
+	SetValue(m_value);
 }
 
 // FUNCTION: LEGORACERS 0x0046e6b0
-void OptionsRow::VTable0x8c()
+void OptionsRow::SnapThumbToValue()
 {
 	LegoS32 index = static_cast<LegoS32>(
-		(static_cast<LegoFloat>(m_unk0x5ec.GetRect()->m_left - m_prevButton.GetRect()->m_right) / m_unk0x6cc) + 0.5f
+		(static_cast<LegoFloat>(m_thumb.GetRect()->m_left - m_prevButton.GetRect()->m_right) / m_stepWidth) + 0.5f
 	);
 
-	VTable0x90(index);
+	SetValue(index);
 }
 
 // FUNCTION: LEGORACERS 0x0046e6f0
-void OptionsRow::VTable0x90(LegoS32 p_unk0x04)
+void OptionsRow::SetValue(LegoS32 p_unk0x04)
 {
-	if (p_unk0x04 != m_unk0x6c0) {
-		double step = m_unk0x6cc;
+	if (p_unk0x04 != m_value) {
+		double step = m_stepWidth;
 		double index = p_unk0x04;
-		Rect rect = *m_unk0x5ec.GetRect();
+		Rect rect = *m_thumb.GetRect();
 		LegoS32 width = rect.m_right - rect.m_left;
-		rect.m_left = m_unk0x6c4 + static_cast<LegoS32>(step * index) - (width >> 1);
+		rect.m_left = m_trackMinX + static_cast<LegoS32>(step * index) - (width >> 1);
 		rect.m_right = width + rect.m_left;
-		m_unk0x5ec.SetRect(&rect);
+		m_thumb.SetRect(&rect);
 
-		m_unk0x6c0 = p_unk0x04;
+		m_value = p_unk0x04;
 		if (m_eventHandler) {
 			m_eventHandler->OnWidgetValueChanged(this);
 		}
@@ -311,9 +310,9 @@ undefined4 OptionsRow::MapCursorToNavigation(undefined4 p_event, undefined4 p_x,
 	if ((p_event & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
 		undefined4 x = p_x;
 		undefined4 y = p_y;
-		m_unk0x5ec.ScreenToLocal(x, y);
+		m_thumb.ScreenToLocal(x, y);
 
-		if (!(m_stateFlags & c_flagBit2) && m_unk0x5ec.HitTest(x, y)) {
+		if (!(m_stateFlags & c_flagBit2) && m_thumb.HitTest(x, y)) {
 			return p_event;
 		}
 
@@ -334,9 +333,9 @@ MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p
 
 	if (!(m_prevButton.GetStateFlags() & c_flagBit2) && !(m_nextButton.GetStateFlags() & c_flagBit2)) {
 		MenuInputDispatcher::Cursor* cursor = static_cast<MenuInputDispatcher::Cursor*>(p_item);
-		cursor->m_bounds = m_unk0x6d0;
+		cursor->m_bounds = m_trackRect;
 
-		Rect rect = *m_unk0x5ec.GetRect();
+		Rect rect = *m_thumb.GetRect();
 		LegoS32 width = rect.m_right;
 		width -= rect.m_left;
 		rect.m_left += p_x;
@@ -351,7 +350,7 @@ MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p
 			rect.m_left = rect.m_right - width;
 		}
 
-		m_unk0x5ec.SetRect(&rect);
+		m_thumb.SetRect(&rect);
 	}
 
 	return this;

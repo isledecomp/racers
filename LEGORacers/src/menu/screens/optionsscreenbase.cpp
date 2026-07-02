@@ -91,8 +91,8 @@ void OptionsScreenBase::FUN_00483030()
 	CreateCarousel(&m_unk0x40e4, 0xfb, 0x3b);
 	CreateSelector(&m_unk0x36f0, &m_unk0x40e4, 0xfc, 0x4c);
 
-	m_unk0x4178.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetMusicVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
-	m_unk0x4864.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetSoundVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
+	m_unk0x4178.SetValue(static_cast<LegoS32>(m_unk0x370->GetMusicVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
+	m_unk0x4864.SetValue(static_cast<LegoS32>(m_unk0x370->GetSoundVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
 	OnWidgetValueChanged(&m_unk0x4178);
 	OnWidgetValueChanged(&m_unk0x4864);
 
@@ -200,7 +200,7 @@ void OptionsScreenBase::OnIconUnfocused(MenuWidget* p_widget)
 void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 {
 	if (p_widget == &m_unk0x4178) {
-		LegoFloat volume = m_unk0x4178.GetUnk0x6c0() * 0.05f;
+		LegoFloat volume = m_unk0x4178.GetValue() * 0.05f;
 		m_unk0x370->SetMusicVolume(static_cast<LegoU8>(volume * 255.0f));
 
 		if (m_context->m_context->m_soundManager) {
@@ -215,7 +215,7 @@ void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 		}
 	}
 	else if (p_widget == &m_unk0x4864) {
-		LegoFloat volume = m_unk0x4864.GetUnk0x6c0() * 0.05f;
+		LegoFloat volume = m_unk0x4864.GetValue() * 0.05f;
 		m_unk0x370->SetSoundVolume(static_cast<LegoU8>(volume * 255.0f));
 
 		SoundManager* soundManager = m_context->m_context->m_soundManager;

@@ -7,7 +7,7 @@
 #include "golname.h"
 #include "golworldentity.h"
 #include "material/materialtable0x0c.h"
-#include "race/powerupprojectile.h"
+#include "race/powerups/powerupprojectile.h"
 #include "race/raceactionsource0x24.h"
 #include "race/racesessionfield0x27d4.h"
 #include "race/racestate.h"

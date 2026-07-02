@@ -15,7 +15,7 @@
 #include "material/materialtable0x0c.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutsceneplayer.h"
-#include "race/powerupprojectile.h"
+#include "race/powerups/powerupprojectile.h"
 #include "race/raceactionsource0x24.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesessionfield0x27d4.h"

@@ -1,4 +1,4 @@
-#include "race/powerupprojectile.h"
+#include "race/powerups/powerupprojectile.h"
 
 #include "decomp.h"
 #include "golconstants.h"

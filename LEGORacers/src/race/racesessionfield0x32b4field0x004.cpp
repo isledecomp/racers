@@ -168,7 +168,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 		}
 	}
 
-	m_unk0x14->FUN_0048aad0(p_unk0x04, p_unk0x08);
+	m_unk0x14->NotifyEventStart(p_unk0x04, p_unk0x08);
 	return m_unk0x24->FUN_0045c660(p_unk0x04);
 }
 
@@ -251,7 +251,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 		}
 	}
 
-	m_unk0x14->FUN_0048ab20(p_unk0x04, p_unk0x08);
+	m_unk0x14->NotifyEventEnd(p_unk0x04, p_unk0x08);
 }
 
 // FUNCTION: LEGORACERS 0x00462350
@@ -353,7 +353,7 @@ void RaceEventTable0x90::FUN_00462350(undefined4 p_unk0x04)
 		}
 	}
 
-	m_unk0x14->FUN_0048ab70(p_unk0x04);
+	m_unk0x14->ForceActivate(p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x00462580
@@ -483,7 +483,7 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 		}
 	}
 
-	m_unk0x14->FUN_0048abb0(p_unk0x04, p_unk0x08, p_unk0x0c);
+	m_unk0x14->NotifyEventPair(p_unk0x04, p_unk0x08, p_unk0x0c);
 }
 
 // FUNCTION: LEGORACERS 0x004628c0
@@ -522,7 +522,7 @@ void RaceEventTable0x90::FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08)
 	}
 
 	if (p_unk0x08) {
-		m_unk0x14->FUN_0048ac30(p_unk0x04, p_unk0x08);
+		m_unk0x14->DispatchEventStart(p_unk0x04, p_unk0x08);
 	}
 }
 
@@ -562,7 +562,7 @@ void RaceEventTable0x90::FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08)
 	}
 
 	if (p_unk0x08) {
-		m_unk0x14->FUN_0048aca0(p_unk0x04, p_unk0x08);
+		m_unk0x14->DispatchEventEnd(p_unk0x04, p_unk0x08);
 	}
 }
 
@@ -618,6 +618,6 @@ void RaceEventTable0x90::FUN_00462ae0(undefined4 p_unk0x04, undefined4 p_unk0x08
 	}
 
 	if (p_unk0x0c) {
-		m_unk0x14->FUN_0048ad10(p_unk0x04, p_unk0x08, p_unk0x0c);
+		m_unk0x14->DispatchEventPair(p_unk0x04, p_unk0x08, p_unk0x0c);
 	}
 }

@@ -32,7 +32,7 @@ const LegoFloat g_dynamiteLaunchHeight = 5.0f;
 
 extern LegoFloat g_cosineTable[1024];
 
-extern const LegoFloat g_item0x40RadiansToTableIndex;
+extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 
 extern const LegoFloat g_negativeRadiansToTableIndex;
 
@@ -178,7 +178,7 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 	up.m_x = g_cosineTable[tableIndex];
 	up.m_y = 0.0f;
 
-	tableIndex = static_cast<LegoS32>(m_tumbleAngle * g_item0x40RadiansToTableIndex) & 0x3ff;
+	tableIndex = static_cast<LegoS32>(m_tumbleAngle * g_sweepCannonRadiansToTableIndex) & 0x3ff;
 	up.m_z = g_cosineTable[tableIndex];
 
 	GolVec3 direction;

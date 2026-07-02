@@ -970,7 +970,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	RacePowerupManager::Params powerupParams;
 	Field0x30c4::Params field0x30c4Params;
 	Field0x2098::Params params;
-	RaceEventDispatcher0x08::Context dispatcherContext;
+	HazardManager::Context dispatcherContext;
 	RaceState::RacerContext racerContext;
 	RaceState::CreateRacersParams racerParams;
 
@@ -1121,24 +1121,24 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.77f);
 
-	dispatcherContext.m_unk0x00 = &m_raceState.m_roster;
+	dispatcherContext.m_eventQueue = &m_raceState.m_roster;
 	dispatcherContext.m_unk0x04 = m_context;
-	dispatcherContext.m_unk0x08 = &m_unk0x3300;
-	dispatcherContext.m_unk0x0c = m_unk0x2098.GetEventTable();
-	dispatcherContext.m_unk0x10 = m_unk0x390;
-	dispatcherContext.m_unk0x14 = m_unk0x398;
+	dispatcherContext.m_soundSource = &m_unk0x3300;
+	dispatcherContext.m_eventTable = m_unk0x2098.GetEventTable();
+	dispatcherContext.m_trackDatabase = m_unk0x390;
+	dispatcherContext.m_sharedDatabase = m_unk0x398;
 	dispatcherContext.m_unk0x18 = m_unk0x3a0;
-	dispatcherContext.m_unk0x1c = &m_unk0x248c;
-	dispatcherContext.m_unk0x20 = m_unk0x394;
-	dispatcherContext.m_unk0x24 = m_golExport;
-	dispatcherContext.m_unk0x28 = m_renderer;
-	dispatcherContext.m_unk0x2c = &m_unk0x27e0;
-	dispatcherContext.m_unk0x30 = &m_raceState;
-	dispatcherContext.m_unk0x34 = &m_unk0x32b4;
-	dispatcherContext.m_unk0x38 = &m_unk0x6dc;
+	dispatcherContext.m_particleAnimation = &m_unk0x248c;
+	dispatcherContext.m_trackCollidable = m_unk0x394;
+	dispatcherContext.m_golExport = m_golExport;
+	dispatcherContext.m_renderer = m_renderer;
+	dispatcherContext.m_colliderTable = &m_unk0x27e0;
+	dispatcherContext.m_raceState = &m_raceState;
+	dispatcherContext.m_skyState = &m_unk0x32b4;
+	dispatcherContext.m_powerupManager = &m_unk0x6dc;
 	dispatcherContext.m_unk0x3c = &m_trailManager;
-	dispatcherContext.m_unk0x40 = p_mirror;
-	m_unk0x2148.FUN_0048a4d0(&dispatcherContext, &m_unk0x1bb, m_context->m_useBinaryFiles);
+	dispatcherContext.m_mirror = p_mirror;
+	m_unk0x2148.LoadHazards(&dispatcherContext, &m_unk0x1bb, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.8f);
 
@@ -2066,7 +2066,7 @@ void RaceSession::VTable0x30()
 		m_unk0x248c.FUN_00489fa0(elapsedMs);
 		m_trailManager.FUN_00493a20(elapsedMs);
 		m_unk0x2098.FUN_00461cc0(elapsedMs);
-		m_unk0x2148.FUN_0048add0(elapsedMs);
+		m_unk0x2148.Update(elapsedMs);
 		m_unk0x213c.FUN_00464dd0(elapsedMs);
 		m_unk0x27fc.Update(elapsedMs);
 		m_soundManager->Update(elapsedMs);
@@ -2109,7 +2109,7 @@ void RaceSession::VTable0x30()
 		}
 
 		m_unk0x27d4.FUN_00492870(elapsedMs);
-		m_unk0x2148.FUN_0048ae00(m_unk0x2acc[0], m_unk0x2ad4[0].m_unk0x0d4);
+		m_unk0x2148.UpdatePerRacer(m_unk0x2acc[0], m_unk0x2ad4[0].m_unk0x0d4);
 		m_unk0x2f90.FUN_0041ccb0(elapsedMs);
 
 		if (m_state == 2 || m_state == 3 || m_state == 4) {
@@ -2382,7 +2382,7 @@ void RaceSession::VTable0x3c()
 {
 	m_unk0x398->FUN_00416040();
 	m_raceState.DrawRacersTransparent(m_renderer);
-	m_unk0x2148.FUN_0048ae30(m_renderer);
+	m_unk0x2148.Draw(m_renderer);
 	m_unk0x6dc.DrawTransparent();
 	m_unk0x2150.FUN_0048a040(m_renderer);
 	m_unk0x248c.FUN_0048a040(m_renderer);

@@ -157,7 +157,7 @@ void RaceCameraController::FUN_00427d30()
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_halfPi;
-extern const LegoFloat g_item0x40Pi;
+extern const LegoFloat g_hazardPi;
 
 // FUNCTION: LEGORACERS 0x00427e80
 void RaceCameraController::FUN_00427e80()
@@ -214,7 +214,7 @@ void RaceCameraController::FUN_00427e80()
 		LegoFloat phase = static_cast<LegoFloat>(remaining);
 		phase *= 0.02f;
 		phase *= 0.1f;
-		phase *= g_item0x40Pi;
+		phase *= g_hazardPi;
 		LegoFloat angle = static_cast<LegoFloat>(cos(phase));
 		LegoFloat fov = angle * m_unk0x13c + (m_unk0x138 - m_unk0x13c);
 		camera->m_flags |= GolCamera::c_flagBit1;

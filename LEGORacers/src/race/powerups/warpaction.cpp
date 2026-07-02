@@ -22,7 +22,7 @@ extern const LegoFloat g_warpFovBoost;
 
 extern LegoFloat g_cosineTable[1024];
 
-extern const LegoFloat g_item0x40Pi;
+extern const LegoFloat g_hazardPi;
 
 extern const LegoFloat g_negativeRadiansToTableIndex;
 
@@ -285,7 +285,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	m_racer->m_cameraController->FUN_00428540(0.0f);
 
 	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
-	phase *= g_item0x40Pi;
+	phase *= g_hazardPi;
 	phase *= g_warpLerpScale;
 	phase *= g_negativeRadiansToTableIndex;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
@@ -338,7 +338,7 @@ void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_rende
 	GolVec3 position;
 	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
 	phase *= g_unk0x004b02fc;
-	phase *= g_item0x40Pi;
+	phase *= g_hazardPi;
 	phase *= g_negativeRadiansToTableIndex;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat scale = g_cosineTable[tableIndex];

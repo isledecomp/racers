@@ -23,10 +23,10 @@
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/checkpointgraph.h"
 #include "race/cobalttrail0x140.h"
+#include "race/hazardmanager.h"
 #include "race/powerups/powerupprojectile.h"
 #include "race/powerups/racepowerupmanager.h"
 #include "race/racecameracontroller.h"
-#include "race/raceeventdispatcher0x08.h"
 #include "race/raceeventtable0x90.h"
 #include "race/raceforcefeedback.h"
 #include "race/racer/racerouterecord.h"
@@ -498,7 +498,7 @@ public:
 			GolWorldDatabase* m_unk0x08;              // 0x08
 			GolWorldDatabase* m_unk0x0c;              // 0x0c
 			RaceState::Racer::SoundSource* m_unk0x10; // 0x10
-			RaceEventDispatcher0x08* m_unk0x14;       // 0x14
+			HazardManager* m_unk0x14;                 // 0x14
 			CutsceneAnimation* m_unk0x18;             // 0x18
 			CutsceneAnimation* m_unk0x1c;             // 0x1c
 			Field0x2f90* m_unk0x20;                   // 0x20
@@ -1089,7 +1089,7 @@ public:
 				GolWorldDatabase* m_unk0x08;              // 0x08
 				GolWorldDatabase* m_unk0x0c;              // 0x0c
 				RaceState::Racer::SoundSource* m_unk0x10; // 0x10
-				RaceEventDispatcher0x08* m_unk0x14;       // 0x14
+				HazardManager* m_unk0x14;                 // 0x14
 				CutsceneAnimation* m_unk0x18;             // 0x18
 				CutsceneAnimation* m_unk0x1c;             // 0x1c
 				Field0x2f90* m_unk0x20;                   // 0x20
@@ -1451,7 +1451,7 @@ public:
 			LegoRacers::Context* m_context;     // 0x00
 			RaceState* m_raceState;             // 0x04
 			RacePowerupManager* m_unk0x08;      // 0x08
-			RaceEventDispatcher0x08* m_unk0x0c; // 0x0c
+			HazardManager* m_unk0x0c;           // 0x0c
 			CutsceneAnimation* m_unk0x10;       // 0x10
 			CutsceneAnimation* m_unk0x14;       // 0x14
 			TimeRaceManager* m_timeRaceManager; // 0x18
@@ -1475,7 +1475,7 @@ public:
 		LegoRacers::Context* m_context;     // 0x00
 		RaceState* m_raceState;             // 0x04
 		RacePowerupManager* m_unk0x08;      // 0x08
-		RaceEventDispatcher0x08* m_unk0x0c; // 0x0c
+		HazardManager* m_unk0x0c;           // 0x0c
 		CutsceneAnimation* m_unk0x10;       // 0x10
 		CutsceneAnimation* m_unk0x14;       // 0x14
 		TimeRaceManager* m_timeRaceManager; // 0x18
@@ -1699,7 +1699,7 @@ private:
 	Field0x2098 m_unk0x2098;                // 0x2098
 	Field0x2128 m_unk0x2128;                // 0x2128
 	Field0x213c m_unk0x213c;                // 0x213c
-	RaceEventDispatcher0x08 m_unk0x2148;    // 0x2148
+	HazardManager m_unk0x2148;              // 0x2148
 	CutsceneAnimation m_unk0x2150;          // 0x2150
 	CutsceneAnimation m_unk0x248c;          // 0x248c
 	RaceTrailManager m_trailManager;        // 0x27c8

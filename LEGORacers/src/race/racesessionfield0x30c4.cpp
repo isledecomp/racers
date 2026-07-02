@@ -60,7 +60,7 @@ void RaceSession::Field0x30c4::FUN_0043a6e0()
 	m_unk0x20->VTable0x0c();
 	m_unk0x1c->VTable0x0c();
 	m_unk0x24->FUN_0045e5b0();
-	m_unk0x0c->FUN_0048ae60();
+	m_unk0x0c->ResetAll();
 	m_unk0x08->ResetEffects();
 
 	if (m_timeRaceManager) {

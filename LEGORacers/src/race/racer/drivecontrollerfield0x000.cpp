@@ -26,7 +26,7 @@ extern const LegoFloat g_unk0x004b0430 = 30.0f;
 // GLOBAL: LEGORACERS 0x004b0434
 extern const LegoFloat g_unk0x004b0434 = 300.0f;
 
-extern const LegoFloat g_item0x40RadiansToTableIndex;
+extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 extern const LegoFloat g_physicsSoundMinDistance;
 extern const LegoFloat g_physicsSoundMaxDistance;
 
@@ -213,7 +213,8 @@ void RaceState::Racer::CarBody::StartSteering(LegoFloat p_gain, LegoFloat p_slip
 	m_slipRatio = p_slipRatio;
 	m_flags = flags;
 	m_facingLagMax = p_maxAngle;
-	m_steeringAlignmentMin = GetCosineTableValue(static_cast<LegoS32>(angle * g_item0x40RadiansToTableIndex) & 0x3ff);
+	m_steeringAlignmentMin =
+		GetCosineTableValue(static_cast<LegoS32>(angle * g_sweepCannonRadiansToTableIndex) & 0x3ff);
 
 	if (m_skidSoundResource != NULL) {
 		return;

@@ -307,7 +307,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x2098resource0x24.cpp
   LEGORacers/src/race/racesessionfield0x2098resource0x48.cpp
   LEGORacers/src/race/racesessionfield0x213c.cpp
-  LEGORacers/src/race/racesessionfield0x2148.cpp
+  LEGORacers/src/race/hazardmanager.cpp
   LEGORacers/src/race/racesessionfield0x23c.cpp
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/racesessionfield0x27d4.cpp

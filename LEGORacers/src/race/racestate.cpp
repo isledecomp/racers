@@ -48,7 +48,7 @@ DECOMP_SIZE_ASSERT(RaceState::RaceSetup, 0x1c)
 
 extern const LegoFloat g_ghostAnimationRateScale;
 extern const LegoFloat g_ghostSampleFractionScale;
-extern const LegoFloat g_item0x40RadiansToTableIndex;
+extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_violetShoalTwo;
 extern LegoU32 g_impostorFlags0;

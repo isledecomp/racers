@@ -56,7 +56,7 @@ LegoBool32 MenuModelCarousel::Create(CreateParams* p_createParams, MenuStyleTabl
 	}
 
 	m_unk0xbc = p_createParams->m_unk0x40;
-	m_unk0x78 = p_createParams->m_unk0x6c;
+	m_viewportIndex = p_createParams->m_viewportIndex;
 	SetupCamera(p_createParams);
 
 	PushCamera();
@@ -502,7 +502,7 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 
 	m_renderer->VTable0xe4();
 	PushCamera();
-	m_renderer->VTable0xec(m_unk0x78);
+	m_renderer->VTable0xec(m_viewportIndex);
 
 	GolVec3 direction = m_renderer->GetCurrentLight(0)->m_direction;
 	m_light.SetDirection(direction);

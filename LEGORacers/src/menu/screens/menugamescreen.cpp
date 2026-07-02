@@ -122,7 +122,7 @@ undefined4 MenuGameScreen::FUN_0047fcf0(CarPartCarousel* p_unk0x04, undefined2 p
 	createParams.m_buildModel = &context->m_carBuildModel;
 	createParams.m_colorTable = &context->m_colorTable;
 	createParams.m_aspectScale = VTable0x6c();
-	createParams.m_unk0x6c = 5;
+	createParams.m_viewportIndex = 5;
 
 	return p_unk0x04->Create(&createParams, styleEntry);
 }

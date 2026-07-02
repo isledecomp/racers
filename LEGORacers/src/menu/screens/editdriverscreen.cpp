@@ -23,10 +23,10 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
 // GLOBAL: LEGORACERS 0x004c20b8
-LegoU16 g_unk0x004c20b8[8] = {0x74, 0x75, 0x76, 0xd3, 0x81, 0x82, 0x78, 0x79};
+LegoU16 g_idleAnimTextIds[8] = {0x74, 0x75, 0x76, 0xd3, 0x81, 0x82, 0x78, 0x79};
 
 // GLOBAL: LEGORACERS 0x004c20c8
-LegoU16 g_unk0x004c20c8[2] = {0x7c, 0x80};
+LegoU16 g_exitAnimTextIds[2] = {0x7c, 0x80};
 
 // FUNCTION: LEGORACERS 0x0047ce30
 EditDriverScreen::EditDriverScreen()
@@ -43,16 +43,16 @@ EditDriverScreen::~EditDriverScreen()
 // FUNCTION: LEGORACERS 0x0047d0d0
 void EditDriverScreen::Reset()
 {
-	m_unk0x476c = 1;
-	m_unk0x4764 = 0;
-	m_unk0x4768 = 0;
-	m_unk0x4770 = 0;
+	m_nextViewportIndex = 1;
+	m_cosmeticsDirty = 0;
+	m_pendingAnimTextId = 0;
+	m_savePending = 0;
 
 	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047d100
-void EditDriverScreen::FUN_0047d100(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+void EditDriverScreen::LoadHeadBuilder(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	DriverHeadBuilder::LoadParams params;
 	::memset(&params, 0, sizeof(params));
@@ -66,7 +66,7 @@ void EditDriverScreen::FUN_0047d100(MenuGameContext* p_context, MenuScreenCreate
 }
 
 // FUNCTION: LEGORACERS 0x0047d170
-LegoBool32 EditDriverScreen::FUN_0047d170(
+LegoBool32 EditDriverScreen::CreateRacerCarousel(
 	MenuRacerCarousel* p_widget,
 	undefined2 p_createParamId,
 	undefined2 p_styleId,
@@ -86,7 +86,7 @@ LegoBool32 EditDriverScreen::FUN_0047d170(
 	ApplyWidgetDefaults(&createParams);
 
 	createParams.m_context = m_context;
-	createParams.m_unk0x6c = m_unk0x476c++;
+	createParams.m_viewportIndex = m_nextViewportIndex++;
 	createParams.m_headBuilder = &m_headBuilder;
 	createParams.m_partType = p_category;
 	createParams.m_aspectScale = VTable0x6c();
@@ -94,13 +94,13 @@ LegoBool32 EditDriverScreen::FUN_0047d170(
 }
 
 // FUNCTION: LEGORACERS 0x0047d230
-void EditDriverScreen::FUN_0047d230()
+void EditDriverScreen::CreateDriverScene()
 {
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\CB_SET");
 	}
 
-	CreateFramedSceneView(&m_unk0x31b0, 0, 0xd0);
+	CreateFramedSceneView(&m_sceneView, 0, 0xd0);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -110,41 +110,41 @@ void EditDriverScreen::FUN_0047d230()
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
-	createParams.m_sceneView = &m_unk0x31b0;
+	createParams.m_sceneView = &m_sceneView;
 	createParams.m_modelBuilder = &m_context->m_modelBuilder;
 	createParams.m_position.m_x = -5.3590002f;
 	createParams.m_position.m_y = -3.1500001f;
 	createParams.m_position.m_z = 0.026000001f;
 
-	m_unk0x4600.Create(&createParams);
-	m_unk0x31b0.AddElement(&m_unk0x4600);
+	m_modelSlot.Create(&createParams);
+	m_sceneView.AddElement(&m_modelSlot);
 }
 
 // FUNCTION: LEGORACERS 0x0047d2f0
 void EditDriverScreen::VTable0x4c()
 {
-	CreateImage(&m_unk0x368, 0x49, 0x49);
-	FUN_0047d170(&m_unk0x420[0], 0xcd, 0x3b, 0);
-	FUN_0047d170(&m_unk0x420[1], 0xce, 0x3b, 1);
-	FUN_0047d170(&m_unk0x420[2], 0xcd, 0x3b, 2);
-	FUN_0047d170(&m_unk0x420[3], 0xcd, 0x3b, 3);
-	CreateSelector(&m_unk0x9e0[0], &m_unk0x420[0], 0xc8, 0xcc);
-	CreateSelector(&m_unk0x9e0[1], &m_unk0x420[1], 0xc9, 0xcc);
-	CreateSelector(&m_unk0x9e0[2], &m_unk0x420[2], 0xca, 0xcc);
-	CreateSelector(&m_unk0x9e0[3], &m_unk0x420[3], 0xcb, 0xcc);
-	FUN_0047d230();
-	CreateTextLabel(&m_unk0x3688, 0x3a, 0x3a, 9);
-	m_unk0x3688.WrapText(0x14);
-	FUN_0047fdc0(&m_unk0x3700, 0xd2, 0x42, 0x38);
+	CreateImage(&m_photoImage, 0x49, 0x49);
+	CreateRacerCarousel(&m_cosmeticCarousels[0], 0xcd, 0x3b, 0);
+	CreateRacerCarousel(&m_cosmeticCarousels[1], 0xce, 0x3b, 1);
+	CreateRacerCarousel(&m_cosmeticCarousels[2], 0xcd, 0x3b, 2);
+	CreateRacerCarousel(&m_cosmeticCarousels[3], 0xcd, 0x3b, 3);
+	CreateSelector(&m_cosmeticSelectors[0], &m_cosmeticCarousels[0], 0xc8, 0xcc);
+	CreateSelector(&m_cosmeticSelectors[1], &m_cosmeticCarousels[1], 0xc9, 0xcc);
+	CreateSelector(&m_cosmeticSelectors[2], &m_cosmeticCarousels[2], 0xca, 0xcc);
+	CreateSelector(&m_cosmeticSelectors[3], &m_cosmeticCarousels[3], 0xcb, 0xcc);
+	CreateDriverScene();
+	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 9);
+	m_infoLabel.WrapText(0x14);
+	FUN_0047fdc0(&m_randomButton, 0xd2, 0x42, 0x38);
 
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-		FUN_0047fdc0(&m_unk0x3ce0, 0x40, 0x44, 0x0a);
+		FUN_0047fdc0(&m_doneButton, 0x40, 0x44, 0x0a);
 	}
 	else {
-		FUN_0047fdc0(&m_unk0x3ce0, 0x40, 0x46, 0x72);
+		FUN_0047fdc0(&m_doneButton, 0x40, 0x46, 0x72);
 	}
 
-	FUN_0047fdc0(&m_unk0x39f0, 0x3f, 0x45, 0x1f);
+	FUN_0047fdc0(&m_backButton, 0x3f, 0x45, 0x1f);
 }
 
 // FUNCTION: LEGORACERS 0x0047d460
@@ -170,11 +170,11 @@ LegoBool32 EditDriverScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCr
 	materialColor.m_alp = 0xff;
 	FUN_0047fec0(&materialColor, &lightColor);
 
-	m_unk0x4600.GetBodyModelPart()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
+	m_modelSlot.GetBodyModelPart()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
 	p_context->m_carBuildModel.FUN_00499f00();
-	FUN_0047d100(p_context, p_createParams);
-	FUN_0047d840();
-	FUN_0047d6f0();
+	LoadHeadBuilder(p_context, p_createParams);
+	LoadCosmetics();
+	PlayNextAnimation();
 
 	return TRUE;
 }
@@ -195,7 +195,7 @@ LegoBool32 EditDriverScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0047d560
-LegoBool32 EditDriverScreen::FUN_0047d560()
+LegoBool32 EditDriverScreen::HasUnsavedChanges()
 {
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 		return FALSE;
@@ -214,35 +214,35 @@ LegoBool32 EditDriverScreen::FUN_0047d560()
 }
 
 // FUNCTION: LEGORACERS 0x0047d5d0
-LegoS32 EditDriverScreen::FUN_0047d5d0()
+LegoS32 EditDriverScreen::PickNextAnimation()
 {
 	GolString string;
 	m_menuNameStrings->CopyStringByIndex(&string, 0x83);
 
-	if (m_unk0x4768) {
-		m_menuNameStrings->CopyStringByIndex(&string, m_unk0x4768);
-		m_unk0x4768 = 0;
+	if (m_pendingAnimTextId) {
+		m_menuNameStrings->CopyStringByIndex(&string, m_pendingAnimTextId);
+		m_pendingAnimTextId = 0;
 	}
 	else {
 		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 		LegoU16 random = g_randomTable[g_randomTableIndex];
 		LegoU16 textIdIndex = static_cast<LegoU16>(static_cast<LegoS32>(random) % 8);
-		m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c20b8[textIdIndex]);
+		m_menuNameStrings->CopyStringByIndex(&string, g_idleAnimTextIds[textIdIndex]);
 	}
 
 	GolName name;
 	string.CopyToBuf8(name);
-	return m_unk0x4600.GetBodyModelPart()->GetPartIndex(name);
+	return m_modelSlot.GetBodyModelPart()->GetPartIndex(name);
 }
 
 // FUNCTION: LEGORACERS 0x0047d6f0
-void EditDriverScreen::FUN_0047d6f0()
+void EditDriverScreen::PlayNextAnimation()
 {
-	GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
+	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 	LegoS32 partIndex;
 
 	do {
-		partIndex = FUN_0047d5d0();
+		partIndex = PickNextAnimation();
 	} while (partIndex == entity->GetActiveState());
 
 	entity->FUN_0040dad0(partIndex);
@@ -250,7 +250,7 @@ void EditDriverScreen::FUN_0047d6f0()
 }
 
 // FUNCTION: LEGORACERS 0x0047d740
-void EditDriverScreen::FUN_0047d740()
+void EditDriverScreen::PlayExitAnimation()
 {
 	GolString string;
 	GolName name;
@@ -258,32 +258,32 @@ void EditDriverScreen::FUN_0047d740()
 	g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 	LegoU16 random = g_randomTable[g_randomTableIndex];
 	LegoS32 textIdIndex = static_cast<LegoS32>(random) % 2;
-	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c20c8[textIdIndex]);
+	m_menuNameStrings->CopyStringByIndex(&string, g_exitAnimTextIds[textIdIndex]);
 	string.CopyToBuf8(name);
 
-	GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
-	LegoS32 partIndex = m_unk0x4600.GetBodyModelPart()->GetPartIndex(name);
+	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
+	LegoS32 partIndex = m_modelSlot.GetBodyModelPart()->GetPartIndex(name);
 	entity->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 
 // FUNCTION: LEGORACERS 0x0047d840
-void EditDriverScreen::FUN_0047d840()
+void EditDriverScreen::LoadCosmetics()
 {
 	m_context->m_saveSystem.GetActiveRecord().GetCosmetics(&m_driverCosmetics);
 
-	m_unk0x420[0].SelectValue(m_driverCosmetics.m_components[0]);
-	m_unk0x420[1].SelectValue(m_driverCosmetics.m_components[1]);
-	m_unk0x420[2].SelectValue(m_driverCosmetics.m_components[2]);
-	m_unk0x420[3].SelectValue(m_driverCosmetics.m_components[3]);
+	m_cosmeticCarousels[0].SelectValue(m_driverCosmetics.m_components[0]);
+	m_cosmeticCarousels[1].SelectValue(m_driverCosmetics.m_components[1]);
+	m_cosmeticCarousels[2].SelectValue(m_driverCosmetics.m_components[2]);
+	m_cosmeticCarousels[3].SelectValue(m_driverCosmetics.m_components[3]);
 
-	m_unk0x4600.SetCosmetics(&m_driverCosmetics);
-	m_unk0x9e0[0].Select(4);
-	m_unk0x4764 = 0;
+	m_modelSlot.SetCosmetics(&m_driverCosmetics);
+	m_cosmeticSelectors[0].Select(4);
+	m_cosmeticsDirty = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0047d8e0
-void EditDriverScreen::FUN_0047d8e0()
+void EditDriverScreen::SaveCosmetics()
 {
 	m_context->m_saveSystem.GetActiveRecord().SetCosmetics(&m_driverCosmetics);
 
@@ -291,12 +291,12 @@ void EditDriverScreen::FUN_0047d8e0()
 		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(
 			&m_context->m_saveSystem.GetActiveRecord()
 		);
-		m_unk0x4770 = TRUE;
+		m_savePending = TRUE;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047d940
-void EditDriverScreen::FUN_0047d940()
+void EditDriverScreen::RemoveSelectedRecord()
 {
 	SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
 	SaveRecordList* records = NULL;
@@ -317,7 +317,7 @@ void EditDriverScreen::FUN_0047d940()
 // FUNCTION: LEGORACERS 0x0047d9a0
 LegoBool32 EditDriverScreen::VTable0x88()
 {
-	GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
+	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 
 	return entity->FUN_0040e360() || !(entity->GetFlags() & 0x10000);
 }
@@ -334,7 +334,7 @@ void EditDriverScreen::VTable0x84()
 	case 3:
 		m_context->m_menuStack.Pop();
 
-		if (m_unk0x4770) {
+		if (m_savePending) {
 			m_context->m_menuStack.Push(0x30);
 		}
 
@@ -353,8 +353,8 @@ LegoBool32 EditDriverScreen::HandleKeyDown(MenuWidget* p_unk0x04, InputEventQueu
 	}
 
 	for (LegoS32 i = 0; i < 4; i++) {
-		if (p_unk0x04 == &m_unk0x420[i]) {
-			OnWidgetValueChanged(&m_unk0x9e0[i]);
+		if (p_unk0x04 == &m_cosmeticCarousels[i]) {
+			OnWidgetValueChanged(&m_cosmeticSelectors[i]);
 			return TRUE;
 		}
 	}
@@ -365,84 +365,84 @@ LegoBool32 EditDriverScreen::HandleKeyDown(MenuWidget* p_unk0x04, InputEventQueu
 // FUNCTION: LEGORACERS 0x0047dab0
 void EditDriverScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
-	m_unk0x4764 = TRUE;
+	m_cosmeticsDirty = TRUE;
 
-	if (p_source == &m_unk0x9e0[0]) {
-		LegoU32 index = m_unk0x420[0].GetSelectedValue();
+	if (p_source == &m_cosmeticSelectors[0]) {
+		LegoU32 index = m_cosmeticCarousels[0].GetSelectedValue();
 		m_driverCosmetics.m_components[0] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.SetHat(index);
-		m_unk0x4768 = 0x83;
+		m_modelSlot.SetHat(index);
+		m_pendingAnimTextId = 0x83;
 		return;
 	}
-	else if (p_source == &m_unk0x9e0[1]) {
-		LegoU32 index = m_unk0x420[1].GetSelectedValue();
+	else if (p_source == &m_cosmeticSelectors[1]) {
+		LegoU32 index = m_cosmeticCarousels[1].GetSelectedValue();
 		m_driverCosmetics.m_components[1] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.SetFace(index, 0);
-		m_unk0x4768 = 0x83;
+		m_modelSlot.SetFace(index, 0);
+		m_pendingAnimTextId = 0x83;
 		return;
 	}
-	else if (p_source == &m_unk0x9e0[2]) {
-		LegoU32 index = m_unk0x420[2].GetSelectedValue();
+	else if (p_source == &m_cosmeticSelectors[2]) {
+		LegoU32 index = m_cosmeticCarousels[2].GetSelectedValue();
 		m_driverCosmetics.m_components[2] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.SetTorso(index);
-		m_unk0x4768 = 0x84;
+		m_modelSlot.SetTorso(index);
+		m_pendingAnimTextId = 0x84;
 		return;
 	}
-	else if (p_source == &m_unk0x9e0[3]) {
-		LegoU32 index = m_unk0x420[3].GetSelectedValue();
+	else if (p_source == &m_cosmeticSelectors[3]) {
+		LegoU32 index = m_cosmeticCarousels[3].GetSelectedValue();
 		m_driverCosmetics.m_components[3] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.SetLegs(index);
+		m_modelSlot.SetLegs(index);
 
 		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 		LegoU16 random = g_randomTable[g_randomTableIndex];
-		m_unk0x4768 = (static_cast<LegoS32>(random) % 2) ? 0xd4 : 0x85;
+		m_pendingAnimTextId = (static_cast<LegoS32>(random) % 2) ? 0xd4 : 0x85;
 		return;
 	}
 	else {
-		m_unk0x4764 = FALSE;
+		m_cosmeticsDirty = FALSE;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047dbf0
 void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x3700) {
+	if (p_source == &m_randomButton) {
 		LegoS32 i;
 		for (i = 0; i < 4; i++) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 			LegoU16 random = g_randomTable[g_randomTableIndex];
-			m_unk0x420[i].SetSelection(static_cast<LegoS32>(random) % m_unk0x420[i].GetItemCount());
+			m_cosmeticCarousels[i].SetSelection(static_cast<LegoS32>(random) % m_cosmeticCarousels[i].GetItemCount());
 		}
 
-		m_driverCosmetics.m_components[0] = static_cast<LegoU8>(m_unk0x420[0].GetSelectedValue());
-		m_driverCosmetics.m_components[1] = static_cast<LegoU8>(m_unk0x420[1].GetSelectedValue());
-		m_driverCosmetics.m_components[2] = static_cast<LegoU8>(m_unk0x420[2].GetSelectedValue());
-		m_driverCosmetics.m_components[3] = static_cast<LegoU8>(m_unk0x420[3].GetSelectedValue());
+		m_driverCosmetics.m_components[0] = static_cast<LegoU8>(m_cosmeticCarousels[0].GetSelectedValue());
+		m_driverCosmetics.m_components[1] = static_cast<LegoU8>(m_cosmeticCarousels[1].GetSelectedValue());
+		m_driverCosmetics.m_components[2] = static_cast<LegoU8>(m_cosmeticCarousels[2].GetSelectedValue());
+		m_driverCosmetics.m_components[3] = static_cast<LegoU8>(m_cosmeticCarousels[3].GetSelectedValue());
 
-		m_unk0x4600.SetCosmetics(&m_driverCosmetics);
+		m_modelSlot.SetCosmetics(&m_driverCosmetics);
 	}
-	else if (p_source == &m_unk0x39f0) {
-		if (FUN_0047d560()) {
-			FUN_0047fdc0(&m_unk0x3fd0, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x42c0, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_unk0x3fd0, &m_unk0x42c0, 0x7b);
+	else if (p_source == &m_backButton) {
+		if (HasUnsavedChanges()) {
+			FUN_0047fdc0(&m_confirmYesButton, 0x99, 0x46, 0x20);
+			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			FUN_0046c6f0(&m_confirmYesButton, &m_confirmNoButton, 0x7b);
 		}
 		else if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-			FUN_0047fdc0(&m_unk0x3fd0, 0x99, 0x46, 0x73);
-			FUN_0047fdc0(&m_unk0x42c0, 0x99, 0x45, 0x74);
-			FUN_0046c6f0(&m_unk0x3fd0, &m_unk0x42c0, 0x77);
+			FUN_0047fdc0(&m_confirmYesButton, 0x99, 0x46, 0x73);
+			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x74);
+			FUN_0046c6f0(&m_confirmYesButton, &m_confirmNoButton, 0x77);
 		}
 		else {
-			OnIconUnfocused(&m_unk0x3fd0);
+			OnIconUnfocused(&m_confirmYesButton);
 		}
 	}
-	else if (p_source == &m_unk0x3ce0) {
-		FUN_0047d8e0();
-		FUN_0047d740();
+	else if (p_source == &m_doneButton) {
+		SaveCosmetics();
+		PlayExitAnimation();
 
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			m_unk0x360 = 0x10;
@@ -451,12 +451,12 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 			m_unk0x360 = 3;
 		}
 	}
-	else if (p_source == &m_unk0x3fd0) {
+	else if (p_source == &m_confirmYesButton) {
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-			FUN_0047d940();
+			RemoveSelectedRecord();
 		}
 
-		GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
+		GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 		entity->SetFlags(entity->GetFlags() & ~0x10000);
 
 		if (m_unk0x284->GetUnk0x9c() > 0) {
@@ -465,7 +465,7 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 
 		m_unk0x360 = 3;
 	}
-	else if (p_source == &m_unk0x42c0) {
+	else if (p_source == &m_confirmNoButton) {
 		m_unk0x284->FUN_00468cf0();
 	}
 
@@ -478,8 +478,8 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x0047de30
 LegoBool32 EditDriverScreen::VTable0x78(undefined4 p_unk0x04)
 {
-	if (!m_unk0x364 && m_unk0x4600.GetDriverEntity()->FUN_0040e360()) {
-		FUN_0047d6f0();
+	if (!m_unk0x364 && m_modelSlot.GetDriverEntity()->FUN_0040e360()) {
+		PlayNextAnimation();
 	}
 
 	return MenuGameScreen::VTable0x78(p_unk0x04);

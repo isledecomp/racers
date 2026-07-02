@@ -22,7 +22,7 @@ public:
 		LegoFloat m_unk0x40;           // 0x40
 		LegoS32 m_focusedSlot;         // 0x44
 		LegoFloat m_cameraSettings[9]; // 0x48
-		LegoU32 m_unk0x6c;             // 0x6c
+		LegoU32 m_viewportIndex;       // 0x6c
 		LegoFloat m_aspectScale;       // 0x70
 	};
 
@@ -79,7 +79,7 @@ protected:
 	GolModelEntity* GetItemEntity(LegoS32 p_index);
 	GolModelBase* GetItemModel(LegoS32 p_index);
 
-	undefined4 m_unk0x78;                           // 0x78
+	undefined4 m_viewportIndex;                     // 0x78
 	Item* m_items;                                  // 0x7c
 	GolCamera* m_camera;                            // 0x80
 	GolCamera* m_savedCamera;                       // 0x84

@@ -65,7 +65,7 @@ LegoS32 RaceState::Racer::DroppableBrick::SnapToGround(GolVec3* p_unk0x04)
 	end.m_y = p_unk0x04->m_y;
 	end.m_z = p_unk0x04->m_z - g_unk0x004b1488;
 
-	LegoS32 result = m_manager->m_unk0x068->FUN_0041f4d0(&start, &end, &record, p_unk0x04, NULL);
+	LegoS32 result = m_manager->m_collisionWorld->FUN_0041f4d0(&start, &end, &record, p_unk0x04, NULL);
 	p_unk0x04->m_z = p_unk0x04->m_z + g_unk0x004b1480;
 	return result;
 }

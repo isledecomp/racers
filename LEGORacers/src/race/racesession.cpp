@@ -1258,7 +1258,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	powerupParams.m_unk0x38 = m_context->m_unk0x20;
 	m_unk0x6dc.Initialize(&powerupParams);
 
-	m_unk0x6dc.FUN_00457c90(&m_unk0xd1, &m_unk0xde, m_context->m_unk0x18);
+	m_unk0x6dc.LoadDatabases(&m_unk0xd1, &m_unk0xde, m_context->m_unk0x18);
 
 	FUN_00435ba0(0.97f);
 
@@ -1278,9 +1278,9 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	}
 
 	m_unk0x6dc.LoadPowerupFile(&m_unk0xc4, m_context->m_unk0x18, p_mirror);
-	m_unk0x6dc.FUN_00457cf0(!m_unk0x3354);
-	m_unk0x6dc.FUN_00458940();
-	m_unk0x6dc.FUN_0045b950();
+	m_unk0x6dc.PreparePools(!m_unk0x3354);
+	m_unk0x6dc.CreatePools();
+	m_unk0x6dc.ClearBricksAudible();
 
 	FUN_00434930();
 }
@@ -1307,7 +1307,7 @@ void RaceSession::FUN_00434000()
 	}
 
 	m_unk0x3058.Destroy();
-	m_unk0x6dc.FUN_00459e20();
+	m_unk0x6dc.Destroy();
 
 	if (m_golExport) {
 		if (m_unk0x3a8) {
@@ -1783,7 +1783,7 @@ void RaceSession::FUN_00434b00()
 		} while (i < m_context->m_playerCount);
 	}
 
-	m_unk0x6dc.FUN_0045b900();
+	m_unk0x6dc.SetBricksAudible();
 
 	if (m_timeRaceManager) {
 		m_timeRaceManager->FUN_00422eb0(m_raceState.m_unk0x318[0]);

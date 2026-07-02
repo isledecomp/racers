@@ -423,7 +423,7 @@ void RacePowerupManager::CannonballAction::Deactivate()
 	m_projectile.Deactivate();
 
 	if (m_smokeParticle != NULL) {
-		m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f00(m_smokeParticle);
+		m_owner0x01c->m_cutsceneAnimation->FUN_00489f00(m_smokeParticle);
 		m_smokeParticle = NULL;
 	}
 
@@ -534,7 +534,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 			}
 		}
 		else {
-			m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f30(m_smokeParticle);
+			m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_smokeParticle);
 			m_smokeParticle = NULL;
 		}
 	}
@@ -664,7 +664,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 		m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &velocity, TRUE);
 	}
 
-	m_smokeParticle = m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489d70("cannsmk", NULL, NULL, NULL);
+	m_smokeParticle = m_owner0x01c->m_cutsceneAnimation->FUN_00489d70("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticle != NULL) {
 		if (m_emplacement == NULL) {
 			m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x48(&right, &forward);
@@ -1688,7 +1688,7 @@ LegoU32 RacePowerupManager::GrapplingHookAction::Activate(
 	GolModelEntity* p_unk0x04,
 	RaceState::Racer* p_racer,
 	RaceState::Racer* p_unk0x0c,
-	Field0x050::Entry* p_unk0x10,
+	TargetPointList::Entry* p_unk0x10,
 	MabMaterialAnimationItem0x18* p_unk0x14,
 	LegoU32 p_unk0x18
 )
@@ -1722,7 +1722,7 @@ void RacePowerupManager::GrapplingHookAction::Deactivate()
 	m_projectile.CancelCollisionEvent();
 
 	if (m_unk0x26c != NULL) {
-		m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f00(m_unk0x26c);
+		m_owner0x01c->m_cutsceneAnimation->FUN_00489f00(m_unk0x26c);
 		m_unk0x26c = NULL;
 	}
 
@@ -1872,7 +1872,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	if (m_unk0x26c != NULL) {
 		CutsceneParticle* particle = m_unk0x26c->m_unk0x00;
 		if (particle == NULL || particle->GetSpawnedCount() >= 3) {
-			m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f30(m_unk0x26c);
+			m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_unk0x26c);
 			m_unk0x26c = NULL;
 			return;
 		}
@@ -1984,7 +1984,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 
 	m_projectile.ResetRope();
 
-	m_unk0x26c = m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489d70("cannsmk", NULL, NULL, NULL);
+	m_unk0x26c = m_owner0x01c->m_cutsceneAnimation->FUN_00489d70("cannsmk", NULL, NULL, NULL);
 	if (m_unk0x26c != NULL) {
 		m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x04(&position);
 		position.m_z += 4.0f;
@@ -2086,7 +2086,7 @@ void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePo
 	}
 
 	m_owner0x01c = p_unk0x08;
-	m_collisionWorld = p_unk0x08->m_unk0x068;
+	m_collisionWorld = p_unk0x08->m_collisionWorld;
 	m_jitterTimerMs = 0;
 	m_shockTimerMs = 0;
 	m_source = 0;
@@ -2254,7 +2254,7 @@ void RacePowerupManager::LightningAction::Deactivate()
 	}
 
 	if (m_owner0x01c != NULL && m_hitParticle != NULL) {
-		m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f30(m_hitParticle);
+		m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
 		m_hitParticle = NULL;
 	}
 
@@ -2394,7 +2394,7 @@ void RacePowerupManager::LightningAction::AdvanceState()
 		m_stateTimerMs = 0;
 
 		if (m_owner0x01c != NULL && m_hitParticle != NULL) {
-			m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f30(m_hitParticle);
+			m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
 			m_hitParticle = NULL;
 		}
 
@@ -2573,7 +2573,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 			m_targetRacer = racer;
 			m_beam.SetColors(&g_lightningHitColor, &g_lightningHitColor, &g_lightningHitColor);
 
-			CutsceneAnimation* cutsceneAnimation = m_owner0x01c->m_cutsceneAnimation0x040;
+			CutsceneAnimation* cutsceneAnimation = m_owner0x01c->m_cutsceneAnimation;
 			if (m_hitParticle != NULL) {
 				cutsceneAnimation->FUN_00489f30(m_hitParticle);
 			}
@@ -2616,7 +2616,7 @@ void RacePowerupManager::LightningAction::UpdateHitParticle()
 	}
 
 	if (m_targetRacer == NULL) {
-		m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f30(m_hitParticle);
+		m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
 		m_hitParticle = NULL;
 		return;
 	}
@@ -2680,7 +2680,7 @@ void RacePowerupManager::MagnetAction::Initialize(
 	RacePowerupManager* p_unk0x04,
 	RaceState* p_raceState,
 	RaceSessionField0x32b4* p_unk0x0c,
-	undefined4,
+	CutsceneAnimation*,
 	GolExport*,
 	GolD3DRenderDevice*,
 	undefined4
@@ -4556,36 +4556,36 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	m_level = p_unk0x08;
 	switch (p_unk0x08) {
 	case 2:
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			model = m_manager->m_unk0x05c->GetUnk0xc0Name("TurboL2");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			model = m_manager->m_worldDatabase->GetUnk0xc0Name("TurboL2");
 		}
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect0 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb2f1");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			effect0 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb2f1");
 		}
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect1 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb2f2");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			effect1 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb2f2");
 		}
 		break;
 	case 1:
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			model = m_manager->m_unk0x05c->GetUnk0xc0Name("TurboL1");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			model = m_manager->m_worldDatabase->GetUnk0xc0Name("TurboL1");
 		}
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect0 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb1f1");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			effect0 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb1f1");
 		}
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect1 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb1f2");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			effect1 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb1f2");
 		}
 		break;
 	case 0:
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			model = m_manager->m_unk0x05c->GetUnk0xc0Name("TurboL0");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			model = m_manager->m_worldDatabase->GetUnk0xc0Name("TurboL0");
 		}
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect0 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb0f1");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			effect0 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb0f1");
 		}
-		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect1 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb0f2");
+		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
+			effect1 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb0f2");
 		}
 		break;
 	}
@@ -4702,7 +4702,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 	m_flame2Entity->VTable0x10(p_elapsedMs);
 
 	if (m_level == 2 && m_state == c_stateBoosting && m_smokeParticle == NULL && m_stateTimerMs < c_smokeWindowMs &&
-		!(m_manager->m_unk0x058 & c_ownerFlags0x058Bit1)) {
+		!(m_manager->m_modeFlags & c_ownerFlags0x058Bit1)) {
 		m_smokeParticle = m_particleAnimation->FUN_00489d70("trbsmke", NULL, NULL, NULL);
 	}
 
@@ -4847,7 +4847,7 @@ void RacePowerupManager::TurboAction::AdvanceState()
 		return;
 	}
 	case c_stateBoosting:
-		if (m_level == 2 && (m_manager->m_unk0x058 & c_ownerFlags0x058Bit1)) {
+		if (m_level == 2 && (m_manager->m_modeFlags & c_ownerFlags0x058Bit1)) {
 			m_stateTimerMs = c_boostDurationL2Ms;
 			m_state = c_stateBoosting;
 			return;
@@ -5037,7 +5037,7 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	MenuAnimationList* animationList = m_manager->m_unk0x04c;
+	MenuAnimationList* animationList = m_manager->m_animationList;
 	if (m_stateTimerMs < c_menuAnimationDurationMs && m_state == c_stateStarting && !m_isDemoRacer &&
 		!animationList->HasActive()) {
 		MenuAnimationList::Entry* entry =
@@ -5089,7 +5089,7 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0045d940
 void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	MenuAnimationList* animationList = m_manager->m_unk0x04c;
+	MenuAnimationList* animationList = m_manager->m_animationList;
 	if (m_state == c_stateDone) {
 		return;
 	}
@@ -5147,20 +5147,20 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	p_renderer->VTable0x5c();
 	racerField->FUN_0043db60();
 
-	GolAnimatedEntity* dbricks = m_manager->m_unk0x064->FindUnk0xc0("dbricks");
+	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindUnk0xc0("dbricks");
 	dbricks->FUN_0040d650();
 	dbricks->SetActiveValue(0.0f);
 	dbricks->FUN_00411680(0.0f);
 	dbricks->FUN_004116b0(0.0f);
 
-	GolAnimatedEntity* dtube = m_manager->m_unk0x064->FindUnk0xc0("dtube");
+	GolAnimatedEntity* dtube = m_manager->m_turbo3Database->FindUnk0xc0("dtube");
 	dtube->FUN_0040d650();
 	dtube->SetActiveValue(0.0f);
 	dtube->FUN_00411680(0.0f);
 	dtube->FUN_004116b0(0.0f);
 
-	m_manager->m_unk0x064->FUN_00416090(c_transitionDurationMs - m_stateTimerMs);
-	m_manager->m_unk0x064->FUN_00416040();
+	m_manager->m_turbo3Database->FUN_00416090(c_transitionDurationMs - m_stateTimerMs);
+	m_manager->m_turbo3Database->FUN_00416040();
 
 	racerField->FUN_0043e620();
 	if (m_racer->m_unk0xdb8 != c_stateActive) {
@@ -5356,7 +5356,7 @@ void RacePowerupManager::WarpAction::FUN_0045e080(GolWorldEntity* p_entity)
 	start.m_z -= g_homingProjectileCollisionProbeDepth;
 
 	GolBoundingVolume::Field0x0c record;
-	m_manager->m_unk0x068->FUN_0041f4d0(&start, &end, &record, &position, NULL);
+	m_manager->m_collisionWorld->FUN_0041f4d0(&start, &end, &record, &position, NULL);
 
 	position.m_z += g_homingProjectileCollisionStartOffset;
 	p_entity->VTable0x08(position);

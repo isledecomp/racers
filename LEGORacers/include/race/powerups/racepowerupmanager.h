@@ -83,7 +83,7 @@ public:
 		};
 	};
 
-	class Field0x050 {
+	class TargetPointList {
 	public:
 		// SIZE 0x14
 		class Entry {
@@ -102,7 +102,7 @@ public:
 			undefined m_unk0x11[0x14 - 0x11]; // 0x11
 		};
 
-		Entry* FUN_0045c6a0(
+		Entry* FindTargetInCone(
 			GolVec3* p_unk0x04,
 			GolVec3* p_unk0x08,
 			LegoFloat p_unk0x0c,
@@ -117,11 +117,11 @@ public:
 	// SIZE 0x14
 	class ActionSetup {
 	public:
-		RaceState::Racer* m_racer;        // 0x00
-		RaceState::Racer* m_targetRacer;  // 0x04
-		Field0x050::Entry* m_targetPoint; // 0x08
-		ActionTarget* m_aimTarget;        // 0x0c
-		LegoU32 m_initialTimerMs;         // 0x10
+		RaceState::Racer* m_racer;             // 0x00
+		RaceState::Racer* m_targetRacer;       // 0x04
+		TargetPointList::Entry* m_targetPoint; // 0x08
+		ActionTarget* m_aimTarget;             // 0x0c
+		LegoU32 m_initialTimerMs;              // 0x10
 	};
 
 	// SIZE 0x04
@@ -468,7 +468,7 @@ public:
 		RaceSessionField0x32b4* m_collisionWorld; // 0x020
 		RaceState::Racer* m_ownerRacer;           // 0x024
 		RaceState::Racer* m_targetRacer;          // 0x028
-		Field0x050::Entry* m_targetPoint;         // 0x02c
+		TargetPointList::Entry* m_targetPoint;    // 0x02c
 	};
 
 	// VTABLE: LEGORACERS 0x004b14b0
@@ -600,11 +600,11 @@ public:
 		void Initialize(
 			RacePowerupManager* p_unk0x04,
 			RaceState* p_raceState,
-			RaceSessionField0x32b4* p_ringModel,
-			undefined4 p_unk0x10,
-			GolExport* p_unk0x14,
-			GolD3DRenderDevice* p_unk0x18,
-			undefined4 p_unk0x1c
+			RaceSessionField0x32b4* p_unk0x0c,
+			CutsceneAnimation*,
+			GolExport*,
+			GolD3DRenderDevice*,
+			undefined4
 		);
 		void Destroy();
 		void Reset();
@@ -858,7 +858,7 @@ public:
 			GolModelEntity* p_unk0x04,
 			RaceState::Racer* p_racer,
 			RaceState::Racer* p_unk0x0c,
-			Field0x050::Entry* p_unk0x10,
+			TargetPointList::Entry* p_unk0x10,
 			MabMaterialAnimationItem0x18* p_unk0x14,
 			LegoU32 p_unk0x18
 		);
@@ -1320,17 +1320,17 @@ public:
 	};
 
 	// SIZE 0x30
-	class Field0x1958Resource : public RaceResourceManager::Resource {
+	class SpatialSoundResource : public RaceResourceManager::Resource {
 	public:
-		void SetUnk0x18(const GolVec3& p_unk0x18) { m_unk0x18 = p_unk0x18; }
-		void SetUnk0x24(const GolVec3& p_unk0x24) { m_unk0x24 = p_unk0x24; }
+		void SetPosition(const GolVec3& p_position) { m_position = p_position; }
+		void SetVelocity(const GolVec3& p_velocity) { m_velocity = p_velocity; }
 
 	private:
 		friend class RacePowerupManager;
 
 		undefined m_unk0x04[0x18 - 0x04]; // 0x04
-		GolVec3 m_unk0x18;                // 0x18
-		GolVec3 m_unk0x24;                // 0x24
+		GolVec3 m_position;               // 0x18
+		GolVec3 m_velocity;               // 0x24
 	};
 
 	RacePowerupManager();
@@ -1348,15 +1348,15 @@ public:
 	void SpawnSpikeExplosion(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
 	void SpawnBrickDebris(const GolVec3* p_unk0x04, const GolVec3* p_position, RaceState::Racer* p_racer);
 	void CancelWarp(RaceState::Racer* p_racer);
-	void FUN_0045b900();
-	LegoBool32 FUN_0045b9a0(RaceState::Racer* p_racer);
-	void FUN_0045bb30();
+	void SetBricksAudible();
+	LegoBool32 IsRacerTargeted(RaceState::Racer* p_racer);
+	void ResetEffects();
 	LegoU32 GetUsedEffectEntityCount() const { return m_usedEffectEntityCount; }
 	undefined4 GetUnk0x19a0() const { return m_unk0x19a0; }
-	GolBillboard::Field0x2c* GetBillboardMaterialTable() { return &m_unk0x008; }
-	MabMaterialAnimationItem0x8* GetMaterialAnimationItems() const { return m_unk0x014.GetUnk0x04(); }
-	LegoU32 GetMaterialAnimationItemCount() const { return m_unk0x014.GetUnk0x08(); }
-	MabMaterialAnimationItem0x18* GetMaterialAnimationItems0x18() const { return m_unk0x014.GetUnk0x0c(); }
+	GolBillboard::Field0x2c* GetBillboardMaterialTable() { return &m_billboardMaterialTable; }
+	MabMaterialAnimationItem0x8* GetMaterialAnimationItems() const { return m_materialAnimation.GetUnk0x04(); }
+	LegoU32 GetMaterialAnimationItemCount() const { return m_materialAnimation.GetUnk0x08(); }
+	MabMaterialAnimationItem0x18* GetMaterialAnimationItems0x18() const { return m_materialAnimation.GetUnk0x0c(); }
 	RaceState* GetRaceState() { return m_raceState; }
 	void SetAimTarget(ActionTarget* p_aimTarget) { m_aimTarget = p_aimTarget; }
 
@@ -1375,7 +1375,7 @@ private:
 		void* m_unk0x24;                         // 0x24
 		MenuAnimationList* m_unk0x28;            // 0x28
 		GolWorldDatabase* m_unk0x2c;             // 0x2c
-		Field0x050* m_unk0x30;                   // 0x30
+		TargetPointList* m_unk0x30;              // 0x30
 		LegoFloat m_cameraFov;                   // 0x34
 		undefined4 m_unk0x38;                    // 0x38
 	};
@@ -1395,20 +1395,20 @@ private:
 	friend class RaceState::Racer::DroppableBrick;
 
 	void Initialize(const Params* p_params);
-	void FUN_00457c90(const LegoChar* p_unk0x04, const LegoChar* p_unk0x08, LegoBool32 p_binary);
-	void FUN_00457cf0(LegoBool32 p_unk0x04);
-	void FUN_00457d30(LegoBool32 p_unk0x04);
+	void LoadDatabases(const LegoChar* p_unk0x04, const LegoChar* p_unk0x08, LegoBool32 p_binary);
+	void PreparePools(LegoBool32 p_unk0x04);
+	void SetActionPoolCounts(LegoBool32 p_unk0x04);
 	void LoadPowerupFile(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
 	void ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_mirror);
 	void ParseWhiteBricks(GolFileParser* p_parser, LegoBool32 p_mirror);
-	void FUN_00458940();
-	void FUN_004590f0();
+	void CreatePools();
+	void CreateActionPools();
 	void FUN_004164c0();
 	void CreateExplosionPools();
-	void FUN_00457a90();
-	void FUN_00459e20();
-	void FUN_0045a3f0(LegoU32 p_elapsedMs);
-	void FUN_0045a340();
+	void Reset();
+	void Destroy();
+	void UpdateBricks(LegoU32 p_elapsedMs);
+	void CreateBrickEvents();
 	LegoU32 FireCannonball(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	LegoU32 FireGrapplingHook(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	void FireLightning(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
@@ -1427,8 +1427,8 @@ private:
 	void CancelShield(RaceState::Racer* p_racer);
 	void CancelTurbo(RaceState::Racer* p_racer);
 	void CancelMagnetHold(RaceState::Racer* p_racer);
-	void FUN_0045b7a0(Field0x1958Resource* p_resource, LegoU32 p_unk0x08, LegoS32 p_unk0x0c);
-	void FUN_0045b950();
+	void UpdateProjectileSound(SpatialSoundResource* p_resource, LegoU32 p_unk0x08, LegoS32 p_unk0x0c);
+	void ClearBricksAudible();
 	GolAnimatedEntity* AllocateEffectEntity();
 	LegoU32 ReleaseEffectEntity(GolAnimatedEntity* p_entity);
 	DuskwindBananaRelic0x24* GetBrickMaterial(LegoU32* p_unk0x04);
@@ -1450,98 +1450,95 @@ private:
 		c_randomBurstMax = 3,
 	};
 
-	GolExport* m_golExport;                      // 0x000
-	GolD3DRenderDevice* m_renderer;              // 0x004
-	GolBillboard::Field0x2c m_unk0x008;          // 0x008
-	MabMaterialAnimation0x14 m_unk0x014;         // 0x014
-	ColorBrick* m_colorBricks;                   // 0x028
-	WhiteBrick* m_whiteBricks;                   // 0x02c
-	LegoEventQueue::Event** m_brickEvents;       // 0x030
-	LegoU32 m_colorBrickCount;                   // 0x034
-	LegoU32 m_whiteBrickCount;                   // 0x038
-	RaceState::Racer::Field0x004* m_soundSource; // 0x03c
+	GolExport* m_golExport;                           // 0x000
+	GolD3DRenderDevice* m_renderer;                   // 0x004
+	GolBillboard::Field0x2c m_billboardMaterialTable; // 0x008
+	MabMaterialAnimation0x14 m_materialAnimation;     // 0x014
+	ColorBrick* m_colorBricks;                        // 0x028
+	WhiteBrick* m_whiteBricks;                        // 0x02c
+	LegoEventQueue::Event** m_brickEvents;            // 0x030
+	LegoU32 m_colorBrickCount;                        // 0x034
+	LegoU32 m_whiteBrickCount;                        // 0x038
+	RaceState::Racer::Field0x004* m_soundSource;      // 0x03c
+	CutsceneAnimation* m_cutsceneAnimation;           // 0x040
+	RaceTrailManager* m_trailManager;                 // 0x044
+	void* m_unk0x048;                                 // 0x048
+	MenuAnimationList* m_animationList;               // 0x04c
+	TargetPointList* m_targetPoints;                  // 0x050
+	LegoFloat m_cameraFov;                            // 0x054
+	undefined4 m_modeFlags;                           // 0x058
+	GolWorldDatabase* m_worldDatabase;                // 0x05c
+	GolWorldDatabase* m_trackDatabase;                // 0x060
+	GolWorldDatabase* m_turbo3Database;               // 0x064
+	RaceSessionField0x32b4* m_collisionWorld;         // 0x068
+	GolCollidableEntity* m_collidable;                // 0x06c
+	GolBoundedEntity* m_boundedEntity;                // 0x070
+	RaceState* m_raceState;                           // 0x074
+	PowerupAction* m_freeMagnetActions;               // 0x078
+	PowerupAction* m_freeOilSlickActions;             // 0x07c
+	PowerupAction* m_freeDynamiteActions;             // 0x080
+	PowerupAction* m_freeCurseActions;                // 0x084
+	PowerupAction* m_freeCannonballActions;           // 0x088
+	PowerupAction* m_freeGrapplingHookActions;        // 0x08c
+	PowerupAction* m_freeLightningActions;            // 0x090
+	PowerupAction* m_freeHomingMissileActions;        // 0x094
+	PowerupAction* m_freeShieldActions;               // 0x098
+	PowerupAction* m_freeTurboActions;                // 0x09c
+	PowerupAction* m_freeWarpActions;                 // 0x0a0
+	GolAnimatedEntity m_effectEntities[25];           // 0x0a4
+	LegoU32 m_effectEntityUsedMask;                   // 0x1878
+	LegoU32 m_usedEffectEntityCount;                  // 0x187c
+	PowerupAction* m_activeActions;                   // 0x1880
+	LegoU8 m_actionPoolCounts[11];                    // 0x1884
+	undefined m_unk0x188f;                            // 0x188f
+	MagnetAction* m_magnetActions;                    // 0x1890
+	OilSlickAction* m_oilSlickActions;                // 0x1894
+	DynamiteAction* m_dynamiteActions;                // 0x1898
+	CurseAction* m_curseActions;                      // 0x189c
+	CannonballAction* m_cannonballActions;            // 0x18a0
+	GrapplingHookAction* m_grapplingHookActions;      // 0x18a4
+	LightningAction* m_lightningActions;              // 0x18a8
+	HomingMissileAction* m_homingMissileActions;      // 0x18ac
+	ShieldAction* m_shieldActions;                    // 0x18b0
+	TurboAction* m_turboActions;                      // 0x18b4
+	WarpAction* m_warpActions;                        // 0x18b8
+	BrickDebris m_brickDebris;                        // 0x18bc
+	Explosion* m_activeExplosions;                    // 0x193c
+	Explosion* m_activeSpikeExplosions;               // 0x1940
+	Explosion* m_freeExplosions;                      // 0x1944
+	Explosion* m_freeSpikeExplosions;                 // 0x1948
+	LegoU8 m_explosionPoolCount;                      // 0x194c
+	LegoU8 m_spikeExplosionPoolCount;                 // 0x194d
+	undefined m_unk0x194e[0x1950 - 0x194e];           // 0x194e
+	Explosion* m_explosionPool;                       // 0x1950
+	Explosion* m_spikeExplosionPool;                  // 0x1954
 	union {
-		undefined4 m_unk0x040;                       // 0x040
-		CutsceneAnimation* m_cutsceneAnimation0x040; // 0x040
-	};
-	RaceTrailManager* m_trailManager;            // 0x044
-	void* m_unk0x048;                            // 0x048
-	MenuAnimationList* m_unk0x04c;               // 0x04c
-	Field0x050* m_unk0x050;                      // 0x050
-	LegoFloat m_cameraFov;                       // 0x054
-	undefined4 m_unk0x058;                       // 0x058
-	GolWorldDatabase* m_unk0x05c;                // 0x05c
-	GolWorldDatabase* m_unk0x060;                // 0x060
-	GolWorldDatabase* m_unk0x064;                // 0x064
-	RaceSessionField0x32b4* m_unk0x068;          // 0x068
-	GolCollidableEntity* m_unk0x06c;             // 0x06c
-	GolBoundedEntity* m_unk0x070;                // 0x070
-	RaceState* m_raceState;                      // 0x074
-	PowerupAction* m_freeMagnetActions;          // 0x078
-	PowerupAction* m_freeOilSlickActions;        // 0x07c
-	PowerupAction* m_freeDynamiteActions;        // 0x080
-	PowerupAction* m_freeCurseActions;           // 0x084
-	PowerupAction* m_freeCannonballActions;      // 0x088
-	PowerupAction* m_freeGrapplingHookActions;   // 0x08c
-	PowerupAction* m_freeLightningActions;       // 0x090
-	PowerupAction* m_freeHomingMissileActions;   // 0x094
-	PowerupAction* m_freeShieldActions;          // 0x098
-	PowerupAction* m_freeTurboActions;           // 0x09c
-	PowerupAction* m_freeWarpActions;            // 0x0a0
-	GolAnimatedEntity m_effectEntities[25];      // 0x0a4
-	LegoU32 m_unk0x1878;                         // 0x1878
-	LegoU32 m_usedEffectEntityCount;             // 0x187c
-	PowerupAction* m_activeActions;              // 0x1880
-	LegoU8 m_actionPoolCounts[11];               // 0x1884
-	undefined m_unk0x188f;                       // 0x188f
-	MagnetAction* m_magnetActions;               // 0x1890
-	OilSlickAction* m_oilSlickActions;           // 0x1894
-	DynamiteAction* m_dynamiteActions;           // 0x1898
-	CurseAction* m_curseActions;                 // 0x189c
-	CannonballAction* m_cannonballActions;       // 0x18a0
-	GrapplingHookAction* m_grapplingHookActions; // 0x18a4
-	LightningAction* m_lightningActions;         // 0x18a8
-	HomingMissileAction* m_homingMissileActions; // 0x18ac
-	ShieldAction* m_shieldActions;               // 0x18b0
-	TurboAction* m_turboActions;                 // 0x18b4
-	WarpAction* m_warpActions;                   // 0x18b8
-	BrickDebris m_brickDebris;                   // 0x18bc
-	Explosion* m_activeExplosions;               // 0x193c
-	Explosion* m_activeSpikeExplosions;          // 0x1940
-	Explosion* m_freeExplosions;                 // 0x1944
-	Explosion* m_freeSpikeExplosions;            // 0x1948
-	LegoU8 m_explosionPoolCount;                 // 0x194c
-	LegoU8 m_spikeExplosionPoolCount;            // 0x194d
-	undefined m_unk0x194e[0x1950 - 0x194e];      // 0x194e
-	Explosion* m_explosionPool;                  // 0x1950
-	Explosion* m_spikeExplosionPool;             // 0x1954
-	union {
-		Field0x1958Resource* m_unk0x1958;                // 0x1958
-		SpatialSoundInstance* m_sound0x1958;             // 0x1958
-		RaceResourceManager::Resource* m_resource0x1958; // 0x1958
+		SpatialSoundResource* m_cannonballFlightSound;                  // 0x1958
+		SpatialSoundInstance* m_cannonballFlightSoundInstance;          // 0x1958
+		RaceResourceManager::Resource* m_cannonballFlightSoundResource; // 0x1958
 	};
 	union {
-		Field0x1958Resource* m_unk0x195c;                // 0x195c
-		SpatialSoundInstance* m_sound0x195c;             // 0x195c
-		RaceResourceManager::Resource* m_resource0x195c; // 0x195c
+		SpatialSoundResource* m_missileFlightSound;                  // 0x195c
+		SpatialSoundInstance* m_missileFlightSoundInstance;          // 0x195c
+		RaceResourceManager::Resource* m_missileFlightSoundResource; // 0x195c
 	};
 	union {
-		Field0x1958Resource* m_unk0x1960;                // 0x1960
-		SpatialSoundInstance* m_sound0x1960;             // 0x1960
-		RaceResourceManager::Resource* m_resource0x1960; // 0x1960
+		SpatialSoundResource* m_grappleFlightSound;                  // 0x1960
+		SpatialSoundInstance* m_grappleFlightSoundInstance;          // 0x1960
+		RaceResourceManager::Resource* m_grappleFlightSoundResource; // 0x1960
 	};
 	union {
-		Field0x1958Resource* m_unk0x1964;                // 0x1964
-		SpatialSoundInstance* m_sound0x1964;             // 0x1964
-		RaceResourceManager::Resource* m_resource0x1964; // 0x1964
+		SpatialSoundResource* m_grappleAttachedSound;                  // 0x1964
+		SpatialSoundInstance* m_grappleAttachedSoundInstance;          // 0x1964
+		RaceResourceManager::Resource* m_grappleAttachedSoundResource; // 0x1964
 	};
 	GolAnimatedEntity* m_brickModel;              // 0x1968
 	GolAnimatedEntity* m_brickBlendModel;         // 0x196c
-	GolAnimatedEntity* m_unk0x1970;               // 0x1970
-	GolAnimatedEntity* m_unk0x1974;               // 0x1974
+	GolAnimatedEntity* m_whiteBrickModel;         // 0x1970
+	GolAnimatedEntity* m_whiteBrickBlendModel;    // 0x1974
 	DuskwindBananaRelic0x24* m_brickMaterials[8]; // 0x1978
 	ActionTarget* m_aimTarget;                    // 0x1998
-	LegoFloat m_unk0x199c;                        // 0x199c
+	LegoFloat m_brickSpinAngle;                   // 0x199c
 	undefined4 m_unk0x19a0;                       // 0x19a0
 };
 

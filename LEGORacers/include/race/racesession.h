@@ -23,11 +23,11 @@
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/cobalttrail0x140.h"
 #include "race/powerups/powerupprojectile.h"
+#include "race/powerups/racepowerupmanager.h"
 #include "race/racecameracontroller.h"
 #include "race/raceeventdispatcher0x08.h"
 #include "race/raceeventtable0x90.h"
 #include "race/raceforcefeedback.h"
-#include "race/powerups/racepowerupmanager.h"
 #include "race/raceresourcemanager.h"
 #include "race/racerouterecord.h"
 #include "race/racesessionfield0x27d4.h"
@@ -1418,7 +1418,7 @@ public:
 	};
 
 	// SIZE 0x08
-	class Field0x2804 : public RacePowerupManager::Field0x050 {
+	class Field0x2804 : public RacePowerupManager::TargetPointList {
 	public:
 		// VTABLE: LEGORACERS 0x004b1958
 		// SIZE 0x1fc

@@ -4,11 +4,11 @@
 
 #include <float.h>
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x050::Entry, 0x14)
+DECOMP_SIZE_ASSERT(RacePowerupManager::TargetPointList::Entry, 0x14)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x2804, 0x08)
 
 // FUNCTION: LEGORACERS 0x0045c340
-RacePowerupManager::Field0x050::Entry::Entry()
+RacePowerupManager::TargetPointList::Entry::Entry()
 {
 	m_unk0x00.m_x = 0.0f;
 	m_unk0x00.m_y = 0.0f;
@@ -18,7 +18,7 @@ RacePowerupManager::Field0x050::Entry::Entry()
 }
 
 // FUNCTION: LEGORACERS 0x0045c360
-RacePowerupManager::Field0x050::Entry::~Entry()
+RacePowerupManager::TargetPointList::Entry::~Entry()
 {
 	m_unk0x0c = -1;
 	m_unk0x00.m_x = 0.0f;
@@ -28,7 +28,7 @@ RacePowerupManager::Field0x050::Entry::~Entry()
 }
 
 // FUNCTION: LEGORACERS 0x0045c380
-void RacePowerupManager::Field0x050::Entry::FUN_0045c380(GolVec3* p_unk0x04, LegoS32 p_unk0x08)
+void RacePowerupManager::TargetPointList::Entry::FUN_0045c380(GolVec3* p_unk0x04, LegoS32 p_unk0x08)
 {
 	m_unk0x00.m_x = p_unk0x04->m_x;
 	m_unk0x00.m_y = p_unk0x04->m_y;
@@ -81,7 +81,7 @@ void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p
 		return;
 	}
 
-	m_entries = new RacePowerupManager::Field0x050::Entry[m_count];
+	m_entries = new RacePowerupManager::TargetPointList::Entry[m_count];
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -140,7 +140,7 @@ void RaceSession::Field0x2804::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0045c6a0
-RacePowerupManager::Field0x050::Entry* RacePowerupManager::Field0x050::FUN_0045c6a0(
+RacePowerupManager::TargetPointList::Entry* RacePowerupManager::TargetPointList::FindTargetInCone(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
 	LegoFloat p_unk0x0c,

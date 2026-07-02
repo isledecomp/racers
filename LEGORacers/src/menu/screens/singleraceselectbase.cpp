@@ -28,8 +28,8 @@ SingleRaceSelectBase::SingleRaceSelectBase()
 {
 	MenuGameScreen::Reset();
 	m_circuitEntry = 0;
-	m_unk0x754 = 0;
-	m_unk0x658[0] = '\0';
+	m_driverModel = 0;
+	m_driverName[0] = '\0';
 }
 
 // FUNCTION: LEGORACERS 0x00488840
@@ -47,14 +47,14 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 		return TRUE;
 	}
 
-	m_unk0x660.VTable0x54();
-	if (m_unk0x754) {
-		m_golExport->VTable0x48(m_unk0x754);
-		m_unk0x754 = NULL;
+	m_driverEntity.VTable0x54();
+	if (m_driverModel) {
+		m_golExport->VTable0x48(m_driverModel);
+		m_driverModel = NULL;
 	}
 
 	FUN_004803a0();
-	m_unk0x658[0] = '\0';
+	m_driverName[0] = '\0';
 	m_circuitEntry = NULL;
 
 	LegoBool32 result = MenuSceneScreen::Destroy();
@@ -68,39 +68,39 @@ void SingleRaceSelectBase::VTable0x4c()
 {
 	LegoS32 optionCount = 3 + ((m_menuId != 0x1d) ? 4 : 0);
 
-	CreateFrame(&m_unk0x758, 0x47, 0x47);
+	CreateFrame(&m_borderFrame, 0x47, 0x47);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\SINGRACE");
 	}
 
-	CreateRegion(&m_unk0x368, 6);
-	m_unk0x368.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
+	CreateRegion(&m_sceneWidget, 6);
+	m_sceneWidget.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
-	CreateTriangle(&m_unk0x1860, 0x5e);
+	CreateTriangle(&m_sceneOverlay, 0x5e);
 
 	Rect rect;
 	rect.m_left = 0;
 	rect.m_top = 0;
-	rect.m_right = m_unk0x368.GetRect()->m_right - m_unk0x368.GetRect()->m_left;
-	rect.m_bottom = m_unk0x368.GetRect()->m_bottom - m_unk0x368.GetRect()->m_top;
-	m_unk0x1860.SetRect(&rect);
-	m_unk0x1860.SetAlphaOverride(200);
-	m_unk0x1860.ClearFlags(2);
+	rect.m_right = m_sceneWidget.GetRect()->m_right - m_sceneWidget.GetRect()->m_left;
+	rect.m_bottom = m_sceneWidget.GetRect()->m_bottom - m_sceneWidget.GetRect()->m_top;
+	m_sceneOverlay.SetRect(&rect);
+	m_sceneOverlay.SetAlphaOverride(200);
+	m_sceneOverlay.ClearFlags(2);
 
-	CreateCarousel(&m_unk0xb54, 0x3e, 0x3b);
-	CreateSelector(&m_unk0xbe8, &m_unk0xb54, 0x95, 0x4d);
+	CreateCarousel(&m_trackCarousel, 0x3e, 0x3b);
+	CreateSelector(&m_trackSelector, &m_trackCarousel, 0x95, 0x4d);
 
 	for (LegoS32 i = 0; i < optionCount; i++) {
-		CreateImage(&m_unk0x15dc[i], static_cast<undefined2>(i + 0x61), 0x9d);
-		m_unk0xb54.AddItem(&m_unk0x15dc[i]);
+		CreateImage(&m_trackIcons[i], static_cast<undefined2>(i + 0x61), 0x9d);
+		m_trackCarousel.AddItem(&m_trackIcons[i]);
 	}
 
-	m_unk0xb54.SetSelection(0);
+	m_trackCarousel.SetSelection(0);
 }
 
 // FUNCTION: LEGORACERS 0x00488ac0
@@ -121,23 +121,23 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuGameContext* p_context, MenuScre
 	}
 
 	FUN_00480310();
-	m_unk0x368.m_unk0x2cc = FALSE;
+	m_sceneWidget.m_unk0x2cc = FALSE;
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00488b40
-void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
+void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 {
 	GolAnimatedEntity* modelEntity = NULL;
 	LegoU32 i = 0;
-	CutsceneDefinition::Frame* frame = m_unk0x368.m_unk0x2b0;
+	CutsceneDefinition::Frame* frame = m_sceneWidget.m_unk0x2b0;
 
 	while (!modelEntity) {
-		if (i >= m_unk0x368.m_unk0x58.GetWorldDatabaseCount()) {
+		if (i >= m_sceneWidget.m_unk0x58.GetWorldDatabaseCount()) {
 			break;
 		}
 
-		GolWorldDatabase* worldDatabase = m_unk0x368.m_unk0x58.GetWorldDatabase(i);
+		GolWorldDatabase* worldDatabase = m_sceneWidget.m_unk0x58.GetWorldDatabase(i);
 		if (!modelEntity && worldDatabase->GetUnk0xc0NameEntries()) {
 			modelEntity = worldDatabase->GetUnk0xc0Name("guy1");
 		}
@@ -145,43 +145,43 @@ void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
 		i++;
 	}
 
-	LegoChar* name = m_unk0x658;
-	if (::strncmp(name, p_name, sizeof(m_unk0x658)) != 0) {
-		::strncpy(name, p_name, sizeof(m_unk0x658));
+	LegoChar* name = m_driverName;
+	if (::strncmp(name, p_name, sizeof(m_driverName)) != 0) {
+		::strncpy(name, p_name, sizeof(m_driverName));
 
-		if (m_unk0x660.HasModel()) {
-			m_unk0x660.VTable0x54();
+		if (m_driverEntity.HasModel()) {
+			m_driverEntity.VTable0x54();
 			m_context->m_modelBuilder.RefreshMenuResources();
 		}
 
-		if (m_unk0x754) {
-			m_golExport->VTable0x48(m_unk0x754);
-			m_unk0x754 = NULL;
+		if (m_driverModel) {
+			m_golExport->VTable0x48(m_driverModel);
+			m_driverModel = NULL;
 		}
 
 		DriverCosmetics cosmetics;
 		m_context->m_cosmeticTable.CopyCosmetics(name, &cosmetics);
-		m_unk0x754 = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
-		m_unk0x660.FUN_0040d550(
-			m_unk0x754,
+		m_driverModel = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
+		m_driverEntity.FUN_0040d550(
+			m_driverModel,
 			modelEntity->VTable0x58(0),
 			modelEntity->GetModelPart(),
 			modelEntity->GetModelDistance(0)
 		);
 	}
 
-	if (m_unk0x660.HasModel()) {
+	if (m_driverEntity.HasModel()) {
 		for (LegoU32 i = 0; i < frame->GetModelCount(); i++) {
 			CutsceneDefinition::Frame::ModelEvent* model = frame->GetModel(i);
 			if (model->GetEntity() == modelEntity) {
-				model->SetEntity(&m_unk0x660);
+				model->SetEntity(&m_driverEntity);
 			}
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00488cb0
-void SingleRaceSelectBase::FUN_00488cb0(LegoS32 p_index)
+void SingleRaceSelectBase::ApplyThemeColor(LegoS32 p_index)
 {
-	m_unk0x758.SetBorderColors(&g_singleRaceVisualStates[g_singleRaceVisualStateMap[p_index]]);
+	m_borderFrame.SetBorderColors(&g_singleRaceVisualStates[g_singleRaceVisualStateMap[p_index]]);
 }

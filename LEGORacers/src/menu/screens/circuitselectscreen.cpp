@@ -104,8 +104,8 @@ void CircuitSelectScreen::VTable0x4c()
 		g_hashTable->SetCurrentEntryFromString(locals.m_path);
 	}
 
-	CreateRegion(&m_unk0x368, m_unk0x28c);
-	m_unk0x368.m_unk0x2cc = FALSE;
+	CreateRegion(&m_sceneWidget, m_unk0x28c);
+	m_sceneWidget.m_unk0x2cc = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00479d10
@@ -125,6 +125,6 @@ void CircuitSelectScreen::VTable0x84()
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED
 LegoBool32 CircuitSelectScreen::VTable0x78(undefined4 p_unk0x04)
 {
-	m_unk0x368.m_unk0x2cc = TRUE;
+	m_sceneWidget.m_unk0x2cc = TRUE;
 	return MenuSceneScreen::VTable0x78(p_unk0x04);
 }

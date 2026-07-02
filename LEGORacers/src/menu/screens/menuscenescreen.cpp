@@ -49,7 +49,7 @@ LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 		font->SetColor(0xff, 0xff, 0xff, 0xff);
 	}
 
-	CutscenePlayer* resourceHelper = &m_unk0x368.m_unk0x84;
+	CutscenePlayer* resourceHelper = &m_sceneWidget.m_unk0x84;
 	if (resourceHelper->GetUnk0x118() && p_context->m_context->m_languageIndex) {
 		LegoChar languageFile[12];
 		languageFile[0] = '\0';
@@ -108,7 +108,7 @@ LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 LegoBool32 MenuSceneScreen::Destroy()
 {
 	m_unk0x638.ReleaseOwnedBuffers();
-	m_unk0x368.Destroy();
+	m_sceneWidget.Destroy();
 
 	if (m_renderer && m_unk0x650) {
 		m_renderer->VTable0x20(m_unk0x650);
@@ -127,7 +127,7 @@ LegoBool32 MenuSceneScreen::VTable0x78(undefined4 p_unk0x04)
 		m_unk0x654 = FALSE;
 	}
 
-	if (m_unk0x368.m_unk0x2c8) {
+	if (m_sceneWidget.m_unk0x2c8) {
 		m_unk0x364 = TRUE;
 	}
 

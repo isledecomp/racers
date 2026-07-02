@@ -64,7 +64,7 @@ public:
 	// MenuSceneScreen::`scalar deleting destructor'
 
 protected:
-	SceneWidget m_unk0x368;         // 0x368
+	SceneWidget m_sceneWidget;      // 0x368
 	GolStringTable m_unk0x638;      // 0x638
 	GolD3DRenderDevice* m_renderer; // 0x64c
 	GolCamera* m_unk0x650;          // 0x650

@@ -28,22 +28,22 @@ public:
 	//  CircuitRaceScreen::`scalar deleting destructor'
 
 protected:
-	void FUN_0047a2b0();
+	void UpdateRacePreview();
 
-	MenuImage m_unk0x1908;                 // 0x1908
-	MenuTextLabel m_unk0x1964;             // 0x1964
-	MenuTextLabel m_unk0x19dc;             // 0x19dc
-	MenuTextLabel m_unk0x1a54;             // 0x1a54
-	MenuTextLabel m_unk0x1acc;             // 0x1acc
-	MenuTextLabel m_unk0x1b44;             // 0x1b44
-	MenuTextLabel m_unk0x1bbc;             // 0x1bbc
-	MenuTextButton m_unk0x1c34;            // 0x1c34
-	MenuTextButton m_unk0x1f24;            // 0x1f24
-	MenuAnimationList::Entry* m_unk0x2214; // 0x2214
-	LegoU32 m_unk0x2218;                   // 0x2218
-	LegoU32 m_unk0x221c;                   // 0x221c
-	LegoU32 m_unk0x2220;                   // 0x2220
-	LegoBool32 m_unk0x2224;                // 0x2224
+	MenuImage m_photoImage;                 // 0x1908
+	MenuTextLabel m_infoLabel;              // 0x1964
+	MenuTextLabel m_circuitCaptionLabel;    // 0x19dc
+	MenuTextLabel m_circuitNameLabel;       // 0x1a54
+	MenuTextLabel m_raceNameLabel;          // 0x1acc
+	MenuTextLabel m_trackCaptionLabel;      // 0x1b44
+	MenuTextLabel m_circuitDescLabel;       // 0x1bbc
+	MenuTextButton m_backButton;            // 0x1c34
+	MenuTextButton m_startButton;           // 0x1f24
+	MenuAnimationList::Entry* m_transition; // 0x2214
+	LegoU32 m_previewTimerMs;               // 0x2218
+	LegoU32 m_circuitIndex;                 // 0x221c
+	LegoU32 m_previewRaceIndex;             // 0x2220
+	LegoBool32 m_previewChanged;            // 0x2224
 };
 
 #endif // CIRCUITRACESCREEN_H

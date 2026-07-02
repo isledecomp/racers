@@ -43,7 +43,7 @@ LegoBool32 MainIntroScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	}
 
 	p_context->m_modelBuilder.GetMusicInstance()->Play(TRUE);
-	m_unk0x368.m_unk0x2cc = FALSE;
+	m_sceneWidget.m_unk0x2cc = FALSE;
 	return TRUE;
 }
 
@@ -54,7 +54,7 @@ void MainIntroScreen::VTable0x4c()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\MAININTR");
 	}
 
-	CreateRegion(&m_unk0x368, m_unk0x28c);
+	CreateRegion(&m_sceneWidget, m_unk0x28c);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -71,7 +71,7 @@ void MainIntroScreen::VTable0x84()
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED
 LegoBool32 MainIntroScreen::VTable0x78(undefined4 p_unk0x04)
 {
-	m_unk0x368.m_unk0x2cc = TRUE;
+	m_sceneWidget.m_unk0x2cc = TRUE;
 	return MenuSceneScreen::VTable0x78(p_unk0x04);
 }
 

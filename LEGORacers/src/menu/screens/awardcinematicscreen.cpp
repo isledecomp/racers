@@ -170,9 +170,9 @@ void AwardCinematicScreen::VTable0x4c()
 		g_hashTable->SetCurrentEntryFromString(locals.m_path);
 	}
 
-	CreateRegion(&m_unk0x368, m_unk0x28c);
-	m_unk0x368.m_unk0x2cc = FALSE;
-	CutsceneDefinition::Frame* frame = m_unk0x368.m_unk0x2b0;
+	CreateRegion(&m_sceneWidget, m_unk0x28c);
+	m_sceneWidget.m_unk0x2cc = FALSE;
+	CutsceneDefinition::Frame* frame = m_sceneWidget.m_unk0x2b0;
 
 	if (m_unk0x28c == c_menuCircuit7) {
 		SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
@@ -183,8 +183,8 @@ void AwardCinematicScreen::VTable0x4c()
 		}
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x368.m_unk0x58.GetWorldDatabaseCount(); i++) {
-		GolWorldDatabase* worldDatabase = m_unk0x368.m_unk0x58.GetWorldDatabase(i);
+	for (LegoU32 i = 0; i < m_sceneWidget.m_unk0x58.GetWorldDatabaseCount(); i++) {
+		GolWorldDatabase* worldDatabase = m_sceneWidget.m_unk0x58.GetWorldDatabase(i);
 		if (!sourceDriverEntity) {
 			sourceDriverEntity = worldDatabase->FindUnk0xc0("guy1");
 		}
@@ -345,7 +345,7 @@ void AwardCinematicScreen::VTable0x4c()
 	}
 
 	if (m_unk0x28c == c_menuWinCar) {
-		GolNameTable* textVisuals = m_unk0x368.m_unk0x84.GetTextVisuals();
+		GolNameTable* textVisuals = m_sceneWidget.m_unk0x84.GetTextVisuals();
 		const LegoChar* driverName = m_context->m_context->m_playerSetupSlots[1].m_driverName;
 		GolName textName;
 
@@ -565,7 +565,7 @@ void AwardCinematicScreen::VTable0x84()
 LegoBool32 AwardCinematicScreen::VTable0x78(undefined4 p_unk0x04)
 {
 	if (m_unk0x28c == c_menuCircuit7) {
-		m_unk0x368.m_unk0x2cc = TRUE;
+		m_sceneWidget.m_unk0x2cc = TRUE;
 	}
 
 	return MenuSceneScreen::VTable0x78(p_unk0x04);

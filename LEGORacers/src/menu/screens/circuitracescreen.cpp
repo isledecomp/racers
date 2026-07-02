@@ -26,28 +26,28 @@ CircuitRaceScreen::~CircuitRaceScreen()
 // FUNCTION: LEGORACERS 0x00479f50
 void CircuitRaceScreen::Reset()
 {
-	m_unk0x2214 = NULL;
-	m_unk0x2218 = 0;
-	m_unk0x2220 = 0;
-	m_unk0x2224 = FALSE;
+	m_transition = NULL;
+	m_previewTimerMs = 0;
+	m_previewRaceIndex = 0;
+	m_previewChanged = FALSE;
 	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00479f70
 void CircuitRaceScreen::VTable0x4c()
 {
-	CreateImage(&m_unk0x1908, 0x49, 0x49);
+	CreateImage(&m_photoImage, 0x49, 0x49);
 	SingleRaceSelectBase::VTable0x4c();
 
-	CreateTextLabel(&m_unk0x1964, 0x3a, 0x3a, 0x0d);
-	m_unk0x1964.WrapText(0x14);
-	CreateTextLabel(&m_unk0x19dc, 0x5b, 0x37, 0x4a);
-	CreateTextLabel(&m_unk0x1a54, 0x5c, 0x37, 0x4c);
-	CreateTextLabel(&m_unk0x1acc, 0x5d, 0x37, 0x4a);
-	CreateTextLabel(&m_unk0x1b44, 0x5f, 0x37, 0x4b);
-	CreateTextLabel(&m_unk0x1bbc, 0x60, 0x37, 0x60);
-	FUN_0047fdc0(&m_unk0x1f24, 0x40, 0x46, 0x72);
-	FUN_0047fdc0(&m_unk0x1c34, 0x3f, 0x43, 2);
+	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 0x0d);
+	m_infoLabel.WrapText(0x14);
+	CreateTextLabel(&m_circuitCaptionLabel, 0x5b, 0x37, 0x4a);
+	CreateTextLabel(&m_circuitNameLabel, 0x5c, 0x37, 0x4c);
+	CreateTextLabel(&m_raceNameLabel, 0x5d, 0x37, 0x4a);
+	CreateTextLabel(&m_trackCaptionLabel, 0x5f, 0x37, 0x4b);
+	CreateTextLabel(&m_circuitDescLabel, 0x60, 0x37, 0x60);
+	FUN_0047fdc0(&m_startButton, 0x40, 0x46, 0x72);
+	FUN_0047fdc0(&m_backButton, 0x3f, 0x43, 2);
 }
 
 // FUNCTION: LEGORACERS 0x0047a040
@@ -57,18 +57,18 @@ LegoBool32 CircuitRaceScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenC
 		return FALSE;
 	}
 
-	OnWidgetValueChanged(&m_unk0xbe8);
-	m_unk0x1f24.Select(0);
+	OnWidgetValueChanged(&m_trackSelector);
+	m_startButton.Select(0);
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0047a090
 void CircuitRaceScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x1f24) {
+	if (p_source == &m_startButton) {
 		m_unk0x360 = 0x1e;
 	}
-	else if (p_source == &m_unk0x1c34) {
+	else if (p_source == &m_backButton) {
 		m_unk0x360 = 2;
 	}
 
@@ -84,12 +84,12 @@ void CircuitRaceScreen::OnWidgetValueChanged(MenuWidget*)
 {
 	m_context->m_context->m_raceMode = LegoRacers::Context::c_raceModeCircuit;
 
-	m_unk0x221c = m_unk0xb54.GetSelectedIndex();
-	m_unk0x1a54.SetStringByIndex(static_cast<undefined2>(m_unk0x221c + 0x4c), 0);
-	m_unk0x1bbc.SetStringByIndex(static_cast<undefined2>(m_unk0x221c + 0x61), 0);
+	m_circuitIndex = m_trackCarousel.GetSelectedIndex();
+	m_circuitNameLabel.SetStringByIndex(static_cast<undefined2>(m_circuitIndex + 0x4c), 0);
+	m_circuitDescLabel.SetStringByIndex(static_cast<undefined2>(m_circuitIndex + 0x61), 0);
 
-	if (m_unk0x221c < m_context->m_circuitList.GetEntryCount()) {
-		m_circuitEntry = &m_context->m_circuitList.GetEntries()[m_unk0x221c];
+	if (m_circuitIndex < m_context->m_circuitList.GetEntryCount()) {
+		m_circuitEntry = &m_context->m_circuitList.GetEntries()[m_circuitIndex];
 		LegoRacers::Context* context = m_context->m_context;
 		::memcpy(context->m_circuitName, m_circuitEntry->GetName(), sizeof(GolName));
 
@@ -112,27 +112,27 @@ void CircuitRaceScreen::OnWidgetValueChanged(MenuWidget*)
 		}
 
 		if (m_context->m_saveSystem.GetGameState().GetUnlockedCircuits() & mask) {
-			m_unk0x1f24.Enable(5);
-			m_unk0x1860.ClearFlags(2);
+			m_startButton.Enable(5);
+			m_sceneOverlay.ClearFlags(2);
 		}
 		else {
-			m_unk0x1f24.Disable(5);
-			m_unk0x1c34.Select(0);
-			m_unk0x1860.SetFlags(2);
+			m_startButton.Disable(5);
+			m_backButton.Select(0);
+			m_sceneOverlay.SetFlags(2);
 		}
 
-		m_unk0x2218 = 0;
-		m_unk0x2220 = 0;
-		FUN_0047a2b0();
+		m_previewTimerMs = 0;
+		m_previewRaceIndex = 0;
+		UpdateRacePreview();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047a250
 void CircuitRaceScreen::VTable0x84()
 {
-	if (m_unk0x2214 && m_unk0x2214->IsActive()) {
-		m_context->m_menuAnimations.Deactivate(m_unk0x2214);
-		m_unk0x2214 = NULL;
+	if (m_transition && m_transition->IsActive()) {
+		m_context->m_menuAnimations.Deactivate(m_transition);
+		m_transition = NULL;
 	}
 
 	if (m_unk0x360 == 2) {
@@ -144,19 +144,19 @@ void CircuitRaceScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047a2b0
-void CircuitRaceScreen::FUN_0047a2b0()
+void CircuitRaceScreen::UpdateRacePreview()
 {
 	GolString string;
 	GolName frameName;
 	GolName driverName;
 	driverName[0] = '\0';
 
-	RaceNameEntry* raceNameEntry = m_circuitEntry->GetRaceNameEntry(m_unk0x2220);
+	RaceNameEntry* raceNameEntry = m_circuitEntry->GetRaceNameEntry(m_previewRaceIndex);
 	if (raceNameEntry) {
 		::memcpy(frameName, raceNameEntry->GetThemeName(), sizeof(GolName));
 		::memcpy(driverName, raceNameEntry->GetMascotName(), sizeof(GolName));
 
-		GolNameTable* frameNames = &m_unk0x368.m_unk0x58;
+		GolNameTable* frameNames = &m_sceneWidget.m_unk0x58;
 		CutsceneDefinition::Frame* frame;
 		if (!frameNames->GetNameEntries()) {
 			frame = NULL;
@@ -165,62 +165,62 @@ void CircuitRaceScreen::FUN_0047a2b0()
 			frame = static_cast<CutsceneDefinition::Frame*>(frameNames->GetName(frameName));
 		}
 
-		if (frame && frame != m_unk0x368.m_unk0x2b0) {
-			m_unk0x368.FUN_00466d00(frame);
-			m_unk0x368.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
-			m_unk0x2218 = 2000;
-			FUN_00488cb0(m_unk0x2220 + m_unk0x221c * 4);
+		if (frame && frame != m_sceneWidget.m_unk0x2b0) {
+			m_sceneWidget.FUN_00466d00(frame);
+			m_sceneWidget.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
+			m_previewTimerMs = 2000;
+			ApplyThemeColor(m_previewRaceIndex + m_circuitIndex * 4);
 			raceNameEntry->CopyDisplayString(&string);
-			m_unk0x1acc.SetString(&string, 0);
+			m_raceNameLabel.SetString(&string, 0);
 		}
 	}
 	else {
-		m_unk0x2218 = 2000;
+		m_previewTimerMs = 2000;
 	}
 
 	if (driverName[0]) {
-		FUN_00488b40(driverName);
+		SetPreviewDriver(driverName);
 	}
 
-	m_unk0x2224 = TRUE;
+	m_previewChanged = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0047a3f0
 LegoBool32 CircuitRaceScreen::VTable0x78(undefined4 p_elapsed)
 {
-	if (m_unk0x2214 && !m_unk0x2214->IsActive()) {
-		m_unk0x2214 = NULL;
+	if (m_transition && !m_transition->IsActive()) {
+		m_transition = NULL;
 	}
 
-	if (p_elapsed > m_unk0x2218 && m_unk0x221c != 6) {
-		m_unk0x2220 = (m_unk0x2220 + 1) & 3;
-		FUN_0047a2b0();
+	if (p_elapsed > m_previewTimerMs && m_circuitIndex != 6) {
+		m_previewRaceIndex = (m_previewRaceIndex + 1) & 3;
+		UpdateRacePreview();
 	}
 	else {
-		m_unk0x2218 -= p_elapsed;
+		m_previewTimerMs -= p_elapsed;
 	}
 
-	if (m_unk0x2218 < 250 && !m_context->m_menuAnimations.HasActive() && m_unk0x221c != 6) {
-		if (m_unk0x2214 && m_unk0x2214->IsActive()) {
-			m_context->m_menuAnimations.Deactivate(m_unk0x2214);
-			m_unk0x2214 = NULL;
+	if (m_previewTimerMs < 250 && !m_context->m_menuAnimations.HasActive() && m_circuitIndex != 6) {
+		if (m_transition && m_transition->IsActive()) {
+			m_context->m_menuAnimations.Deactivate(m_transition);
+			m_transition = NULL;
 		}
 
-		GolCamera* rectSource = m_unk0x368.m_unk0x2b0->FUN_00406890();
-		m_unk0x2214 = m_context->m_menuAnimations.Activate(250, FALSE, NULL, rectSource);
+		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->FUN_00406890();
+		m_transition = m_context->m_menuAnimations.Activate(250, FALSE, NULL, rectSource);
 	}
 
 	LegoBool32 result = MenuSceneScreen::VTable0x78(p_elapsed);
-	if (m_unk0x2224) {
-		if (m_unk0x2214 && m_unk0x2214->IsActive()) {
-			m_context->m_menuAnimations.Deactivate(m_unk0x2214);
-			m_unk0x2214 = NULL;
+	if (m_previewChanged) {
+		if (m_transition && m_transition->IsActive()) {
+			m_context->m_menuAnimations.Deactivate(m_transition);
+			m_transition = NULL;
 		}
 
-		m_unk0x368.m_unk0x2b0->FUN_00406390(0);
-		GolCamera* rectSource = m_unk0x368.m_unk0x2b0->FUN_00406890();
-		m_unk0x2214 = m_context->m_menuAnimations.Activate(250, TRUE, NULL, rectSource);
-		m_unk0x2224 = FALSE;
+		m_sceneWidget.m_unk0x2b0->FUN_00406390(0);
+		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->FUN_00406890();
+		m_transition = m_context->m_menuAnimations.Activate(250, TRUE, NULL, rectSource);
+		m_previewChanged = FALSE;
 	}
 
 	return result;

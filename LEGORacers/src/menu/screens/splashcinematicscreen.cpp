@@ -56,7 +56,7 @@ LegoBool32 SplashCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScr
 		FUN_00480470(p_context, nextMenu, pushExtra);
 	}
 
-	m_unk0x368.m_unk0x2cc = 0;
+	m_sceneWidget.m_unk0x2cc = 0;
 	return TRUE;
 }
 
@@ -109,7 +109,7 @@ void SplashCinematicScreen::VTable0x4c()
 		break;
 	}
 
-	CreateRegion(&m_unk0x368, m_menuId);
+	CreateRegion(&m_sceneWidget, m_menuId);
 }
 
 // FUNCTION: LEGORACERS 0x00488630
@@ -144,7 +144,7 @@ void SplashCinematicScreen::VTable0x84()
 LegoBool32 SplashCinematicScreen::VTable0x78(undefined4 p_unk0x04)
 {
 	if (m_menuId != c_menuLegoIntro) {
-		m_unk0x368.m_unk0x2cc = 1;
+		m_sceneWidget.m_unk0x2cc = 1;
 	}
 
 	return MenuSceneScreen::VTable0x78(p_unk0x04);

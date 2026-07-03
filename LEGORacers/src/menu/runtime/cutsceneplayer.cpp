@@ -1760,15 +1760,15 @@ void CutscenePlayer::LoadImageVisuals()
 void CutscenePlayer::ParseTriggerChannel(
 	GolFileParser* p_parser,
 	LegoU32 p_token,
-	undefined4& p_unk0x08,
-	CutsceneEventLink*& p_unk0x0c,
-	GolNameTable& p_unk0x10
+	undefined4& p_count,
+	CutsceneEventLink*& p_links,
+	GolNameTable& p_names
 )
 {
 	CutsceneEvent* event = NULL;
 	undefined4 mode = 0;
 
-	if (p_unk0x0c != NULL) {
+	if (p_links != NULL) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
@@ -1781,14 +1781,14 @@ void CutscenePlayer::ParseTriggerChannel(
 	p_parser->ReadRightBracket();
 	p_parser->ReadLeftCurly();
 
-	p_unk0x08 = count;
-	p_unk0x10.Allocate(count);
+	p_count = count;
+	p_names.Allocate(count);
 
 	CutsceneEventLink* links = new CutsceneEventLink[count];
 	if (links == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	p_unk0x0c = links;
+	p_links = links;
 
 	CutsceneEventLink* link = links;
 	CutsceneEventLink* end = links + count;
@@ -1798,13 +1798,13 @@ void CutscenePlayer::ParseTriggerChannel(
 		p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(p_token));
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 
-		CutsceneEventLink* existing = static_cast<CutsceneEventLink*>(p_unk0x10.GetName(name));
+		CutsceneEventLink* existing = static_cast<CutsceneEventLink*>(p_names.GetName(name));
 		if (existing != NULL) {
 			link->SetNext(existing->GetNext());
 			existing->SetNext(link);
 		}
 		else {
-			p_unk0x10.AddName(name, link);
+			p_names.AddName(name, link);
 		}
 
 		p_parser->ReadLeftCurly();

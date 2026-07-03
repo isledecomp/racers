@@ -128,7 +128,7 @@ public:
 		GolExport* p_golExport,
 		GolD3DRenderDevice* p_renderer,
 		SoundManager* p_soundManager,
-		CutsceneDefinition* p_unk0x10,
+		CutsceneDefinition* p_definition,
 		const LegoChar* p_fileName,
 		undefined4 p_binary
 	);
@@ -154,9 +154,9 @@ public:
 	void ParseTriggerChannel(
 		GolFileParser* p_parser,
 		LegoU32 p_token,
-		undefined4& p_unk0x08,
-		CutsceneEventLink*& p_unk0x0c,
-		GolNameTable& p_unk0x10
+		undefined4& p_count,
+		CutsceneEventLink*& p_links,
+		GolNameTable& p_names
 	);
 	void Update(LegoU32 p_elapsedMs);
 	void Draw(GolD3DRenderDevice* p_renderer);

@@ -12,7 +12,7 @@ public:
 	GolImgFileWriter();
 	~GolImgFileWriter() override;
 
-	void VTable0x08(const LegoChar* p_fileName) override;            // vtable+0x08
+	void Open(const LegoChar* p_fileName) override;                  // vtable+0x08
 	void Destroy() override;                                         // vtable+0x0c
 	const LegoChar* GetSuffix() override = 0;                        // vtable+0x10
 	virtual void WriteSurface(const GolRenderTarget* p_surface) = 0; // vtable+0x24

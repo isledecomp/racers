@@ -10,18 +10,18 @@ class GolTgaFile : public GolImgFile {
 public:
 	GolTgaFile();
 
-	void VTable0x00() override;                                                                 // vtable+0x00
-	void VTable0x08(const LegoChar* p_fileName) override;                                       // vtable+0x08
-	const LegoChar* GetSuffix() override;                                                       // vtable+0x10
-	void VTable0x18(LegoU8* p_buffer) override;                                                 // vtable+0x18
-	void VTable0x1c(GolTiledTexture* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey) override; // vtable+0x1c
-	void VTable0x20(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey) override;    // vtable+0x20
+	void ReadHeader() override;                                                                       // vtable+0x00
+	void Open(const LegoChar* p_fileName) override;                                                   // vtable+0x08
+	const LegoChar* GetSuffix() override;                                                             // vtable+0x10
+	void ReadPixels(LegoU8* p_buffer) override;                                                       // vtable+0x18
+	void LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey) override; // vtable+0x1c
+	void LoadSurface(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey) override;         // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1002a4d0 FOLDED
 	// SYNTHETIC: LEGORACERS 0x004016a0 FOLDED
 	// GolTgaFile::`scalar deleting destructor'
 
-	void FUN_1002ad40(LegoU8* p_src, LegoU8* p_dst);
+	void DecodeRleRow(LegoU8* p_src, LegoU8* p_dst);
 
 private:
 	LegoU32 m_identificationFieldSize; // 0x5b0

@@ -136,7 +136,7 @@ void DriverModelBuilder::LoadFaceTexture(const LegoChar* p_name, GolBmpFile* p_i
 	::memset(fileName, 0, sizeof(fileName));
 	::strncpy(fileName, p_name, sizeof(GolName));
 	::strcat(fileName, ".bmp");
-	p_imageFile->VTable0x08(fileName);
+	p_imageFile->Open(fileName);
 
 	texture->SetNameFromBuffer(p_name);
 	texture->SetTextureFlags(GolTexture::c_unk0x36Bit2);

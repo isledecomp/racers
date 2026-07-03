@@ -72,7 +72,7 @@ void GolBmpWriterFile::WriteSurface(const GolRenderTarget* p_surface)
 	InitializeFromSurface(p_surface);
 	WriteHeader();
 	WritePalette();
-	FUN_100204d0(m_bmpFormat, NULL);
+	SetupPixelConversion(m_bmpFormat, NULL);
 
 	const_cast<GolRenderTarget*>(p_surface)->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead);
 
@@ -86,7 +86,7 @@ void GolBmpWriterFile::WriteSurface(const GolRenderTarget* p_surface)
 	pitch = -pitch;
 
 	for (LegoU32 y = 0; y < m_height; y++) {
-		FUN_100207e0(pixels, rowBuffer, m_bmpFormat);
+		ConvertRow(pixels, rowBuffer, m_bmpFormat);
 		pixels += pitch;
 
 		LegoS32 result = m_file.BufferedWrite(fileOffset, rowBuffer, m_rowByteStride);

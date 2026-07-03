@@ -220,7 +220,7 @@ void GolTextureList::LoadTextures()
 			imageFile = &g_unk0x10063ca0;
 		}
 
-		imageFile->VTable0x08(textureName);
+		imageFile->Open(textureName);
 		texture->VTable0x30(*m_renderer, imageFile);
 		imageFile->Destroy();
 	}

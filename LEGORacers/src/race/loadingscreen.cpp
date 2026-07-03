@@ -148,8 +148,8 @@ void LoadingScreen::Initialize(
 		delete parser;
 	}
 
-	bmpFile.VTable0x08(imageName);
-	bmpFile.VTable0x20(renderTargetInfo, 0, NULL);
+	bmpFile.Open(imageName);
+	bmpFile.LoadSurface(renderTargetInfo, 0, NULL);
 	renderTargetInfo->VTable0x14(TRUE);
 	renderTargetInfo->VTable0x2c();
 

@@ -1165,7 +1165,7 @@ void MenuManager::TakeScreenshot()
 	}
 
 	if (screenshotIndex <= c_maxScreenshotIndex) {
-		bmpWriter.VTable0x08(fileName);
+		bmpWriter.Open(fileName);
 		bmpWriter.WriteSurface(m_renderer->GetRenderTargetInfo());
 		bmpWriter.Destroy();
 

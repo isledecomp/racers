@@ -104,7 +104,7 @@ void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 		imageFile = &bmpFile;
 	}
 
-	imageFile->VTable0x08(p_name);
+	imageFile->Open(p_name);
 	m_fontHeight = imageFile->GetHeight();
 
 	if (g_fontSourceImage == NULL) {
@@ -117,7 +117,7 @@ void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 		colorKey = &m_colorKey;
 	}
 
-	imageFile->VTable0x20(g_fontSourceImage, m_flags & c_flagBit2, colorKey);
+	imageFile->LoadSurface(g_fontSourceImage, m_flags & c_flagBit2, colorKey);
 	imageFile->Destroy();
 
 	ScanGlyphs(p_name);

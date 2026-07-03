@@ -20,7 +20,7 @@ GolImgFileWriter::~GolImgFileWriter()
 }
 
 // FUNCTION: LEGORACERS 0x0040d330
-void GolImgFileWriter::VTable0x08(const LegoChar* p_fileName)
+void GolImgFileWriter::Open(const LegoChar* p_fileName)
 {
 	LegoChar buffer[256];
 	LegoS32 dotIndex = -1;

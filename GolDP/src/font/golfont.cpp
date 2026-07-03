@@ -60,7 +60,7 @@ void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 		imageFile = &g_unk0x10064280;
 	}
 
-	imageFile->VTable0x08(p_name);
+	imageFile->Open(p_name);
 	LegoU32 sourceHeight = imageFile->GetHeight();
 	sourceFormat = imageFile->GetTextureFormat();
 	m_fontHeight = sourceHeight;
@@ -74,7 +74,7 @@ void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	LegoU32 sourceWidth = imageFile->GetWidth();
 	g_fontSourceImage = &m_sourceImage;
 	m_sourceImage.VTable0x34(*p_renderer, sourceFormat, sourceWidth, m_fontHeight);
-	imageFile->VTable0x20(&m_sourceImage, m_flags & c_flagBit2, NULL);
+	imageFile->LoadSurface(&m_sourceImage, m_flags & c_flagBit2, NULL);
 	imageFile->Destroy();
 
 	ScanGlyphs(p_name);
@@ -296,10 +296,10 @@ void GolFont::CopyGlyphsToTextures(
 	ColorRGBA* colorKey;
 	if (font->m_flags & c_flagBit5) {
 		if (p_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
-			g_unk0x10062568.SetUnk0x0a0(g_unk0x10057668);
+			g_unk0x10062568.SetColorKeyReplacement(g_unk0x10057668);
 		}
 		else {
-			g_unk0x10062568.SetUnk0x0a0(font->m_colorKey);
+			g_unk0x10062568.SetColorKeyReplacement(font->m_colorKey);
 		}
 		colorKey = &font->m_colorKey;
 	}
@@ -323,7 +323,7 @@ void GolFont::CopyGlyphsToTextures(
 			texture->LockPixels(&destPixels, &destPitch, GolSurface::c_lockRequestWrite);
 		}
 
-		g_unk0x10062568.FUN_100226c0(
+		g_unk0x10062568.SetImageInfo(
 			*p_sourceFormat,
 			font->m_glyphs[i].m_width,
 			font->m_fontHeight,
@@ -340,7 +340,7 @@ void GolFont::CopyGlyphsToTextures(
 			((static_cast<LegoU32>(p_textureFormat->m_bitsPerPixel) * font->m_glyphs[i].m_textureX + 7) >> 3);
 
 		GolPaletteBase* palette = p_textureFormat->m_paletteMask ? texture->GetPalette() : NULL;
-		g_unk0x10062568.FUN_10022730(
+		g_unk0x10062568.ConvertImage(
 			source,
 			dest,
 			font->m_glyphs[i].m_width,

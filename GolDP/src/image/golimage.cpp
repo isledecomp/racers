@@ -64,16 +64,16 @@ void GolImage::VTable0x10()
 		m_unk0x3c |= c_flagBit4;
 	}
 
-	imageFile->VTable0x08(imageName.m_chars);
+	imageFile->Open(imageName.m_chars);
 	imageFormat = imageFile->GetTextureFormat();
 	m_width = imageFile->GetWidth();
 	m_height = imageFile->GetHeight();
 
 	m_unk0x58.VTable0x34(*m_renderer, imageFormat, m_width, m_height);
-	imageFile->SetUnk0x5a8(TRUE);
-	imageFile->SetUnk0x5ac(FALSE);
-	imageFile->VTable0x20(&m_unk0x58, m_flags & c_flagBit2, NULL);
-	imageFile->SetUnk0x5a8(FALSE);
+	imageFile->SetKeepNibbleOrder(TRUE);
+	imageFile->SetRemapPureBlack(FALSE);
+	imageFile->LoadSurface(&m_unk0x58, m_flags & c_flagBit2, NULL);
+	imageFile->SetKeepNibbleOrder(FALSE);
 	imageFile->Destroy();
 
 	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
@@ -428,10 +428,10 @@ void GolImage::FUN_10005b00()
 	if (m_flags & c_flagBit5) {
 		colorKey = &m_colorKey;
 		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
-			g_unk0x10062b18.SetUnk0x0a0(g_unk0x10057668);
+			g_unk0x10062b18.SetColorKeyReplacement(g_unk0x10057668);
 		}
 		else {
-			g_unk0x10062b18.SetUnk0x0a0(*colorKey);
+			g_unk0x10062b18.SetColorKeyReplacement(*colorKey);
 		}
 	}
 	else {
@@ -463,8 +463,8 @@ void GolImage::FUN_10005b00()
 			LegoU8* source = sourcePixels + sourceY * sourcePitch + ((textureFormat.m_bitsPerPixel * sourceX + 7) >> 3);
 
 			g_unk0x10062b18
-				.FUN_100226c0(textureFormat, copyWidth, copyHeight, sourcePitch, paletteEntries, paletteSize);
-			g_unk0x10062b18.SetUnk0x5ac(TRUE);
+				.SetImageInfo(textureFormat, copyWidth, copyHeight, sourcePitch, paletteEntries, paletteSize);
+			g_unk0x10062b18.SetRemapPureBlack(TRUE);
 
 			LegoU8* destPixels;
 			LegoU32 destPitch;
@@ -475,7 +475,7 @@ void GolImage::FUN_10005b00()
 				destPalette = texture->GetPalette();
 			}
 
-			g_unk0x10062b18.FUN_10022730(
+			g_unk0x10062b18.ConvertImage(
 				source,
 				destPixels,
 				copyWidth,

@@ -81,7 +81,7 @@ void GolTextureList::LoadTextures()
 			imageFile = &g_textureTgaFile;
 		}
 
-		imageFile->VTable0x08(textureName);
+		imageFile->Open(textureName);
 		texture->VTable0x30(*m_renderer, imageFile);
 		imageFile->Destroy();
 	}

@@ -63,7 +63,7 @@ void GolTiledTexture::VTable0x10()
 		imageFile = &g_unk0x10064280;
 	}
 
-	imageFile->VTable0x08(imageName.m_chars);
+	imageFile->Open(imageName.m_chars);
 
 	imageFormat = imageFile->GetTextureFormat();
 	m_renderer->SelectTextureFormat(imageFormat, &m_unk0x0c, m_flags & c_flagBit5);
@@ -73,16 +73,16 @@ void GolTiledTexture::VTable0x10()
 
 	if (m_flags & c_flagBit5) {
 		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
-			imageFile->SetUnk0x0a0(g_unk0x10057668);
+			imageFile->SetColorKeyReplacement(g_unk0x10057668);
 		}
 		else {
-			imageFile->SetUnk0x0a0(m_colorKey);
+			imageFile->SetColorKeyReplacement(m_colorKey);
 		}
 
-		imageFile->VTable0x1c(this, m_flags & c_flagBit2, &m_colorKey);
+		imageFile->LoadTiledTexture(this, m_flags & c_flagBit2, &m_colorKey);
 	}
 	else {
-		imageFile->VTable0x1c(this, m_flags & c_flagBit2, NULL);
+		imageFile->LoadTiledTexture(this, m_flags & c_flagBit2, NULL);
 	}
 
 	imageFile->Destroy();

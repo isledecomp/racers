@@ -48,10 +48,10 @@ void GolD3DTexture::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source
 	}
 
 	VTable0x34(p_renderer, textureFormat, p_source->GetWidth(), p_source->GetHeight());
-	p_source->SetUnk0x5a8(TRUE);
-	p_source->SetUnk0x5ac(FALSE);
-	p_source->VTable0x20(this, m_unk0x36 & c_unk0x36Bit2, NULL);
-	p_source->SetUnk0x5a8(FALSE);
+	p_source->SetKeepNibbleOrder(TRUE);
+	p_source->SetRemapPureBlack(FALSE);
+	p_source->LoadSurface(this, m_unk0x36 & c_unk0x36Bit2, NULL);
+	p_source->SetKeepNibbleOrder(FALSE);
 }
 
 // FUNCTION: GOLDP 0x10015d00
@@ -283,14 +283,14 @@ void GolD3DTexture::FUN_10016100()
 		paletteSize = 0;
 	}
 
-	g_unk0x100635c0.FUN_100226c0(m_textureFormat, m_width, m_height, m_pitch, paletteEntries, paletteSize);
+	g_unk0x100635c0.SetImageInfo(m_textureFormat, m_width, m_height, m_pitch, paletteEntries, paletteSize);
 
 	if (m_unk0x36 & c_unk0x36Bit5) {
 		if (m_unk0x36 & c_unk0x36Bit7) {
-			g_unk0x100635c0.SetUnk0x0a0(g_unk0x10057668);
+			g_unk0x100635c0.SetColorKeyReplacement(g_unk0x10057668);
 		}
 		else {
-			g_unk0x100635c0.SetUnk0x0a0(m_colorKey);
+			g_unk0x100635c0.SetColorKeyReplacement(m_colorKey);
 		}
 
 		colorKey = &m_colorKey;
@@ -300,7 +300,7 @@ void GolD3DTexture::FUN_10016100()
 	}
 
 	if (m_mipmaps != NULL) {
-		g_unk0x100635c0.SetUnk0x5ac(TRUE);
+		g_unk0x100635c0.SetRemapPureBlack(TRUE);
 		dstPixels = m_mipmaps->m_pixels;
 		dstPitch = m_mipmaps->m_pitch;
 	}
@@ -330,7 +330,7 @@ void GolD3DTexture::FUN_10016100()
 	}
 
 	g_unk0x100635c0
-		.FUN_10022730(m_pixels, dstPixels, m_unk0x74, m_unk0x78, dstPitch, m_textureFormat2, m_palette, 0, colorKey);
+		.ConvertImage(m_pixels, dstPixels, m_unk0x74, m_unk0x78, dstPitch, m_textureFormat2, m_palette, 0, colorKey);
 	g_unk0x100635c0.Destroy();
 
 	if (m_mipmaps == NULL) {
@@ -351,10 +351,10 @@ void GolD3DTexture::FUN_10016260()
 				ColorRGBA* colorKey;
 				if (m_unk0x36 & c_unk0x36Bit5) {
 					if (m_unk0x36 & c_unk0x36Bit7) {
-						g_unk0x100635c0.SetUnk0x0a0(g_unk0x10057668);
+						g_unk0x100635c0.SetColorKeyReplacement(g_unk0x10057668);
 					}
 					else {
-						g_unk0x100635c0.SetUnk0x0a0(m_colorKey);
+						g_unk0x100635c0.SetColorKeyReplacement(m_colorKey);
 					}
 
 					colorKey = &m_colorKey;
@@ -369,12 +369,12 @@ void GolD3DTexture::FUN_10016260()
 				LegoU32 height = m_unk0x78;
 
 				for (LegoU32 i = 1; i < m_unk0x34; i++) {
-					g_unk0x100635c0.FUN_100226c0(m_textureFormat2, width, height, srcPitch, NULL, 0);
+					g_unk0x100635c0.SetImageInfo(m_textureFormat2, width, height, srcPitch, NULL, 0);
 
 					width >>= 1;
 					height >>= 1;
 					srcPitch = m_mipmaps[i].m_pitch;
-					g_unk0x100635c0.FUN_10022880(
+					g_unk0x100635c0.ConvertImageHalfSize(
 						srcPixels,
 						m_mipmaps[i].m_pixels,
 						width,

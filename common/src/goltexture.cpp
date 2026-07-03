@@ -40,15 +40,15 @@ void GolTexture::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
 	if (texture->m_unk0x36 & c_unk0x36Bit5) {
 		ColorRGBA colorKey = texture->m_colorKey;
 		if (p_renderer.GetFlags() & rendererAlphaFlag) {
-			source->SetUnk0x0a0(g_unk0x10057668);
+			source->SetColorKeyReplacement(g_unk0x10057668);
 		}
 		else {
-			source->SetUnk0x0a0(texture->m_colorKey);
+			source->SetColorKeyReplacement(texture->m_colorKey);
 		}
 
-		source->VTable0x20(texture, texture->m_unk0x36 & c_unk0x36Bit2, &colorKey);
+		source->LoadSurface(texture, texture->m_unk0x36 & c_unk0x36Bit2, &colorKey);
 	}
 	else {
-		source->VTable0x20(texture, texture->m_unk0x36 & c_unk0x36Bit2, NULL);
+		source->LoadSurface(texture, texture->m_unk0x36 & c_unk0x36Bit2, NULL);
 	}
 }

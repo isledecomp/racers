@@ -328,8 +328,8 @@ void GolAnimatedEntity::PlayPartScaled(LegoU32 p_partIndex, LegoS32 p_timeScale)
 }
 
 // GOLDP compiles the time-scale-0 start as a single, standalone function, whereas
-// LEGORACERS factors it into FUN_0040dad0 -> FUN_0040dae0 -> FUN_0040d650.
-// The GOLDP call is probably also to FUN_0040dad0, but inlining isn't right.
+// LEGORACERS factors it into 0x0040dad0 -> 0x0040dae0 -> 0x0040d650 (unannotated
+// helpers). The GOLDP call is probably also to the first one, but inlining isn't right.
 // FUNCTION: GOLDP 0x10023a70
 void GolAnimatedEntity::PlayPartDirect(LegoU32 p_partIndex)
 {

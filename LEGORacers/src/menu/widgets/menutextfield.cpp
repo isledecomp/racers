@@ -308,7 +308,7 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 // FUNCTION: LEGORACERS 0x00471810
 MenuWidget* MenuTextField::OnKeyDown(InputEventQueue::Event* p_event, undefined4, undefined4)
 {
-	if (m_stateFlags & c_flagBit1) {
+	if (m_stateFlags & c_flagSelected) {
 		LegoU32 mode = m_inputMode;
 		if (mode == p_event->m_device->GetDeviceType()) {
 			switch (mode) {

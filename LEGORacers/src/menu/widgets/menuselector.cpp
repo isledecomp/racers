@@ -40,7 +40,7 @@ LegoBool32 MenuSelectorBase::Create(CreateParams* p_createParams, const MenuStyl
 		return FALSE;
 	}
 
-	if (m_stateFlags & c_flagBit0) {
+	if (m_stateFlags & c_flagEnabled) {
 		m_prevButton.Enable(5);
 		m_nextButton.Enable(5);
 	}
@@ -74,7 +74,7 @@ void MenuSelectorBase::OnPreviousPressed(undefined4 p_param)
 
 	m_unk0x5e4 = -1;
 
-	if (m_prevButton.GetStateFlags() & c_flagBit2) {
+	if (m_prevButton.GetStateFlags() & c_flagFocused) {
 		StepPrevious();
 
 		if (p_param) {
@@ -96,7 +96,7 @@ void MenuSelectorBase::OnNextPressed(undefined4 p_param)
 
 	m_unk0x5e4 = 1;
 
-	if (m_nextButton.GetStateFlags() & c_flagBit2) {
+	if (m_nextButton.GetStateFlags() & c_flagFocused) {
 		StepNext();
 
 		if (p_param) {
@@ -112,7 +112,7 @@ void MenuSelectorBase::OnNextPressed(undefined4 p_param)
 // FUNCTION: LEGORACERS 0x00467240
 void MenuSelectorBase::Enable(undefined4 p_flags)
 {
-	if (m_stateFlags & c_flagBit0) {
+	if (m_stateFlags & c_flagEnabled) {
 		return;
 	}
 
@@ -127,7 +127,7 @@ void MenuSelectorBase::Enable(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00467290
 void MenuSelectorBase::Disable(undefined4 p_flags)
 {
-	if (!(m_stateFlags & c_flagBit0)) {
+	if (!(m_stateFlags & c_flagEnabled)) {
 		return;
 	}
 
@@ -252,12 +252,12 @@ LegoBool32 MenuSelectorBase::HandleNavigationKeyDown(InputEventQueue::Event* p_e
 			return TRUE;
 		}
 
-		if (p_event->m_isRepeat && (m_nextButton.GetStateFlags() & c_flagBit2)) {
+		if (p_event->m_isRepeat && (m_nextButton.GetStateFlags() & c_flagFocused)) {
 			OnNextPressed(0);
 			return TRUE;
 		}
 
-		if (m_stateFlags & c_flagBit2) {
+		if (m_stateFlags & c_flagFocused) {
 			return TRUE;
 		}
 
@@ -271,12 +271,12 @@ LegoBool32 MenuSelectorBase::HandleNavigationKeyDown(InputEventQueue::Event* p_e
 			return TRUE;
 		}
 
-		if (p_event->m_isRepeat && (m_prevButton.GetStateFlags() & c_flagBit2)) {
+		if (p_event->m_isRepeat && (m_prevButton.GetStateFlags() & c_flagFocused)) {
 			OnPreviousPressed(0);
 			return TRUE;
 		}
 
-		if (m_stateFlags & c_flagBit2) {
+		if (m_stateFlags & c_flagFocused) {
 			return TRUE;
 		}
 
@@ -297,10 +297,10 @@ LegoBool32 MenuSelectorBase::HandleNavigationKeyUp(InputEventQueue::Event*, unde
 	}
 
 	MenuButton* glyph;
-	if (m_prevButton.GetStateFlags() & c_flagBit2) {
+	if (m_prevButton.GetStateFlags() & c_flagFocused) {
 		glyph = &m_prevButton;
 	}
-	else if (m_nextButton.GetStateFlags() & c_flagBit2) {
+	else if (m_nextButton.GetStateFlags() & c_flagFocused) {
 		glyph = &m_nextButton;
 	}
 	else {
@@ -440,7 +440,7 @@ void MenuSelector::StepNext()
 // FUNCTION: LEGORACERS 0x00467a00
 undefined4 MenuSelector::OnEvent(undefined4)
 {
-	LegoU32 index = m_stateFlags & c_flagBit1;
+	LegoU32 index = m_stateFlags & c_flagSelected;
 
 	if (m_scrollPending && !(m_carousel->GetAnimFlags() & 1) && m_eventHandler) {
 		m_eventHandler->OnSelectorSettled(this);
@@ -450,10 +450,10 @@ undefined4 MenuSelector::OnEvent(undefined4)
 	m_carousel->SetItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
 	m_carousel->SetFocusedItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
 
-	if (m_prevButton.GetStateFlags() & c_flagBit2) {
+	if (m_prevButton.GetStateFlags() & c_flagFocused) {
 		StepPrevious();
 	}
-	else if (m_nextButton.GetStateFlags() & c_flagBit2) {
+	else if (m_nextButton.GetStateFlags() & c_flagFocused) {
 		StepNext();
 	}
 	else {
@@ -490,14 +490,14 @@ MenuWidget* MenuSelector::OnKeyDown(InputEventQueue::Event* p_param1, undefined4
 	LegoU8 stateFlags = m_stateFlags;
 	LegoU32 keyCode = p_param1->m_keyCode;
 
-	if ((stateFlags & c_flagBit0) && (!m_activeKeyCode || m_activeKeyCode == keyCode) &&
-		((stateFlags & c_flagBit2) || !p_param1->m_isRepeat)) {
+	if ((stateFlags & c_flagEnabled) && (!m_activeKeyCode || m_activeKeyCode == keyCode) &&
+		((stateFlags & c_flagFocused) || !p_param1->m_isRepeat)) {
 
 		undefined4 mappedEvent = MapCursorToNavigation(keyCode, p_x, p_y);
 		undefined4 result = TranslateNavigationEvent(mappedEvent);
 
 		stateFlags = m_stateFlags;
-		if ((stateFlags & c_flagBit0) && ((stateFlags & c_flagBit1) || m_acceptUnfocusedInput) &&
+		if ((stateFlags & c_flagEnabled) && ((stateFlags & c_flagSelected) || m_acceptUnfocusedInput) &&
 			HandleNavigationKeyDown(p_param1, result)) {
 			m_activeKeyCode = p_param1->m_keyCode;
 			return this;
@@ -522,8 +522,8 @@ MenuWidget* MenuSelector::OnKeyUp(InputEventQueue::Event* p_param1, undefined4 p
 	LegoU8 stateFlags = m_stateFlags;
 	m_activeKeyCode = 0;
 
-	if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit2) &&
-		((stateFlags & c_flagBit1) || m_acceptUnfocusedInput)) {
+	if ((stateFlags & c_flagEnabled) && (stateFlags & c_flagFocused) &&
+		((stateFlags & c_flagSelected) || m_acceptUnfocusedInput)) {
 		HandleNavigationKeyUp(p_param1, result);
 	}
 

@@ -69,8 +69,8 @@ void CarBuildScreen::CreateWidgets()
 	MenuButton* glyph1 = &m_carViewRegion;
 	CreateButton(glyph1, 0xb7, 0xb0);
 
-	glyph0->ClearFlags(MenuIcon::c_flagBit1);
-	glyph1->ClearFlags(MenuIcon::c_flagBit1);
+	glyph0->ClearFlags(MenuIcon::c_flagSelected);
+	glyph1->ClearFlags(MenuIcon::c_flagSelected);
 	CreateButton(&m_doneButton, 0x3f, 0xb0);
 }
 
@@ -418,25 +418,25 @@ LegoBool32 CarBuildScreen::HandleBuildKey(MenuWidget*, InputEventQueue::Event* p
 		}
 		break;
 	case c_carBuildKeyboardInsert:
-		if (!(m_categorySelector.GetStateFlags() & MenuIcon::c_flagBit2)) {
+		if (!(m_categorySelector.GetStateFlags() & MenuIcon::c_flagFocused)) {
 			m_categorySelector.GetPrevButton().Focus(1);
 			m_categorySelector.OnPreviousPressed(0);
 		}
 		break;
 	case c_carBuildKeyboardPageUp:
-		if (!(m_categorySelector.GetStateFlags() & MenuIcon::c_flagBit2)) {
+		if (!(m_categorySelector.GetStateFlags() & MenuIcon::c_flagFocused)) {
 			m_categorySelector.GetNextButton().Focus(1);
 			m_categorySelector.OnNextPressed(0);
 		}
 		break;
 	case c_carBuildKeyboardDelete:
-		if (!(m_pieceSelector.GetStateFlags() & MenuIcon::c_flagBit2)) {
+		if (!(m_pieceSelector.GetStateFlags() & MenuIcon::c_flagFocused)) {
 			m_pieceSelector.GetPrevButton().Focus(1);
 			m_pieceSelector.OnPreviousPressed(0);
 		}
 		break;
 	case c_carBuildKeyboardPageDown:
-		if (!(m_pieceSelector.GetStateFlags() & MenuIcon::c_flagBit2)) {
+		if (!(m_pieceSelector.GetStateFlags() & MenuIcon::c_flagFocused)) {
 			m_pieceSelector.GetNextButton().Focus(1);
 			m_pieceSelector.OnNextPressed(0);
 		}
@@ -791,8 +791,8 @@ void CarBuildScreen::UpdateHoverRegions()
 		}
 	}
 
-	if ((m_pieceViewRegion.GetStateFlags() & MenuIcon::c_flagBit1) ||
-		(m_carViewRegion.GetStateFlags() & MenuIcon::c_flagBit1)) {
+	if ((m_pieceViewRegion.GetStateFlags() & MenuIcon::c_flagSelected) ||
+		(m_carViewRegion.GetStateFlags() & MenuIcon::c_flagSelected)) {
 		m_pieceViewRegion.Deselect(7);
 		m_carViewRegion.Deselect(7);
 		m_hoverIcon = NULL;

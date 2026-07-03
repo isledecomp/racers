@@ -3,7 +3,7 @@
 
 // Menu IDs dispatched in MenuScreenFactory::CreateScreen (LEGORACERS 0x0047f4e0).
 // Names taken verbatim from MENUDATA\MENUNAME.SRF (the game's own screen-name
-// string table), looked up at runtime by MenuScreen::VTable0x58 to
+// string table), looked up at runtime by MenuScreen::LoadStylesAndBindings to
 // build each screen's .MIB filename (LEGORacers/src/menu/screens/menuscreen.cpp).
 enum {
 	c_menuSplash = 0x01,        // MENUNAME[1]  = "splash"

@@ -2,7 +2,7 @@
 #define MENUBINDINGTOKEN_H
 
 // Block-type tokens in the .MIB/.MID menu binding format, dispatched by
-// MenuInputBindingTable::VTable0x14. Each block id corresponds to one widget
+// MenuInputBindingTable::ParseSection. Each block id corresponds to one widget
 // kind (see the matching MenuInputBindingTable::Parse*Bindings method and the
 // widget it builds). Grounded in decoded LEGO.JAM .MIB item types.
 enum MenuBindingToken {

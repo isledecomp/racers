@@ -253,7 +253,7 @@ void ControlConfigScreen::RefreshEventTexts()
 	for (LegoS32 i = 0; i < sizeOfArray(m_eventButtons); i++) {
 		m_eventTexts[i].CopyFromBufSelection(m_ellipsisText, 0);
 
-		if (!(m_eventButtons[i].GetStateFlags() & MenuIcon::c_flagBit2)) {
+		if (!(m_eventButtons[i].GetStateFlags() & MenuIcon::c_flagFocused)) {
 			LegoU32 event = state.GetInputEvent(m_playerIndex, m_bindingIndices[m_selectedDevice], i);
 
 			if (event) {

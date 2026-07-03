@@ -142,13 +142,13 @@ MenuWidget* OptionsRowBase::OnKeyDown(InputEventQueue::Event* p_event, undefined
 	LegoU8 stateFlags = m_stateFlags;
 	LegoU32 keyCode = p_event->m_keyCode;
 
-	if ((stateFlags & c_flagBit0) && (!m_activeKeyCode || m_activeKeyCode == keyCode) &&
-		((stateFlags & c_flagBit2) || !p_event->m_isRepeat)) {
+	if ((stateFlags & c_flagEnabled) && (!m_activeKeyCode || m_activeKeyCode == keyCode) &&
+		((stateFlags & c_flagFocused) || !p_event->m_isRepeat)) {
 		undefined4 mappedEvent = MapCursorToNavigation(keyCode, p_x, p_y);
 		undefined4 result = TranslateNavigationEvent(mappedEvent);
 
 		stateFlags = m_stateFlags;
-		if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit1)) {
+		if ((stateFlags & c_flagEnabled) && (stateFlags & c_flagSelected)) {
 			if ((result & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
 				undefined4 x = p_x;
 				undefined4 y = p_y;
@@ -190,7 +190,7 @@ MenuWidget* OptionsRowBase::OnKeyUp(InputEventQueue::Event* p_event, undefined4 
 	LegoU8 stateFlags = m_stateFlags;
 	m_activeKeyCode = 0;
 
-	if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit2) && (stateFlags & c_flagBit1) &&
+	if ((stateFlags & c_flagEnabled) && (stateFlags & c_flagFocused) && (stateFlags & c_flagSelected) &&
 		HandleNavigationKeyUp(p_event, result)) {
 		return this;
 	}
@@ -312,7 +312,7 @@ undefined4 OptionsRow::MapCursorToNavigation(undefined4 p_event, undefined4 p_x,
 		undefined4 y = p_y;
 		m_thumb.ScreenToLocal(x, y);
 
-		if (!(m_stateFlags & c_flagBit2) && m_thumb.HitTest(x, y)) {
+		if (!(m_stateFlags & c_flagFocused) && m_thumb.HitTest(x, y)) {
 			return p_event;
 		}
 
@@ -331,7 +331,7 @@ MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p
 		return NULL;
 	}
 
-	if (!(m_prevButton.GetStateFlags() & c_flagBit2) && !(m_nextButton.GetStateFlags() & c_flagBit2)) {
+	if (!(m_prevButton.GetStateFlags() & c_flagFocused) && !(m_nextButton.GetStateFlags() & c_flagFocused)) {
 		MenuInputDispatcher::Cursor* cursor = static_cast<MenuInputDispatcher::Cursor*>(p_item);
 		cursor->m_bounds = m_trackRect;
 

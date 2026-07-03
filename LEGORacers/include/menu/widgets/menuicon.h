@@ -71,9 +71,9 @@ public:
 	};
 
 	enum {
-		c_flagBit0 = 1 << 0, // VTable0x44 sets / VTable0x48 clears
-		c_flagBit1 = 1 << 1, // SetSelected sets / ClearSelected clears
-		c_flagBit2 = 1 << 2, // VTable0x54 sets / VTable0x58 clears
+		c_flagEnabled = 1 << 0,  // Enable sets / Disable clears
+		c_flagSelected = 1 << 1, // SetSelected sets / ClearSelected clears
+		c_flagFocused = 1 << 2,  // Focus sets / Unfocus clears
 	};
 
 	MenuIcon();

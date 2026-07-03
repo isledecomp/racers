@@ -130,12 +130,12 @@ MenuWidget* MenuHotspotButton::OnKeyDown(InputEventQueue::Event* p_item, undefin
 	LegoU32 source = keyCode & InputDevice::c_sourceMask;
 	LegoU8 stateFlags = m_stateFlags;
 
-	if (!(stateFlags & c_flagBit0)) {
+	if (!(stateFlags & c_flagEnabled)) {
 		return NULL;
 	}
 
-	if (!(stateFlags & c_flagBit2)) {
-		if (!(stateFlags & c_flagBit1)) {
+	if (!(stateFlags & c_flagFocused)) {
+		if (!(stateFlags & c_flagSelected)) {
 			return NULL;
 		}
 
@@ -180,8 +180,8 @@ MenuWidget* MenuHotspotButton::OnKeyUp(InputEventQueue::Event* p_item, undefined
 	LegoU32 source = p_item->m_keyCode & InputDevice::c_sourceMask;
 	LegoU8 stateFlags = m_stateFlags;
 
-	if (stateFlags & c_flagBit0) {
-		if (!(stateFlags & c_flagBit2)) {
+	if (stateFlags & c_flagEnabled) {
+		if (!(stateFlags & c_flagFocused)) {
 			if (source != InputDevice::c_sourceMouse) {
 				return this;
 			}

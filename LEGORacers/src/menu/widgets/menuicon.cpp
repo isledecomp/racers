@@ -221,7 +221,7 @@ void MenuIcon::SetSelected(undefined4 p_flags)
 		skipParentLink = (LegoU8) p_flags & 2;
 
 		for (; icon; icon = icon->m_parent) {
-			icon->m_stateFlags |= c_flagBit1;
+			icon->m_stateFlags |= c_flagSelected;
 			RefreshVisualState();
 
 			MenuScreenInterface* eventHandler = icon->m_eventHandler;
@@ -251,7 +251,7 @@ void MenuIcon::ClearSelected(undefined4 p_flags)
 		LegoU8 skipParentLink = (LegoU8) p_flags & 2;
 
 		for (; icon; icon = icon->m_parent) {
-			icon->m_stateFlags &= ~c_flagBit1;
+			icon->m_stateFlags &= ~c_flagSelected;
 			RefreshVisualState();
 
 			MenuScreenInterface* eventHandler = icon->m_eventHandler;
@@ -278,8 +278,8 @@ void MenuIcon::RefreshVisualState()
 	LegoU8 flags = m_stateFlags;
 	LegoU32 oldState = m_visualStateIndex;
 
-	if (flags & c_flagBit0) {
-		if (flags & c_flagBit1) {
+	if (flags & c_flagEnabled) {
+		if (flags & c_flagSelected) {
 			m_visualStateIndex = c_stateFocused;
 		}
 		else {
@@ -290,7 +290,7 @@ void MenuIcon::RefreshVisualState()
 		m_visualStateIndex = c_stateDisabled;
 	}
 
-	if (flags & c_flagBit2) {
+	if (flags & c_flagFocused) {
 		m_visualStateIndex++;
 	}
 
@@ -304,8 +304,8 @@ void MenuIcon::RefreshVisualState()
 // FUNCTION: LEGORACERS 0x004720f0
 void MenuIcon::Enable(undefined4 p_flags)
 {
-	if (!(m_stateFlags & c_flagBit0)) {
-		m_stateFlags |= c_flagBit0;
+	if (!(m_stateFlags & c_flagEnabled)) {
+		m_stateFlags |= c_flagEnabled;
 		RefreshVisualState();
 
 		if (m_eventHandler && !(p_flags & 1)) {
@@ -317,17 +317,17 @@ void MenuIcon::Enable(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472130
 void MenuIcon::Disable(undefined4 p_flags)
 {
-	if (m_stateFlags & c_flagBit0) {
+	if (m_stateFlags & c_flagEnabled) {
 		LegoU8 flags = (LegoU8) p_flags;
 
-		if (m_stateFlags & c_flagBit1) {
+		if (m_stateFlags & c_flagSelected) {
 			MenuIcon* root = FindRoot();
 			if (!root->SelectNext() && !root->SelectFirst()) {
 				Deselect(0);
 			}
 		}
 
-		m_stateFlags &= ~c_flagBit0;
+		m_stateFlags &= ~c_flagEnabled;
 		RefreshVisualState();
 
 		if (m_eventHandler && !flags) {
@@ -339,8 +339,8 @@ void MenuIcon::Disable(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x004721a0
 void MenuIcon::Select(undefined4 p_flags)
 {
-	if (m_stateFlags & c_flagBit0) {
-		if ((m_stateFlags & c_flagBit1) && !m_selectedChild) {
+	if (m_stateFlags & c_flagEnabled) {
+		if ((m_stateFlags & c_flagSelected) && !m_selectedChild) {
 			return;
 		}
 
@@ -362,8 +362,8 @@ void MenuIcon::Select(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472200
 void MenuIcon::Deselect(undefined4 p_flags)
 {
-	if ((m_stateFlags & c_flagBit0) && (m_stateFlags & c_flagBit1)) {
-		if (m_stateFlags & c_flagBit2) {
+	if ((m_stateFlags & c_flagEnabled) && (m_stateFlags & c_flagSelected)) {
+		if (m_stateFlags & c_flagFocused) {
 			Unfocus(1);
 		}
 
@@ -393,7 +393,7 @@ void MenuIcon::Deselect(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472290
 void MenuIcon::Focus(undefined4 p_flags)
 {
-	if (m_stateFlags & c_flagBit2) {
+	if (m_stateFlags & c_flagFocused) {
 		return;
 	}
 
@@ -404,7 +404,7 @@ void MenuIcon::Focus(undefined4 p_flags)
 	}
 
 	SetFocus();
-	m_stateFlags |= c_flagBit2;
+	m_stateFlags |= c_flagFocused;
 	RefreshVisualState();
 
 	if (m_eventHandler && !flags) {
@@ -422,7 +422,7 @@ void MenuIcon::Unfocus(undefined4 p_flags)
 	LegoU8 stateFlags = m_stateFlags;
 	m_activeKeyCode = 0;
 
-	if (stateFlags & c_flagBit2) {
+	if (stateFlags & c_flagFocused) {
 		if (m_flags & 8) {
 			ClearFocus();
 		}
@@ -433,7 +433,7 @@ void MenuIcon::Unfocus(undefined4 p_flags)
 			m_parent->Unfocus(0);
 		}
 
-		m_stateFlags &= ~c_flagBit2;
+		m_stateFlags &= ~c_flagFocused;
 		RefreshVisualState();
 
 		if (m_eventHandler && !flags) {
@@ -495,7 +495,7 @@ MenuIcon* MenuIcon::SelectLast()
 // FUNCTION: LEGORACERS 0x00472440
 MenuIcon* MenuIcon::SelectNext()
 {
-	if (m_stateFlags & c_flagBit1) {
+	if (m_stateFlags & c_flagSelected) {
 		MenuIcon* child = m_selectedChild;
 
 		while (child) {
@@ -535,7 +535,7 @@ MenuIcon* MenuIcon::SelectNext()
 // FUNCTION: LEGORACERS 0x004724c0
 MenuIcon* MenuIcon::SelectPrevious()
 {
-	if (m_stateFlags & c_flagBit1) {
+	if (m_stateFlags & c_flagSelected) {
 		MenuIcon* child = m_selectedChild;
 
 		while (child) {
@@ -678,13 +678,13 @@ MenuWidget* MenuIcon::OnKeyDown(InputEventQueue::Event* p_item, undefined4 p_x, 
 	LegoU8 stateFlags = m_stateFlags;
 	LegoBool32 activate = FALSE;
 
-	if (stateFlags & c_flagBit0) {
+	if (stateFlags & c_flagEnabled) {
 		if (!m_activeKeyCode || m_activeKeyCode == keyCode) {
-			if ((stateFlags & c_flagBit2) || !p_item->m_isRepeat) {
+			if ((stateFlags & c_flagFocused) || !p_item->m_isRepeat) {
 				if (keyCode == m_unk0x1a4) {
 					activate = TRUE;
 				}
-				else if (stateFlags & c_flagBit1) {
+				else if (stateFlags & c_flagSelected) {
 					switch (eventType) {
 					case InputDevice::c_sourceKeyboard:
 						if (keyCode == (InputDevice::c_sourceKeyboard | 0x1c) ||
@@ -708,7 +708,7 @@ MenuWidget* MenuIcon::OnKeyDown(InputEventQueue::Event* p_item, undefined4 p_x, 
 		}
 	}
 
-	if (activate && !(m_stateFlags & c_flagBit2)) {
+	if (activate && !(m_stateFlags & c_flagFocused)) {
 		Focus(0);
 		m_activeKeyCode = keyCode;
 		return this;
@@ -732,7 +732,7 @@ MenuWidget* MenuIcon::OnKeyUp(InputEventQueue::Event* p_item, undefined4 p_x, un
 	if (eventType == InputDevice::c_sourceMouse) {
 		m_activeKeyCode = 0;
 
-		if (!HitTest(p_x, p_y) && (m_stateFlags & c_flagBit2)) {
+		if (!HitTest(p_x, p_y) && (m_stateFlags & c_flagFocused)) {
 			Unfocus(1);
 			return this;
 		}

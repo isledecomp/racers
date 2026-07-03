@@ -347,7 +347,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racedecaltrail.cpp
   LEGORacers/src/race/racer/drivecontroller.cpp
   LEGORacers/src/race/racecameracontroller.cpp
-  LEGORacers/src/race/racer/racerphysicshelpers.cpp
+  LEGORacers/src/race/racer/racercarbody.cpp
+  LEGORacers/src/race/racer/racerrigidbody.cpp
   LEGORacers/src/race/surfacetable.cpp
   LEGORacers/src/race/checkpointgraph.cpp
   LEGORacers/src/race/checkpointgraphwalk.cpp
@@ -395,7 +396,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/raceroster.cpp
   LEGORacers/src/race/racer/routecursor.cpp
   LEGORacers/src/race/powerups/droppablebrick.cpp
-  LEGORacers/src/race/racer/racerphysicssteering.cpp
   LEGORacers/src/race/racehud.cpp
   LEGORacers/src/race/racedialog.cpp
   LEGORacers/src/race/circuitracerunner.cpp

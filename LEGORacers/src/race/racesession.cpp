@@ -28,6 +28,7 @@
 #include "input/mousedevice.h"
 #include "material/golimagedefinitionlist.h"
 #include "race/circuitstandings.h"
+#include "race/hazards/hazardcontext.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"

@@ -1,9 +1,10 @@
 #ifndef CANNONBALLRAINHAZARD_H
 #define CANNONBALLRAINHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
 #include "golmodelentity.h"
+#include "golname.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 
 class CutsceneAnimation;
@@ -21,10 +22,10 @@ class CannonballRainHazard : public Hazard {
 public:
 	CannonballRainHazard();
 	~CannonballRainHazard() override;
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 
 	LegoS32 Reset();
 
@@ -47,6 +48,5 @@ private:
 	LegoU32 m_timerMs;                    // 0x3c
 	LegoU32 m_intervalMs;                 // 0x40
 };
-
 
 #endif // CANNONBALLRAINHAZARD_H

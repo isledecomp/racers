@@ -1,0 +1,263 @@
+#include "race/hazards/grabberhazard.h"
+
+#include "decomp.h"
+#include "golfileparser.h"
+#include "golmath.h"
+#include "golmodelbase.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "race/hazards/hazardcontext.h"
+#include "race/racer/racer.h"
+#include "types.h"
+#include "world/golworlddatabase.h"
+
+#include <string.h>
+
+DECOMP_SIZE_ASSERT(GrabberHazard, 0x60)
+
+// GLOBAL: LEGORACERS 0x004b4514
+extern const LegoFloat g_grabberTriggerRadius = 45.0f;
+
+// FUNCTION: LEGORACERS 0x0048dd20
+GrabberHazard::GrabberHazard()
+{
+	ClearFields();
+}
+
+// FUNCTION: LEGORACERS 0x0048dda0
+GrabberHazard::~GrabberHazard()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0048ddf0
+LegoS32 GrabberHazard::ClearFields()
+{
+	m_entity = NULL;
+	m_racer = NULL;
+	m_unk0x48 = 0.0f;
+	m_unk0x4c = 0.0f;
+	m_unk0x50 = 0.0f;
+	m_collisionEvent = NULL;
+	m_grabState = 0;
+	m_unk0x5c = 0;
+
+	return 0;
+}
+
+// FUNCTION: LEGORACERS 0x0048de10
+void GrabberHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
+{
+	if (m_state) {
+		Reset();
+	}
+
+	GolName entityName;
+	entityName[0] = '\0';
+	p_parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
+		switch (token) {
+		case GolFileParser::e_unknown0x3b:
+			m_triggerId = p_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x42:
+			::strncpy(entityName, p_parser->ReadStringWithMaxLength(sizeof(entityName)), sizeof(entityName));
+			m_unk0x50 = p_parser->ReadFloat();
+			m_unk0x48 = p_parser->ReadFloat();
+			m_unk0x4c = p_parser->ReadFloat();
+			break;
+		default:
+			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+			break;
+		}
+	}
+
+	m_eventQueue = p_context->GetEventQueue();
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(entityName);
+	m_trigger.FUN_10026fa0(g_grabberTriggerRadius);
+	m_state = 1;
+}
+
+// FUNCTION: LEGORACERS 0x0048df00
+LegoS32 GrabberHazard::Reset()
+{
+	OnDeactivate(NULL);
+	ClearFields();
+	return Hazard::Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0048df20
+void GrabberHazard::OnActivate(void*)
+{
+	LegoEventQueue::Descriptor descriptor;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
+	descriptor.m_worldEntity = &m_trigger;
+
+	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
+	m_grabState = 0;
+	m_unk0x5c = 0;
+	m_state = 2;
+}
+
+// FUNCTION: LEGORACERS 0x0048df70
+void GrabberHazard::OnDeactivate(void*)
+{
+	ReleaseRacer();
+	if (m_collisionEvent) {
+		m_collisionEvent->m_active = 0;
+		m_collisionEvent = NULL;
+	}
+
+	m_state = 1;
+	m_grabState = 0;
+	m_unk0x5c = 0;
+}
+
+// FUNCTION: LEGORACERS 0x0048dfa0
+void GrabberHazard::Update(undefined4 p_elapsedMs)
+{
+	if (m_state == 1) {
+		return;
+	}
+
+	LegoU32 elapsedMs = p_elapsedMs;
+	Hazard::Update(p_elapsedMs);
+
+	GolVec3 position;
+	GetGrabPosition(&position);
+	m_trigger.SetCenter(position);
+
+	if (m_stateMs) {
+		if (elapsedMs >= m_stateMs) {
+			m_stateMs = 0;
+			ReleaseRacer();
+			m_grabState = 0;
+			m_unk0x5c = 0;
+		}
+		else {
+			m_stateMs -= elapsedMs;
+		}
+	}
+
+	if (m_unk0x5c) {
+		if (elapsedMs >= m_unk0x5c) {
+			m_unk0x5c = 0;
+			switch (m_grabState) {
+			case c_stateOne:
+				ReleaseRacer();
+				m_stateMs = 0;
+				m_grabState = c_stateTwo;
+				m_unk0x5c = c_timerMs;
+				break;
+			case c_stateTwo:
+				m_grabState = 0;
+				return;
+			default:
+				return;
+			}
+		}
+		else {
+			m_unk0x5c -= elapsedMs;
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0048e050
+void GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
+{
+	LegoFloat frame = m_entity->GetActiveValue();
+	if (m_grabState == c_stateTwo) {
+		return;
+	}
+
+	Racer* racer = static_cast<Racer*>(p_data->m_data);
+	RacerPhysics* field0x3e8 = &racer->m_physics;
+	if ((frame <= m_unk0x48 || frame >= m_unk0x4c) && !(racer->m_flags & c_racerFlags0xd04Bit0)) {
+		if (m_racer == NULL || m_racer == racer) {
+			if (m_racer == NULL) {
+				m_grabState = c_stateOne;
+				m_unk0x5c = c_timerMs;
+			}
+		}
+		else {
+			return;
+		}
+
+		m_racer = racer;
+		racer->m_flags |= c_racerFlags0xd04Bit29;
+
+		Racer* currentRacer = m_racer;
+		if (currentRacer->m_physics.m_routeMode) {
+			LegoU32 flags = currentRacer->m_physics.m_flags;
+			currentRacer->m_physics.m_routeBaseSpeed = -0.4f;
+			if (!(flags & RacerPhysics::c_flagRoutePushed)) {
+				currentRacer->m_physics.m_routeTargetSpeed = -0.4f;
+				m_stateMs = c_restoreTimerMs;
+				return;
+			}
+		}
+		else {
+			GolVec3 position;
+			GetGrabPosition(&position);
+
+			GolVec3 racerPosition;
+			CarVisuals* racerField = &m_racer->m_visuals;
+			racerField->m_carEntity->VTable0x04(&racerPosition);
+
+			GolVec3 force;
+			force.m_x = position.m_x - racerPosition.m_x;
+			force.m_y = position.m_y - racerPosition.m_y;
+			force.m_z = 0.0f;
+			GolMath::NormalizeVector3(force, &force);
+			LegoFloat scale = m_unk0x50;
+			force.m_x = scale * force.m_x;
+			force.m_y = force.m_y * scale;
+			force.m_z = force.m_z * scale;
+			field0x3e8->StartExternalForce1(&force);
+		}
+
+		m_stateMs = c_restoreTimerMs;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0048e1c0
+void GrabberHazard::GetGrabPosition(GolVec3* p_position)
+{
+	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
+	GolSceneNode* node = m_entity->VTable0x58(0);
+	GolTransformBase* transform = node->VTable0x18(0);
+
+	GolVec3 localPosition;
+	transform->GetPosition(&localPosition);
+	localPosition.m_x *= scale;
+	localPosition.m_y *= scale;
+	localPosition.m_z *= scale;
+
+	m_entity->VTable0x2c(localPosition, p_position);
+}
+
+// FUNCTION: LEGORACERS 0x0048e230
+void GrabberHazard::ReleaseRacer()
+{
+	if (m_racer) {
+		m_racer->m_physics.EndExternalForce1();
+		m_racer->m_flags &= ~c_racerFlags0xd04Bit29;
+
+		Racer* racer = m_racer;
+		if (racer->m_physics.m_routeMode) {
+			LegoU32 flags = racer->m_physics.m_flags;
+			LegoFloat value = 1.0f;
+			racer->m_physics.m_routeBaseSpeed = value;
+			if (!(flags & RacerPhysics::c_flagRoutePushed)) {
+				racer->m_physics.m_routeTargetSpeed = value;
+			}
+		}
+
+		m_racer = NULL;
+	}
+}

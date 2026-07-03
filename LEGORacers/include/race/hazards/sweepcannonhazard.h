@@ -1,10 +1,11 @@
 #ifndef SWEEPCANNONHAZARD_H
 #define SWEEPCANNONHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
 #include "golmodelentity.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
+#include "race/raceactionsource.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
@@ -21,10 +22,10 @@ class SweepCannonHazard : public Hazard {
 public:
 	SweepCannonHazard();
 	~SweepCannonHazard() override;
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 
 	void ClearFields();
 	LegoS32 Reset();
@@ -48,6 +49,5 @@ private:
 	LegoU32 m_periodMs;                   // 0x50
 	LegoU32 m_mirror;                     // 0x54
 };
-
 
 #endif // SWEEPCANNONHAZARD_H

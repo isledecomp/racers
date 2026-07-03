@@ -308,6 +308,27 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/colortransformresource.cpp
   LEGORacers/src/race/racetimerlist.cpp
   LEGORacers/src/race/hazardmanager.cpp
+  LEGORacers/src/race/hazards/cannonballrainhazard.cpp
+  LEGORacers/src/race/hazards/codepuzzlehazard.cpp
+  LEGORacers/src/race/hazards/cursedrophazard.cpp
+  LEGORacers/src/race/hazards/fallingpillarhazard.cpp
+  LEGORacers/src/race/hazards/ghosthazard.cpp
+  LEGORacers/src/race/hazards/grabberhazard.cpp
+  LEGORacers/src/race/hazards/hammerhazard.cpp
+  LEGORacers/src/race/hazards/hazard.cpp
+  LEGORacers/src/race/hazards/launcherhazard.cpp
+  LEGORacers/src/race/hazards/lavageyserhazard.cpp
+  LEGORacers/src/race/hazards/movingobstaclehazard.cpp
+  LEGORacers/src/race/hazards/multilauncherhazard.cpp
+  LEGORacers/src/race/hazards/oscillatorhazard.cpp
+  LEGORacers/src/race/hazards/rockethazard.cpp
+  LEGORacers/src/race/hazards/rollingrockhazard.cpp
+  LEGORacers/src/race/hazards/smokeventhazard.cpp
+  LEGORacers/src/race/hazards/snowfallhazard.cpp
+  LEGORacers/src/race/hazards/sphinxhazard.cpp
+  LEGORacers/src/race/hazards/sweepcannonhazard.cpp
+  LEGORacers/src/race/hazards/triggeredanimationhazard.cpp
+  LEGORacers/src/race/hazards/warppadhazard.cpp
   LEGORacers/src/race/raceinputrouter.cpp
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/racedecalmanager.cpp

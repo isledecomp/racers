@@ -3,6 +3,8 @@
 
 #include "golmodelentity.h"
 #include "race/powerups/hazardactionbase.h"
+#include "race/powerups/powerupprojectile.h"
+#include "race/raceresourcemanager.h"
 
 class CutsceneAnimation;
 class MabMaterialAnimationItem0x18;

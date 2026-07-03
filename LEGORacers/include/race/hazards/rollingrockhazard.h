@@ -1,10 +1,12 @@
 #ifndef ROLLINGROCKHAZARD_H
 #define ROLLINGROCKHAZARD_H
 
-#include "race/hazards/hazard.h"
+#include "golanimatedentity.h"
 #include "golmath.h"
 #include "golmodelentity.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
+#include "race/racer/racerboxbody.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
@@ -21,10 +23,10 @@ class RollingRockHazard : public Hazard {
 public:
 	RollingRockHazard();
 	~RollingRockHazard() override;
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 
 	// SYNTHETIC: LEGORACERS 0x0048bb80
 	// RollingRockHazard::`scalar deleting destructor'
@@ -42,6 +44,5 @@ private:
 	LegoFloat m_sizeZ;                       // 0x1fc
 	LegoU32 m_isRock;                        // 0x200
 };
-
 
 #endif // ROLLINGROCKHAZARD_H

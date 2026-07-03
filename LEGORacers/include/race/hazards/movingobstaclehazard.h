@@ -1,11 +1,13 @@
 #ifndef MOVINGOBSTACLEHAZARD_H
 #define MOVINGOBSTACLEHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
-#include "race/raceresourcemanager.h"
 #include "golmodelentity.h"
+#include "material/materialtable0x0c.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
+#include "race/racedecalmanager.h"
+#include "race/raceresourcemanager.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
@@ -22,13 +24,13 @@ class MovingObstacleHazard : public Hazard {
 public:
 	MovingObstacleHazard();
 	~MovingObstacleHazard() override;
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;       // vtable+0x00
-	void OnActivate(void* p_unk0x04) override;                            // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                          // vtable+0x08
-	void Load(HazardContext* p_context, GolFileParser* p_parser) override;      // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                         // vtable+0x14
-	void UpdatePerRacer(GolCamera* p_unk0x04, Racer* p_unk0x08) override; // vtable+0x18
-	void Draw(GolD3DRenderDevice* p_renderer) override;                   // vtable+0x1c
+	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
+	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
+	void UpdatePerRacer(GolCamera* p_unk0x04, Racer* p_unk0x08) override;  // vtable+0x18
+	void Draw(GolD3DRenderDevice* p_renderer) override;                    // vtable+0x1c
 
 	LegoS32 Reset();
 
@@ -59,6 +61,5 @@ private:
 	LegoU8 m_flags;                      // 0x178
 	undefined m_unk0x179[0x17c - 0x179]; // 0x179
 };
-
 
 #endif // MOVINGOBSTACLEHAZARD_H

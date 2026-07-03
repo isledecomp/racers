@@ -5,6 +5,7 @@
 #include "types.h"
 
 class Racer;
+class RaceActionSource;
 
 // SIZE 0x1c
 class ActionTarget {

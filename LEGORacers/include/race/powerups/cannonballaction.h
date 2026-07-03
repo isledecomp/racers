@@ -2,6 +2,8 @@
 #define CANNONBALLACTION_H
 
 #include "golmodelentity.h"
+#include "golname.h"
+#include "race/powerups/powerupprojectile.h"
 #include "race/powerups/weaponactionbase.h"
 #include "race/racetrailmanager.h"
 

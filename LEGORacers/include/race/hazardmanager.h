@@ -1,61 +1,14 @@
-#ifndef RACEEVENTDISPATCHER0X08_H
-#define RACEEVENTDISPATCHER0X08_H
+#ifndef HAZARDMANAGER_H
+#define HAZARDMANAGER_H
 
 #include "decomp.h"
-#include "golmath.h"
-#include "golmodelentity.h"
-#include "golname.h"
-#include "golworldentity.h"
-#include "material/materialtable0x0c.h"
-#include "race/hazards/cannonballrainhazard.h"
-#include "race/hazards/codepuzzlehazard.h"
-#include "race/hazards/colliderrecord.h"
-#include "race/hazards/cursedrophazard.h"
-#include "race/hazards/fallingpillarhazard.h"
-#include "race/hazards/ghosthazard.h"
-#include "race/hazards/grabberhazard.h"
-#include "race/hazards/hammerhazard.h"
-#include "race/hazards/hazard.h"
-#include "race/hazards/hazardcontext.h"
-#include "race/hazards/launcherhazard.h"
-#include "race/hazards/lavageyserhazard.h"
-#include "race/hazards/movingobstaclehazard.h"
-#include "race/hazards/multilauncherhazard.h"
-#include "race/hazards/oscillatorhazard.h"
-#include "race/hazards/rockethazard.h"
-#include "race/hazards/rollingrockhazard.h"
-#include "race/hazards/smokeventhazard.h"
-#include "race/hazards/snowfallhazard.h"
-#include "race/hazards/sphinxhazard.h"
-#include "race/hazards/sweepcannonhazard.h"
-#include "race/hazards/triggeredanimationhazard.h"
-#include "race/hazards/warppadhazard.h"
-#include "race/powerups/powerupprojectile.h"
-#include "race/raceactionsource.h"
-#include "race/racedecalmanager.h"
-#include "race/racestate.h"
+#include "goltxtparser.h"
 #include "types.h"
-#include "util/legoeventqueue.h"
 
 class GolCamera;
 class GolD3DRenderDevice;
-class GolFileParser;
-class GolAnimatedEntity;
-class GolBillboard;
-class GolCollidableEntity;
-class GolExport;
-class GolModelEntity;
-class GolNameTable;
-class GolWorldDatabase;
-struct CutsceneParticleRef;
-class CutsceneAnimation;
-class MabMaterialAnimationItem0x8;
-class MabMaterialAnimationItem0x18;
-class RaceEventTable;
-class RacePowerupManager;
-class RaceSession;
-class TriggerWorld;
-class SpatialSoundInstance;
+class Hazard;
+class Racer;
 
 // SIZE 0x08
 class HazardManager {
@@ -89,4 +42,4 @@ private:
 	Hazard** m_entries; // 0x04
 };
 
-#endif
+#endif // HAZARDMANAGER_H

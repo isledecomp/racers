@@ -29,14 +29,14 @@ public:
 	// SIZE 0xd0
 	class Item {
 	public:
-		LegoFloat m_unk0x00;               // 0x00
-		LegoFloat m_unk0x04;               // 0x04
-		LegoFloat m_unk0x08;               // 0x08
+		LegoFloat m_left;                  // 0x00
+		LegoFloat m_height;                // 0x04
+		LegoFloat m_right;                 // 0x08
 		LegoFloat m_unk0x0c;               // 0x0c
 		Rect m_rect;                       // 0x10
-		LegoFloat m_unk0x20;               // 0x20
-		LegoFloat m_unk0x24;               // 0x24
-		LegoFloat m_unk0x28;               // 0x28
+		LegoFloat m_centerY;               // 0x20
+		LegoFloat m_positionZ;             // 0x24
+		LegoFloat m_fitSize;               // 0x28
 		GolModelBase* m_model;             // 0x2c
 		LegoFloat m_modelRadius;           // 0x30
 		GolModelEntity m_entity;           // 0x34

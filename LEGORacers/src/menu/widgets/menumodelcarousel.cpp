@@ -247,22 +247,22 @@ void MenuModelCarousel::DestroyItems()
 
 			LegoS32 rectLeft = rect->m_left;
 			rectLeft += halfWidth;
-			item->m_unk0x00 = static_cast<LegoFloat>(rectLeft) * m_scaleX;
-			item->m_unk0x08 = item->m_unk0x00 + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_scaleX;
-			item->m_unk0x04 = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_scaleY;
+			item->m_left = static_cast<LegoFloat>(rectLeft) * m_scaleX;
+			item->m_right = item->m_left + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_scaleX;
+			item->m_height = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_scaleY;
 			item->m_unk0x0c = 0.0f;
-			item->m_unk0x24 = 0.0f;
+			item->m_positionZ = 0.0f;
 
-			LegoFloat center = item->m_unk0x08;
-			center += item->m_unk0x00;
-			item->m_unk0x20 = center * 0.5f;
+			LegoFloat center = item->m_right;
+			center += item->m_left;
+			item->m_centerY = center * 0.5f;
 
-			LegoFloat range = item->m_unk0x08 - item->m_unk0x00;
-			if (range > item->m_unk0x04) {
-				item->m_unk0x28 = item->m_unk0x04;
+			LegoFloat range = item->m_right - item->m_left;
+			if (range > item->m_height) {
+				item->m_fitSize = item->m_height;
 			}
 			else {
-				item->m_unk0x28 = range;
+				item->m_fitSize = range;
 			}
 
 			i++;
@@ -288,10 +288,10 @@ void MenuModelCarousel::GetItemPosition(Item* p_item, GolVec3* p_position)
 	GolVec3 center;
 	GolVec3 oldPosition;
 
-	LegoFloat x = p_item->m_modelRadius - p_item->m_unk0x28;
+	LegoFloat x = p_item->m_modelRadius - p_item->m_fitSize;
 
 	if (x > 0.0f) {
-		x = -(m_cameraDistance / p_item->m_unk0x28 * x);
+		x = -(m_cameraDistance / p_item->m_fitSize * x);
 	}
 
 	LegoFloat minX = p_item->m_modelRadius;
@@ -301,8 +301,8 @@ void MenuModelCarousel::GetItemPosition(Item* p_item, GolVec3* p_position)
 		x = minX;
 	}
 
-	itemPosition.m_y = p_item->m_unk0x20;
-	itemPosition.m_z = p_item->m_unk0x24;
+	itemPosition.m_y = p_item->m_centerY;
+	itemPosition.m_z = p_item->m_positionZ;
 	scale = (m_cameraDistance - x) / m_cameraDistance;
 	GolModelEntity* entity = &p_item->m_entity;
 

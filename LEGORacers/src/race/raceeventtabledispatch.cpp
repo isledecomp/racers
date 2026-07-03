@@ -1,4 +1,19 @@
+#include "race/events/colortransformresource.h"
+#include "race/events/externalforceresource.h"
+#include "race/events/lapzoneresource.h"
+#include "race/events/looktargetresource.h"
+#include "race/events/materialanimationresource.h"
+#include "race/events/modeldistanceresource.h"
+#include "race/events/nodetransformresource.h"
+#include "race/events/partanimationresource.h"
+#include "race/events/particleresource.h"
+#include "race/events/raceeventresource.h"
+#include "race/events/skystateresource.h"
+#include "race/events/soundresource.h"
+#include "race/events/timerresource.h"
+#include "race/hazardmanager.h"
 #include "race/raceeventtable.h"
+#include "race/targetpointlist.h"
 
 DECOMP_SIZE_ASSERT(RaceEventTable, 0x90)
 
@@ -24,7 +39,7 @@ LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045ee50
-void RaceEventTable::Resource::OnEventStart(GolVec3* p_unk0x04)
+void RaceEventResource::OnEventStart(GolVec3* p_unk0x04)
 {
 	if (!(m_flags0x1c & 4) && (m_state0x18 == 1 || m_state0x18 == 4)) {
 		OnStartAt(p_unk0x04);
@@ -32,7 +47,7 @@ void RaceEventTable::Resource::OnEventStart(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045ee70
-void RaceEventTable::Resource::OnEventEnd(GolVec3* p_unk0x04)
+void RaceEventResource::OnEventEnd(GolVec3* p_unk0x04)
 {
 	if (m_flags0x1c & 4) {
 		if (m_state0x18 == 1 || m_state0x18 == 4) {
@@ -52,7 +67,7 @@ void RaceEventTable::Resource::OnEventEnd(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045eec0
-void RaceEventTable::Resource::ForceEventStart(Racer* p_racer)
+void RaceEventResource::ForceEventStart(Racer* p_racer)
 {
 	if (!(m_flags0x1c & 4) && (m_state0x18 == 1 || m_state0x18 == 4)) {
 		OnStartForRacer(p_racer);

@@ -7,6 +7,7 @@
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
+#include "menu/runtime/cutsceneanimation.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/raceeventtable.h"
 #include "race/racer/racer.h"

@@ -1,6 +1,7 @@
 #include "race/hazards/hammerhazard.h"
 
 #include "decomp.h"
+#include "golanimatedentity.h"
 #include "golfileparser.h"
 #include "golmath.h"
 #include "race/hazards/hazardcontext.h"

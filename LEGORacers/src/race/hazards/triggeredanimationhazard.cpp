@@ -1,5 +1,7 @@
 #include "race/hazards/triggeredanimationhazard.h"
 
+#include "cmbmodelpart0x34.h"
+#include "cmbmodelpartdata0x28.h"
 #include "decomp.h"
 #include "golanimatedentity.h"
 #include "golfileparser.h"

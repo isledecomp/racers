@@ -1,3 +1,5 @@
+#include "race/raceeventtable.h"
+
 #include "audio/spatialsoundinstance.h"
 #include "decomp.h"
 #include "golbinparser.h"
@@ -8,6 +10,19 @@
 #include "golscenenode.h"
 #include "goltransformbase.h"
 #include "menu/runtime/cutsceneparticle.h"
+#include "race/events/colortransformresource.h"
+#include "race/events/externalforceresource.h"
+#include "race/events/lapzoneresource.h"
+#include "race/events/looktargetresource.h"
+#include "race/events/materialanimationresource.h"
+#include "race/events/modeldistanceresource.h"
+#include "race/events/nodetransformresource.h"
+#include "race/events/partanimationresource.h"
+#include "race/events/particleresource.h"
+#include "race/events/raceeventresource.h"
+#include "race/events/skystateresource.h"
+#include "race/events/soundresource.h"
+#include "race/events/timerresource.h"
 #include "race/racesession.h"
 #include "world/golworlddatabase.h"
 
@@ -15,55 +30,55 @@ DECOMP_SIZE_ASSERT(RaceEventTable, 0x90)
 DECOMP_SIZE_ASSERT(RaceEventTable::EvbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(RaceEventTable::Params, 0x34)
 DECOMP_SIZE_ASSERT(RaceEventTable::EventLink, 0x08)
-DECOMP_SIZE_ASSERT(RaceEventTable::Resource, 0x20)
-DECOMP_SIZE_ASSERT(RaceEventTable::LapZoneResource::InitParams, 0x18)
-DECOMP_SIZE_ASSERT(RaceEventTable::LapZoneResource, 0x24)
-DECOMP_SIZE_ASSERT(RaceEventTable::LookTargetResource::InitParams, 0x20)
-DECOMP_SIZE_ASSERT(RaceEventTable::LookTargetResource, 0x2c)
-DECOMP_SIZE_ASSERT(RaceEventTable::TimerResource::InitParams, 0x20)
-DECOMP_SIZE_ASSERT(RaceEventTable::TimerResource, 0x30)
-DECOMP_SIZE_ASSERT(RaceEventTable::MaterialAnimationResource::InitParams, 0x38)
-DECOMP_SIZE_ASSERT(RaceEventTable::MaterialAnimationResource, 0x34)
-DECOMP_SIZE_ASSERT(RaceEventTable::PartAnimationResource::InitParams, 0x3c)
-DECOMP_SIZE_ASSERT(RaceEventTable::PartAnimationResource, 0x34)
-DECOMP_SIZE_ASSERT(RaceEventTable::ModelDistanceResource::InitParams, 0x24)
-DECOMP_SIZE_ASSERT(RaceEventTable::ModelDistanceResource, 0x34)
-DECOMP_SIZE_ASSERT(RaceEventTable::NodeTransformResource::InitParams, 0x24)
-DECOMP_SIZE_ASSERT(RaceEventTable::NodeTransformResource, 0x2c)
-DECOMP_SIZE_ASSERT(RaceEventTable::SkyStateResource::InitParams, 0x2c)
-DECOMP_SIZE_ASSERT(RaceEventTable::SkyStateResource, 0x34)
-DECOMP_SIZE_ASSERT(RaceEventTable::ExternalForceResource::InitParams, 0x30)
-DECOMP_SIZE_ASSERT(RaceEventTable::ExternalForceResource, 0x38)
-DECOMP_SIZE_ASSERT(RaceEventTable::ColorTransformResource, 0x48)
-DECOMP_SIZE_ASSERT(RaceEventTable::SoundResource::InitParams, 0x4c)
-DECOMP_SIZE_ASSERT(RaceEventTable::SoundResource, 0x5c)
-DECOMP_SIZE_ASSERT(RaceEventTable::ParticleResource::InitParams, 0x5c)
-DECOMP_SIZE_ASSERT(RaceEventTable::ParticleResource, 0x64)
+DECOMP_SIZE_ASSERT(RaceEventResource, 0x20)
+DECOMP_SIZE_ASSERT(LapZoneResource::InitParams, 0x18)
+DECOMP_SIZE_ASSERT(LapZoneResource, 0x24)
+DECOMP_SIZE_ASSERT(LookTargetResource::InitParams, 0x20)
+DECOMP_SIZE_ASSERT(LookTargetResource, 0x2c)
+DECOMP_SIZE_ASSERT(TimerResource::InitParams, 0x20)
+DECOMP_SIZE_ASSERT(TimerResource, 0x30)
+DECOMP_SIZE_ASSERT(MaterialAnimationResource::InitParams, 0x38)
+DECOMP_SIZE_ASSERT(MaterialAnimationResource, 0x34)
+DECOMP_SIZE_ASSERT(PartAnimationResource::InitParams, 0x3c)
+DECOMP_SIZE_ASSERT(PartAnimationResource, 0x34)
+DECOMP_SIZE_ASSERT(ModelDistanceResource::InitParams, 0x24)
+DECOMP_SIZE_ASSERT(ModelDistanceResource, 0x34)
+DECOMP_SIZE_ASSERT(NodeTransformResource::InitParams, 0x24)
+DECOMP_SIZE_ASSERT(NodeTransformResource, 0x2c)
+DECOMP_SIZE_ASSERT(SkyStateResource::InitParams, 0x2c)
+DECOMP_SIZE_ASSERT(SkyStateResource, 0x34)
+DECOMP_SIZE_ASSERT(ExternalForceResource::InitParams, 0x30)
+DECOMP_SIZE_ASSERT(ExternalForceResource, 0x38)
+DECOMP_SIZE_ASSERT(ColorTransformResource, 0x48)
+DECOMP_SIZE_ASSERT(SoundResource::InitParams, 0x4c)
+DECOMP_SIZE_ASSERT(SoundResource, 0x5c)
+DECOMP_SIZE_ASSERT(ParticleResource::InitParams, 0x5c)
+DECOMP_SIZE_ASSERT(ParticleResource, 0x64)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x0045c330 FOLDED
-LegoU32 RaceEventTable::MaterialAnimationResource::GetKind()
+LegoU32 MaterialAnimationResource::GetKind()
 {
 	return 2;
 }
 
 // FUNCTION: LEGORACERS 0x0045e150
-RaceEventTable::SkyStateResource::SkyStateResource()
+SkyStateResource::SkyStateResource()
 {
 	ClearFields();
 	m_flags0x1c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e1a0
-RaceEventTable::SkyStateResource::~SkyStateResource()
+SkyStateResource::~SkyStateResource()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045e1f0
-void RaceEventTable::SkyStateResource::ClearFields()
+void SkyStateResource::ClearFields()
 {
 	m_skyState = NULL;
 	m_unk0x24[0] = '\0';
@@ -72,7 +87,7 @@ void RaceEventTable::SkyStateResource::ClearFields()
 }
 
 // FUNCTION: LEGORACERS 0x0045e200
-void RaceEventTable::SkyStateResource::Initialize(InitParams* p_params)
+void SkyStateResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
 		Destroy();
@@ -99,7 +114,7 @@ void RaceEventTable::SkyStateResource::Initialize(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x0045e280
-void RaceEventTable::SkyStateResource::Destroy()
+void SkyStateResource::Destroy()
 {
 	OnEnd();
 	ClearFields();
@@ -107,7 +122,7 @@ void RaceEventTable::SkyStateResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045e2a0
-void RaceEventTable::SkyStateResource::OnStartAt(GolVec3*)
+void SkyStateResource::OnStartAt(GolVec3*)
 {
 	if (m_unk0x24[0]) {
 		m_skyState->StartTransition(m_unk0x24, m_unk0x2c);
@@ -134,7 +149,7 @@ void RaceEventTable::SkyStateResource::OnStartAt(GolVec3*)
 }
 
 // FUNCTION: LEGORACERS 0x0045e320
-void RaceEventTable::SkyStateResource::OnEnd()
+void SkyStateResource::OnEnd()
 {
 	NotifyStateChange(m_state0x18, 3);
 	m_state0x18 = c_state0x18One;
@@ -142,13 +157,13 @@ void RaceEventTable::SkyStateResource::OnEnd()
 }
 
 // FUNCTION: LEGORACERS 0x0045e340
-LegoU32 RaceEventTable::SkyStateResource::GetKind()
+LegoU32 SkyStateResource::GetKind()
 {
 	return 5;
 }
 
 // FUNCTION: LEGORACERS 0x0045e5e0
-RaceEventTable::LookTargetResource::LookTargetResource()
+LookTargetResource::LookTargetResource()
 {
 	m_lookPosition.m_x = 0.0f;
 	m_lookPosition.m_y = 0.0f;
@@ -156,13 +171,13 @@ RaceEventTable::LookTargetResource::LookTargetResource()
 }
 
 // FUNCTION: LEGORACERS 0x0045e600
-RaceEventTable::LookTargetResource::~LookTargetResource()
+LookTargetResource::~LookTargetResource()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045e650
-void RaceEventTable::LookTargetResource::Initialize(InitParams* p_params)
+void LookTargetResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
 		Destroy();
@@ -183,7 +198,7 @@ void RaceEventTable::LookTargetResource::Initialize(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x0045e6b0
-void RaceEventTable::LookTargetResource::Destroy()
+void LookTargetResource::Destroy()
 {
 	m_lookPosition.m_x = 0.0f;
 	m_lookPosition.m_y = 0.0f;
@@ -192,7 +207,7 @@ void RaceEventTable::LookTargetResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045e6c0
-void RaceEventTable::LookTargetResource::OnStartForRacer(Racer* p_racer)
+void LookTargetResource::OnStartForRacer(Racer* p_racer)
 {
 	NotifyStateChange(1, 1);
 	if (p_racer) {
@@ -201,7 +216,7 @@ void RaceEventTable::LookTargetResource::OnStartForRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045e6f0
-void RaceEventTable::LookTargetResource::OnEndForRacer(Racer* p_racer)
+void LookTargetResource::OnEndForRacer(Racer* p_racer)
 {
 	NotifyStateChange(m_state0x18, 3);
 	if (p_racer) {
@@ -212,31 +227,31 @@ void RaceEventTable::LookTargetResource::OnEndForRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045e720
-LegoU32 RaceEventTable::LookTargetResource::GetKind()
+LegoU32 LookTargetResource::GetKind()
 {
 	return 11;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::LookTargetResource::FUN_004513d0(undefined4)
+void LookTargetResource::FUN_004513d0(undefined4)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0045e730
-RaceEventTable::TimerResource::TimerResource()
+TimerResource::TimerResource()
 {
 	ClearFields();
 	m_flags0x1c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e780
-RaceEventTable::TimerResource::~TimerResource()
+TimerResource::~TimerResource()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045e7d0
-void RaceEventTable::TimerResource::ClearFields()
+void TimerResource::ClearFields()
 {
 	m_holdEventId = -1;
 	m_durationMs = 0;
@@ -245,7 +260,7 @@ void RaceEventTable::TimerResource::ClearFields()
 }
 
 // FUNCTION: LEGORACERS 0x0045e7f0
-void RaceEventTable::TimerResource::Initialize(InitParams* p_params)
+void TimerResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
 		Destroy();
@@ -270,7 +285,7 @@ void RaceEventTable::TimerResource::Initialize(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x0045e860
-void RaceEventTable::TimerResource::Destroy()
+void TimerResource::Destroy()
 {
 	OnEnd();
 	ClearFields();
@@ -278,7 +293,7 @@ void RaceEventTable::TimerResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045e880
-void RaceEventTable::TimerResource::OnStartAt(GolVec3*)
+void TimerResource::OnStartAt(GolVec3*)
 {
 	m_remainingMs = m_durationMs;
 	NotifyStateChange(1, 1);
@@ -286,7 +301,7 @@ void RaceEventTable::TimerResource::OnStartAt(GolVec3*)
 }
 
 // FUNCTION: LEGORACERS 0x0045e8a0
-void RaceEventTable::TimerResource::OnEnd()
+void TimerResource::OnEnd()
 {
 	if (m_remainingMs <= 0 && !(m_flags0x2c & 1)) {
 		NotifyStateChange(m_state0x18, 3);
@@ -295,9 +310,9 @@ void RaceEventTable::TimerResource::OnEnd()
 }
 
 // FUNCTION: LEGORACERS 0x0045e8d0
-void RaceEventTable::TimerResource::Update(LegoU32 p_elapsedMs)
+void TimerResource::Update(LegoU32 p_elapsedMs)
 {
-	Resource::Update(p_elapsedMs);
+	RaceEventResource::Update(p_elapsedMs);
 	if (m_state0x18 != c_state0x18Four) {
 		if (p_elapsedMs > m_remainingMs) {
 			m_remainingMs = 0;
@@ -313,42 +328,42 @@ void RaceEventTable::TimerResource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0045e910
-LegoU32 RaceEventTable::TimerResource::GetKind()
+LegoU32 TimerResource::GetKind()
 {
 	return 6;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::TimerResource::FUN_004513d0(undefined4)
+void TimerResource::FUN_004513d0(undefined4)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044f580 FOLDED
-LegoU32 RaceEventTable::ParticleResource::GetKind()
+LegoU32 ParticleResource::GetKind()
 {
 	return 3;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::ParticleResource::FUN_004513d0(undefined4)
+void ParticleResource::FUN_004513d0(undefined4)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0045e920
-RaceEventTable::ParticleResource::ParticleResource()
+ParticleResource::ParticleResource()
 {
 	ClearFields();
 	m_flags0x1c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e970
-RaceEventTable::ParticleResource::~ParticleResource()
+ParticleResource::~ParticleResource()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045e9c0
-void RaceEventTable::ParticleResource::ClearFields()
+void ParticleResource::ClearFields()
 {
 	m_particleAnimation = NULL;
 	m_sharedParticleAnimation = NULL;
@@ -371,7 +386,7 @@ void RaceEventTable::ParticleResource::ClearFields()
 }
 
 // FUNCTION: LEGORACERS 0x0045ea00
-void RaceEventTable::ParticleResource::Initialize(InitParams* p_params)
+void ParticleResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
 		Destroy();
@@ -416,7 +431,7 @@ void RaceEventTable::ParticleResource::Initialize(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x0045ead0
-void RaceEventTable::ParticleResource::Destroy()
+void ParticleResource::Destroy()
 {
 	OnEnd();
 	ClearFields();
@@ -424,7 +439,7 @@ void RaceEventTable::ParticleResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045eaf0
-void RaceEventTable::ParticleResource::OnStartAt(GolVec3* p_unk0x04)
+void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 {
 	if (p_unk0x04 && (m_flags0x1c & c_flags0x1cBit3)) {
 		m_unk0x3c = *p_unk0x04;
@@ -448,7 +463,7 @@ void RaceEventTable::ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045eb90
-void RaceEventTable::ParticleResource::OnEnd()
+void ParticleResource::OnEnd()
 {
 	if (m_particle) {
 		if (m_partAnimations) {
@@ -467,9 +482,9 @@ void RaceEventTable::ParticleResource::OnEnd()
 }
 
 // FUNCTION: LEGORACERS 0x0045ebe0
-void RaceEventTable::ParticleResource::Update(LegoU32 p_elapsedMs)
+void ParticleResource::Update(LegoU32 p_elapsedMs)
 {
-	Resource::Update(p_elapsedMs);
+	RaceEventResource::Update(p_elapsedMs);
 	if (m_state0x18 == c_state0x18One) {
 		return;
 	}
@@ -518,27 +533,27 @@ void RaceEventTable::ParticleResource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::Resource::OnStartForRacer(Racer*)
+void RaceEventResource::OnStartForRacer(Racer*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::Resource::OnStartAt(GolVec3*)
+void RaceEventResource::OnStartAt(GolVec3*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::Resource::OnEndForRacer(Racer*)
+void RaceEventResource::OnEndForRacer(Racer*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void RaceEventTable::Resource::OnEnd()
+void RaceEventResource::OnEnd()
 {
 }
 
 // FUNCTION: LEGORACERS 0x0045ed40
-RaceEventTable::Resource::Resource()
+RaceEventResource::RaceEventResource()
 {
 	m_eventTable = NULL;
 	m_stateEventIds[0] = -1;
@@ -550,13 +565,13 @@ RaceEventTable::Resource::Resource()
 }
 
 // FUNCTION: LEGORACERS 0x0045ed90
-RaceEventTable::Resource::~Resource()
+RaceEventResource::~RaceEventResource()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045eda0
-void RaceEventTable::Resource::Reset()
+void RaceEventResource::Reset()
 {
 	m_eventTable = NULL;
 	m_stateEventIds[0] = -1;
@@ -567,7 +582,7 @@ void RaceEventTable::Resource::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0045edc0
-void RaceEventTable::Resource::Update(LegoU32)
+void RaceEventResource::Update(LegoU32)
 {
 	if (m_state0x18 == c_state0x18Five) {
 		OnEnd();
@@ -575,7 +590,7 @@ void RaceEventTable::Resource::Update(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x0045edd0
-void RaceEventTable::Resource::NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
+void RaceEventResource::NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
 {
 	LegoS32 current = -1;
 	LegoS32 next = -1;
@@ -617,7 +632,7 @@ void RaceEventTable::Resource::NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_un
 }
 
 // FUNCTION: LEGORACERS 0x0045eee0 FOLDED
-void RaceEventTable::Resource::ForceEventEnd(Racer* p_racer)
+void RaceEventResource::ForceEventEnd(Racer* p_racer)
 {
 	LegoU8 flags = m_flags0x1c;
 	if (flags & c_flags0x1cBit2) {
@@ -2266,49 +2281,49 @@ void RaceEventTable::ForceAllEvents()
 
 	if (m_sounds) {
 		for (i = 0; i < m_soundCount; i++) {
-			m_sounds[i].SetState0x18(Resource::c_state0x18Five);
+			m_sounds[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
 	if (m_partAnimations) {
 		for (i = 0; i < m_partAnimationCount; i++) {
-			m_partAnimations[i].SetState0x18(Resource::c_state0x18Five);
+			m_partAnimations[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
 	if (m_materialAnimations) {
 		for (i = 0; i < m_materialAnimationCount; i++) {
-			m_materialAnimations[i].SetState0x18(Resource::c_state0x18Five);
+			m_materialAnimations[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
 	if (m_particles) {
 		for (i = 0; i < m_particleCount; i++) {
-			m_particles[i].SetState0x18(Resource::c_state0x18Five);
+			m_particles[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
 	if (m_skyStates) {
 		for (i = 0; i < m_skyStateCount; i++) {
-			m_skyStates[i].SetState0x18(Resource::c_state0x18Five);
+			m_skyStates[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
 	if (m_timers) {
 		for (i = 0; i < m_timerCount; i++) {
-			m_timers[i].SetState0x18(Resource::c_state0x18Five);
+			m_timers[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
 	if (m_nodeTransforms) {
 		for (i = 0; i < m_nodeTransformCount; i++) {
-			m_nodeTransforms[i].SetState0x18(Resource::c_state0x18Five);
+			m_nodeTransforms[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
 	if (m_modelDistances) {
 		for (i = 0; i < m_modelDistanceCount; i++) {
-			m_modelDistances[i].SetState0x18(Resource::c_state0x18Five);
+			m_modelDistances[i].SetState0x18(RaceEventResource::c_state0x18Five);
 		}
 	}
 
@@ -2322,21 +2337,21 @@ void RaceEventTable::EndAllForRacer(Racer* p_racer)
 
 	if (m_colorTransforms) {
 		for (i = 0; i < m_colorTransformCount; i++) {
-			Resource* resource = &m_colorTransforms[i];
+			RaceEventResource* resource = &m_colorTransforms[i];
 			resource->ForceEventEnd(p_racer);
 		}
 	}
 
 	if (m_lapZones) {
 		for (i = 0; i < m_lapZoneCount; i++) {
-			Resource* resource = &m_lapZones[i];
+			RaceEventResource* resource = &m_lapZones[i];
 			resource->ForceEventEnd(p_racer);
 		}
 	}
 
 	if (m_lookTargets) {
 		for (i = 0; i < m_lookTargetCount; i++) {
-			Resource* resource = &m_lookTargets[i];
+			RaceEventResource* resource = &m_lookTargets[i];
 			resource->ForceEventEnd(p_racer);
 		}
 	}
@@ -2345,7 +2360,7 @@ void RaceEventTable::EndAllForRacer(Racer* p_racer)
 		LegoU32 count = m_externalForceCount;
 
 		for (i = 0; i < count; i++) {
-			Resource* resource = &m_externalForces[i];
+			RaceEventResource* resource = &m_externalForces[i];
 			resource->ForceEventEnd(p_racer);
 			count = m_externalForceCount;
 		}
@@ -2353,19 +2368,19 @@ void RaceEventTable::EndAllForRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00462e70
-RaceEventTable::ExternalForceResource::ExternalForceResource()
+ExternalForceResource::ExternalForceResource()
 {
 	ClearFields();
 }
 
 // FUNCTION: LEGORACERS 0x00462ec0
-RaceEventTable::ExternalForceResource::~ExternalForceResource()
+ExternalForceResource::~ExternalForceResource()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00462f10
-void RaceEventTable::ExternalForceResource::ClearFields()
+void ExternalForceResource::ClearFields()
 {
 	m_armEventId = -1;
 	m_eventTable = NULL;
@@ -2379,7 +2394,7 @@ void RaceEventTable::ExternalForceResource::ClearFields()
 }
 
 // FUNCTION: LEGORACERS 0x00462f40
-void RaceEventTable::ExternalForceResource::Initialize(InitParams* p_params)
+void ExternalForceResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
 		Destroy();
@@ -2406,14 +2421,14 @@ void RaceEventTable::ExternalForceResource::Initialize(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x00462fc0
-void RaceEventTable::ExternalForceResource::Destroy()
+void ExternalForceResource::Destroy()
 {
 	ClearFields();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00462fe0
-void RaceEventTable::ExternalForceResource::OnStartForRacer(Racer* p_racer)
+void ExternalForceResource::OnStartForRacer(Racer* p_racer)
 {
 	if (m_flags0x34 & c_flags0x34Bit0) {
 		if (p_racer) {
@@ -2433,7 +2448,7 @@ void RaceEventTable::ExternalForceResource::OnStartForRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00463040
-void RaceEventTable::ExternalForceResource::OnEndForRacer(Racer* p_racer)
+void ExternalForceResource::OnEndForRacer(Racer* p_racer)
 {
 	if (p_racer) {
 		switch (m_channel) {
@@ -2451,13 +2466,13 @@ void RaceEventTable::ExternalForceResource::OnEndForRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00463090
-LegoU32 RaceEventTable::ExternalForceResource::GetKind()
+LegoU32 ExternalForceResource::GetKind()
 {
 	return 12;
 }
 
 // FUNCTION: LEGORACERS 0x004630a0
-RaceEventTable::MaterialAnimationResource::MaterialAnimationResource()
+MaterialAnimationResource::MaterialAnimationResource()
 {
 	m_unk0x20 = NULL;
 	m_unk0x24 = NULL;
@@ -2468,13 +2483,13 @@ RaceEventTable::MaterialAnimationResource::MaterialAnimationResource()
 }
 
 // FUNCTION: LEGORACERS 0x004630d0
-RaceEventTable::MaterialAnimationResource::~MaterialAnimationResource()
+MaterialAnimationResource::~MaterialAnimationResource()
 {
 	FUN_004631e0();
 }
 
 // FUNCTION: LEGORACERS 0x00463120
-void RaceEventTable::MaterialAnimationResource::FUN_00463120(InitParams* p_params)
+void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
 {
 	if (m_state0x18) {
 		FUN_004631e0();
@@ -2515,7 +2530,7 @@ void RaceEventTable::MaterialAnimationResource::FUN_00463120(InitParams* p_param
 }
 
 // FUNCTION: LEGORACERS 0x004631e0
-void RaceEventTable::MaterialAnimationResource::FUN_004631e0()
+void MaterialAnimationResource::FUN_004631e0()
 {
 	OnEnd();
 	m_unk0x20 = NULL;
@@ -2523,16 +2538,16 @@ void RaceEventTable::MaterialAnimationResource::FUN_004631e0()
 }
 
 // FUNCTION: LEGORACERS 0x00463200
-void RaceEventTable::MaterialAnimationResource::Update(LegoU32 p_elapsedMs)
+void MaterialAnimationResource::Update(LegoU32 p_elapsedMs)
 {
-	Resource::Update(p_elapsedMs);
+	RaceEventResource::Update(p_elapsedMs);
 	if (m_state0x18 == c_state0x18Three && !(m_flags0x1c & c_flags0x1cBit0) && !m_unk0x24->IsAssigned()) {
 		OnEnd();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00463230
-void RaceEventTable::MaterialAnimationResource::OnStartAt(GolVec3*)
+void MaterialAnimationResource::OnStartAt(GolVec3*)
 {
 	m_unk0x28->FUN_00410470();
 	m_unk0x24->FUN_10025da0(m_unk0x2c, m_unk0x30, m_flags0x1c & c_flags0x1cBit0);
@@ -2542,7 +2557,7 @@ void RaceEventTable::MaterialAnimationResource::OnStartAt(GolVec3*)
 }
 
 // FUNCTION: LEGORACERS 0x00463280
-void RaceEventTable::MaterialAnimationResource::OnEnd()
+void MaterialAnimationResource::OnEnd()
 {
 	m_unk0x24->FUN_00410470();
 	m_unk0x28->FUN_10025da0(m_unk0x2c, m_unk0x30, TRUE);
@@ -2552,20 +2567,20 @@ void RaceEventTable::MaterialAnimationResource::OnEnd()
 }
 
 // FUNCTION: LEGORACERS 0x004632c0
-RaceEventTable::PartAnimationResource::PartAnimationResource()
+PartAnimationResource::PartAnimationResource()
 {
 	m_unk0x20 = NULL;
 	m_flags0x1c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004632e0
-RaceEventTable::PartAnimationResource::~PartAnimationResource()
+PartAnimationResource::~PartAnimationResource()
 {
 	FUN_004633e0();
 }
 
 // FUNCTION: LEGORACERS 0x00463330
-void RaceEventTable::PartAnimationResource::FUN_00463330(InitParams* p_params)
+void PartAnimationResource::FUN_00463330(InitParams* p_params)
 {
 	if (m_state0x18) {
 		FUN_004633e0();
@@ -2609,16 +2624,16 @@ void RaceEventTable::PartAnimationResource::FUN_00463330(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004633e0
-void RaceEventTable::PartAnimationResource::FUN_004633e0()
+void PartAnimationResource::FUN_004633e0()
 {
 	m_unk0x20 = NULL;
 	Reset();
 }
 
 // STUB: LEGORACERS 0x004633f0
-void RaceEventTable::PartAnimationResource::Update(LegoU32 p_elapsedMs)
+void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 {
-	Resource::Update(p_elapsedMs);
+	RaceEventResource::Update(p_elapsedMs);
 
 	GolAnimatedEntity* entity = m_unk0x20;
 	LegoU32 state = m_state0x18;
@@ -2700,7 +2715,7 @@ void RaceEventTable::PartAnimationResource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00463570
-void RaceEventTable::PartAnimationResource::OnStartAt(GolVec3*)
+void PartAnimationResource::OnStartAt(GolVec3*)
 {
 	LegoS32 queuedPart = m_unk0x2c;
 	GolAnimatedEntity* entity = m_unk0x20;
@@ -2722,7 +2737,7 @@ void RaceEventTable::PartAnimationResource::OnStartAt(GolVec3*)
 }
 
 // FUNCTION: LEGORACERS 0x004635c0
-void RaceEventTable::PartAnimationResource::OnEnd()
+void PartAnimationResource::OnEnd()
 {
 	LegoU32 state = m_state0x18;
 	LegoU32 nextState = state;
@@ -2762,20 +2777,20 @@ void RaceEventTable::PartAnimationResource::OnEnd()
 }
 
 // FUNCTION: LEGORACERS 0x00463640
-RaceEventTable::ModelDistanceResource::ModelDistanceResource()
+ModelDistanceResource::ModelDistanceResource()
 {
 	m_flags0x1c = 0;
 	FUN_004636e0();
 }
 
 // FUNCTION: LEGORACERS 0x00463690
-RaceEventTable::ModelDistanceResource::~ModelDistanceResource()
+ModelDistanceResource::~ModelDistanceResource()
 {
 	FUN_004637a0();
 }
 
 // FUNCTION: LEGORACERS 0x004636e0
-void RaceEventTable::ModelDistanceResource::FUN_004636e0()
+void ModelDistanceResource::FUN_004636e0()
 {
 	m_modelDistances[0] = 0.0f;
 	m_modelDistances[1] = 0.0f;
@@ -2785,7 +2800,7 @@ void RaceEventTable::ModelDistanceResource::FUN_004636e0()
 }
 
 // FUNCTION: LEGORACERS 0x00463700
-void RaceEventTable::ModelDistanceResource::FUN_00463700(InitParams* p_params)
+void ModelDistanceResource::FUN_00463700(InitParams* p_params)
 {
 	if (m_state0x18) {
 		FUN_004637a0();
@@ -2820,14 +2835,14 @@ void RaceEventTable::ModelDistanceResource::FUN_00463700(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004637a0
-void RaceEventTable::ModelDistanceResource::FUN_004637a0()
+void ModelDistanceResource::FUN_004637a0()
 {
 	FUN_004636e0();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004637c0
-void RaceEventTable::ModelDistanceResource::OnStartAt(GolVec3*)
+void ModelDistanceResource::OnStartAt(GolVec3*)
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_modelDistances); i++) {
 		LegoFloat modelDistance;
@@ -2844,7 +2859,7 @@ void RaceEventTable::ModelDistanceResource::OnStartAt(GolVec3*)
 }
 
 // FUNCTION: LEGORACERS 0x00463800
-void RaceEventTable::ModelDistanceResource::OnEnd()
+void ModelDistanceResource::OnEnd()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_modelDistances); i++) {
 		LegoFloat modelDistance;
@@ -2861,26 +2876,26 @@ void RaceEventTable::ModelDistanceResource::OnEnd()
 }
 
 // FUNCTION: LEGORACERS 0x00463840
-LegoU32 RaceEventTable::ModelDistanceResource::GetKind()
+LegoU32 ModelDistanceResource::GetKind()
 {
 	return 10;
 }
 
 // FUNCTION: LEGORACERS 0x00463850
-RaceEventTable::NodeTransformResource::NodeTransformResource()
+NodeTransformResource::NodeTransformResource()
 {
 	FUN_004638f0();
 	m_flags0x1c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004638a0
-RaceEventTable::NodeTransformResource::~NodeTransformResource()
+NodeTransformResource::~NodeTransformResource()
 {
 	FUN_00463970();
 }
 
 // FUNCTION: LEGORACERS 0x004638f0
-void RaceEventTable::NodeTransformResource::FUN_004638f0()
+void NodeTransformResource::FUN_004638f0()
 {
 	m_unk0x20 = NULL;
 	m_unk0x24 = NULL;
@@ -2888,7 +2903,7 @@ void RaceEventTable::NodeTransformResource::FUN_004638f0()
 }
 
 // FUNCTION: LEGORACERS 0x00463900
-void RaceEventTable::NodeTransformResource::FUN_00463900(InitParams* p_params)
+void NodeTransformResource::FUN_00463900(InitParams* p_params)
 {
 	if (m_state0x18) {
 		FUN_00463970();
@@ -2912,7 +2927,7 @@ void RaceEventTable::NodeTransformResource::FUN_00463900(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x00463970
-void RaceEventTable::NodeTransformResource::FUN_00463970()
+void NodeTransformResource::FUN_00463970()
 {
 	OnEnd();
 	FUN_004638f0();
@@ -2920,24 +2935,24 @@ void RaceEventTable::NodeTransformResource::FUN_00463970()
 }
 
 // FUNCTION: LEGORACERS 0x00463990
-void RaceEventTable::NodeTransformResource::OnStartAt(GolVec3*)
+void NodeTransformResource::OnStartAt(GolVec3*)
 {
 	NotifyStateChange(1, 1);
 	m_state0x18 = c_state0x18Three;
 }
 
 // FUNCTION: LEGORACERS 0x004639b0
-void RaceEventTable::NodeTransformResource::OnEnd()
+void NodeTransformResource::OnEnd()
 {
 	NotifyStateChange(m_state0x18, 3);
 	m_state0x18 = c_state0x18One;
 }
 
 // FUNCTION: LEGORACERS 0x004639d0
-void RaceEventTable::NodeTransformResource::Update(LegoU32 p_elapsedMs)
+void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state0x18 != c_state0x18One) {
-		Resource::Update(p_elapsedMs);
+		RaceEventResource::Update(p_elapsedMs);
 
 		if (m_unk0x20) {
 			m_unk0x24->VTable0x5c(0);
@@ -2969,13 +2984,13 @@ void RaceEventTable::NodeTransformResource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00463ad0
-LegoU32 RaceEventTable::NodeTransformResource::GetKind()
+LegoU32 NodeTransformResource::GetKind()
 {
 	return 9;
 }
 
 // FUNCTION: LEGORACERS 0x00464130
-RaceEventTable::SoundResource::SoundResource()
+SoundResource::SoundResource()
 {
 	m_sound = NULL;
 	m_soundSource = NULL;
@@ -2986,13 +3001,13 @@ RaceEventTable::SoundResource::SoundResource()
 }
 
 // FUNCTION: LEGORACERS 0x00464160
-RaceEventTable::SoundResource::~SoundResource()
+SoundResource::~SoundResource()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004641b0
-void RaceEventTable::SoundResource::Initialize(InitParams* p_params)
+void SoundResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
 		Destroy();
@@ -3033,7 +3048,7 @@ void RaceEventTable::SoundResource::Initialize(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x00464290
-void RaceEventTable::SoundResource::Destroy()
+void SoundResource::Destroy()
 {
 	if (m_sound) {
 		m_soundSource->ReleaseSound(m_res0x20);
@@ -3048,7 +3063,7 @@ void RaceEventTable::SoundResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004642c0
-void RaceEventTable::SoundResource::OnStartAt(GolVec3* p_unk0x04)
+void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 {
 	if (p_unk0x04 && (m_flags0x1c & c_flags0x1cBit3)) {
 		m_position.m_x = p_unk0x04->m_x;
@@ -3089,7 +3104,7 @@ void RaceEventTable::SoundResource::OnStartAt(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x004643b0
-void RaceEventTable::SoundResource::OnEnd()
+void SoundResource::OnEnd()
 {
 	if (m_sound) {
 		m_soundSource->ReleaseSound(m_res0x20);
@@ -3100,9 +3115,9 @@ void RaceEventTable::SoundResource::OnEnd()
 }
 
 // FUNCTION: LEGORACERS 0x004643e0
-void RaceEventTable::SoundResource::Update(LegoU32 p_elapsedMs)
+void SoundResource::Update(LegoU32 p_elapsedMs)
 {
-	Resource::Update(p_elapsedMs);
+	RaceEventResource::Update(p_elapsedMs);
 	if (m_state0x18 == c_state0x18One) {
 		return;
 	}
@@ -3135,7 +3150,7 @@ void RaceEventTable::SoundResource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004644b0
-void RaceEventTable::SoundResource::StopSound()
+void SoundResource::StopSound()
 {
 	GolSceneNode* node = m_unk0x28->VTable0x58(0);
 	GolTransformBase* transform = node->VTable0x18(m_unk0x2c);
@@ -3165,7 +3180,7 @@ void RaceEventTable::SoundResource::StopSound()
 
 // FUNCTION: LEGORACERS 0x0044f2e0 FOLDED
 #pragma code_seg(".text$kbd_vt20")
-LegoU32 RaceEventTable::SoundResource::GetKind()
+LegoU32 SoundResource::GetKind()
 {
 	return 0;
 }
@@ -3174,7 +3189,7 @@ LegoU32 RaceEventTable::SoundResource::GetKind()
 // TODO: Prevent unwanted ICF with NullMusicGroup::IsLoaded while this folded return helper is still isolated.
 // FUNCTION: LEGORACERS 0x00452430 FOLDED
 #pragma code_seg(".text$animatedpartresource_vt18")
-LegoU32 RaceEventTable::PartAnimationResource::GetKind()
+LegoU32 PartAnimationResource::GetKind()
 {
 	return 1;
 }

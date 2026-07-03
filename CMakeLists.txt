@@ -304,8 +304,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesession.cpp
   LEGORacers/src/race/triggerlists.cpp
   LEGORacers/src/race/raceeventtable.cpp
-  LEGORacers/src/race/lapzoneresource.cpp
-  LEGORacers/src/race/colortransformresource.cpp
+  LEGORacers/src/race/events/lapzoneresource.cpp
+  LEGORacers/src/race/events/colortransformresource.cpp
   LEGORacers/src/race/racetimerlist.cpp
   LEGORacers/src/race/hazardmanager.cpp
   LEGORacers/src/race/hazards/cannonballrainhazard.cpp

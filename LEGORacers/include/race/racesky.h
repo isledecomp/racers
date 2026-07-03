@@ -16,7 +16,7 @@ class GolFileParser;
 class GolExport;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
-class MaterialTable0x0c;
+struct MaterialTable0x0c;
 class GolMaterial;
 class RaceSession;
 

@@ -1,6 +1,7 @@
 #include "race/hazards/sphinxhazard.h"
 
 #include "decomp.h"
+#include "golanimatedentity.h"
 #include "golfileparser.h"
 #include "golmath.h"
 #include "golnametable.h"

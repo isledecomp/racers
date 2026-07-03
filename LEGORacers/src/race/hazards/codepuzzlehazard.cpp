@@ -5,6 +5,7 @@
 #include "golmath.h"
 #include "golmodelentity.h"
 #include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimationitem0x18.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/raceeventtable.h"
 #include "types.h"

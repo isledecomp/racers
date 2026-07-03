@@ -160,8 +160,8 @@ public:
 		Entry m_entries[5];                  // 0x00
 		GolAnimatedEntity* m_brickModels[4]; // 0x64
 		RacePowerupManager* m_manager;       // 0x74
-		undefined4 m_nextModelIndex;         // 0x78
-		undefined4 m_nextPartIndex;          // 0x7c
+		LegoU32 m_nextModelIndex;            // 0x78
+		LegoU32 m_nextPartIndex;             // 0x7c
 	};
 
 	RacePowerupManager();

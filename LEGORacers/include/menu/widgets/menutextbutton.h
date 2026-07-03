@@ -26,7 +26,7 @@ public:
 		undefined4 m_unk0xd0;              // 0xd0
 		undefined2 m_stringId;             // 0xd4
 		undefined2 m_unk0xd6;              // 0xd6
-		undefined4 m_maxTextWidth;         // 0xd8
+		LegoU32 m_maxTextWidth;            // 0xd8
 		LegoBool32 m_hasMaxTextWidth;      // 0xdc
 	};
 

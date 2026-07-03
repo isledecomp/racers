@@ -330,7 +330,7 @@ private:
 	LegoFloat m_musicVolume;                               // 0x3324
 	undefined4 m_state;                                    // 0x3328
 	LegoU32 m_elapsedMs;                                   // 0x332c
-	undefined4 m_finishedCount;                            // 0x3330
+	LegoU32 m_finishedCount;                               // 0x3330
 	LegoBool32 m_running;                                  // 0x3334
 	LegoBool m_abortKeyMask;                               // 0x3338
 	undefined m_unk0x3339[0x333c - 0x3339];                // 0x3339
@@ -339,10 +339,10 @@ private:
 	LegoFloat m_fps;                                       // 0x3344
 	undefined m_lapCount;                                  // 0x3348
 	undefined m_unk0x3349[0x334c - 0x3349];                // 0x3349
-	undefined4 m_demoTextMs;                               // 0x334c
-	undefined4 m_demoMode;                                 // 0x3350
+	LegoU32 m_demoTextMs;                                  // 0x334c
+	LegoU32 m_demoMode;                                    // 0x3350
 	undefined4 m_splitScreen;                              // 0x3354
-	undefined4 m_clearMode;                                // 0x3358
+	LegoU32 m_clearMode;                                   // 0x3358
 	undefined4 m_returnToGarage;                           // 0x335c
 	undefined4 m_pendingAction;                            // 0x3360
 	TimeRaceManager* m_timeRaceManager;                    // 0x3364

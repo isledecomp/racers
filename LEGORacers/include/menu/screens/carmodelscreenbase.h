@@ -217,7 +217,7 @@ protected:
 	undefined4 m_unk0x2ad8;                   // 0x2ad8
 	undefined4 m_carouselAction;              // 0x2adc
 	undefined4 m_mode;                        // 0x2ae0
-	undefined4 m_nextMode;                    // 0x2ae4
+	LegoU32 m_nextMode;                       // 0x2ae4
 	LegoU8 m_partCategoryUnlockFlags;         // 0x2ae8
 	undefined m_unk0x2ae9[0x2aec - 0x2ae9];   // 0x2ae9
 	LegoBool32 m_partCategoryAvailable[12];   // 0x2aec

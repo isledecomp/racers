@@ -344,7 +344,7 @@ public:
 	LegoFloat m_accelerationScale;         // 0x72c
 	LegoFloat m_topSpeedScale;             // 0x730
 	LegoFloat m_maxSpeedSetting;           // 0x734
-	undefined4 m_surfaceSoundMs;           // 0x738
+	LegoU32 m_surfaceSoundMs;              // 0x738
 	LegoS32 m_surfaceSoundId;              // 0x73c
 	SpatialSoundInstance* m_surfaceSound;  // 0x740
 	LegoU32 m_routeMode;                   // 0x744

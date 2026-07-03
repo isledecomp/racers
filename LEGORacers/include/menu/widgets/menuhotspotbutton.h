@@ -49,7 +49,7 @@ protected:
 
 	MenuStyleTable::HotspotStyle* m_hotspotStyle; // 0x21c
 	GolImage* m_highlightImage;                   // 0x220
-	undefined4 m_hotspotIndex;                    // 0x224
+	LegoU32 m_hotspotIndex;                       // 0x224
 };
 
 #endif // MENUHOTSPOTBUTTON_H

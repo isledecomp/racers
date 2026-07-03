@@ -86,7 +86,7 @@ protected:
 	LegoFloat m_launchHeight;                // 0x048
 	LegoFloat m_speed;                       // 0x04c
 	LegoS32 m_ageMs;                         // 0x050
-	undefined4 m_flightTimeMs;               // 0x054
+	LegoU32 m_flightTimeMs;                  // 0x054
 	LegoU32 m_lifetimeMs;                    // 0x058
 	GolVec3 m_hitNormal;                     // 0x05c
 	undefined m_unk0x068[0x09c - 0x068];     // 0x068

@@ -35,7 +35,7 @@ protected:
 	LegoBool m_loaded;              // 0x0c
 	GolFileParser* m_parser;        // 0x10
 	GolD3DRenderDevice* m_renderer; // 0x14
-	undefined4 m_entryCount;        // 0x18
+	LegoU32 m_entryCount;           // 0x18
 	undefined4 m_entryCapacity;     // 0x1c
 };
 

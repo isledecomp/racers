@@ -22,7 +22,7 @@ public:
 	void SetSelectedRecord(LegoU32 p_index, SaveRecordList::Record* p_record) { m_selectedRecords[p_index] = p_record; }
 
 private:
-	undefined4 m_selectedRecordCount;             // 0x244
+	LegoU32 m_selectedRecordCount;                // 0x244
 	SaveRecordList::Record* m_selectedRecords[2]; // 0x248
 };
 

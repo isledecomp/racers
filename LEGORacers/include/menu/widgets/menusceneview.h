@@ -26,7 +26,7 @@ public:
 		LegoChar m_worldName[0x70 - 0x60]; // 0x60
 		undefined4 m_drawWorld;            // 0x70
 		LegoBool32 m_hasBlendedWorld;      // 0x74
-		undefined4 m_viewportClearMode;    // 0x78
+		LegoU32 m_viewportClearMode;       // 0x78
 		undefined4 m_eventCode;            // 0x7c
 		LegoFloat m_aspectScale;           // 0x80
 	};
@@ -69,7 +69,7 @@ protected:
 	undefined4 m_drawWorld;           // 0x6c
 	GolVec3 m_cameraEye;              // 0x70
 	GolVec3 m_cameraTarget;           // 0x7c
-	undefined4 m_viewportClearMode;   // 0x88
+	LegoU32 m_viewportClearMode;      // 0x88
 	LegoFloat m_worldScale;           // 0x8c
 	GolVec3 m_forward;                // 0x90
 	GolVec3 m_right;                  // 0x9c

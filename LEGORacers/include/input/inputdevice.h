@@ -182,7 +182,7 @@ protected:
 	undefined4 m_stringBufferLength;              // 0x5c
 	LegoChar m_deviceName[32];                    // 0x60
 	undefined m_unk0x80[0x90 - 0x80];             // 0x80
-	undefined4 m_deviceId;                        // 0x90
+	LegoU32 m_deviceId;                           // 0x90
 	wchar_t* m_stringBuffer;                      // 0x94
 	Callback* m_callback;                         // 0x98
 };

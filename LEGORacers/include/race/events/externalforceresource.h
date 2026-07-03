@@ -16,7 +16,7 @@ public:
 
 	// SIZE 0x30
 	struct InitParams {
-		undefined4 m_eventId;         // 0x00
+		LegoU32 m_eventId;            // 0x00
 		LegoS32 m_stateEventIds[3];   // 0x04
 		RaceEventTable* m_eventTable; // 0x10
 		GolVec3 m_force;              // 0x14

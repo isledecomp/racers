@@ -79,7 +79,7 @@ protected:
 	GolModelEntity* GetItemEntity(LegoS32 p_index);
 	GolModelBase* GetItemModel(LegoS32 p_index);
 
-	undefined4 m_viewportIndex;                     // 0x78
+	LegoU32 m_viewportIndex;                        // 0x78
 	Item* m_items;                                  // 0x7c
 	GolCamera* m_camera;                            // 0x80
 	GolCamera* m_savedCamera;                       // 0x84
@@ -90,7 +90,7 @@ protected:
 	LegoFloat m_unk0xa4;                            // 0xa4
 	undefined m_unk0xa8[0xb4 - 0xa8];               // 0xa8
 	LegoFloat m_cameraDistance;                     // 0xb4
-	undefined4 m_ringBaseIndex;                     // 0xb8
+	LegoU32 m_ringBaseIndex;                        // 0xb8
 	LegoFloat m_scrollStep;                         // 0xbc
 };
 

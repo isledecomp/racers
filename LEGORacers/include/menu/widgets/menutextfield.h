@@ -67,7 +67,7 @@ protected:
 	undefined2 m_buffer[(0x1f4 - 0x1b4) / 2]; // 0x1b4
 	undefined2 m_charsetIndex;                // 0x1f4
 	undefined2 m_unk0x1f6;                    // 0x1f6
-	undefined4 m_inputMode;                   // 0x1f8
+	LegoU32 m_inputMode;                      // 0x1f8
 	GolString m_charset;                      // 0x1fc
 	GolString m_text;                         // 0x208
 	GolFontBase* m_font;                      // 0x214

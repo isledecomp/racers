@@ -121,7 +121,7 @@ private:
 	LegoU32 GetRegistryLanguageIndex();
 
 	LegoBool32 m_dirty;           // 0x00
-	undefined4 m_activeSaveIndex; // 0x04
+	LegoU32 m_activeSaveIndex;    // 0x04
 	InputManager* m_inputManager; // 0x08
 	PersistentGameState m_state;  // 0x0c
 };

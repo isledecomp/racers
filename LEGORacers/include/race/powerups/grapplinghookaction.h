@@ -61,7 +61,7 @@ private:
 	CutsceneParticleRef* m_smokeParticleRef; // 0x26c
 	GolBillboard* m_billboard;               // 0x270
 	MabMaterialTrack m_billboardAnimation;   // 0x274
-	undefined4 m_billboardMaterialIndex;     // 0x28c
+	LegoU32 m_billboardMaterialIndex;        // 0x28c
 };
 
 #endif // GRAPPLINGHOOKACTION_H

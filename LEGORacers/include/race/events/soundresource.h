@@ -35,7 +35,7 @@ public:
 
 	// SIZE 0x4c
 	struct InitParams {
-		undefined4 m_eventId;            // 0x00
+		LegoU32 m_eventId;               // 0x00
 		undefined4 m_unk0x04;            // 0x04
 		RacerSoundSource* m_soundSource; // 0x08
 		GolVec3 m_position;              // 0x0c

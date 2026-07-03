@@ -244,13 +244,13 @@ public:
 	LegoFloat m_engineIdleVolume;             // 0xd28
 	LegoFloat m_engineDriveVolume;            // 0xd2c
 	LegoFloat m_engineFastVolume;             // 0xd30
-	undefined4 m_tauntCooldownMs;             // 0xd34
+	LegoU32 m_tauntCooldownMs;                // 0xd34
 	undefined4 m_unk0xd38;                    // 0xd38
 	undefined4 m_unk0xd3c;                    // 0xd3c
 	LegoU32 m_voiceBank;                      // 0xd40
 	LegoU32 m_reactionCooldownMs;             // 0xd44
-	undefined4 m_speedRampTimerMs;            // 0xd48
-	undefined4 m_scrapeSoundCooldownMs;       // 0xd4c
+	LegoU32 m_speedRampTimerMs;               // 0xd48
+	LegoU32 m_scrapeSoundCooldownMs;          // 0xd4c
 	LegoU32 m_airborneMs;                     // 0xd50
 	LegoFloat m_enginePitchScale;             // 0xd54
 	LegoU32 m_whiteBrickCount;                // 0xd58
@@ -258,9 +258,9 @@ public:
 	LegoU32 m_turboLevel;                     // 0xd68
 	LegoU32 m_shieldLevel;                    // 0xd6c
 	undefined4 m_shoveForceSlot;              // 0xd70
-	undefined4 m_shieldHitCooldownMs;         // 0xd74
+	LegoU32 m_shieldHitCooldownMs;            // 0xd74
 	LegoU32 m_facingForwardMs;                // 0xd78
-	undefined4 m_curseTimerMs;                // 0xd7c
+	LegoU32 m_curseTimerMs;                   // 0xd7c
 	LegoU32 m_curseTickMs;                    // 0xd80
 	LegoU32 m_timeBehindDisplayMs;            // 0xd84
 	LegoU32 m_timeBehind;                     // 0xd88

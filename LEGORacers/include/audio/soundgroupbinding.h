@@ -32,7 +32,7 @@ private:
 
 	SoundManager* m_soundManager; // 0x00
 	SoundGroup* m_soundGroup;     // 0x04
-	undefined4 m_firstSoundIndex; // 0x08
+	LegoU32 m_firstSoundIndex;    // 0x08
 };
 
 #endif // SOUNDGROUPBINDING_H

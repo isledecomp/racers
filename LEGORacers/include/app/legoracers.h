@@ -94,7 +94,7 @@ public:
 		LegoU8 m_flags;                                                     // 0x1e
 		undefined m_unk0x1f;                                                // 0x1f
 		LegoU32 m_cheatFlags;                                               // 0x20
-		undefined4 m_raceMode;                                              // 0x24
+		LegoU32 m_raceMode;                                                 // 0x24
 		LegoU32 m_languageIndex;                                            // 0x28
 		undefined m_lapCount;                                               // 0x2c
 		GolName m_circuitName;                                              // 0x2d
@@ -107,12 +107,12 @@ public:
 		LegoU32 m_currentRaceIndex;                                         // 0xd8
 		LegoChar m_gameDataDirectory[18];                                   // 0xdc
 		LegoChar m_commonDataDirectory[18];                                 // 0xee
-		undefined4 m_racerCount;                                            // 0x100
+		LegoU32 m_racerCount;                                               // 0x100
 		PlayerSetupSlot m_playerSetupSlots[c_playerSetupSlotCount];         // 0x104
-		undefined4 m_playerCount;                                           // 0x32c
+		LegoU32 m_playerCount;                                              // 0x32c
 		PlayerRecordState m_playerRecordStates[c_playerRecordStateCount];   // 0x330
 		InputBindingState::Entry m_inputBindings[c_inputBindingEntryCount]; // 0x348
-		undefined4 m_cameraViewIndex;                                       // 0x398
+		LegoU32 m_cameraViewIndex;                                          // 0x398
 		LegoU32 m_saveRecordCount;                                          // 0x39c
 		SaveRecordData m_saveRecords[5];                                    // 0x3a0
 		PersistentGameState m_saveState;                                    // 0xe81

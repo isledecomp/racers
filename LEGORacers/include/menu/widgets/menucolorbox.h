@@ -12,9 +12,9 @@ public:
 	// SIZE 0x44
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		undefined4 m_blinkEnabled;  // 0x38
-		undefined4 m_onDurationMs;  // 0x3c
-		undefined4 m_offDurationMs; // 0x40
+		undefined4 m_blinkEnabled; // 0x38
+		LegoU32 m_onDurationMs;    // 0x3c
+		LegoU32 m_offDurationMs;   // 0x40
 	};
 
 	MenuColorBox();
@@ -34,13 +34,13 @@ public:
 	// MenuColorBox::`scalar deleting destructor'
 
 protected:
-	undefined4 m_visible;       // 0xa4
-	undefined4 m_onDurationMs;  // 0xa8
-	undefined4 m_offDurationMs; // 0xac
-	undefined4 m_blinkMs;       // 0xb0
-	undefined4 m_blinkEnabled;  // 0xb4
-	undefined4 m_width;         // 0xb8
-	undefined4 m_height;        // 0xbc
+	undefined4 m_visible;      // 0xa4
+	LegoU32 m_onDurationMs;    // 0xa8
+	LegoU32 m_offDurationMs;   // 0xac
+	LegoU32 m_blinkMs;         // 0xb0
+	undefined4 m_blinkEnabled; // 0xb4
+	undefined4 m_width;        // 0xb8
+	undefined4 m_height;       // 0xbc
 };
 
 #endif // MENUCOLORBOX_H

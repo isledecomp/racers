@@ -84,7 +84,7 @@ private:
 	LegoU32 m_recordCount;     // 0x00
 	Record* m_records;         // 0x04
 	undefined4 m_recordSource; // 0x08
-	undefined4 m_saveIndex;    // 0x0c
+	LegoU32 m_saveIndex;       // 0x0c
 	undefined4 m_unk0x10;      // 0x10
 	Record* m_freeRecords;     // 0x14
 	Record* m_usedRecords;     // 0x18

@@ -62,7 +62,7 @@ public:
 		undefined2 m_iconSoundIds[5];          // 0x18
 		undefined2 m_unk0x22;                  // 0x22
 		Rect m_stateRects[6];                  // 0x24
-		undefined4 m_transitionDurationMs;     // 0x84
+		LegoU32 m_transitionDurationMs;        // 0x84
 		LegoBool32 m_hasStateColors;           // 0x88
 		LegoBool32 m_hasSoundIds;              // 0x8c
 	};

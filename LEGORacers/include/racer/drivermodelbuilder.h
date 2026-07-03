@@ -43,7 +43,7 @@ public:
 	struct LoadParams {
 		GolExport* m_golExport;               // 0x00
 		GolD3DRenderDevice* m_renderer;       // 0x04
-		undefined4 m_menuId;                  // 0x08
+		LegoU32 m_menuId;                     // 0x08
 		DriverPartResources* m_partResources; // 0x0c
 	};
 
@@ -98,9 +98,9 @@ private:
 	GolModelBase* MergeModels(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_vertexType);
 	void CopyGroupsUntilFace();
 
-	undefined4 m_menuId;                       // 0x00
-	undefined4 m_textureCount;                 // 0x04
-	undefined4 m_materialCount;                // 0x08
+	LegoU32 m_menuId;                          // 0x00
+	LegoU32 m_textureCount;                    // 0x04
+	LegoU32 m_materialCount;                   // 0x08
 	undefined4 m_unk0x0c;                      // 0x0c
 	undefined4 m_expressionMask;               // 0x10
 	GolExport* m_golExport;                    // 0x14

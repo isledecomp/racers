@@ -103,7 +103,7 @@ public:
 		VisualStateColor m_unk0xd8;        // 0xd8
 		Rect m_unk0xdc;                    // 0xdc
 		Rect m_unk0xec;                    // 0xec
-		undefined4 m_maxTextWidth;         // 0xfc
+		LegoU32 m_maxTextWidth;            // 0xfc
 		LegoBool32 m_hasMaxTextWidth;      // 0x100
 	};
 

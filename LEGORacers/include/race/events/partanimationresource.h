@@ -11,7 +11,7 @@ class PartAnimationResource : public RaceEventResource {
 public:
 	// SIZE 0x3c
 	struct InitParams {
-		undefined4 m_eventId;                // 0x00
+		LegoU32 m_eventId;                   // 0x00
 		LegoS32 m_stateEventIds[3];          // 0x04
 		RaceEventTable* m_eventTable;        // 0x10
 		GolAnimatedEntity* m_animatedEntity; // 0x14

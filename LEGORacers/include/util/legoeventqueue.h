@@ -82,7 +82,7 @@ public:
 
 		undefined4 m_type;         // 0x00
 		undefined4 m_flags;        // 0x04
-		undefined4 m_maxFireCount; // 0x08
+		LegoU32 m_maxFireCount;    // 0x08
 		undefined4 m_hitThreshold; // 0x0c
 		union {
 			LegoU32 m_intervalMs;          // 0x10
@@ -99,10 +99,10 @@ public:
 	// SIZE 0x18
 	class CallbackData {
 	public:
-		undefined4 m_type;      // 0x00
-		undefined4 m_flags;     // 0x04
-		undefined4 m_fireCount; // 0x08
-		undefined4 m_hitCount;  // 0x0c
+		undefined4 m_type;   // 0x00
+		undefined4 m_flags;  // 0x04
+		LegoU32 m_fireCount; // 0x08
+		LegoU32 m_hitCount;  // 0x0c
 		union {
 			LegoU32 m_intervalMs;             // 0x10
 			GolWorldEntity* m_worldEntity0;   // 0x10
@@ -133,8 +133,8 @@ public:
 
 		Callback* m_callback;    // 0x00
 		Descriptor m_descriptor; // 0x04
-		undefined4 m_fireCount;  // 0x1c
-		undefined4 m_hitCount;   // 0x20
+		LegoU32 m_fireCount;     // 0x1c
+		LegoU32 m_hitCount;      // 0x20
 		LegoBool32 m_active;     // 0x24
 		Event* m_next;           // 0x28
 	};

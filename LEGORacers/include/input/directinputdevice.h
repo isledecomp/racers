@@ -17,7 +17,7 @@ public:
 		LPCDIDATAFORMAT m_dataFormat; // 0x04
 		HWND m_hWnd;                  // 0x08
 		const GUID* m_guid;           // 0x0c
-		undefined4 m_deviceId;        // 0x10
+		LegoU32 m_deviceId;           // 0x10
 		InputManager* m_inputManager; // 0x14
 	};
 

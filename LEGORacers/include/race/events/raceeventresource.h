@@ -50,7 +50,7 @@ public:
 public:
 	RaceEventTable* m_eventTable;     // 0x04
 	LegoS32 m_stateEventIds[3];       // 0x08
-	undefined4 m_eventId;             // 0x14
+	LegoU32 m_eventId;                // 0x14
 	LegoU32 m_state;                  // 0x18
 	LegoU8 m_flags;                   // 0x1c
 	undefined m_unk0x1d[0x20 - 0x1d]; // 0x1d

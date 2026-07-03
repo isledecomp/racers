@@ -178,7 +178,7 @@ public:
 	ColorTransform m_baseColorTransform;                      // 0x3a0
 	LegoU32 m_hasColorTransform;                              // 0x3c0
 	LegoU32 m_isFlashing;                                     // 0x3c4
-	undefined4 m_flashTimerMs;                                // 0x3c8
+	LegoU32 m_flashTimerMs;                                   // 0x3c8
 	LegoU32 m_lastGroundedWheelCount;                         // 0x3cc
 };
 

@@ -220,7 +220,7 @@ private:
 	LegoU32 m_animEventCount;                     // 0x0f0
 	CutsceneAnimationEvent* m_animEvents;         // 0x0f4
 	GolNameTable m_menuAnimEventNames;            // 0x0f8
-	undefined4 m_menuAnimEventCount;              // 0x104
+	LegoU32 m_menuAnimEventCount;                 // 0x104
 	CutsceneMenuAnimationEvent* m_menuAnimEvents; // 0x108
 	GolNameTable m_textVisualNames;               // 0x10c
 	LegoU32 m_textVisualCount;                    // 0x118
@@ -228,40 +228,40 @@ private:
 	GolNameTable m_imageVisualNames;              // 0x120
 	LegoU32 m_imageVisualCount;                   // 0x12c
 	CutsceneImageVisual* m_imageVisuals;          // 0x130
-	undefined4 m_eventStartedCount;               // 0x134
+	LegoU32 m_eventStartedCount;                  // 0x134
 	CutsceneEventLink* m_eventStartedLinks;       // 0x138
 	GolNameTable m_eventStartedNames;             // 0x13c
-	undefined4 m_eventEndedCount;                 // 0x148
+	LegoU32 m_eventEndedCount;                    // 0x148
 	CutsceneEventLink* m_eventEndedLinks;         // 0x14c
 	GolNameTable m_eventEndedNames;               // 0x150
-	undefined4 m_cameraStartedCount;              // 0x15c
+	LegoU32 m_cameraStartedCount;                 // 0x15c
 	CutsceneEventLink* m_cameraStartedLinks;      // 0x160
 	GolNameTable m_cameraStartedNames;            // 0x164
-	undefined4 m_cameraEndedCount;                // 0x170
+	LegoU32 m_cameraEndedCount;                   // 0x170
 	CutsceneEventLink* m_cameraEndedLinks;        // 0x174
 	GolNameTable m_cameraEndedNames;              // 0x178
-	undefined4 m_modelStartedCount;               // 0x184
+	LegoU32 m_modelStartedCount;                  // 0x184
 	CutsceneEventLink* m_modelStartedLinks;       // 0x188
 	GolNameTable m_modelStartedNames;             // 0x18c
-	undefined4 m_modelEndedCount;                 // 0x198
+	LegoU32 m_modelEndedCount;                    // 0x198
 	CutsceneEventLink* m_modelEndedLinks;         // 0x19c
 	GolNameTable m_modelEndedNames;               // 0x1a0
-	undefined4 m_transformStartedCount;           // 0x1ac
+	LegoU32 m_transformStartedCount;              // 0x1ac
 	CutsceneEventLink* m_transformStartedLinks;   // 0x1b0
 	GolNameTable m_transformStartedNames;         // 0x1b4
-	undefined4 m_transformEndedCount;             // 0x1c0
+	LegoU32 m_transformEndedCount;                // 0x1c0
 	CutsceneEventLink* m_transformEndedLinks;     // 0x1c4
 	GolNameTable m_transformEndedNames;           // 0x1c8
-	undefined4 m_ambientStartedCount;             // 0x1d4
+	LegoU32 m_ambientStartedCount;                // 0x1d4
 	CutsceneEventLink* m_ambientStartedLinks;     // 0x1d8
 	GolNameTable m_ambientStartedNames;           // 0x1dc
-	undefined4 m_ambientEndedCount;               // 0x1e8
+	LegoU32 m_ambientEndedCount;                  // 0x1e8
 	CutsceneEventLink* m_ambientEndedLinks;       // 0x1ec
 	GolNameTable m_ambientEndedNames;             // 0x1f0
-	undefined4 m_directionalStartedCount;         // 0x1fc
+	LegoU32 m_directionalStartedCount;            // 0x1fc
 	CutsceneEventLink* m_directionalStartedLinks; // 0x200
 	GolNameTable m_directionalStartedNames;       // 0x204
-	undefined4 m_directionalEndedCount;           // 0x210
+	LegoU32 m_directionalEndedCount;              // 0x210
 	CutsceneEventLink* m_directionalEndedLinks;   // 0x214
 	GolNameTable m_directionalEndedNames;         // 0x218
 	GolStringTable* m_stringTable;                // 0x224

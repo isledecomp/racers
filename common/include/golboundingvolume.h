@@ -107,10 +107,10 @@ private:
 	void ParseNodesFixedPoint(GolFileParser& p_parser);
 	undefined4 ComputeTraversalDepth();
 
-	undefined4 m_nodeCount;                       // 0x04
+	LegoU32 m_nodeCount;                          // 0x04
 	BspNode* m_nodes;                             // 0x08
 	GdbVertexArray* m_vertices;                   // 0x0c
-	undefined4 m_triangleCount;                   // 0x10
+	LegoU32 m_triangleCount;                      // 0x10
 	Triangle* m_triangles;                        // 0x14
 	GolModelMaterialTable m_materialTable;        // 0x18
 	GolModelMaterialTable* m_activeMaterialTable; // 0x24

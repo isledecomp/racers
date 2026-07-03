@@ -66,7 +66,7 @@ public:
 		GolStringTable* m_stringTable; // 0x38
 		GolFont* m_font;               // 0x3c
 		undefined2 m_stringId;         // 0x40
-		undefined4 m_wrapWidth;        // 0x44
+		LegoU32 m_wrapWidth;           // 0x44
 	};
 
 	// SIZE 0x60
@@ -83,7 +83,7 @@ public:
 		LegoChar m_worldName[0x70 - 0x60]; // 0x60
 		undefined4 m_drawWorld;            // 0x70
 		LegoBool32 m_hasBlendedWorld;      // 0x74
-		undefined4 m_viewportClearMode;    // 0x78
+		LegoU32 m_viewportClearMode;       // 0x78
 		undefined4 m_eventCode;            // 0x7c
 		LegoFloat m_aspectScale;           // 0x80
 		void* m_linkedBinding;             // 0x84

@@ -43,8 +43,8 @@ private:
 	GolVec3 m_velocity;                    // 0x148
 	GolVec3 m_position;                    // 0x154
 	GolMatrix3 m_basis;                    // 0x160
-	undefined4 m_emitTimerMs;              // 0x184
-	undefined4 m_ageMs;                    // 0x188
+	LegoU32 m_emitTimerMs;                 // 0x184
+	LegoU32 m_ageMs;                       // 0x188
 };
 
 #endif // CUTSCENEPARTICLE_H

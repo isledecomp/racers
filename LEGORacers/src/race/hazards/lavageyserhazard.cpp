@@ -1,6 +1,7 @@
 #include "race/hazards/lavageyserhazard.h"
 
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "decomp.h"
 #include "golfileparser.h"
 #include "golmath.h"
@@ -117,7 +118,7 @@ void LavaGeyserHazard::OnDeactivate(void*)
 	}
 
 	if (m_loopSound) {
-		m_soundSource->ReleaseSound(m_soundResource);
+		m_soundSource->ReleaseSound(m_loopSound);
 		m_loopSound = NULL;
 	}
 
@@ -188,7 +189,7 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 				m_eventTable->FireEventsAt(c_eventId, c_eventId, &effectPosition);
 				m_eventMs = c_eventCooldownMs;
 				if (m_loopSound) {
-					m_soundSource->ReleaseSound(m_soundResource);
+					m_soundSource->ReleaseSound(m_loopSound);
 					m_loopSound = NULL;
 				}
 			}

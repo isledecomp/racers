@@ -52,12 +52,9 @@ public:
 	void Activate(Racer* p_racer);
 
 private:
-	RacePowerupManager* m_manager; // 0x02c
-	GolWorldEntity m_worldEntity;  // 0x030
-	union {
-		SpatialSoundInstance* m_sound;                  // 0x058
-		RaceResourceManager::Resource* m_soundResource; // 0x058
-	};
+	RacePowerupManager* m_manager;               // 0x02c
+	GolWorldEntity m_worldEntity;                // 0x030
+	SpatialSoundInstance* m_sound;               // 0x058
 	CutsceneAnimation* m_particleAnimation;      // 0x05c
 	CutsceneParticleRef* m_bubbleParticle;       // 0x060
 	RaceDecalManager::Trail::Decal m_slickDecal; // 0x064

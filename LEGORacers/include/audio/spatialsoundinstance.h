@@ -72,6 +72,7 @@ public:
 
 protected:
 	friend class DirectSoundGroup;
+	friend class RacePowerupManager;
 	friend class RaceState;
 
 	void UpdateSpatialFromOrigin();

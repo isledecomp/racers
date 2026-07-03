@@ -7,6 +7,8 @@
 #include "gollist.h"
 #include "types.h"
 
+class StreamingSoundInstance;
+
 class SoundGroup;
 struct SoundNode;
 

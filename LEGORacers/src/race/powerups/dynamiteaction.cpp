@@ -1,5 +1,6 @@
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
 #include "decomp.h"
@@ -110,7 +111,7 @@ LegoU32 DynamiteAction::Activate(Racer* p_racer, Racer* p_targetRacer)
 void DynamiteAction::Deactivate()
 {
 	if (m_sound != NULL) {
-		m_soundSource->ReleaseSound(m_soundResource);
+		m_soundSource->ReleaseSound(m_sound);
 		m_sound = NULL;
 	}
 
@@ -158,7 +159,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 			);
 
 			if (m_sound != NULL) {
-				m_soundSource->ReleaseSound(m_soundResource);
+				m_soundSource->ReleaseSound(m_sound);
 				m_sound = NULL;
 			}
 

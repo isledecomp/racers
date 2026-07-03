@@ -58,10 +58,7 @@ public:
 	// SoundResource::`vector deleting destructor'
 
 private:
-	union {
-		SpatialSoundInstance* m_sound;            // 0x20
-		RaceResourceManager::Resource* m_res0x20; // 0x20
-	};
+	SpatialSoundInstance* m_sound;    // 0x20
 	RacerSoundSource* m_soundSource;  // 0x24
 	GolModelEntity* m_unk0x28;        // 0x28
 	LegoU32 m_unk0x2c;                // 0x2c

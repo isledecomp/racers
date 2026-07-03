@@ -3,6 +3,7 @@
 
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutsceneevent.h"
+#include "surface/color.h"
 
 class GolD3DRenderDevice;
 class GolMaterial;
@@ -35,12 +36,7 @@ private:
 	GolMaterial* m_material;                 // 0x18
 	MenuAnimationList::Entry* m_activeEntry; // 0x1c
 	union {
-		struct {
-			LegoU8 m_red;   // 0x20
-			LegoU8 m_grn;   // 0x21
-			LegoU8 m_blu;   // 0x22
-			LegoU8 m_alpha; // 0x23
-		};
+		ColorRGBA m_color;     // 0x20
 		LegoU32 m_colorPacked; // 0x20
 	};
 	LegoU32 m_durationMs;             // 0x24

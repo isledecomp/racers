@@ -1,5 +1,6 @@
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
 #include "golbinparser.h"
@@ -205,9 +206,9 @@ RaceState::~RaceState()
 void RaceState::Reset()
 {
 	m_roster.m_racers = NULL;
-	m_roster.m_unk0x058 = 0;
+	m_roster.m_checkpointGraph = NULL;
 	m_roster.m_racerCount = 0;
-	m_roster.m_soundSource = 0;
+	m_roster.m_soundSource = NULL;
 
 	LegoS32 i;
 	for (i = 0; i < sizeOfArray(m_roster.m_racerEvents); i++) {
@@ -224,10 +225,10 @@ void RaceState::Reset()
 		m_roster.m_placementSlots[i] = 0;
 	}
 
-	m_roster.m_proximitySoundResource = NULL;
-	m_roster.m_unk0x080[0] = NULL;
-	m_roster.m_unk0x080[1] = NULL;
-	m_roster.m_unk0x080[2] = NULL;
+	m_roster.m_proximitySound = NULL;
+	m_roster.m_currentRacer = NULL;
+	m_roster.m_golExport = NULL;
+	m_roster.m_timeRaceManager = NULL;
 
 	for (i = 0; i < sizeOfArray(m_roster.m_customCarModels); i++) {
 		m_roster.m_customCarModels[i] = 0;
@@ -278,9 +279,9 @@ void RaceState::Destroy()
 	table = &m_driverTable;
 	table->Clear();
 
-	if (m_roster.m_proximitySoundResource) {
-		m_roster.m_soundSource->ReleaseSound(m_roster.m_proximitySoundResource);
-		m_roster.m_proximitySoundResource = NULL;
+	if (m_roster.m_proximitySound) {
+		m_roster.m_soundSource->ReleaseSound(m_roster.m_proximitySound);
+		m_roster.m_proximitySound = NULL;
 	}
 
 	LegoU32 racerIndex;
@@ -310,7 +311,7 @@ void RaceState::Destroy()
 // FUNCTION: LEGORACERS 0x0043b190
 void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_context, LegoBool32 p_binary)
 {
-	m_roster.m_field0x010 = p_context->m_checkpointGraph;
+	m_roster.m_checkpointGraph = p_context->m_checkpointGraph;
 	m_roster.m_soundSource = p_context->m_soundSource;
 	m_roster.m_powerupManager = p_context->m_powerupManager;
 	m_roster.m_golExport = p_context->m_golExport;
@@ -812,7 +813,7 @@ void RaceState::UpdateStandings()
 				for (planeIndex = 0; planeIndex < sizeOfArray(pathField->m_next.m_items); planeIndex++) {
 					if (pathField->m_next.m_items[planeIndex] != 0xff) {
 						CheckpointGraph::Entry* plane =
-							m_roster.m_field0x010->GetCheckpoint(pathField->m_next.m_items[planeIndex]);
+							m_roster.m_checkpointGraph->GetCheckpoint(pathField->m_next.m_items[planeIndex]);
 						LegoFloat distance = plane->m_planeNormal.m_x * position.m_x +
 											 plane->m_planeNormal.m_y * position.m_y +
 											 plane->m_planeNormal.m_z * position.m_z + plane->m_planeDistance;
@@ -857,7 +858,7 @@ void RaceState::UpdateStandings()
 	}
 
 	SpatialSoundInstance* sound = m_roster.m_proximitySound;
-	Racer* trackedRacer = m_roster.m_racer080;
+	Racer* trackedRacer = m_roster.m_currentRacer;
 	if (sound && trackedRacer) {
 		GolVec3 trackedPosition;
 		trackedRacer->m_visuals.m_carEntity->VTable0x04(&trackedPosition);
@@ -967,9 +968,9 @@ void RaceState::DrawRacerEntities(GolRenderDevice* p_renderer, Racer* p_racer)
 // FUNCTION: LEGORACERS 0x0043d120
 void RaceState::StopProximitySound()
 {
-	RaceResourceManager::Resource* resource = m_roster.m_proximitySoundResource;
+	SpatialSoundInstance* resource = m_roster.m_proximitySound;
 	if (resource) {
 		m_roster.m_soundSource->ReleaseSound(resource);
-		m_roster.m_proximitySoundResource = NULL;
+		m_roster.m_proximitySound = NULL;
 	}
 }

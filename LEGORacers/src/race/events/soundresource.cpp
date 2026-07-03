@@ -1,6 +1,7 @@
 #include "race/events/soundresource.h"
 
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "decomp.h"
 #include "golmodelbase.h"
 #include "golmodelentity.h"
@@ -76,7 +77,7 @@ void SoundResource::Initialize(InitParams* p_params)
 void SoundResource::Destroy()
 {
 	if (m_sound) {
-		m_soundSource->ReleaseSound(m_res0x20);
+		m_soundSource->ReleaseSound(m_sound);
 		m_sound = NULL;
 	}
 
@@ -132,7 +133,7 @@ void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 void SoundResource::OnEnd()
 {
 	if (m_sound) {
-		m_soundSource->ReleaseSound(m_res0x20);
+		m_soundSource->ReleaseSound(m_sound);
 		m_sound = NULL;
 	}
 

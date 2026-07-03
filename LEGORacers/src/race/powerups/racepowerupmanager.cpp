@@ -1,5 +1,6 @@
 #include "app/cheatflags.h"
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "cmbmodelpart0x34.h"
 #include "decomp.h"
 #include "golbinparser.h"
@@ -17,7 +18,6 @@ DECOMP_SIZE_ASSERT(PickupBrick, 0x54)
 DECOMP_SIZE_ASSERT(ColorBrick, 0x68)
 DECOMP_SIZE_ASSERT(WhiteBrick, 0x68)
 DECOMP_SIZE_ASSERT(RacePowerupManager::PwbTxtParser, 0x1fc)
-DECOMP_SIZE_ASSERT(RacePowerupManager::SpatialSoundResource, 0x30)
 DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris, 0x80)
 DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris::Entry, 0x14)
 DECOMP_SIZE_ASSERT(TargetPointList::Entry, 0x14)
@@ -740,33 +740,33 @@ void RacePowerupManager::CreatePools()
 	CreateActionPools();
 	CreateExplosionPools();
 
-	m_cannonballFlightSoundInstance = m_soundSource->AcquireSoundById(7);
-	if (m_cannonballFlightSoundInstance != NULL) {
-		m_cannonballFlightSoundInstance->SetDistanceRangeWithMinSquared(
+	m_cannonballFlightSound = m_soundSource->AcquireSoundById(7);
+	if (m_cannonballFlightSound != NULL) {
+		m_cannonballFlightSound->SetDistanceRangeWithMinSquared(
 			g_flightSoundMinDistance * g_flightSoundMinDistance,
 			g_flightSoundMaxDistanceSquared
 		);
 	}
 
-	m_missileFlightSoundInstance = m_soundSource->AcquireSoundById(0x34);
-	if (m_missileFlightSoundInstance != NULL) {
-		m_missileFlightSoundInstance->SetDistanceRangeWithMinSquared(
+	m_missileFlightSound = m_soundSource->AcquireSoundById(0x34);
+	if (m_missileFlightSound != NULL) {
+		m_missileFlightSound->SetDistanceRangeWithMinSquared(
 			g_flightSoundMinDistance * g_flightSoundMinDistance,
 			g_flightSoundMaxDistanceSquared
 		);
 	}
 
-	m_grappleFlightSoundInstance = m_soundSource->AcquireSoundById(0x17);
-	if (m_grappleFlightSoundInstance != NULL) {
-		m_grappleFlightSoundInstance->SetDistanceRangeWithMinSquared(
+	m_grappleFlightSound = m_soundSource->AcquireSoundById(0x17);
+	if (m_grappleFlightSound != NULL) {
+		m_grappleFlightSound->SetDistanceRangeWithMinSquared(
 			g_flightSoundMinDistance * g_flightSoundMinDistance,
 			g_flightSoundMaxDistanceSquared
 		);
 	}
 
-	m_grappleAttachedSoundInstance = m_soundSource->AcquireSoundById(0x13);
-	if (m_grappleAttachedSoundInstance != NULL) {
-		m_grappleAttachedSoundInstance->SetDistanceRangeWithMinSquared(
+	m_grappleAttachedSound = m_soundSource->AcquireSoundById(0x13);
+	if (m_grappleAttachedSound != NULL) {
+		m_grappleAttachedSound->SetDistanceRangeWithMinSquared(
 			g_flightSoundMinDistance * g_flightSoundMinDistance,
 			g_flightSoundMaxDistanceSquared
 		);
@@ -1228,22 +1228,22 @@ void RacePowerupManager::CreateExplosionPools()
 void RacePowerupManager::Destroy()
 {
 	if (m_grappleAttachedSound != NULL) {
-		m_soundSource->ReleaseSound(m_grappleAttachedSoundResource);
+		m_soundSource->ReleaseSound(m_grappleAttachedSound);
 		m_grappleAttachedSound = NULL;
 	}
 
 	if (m_grappleFlightSound != NULL) {
-		m_soundSource->ReleaseSound(m_grappleFlightSoundResource);
+		m_soundSource->ReleaseSound(m_grappleFlightSound);
 		m_grappleFlightSound = NULL;
 	}
 
 	if (m_missileFlightSound != NULL) {
-		m_soundSource->ReleaseSound(m_missileFlightSoundResource);
+		m_soundSource->ReleaseSound(m_missileFlightSound);
 		m_missileFlightSound = NULL;
 	}
 
 	if (m_cannonballFlightSound != NULL) {
-		m_soundSource->ReleaseSound(m_cannonballFlightSoundResource);
+		m_soundSource->ReleaseSound(m_cannonballFlightSound);
 		m_cannonballFlightSound = NULL;
 	}
 
@@ -2470,19 +2470,19 @@ void RacePowerupManager::CancelWarp(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045b7a0
-void RacePowerupManager::UpdateProjectileSound(SpatialSoundResource* p_resource, LegoU32 p_level, LegoS32 p_state)
+void RacePowerupManager::UpdateProjectileSound(SpatialSoundInstance* p_sound, LegoU32 p_level, LegoS32 p_state)
 {
 	Racer* racer = m_raceState->GetCurrentRacer();
 	if (racer == NULL) {
-		if (p_resource->VTable0x0c()) {
-			p_resource->VTable0x08();
+		if (p_sound->IsPlaying()) {
+			p_sound->Stop();
 		}
 		return;
 	}
 
 	WeaponActionBase* nearest = NULL;
 	LegoFloat nearestDistanceSquared = FLT_MAX;
-	GolVec3 referencePosition;
+	SoundVector referencePosition;
 	GolVec3 position;
 	GolVec3 direction;
 
@@ -2505,20 +2505,20 @@ void RacePowerupManager::UpdateProjectileSound(SpatialSoundResource* p_resource,
 	}
 
 	if (nearestDistanceSquared < g_projectileSoundRangeSquared) {
-		if (!p_resource->VTable0x0c()) {
-			p_resource->VTable0x04(1);
+		if (!p_sound->IsPlaying()) {
+			p_sound->Play(TRUE);
 		}
 
 		nearest->GetProjectilePosition(&referencePosition);
 		nearest->GetProjectileVelocity(&direction);
 
-		p_resource->m_position = referencePosition;
-		p_resource->m_velocity.m_x = direction.m_x;
-		p_resource->m_velocity.m_y = direction.m_y;
-		p_resource->m_velocity.m_z = direction.m_z;
+		p_sound->m_position = referencePosition;
+		p_sound->m_velocity.m_x = direction.m_x;
+		p_sound->m_velocity.m_y = direction.m_y;
+		p_sound->m_velocity.m_z = direction.m_z;
 	}
-	else if (p_resource->VTable0x0c()) {
-		p_resource->VTable0x08();
+	else if (p_sound->IsPlaying()) {
+		p_sound->Stop();
 	}
 }
 

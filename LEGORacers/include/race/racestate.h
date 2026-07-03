@@ -73,7 +73,7 @@ public:
 	Racer* GetRacers() { return m_roster.m_racers; }
 	Racer* GetRacer(LegoU32 p_index) { return &m_roster.m_racers[p_index]; }
 	LegoU32 GetRacerCount() const { return m_roster.m_racerCount; }
-	Racer* GetCurrentRacer() { return m_roster.m_racer080; }
+	Racer* GetCurrentRacer() { return m_roster.m_currentRacer; }
 	GolMaterialLibrary* GetMaterialLibrary() const { return m_setup.m_materialLibrary; }
 	Racer* GetPlayerRacer() { return m_playerRacers[0]; }
 	RaceRouteRecord* FindNearestRouteRecord(Racer* p_racer);
@@ -155,7 +155,7 @@ private:
 	void UpdateShadows(GolCamera* p_camera);
 	void StartRace();
 	void DrawRacerEntities(GolRenderDevice* p_renderer, Racer* p_racer);
-	void SetCurrentRacer(Racer* p_racer) { m_roster.m_racer080 = p_racer; }
+	void SetCurrentRacer(Racer* p_racer) { m_roster.m_currentRacer = p_racer; }
 	void SetRubberBandBoost(LegoFloat p_boost) { m_setup.m_rubberBandBoost = p_boost; }
 	void Reset();
 	void Destroy();

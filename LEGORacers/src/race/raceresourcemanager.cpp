@@ -1,13 +1,17 @@
 #include "race/raceresourcemanager.h"
 
+#include "audio/directsoundgroup.h"
+#include "audio/streamingsoundinstance.h"
+
 DECOMP_SIZE_ASSERT(RaceResourceManager, 0x04)
-DECOMP_SIZE_ASSERT(RaceResourceManager::Resource, 0x04)
 
 // FUNCTION: LEGORACERS 0x00443c10
-void RaceResourceManager::ReleaseSound(Resource* p_resource)
+void RaceResourceManager::ReleaseSound(SpatialSoundInstance* p_sound)
 {
 	if (m_soundManager != NULL) {
-		Resource* resource = p_resource->VTable0x10();
-		resource->VTable0x24(p_resource);
+		// Acquired sounds are streaming instances except the null fallback,
+		// which is only handed out when no sound manager exists.
+		DirectSoundGroup* group = p_sound->GetSoundGroup();
+		group->DestroyStreamingSoundInstance(static_cast<StreamingSoundInstance*>(p_sound));
 	}
 }

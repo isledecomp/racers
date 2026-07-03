@@ -1,5 +1,6 @@
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
 #include "golbinparser.h"
@@ -42,7 +43,6 @@ DECOMP_SIZE_ASSERT(RacerBoxBody, 0xe4)
 DECOMP_SIZE_ASSERT(RacerCarBody, 0x74c)
 DECOMP_SIZE_ASSERT(RacerPhysics, 0x888)
 DECOMP_SIZE_ASSERT(DriveController, 0x54)
-DECOMP_SIZE_ASSERT(Racer::SpatialSoundResource, 0x30)
 DECOMP_SIZE_ASSERT(RaceRoster, 0x194)
 DECOMP_SIZE_ASSERT(RaceSetup, 0x1c)
 
@@ -277,22 +277,22 @@ void Racer::Destroy()
 	}
 
 	if (m_engineIdleSound) {
-		m_soundSource->ReleaseSound(m_soundD9c);
+		m_soundSource->ReleaseSound(m_engineIdleSound);
 		m_engineIdleSound = NULL;
 	}
 
 	if (m_engineDriveSound) {
-		m_soundSource->ReleaseSound(m_soundDa0);
+		m_soundSource->ReleaseSound(m_engineDriveSound);
 		m_engineDriveSound = NULL;
 	}
 
 	if (m_engineFastSound) {
-		m_soundSource->ReleaseSound(m_soundDa4);
+		m_soundSource->ReleaseSound(m_engineFastSound);
 		m_engineFastSound = NULL;
 	}
 
 	if (m_brakeSound) {
-		m_soundSource->ReleaseSound(m_brakeSoundResource);
+		m_soundSource->ReleaseSound(m_brakeSound);
 		m_brakeSound = NULL;
 	}
 
@@ -721,33 +721,33 @@ void Racer::InitializeSounds(RaceCameraController* p_cameraController, LegoBool3
 	m_controlMode = p_state;
 	m_cameraController = p_cameraController;
 
-	m_soundD8c = m_soundSource->AcquireSoundById(0x2a);
-	if (m_soundD8c) {
-		m_soundD8c->SetDistanceRangeWithMinSquared(
+	m_turboSoundL0 = m_soundSource->AcquireSoundById(0x2a);
+	if (m_turboSoundL0) {
+		m_turboSoundL0->SetDistanceRangeWithMinSquared(
 			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
 			g_shieldSoundMaxDistance
 		);
 	}
 
-	m_soundD90 = m_soundSource->AcquireSoundById(0x2b);
-	if (m_soundD90) {
-		m_soundD90->SetDistanceRangeWithMinSquared(
+	m_turboSoundL1 = m_soundSource->AcquireSoundById(0x2b);
+	if (m_turboSoundL1) {
+		m_turboSoundL1->SetDistanceRangeWithMinSquared(
 			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
 			g_shieldSoundMaxDistance
 		);
 	}
 
-	m_soundD94 = m_soundSource->AcquireSoundById(0x2c);
-	if (m_soundD94) {
-		m_soundD94->SetDistanceRangeWithMinSquared(
+	m_turboSoundL2 = m_soundSource->AcquireSoundById(0x2c);
+	if (m_turboSoundL2) {
+		m_turboSoundL2->SetDistanceRangeWithMinSquared(
 			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
 			g_shieldSoundMaxDistance
 		);
 	}
 
-	m_soundD98 = m_soundSource->AcquireSoundById(0x2d);
-	if (m_soundD98) {
-		m_soundD98->SetDistanceRangeWithMinSquared(
+	m_ghostSound = m_soundSource->AcquireSoundById(0x2d);
+	if (m_ghostSound) {
+		m_ghostSound->SetDistanceRangeWithMinSquared(
 			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
 			g_shieldSoundMaxDistance
 		);
@@ -1008,7 +1008,7 @@ void Racer::UpdateDriftLean()
 void Racer::UpdateSpatialSounds()
 {
 	for (LegoU32 i = 0; i <= 3; i++) {
-		SpatialSoundResource* resource = NULL;
+		SpatialSoundInstance* resource = NULL;
 
 		switch (i) {
 		case 0:
@@ -1030,22 +1030,22 @@ void Racer::UpdateSpatialSounds()
 		if (resource) {
 			LegoU32 flags = m_flags;
 			if ((flags & c_flagTurbo) && i == m_turboLevel && i < 3) {
-				if (!resource->VTable0x0c()) {
-					resource->VTable0x04(1);
+				if (!resource->IsPlaying()) {
+					resource->Play(TRUE);
 				}
 
 				GolVec3 position;
 				m_visuals.m_carEntity->VTable0x04(&position);
-				resource->m_position = position;
-				resource->m_velocity = m_physics.m_velocity;
+				resource->SetPosition(position);
+				resource->SetVelocity(m_physics.m_velocity);
 			}
 			else if ((flags & c_flagGhost) && i == 3) {
-				if (!resource->VTable0x0c()) {
-					resource->VTable0x04(1);
+				if (!resource->IsPlaying()) {
+					resource->Play(TRUE);
 				}
 			}
-			else if (resource->VTable0x0c()) {
-				resource->VTable0x08();
+			else if (resource->IsPlaying()) {
+				resource->Stop();
 			}
 		}
 	}
@@ -1053,7 +1053,7 @@ void Racer::UpdateSpatialSounds()
 	if (m_curseSound) {
 		GolVec3 position;
 		m_visuals.m_curseEntity.VTable0x04(&position);
-		m_curseSound->m_position = position;
+		m_curseSound->SetPosition(position);
 	}
 }
 
@@ -1264,7 +1264,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_soundSource->ReleaseSound(m_brakeSoundResource);
+		m_soundSource->ReleaseSound(m_brakeSound);
 		m_brakeSound = NULL;
 		return;
 	}
@@ -2135,17 +2135,17 @@ void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 	entity->CopyOrientationFrom(*p_curseEntity);
 	entity->CopyPositionFrom(*p_curseEntity);
 
-	m_soundDac = m_soundSource->AcquireSoundById(8);
-	if (m_soundDac) {
-		m_soundDac->Play(TRUE);
-		m_soundDac->SetDistanceRangeWithMinSquared(
+	m_curseSound = m_soundSource->AcquireSoundById(8);
+	if (m_curseSound) {
+		m_curseSound->Play(TRUE);
+		m_curseSound->SetDistanceRangeWithMinSquared(
 			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
 			g_shieldSoundMaxDistance
 		);
 
 		GolVec3 position;
 		p_curseEntity->VTable0x04(&position);
-		m_soundDac->SetPosition(position);
+		m_curseSound->SetPosition(position);
 	}
 
 	ColorTransform0x20 transform;

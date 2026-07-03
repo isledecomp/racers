@@ -65,19 +65,16 @@ public:
 	void UpdateHitParticle();
 
 private:
-	BeamMesh m_beam;             // 0x030
-	GolVec3 m_boltPoints[4];     // 0x1a0
-	LegoFloat m_jitterTable[20]; // 0x1d0
-	LegoU32 m_jitterCursor;      // 0x220
-	LegoU32 m_jitterTimerMs;     // 0x224
-	undefined4 m_unk0x228;       // 0x228
-	LegoU32 m_crackleTimerMs;    // 0x22c
-	LegoFloat m_boltLength;      // 0x230
-	undefined4 m_unk0x234;       // 0x234
-	union {
-		SpatialSoundInstance* m_sound;                  // 0x238
-		RaceResourceManager::Resource* m_soundResource; // 0x238
-	};
+	BeamMesh m_beam;                    // 0x030
+	GolVec3 m_boltPoints[4];            // 0x1a0
+	LegoFloat m_jitterTable[20];        // 0x1d0
+	LegoU32 m_jitterCursor;             // 0x220
+	LegoU32 m_jitterTimerMs;            // 0x224
+	undefined4 m_unk0x228;              // 0x228
+	LegoU32 m_crackleTimerMs;           // 0x22c
+	LegoFloat m_boltLength;             // 0x230
+	undefined4 m_unk0x234;              // 0x234
+	SpatialSoundInstance* m_sound;      // 0x238
 	RaceActionSource* m_source;         // 0x23c
 	LegoU32 m_shockTimerMs;             // 0x240
 	CutsceneParticleRef* m_hitParticle; // 0x244

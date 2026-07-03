@@ -1,6 +1,7 @@
 #include "race/hazards/movingobstaclehazard.h"
 
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
 #include "decomp.h"
 #include "golfileparser.h"
@@ -111,7 +112,7 @@ void MovingObstacleHazard::OnDeactivate(void*)
 	}
 
 	if (m_loopSound != NULL) {
-		m_soundSource->ReleaseSound(m_loopSoundResource);
+		m_soundSource->ReleaseSound(m_loopSound);
 		m_loopSound = NULL;
 	}
 

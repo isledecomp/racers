@@ -151,20 +151,6 @@ public:
 		undefined4 m_nextPartIndex;          // 0x7c
 	};
 
-	// SIZE 0x30
-	class SpatialSoundResource : public RaceResourceManager::Resource {
-	public:
-		void SetPosition(const GolVec3& p_position) { m_position = p_position; }
-		void SetVelocity(const GolVec3& p_velocity) { m_velocity = p_velocity; }
-
-	private:
-		friend class RacePowerupManager;
-
-		undefined m_unk0x04[0x18 - 0x04]; // 0x04
-		GolVec3 m_position;               // 0x18
-		GolVec3 m_velocity;               // 0x24
-	};
-
 	RacePowerupManager();
 	~RacePowerupManager();
 	void Update(LegoU32 p_elapsedMs);
@@ -259,7 +245,7 @@ private:
 	void CancelShield(Racer* p_racer);
 	void CancelTurbo(Racer* p_racer);
 	void CancelMagnetHold(Racer* p_racer);
-	void UpdateProjectileSound(SpatialSoundResource* p_resource, LegoU32 p_level, LegoS32 p_state);
+	void UpdateProjectileSound(SpatialSoundInstance* p_sound, LegoU32 p_level, LegoS32 p_state);
 	void ClearBricksAudible();
 	GolAnimatedEntity* AllocateEffectEntity();
 	LegoU32 ReleaseEffectEntity(GolAnimatedEntity* p_entity);
@@ -344,34 +330,18 @@ private:
 	undefined m_unk0x194e[0x1950 - 0x194e];           // 0x194e
 	PowerupExplosion* m_explosionPool;                // 0x1950
 	PowerupExplosion* m_spikeExplosionPool;           // 0x1954
-	union {
-		SpatialSoundResource* m_cannonballFlightSound;                  // 0x1958
-		SpatialSoundInstance* m_cannonballFlightSoundInstance;          // 0x1958
-		RaceResourceManager::Resource* m_cannonballFlightSoundResource; // 0x1958
-	};
-	union {
-		SpatialSoundResource* m_missileFlightSound;                  // 0x195c
-		SpatialSoundInstance* m_missileFlightSoundInstance;          // 0x195c
-		RaceResourceManager::Resource* m_missileFlightSoundResource; // 0x195c
-	};
-	union {
-		SpatialSoundResource* m_grappleFlightSound;                  // 0x1960
-		SpatialSoundInstance* m_grappleFlightSoundInstance;          // 0x1960
-		RaceResourceManager::Resource* m_grappleFlightSoundResource; // 0x1960
-	};
-	union {
-		SpatialSoundResource* m_grappleAttachedSound;                  // 0x1964
-		SpatialSoundInstance* m_grappleAttachedSoundInstance;          // 0x1964
-		RaceResourceManager::Resource* m_grappleAttachedSoundResource; // 0x1964
-	};
-	GolAnimatedEntity* m_brickModel;           // 0x1968
-	GolAnimatedEntity* m_brickBlendModel;      // 0x196c
-	GolAnimatedEntity* m_whiteBrickModel;      // 0x1970
-	GolAnimatedEntity* m_whiteBrickBlendModel; // 0x1974
-	GolMaterial* m_brickMaterials[8];          // 0x1978
-	ActionTarget* m_aimTarget;                 // 0x1998
-	LegoFloat m_brickSpinAngle;                // 0x199c
-	undefined4 m_unk0x19a0;                    // 0x19a0
+	SpatialSoundInstance* m_cannonballFlightSound;    // 0x1958
+	SpatialSoundInstance* m_missileFlightSound;       // 0x195c
+	SpatialSoundInstance* m_grappleFlightSound;       // 0x1960
+	SpatialSoundInstance* m_grappleAttachedSound;     // 0x1964
+	GolAnimatedEntity* m_brickModel;                  // 0x1968
+	GolAnimatedEntity* m_brickBlendModel;             // 0x196c
+	GolAnimatedEntity* m_whiteBrickModel;             // 0x1970
+	GolAnimatedEntity* m_whiteBrickBlendModel;        // 0x1974
+	GolMaterial* m_brickMaterials[8];                 // 0x1978
+	ActionTarget* m_aimTarget;                        // 0x1998
+	LegoFloat m_brickSpinAngle;                       // 0x199c
+	undefined4 m_unk0x19a0;                           // 0x19a0
 };
 
 #endif // RACEPOWERUPMANAGER_H

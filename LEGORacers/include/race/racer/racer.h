@@ -74,14 +74,6 @@ public:
 		LegoU32 m_isValid; // 0x08
 	};
 
-	// SIZE 0x30
-	class SpatialSoundResource : public RaceResourceManager::Resource {
-	public:
-		undefined m_unk0x004[0x018 - 0x004]; // 0x004
-		GolVec3 m_position;                  // 0x018
-		GolVec3 m_velocity;                  // 0x024
-	};
-
 	enum {
 		c_flagBit21 = 0x00200000,
 	};
@@ -200,105 +192,73 @@ private:
 public:
 	LegoBool32 CollectWhiteBrick(DroppableBrick* p_brick);
 
-	RacerSoundSource* m_soundSource;      // 0x004
-	RacePowerupManager* m_powerupManager; // 0x008
-	RaceState* m_raceState;               // 0x00c
-	CheckpointGraph* m_checkpointGraph;   // 0x010
-	RaceForceFeedback* m_forceFeedback;   // 0x014
-	CarVisuals m_visuals;                 // 0x018
-	RacerPhysics m_physics;               // 0x3e8
-	DriveController m_driveController;    // 0xc70
-	CheckpointGraph::Entry* m_checkpoint; // 0xcc4
-	undefined4 m_checkpointForward;       // 0xcc8
-	LegoU32 m_heldPowerupColor;           // 0xccc
-	LegoU32 m_aiChargeColor;              // 0xcd0
-	LegoU32 m_aiChargeTarget;             // 0xcd4
-	LegoU32 m_aiPowerupCheckMs;           // 0xcd8
-	LegoU32 m_aiPowerupCheckIntervalMs;   // 0xcdc
-	LegoU8 m_lapCount;                    // 0xce0
-	undefined m_unk0xce1[0xce4 - 0xce1];  // 0xce1
-	LegoU32 m_lapsCompleted;              // 0xce4
-	LegoU32 m_lapTransitionCount;         // 0xce8
-	LegoU32 m_lapTimes[0x18 / 4];         // 0xcec
-	LegoU32 m_flags;                      // 0xd04
-	LegoU32 m_controlMode;                // 0xd08
-	LegoU32 m_currentZone;                // 0xd0c
-	LegoU32 m_previousZone;               // 0xd10
-	LegoU32 m_zoneBeforePrevious;         // 0xd14
-	LegoS32 m_checkpointCount;            // 0xd18
-	LegoU8 m_aiRedUseChance;              // 0xd1c
-	LegoU8 m_aiYellowUseChance;           // 0xd1d
-	LegoU8 m_aiGreenUseChance;            // 0xd1e
-	LegoU8 m_aiBlueUseChance;             // 0xd1f
-	LegoU8 m_driverStat4;                 // 0xd20
-	LegoU8 m_driverStat5;                 // 0xd21
-	LegoU8 m_aiAggression;                // 0xd22
-	LegoU8 m_tauntSoundId;                // 0xd23
-	LegoU32 m_activeEngineSound;          // 0xd24
-	LegoFloat m_engineIdleVolume;         // 0xd28
-	LegoFloat m_engineDriveVolume;        // 0xd2c
-	LegoFloat m_engineFastVolume;         // 0xd30
-	undefined4 m_tauntCooldownMs;         // 0xd34
-	undefined4 m_unk0xd38;                // 0xd38
-	undefined4 m_unk0xd3c;                // 0xd3c
-	LegoU32 m_voiceBank;                  // 0xd40
-	LegoU32 m_reactionCooldownMs;         // 0xd44
-	undefined4 m_speedRampTimerMs;        // 0xd48
-	undefined4 m_scrapeSoundCooldownMs;   // 0xd4c
-	LegoU32 m_airborneMs;                 // 0xd50
-	LegoFloat m_enginePitchScale;         // 0xd54
-	LegoU32 m_whiteBrickCount;            // 0xd58
-	DroppableBrick* m_whiteBricks[3];     // 0xd5c
-	LegoU32 m_turboLevel;                 // 0xd68
-	LegoU32 m_shieldLevel;                // 0xd6c
-	undefined4 m_shoveForceSlot;          // 0xd70
-	undefined4 m_shieldHitCooldownMs;     // 0xd74
-	LegoU32 m_facingForwardMs;            // 0xd78
-	undefined4 m_curseTimerMs;            // 0xd7c
-	LegoU32 m_curseTickMs;                // 0xd80
-	LegoU32 m_timeBehindDisplayMs;        // 0xd84
-	LegoU32 m_timeBehind;                 // 0xd88
-	union {
-		SpatialSoundResource* m_turboSoundL0;    // 0xd8c
-		SpatialSoundInstance* m_soundD8c;        // 0xd8c
-		RaceResourceManager::Resource* m_resD8c; // 0xd8c
-	};
-	union {
-		SpatialSoundResource* m_turboSoundL1;    // 0xd90
-		SpatialSoundInstance* m_soundD90;        // 0xd90
-		RaceResourceManager::Resource* m_resD90; // 0xd90
-	};
-	union {
-		SpatialSoundResource* m_turboSoundL2;    // 0xd94
-		SpatialSoundInstance* m_soundD94;        // 0xd94
-		RaceResourceManager::Resource* m_resD94; // 0xd94
-	};
-	union {
-		SpatialSoundResource* m_ghostSound;      // 0xd98
-		SpatialSoundInstance* m_soundD98;        // 0xd98
-		RaceResourceManager::Resource* m_resD98; // 0xd98
-	};
-	union {
-		SpatialSoundInstance* m_engineIdleSound;   // 0xd9c
-		RaceResourceManager::Resource* m_soundD9c; // 0xd9c
-	};
-	union {
-		SpatialSoundInstance* m_engineDriveSound;  // 0xda0
-		RaceResourceManager::Resource* m_soundDa0; // 0xda0
-	};
-	union {
-		SpatialSoundInstance* m_engineFastSound;   // 0xda4
-		RaceResourceManager::Resource* m_soundDa4; // 0xda4
-	};
-	union {
-		SpatialSoundInstance* m_brakeSound;                  // 0xda8
-		RaceResourceManager::Resource* m_brakeSoundResource; // 0xda8
-	};
-	union {
-		SpatialSoundResource* m_curseSound;      // 0xdac
-		SpatialSoundInstance* m_soundDac;        // 0xdac
-		RaceResourceManager::Resource* m_resDac; // 0xdac
-	};
+	RacerSoundSource* m_soundSource;          // 0x004
+	RacePowerupManager* m_powerupManager;     // 0x008
+	RaceState* m_raceState;                   // 0x00c
+	CheckpointGraph* m_checkpointGraph;       // 0x010
+	RaceForceFeedback* m_forceFeedback;       // 0x014
+	CarVisuals m_visuals;                     // 0x018
+	RacerPhysics m_physics;                   // 0x3e8
+	DriveController m_driveController;        // 0xc70
+	CheckpointGraph::Entry* m_checkpoint;     // 0xcc4
+	undefined4 m_checkpointForward;           // 0xcc8
+	LegoU32 m_heldPowerupColor;               // 0xccc
+	LegoU32 m_aiChargeColor;                  // 0xcd0
+	LegoU32 m_aiChargeTarget;                 // 0xcd4
+	LegoU32 m_aiPowerupCheckMs;               // 0xcd8
+	LegoU32 m_aiPowerupCheckIntervalMs;       // 0xcdc
+	LegoU8 m_lapCount;                        // 0xce0
+	undefined m_unk0xce1[0xce4 - 0xce1];      // 0xce1
+	LegoU32 m_lapsCompleted;                  // 0xce4
+	LegoU32 m_lapTransitionCount;             // 0xce8
+	LegoU32 m_lapTimes[0x18 / 4];             // 0xcec
+	LegoU32 m_flags;                          // 0xd04
+	LegoU32 m_controlMode;                    // 0xd08
+	LegoU32 m_currentZone;                    // 0xd0c
+	LegoU32 m_previousZone;                   // 0xd10
+	LegoU32 m_zoneBeforePrevious;             // 0xd14
+	LegoS32 m_checkpointCount;                // 0xd18
+	LegoU8 m_aiRedUseChance;                  // 0xd1c
+	LegoU8 m_aiYellowUseChance;               // 0xd1d
+	LegoU8 m_aiGreenUseChance;                // 0xd1e
+	LegoU8 m_aiBlueUseChance;                 // 0xd1f
+	LegoU8 m_driverStat4;                     // 0xd20
+	LegoU8 m_driverStat5;                     // 0xd21
+	LegoU8 m_aiAggression;                    // 0xd22
+	LegoU8 m_tauntSoundId;                    // 0xd23
+	LegoU32 m_activeEngineSound;              // 0xd24
+	LegoFloat m_engineIdleVolume;             // 0xd28
+	LegoFloat m_engineDriveVolume;            // 0xd2c
+	LegoFloat m_engineFastVolume;             // 0xd30
+	undefined4 m_tauntCooldownMs;             // 0xd34
+	undefined4 m_unk0xd38;                    // 0xd38
+	undefined4 m_unk0xd3c;                    // 0xd3c
+	LegoU32 m_voiceBank;                      // 0xd40
+	LegoU32 m_reactionCooldownMs;             // 0xd44
+	undefined4 m_speedRampTimerMs;            // 0xd48
+	undefined4 m_scrapeSoundCooldownMs;       // 0xd4c
+	LegoU32 m_airborneMs;                     // 0xd50
+	LegoFloat m_enginePitchScale;             // 0xd54
+	LegoU32 m_whiteBrickCount;                // 0xd58
+	DroppableBrick* m_whiteBricks[3];         // 0xd5c
+	LegoU32 m_turboLevel;                     // 0xd68
+	LegoU32 m_shieldLevel;                    // 0xd6c
+	undefined4 m_shoveForceSlot;              // 0xd70
+	undefined4 m_shieldHitCooldownMs;         // 0xd74
+	LegoU32 m_facingForwardMs;                // 0xd78
+	undefined4 m_curseTimerMs;                // 0xd7c
+	LegoU32 m_curseTickMs;                    // 0xd80
+	LegoU32 m_timeBehindDisplayMs;            // 0xd84
+	LegoU32 m_timeBehind;                     // 0xd88
+	SpatialSoundInstance* m_turboSoundL0;     // 0xd8c
+	SpatialSoundInstance* m_turboSoundL1;     // 0xd90
+	SpatialSoundInstance* m_turboSoundL2;     // 0xd94
+	SpatialSoundInstance* m_ghostSound;       // 0xd98
+	SpatialSoundInstance* m_engineIdleSound;  // 0xd9c
+	SpatialSoundInstance* m_engineDriveSound; // 0xda0
+	SpatialSoundInstance* m_engineFastSound;  // 0xda4
+	SpatialSoundInstance* m_brakeSound;       // 0xda8
+	SpatialSoundInstance* m_curseSound;       // 0xdac
 	undefined4 m_unk0xdb0;                    // 0xdb0
 	RaceCameraController* m_cameraController; // 0xdb4
 	LegoU32 m_cameraViewIndex;                // 0xdb8

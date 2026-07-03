@@ -2813,10 +2813,10 @@ void CutsceneMenuAnimationEvent::Reset()
 	m_activeEntry = NULL;
 	m_durationMs = 0;
 	m_mode = 0;
-	m_red = 0;
-	m_grn = 0;
-	m_blu = 0;
-	m_alpha = 0;
+	m_color.m_red = 0;
+	m_color.m_grn = 0;
+	m_color.m_blu = 0;
+	m_color.m_alp = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a49e0
@@ -2858,9 +2858,9 @@ void CutsceneMenuAnimationEvent::Parse(
 			::strncpy(materialName, p_parser->ReadString(), sizeof(GolName));
 			break;
 		case GolFileParser::e_unknown0x66:
-			m_red = static_cast<LegoU8>(p_parser->ReadInteger());
-			m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
-			m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_color.m_red = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_color.m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
 			break;
 		default:
 			ParseCommonToken(p_parser, p_owner, token);

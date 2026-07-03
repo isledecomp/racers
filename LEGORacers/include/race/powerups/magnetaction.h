@@ -67,15 +67,12 @@ private:
 	GolAnimatedEntity* m_ringEntity;   // 0x40
 	GolAnimatedEntity* m_insideEntity; // 0x44
 	GolWorldEntity m_worldEntity;      // 0x48
-	union {
-		SpatialSoundInstance* m_sound;                  // 0x70
-		RaceResourceManager::Resource* m_soundResource; // 0x70
-	};
-	undefined m_unk0x74[0x78 - 0x74]; // 0x74
-	Racer* m_heldRacer;               // 0x78
-	Racer* m_pulledRacer;             // 0x7c
-	LegoU8 m_flags0x80;               // 0x80
-	undefined m_unk0x81[0x84 - 0x81]; // 0x81
+	SpatialSoundInstance* m_sound;     // 0x70
+	undefined m_unk0x74[0x78 - 0x74];  // 0x74
+	Racer* m_heldRacer;                // 0x78
+	Racer* m_pulledRacer;              // 0x7c
+	LegoU8 m_flags0x80;                // 0x80
+	undefined m_unk0x81[0x84 - 0x81];  // 0x81
 };
 
 #endif // MAGNETACTION_H

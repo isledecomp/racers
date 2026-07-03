@@ -56,12 +56,9 @@ private:
 	RacePowerupManager* m_manager;          // 0x164
 	CutsceneAnimation* m_cutsceneAnimation; // 0x168
 	CutsceneParticleRef* m_sparkParticle;   // 0x16c
-	union {
-		SpatialSoundInstance* m_sound;                  // 0x170
-		RaceResourceManager::Resource* m_soundResource; // 0x170
-	};
-	Racer* m_targetRacer;    // 0x174
-	LegoFloat m_tumbleAngle; // 0x178
+	SpatialSoundInstance* m_sound;          // 0x170
+	Racer* m_targetRacer;                   // 0x174
+	LegoFloat m_tumbleAngle;                // 0x178
 };
 
 #endif // DYNAMITEACTION_H

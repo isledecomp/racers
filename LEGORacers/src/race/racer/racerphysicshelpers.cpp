@@ -1,4 +1,5 @@
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "golconstants.h"
 #include "golmath.h"
 #include "race/raceeventtable.h"
@@ -257,7 +258,7 @@ void RacerPhysics::Reset()
 	m_resetRotation.m_y = 0.0f;
 	m_resetRotation.m_z = 0.0f;
 	m_resetRotation.m_w = 1.0f;
-	m_surfaceSoundResource = NULL;
+	m_surfaceSound = NULL;
 	m_routeBaseSpeed = 1.0f;
 	m_routeTargetSpeed = 1.0f;
 	m_surfaceSoundId = -1;
@@ -1395,14 +1396,14 @@ SpatialSoundInstance* RacerPhysics::PlaySurfaceSound(LegoS32 p_soundId)
 // FUNCTION: LEGORACERS 0x0042b060 FOLDED
 void RacerPhysics::StopSurfaceSound()
 {
-	if (m_surfaceSoundResource != NULL) {
-		if (m_surfaceSoundResource->VTable0x0c()) {
-			m_surfaceSoundResource->VTable0x08();
+	if (m_surfaceSound != NULL) {
+		if (m_surfaceSound->IsPlaying()) {
+			m_surfaceSound->Stop();
 		}
 
-		m_soundSource->ReleaseSound(m_surfaceSoundResource);
+		m_soundSource->ReleaseSound(m_surfaceSound);
 		m_surfaceSoundId = -1;
-		m_surfaceSoundResource = NULL;
+		m_surfaceSound = NULL;
 		m_surfaceSoundMs = 0;
 	}
 }
@@ -1934,8 +1935,8 @@ void RacerCarBody::Reset()
 	m_steeringGain = 1.0f;
 	m_steeringAlignmentMin = -1.0f;
 	m_facingLagMax = 3.1415927f;
-	m_spinSoundResource = NULL;
-	m_skidSoundResource = NULL;
+	m_spinSound = NULL;
+	m_skidSound = NULL;
 	m_soundsEnabled = 1;
 	m_airborneMs = 0;
 	m_slideLift = 0;
@@ -2001,14 +2002,14 @@ void RacerCarBody::Destroy()
 	Reset();
 	RacerRigidBody::Destroy();
 
-	if (m_spinSoundResource) {
-		m_soundSource->ReleaseSound(m_spinSoundResource);
-		m_spinSoundResource = NULL;
+	if (m_spinSound) {
+		m_soundSource->ReleaseSound(m_spinSound);
+		m_spinSound = NULL;
 	}
 
-	if (m_skidSoundResource) {
-		m_soundSource->ReleaseSound(m_skidSoundResource);
-		m_skidSoundResource = NULL;
+	if (m_skidSound) {
+		m_soundSource->ReleaseSound(m_skidSound);
+		m_skidSound = NULL;
 	}
 }
 
@@ -3776,7 +3777,7 @@ void RacerCarBody::ApplyWallResponse()
 void RacerCarBody::StopSteering()
 {
 	LegoU32 flags = m_flags;
-	RaceResourceManager::Resource* resource = m_skidSoundResource;
+	SpatialSoundInstance* resource = m_skidSound;
 
 	flags &= ~(c_flagSteering | c_flagBit9);
 	m_steeringAlignmentMin = -1.0f;
@@ -3785,7 +3786,7 @@ void RacerCarBody::StopSteering()
 
 	if (resource != NULL) {
 		m_soundSource->ReleaseSound(resource);
-		m_skidSoundResource = NULL;
+		m_skidSound = NULL;
 	}
 }
 
@@ -3846,7 +3847,7 @@ void RacerCarBody::StartSpin(LegoFloat p_turns, LegoFloat p_rate, LegoFloat p_al
 			static_cast<LegoS32>(static_cast<LegoFloat>(static_cast<LegoS32>(m_spinPeriodMs)) * p_alignFraction);
 	}
 
-	if (!m_spinSoundResource) {
+	if (!m_spinSound) {
 		if (m_soundsEnabled) {
 			m_spinSound = m_soundSource->AcquireSoundById(0x3c);
 		}
@@ -3891,10 +3892,10 @@ void RacerCarBody::EndSpin()
 		CancelAngularMomentumAlong(&direction);
 		m_flags &= ~(c_flagSpinning | c_flagSpinFresh | c_flagYawImpulse);
 
-		if (m_spinSoundResource != NULL) {
-			m_spinSoundResource->VTable0x08();
-			m_soundSource->ReleaseSound(m_spinSoundResource);
-			m_spinSoundResource = NULL;
+		if (m_spinSound != NULL) {
+			m_spinSound->Stop();
+			m_soundSource->ReleaseSound(m_spinSound);
+			m_spinSound = NULL;
 		}
 	}
 }

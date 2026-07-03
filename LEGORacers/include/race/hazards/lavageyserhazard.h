@@ -1,11 +1,11 @@
 #ifndef LAVAGEYSERHAZARD_H
 #define LAVAGEYSERHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
-#include "race/raceresourcemanager.h"
 #include "golmodelentity.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
+#include "race/raceresourcemanager.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
@@ -22,11 +22,11 @@ class LavaGeyserHazard : public Hazard {
 public:
 	LavaGeyserHazard();
 	~LavaGeyserHazard() override;
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;  // vtable+0x00
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 
 	LegoS32 ClearFields();
 	LegoS32 Reset();
@@ -48,15 +48,11 @@ private:
 	LegoEventQueue* m_eventQueue;            // 0x3c
 	LegoEventQueue::Event* m_collisionEvent; // 0x40
 	CutsceneAnimation* m_particleAnimation;  // 0x44
-	union {
-		SpatialSoundInstance* m_loopSound;              // 0x48
-		RaceResourceManager::Resource* m_soundResource; // 0x48
-	};
-	RacerSoundSource* m_soundSource; // 0x4c
-	LegoU32 m_smokeMs;               // 0x50
-	LegoU32 m_eventMs;               // 0x54
-	LegoU32 m_unk0x58;               // 0x58
+	SpatialSoundInstance* m_loopSound;       // 0x48
+	RacerSoundSource* m_soundSource;         // 0x4c
+	LegoU32 m_smokeMs;                       // 0x50
+	LegoU32 m_eventMs;                       // 0x54
+	LegoU32 m_unk0x58;                       // 0x58
 };
-
 
 #endif // LAVAGEYSERHAZARD_H

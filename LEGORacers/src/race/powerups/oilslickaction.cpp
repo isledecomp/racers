@@ -1,5 +1,6 @@
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
 #include "decomp.h"
@@ -107,7 +108,7 @@ void OilSlickAction::Deactivate()
 	}
 
 	if (m_sound != NULL) {
-		m_soundSource->ReleaseSound(m_soundResource);
+		m_soundSource->ReleaseSound(m_sound);
 		m_sound = NULL;
 	}
 

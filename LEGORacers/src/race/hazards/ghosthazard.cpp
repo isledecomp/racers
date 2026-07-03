@@ -1,6 +1,7 @@
 #include "race/hazards/ghosthazard.h"
 
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "cmbmodelpart0x34.h"
 #include "cmbmodelpartdata0x28.h"
 #include "decomp.h"
@@ -181,7 +182,7 @@ void GhostHazard::OnDeactivate(void*)
 	}
 
 	if (m_loopSound != NULL) {
-		m_soundSource->ReleaseSound(m_loopSoundResource);
+		m_soundSource->ReleaseSound(m_loopSound);
 		m_loopSound = NULL;
 	}
 

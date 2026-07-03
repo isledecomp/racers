@@ -55,10 +55,7 @@ private:
 	GolAnimatedEntity* m_auraEntity;      // 0x34
 	GolAnimatedEntity* m_innerAuraEntity; // 0x38
 	GolWorldEntity m_worldEntity;         // 0x3c
-	union {
-		SpatialSoundInstance* m_sound;                  // 0x64
-		RaceResourceManager::Resource* m_soundResource; // 0x64
-	};
+	SpatialSoundInstance* m_sound;        // 0x64
 };
 
 #endif // CURSEACTION_H

@@ -53,13 +53,10 @@ private:
 	RaceDecalManager::Trail::Decal m_shadowDecal; // 0x44
 	MaterialTable0x0c m_shadowMaterialTable;      // 0x160
 	GolCollidableEntity* m_trackCollidable;       // 0x16c
-	union {
-		RaceResourceManager::Resource* m_loopSoundResource; // 0x170
-		SpatialSoundInstance* m_loopSound;                  // 0x170
-	};
-	RacerSoundSource* m_soundSource;     // 0x174
-	LegoU8 m_flags;                      // 0x178
-	undefined m_unk0x179[0x17c - 0x179]; // 0x179
+	SpatialSoundInstance* m_loopSound;            // 0x170
+	RacerSoundSource* m_soundSource;              // 0x174
+	LegoU8 m_flags;                               // 0x178
+	undefined m_unk0x179[0x17c - 0x179];          // 0x179
 };
 
 #endif // MOVINGOBSTACLEHAZARD_H

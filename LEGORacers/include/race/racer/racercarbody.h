@@ -324,16 +324,10 @@ public:
 		LegoU32 m_powerslideFactorBits; // 0x6d8
 		LegoFloat m_powerslideFactor;   // 0x6d8
 	};
-	LegoU32 m_airborneMs; // 0x6dc
-	LegoU32 m_spinOutMs;  // 0x6e0
-	union {
-		RaceResourceManager::Resource* m_spinSoundResource; // 0x6e4
-		SpatialSoundInstance* m_spinSound;                  // 0x6e4
-	};
-	union {
-		RaceResourceManager::Resource* m_skidSoundResource; // 0x6e8
-		SpatialSoundInstance* m_skidSound;                  // 0x6e8
-	};
+	LegoU32 m_airborneMs;                  // 0x6dc
+	LegoU32 m_spinOutMs;                   // 0x6e0
+	SpatialSoundInstance* m_spinSound;     // 0x6e4
+	SpatialSoundInstance* m_skidSound;     // 0x6e8
 	LegoU32 m_soundsEnabled;               // 0x6ec
 	Racer* m_ownerRacer;                   // 0x6f0
 	RaceEventTable* m_eventTable;          // 0x6f4
@@ -350,12 +344,9 @@ public:
 	LegoFloat m_maxSpeedSetting;           // 0x734
 	undefined4 m_surfaceSoundMs;           // 0x738
 	LegoS32 m_surfaceSoundId;              // 0x73c
-	union {
-		SpatialSoundInstance* m_surfaceSound;                  // 0x740
-		RaceResourceManager::Resource* m_surfaceSoundResource; // 0x740
-	};
-	LegoU32 m_routeMode;   // 0x744
-	LegoU32 m_routePaused; // 0x748
+	SpatialSoundInstance* m_surfaceSound;  // 0x740
+	LegoU32 m_routeMode;                   // 0x744
+	LegoU32 m_routePaused;                 // 0x748
 };
 
 #endif // RACERCARBODY_H

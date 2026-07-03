@@ -217,7 +217,7 @@ void RacerCarBody::StartSteering(LegoFloat p_gain, LegoFloat p_slipRatio, LegoFl
 	m_steeringAlignmentMin =
 		GetCosineTableValue(static_cast<LegoS32>(angle * g_sweepCannonRadiansToTableIndex) & 0x3ff);
 
-	if (m_skidSoundResource != NULL) {
+	if (m_skidSound != NULL) {
 		return;
 	}
 

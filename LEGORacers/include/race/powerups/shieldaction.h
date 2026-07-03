@@ -57,10 +57,7 @@ private:
 	GolAnimatedEntity* m_innerShieldEntity; // 0x1c
 	Racer* m_racer;                         // 0x20
 	RacePowerupManager* m_manager;          // 0x24
-	union {
-		SpatialSoundInstance* m_sound;                  // 0x28
-		RaceResourceManager::Resource* m_soundResource; // 0x28
-	};
+	SpatialSoundInstance* m_sound;          // 0x28
 };
 
 #endif // SHIELDACTION_H

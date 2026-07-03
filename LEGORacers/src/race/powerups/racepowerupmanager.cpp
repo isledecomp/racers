@@ -565,7 +565,7 @@ void RacePowerupManager::LoadDatabases(
 {
 	m_worldDatabase = m_golExport->VTable0x08();
 	m_worldDatabase->Load(m_renderer, p_databaseName, p_binary, 1.0f);
-	m_materialAnimation.VTable0x04(m_renderer, p_animationName, p_binary);
+	m_materialAnimation.Load(m_renderer, p_animationName, p_binary);
 	m_turbo3Database = m_golExport->VTable0x08();
 	m_turbo3Database->Load(m_renderer, "turbo3", p_binary, 1.0f);
 }
@@ -1423,7 +1423,7 @@ void RacePowerupManager::Destroy()
 		m_worldDatabase = 0;
 	}
 
-	m_materialAnimation.VTable0x08();
+	m_materialAnimation.Destroy();
 	m_trackDatabase = 0;
 
 	if (m_golExport != NULL && m_turbo3Database != 0) {

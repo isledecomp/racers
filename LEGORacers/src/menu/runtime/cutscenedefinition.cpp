@@ -239,10 +239,10 @@ void CutsceneDefinition::Frame::ModelEvent::Update(undefined4 p_elapsedMs)
 		m_entity->Update(p_elapsedMs);
 
 		for (LegoU32 i = 0; i < m_animationCount; i++) {
-			m_animations[i].m_item->FUN_004104c0(
+			m_animations[i].m_item->Update(
 				p_elapsedMs,
-				m_animations[i].m_materialAnimation->GetUnk0x04(),
-				m_animations[i].m_materialAnimation->GetUnk0x08()
+				m_animations[i].m_materialAnimation->GetFrames(),
+				m_animations[i].m_materialAnimation->GetFrameCount()
 			);
 		}
 	}
@@ -286,7 +286,7 @@ void CutsceneDefinition::Frame::ModelEvent::Begin(Frame* p_frame, CutsceneEventS
 										 ->GetMaterialTable();
 				}
 
-				animation->m_item->FUN_10025da0(materialTarget, animation->m_startParam0x14, TRUE);
+				animation->m_item->Assign(materialTarget, animation->m_startParam0x14, TRUE);
 			}
 		}
 
@@ -1606,7 +1606,7 @@ MabMaterialTrack* CutsceneDefinition::GetMaterialAnimationItem(
 )
 {
 	MabMaterialAnimation* materialAnimation = m_worldDatabases[p_index]->GetMaterialAnimation(p_animationIndex);
-	return &materialAnimation->GetUnk0x0c()[p_itemIndex];
+	return &materialAnimation->GetTracks()[p_itemIndex];
 }
 
 // FUNCTION: LEGORACERS 0x00406f90

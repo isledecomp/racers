@@ -139,12 +139,11 @@ LegoU32 GrapplingHookAction::Activate(
 	m_targetPoint = p_targetPoint;
 	m_stateTimerMs = p_delayMs;
 
-	m_billboardAnimation.FUN_004103c0(*p_billboardAnimation);
-	m_billboardAnimation.FUN_00410470();
-	m_billboardAnimation.FUN_00410480();
-	m_billboardAnimation.FUN_10025da0(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
-	m_billboardAnimation
-		.FUN_004104c0(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
+	m_billboardAnimation.ConfigureFrom(*p_billboardAnimation);
+	m_billboardAnimation.Unassign();
+	m_billboardAnimation.Rewind();
+	m_billboardAnimation.Assign(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
+	m_billboardAnimation.Update(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
 
 	return m_billboard->ConfigureFromMaterialTable(
 		m_owner->GetBillboardMaterialTable(),
@@ -293,11 +292,8 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		break;
 	case c_stateRetracting:
 		if (m_billboardAnimation.IsAssigned()) {
-			m_billboardAnimation.FUN_004104c0(
-				p_elapsedMs,
-				m_owner->GetMaterialAnimationItems(),
-				m_owner->GetMaterialAnimationItemCount()
-			);
+			m_billboardAnimation
+				.Update(p_elapsedMs, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
 			m_billboard->Update(p_elapsedMs);
 		}
 
@@ -509,11 +505,10 @@ void GrapplingHookAction::ReleaseHook(SoundVector* p_position)
 
 	m_state = c_stateRetracting;
 	m_stateTimerMs = 500;
-	m_billboardAnimation.FUN_00410470();
-	m_billboardAnimation.FUN_00410480();
-	m_billboardAnimation.FUN_10025da0(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
-	m_billboardAnimation
-		.FUN_004104c0(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
+	m_billboardAnimation.Unassign();
+	m_billboardAnimation.Rewind();
+	m_billboardAnimation.Assign(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
+	m_billboardAnimation.Update(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
 	m_billboard->SetPosition(*p_position);
 	m_projectile.Release(p_position);
 	m_projectile.CancelCollisionEvent();

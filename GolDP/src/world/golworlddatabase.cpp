@@ -1284,8 +1284,8 @@ void GolWorldDatabase::BindSpriteMaterialAnimation(GolBillboard* p_billboard, Wd
 	}
 
 	LegoU32 materialIndex = p_sprite->m_materialTrackIndex;
-	MabMaterialTrack* item = GetMaterialAnimation(animationIndex)->GetUnk0x0c();
-	item[materialIndex].FUN_10025da0(p_billboard->GetMaterialTable(), p_sprite->m_materialIndex, TRUE);
+	MabMaterialTrack* item = GetMaterialAnimation(animationIndex)->GetTracks();
+	item[materialIndex].Assign(p_billboard->GetMaterialTable(), p_sprite->m_materialIndex, TRUE);
 }
 
 // FUNCTION: GOLDP 0x1002e2c0
@@ -1410,13 +1410,13 @@ void GolWorldDatabase::InitializeEntities()
 				continue;
 			}
 
-			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetUnk0x0c();
+			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetTracks();
 			LegoU32 targetIndex = assignment->m_bottom;
 			MaterialTable* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
-			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
+			item[assignment->m_top].Assign(target, assignment->m_right, TRUE);
 		}
 
 		if (model->m_name[0] != '\0') {
@@ -1527,13 +1527,13 @@ void GolWorldDatabase::InitializeEntities()
 				continue;
 			}
 
-			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetUnk0x0c();
+			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetTracks();
 			LegoU32 targetIndex = assignment->m_bottom;
 			MaterialTable* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
-			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
+			item[assignment->m_top].Assign(target, assignment->m_right, TRUE);
 		}
 
 		if (model->m_name[0] != '\0') {
@@ -1611,13 +1611,13 @@ void GolWorldDatabase::InitializeEntities()
 				continue;
 			}
 
-			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetUnk0x0c();
+			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetTracks();
 			LegoU32 targetIndex = assignment->m_bottom;
 			MaterialTable* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
-			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
+			item[assignment->m_top].Assign(target, assignment->m_right, TRUE);
 		}
 
 		if (model->m_name[0] != '\0') {

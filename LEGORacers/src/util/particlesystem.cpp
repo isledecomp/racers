@@ -288,7 +288,7 @@ void ParticleSystem::Update(LegoS32 p_elapsedMs)
 					if (m_materialAnimation) {
 						LegoS32 ageMs = current->m_ageMs;
 						current->m_material =
-							m_materialAnimation->FUN_00410560(ageMs, m_materialItems, m_materialItemCount);
+							m_materialAnimation->SampleMaterial(ageMs, m_materialItems, m_materialItemCount);
 					}
 					else {
 						current->m_material = m_material;

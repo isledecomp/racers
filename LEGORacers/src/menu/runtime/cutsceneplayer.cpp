@@ -451,7 +451,7 @@ void CutsceneAnimation::Emitter::Parse(
 			break;
 		case CutsceneAnimation::EmbTxtParser::e_materialAnimationItem:
 			i = p_parser->ReadInteger();
-			m_materialAnimationItem = &p_materialAnimation->GetUnk0x0c()[i];
+			m_materialAnimationItem = &p_materialAnimation->GetTracks()[i];
 			break;
 		case CutsceneAnimation::EmbTxtParser::e_material: {
 			LegoChar materialName[8];
@@ -1246,7 +1246,7 @@ void CutscenePlayer::LoadAnimations(undefined4 p_binary)
 {
 	if (m_animationNames != NULL) {
 		for (LegoU32 i = 0; i < m_animationCount; i++) {
-			m_materialAnimations[i].VTable0x04(m_renderer, &m_animationNames[i * 9], p_binary);
+			m_materialAnimations[i].Load(m_renderer, &m_animationNames[i * 9], p_binary);
 			m_animations[i]
 				.Load(3, m_golExport, m_renderer, &m_materialAnimations[i], &m_animationNames[i * 9], p_binary);
 		}

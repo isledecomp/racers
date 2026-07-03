@@ -67,14 +67,14 @@ void CodePuzzleHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_codeModel3 = modelEntity;
 
 	MabMaterialAnimation* animation = p_context->GetTrackDatabase()->GetMaterialAnimation(0);
-	m_codeItem1 = &animation->GetUnk0x0c()[5];
-	m_codeItem2 = &animation->GetUnk0x0c()[4];
-	m_codeItem3 = &animation->GetUnk0x0c()[3];
-	m_codeItem1->SetUnk0x0c(0.003f);
-	m_codeItem2->SetUnk0x0c(0.004f);
-	m_codeItem3->SetUnk0x0c(0.005f);
-	m_materialFrames = animation->GetUnk0x04();
-	m_materialFrameCount = animation->GetUnk0x08();
+	m_codeItem1 = &animation->GetTracks()[5];
+	m_codeItem2 = &animation->GetTracks()[4];
+	m_codeItem3 = &animation->GetTracks()[3];
+	m_codeItem1->SetFramesPerMs(0.003f);
+	m_codeItem2->SetFramesPerMs(0.004f);
+	m_codeItem3->SetFramesPerMs(0.005f);
+	m_materialFrames = animation->GetFrames();
+	m_materialFrameCount = animation->GetFrameCount();
 	m_state = 1;
 	OnActivate(NULL);
 }
@@ -139,9 +139,9 @@ void CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 	else if (p_unk0x04 == m_codeEvent3 && m_codeProgress == 3) {
 		m_eventTable->FireEventsAt(c_successFirstEvent, c_successFirstEvent, NULL);
 		m_codeProgress = 0;
-		m_codeItem1->FUN_10025da0(m_codeItem1->GetUnk0x00(), m_codeItem1->GetUnk0x04(), TRUE);
-		m_codeItem2->FUN_10025da0(m_codeItem2->GetUnk0x00(), m_codeItem2->GetUnk0x04(), TRUE);
-		m_codeItem3->FUN_10025da0(m_codeItem3->GetUnk0x00(), m_codeItem3->GetUnk0x04(), TRUE);
+		m_codeItem1->Assign(m_codeItem1->GetMaterialTable(), m_codeItem1->GetMaterialIndex(), TRUE);
+		m_codeItem2->Assign(m_codeItem2->GetMaterialTable(), m_codeItem2->GetMaterialIndex(), TRUE);
+		m_codeItem3->Assign(m_codeItem3->GetMaterialTable(), m_codeItem3->GetMaterialIndex(), TRUE);
 		m_delayMs = c_delayMs;
 		ResetCodeModels();
 		m_eventTable->StartEventsAt(c_successSecondEvent, NULL);
@@ -198,31 +198,31 @@ void CodePuzzleHazard::Update(undefined4 p_elapsedMs)
 			m_eventTable->EndEventsAt(c_successSecondEvent, NULL);
 
 			if (m_codeEvent1 == c_firstCodeEvent) {
-				m_codeItem1->FUN_00410480();
+				m_codeItem1->Rewind();
 			}
 			else {
-				m_codeItem1->FUN_00410490();
+				m_codeItem1->SeekToLastFrame();
 			}
-			m_codeItem1->FUN_004104c0(0, m_materialFrames, m_materialFrameCount);
-			m_codeItem1->FUN_00410470();
+			m_codeItem1->Update(0, m_materialFrames, m_materialFrameCount);
+			m_codeItem1->Unassign();
 
 			if (m_codeEvent2 == c_secondCodeEvent) {
-				m_codeItem2->FUN_00410480();
+				m_codeItem2->Rewind();
 			}
 			else {
-				m_codeItem2->FUN_00410490();
+				m_codeItem2->SeekToLastFrame();
 			}
-			m_codeItem2->FUN_004104c0(0, m_materialFrames, m_materialFrameCount);
-			m_codeItem2->FUN_00410470();
+			m_codeItem2->Update(0, m_materialFrames, m_materialFrameCount);
+			m_codeItem2->Unassign();
 
 			if (m_codeEvent3 == c_thirdCodeEvent) {
-				m_codeItem3->FUN_00410480();
+				m_codeItem3->Rewind();
 			}
 			else {
-				m_codeItem3->FUN_00410490();
+				m_codeItem3->SeekToLastFrame();
 			}
-			m_codeItem3->FUN_004104c0(0, m_materialFrames, m_materialFrameCount);
-			m_codeItem3->FUN_00410470();
+			m_codeItem3->Update(0, m_materialFrames, m_materialFrameCount);
+			m_codeItem3->Unassign();
 		}
 		else {
 			m_delayMs = timer - elapsedMs;

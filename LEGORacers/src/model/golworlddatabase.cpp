@@ -37,7 +37,7 @@ void GolWorldDatabase::Update(LegoS32 p_elapsedMs)
 	LegoU32 i;
 
 	for (i = 0; i < m_materialAnimationCount; i++) {
-		GetMaterialAnimation(i)->FUN_00410300(p_elapsedMs);
+		GetMaterialAnimation(i)->Update(p_elapsedMs);
 	}
 
 	for (i = 0; i < m_modelEntityCount; i++) {

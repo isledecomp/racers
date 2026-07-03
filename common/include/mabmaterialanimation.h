@@ -21,30 +21,27 @@ public:
 
 	MabMaterialAnimation();
 	virtual ~MabMaterialAnimation(); // vtable+0x00
-	virtual void VTable0x04(
-		GolRenderDevice* p_renderer,
-		const LegoChar* p_fileName,
-		LegoBool32 p_binary
-	);                         // vtable+0x04
-	virtual void VTable0x08(); // vtable+0x08
+	virtual void Load(GolRenderDevice* p_renderer, const LegoChar* p_fileName,
+					  LegoBool32 p_binary); // vtable+0x04
+	virtual void Destroy();                 // vtable+0x08
 
 	// SYNTHETIC: GOLDP 0x10017a00
 	// SYNTHETIC: LEGORACERS 0x004a11e0
 	// MabMaterialAnimation::`vector deleting destructor'
 
-	MabMaterialTrack* GetUnk0x0c() const { return m_unk0x0c; }
-	MabMaterialFrame* GetUnk0x04() const { return m_unk0x04; }
-	LegoU32 GetUnk0x08() const { return m_unk0x08; }
-	void FUN_00410300(LegoS32 p_elapsedMs);
+	MabMaterialTrack* GetTracks() const { return m_tracks; }
+	MabMaterialFrame* GetFrames() const { return m_frames; }
+	LegoU32 GetFrameCount() const { return m_frameCount; }
+	void Update(LegoS32 p_elapsedMs);
 
 private:
-	void FUN_10025a40(GolRenderDevice* p_renderer, GolFileParser& p_parser);
-	void FUN_10025b60(GolFileParser& p_parser);
+	void ParseFrames(GolRenderDevice* p_renderer, GolFileParser& p_parser);
+	void ParseTracks(GolFileParser& p_parser);
 
-	MabMaterialFrame* m_unk0x04;
-	LegoU32 m_unk0x08;
-	MabMaterialTrack* m_unk0x0c;
-	LegoU32 m_unk0x10;
+	MabMaterialFrame* m_frames; // 0x04
+	LegoU32 m_frameCount;       // 0x08
+	MabMaterialTrack* m_tracks; // 0x0c
+	LegoU32 m_trackCount;       // 0x10
 };
 
 #endif // MABMATERIALANIMATION_H

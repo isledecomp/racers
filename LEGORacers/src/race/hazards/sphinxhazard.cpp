@@ -89,16 +89,16 @@ void SphinxHazard::OnActivate(void*)
 	}
 
 	if (animation != NULL) {
-		MabMaterialTrack* items = animation->GetUnk0x0c();
+		MabMaterialTrack* items = animation->GetTracks();
 		MabMaterialTrack* item1 = &items[1];
 		MabMaterialTrack* item2 = &items[2];
 		MabMaterialTrack* item3 = &items[3];
-		items[0].FUN_00410470();
-		item1->FUN_00410470();
-		item2->FUN_10025da0(items[0].GetUnk0x00(), items[0].GetUnk0x04(), FALSE);
-		item2->FUN_00410480();
-		item3->FUN_10025da0(item1->GetUnk0x00(), item1->GetUnk0x04(), FALSE);
-		item3->FUN_00410480();
+		items[0].Unassign();
+		item1->Unassign();
+		item2->Assign(items[0].GetMaterialTable(), items[0].GetMaterialIndex(), FALSE);
+		item2->Rewind();
+		item3->Assign(item1->GetMaterialTable(), item1->GetMaterialIndex(), FALSE);
+		item3->Rewind();
 		m_blowupItem = item2;
 
 		GolVec3 position;
@@ -178,16 +178,16 @@ void SphinxHazard::ResetState()
 	}
 
 	if (animation != NULL) {
-		MabMaterialTrack* items = animation->GetUnk0x0c();
+		MabMaterialTrack* items = animation->GetTracks();
 		MabMaterialTrack* item2 = &items[2];
 		MabMaterialTrack* item1 = &items[1];
 		MabMaterialTrack* item3 = &items[3];
-		item2->FUN_00410470();
-		item3->FUN_00410470();
-		items[0].FUN_10025da0(items[0].GetUnk0x00(), items[0].GetUnk0x04(), TRUE);
-		items[0].FUN_00410480();
-		item1->FUN_10025da0(item1->GetUnk0x00(), item1->GetUnk0x04(), TRUE);
-		item1->FUN_00410480();
+		item2->Unassign();
+		item3->Unassign();
+		items[0].Assign(items[0].GetMaterialTable(), items[0].GetMaterialIndex(), TRUE);
+		items[0].Rewind();
+		item1->Assign(item1->GetMaterialTable(), item1->GetMaterialIndex(), TRUE);
+		item1->Rewind();
 	}
 
 	m_state = 1;

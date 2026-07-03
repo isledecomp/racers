@@ -233,7 +233,7 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 	for (i = 0; i < m_materialAnimationCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_materialAnimationNames[i], ".maf");
-		GetMaterialAnimation(i)->VTable0x04(m_renderer, fileName, m_binary);
+		GetMaterialAnimation(i)->Load(m_renderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_spriteCount; i++) {

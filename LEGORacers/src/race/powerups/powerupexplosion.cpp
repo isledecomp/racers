@@ -97,10 +97,10 @@ void PowerupExplosion::Initialize(const Params* p_params)
 	}
 
 	if (p_params->m_billboardAnimation != NULL) {
-		m_billboardAnimation.FUN_004103c0(*p_params->m_billboardAnimation);
-		m_billboardAnimation.FUN_10025da0(m_manager->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
+		m_billboardAnimation.ConfigureFrom(*p_params->m_billboardAnimation);
+		m_billboardAnimation.Assign(m_manager->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
 		m_billboardAnimation
-			.FUN_004104c0(0, m_manager->GetMaterialAnimationItems(), m_manager->GetMaterialAnimationItemCount());
+			.Update(0, m_manager->GetMaterialAnimationItems(), m_manager->GetMaterialAnimationItemCount());
 		m_billboard->ConfigureFromMaterialTable(
 			m_manager->GetBillboardMaterialTable(),
 			m_billboardMaterialIndex,
@@ -215,9 +215,9 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 	}
 
 	if (m_billboardAnimation.IsConfigured()) {
-		m_billboardAnimation.FUN_00410470();
-		m_billboardAnimation.FUN_00410480();
-		m_billboardAnimation.FUN_10025da0(m_manager->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
+		m_billboardAnimation.Unassign();
+		m_billboardAnimation.Rewind();
+		m_billboardAnimation.Assign(m_manager->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
 	}
 
 	if (m_particleAnimation != NULL) {
@@ -343,7 +343,7 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 		}
 
 		if (m_billboardAnimation.IsConfigured()) {
-			m_billboardAnimation.FUN_004104c0(
+			m_billboardAnimation.Update(
 				p_elapsedMs,
 				m_manager->GetMaterialAnimationItems(),
 				m_manager->GetMaterialAnimationItemCount()

@@ -215,8 +215,8 @@ void CutsceneParticle::ActivateEmitter(CutsceneAnimation::Emitter* p_runtime)
 	if (m_emitter->GetMaterialAnimationItem() != NULL) {
 		m_particleSystem.ConfigureMaterialAnimation(
 			m_emitter->GetMaterialAnimationItem(),
-			m_emitter->GetMaterialAnimation()->GetUnk0x04(),
-			m_emitter->GetMaterialAnimation()->GetUnk0x08(),
+			m_emitter->GetMaterialAnimation()->GetFrames(),
+			m_emitter->GetMaterialAnimation()->GetFrameCount(),
 			m_emitter->GetStartSizeUp(),
 			m_emitter->GetStartSizeForward(),
 			m_emitter->GetSizeGrowthUp(),

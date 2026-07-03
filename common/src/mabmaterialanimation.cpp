@@ -14,25 +14,25 @@ DECOMP_SIZE_ASSERT(MabMaterialAnimation::MabTxtParser, 0x1fc)
 // FUNCTION: LEGORACERS 0x0040fea0
 MabMaterialAnimation::MabMaterialAnimation()
 {
-	m_unk0x04 = NULL;
-	m_unk0x08 = 0;
-	m_unk0x0c = NULL;
-	m_unk0x10 = 0;
+	m_frames = NULL;
+	m_frameCount = 0;
+	m_tracks = NULL;
+	m_trackCount = 0;
 }
 
 // FUNCTION: GOLDP 0x100258b0
 // FUNCTION: LEGORACERS 0x0040fec0
 MabMaterialAnimation::~MabMaterialAnimation()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x100258f0
 // FUNCTION: LEGORACERS 0x0040fed0
-void MabMaterialAnimation::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
+void MabMaterialAnimation::Load(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
-	if (m_unk0x0c != NULL) {
-		VTable0x08();
+	if (m_tracks != NULL) {
+		Destroy();
 	}
 
 	GolFileParser* parser;
@@ -51,8 +51,8 @@ void MabMaterialAnimation::VTable0x04(GolRenderDevice* p_renderer, const LegoCha
 	}
 
 	parser->OpenFileForRead(p_fileName);
-	FUN_10025a40(p_renderer, *parser);
-	FUN_10025b60(*parser);
+	ParseFrames(p_renderer, *parser);
+	ParseTracks(*parser);
 	parser->Dispose();
 	if (parser != NULL) {
 		delete parser;
@@ -61,23 +61,23 @@ void MabMaterialAnimation::VTable0x04(GolRenderDevice* p_renderer, const LegoCha
 
 // FUNCTION: GOLDP 0x10025a00
 // FUNCTION: LEGORACERS 0x0040ffe0
-void MabMaterialAnimation::VTable0x08()
+void MabMaterialAnimation::Destroy()
 {
-	if (m_unk0x04 != NULL) {
-		delete[] m_unk0x04;
-		m_unk0x04 = NULL;
+	if (m_frames != NULL) {
+		delete[] m_frames;
+		m_frames = NULL;
 	}
-	if (m_unk0x0c != NULL) {
-		delete[] m_unk0x0c;
-		m_unk0x0c = NULL;
+	if (m_tracks != NULL) {
+		delete[] m_tracks;
+		m_tracks = NULL;
 	}
-	m_unk0x08 = 0;
-	m_unk0x10 = 0;
+	m_frameCount = 0;
+	m_trackCount = 0;
 }
 
 // FUNCTION: GOLDP 0x10025a40
 // FUNCTION: LEGORACERS 0x00410020
-void MabMaterialAnimation::FUN_10025a40(GolRenderDevice* p_renderer, GolFileParser& p_parser)
+void MabMaterialAnimation::ParseFrames(GolRenderDevice* p_renderer, GolFileParser& p_parser)
 {
 	LegoU32 i;
 
@@ -85,20 +85,20 @@ void MabMaterialAnimation::FUN_10025a40(GolRenderDevice* p_renderer, GolFilePars
 		p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 
-	m_unk0x08 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x08 == 0) {
+	m_frameCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_frameCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 	}
 
-	m_unk0x04 = new MabMaterialFrame[m_unk0x08];
-	if (m_unk0x04 == NULL) {
+	m_frames = new MabMaterialFrame[m_frameCount];
+	if (m_frames == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (i = 0; i < m_unk0x08; i++) {
+	for (i = 0; i < m_frameCount; i++) {
 		GolName name;
 		::strncpy(name, p_parser.ReadStringWithMaxLength(sizeOfArray(name)), sizeof(name));
-		m_unk0x04[i].FUN_10026110(p_renderer, name, p_parser.ReadInteger());
+		m_frames[i].Initialize(p_renderer, name, p_parser.ReadInteger());
 	}
 
 	if (p_parser.GetNextToken() != GolFileParser::e_rightCurly) {
@@ -108,7 +108,7 @@ void MabMaterialAnimation::FUN_10025a40(GolRenderDevice* p_renderer, GolFilePars
 
 // FUNCTION: GOLDP 0x10025b60
 // FUNCTION: LEGORACERS 0x00410140
-void MabMaterialAnimation::FUN_10025b60(GolFileParser& p_parser)
+void MabMaterialAnimation::ParseTracks(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
@@ -116,17 +116,17 @@ void MabMaterialAnimation::FUN_10025b60(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 
-	m_unk0x10 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x10 == 0) {
+	m_trackCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_trackCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 	}
 
-	m_unk0x0c = new MabMaterialTrack[m_unk0x10];
-	if (m_unk0x0c == NULL) {
+	m_tracks = new MabMaterialTrack[m_trackCount];
+	if (m_tracks == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (i = 0; i < m_unk0x10; i++) {
+	for (i = 0; i < m_trackCount; i++) {
 		undefined4 param2 = 1;
 		undefined4 param1 = 0;
 		undefined4 param3 = 1;
@@ -159,7 +159,7 @@ void MabMaterialAnimation::FUN_10025b60(GolFileParser& p_parser)
 			}
 		}
 
-		m_unk0x0c[i].FUN_10025d40(param1, param2, param3, param4);
+		m_tracks[i].Configure(param1, param2, param3, param4);
 	}
 
 	if (p_parser.GetNextToken() != GolFileParser::e_rightCurly) {
@@ -168,11 +168,11 @@ void MabMaterialAnimation::FUN_10025b60(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00410300
-void MabMaterialAnimation::FUN_00410300(LegoS32 p_elapsedMs)
+void MabMaterialAnimation::Update(LegoS32 p_elapsedMs)
 {
-	for (LegoU32 i = 0; i < m_unk0x10; i++) {
-		if (m_unk0x0c[i].IsAssigned()) {
-			m_unk0x0c[i].FUN_004104c0(p_elapsedMs, m_unk0x04, m_unk0x08);
+	for (LegoU32 i = 0; i < m_trackCount; i++) {
+		if (m_tracks[i].IsAssigned()) {
+			m_tracks[i].Update(p_elapsedMs, m_frames, m_frameCount);
 		}
 	}
 }

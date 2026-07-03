@@ -13,16 +13,16 @@ DECOMP_SIZE_ASSERT(MabMaterialFrame, 0x8)
 // FUNCTION: LEGORACERS 0x0045c3b0 FOLDED
 MabMaterialFrame::MabMaterialFrame()
 {
-	m_unk0x00 = NULL;
-	m_unk0x04 = 0;
+	m_material = NULL;
+	m_frame = 0;
 }
 
 // FUNCTION: GOLDP 0x10026110
 // FUNCTION: LEGORACERS 0x00410770
-void MabMaterialFrame::FUN_10026110(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoU32 p_id)
+void MabMaterialFrame::Initialize(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoU32 p_id)
 {
-	m_unk0x00 = p_renderer->FindMaterialByName(p_name);
-	if (m_unk0x00 == NULL) {
+	m_material = p_renderer->FindMaterialByName(p_name);
+	if (m_material == NULL) {
 		LegoChar message[40];
 		::strcpy(message, "Unable to find named material: ");
 		size_t lenPrefix = strlen(message);
@@ -31,5 +31,5 @@ void MabMaterialFrame::FUN_10026110(GolRenderDevice* p_renderer, const LegoChar*
 		GOL_FATALERROR_MESSAGE(message);
 	}
 
-	m_unk0x04 = p_id;
+	m_frame = p_id;
 }

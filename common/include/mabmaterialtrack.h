@@ -12,39 +12,39 @@ class GolMaterial;
 class MabMaterialTrack {
 public:
 	enum {
-		c_flagBit0 = 0x1 << 0,
-		c_flagBit1 = 0x1 << 1,
-		c_flagBit2 = 0x1 << 2,
+		c_flagConfigured = 0x1 << 0,
+		c_flagAssigned = 0x1 << 1,
+		c_flagLooping = 0x1 << 2,
 	};
 
 	MabMaterialTrack();
 
-	void FUN_10025d40(undefined2, undefined2, undefined2, LegoS32);
-	void FUN_10025da0(MaterialTable* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3);
-	void FUN_004103c0(const MabMaterialTrack& p_other);
+	void Configure(undefined2 p_firstFrame, undefined2 p_frameCount, undefined2 p_durationFrames, LegoS32 p_frameRate);
+	void Assign(MaterialTable* p_materialTable, LegoU32 p_materialIndex, LegoBool32 p_looping);
+	void ConfigureFrom(const MabMaterialTrack& p_other);
 	void Reset();
-	void FUN_00410470();
-	void FUN_00410480();
-	void FUN_00410490();
-	void FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialFrame* p_items, LegoU32 p_itemCount);
-	GolMaterial* FUN_00410560(LegoS32 p_elapsedMs, MabMaterialFrame* p_items, LegoU32 p_itemCount);
-	MaterialTable* GetUnk0x00() const { return m_unk0x00; }
-	LegoU16 GetUnk0x04() const { return m_unk0x04; }
-	LegoU16 GetFirstFrame() const { return m_unk0x06; }
-	LegoU16 GetFrameCount() const { return m_unk0x08; }
-	void SetUnk0x0c(LegoFloat p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
-	LegoBool32 IsConfigured() const { return m_flags & c_flagBit0; }
-	LegoBool32 IsAssigned() const { return m_flags & c_flagBit1; }
+	void Unassign();
+	void Rewind();
+	void SeekToLastFrame();
+	void Update(LegoS32 p_elapsedMs, MabMaterialFrame* p_frames, LegoU32 p_frameCount);
+	GolMaterial* SampleMaterial(LegoS32 p_timeMs, MabMaterialFrame* p_frames, LegoU32 p_frameCount);
+	MaterialTable* GetMaterialTable() const { return m_materialTable; }
+	LegoU16 GetMaterialIndex() const { return m_materialIndex; }
+	LegoU16 GetFirstFrame() const { return m_firstFrame; }
+	LegoU16 GetFrameCount() const { return m_frameCount; }
+	void SetFramesPerMs(LegoFloat p_framesPerMs) { m_framesPerMs = p_framesPerMs; }
+	LegoBool32 IsConfigured() const { return m_flags & c_flagConfigured; }
+	LegoBool32 IsAssigned() const { return m_flags & c_flagAssigned; }
 
 private:
-	MaterialTable* m_unk0x00; // 0x00
-	LegoU16 m_unk0x04;        // 0x04
-	LegoU16 m_unk0x06;        // 0x06
-	LegoU16 m_unk0x08;        // 0x08
-	LegoU16 m_unk0x0a;        // 0x0a
-	LegoFloat m_unk0x0c;      // 0x0c
-	LegoFloat m_unk0x10;      // 0x10
-	LegoU32 m_flags;          // 0x14
+	MaterialTable* m_materialTable; // 0x00
+	LegoU16 m_materialIndex;        // 0x04
+	LegoU16 m_firstFrame;           // 0x06
+	LegoU16 m_frameCount;           // 0x08
+	LegoU16 m_durationFrames;       // 0x0a
+	LegoFloat m_framesPerMs;        // 0x0c
+	LegoFloat m_frameCursor;        // 0x10
+	LegoU32 m_flags;                // 0x14
 };
 
 #endif // MABMATERIALTRACK_H

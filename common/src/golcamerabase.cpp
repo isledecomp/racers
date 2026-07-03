@@ -164,22 +164,22 @@ void GolCameraBase::ComputeFrustum(GolViewFrustum* p_view)
 	source.m_x = -m_farHalfWidth;
 	source.m_y = -m_farHalfHeight;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[0]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[0]);
 
 	source.m_x = -m_farHalfWidth;
 	source.m_y = m_farHalfHeight;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[2]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[2]);
 
 	source.m_x = m_farHalfWidth;
 	source.m_y = -m_farHalfHeight;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[1]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[1]);
 
 	source.m_x = m_farHalfWidth;
 	source.m_y = m_farHalfHeight;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[3]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[3]);
 
 	m_nearHalfHeight = m_nearClip * tangent;
 	m_nearHalfWidth = m_aspectRatio * m_nearHalfHeight;
@@ -187,22 +187,22 @@ void GolCameraBase::ComputeFrustum(GolViewFrustum* p_view)
 	source.m_x = -m_nearHalfWidth;
 	source.m_y = -m_nearHalfHeight;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[4]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[4]);
 
 	source.m_x = -m_nearHalfWidth;
 	source.m_y = m_nearHalfHeight;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[6]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[6]);
 
 	source.m_x = m_nearHalfWidth;
 	source.m_y = -m_nearHalfHeight;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[5]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[5]);
 
 	source.m_x = m_nearHalfWidth;
 	source.m_y = m_nearHalfHeight;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[7]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[7]);
 
 	GolVec3 edge0;
 	GolVec3 edge1;
@@ -273,42 +273,42 @@ void GolCameraBase::ComputeFrustumFromBounds(GolViewFrustum* p_view)
 	source.m_x = farLeft;
 	source.m_y = farBottom;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[0]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[0]);
 
 	source.m_x = farLeft;
 	source.m_y = farTop;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[2]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[2]);
 
 	source.m_x = farRight;
 	source.m_y = farBottom;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[1]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[1]);
 
 	source.m_x = farRight;
 	source.m_y = farTop;
 	source.m_z = m_farClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[3]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[3]);
 
 	source.m_x = m_viewBounds.m_x;
 	source.m_y = m_viewBounds.m_y;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[4]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[4]);
 
 	source.m_x = m_viewBounds.m_x;
 	source.m_y = m_viewBounds.m_u;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[6]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[6]);
 
 	source.m_x = m_viewBounds.m_z;
 	source.m_y = m_viewBounds.m_y;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[5]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[5]);
 
 	source.m_x = m_viewBounds.m_z;
 	source.m_y = m_viewBounds.m_u;
 	source.m_z = m_nearClip;
-	m_transform->VTable0x04(&source, &p_view->m_corners[7]);
+	m_transform->TransformPoint(&source, &p_view->m_corners[7]);
 
 	GolVec3 edge0;
 	GolVec3 edge1;
@@ -478,9 +478,9 @@ void GolCameraBase::UpdateFromTrackedEntity()
 	orbit->VTable0x20(&right, &forward);
 
 	for (GolTransformBase* parent = orbit->m_parent; parent != NULL; parent = parent->m_parent) {
-		parent->VTable0x04(&position, &transformedPosition);
-		parent->VTable0x0c(&right, &transformedRight);
-		parent->VTable0x0c(&forward, &transformedForward);
+		parent->TransformPoint(&position, &transformedPosition);
+		parent->TransformVector(&right, &transformedRight);
+		parent->TransformVector(&forward, &transformedForward);
 
 		position = transformedPosition;
 		right = transformedRight;

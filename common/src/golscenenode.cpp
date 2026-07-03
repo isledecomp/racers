@@ -91,7 +91,7 @@ void GolSceneNode::VTable0x10(GolSceneNode* p_node)
 			static_cast<GolTransformBase*>(GetName(parentName))->AttachChild(destOrbit);
 		}
 
-		destOrbit->VTable0x48(sourceOrbit);
+		destOrbit->CopyFrom(sourceOrbit);
 	}
 }
 
@@ -155,7 +155,7 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 				values[1] = p_parser->ReadFloat();
 				values[2] = p_parser->ReadFloat();
 				values[3] = p_parser->ReadFloat();
-				orbit->VTable0x2c(values);
+				orbit->SetRotation(values);
 				break;
 			}
 			case GolFileParser::e_unknown0x28: {
@@ -212,7 +212,7 @@ void GolSceneNode::TransformPointToWorld(undefined4 p_param1, GolVec3* p_param2,
 	GolVec3 vec;
 	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_parent) {
 		vec = *p_param3;
-		current->VTable0x04(&vec, p_param3);
+		current->TransformPoint(&vec, p_param3);
 	}
 }
 
@@ -224,7 +224,7 @@ void GolSceneNode::TransformVectorToWorld(undefined4 p_param1, GolVec3* p_param2
 	GolVec3 vec;
 	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_parent) {
 		vec = *p_param3;
-		current->VTable0x0c(&vec, p_param3);
+		current->TransformVector(&vec, p_param3);
 	}
 }
 

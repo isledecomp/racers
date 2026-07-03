@@ -143,14 +143,14 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 		transform->VTable0x20(&right, &forward);
 
 		GolVec3 origin = localPosition;
-		transform->VTable0x04(&origin, &localPosition);
+		transform->TransformPoint(&origin, &localPosition);
 
 		if (m_isRock) {
 			do {
 				GolVec3 transformedRight = right;
 				GolVec3 transformedForward = forward;
-				transform->VTable0x0c(&transformedRight, &right);
-				transform->VTable0x0c(&transformedForward, &forward);
+				transform->TransformVector(&transformedRight, &right);
+				transform->TransformVector(&transformedForward, &forward);
 				transform = transform->m_parent;
 			} while (transform != NULL);
 		}

@@ -220,14 +220,14 @@ void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 			if (hasQueuedRotation) {
 				GolQuat blendedRotation;
 				GolMath::LerpQuat(activeRotation, queuedRotation, m_transitionProgress, &blendedRotation);
-				orbit->VTable0x2c(&blendedRotation.m_x);
+				orbit->SetRotation(&blendedRotation.m_x);
 			}
 			else {
-				orbit->VTable0x2c(&activeRotation.m_x);
+				orbit->SetRotation(&activeRotation.m_x);
 			}
 		}
 		else if (hasQueuedRotation) {
-			orbit->VTable0x2c(&queuedRotation.m_x);
+			orbit->SetRotation(&queuedRotation.m_x);
 		}
 	}
 }

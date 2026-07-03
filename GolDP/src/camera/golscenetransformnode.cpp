@@ -60,10 +60,10 @@ void GolSceneTransformNode::FUN_10014a60(const GolMatrix4& p_m1, const GolMatrix
 		for (; obj < end; obj++) {
 			GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
 			if (parent == NULL) {
-				GolMath::MultiplyMatrix4(obj->m_unk0x10, p_m1, &obj->m_unk0x50);
+				GolMath::MultiplyMatrix4(obj->m_matrix, p_m1, &obj->m_unk0x50);
 			}
 			else {
-				GolMath::MultiplyMatrix4(obj->m_unk0x10, parent->m_unk0x50, &obj->m_unk0x50);
+				GolMath::MultiplyMatrix4(obj->m_matrix, parent->m_unk0x50, &obj->m_unk0x50);
 			}
 		}
 	}
@@ -122,10 +122,10 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 		for (; obj < end; obj++) {
 			GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
 			if (parent == NULL) {
-				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, p_m, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, p_m, &obj->m_unk0x90);
 			}
 			else {
-				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, parent->m_unk0x90, &obj->m_unk0x90);
 			}
 		}
 		return;
@@ -137,12 +137,12 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 
 		if (m_unk0x14->VTable0x00(i)) {
 			GolQuat rotation;
-			GolMath::Matrix4ToQuat(obj->m_unk0x10, &rotation);
+			GolMath::Matrix4ToQuat(obj->m_matrix, &rotation);
 
 			GolVec3 position;
-			position.m_x = obj->m_unk0x10.m_m[3][0];
-			position.m_y = obj->m_unk0x10.m_m[3][1];
-			position.m_z = obj->m_unk0x10.m_m[3][2];
+			position.m_x = obj->m_matrix.m_m[3][0];
+			position.m_y = obj->m_matrix.m_m[3][1];
+			position.m_z = obj->m_matrix.m_m[3][2];
 
 			if (parent != NULL) {
 				m_unk0x14->VTable0x04(i, rotation, position, parent->m_unk0x90, &obj->m_unk0x90);
@@ -153,10 +153,10 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 		}
 		else {
 			if (parent != NULL) {
-				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, parent->m_unk0x90, &obj->m_unk0x90);
 			}
 			else {
-				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, p_m, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, p_m, &obj->m_unk0x90);
 			}
 		}
 	}

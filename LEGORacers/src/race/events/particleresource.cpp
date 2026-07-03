@@ -191,7 +191,7 @@ void ParticleResource::Update(LegoU32 p_elapsedMs)
 
 		do {
 			transformedPosition = position;
-			transform->VTable0x04(&transformedPosition, &position);
+			transform->TransformPoint(&transformedPosition, &position);
 			transform = transform->m_parent;
 		} while (transform);
 

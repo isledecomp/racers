@@ -138,7 +138,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	GolVec3 position;
 	do {
 		position = offset;
-		transform->VTable0x04(&position, &offset);
+		transform->TransformPoint(&position, &offset);
 		transform = transform->m_parent;
 	} while (transform != NULL);
 

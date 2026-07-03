@@ -120,7 +120,7 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 			vector.m_y = -vector.m_y;
 		}
 
-		transform->VTable0x04(&vector, &position);
+		transform->TransformPoint(&vector, &position);
 		vector.m_x = position.m_x * scale;
 		vector.m_y = position.m_y * scale;
 		vector.m_z = position.m_z * scale;

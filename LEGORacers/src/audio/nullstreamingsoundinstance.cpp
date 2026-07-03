@@ -45,7 +45,7 @@ void NullStreamingSoundInstance::Play(LegoBool32)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void NullStreamingSoundInstance::VTable0x14(undefined4)
+void NullStreamingSoundInstance::SetPriority(undefined4)
 {
 }
 

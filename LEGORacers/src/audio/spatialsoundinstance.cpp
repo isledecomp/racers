@@ -262,6 +262,6 @@ void SpatialSoundInstance::Play(LegoBool32)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void SpatialSoundInstance::VTable0x14(undefined4)
+void SpatialSoundInstance::SetPriority(undefined4)
 {
 }

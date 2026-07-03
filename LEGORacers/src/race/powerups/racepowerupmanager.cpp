@@ -478,7 +478,7 @@ void RacePowerupManager::Reset()
 	m_freeTurboActions = 0;
 	m_freeWarpActions = 0;
 	m_brickSpinAngle = 0;
-	m_unk0x19a0 = 0;
+	m_exclusiveDraw = 0;
 	m_turbo3Database = 0;
 	m_boundedEntity = 0;
 	m_unk0x048 = 0;

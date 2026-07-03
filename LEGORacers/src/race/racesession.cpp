@@ -2121,7 +2121,7 @@ void RaceSession::Update()
 // FUNCTION: LEGORACERS 0x004354d0
 void RaceSession::Draw()
 {
-	if (m_powerupManager.GetUnk0x19a0()) {
+	if (m_powerupManager.GetExclusiveDraw()) {
 		m_powerupManager.Draw(FALSE);
 		return;
 	}

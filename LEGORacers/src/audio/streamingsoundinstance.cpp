@@ -69,6 +69,6 @@ DirectSoundGroup* StreamingSoundInstance::GetSoundGroup()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void StreamingSoundInstance::VTable0x14(undefined4)
+void StreamingSoundInstance::SetPriority(undefined4)
 {
 }

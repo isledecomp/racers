@@ -21,7 +21,7 @@ public:
 	void Stop() override;                           // vtable+0x08
 	LegoBool32 IsPlaying() override;                // vtable+0x0c
 	DirectSoundGroup* GetSoundGroup() override;     // vtable+0x10
-	void VTable0x14(undefined4) override;           // vtable+0x14
+	void SetPriority(undefined4) override;          // vtable+0x14
 	void UpdateSpatial(SoundNode* p_node) override; // vtable+0x18
 
 	// SYNTHETIC: LEGORACERS 0x0041ace0

@@ -170,7 +170,7 @@ public:
 	LegoBool32 IsProjectileEntity(GolWorldEntity* p_entity);
 	void ResetEffects();
 	LegoU32 GetUsedEffectEntityCount() const { return m_usedEffectEntityCount; }
-	undefined4 GetUnk0x19a0() const { return m_unk0x19a0; }
+	undefined4 GetExclusiveDraw() const { return m_exclusiveDraw; }
 	GolBillboard::ManagedMaterialTable* GetBillboardMaterialTable() { return &m_billboardMaterialTable; }
 	MabMaterialFrame* GetMaterialAnimationItems() const { return m_materialAnimation.GetFrames(); }
 	LegoU32 GetMaterialAnimationItemCount() const { return m_materialAnimation.GetFrameCount(); }
@@ -340,7 +340,7 @@ private:
 	GolMaterial* m_brickMaterials[8];                            // 0x1978
 	ActionTarget* m_aimTarget;                                   // 0x1998
 	LegoFloat m_brickSpinAngle;                                  // 0x199c
-	undefined4 m_unk0x19a0;                                      // 0x19a0
+	undefined4 m_exclusiveDraw;                                  // 0x19a0
 };
 
 #endif // RACEPOWERUPMANAGER_H

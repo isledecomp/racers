@@ -758,7 +758,7 @@ void Racer::InitializeSounds(RaceCameraController* p_cameraController, LegoBool3
 	m_engineFastVolume = 0.0f;
 
 	m_engineIdleSound = m_soundSource->AcquireSoundById(0x20);
-	m_engineIdleSound->VTable0x14(0xff);
+	m_engineIdleSound->SetPriority(0xff);
 	m_engineIdleSound->Play(TRUE);
 	m_engineIdleSound->SetDistanceRangeWithMinSquared(
 		g_shieldSoundMinDistance * g_shieldSoundMinDistance,
@@ -772,7 +772,7 @@ void Racer::InitializeSounds(RaceCameraController* p_cameraController, LegoBool3
 		g_shieldSoundMinDistance * g_shieldSoundMinDistance,
 		g_shieldSoundMaxDistance
 	);
-	m_engineDriveSound->VTable0x14(0xff);
+	m_engineDriveSound->SetPriority(0xff);
 	m_engineDriveSound->SetVolume(m_engineDriveVolume);
 
 	m_engineFastSound = m_soundSource->AcquireSoundById(0x3d);
@@ -780,7 +780,7 @@ void Racer::InitializeSounds(RaceCameraController* p_cameraController, LegoBool3
 		g_shieldSoundMinDistance * g_shieldSoundMinDistance,
 		g_shieldSoundMaxDistance
 	);
-	m_engineFastSound->VTable0x14(0xff);
+	m_engineFastSound->SetPriority(0xff);
 	m_engineFastSound->SetVolume(m_engineFastVolume);
 }
 

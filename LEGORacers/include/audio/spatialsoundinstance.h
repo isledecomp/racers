@@ -20,7 +20,7 @@ public:
 	virtual void Stop();                       // vtable+0x08
 	virtual LegoBool32 IsPlaying();            // vtable+0x0c
 	virtual DirectSoundGroup* GetSoundGroup(); // vtable+0x10
-	virtual void VTable0x14(undefined4);       // vtable+0x14
+	virtual void SetPriority(undefined4);      // vtable+0x14
 	virtual void UpdateSpatial(SoundNode*);    // vtable+0x18
 
 	void SetVolume(LegoFloat p_volume);

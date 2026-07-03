@@ -10,8 +10,8 @@
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(MagentaRibbonSourceItem0x2c, 0x2c)
-DECOMP_SIZE_ASSERT(MagentaRibbonSource0x4, 0x04)
+DECOMP_SIZE_ASSERT(GolTextureSourceItem, 0x2c)
+DECOMP_SIZE_ASSERT(GolTextureSource, 0x04)
 DECOMP_SIZE_ASSERT(GolTextureList, 0x20)
 DECOMP_SIZE_ASSERT(GolTextureList::TdbTxtParser, 0x1fc)
 
@@ -164,7 +164,7 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 // FUNCTION: GOLDP 0x1002b890
 void GolTextureList::LoadTextures()
 {
-	MagentaRibbonSourceItem0x2c sourceItem;
+	GolTextureSourceItem sourceItem;
 	GolSurfaceFormat textureFormat;
 	LegoChar textureName[sizeof(GolName) + 1];
 
@@ -227,7 +227,7 @@ void GolTextureList::LoadTextures()
 }
 
 // FUNCTION: GOLDP 0x1002ba30
-void GolTextureList::VTable0x20(GolD3DRenderDevice* p_renderer, MagentaRibbonSource0x4* p_source, LegoU32 p_capacity)
+void GolTextureList::VTable0x20(GolD3DRenderDevice* p_renderer, GolTextureSource* p_source, LegoU32 p_capacity)
 {
 	if (m_renderer != NULL) {
 		Clear();

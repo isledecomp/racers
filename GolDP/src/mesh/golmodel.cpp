@@ -5,8 +5,8 @@
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golmaterial.h"
-#include "mesh/gdbcommonvertexarray0x1c.h"
-#include "mesh/gdbvertexarraymistery0x1c.h"
+#include "mesh/gdbcoloredvertexarray.h"
+#include "mesh/gdbuncoloredvertexarray.h"
 #include "mesh/gdbvertexarraytypeone0x1c.h"
 #include "mesh/gdbvertexarraytypethree0x20.h"
 #include "mesh/gdbvertexarraytypetwo0x20.h"
@@ -105,7 +105,7 @@ void GolModel::VTable0x0c(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x40 = new GdbVertexArrayMistery0x1c;
+	m_unk0x40 = new GdbUncoloredVertexArray;
 	m_unk0x10 = m_unk0x40;
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -180,7 +180,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 		m_unk0x3c = FALSE;
 	}
 
-	GdbCommonVertexArray0x1c* vertexArray = static_cast<GdbCommonVertexArray0x1c*>(m_unk0x40);
+	GdbColoredVertexArray* vertexArray = static_cast<GdbColoredVertexArray*>(m_unk0x40);
 	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
 	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {
@@ -279,7 +279,7 @@ void GolModel::FUN_10006e00(
 		m_unk0x3c = FALSE;
 	}
 
-	GdbCommonVertexArray0x1c* vertexArray = static_cast<GdbCommonVertexArray0x1c*>(m_unk0x40);
+	GdbColoredVertexArray* vertexArray = static_cast<GdbColoredVertexArray*>(m_unk0x40);
 	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
 	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {

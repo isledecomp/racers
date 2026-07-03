@@ -1,9 +1,9 @@
 #include "camera/goltransform.h"
 
-#include "camera/jadeorbit0x220.h"
+#include "camera/golcameramatrices.h"
 
 DECOMP_SIZE_ASSERT(GolTransform, 0xd0)
-DECOMP_SIZE_ASSERT(JadeOrbit0x220, 0x220)
+DECOMP_SIZE_ASSERT(GolCameraMatrices, 0x220)
 
 // FUNCTION: GOLDP 0x10002890
 GolTransform::GolTransform()

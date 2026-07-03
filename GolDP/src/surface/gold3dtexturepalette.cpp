@@ -1,26 +1,26 @@
-#include "surface/falcondunebag0x10.h"
+#include "surface/gold3dtexturepalette.h"
 
 #include "golerror.h"
 
 #include <string.h>
 
 // GLOBAL: GOLDP 0x10063558
-GolSurfaceFormat FalconDuneBag0x10::g_textureFormat;
+GolSurfaceFormat GolD3DTexturePalette::g_textureFormat;
 
 // FUNCTION: GOLDP 0x100146c0
-FalconDuneBag0x10::FalconDuneBag0x10()
+GolD3DTexturePalette::GolD3DTexturePalette()
 {
 	m_unk0x0c = NULL;
 }
 
 // FUNCTION: GOLDP 0x10014700
-FalconDuneBag0x10::~FalconDuneBag0x10()
+GolD3DTexturePalette::~GolD3DTexturePalette()
 {
 	Destroy();
 }
 
 // FUNCTION: GOLDP 0x10014770
-void FalconDuneBag0x10::Initialize(const GolSurfaceFormat& p_textureFormat)
+void GolD3DTexturePalette::Initialize(const GolSurfaceFormat& p_textureFormat)
 {
 	if (m_entries != NULL) {
 		if (m_unk0x0c != NULL) {
@@ -42,7 +42,7 @@ void FalconDuneBag0x10::Initialize(const GolSurfaceFormat& p_textureFormat)
 }
 
 // FUNCTION: GOLDP 0x100147f0
-void FalconDuneBag0x10::Destroy()
+void GolD3DTexturePalette::Destroy()
 {
 	if (m_unk0x0c != NULL) {
 		delete m_unk0x0c;
@@ -52,7 +52,7 @@ void FalconDuneBag0x10::Destroy()
 }
 
 // FUNCTION: GOLDP 0x10014820
-void FalconDuneBag0x10::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
+void GolD3DTexturePalette::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	GolTexturePalette::SetEntries(p_entries, p_start, p_count);
 
@@ -62,7 +62,7 @@ void FalconDuneBag0x10::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU3
 }
 
 // FUNCTION: GOLDP 0x10014870
-void FalconDuneBag0x10::CopyEntriesFrom(GolPaletteBase* p_source)
+void GolD3DTexturePalette::CopyEntriesFrom(GolPaletteBase* p_source)
 {
 	LegoU32 i;
 	ColorRGBA entry;
@@ -76,7 +76,7 @@ void FalconDuneBag0x10::CopyEntriesFrom(GolPaletteBase* p_source)
 }
 
 // FUNCTION: GOLDP 0x100148c0
-void FalconDuneBag0x10::SetTextureFormat(const GolSurfaceFormat& p_format)
+void GolD3DTexturePalette::SetTextureFormat(const GolSurfaceFormat& p_format)
 {
 	g_textureFormat = p_format;
 }

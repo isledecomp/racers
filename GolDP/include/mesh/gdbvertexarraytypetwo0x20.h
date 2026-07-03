@@ -2,11 +2,11 @@
 #define GDBVERTEXARRAYTYPETWO0x20_H
 
 #include "compat.h"
-#include "mesh/gdbcommonvertexarray0x1c.h"
+#include "mesh/gdbcoloredvertexarray.h"
 
 // VTABLE: GOLDP 0x10056894
 // SIZE 0x20
-class GdbVertexArrayTypeTwo0x20 : public GdbCommonVertexArray0x1c {
+class GdbVertexArrayTypeTwo0x20 : public GdbColoredVertexArray {
 public:
 	GdbVertexArrayTypeTwo0x20();
 

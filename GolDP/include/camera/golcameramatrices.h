@@ -1,12 +1,12 @@
-#ifndef JADEORBIT0X220_H
-#define JADEORBIT0X220_H
+#ifndef GOLCAMERAMATRICES_H
+#define GOLCAMERAMATRICES_H
 
 #include "camera/goltransform.h"
 #include "compat.h"
 #include "types.h"
 
 // SIZE 0x220
-class JadeOrbit0x220 {
+class GolCameraMatrices {
 public:
 	GolTransform m_unk0x00; // 0x00
 	GolMatrix4 m_unk0xd0;   // 0xd0
@@ -20,4 +20,4 @@ public:
 	LegoFloat m_unk0x21c;   // 0x21c
 };
 
-#endif // JADEORBIT0X220_H
+#endif // GOLCAMERAMATRICES_H

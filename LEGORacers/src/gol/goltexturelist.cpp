@@ -17,7 +17,7 @@ GolBmpFile g_textureBmpFile;
 // FUNCTION: LEGORACERS 0x004146a0
 void GolTextureList::LoadTextures()
 {
-	MagentaRibbonSourceItem0x2c sourceItem;
+	GolTextureSourceItem sourceItem;
 	GolSurfaceFormat textureFormat;
 	LegoChar textureName[sizeof(GolName) + 1];
 

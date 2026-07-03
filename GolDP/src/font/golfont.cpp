@@ -7,7 +7,7 @@
 #include "golimgfile.h"
 #include "golsurface.h"
 #include "goltgafile.h"
-#include "material/duskwindbananarelic0x30.h"
+#include "material/golsoftwarematerial.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
 #include "surface/gold3dtexture.h"
@@ -126,14 +126,14 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_materials = new DuskwindBananaRelic0x30[m_surfaceCount];
+	m_materials = new GolSoftwareMaterial[m_surfaceCount];
 	if (m_materials == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	LegoU32 i = 0;
 	GolD3DTexture* texture = m_textures;
-	DuskwindBananaRelic0x30* material = m_materials;
+	GolSoftwareMaterial* material = m_materials;
 
 	for (; i < m_surfaceCount - 1; i++) {
 		if (m_flags & c_flagBit5) {
@@ -212,7 +212,7 @@ void GolFont::VTable0x0c(GolRenderDevice* p_renderer, LegoU32)
 void GolFont::SelectSurface(LegoU32 p_index)
 {
 	LegoU32 index = p_index;
-	DuskwindBananaRelic0x30* material = &m_materials[index];
+	GolSoftwareMaterial* material = &m_materials[index];
 	(m_renderer->*m_renderer->m_unk0xc876c)(material);
 
 	GolTexture* texture = &m_textures[index];

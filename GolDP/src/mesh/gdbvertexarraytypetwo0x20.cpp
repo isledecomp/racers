@@ -109,7 +109,7 @@ void GdbVertexArrayTypeTwo0x20::VTable0x0c()
 		m_unk0x1c = NULL;
 	}
 
-	GdbCommonVertexArray0x1c::VTable0x0c();
+	GdbColoredVertexArray::VTable0x0c();
 }
 
 // FUNCTION: GOLDP 0x10006210 FOLDED

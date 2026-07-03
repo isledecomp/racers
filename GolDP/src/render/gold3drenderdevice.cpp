@@ -21,8 +21,8 @@
 #include "render/goldrawdpstate.h"
 #include "render/rectangle.h"
 #include "scene/golbillboard.h"
-#include "surface/falcondunebag0x10.h"
 #include "surface/gold3dtexture.h"
+#include "surface/gold3dtexturepalette.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -659,7 +659,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 		m_unk0xc8700 = 2;
 	}
 
-	FalconDuneBag0x10::SetTextureFormat(swTextureFormat);
+	GolD3DTexturePalette::SetTextureFormat(swTextureFormat);
 	if (!m_softwareRenderer.Initialize(swPixelFormat, 16000)) {
 		GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
 	}
@@ -2309,7 +2309,7 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 
 	if (textureCount > 0) {
 		for (LegoU32 i = 0; i < textureCount; i++) {
-			m_unk0xc83b4.m_unk0x00[i] = static_cast<DuskwindBananaRelic0x30*>(p_material)->GetUnk0x2c() + i;
+			m_unk0xc83b4.m_unk0x00[i] = static_cast<GolSoftwareMaterial*>(p_material)->GetUnk0x2c() + i;
 		}
 	}
 

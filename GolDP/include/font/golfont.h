@@ -5,7 +5,7 @@
 #include "golpalettedtexture.h"
 
 class GolD3DRenderDevice;
-class DuskwindBananaRelic0x30;
+class GolSoftwareMaterial;
 class GolD3DTexture;
 
 // VTABLE: GOLDP 0x100562dc
@@ -41,12 +41,12 @@ private:
 		GolSurfaceFormat* p_textureFormat
 	);
 
-	GolPalettedTexture m_sourceImage;     // 0x40
-	GolD3DRenderDevice* m_renderer;       // 0x8c
-	GolD3DTexture* m_textures;            // 0x90
-	LegoFloat m_inverseTextureWidth;      // 0x94
-	LegoFloat m_inverseTextureHeight;     // 0x98
-	DuskwindBananaRelic0x30* m_materials; // 0x9c
+	GolPalettedTexture m_sourceImage; // 0x40
+	GolD3DRenderDevice* m_renderer;   // 0x8c
+	GolD3DTexture* m_textures;        // 0x90
+	LegoFloat m_inverseTextureWidth;  // 0x94
+	LegoFloat m_inverseTextureHeight; // 0x98
+	GolSoftwareMaterial* m_materials; // 0x9c
 };
 
 #endif // GOLFONT_H

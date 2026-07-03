@@ -1,4 +1,4 @@
-#include "material/duskwindbananarelic0x30.h"
+#include "material/golsoftwarematerial.h"
 
 #include "golerror.h"
 #include "goltexture.h"
@@ -8,10 +8,10 @@
 #include <stdio.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(DuskwindBananaRelic0x30, 0x30)
+DECOMP_SIZE_ASSERT(GolSoftwareMaterial, 0x30)
 
 // FUNCTION: GOLDP 0x10006280
-DuskwindBananaRelic0x30::DuskwindBananaRelic0x30()
+GolSoftwareMaterial::GolSoftwareMaterial()
 {
 	m_unk0x24 = NULL;
 	m_unk0x28 = 0;
@@ -19,13 +19,13 @@ DuskwindBananaRelic0x30::DuskwindBananaRelic0x30()
 }
 
 // FUNCTION: GOLDP 0x100062a0
-DuskwindBananaRelic0x30::~DuskwindBananaRelic0x30()
+GolSoftwareMaterial::~GolSoftwareMaterial()
 {
 	Destroy();
 }
 
 // FUNCTION: GOLDP 0x10006320
-void DuskwindBananaRelic0x30::FUN_10006320(GolRenderDevice& p_renderer)
+void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
 {
 	if (m_unk0x08 & c_flagBit0) {
 		Destroy();
@@ -72,7 +72,7 @@ void DuskwindBananaRelic0x30::FUN_10006320(GolRenderDevice& p_renderer)
 }
 
 // FUNCTION: GOLDP 0x10006490
-void DuskwindBananaRelic0x30::Destroy()
+void GolSoftwareMaterial::Destroy()
 {
 	if (m_unk0x2c != NULL) {
 		delete[] m_unk0x2c;
@@ -87,7 +87,7 @@ void DuskwindBananaRelic0x30::Destroy()
 }
 
 // FUNCTION: GOLDP 0x100064d0
-void DuskwindBananaRelic0x30::FUN_100064d0(GolD3DRenderDevice* p_renderer)
+void GolSoftwareMaterial::FUN_100064d0(GolD3DRenderDevice* p_renderer)
 {
 	D3DMATERIAL material;
 	LegoChar errorMessage[64];

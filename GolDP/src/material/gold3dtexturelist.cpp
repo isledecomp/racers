@@ -1,25 +1,25 @@
-#include "material/purpleribbon0x24.h"
+#include "material/gold3dtexturelist.h"
 
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/gold3dtexture.h"
 
-DECOMP_SIZE_ASSERT(PurpleRibbon0x24, 0x24)
+DECOMP_SIZE_ASSERT(GolD3DTextureList, 0x24)
 
 // FUNCTION: GOLDP 0x10015920
-PurpleRibbon0x24::PurpleRibbon0x24()
+GolD3DTextureList::GolD3DTextureList()
 {
 	m_items = NULL;
 }
 
 // FUNCTION: GOLDP 0x10015940
-PurpleRibbon0x24::~PurpleRibbon0x24()
+GolD3DTextureList::~GolD3DTextureList()
 {
 	Clear();
 }
 
 // FUNCTION: GOLDP 0x100159b0
-void PurpleRibbon0x24::AllocateItems()
+void GolD3DTextureList::AllocateItems()
 {
 	if (GetItemCount() >= 1) {
 		m_items = new GolD3DTexture[GetItemCount()];
@@ -30,7 +30,7 @@ void PurpleRibbon0x24::AllocateItems()
 }
 
 // FUNCTION: GOLDP 0x10015a50
-void PurpleRibbon0x24::VTable0x0c()
+void GolD3DTextureList::VTable0x0c()
 {
 	LegoU32 i;
 	if (m_renderer != NULL) {
@@ -43,7 +43,7 @@ void PurpleRibbon0x24::VTable0x0c()
 }
 
 // FUNCTION: GOLDP 0x10015a90
-void PurpleRibbon0x24::VTable0x10()
+void GolD3DTextureList::VTable0x10()
 {
 	LegoU32 i;
 	if (m_renderer != NULL) {
@@ -56,7 +56,7 @@ void PurpleRibbon0x24::VTable0x10()
 }
 
 // FUNCTION: GOLDP 0x10015ad0
-void PurpleRibbon0x24::Clear()
+void GolD3DTextureList::Clear()
 {
 	if (m_items != NULL) {
 		delete[] m_items;
@@ -66,13 +66,13 @@ void PurpleRibbon0x24::Clear()
 }
 
 // FUNCTION: GOLDP 0x10015af0
-GolD3DTexture* PurpleRibbon0x24::GetItem(LegoU32 p_index)
+GolD3DTexture* GolD3DTextureList::GetItem(LegoU32 p_index)
 {
 	return &m_items[p_index];
 }
 
 // FUNCTION: GOLDP 0x10015b10
-void PurpleRibbon0x24::VTable0x18(
+void GolD3DTextureList::VTable0x18(
 	LegoU32 p_index,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,

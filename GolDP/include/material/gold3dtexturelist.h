@@ -8,10 +8,10 @@ class GolD3DTexture;
 
 // VTABLE: GOLDP 0x100567f0
 // SIZE 0x24
-class PurpleRibbon0x24 : public GolTextureList {
+class GolD3DTextureList : public GolTextureList {
 public:
-	PurpleRibbon0x24();
-	~PurpleRibbon0x24() override;  // vtable+0x00
+	GolD3DTextureList();
+	~GolD3DTextureList() override; // vtable+0x00
 	void Clear() override;         // vtable+0x08
 	void VTable0x0c() override;    // vtable+0x0c
 	void VTable0x10() override;    // vtable+0x10
@@ -25,7 +25,7 @@ public:
 	GolD3DTexture* GetItem(LegoU32 p_index) override; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x100177c0
-	// PurpleRibbon0x24::`vector deleting destructor'
+	// GolD3DTextureList::`vector deleting destructor'
 
 private:
 	GolD3DTexture* m_items; // 0x20

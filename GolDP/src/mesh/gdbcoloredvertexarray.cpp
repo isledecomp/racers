@@ -1,10 +1,10 @@
-#include "mesh/gdbcommonvertexarray0x1c.h"
+#include "mesh/gdbcoloredvertexarray.h"
 
 #include "golerror.h"
 #include "golmath.h"
 
 // FUNCTION: GOLDP 0x10016f20
-GdbCommonVertexArray0x1c::GdbCommonVertexArray0x1c()
+GdbColoredVertexArray::GdbColoredVertexArray()
 {
 	m_unk0x0c = NULL;
 	m_unk0x10 = NULL;
@@ -13,13 +13,13 @@ GdbCommonVertexArray0x1c::GdbCommonVertexArray0x1c()
 }
 
 // FUNCTION: GOLDP 0x10016f60 FOLDED
-GdbCommonVertexArray0x1c::~GdbCommonVertexArray0x1c()
+GdbColoredVertexArray::~GdbColoredVertexArray()
 {
 	VTable0x0c();
 }
 
 // FUNCTION: GOLDP 0x10016ff0
-void GdbCommonVertexArray0x1c::VTable0x0c()
+void GdbColoredVertexArray::VTable0x0c()
 {
 	if (m_unk0x0c != NULL) {
 		delete[] m_unk0x0c;
@@ -37,7 +37,7 @@ void GdbCommonVertexArray0x1c::VTable0x0c()
 }
 
 // FUNCTION: GOLDP 0x10017050
-void GdbCommonVertexArray0x1c::VTable0x34(const ColorTransform& p_details)
+void GdbColoredVertexArray::VTable0x34(const ColorTransform& p_details)
 {
 	LegoU32* ptrIn;
 	LegoU32* ptrOut;
@@ -83,7 +83,7 @@ void GdbCommonVertexArray0x1c::VTable0x34(const ColorTransform& p_details)
 }
 
 // FUNCTION: GOLDP 0x10017180
-void GdbCommonVertexArray0x1c::VTable0x38()
+void GdbColoredVertexArray::VTable0x38()
 {
 	m_unk0x14 = FALSE;
 }

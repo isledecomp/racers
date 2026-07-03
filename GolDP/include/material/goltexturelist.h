@@ -12,7 +12,7 @@ class GolD3DTexture;
 class RaceState;
 
 // SIZE 0x2c
-struct MagentaRibbonSourceItem0x2c {
+struct GolTextureSourceItem {
 	LegoU32 m_width;                  // 0x00
 	LegoU32 m_height;                 // 0x04
 	GolSurfaceFormat m_textureFormat; // 0x08
@@ -25,9 +25,9 @@ struct MagentaRibbonSourceItem0x2c {
 // Runtime texture source used by VTable0x20 when textures are supplied by code
 // instead of parsed from a .tdb definition file.
 // SIZE 0x04
-class MagentaRibbonSource0x4 {
+class GolTextureSource {
 public:
-	virtual void VTable0x00(LegoU32 p_index, MagentaRibbonSourceItem0x2c* p_item) = 0;    // vtable+0x00
+	virtual void VTable0x00(LegoU32 p_index, GolTextureSourceItem* p_item) = 0;           // vtable+0x00
 	virtual void VTable0x04(LegoU32 p_index, LegoU32 p_flags, GolTexture* p_texture) = 0; // vtable+0x04
 };
 
@@ -70,7 +70,7 @@ public:
 	virtual void VTable0x1c(GolD3DRenderDevice* p_renderer, LegoU32 p_capacity); // vtable+0x1c
 	virtual void VTable0x20(
 		GolD3DRenderDevice* p_renderer,
-		MagentaRibbonSource0x4* p_source,
+		GolTextureSource* p_source,
 		LegoU32 p_capacity
 	); // vtable+0x20
 	virtual void VTable0x24(
@@ -92,11 +92,11 @@ protected:
 
 	void LoadTextures();
 
-	GolD3DRenderDevice* m_renderer;    // 0x0c
-	GolTextureList* m_next;            // 0x10
-	MagentaRibbonSource0x4* m_unk0x14; // 0x14
-	GolHashTable::Entry* m_unk0x18;    // 0x18
-	LegoU32 m_numItems;                // 0x1c
+	GolD3DRenderDevice* m_renderer; // 0x0c
+	GolTextureList* m_next;         // 0x10
+	GolTextureSource* m_unk0x14;    // 0x14
+	GolHashTable::Entry* m_unk0x18; // 0x18
+	LegoU32 m_numItems;             // 0x1c
 };
 
 #endif // GOLTEXTURELIST_H

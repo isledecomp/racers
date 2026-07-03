@@ -6,7 +6,7 @@
 #include "golimgfile.h"
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/falcondunebag0x10.h"
+#include "surface/gold3dtexturepalette.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -402,11 +402,11 @@ void GolD3DTexture::FUN_10016380()
 
 	if (mipmaps != NULL) {
 		if (palette != NULL) {
-			static_cast<FalconDuneBag0x10*>(palette)->Destroy();
+			static_cast<GolD3DTexturePalette*>(palette)->Destroy();
 
 			palette = m_palette;
 			if (palette != NULL) {
-				delete static_cast<FalconDuneBag0x10*>(palette);
+				delete static_cast<GolD3DTexturePalette*>(palette);
 			}
 
 			m_palette = NULL;
@@ -673,13 +673,13 @@ void GolD3DTexture::FUN_100168c0(GolD3DRenderDevice& p_renderer)
 		mipmap->m_pixels = NULL;
 
 		if (m_textureFormat2.m_paletteMask != 0 && p_renderer.GetUnk0xc8700() != 0) {
-			m_palette = new FalconDuneBag0x10;
+			m_palette = new GolD3DTexturePalette;
 			if (m_palette == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			static_cast<FalconDuneBag0x10*>(m_palette)->Initialize(m_textureFormat2);
-			mipmap->m_paletteData = static_cast<FalconDuneBag0x10*>(m_palette)->m_unk0x0c;
+			static_cast<GolD3DTexturePalette*>(m_palette)->Initialize(m_textureFormat2);
+			mipmap->m_paletteData = static_cast<GolD3DTexturePalette*>(m_palette)->m_unk0x0c;
 		}
 		else {
 			mipmap->m_paletteData = NULL;

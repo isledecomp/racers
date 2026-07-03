@@ -6,7 +6,7 @@
 #include "golimgfile.h"
 #include "golsurfaceformat.h"
 #include "goltgafile.h"
-#include "material/duskwindbananarelic0x30.h"
+#include "material/golsoftwarematerial.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
 #include "surface/gold3dtexture.h"
@@ -149,7 +149,7 @@ void GolImage::VTable0x08()
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x54 = new DuskwindBananaRelic0x30[count];
+	m_unk0x54 = new GolSoftwareMaterial[count];
 	if (m_unk0x54 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -170,7 +170,7 @@ void GolImage::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_t
 }
 
 // FUNCTION: GOLDP 0x10005440
-void GolImage::FUN_10005440(GolRenderDevice* p_renderer, DuskwindBananaRelic0x30* p_material, GolTexture* p_texture)
+void GolImage::FUN_10005440(GolRenderDevice* p_renderer, GolSoftwareMaterial* p_material, GolTexture* p_texture)
 {
 	LegoU32 flags = (m_unk0x3c & c_flagBit1) ? 0x92a8a : 0x92a8c;
 	if (m_unk0x3c & c_flagBit4) {

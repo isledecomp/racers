@@ -58,22 +58,4 @@ protected:
 	GolVec3* m_positions; // 0x08
 };
 //
-// // SIZE 0x1c
-// class GdbVertexArrayTypeOne0x1c : public GdbCommonVertexArray0x1c {
-// public:
-// 	GdbVertexArrayTypeOne0x1c();
-// };
-//
-// // SIZE 0x20
-// class GdbVertexArrayTypeTwo0x20 : public GdbCommonVertexArray0x1c{
-// public:
-// 	GdbVertexArrayTypeTwo0x20();
-// };
-//
-// // SIZE 0x20
-// class GdbVertexArrayTypeThree0x20 : public GdbVertexArrayTypeTwo0x20 {
-// public:
-// 	GdbVertexArrayTypeThree0x20();
-// };
-
 #endif // GDBVERTEXARRAY0XC_H

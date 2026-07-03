@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "material/duskwindbananarelic0x30.h"
+#include "material/golsoftwarematerial.h"
 #include "render/golrenderdevice.h"
 #include "render/golsoftwarerenderer.h"
 #include "surface/goldepthbuffer.h"
@@ -275,7 +275,7 @@ private:
 	D3DMATERIALHANDLE m_backgroundMaterialHandle;                                  // 0x2c8
 	ColorRGBA m_clearColor;                                                        // 0x2cc
 	LegoU32 m_clearPixelValue;                                                     // 0x2d0
-	DuskwindBananaRelic0x30 m_unk0x2d4;                                            // 0x2d4
+	GolSoftwareMaterial m_unk0x2d4;                                                // 0x2d4
 	GolRenderTarget* m_unk0x304;                                                   // 0x304
 	GolRenderTarget* m_renderTargetInfo;                                           // 0x308
 	GolD3DRenderSurface* m_unk0x30c;                                               // 0x30c

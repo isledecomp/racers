@@ -1,31 +1,31 @@
-#include "material/amberhaze0x20.h"
+#include "material/golsoftwaremateriallibrary.h"
 
 #include "golerror.h"
-#include "material/duskwindbananarelic0x30.h"
+#include "material/golsoftwarematerial.h"
 
 // FUNCTION: GOLDP 0x10006680
-AmberHaze0x20::AmberHaze0x20()
+GolSoftwareMaterialLibrary::GolSoftwareMaterialLibrary()
 {
 	m_items = NULL;
 }
 
 // FUNCTION: GOLDP 0x100066a0
-AmberHaze0x20::~AmberHaze0x20()
+GolSoftwareMaterialLibrary::~GolSoftwareMaterialLibrary()
 {
 	Clear();
 }
 
 // FUNCTION: GOLDP 0x10006710
-void AmberHaze0x20::AllocateItems()
+void GolSoftwareMaterialLibrary::AllocateItems()
 {
-	m_items = new DuskwindBananaRelic0x30[m_numItems];
+	m_items = new GolSoftwareMaterial[m_numItems];
 	if (m_items == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
 
 // FUNCTION: GOLDP 0x100067a0
-void AmberHaze0x20::VTable0x0c()
+void GolSoftwareMaterialLibrary::VTable0x0c()
 {
 	LegoU32 i;
 
@@ -35,13 +35,13 @@ void AmberHaze0x20::VTable0x0c()
 }
 
 // FUNCTION: GOLDP 0x100067d0
-void AmberHaze0x20::VTable0x10()
+void GolSoftwareMaterialLibrary::VTable0x10()
 {
 	FUN_10026970();
 }
 
 // FUNCTION: GOLDP 0x100067e0
-void AmberHaze0x20::Clear()
+void GolSoftwareMaterialLibrary::Clear()
 {
 	if (m_items != NULL) {
 		delete[] m_items;
@@ -52,13 +52,13 @@ void AmberHaze0x20::Clear()
 }
 
 // FUNCTION: GOLDP 0x10006800
-GolMaterial* AmberHaze0x20::GetItem(LegoU32 p_index) const
+GolMaterial* GolSoftwareMaterialLibrary::GetItem(LegoU32 p_index) const
 {
 	return &m_items[p_index];
 }
 
 // FUNCTION: GOLDP 0x10006820
-void AmberHaze0x20::VTable0x18(LegoU32 p_index)
+void GolSoftwareMaterialLibrary::VTable0x18(LegoU32 p_index)
 {
 	m_items[p_index].FUN_10006320(*m_renderer);
 }

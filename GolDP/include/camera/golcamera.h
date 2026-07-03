@@ -1,7 +1,7 @@
 #ifndef GOLCAMERA_H
 #define GOLCAMERA_H
 
-#include "camera/jadeorbit0x220.h"
+#include "camera/golcameramatrices.h"
 #include "compat.h"
 #include "decomp.h"
 #include "golcamerabase.h"
@@ -54,7 +54,7 @@ protected:
 	);
 	void FUN_10002860(D3DVIEWPORT2* p_viewport);
 
-	JadeOrbit0x220 m_unk0x120;      // 0x120
+	GolCameraMatrices m_unk0x120;   // 0x120
 	GolD3DRenderDevice* m_renderer; // 0x340
 };
 

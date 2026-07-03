@@ -304,11 +304,7 @@ void GolMaterialLibrary::FUN_10026970()
 }
 
 // FUNCTION: GOLDP 0x10026a00
-void GolMaterialLibrary::VTable0x20(
-	GolRenderDevice* p_renderer,
-	DuskwindBananaRelicProvider0x4* p_arg2,
-	LegoU32 p_capacity
-)
+void GolMaterialLibrary::VTable0x20(GolRenderDevice* p_renderer, GolMaterialSource* p_arg2, LegoU32 p_capacity)
 {
 	if (m_renderer != NULL) {
 		Clear();

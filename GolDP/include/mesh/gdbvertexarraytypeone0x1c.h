@@ -2,14 +2,14 @@
 #define GDBVERTEXARRAYTYPEONE0x1C_H
 
 #include "compat.h"
-#include "mesh/gdbcommonvertexarray0x1c.h"
+#include "mesh/gdbcoloredvertexarray.h"
 
 struct GolVec2;
 struct ColorRGBA;
 
 // VTABLE: GOLDP 0x10056388
 // SIZE 0x1c
-class GdbVertexArrayTypeOne0x1c : public GdbCommonVertexArray0x1c {
+class GdbVertexArrayTypeOne0x1c : public GdbColoredVertexArray {
 public:
 	GdbVertexArrayTypeOne0x1c();
 

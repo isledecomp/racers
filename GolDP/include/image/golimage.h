@@ -7,7 +7,7 @@
 #include "types.h"
 
 class GolD3DRenderDevice;
-class DuskwindBananaRelic0x30;
+class GolSoftwareMaterial;
 class GolSurfaceFormat;
 class GolTexture;
 class GolD3DTexture;
@@ -39,7 +39,7 @@ public:
 
 	void FUN_100051c0();
 	void FUN_10005210();
-	void FUN_10005440(GolRenderDevice* p_renderer, DuskwindBananaRelic0x30* p_material, GolTexture* p_texture);
+	void FUN_10005440(GolRenderDevice* p_renderer, GolSoftwareMaterial* p_material, GolTexture* p_texture);
 	void FUN_100054d0(GolD3DRenderDevice*, undefined4, Rect*, Rect* p_clipRect);
 	void FUN_10005510(GolD3DRenderDevice*, undefined4, Rect*, Rect*, Rect* p_clipRect);
 	void FUN_10005b00();
@@ -48,9 +48,9 @@ public:
 	// GolImage::`vector deleting destructor'
 
 protected:
-	GolD3DTexture* m_unk0x50;           // 0x50
-	DuskwindBananaRelic0x30* m_unk0x54; // 0x54
-	GolPalettedTexture m_unk0x58;       // 0x58
+	GolD3DTexture* m_unk0x50;       // 0x50
+	GolSoftwareMaterial* m_unk0x54; // 0x54
+	GolPalettedTexture m_unk0x58;   // 0x58
 };
 
 #endif // GOLDP_UTOPIANPAN_H

@@ -8,7 +8,7 @@
 class GolRenderDevice;
 class RaceState;
 
-class DuskwindBananaRelicProvider0x4 {
+class GolMaterialSource {
 public:
 	virtual void VTable0x00(LegoU32 p_index, GolMaterialParams* p_params) = 0;
 };
@@ -38,7 +38,7 @@ public:
 	virtual void VTable0x1c(GolRenderDevice* p_renderer, LegoU32 p_capacity); // vtable+0x1c
 	virtual void VTable0x20(
 		GolRenderDevice* p_renderer,
-		DuskwindBananaRelicProvider0x4* p_source,
+		GolMaterialSource* p_source,
 		LegoU32 p_capacity
 	); // vtable+0x20
 	virtual void VTable0x24(
@@ -61,10 +61,10 @@ protected:
 
 	void FUN_10026970();
 
-	GolRenderDevice* m_renderer;               // 0x0c
-	GolMaterialLibrary* m_next;                // 0x10
-	DuskwindBananaRelicProvider0x4* m_unk0x14; // 0x14
-	LegoU32 m_numItems;                        // 0x18
+	GolRenderDevice* m_renderer;  // 0x0c
+	GolMaterialLibrary* m_next;   // 0x10
+	GolMaterialSource* m_unk0x14; // 0x14
+	LegoU32 m_numItems;           // 0x18
 };
 
 #endif // GOLMATERIALLIBRARY_H

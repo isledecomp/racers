@@ -9,9 +9,9 @@
 #include "golfontbase.h"
 #include "golscenenode.h"
 #include "image/goltiledtexture.h"
-#include "material/amberhaze0x20.h"
+#include "material/gold3dtexturelist.h"
 #include "material/golimagedefinitionlist.h"
-#include "material/purpleribbon0x24.h"
+#include "material/golsoftwaremateriallibrary.h"
 #include "mesh/golmodel.h"
 #include "scene/golbillboardex.h"
 #include "types.h"
@@ -52,7 +52,7 @@ GolWorldDatabase* GolDPExport::VTable0x08()
 // FUNCTION: GOLDP 0x10015110
 GolTextureList* GolDPExport::CreateTextureList()
 {
-	GolTextureList* obj = new PurpleRibbon0x24;
+	GolTextureList* obj = new GolD3DTextureList;
 	if (obj == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -62,7 +62,7 @@ GolTextureList* GolDPExport::CreateTextureList()
 // FUNCTION: GOLDP 0x10015180
 GolMaterialLibrary* GolDPExport::CreateMaterialList()
 {
-	AmberHaze0x20* result = new AmberHaze0x20;
+	GolSoftwareMaterialLibrary* result = new GolSoftwareMaterialLibrary;
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}

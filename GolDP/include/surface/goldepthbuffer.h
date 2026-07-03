@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "surface/moltenquillphantom0x34.h"
+#include "surface/golattachedsurface.h"
 
 #include <ddraw.h>
 
@@ -11,7 +11,7 @@ class GolDrawDPState;
 
 // VTABLE: GOLDP 0x10056964
 // SIZE 0x38
-class GolDepthBuffer : public MoltenQuillPhantom0x34 {
+class GolDepthBuffer : public GolAttachedSurface {
 public:
 	GolDepthBuffer();
 	~GolDepthBuffer() override; // vtable+0x00

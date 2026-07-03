@@ -10,8 +10,8 @@
 #include "golmodelentity.h"
 #include "golmodelmaterialtable.h"
 #include "mabmaterialanimation.h"
-#include "material/amberhaze0x20.h"
-#include "material/purpleribbon0x24.h"
+#include "material/gold3dtexturelist.h"
+#include "material/golsoftwaremateriallibrary.h"
 #include "mesh/golmodel.h"
 #include "render/gold3drenderdevice.h"
 #include "scene/golbillboardex.h"
@@ -112,14 +112,14 @@ GolCameraBase* GolWorldDatabaseEx::VTable0x50(LegoU32 p_index) const
 void GolWorldDatabaseEx::VTable0x08()
 {
 	if (GetUnk0x0c() != 0) {
-		m_unk0xf0 = new PurpleRibbon0x24[GetUnk0x0c()];
+		m_unk0xf0 = new GolD3DTextureList[GetUnk0x0c()];
 		if (m_unk0xf0 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetUnk0x14() != 0) {
-		m_unk0xf4 = new AmberHaze0x20[GetUnk0x14()];
+		m_unk0xf4 = new GolSoftwareMaterialLibrary[GetUnk0x14()];
 		if (m_unk0xf4 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

@@ -1,16 +1,16 @@
-#ifndef AMBERHAZE0X20_H
-#define AMBERHAZE0X20_H
+#ifndef GOLSOFTWAREMATERIALLIBRARY_H
+#define GOLSOFTWAREMATERIALLIBRARY_H
 
 #include "golmateriallibrary.h"
 
-class DuskwindBananaRelic0x30;
+class GolSoftwareMaterial;
 
 // VTABLE: GOLDP 0x100563d0
 // SIZE 0x20
-class AmberHaze0x20 : public GolMaterialLibrary {
+class GolSoftwareMaterialLibrary : public GolMaterialLibrary {
 public:
-	AmberHaze0x20();
-	~AmberHaze0x20() override; // vtable+0x00
+	GolSoftwareMaterialLibrary();
+	~GolSoftwareMaterialLibrary() override; // vtable+0x00
 
 	void Clear() override;                                // vtable+0x08
 	void VTable0x0c() override;                           // vtable+0x0c
@@ -20,10 +20,10 @@ public:
 	GolMaterial* GetItem(LegoU32 p_index) const override; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x10017820
-	// AmberHaze0x20::`vector deleting destructor'
+	// GolSoftwareMaterialLibrary::`vector deleting destructor'
 
 private:
-	DuskwindBananaRelic0x30* m_items; // 0x1c
+	GolSoftwareMaterial* m_items; // 0x1c
 };
 
-#endif // AMBERHAZE0X20_H
+#endif // GOLSOFTWAREMATERIALLIBRARY_H

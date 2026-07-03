@@ -1,20 +1,20 @@
-#include "mesh/gdbvertexarraymistery0x1c.h"
+#include "mesh/gdbuncoloredvertexarray.h"
 
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golmath.h"
 #include "surface/color.h"
 
-DECOMP_SIZE_ASSERT(GdbVertexArrayMistery0x1c, 0x1c)
+DECOMP_SIZE_ASSERT(GdbUncoloredVertexArray, 0x1c)
 
 // FUNCTION: GOLDP 0x100156d0
-GdbVertexArrayMistery0x1c::GdbVertexArrayMistery0x1c()
+GdbUncoloredVertexArray::GdbUncoloredVertexArray()
 {
 	m_vertexType = 1;
 }
 
 // FUNCTION: GOLDP 0x10006150 FOLDED
-void GdbVertexArrayMistery0x1c::VTable0x04(LegoU16 p_count)
+void GdbUncoloredVertexArray::VTable0x04(LegoU16 p_count)
 {
 	LegoU32 i;
 
@@ -45,7 +45,7 @@ void GdbVertexArrayMistery0x1c::VTable0x04(LegoU16 p_count)
 }
 
 // FUNCTION: GOLDP 0x100156f0
-void GdbVertexArrayMistery0x1c::VTable0x08(GolFileParser& p_parser)
+void GdbUncoloredVertexArray::VTable0x08(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
@@ -90,14 +90,14 @@ void GdbVertexArrayMistery0x1c::VTable0x08(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x10006210 FOLDED
-void GdbVertexArrayMistery0x1c::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
+void GdbUncoloredVertexArray::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
 {
 	p_dest->m_x = m_unk0x0c[p_index].m_x;
 	p_dest->m_y = m_unk0x0c[p_index].m_y;
 }
 
 // FUNCTION: GOLDP 0x10015890
-void GdbVertexArrayMistery0x1c::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
+void GdbUncoloredVertexArray::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = 0xff;
 	p_dest->m_grn = 0xff;
@@ -106,7 +106,7 @@ void GdbVertexArrayMistery0x1c::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) c
 }
 
 // FUNCTION: GOLDP 0x100158f0 FOLDED
-void GdbVertexArrayMistery0x1c::VTable0x28(LegoU32 p_index, const GolVec2& p_arg2)
+void GdbUncoloredVertexArray::VTable0x28(LegoU32 p_index, const GolVec2& p_arg2)
 {
 	m_unk0x0c[p_index].m_x = p_arg2.m_x;
 	m_unk0x0c[p_index].m_y = p_arg2.m_y;

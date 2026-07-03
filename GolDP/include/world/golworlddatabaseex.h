@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "world/golworlddatabase.h"
 
-class AmberHaze0x20;
+class GolSoftwareMaterialLibrary;
 class GolCamera;
 class GolCameraBase;
 class GolBoundingShape;
@@ -15,7 +15,7 @@ class GolWorldEntity;
 class GolModel;
 class GolSceneTransformNode;
 class MabMaterialAnimation;
-class PurpleRibbon0x24;
+class GolD3DTextureList;
 class GolModelMaterialTable;
 class GolSceneNode;
 
@@ -49,16 +49,16 @@ public:
 private:
 	void FUN_10017390();
 
-	PurpleRibbon0x24* m_unk0xf0;       // 0xf0
-	AmberHaze0x20* m_unk0xf4;          // 0xf4
-	GolModel* m_unk0xf8;               // 0xf8
-	GolSceneTransformNode* m_unk0xfc;  // 0xfc
-	GolBillboardEx* m_unk0x100;        // 0x100
-	GolModelMaterialTable* m_unk0x104; // 0x104
-	MabMaterialAnimation* m_unk0x108;  // 0x108
-	CmbModelPart* m_unk0x10c;          // 0x10c
-	GolBoundingShape* m_unk0x110;      // 0x110
-	GolCamera* m_unk0x114;             // 0x114
+	GolD3DTextureList* m_unk0xf0;          // 0xf0
+	GolSoftwareMaterialLibrary* m_unk0xf4; // 0xf4
+	GolModel* m_unk0xf8;                   // 0xf8
+	GolSceneTransformNode* m_unk0xfc;      // 0xfc
+	GolBillboardEx* m_unk0x100;            // 0x100
+	GolModelMaterialTable* m_unk0x104;     // 0x104
+	MabMaterialAnimation* m_unk0x108;      // 0x108
+	CmbModelPart* m_unk0x10c;              // 0x10c
+	GolBoundingShape* m_unk0x110;          // 0x110
+	GolCamera* m_unk0x114;                 // 0x114
 };
 
 #endif // GOLWORLDDATABASEEX_H

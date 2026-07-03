@@ -10,13 +10,13 @@
 DECOMP_SIZE_ASSERT(GolCameraBase, 0x120)
 
 // FUNCTION: LEGORACERS 0x004044f0
-LegoFloat GolCameraBase::FUN_004044f0(GolVec3* p_left, GolVec3* p_right)
+LegoFloat GolCameraBase::Dot2(GolVec3* p_left, GolVec3* p_right)
 {
 	return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
 }
 
 // FUNCTION: LEGORACERS 0x00404510
-GolVec3* GolCameraBase::FUN_00404510(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+GolVec3* GolCameraBase::Cross(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
 {
 	LegoFloat x = p_left->m_y;
 	x *= p_right->m_z;
@@ -41,7 +41,7 @@ GolVec3* GolCameraBase::FUN_00404510(GolVec3* p_left, GolVec3* p_right, GolVec3*
 }
 
 // FUNCTION: LEGORACERS 0x00404550
-GolVec3* GolCameraBase::FUN_00404550(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+GolVec3* GolCameraBase::Add(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
 {
 	p_dest->m_x = p_left->m_x + p_right->m_x;
 	p_dest->m_y = p_left->m_y + p_right->m_y;
@@ -51,7 +51,7 @@ GolVec3* GolCameraBase::FUN_00404550(GolVec3* p_left, GolVec3* p_right, GolVec3*
 }
 
 // FUNCTION: LEGORACERS 0x00404580
-GolVec3* GolCameraBase::FUN_00404580(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+GolVec3* GolCameraBase::Subtract(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
 {
 	p_dest->m_x = p_left->m_x - p_right->m_x;
 	p_dest->m_y = p_left->m_y - p_right->m_y;
@@ -61,7 +61,7 @@ GolVec3* GolCameraBase::FUN_00404580(GolVec3* p_left, GolVec3* p_right, GolVec3*
 }
 
 // FUNCTION: LEGORACERS 0x004045b0
-GolVec3* GolCameraBase::FUN_004045b0(GolVec3* p_src, LegoFloat p_scale, GolVec3* p_dest)
+GolVec3* GolCameraBase::Scale(GolVec3* p_src, LegoFloat p_scale, GolVec3* p_dest)
 {
 	p_dest->m_x = p_scale * p_src->m_x;
 
@@ -79,7 +79,7 @@ GolVec3* GolCameraBase::FUN_004045b0(GolVec3* p_src, LegoFloat p_scale, GolVec3*
 // TODO: Unique section prevents ICF; the original keeps both dot helpers as distinct functions.
 #pragma code_seg(".text$golcamerabase_00404680")
 // FUNCTION: LEGORACERS 0x00404680
-LegoFloat GolCameraBase::FUN_00404680(GolVec3* p_left, GolVec3* p_right)
+LegoFloat GolCameraBase::Dot(GolVec3* p_left, GolVec3* p_right)
 {
 	return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
 }

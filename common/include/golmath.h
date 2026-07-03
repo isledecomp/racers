@@ -154,7 +154,7 @@ public:
 	static void FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest);
 	static void LerpQuat(const GolQuat& p_from, const GolQuat& p_to, LegoFloat p_amount, GolQuat* p_dest);
 	static void RotateAboutAxis(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle);
-	static LegoBool32 FUN_004497f0(const GolVec3* p_point, const LegoFloat* p_triangle);
+	static LegoBool32 PointInTriangle(const GolVec3* p_point, const LegoFloat* p_triangle);
 	static LegoBool32 FUN_00449a90(
 		GolVec3* p_target,
 		GolVec3* p_current,

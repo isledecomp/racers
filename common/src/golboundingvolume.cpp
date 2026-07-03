@@ -7,56 +7,56 @@
 #include "golmath.h"
 
 DECOMP_SIZE_ASSERT(GolBoundingVolume::HitTriangle, 0x34)
-DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonId, 0x08)
-DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonRange, 0x14)
+DECOMP_SIZE_ASSERT(GolBoundingVolume::Triangle, 0x08)
+DECOMP_SIZE_ASSERT(GolBoundingVolume::BspNode, 0x14)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::TraversalEntry, 0x0c)
 DECOMP_SIZE_ASSERT(GolBoundingVolume, 0x64)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::BvbTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004c26f8
-GolVec3 g_unk0x004c26f8;
+GolVec3 g_edge0;
 
 // GLOBAL: LEGORACERS 0x004c2704
 undefined4 g_unk0x004c2704;
 
 // GLOBAL: LEGORACERS 0x004c2708
-GolVec3 g_unk0x004c2708;
+GolVec3 g_edge1;
 
 // GLOBAL: LEGORACERS 0x004c2714
 undefined4 g_unk0x004c2714;
 
 // GLOBAL: LEGORACERS 0x004c2718
-GolVec3 g_unk0x004c2718;
+GolVec3 g_hitNormal;
 
 // GLOBAL: LEGORACERS 0x004c2724
 undefined4 g_unk0x004c2724;
 
 // GLOBAL: LEGORACERS 0x004c2728
-GolVec3 g_unk0x004c2728;
+GolVec3 g_segmentDelta;
 
 // FUNCTION: GOLDP 0x1001b770
-GolBoundingVolume::GolBoundingVolume() : m_unk0x24(&m_unk0x18)
+GolBoundingVolume::GolBoundingVolume() : m_activeMaterialTable(&m_materialTable)
 {
-	m_unk0x04 = 0;
-	m_unk0x08 = NULL;
-	m_unk0x0c = NULL;
-	m_unk0x10 = 0;
-	m_unk0x14 = NULL;
-	m_unk0x28 = 0;
-	m_unk0x2c = NULL;
+	m_nodeCount = 0;
+	m_nodes = NULL;
+	m_vertices = NULL;
+	m_triangleCount = 0;
+	m_triangles = NULL;
+	m_traversalDepth = 0;
+	m_traversalStack = NULL;
 }
 
 // FUNCTION: GOLDP 0x1001b7b0
 GolBoundingVolume::~GolBoundingVolume()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x1001b800
-void GolBoundingVolume::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
+void GolBoundingVolume::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
 {
-	if (m_unk0x08 != NULL) {
-		VTable0x08();
+	if (m_nodes != NULL) {
+		Destroy();
 	}
 	GolFileParser* parser;
 	if (p_binary) {
@@ -77,38 +77,38 @@ void GolBoundingVolume::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* 
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
 		case GolFileParser::e_unknown0x27:
-			if (m_unk0x18.GetRenderer() != NULL) {
+			if (m_materialTable.GetRenderer() != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			m_unk0x18.Parse(p_renderer, *parser);
+			m_materialTable.Parse(p_renderer, *parser);
 			break;
 		case GolFileParser::e_unknown0x34:
-			if (m_unk0x0c != 0) {
+			if (m_vertices != 0) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			m_unk0x0c = new GdbVertexArray;
-			if (m_unk0x0c == NULL) {
+			m_vertices = new GdbVertexArray;
+			if (m_vertices == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
-			m_unk0x0c->VTable0x08(*parser);
+			m_vertices->VTable0x08(*parser);
 			break;
 		case GolFileParser::e_unknown0x2d:
-			FUN_1001bb10(*parser);
+			ParseTriangles(*parser);
 			break;
 		case GolFileParser::e_unknown0x8b:
-			FUN_1001bbb0(*parser);
+			ParseNodes(*parser);
 			break;
 		case GolFileParser::e_unknown0x8e:
-			FUN_1001bd00(*parser);
+			ParseNodesFixedPoint(*parser);
 			break;
 		default:
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 		}
 	}
-	if (m_unk0x04 != 0) {
-		m_unk0x28 = FUN_1001be50();
-		m_unk0x2c = new TraversalEntry[m_unk0x28];
-		if (m_unk0x2c == NULL) {
+	if (m_nodeCount != 0) {
+		m_traversalDepth = ComputeTraversalDepth();
+		m_traversalStack = new TraversalEntry[m_traversalDepth];
+		if (m_traversalStack == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
@@ -119,82 +119,82 @@ void GolBoundingVolume::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* 
 }
 
 // FUNCTION: GOLDP 0x1001ba90
-void GolBoundingVolume::VTable0x08()
+void GolBoundingVolume::Destroy()
 {
-	if (m_unk0x08 != NULL) {
-		if (m_unk0x0c != NULL) {
-			m_unk0x0c->VTable0x0c();
-			if (m_unk0x0c != NULL) {
-				delete m_unk0x0c;
+	if (m_nodes != NULL) {
+		if (m_vertices != NULL) {
+			m_vertices->VTable0x0c();
+			if (m_vertices != NULL) {
+				delete m_vertices;
 			}
 		}
-		if (m_unk0x14 != NULL) {
-			delete[] m_unk0x14;
+		if (m_triangles != NULL) {
+			delete[] m_triangles;
 		}
-		if (m_unk0x08 != NULL) {
-			delete[] m_unk0x08;
+		if (m_nodes != NULL) {
+			delete[] m_nodes;
 		}
-		if (m_unk0x2c != NULL) {
-			delete[] m_unk0x2c;
+		if (m_traversalStack != NULL) {
+			delete[] m_traversalStack;
 		}
-		m_unk0x04 = 0;
-		m_unk0x08 = NULL;
-		m_unk0x0c = 0;
-		m_unk0x10 = 0;
-		m_unk0x14 = NULL;
-		m_unk0x24 = &m_unk0x18;
-		m_unk0x28 = 0;
-		m_unk0x2c = NULL;
+		m_nodeCount = 0;
+		m_nodes = NULL;
+		m_vertices = 0;
+		m_triangleCount = 0;
+		m_triangles = NULL;
+		m_activeMaterialTable = &m_materialTable;
+		m_traversalDepth = 0;
+		m_traversalStack = NULL;
 	}
 }
 
 // FUNCTION: GOLDP 0x1001bb10
-void GolBoundingVolume::FUN_1001bb10(GolFileParser& p_parser)
+void GolBoundingVolume::ParseTriangles(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
-	m_unk0x10 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x10 == 0) {
+	m_triangleCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_triangleCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x14 = new PolygonId[m_unk0x10];
-	if (m_unk0x14 == NULL) {
+	m_triangles = new Triangle[m_triangleCount];
+	if (m_triangles == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	for (i = 0; i < m_unk0x10; i++) {
-		m_unk0x14[i].m_unk0x00 = p_parser.ReadInteger();
-		m_unk0x14[i].m_unk0x02 = p_parser.ReadInteger();
-		m_unk0x14[i].m_unk0x04 = p_parser.ReadInteger();
-		m_unk0x14[i].m_unk0x06 = p_parser.ReadInteger();
+	for (i = 0; i < m_triangleCount; i++) {
+		m_triangles[i].m_vertex0 = p_parser.ReadInteger();
+		m_triangles[i].m_vertex1 = p_parser.ReadInteger();
+		m_triangles[i].m_vertex2 = p_parser.ReadInteger();
+		m_triangles[i].m_materialIndex = p_parser.ReadInteger();
 	}
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: GOLDP 0x1001bbb0
-void GolBoundingVolume::FUN_1001bbb0(GolFileParser& p_parser)
+void GolBoundingVolume::ParseNodes(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
-	m_unk0x04 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x04 == 0) {
+	m_nodeCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_nodeCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x08 = new PolygonRange[m_unk0x04];
-	if (m_unk0x08 == NULL) {
+	m_nodes = new BspNode[m_nodeCount];
+	if (m_nodes == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	for (i = 0; i < m_unk0x04; i++) {
+	for (i = 0; i < m_nodeCount; i++) {
 		LegoU32 j;
 		for (j = 0; j < 2; j++) {
 			switch (p_parser.GetNextToken()) {
 			case GolFileParser::e_unknown0x8d:
-				m_unk0x08[i].GetChildIndexSlot(j) = -2;
+				m_nodes[i].GetChildIndexSlot(j) = -2;
 				break;
 			case GolFileParser::e_unknown0x8c:
-				m_unk0x08[i].GetChildIndexSlot(j) = -1;
+				m_nodes[i].GetChildIndexSlot(j) = -1;
 				break;
 			case GolFileParser::e_int:
-				m_unk0x08[i].GetChildIndexSlot(j) = p_parser.GetLastInt();
+				m_nodes[i].GetChildIndexSlot(j) = p_parser.GetLastInt();
 				break;
 			default:
 				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -206,66 +206,66 @@ void GolBoundingVolume::FUN_1001bbb0(GolFileParser& p_parser)
 		v.m_y = p_parser.ReadFloat();
 		v.m_z = p_parser.ReadFloat();
 		v.m_u = p_parser.ReadFloat();
-		GolVec3* ptrVec = &m_unk0x08[i].m_unk0x00;
+		GolVec3* ptrVec = &m_nodes[i].m_planeNormal;
 		ptrVec->m_x = v.m_x;
 		ptrVec->m_y = v.m_y;
 		ptrVec->m_z = v.m_z;
-		m_unk0x08[i].m_unk0x0c = p_parser.ReadInteger();
-		m_unk0x08[i].m_unk0x0e = p_parser.ReadInteger();
+		m_nodes[i].m_firstTriangle = p_parser.ReadInteger();
+		m_nodes[i].m_triangleCount = p_parser.ReadInteger();
 	}
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: GOLDP 0x1001bd00
-void GolBoundingVolume::FUN_1001bd00(GolFileParser& p_parser)
+void GolBoundingVolume::ParseNodesFixedPoint(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
-	m_unk0x04 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x04 == 0) {
+	m_nodeCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_nodeCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x08 = new PolygonRange[m_unk0x04];
-	if (m_unk0x08 == NULL) {
+	m_nodes = new BspNode[m_nodeCount];
+	if (m_nodes == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	for (i = 0; i < m_unk0x04; i++) {
+	for (i = 0; i < m_nodeCount; i++) {
 		LegoU32 j;
 		for (j = 0; j < 2; j++) {
 			LegoS32 v = p_parser.ReadInteger();
 			if (v < 0) {
 				if (v == -1) {
-					m_unk0x08[i].GetChildIndexSlot(j) = -1;
+					m_nodes[i].GetChildIndexSlot(j) = -1;
 				}
 				else if (v == -2) {
-					m_unk0x08[i].GetChildIndexSlot(j) = -2;
+					m_nodes[i].GetChildIndexSlot(j) = -2;
 				}
 				else {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 				}
 			}
 			else {
-				m_unk0x08[i].GetChildIndexSlot(j) = v;
+				m_nodes[i].GetChildIndexSlot(j) = v;
 			}
 		}
 		int i3[3];
 		i3[0] = p_parser.ReadInteger();
 		i3[1] = p_parser.ReadInteger();
 		i3[2] = p_parser.ReadInteger();
-		GolVec3* ptrVec = &m_unk0x08[i].m_unk0x00;
+		GolVec3* ptrVec = &m_nodes[i].m_planeNormal;
 		ptrVec->m_x = static_cast<float>(i3[0]) / static_cast<float>(0x40000000);
 		ptrVec->m_y = static_cast<float>(i3[1]) / static_cast<float>(0x40000000);
 		ptrVec->m_z = static_cast<float>(i3[2]) / static_cast<float>(0x40000000);
-		m_unk0x08[i].m_unk0x0c = p_parser.ReadInteger();
-		m_unk0x08[i].m_unk0x0e = p_parser.ReadInteger();
+		m_nodes[i].m_firstTriangle = p_parser.ReadInteger();
+		m_nodes[i].m_triangleCount = p_parser.ReadInteger();
 	}
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: GOLDP 0x1001be50
-undefined4 GolBoundingVolume::FUN_1001be50()
+undefined4 GolBoundingVolume::ComputeTraversalDepth()
 {
-	LegoU16* stack = new LegoU16[m_unk0x04];
+	LegoU16* stack = new LegoU16[m_nodeCount];
 	if (stack == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -278,14 +278,14 @@ undefined4 GolBoundingVolume::FUN_1001be50()
 	LegoU16* stackHead = stack;
 
 	for (;;) {
-		PolygonRange* obj = &m_unk0x08[index];
+		BspNode* obj = &m_nodes[index];
 		if (stackSize > maxStackSize) {
 			maxStackSize = stackSize;
 		}
 
-		LegoU32 rightIndex = obj->m_unk0x10[1];
+		LegoU32 rightIndex = obj->m_childIndices[1];
 		if (prevIndex != rightIndex) {
-			LegoU32 leftIndex = obj->m_unk0x10[0];
+			LegoU32 leftIndex = obj->m_childIndices[0];
 			if (prevIndex != leftIndex && leftIndex != 0xffff && leftIndex != 0xfffe) {
 				stackSize++;
 				stackHead++;
@@ -317,7 +317,7 @@ undefined4 GolBoundingVolume::FUN_1001be50()
 }
 
 // FUNCTION: LEGORACERS 0x00403fa0
-LegoBool32 GolBoundingVolume::FUN_00403fa0(
+LegoBool32 GolBoundingVolume::IntersectSegment(
 	GolVec3* p_start,
 	GolVec3* p_end,
 	HitTriangle* p_record,
@@ -331,126 +331,128 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 	GolVec3 scaledDelta;
 	LegoU32 childIndex;
 
-	m_unk0x30 = *start;
-	m_unk0x3c = *p_end;
-	m_unk0x54 = p_record;
-	m_unk0x58 = p_hit;
-	m_unk0x5c = p_hitRecord;
-	m_unk0x60 = p_amountOut;
+	m_segmentStart = *start;
+	m_segmentEnd = *p_end;
+	m_hitTriangle = p_record;
+	m_hitPoint = p_hit;
+	m_hitRecord = p_hitRecord;
+	m_hitAmount = p_amountOut;
 
-	TraversalEntry* stack = m_unk0x2c;
-	stack->m_unk0x0a = 0;
-	stack->m_unk0x08 = 0;
+	TraversalEntry* stack = m_traversalStack;
+	stack->m_stage = 0;
+	stack->m_nodeIndex = 0;
 
-	PolygonRange* node = m_unk0x08;
-	GolVec3* vertices = m_unk0x0c->GetPositions();
+	BspNode* node = m_nodes;
+	GolVec3* vertices = m_vertices->GetPositions();
 
 	for (;;) {
-		LegoU32 stage = stack->m_unk0x0a;
+		LegoU32 stage = stack->m_stage;
 		if (stage == 0) {
-			PolygonId* firstTriangle = &m_unk0x14[node->m_unk0x0c];
-			GolVec3* planePoint = &vertices[firstTriangle->m_unk0x00];
-			stack->m_unk0x00 = planePoint;
+			Triangle* firstTriangle = &m_triangles[node->m_firstTriangle];
+			GolVec3* planePoint = &vertices[firstTriangle->m_vertex0];
+			stack->m_planePoint = planePoint;
 
 			delta.m_x = start->m_x - planePoint->m_x;
 			delta.m_y = start->m_y - planePoint->m_y;
 			delta.m_z = start->m_z - planePoint->m_z;
 
-			LegoFloat startDistance = GolCameraBase::FUN_00404680(&node->m_unk0x00, &delta);
-			stack->m_unk0x04 = startDistance;
+			LegoFloat startDistance = GolCameraBase::Dot(&node->m_planeNormal, &delta);
+			stack->m_startDistance = startDistance;
 
 			if (startDistance > 0.0f) {
-				childIndex = node->m_unk0x10[0];
+				childIndex = node->m_childIndices[0];
 			}
 			else {
-				childIndex = node->m_unk0x10[1];
+				childIndex = node->m_childIndices[1];
 			}
 
-			stack->m_unk0x0a++;
+			stack->m_stage++;
 			if (childIndex < c_invalidChildIndex) {
 				stack++;
-				stack->m_unk0x08 = childIndex;
-				stack->m_unk0x0a = 0;
-				node = &m_unk0x08[childIndex];
+				stack->m_nodeIndex = childIndex;
+				stack->m_stage = 0;
+				node = &m_nodes[childIndex];
 			}
 		}
 		else if (stage == 1) {
-			stack->m_unk0x0a++;
+			stack->m_stage++;
 
-			GolVec3* planePoint = stack->m_unk0x00;
+			GolVec3* planePoint = stack->m_planePoint;
 			delta.m_x = p_end->m_x - planePoint->m_x;
 			delta.m_y = p_end->m_y - planePoint->m_y;
 			delta.m_z = p_end->m_z - planePoint->m_z;
 
-			LegoFloat endDistance = GolCameraBase::FUN_00404680(&node->m_unk0x00, &delta);
-			LegoFloat startDistance = stack->m_unk0x04;
+			LegoFloat endDistance = GolCameraBase::Dot(&node->m_planeNormal, &delta);
+			LegoFloat startDistance = stack->m_startDistance;
 
 			if (endDistance <= 0.0f) {
 				if (startDistance <= 0.0f) {
 					continue;
 				}
 
-				m_unk0x48 = startDistance;
-				m_unk0x4c = -endDistance;
-				childIndex = node->m_unk0x10[1];
+				m_startDistance = startDistance;
+				m_endDistance = -endDistance;
+				childIndex = node->m_childIndices[1];
 			}
 			else {
 				if (startDistance > 0.0f) {
 					continue;
 				}
 
-				m_unk0x48 = -startDistance;
-				m_unk0x4c = endDistance;
-				childIndex = node->m_unk0x10[0];
+				m_startDistance = -startDistance;
+				m_endDistance = endDistance;
+				childIndex = node->m_childIndices[0];
 			}
 
-			m_unk0x50 = node;
-			g_unk0x004c2728.m_x = m_unk0x3c.m_x - m_unk0x30.m_x;
-			g_unk0x004c2728.m_y = m_unk0x3c.m_y - m_unk0x30.m_y;
-			g_unk0x004c2728.m_z = m_unk0x3c.m_z - m_unk0x30.m_z;
+			m_hitNode = node;
+			g_segmentDelta.m_x = m_segmentEnd.m_x - m_segmentStart.m_x;
+			g_segmentDelta.m_y = m_segmentEnd.m_y - m_segmentStart.m_y;
+			g_segmentDelta.m_z = m_segmentEnd.m_z - m_segmentStart.m_z;
 
-			LegoFloat amount = m_unk0x48 / (m_unk0x48 + m_unk0x4c);
-			GolCameraBase::FUN_004045b0(&g_unk0x004c2728, amount, &scaledDelta);
-			GolCameraBase::FUN_00404550(&m_unk0x30, &scaledDelta, m_unk0x58);
+			LegoFloat amount = m_startDistance / (m_startDistance + m_endDistance);
+			GolCameraBase::Scale(&g_segmentDelta, amount, &scaledDelta);
+			GolCameraBase::Add(&m_segmentStart, &scaledDelta, m_hitPoint);
 
-			vertices = m_unk0x0c->GetPositions();
-			node = m_unk0x50;
+			vertices = m_vertices->GetPositions();
+			node = m_hitNode;
 
-			PolygonId* triangle = &m_unk0x14[node->m_unk0x0c];
-			PolygonId* end = triangle + node->m_unk0x0e;
-			PolygonId* candidate = NULL;
+			Triangle* triangle = &m_triangles[node->m_firstTriangle];
+			Triangle* end = triangle + node->m_triangleCount;
+			Triangle* candidate = NULL;
 
-			node->FUN_00404660(&g_unk0x004c2718);
-			m_unk0x54->m_normal.m_x = g_unk0x004c2718.m_x;
-			m_unk0x54->m_normal.m_y = g_unk0x004c2718.m_y;
-			m_unk0x54->m_normal.m_z = g_unk0x004c2718.m_z;
+			node->GetPlaneNormal(&g_hitNormal);
+			m_hitTriangle->m_normal.m_x = g_hitNormal.m_x;
+			m_hitTriangle->m_normal.m_y = g_hitNormal.m_y;
+			m_hitTriangle->m_normal.m_z = g_hitNormal.m_z;
 
 			while (triangle < end) {
-				m_unk0x54->m_unk0x00 = vertices[triangle->m_unk0x00];
-				m_unk0x54->m_unk0x0c = vertices[triangle->m_unk0x02];
-				m_unk0x54->m_unk0x18 = vertices[triangle->m_unk0x04];
+				m_hitTriangle->m_vertex0 = vertices[triangle->m_vertex0];
+				m_hitTriangle->m_vertex1 = vertices[triangle->m_vertex1];
+				m_hitTriangle->m_vertex2 = vertices[triangle->m_vertex2];
 
-				if (GolMath::FUN_004497f0(m_unk0x58, m_unk0x54->GetFloatData())) {
-					GolCameraBase::FUN_00404580(&m_unk0x54->m_unk0x00, &m_unk0x54->m_unk0x0c, &g_unk0x004c26f8);
-					GolCameraBase::FUN_00404580(&m_unk0x54->m_unk0x18, &m_unk0x54->m_unk0x0c, &g_unk0x004c2708);
-					GolCameraBase::FUN_00404510(&g_unk0x004c2708, &g_unk0x004c26f8, &g_unk0x004c2718);
+				if (GolMath::PointInTriangle(m_hitPoint, m_hitTriangle->GetFloatData())) {
+					GolCameraBase::Subtract(&m_hitTriangle->m_vertex0, &m_hitTriangle->m_vertex1, &g_edge0);
+					GolCameraBase::Subtract(&m_hitTriangle->m_vertex2, &m_hitTriangle->m_vertex1, &g_edge1);
+					GolCameraBase::Cross(&g_edge1, &g_edge0, &g_hitNormal);
 
-					if (GolCameraBase::FUN_004044f0(&g_unk0x004c2718, &g_unk0x004c2728) <= 0.0f) {
-						GolMath::NormalizeVector3(g_unk0x004c2718, &g_unk0x004c2718);
-						m_unk0x54->m_normal.m_x = g_unk0x004c2718.m_x;
-						m_unk0x54->m_normal.m_y = g_unk0x004c2718.m_y;
-						m_unk0x54->m_normal.m_z = g_unk0x004c2718.m_z;
-						m_unk0x54->m_unk0x30 =
-							-(m_unk0x54->m_unk0x00.m_z * g_unk0x004c2718.m_z +
-							  m_unk0x54->m_unk0x00.m_y * g_unk0x004c2718.m_y +
-							  m_unk0x54->m_unk0x00.m_x * g_unk0x004c2718.m_x);
+					if (GolCameraBase::Dot2(&g_hitNormal, &g_segmentDelta) <= 0.0f) {
+						GolMath::NormalizeVector3(g_hitNormal, &g_hitNormal);
+						m_hitTriangle->m_normal.m_x = g_hitNormal.m_x;
+						m_hitTriangle->m_normal.m_y = g_hitNormal.m_y;
+						m_hitTriangle->m_normal.m_z = g_hitNormal.m_z;
+						m_hitTriangle->m_planeDistance =
+							-(m_hitTriangle->m_vertex0.m_z * g_hitNormal.m_z +
+							  m_hitTriangle->m_vertex0.m_y * g_hitNormal.m_y +
+							  m_hitTriangle->m_vertex0.m_x * g_hitNormal.m_x);
 
-						if (m_unk0x5c) {
-							*m_unk0x5c = static_cast<RaceEventRecord*>(m_unk0x24->m_entries[triangle->m_unk0x06]);
+						if (m_hitRecord) {
+							*m_hitRecord = static_cast<RaceEventRecord*>(
+								m_activeMaterialTable->m_entries[triangle->m_materialIndex]
+							);
 						}
 
-						if (m_unk0x60) {
-							*m_unk0x60 = amount;
+						if (m_hitAmount) {
+							*m_hitAmount = amount;
 							return TRUE;
 						}
 
@@ -464,24 +466,25 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 			}
 
 			if (candidate) {
-				m_unk0x54->m_unk0x00 = vertices[candidate->m_unk0x00];
-				m_unk0x54->m_unk0x0c = vertices[candidate->m_unk0x02];
-				m_unk0x54->m_unk0x18 = vertices[candidate->m_unk0x04];
+				m_hitTriangle->m_vertex0 = vertices[candidate->m_vertex0];
+				m_hitTriangle->m_vertex1 = vertices[candidate->m_vertex1];
+				m_hitTriangle->m_vertex2 = vertices[candidate->m_vertex2];
 
-				GolMath::NormalizeVector3(g_unk0x004c2718, &g_unk0x004c2718);
-				m_unk0x54->m_normal.m_x = g_unk0x004c2718.m_x;
-				m_unk0x54->m_normal.m_y = g_unk0x004c2718.m_y;
-				m_unk0x54->m_normal.m_z = g_unk0x004c2718.m_z;
-				m_unk0x54->m_unk0x30 =
-					-(m_unk0x54->m_unk0x00.m_z * g_unk0x004c2718.m_z + m_unk0x54->m_unk0x00.m_y * g_unk0x004c2718.m_y +
-					  m_unk0x54->m_unk0x00.m_x * g_unk0x004c2718.m_x);
+				GolMath::NormalizeVector3(g_hitNormal, &g_hitNormal);
+				m_hitTriangle->m_normal.m_x = g_hitNormal.m_x;
+				m_hitTriangle->m_normal.m_y = g_hitNormal.m_y;
+				m_hitTriangle->m_normal.m_z = g_hitNormal.m_z;
+				m_hitTriangle->m_planeDistance =
+					-(m_hitTriangle->m_vertex0.m_z * g_hitNormal.m_z + m_hitTriangle->m_vertex0.m_y * g_hitNormal.m_y +
+					  m_hitTriangle->m_vertex0.m_x * g_hitNormal.m_x);
 
-				if (m_unk0x5c) {
-					*m_unk0x5c = static_cast<RaceEventRecord*>(m_unk0x24->m_entries[candidate->m_unk0x06]);
+				if (m_hitRecord) {
+					*m_hitRecord =
+						static_cast<RaceEventRecord*>(m_activeMaterialTable->m_entries[candidate->m_materialIndex]);
 				}
 
-				if (m_unk0x60) {
-					*m_unk0x60 = amount;
+				if (m_hitAmount) {
+					*m_hitAmount = amount;
 				}
 
 				goto successReturn;
@@ -489,20 +492,20 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 
 			if (childIndex < c_invalidChildIndex) {
 				stack++;
-				stack->m_unk0x08 = childIndex;
-				stack->m_unk0x0a = 0;
-				node = &m_unk0x08[childIndex];
+				stack->m_nodeIndex = childIndex;
+				stack->m_stage = 0;
+				node = &m_nodes[childIndex];
 			}
 
 			start = p_start;
 		}
 		else {
 			stack--;
-			if (stack < m_unk0x2c) {
+			if (stack < m_traversalStack) {
 				return FALSE;
 			}
 
-			node = &m_unk0x08[stack->m_unk0x08];
+			node = &m_nodes[stack->m_nodeIndex];
 		}
 	}
 
@@ -511,31 +514,31 @@ successReturn:
 }
 
 // FUNCTION: LEGORACERS 0x004045e0
-void GolBoundingVolume::FUN_004045e0()
+void GolBoundingVolume::MirrorY()
 {
 	LegoU32 i;
-	for (i = 0; i < m_unk0x04; i++) {
-		m_unk0x08[i].m_unk0x00.m_y = -m_unk0x08[i].m_unk0x00.m_y;
+	for (i = 0; i < m_nodeCount; i++) {
+		m_nodes[i].m_planeNormal.m_y = -m_nodes[i].m_planeNormal.m_y;
 	}
 
-	GolVec3* vertices = m_unk0x0c->GetPositions();
-	for (i = 0; i < m_unk0x0c->GetCount(); i++) {
+	GolVec3* vertices = m_vertices->GetPositions();
+	for (i = 0; i < m_vertices->GetCount(); i++) {
 		vertices[i].m_y = -vertices[i].m_y;
 	}
 
-	for (i = 0; i < m_unk0x10; i++) {
-		LegoU16 value = m_unk0x14[i].m_unk0x02;
-		m_unk0x14[i].m_unk0x02 = m_unk0x14[i].m_unk0x04;
-		m_unk0x14[i].m_unk0x04 = value;
+	for (i = 0; i < m_triangleCount; i++) {
+		LegoU16 value = m_triangles[i].m_vertex1;
+		m_triangles[i].m_vertex1 = m_triangles[i].m_vertex2;
+		m_triangles[i].m_vertex2 = value;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00404660
-GolVec3* GolBoundingVolume::PolygonRange::FUN_00404660(GolVec3* p_dest) const
+GolVec3* GolBoundingVolume::BspNode::GetPlaneNormal(GolVec3* p_dest) const
 {
-	p_dest->m_x = m_unk0x00.m_x;
-	p_dest->m_y = m_unk0x00.m_y;
-	p_dest->m_z = m_unk0x00.m_z;
+	p_dest->m_x = m_planeNormal.m_x;
+	p_dest->m_y = m_planeNormal.m_y;
+	p_dest->m_z = m_planeNormal.m_z;
 
 	return p_dest;
 }

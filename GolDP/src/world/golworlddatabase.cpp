@@ -1632,7 +1632,7 @@ void GolWorldDatabase::InitializeEntities()
 		LegoChar name[sizeof(GolName) + 1];
 		::memcpy(name, m_boundingVolumeNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';
-		m_boundingVolumes[i].VTable0x04(m_renderer, name, m_binary);
+		m_boundingVolumes[i].Load(m_renderer, name, m_binary);
 	}
 
 	for (i = 0; i < m_boundedEntityCount; i++) {
@@ -1647,13 +1647,13 @@ void GolWorldDatabase::InitializeEntities()
 			if (model->m_materialTableIndices[0] >= static_cast<LegoS32>(m_materialTableCount)) {
 				GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
 			}
-			runtime->m_unk0x5c = GetMaterialTable(model->m_materialTableIndices[0]);
+			runtime->m_materialTableOverride = GetMaterialTable(model->m_materialTableIndices[0]);
 		}
 		else {
-			runtime->m_unk0x5c = NULL;
+			runtime->m_materialTableOverride = NULL;
 		}
 
-		runtime->FUN_1001b760(&m_boundingVolumes[model->m_sceneNodeIndices[0]]);
+		runtime->SetBoundingVolume(&m_boundingVolumes[model->m_sceneNodeIndices[0]]);
 		runtime->SetPosition(model->m_position);
 		runtime->SetDirectionUp(model->m_direction, model->m_up);
 

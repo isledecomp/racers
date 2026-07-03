@@ -794,7 +794,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		oldRow0.m_x = oldRow2.m_x * value;
 		oldRow0.m_y = oldRow2.m_y * value;
 		oldRow0.m_z = oldRow2.m_z * value;
-		GolCameraBase::FUN_00404550(&targetRow0, &oldRow0, &row0);
+		GolCameraBase::Add(&targetRow0, &oldRow0, &row0);
 	}
 
 	GolVec3 row1;
@@ -806,7 +806,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		oldRow1.m_x = oldRow2.m_x * value;
 		oldRow1.m_y = oldRow2.m_y * value;
 		oldRow1.m_z = oldRow2.m_z * value;
-		GolCameraBase::FUN_00404550(&targetRow1, &oldRow1, &row1);
+		GolCameraBase::Add(&targetRow1, &oldRow1, &row1);
 	}
 
 	m_bodyModelEntity->SetPosition(position);

@@ -5,19 +5,19 @@
 // FUNCTION: GOLDP 0x1001b740
 GolBoundedEntity::GolBoundedEntity()
 {
-	m_unk0x58 = 0;
-	m_unk0x60 = 0;
+	m_boundingVolume = 0;
+	m_boundedFlags = 0;
 }
 
 // FUNCTION: GOLDP 0x1001b760
-void GolBoundedEntity::FUN_1001b760(GolBoundingVolume* p_arg)
+void GolBoundedEntity::SetBoundingVolume(GolBoundingVolume* p_boundingVolume)
 {
-	m_unk0x58 = p_arg;
+	m_boundingVolume = p_boundingVolume;
 }
 
 // FUNCTION: LEGORACERS 0x00403f80
-void GolBoundedEntity::FUN_00403f80()
+void GolBoundedEntity::MirrorY()
 {
-	m_unk0x58->FUN_004045e0();
-	FUN_00411040();
+	m_boundingVolume->MirrorY();
+	GolOrientedEntity::MirrorY();
 }

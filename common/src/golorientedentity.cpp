@@ -368,7 +368,7 @@ void GolOrientedEntity::FUN_00410f30(const GolMatrix3& p_matrix, GolMatrix3* p_d
 }
 
 // FUNCTION: LEGORACERS 0x00411040
-void GolOrientedEntity::FUN_00411040()
+void GolOrientedEntity::MirrorY()
 {
 	GolVec3 right;
 	right.m_x = m_orientation.m_m[0][0];

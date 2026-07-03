@@ -40,9 +40,9 @@ GolWorldDatabase* TriggerWorld::Initialize(
 	GolWorldDatabase* result = m_triggerDatabase;
 	for (LegoU32 count = 0; count < m_triggerDatabase->GetBoundedEntityCount(); count++) {
 		GolBoundedEntity* item = &m_triggerDatabase->GetBoundedEntities()[count];
-		LegoU32 flags = item->GetUnk0x60();
+		LegoU32 flags = item->GetBoundedFlags();
 		flags |= 1;
-		item->SetUnk0x60(flags);
+		item->SetBoundedFlags(flags);
 		result = m_triggerDatabase;
 	}
 
@@ -84,7 +84,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 
 	while (TRUE) {
 		entity = &root->GetBoundedEntities()[count];
-		if (entity->GetUnk0x60() & 1) {
+		if (entity->GetBoundedFlags() & 1) {
 			entity->GetBoundsCenter(&center);
 
 			LegoFloat radius = entity->GetBoundsRadius();
@@ -99,9 +99,9 @@ LegoBool32 TriggerWorld::IntersectSegment(
 					entity->WorldToLocal(*p_unk0x04, &startLocal);
 					entity->WorldToLocal(*p_unk0x08, &endLocal);
 
-					query = entity->GetUnk0x58();
-					query->SetUnk0x24(entity->GetMaterialTable());
-					if (query->FUN_00403fa0(&startLocal, &endLocal, record, &hitLocal, &hitRecord, 0)) {
+					query = entity->GetBoundingVolume();
+					query->SetMaterialTable(entity->GetMaterialTable());
+					if (query->IntersectSegment(&startLocal, &endLocal, record, &hitLocal, &hitRecord, 0)) {
 						goto hit;
 					}
 				}
@@ -117,9 +117,9 @@ LegoBool32 TriggerWorld::IntersectSegment(
 
 fallback:
 	entity = m_boundsEntity;
-	query = entity->GetUnk0x58();
-	query->SetUnk0x24(entity->GetMaterialTable());
-	if (!query->FUN_00403fa0(p_unk0x04, p_unk0x08, record, p_unk0x10, &hitRecord, 0)) {
+	query = entity->GetBoundingVolume();
+	query->SetMaterialTable(entity->GetMaterialTable());
+	if (!query->IntersectSegment(p_unk0x04, p_unk0x08, record, p_unk0x10, &hitRecord, 0)) {
 		goto fail;
 	}
 
@@ -142,7 +142,7 @@ hit:
 	record->m_normal.m_x = planeWorld.m_x;
 	record->m_normal.m_y = planeWorld.m_y;
 	record->m_normal.m_z = planeWorld.m_z;
-	record->m_unk0x30 =
+	record->m_planeDistance =
 		-(record->m_normal.m_z * p_unk0x10->m_z + record->m_normal.m_y * p_unk0x10->m_y +
 		  p_unk0x10->m_x * record->m_normal.m_x);
 	goto finish;

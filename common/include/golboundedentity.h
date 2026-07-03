@@ -13,27 +13,27 @@ class GolBoundedEntity : public GolOrientedEntity {
 public:
 	GolBoundedEntity();
 
-	void FUN_1001b760(GolBoundingVolume* p_arg);
-	void FUN_00403f80();
-	GolBoundingVolume* GetUnk0x58() const { return m_unk0x58; }
-	GolModelMaterialTable* GetUnk0x5c() const { return m_unk0x5c; }
-	LegoU32 GetUnk0x60() const { return m_unk0x60; }
-	void SetUnk0x60(LegoU32 p_unk0x60) { m_unk0x60 = p_unk0x60; }
+	void SetBoundingVolume(GolBoundingVolume* p_boundingVolume);
+	void MirrorY();
+	GolBoundingVolume* GetBoundingVolume() const { return m_boundingVolume; }
+	GolModelMaterialTable* GetMaterialTableOverride() const { return m_materialTableOverride; }
+	LegoU32 GetBoundedFlags() const { return m_boundedFlags; }
+	void SetBoundedFlags(LegoU32 p_boundedFlags) { m_boundedFlags = p_boundedFlags; }
 	GolModelMaterialTable* GetMaterialTable() const
 	{
-		if (m_unk0x5c != NULL) {
-			return m_unk0x5c;
+		if (m_materialTableOverride != NULL) {
+			return m_materialTableOverride;
 		}
 
-		return m_unk0x58->GetUnk0x18();
+		return m_boundingVolume->GetMaterialTable();
 	}
 
 protected:
 	friend class GolWorldDatabase;
 
-	GolBoundingVolume* m_unk0x58;
-	GolModelMaterialTable* m_unk0x5c;
-	LegoU32 m_unk0x60;
+	GolBoundingVolume* m_boundingVolume;
+	GolModelMaterialTable* m_materialTableOverride;
+	LegoU32 m_boundedFlags;
 };
 
 #endif // GOLBOUNDEDENTITY_H

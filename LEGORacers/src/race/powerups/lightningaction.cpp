@@ -478,7 +478,7 @@ void LightningAction::UpdateBoltPath()
 	scaledDirection.m_x = direction.m_x * scale;
 	scaledDirection.m_y = direction.m_y * scale;
 	scaledDirection.m_z = direction.m_z * scale;
-	GolCameraBase::FUN_00404550(&position, &scaledDirection, &end);
+	GolCameraBase::Add(&position, &scaledDirection, &end);
 
 	if (m_targetRacer != NULL) {
 		m_targetRacer->m_visuals.m_carEntity->GetPosition(&end);

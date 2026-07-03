@@ -364,7 +364,7 @@ void RacerPhysics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 				consumed.m_x = negativeDistance * unitSegment.m_x;
 				consumed.m_y = unitSegment.m_y * negativeDistance;
 				consumed.m_z = unitSegment.m_z * negativeDistance;
-				GolCameraBase::FUN_00404580(p_delta, &consumed, p_delta);
+				GolCameraBase::Subtract(p_delta, &consumed, p_delta);
 
 				do {
 					endPosition = startPosition;
@@ -434,7 +434,7 @@ void RacerPhysics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 				consumed.m_x = unitSegment.m_x * remainingDistance;
 				consumed.m_y = unitSegment.m_y * remainingDistance;
 				consumed.m_z = unitSegment.m_z * remainingDistance;
-				GolCameraBase::FUN_00404580(p_delta, &consumed, p_delta);
+				GolCameraBase::Subtract(p_delta, &consumed, p_delta);
 
 				do {
 					startPosition = endPosition;

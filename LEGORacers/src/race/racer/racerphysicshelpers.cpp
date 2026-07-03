@@ -2660,12 +2660,12 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 		entry = entries;
 		while (entry < entriesEnd) {
 			if (!(entry->m_flags & WheelProbe::c_flagHit)) {
-				GolBoundingVolume* query = resource->GetUnk0x58();
-				query->SetUnk0x24(resource->GetMaterialTable());
+				GolBoundingVolume* query = resource->GetBoundingVolume();
+				query->SetMaterialTable(resource->GetMaterialTable());
 
 				GolVec3 hitPoint;
 				RaceEventRecord* hitRecord;
-				if (query->FUN_00403fa0(
+				if (query->IntersectSegment(
 						&entry->m_rayStart,
 						&entry->m_rayEnd,
 						collisionContext,
@@ -2712,11 +2712,11 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 		entry->m_rayEnd.m_z = entry->m_wheelPosition.m_z - sweepDistance;
 
 		if (!TestCachedPlanes(entry)) {
-			GolBoundingVolume* query = baseResource->GetUnk0x58();
-			query->SetUnk0x24(baseResource->GetMaterialTable());
+			GolBoundingVolume* query = baseResource->GetBoundingVolume();
+			query->SetMaterialTable(baseResource->GetMaterialTable());
 
 			RaceEventRecord* hitRecord;
-			if (query->FUN_00403fa0(
+			if (query->IntersectSegment(
 					&entry->m_rayStart,
 					&entry->m_rayEnd,
 					collisionContext,
@@ -2986,12 +2986,12 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 			resource->WorldToLocal(entry->m_rayStart, &start);
 			resource->WorldToLocal(entry->m_rayEnd, &end);
 
-			GolBoundingVolume* query = resource->GetUnk0x58();
-			query->SetUnk0x24(resource->GetMaterialTable());
+			GolBoundingVolume* query = resource->GetBoundingVolume();
+			query->SetMaterialTable(resource->GetMaterialTable());
 
 			GolVec3 hitPoint;
 			RaceEventRecord* hitRecord;
-			if (!query->FUN_00403fa0(&start, &end, collisionContext, &hitPoint, &hitRecord, NULL)) {
+			if (!query->IntersectSegment(&start, &end, collisionContext, &hitPoint, &hitRecord, NULL)) {
 				continue;
 			}
 
@@ -3028,11 +3028,11 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 	for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
 		if (!(entry->m_flags & WheelProbe::c_flagHit)) {
 			if (!TestCachedPlanes(entry)) {
-				GolBoundingVolume* query = baseResource->GetUnk0x58();
-				query->SetUnk0x24(baseResource->GetMaterialTable());
+				GolBoundingVolume* query = baseResource->GetBoundingVolume();
+				query->SetMaterialTable(baseResource->GetMaterialTable());
 
 				RaceEventRecord* hitRecord;
-				if (!query->FUN_00403fa0(
+				if (!query->IntersectSegment(
 						&entry->m_rayStart,
 						&entry->m_rayEnd,
 						collisionContext,
@@ -3571,11 +3571,11 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 				);
 				resource->WorldToLocal(m_bodyPointsWorld[pointIndex], &g_carBodySavedState.m_rayEndsLocal[pointIndex]);
 
-				GolBoundingVolume* query = resource->GetUnk0x58();
-				query->SetUnk0x24(resource->GetMaterialTable());
+				GolBoundingVolume* query = resource->GetBoundingVolume();
+				query->SetMaterialTable(resource->GetMaterialTable());
 
 				GolVec3 hitPoint;
-				if (query->FUN_00403fa0(
+				if (query->IntersectSegment(
 						&g_carBodySavedState.m_rayStartsLocal[pointIndex],
 						&g_carBodySavedState.m_rayEndsLocal[pointIndex],
 						g_carBodySavedWheels.GetEventContext(),
@@ -3625,11 +3625,11 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 
 		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_bodyPointsWorld); pointIndex++) {
 			if (!m_bodyPointHit[pointIndex]) {
-				GolBoundingVolume* query = resource->GetUnk0x58();
-				query->SetUnk0x24(resource->GetMaterialTable());
+				GolBoundingVolume* query = resource->GetBoundingVolume();
+				query->SetMaterialTable(resource->GetMaterialTable());
 
 				GolVec3 hitPoint;
-				if (query->FUN_00403fa0(
+				if (query->IntersectSegment(
 						&g_carBodySavedState.m_bodyPointsWorld[pointIndex],
 						&m_bodyPointsWorld[pointIndex],
 						g_carBodySavedWheels.GetEventContext(),

@@ -191,11 +191,11 @@ LegoBool32 RacerCarBody::TestCachedPlane(WheelProbe* p_probe, CollisionCacheReco
 	LegoFloat start = p_record->m_plane.m_normal.m_z * p_probe->m_rayStart.m_z;
 	start += p_record->m_plane.m_normal.m_y * p_probe->m_rayStart.m_y;
 	start += p_probe->m_rayStart.m_x * p_record->m_plane.m_normal.m_x;
-	start += p_record->m_plane.m_unk0x30;
+	start += p_record->m_plane.m_planeDistance;
 	LegoFloat end = p_record->m_plane.m_normal.m_z * p_probe->m_rayEnd.m_z;
 	end += p_probe->m_rayEnd.m_y * p_record->m_plane.m_normal.m_y;
 	end += p_probe->m_rayEnd.m_x * p_record->m_plane.m_normal.m_x;
-	end += p_record->m_plane.m_unk0x30;
+	end += p_record->m_plane.m_planeDistance;
 
 	LegoBool32 startNonNegative = start >= 0.0f;
 	LegoBool32 endNonNegative = end >= 0.0f;
@@ -226,7 +226,7 @@ LegoBool32 RacerCarBody::TestCachedPlane(WheelProbe* p_probe, CollisionCacheReco
 	point->m_y = scaled.m_y + p_probe->m_rayStart.m_y;
 	point->m_z = scaled.m_z + p_probe->m_rayStart.m_z;
 
-	return GolMath::FUN_004497f0(point, p_record->m_plane.GetFloatData());
+	return GolMath::PointInTriangle(point, p_record->m_plane.GetFloatData());
 }
 
 // FUNCTION: LEGORACERS 0x00448c70
@@ -335,9 +335,9 @@ void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_
 	entries[3].m_rayStart.m_x = corner2.m_x + zHeight.m_x;
 	entries[3].m_rayStart.m_y = corner2.m_y + zHeight.m_y;
 	entries[3].m_rayStart.m_z = corner2.m_z + zHeight.m_z;
-	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[3].m_rayEnd);
+	GolCameraBase::Subtract(&corner2, &zDistance, &entries[3].m_rayEnd);
 
-	GolCameraBase::FUN_00404580(&corner, &localRow0, &corner2);
-	GolCameraBase::FUN_00404550(&corner2, &zHeight, &entries[2].m_rayStart);
-	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[2].m_rayEnd);
+	GolCameraBase::Subtract(&corner, &localRow0, &corner2);
+	GolCameraBase::Add(&corner2, &zHeight, &entries[2].m_rayStart);
+	GolCameraBase::Subtract(&corner2, &zDistance, &entries[2].m_rayEnd);
 }

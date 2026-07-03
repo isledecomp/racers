@@ -2550,7 +2550,7 @@ void RaceSession::BindCheckpointMaterials()
 	LegoU32 checkpointIndex;
 
 	if (m_extraTriggerWorldEntity) {
-		GolModelMaterialTable* materials = m_extraTriggerWorldEntity->GetUnk0x58()->GetUnk0x18();
+		GolModelMaterialTable* materials = m_extraTriggerWorldEntity->GetBoundingVolume()->GetMaterialTable();
 		materialIndex = 0;
 		checkpointIndex = 0;
 

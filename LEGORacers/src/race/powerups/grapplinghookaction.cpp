@@ -407,7 +407,7 @@ void GrapplingHookAction::AdvanceState()
 			scaledDirection.m_x = direction.m_x * 500.0f;
 			scaledDirection.m_y = direction.m_y * 500.0f;
 			scaledDirection.m_z = direction.m_z * 500.0f;
-			GolCameraBase::FUN_00404550(&position, &scaledDirection, &targetPosition);
+			GolCameraBase::Add(&position, &scaledDirection, &targetPosition);
 			targetPosition.m_z = 5.0f + targetPosition.m_z;
 		}
 

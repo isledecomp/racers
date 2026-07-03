@@ -59,11 +59,11 @@ void GolWorldDatabase::ResetEntities()
 	LegoU32 i;
 
 	for (i = 0; i < m_modelEntityCount; i++) {
-		m_modelEntities[i].FUN_00411040();
+		m_modelEntities[i].MirrorY();
 	}
 
 	for (i = 0; i < m_animatedEntityCount; i++) {
-		m_animatedEntities[i].FUN_00411040();
+		m_animatedEntities[i].MirrorY();
 	}
 
 	for (i = 0; i < m_collidableEntityCount; i++) {
@@ -71,7 +71,7 @@ void GolWorldDatabase::ResetEntities()
 	}
 
 	for (i = 0; i < m_boundedEntityCount; i++) {
-		m_boundedEntities[i].FUN_00403f80();
+		m_boundedEntities[i].MirrorY();
 	}
 
 	for (i = 0; i < m_modelCount; i++) {

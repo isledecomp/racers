@@ -67,5 +67,5 @@ void GolCollidableEntity::FUN_00403c60()
 			m_boundingShapes[i]->FUN_00403f20();
 		}
 	}
-	FUN_00411040();
+	MirrorY();
 }

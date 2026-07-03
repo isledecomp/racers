@@ -352,7 +352,7 @@ void MenuGameScreen::ClearCosmeticTable()
 // The pragma code_seg prevents this trivial body from folding with identical functions elsewhere.
 
 // FUNCTION: LEGORACERS 0x004803c0
-#pragma code_seg(".text$imaginarytool_vt6c")
+#pragma code_seg(".text$menugamescreen_vt6c")
 LegoFloat MenuGameScreen::GetAspectScale()
 {
 	return 1.0f;

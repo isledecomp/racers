@@ -19,7 +19,7 @@ class GolDrawDPState;
 class GolD3DRenderDevice;
 class GolSceneNode;
 
-typedef void (GolD3DRenderDevice::*BronzeFalconDrawFunction)(LegoU32, LegoU32, LegoU32);
+typedef void (GolD3DRenderDevice::*DrawTriangleFunction)(LegoU32, LegoU32, LegoU32);
 
 // VTABLE: GOLDP 0x100565b8
 // SIZE 0xc8770
@@ -260,8 +260,8 @@ private:
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
-	static BronzeFalconDrawFunction g_unk0x1005c8a8[8];
-	static BronzeFalconDrawFunction g_unk0x1005c8c8[64];
+	static DrawTriangleFunction g_drawTriangleLitTable[8];
+	static DrawTriangleFunction g_drawTriangleTable[64];
 
 	GolDrawDPState* m_drawState;                                                   // 0x140
 	LPDIRECT3DDEVICE3 m_d3dDevice;                                                 // 0x144
@@ -347,9 +347,9 @@ private:
 	undefined4 m_defaultMipmapCount;                                               // 0xc8704
 	D3DBLEND m_srcBlendOps[11];                                                    // 0xc8708
 	D3DBLEND m_destBlendOps[11];                                                   // 0xc8734
-	BronzeFalconDrawFunction m_drawTriangleFn0;                                    // 0xc8760
-	BronzeFalconDrawFunction m_drawTriangleFn1;                                    // 0xc8764
-	BronzeFalconDrawFunction m_drawTriangleFn2;                                    // 0xc8768
+	DrawTriangleFunction m_drawTriangleFn0;                                        // 0xc8760
+	DrawTriangleFunction m_drawTriangleFn1;                                        // 0xc8764
+	DrawTriangleFunction m_drawTriangleFn2;                                        // 0xc8768
 	void (GolD3DRenderDevice::*m_applyMaterialFn)(GolMaterial*);                   // 0xc876c
 };
 

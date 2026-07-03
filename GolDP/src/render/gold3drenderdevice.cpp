@@ -288,7 +288,7 @@ D3DBLEND g_d3dBlendOps[11] = {
 };
 
 // GLOBAL: GOLDP 0x1005c8a8
-BronzeFalconDrawFunction GolD3DRenderDevice::g_unk0x1005c8a8[8] = {
+DrawTriangleFunction GolD3DRenderDevice::g_drawTriangleLitTable[8] = {
 	&GolD3DRenderDevice::FUN_10011e60,
 	&GolD3DRenderDevice::FUN_10011ed0,
 	&GolD3DRenderDevice::FUN_10012030,
@@ -300,7 +300,7 @@ BronzeFalconDrawFunction GolD3DRenderDevice::g_unk0x1005c8a8[8] = {
 };
 
 // GLOBAL: GOLDP 0x1005c8c8
-BronzeFalconDrawFunction GolD3DRenderDevice::g_unk0x1005c8c8[64] = {
+DrawTriangleFunction GolD3DRenderDevice::g_drawTriangleTable[64] = {
 	&GolD3DRenderDevice::FUN_1000c160, &GolD3DRenderDevice::FUN_1000c2d0, &GolD3DRenderDevice::FUN_1000bfb0,
 	&GolD3DRenderDevice::FUN_1000c470, &GolD3DRenderDevice::FUN_1000be20, &GolD3DRenderDevice::FUN_1000c2d0,
 	&GolD3DRenderDevice::FUN_1000bfb0, &GolD3DRenderDevice::FUN_1000c470, &GolD3DRenderDevice::FUN_1000caf0,
@@ -5173,11 +5173,11 @@ void GolD3DRenderDevice::FUN_10012f50()
 		}
 
 		if (m_unk0xc8568) {
-			m_drawTriangleFn1 = g_unk0x1005c8a8[m_lightCount];
-			m_drawTriangleFn0 = g_unk0x1005c8c8[index];
+			m_drawTriangleFn1 = g_drawTriangleLitTable[m_lightCount];
+			m_drawTriangleFn0 = g_drawTriangleTable[index];
 		}
 		else {
-			m_drawTriangleFn1 = g_unk0x1005c8c8[index];
+			m_drawTriangleFn1 = g_drawTriangleTable[index];
 		}
 	}
 }

@@ -879,7 +879,7 @@ MenuInputBindingTable* MenuScreen::GetMenuInputBindings()
 // The pragma code_seg prevents this trivial body from folding with identical functions elsewhere.
 
 // FUNCTION: LEGORACERS 0x0046c850
-#pragma code_seg(".text$imaginarynotion_vt6c")
+#pragma code_seg(".text$menuscreen_vt6c")
 LegoFloat MenuScreen::GetAspectScale()
 {
 	return 1.0f;

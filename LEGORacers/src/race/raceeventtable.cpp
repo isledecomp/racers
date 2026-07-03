@@ -599,58 +599,58 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 			eventIndex = 1;
 		}
 
-		params.m_unk0x14 = field->m_particleAnimation;
-		params.m_particleAnimation = field->m_sharedParticleAnimation;
+		params.m_particleAnimation = field->m_particleAnimation;
+		params.m_sharedParticleAnimation = field->m_sharedParticleAnimation;
 		params.m_stateEventIds[0] = -1;
 		params.m_stateEventIds[1] = -1;
 		params.m_eventTable = field;
 		params.m_stateEventIds[2] = -1;
-		params.m_unk0x24[0] = '\0';
+		params.m_particleName[0] = '\0';
 		params.m_unk0x50 = FALSE;
 		params.m_unk0x58 = FALSE;
-		params.m_unk0x2c.m_x = 0.0f;
-		params.m_unk0x2c.m_y = 0.0f;
-		params.m_unk0x2c.m_z = 0.0f;
-		params.m_unk0x38.m_x = 1.0f;
-		params.m_unk0x38.m_y = 0.0f;
-		params.m_unk0x38.m_z = 0.0f;
-		params.m_unk0x44.m_x = 0.0f;
-		params.m_unk0x44.m_y = 0.0f;
-		params.m_unk0x44.m_z = 1.0f;
-		params.m_unk0x1c = NULL;
-		params.m_unk0x20 = 0;
+		params.m_position.m_x = 0.0f;
+		params.m_position.m_y = 0.0f;
+		params.m_position.m_z = 0.0f;
+		params.m_direction.m_x = 1.0f;
+		params.m_direction.m_y = 0.0f;
+		params.m_direction.m_z = 0.0f;
+		params.m_up.m_x = 0.0f;
+		params.m_up.m_y = 0.0f;
+		params.m_up.m_z = 1.0f;
+		params.m_trackedEntity = NULL;
+		params.m_nodeIndex = 0;
 		LegoBool32 token0x3f = FALSE;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
 			case GolFileParser::e_unknown0x3d:
 				::strncpy(
-					params.m_unk0x24,
-					p_parser->ReadStringWithMaxLength(sizeof(params.m_unk0x24)),
-					sizeof(params.m_unk0x24)
+					params.m_particleName,
+					p_parser->ReadStringWithMaxLength(sizeof(params.m_particleName)),
+					sizeof(params.m_particleName)
 				);
 				break;
 			case GolFileParser::e_unknown0x3a:
 				params.m_unk0x50 = eventIndex;
 				break;
 			case GolFileParser::e_unknown0x3b:
-				params.m_unk0x2c.m_x = p_parser->ReadFloat();
-				params.m_unk0x2c.m_y = p_parser->ReadFloat();
-				params.m_unk0x2c.m_z = p_parser->ReadFloat();
+				params.m_position.m_x = p_parser->ReadFloat();
+				params.m_position.m_y = p_parser->ReadFloat();
+				params.m_position.m_z = p_parser->ReadFloat();
 				if (p_mirror) {
-					params.m_unk0x2c.m_y = -params.m_unk0x2c.m_y;
+					params.m_position.m_y = -params.m_position.m_y;
 				}
 				break;
 			case GolFileParser::e_unknown0x3e:
-				params.m_unk0x38.m_x = p_parser->ReadFloat();
-				params.m_unk0x38.m_y = p_parser->ReadFloat();
-				params.m_unk0x38.m_z = p_parser->ReadFloat();
-				params.m_unk0x44.m_x = p_parser->ReadFloat();
-				params.m_unk0x44.m_y = p_parser->ReadFloat();
-				params.m_unk0x44.m_z = p_parser->ReadFloat();
+				params.m_direction.m_x = p_parser->ReadFloat();
+				params.m_direction.m_y = p_parser->ReadFloat();
+				params.m_direction.m_z = p_parser->ReadFloat();
+				params.m_up.m_x = p_parser->ReadFloat();
+				params.m_up.m_y = p_parser->ReadFloat();
+				params.m_up.m_z = p_parser->ReadFloat();
 				if (p_mirror) {
-					params.m_unk0x38.m_y = -params.m_unk0x38.m_y;
-					params.m_unk0x44.m_y = -params.m_unk0x44.m_y;
+					params.m_direction.m_y = -params.m_direction.m_y;
+					params.m_up.m_y = -params.m_up.m_y;
 				}
 				break;
 			case GolFileParser::e_unknown0x3f:
@@ -668,26 +668,26 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 					GolWorldDatabase* worldDatabase = field->m_sharedDatabase;
 					if (worldDatabase->GetAnimatedEntityEntries() == NULL) {
 						GolModelEntity* entity = NULL;
-						params.m_unk0x1c = entity;
+						params.m_trackedEntity = entity;
 					}
 					else {
-						params.m_unk0x1c = worldDatabase->GetAnimatedEntityByName(destination);
+						params.m_trackedEntity = worldDatabase->GetAnimatedEntityByName(destination);
 					}
 				}
 				else {
 					GolWorldDatabase* worldDatabase = field->m_trackDatabase;
 					if (worldDatabase->GetAnimatedEntityEntries() == NULL) {
 						GolModelEntity* entity = NULL;
-						params.m_unk0x1c = entity;
+						params.m_trackedEntity = entity;
 					}
 					else {
-						params.m_unk0x1c = worldDatabase->GetAnimatedEntityByName(destination);
+						params.m_trackedEntity = worldDatabase->GetAnimatedEntityByName(destination);
 					}
 				}
 				break;
 			}
 			case GolFileParser::e_unknown0x54:
-				params.m_unk0x20 = p_parser->ReadInteger();
+				params.m_nodeIndex = p_parser->ReadInteger();
 				break;
 			case EvbTxtParser::e_event: {
 				LegoS32 eventToken = p_parser->GetNextToken() - EvbTxtParser::e_active;

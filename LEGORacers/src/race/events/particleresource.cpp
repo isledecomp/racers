@@ -45,17 +45,17 @@ void ParticleResource::ClearFields()
 	m_particle = NULL;
 	m_trackedEntity = NULL;
 	m_particleName[0] = '\0';
-	m_unk0x3c.m_x = 0.0f;
-	m_unk0x3c.m_y = 0.0f;
-	m_unk0x3c.m_z = 0.0f;
-	m_unk0x48.m_x = 0.0f;
-	m_unk0x48.m_y = 0.0f;
-	m_unk0x48.m_z = 0.0f;
-	m_unk0x48.m_x = 1.0f;
-	m_unk0x54.m_x = 0.0f;
-	m_unk0x54.m_y = 0.0f;
-	m_unk0x54.m_z = 0.0f;
-	m_unk0x54.m_z = 1.0f;
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
+	m_direction.m_x = 0.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
+	m_direction.m_x = 1.0f;
+	m_up.m_x = 0.0f;
+	m_up.m_y = 0.0f;
+	m_up.m_z = 0.0f;
+	m_up.m_z = 1.0f;
 	m_partAnimations = 0;
 	m_nodeIndex = 0;
 }
@@ -74,20 +74,20 @@ void ParticleResource::Initialize(InitParams* p_params)
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_particleAnimation = p_params->m_unk0x14;
-	m_sharedParticleAnimation = p_params->m_particleAnimation;
-	m_trackedEntity = p_params->m_unk0x1c;
-	m_nodeIndex = p_params->m_unk0x20;
-	::strncpy(m_particleName, p_params->m_unk0x24, sizeof(m_particleName));
-	m_unk0x3c.m_x = p_params->m_unk0x2c.m_x;
-	m_unk0x3c.m_y = p_params->m_unk0x2c.m_y;
-	m_unk0x3c.m_z = p_params->m_unk0x2c.m_z;
-	m_unk0x48.m_x = p_params->m_unk0x38.m_x;
-	m_unk0x48.m_y = p_params->m_unk0x38.m_y;
-	m_unk0x48.m_z = p_params->m_unk0x38.m_z;
-	m_unk0x54.m_x = p_params->m_unk0x44.m_x;
-	m_unk0x54.m_y = p_params->m_unk0x44.m_y;
-	m_unk0x54.m_z = p_params->m_unk0x44.m_z;
+	m_particleAnimation = p_params->m_particleAnimation;
+	m_sharedParticleAnimation = p_params->m_sharedParticleAnimation;
+	m_trackedEntity = p_params->m_trackedEntity;
+	m_nodeIndex = p_params->m_nodeIndex;
+	::strncpy(m_particleName, p_params->m_particleName, sizeof(m_particleName));
+	m_position.m_x = p_params->m_position.m_x;
+	m_position.m_y = p_params->m_position.m_y;
+	m_position.m_z = p_params->m_position.m_z;
+	m_direction.m_x = p_params->m_direction.m_x;
+	m_direction.m_y = p_params->m_direction.m_y;
+	m_direction.m_z = p_params->m_direction.m_z;
+	m_up.m_x = p_params->m_up.m_x;
+	m_up.m_y = p_params->m_up.m_y;
+	m_up.m_z = p_params->m_up.m_z;
 
 	if (p_params->m_unk0x50) {
 		m_flags |= c_flagNoEnd;
@@ -117,16 +117,16 @@ void ParticleResource::Destroy()
 void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 {
 	if (p_unk0x04 && (m_flags & c_flagBit3)) {
-		m_unk0x3c = *p_unk0x04;
+		m_position = *p_unk0x04;
 	}
 
 	if (m_particleAnimation->HasEmitter(m_particleName)) {
 		m_partAnimations = 1;
-		m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+		m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_position, &m_direction, &m_up);
 	}
 	else if (m_sharedParticleAnimation->HasEmitter(m_particleName)) {
 		m_partAnimations = 0;
-		m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+		m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_position, &m_direction, &m_up);
 	}
 
 	if (m_particle) {
@@ -167,11 +167,11 @@ void ParticleResource::Update(LegoU32 p_elapsedMs)
 	if (!(m_flags & c_flagBit5)) {
 		if (m_particleAnimation->HasEmitter(m_particleName)) {
 			m_partAnimations = 1;
-			m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+			m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_position, &m_direction, &m_up);
 		}
 		else if (m_sharedParticleAnimation->HasEmitter(m_particleName)) {
 			m_partAnimations = 0;
-			m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+			m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_position, &m_direction, &m_up);
 		}
 
 		if (m_particle) {

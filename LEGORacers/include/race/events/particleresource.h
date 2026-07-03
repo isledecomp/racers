@@ -14,20 +14,20 @@ class ParticleResource : public RaceEventResource {
 public:
 	// SIZE 0x5c
 	struct InitParams {
-		undefined4 m_eventId;                   // 0x00
-		LegoS32 m_stateEventIds[3];             // 0x04
-		RaceEventTable* m_eventTable;           // 0x10
-		CutsceneAnimation* m_unk0x14;           // 0x14
-		CutsceneAnimation* m_particleAnimation; // 0x18
-		GolModelEntity* m_unk0x1c;              // 0x1c
-		LegoU32 m_unk0x20;                      // 0x20
-		GolName m_unk0x24;                      // 0x24
-		GolVec3 m_unk0x2c;                      // 0x2c
-		GolVec3 m_unk0x38;                      // 0x38
-		GolVec3 m_unk0x44;                      // 0x44
-		undefined4 m_unk0x50;                   // 0x50
-		undefined4 m_unk0x54;                   // 0x54
-		undefined4 m_unk0x58;                   // 0x58
+		undefined4 m_eventId;                         // 0x00
+		LegoS32 m_stateEventIds[3];                   // 0x04
+		RaceEventTable* m_eventTable;                 // 0x10
+		CutsceneAnimation* m_particleAnimation;       // 0x14
+		CutsceneAnimation* m_sharedParticleAnimation; // 0x18
+		GolModelEntity* m_trackedEntity;              // 0x1c
+		LegoU32 m_nodeIndex;                          // 0x20
+		GolName m_particleName;                       // 0x24
+		GolVec3 m_position;                           // 0x2c
+		GolVec3 m_direction;                          // 0x38
+		GolVec3 m_up;                                 // 0x44
+		undefined4 m_unk0x50;                         // 0x50
+		undefined4 m_unk0x54;                         // 0x54
+		undefined4 m_unk0x58;                         // 0x58
 	};
 
 	ParticleResource();
@@ -52,9 +52,9 @@ private:
 	CutsceneParticleRef* m_particle;              // 0x30
 	GolModelEntity* m_trackedEntity;              // 0x34
 	LegoU32 m_nodeIndex;                          // 0x38
-	GolVec3 m_unk0x3c;                            // 0x3c
-	GolVec3 m_unk0x48;                            // 0x48
-	GolVec3 m_unk0x54;                            // 0x54
+	GolVec3 m_position;                           // 0x3c
+	GolVec3 m_direction;                          // 0x48
+	GolVec3 m_up;                                 // 0x54
 	LegoU32 m_partAnimations;                     // 0x60
 };
 

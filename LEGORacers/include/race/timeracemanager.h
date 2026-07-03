@@ -85,7 +85,7 @@ private:
 		c_flagBinaryGhosts = 1 << 2,
 		c_flagRecordRunValid = 1 << 3,
 		c_flagBit4 = 1 << 4,
-		c_flag0x3b4Bit5 = 1 << 5,
+		c_flagMirror = 1 << 5,
 		c_lapCount = 3,
 		c_ghostSampleIntervalMs = 250,
 		c_ghostRaceDurationLimitMs = 240000,

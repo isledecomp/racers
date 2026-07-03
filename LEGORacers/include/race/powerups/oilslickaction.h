@@ -21,7 +21,6 @@ public:
 		c_stateExpiring = 5,
 		c_stateDone = 6,
 		c_flagHalted = 1 << 3,
-		c_racerCarVisualsFlags0x384Bit1 = 1 << 1,
 		c_activeDurationMs = 0x2710,
 		c_soundDrop = 0x2e,
 		c_soundSlip = 0x2f,

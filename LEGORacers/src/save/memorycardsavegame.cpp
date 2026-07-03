@@ -49,7 +49,8 @@ void MemoryCardSaveGame::Destroy()
 // FUNCTION: LEGORACERS 0x00443910
 LegoS32 MemoryCardSaveGame::OpenExistingFile()
 {
-	return m_file.BufferedOpenSlotFile(m_slot, g_memoryCardSaveFileName, GolStream::c_unk0x40, c_fileBufferSize, 0);
+	return m_file
+		.BufferedOpenSlotFile(m_slot, g_memoryCardSaveFileName, GolStream::c_modeNoFileSource, c_fileBufferSize, 0);
 }
 
 // FUNCTION: LEGORACERS 0x00443940

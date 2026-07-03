@@ -901,7 +901,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (eventFlags & c_flags0x384Bit1) {
+	if (eventFlags & c_reactionHit) {
 		m_driverEntity->PlayPart(c_animationPart10);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 

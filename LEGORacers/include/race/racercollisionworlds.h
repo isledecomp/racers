@@ -30,7 +30,6 @@ private:
 	enum {
 		c_racerCount = 6,
 		c_maxElapsedChunk = 0xff,
-		c_unk0x0a8Stride = 100,
 		c_activationTtl = 150,
 	};
 

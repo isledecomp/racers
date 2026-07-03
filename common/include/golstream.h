@@ -34,7 +34,7 @@ public:
 		c_modeTextAppend = 0x08,
 		c_modeExclusive = 0x10,
 		c_modeKeepBuffer = 0x20,
-		c_unk0x40 = 0x40
+		c_modeNoFileSource = 0x40
 	};
 
 	enum {

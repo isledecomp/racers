@@ -78,7 +78,7 @@ public:
 		c_avoidanceCooldownBaseMs = 5000,
 		c_avoidanceCooldownRangeMs = 1000,
 		c_flags0x384Bit0 = 1 << 0,
-		c_flags0x384Bit1 = 1 << 1,
+		c_reactionHit = 1 << 1,
 		c_wheelSkidActive = 1 << 0,
 		c_wheelSkidGrounded = 1 << 1,
 		c_wheelSkidFading = 1 << 2,

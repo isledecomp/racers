@@ -2109,7 +2109,7 @@ void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 	m_driveController.m_flags = flags0xc70;
 
 	LegoU32 flags0x384 = m_visuals.m_reactionFlags;
-	flags0x384 |= CarVisuals::c_flags0x384Bit1;
+	flags0x384 |= CarVisuals::c_reactionHit;
 	m_visuals.m_reactionFlags = flags0x384;
 
 	entity->SetModel(

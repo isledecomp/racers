@@ -22,7 +22,6 @@ public:
 		c_stateFade = 4,
 		c_stateDone = 6,
 		c_racerFlags0xaa8Bit7 = 1 << 7,
-		c_racerCarVisualsFlags0x384Bit1 = 1 << 1,
 		c_jitterIntervalMs = 0x0032,
 		c_flashDurationMs = 0x0064,
 		c_fadeDurationMs = 0x01f4,

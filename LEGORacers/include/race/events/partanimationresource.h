@@ -42,7 +42,7 @@ public:
 private:
 	enum {
 		c_flagLooping = 1 << 0,
-		c_flags0x1cBit4 = 1 << 4,
+		c_flagUseSharedDatabase = 1 << 4,
 		c_entityFlag0x200000 = 1 << 21,
 		c_entityFlags0x4e0000 = 0x4e0000,
 		c_entityFlags0x0e0000 = 0x0e0000,

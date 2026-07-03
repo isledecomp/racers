@@ -152,7 +152,7 @@ LegoS32 GolStream::OpenFileSource()
 		return result;
 	}
 
-	if (m_mode & (c_modeCreate | c_modeWrite | c_unk0x40)) {
+	if (m_mode & (c_modeCreate | c_modeWrite | c_modeNoFileSource)) {
 		return result;
 	}
 

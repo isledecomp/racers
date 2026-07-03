@@ -39,8 +39,8 @@ public:
 
 private:
 	enum {
-		c_flags0x178Bit0 = 1 << 0,
-		c_flags0x178Bit1 = 1 << 1,
+		c_flagShadowVisible = 1 << 0,
+		c_flagImpactPending = 1 << 1,
 		c_soundId = 0xbbb,
 		c_eventId0x14 = 0x14,
 		c_eventId0x15 = 0x15,

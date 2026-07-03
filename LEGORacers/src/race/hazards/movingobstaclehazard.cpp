@@ -99,7 +99,7 @@ void MovingObstacleHazard::OnActivate(void*)
 		m_loopSound->SetDistanceRangeWithMinSquared(10000.0f, maxDistance);
 	}
 
-	m_flags = c_flags0x178Bit1;
+	m_flags = c_flagImpactPending;
 	m_state = 2;
 }
 
@@ -151,23 +151,23 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	m_trigger.SetBoundsCenter(position);
 
 	LegoFloat frame = m_entity->GetPartTimeMs();
-	if ((m_flags & c_flags0x178Bit1) != 0) {
+	if ((m_flags & c_flagImpactPending) != 0) {
 		if ((frame > 150.0f && frame < 180.0f) || (frame > 0.0f && frame < 30.0f)) {
 			m_eventTable->FireEventsAt(c_eventId0x14, c_eventId0x14, &position);
-			m_flags &= ~c_flags0x178Bit1;
+			m_flags &= ~c_flagImpactPending;
 		}
 	}
 	else if ((frame > 60.0f && frame < 120.0f) || (frame > 210.0f && frame < 270.0f)) {
-		m_flags |= c_flags0x178Bit1;
+		m_flags |= c_flagImpactPending;
 	}
 
-	m_flags &= ~c_flags0x178Bit0;
+	m_flags &= ~c_flagShadowVisible;
 }
 
 // FUNCTION: LEGORACERS 0x00490330
 void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 {
-	if (m_state == 1 || (m_flags & c_flags0x178Bit0) != 0) {
+	if (m_state == 1 || (m_flags & c_flagShadowVisible) != 0) {
 		return;
 	}
 
@@ -203,13 +203,13 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 	m_shadowDecal.SetOrientation(&forward, &up);
 	m_shadowDecal.Project(m_trackCollidable);
 
-	m_flags |= c_flags0x178Bit0;
+	m_flags |= c_flagShadowVisible;
 }
 
 // FUNCTION: LEGORACERS 0x00490460
 void MovingObstacleHazard::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state != 1 && (m_flags & c_flags0x178Bit0) != 0) {
+	if (m_state != 1 && (m_flags & c_flagShadowVisible) != 0) {
 		m_shadowDecal.Draw(p_renderer);
 	}
 }

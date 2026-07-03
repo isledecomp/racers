@@ -22,7 +22,6 @@ public:
 		c_stateFlying = 3,
 		c_state0x04 = 4,
 		c_stateDone = 6,
-		c_racerCarVisualsFlags0x384Bit1 = 1 << 1,
 		c_transformNodeIndex1 = 1,
 		c_flightTimeMs = 0x157c,
 		c_soundExplode = 0x32,

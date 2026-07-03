@@ -614,7 +614,7 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 
 			racer->PlayReaction(FALSE);
 			racer->DropWhiteBrick();
-			racerCarVisuals->m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
+			racerCarVisuals->m_reactionFlags |= CarVisuals::c_reactionHit;
 
 			m_shockTimerMs = 0;
 			m_targetRacer = racer;

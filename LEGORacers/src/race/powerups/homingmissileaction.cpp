@@ -483,7 +483,7 @@ void HomingMissileAction::OnHitRacer(Racer* p_racer)
 
 			p_racer->PlayReaction(FALSE);
 			p_racer->DropWhiteBrick();
-			p_racer->m_visuals.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
+			p_racer->m_visuals.m_reactionFlags |= CarVisuals::c_reactionHit;
 
 			SoundVector position;
 			p_racer->m_visuals.m_carEntity->GetPosition(&position);

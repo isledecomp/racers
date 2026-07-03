@@ -239,7 +239,7 @@ void OilSlickAction::OnHitRacer(Racer* p_racer)
 	}
 
 	p_racer->m_physics.StartSpin(1.0f, 0.007f, 1.0f);
-	p_racer->m_visuals.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
+	p_racer->m_visuals.m_reactionFlags |= CarVisuals::c_reactionHit;
 	m_state = c_stateDone;
 	m_stateTimerMs = 0;
 

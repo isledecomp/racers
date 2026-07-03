@@ -142,7 +142,7 @@ void TimeRaceManager::Initialize(
 	}
 
 	if (p_mirror) {
-		m_flags |= c_flag0x3b4Bit5;
+		m_flags |= c_flagMirror;
 	}
 
 	m_sampleCountdownMs = 0;
@@ -578,7 +578,7 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 			p_ghostRun->m_initialPosition.m_x = parser->ReadFloat();
 			p_ghostRun->m_initialPosition.m_y = parser->ReadFloat();
 			p_ghostRun->m_initialPosition.m_z = parser->ReadFloat();
-			if (m_flags & c_flag0x3b4Bit5) {
+			if (m_flags & c_flagMirror) {
 				p_ghostRun->m_initialPosition.m_y = -p_ghostRun->m_initialPosition.m_y;
 			}
 			break;
@@ -587,7 +587,7 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 			p_ghostRun->m_initialRotation.m_y = parser->ReadFloat();
 			p_ghostRun->m_initialRotation.m_z = parser->ReadFloat();
 			p_ghostRun->m_initialRotation.m_w = parser->ReadFloat();
-			if (m_flags & c_flag0x3b4Bit5) {
+			if (m_flags & c_flagMirror) {
 				p_ghostRun->m_initialRotation.m_y = -p_ghostRun->m_initialRotation.m_y;
 				p_ghostRun->m_initialRotation.m_w = -p_ghostRun->m_initialRotation.m_w;
 			}
@@ -607,7 +607,7 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 				sample->m_rotationZ = static_cast<LegoS8>(parser->ReadInteger());
 				sample->m_rotationW = static_cast<LegoS8>(parser->ReadInteger());
 
-				if (m_flags & c_flag0x3b4Bit5) {
+				if (m_flags & c_flagMirror) {
 					sample->m_positionY = -sample->m_positionY;
 					sample->m_rotationY = -sample->m_rotationY;
 					sample->m_rotationW = -sample->m_rotationW;

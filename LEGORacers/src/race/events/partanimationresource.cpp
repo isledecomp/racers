@@ -56,7 +56,7 @@ void PartAnimationResource::Initialize(InitParams* p_params)
 	}
 
 	if (p_params->m_useSharedDatabase) {
-		m_flags |= c_flags0x1cBit4;
+		m_flags |= c_flagUseSharedDatabase;
 	}
 
 	m_animatedEntity->SetFlags(m_animatedEntity->GetFlags() | c_entityFlag0x200000);

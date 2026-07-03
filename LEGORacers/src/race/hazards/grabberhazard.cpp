@@ -176,7 +176,7 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 	}
 
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
-	RacerPhysics* field0x3e8 = &racer->m_physics;
+	RacerPhysics* physics = &racer->m_physics;
 	if ((frame <= m_grabFrameLow || frame >= m_grabFrameHigh) && !(racer->m_flags & Racer::c_flagShielded)) {
 		if (m_racer == NULL || m_racer == racer) {
 			if (m_racer == NULL) {
@@ -218,7 +218,7 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 			force.m_x = scale * force.m_x;
 			force.m_y = force.m_y * scale;
 			force.m_z = force.m_z * scale;
-			field0x3e8->StartExternalForce1(&force);
+			physics->StartExternalForce1(&force);
 		}
 
 		m_stateMs = c_restoreTimerMs;

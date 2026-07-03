@@ -248,7 +248,7 @@ void HazardManager::NotifyEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_
 void HazardManager::DispatchEventStart(LegoS32 p_eventId, void* p_context)
 {
 	HazardContext* context = static_cast<HazardContext*>(p_context);
-	undefined unk0x08[12];
+	undefined position[12];
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
@@ -260,8 +260,8 @@ void HazardManager::DispatchEventStart(LegoS32 p_eventId, void* p_context)
 			}
 		}
 
-		context->m_positionProvider->GetPosition(unk0x08);
-		m_entries[i]->OnEventStart(p_eventId, unk0x08);
+		context->m_positionProvider->GetPosition(position);
+		m_entries[i]->OnEventStart(p_eventId, position);
 	}
 }
 
@@ -269,7 +269,7 @@ void HazardManager::DispatchEventStart(LegoS32 p_eventId, void* p_context)
 void HazardManager::DispatchEventEnd(LegoS32 p_eventId, void* p_context)
 {
 	HazardContext* context = static_cast<HazardContext*>(p_context);
-	undefined unk0x08[12];
+	undefined position[12];
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
@@ -281,8 +281,8 @@ void HazardManager::DispatchEventEnd(LegoS32 p_eventId, void* p_context)
 			}
 		}
 
-		context->m_positionProvider->GetPosition(unk0x08);
-		m_entries[i]->OnEventEnd(p_eventId, unk0x08);
+		context->m_positionProvider->GetPosition(position);
+		m_entries[i]->OnEventEnd(p_eventId, position);
 	}
 }
 
@@ -290,7 +290,7 @@ void HazardManager::DispatchEventEnd(LegoS32 p_eventId, void* p_context)
 void HazardManager::DispatchEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_context)
 {
 	HazardContext* context = static_cast<HazardContext*>(p_context);
-	undefined unk0x0c[12];
+	undefined position[12];
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
@@ -312,9 +312,9 @@ void HazardManager::DispatchEventPair(LegoS32 p_startId, LegoS32 p_endId, void* 
 			}
 		}
 
-		context->m_positionProvider->GetPosition(unk0x0c);
-		m_entries[i]->OnEventStart(p_startId, unk0x0c);
-		m_entries[i]->OnEventEnd(p_endId, unk0x0c);
+		context->m_positionProvider->GetPosition(position);
+		m_entries[i]->OnEventStart(p_startId, position);
+		m_entries[i]->OnEventEnd(p_endId, position);
 	}
 }
 

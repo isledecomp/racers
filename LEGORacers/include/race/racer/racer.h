@@ -212,7 +212,8 @@ public:
 	undefined m_unk0xce1[0xce4 - 0xce1];      // 0xce1
 	LegoU32 m_lapsCompleted;                  // 0xce4
 	LegoU32 m_lapTransitionCount;             // 0xce8
-	LegoU32 m_lapTimes[0x18 / 4];             // 0xcec
+	LegoU32 m_lapTimes[5];                    // 0xcec
+	LegoU32 m_standingsPosition;              // 0xd00
 	LegoU32 m_flags;                          // 0xd04
 	LegoU32 m_controlMode;                    // 0xd08
 	LegoU32 m_currentZone;                    // 0xd0c

@@ -580,29 +580,29 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 			return;
 		}
 
-		if (!(racer->m_physics.m_flags & c_racerFlags0xaa8Bit7)) {
-			RacerPhysics* field0x3e8 = &racer->m_physics;
-			GolVec3 direction = field0x3e8->m_facingDirection;
+		if (!(racer->m_physics.m_flags & RacerPhysics::c_flagSpinOut)) {
+			RacerPhysics* physics = &racer->m_physics;
+			GolVec3 direction = physics->m_facingDirection;
 			racer->StartSpinOut();
 
-			field0x3e8->m_velocity.m_x = 0.0f;
-			field0x3e8->m_velocity.m_y = 0.0f;
-			field0x3e8->m_velocity.m_z = 0.0f;
+			physics->m_velocity.m_x = 0.0f;
+			physics->m_velocity.m_y = 0.0f;
+			physics->m_velocity.m_z = 0.0f;
 
 			GolVec3 impulse;
 			impulse.m_x = direction.m_x * g_lightningImpulseScale;
 			impulse.m_y = direction.m_y * g_lightningImpulseScale;
 			impulse.m_z = direction.m_z * g_lightningImpulseScale + g_lightningLaunchImpulse;
 
-			field0x3e8->ApplyImpulse(&impulse, &impulse);
+			physics->ApplyImpulse(&impulse, &impulse);
 
 			CarVisuals* racerCarVisuals = &racer->m_visuals;
 			ColorTransform transform;
-			transform.m_redOffset = c_colorOffset0xe1;
+			transform.m_redOffset = c_flashRedGrnOffset;
 			transform.m_redShift = 0;
-			transform.m_grnOffset = c_colorOffset0xe1;
+			transform.m_grnOffset = c_flashRedGrnOffset;
 			transform.m_grnShift = 0;
-			transform.m_bluOffset = c_colorOffset0xff;
+			transform.m_bluOffset = c_flashBluOffset;
 			transform.m_bluShift = 0;
 			transform.m_alpOffset = 0;
 			transform.m_alpShift = 0;

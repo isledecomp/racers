@@ -303,28 +303,28 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 void GhostHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
-	RacerPhysics* field0x3e8 = &racer->m_physics;
+	RacerPhysics* physics = &racer->m_physics;
 
-	if ((field0x3e8->m_flags & RacerPhysics::c_flagSpinning) || field0x3e8->m_forwardSpeed == 0.0f ||
+	if ((physics->m_flags & RacerPhysics::c_flagSpinning) || physics->m_forwardSpeed == 0.0f ||
 		(racer->m_flags & Racer::c_flagShielded)) {
 		return;
 	}
 
-	field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
+	physics->StartSpin(1.0f, 0.01f, 0.0f);
 	racer->StartSpinOut();
 
 	GolVec3 impulse;
 	impulse.m_y = 0.0f;
 	impulse.m_z = 0.0f;
 
-	field0x3e8->m_velocity.m_x = 0.0f;
-	field0x3e8->m_velocity.m_y = impulse.m_y;
-	field0x3e8->m_velocity.m_z = impulse.m_z;
+	physics->m_velocity.m_x = 0.0f;
+	physics->m_velocity.m_y = impulse.m_y;
+	physics->m_velocity.m_z = impulse.m_z;
 
 	impulse.m_y = impulse.m_x = 0.0f;
 	LegoFloat impulseZ = g_ghostImpulseVectorZ;
 	impulse.m_z = impulseZ;
-	field0x3e8->ApplyImpulse(&impulse, &impulse);
+	physics->ApplyImpulse(&impulse, &impulse);
 
 	racer->PlayReaction(FALSE);
 

@@ -14,28 +14,28 @@
 DECOMP_SIZE_ASSERT(HammerHazard, 0x18)
 
 // GLOBAL: LEGORACERS 0x004b4414
-extern const LegoFloat g_item0x2aTriggerStart0 = 22.0f;
+extern const LegoFloat g_hammerStrikeStart0 = 22.0f;
 
 // GLOBAL: LEGORACERS 0x004b4418
-extern const LegoFloat g_item0x2aTriggerEnd0 = 28.0f;
+extern const LegoFloat g_hammerStrikeEnd0 = 28.0f;
 
 // GLOBAL: LEGORACERS 0x004b441c
-extern const LegoFloat g_item0x2aTriggerStart1 = 72.0f;
+extern const LegoFloat g_hammerStrikeStart1 = 72.0f;
 
 // GLOBAL: LEGORACERS 0x004b4420
-extern const LegoFloat g_item0x2aTriggerEnd1 = 78.0f;
+extern const LegoFloat g_hammerStrikeEnd1 = 78.0f;
 
 // GLOBAL: LEGORACERS 0x004b4424
-extern const LegoFloat g_item0x2aResetStart0 = 0.0f;
+extern const LegoFloat g_hammerRaisedStart0 = 0.0f;
 
 // GLOBAL: LEGORACERS 0x004b4428
-extern const LegoFloat g_item0x2aResetEnd0 = 20.0f;
+extern const LegoFloat g_hammerRaisedEnd0 = 20.0f;
 
 // GLOBAL: LEGORACERS 0x004b442c
-extern const LegoFloat g_item0x2aResetStart1 = 40.0f;
+extern const LegoFloat g_hammerRaisedStart1 = 40.0f;
 
 // GLOBAL: LEGORACERS 0x004b4430
-extern const LegoFloat g_item0x2aResetEnd1 = 60.0f;
+extern const LegoFloat g_hammerRaisedEnd1 = 60.0f;
 
 // FUNCTION: LEGORACERS 0x0048cff0
 HammerHazard::HammerHazard()
@@ -100,15 +100,15 @@ void HammerHazard::Update(undefined4 p_elapsedMs)
 	LegoU32 active = state;
 	active &= 1;
 	if (active) {
-		if ((frame > g_item0x2aTriggerStart0 && frame < g_item0x2aTriggerEnd0) ||
-			(frame > g_item0x2aTriggerStart1 && frame < g_item0x2aTriggerEnd1)) {
+		if ((frame > g_hammerStrikeStart0 && frame < g_hammerStrikeEnd0) ||
+			(frame > g_hammerStrikeStart1 && frame < g_hammerStrikeEnd1)) {
 			m_eventTable->FireEventsAt(0x2b, 0x2b, NULL);
 			m_unk0x14 &= ~1;
 		}
 	}
 	else if (
-		(frame > g_item0x2aResetStart0 && frame < g_item0x2aResetEnd0) ||
-		(frame > g_item0x2aResetStart1 && frame < g_item0x2aResetEnd1)
+		(frame > g_hammerRaisedStart0 && frame < g_hammerRaisedEnd0) ||
+		(frame > g_hammerRaisedStart1 && frame < g_hammerRaisedEnd1)
 	) {
 		m_unk0x14 = state | 1;
 	}

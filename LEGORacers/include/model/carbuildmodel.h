@@ -314,8 +314,8 @@ public:
 
 	enum {
 		c_indexCommandModeMask = 0x3000,
-		c_indexCommandMode0x1000 = 0x1000,
-		c_indexCommandMode0x2000 = 0x2000,
+		c_indexCommandTextured = 0x1000,
+		c_indexCommandQuad = 0x2000,
 		c_buildVertexCapacity = 7500,
 		c_buildPrimitiveCapacity = 2500,
 		c_modelTriangleCapacity = 2502,

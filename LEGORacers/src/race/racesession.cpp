@@ -1889,7 +1889,7 @@ void RaceSession::UpdateRacingState()
 						m_music->Stop();
 						m_musicGroup->DestroyMusicInstance(m_music);
 
-						if (racer->m_lapTimes[5] == 1) {
+						if (racer->m_standingsPosition == 1) {
 							m_music = m_musicGroup->CreateMusicInstance(3);
 						}
 						else {
@@ -1952,7 +1952,7 @@ void RaceSession::UpdateFinishedState()
 					racer->SetStandingsPosition(m_finishedCount);
 				}
 
-				m_context->m_playerSetupSlots[i].m_finishPosition = (LegoU8) racer->m_lapTimes[5];
+				m_context->m_playerSetupSlots[i].m_finishPosition = (LegoU8) racer->m_standingsPosition;
 				i++;
 				racer++;
 			} while (i < m_context->m_racerCount);

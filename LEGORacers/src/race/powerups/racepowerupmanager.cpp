@@ -1527,144 +1527,144 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 		m_brickSpinAngle -= g_brickSpinWrap;
 	}
 
-	PowerupAction* node0x1880;
-	for (node0x1880 = m_activeActions; node0x1880 != NULL; node0x1880 = node0x1880->GetNext()) {
-		node0x1880->Update(p_elapsedMs);
+	PowerupAction* action;
+	for (action = m_activeActions; action != NULL; action = action->GetNext()) {
+		action->Update(p_elapsedMs);
 	}
 
-	PowerupExplosion* node0x270;
-	for (node0x270 = m_activeExplosions; node0x270 != NULL; node0x270 = node0x270->GetNext()) {
-		node0x270->Update(p_elapsedMs);
+	PowerupExplosion* explosion;
+	for (explosion = m_activeExplosions; explosion != NULL; explosion = explosion->GetNext()) {
+		explosion->Update(p_elapsedMs);
 	}
 
-	for (node0x270 = m_activeSpikeExplosions; node0x270 != NULL; node0x270 = node0x270->GetNext()) {
-		node0x270->Update(p_elapsedMs);
+	for (explosion = m_activeSpikeExplosions; explosion != NULL; explosion = explosion->GetNext()) {
+		explosion->Update(p_elapsedMs);
 	}
 
 	m_brickDebris.Update(p_elapsedMs);
 
-	node0x1880 = m_activeActions;
-	PowerupAction* previous0x1880 = NULL;
-	while (node0x1880 != NULL) {
-		PowerupAction* next0x1880 = node0x1880->GetNext();
-		if (node0x1880->GetState() == 6) {
-			if (previous0x1880 == NULL) {
-				m_activeActions = next0x1880;
+	action = m_activeActions;
+	PowerupAction* previousAction = NULL;
+	while (action != NULL) {
+		PowerupAction* nextAction = action->GetNext();
+		if (action->GetState() == 6) {
+			if (previousAction == NULL) {
+				m_activeActions = nextAction;
 			}
 			else {
-				previous0x1880->SetNext(next0x1880);
+				previousAction->SetNext(nextAction);
 			}
 
-			node0x1880->Deactivate();
+			action->Deactivate();
 
-			switch (node0x1880->GetBrickColor()) {
+			switch (action->GetBrickColor()) {
 			case 1:
-				switch (node0x1880->GetLevel()) {
+				switch (action->GetLevel()) {
 				case 0:
-					node0x1880->SetNext(m_freeCannonballActions);
-					m_freeCannonballActions = node0x1880;
+					action->SetNext(m_freeCannonballActions);
+					m_freeCannonballActions = action;
 					break;
 				case 1:
-					node0x1880->SetNext(m_freeGrapplingHookActions);
-					m_freeGrapplingHookActions = node0x1880;
+					action->SetNext(m_freeGrapplingHookActions);
+					m_freeGrapplingHookActions = action;
 					break;
 				case 2:
-					node0x1880->SetNext(m_freeLightningActions);
-					m_freeLightningActions = node0x1880;
+					action->SetNext(m_freeLightningActions);
+					m_freeLightningActions = action;
 					break;
 				case 3:
-					node0x1880->SetNext(m_freeHomingMissileActions);
-					m_freeHomingMissileActions = node0x1880;
+					action->SetNext(m_freeHomingMissileActions);
+					m_freeHomingMissileActions = action;
 					break;
 				}
 				break;
 			case 4:
-				switch (node0x1880->GetLevel()) {
+				switch (action->GetLevel()) {
 				case 0:
-					node0x1880->SetNext(m_freeOilSlickActions);
-					m_freeOilSlickActions = node0x1880;
+					action->SetNext(m_freeOilSlickActions);
+					m_freeOilSlickActions = action;
 					break;
 				case 1:
-					node0x1880->SetNext(m_freeDynamiteActions);
-					m_freeDynamiteActions = node0x1880;
+					action->SetNext(m_freeDynamiteActions);
+					m_freeDynamiteActions = action;
 					break;
 				case 2:
-					node0x1880->SetNext(m_freeMagnetActions);
-					m_freeMagnetActions = node0x1880;
+					action->SetNext(m_freeMagnetActions);
+					m_freeMagnetActions = action;
 					break;
 				case 3:
-					node0x1880->SetNext(m_freeCurseActions);
-					m_freeCurseActions = node0x1880;
+					action->SetNext(m_freeCurseActions);
+					m_freeCurseActions = action;
 					break;
 				}
 				break;
 			case 2:
-				node0x1880->SetNext(m_freeShieldActions);
-				m_freeShieldActions = node0x1880;
+				action->SetNext(m_freeShieldActions);
+				m_freeShieldActions = action;
 				break;
 			case 3:
-				if (node0x1880->GetLevel() > 2) {
-					if (node0x1880->GetLevel() == 3) {
-						node0x1880->SetNext(m_freeWarpActions);
-						m_freeWarpActions = node0x1880;
+				if (action->GetLevel() > 2) {
+					if (action->GetLevel() == 3) {
+						action->SetNext(m_freeWarpActions);
+						m_freeWarpActions = action;
 					}
 				}
 				else {
-					node0x1880->SetNext(m_freeTurboActions);
-					m_freeTurboActions = node0x1880;
+					action->SetNext(m_freeTurboActions);
+					m_freeTurboActions = action;
 				}
 				break;
 			}
 		}
 		else {
-			previous0x1880 = node0x1880;
+			previousAction = action;
 		}
 
-		node0x1880 = next0x1880;
+		action = nextAction;
 	}
 
-	node0x270 = m_activeExplosions;
-	PowerupExplosion* previous0x270 = NULL;
-	while (node0x270 != NULL) {
-		PowerupExplosion* next0x270 = node0x270->GetNext();
-		if (node0x270->GetState() == PowerupExplosion::c_stateIdle) {
-			if (previous0x270 == NULL) {
-				m_activeExplosions = next0x270;
+	explosion = m_activeExplosions;
+	PowerupExplosion* previousExplosion = NULL;
+	while (explosion != NULL) {
+		PowerupExplosion* nextExplosion = explosion->GetNext();
+		if (explosion->GetState() == PowerupExplosion::c_stateIdle) {
+			if (previousExplosion == NULL) {
+				m_activeExplosions = nextExplosion;
 			}
 			else {
-				previous0x270->SetNext(next0x270);
+				previousExplosion->SetNext(nextExplosion);
 			}
 
-			node0x270->SetNext(m_freeExplosions);
-			m_freeExplosions = node0x270;
+			explosion->SetNext(m_freeExplosions);
+			m_freeExplosions = explosion;
 		}
 		else {
-			previous0x270 = node0x270;
+			previousExplosion = explosion;
 		}
 
-		node0x270 = next0x270;
+		explosion = nextExplosion;
 	}
 
-	node0x270 = m_activeSpikeExplosions;
-	previous0x270 = NULL;
-	while (node0x270 != NULL) {
-		PowerupExplosion* next0x270 = node0x270->GetNext();
-		if (node0x270->GetState() == PowerupExplosion::c_stateIdle) {
-			if (previous0x270 == NULL) {
-				m_activeSpikeExplosions = next0x270;
+	explosion = m_activeSpikeExplosions;
+	previousExplosion = NULL;
+	while (explosion != NULL) {
+		PowerupExplosion* nextExplosion = explosion->GetNext();
+		if (explosion->GetState() == PowerupExplosion::c_stateIdle) {
+			if (previousExplosion == NULL) {
+				m_activeSpikeExplosions = nextExplosion;
 			}
 			else {
-				previous0x270->SetNext(next0x270);
+				previousExplosion->SetNext(nextExplosion);
 			}
 
-			node0x270->SetNext(m_freeSpikeExplosions);
-			m_freeSpikeExplosions = node0x270;
+			explosion->SetNext(m_freeSpikeExplosions);
+			m_freeSpikeExplosions = explosion;
 		}
 		else {
-			previous0x270 = node0x270;
+			previousExplosion = explosion;
 		}
 
-		node0x270 = next0x270;
+		explosion = nextExplosion;
 	}
 
 	if (m_trackDatabase != NULL) {
@@ -1700,26 +1700,26 @@ void RacePowerupManager::Draw(LegoBool32 p_warpOnly)
 		}
 	}
 
-	PowerupAction* node0x1880 = m_activeActions;
-	while (node0x1880 != NULL) {
-		if (!p_warpOnly || (node0x1880->GetBrickColor() == c_brickColorGreen && node0x1880->GetLevel() == 3)) {
-			node0x1880->Draw(m_renderer);
+	PowerupAction* action = m_activeActions;
+	while (action != NULL) {
+		if (!p_warpOnly || (action->GetBrickColor() == c_brickColorGreen && action->GetLevel() == 3)) {
+			action->Draw(m_renderer);
 		}
 
-		node0x1880 = node0x1880->GetNext();
+		action = action->GetNext();
 	}
 
 	if (!p_warpOnly) {
-		PowerupExplosion* node0x193c = m_activeExplosions;
-		while (node0x193c != NULL) {
-			node0x193c->Draw(m_renderer);
-			node0x193c = node0x193c->GetNext();
+		PowerupExplosion* explosion = m_activeExplosions;
+		while (explosion != NULL) {
+			explosion->Draw(m_renderer);
+			explosion = explosion->GetNext();
 		}
 
-		PowerupExplosion* node0x1940 = m_activeSpikeExplosions;
-		while (node0x1940 != NULL) {
-			node0x1940->Draw(m_renderer);
-			node0x1940 = node0x1940->GetNext();
+		PowerupExplosion* spikeExplosion = m_activeSpikeExplosions;
+		while (spikeExplosion != NULL) {
+			spikeExplosion->Draw(m_renderer);
+			spikeExplosion = spikeExplosion->GetNext();
 		}
 	}
 
@@ -1739,22 +1739,22 @@ void RacePowerupManager::DrawTransparent()
 		m_whiteBricks[i].DrawTransparent(m_renderer);
 	}
 
-	PowerupAction* node0x1880 = m_activeActions;
-	while (node0x1880 != NULL) {
-		node0x1880->DrawTransparent(m_renderer);
-		node0x1880 = node0x1880->GetNext();
+	PowerupAction* action = m_activeActions;
+	while (action != NULL) {
+		action->DrawTransparent(m_renderer);
+		action = action->GetNext();
 	}
 
-	PowerupExplosion* node0x193c = m_activeExplosions;
-	while (node0x193c != NULL) {
-		node0x193c->DrawTransparent(m_renderer);
-		node0x193c = node0x193c->GetNext();
+	PowerupExplosion* explosion = m_activeExplosions;
+	while (explosion != NULL) {
+		explosion->DrawTransparent(m_renderer);
+		explosion = explosion->GetNext();
 	}
 
-	PowerupExplosion* node0x1940 = m_activeSpikeExplosions;
-	while (node0x1940 != NULL) {
-		node0x1940->DrawTransparent(m_renderer);
-		node0x1940 = node0x1940->GetNext();
+	PowerupExplosion* spikeExplosion = m_activeSpikeExplosions;
+	while (spikeExplosion != NULL) {
+		spikeExplosion->DrawTransparent(m_renderer);
+		spikeExplosion = spikeExplosion->GetNext();
 	}
 }
 
@@ -1907,14 +1907,9 @@ LegoU32 RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
 	GolWorldDatabase* worldDatabase = m_worldDatabase;
 	m_activeActions = action;
 	GrapplingHookAction* activeAction = static_cast<GrapplingHookAction*>(m_activeActions);
-	LegoU32 result = activeAction->Activate(
-		worldDatabase->GetModelEntities(),
-		p_racer,
-		target,
-		setupEntry,
-		GetMaterialAnimationItems0x18(),
-		0
-	);
+	LegoU32 result =
+		activeAction
+			->Activate(worldDatabase->GetModelEntities(), p_racer, target, setupEntry, GetMaterialAnimationTracks(), 0);
 	action->m_level = p_level;
 	return result;
 }
@@ -2652,24 +2647,24 @@ void RacePowerupManager::ResetEffects()
 		m_whiteBricks[i].Respawn();
 	}
 
-	PowerupExplosion* node0x193c = m_activeExplosions;
-	while (node0x193c != NULL) {
-		node0x193c->Deactivate();
-		node0x193c = node0x193c->GetNext();
+	PowerupExplosion* explosion = m_activeExplosions;
+	while (explosion != NULL) {
+		explosion->Deactivate();
+		explosion = explosion->GetNext();
 	}
 
-	PowerupExplosion* node0x1940 = m_activeSpikeExplosions;
-	while (node0x1940 != NULL) {
-		node0x1940->Deactivate();
-		node0x1940 = node0x1940->GetNext();
+	PowerupExplosion* spikeExplosion = m_activeSpikeExplosions;
+	while (spikeExplosion != NULL) {
+		spikeExplosion->Deactivate();
+		spikeExplosion = spikeExplosion->GetNext();
 	}
 
 	m_brickDebris.ReleaseAll();
 
-	PowerupAction* node0x1880 = m_activeActions;
-	while (node0x1880 != NULL) {
-		node0x1880->SetState(6);
-		node0x1880 = node0x1880->GetNext();
+	PowerupAction* action = m_activeActions;
+	while (action != NULL) {
+		action->SetState(6);
+		action = action->GetNext();
 	}
 
 	Update(0);

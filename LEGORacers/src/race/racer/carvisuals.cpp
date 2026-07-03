@@ -839,8 +839,8 @@ void GolOrientedEntity::CopyOrientationFrom2(const GolOrientedEntity& p_other)
 // FUNCTION: LEGORACERS 0x0043ec10
 void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 {
-	DriveController* field0xc70 = &m_racer->m_driveController;
-	LegoFloat activeValue = field0xc70->m_turnRadius;
+	DriveController* controller = &m_racer->m_driveController;
+	LegoFloat activeValue = controller->m_turnRadius;
 	LegoFloat speed = m_racerPhysics->m_forwardSpeed;
 	LegoU32 activePart = m_driverEntity->GetActiveState();
 	LegoU32 eventFlags = m_reactionFlags;
@@ -916,7 +916,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (field0xc70->m_thrust < 0.0f && speed < 0.0f) {
+	if (controller->m_thrust < 0.0f && speed < 0.0f) {
 		if (activePart == c_animationPart2 || activePart == c_animationPart3) {
 			return;
 		}
@@ -1079,8 +1079,8 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 		LegoU32 i = 0;
 		LegoU8 colorByte = 0xff;
 		do {
-			LegoU32 flags0x000Bit8 = m_flags & c_flagSliding;
-			if (flags0x000Bit8) {
+			LegoU32 sliding = m_flags & c_flagSliding;
+			if (sliding) {
 				RaceDecalManager::Trail* item = *itemSlot;
 				if (item && item->GetDurationMs() == 1000) {
 					m_skidMarkManager->ReleaseTrail(item, 0);
@@ -1491,11 +1491,11 @@ void CarVisuals::RenderShadowSilhouette(GolD3DRenderDevice* p_renderer)
 	color.m_alp = 0xff;
 	g_carShadowRenderState.SetSilhouetteColor(&color);
 
-	LegoFloat unk0x0c = m_shadowWidth;
-	unk0x0c *= g_carShadowScale;
-	LegoFloat unk0x08 = m_shadowLength;
-	unk0x08 *= g_carShadowScale;
-	g_carShadowRenderState.BeginCapture(origin, unk0x08, unk0x0c, g_silhouetteClearFlag | g_silhouetteFlattenFlag);
+	LegoFloat width = m_shadowWidth;
+	width *= g_carShadowScale;
+	LegoFloat length = m_shadowLength;
+	length *= g_carShadowScale;
+	g_carShadowRenderState.BeginCapture(origin, length, width, g_silhouetteClearFlag | g_silhouetteFlattenFlag);
 	g_carShadowRenderState.RenderEntity(m_carEntity, 0);
 	g_carShadowRenderState.RenderEntity(m_bodyModelEntity, 0);
 
@@ -1533,10 +1533,10 @@ void CarVisuals::SetColorTransform(ColorTransform* p_transform)
 {
 	m_baseColorTransform = *p_transform;
 
-	LegoU32 unk0x3c4 = m_isFlashing;
+	LegoU32 wasFlashing = m_isFlashing;
 	m_hasColorTransform = 1;
 
-	if (!unk0x3c4) {
+	if (!wasFlashing) {
 		m_entityGroup.ApplyColorTransform(&m_baseColorTransform);
 	}
 }
@@ -1544,10 +1544,10 @@ void CarVisuals::SetColorTransform(ColorTransform* p_transform)
 // FUNCTION: LEGORACERS 0x004400e0
 void CarVisuals::ClearColorTransform()
 {
-	LegoU32 unk0x3c4 = m_isFlashing;
+	LegoU32 wasFlashing = m_isFlashing;
 	m_hasColorTransform = 0;
 
-	if (!unk0x3c4) {
+	if (!wasFlashing) {
 		m_entityGroup.ClearColorTransform();
 	}
 }
@@ -1563,11 +1563,11 @@ void CarVisuals::FlashColor(ColorTransform* p_transform, undefined4 p_durationMs
 // FUNCTION: LEGORACERS 0x00440130
 void CarVisuals::EndFlash()
 {
-	LegoU32 unk0x3c0 = m_hasColorTransform;
+	LegoU32 hadColorTransform = m_hasColorTransform;
 	m_isFlashing = 0;
 	m_flashTimerMs = 0;
 
-	if (unk0x3c0) {
+	if (hadColorTransform) {
 		m_entityGroup.ApplyColorTransform(&m_baseColorTransform);
 	}
 	else {

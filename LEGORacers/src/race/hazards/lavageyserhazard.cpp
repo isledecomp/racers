@@ -227,9 +227,9 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 void LavaGeyserHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
-	RacerPhysics* field0x3e8 = &racer->m_physics;
-	if (!(field0x3e8->m_flags & RacerPhysics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
-		field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
+	RacerPhysics* physics = &racer->m_physics;
+	if (!(physics->m_flags & RacerPhysics::c_flagSpinning) && physics->m_forwardSpeed != 0.0f) {
+		physics->StartSpin(1.0f, 0.01f, 0.0f);
 		racer->PlayReaction(FALSE);
 	}
 }

@@ -153,7 +153,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	LegoFloat frame = m_entity->GetPartTimeMs();
 	if ((m_flags & c_flagImpactPending) != 0) {
 		if ((frame > 150.0f && frame < 180.0f) || (frame > 0.0f && frame < 30.0f)) {
-			m_eventTable->FireEventsAt(c_eventId0x14, c_eventId0x14, &position);
+			m_eventTable->FireEventsAt(c_impactEventId, c_impactEventId, &position);
 			m_flags &= ~c_flagImpactPending;
 		}
 	}
@@ -218,12 +218,12 @@ void MovingObstacleHazard::Draw(GolD3DRenderDevice* p_renderer)
 void MovingObstacleHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
-	RacerPhysics* field0x3e8 = &racer->m_physics;
-	if (!(field0x3e8->m_flags & RacerPhysics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
-		field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
+	RacerPhysics* physics = &racer->m_physics;
+	if (!(physics->m_flags & RacerPhysics::c_flagSpinning) && physics->m_forwardSpeed != 0.0f) {
+		physics->StartSpin(1.0f, 0.01f, 0.0f);
 
 		GolVec3 position;
 		racer->m_visuals.m_carEntity->GetPosition(&position);
-		m_eventTable->FireEventsAt(c_eventId0x15, c_eventId0x15, &position);
+		m_eventTable->FireEventsAt(c_nearImpactEventId, c_nearImpactEventId, &position);
 	}
 }

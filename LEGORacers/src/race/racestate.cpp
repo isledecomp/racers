@@ -129,13 +129,13 @@ LegoU32 RaceSetup::Update(LegoU32 p_elapsedMs)
 			result = m_racerCount;
 			LegoU32 index = 0;
 			if (result > 0) {
-				LegoU32 flags0xaa8Mask = RacerPhysics::c_flagRoutePushed;
+				LegoU32 pushedMask = RacerPhysics::c_flagRoutePushed;
 				do {
 					Racer* racer = &m_racers[index];
 					if (!(racer->m_flags & c_rubberBandFlags)) {
-						LegoU32 flags0xaa8 = racer->m_physics.m_flags;
+						LegoU32 physicsFlags = racer->m_physics.m_flags;
 						racer->m_physics.m_routeBaseSpeed = 1.0f;
-						if (!(flags0xaa8Mask & flags0xaa8)) {
+						if (!(pushedMask & physicsFlags)) {
 							racer->m_physics.m_routeTargetSpeed = 1.0f;
 						}
 					}
@@ -149,28 +149,28 @@ LegoU32 RaceSetup::Update(LegoU32 p_elapsedMs)
 			result = m_racerCount;
 			racerIndex = 0;
 			if (result > 0) {
-				LegoU32 flags0xaa8Mask = RacerPhysics::c_flagRoutePushed;
+				LegoU32 pushedMask = RacerPhysics::c_flagRoutePushed;
 				do {
 					if (racerIndex) {
 						if (!(m_racers[racerIndex].m_flags & c_rubberBandFlags)) {
 							if (m_racers[racerIndex].GetRaceProgress() > bestProgress) {
 								LegoFloat adjustment = 1.0f - g_rubberBandScale;
 								adjustment += m_rubberBandBoost;
-								RacerPhysics* field0x3e8 = &m_racers[racerIndex].m_physics;
-								LegoU32 flags0xaa8 = field0x3e8->m_flags;
-								field0x3e8->m_routeBaseSpeed = adjustment;
-								if (!(flags0xaa8Mask & flags0xaa8)) {
-									field0x3e8->m_routeTargetSpeed = adjustment;
+								RacerPhysics* physics = &m_racers[racerIndex].m_physics;
+								LegoU32 physicsFlags = physics->m_flags;
+								physics->m_routeBaseSpeed = adjustment;
+								if (!(pushedMask & physicsFlags)) {
+									physics->m_routeTargetSpeed = adjustment;
 								}
 							}
 							else if (m_racers[racerIndex].GetRaceProgress() < bestProgress) {
 								LegoFloat adjustment = g_rubberBandScale + m_rubberBandBoost;
 								adjustment += 1.0f;
-								RacerPhysics* field0x3e8 = &m_racers[racerIndex].m_physics;
-								LegoU32 flags0xaa8 = field0x3e8->m_flags;
-								field0x3e8->m_routeBaseSpeed = adjustment;
-								if (!(flags0xaa8Mask & flags0xaa8)) {
-									field0x3e8->m_routeTargetSpeed = adjustment;
+								RacerPhysics* physics = &m_racers[racerIndex].m_physics;
+								LegoU32 physicsFlags = physics->m_flags;
+								physics->m_routeBaseSpeed = adjustment;
+								if (!(pushedMask & physicsFlags)) {
+									physics->m_routeTargetSpeed = adjustment;
 								}
 							}
 						}

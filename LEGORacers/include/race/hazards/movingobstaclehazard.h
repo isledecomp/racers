@@ -42,8 +42,8 @@ private:
 		c_flagShadowVisible = 1 << 0,
 		c_flagImpactPending = 1 << 1,
 		c_soundId = 0xbbb,
-		c_eventId0x14 = 0x14,
-		c_eventId0x15 = 0x15,
+		c_impactEventId = 0x14,
+		c_nearImpactEventId = 0x15,
 	};
 
 	GolWorldEntity m_trigger;                     // 0x10

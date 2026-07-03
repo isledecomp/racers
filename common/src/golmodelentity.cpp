@@ -259,9 +259,9 @@ void GolModelEntity::Draw(GolRenderDevice& p_renderer)
 			}
 		}
 		else {
-			LegoFloat value0x60 = GetTextureScrollU();
-			LegoFloat value0x62 = GetTextureScrollV();
-			p_renderer.DrawModelEntityWithUvOffset(this, value0x60, value0x62);
+			LegoFloat scrollU = GetTextureScrollU();
+			LegoFloat scrollV = GetTextureScrollV();
+			p_renderer.DrawModelEntityWithUvOffset(this, scrollU, scrollV);
 			return;
 		}
 	}

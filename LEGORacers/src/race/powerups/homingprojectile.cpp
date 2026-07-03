@@ -92,7 +92,7 @@ void HomingProjectile::UpdateTargeting(
 	Racer* noTarget = NULL;
 	Racer* target = m_targetRacer;
 	if (target == noTarget || m_retargetTimerMs > c_targetRefreshMs ||
-		(target->m_physics.m_flags & c_racerFlags0xaa8Bit7) || (target->m_flags & c_racerFlags0xd04InvalidTargetMask)) {
+		(target->m_physics.m_flags & RacerPhysics::c_flagSpinOut) || (target->m_flags & c_invalidTargetMask)) {
 		m_retargetTimerMs = 0;
 		target =
 			p_raceState
@@ -100,8 +100,8 @@ void HomingProjectile::UpdateTargeting(
 		m_targetRacer = target;
 
 		while (target != noTarget) {
-			if (target != m_ownerRacer && !(target->m_physics.m_flags & c_racerFlags0xaa8Bit7) &&
-				!(target->m_flags & c_racerFlags0xd04InvalidTargetMask)) {
+			if (target != m_ownerRacer && !(target->m_physics.m_flags & RacerPhysics::c_flagSpinOut) &&
+				!(target->m_flags & c_invalidTargetMask)) {
 				break;
 			}
 

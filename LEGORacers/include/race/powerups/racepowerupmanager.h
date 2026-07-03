@@ -180,7 +180,7 @@ public:
 	GolBillboard::ManagedMaterialTable* GetBillboardMaterialTable() { return &m_billboardMaterialTable; }
 	MabMaterialFrame* GetMaterialAnimationItems() const { return m_materialAnimation.GetFrames(); }
 	LegoU32 GetMaterialAnimationItemCount() const { return m_materialAnimation.GetFrameCount(); }
-	MabMaterialTrack* GetMaterialAnimationItems0x18() const { return m_materialAnimation.GetTracks(); }
+	MabMaterialTrack* GetMaterialAnimationTracks() const { return m_materialAnimation.GetTracks(); }
 	RaceState* GetRaceState() { return m_raceState; }
 	void SetAimTarget(ActionTarget* p_aimTarget) { m_aimTarget = p_aimTarget; }
 

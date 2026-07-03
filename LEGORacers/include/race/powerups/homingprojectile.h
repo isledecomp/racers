@@ -28,8 +28,7 @@ protected:
 	friend class HomingMissileAction;
 
 	enum {
-		c_racerFlags0xd04InvalidTargetMask = 0x11,
-		c_racerFlags0xaa8Bit7 = 1 << 7,
+		c_invalidTargetMask = Racer::c_flagShielded | Racer::c_flagGhost,
 		c_targetRefreshMs = 1000,
 	};
 

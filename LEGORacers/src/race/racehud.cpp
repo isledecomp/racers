@@ -1259,7 +1259,7 @@ void RaceHud::StartCountdown()
 // FUNCTION: LEGORACERS 0x00426370
 void RaceHud::ShowFinish()
 {
-	LegoS32 value = m_racer->m_lapTimes[5];
+	LegoS32 value = m_racer->m_standingsPosition;
 
 	m_bannerMs = -1;
 	m_finalPosition = value - 1;
@@ -1401,7 +1401,7 @@ void RaceHud::Draw()
 	if (!m_positionPulseMs) {
 		positionIndex = m_finalPosition;
 		if (positionIndex < 0) {
-			positionIndex = racer->m_lapTimes[5] - 1;
+			positionIndex = racer->m_standingsPosition - 1;
 		}
 		if (positionIndex > 8) {
 			positionIndex = 8;

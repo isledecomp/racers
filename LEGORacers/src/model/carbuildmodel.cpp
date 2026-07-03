@@ -1705,7 +1705,7 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 				LegoU32 command = *cursor++;
 				LegoS32 mode = command & c_indexCommandModeMask;
 
-				if (mode == c_indexCommandMode0x2000) {
+				if (mode == c_indexCommandQuad) {
 					m_buildPrimitiveCount = primitiveCount - 1;
 					primitive->m_vertexCount = 4;
 
@@ -1830,7 +1830,7 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 					primitive = &m_buildPrimitives[primitiveCount];
 					m_buildPrimitiveOrder[primitiveCount] = primitive;
 
-					hasTextureIndex = mode == c_indexCommandMode0x1000;
+					hasTextureIndex = mode == c_indexCommandTextured;
 					hasNormalIndex = (command >> 14) & 1;
 					LegoBool32 hasSharedNormalIndex = (command >> 15) & 1;
 					LegoU16 commandFlags = command & c_buildPrimitiveCommandMask;
@@ -2253,7 +2253,7 @@ void CarBuildModel::ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRec
 	do {
 		LegoU32 command = *indexCursor++;
 		LegoS32 mode = command & c_indexCommandModeMask;
-		if (mode == c_indexCommandMode0x2000) {
+		if (mode == c_indexCommandQuad) {
 			library->GetColor(*indexCursor++, &x, &y, &z);
 
 			if (minX > x) {
@@ -2283,7 +2283,7 @@ void CarBuildModel::ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRec
 			}
 		}
 		else {
-			hasExtraIndex = mode == c_indexCommandMode0x1000;
+			hasExtraIndex = mode == c_indexCommandTextured;
 			hasTextureIndex = (command >> 14) & 1;
 			LegoBool32 hasSharedIndex = (command >> 15) & 1;
 

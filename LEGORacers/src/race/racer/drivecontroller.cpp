@@ -183,10 +183,10 @@ void DriveController::UpdateBrakeToStop(LegoU32)
 // FUNCTION: LEGORACERS 0x0041fdb0
 void DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs)
 {
-	RacerPhysics* field0x000 = m_physics;
+	RacerPhysics* physics = m_physics;
 	m_stuckMs += p_elapsedMs;
 
-	if (field0x000->m_flags & RacerPhysics::c_flagSpinning) {
+	if (physics->m_flags & RacerPhysics::c_flagSpinning) {
 		LegoU32 flags = m_flags;
 		m_stuckMs = 0;
 		m_flags = flags & ~c_flagReversing;
@@ -201,7 +201,7 @@ void DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs)
 		}
 	}
 	else {
-		if (field0x000->m_forwardSpeed > 0.009f || -0.009f > field0x000->m_forwardSpeed) {
+		if (physics->m_forwardSpeed > 0.009f || -0.009f > physics->m_forwardSpeed) {
 			m_stuckMs = 0;
 		}
 		else if (m_stuckMs >= 1000) {
@@ -416,9 +416,9 @@ GolQuat* DriveController::StartReturnToPath(RaceRouteRecord* p_record)
 	m_previewCursor->Advance(static_cast<LegoFloat>(m_returnPreviewMs));
 
 	GolQuat* basis = &m_returnRotation;
-	RacerPhysics::RouteCursorInstance* field0x50 = m_previewCursor;
-	m_returnPosition = field0x50->m_position;
-	GolQuat* result = &field0x50->m_rotation;
+	RacerPhysics::RouteCursorInstance* previewCursor = m_previewCursor;
+	m_returnPosition = previewCursor->m_position;
+	GolQuat* result = &previewCursor->m_rotation;
 	basis->m_x = result->m_x;
 	basis->m_y = result->m_y;
 	basis->m_z = result->m_z;
@@ -508,8 +508,8 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 		m_turnRadius = -m_turnRadius;
 	}
 
-	LegoU8 flags0x014 = static_cast<LegoU8>(m_flags);
-	if (flags0x014 & c_flagReversing) {
+	LegoU8 flags = static_cast<LegoU8>(m_flags);
+	if (flags & c_flagReversing) {
 		m_thrust = g_returnPathThrust;
 		m_turnRadius = -m_turnRadius;
 		m_thrust = -g_fullThrottleThrust;

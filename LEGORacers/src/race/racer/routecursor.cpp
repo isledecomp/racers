@@ -139,13 +139,13 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 		LegoS32 targetTime;
 		LegoFloat amount;
 		LegoFloat currentTimeFloat;
-		LegoFloat endValue0x09;
-		LegoFloat endValue0x0a;
+		LegoFloat endWidthLeft;
+		LegoFloat endWidthRight;
 		LegoFloat scaledX;
 		LegoFloat scaledY;
 		LegoFloat scaledZ;
-		LegoFloat startValue0x09;
-		LegoFloat startValue0x0a;
+		LegoFloat startWidthLeft;
+		LegoFloat startWidthRight;
 
 		currentTimeFloat = m_playbackSpeed;
 		currentTimeFloat *= p_elapsedMs;
@@ -155,8 +155,8 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 		targetTime = currentTime;
 
 		if (m_startIndex < 0) {
-			startValue0x0a = 0.0f;
-			startValue0x09 = 0.0f;
+			startWidthRight = 0.0f;
+			startWidthLeft = 0.0f;
 
 			currentPosition = &m_startPosition;
 			*currentPosition = entry->m_startPosition;
@@ -173,13 +173,13 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 		}
 		else {
 			point = &entry->m_pathPoints[m_startIndex];
-			startValue0x0a = point->GetWidthRight();
-			startValue0x09 = point->GetWidthLeft();
+			startWidthRight = point->GetWidthRight();
+			startWidthLeft = point->GetWidthLeft();
 			point = &m_record->m_pathPoints[m_endIndex];
 		}
 
-		endValue0x0a = point->GetWidthRight();
-		endValue0x09 = point->GetWidthLeft();
+		endWidthRight = point->GetWidthRight();
+		endWidthLeft = point->GetWidthLeft();
 		segmentStartTime = m_segmentStartTime;
 		segmentEndTime = segmentStartTime + point->GetLength();
 
@@ -192,8 +192,8 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 					m_endIndex = pointIndex;
 					m_endPosition = m_startPosition;
 					m_endRotation = m_startRotation;
-					endValue0x0a = startValue0x0a;
-					endValue0x09 = startValue0x09;
+					endWidthRight = startWidthRight;
+					endWidthLeft = startWidthLeft;
 
 					point = &m_record->m_pathPoints[pointIndex];
 					point->GetPosition(&offset);
@@ -207,8 +207,8 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 
 					point = &m_record->m_pathPoints[m_startIndex];
 					m_pointType = point->GetType();
-					startValue0x0a = point->GetWidthRight();
-					startValue0x09 = point->GetWidthLeft();
+					startWidthRight = point->GetWidthRight();
+					startWidthLeft = point->GetWidthLeft();
 					point->GetRotation(&m_startRotation);
 
 					if (targetTime >= segmentStartTime) {
@@ -240,8 +240,8 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 				m_startPosition = *endPosition;
 				m_startRotation = m_endRotation;
 
-				startValue0x0a = endValue0x0a;
-				startValue0x09 = endValue0x09;
+				startWidthRight = endWidthRight;
+				startWidthLeft = endWidthLeft;
 				pointIndex++;
 				m_endIndex = pointIndex;
 
@@ -260,8 +260,8 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 
 				point = &wrapEntry->m_pathPoints[m_endIndex];
 				m_pointType = point->GetType();
-				endValue0x0a = point->GetWidthRight();
-				endValue0x09 = point->GetWidthLeft();
+				endWidthRight = point->GetWidthRight();
+				endWidthLeft = point->GetWidthLeft();
 
 				point->GetPosition(&offset);
 				point->GetRotation(&m_endRotation);
@@ -275,8 +275,8 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 	Interpolate:
 		amount = static_cast<LegoFloat>(targetTime - m_segmentStartTime) /
 				 static_cast<LegoFloat>(segmentEndTime - m_segmentStartTime);
-		m_widthLeft = (endValue0x09 - startValue0x09) * amount + startValue0x09;
-		m_widthRight = (endValue0x0a - startValue0x0a) * amount + startValue0x0a;
+		m_widthLeft = (endWidthLeft - startWidthLeft) * amount + startWidthLeft;
+		m_widthRight = (endWidthRight - startWidthRight) * amount + startWidthRight;
 
 		offset.m_x = m_endPosition.m_x - m_startPosition.m_x;
 		offset.m_y = m_endPosition.m_y - m_startPosition.m_y;

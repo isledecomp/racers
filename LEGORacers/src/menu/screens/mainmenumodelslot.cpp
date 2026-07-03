@@ -14,7 +14,7 @@ DECOMP_SIZE_ASSERT(MainMenuModelSlot, 0x15c)
 DECOMP_SIZE_ASSERT(MainMenuModelSlot::CreateParams, 0x1c)
 
 // GLOBAL: LEGORACERS 0x004b33c4
-LegoFloat g_fltMax0x004b33c4 = FLT_MAX;
+LegoFloat g_unlimitedModelDistance = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x0047de70
 MainMenuModelSlot::MainMenuModelSlot()
@@ -66,7 +66,7 @@ void MainMenuModelSlot::CreateDriverModel()
 	}
 
 	m_bodySceneNode->CopyFrom(m_modelBuilder->GetBodySceneNode(&m_cosmetics));
-	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, &m_bodyModelPart, g_fltMax0x004b33c4);
+	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, &m_bodyModelPart, g_unlimitedModelDistance);
 }
 
 // FUNCTION: LEGORACERS 0x0047e0a0

@@ -23,7 +23,6 @@ public:
 		c_stateSustain = 3,
 		c_stateFade = 4,
 		c_stateDone = 6,
-		c_racerFlags0xaa8Bit7 = 1 << 7,
 		c_jitterIntervalMs = 0x0032,
 		c_flashDurationMs = 0x0064,
 		c_fadeDurationMs = 0x01f4,
@@ -35,8 +34,8 @@ public:
 		c_soundThunder = 0x42,
 		c_soundZap = 0x43,
 		c_soundCrackle = 0x45,
-		c_colorOffset0xe1 = 0xe1,
-		c_colorOffset0xff = 0xff,
+		c_flashRedGrnOffset = 0xe1,
+		c_flashBluOffset = 0xff,
 		c_randomTableMask = 0x3ff,
 		c_randomOffsetRange = 0x32,
 	};

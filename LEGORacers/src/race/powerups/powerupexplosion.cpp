@@ -401,7 +401,7 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 	}
 
 	LegoU8 racerFlags = static_cast<LegoU8>(racer->m_flags);
-	RacerPhysics* field0x3e8 = &racer->m_physics;
+	RacerPhysics* physics = &racer->m_physics;
 	if (racerFlags & Racer::c_flagShielded) {
 		return;
 	}
@@ -416,14 +416,14 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 			return;
 		}
 
-		GolVec3 direction = field0x3e8->m_facingDirection;
+		GolVec3 direction = physics->m_facingDirection;
 		racer->StartSpinOut();
 
 		GolVec3 impulse;
 		impulse.m_x = 0.0f;
 		impulse.m_y = 0.0f;
 		impulse.m_z = 0.0f;
-		field0x3e8->m_velocity = impulse;
+		physics->m_velocity = impulse;
 
 		LegoFloat amount;
 		LegoS32 duration = static_cast<LegoS32>(m_flashDurationMs);
@@ -450,12 +450,12 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 		impulse.m_z = direction.m_z * scale;
 		impulse.m_z += amount * g_explosionLaunchImpulse;
 
-		field0x3e8->ApplyImpulse(&impulse, &impulse);
+		physics->ApplyImpulse(&impulse, &impulse);
 		return;
 	}
 
-	if (!(field0x3e8->m_flags & RacerPhysics::c_flagSpinning)) {
-		field0x3e8->StartSpin(2.0f, 0.007f, 0);
+	if (!(physics->m_flags & RacerPhysics::c_flagSpinning)) {
+		physics->StartSpin(2.0f, 0.007f, 0);
 	}
 }
 

@@ -718,8 +718,8 @@ void RacerPhysics::StartSpinOut()
 {
 	RacerCarBody::StartSpinOut();
 	m_routeMotion.m_jumpVelocity = g_routeSpinOutJumpVelocity;
-	LegoFloat unk0x778 = g_routeSpinOutSpeed;
-	m_routeCursor.m_playbackSpeed = unk0x778;
+	LegoFloat playbackSpeed = g_routeSpinOutSpeed;
+	m_routeCursor.m_playbackSpeed = playbackSpeed;
 }
 
 // FUNCTION: LEGORACERS 0x00429c30
@@ -1948,9 +1948,9 @@ void RacerCarBody::Reset()
 	m_slideBankTarget = 0;
 	m_slideBankAngle = 0;
 	m_visualBankAngle = 0;
-	LegoU32 unk0x6d8 = g_defaultPowerslideFactorBits;
+	LegoU32 factorBits = g_defaultPowerslideFactorBits;
 	m_spinOutMs = 0;
-	m_powerslideFactorBits = unk0x6d8;
+	m_powerslideFactorBits = factorBits;
 	SetMaxSpeed(g_defaultMaxSpeed);
 	m_gripScale = 1.0f;
 }
@@ -2295,11 +2295,11 @@ void RacerCarBody::AccumulateForces()
 
 	LegoFloat baseForce = -m_gravity;
 	baseForce *= m_massScale;
-	LegoU8 flags0x6c0 = static_cast<LegoU8>(m_flags);
+	LegoU8 flags = static_cast<LegoU8>(m_flags);
 	m_yawRate = 0.0f;
 	m_gravityForce = baseForce;
 
-	if (flags0x6c0 & c_flagSteering) {
+	if (flags & c_flagSteering) {
 		const GolVec3& right = m_physicsEntity.GetOrientation().m_rows[0];
 		steeringAmount = right.m_x * m_velocityDirection.m_x + right.m_y * m_velocityDirection.m_y +
 						 right.m_z * m_velocityDirection.m_z;

@@ -44,7 +44,7 @@ LegoBool32 MenuTextButton::CreateImage(CreateParams* p_createParams)
 	createParams.m_rect.m_top = 0;
 	createParams.m_flags = flags;
 	createParams.m_rect.m_right = 0;
-	createParams.m_unk0x38 = m_stateImages[0];
+	createParams.m_image = m_stateImages[0];
 	createParams.m_rect.m_bottom = 0;
 	createParams.m_parent = this;
 	createParams.m_color = m_stateImageColors[0];

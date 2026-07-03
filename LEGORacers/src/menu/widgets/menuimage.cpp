@@ -29,7 +29,7 @@ LegoBool32 MenuImage::Create(CreateParams* p_createParams)
 {
 	Destroy();
 
-	m_unk0x58 = p_createParams->m_unk0x38;
+	m_unk0x58 = p_createParams->m_image;
 
 	if (!p_createParams->m_rect.m_right) {
 		p_createParams->m_rect.m_right = m_unk0x58->GetWidth() + p_createParams->m_rect.m_left;

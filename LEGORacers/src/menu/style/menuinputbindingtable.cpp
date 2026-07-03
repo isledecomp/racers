@@ -260,8 +260,8 @@ void MenuInputBindingTable::ParseWidgetBase(MenuWidget::CreateParams* p_entry)
 // FUNCTION: LEGORACERS 0x00469b20
 void MenuInputBindingTable::InitIconDefaults(MenuIcon::CreateParams* p_entry)
 {
-	p_entry->m_unk0x38 = TRUE;
-	p_entry->m_unk0x74 = TRUE;
+	p_entry->m_startEnabled = TRUE;
+	p_entry->m_attachToParent = TRUE;
 	::memset(p_entry->m_unk0x52, 0xff, sizeof(p_entry->m_unk0x52));
 }
 
@@ -273,10 +273,10 @@ void MenuInputBindingTable::ParseIconField(MenuIcon::CreateParams* p_entry)
 		ParseWidgetBase(p_entry);
 		return;
 	case MidTxtParser::e_value:
-		p_entry->m_unk0x38 = m_parser->ReadInteger();
+		p_entry->m_startEnabled = m_parser->ReadInteger();
 		return;
 	case GolFileParser::e_unknown0x32:
-		p_entry->m_unk0x74 = m_parser->ReadInteger();
+		p_entry->m_attachToParent = m_parser->ReadInteger();
 		return;
 	case MidTxtParser::e_name:
 		::strncpy(p_entry->m_name, m_parser->ReadString(), 8);
@@ -351,7 +351,7 @@ void MenuInputBindingTable::ParseImageBinding(ImageBinding* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case MidTxtParser::e_image:
-			p_entry->m_unk0x38 = m_renderer->FindImageByName(m_parser->ReadString());
+			p_entry->m_image = m_renderer->FindImageByName(m_parser->ReadString());
 			break;
 		case MidTxtParser::e_colors:
 			ReadVisualState(p_entry->m_color.m_bytes);
@@ -514,8 +514,8 @@ void MenuInputBindingTable::ParseHotspotBinding(HotspotBinding* p_entry)
 // FUNCTION: LEGORACERS 0x0046a190
 void MenuInputBindingTable::ParseSelectorBinding(SelectorBinding* p_entry)
 {
-	p_entry->m_unk0x38 = TRUE;
-	p_entry->m_unk0x74 = TRUE;
+	p_entry->m_startEnabled = TRUE;
+	p_entry->m_attachToParent = TRUE;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);

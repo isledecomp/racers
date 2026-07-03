@@ -38,7 +38,7 @@ public:
 	// SIZE 0x84
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		LegoBool m_unk0x38;               // 0x38
+		LegoBool m_startEnabled;          // 0x38
 		undefined m_unk0x39[0x3c - 0x39]; // 0x39
 		undefined4 m_unk0x3c;             // 0x3c
 		undefined2 m_helpStringId;        // 0x40
@@ -52,7 +52,7 @@ public:
 			undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
 			undefined2 m_soundIds[5];         // 0x6a
 		};
-		undefined4 m_unk0x74;           // 0x74
+		undefined4 m_attachToParent;    // 0x74
 		undefined4 m_unk0x78;           // 0x78
 		undefined4 m_unk0x7c;           // 0x7c
 		MenuScreenInterface* m_unk0x80; // 0x80

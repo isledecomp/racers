@@ -214,7 +214,7 @@ LegoBool32 MenuScreen::CreateRootIcon()
 
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
-	createParams.m_unk0x38 = TRUE;
+	createParams.m_startEnabled = TRUE;
 	createParams.m_soundGroupBinding = m_soundGroupBinding;
 	createParams.m_rect.m_right = drawState->m_width;
 	createParams.m_rect.m_bottom = drawState->m_height;
@@ -369,7 +369,7 @@ void MenuScreen::ApplyWidgetDefaults(MenuWidget::CreateParams* p_createParams)
 // FUNCTION: LEGORACERS 0x0046bb10
 void MenuScreen::ApplyIconDefaults(MenuIcon::CreateParams* p_createParams)
 {
-	if (!p_createParams->m_parent && p_createParams->m_unk0x74) {
+	if (!p_createParams->m_parent && p_createParams->m_attachToParent) {
 		if (p_createParams->m_unk0x4a) {
 			MenuInputBindingTable::IconBinding* entry =
 				(MenuInputBindingTable::IconBinding*) GetMenuInputBindings()->ResolveEntryByName(
@@ -403,8 +403,8 @@ void MenuScreen::ApplySelectorDefaults(
 	ApplyIconDefaults(p_createParams->m_unk0x88);
 	ApplyWidgetDefaults(p_createParams->m_unk0x8c);
 
-	p_createParams->m_unk0x84->m_unk0x38 = p_createParams->m_unk0x38;
-	p_createParams->m_unk0x88->m_unk0x38 = p_createParams->m_unk0x38;
+	p_createParams->m_unk0x84->m_startEnabled = p_createParams->m_startEnabled;
+	p_createParams->m_unk0x88->m_startEnabled = p_createParams->m_startEnabled;
 	p_createParams->m_unk0x84->m_unk0x80 = NULL;
 	p_createParams->m_unk0x88->m_unk0x80 = NULL;
 
@@ -442,9 +442,9 @@ void MenuScreen::ApplyCompositeDefaults(
 	ApplyWidgetDefaults(p_createParams->m_unk0x90);
 	ApplyWidgetDefaults(p_createParams->m_unk0x8c);
 
-	p_createParams->m_unk0x84->m_unk0x38 = p_createParams->m_unk0x38;
+	p_createParams->m_unk0x84->m_startEnabled = p_createParams->m_startEnabled;
 	p_createParams->m_unk0x84->m_unk0x80 = NULL;
-	p_createParams->m_unk0x88->m_unk0x38 = p_createParams->m_unk0x38;
+	p_createParams->m_unk0x88->m_startEnabled = p_createParams->m_startEnabled;
 	p_createParams->m_unk0x88->m_unk0x80 = NULL;
 
 	for (LegoS32 i = 0; i < 6; i++) {
@@ -457,12 +457,12 @@ void MenuScreen::ApplyCompositeDefaults(
 		}
 	}
 
-	if (!p_createParams->m_unk0x90->m_unk0x38) {
-		p_createParams->m_unk0x90->m_unk0x38 = p_styleEntry->m_unk0x9c->m_image;
+	if (!p_createParams->m_unk0x90->m_image) {
+		p_createParams->m_unk0x90->m_image = p_styleEntry->m_unk0x9c->m_image;
 	}
 
-	if (!p_createParams->m_unk0x8c->m_unk0x38) {
-		p_createParams->m_unk0x8c->m_unk0x38 = p_styleEntry->m_unk0x98->m_image;
+	if (!p_createParams->m_unk0x8c->m_image) {
+		p_createParams->m_unk0x8c->m_image = p_styleEntry->m_unk0x98->m_image;
 	}
 }
 
@@ -515,12 +515,12 @@ LegoBool32 MenuScreen::CreateImage(MenuImage* p_source, undefined2 p_event, unde
 	MenuImage::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
 
-	if (!createParams.m_unk0x38) {
-		createParams.m_unk0x38 = styleEntry->m_image;
+	if (!createParams.m_image) {
+		createParams.m_image = styleEntry->m_image;
 	}
 
 	if (!(createParams.m_flags & 2) && styleEntry->m_hasColor) {
-		createParams.m_unk0x38 = styleEntry->m_image;
+		createParams.m_image = styleEntry->m_image;
 	}
 
 	return p_source->Create(&createParams);

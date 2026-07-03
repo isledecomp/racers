@@ -51,7 +51,7 @@ LegoBool32 MenuFrame::CreateFill(CreateParams* p_createParams)
 		createParams.m_id = 0x400;
 
 		GolImage* image = p_createParams->m_images[i];
-		createParams.m_unk0x38 = image;
+		createParams.m_image = image;
 		m_images[i] = image;
 		createParams.m_color = p_createParams->m_color;
 

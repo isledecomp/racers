@@ -14,7 +14,7 @@ public:
 	// SIZE 0x3c
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		GolImage* m_unk0x38; // 0x38
+		GolImage* m_image; // 0x38
 	};
 
 	MenuImage();

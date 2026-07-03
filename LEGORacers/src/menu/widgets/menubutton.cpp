@@ -39,7 +39,7 @@ LegoBool32 MenuButton::CreateImage(MenuImage* p_unk0x04, CreateParams* p_createP
 	createParams.m_id = m_id;
 	createParams.m_color = m_stateColors[0];
 	createParams.m_parent = this;
-	createParams.m_unk0x38 = image;
+	createParams.m_image = image;
 
 	return p_unk0x04->Create(&createParams);
 }

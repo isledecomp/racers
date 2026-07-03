@@ -65,7 +65,7 @@ void HammerHazard::Load(HazardContext* p_context, GolFileParser*)
 	name[7] = '2';
 
 	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(name);
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048d110
@@ -80,13 +80,13 @@ LegoS32 HammerHazard::Reset()
 void HammerHazard::OnActivate(void*)
 {
 	m_unk0x14 = 7;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048d150
 void HammerHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 
@@ -117,5 +117,5 @@ void HammerHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048d470 FOLDED
 void HammerHazard::OnDeactivate(void*)
 {
-	m_state = 1;
+	m_state = c_stateLoaded;
 }

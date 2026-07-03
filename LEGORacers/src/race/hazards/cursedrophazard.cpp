@@ -25,7 +25,7 @@ static const GolVec3 g_curseDropActionPositions[] = {
 // FUNCTION: LEGORACERS 0x0048b060 FOLDED
 void CurseDropHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		Hazard::Update(p_elapsedMs);
 	}
 }
@@ -54,7 +54,7 @@ void CurseDropHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_powerupManager = p_context->GetPowerupManager();
 	m_mirror = p_context->GetMirror();
 	m_triggerId = 8;
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048b3c0
@@ -74,7 +74,7 @@ void CurseDropHazard::OnActivate(void*)
 	m_powerupManager->SetAimTarget(&target);
 	m_powerupManager->UseYellowPowerup(NULL, 3);
 	m_powerupManager->SetAimTarget(NULL);
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 LegoS32 CurseDropHazard::Reset()
@@ -88,5 +88,5 @@ LegoS32 CurseDropHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048d470 FOLDED
 void CurseDropHazard::OnDeactivate(void*)
 {
-	m_state = 1;
+	m_state = c_stateLoaded;
 }

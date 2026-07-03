@@ -67,13 +67,13 @@ void OscillatorHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 
 	m_amplitude0 = p_parser->ReadFloat();
 	m_amplitude1 = p_parser->ReadFloat();
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048b220
 void OscillatorHazard::OnActivate(void*)
 {
-	m_state = 2;
+	m_state = c_stateActive;
 	m_phaseMs = 0.0f;
 }
 
@@ -108,7 +108,7 @@ void OscillatorHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048d470 FOLDED
 void OscillatorHazard::OnDeactivate(void*)
 {
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048b9b0 FOLDED

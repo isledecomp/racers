@@ -104,13 +104,13 @@ void RollingRockHazard::Reset()
 void RollingRockHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_type = 3;
+	descriptor.m_type = LegoEventQueue::Descriptor::c_typeCollision;
 	descriptor.m_flags = 1;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &m_body;
 
 	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048be50
@@ -121,13 +121,13 @@ void RollingRockHazard::OnDeactivate(void*)
 		m_collisionEvent = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // STUB: LEGORACERS 0x0048be70
 void RollingRockHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		Hazard::Update(p_elapsedMs);
 
 		GolSceneNode* node = m_entity->GetSceneNode(0);

@@ -51,7 +51,7 @@ void SphinxHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_collider =
 		nameTable->GetNameEntries() == NULL ? NULL : static_cast<ColliderRecord*>(nameTable->GetName("sphinx"));
 	m_entity = m_sharedDatabase->FindAnimatedEntity("blowup");
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048c150
@@ -108,7 +108,7 @@ void SphinxHazard::OnActivate(void*)
 
 	m_collider->m_flags |= ColliderRecord::c_flagBit16;
 	m_collider->m_flags |= ColliderRecord::c_flagBit17;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048c2a0
@@ -122,13 +122,13 @@ void SphinxHazard::OnDeactivate(void*)
 		m_entity->SetModelDistance(i, g_sphinxInactiveModelDistance);
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048c2e0
 void SphinxHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 
@@ -151,7 +151,7 @@ void SphinxHazard::Update(undefined4 p_elapsedMs)
 void SphinxHazard::ResetState()
 {
 	MabMaterialAnimation* animation = NULL;
-	if (m_state == 1 && m_entity->GetModelDistance(0) != g_sphinxInactiveModelDistance) {
+	if (m_state == c_stateLoaded && m_entity->GetModelDistance(0) != g_sphinxInactiveModelDistance) {
 		return;
 	}
 
@@ -190,5 +190,5 @@ void SphinxHazard::ResetState()
 		item1->Rewind();
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }

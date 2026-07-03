@@ -13,7 +13,7 @@ DECOMP_SIZE_ASSERT(Hazard, 0x10)
 Hazard::Hazard()
 {
 	m_eventTable = NULL;
-	m_state = 0;
+	m_state = c_stateUnloaded;
 	m_triggerId = 0;
 }
 
@@ -32,7 +32,7 @@ Hazard::~Hazard()
 LegoS32 Hazard::Reset()
 {
 	m_eventTable = NULL;
-	m_state = 0;
+	m_state = c_stateUnloaded;
 	m_triggerId = 0;
 
 	return 0;
@@ -41,7 +41,7 @@ LegoS32 Hazard::Reset()
 // FUNCTION: LEGORACERS 0x0048a460
 void Hazard::Update(undefined4)
 {
-	if (m_state == 3) {
+	if (m_state == c_stateDeactivatePending) {
 		OnDeactivate(NULL);
 	}
 }
@@ -49,7 +49,7 @@ void Hazard::Update(undefined4)
 // FUNCTION: LEGORACERS 0x0048a470
 void Hazard::Activate(void* p_context)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		OnActivate(p_context);
 	}
 }
@@ -57,7 +57,7 @@ void Hazard::Activate(void* p_context)
 // FUNCTION: LEGORACERS 0x0048a490
 void Hazard::Deactivate(void* p_context)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		OnDeactivate(p_context);
 	}
 }

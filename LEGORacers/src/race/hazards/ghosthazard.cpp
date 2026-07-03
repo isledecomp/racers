@@ -123,7 +123,7 @@ void GhostHazard::Load(HazardContext* p_context, GolFileParser*)
 	LegoFloat frameCountFloat = static_cast<LegoFloat>(frameCount);
 	m_animationFrameCount = static_cast<LegoS32>(inverseDuration * frameCountFloat);
 	m_racerSearchMs = 0;
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048ca80
@@ -165,7 +165,7 @@ void GhostHazard::OnActivate(void*)
 		);
 	}
 
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048cb60
@@ -186,7 +186,7 @@ void GhostHazard::OnDeactivate(void*)
 		m_loopSound = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048cbb0
@@ -195,7 +195,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 	LegoU32 elapsedMs = static_cast<LegoU32>(p_elapsedMs);
 	m_racerSearchMs += elapsedMs;
 
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		LegoU32 frameOffset;
 		LegoU32 frame = static_cast<LegoS32>(m_ghostEntity->GetPartTimeMs() / m_ghostEntity->GetMsPerFrame());
 		LegoFloat scale = m_ghostEntity->GetModel(0)->GetScale() * m_ghostEntity->GetScale();
@@ -343,7 +343,7 @@ void GhostHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 // FUNCTION: LEGORACERS 0x0048cf90
 void GhostHazard::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		LegoS32 alpha = 0x2a;
 		GolModelEntity* modelEntity = &m_trailModels[2];
 		LegoS32 i = sizeOfArray(m_trailModels);

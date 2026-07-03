@@ -89,12 +89,12 @@ void RacerTriggerList::Entry::Update(LegoU32 p_elapsedMs)
 void RacerTriggerList::Entry::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = NULL;
-	if (p_data->m_type == 2) {
+	if (p_data->m_type == LegoEventQueue::Descriptor::c_typeProximity) {
 		if (!m_powerupManager->IsProjectileEntity(static_cast<GolWorldEntity*>(p_data->m_data))) {
 			return;
 		}
 	}
-	else if (p_data->m_type == 4) {
+	else if (p_data->m_type == LegoEventQueue::Descriptor::c_typeRacerTrigger) {
 		racer = static_cast<Racer*>(p_data->m_data);
 		if ((m_flags & c_lapGated) && racer->m_lapsCompleted != m_lapNumber) {
 			return;

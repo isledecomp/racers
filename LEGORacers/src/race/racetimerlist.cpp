@@ -182,7 +182,7 @@ LegoEventQueue::Event* RaceTimerList::Resource::Schedule(LegoU32 p_delayMs)
 {
 	LegoEventQueue::Callback* callback = this;
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_maxFireCount = descriptor.m_type = 1;
+	descriptor.m_maxFireCount = descriptor.m_type = LegoEventQueue::Descriptor::c_typeTimer;
 	descriptor.m_flags = 0;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_intervalMs = p_delayMs;

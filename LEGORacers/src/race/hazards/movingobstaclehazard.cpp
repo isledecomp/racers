@@ -64,7 +64,7 @@ void MovingObstacleHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_shadowMaterialTable.Initialize(p_context->GetRenderer(), 1);
 	m_shadowMaterialTable.AssignEntryByName(0, "crneshd");
 	m_shadowDecal.Initialize(p_context->GetGolExport(), p_context->GetRenderer(), 0x20);
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x00490040
@@ -81,7 +81,7 @@ LegoS32 MovingObstacleHazard::Reset()
 void MovingObstacleHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_type = 4;
+	descriptor.m_type = LegoEventQueue::Descriptor::c_typeRacerTrigger;
 	descriptor.m_flags = 1;
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
@@ -100,7 +100,7 @@ void MovingObstacleHazard::OnActivate(void*)
 	}
 
 	m_flags = c_flagImpactPending;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x00490140
@@ -116,13 +116,13 @@ void MovingObstacleHazard::OnDeactivate(void*)
 		m_loopSound = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x00490190
 void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 
@@ -167,7 +167,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00490330
 void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 {
-	if (m_state == 1 || (m_flags & c_flagShadowVisible) != 0) {
+	if (m_state == c_stateLoaded || (m_flags & c_flagShadowVisible) != 0) {
 		return;
 	}
 
@@ -209,7 +209,7 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 // FUNCTION: LEGORACERS 0x00490460
 void MovingObstacleHazard::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state != 1 && (m_flags & c_flagShadowVisible) != 0) {
+	if (m_state != c_stateLoaded && (m_flags & c_flagShadowVisible) != 0) {
 		m_shadowDecal.Draw(p_renderer);
 	}
 }

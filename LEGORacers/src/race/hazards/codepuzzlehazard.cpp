@@ -75,7 +75,7 @@ void CodePuzzleHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_codeItem3->SetFramesPerMs(0.005f);
 	m_materialFrames = animation->GetFrames();
 	m_materialFrameCount = animation->GetFrameCount();
-	m_state = 1;
+	m_state = c_stateLoaded;
 	OnActivate(NULL);
 }
 
@@ -113,13 +113,13 @@ void CodePuzzleHazard::OnActivate(void*)
 	m_codeProgress = 0;
 	ResetCodeModels();
 	m_delayMs = 1;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048d470 FOLDED
 void CodePuzzleHazard::OnDeactivate(void*)
 {
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048d480

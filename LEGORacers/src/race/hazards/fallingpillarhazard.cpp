@@ -44,7 +44,7 @@ void FallingPillarHazard::Load(HazardContext* p_context, GolFileParser*)
 		nameTable->GetNameEntries() == NULL ? NULL : static_cast<ColliderRecord*>(nameTable->GetName("pilcol"));
 
 	m_entity->SetFlags(m_entity->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048b9b0 FOLDED
@@ -65,7 +65,7 @@ void FallingPillarHazard::OnActivate(void*)
 	m_entity->PlayPart(0);
 	m_entity->SetFlags(m_entity->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart);
 	m_fallen = 0;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 void FallingPillarHazard::OnDeactivate(void*)
@@ -75,7 +75,7 @@ void FallingPillarHazard::OnDeactivate(void*)
 // FUNCTION: LEGORACERS 0x0048ba20
 void FallingPillarHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		Hazard::Update(p_elapsedMs);
 
 		if (m_fallen == 0 && m_entity->GetPartTimeMs() > 50.0f) {
@@ -90,7 +90,7 @@ void FallingPillarHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048ba90
 void FallingPillarHazard::ResetState()
 {
-	m_state = 1;
+	m_state = c_stateLoaded;
 	m_fallen = 0;
 	m_collider->m_flags |= ColliderRecord::c_flagBit16;
 	m_collider->m_flags |= ColliderRecord::c_flagBit17;

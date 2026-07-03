@@ -100,7 +100,7 @@ void TriggeredAnimationHazard::Load(HazardContext* p_context, GolFileParser* p_p
 	for (i = 0; i < 3; i++) {
 		(&m_unk0x24.m_x)[i] = m_entities[0]->GetModelDistance(i);
 	}
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048ef50
@@ -128,7 +128,7 @@ void TriggeredAnimationHazard::OnActivate(void*)
 	} while (--count);
 
 	m_eventTable->FireEventsAt(9, 9, NULL);
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048efe0
@@ -152,13 +152,13 @@ void TriggeredAnimationHazard::OnDeactivate(void*)
 		}
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048f030
 void TriggeredAnimationHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		Hazard::Update(p_elapsedMs);
 
 		if (m_collider != NULL) {
@@ -175,7 +175,7 @@ void TriggeredAnimationHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048f080
 void TriggeredAnimationHazard::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 
@@ -231,5 +231,5 @@ void TriggeredAnimationHazard::ResetState()
 		entity++;
 	} while (--count);
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }

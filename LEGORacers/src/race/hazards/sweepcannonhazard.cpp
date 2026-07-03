@@ -109,7 +109,7 @@ void SweepCannonHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	if (name[0]) {
 		m_trackedEntity = p_context->GetTrackDatabase()->FindAnimatedEntity(name);
 	}
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048b700
@@ -124,13 +124,13 @@ LegoS32 SweepCannonHazard::Reset()
 void SweepCannonHazard::OnActivate(void*)
 {
 	m_cooldownMs = c_actionCooldownMs;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048b740
 void SweepCannonHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		ActionTarget target;
 		Hazard::Update(p_elapsedMs);
 
@@ -187,5 +187,5 @@ void SweepCannonHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048d470 FOLDED
 void SweepCannonHazard::OnDeactivate(void*)
 {
-	m_state = 1;
+	m_state = c_stateLoaded;
 }

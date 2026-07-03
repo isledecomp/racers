@@ -46,7 +46,7 @@ void WarpPadHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_triggerId = 0;
 	m_powerupManager = p_context->GetPowerupManager();
 	m_mirror = p_context->GetMirror();
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 #pragma code_seg(".text$warppadhazard_reset")
@@ -64,7 +64,7 @@ LegoS32 WarpPadHazard::Reset()
 void WarpPadHazard::OnActivate(void* p_racer)
 {
 	Racer* racer = static_cast<Racer*>(p_racer);
-	if (racer && m_state != 2 && !(racer->GetFlags() & c_flagGhost)) {
+	if (racer && m_state != c_stateActive && !(racer->GetFlags() & c_flagGhost)) {
 		ActionTarget target;
 		target.m_direction.m_x = g_warpPadActionDirectionX;
 		target.m_direction.m_y = g_warpPadActionDirectionY;
@@ -82,7 +82,7 @@ void WarpPadHazard::OnActivate(void* p_racer)
 		m_powerupManager->SetAimTarget(&target);
 		m_powerupManager->ActivateWarp(racer, 3);
 		m_powerupManager->SetAimTarget(NULL);
-		m_state = 2;
+		m_state = c_stateActive;
 	}
 }
 
@@ -90,7 +90,7 @@ void WarpPadHazard::OnActivate(void* p_racer)
 void WarpPadHazard::OnDeactivate(void* p_context)
 {
 	if (p_context) {
-		m_state = 1;
+		m_state = c_stateLoaded;
 	}
 }
 
@@ -98,7 +98,7 @@ void WarpPadHazard::OnDeactivate(void* p_context)
 // FUNCTION: LEGORACERS 0x0048b060 FOLDED
 void WarpPadHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		Hazard::Update(p_elapsedMs);
 	}
 }

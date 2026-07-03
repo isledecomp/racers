@@ -1817,7 +1817,7 @@ LegoU32 RacePowerupManager::FireCannonball(Racer* p_racer, LegoU32 p_level)
 		GolVec3 direction;
 		p_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 
-		if (p_racer->m_controlMode != 2) {
+		if (p_racer->m_controlMode != Racer::c_controlAi) {
 			setup.m_targetPoint = m_targetPoints->FindTargetInCone(
 				&position,
 				&direction,
@@ -1882,7 +1882,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
 			g_hookAimMaxDistanceSquared,
 			g_hookAimWideConeCosine
 		);
-		if (!target && p_racer->m_controlMode != 2) {
+		if (!target && p_racer->m_controlMode != Racer::c_controlAi) {
 			entry = m_targetPoints->FindTargetInCone(
 				&position,
 				&direction,

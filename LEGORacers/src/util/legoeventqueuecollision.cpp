@@ -33,7 +33,7 @@ LegoS32 CollisionEventQueue::AddEvent(Event* p_event)
 		return 1;
 	}
 
-	if (p_event->m_descriptor.m_type == 3) {
+	if (p_event->m_descriptor.m_type == Descriptor::c_typeCollision) {
 		if (m_bodyList) {
 			m_bodyList->m_descriptor.m_previous = p_event;
 		}
@@ -98,7 +98,7 @@ void CollisionEventQueue::DispatchContact(Event* p_event, LegoEventQueue*, Callb
 	Descriptor::RigidBody* target1 = p_data->m_target1;
 	CollisionCallbackData collisionData;
 
-	m_collisionData.m_type = 3;
+	m_collisionData.m_type = Descriptor::c_typeCollision;
 	if (target0->CalculateBoxContact(
 			target1,
 			&collisionData.m_penetrationDepth,
@@ -148,13 +148,13 @@ void CollisionEventQueue::TestBodyPairs()
 
 					if (otherModel->GetMinX() <= maxX) {
 						if (other->m_active && model->Intersects(otherModel)) {
-							m_callbackData.m_type = 2;
+							m_callbackData.m_type = Descriptor::c_typeProximity;
 							m_callbackData.m_target0 = event->m_descriptor.m_target;
 							m_callbackData.m_target1 = other->m_descriptor.m_target;
 							DispatchContact(event, this, &m_callbackData);
 
 							if (!(event->m_descriptor.m_flags & 4)) {
-								m_callbackData.m_type = 2;
+								m_callbackData.m_type = Descriptor::c_typeProximity;
 								m_callbackData.m_target0 = other->m_descriptor.m_target;
 								m_callbackData.m_target1 = event->m_descriptor.m_target;
 								DispatchContact(other, this, &m_callbackData);

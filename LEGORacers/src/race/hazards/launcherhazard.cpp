@@ -108,7 +108,7 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 		m_triggerPosition.m_y = -m_triggerPosition.m_y;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048f9f0
@@ -127,7 +127,7 @@ void LauncherHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048fa30
 void LauncherHazard::OnEventStart(LegoS32 p_eventId, void* p_context)
 {
-	if (m_triggerEventId == -1 || p_eventId != m_triggerEventId || m_state != 1) {
+	if (m_triggerEventId == -1 || p_eventId != m_triggerEventId || m_state != c_stateLoaded) {
 		return;
 	}
 
@@ -147,7 +147,7 @@ void LauncherHazard::OnEventStart(LegoS32 p_eventId, void* p_context)
 // FUNCTION: LEGORACERS 0x0048faa0
 void LauncherHazard::OnActivate(void*)
 {
-	m_state = 2;
+	m_state = c_stateActive;
 	m_trigger.SetBoundsCenter(m_launchPosition);
 
 	PowerupProjectile::Params projectileParams;
@@ -195,13 +195,13 @@ void LauncherHazard::OnDeactivate(void*)
 		m_trail = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048fbe0
 void LauncherHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 
@@ -270,7 +270,7 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048fde0
 void LauncherHazard::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state != 1 && m_projectile.GetState() == PowerupProjectile::c_stateFlying) {
+	if (m_state != c_stateLoaded && m_projectile.GetState() == PowerupProjectile::c_stateFlying) {
 		GolVec3 position;
 		m_trigger.GetBoundsCenter(&position);
 		m_billboard->SetPosition(position);

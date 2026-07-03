@@ -1300,7 +1300,7 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 
 	if ((p_target->m_flags & RaceEventRecord::Target::c_flagWheelParticle) &&
 		!(m_flags & (c_flagSliding | c_flagSpinOut)) && m_forwardSpeed > g_wheelParticleMinSpeed &&
-		m_ownerRacer->m_controlMode != 2) {
+		m_ownerRacer->m_controlMode != Racer::c_controlAi) {
 		GolName name;
 		::memcpy(name, p_target->m_wheelParticleName, sizeof(GolName));
 		m_ownerRacer->m_visuals.SetWheelParticle(p_probe - m_wheelProbes, name);

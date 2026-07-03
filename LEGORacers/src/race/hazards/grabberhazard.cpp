@@ -77,7 +77,7 @@ void GrabberHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	m_eventQueue = p_context->GetEventQueue();
 	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(entityName);
 	m_trigger.SetBoundsRadius(g_grabberTriggerRadius);
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048df00
@@ -92,7 +92,7 @@ LegoS32 GrabberHazard::Reset()
 void GrabberHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_type = 4;
+	descriptor.m_type = LegoEventQueue::Descriptor::c_typeRacerTrigger;
 	descriptor.m_flags = 1;
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
@@ -101,7 +101,7 @@ void GrabberHazard::OnActivate(void*)
 	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_grabState = 0;
 	m_grabTimerMs = 0;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048df70
@@ -113,7 +113,7 @@ void GrabberHazard::OnDeactivate(void*)
 		m_collisionEvent = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 	m_grabState = 0;
 	m_grabTimerMs = 0;
 }
@@ -121,7 +121,7 @@ void GrabberHazard::OnDeactivate(void*)
 // FUNCTION: LEGORACERS 0x0048dfa0
 void GrabberHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 

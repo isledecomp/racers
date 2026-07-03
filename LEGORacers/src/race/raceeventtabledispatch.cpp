@@ -346,7 +346,7 @@ void RaceEventTable::ForceEvents(undefined4 p_eventId)
 		}
 	}
 
-	m_hazardManager->ForceActivate(p_eventId);
+	m_hazardManager->ForceDeactivate(p_eventId);
 }
 
 // FUNCTION: LEGORACERS 0x00462580

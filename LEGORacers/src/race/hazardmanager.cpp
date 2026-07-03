@@ -211,14 +211,14 @@ void HazardManager::NotifyEventEnd(LegoS32 p_eventId, void* p_context)
 }
 
 // FUNCTION: LEGORACERS 0x0048ab70
-void HazardManager::ForceActivate(LegoS32 p_eventId)
+void HazardManager::ForceDeactivate(LegoS32 p_eventId)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
 		Hazard* item = m_entries[i];
 		if (item->m_triggerId != -1 && item->m_triggerId == p_eventId) {
-			item->m_state = 3;
+			item->m_state = Hazard::c_stateDeactivatePending;
 		}
 	}
 }

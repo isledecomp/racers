@@ -15,6 +15,13 @@ public:
 	// SIZE 0x18
 	class Descriptor {
 	public:
+		enum {
+			c_typeTimer = 1,
+			c_typeProximity = 2,
+			c_typeCollision = 3,
+			c_typeRacerTrigger = 4,
+		};
+
 		// Layout mirror of the racer physics chain (RacerRigidBody 0x04-0xd0,
 		// RacerBoxBody 0xd0-0xe4); racer bodies are the only implementers.
 		// SIZE 0xe4

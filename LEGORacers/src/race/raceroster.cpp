@@ -32,7 +32,7 @@ LegoS32 RaceRoster::AddEvent(LegoEventQueue::Event* p_event)
 		return 1;
 	}
 
-	if (p_event->m_descriptor.m_type == 4) {
+	if (p_event->m_descriptor.m_type == LegoEventQueue::Descriptor::c_typeRacerTrigger) {
 		if (m_bodyEvents) {
 			m_bodyEvents->m_descriptor.m_previous = p_event;
 		}
@@ -137,14 +137,14 @@ void RaceRoster::TestRacerCollisions()
 						otherModel = other->m_descriptor.m_worldEntity;
 
 						if (flags & 8) {
-							if (target->m_controlMode == 2) {
+							if (target->m_controlMode == Racer::c_controlAi) {
 								other = other->m_next;
 								continue;
 							}
 						}
 
 						if (flags & 0x10) {
-							if (target->m_controlMode != 2) {
+							if (target->m_controlMode != Racer::c_controlAi) {
 								other = other->m_next;
 								continue;
 							}
@@ -164,7 +164,7 @@ void RaceRoster::TestRacerCollisions()
 						}
 
 						if (model->Intersects(otherModel)) {
-							m_callbackData.m_type = 4;
+							m_callbackData.m_type = LegoEventQueue::Descriptor::c_typeRacerTrigger;
 							m_callbackData.m_worldEntity0 = otherModel;
 							m_callbackData.m_racerView1 = target;
 							other->Fire(this, &m_callbackData);

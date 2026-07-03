@@ -128,7 +128,7 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 
 		m_manager->CancelMagnetHold(p_racer);
 		m_racer = p_racer;
-		m_isDemoRacer = p_racer->m_controlMode == 2;
+		m_isDemoRacer = p_racer->m_controlMode == Racer::c_controlAi;
 		p_racer->m_flags |= Racer::c_flagWarping;
 
 		m_modelEntity.SetPrimaryModel(p_model->GetModel(0), p_model->GetModelDistance(0));

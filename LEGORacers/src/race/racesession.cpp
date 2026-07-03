@@ -1856,7 +1856,7 @@ void RaceSession::UpdateRacingState()
 				m_finishedCount++;
 				racer->SetStandingsPosition(m_finishedCount);
 
-				if (racer->m_controlMode != 2 || (m_demoMode && racerIndex == 0)) {
+				if (racer->m_controlMode != Racer::c_controlAi || (m_demoMode && racerIndex == 0)) {
 					LegoU32 playerIndex = 0;
 					Racer** playerRacer = m_raceState.m_playerRacers;
 					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
@@ -1976,7 +1976,7 @@ void RaceSession::UpdateFinishedState()
 				m_finishedCount++;
 				racer->SetStandingsPosition(m_finishedCount);
 
-				if (racer->m_controlMode != 2) {
+				if (racer->m_controlMode != Racer::c_controlAi) {
 					LegoU32 playerIndex = 0;
 					Racer** playerRacer = m_raceState.m_playerRacers;
 					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {

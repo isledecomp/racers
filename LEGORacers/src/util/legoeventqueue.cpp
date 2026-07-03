@@ -73,7 +73,7 @@ LegoEventQueue::Event* LegoEventQueue::AllocateEvent(Callback* p_callback, const
 // FUNCTION: LEGORACERS 0x0042fb90
 LegoS32 LegoEventQueue::AddEvent(Event* p_event)
 {
-	if (p_event->m_descriptor.m_type == 1) {
+	if (p_event->m_descriptor.m_type == Descriptor::c_typeTimer) {
 		p_event->m_next = m_activeList;
 		m_activeList = p_event;
 		p_event->m_descriptor.m_elapsedMs = 0;
@@ -117,7 +117,7 @@ void LegoEventQueue::PruneActiveList()
 void LegoEventQueue::Update(LegoU32 p_elapsedMs)
 {
 	Event* event = m_activeList;
-	m_callbackData.m_type = 1;
+	m_callbackData.m_type = Descriptor::c_typeTimer;
 
 	if (event) {
 		do {
@@ -205,13 +205,13 @@ void ProximityEventQueue::TestPairs()
 
 					if (otherModel->GetMinX() <= maxX) {
 						if (other->m_active && model->Intersects(otherModel)) {
-							m_callbackData.m_type = 2;
+							m_callbackData.m_type = Descriptor::c_typeProximity;
 							m_callbackData.m_worldEntity0 = model;
 							m_callbackData.m_worldEntity1 = otherModel;
 							event->Fire(this, &m_callbackData);
 
 							if (!(event->m_descriptor.m_flags & 4)) {
-								m_callbackData.m_type = 2;
+								m_callbackData.m_type = Descriptor::c_typeProximity;
 								m_callbackData.m_worldEntity0 = otherModel;
 								m_callbackData.m_worldEntity1 = model;
 								event->Fire(this, &m_callbackData);
@@ -320,7 +320,7 @@ LegoS32 ProximityEventQueue::AddEvent(Event* p_event)
 		return 1;
 	}
 
-	if (p_event->m_descriptor.m_type == 2) {
+	if (p_event->m_descriptor.m_type == Descriptor::c_typeProximity) {
 		if (m_sortedList) {
 			m_sortedList->m_descriptor.m_previous = p_event;
 		}

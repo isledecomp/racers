@@ -546,7 +546,7 @@ void RaceHud::DrawFixedMap()
 			destRect.m_right = destRect.m_left + markerWidth;
 
 			Rect sourceRect;
-			if (racer->m_controlMode == 2 && racerIndex == 1) {
+			if (racer->m_controlMode == Racer::c_controlAi && racerIndex == 1) {
 				sourceRect.m_left = 0x10;
 			}
 			else {
@@ -751,7 +751,7 @@ void RaceHud::DrawRotatingMap()
 			destRect.m_right = destRect.m_left + markerWidth;
 			destRect.m_bottom = destRect.m_top + markerHeight;
 
-			if (racer->m_controlMode == 2 && racerIndex == 1) {
+			if (racer->m_controlMode == Racer::c_controlAi && racerIndex == 1) {
 				sourceRect.m_left = 0x10;
 			}
 			else {

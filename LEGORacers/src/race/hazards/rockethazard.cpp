@@ -92,7 +92,7 @@ void RocketHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_trigger.SetBoundsCenter(position);
 	m_trigger.SetBoundsRadius(g_rocketTriggerRadius);
 	m_idle = 1;
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048e490
@@ -109,12 +109,12 @@ void RocketHazard::OnActivate(void*)
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
-	descriptor.m_type = 4;
+	descriptor.m_type = LegoEventQueue::Descriptor::c_typeRacerTrigger;
 	descriptor.m_flags = 1;
 	descriptor.m_worldEntity = &m_trigger;
 
 	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048e500
@@ -125,13 +125,13 @@ void RocketHazard::OnDeactivate(void*)
 		m_collisionEvent->m_active = 0;
 		m_collisionEvent = NULL;
 	}
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048e530
 void RocketHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		Hazard::Update(p_elapsedMs);
 
 		LegoU32 state = m_idle;

@@ -88,7 +88,7 @@ void CannonballRainHazard::Load(HazardContext* p_context, GolFileParser* p_parse
 
 	m_powerupManager = p_context->GetPowerupManager();
 	m_emitterEntity = p_context->GetTrackDatabase()->FindAnimatedEntity(entityName);
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048c650
@@ -102,14 +102,14 @@ LegoS32 CannonballRainHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048c670
 void CannonballRainHazard::OnActivate(void*)
 {
-	m_state = 2;
+	m_state = c_stateActive;
 	m_timerMs = m_intervalMs;
 }
 
 // FUNCTION: LEGORACERS 0x0048c680
 void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 
@@ -183,5 +183,5 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048d470 FOLDED
 void CannonballRainHazard::OnDeactivate(void*)
 {
-	m_state = 1;
+	m_state = c_stateLoaded;
 }

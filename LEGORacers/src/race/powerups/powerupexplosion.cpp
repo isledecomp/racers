@@ -412,7 +412,7 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 			return;
 		}
 
-		if ((racer->m_physics.m_flags & RacerPhysics::c_flagSpinOut) && racer->m_controlMode != 2) {
+		if ((racer->m_physics.m_flags & RacerPhysics::c_flagSpinOut) && racer->m_controlMode != Racer::c_controlAi) {
 			return;
 		}
 

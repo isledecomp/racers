@@ -329,7 +329,7 @@ void Racer::Reset()
 	m_lapTimes[4] = lapTime;
 	m_heldPowerupColor = 0;
 	m_flags = 0;
-	m_controlMode = 2;
+	m_controlMode = c_controlAi;
 	m_aiPowerupCheckIntervalMs = 150;
 	m_unk0xd38 = 0;
 	m_tauntCooldownMs = 0;
@@ -833,7 +833,7 @@ void Racer::UpdateTimers(LegoU32 p_elapsedMs)
 		m_aiPowerupCheckMs = 0;
 		m_aiPowerupCheckIntervalMs = 150;
 
-		if (m_controlMode == 2 && m_heldPowerupColor) {
+		if (m_controlMode == c_controlAi && m_heldPowerupColor) {
 			AiConsiderPowerup();
 		}
 	}
@@ -918,7 +918,7 @@ void Racer::UpdateTimers(LegoU32 p_elapsedMs)
 	GolVec3& velocity = m_actionSource.m_velocity;
 	velocity = m_physics.m_velocity;
 
-	if (!m_tauntCooldownMs && m_controlMode == 2) {
+	if (!m_tauntCooldownMs && m_controlMode == c_controlAi) {
 		if (m_raceState
 				->FindNearestRacerInCone(&m_actionSource, &m_actionSource.m_forward, 0.0f, 169.0f, 0.30000001f)) {
 			PlayTaunt();
@@ -1293,7 +1293,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00438500
 void Racer::StopEngineSounds()
 {
-	if (m_controlMode != 2) {
+	if (m_controlMode != c_controlAi) {
 		LegoU32 flags = m_flags;
 		flags &= ~c_flagEngineSounds;
 		m_flags = flags;
@@ -1315,7 +1315,7 @@ void Racer::StopEngineSounds()
 // STUB: LEGORACERS 0x00438560
 void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
-	if (p_data->m_type == 1) {
+	if (p_data->m_type == LegoEventQueue::Descriptor::c_typeTimer) {
 		LegoU32 flags = m_flags;
 		m_flags = flags & ~c_flagShoveActive;
 
@@ -1465,7 +1465,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 		secondRacer->m_forceFeedback->PlayLightRumble();
 	}
 
-	if (firstRacer->m_controlMode == 2 && secondRacer->m_controlMode == 2) {
+	if (firstRacer->m_controlMode == Racer::c_controlAi && secondRacer->m_controlMode == Racer::c_controlAi) {
 		if (firstRacer->m_physics.m_speedRampScale == 1.0f) {
 			firstRacer->m_speedRampTimerMs = 750;
 		}
@@ -1583,7 +1583,7 @@ void Racer::ApplyShove(GolVec3* p_impulse)
 
 	descriptor.m_flags = 0;
 	descriptor.m_hitThreshold = 0;
-	descriptor.m_type = 1;
+	descriptor.m_type = LegoEventQueue::Descriptor::c_typeTimer;
 	descriptor.m_maxFireCount = 1;
 	descriptor.m_intervalMs = 750;
 	if (m_raceState->GetRoster()->AllocateEvent(this, &descriptor) == NULL) {
@@ -1942,7 +1942,7 @@ void Racer::EnterGhostMode()
 	RacerPhysics* field0x3e8 = &m_physics;
 	field0x3e8->EndSpin();
 
-	if (m_controlMode == 2 && m_physics.m_routeMode) {
+	if (m_controlMode == c_controlAi && m_physics.m_routeMode) {
 		field0x3e8->StartRouteGhost();
 	}
 	else {
@@ -1962,7 +1962,7 @@ void Racer::LeaveGhostMode()
 	CarVisuals* field = &m_visuals;
 	field->ShowModels();
 
-	if (m_controlMode == 2 && m_physics.m_routeMode) {
+	if (m_controlMode == c_controlAi && m_physics.m_routeMode) {
 		m_physics.EndRouteGhost();
 		field->m_flags |= CarVisuals::c_flagShadowEnabled;
 		return;
@@ -1977,7 +1977,7 @@ void Racer::StartTurbo(LegoU32 p_level)
 {
 	m_flags |= c_flagTurbo;
 
-	if (m_controlMode != 2) {
+	if (m_controlMode != c_controlAi) {
 		m_visuals.StartTurboEffects();
 	}
 
@@ -2448,7 +2448,7 @@ void Racer::CycleHudGadget()
 void Racer::SwitchToAiControl()
 {
 	RaceRouteRecord* unk0xe2c = m_routeRecord;
-	m_controlMode = 2;
+	m_controlMode = c_controlAi;
 
 	if (!unk0xe2c) {
 		unk0xe2c = m_raceState->FindNearestRouteRecord(this);
@@ -2468,7 +2468,7 @@ void Racer::StartMagnetHold()
 {
 	m_flags |= c_flagMagnetHeld;
 
-	if (m_controlMode != 2) {
+	if (m_controlMode != c_controlAi) {
 		m_driveController.m_flags |= DriveController::c_flagBrakeToStop;
 		m_visuals.StartSkidEffects();
 	}

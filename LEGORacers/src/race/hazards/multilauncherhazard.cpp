@@ -107,7 +107,7 @@ void MultiLauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser
 	p_parser->ReadRightCurly();
 
 	m_triggerId = -1;
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048f520
@@ -166,13 +166,13 @@ void MultiLauncherHazard::OnDeactivate(void*)
 	}
 
 	LauncherHazard::OnDeactivate(NULL);
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048f6c0
 void MultiLauncherHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state != 1) {
+	if (m_state != c_stateLoaded) {
 		LauncherHazard::Update(p_elapsedMs);
 	}
 }

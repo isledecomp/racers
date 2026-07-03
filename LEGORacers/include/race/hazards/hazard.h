@@ -28,6 +28,13 @@ public:
 	virtual void OnEventStart(LegoS32, void*);                   // vtable+0x28
 	virtual void OnEventEnd(LegoS32, void*);                     // vtable+0x2c
 
+	enum {
+		c_stateUnloaded = 0,
+		c_stateLoaded = 1,
+		c_stateActive = 2,
+		c_stateDeactivatePending = 3,
+	};
+
 	LegoS32 Reset();
 	void Activate(void* p_context);
 	void Deactivate(void* p_context);

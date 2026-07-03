@@ -1387,7 +1387,7 @@ void CarVisuals::DrawTransparent(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x0043fd30
 void CarVisuals::StartTurboEffects()
 {
-	if (m_racer->m_controlMode != 2) {
+	if (m_racer->m_controlMode != Racer::c_controlAi) {
 		StartDust();
 		StartCarSmoke();
 
@@ -1410,7 +1410,7 @@ void CarVisuals::StartSlideSkid()
 {
 	m_flags |= c_flagSliding;
 
-	if (m_racer->m_controlMode != 2) {
+	if (m_racer->m_controlMode != Racer::c_controlAi) {
 		StartSkidEffects();
 	}
 }

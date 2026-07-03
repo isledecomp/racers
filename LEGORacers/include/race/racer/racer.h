@@ -142,6 +142,12 @@ private:
 
 public:
 	enum {
+		c_controlNone = 0,
+		c_controlPlayer = 1,
+		c_controlAi = 2,
+	};
+
+	enum {
 		c_flagShielded = 1 << 0,
 		c_flagPreStart = 1 << 1,
 		c_flagHalted = 1 << 3,

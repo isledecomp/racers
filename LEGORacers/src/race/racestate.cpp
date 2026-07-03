@@ -553,7 +553,7 @@ void RaceState::CreateRacer(
 	racer->m_driveController.m_previewCursor = &m_sharedRouteCursor;
 
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_type = 3;
+	descriptor.m_type = LegoEventQueue::Descriptor::c_typeCollision;
 	descriptor.m_flags = 5;
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
@@ -721,7 +721,7 @@ void RaceState::UpdateRacers(LegoU32 p_elapsedMs)
 			racer->m_driveController.UpdateBrakeToStop(p_elapsedMs);
 		}
 		else {
-			if (racer->m_controlMode != 2) {
+			if (racer->m_controlMode != Racer::c_controlAi) {
 				racer->m_driveController.Update(p_elapsedMs);
 			}
 			else if (racer->m_driveController.m_flags & DriveController::c_flagReturnToPath) {

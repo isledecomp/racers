@@ -51,7 +51,7 @@ void SnowfallHazard::Load(HazardContext* p_context, GolFileParser*)
 
 	m_triggerId = -1;
 	m_particleAnimation = p_context->GetParticleAnimation();
-	m_state = 1;
+	m_state = c_stateLoaded;
 	OnActivate(NULL);
 }
 
@@ -67,7 +67,7 @@ LegoS32 SnowfallHazard::Reset()
 void SnowfallHazard::OnActivate(void*)
 {
 	m_snowEnabled = 1;
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048ead0
@@ -78,13 +78,13 @@ void SnowfallHazard::OnDeactivate(void*)
 		m_snowParticle = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048eb00
 void SnowfallHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 
@@ -168,6 +168,6 @@ void SnowfallHazard::ResetState()
 		m_snowParticle = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 	OnActivate(NULL);
 }

@@ -82,7 +82,7 @@ void LavaGeyserHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_unk0x58 = p_context->GetMirror();
 	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("mmlavbl");
 	m_trigger.SetBoundsRadius(m_entity->GetModel(0)->GetRadius());
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048d960
@@ -106,7 +106,7 @@ void LavaGeyserHazard::OnActivate(void*)
 	descriptor.m_worldEntity = &m_trigger;
 
 	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048d9d0
@@ -122,13 +122,13 @@ void LavaGeyserHazard::OnDeactivate(void*)
 		m_loopSound = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048da10
 void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 

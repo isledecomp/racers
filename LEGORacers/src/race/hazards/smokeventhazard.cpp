@@ -52,7 +52,7 @@ void SmokeVentHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_particleAnimation = p_context->GetParticleAnimation();
 	m_mirror = p_context->GetMirror();
 	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("dp_def");
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048e780
@@ -68,7 +68,7 @@ LegoS32 SmokeVentHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048e7b0
 void SmokeVentHazard::OnActivate(void*)
 {
-	m_state = 2;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0048e7c0
@@ -79,13 +79,13 @@ void SmokeVentHazard::OnDeactivate(void*)
 		m_smokeParticle = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateLoaded;
 }
 
 // FUNCTION: LEGORACERS 0x0048e7f0
 void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 {
-	if (m_state == 1) {
+	if (m_state == c_stateLoaded) {
 		return;
 	}
 

@@ -451,7 +451,7 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 	GolVec3 targetPosition;
 	GolMatrix34 basis;
 
-	m_physics->m_carEntity->VTable0x04(&targetPosition);
+	m_physics->m_carEntity->GetPosition(&targetPosition);
 	delta.m_x = m_returnPosition.m_x - targetPosition.m_x;
 	delta.m_y = m_returnPosition.m_y - targetPosition.m_y;
 	delta.m_z = m_returnPosition.m_z - targetPosition.m_z;

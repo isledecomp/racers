@@ -221,7 +221,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
-			m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
+			m_ownerRacer->m_physics.m_carEntity->GetPosition(&position);
 
 			up.m_x = 0.0f;
 			up.m_y = 0.0f;
@@ -233,7 +233,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			forward.m_x = targetPosition.m_x - position.m_x;
 			forward.m_y = targetPosition.m_y - position.m_y;
 			forward.m_z = targetPosition.m_z - position.m_z;
-			m_hookEntity->VTable0x40(forward, up);
+			m_hookEntity->SetDirectionUp(forward, up);
 		}
 
 		break;
@@ -246,10 +246,10 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		}
 		else {
 			CarVisuals* racerField = &m_ownerRacer->m_visuals;
-			racerField->m_carEntity->VTable0x04(&position);
+			racerField->m_carEntity->GetPosition(&position);
 
 			Racer* targetRacer = m_projectile.GetHitRacer();
-			targetRacer->m_visuals.m_carEntity->VTable0x04(&targetPosition);
+			targetRacer->m_visuals.m_carEntity->GetPosition(&targetPosition);
 
 			if (targetRacer->m_flags & c_racerFlags0xd04Bit0) {
 				ReleaseHook(&targetPosition);
@@ -298,7 +298,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 				m_owner->GetMaterialAnimationItems(),
 				m_owner->GetMaterialAnimationItemCount()
 			);
-			m_billboard->VTable0x10(p_elapsedMs);
+			m_billboard->Update(p_elapsedMs);
 		}
 
 		if (projectileState == PowerupProjectile::c_stateExpired) {
@@ -316,12 +316,12 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
+		m_ownerRacer->m_physics.m_carEntity->GetPosition(&position);
 		position.m_z += 4.0f;
 
 		velocity = m_ownerRacer->m_physics.m_velocity;
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetBasis());
+			m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticleRef->m_particle->GetBasis());
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_smokeParticleRef->m_particle->SetPosition(&position);
@@ -360,7 +360,7 @@ void GrapplingHookAction::AdvanceState()
 
 	if (m_state != c_stateArmed) {
 		if (m_state > c_stateArmed && m_state <= c_statePulling) {
-			m_hookEntity->VTable0x04(&targetPosition);
+			m_hookEntity->GetPosition(&targetPosition);
 			ReleaseHook(&targetPosition);
 		}
 		else {
@@ -382,7 +382,7 @@ void GrapplingHookAction::AdvanceState()
 	m_state = c_stateFlying;
 	m_stateTimerMs = durationMs;
 
-	racerField->m_carEntity->VTable0x04(&position);
+	racerField->m_carEntity->GetPosition(&position);
 
 	m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 
@@ -425,18 +425,18 @@ void GrapplingHookAction::AdvanceState()
 
 	m_smokeParticleRef = m_owner->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticleRef != NULL) {
-		m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
+		m_ownerRacer->m_physics.m_carEntity->GetPosition(&position);
 		position.m_z += 4.0f;
 
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetBasis());
+			m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticleRef->m_particle->GetBasis());
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_smokeParticleRef->m_particle->SetPosition(&position);
 		}
 	}
 
-	racerField->m_carEntity->VTable0x04(&position);
+	racerField->m_carEntity->GetPosition(&position);
 	m_soundSource
 		->PlaySpatialSoundById(c_soundFire, &position, g_hookSoundMinDistance, g_hookSoundMaxDistance, 1.0f, 1.0f);
 }
@@ -450,7 +450,7 @@ void GrapplingHookAction::OnHitRacer(Racer* p_racer)
 			p_racer->AbsorbShieldHit();
 
 			SoundVector position;
-			m_hookEntity->VTable0x04(&position);
+			m_hookEntity->GetPosition(&position);
 			ReleaseHook(&position);
 		}
 		else {
@@ -462,7 +462,7 @@ void GrapplingHookAction::OnHitRacer(Racer* p_racer)
 			p_racer->DropWhiteBrick();
 
 			SoundVector position;
-			p_racer->m_visuals.m_carEntity->VTable0x04(&position);
+			p_racer->m_visuals.m_carEntity->GetPosition(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundHitRacer,
 				&position,
@@ -514,7 +514,7 @@ void GrapplingHookAction::ReleaseHook(SoundVector* p_position)
 	m_billboardAnimation.FUN_10025da0(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
 	m_billboardAnimation
 		.FUN_004104c0(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
-	m_billboard->VTable0x08(*p_position);
+	m_billboard->SetPosition(*p_position);
 	m_projectile.Release(p_position);
 	m_projectile.CancelCollisionEvent();
 }

@@ -158,13 +158,13 @@ void CurseAction::Activate(
 		GolVec3 direction = p_target->m_direction;
 
 		GolWorldEntity* target = &m_worldEntity;
-		target->VTable0x08(position);
+		target->SetPosition(position);
 		m_worldEntity.FUN_10026fa0(10.0f);
-		m_auraEntity->VTable0x08(position);
-		m_innerAuraEntity->VTable0x08(position);
+		m_auraEntity->SetPosition(position);
+		m_innerAuraEntity->SetPosition(position);
 
 		position.m_z += 13.0f;
-		m_curseEntity->VTable0x08(position);
+		m_curseEntity->SetPosition(position);
 
 		direction.m_x = -direction.m_x;
 		direction.m_y = -direction.m_y;
@@ -179,7 +179,7 @@ void CurseAction::Activate(
 		forward.m_x = -direction.m_y;
 		forward.m_y = direction.m_x;
 		forward.m_z = 0.0f;
-		m_curseEntity->VTable0x40(forward, up);
+		m_curseEntity->SetDirectionUp(forward, up);
 
 		m_auraEntity->CopyOrientationFrom(*m_curseEntity);
 		m_innerAuraEntity->CopyOrientationFrom(*m_curseEntity);
@@ -232,9 +232,9 @@ void CurseAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	PowerupActionBase::Update(p_elapsedMs);
-	m_curseEntity->VTable0x10(p_elapsedMs);
-	m_auraEntity->VTable0x10(p_elapsedMs);
-	m_innerAuraEntity->VTable0x10(p_elapsedMs);
+	m_curseEntity->Update(p_elapsedMs);
+	m_auraEntity->Update(p_elapsedMs);
+	m_innerAuraEntity->Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00452a40
@@ -264,8 +264,8 @@ void CurseAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		m_innerAuraEntity->SetUnk0x58ThenInvalidateRadius(m_auraEntity->GetUnk0x58());
 	}
 
-	m_auraEntity->VTable0x1c(*p_renderer);
-	m_innerAuraEntity->VTable0x1c(*p_renderer);
+	m_auraEntity->Draw(*p_renderer);
+	m_innerAuraEntity->Draw(*p_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x00452ae0
@@ -301,28 +301,28 @@ void CurseAction::AdvanceState()
 			direction.m_z = 0.0f;
 		}
 
-		m_worldEntity.VTable0x08(position);
+		m_worldEntity.SetPosition(position);
 		m_worldEntity.FUN_10026fa0(g_curseTriggerRadius);
-		m_auraEntity->VTable0x08(position);
-		m_innerAuraEntity->VTable0x08(position);
+		m_auraEntity->SetPosition(position);
+		m_innerAuraEntity->SetPosition(position);
 
 		GolVec3 up = record.m_normal;
 		position.m_x += up.m_x * 13.0f;
 		position.m_y += up.m_y * 13.0f;
 		position.m_z += up.m_z * 13.0f;
-		m_curseEntity->VTable0x08(position);
+		m_curseEntity->SetPosition(position);
 
 		GolVec3 cross;
 		cross.m_x = up.m_y * direction.m_z - up.m_z * direction.m_y;
 		cross.m_y = up.m_z * direction.m_x - direction.m_z * up.m_x;
 		cross.m_z = direction.m_y * up.m_x - up.m_y * direction.m_x;
-		m_curseEntity->VTable0x40(cross, up);
+		m_curseEntity->SetDirectionUp(cross, up);
 
 		m_auraEntity->CopyOrientationFrom(*m_curseEntity);
 		m_innerAuraEntity->CopyOrientationFrom(*m_curseEntity);
 	}
 	else {
-		m_worldEntity.VTable0x04(&position);
+		m_worldEntity.GetPosition(&position);
 		position.m_z += 13.0f;
 	}
 

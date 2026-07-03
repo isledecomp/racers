@@ -79,7 +79,7 @@ void PickupBrick::Initialize(
 	m_soundSource = p_soundResource;
 	m_blendModel = p_model1;
 	m_model = p_model0;
-	m_worldEntity.VTable0x08(*p_position);
+	m_worldEntity.SetPosition(*p_position);
 	m_state = c_stateWait;
 	m_stateTimerMs = 3000;
 }
@@ -164,10 +164,10 @@ void PickupBrick::Draw(GolD3DRenderDevice* p_renderer)
 	if (m_state != c_stateInactive &&
 		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {
 		GolVec3 position;
-		m_worldEntity.VTable0x04(&position);
-		m_model->VTable0x08(position);
+		m_worldEntity.GetPosition(&position);
+		m_model->SetPosition(position);
 		m_model->SetUnk0x58ThenInvalidateRadius(m_scale);
-		m_model->VTable0x1c(*p_renderer);
+		m_model->Draw(*p_renderer);
 	}
 }
 
@@ -177,9 +177,9 @@ void PickupBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	if (m_state != c_stateInactive &&
 		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {
 		GolVec3 position;
-		m_worldEntity.VTable0x04(&position);
-		m_blendModel->VTable0x08(position);
+		m_worldEntity.GetPosition(&position);
+		m_blendModel->SetPosition(position);
 		m_blendModel->SetUnk0x58ThenInvalidateRadius(m_scale);
-		m_blendModel->VTable0x1c(*p_renderer);
+		m_blendModel->Draw(*p_renderer);
 	}
 }

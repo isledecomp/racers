@@ -103,11 +103,11 @@ void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 			GolVec3 transformedPosition;
 			GolVec3 transformedUp;
 			GolVec3 transformedRight;
-			m_modelEntity->VTable0x2c(position, &transformedPosition);
-			m_modelEntity->VTable0x34(up, &transformedUp);
-			m_modelEntity->VTable0x34(right, &transformedRight);
-			m_boundedEntity->VTable0x08(transformedPosition);
-			m_boundedEntity->VTable0x40(transformedUp, transformedRight);
+			m_modelEntity->LocalToWorld(position, &transformedPosition);
+			m_modelEntity->RotateToWorld(up, &transformedUp);
+			m_modelEntity->RotateToWorld(right, &transformedRight);
+			m_boundedEntity->SetPosition(transformedPosition);
+			m_boundedEntity->SetDirectionUp(transformedUp, transformedRight);
 		}
 	}
 }

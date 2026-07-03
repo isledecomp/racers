@@ -23,7 +23,7 @@ Racer* RaceState::FindRacerInCone(
 		CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
-		racerField->m_carEntity->VTable0x04(&position);
+		racerField->m_carEntity->GetPosition(&position);
 
 		LegoFloat deltaX = position.m_x - origin->m_x;
 		LegoFloat deltaY = position.m_y - origin->m_y;
@@ -73,7 +73,7 @@ Racer* RaceState::FindNextRacerInCone(
 		}
 
 		GolVec3 position;
-		racer->m_visuals.m_carEntity->VTable0x04(&position);
+		racer->m_visuals.m_carEntity->GetPosition(&position);
 
 		LegoFloat deltaX = position.m_x - p_position->m_x;
 		LegoFloat deltaY = position.m_y - p_position->m_y;
@@ -116,7 +116,7 @@ Racer* RaceState::FindFarthestRacerInCone(
 		CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
-		racerField->m_carEntity->VTable0x04(&position);
+		racerField->m_carEntity->GetPosition(&position);
 
 		LegoFloat distanceSquared = (position.m_x - p_position->m_x) * (position.m_x - p_position->m_x) +
 									(position.m_y - p_position->m_y) * (position.m_y - p_position->m_y) +
@@ -159,7 +159,7 @@ Racer* RaceState::FindNearestRacerInCone(
 		CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
-		racerField->m_carEntity->VTable0x04(&position);
+		racerField->m_carEntity->GetPosition(&position);
 
 		LegoFloat distanceSquared = (position.m_x - p_position->m_x) * (position.m_x - p_position->m_x) +
 									(position.m_y - p_position->m_y) * (position.m_y - p_position->m_y) +
@@ -199,7 +199,7 @@ Racer* RaceState::FindNearestRacerInRange(
 		Racer* racer = &m_roster.m_racers[i];
 
 		GolVec3 position;
-		racer->m_visuals.m_carEntity->VTable0x04(&position);
+		racer->m_visuals.m_carEntity->GetPosition(&position);
 
 		LegoFloat deltaX = position.m_x - p_position->m_x;
 		LegoFloat deltaY = position.m_y - p_position->m_y;
@@ -387,7 +387,7 @@ RaceRouteRecord* RaceState::FindNearestRouteRecord(Racer* p_racer)
 	RaceRouteRecord* result = NULL;
 
 	GolVec3 racerPosition;
-	p_racer->m_visuals.m_carEntity->VTable0x04(&racerPosition);
+	p_racer->m_visuals.m_carEntity->GetPosition(&racerPosition);
 
 	RaceRouteRecord* entry = m_roster.m_routeRecords;
 	for (LegoS32 i = 6; i; i--) {

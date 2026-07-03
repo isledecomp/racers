@@ -238,8 +238,8 @@ void RaceDecalManager::Trail::Update(LegoU32 p_elapsedMs)
 			BakeSegment();
 
 			GolVec3 position;
-			m_decal.GetEntity().VTable0x04(&position);
-			m_slots[m_slotIndex].m_entry.m_entity.VTable0x08(position);
+			m_decal.GetEntity().GetPosition(&position);
+			m_slots[m_slotIndex].m_entry.m_entity.SetPosition(position);
 
 			LegoU32 index = m_slotIndex;
 			LegoU32 zero = 0;

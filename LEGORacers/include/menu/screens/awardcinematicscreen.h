@@ -35,8 +35,8 @@ public:
 		SceneEntityGroup();
 		~SceneEntityGroup() override;
 
-		void VTable0x08(const GolVec3& p_center) override;                         // vtable+0x08
-		void VTable0x40(const GolVec3& p_direction, const GolVec3& p_up) override; // vtable+0x40
+		void SetPosition(const GolVec3& p_center) override;                            // vtable+0x08
+		void SetDirectionUp(const GolVec3& p_direction, const GolVec3& p_up) override; // vtable+0x40
 		LegoBool32 Create(CreateParams* p_createParams);
 		LegoBool32 Destroy();
 		GolAnimatedEntity* GetPrimaryChassisEntity() const { return static_cast<GolAnimatedEntity*>(m_entities[1]); }

@@ -65,7 +65,7 @@ void MainMenuScreen::CreateDriverScene()
 	vector0.m_z = 1.0f;
 
 	m_driverEntity = m_modelSlot.GetDriverEntity();
-	m_driverEntity->VTable0x40(vector1, vector0);
+	m_driverEntity->SetDirectionUp(vector1, vector0);
 }
 
 // FUNCTION: LEGORACERS 0x00480f20

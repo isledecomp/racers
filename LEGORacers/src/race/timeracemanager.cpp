@@ -187,18 +187,18 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 	m_elapsedTotalMs += p_elapsedMs;
 
 	if (flags & c_flagBestRunValid) {
-		m_bestGhostCarModel.VTable0x10(p_elapsedMs);
-		m_bestGhostMarker.VTable0x10(p_elapsedMs);
-		m_bestGhostDriver.VTable0x10(p_elapsedMs);
+		m_bestGhostCarModel.Update(p_elapsedMs);
+		m_bestGhostMarker.Update(p_elapsedMs);
+		m_bestGhostDriver.Update(p_elapsedMs);
 		if (m_bestGhostSecondary.HasModel()) {
-			m_bestGhostSecondary.VTable0x10(p_elapsedMs);
+			m_bestGhostSecondary.Update(p_elapsedMs);
 		}
 	}
 
 	if (m_flags & c_flagRecordRunValid) {
-		m_recordGhostMarker->VTable0x10(p_elapsedMs);
-		m_recordGhostCarModel->VTable0x10(p_elapsedMs);
-		m_recordGhostDriver->VTable0x10(p_elapsedMs);
+		m_recordGhostMarker->Update(p_elapsedMs);
+		m_recordGhostCarModel->Update(p_elapsedMs);
+		m_recordGhostDriver->Update(p_elapsedMs);
 	}
 
 	if (p_elapsedMs >= m_sampleCountdownMs) {
@@ -206,7 +206,7 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 		if (m_scratchRun->m_sampleCount < GhostRunData::c_sampleCapacity) {
 			CarVisuals* racerField = &m_racer->m_visuals;
 			GolVec3 position;
-			racerField->m_carEntity->VTable0x04(&position);
+			racerField->m_carEntity->GetPosition(&position);
 
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionX =
 				static_cast<LegoS16>(32.0f * position.m_x);
@@ -301,18 +301,18 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			GolVec3* position = &ghostRun->m_initialPosition;
 			GolQuat* rotation = &ghostRun->m_initialRotation;
 
-			animatedEntity->VTable0x08(*position);
+			animatedEntity->SetPosition(*position);
 			animatedEntity->SetOrientationFromQuaternion(*rotation);
-			modelEntity->VTable0x08(*position);
+			modelEntity->SetPosition(*position);
 			modelEntity->SetOrientationFromQuaternion(*rotation);
 			if (optionalEntity) {
-				optionalEntity->VTable0x08(*position);
+				optionalEntity->SetPosition(*position);
 				optionalEntity->SetOrientationFromQuaternion(*rotation);
 			}
 
 			GolVec3 attachedPosition;
-			animatedEntity->VTable0x2c(*attachedOffset, &attachedPosition);
-			attachedEntity->VTable0x08(attachedPosition);
+			animatedEntity->LocalToWorld(*attachedOffset, &attachedPosition);
+			attachedEntity->SetPosition(attachedPosition);
 			attachedEntity->SetOrientationFromQuaternion(*rotation);
 		}
 		else {
@@ -368,18 +368,18 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			speed *= g_ghostAnimationRateScale;
 			animatedEntity->SetMsPerFrame(speed);
 
-			animatedEntity->VTable0x08(position);
+			animatedEntity->SetPosition(position);
 			animatedEntity->SetOrientationFromQuaternion(interpolatedRotation);
-			modelEntity->VTable0x08(position);
+			modelEntity->SetPosition(position);
 			modelEntity->SetOrientationFromQuaternion(interpolatedRotation);
 			if (optionalEntity) {
-				optionalEntity->VTable0x08(position);
+				optionalEntity->SetPosition(position);
 				optionalEntity->SetOrientationFromQuaternion(interpolatedRotation);
 			}
 
 			GolVec3 attachedPosition;
-			animatedEntity->VTable0x2c(*attachedOffset, &attachedPosition);
-			attachedEntity->VTable0x08(attachedPosition);
+			animatedEntity->LocalToWorld(*attachedOffset, &attachedPosition);
+			attachedEntity->SetPosition(attachedPosition);
 			attachedEntity->SetOrientationFromQuaternion(interpolatedRotation);
 		}
 

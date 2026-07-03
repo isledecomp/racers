@@ -63,7 +63,7 @@ void TriggerList::Entry::Update(LegoU32)
 
 		GolVec3 position;
 		GolWorldEntity* entity = &m_body;
-		entity->VTable0x04(&position);
+		entity->GetPosition(&position);
 
 		if (m_eventId != -1) {
 			m_eventTable->EndEventsAt(m_eventId, &position);
@@ -82,7 +82,7 @@ void TriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData*)
 
 		GolVec3 position;
 		GolWorldEntity* entity = &m_body;
-		entity->VTable0x04(&position);
+		entity->GetPosition(&position);
 
 		if (m_eventId != -1) {
 			m_eventTable->StartEventsAt(m_eventId, &position);

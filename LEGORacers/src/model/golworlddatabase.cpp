@@ -41,11 +41,11 @@ void GolWorldDatabase::Update(LegoS32 p_elapsedMs)
 	}
 
 	for (i = 0; i < m_modelEntityCount; i++) {
-		m_modelEntities[i].VTable0x10(p_elapsedMs);
+		m_modelEntities[i].Update(p_elapsedMs);
 	}
 
 	for (i = 0; i < m_animatedEntityCount; i++) {
-		m_animatedEntities[i].VTable0x10(p_elapsedMs);
+		m_animatedEntities[i].Update(p_elapsedMs);
 	}
 
 	for (i = 0; i < m_unk0x7c; i++) {
@@ -83,7 +83,7 @@ void GolWorldDatabase::ResetEntities()
 		GolVec3 center;
 		entity->FUN_100286d0(&center);
 		center.m_y = -center.m_y;
-		entity->VTable0x08(center);
+		entity->SetPosition(center);
 	}
 
 	for (i = 0; i < m_unk0x1c; i++) {

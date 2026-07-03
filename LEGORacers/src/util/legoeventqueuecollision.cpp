@@ -138,16 +138,16 @@ void CollisionEventQueue::TestBodyPairs()
 					otherModel = other->m_descriptor.m_target->VTable0x08();
 
 					if (model->GetRadius() < 0.0f) {
-						model->VTable0x00();
+						model->UpdateBounds();
 					}
 
 					maxX = model->GetMaxX();
 					if (otherModel->GetRadius() < 0.0f) {
-						otherModel->VTable0x00();
+						otherModel->UpdateBounds();
 					}
 
 					if (otherModel->GetMinX() <= maxX) {
-						if (other->m_active && model->VTable0x18(otherModel)) {
+						if (other->m_active && model->Intersects(otherModel)) {
 							m_callbackData.m_type = 2;
 							m_callbackData.m_target0 = event->m_descriptor.m_target;
 							m_callbackData.m_target1 = other->m_descriptor.m_target;
@@ -185,7 +185,7 @@ void CollisionEventQueue::SortBodyList()
 
 	GolWorldEntity* model = previous->m_descriptor.m_target->VTable0x08();
 	if (model->GetRadius() < 0.0f) {
-		model->VTable0x00();
+		model->UpdateBounds();
 	}
 
 	LegoFloat previousMinX = model->GetMinX();
@@ -200,7 +200,7 @@ void CollisionEventQueue::SortBodyList()
 		GolWorldEntity* eventModel = event->m_descriptor.m_target->VTable0x08();
 
 		if (eventModel->GetRadius() < 0.0f) {
-			eventModel->VTable0x00();
+			eventModel->UpdateBounds();
 		}
 
 		if (eventModel->GetMinX() < previousMinX) {
@@ -215,12 +215,12 @@ void CollisionEventQueue::SortBodyList()
 					GolWorldEntity* insertModel = insertAfter->m_descriptor.m_target->VTable0x08();
 
 					if (eventModel->GetRadius() < 0.0f) {
-						eventModel->VTable0x00();
+						eventModel->UpdateBounds();
 					}
 
 					eventMinX = eventModel->GetMinX();
 					if (insertModel->GetRadius() < 0.0f) {
-						insertModel->VTable0x00();
+						insertModel->UpdateBounds();
 					}
 
 					if (insertModel->GetMinX() <= eventMinX) {
@@ -246,7 +246,7 @@ void CollisionEventQueue::SortBodyList()
 			previous = event;
 
 			if (eventModel->GetRadius() < 0.0f) {
-				eventModel->VTable0x00();
+				eventModel->UpdateBounds();
 			}
 
 			previousMinX = eventModel->GetMinX();

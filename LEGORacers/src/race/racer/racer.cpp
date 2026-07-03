@@ -913,7 +913,7 @@ void Racer::UpdateTimers(LegoU32 p_elapsedMs)
 	}
 
 	m_flags &= ~c_flagSpeedRamping;
-	m_visuals.m_carEntity->VTable0x04(&m_actionSource);
+	m_visuals.m_carEntity->GetPosition(&m_actionSource);
 	m_visuals.m_carEntity->GetOrientationRow0(&m_actionSource.m_forward);
 	GolVec3& velocity = m_actionSource.m_velocity;
 	velocity = m_physics.m_velocity;
@@ -946,7 +946,7 @@ void Racer::UpdateTimers(LegoU32 p_elapsedMs)
 
 		if (!m_scrapeSoundCooldownMs) {
 			SoundVector position;
-			m_visuals.m_carEntity->VTable0x04(&position);
+			m_visuals.m_carEntity->GetPosition(&position);
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoS32 randomValue = g_randomTable[g_randomTableIndex];
@@ -1035,7 +1035,7 @@ void Racer::UpdateSpatialSounds()
 				}
 
 				GolVec3 position;
-				m_visuals.m_carEntity->VTable0x04(&position);
+				m_visuals.m_carEntity->GetPosition(&position);
 				resource->SetPosition(position);
 				resource->SetVelocity(m_physics.m_velocity);
 			}
@@ -1052,7 +1052,7 @@ void Racer::UpdateSpatialSounds()
 
 	if (m_curseSound) {
 		GolVec3 position;
-		m_visuals.m_curseEntity.VTable0x04(&position);
+		m_visuals.m_curseEntity.GetPosition(&position);
 		m_curseSound->SetPosition(position);
 	}
 }
@@ -1065,7 +1065,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 	}
 
 	SoundVector position;
-	m_visuals.m_carEntity->VTable0x04(&position);
+	m_visuals.m_carEntity->GetPosition(&position);
 
 	GolVec3 velocity = m_physics.m_velocity;
 	LegoFloat frequencyScale;
@@ -1635,7 +1635,7 @@ void Racer::AiConsiderPowerup()
 				return;
 			case 1: {
 				GolVec3 position;
-				m_visuals.m_carEntity->VTable0x04(&position);
+				m_visuals.m_carEntity->GetPosition(&position);
 
 				GolVec3 direction;
 				m_visuals.m_carEntity->GetOrientationRow0(&direction);
@@ -1743,7 +1743,7 @@ void Racer::PlayReaction(LegoBool32 p_positive)
 {
 	if (m_reactionCooldownMs <= 0) {
 		SoundVector position;
-		m_visuals.m_carEntity->VTable0x04(&position);
+		m_visuals.m_carEntity->GetPosition(&position);
 
 		LegoU32 randomIndex;
 		if (p_positive) {
@@ -1811,7 +1811,7 @@ void Racer::OnRaceStart()
 void Racer::StartEngine()
 {
 	SoundVector position;
-	m_visuals.m_carEntity->VTable0x04(&position);
+	m_visuals.m_carEntity->GetPosition(&position);
 
 	m_soundSource
 		->PlaySpatialSoundById(0x3e, &position, g_shieldSoundMinDistance, g_shieldSoundMaxDistance, 1.0f, 1.0f);
@@ -1872,7 +1872,7 @@ DroppableBrick* Racer::DropWhiteBrick()
 			m_whiteBricks[index] = NULL;
 
 			GolVec3 position;
-			m_visuals.m_carEntity->VTable0x04(&position);
+			m_visuals.m_carEntity->GetPosition(&position);
 			m_whiteBrickCount--;
 			result->DropAt(position);
 			return result;
@@ -2044,7 +2044,7 @@ void Racer::StartDrift(LegoBool32 p_left)
 					m_visuals.StartSkidEffects();
 				}
 
-				m_visuals.m_carEntity->VTable0x04(&position);
+				m_visuals.m_carEntity->GetPosition(&position);
 				m_soundSource->PlaySpatialSoundById(
 					0x39,
 					&position,
@@ -2072,7 +2072,7 @@ void Racer::EndDrift()
 		LegoU8 testFlag = RacerPhysics::c_flagSliding;
 		if (!(testFlag & flags0xaa8)) {
 			if (m_driveController.m_flags & DriveController::c_flagSlideBoost) {
-				m_visuals.m_carEntity->VTable0x04(&position);
+				m_visuals.m_carEntity->GetPosition(&position);
 				m_soundSource->PlaySpatialSoundById(
 					0x41,
 					&position,
@@ -2144,7 +2144,7 @@ void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 		);
 
 		GolVec3 position;
-		p_curseEntity->VTable0x04(&position);
+		p_curseEntity->GetPosition(&position);
 		m_curseSound->SetPosition(position);
 	}
 
@@ -2250,7 +2250,7 @@ void Racer::ComputeStandingsDeltas(StandingsDeltaEntry* p_entries)
 void Racer::PlayTaunt()
 {
 	SoundVector position;
-	m_visuals.m_carEntity->VTable0x04(&position);
+	m_visuals.m_carEntity->GetPosition(&position);
 
 	m_soundSource->PlaySpatialSoundById(
 		m_tauntSoundId,
@@ -2354,7 +2354,7 @@ void Racer::UpdateLookTarget(LegoU32)
 	if (m_flags & c_flagHasLookTarget) {
 		GolVec3 direction = m_physics.m_facingDirection;
 		GolVec3 position;
-		m_visuals.m_carEntity->VTable0x04(&position);
+		m_visuals.m_carEntity->GetPosition(&position);
 
 		GolVec3 delta;
 		delta.m_x = m_lookTargetPosition.m_x - position.m_x;
@@ -2534,7 +2534,7 @@ void Racer::AbsorbShieldHit()
 {
 	LegoU32 soundId = 1;
 	SoundVector position;
-	m_visuals.m_carEntity->VTable0x04(&position);
+	m_visuals.m_carEntity->GetPosition(&position);
 
 	LegoU32 randomIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 	g_randomTableIndex = randomIndex;

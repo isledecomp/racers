@@ -77,7 +77,7 @@ LegoBool32 MainMenuModelSlot::Create(CreateParams* p_createParams)
 
 	if (MenuSceneElement::Create(p_createParams)) {
 		CreateDriverModel();
-		m_driverEntity.VTable0x08(p_createParams->m_position);
+		m_driverEntity.SetPosition(p_createParams->m_position);
 	}
 
 	return m_created;
@@ -144,8 +144,8 @@ void MainMenuModelSlot::SetCosmetics(DriverCosmetics* p_cosmetics)
 LegoBool32 MainMenuModelSlot::Draw()
 {
 	GolVec3 position;
-	m_driverEntity.VTable0x04(&position);
-	m_driverEntity.VTable0x08(position);
+	m_driverEntity.GetPosition(&position);
+	m_driverEntity.SetPosition(position);
 	m_renderer->VTable0x94(&m_driverEntity);
 
 	return TRUE;
@@ -154,6 +154,6 @@ LegoBool32 MainMenuModelSlot::Draw()
 // FUNCTION: LEGORACERS 0x0047e290
 LegoBool32 MainMenuModelSlot::Update(undefined4 p_unk0x04)
 {
-	m_driverEntity.VTable0x10(p_unk0x04);
+	m_driverEntity.Update(p_unk0x04);
 	return TRUE;
 }

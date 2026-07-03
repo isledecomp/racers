@@ -2604,13 +2604,13 @@ void CarBuildModel::RemoveLastPiece()
 void CarBuildModel::DrawOverlay(GolD3DRenderDevice* p_renderer, LegoFloat p_unk0x08)
 {
 	GolVec3 position;
-	m_modelEntity.VTable0x04(&position);
+	m_modelEntity.GetPosition(&position);
 	position.m_z += p_unk0x08;
-	m_overlayEntity.VTable0x08(position);
+	m_overlayEntity.SetPosition(position);
 
 	GolMatrix3 matrix;
-	m_modelEntity.VTable0x44(&matrix);
-	m_overlayEntity.VTable0x3c(matrix);
+	m_modelEntity.CopyOrientation(&matrix);
+	m_overlayEntity.SetOrientationMatrix(matrix);
 
 	if (m_overlayVisible) {
 		p_renderer->VTable0x94(&m_overlayEntity);

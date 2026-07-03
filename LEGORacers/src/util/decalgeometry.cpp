@@ -87,7 +87,7 @@ void DecalGeometry::Initialize(GolExport* p_golExport, GolRenderDevice* p_render
 	m_position.m_x = 0.0f;
 	m_position.m_y = 0.0f;
 	m_position.m_z = g_decalGeometryDefaultLift;
-	m_entity.VTable0x08(m_position);
+	m_entity.SetPosition(m_position);
 	m_flags = c_initialized;
 }
 

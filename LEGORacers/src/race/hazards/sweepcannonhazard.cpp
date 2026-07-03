@@ -169,7 +169,7 @@ void SweepCannonHazard::Update(undefined4 p_elapsedMs)
 		GolMath::NormalizeVector3(m_source.m_forward, &m_source.m_forward);
 
 		if (m_trackedEntity) {
-			m_trackedEntity->VTable0x04(&m_source);
+			m_trackedEntity->GetPosition(&m_source);
 			m_source.m_z -= g_sweepCannonTrackedEntityZOffset;
 		}
 

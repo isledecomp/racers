@@ -28,12 +28,12 @@ public:
 
 	GolAnimatedEntity();
 
-	void VTable0x10(LegoS32 p_elapsed) override;                                    // vtable+0x10
-	void VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result) override; // vtable+0x14
-	void VTable0x4c(LegoU32 p_index) override;                                      // vtable+0x4c
-	void VTable0x54() override;                                                     // vtable+0x54
-	GolSceneNode* VTable0x58(LegoU32 p_arg1) override;                              // vtable+0x58
-	void VTable0x5c(LegoU32 p_arg1) override;                                       // vtable+0x5c
+	void Update(LegoS32 p_elapsed) override;                                               // vtable+0x10
+	void ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result) override; // vtable+0x14
+	void VTable0x4c(LegoU32 p_index) override;                                             // vtable+0x4c
+	void VTable0x54() override;                                                            // vtable+0x54
+	GolSceneNode* VTable0x58(LegoU32 p_arg1) override;                                     // vtable+0x58
+	void VTable0x5c(LegoU32 p_arg1) override;                                              // vtable+0x5c
 
 	void SetModel(GolModelBase* p_model, GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);
 	void SetNode(GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);

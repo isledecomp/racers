@@ -64,10 +64,10 @@ void RaceCameraController::UpdateListener()
 	GolVec3 velocity = m_racer->m_physics.m_velocity;
 	GolVec3 right;
 	GolVec3 forward;
-	m_racer->m_visuals.m_carEntity->VTable0x48(&right, &forward);
+	m_racer->m_visuals.m_carEntity->GetAxes(&right, &forward);
 
 	GolVec3 position;
-	m_racer->m_visuals.m_carEntity->VTable0x04(&position);
+	m_racer->m_visuals.m_carEntity->GetPosition(&position);
 
 	{
 		SoundNode* soundNode = m_listenerNode;
@@ -301,7 +301,7 @@ void RaceCameraController::SetRacer(Racer* p_unk0x04)
 {
 	if (m_racer != p_unk0x04) {
 		m_racer = p_unk0x04;
-		m_racer->m_visuals.m_carEntity->VTable0x04(&m_lastRacerPosition);
+		m_racer->m_visuals.m_carEntity->GetPosition(&m_lastRacerPosition);
 		LegoU32 flags = m_racer->m_driveController.m_flags;
 		m_followDistanceScale = 1.0f;
 		m_turboActive = flags & 1;
@@ -459,7 +459,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 
 	switch (m_mode) {
 	case 0: {
-		m_racer->m_visuals.m_carEntity->VTable0x04(&m_lastRacerPosition);
+		m_racer->m_visuals.m_carEntity->GetPosition(&m_lastRacerPosition);
 
 		if (m_transitionMs == 0.0f) {
 			GolMath::FUN_1002f5a0(m_previousTransform.m_orientation, &m_previousRotation);
@@ -496,7 +496,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 		Racer* racer = m_racer;
 		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
 		GolVec3 targetPosition;
-		entity->VTable0x04(&targetPosition);
+		entity->GetPosition(&targetPosition);
 
 		GolVec3 desiredDirection = entity->GetOrientation().m_rows[0];
 		if (desiredDirection.m_x == 0.0f && desiredDirection.m_y == 0.0f) {
@@ -710,7 +710,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 	case 2: {
 		Racer* racer = m_racer;
 		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
-		entity->VTable0x04(&m_lastRacerPosition);
+		entity->GetPosition(&m_lastRacerPosition);
 
 		GolVec3 right = entity->GetOrientation().m_rows[0];
 		GolVec3 up = entity->GetOrientation().m_rows[2];
@@ -719,7 +719,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 		up.m_z = -up.m_z;
 		BuildOrientation(&right, &up, &m_rawTransform.m_orientation);
 
-		entity->VTable0x04(&m_rawTransform.m_position);
+		entity->GetPosition(&m_rawTransform.m_position);
 		if (m_alternate) {
 			m_rawTransform.m_position.m_z += 6.0f;
 		}

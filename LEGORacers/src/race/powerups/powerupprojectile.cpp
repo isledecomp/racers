@@ -88,17 +88,17 @@ void PowerupProjectile::LaunchAtRacer(
 	m_targetRacer = targetRacer;
 	m_ownerRacer = p_racer;
 	if (p_fromRacerPosition) {
-		p_racer->m_visuals.m_carEntity->VTable0x04(&m_startPosition);
+		p_racer->m_visuals.m_carEntity->GetPosition(&m_startPosition);
 		m_startPosition.m_z += m_launchHeight;
-		m_worldEntity->VTable0x08(m_startPosition);
+		m_worldEntity->SetPosition(m_startPosition);
 	}
 	else {
-		m_worldEntity->VTable0x04(&m_startPosition);
+		m_worldEntity->GetPosition(&m_startPosition);
 	}
 
 	GolVec3* startPosition = &m_startPosition;
 	GolVec3* target = &m_targetPosition;
-	targetRacer->m_visuals.m_carEntity->VTable0x04(target);
+	targetRacer->m_visuals.m_carEntity->GetPosition(target);
 	target->m_z += 5.0f;
 
 	GolVec3 scaledVelocity;
@@ -187,12 +187,12 @@ void PowerupProjectile::LaunchAtPoint(
 	m_targetRacer = NULL;
 	m_ownerRacer = p_racer;
 	if (p_fromRacerPosition) {
-		p_racer->m_visuals.m_carEntity->VTable0x04(&m_startPosition);
+		p_racer->m_visuals.m_carEntity->GetPosition(&m_startPosition);
 		m_startPosition.m_z += m_launchHeight;
-		m_worldEntity->VTable0x08(m_startPosition);
+		m_worldEntity->SetPosition(m_startPosition);
 	}
 	else {
-		m_worldEntity->VTable0x04(&m_startPosition);
+		m_worldEntity->GetPosition(&m_startPosition);
 	}
 
 	GolVec3* startPosition = &m_startPosition;
@@ -255,7 +255,7 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 	m_targetPosition.m_z = p_params->m_targetOffset.m_z + p_position->m_z;
 	m_ownerRacer = NULL;
 	m_targetRacer = NULL;
-	m_worldEntity->VTable0x04(&m_startPosition);
+	m_worldEntity->GetPosition(&m_startPosition);
 
 	GolVec3 delta;
 	delta.m_x = m_targetPosition.m_x - m_startPosition.m_x;
@@ -295,7 +295,7 @@ void PowerupProjectile::Deflect(Racer* p_racer)
 	m_state = c_stateFlying;
 	m_targetRacer = m_ownerRacer;
 	if (m_targetRacer) {
-		m_targetRacer->m_visuals.m_carEntity->VTable0x04(&m_targetPosition);
+		m_targetRacer->m_visuals.m_carEntity->GetPosition(&m_targetPosition);
 		m_targetPosition.m_z += 5.0f;
 		velocity = m_targetRacer->m_physics.m_velocity;
 	}
@@ -304,7 +304,7 @@ void PowerupProjectile::Deflect(Racer* p_racer)
 	}
 
 	m_ownerRacer = p_racer;
-	m_worldEntity->VTable0x04(&m_startPosition);
+	m_worldEntity->GetPosition(&m_startPosition);
 	m_hitRacer = NULL;
 
 	GolVec3 delta;
@@ -393,7 +393,7 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 	p_elapsedMs = m_ageMs;
 	if (p_elapsedMs >= m_lifetimeMs) {
 		m_state = c_stateExpired;
-		m_worldEntity->VTable0x04(&m_hitPosition);
+		m_worldEntity->GetPosition(&m_hitPosition);
 		return c_stateExpired;
 	}
 
@@ -404,19 +404,19 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 		elapsed * m_velocityX;
 	vectors[0].m_y = vectors[1].m_y + m_startPosition.m_y;
 	vectors[0].m_z = (vectors[1].m_z + m_startPosition.m_z) + m_gravity * 0.5f * elapsed * elapsed;
-	m_worldEntity->VTable0x04(&vectors[1]);
+	m_worldEntity->GetPosition(&vectors[1]);
 
 	GolBoundingVolume::HitTriangle record;
 	if (m_collisionWorld->IntersectSegmentAndFireEvents(&vectors[1], &vectors[0], &record, &m_hitPosition)) {
 		m_hitNormal.m_x = record.m_normal.m_x;
 		m_hitNormal.m_y = record.m_normal.m_y;
 		m_hitNormal.m_z = record.m_normal.m_z;
-		m_worldEntity->VTable0x08(m_hitPosition);
+		m_worldEntity->SetPosition(m_hitPosition);
 		m_state = c_stateHitWorld;
 		return c_stateHitWorld;
 	}
 
-	m_worldEntity->VTable0x08(vectors[0]);
+	m_worldEntity->SetPosition(vectors[0]);
 	return c_stateFlying;
 }
 
@@ -428,7 +428,7 @@ void PowerupProjectile::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		m_state = c_stateHitRacer;
 		Racer* racer = static_cast<Racer*>(p_data->m_data);
 		m_hitRacer = racer;
-		racer->m_visuals.m_carEntity->VTable0x04(&m_hitPosition);
+		racer->m_visuals.m_carEntity->GetPosition(&m_hitPosition);
 	}
 }
 

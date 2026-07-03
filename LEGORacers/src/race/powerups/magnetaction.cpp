@@ -230,7 +230,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		up.m_x = 0.0f;
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
-		m_magnetEntity->VTable0x40(m_direction, up);
+		m_magnetEntity->SetDirectionUp(m_direction, up);
 	}
 	else {
 		GolAnimatedEntity* racerEntity;
@@ -242,10 +242,10 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		}
 
 		GolVec3 racerPosition;
-		racerEntity->VTable0x04(&racerPosition);
+		racerEntity->GetPosition(&racerPosition);
 
 		GolVec3 modelPosition;
-		m_magnetEntity->VTable0x04(&modelPosition);
+		m_magnetEntity->GetPosition(&modelPosition);
 
 		GolVec3 direction;
 		direction.m_x = modelPosition.m_x - racerPosition.m_x;
@@ -324,9 +324,9 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 
 	m_ringEntity->CopyOrientationFrom(*m_magnetEntity);
 	m_insideEntity->CopyOrientationFrom(*m_magnetEntity);
-	m_magnetEntity->VTable0x10(p_elapsedMs);
-	m_ringEntity->VTable0x10(p_elapsedMs);
-	m_insideEntity->VTable0x10(p_elapsedMs);
+	m_magnetEntity->Update(p_elapsedMs);
+	m_ringEntity->Update(p_elapsedMs);
+	m_insideEntity->Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00455ed0
@@ -350,8 +350,8 @@ void MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
-	m_insideEntity->VTable0x1c(*p_renderer);
-	m_ringEntity->VTable0x1c(*p_renderer);
+	m_insideEntity->Draw(*p_renderer);
+	m_ringEntity->Draw(*p_renderer);
 
 	if (m_state == 4) {
 		p_renderer->ClearAlphaOverride();
@@ -370,7 +370,7 @@ void MagnetAction::AdvanceState()
 	m_stateTimerMs = c_fadeDurationMs;
 
 	SoundVector position;
-	m_magnetEntity->VTable0x04(&position);
+	m_magnetEntity->GetPosition(&position);
 	m_soundSource->PlaySpatialSoundById(
 		c_soundRelease,
 		&position,
@@ -396,9 +396,9 @@ void MagnetAction::OnHitRacer(Racer* p_racer)
 	if (m_state == 3) {
 		SoundVector modelPosition;
 		GolVec3 racerPosition;
-		m_magnetEntity->VTable0x04(&modelPosition);
+		m_magnetEntity->GetPosition(&modelPosition);
 		modelPosition.m_z -= g_magnetHoldHeightOffset;
-		p_racer->m_visuals.m_carEntity->VTable0x04(&racerPosition);
+		p_racer->m_visuals.m_carEntity->GetPosition(&racerPosition);
 
 		GolVec3 delta;
 		delta.m_x = modelPosition.m_x - racerPosition.m_x;
@@ -435,7 +435,7 @@ void MagnetAction::Deploy()
 	ComputeDropPosition(m_ownerRacer, &position, NULL);
 
 	position.m_z += 30.0f;
-	m_magnetEntity->VTable0x08(position);
+	m_magnetEntity->SetPosition(position);
 	position.m_z -= 30.0f;
 	m_ringEntity->CopyPositionFrom(*m_magnetEntity);
 	m_insideEntity->CopyPositionFrom(*m_magnetEntity);
@@ -460,9 +460,9 @@ void MagnetAction::Deploy()
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
-	m_magnetEntity->VTable0x40(m_direction, up);
+	m_magnetEntity->SetDirectionUp(m_direction, up);
 
-	m_worldEntity.VTable0x08(position);
+	m_worldEntity.SetPosition(position);
 	m_worldEntity.FUN_10026fa0(10.0f);
 	m_ownerRacer->m_physics.ApplyPitchImpulse(0.0015f, 150);
 	m_soundSource->PlaySpatialSoundById(c_soundDeploy, &position, 30.0f, 300.0f, 1.0f, 1.0f);

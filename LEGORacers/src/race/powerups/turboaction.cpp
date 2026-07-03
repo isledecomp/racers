@@ -249,7 +249,7 @@ void TurboAction::StartBoost()
 	SoundVector position;
 	CarVisuals* racerField = &m_racer->m_visuals;
 	GolAnimatedEntity** racerEntity = &racerField->m_carEntity;
-	(*racerEntity)->VTable0x04(&position);
+	(*racerEntity)->GetPosition(&position);
 
 	m_soundSource->PlaySpatialSoundById(
 		m_level + c_soundBoostBase,
@@ -275,9 +275,9 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	PowerupActionBase::Update(p_elapsedMs);
-	m_turboEntity->VTable0x10(p_elapsedMs);
-	m_flameEntity->VTable0x10(p_elapsedMs);
-	m_flame2Entity->VTable0x10(p_elapsedMs);
+	m_turboEntity->Update(p_elapsedMs);
+	m_flameEntity->Update(p_elapsedMs);
+	m_flame2Entity->Update(p_elapsedMs);
 
 	if (m_level == 2 && m_state == c_stateBoosting && m_smokeParticle == NULL && m_stateTimerMs < c_smokeWindowMs &&
 		!(m_manager->m_cheatFlags & c_flyskyhgh)) {
@@ -293,10 +293,10 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 		offset.m_x = -2.0f;
 		offset.m_y = 0.0f;
 		offset.m_z = 3.0f;
-		racerEntity->VTable0x2c(offset, &position);
+		racerEntity->LocalToWorld(offset, &position);
 
 		if (m_smokeParticle->m_particle != NULL) {
-			racerEntity->VTable0x44(m_smokeParticle->m_particle->GetBasis());
+			racerEntity->CopyOrientation(m_smokeParticle->m_particle->GetBasis());
 		}
 
 		if (m_smokeParticle->m_particle != NULL) {
@@ -325,7 +325,7 @@ void TurboAction::AnchorToRacer()
 	GolAnimatedEntity* racerEntity = m_racer->m_visuals.m_carEntity;
 
 	GolVec3 position;
-	racerEntity->VTable0x04(&position);
+	racerEntity->GetPosition(&position);
 
 	const GolMatrix3& orientation = racerEntity->GetOrientation();
 
@@ -339,8 +339,8 @@ void TurboAction::AnchorToRacer()
 	position.m_y += up.m_y * g_emplacementGravityScale;
 	position.m_z += up.m_z * g_emplacementGravityScale;
 
-	m_turboEntity->VTable0x08(position);
-	m_turboEntity->VTable0x40(direction, up);
+	m_turboEntity->SetPosition(position);
+	m_turboEntity->SetDirectionUp(direction, up);
 	m_turboEntity->CopyOrientationAndPositionTo(m_flameEntity);
 	m_turboEntity->CopyOrientationAndPositionTo(m_flame2Entity);
 }
@@ -380,8 +380,8 @@ void TurboAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
-	m_flame2Entity->VTable0x1c(*p_renderer);
-	m_flameEntity->VTable0x1c(*p_renderer);
+	m_flame2Entity->Draw(*p_renderer);
+	m_flameEntity->Draw(*p_renderer);
 
 	if (m_state == c_stateIgnite || m_state == c_stateFade) {
 		p_renderer->ClearAlphaOverride();
@@ -396,7 +396,7 @@ void TurboAction::AdvanceState()
 		SoundVector position;
 		CarVisuals* racerField = &m_racer->m_visuals;
 		GolAnimatedEntity* racerEntity = racerField->GetCarEntity();
-		racerEntity->VTable0x04(&position);
+		racerEntity->GetPosition(&position);
 
 		LegoS32 state = m_level;
 		if (state == 2) {

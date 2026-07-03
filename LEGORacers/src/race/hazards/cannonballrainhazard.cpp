@@ -137,10 +137,10 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 	position.m_y *= scale;
 	position.m_z *= scale;
 
-	m_emitterEntity->VTable0x2c(position, &m_emitterPosition);
+	m_emitterEntity->LocalToWorld(position, &m_emitterPosition);
 
 	GolVec3 transformedRight;
-	m_emitterEntity->VTable0x34(right, &transformedRight);
+	m_emitterEntity->RotateToWorld(right, &transformedRight);
 
 	LegoFloat transformedOffset = transformedRight.m_x;
 	transformedOffset *= g_cannonballRainTransformOffsetScale;

@@ -81,7 +81,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 	}
 
 	if (entity) {
-		entity->VTable0x24(&m_colorTransform);
+		entity->ApplyColorTransform(&m_colorTransform);
 	}
 	else if (p_racer) {
 		p_racer->m_visuals.SetColorTransform(&m_colorTransform);

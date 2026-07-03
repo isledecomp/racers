@@ -57,7 +57,7 @@ void RacerModelSlot::SetEntity(GolWorldEntity* p_entity)
 {
 	m_entity = p_entity;
 	if (p_entity != NULL) {
-		p_entity->VTable0x08(m_createParams.m_position);
+		p_entity->SetPosition(m_createParams.m_position);
 		p_entity->ClearVelocity();
 	}
 }
@@ -71,7 +71,7 @@ LegoBool32 RacerModelSlot::UpdateEntityA(LegoU32 p_elapsed)
 			elapsed = m_timerAMs;
 		}
 
-		m_entityA->VTable0x10(elapsed);
+		m_entityA->Update(elapsed);
 		m_timerAMs -= elapsed;
 
 		if (m_timerAMs == 0) {
@@ -95,7 +95,7 @@ LegoBool32 RacerModelSlot::UpdateEntityB(LegoU32 p_elapsed)
 			elapsed = m_timerBMs;
 		}
 
-		m_entityB->VTable0x10(elapsed);
+		m_entityB->Update(elapsed);
 		m_timerBMs -= elapsed;
 
 		if (m_timerBMs == 0) {
@@ -118,7 +118,7 @@ LegoBool32 RacerModelSlot::UpdateSpin(LegoS32 p_elapsed)
 	}
 
 	if (m_createParams.m_animate) {
-		m_entity->VTable0x10(p_elapsed);
+		m_entity->Update(p_elapsed);
 	}
 
 	if (m_createParams.m_spinSpeed == 0.0f) {
@@ -128,10 +128,10 @@ LegoBool32 RacerModelSlot::UpdateSpin(LegoS32 p_elapsed)
 	LegoFloat angle = static_cast<LegoFloat>(p_elapsed) * m_createParams.m_spinSpeed;
 	GolVec3 right;
 	GolVec3 forward;
-	m_entity->VTable0x48(&right, &forward);
+	m_entity->GetAxes(&right, &forward);
 
 	GolMath::RotateAboutAxis(&right, &forward, &m_spinAxis, angle);
-	m_entity->VTable0x40(forward, m_spinAxis);
+	m_entity->SetDirectionUp(forward, m_spinAxis);
 
 	return TRUE;
 }
@@ -142,21 +142,21 @@ LegoBool32 RacerModelSlot::Draw()
 	GolVec3 center;
 
 	if (m_entityA != NULL) {
-		m_entityA->VTable0x04(&center);
-		m_entityA->VTable0x08(center);
-		m_entityA->VTable0x1c(*m_renderer);
+		m_entityA->GetPosition(&center);
+		m_entityA->SetPosition(center);
+		m_entityA->Draw(*m_renderer);
 	}
 
 	if (m_entity != NULL) {
-		m_entity->VTable0x04(&center);
-		m_entity->VTable0x08(center);
-		m_entity->VTable0x1c(*m_renderer);
+		m_entity->GetPosition(&center);
+		m_entity->SetPosition(center);
+		m_entity->Draw(*m_renderer);
 	}
 
 	if (m_entityB != NULL) {
-		m_entityB->VTable0x04(&center);
-		m_entityB->VTable0x08(center);
-		m_entityB->VTable0x1c(*m_renderer);
+		m_entityB->GetPosition(&center);
+		m_entityB->SetPosition(center);
+		m_entityB->Draw(*m_renderer);
 	}
 
 	return TRUE;

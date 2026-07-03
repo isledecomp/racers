@@ -32,10 +32,10 @@ GolWorldEntity::GolWorldEntity()
 
 // FUNCTION: GOLDP 0x100284f0
 // FUNCTION: LEGORACERS 0x00411a70
-void GolWorldEntity::VTable0x10(LegoS32 p_elapsed)
+void GolWorldEntity::Update(LegoS32 p_elapsed)
 {
 	if (m_radius < 0.0f) {
-		VTable0x00();
+		UpdateBounds();
 	}
 
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
@@ -54,10 +54,10 @@ void GolWorldEntity::VTable0x10(LegoS32 p_elapsed)
 
 // FUNCTION: GOLDP 0x10028560
 // FUNCTION: LEGORACERS 0x00411ae0
-void GolWorldEntity::VTable0x0c(LegoFloat p_elapsed)
+void GolWorldEntity::Integrate(LegoFloat p_elapsed)
 {
 	if (m_radius < 0.0f) {
-		VTable0x00();
+		UpdateBounds();
 	}
 
 	GolVec3 delta;
@@ -76,10 +76,10 @@ void GolWorldEntity::VTable0x0c(LegoFloat p_elapsed)
 
 // FUNCTION: GOLDP 0x100285d0
 // FUNCTION: LEGORACERS 0x00411b50
-void GolWorldEntity::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result)
+void GolWorldEntity::ComputeVisibility(const GolViewFrustum& p_view, ViewResult* p_result)
 {
 	if (m_radius < 0.0f) {
-		VTable0x00();
+		UpdateBounds();
 	}
 
 	p_result->m_lodIndex = 0;
@@ -88,14 +88,14 @@ void GolWorldEntity::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_resu
 
 // FUNCTION: GOLDP 0x10028610
 // FUNCTION: LEGORACERS 0x00411b90
-LegoBool32 GolWorldEntity::VTable0x18(GolWorldEntity* p_model)
+LegoBool32 GolWorldEntity::Intersects(GolWorldEntity* p_model)
 {
 	if (m_radius < 0.0f) {
-		VTable0x00();
+		UpdateBounds();
 	}
 
 	if (p_model->m_radius < 0.0f) {
-		p_model->VTable0x00();
+		p_model->UpdateBounds();
 	}
 
 	LegoFloat distanceSquared = m_center.DistanceSquaredTo(p_model->m_center);
@@ -114,7 +114,7 @@ LegoBool32 GolWorldEntity::VTable0x18(GolWorldEntity* p_model)
 
 // FUNCTION: GOLDP 0x100286b0
 // FUNCTION: LEGORACERS 0x00411c30
-void GolWorldEntity::VTable0x04(GolVec3* p_center) const
+void GolWorldEntity::GetPosition(GolVec3* p_center) const
 {
 	p_center->m_x = m_center.m_x;
 	p_center->m_y = m_center.m_y;
@@ -123,7 +123,7 @@ void GolWorldEntity::VTable0x04(GolVec3* p_center) const
 
 // FUNCTION: GOLDP 0x10028730 FOLDED
 // FUNCTION: LEGORACERS 0x00411c50
-void GolWorldEntity::VTable0x08(const GolVec3& p_center)
+void GolWorldEntity::SetPosition(const GolVec3& p_center)
 {
 	SetCenter(p_center);
 }
@@ -133,7 +133,7 @@ void GolWorldEntity::VTable0x08(const GolVec3& p_center)
 void GolWorldEntity::FUN_100286d0(GolVec3* p_center)
 {
 	if (m_radius < 0.0f) {
-		VTable0x00();
+		UpdateBounds();
 	}
 
 	p_center->m_x = m_center.m_x;
@@ -143,7 +143,7 @@ void GolWorldEntity::FUN_100286d0(GolVec3* p_center)
 
 // FUNCTION: GOLDP 0x10028700
 // FUNCTION: LEGORACERS 0x00411c90
-void GolWorldEntity::VTable0x00()
+void GolWorldEntity::UpdateBounds()
 {
 	m_radius = 0.0f;
 	m_center.m_z = 0.0f;
@@ -156,7 +156,7 @@ void GolWorldEntity::VTable0x00()
 LegoFloat GolWorldEntity::FUN_10028710()
 {
 	if (m_radius < 0.0f) {
-		VTable0x00();
+		UpdateBounds();
 	}
 
 	return m_radius;
@@ -175,7 +175,7 @@ void GolWorldEntity::SetCenter(const GolVec3& p_center)
 
 // FUNCTION: GOLDP 0x10028760
 // FUNCTION: LEGORACERS 0x00411cf0
-void GolWorldEntity::VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const
+void GolWorldEntity::LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const
 {
 	p_dest->m_x = m_center.m_x + p_add.m_x;
 	p_dest->m_y = m_center.m_y + p_add.m_y;
@@ -184,7 +184,7 @@ void GolWorldEntity::VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const
 
 // FUNCTION: GOLDP 0x10028790
 // FUNCTION: LEGORACERS 0x00411d20
-void GolWorldEntity::VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const
+void GolWorldEntity::WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) const
 {
 	p_dest->m_x = p_src.m_x - m_center.m_x;
 	p_dest->m_y = p_src.m_y - m_center.m_y;
@@ -193,21 +193,21 @@ void GolWorldEntity::VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const
 
 // FUNCTION: GOLDP 0x100287c0 FOLDED
 // FUNCTION: LEGORACERS 0x00411d50 FOLDED
-void GolWorldEntity::VTable0x34(const GolVec3& p_src, GolVec3* p_dest)
+void GolWorldEntity::RotateToWorld(const GolVec3& p_src, GolVec3* p_dest)
 {
 	*p_dest = p_src;
 }
 
 // FUNCTION: GOLDP 0x100287c0 FOLDED
 // FUNCTION: LEGORACERS 0x00411d50 FOLDED
-void GolWorldEntity::VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const
+void GolWorldEntity::RotateToLocal(const GolVec3& p_src, GolVec3* p_dest) const
 {
 	*p_dest = p_src;
 }
 
 // FUNCTION: GOLDP 0x100287e0
 // FUNCTION: LEGORACERS 0x00411d70
-void GolWorldEntity::VTable0x48(GolVec3* p_right, GolVec3* p_forward) const
+void GolWorldEntity::GetAxes(GolVec3* p_right, GolVec3* p_forward) const
 {
 	p_right->m_x = 1.0f;
 	p_right->m_y = 0.0f;
@@ -219,7 +219,7 @@ void GolWorldEntity::VTable0x48(GolVec3* p_right, GolVec3* p_forward) const
 
 // FUNCTION: GOLDP 0x10028810
 // FUNCTION: LEGORACERS 0x00411da0
-void GolWorldEntity::VTable0x44(GolMatrix3* p_dest) const
+void GolWorldEntity::CopyOrientation(GolMatrix3* p_dest) const
 {
 	p_dest->m_m[0][0] = 1.0f;
 	p_dest->m_m[0][1] = 0.0f;
@@ -241,35 +241,35 @@ void GolWorldEntity::VTable0x28()
 
 // FUNCTION: GOLDP 0x100016f0 FOLDED
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-undefined4 GolWorldEntity::VTable0x20()
+undefined4 GolWorldEntity::GetKind()
 {
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GolWorldEntity::VTable0x40(const GolVec3& p_direction, const GolVec3& p_up)
+void GolWorldEntity::SetDirectionUp(const GolVec3& p_direction, const GolVec3& p_up)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolWorldEntity::VTable0x1c(GolRenderDevice&)
+void GolWorldEntity::Draw(GolRenderDevice&)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolWorldEntity::VTable0x24(ColorTransform*)
+void GolWorldEntity::ApplyColorTransform(ColorTransform*)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolWorldEntity::VTable0x3c(const GolMatrix3&)
+void GolWorldEntity::SetOrientationMatrix(const GolMatrix3&)
 {
 	// empty
 }

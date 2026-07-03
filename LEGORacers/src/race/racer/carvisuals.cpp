@@ -312,7 +312,7 @@ void CarVisuals::StartSkidEffects()
 				GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
 				GolAnimatedEntity* entity = m_carEntity;
 				if (m_tireSmokeParticle->m_particle) {
-					entity->VTable0x44(m_tireSmokeParticle->m_particle->GetBasis());
+					entity->CopyOrientation(m_tireSmokeParticle->m_particle->GetBasis());
 				}
 
 				if (m_tireSmokeParticle->m_particle) {
@@ -385,7 +385,7 @@ void CarVisuals::SetWheelParticle(LegoU32 p_wheelIndex, const LegoChar* p_name)
 	GolWorldEntity* entity = m_carEntity;
 
 	if (particle) {
-		entity->VTable0x44(particle->GetBasis());
+		entity->CopyOrientation(particle->GetBasis());
 	}
 
 	if (m_wheelParticles[p_wheelIndex]->m_particle) {
@@ -433,7 +433,7 @@ void CarVisuals::StartDust()
 	GolWorldEntity* entity = m_carEntity;
 
 	if (particle) {
-		entity->VTable0x44(particle->GetBasis());
+		entity->CopyOrientation(particle->GetBasis());
 	}
 
 	if (m_dustParticle->m_particle) {
@@ -465,7 +465,7 @@ void CarVisuals::StartCarSmoke()
 
 	CutsceneParticle* particle = ref->m_particle;
 	if (particle) {
-		entity->VTable0x44(particle->GetBasis());
+		entity->CopyOrientation(particle->GetBasis());
 	}
 
 	if (m_carSmokeParticle->m_particle) {
@@ -478,7 +478,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 {
 	UpdateBodyLean(p_elapsedMs);
 	UpdateDriver(p_elapsedMs);
-	m_entityGroup.VTable0x00();
+	m_entityGroup.UpdateBounds();
 
 	if (m_isFlashing) {
 		if (p_elapsedMs >= m_flashTimerMs) {
@@ -533,7 +533,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 				CutsceneParticle* particle = ref->m_particle;
 
 				if (particle) {
-					m_carEntity->VTable0x44(particle->GetBasis());
+					m_carEntity->CopyOrientation(particle->GetBasis());
 				}
 
 				if (ref->m_particle) {
@@ -556,7 +556,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 				m_flags &= ~c_flagAirborne;
 
 				SoundVector position;
-				m_carEntity->VTable0x04(&position);
+				m_carEntity->GetPosition(&position);
 
 				switch (state - m_lastGroundedWheelCount) {
 				case 1:
@@ -612,7 +612,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 
 				particle = m_dustParticle->m_particle;
 				if (particle) {
-					m_carEntity->VTable0x44(particle->GetBasis());
+					m_carEntity->CopyOrientation(particle->GetBasis());
 				}
 
 				if (m_dustParticle->m_particle) {
@@ -640,7 +640,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 
 				particle = m_carSmokeParticle->m_particle;
 				if (particle) {
-					m_carEntity->VTable0x44(particle->GetBasis());
+					m_carEntity->CopyOrientation(particle->GetBasis());
 				}
 
 				if (m_carSmokeParticle->m_particle) {
@@ -677,7 +677,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 
 			CutsceneParticle* particle = m_tireSmokeParticle->m_particle;
 			if (particle) {
-				m_carEntity->VTable0x44(particle->GetBasis());
+				m_carEntity->CopyOrientation(particle->GetBasis());
 			}
 
 			if (m_tireSmokeParticle->m_particle) {
@@ -699,8 +699,8 @@ void CarVisuals::SnapVisuals()
 	m_carEntity->CopyOrientationAndPositionTo(m_bodyModelEntity);
 
 	GolVec3 position;
-	m_bodyModelEntity->VTable0x2c(m_driverMountOffset, &position);
-	m_driverEntity->VTable0x08(position);
+	m_bodyModelEntity->LocalToWorld(m_driverMountOffset, &position);
+	m_driverEntity->SetPosition(position);
 	m_driverEntity->CopyOrientationFrom(*m_bodyModelEntity);
 
 	if (m_secondaryEntity != NULL) {
@@ -712,7 +712,7 @@ void CarVisuals::SnapVisuals()
 void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 {
 	GolVec3 position;
-	m_carEntity->VTable0x04(&position);
+	m_carEntity->GetPosition(&position);
 
 	const GolMatrix3& oldOrientation = m_carEntity->GetOrientation();
 	GolVec3 oldRow0;
@@ -727,7 +727,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	oldRow2.m_x = oldOrientation.m_m[2][0];
 	oldRow2.m_y = oldOrientation.m_m[2][1];
 	oldRow2.m_z = oldOrientation.m_m[2][2];
-	m_carEntity->VTable0x10(p_elapsedMs);
+	m_carEntity->Update(p_elapsedMs);
 
 	const GolVec3& modelRow2 = m_bodyModelEntity->GetOrientation().m_rows[2];
 	GolVec3 targetRow0;
@@ -809,16 +809,16 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		GolCameraBase::FUN_00404550(&targetRow1, &oldRow1, &row1);
 	}
 
-	m_bodyModelEntity->VTable0x08(position);
+	m_bodyModelEntity->SetPosition(position);
 	m_bodyModelEntity->FUN_00410a00(row0, row1);
 
 	if (m_secondaryEntity != NULL) {
 		m_bodyModelEntity->CopyOrientationAndPositionTo(m_secondaryEntity);
-		m_secondaryEntity->VTable0x10(p_elapsedMs);
+		m_secondaryEntity->Update(p_elapsedMs);
 	}
 
-	m_bodyModelEntity->VTable0x2c(m_driverMountOffset, &position);
-	m_driverEntity->VTable0x08(position);
+	m_bodyModelEntity->LocalToWorld(m_driverMountOffset, &position);
+	m_driverEntity->SetPosition(position);
 	m_driverEntity->FUN_0043ebd0(*m_bodyModelEntity);
 }
 
@@ -845,7 +845,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 	LegoU32 activePart = m_driverEntity->GetActiveState();
 	LegoU32 eventFlags = m_reactionFlags;
 
-	m_driverEntity->VTable0x10(p_elapsedMs);
+	m_driverEntity->Update(p_elapsedMs);
 	m_reactionFlags = 0;
 
 	if (p_elapsedMs < m_lookCooldownMs) {
@@ -939,7 +939,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 
 	if (m_lookCooldownMs == 0) {
 		GolVec3 position;
-		m_carEntity->VTable0x04(&position);
+		m_carEntity->GetPosition(&position);
 
 		Racer* racer = m_racer;
 		RaceState* raceState = racer->m_raceState;
@@ -952,7 +952,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 			GolVec3 row1 = m_carEntity->GetOrientation().m_rows[1];
 
 			GolVec3 nearbyPosition;
-			nearbyEntity->VTable0x04(&nearbyPosition);
+			nearbyEntity->GetPosition(&nearbyPosition);
 
 			GolVec3 direction;
 			direction.m_x = nearbyPosition.m_x - position.m_x;
@@ -1037,7 +1037,7 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 			}
 
 			if (m_skidMarks[i]) {
-				m_carEntity->VTable0x2c(m_wheelOffsets[i], &position);
+				m_carEntity->LocalToWorld(m_wheelOffsets[i], &position);
 				m_skidMarks[i]->AddSample(p_elapsedMs, position);
 			}
 		}
@@ -1157,10 +1157,10 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 
 	GolModelEntity* entity = &m_curseEntity;
 	GolVec3 position;
-	entity->VTable0x04(&position);
+	entity->GetPosition(&position);
 
 	GolVec3 target;
-	m_bodyModelEntity->VTable0x04(&target);
+	m_bodyModelEntity->GetPosition(&target);
 	target.m_x += 6.0f * offsetX;
 	target.m_y += 6.0f * offsetY;
 	target.m_z += 9.0f;
@@ -1186,14 +1186,14 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	else {
 		position = target;
 	}
-	entity->VTable0x08(position);
+	entity->SetPosition(position);
 
 	GolVec3 up;
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
 
-	m_bodyModelEntity->VTable0x04(&target);
+	m_bodyModelEntity->GetPosition(&target);
 	delta.m_x = target.m_x - position.m_x;
 	delta.m_y = target.m_y - position.m_y;
 	delta.m_z = target.m_z - position.m_z;
@@ -1207,7 +1207,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 
 	if (m_curseBlendMs > 0) {
 		GolMatrix3 currentOrientation;
-		entity->VTable0x44(&currentOrientation);
+		entity->CopyOrientation(&currentOrientation);
 		GolVec3 unit;
 		GolMath::NormalizeVector3(right, &unit);
 
@@ -1243,10 +1243,10 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 
 		GolMatrix3 orientation;
 		GolMath::FUN_00449340(&blendedRotation, &orientation.m_m[0][0]);
-		entity->VTable0x3c(orientation);
+		entity->SetOrientationMatrix(orientation);
 	}
 	else {
-		entity->VTable0x40(right, up);
+		entity->SetDirectionUp(right, up);
 	}
 
 	LegoFloat scale = entity->GetUnk0x58();
@@ -1258,7 +1258,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		entity->SetUnk0x58ThenInvalidateRadius(scale);
 	}
 
-	entity->VTable0x10(p_elapsedMs);
+	entity->Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x0043fa50
@@ -1270,7 +1270,7 @@ void CarVisuals::UpdateShadow(GolCamera* p_camera)
 	}
 
 	GolVec3 entityPosition;
-	m_carEntity->VTable0x04(&entityPosition);
+	m_carEntity->GetPosition(&entityPosition);
 
 	GolVec3 cameraPosition;
 	p_camera->GetTransform()->GetPosition(&cameraPosition);
@@ -1477,7 +1477,7 @@ void CarVisuals::RenderShadowSilhouette(GolD3DRenderDevice* p_renderer)
 	g_carShadowRenderState.Initialize(p_renderer, material->GetUnk0x04());
 
 	GolVec3 position;
-	m_carEntity->VTable0x04(&position);
+	m_carEntity->GetPosition(&position);
 	LegoFloat origin[2];
 	origin[0] = position.m_x;
 	origin[1] = position.m_y;
@@ -1537,7 +1537,7 @@ void CarVisuals::SetColorTransform(ColorTransform* p_transform)
 	m_hasColorTransform = 1;
 
 	if (!unk0x3c4) {
-		m_entityGroup.VTable0x24(&m_baseColorTransform);
+		m_entityGroup.ApplyColorTransform(&m_baseColorTransform);
 	}
 }
 
@@ -1557,7 +1557,7 @@ void CarVisuals::FlashColor(ColorTransform* p_transform, undefined4 p_durationMs
 {
 	m_isFlashing = 1;
 	m_flashTimerMs = p_durationMs;
-	m_entityGroup.VTable0x24(p_transform);
+	m_entityGroup.ApplyColorTransform(p_transform);
 }
 
 // FUNCTION: LEGORACERS 0x00440130
@@ -1568,7 +1568,7 @@ void CarVisuals::EndFlash()
 	m_flashTimerMs = 0;
 
 	if (unk0x3c0) {
-		m_entityGroup.VTable0x24(&m_baseColorTransform);
+		m_entityGroup.ApplyColorTransform(&m_baseColorTransform);
 	}
 	else {
 		m_entityGroup.VTable0x28();

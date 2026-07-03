@@ -246,7 +246,7 @@ void RaceSkyState::Load(
 		center.m_x = 0.0f;
 		center.m_y = 0.0f;
 		center.m_z = 0.0f;
-		m_domeEntity.VTable0x08(center);
+		m_domeEntity.SetPosition(center);
 
 		GolVec3 direction;
 		direction.m_x = 1.0f;
@@ -257,7 +257,7 @@ void RaceSkyState::Load(
 		up.m_x = 0.0f;
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
-		m_domeEntity.VTable0x40(direction, up);
+		m_domeEntity.SetDirectionUp(direction, up);
 
 		GolName materialName;
 		::strncpy(materialName, "skymat", sizeof(materialName));
@@ -436,17 +436,17 @@ void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_un
 void RaceSkyState::SetPosition(GolVec3* p_position)
 {
 	p_position->m_z -= g_unk0x004afde0 - m_heightOffset;
-	m_domeEntity.VTable0x08(*p_position);
+	m_domeEntity.SetPosition(*p_position);
 	p_position->m_z += g_raceSkyDomeDepth - m_heightOffset;
 
 	LegoU32 i;
 	for (i = 0; i < m_skyWorld->GetModelEntityCount(); i++) {
-		m_skyWorld->GetModelEntities()[i].VTable0x08(*p_position);
+		m_skyWorld->GetModelEntities()[i].SetPosition(*p_position);
 	}
 
 	for (i = 0; i < m_skyWorld->GetAnimatedEntityCount(); i++) {
 		GolWorldEntity* entity = &m_skyWorld->GetAnimatedEntities()[i];
-		entity->VTable0x08(*p_position);
+		entity->SetPosition(*p_position);
 	}
 }
 

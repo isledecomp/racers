@@ -120,7 +120,7 @@ void GolModelEntity::FUN_10027cc0(const GolVec3& p_vector, GolModelEntity::Resul
 
 	if (*threshold != g_maxFloat) {
 		GolVec3 v3;
-		VTable0x04(&v3);
+		GetPosition(&v3);
 		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(p_vector, v3);
 
 		for (; distanceSquared > *threshold;) {
@@ -142,7 +142,7 @@ void GolModelEntity::FUN_10027cc0(const GolVec3& p_vector, GolModelEntity::Resul
 
 // FUNCTION: GOLDP 0x10027d80
 // FUNCTION: LEGORACERS 0x004112c0
-void GolModelEntity::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result)
+void GolModelEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
 	LegoU32 i;
 	LegoFloat* threshold;
@@ -151,7 +151,7 @@ void GolModelEntity::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_re
 	i = 0;
 	threshold = m_modelDistances;
 	if (*threshold != g_maxFloat) {
-		VTable0x04(&position);
+		GetPosition(&position);
 		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
 
 		for (; distanceSquared > *threshold;) {
@@ -183,7 +183,7 @@ void GolModelEntity::FUN_10027e70(GolMatrix4* p_dest, LegoU32 p_index)
 
 // FUNCTION: GOLDP 0x10027e90
 // FUNCTION: LEGORACERS 0x004113c0
-void GolModelEntity::VTable0x00()
+void GolModelEntity::UpdateBounds()
 {
 	VTable0x4c(0);
 }
@@ -205,20 +205,20 @@ void GolModelEntity::VTable0x4c(LegoU32 p_index)
 	center.m_y *= scale;
 	center.m_z *= scale;
 	GolVec3 position;
-	VTable0x2c(center, &position);
+	LocalToWorld(center, &position);
 	FUN_10026f70(position);
 	FUN_10026fa0(m_unk0x58 * radius);
 }
 
 // FUNCTION: GOLDP 0x10027f40
 // FUNCTION: LEGORACERS 0x00411470
-void GolModelEntity::VTable0x10(LegoS32 p_elapsed)
+void GolModelEntity::Update(LegoS32 p_elapsed)
 {
 	GolVec3 v;
-	VTable0x04(&v);
+	GetPosition(&v);
 	LegoFloat f = static_cast<LegoFloat>(p_elapsed);
 	v += m_velocity * f;
-	VTable0x08(v);
+	SetPosition(v);
 	m_radius = -1.0f;
 	if (m_textureScrollSpeedU != 0 || m_textureScrollSpeedV != 0) {
 		m_textureScrollU += m_textureScrollSpeedU * p_elapsed;
@@ -245,7 +245,7 @@ void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat
 
 // FUNCTION: GOLDP 0x10028030
 // FUNCTION: LEGORACERS 0x00411560
-void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
+void GolModelEntity::Draw(GolRenderDevice& p_renderer)
 {
 	if (m_flags & (c_flagBit3 | c_flagBit2)) {
 		if (m_textureScrollU == 0 && m_textureScrollV == 0) {
@@ -271,7 +271,7 @@ void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
 
 // FUNCTION: GOLDP 0x100280c0
 // FUNCTION: LEGORACERS 0x004115f0
-void GolModelEntity::VTable0x24(ColorTransform* p_transform)
+void GolModelEntity::ApplyColorTransform(ColorTransform* p_transform)
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
 		GolModelBase* model = m_models[i];
@@ -358,7 +358,7 @@ void GolModelEntity::SetTextureScrollSpeedV(LegoFloat p_arg)
 
 // FUNCTION: GOLDP 0x10028170
 // FUNCTION: LEGORACERS 0x00411760
-LegoBool32 GolModelEntity::VTable0x20()
+LegoBool32 GolModelEntity::GetKind()
 {
 	MaterialTable* materialTable = m_materialTables[0];
 	if (materialTable == NULL) {

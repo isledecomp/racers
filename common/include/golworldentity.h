@@ -24,25 +24,25 @@ public:
 
 	typedef ViewResult ResultStruct;
 
-	virtual void VTable0x00();                                                   // vtable+0x00
-	virtual void VTable0x04(GolVec3* p_center) const;                            // vtable+0x04
-	virtual void VTable0x08(const GolVec3& p_center);                            // vtable+0x08
-	virtual void VTable0x0c(LegoFloat p_elapsed);                                // vtable+0x0c
-	virtual void VTable0x10(LegoS32 p_elapsed);                                  // vtable+0x10
-	virtual void VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result); // vtable+0x14
-	virtual LegoBool32 VTable0x18(GolWorldEntity* p_model);                      // vtable+0x18
-	virtual void VTable0x1c(GolRenderDevice& p_renderer);                        // vtable+0x1c
-	virtual undefined4 VTable0x20();                                             // vtable+0x20
-	virtual void VTable0x24(ColorTransform* p_transform);                        // vtable+0x24
-	virtual void VTable0x28();                                                   // vtable+0x28
-	virtual void VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const;        // vtable+0x2c
-	virtual void VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const;        // vtable+0x30
-	virtual void VTable0x34(const GolVec3& p_src, GolVec3* p_dest);              // vtable+0x34
-	virtual void VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const;        // vtable+0x38
-	virtual void VTable0x3c(const GolMatrix3& p_matrix);                         // vtable+0x3c
-	virtual void VTable0x40(const GolVec3& p_direction, const GolVec3& p_up);    // vtable+0x40
-	virtual void VTable0x44(GolMatrix3* p_dest) const;                           // vtable+0x44
-	virtual void VTable0x48(GolVec3* p_right, GolVec3* p_forward) const;         // vtable+0x48
+	virtual void UpdateBounds();                                                        // vtable+0x00
+	virtual void GetPosition(GolVec3* p_center) const;                                  // vtable+0x04
+	virtual void SetPosition(const GolVec3& p_center);                                  // vtable+0x08
+	virtual void Integrate(LegoFloat p_elapsed);                                        // vtable+0x0c
+	virtual void Update(LegoS32 p_elapsed);                                             // vtable+0x10
+	virtual void ComputeVisibility(const GolViewFrustum& p_view, ViewResult* p_result); // vtable+0x14
+	virtual LegoBool32 Intersects(GolWorldEntity* p_model);                             // vtable+0x18
+	virtual void Draw(GolRenderDevice& p_renderer);                                     // vtable+0x1c
+	virtual undefined4 GetKind();                                                       // vtable+0x20
+	virtual void ApplyColorTransform(ColorTransform* p_transform);                      // vtable+0x24
+	virtual void VTable0x28();                                                          // vtable+0x28
+	virtual void LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const;             // vtable+0x2c
+	virtual void WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) const;             // vtable+0x30
+	virtual void RotateToWorld(const GolVec3& p_src, GolVec3* p_dest);                  // vtable+0x34
+	virtual void RotateToLocal(const GolVec3& p_src, GolVec3* p_dest) const;            // vtable+0x38
+	virtual void SetOrientationMatrix(const GolMatrix3& p_matrix);                      // vtable+0x3c
+	virtual void SetDirectionUp(const GolVec3& p_direction, const GolVec3& p_up);       // vtable+0x40
+	virtual void CopyOrientation(GolMatrix3* p_dest) const;                             // vtable+0x44
+	virtual void GetAxes(GolVec3* p_right, GolVec3* p_forward) const;                   // vtable+0x48
 
 	void FUN_100286d0(GolVec3* p_center);
 	LegoFloat FUN_10028710();

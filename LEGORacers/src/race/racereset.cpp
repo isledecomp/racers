@@ -127,8 +127,8 @@ void RaceReset::ResetRacers()
 		GolVec3 up;
 		GolVec3 direction = m_raceState->GetStartDirection(startIndex);
 		up = m_raceState->GetStartUp(startIndex);
-		racer->m_visuals.m_carEntity->VTable0x08(position);
-		racer->m_visuals.m_carEntity->VTable0x40(direction, up);
+		racer->m_visuals.m_carEntity->SetPosition(position);
+		racer->m_visuals.m_carEntity->SetDirectionUp(direction, up);
 		field->SnapVisuals();
 		racer->InvalidateCamera();
 

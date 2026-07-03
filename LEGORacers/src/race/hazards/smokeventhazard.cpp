@@ -103,7 +103,7 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 	vector.m_z *= scale;
 
 	GolVec3 position;
-	m_entity->VTable0x2c(vector, &position);
+	m_entity->LocalToWorld(vector, &position);
 
 	if (m_smokeParticle || (m_smokeParticle = m_particleAnimation->SpawnParticle("smoke", NULL, NULL, NULL)) != NULL) {
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
@@ -125,13 +125,13 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 		vector.m_y = position.m_y * scale;
 		vector.m_z = position.m_z * scale;
 
-		m_entity->VTable0x2c(vector, &position);
+		m_entity->LocalToWorld(vector, &position);
 
 		CutsceneParticleRef* particleRef = m_smokeParticle;
 		GolAnimatedEntity* entity = m_entity;
 		CutsceneParticle* particle = particleRef->m_particle;
 		if (particle) {
-			entity->VTable0x44(particle->GetBasis());
+			entity->CopyOrientation(particle->GetBasis());
 		}
 
 		particleRef = m_smokeParticle;

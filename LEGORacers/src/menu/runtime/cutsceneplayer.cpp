@@ -573,7 +573,7 @@ void CutsceneEvent::GetJointPosition(undefined4 p_param1, GolVec3* p_param2)
 	vec2.m_x *= scale;
 	vec2.m_y *= scale;
 	vec2.m_z *= scale;
-	m_animatedEntity->VTable0x2c(vec2, p_param2);
+	m_animatedEntity->LocalToWorld(vec2, p_param2);
 }
 
 // FUNCTION: LEGORACERS 0x0049fec0
@@ -589,13 +589,13 @@ void CutsceneEvent::GetJointAxes(undefined4 p_param1, GolVec3* p_param2, GolVec3
 	vec1.m_z = 0.0f;
 
 	falconNode->FUN_004132a0(p_param1, &vec1, &vec2);
-	m_animatedEntity->VTable0x34(vec2, p_param2);
+	m_animatedEntity->RotateToWorld(vec2, p_param2);
 
 	vec1.m_x = 0.0f;
 	vec1.m_y = 0.0f;
 	vec1.m_z = 1.0f;
 	falconNode->FUN_004132a0(p_param1, &vec1, &vec2);
-	m_animatedEntity->VTable0x34(vec2, p_param3);
+	m_animatedEntity->RotateToWorld(vec2, p_param3);
 }
 
 // FUNCTION: LEGORACERS 0x0049ff70
@@ -2445,7 +2445,7 @@ void CutsceneAnimationEvent::StartAt(const GolVec3* p_a, const GolVec3* p_b, con
 
 		if (!(m_flags & 1)) {
 			if (m_parsedEntity != NULL) {
-				m_parsedEntity->VTable0x04(&m_position);
+				m_parsedEntity->GetPosition(&m_position);
 			}
 			else {
 				m_position = *p_a;
@@ -2454,7 +2454,7 @@ void CutsceneAnimationEvent::StartAt(const GolVec3* p_a, const GolVec3* p_b, con
 
 		if (!(m_flags & 2)) {
 			if (m_parsedEntity != NULL) {
-				m_parsedEntity->VTable0x48(&m_direction, &m_up);
+				m_parsedEntity->GetAxes(&m_direction, &m_up);
 			}
 			else {
 				m_direction = *p_b;
@@ -2732,7 +2732,7 @@ void CutsceneStreamingSoundEvent::Start()
 			position = m_position;
 		}
 		else if (m_parsedEntity != NULL) {
-			m_parsedEntity->VTable0x04(&position);
+			m_parsedEntity->GetPosition(&position);
 			m_parsedEntity->GetVelocity(&velocity);
 		}
 		else {
@@ -2840,7 +2840,7 @@ void CutsceneStreamingSoundEvent::Update()
 			entity = m_animatedEntity;
 		}
 		else if (m_flags & c_flagTrackEntity) {
-			m_parsedEntity->VTable0x04(&position);
+			m_parsedEntity->GetPosition(&position);
 			m_streamInstance->SetPosition(&position);
 			entity = m_parsedEntity;
 		}
@@ -3077,5 +3077,5 @@ void CutsceneColorEvent::ApplyColorTransform()
 	transform.m_bluOffset = static_cast<LegoS32>(m_offsetBlu);
 	transform.m_alpOffset = 0;
 
-	m_entity->VTable0x24(&transform);
+	m_entity->ApplyColorTransform(&transform);
 }

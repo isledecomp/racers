@@ -213,8 +213,8 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 
 	CollisionScratch scratch;
 
-	m_entity->VTable0x44(&scratch.m_orientation0);
-	p_other->m_entity->VTable0x44(&scratch.m_absOrientation);
+	m_entity->CopyOrientation(&scratch.m_orientation0);
+	p_other->m_entity->CopyOrientation(&scratch.m_absOrientation);
 
 	GolMath::FUN_00449b90(
 		p_other->m_position.m_x - m_position.m_x,

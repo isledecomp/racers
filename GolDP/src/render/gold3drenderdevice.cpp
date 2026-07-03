@@ -899,7 +899,7 @@ void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodInde
 void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
-	p_model->VTable0x14(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_unk0x4c, &result);
 	if (!result.m_visibility) {
 		return;
 	}
@@ -1089,7 +1089,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->VTable0x14(m_unk0x4c, &result);
+		p_model->ComputeVisibility(m_unk0x4c, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -1157,7 +1157,7 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 {
 	GolWorldEntity::ResultStruct result;
 	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
-	p_model->VTable0x14(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_unk0x4c, &result);
 	if (!result.m_visibility) {
 		return;
 	}
@@ -1208,7 +1208,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->VTable0x14(m_unk0x4c, &result);
+		p_model->ComputeVisibility(m_unk0x4c, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -1297,7 +1297,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
 	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
-	p_model->VTable0x14(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_unk0x4c, &result);
 	if (!result.m_visibility) {
 		return;
 	}

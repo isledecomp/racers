@@ -11,20 +11,20 @@ public:
 	GolWorldEntityGroup();
 	virtual ~GolWorldEntityGroup(); // vtable+0x4c
 
-	void VTable0x00() override;                                                // vtable+0x00
-	void VTable0x04(GolVec3* p_center) const override;                         // vtable+0x04
-	void VTable0x08(const GolVec3& p_center) override;                         // vtable+0x08
-	void VTable0x10(LegoS32 p_elapsed) override;                               // vtable+0x10
-	void VTable0x1c(GolRenderDevice& p_renderer) override;                     // vtable+0x1c
-	void VTable0x24(ColorTransform* p_transform) override;                     // vtable+0x24
-	void VTable0x28() override;                                                // vtable+0x28
-	void VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const override;     // vtable+0x2c
-	void VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const override;     // vtable+0x30
-	void VTable0x34(const GolVec3& p_src, GolVec3* p_dest) override;           // vtable+0x34
-	void VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const override;     // vtable+0x38
-	void VTable0x40(const GolVec3& p_direction, const GolVec3& p_up) override; // vtable+0x40
-	void VTable0x44(GolMatrix3* p_dest) const override;                        // vtable+0x44
-	void VTable0x48(GolVec3* p_right, GolVec3* p_forward) const override;      // vtable+0x48
+	void UpdateBounds() override;                                                  // vtable+0x00
+	void GetPosition(GolVec3* p_center) const override;                            // vtable+0x04
+	void SetPosition(const GolVec3& p_center) override;                            // vtable+0x08
+	void Update(LegoS32 p_elapsed) override;                                       // vtable+0x10
+	void Draw(GolRenderDevice& p_renderer) override;                               // vtable+0x1c
+	void ApplyColorTransform(ColorTransform* p_transform) override;                // vtable+0x24
+	void VTable0x28() override;                                                    // vtable+0x28
+	void LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const override;       // vtable+0x2c
+	void WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) const override;       // vtable+0x30
+	void RotateToWorld(const GolVec3& p_src, GolVec3* p_dest) override;            // vtable+0x34
+	void RotateToLocal(const GolVec3& p_src, GolVec3* p_dest) const override;      // vtable+0x38
+	void SetDirectionUp(const GolVec3& p_direction, const GolVec3& p_up) override; // vtable+0x40
+	void CopyOrientation(GolMatrix3* p_dest) const override;                       // vtable+0x44
+	void GetAxes(GolVec3* p_right, GolVec3* p_forward) const override;             // vtable+0x48
 
 	void FUN_00411e30(LegoU32 p_capacity);
 	void FUN_00411e90();

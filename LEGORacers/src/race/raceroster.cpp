@@ -115,12 +115,12 @@ void RaceRoster::TestRacerCollisions()
 					if (other->m_active) {
 						otherModel = other->m_descriptor.m_worldEntity;
 						if (model->GetRadius() < 0.0f) {
-							model->VTable0x00();
+							model->UpdateBounds();
 						}
 
 						modelMinX = model->GetMinX();
 						if (otherModel->GetRadius() < 0.0f) {
-							otherModel->VTable0x00();
+							otherModel->UpdateBounds();
 						}
 
 						if (otherModel->GetMaxX() >= modelMinX) {
@@ -151,19 +151,19 @@ void RaceRoster::TestRacerCollisions()
 						}
 
 						if (model->GetRadius() < 0.0f) {
-							model->VTable0x00();
+							model->UpdateBounds();
 						}
 
 						modelMaxX = model->GetMaxX();
 						if (otherModel->GetRadius() < 0.0f) {
-							otherModel->VTable0x00();
+							otherModel->UpdateBounds();
 						}
 
 						if (otherModel->GetMinX() > modelMaxX) {
 							break;
 						}
 
-						if (model->VTable0x18(otherModel)) {
+						if (model->Intersects(otherModel)) {
 							m_callbackData.m_type = 4;
 							m_callbackData.m_worldEntity0 = otherModel;
 							m_callbackData.m_racerView1 = target;
@@ -191,7 +191,7 @@ void RaceRoster::SortBodyEvents()
 	LegoEventQueue::Event* previous = m_bodyEvents;
 	GolWorldEntity* model = previous->m_descriptor.m_worldEntity;
 	if (model->GetRadius() < 0.0f) {
-		model->VTable0x00();
+		model->UpdateBounds();
 	}
 
 	LegoFloat previousMinX = model->GetMinX();
@@ -206,7 +206,7 @@ void RaceRoster::SortBodyEvents()
 		GolWorldEntity* eventModel = event->m_descriptor.m_worldEntity;
 
 		if (eventModel->GetRadius() < 0.0f) {
-			eventModel->VTable0x00();
+			eventModel->UpdateBounds();
 		}
 
 		if (eventModel->GetMinX() < previousMinX) {
@@ -220,12 +220,12 @@ void RaceRoster::SortBodyEvents()
 				GolWorldEntity* insertModel = insertAfter->m_descriptor.m_worldEntity;
 
 				if (eventModel->GetRadius() < 0.0f) {
-					eventModel->VTable0x00();
+					eventModel->UpdateBounds();
 				}
 
 				eventMinX = eventModel->GetMinX();
 				if (insertModel->GetRadius() < 0.0f) {
-					insertModel->VTable0x00();
+					insertModel->UpdateBounds();
 				}
 
 				if (insertModel->GetMinX() <= eventMinX) {
@@ -250,7 +250,7 @@ void RaceRoster::SortBodyEvents()
 			previous = event;
 
 			if (eventModel->GetRadius() < 0.0f) {
-				eventModel->VTable0x00();
+				eventModel->UpdateBounds();
 			}
 
 			previousMinX = eventModel->GetMinX();

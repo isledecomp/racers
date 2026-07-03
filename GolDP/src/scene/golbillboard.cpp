@@ -72,7 +72,7 @@ void GolBillboard::VTable0x50()
 }
 
 // FUNCTION: GOLDP 0x10029ee0
-void GolBillboard::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result)
+void GolBillboard::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
 	GolVec3 position;
 	FUN_100286d0(&position);
@@ -126,13 +126,13 @@ GolMaterial* GolBillboard::FUN_1002a020()
 }
 
 // FUNCTION: GOLDP 0x1002a040
-void GolBillboard::VTable0x1c(GolRenderDevice& p_renderer)
+void GolBillboard::Draw(GolRenderDevice& p_renderer)
 {
 	p_renderer.VTable0xb4(*this);
 }
 
 // FUNCTION: GOLDP 0x1002a060
-LegoBool32 GolBillboard::VTable0x20()
+LegoBool32 GolBillboard::GetKind()
 {
 	if (m_flags & c_flagBit2) {
 		m_position = static_cast<GolMaterial*>(m_positionContainer->GetPosition(m_positionIndex));

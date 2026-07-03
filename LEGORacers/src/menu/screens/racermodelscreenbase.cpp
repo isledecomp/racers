@@ -417,7 +417,7 @@ void RacerModelScreenBase::AlignDriverSlots()
 		up.m_z = 1.0f;
 
 		if (entity != NULL) {
-			entity->VTable0x40(direction, up);
+			entity->SetDirectionUp(direction, up);
 		}
 	}
 }
@@ -443,13 +443,13 @@ void RacerModelScreenBase::AlignCarSlots()
 			GolVec3 localVector;
 			GolVec3 direction;
 			node->FUN_004132a0(0, &m_carDirAxis, &localVector);
-			source->VTable0x34(localVector, &direction);
+			source->RotateToWorld(localVector, &direction);
 
 			GolVec3 up;
 			node->FUN_004132a0(0, &m_carUpAxis, &localVector);
-			source->VTable0x34(localVector, &up);
+			source->RotateToWorld(localVector, &up);
 
-			target->VTable0x40(direction, up);
+			target->SetDirectionUp(direction, up);
 		}
 	}
 }

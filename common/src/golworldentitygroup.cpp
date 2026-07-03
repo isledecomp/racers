@@ -62,7 +62,7 @@ void GolWorldEntityGroup::FUN_00411ec0(GolWorldEntity* p_entity)
 }
 
 // STUB: LEGORACERS 0x00411ef0
-void GolWorldEntityGroup::VTable0x00()
+void GolWorldEntityGroup::UpdateBounds()
 {
 	LegoFloat radius;
 	GolVec3 delta;
@@ -106,31 +106,31 @@ void GolWorldEntityGroup::VTable0x00()
 }
 
 // FUNCTION: LEGORACERS 0x004120b0
-void GolWorldEntityGroup::VTable0x1c(GolRenderDevice& p_renderer)
+void GolWorldEntityGroup::Draw(GolRenderDevice& p_renderer)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
-		m_entities[i]->VTable0x1c(p_renderer);
+		m_entities[i]->Draw(p_renderer);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004120e0
-void GolWorldEntityGroup::VTable0x10(LegoS32 p_elapsed)
+void GolWorldEntityGroup::Update(LegoS32 p_elapsed)
 {
 	LegoU32 i = 0;
 	if (static_cast<LegoU32>(m_count) > 0) {
 		LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
 		for (;;) {
-			m_entities[i]->VTable0x10(p_elapsed);
+			m_entities[i]->Update(p_elapsed);
 
 			GolVec3 center;
-			m_entities[i]->VTable0x04(&center);
+			m_entities[i]->GetPosition(&center);
 
 			GolVec3 delta;
 			delta.m_x = elapsed * m_velocity.m_x;
 			delta.m_y = m_velocity.m_y * elapsed;
 			delta.m_z = m_velocity.m_z * elapsed;
 			center += delta;
-			m_entities[i]->VTable0x08(center);
+			m_entities[i]->SetPosition(center);
 
 			if (++i >= static_cast<LegoU32>(m_count)) {
 				break;
@@ -142,70 +142,70 @@ void GolWorldEntityGroup::VTable0x10(LegoS32 p_elapsed)
 }
 
 // FUNCTION: LEGORACERS 0x004121a0
-void GolWorldEntityGroup::VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const
+void GolWorldEntityGroup::LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const
 {
-	m_entities[0]->VTable0x2c(p_add, p_dest);
+	m_entities[0]->LocalToWorld(p_add, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x004121c0
-void GolWorldEntityGroup::VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const
+void GolWorldEntityGroup::WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) const
 {
-	m_entities[0]->VTable0x30(p_src, p_dest);
+	m_entities[0]->WorldToLocal(p_src, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x004121e0
-void GolWorldEntityGroup::VTable0x34(const GolVec3& p_src, GolVec3* p_dest)
+void GolWorldEntityGroup::RotateToWorld(const GolVec3& p_src, GolVec3* p_dest)
 {
-	m_entities[0]->VTable0x34(p_src, p_dest);
+	m_entities[0]->RotateToWorld(p_src, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00412200
-void GolWorldEntityGroup::VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const
+void GolWorldEntityGroup::RotateToLocal(const GolVec3& p_src, GolVec3* p_dest) const
 {
-	m_entities[0]->VTable0x38(p_src, p_dest);
+	m_entities[0]->RotateToLocal(p_src, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00412220
-void GolWorldEntityGroup::VTable0x08(const GolVec3& p_center)
+void GolWorldEntityGroup::SetPosition(const GolVec3& p_center)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
-		m_entities[i]->VTable0x08(p_center);
+		m_entities[i]->SetPosition(p_center);
 	}
 
 	m_radius = -1.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00412260
-void GolWorldEntityGroup::VTable0x04(GolVec3* p_center) const
+void GolWorldEntityGroup::GetPosition(GolVec3* p_center) const
 {
-	m_entities[0]->VTable0x04(p_center);
+	m_entities[0]->GetPosition(p_center);
 }
 
 // FUNCTION: LEGORACERS 0x00412280
-void GolWorldEntityGroup::VTable0x40(const GolVec3& p_direction, const GolVec3& p_up)
+void GolWorldEntityGroup::SetDirectionUp(const GolVec3& p_direction, const GolVec3& p_up)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
-		m_entities[i]->VTable0x40(p_direction, p_up);
+		m_entities[i]->SetDirectionUp(p_direction, p_up);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004122c0
-void GolWorldEntityGroup::VTable0x48(GolVec3* p_right, GolVec3* p_forward) const
+void GolWorldEntityGroup::GetAxes(GolVec3* p_right, GolVec3* p_forward) const
 {
-	m_entities[0]->VTable0x48(p_right, p_forward);
+	m_entities[0]->GetAxes(p_right, p_forward);
 }
 
 // FUNCTION: LEGORACERS 0x004122e0
-void GolWorldEntityGroup::VTable0x44(GolMatrix3* p_dest) const
+void GolWorldEntityGroup::CopyOrientation(GolMatrix3* p_dest) const
 {
-	m_entities[0]->VTable0x44(p_dest);
+	m_entities[0]->CopyOrientation(p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00412300
-void GolWorldEntityGroup::VTable0x24(ColorTransform* p_transform)
+void GolWorldEntityGroup::ApplyColorTransform(ColorTransform* p_transform)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
-		m_entities[i]->VTable0x24(p_transform);
+		m_entities[i]->ApplyColorTransform(p_transform);
 	}
 }
 

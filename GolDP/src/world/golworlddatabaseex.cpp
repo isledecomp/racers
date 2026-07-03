@@ -272,7 +272,7 @@ undefined4* GolWorldDatabaseEx::VTable0x0c()
 			billboard->VTable0x4c(material, sprite->m_unk0x20, sprite->m_unk0x24, maxDistanceSquared);
 		}
 
-		billboard->VTable0x08(sprite->m_unk0x08);
+		billboard->SetPosition(sprite->m_unk0x08);
 		if (sprite->m_flags & WdbBillboardSprite::c_flagBit1) {
 			billboard->EnableFlagBit1();
 			billboard->SetUnk0x30(sprite->m_unk0x14);
@@ -345,7 +345,7 @@ void GolWorldDatabaseEx::VTable0x20(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_modelEntityCount; i++) {
-		m_modelEntities[i].VTable0x1c(*p_renderer);
+		m_modelEntities[i].Draw(*p_renderer);
 	}
 }
 
@@ -354,7 +354,7 @@ void GolWorldDatabaseEx::VTable0x24(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_animatedEntityCount; i++) {
-		m_animatedEntities[i].VTable0x1c(*p_renderer);
+		m_animatedEntities[i].Draw(*p_renderer);
 	}
 }
 

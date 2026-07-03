@@ -106,7 +106,7 @@ void ColorBrick::Update(LegoU32 p_elapsedMs)
 
 	if (playSound) {
 		SoundVector position;
-		m_worldEntity.VTable0x04(&position);
+		m_worldEntity.GetPosition(&position);
 		m_soundSource->PlaySpatialSoundById(c_soundRespawn, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
 	}
 }
@@ -119,7 +119,7 @@ void ColorBrick::OnTouched(Racer* p_racer)
 		p_racer->CollectColorBrick(m_currentColor);
 
 		SoundVector position;
-		m_worldEntity.VTable0x04(&position);
+		m_worldEntity.GetPosition(&position);
 
 		if (!racerState) {
 			m_nextColor = m_assignedColor;

@@ -54,7 +54,7 @@ void GolCollidableEntity::FUN_1001acf0(GolModelBase* p_model, GolBoundingShape* 
 }
 
 // FUNCTION: GOLDP 0x1001ad70
-void GolCollidableEntity::VTable0x1c(GolRenderDevice& p_renderer)
+void GolCollidableEntity::Draw(GolRenderDevice& p_renderer)
 {
 	p_renderer.VTable0x90(this);
 }

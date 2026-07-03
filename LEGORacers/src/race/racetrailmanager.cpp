@@ -376,7 +376,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	center.m_x = activeFrame->m_points[0].m_x;
 	center.m_y = activeFrame->m_points[1].m_y;
 	center.m_z = activeFrame->m_points[2].m_z;
-	m_entity.VTable0x08(center);
+	m_entity.SetPosition(center);
 
 	GdbVertexArray* vertexArray;
 	LegoFloat uStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_pointCount + 1));

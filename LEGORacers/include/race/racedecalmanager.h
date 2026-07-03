@@ -110,7 +110,7 @@ public:
 
 		// SIZE 0x9c
 		struct ModelEntry {
-			void VTable0x08(const GolVec3& p_position) { m_entity.VTable0x08(p_position); }
+			void SetPosition(const GolVec3& p_position) { m_entity.SetPosition(p_position); }
 			void VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance)
 			{
 				m_entity.VTable0x50(p_model, p_modelDistance);

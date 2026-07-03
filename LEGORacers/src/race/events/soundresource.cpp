@@ -198,7 +198,7 @@ void SoundResource::StopSound()
 	position.m_y = position.m_y * scale;
 	position.m_z = position.m_z * scale;
 
-	m_unk0x28->VTable0x2c(position, &m_position);
+	m_unk0x28->LocalToWorld(position, &m_position);
 	if (m_sound) {
 		m_sound->SetPosition(&m_position);
 	}

@@ -56,12 +56,12 @@ void RacerPhysics::AttachRouteAtLoop(RaceRouteRecord* p_record)
 	GolVec3 position = p_record->m_loopPosition;
 	GolQuat rotation = p_record->m_loopRotation;
 
-	m_carEntity->VTable0x08(position);
+	m_carEntity->SetPosition(position);
 	GolMath::FUN_00449340(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
-	m_carEntity->VTable0x2c(m_centerOfMassLocal, &m_centerOfMassWorld);
+	m_carEntity->LocalToWorld(m_centerOfMassLocal, &m_centerOfMassWorld);
 
 	for (LegoS32 i = 0; i < 4; i++) {
-		m_carEntity->VTable0x2c(m_bodyPointsLocal[i], &m_bodyPointsWorld[i]);
+		m_carEntity->LocalToWorld(m_bodyPointsLocal[i], &m_bodyPointsWorld[i]);
 	}
 }
 

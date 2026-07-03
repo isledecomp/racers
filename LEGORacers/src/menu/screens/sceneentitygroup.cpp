@@ -59,9 +59,9 @@ LegoBool32 AwardCinematicScreen::SceneEntityGroup::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004795b0
-void AwardCinematicScreen::SceneEntityGroup::VTable0x08(const GolVec3& p_center)
+void AwardCinematicScreen::SceneEntityGroup::SetPosition(const GolVec3& p_center)
 {
-	GolWorldEntityGroup::VTable0x08(p_center);
+	GolWorldEntityGroup::SetPosition(p_center);
 
 	if (m_driverEntity) {
 		for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
@@ -69,17 +69,17 @@ void AwardCinematicScreen::SceneEntityGroup::VTable0x08(const GolVec3& p_center)
 				ChassisModelTable::Item* item =
 					static_cast<ChassisModelTable::Item*>(m_chassisModels->GetName(m_chassisName));
 				GolVec3 center;
-				m_carEntity->VTable0x2c(item->m_driverMountOffset, &center);
-				m_driverEntity->VTable0x08(center);
+				m_carEntity->LocalToWorld(item->m_driverMountOffset, &center);
+				m_driverEntity->SetPosition(center);
 			}
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00479620
-void AwardCinematicScreen::SceneEntityGroup::VTable0x40(const GolVec3& p_direction, const GolVec3& p_up)
+void AwardCinematicScreen::SceneEntityGroup::SetDirectionUp(const GolVec3& p_direction, const GolVec3& p_up)
 {
-	GolWorldEntityGroup::VTable0x40(p_direction, p_up);
+	GolWorldEntityGroup::SetDirectionUp(p_direction, p_up);
 
 	if (m_driverEntity) {
 		for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
@@ -88,8 +88,8 @@ void AwardCinematicScreen::SceneEntityGroup::VTable0x40(const GolVec3& p_directi
 				const LegoChar* name = m_chassisName;
 				ChassisModelTable::Item* item = static_cast<ChassisModelTable::Item*>(nameTable->GetName(name));
 				GolVec3 center;
-				m_carEntity->VTable0x2c(item->m_driverMountOffset, &center);
-				m_driverEntity->VTable0x08(center);
+				m_carEntity->LocalToWorld(item->m_driverMountOffset, &center);
+				m_driverEntity->SetPosition(center);
 			}
 		}
 	}

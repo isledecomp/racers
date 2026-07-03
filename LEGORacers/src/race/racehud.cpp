@@ -537,7 +537,7 @@ void RaceHud::DrawFixedMap()
 		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 		if (racer != m_racer) {
 			GolVec3 position;
-			racer->m_visuals.m_carEntity->VTable0x04(&position);
+			racer->m_visuals.m_carEntity->GetPosition(&position);
 
 			Rect destRect;
 			destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
@@ -567,7 +567,7 @@ void RaceHud::DrawFixedMap()
 
 	if (m_timeRaceManager && m_timeRaceManager->HasRecordGhostMarker()) {
 		GolVec3 position;
-		m_timeRaceManager->GetRecordGhostMarkerEntity()->VTable0x04(&position);
+		m_timeRaceManager->GetRecordGhostMarkerEntity()->GetPosition(&position);
 
 		Rect destRect;
 		destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
@@ -591,7 +591,7 @@ void RaceHud::DrawFixedMap()
 
 	if (m_timeRaceManager && m_timeRaceManager->HasBestGhostMarker()) {
 		GolVec3 position;
-		m_timeRaceManager->GetBestGhostMarkerEntity()->VTable0x04(&position);
+		m_timeRaceManager->GetBestGhostMarkerEntity()->GetPosition(&position);
 
 		Rect destRect;
 		destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
@@ -614,7 +614,7 @@ void RaceHud::DrawFixedMap()
 	}
 
 	GolVec3 currentPosition;
-	m_racer->m_visuals.m_carEntity->VTable0x04(&currentPosition);
+	m_racer->m_visuals.m_carEntity->GetPosition(&currentPosition);
 
 	GolVec3 direction;
 	m_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
@@ -674,7 +674,7 @@ void RaceHud::DrawRotatingMap()
 	GolImage* markerResource = m_images->GetItem(10);
 
 	GolVec3 currentPosition;
-	m_racer->m_visuals.m_carEntity->VTable0x04(&currentPosition);
+	m_racer->m_visuals.m_carEntity->GetPosition(&currentPosition);
 
 	GolVec3 cameraDirection;
 	m_racer->m_cameraController->GetViewDirection(&cameraDirection);
@@ -740,7 +740,7 @@ void RaceHud::DrawRotatingMap()
 	for (LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
 		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 		if (racer != m_racer) {
-			racer->m_visuals.m_carEntity->VTable0x04(&position);
+			racer->m_visuals.m_carEntity->GetPosition(&position);
 
 			LegoFloat deltaX = position.m_x - currentPosition.m_x;
 			LegoFloat deltaY = position.m_y - currentPosition.m_y;
@@ -771,7 +771,7 @@ void RaceHud::DrawRotatingMap()
 	}
 
 	if (m_timeRaceManager && m_timeRaceManager->HasRecordGhostMarker()) {
-		m_timeRaceManager->GetRecordGhostMarkerEntity()->VTable0x04(&position);
+		m_timeRaceManager->GetRecordGhostMarkerEntity()->GetPosition(&position);
 
 		LegoFloat deltaX = position.m_x - currentPosition.m_x;
 		LegoFloat deltaY = position.m_y - currentPosition.m_y;
@@ -796,7 +796,7 @@ void RaceHud::DrawRotatingMap()
 	}
 
 	if (m_timeRaceManager && m_timeRaceManager->HasBestGhostMarker()) {
-		m_timeRaceManager->GetBestGhostMarkerEntity()->VTable0x04(&position);
+		m_timeRaceManager->GetBestGhostMarkerEntity()->GetPosition(&position);
 
 		LegoFloat deltaX = position.m_x - currentPosition.m_x;
 		LegoFloat deltaY = position.m_y - currentPosition.m_y;

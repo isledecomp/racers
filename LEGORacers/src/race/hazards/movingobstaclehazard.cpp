@@ -91,7 +91,7 @@ void MovingObstacleHazard::OnActivate(void*)
 	m_loopSound = m_soundSource->AcquireSoundById(c_soundId);
 	if (m_loopSound != NULL) {
 		GolVec3 position;
-		m_entity->VTable0x04(&position);
+		m_entity->GetPosition(&position);
 		m_loopSound->Play(TRUE);
 		m_loopSound->SetPosition(position);
 		m_loopSound->SetFrequencyScale(1.0f);
@@ -147,7 +147,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	offset.m_y *= scale;
 	offset.m_z *= scale;
 
-	m_entity->VTable0x2c(offset, &position);
+	m_entity->LocalToWorld(offset, &position);
 	m_trigger.SetCenter(position);
 
 	LegoFloat frame = m_entity->GetPartTimeMs();
@@ -195,7 +195,7 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 
 	GolVec3 up;
 	GolVec3 forward;
-	m_entity->VTable0x48(&up, &forward);
+	m_entity->GetAxes(&up, &forward);
 
 	forward.m_x = 0.0f;
 	forward.m_y = 0.0f;
@@ -223,7 +223,7 @@ void MovingObstacleHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
 
 		GolVec3 position;
-		racer->m_visuals.m_carEntity->VTable0x04(&position);
+		racer->m_visuals.m_carEntity->GetPosition(&position);
 		m_eventTable->FireEventsAt(c_eventId0x15, c_eventId0x15, &position);
 	}
 }

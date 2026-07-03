@@ -525,8 +525,11 @@ void RaceState::CreateRacer(
 	}
 
 	LegoU32 placementIndex = m_roster.m_placementSlots[p_racerIndex];
-	initParams.m_carEntity->VTable0x08(m_roster.m_startPositions[placementIndex]);
-	initParams.m_carEntity->VTable0x40(m_roster.m_startDirections[placementIndex], m_roster.m_startUps[placementIndex]);
+	initParams.m_carEntity->SetPosition(m_roster.m_startPositions[placementIndex]);
+	initParams.m_carEntity->SetDirectionUp(
+		m_roster.m_startDirections[placementIndex],
+		m_roster.m_startUps[placementIndex]
+	);
 
 	m_roster.m_racers[p_racerIndex].Initialize(p_context, &initParams, &racerParams, this, p_racerIndex);
 
@@ -806,7 +809,7 @@ void RaceState::UpdateStandings()
 			LegoU32 tiedIndex;
 			for (tiedIndex = groupStart; tiedIndex < groupEnd; tiedIndex++) {
 				GolVec3 position;
-				entries[tiedIndex].m_racer->m_visuals.m_carEntity->VTable0x04(&position);
+				entries[tiedIndex].m_racer->m_visuals.m_carEntity->GetPosition(&position);
 
 				LegoFloat nearestPlaneDistance = FLT_MAX;
 				LegoU32 planeIndex;
@@ -861,7 +864,7 @@ void RaceState::UpdateStandings()
 	Racer* trackedRacer = m_roster.m_currentRacer;
 	if (sound && trackedRacer) {
 		GolVec3 trackedPosition;
-		trackedRacer->m_visuals.m_carEntity->VTable0x04(&trackedPosition);
+		trackedRacer->m_visuals.m_carEntity->GetPosition(&trackedPosition);
 
 		Racer* nearestRacer = NULL;
 		LegoFloat nearestDistanceSquared = FLT_MAX;
@@ -870,7 +873,7 @@ void RaceState::UpdateStandings()
 			Racer* racer = &m_roster.m_racers[nearestIndex];
 			if (racer != trackedRacer) {
 				GolVec3 position;
-				racer->m_visuals.m_carEntity->VTable0x04(&position);
+				racer->m_visuals.m_carEntity->GetPosition(&position);
 
 				LegoFloat deltaX = trackedPosition.m_x - position.m_x;
 				LegoFloat deltaY = trackedPosition.m_y - position.m_y;
@@ -895,7 +898,7 @@ void RaceState::UpdateStandings()
 			}
 
 			GolVec3 position;
-			nearestRacer->m_visuals.m_carEntity->VTable0x04(&position);
+			nearestRacer->m_visuals.m_carEntity->GetPosition(&position);
 			sound->SetPosition(position);
 
 			GolVec3 velocity = nearestRacer->m_physics.m_velocity;
@@ -960,7 +963,7 @@ void RaceState::DrawRacerEntities(GolRenderDevice* p_renderer, Racer* p_racer)
 	for (LegoU32 i = 0; i < m_roster.m_racerCount; i++) {
 		if (p_racer != &m_roster.m_racers[i] || p_racer->m_cameraViewIndex != 3 ||
 			(p_racer->m_flags & Racer::c_flagFinished) || !(p_racer->m_flags & Racer::c_flagEngineSounds)) {
-			m_roster.m_racers[i].m_visuals.m_entityGroup.VTable0x1c(*p_renderer);
+			m_roster.m_racers[i].m_visuals.m_entityGroup.Draw(*p_renderer);
 		}
 	}
 }

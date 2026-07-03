@@ -100,7 +100,7 @@ void HazardActionBase::ComputeDropPosition(
 )
 {
 	GolVec3 start;
-	p_racer->m_visuals.m_carEntity->VTable0x04(&start);
+	p_racer->m_visuals.m_carEntity->GetPosition(&start);
 
 	GolVec3 verticalOffset;
 	verticalOffset.Clear();

@@ -111,8 +111,8 @@ void HomingMissileAction::Activate(
 
 	SoundVector position;
 	CarVisuals* racerEntities = &m_ownerRacer->m_visuals;
-	racerEntities->m_carEntity->VTable0x04(&position);
-	projectile->VTable0x08(position);
+	racerEntities->m_carEntity->GetPosition(&position);
+	projectile->SetPosition(position);
 
 	m_ownerRacer->m_physics.m_carEntity->CopyOrientationTo(&projectile->GetOrientation());
 	projectile->SetFlags(projectile->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
@@ -135,7 +135,7 @@ void HomingMissileAction::LaunchProjectile()
 	GolVec3 position;
 	{
 		CarVisuals* racerField = &m_ownerRacer->m_visuals;
-		racerField->m_carEntity->VTable0x04(&position);
+		racerField->m_carEntity->GetPosition(&position);
 	}
 
 	GolVec3 direction;
@@ -237,22 +237,22 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 	GolVec3 up;
 
 	if (m_state == c_stateArmed) {
-		m_missileEntity.VTable0x10(p_elapsedMs);
+		m_missileEntity.Update(p_elapsedMs);
 		if (m_missileEntity.IsPartAnimationDone()) {
 			AdvanceState();
 		}
 		else {
 			GolVec3 position;
 			CarVisuals* racerField = &m_ownerRacer->m_visuals;
-			racerField->m_carEntity->VTable0x04(&position);
-			m_missileEntity.VTable0x08(position);
+			racerField->m_carEntity->GetPosition(&position);
+			m_missileEntity.SetPosition(position);
 			m_missileEntity.CopyOrientationFrom(*m_ownerRacer->m_physics.m_carEntity);
 			return;
 		}
 	}
 
 	if (m_state == c_stateFlying) {
-		m_missileEntity.VTable0x10(p_elapsedMs);
+		m_missileEntity.Update(p_elapsedMs);
 		m_projectile.UpdateTargeting(
 			p_elapsedMs,
 			m_owner->m_raceState,
@@ -311,12 +311,12 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_missileEntity.VTable0x48(&direction, &up);
+		m_missileEntity.GetAxes(&direction, &up);
 		direction = m_projectile.m_direction;
-		m_missileEntity.VTable0x40(direction, up);
+		m_missileEntity.SetDirectionUp(direction, up);
 
 		GolVec3 position;
-		m_missileEntity.VTable0x04(&position);
+		m_missileEntity.GetPosition(&position);
 
 		if (m_trail != NULL) {
 			GolVec3 velocity;
@@ -409,14 +409,14 @@ void HomingMissileAction::AdvanceState()
 		position.m_z *= scale;
 
 		GolVec3 worldPosition;
-		animatedEntity->VTable0x2c(position, &worldPosition);
+		animatedEntity->LocalToWorld(position, &worldPosition);
 
 		GolVec3 worldBasis[2];
-		animatedEntity->VTable0x34(up, &worldBasis[1]);
-		animatedEntity->VTable0x34(right, &worldBasis[0]);
+		animatedEntity->RotateToWorld(up, &worldBasis[1]);
+		animatedEntity->RotateToWorld(right, &worldBasis[0]);
 
-		animatedEntity->VTable0x08(worldPosition);
-		animatedEntity->VTable0x40(worldBasis[1], worldBasis[0]);
+		animatedEntity->SetPosition(worldPosition);
+		animatedEntity->SetDirectionUp(worldBasis[1], worldBasis[0]);
 		animatedEntity->VTable0x4c(0);
 
 		LegoU32 flags = animatedEntity->GetFlags();
@@ -486,7 +486,7 @@ void HomingMissileAction::OnHitRacer(Racer* p_racer)
 			p_racer->m_visuals.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
 
 			SoundVector position;
-			p_racer->m_visuals.m_carEntity->VTable0x04(&position);
+			p_racer->m_visuals.m_carEntity->GetPosition(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundExplode,
 				&position,

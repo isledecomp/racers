@@ -164,14 +164,14 @@ void HomingProjectile::UpdateTargeting(
 // FUNCTION: LEGORACERS 0x00423980
 void HomingProjectile::StartHoming()
 {
-	m_worldEntity->VTable0x04(&m_position);
+	m_worldEntity->GetPosition(&m_position);
 	m_spiralAmplitude = 0.0f;
 	m_hasWaypoint = 0;
 	m_retargetTimerMs = 0;
 
 	GolVec3 forward;
 	GolVec3* direction = &m_direction;
-	m_worldEntity->VTable0x48(direction, &forward);
+	m_worldEntity->GetAxes(direction, &forward);
 	m_retargetTimerMs = 0;
 
 	Racer* racer = m_ownerRacer;
@@ -208,7 +208,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 	m_ageMs += p_elapsedMs;
 	if (static_cast<LegoU32>(m_ageMs) >= m_lifetimeMs) {
 		m_state = c_stateExpired;
-		m_worldEntity->VTable0x04(&m_hitPosition);
+		m_worldEntity->GetPosition(&m_hitPosition);
 		return c_stateExpired;
 	}
 
@@ -222,7 +222,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 
 	Racer* target = m_targetRacer;
 	if (target != NULL) {
-		target->m_visuals.m_carEntity->VTable0x04(&m_targetPosition);
+		target->m_visuals.m_carEntity->GetPosition(&m_targetPosition);
 		m_targetPosition.m_z += g_homingProjectileTargetHeightOffset;
 		m_direction.m_x = m_targetPosition.m_x - m_position.m_x;
 		m_direction.m_y = m_targetPosition.m_y - m_position.m_y;
@@ -248,7 +248,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 
 		if (targetDistanceSquared < g_homingProjectileTargetDirectHitDistanceSquared) {
 			m_hitPosition = m_targetPosition;
-			m_worldEntity->VTable0x08(m_hitPosition);
+			m_worldEntity->SetPosition(m_hitPosition);
 			m_state = c_stateExpired;
 			return c_stateExpired;
 		}
@@ -262,7 +262,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 		targetDistanceSquared += (m_targetPosition.m_x - nextPosition.m_x) * direction->m_x;
 		if (targetDistanceSquared <= 0.0f) {
 			m_hitPosition = m_targetPosition;
-			m_worldEntity->VTable0x08(m_hitPosition);
+			m_worldEntity->SetPosition(m_hitPosition);
 			m_state = c_stateExpired;
 			return c_stateExpired;
 		}
@@ -313,18 +313,18 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 	m_position = nextPosition;
 	ApplySpiral(elapsedSeconds, direction, &nextPosition);
 
-	m_worldEntity->VTable0x04(&previousPosition);
+	m_worldEntity->GetPosition(&previousPosition);
 
 	if (m_collisionWorld->IntersectSegmentAndFireEvents(&previousPosition, &nextPosition, &record, &m_hitPosition)) {
 		m_hitNormal.m_x = record.m_normal.m_x;
 		m_hitNormal.m_y = record.m_normal.m_y;
 		m_hitNormal.m_z = record.m_normal.m_z;
-		m_worldEntity->VTable0x08(m_hitPosition);
+		m_worldEntity->SetPosition(m_hitPosition);
 		m_state = c_stateHitWorld;
 		return c_stateHitWorld;
 	}
 
-	m_worldEntity->VTable0x08(nextPosition);
+	m_worldEntity->SetPosition(nextPosition);
 	return c_stateFlying;
 }
 

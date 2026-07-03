@@ -12,16 +12,16 @@ class GolOrientedEntity : public GolWorldEntity {
 public:
 	GolOrientedEntity();
 
-	void VTable0x04(GolVec3* p_v) const override;                          // vtable+0x04
-	void VTable0x08(const GolVec3& p_v) override;                          // vtable+0x08
-	void VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const override; // vtable+0x2c
-	void VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const override; // vtable+0x30
-	void VTable0x34(const GolVec3& p_src, GolVec3* p_dest) override;       // vtable+0x34
-	void VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const override; // vtable+0x38
-	void VTable0x3c(const GolMatrix3&) override;                           // vtable+0x3c
-	void VTable0x40(const GolVec3& p_v1, const GolVec3& p_v2) override;    // vtable+0x40
-	void VTable0x44(GolMatrix3*) const override;                           // vtable+0x44
-	void VTable0x48(GolVec3* p_dest1, GolVec3* p_dest2) const override;    // vtable+0x48
+	void GetPosition(GolVec3* p_v) const override;                            // vtable+0x04
+	void SetPosition(const GolVec3& p_v) override;                            // vtable+0x08
+	void LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const override;  // vtable+0x2c
+	void WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) const override;  // vtable+0x30
+	void RotateToWorld(const GolVec3& p_src, GolVec3* p_dest) override;       // vtable+0x34
+	void RotateToLocal(const GolVec3& p_src, GolVec3* p_dest) const override; // vtable+0x38
+	void SetOrientationMatrix(const GolMatrix3&) override;                    // vtable+0x3c
+	void SetDirectionUp(const GolVec3& p_v1, const GolVec3& p_v2) override;   // vtable+0x40
+	void CopyOrientation(GolMatrix3*) const override;                         // vtable+0x44
+	void GetAxes(GolVec3* p_dest1, GolVec3* p_dest2) const override;          // vtable+0x48
 
 	void Reset();
 	void FUN_00410a00(const GolVec3& p_v1, const GolVec3& p_v2);

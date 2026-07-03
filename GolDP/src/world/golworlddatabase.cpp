@@ -1392,8 +1392,8 @@ void GolWorldDatabase::FUN_1002e640()
 			runtime->FUN_10027c50(VTable0x38(model->m_unk0x08[lod]), maxDistances[lod]);
 		}
 
-		runtime->VTable0x08(model->m_unk0x50);
-		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_unk0x50);
+		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
 		runtime->m_radius = -1.0f;
 		runtime->m_unk0x58 = model->m_unk0x74;
 
@@ -1496,8 +1496,8 @@ void GolWorldDatabase::FUN_1002e640()
 			}
 		}
 
-		runtime->VTable0x08(model->m_unk0x50);
-		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_unk0x50);
+		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
 		runtime->m_radius = -1.0f;
 		runtime->m_unk0x58 = model->m_unk0x74;
 
@@ -1591,8 +1591,8 @@ void GolWorldDatabase::FUN_1002e640()
 				->FUN_1001acf0(VTable0x38(model->m_unk0x08[lod]), VTable0x44(model->m_unk0x14[lod]), maxDistances[lod]);
 		}
 
-		runtime->VTable0x08(model->m_unk0x50);
-		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_unk0x50);
+		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
 
 		if (model->m_flags & WdbModel::e_flagBit3) {
 			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
@@ -1651,8 +1651,8 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		runtime->FUN_1001b760(&m_unk0x98[model->m_unk0x14[0]]);
-		runtime->VTable0x08(model->m_unk0x50);
-		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_unk0x50);
+		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
 
 		if (model->m_unk0x00[0] != '\0') {
 			if (m_boundedEntityNames.GetNameEntries() == NULL) {

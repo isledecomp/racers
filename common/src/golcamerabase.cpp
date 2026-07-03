@@ -487,9 +487,9 @@ void GolCameraBase::UpdateFromTrackedEntity()
 		forward = transformedForward;
 	}
 
-	m_trackedEntity->VTable0x2c(position, &transformedPosition);
-	m_trackedEntity->VTable0x34(right, &transformedRight);
-	m_trackedEntity->VTable0x34(forward, &transformedForward);
+	m_trackedEntity->LocalToWorld(position, &transformedPosition);
+	m_trackedEntity->RotateToWorld(right, &transformedRight);
+	m_trackedEntity->RotateToWorld(forward, &transformedForward);
 
 	m_transform->SetPosition(&transformedPosition);
 	transformedForward.m_x = -transformedForward.m_x;

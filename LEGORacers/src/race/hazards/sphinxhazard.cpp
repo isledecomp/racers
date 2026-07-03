@@ -102,7 +102,7 @@ void SphinxHazard::OnActivate(void*)
 		m_blowupItem = item2;
 
 		GolVec3 position;
-		m_entity->VTable0x04(&position);
+		m_entity->GetPosition(&position);
 		m_eventTable->StartEventsAt(0x10, &position);
 	}
 
@@ -139,7 +139,7 @@ void SphinxHazard::Update(undefined4 p_elapsedMs)
 		}
 
 		GolVec3 position;
-		m_entity->VTable0x04(&position);
+		m_entity->GetPosition(&position);
 		m_eventTable->EndEventsAt(0x10, &position);
 		OnDeactivate(NULL);
 		return;

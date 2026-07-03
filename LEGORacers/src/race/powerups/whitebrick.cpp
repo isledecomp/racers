@@ -40,7 +40,7 @@ void WhiteBrick::Reset()
 // FUNCTION: LEGORACERS 0x00453620
 void WhiteBrick::CaptureHomePosition()
 {
-	m_worldEntity.VTable0x04(&m_homePosition);
+	m_worldEntity.GetPosition(&m_homePosition);
 	m_state = c_stateActive;
 	m_droppedTimeMs = 0;
 	m_flags = 0;
@@ -50,7 +50,7 @@ void WhiteBrick::CaptureHomePosition()
 void WhiteBrick::Respawn()
 {
 	PickupBrick::Respawn();
-	m_worldEntity.VTable0x08(m_homePosition);
+	m_worldEntity.SetPosition(m_homePosition);
 	m_state = c_stateActive;
 	m_droppedTimeMs = 0;
 	m_flags = 0;
@@ -80,7 +80,7 @@ void WhiteBrick::Update(LegoU32 p_elapsedMs)
 			LegoU8 flags = m_flags;
 			if (flags & c_flagReturnHome) {
 				m_flags = flags & ~c_flagReturnHome;
-				m_worldEntity.VTable0x08(m_homePosition);
+				m_worldEntity.SetPosition(m_homePosition);
 				m_state = c_stateActive;
 			}
 			else {

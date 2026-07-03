@@ -273,7 +273,7 @@ void LauncherHazard::Draw(GolD3DRenderDevice* p_renderer)
 	if (m_state != 1 && m_projectile.GetState() == PowerupProjectile::c_stateFlying) {
 		GolVec3 position;
 		m_trigger.FUN_100286d0(&position);
-		m_billboard->VTable0x08(position);
+		m_billboard->SetPosition(position);
 		p_renderer->VTable0xb4(*m_billboard);
 	}
 }

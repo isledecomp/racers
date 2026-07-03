@@ -206,13 +206,13 @@ Particle* ParticleSystem::SpawnParticle(GolVec3* p_position, GolVec3* p_velocity
 	GolVec3 center, position;
 
 	if (!m_spawnedCount) {
-		m_modelEntity.VTable0x08(*p_position);
+		m_modelEntity.SetPosition(*p_position);
 		center.m_x = 0.0f;
 		center.m_y = 0.0f;
 		center.m_z = 0.0f;
 	}
 	else {
-		m_modelEntity.VTable0x04(&position);
+		m_modelEntity.GetPosition(&position);
 		center.m_x = p_position->m_x - position.m_x;
 		center.m_y = p_position->m_y - position.m_y;
 		center.m_z = p_position->m_z - position.m_z;
@@ -357,7 +357,7 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 				GolCamera* camera = p_renderer->GetUnk0x0c();
 				GolVec3 center;
 				GolVec3 cameraPosition;
-				m_modelEntity.VTable0x04(&center);
+				m_modelEntity.GetPosition(&center);
 				camera->GetTransform()->GetPosition(&cameraPosition);
 
 				LegoFloat deltaX = cameraPosition.m_x - center.m_x;

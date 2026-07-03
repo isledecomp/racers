@@ -147,7 +147,7 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 		localPosition.m_z *= scale;
 
 		GolVec3 position;
-		m_entity->VTable0x2c(localPosition, &position);
+		m_entity->LocalToWorld(localPosition, &position);
 		m_trigger.SetCenter(position);
 
 		if (m_loopSound) {

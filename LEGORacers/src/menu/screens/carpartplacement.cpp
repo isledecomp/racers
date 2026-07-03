@@ -539,8 +539,8 @@ void CarModelScreenBase::CarPartPlacement::CreateCarGroup()
 	m_context->m_saveSystem.GetActiveRecord().GetChassisName(createParams.m_chassisName);
 
 	m_carGroup.Create(&createParams);
-	m_carGroup.VTable0x08(m_piecePosition);
-	m_carGroup.VTable0x00();
+	m_carGroup.SetPosition(m_piecePosition);
+	m_carGroup.UpdateBounds();
 }
 
 // FUNCTION: LEGORACERS 0x00477e40
@@ -561,7 +561,7 @@ void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_unk0x04)
 
 	m_context->m_carBuildModel.UpdateOffset(TRUE);
 	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
-	m_pieceEntity.VTable0x08(m_piecePosition);
+	m_pieceEntity.SetPosition(m_piecePosition);
 	m_previewDirty = 1;
 }
 
@@ -587,8 +587,8 @@ void CarModelScreenBase::CarPartPlacement::ApplyViewAngle(LegoFloat p_unk0x04)
 	up.m_z = 1.0f;
 
 	GolMath::RotateAboutAxis(&direction, &direction, &up, p_unk0x04);
-	m_carGroup.VTable0x40(direction, up);
-	m_pieceEntity.VTable0x40(direction, up);
+	m_carGroup.SetDirectionUp(direction, up);
+	m_pieceEntity.SetDirectionUp(direction, up);
 }
 
 // FUNCTION: LEGORACERS 0x00477fc0
@@ -810,7 +810,7 @@ void CarModelScreenBase::CarPartPlacement::RotatePiece()
 	m_placement.Rotate();
 	m_context->m_carBuildModel.UpdateOffset(TRUE);
 	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
-	m_pieceEntity.VTable0x08(m_piecePosition);
+	m_pieceEntity.SetPosition(m_piecePosition);
 }
 
 // FUNCTION: LEGORACERS 0x004785b0
@@ -832,7 +832,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::MovePieceX(LegoS32 p_delta)
 
 	m_context->m_carBuildModel.UpdateOffset(TRUE);
 	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
-	m_pieceEntity.VTable0x08(m_piecePosition);
+	m_pieceEntity.SetPosition(m_piecePosition);
 	return TRUE;
 }
 
@@ -855,7 +855,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::MovePieceY(LegoS32 p_delta)
 
 	m_context->m_carBuildModel.UpdateOffset(TRUE);
 	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
-	m_pieceEntity.VTable0x08(m_piecePosition);
+	m_pieceEntity.SetPosition(m_piecePosition);
 	return TRUE;
 }
 
@@ -942,7 +942,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 		m_renderer->VTable0x60();
 	}
 
-	m_carGroup.VTable0x1c(*m_renderer);
+	m_carGroup.Draw(*m_renderer);
 
 	if (m_focusedPane == 2) {
 		material->SetColor(originalColor);
@@ -959,7 +959,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 		position.m_x = m_piecePosition.m_x;
 		position.m_y = m_piecePosition.m_y;
 		position.m_z = m_pieceHeight;
-		entity->VTable0x08(position);
+		entity->SetPosition(position);
 
 		if (m_focusedPane == 1) {
 			material->SetColor(highlightColor);
@@ -1003,7 +1003,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 		}
 
 		position.m_z = m_pieceRestHeight;
-		entity->VTable0x08(position);
+		entity->SetPosition(position);
 
 		if (!(m_animFlags & (c_flagCommittingPart | c_flagResettingView)) && alpha > 0) {
 			m_renderer->SetAlphaOverride(alpha, 0);
@@ -1018,13 +1018,13 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 			position.m_z = g_unk0x4b2ed8;
 		}
 
-		entity->VTable0x08(position);
+		entity->SetPosition(position);
 
 		if (m_pitchTarget != 2 || (m_animFlags & (c_flagCommittingPart | c_flagResettingView))) {
 			m_renderer->VTable0x94(entity);
 		}
 
-		entity->VTable0x08(m_piecePosition);
+		entity->SetPosition(m_piecePosition);
 
 		if (m_focusedPane == 1) {
 			material->SetColor(originalColor);
@@ -1051,7 +1051,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Update(undefined4 p_elapsed)
 		m_bobMs -= p_elapsed;
 	}
 
-	m_driverEntity.VTable0x10(p_elapsed);
+	m_driverEntity.Update(p_elapsed);
 
 	if (m_animFlags) {
 		if (m_animFlags & c_flagRotatingAroundCar) {
@@ -1260,7 +1260,7 @@ void CarModelScreenBase::CarPartPlacement::UpdateCommitFeedback(LegoS32 p_elapse
 		m_animFlags &= ~c_flagCommittingPart;
 		m_feedbackMs = 0;
 		m_carGroup.FUN_10026fa0(-1.0f);
-		m_carGroup.VTable0x00();
+		m_carGroup.UpdateBounds();
 
 		m_context->m_carBuildModel.PlacePiece(
 			pieceRecord,

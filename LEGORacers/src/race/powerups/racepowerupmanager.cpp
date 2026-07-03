@@ -249,8 +249,8 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
-	m_entity->VTable0x08(*p_position);
-	m_entity->VTable0x40(*p_direction, up);
+	m_entity->SetPosition(*p_position);
+	m_entity->SetDirectionUp(*p_direction, up);
 	m_state = 2;
 }
 
@@ -258,7 +258,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 void RacePowerupManager::BrickDebris::Entry::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == 2) {
-		m_entity->VTable0x10(p_elapsedMs);
+		m_entity->Update(p_elapsedMs);
 		if (m_entity->IsPartAnimationDone()) {
 			m_entity->VTable0x54();
 			m_state = 3;
@@ -1492,16 +1492,16 @@ void RacePowerupManager::CreateBrickEvents()
 void RacePowerupManager::UpdateBricks(LegoU32 p_elapsedMs)
 {
 	if (m_brickModel != NULL) {
-		m_brickModel->VTable0x10(p_elapsedMs);
+		m_brickModel->Update(p_elapsedMs);
 	}
 	if (m_brickBlendModel != NULL) {
-		m_brickBlendModel->VTable0x10(p_elapsedMs);
+		m_brickBlendModel->Update(p_elapsedMs);
 	}
 	if (m_whiteBrickModel != NULL) {
-		m_whiteBrickModel->VTable0x10(p_elapsedMs);
+		m_whiteBrickModel->Update(p_elapsedMs);
 	}
 	if (m_whiteBrickBlendModel != NULL) {
-		m_whiteBrickBlendModel->VTable0x10(p_elapsedMs);
+		m_whiteBrickBlendModel->Update(p_elapsedMs);
 	}
 
 	if (m_colorBricks != NULL) {
@@ -1812,7 +1812,7 @@ LegoU32 RacePowerupManager::FireCannonball(Racer* p_racer, LegoU32 p_level)
 
 	if (!m_aimTarget) {
 		GolVec3 position;
-		p_racer->m_visuals.m_carEntity->VTable0x04(&position);
+		p_racer->m_visuals.m_carEntity->GetPosition(&position);
 
 		GolVec3 direction;
 		p_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
@@ -1862,7 +1862,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
 	TargetPointList::Entry* entry = NULL;
 
 	GolVec3 position;
-	p_racer->m_visuals.m_carEntity->VTable0x04(&position);
+	p_racer->m_visuals.m_carEntity->GetPosition(&position);
 
 	GolVec3 direction;
 	p_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
@@ -1968,7 +1968,7 @@ LegoU32 RacePowerupManager::ThrowDynamite(Racer* p_racer, LegoU32 p_level)
 	m_activeActions = action;
 
 	GolVec3 position;
-	p_racer->m_visuals.m_carEntity->VTable0x04(&position);
+	p_racer->m_visuals.m_carEntity->GetPosition(&position);
 
 	GolVec3 direction;
 	p_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
@@ -2486,7 +2486,7 @@ void RacePowerupManager::UpdateProjectileSound(SpatialSoundInstance* p_sound, Le
 	GolVec3 position;
 	GolVec3 direction;
 
-	racer->m_visuals.GetCarEntity()->VTable0x04(&referencePosition);
+	racer->m_visuals.GetCarEntity()->GetPosition(&referencePosition);
 
 	for (PowerupAction* node = m_activeActions; node != NULL; node = node->GetNext()) {
 		if (node->GetBrickColor() == 1 && node->GetLevel() == p_level && node->GetState() == p_state) {

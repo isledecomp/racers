@@ -229,12 +229,12 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 		CutsceneParticle* particle = m_smokeParticle->m_particle;
 		if (particle != NULL && particle->GetSpawnedCount() < 3) {
 			if (m_ownerRacer != NULL) {
-				m_ownerRacer->m_physics.m_carEntity->VTable0x04(&particlePosition);
+				m_ownerRacer->m_physics.m_carEntity->GetPosition(&particlePosition);
 				particlePosition.m_z += g_cannonballSmokeHeightOffset;
 
 				particleVelocity = m_ownerRacer->m_physics.m_velocity;
 				if (m_smokeParticle->m_particle != NULL) {
-					m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticle->m_particle->GetBasis());
+					m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticle->m_particle->GetBasis());
 				}
 
 				if (m_smokeParticle->m_particle != NULL) {
@@ -329,7 +329,7 @@ void CannonballAction::AdvanceState()
 
 	if (m_emplacement == NULL) {
 		CarVisuals* racerField = &m_ownerRacer->m_visuals;
-		racerField->m_carEntity->VTable0x04(&position);
+		racerField->m_carEntity->GetPosition(&position);
 		m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 	}
 	else {
@@ -356,7 +356,7 @@ void CannonballAction::AdvanceState()
 	}
 	else if (m_emplacement != NULL) {
 		projectileParams.m_lifetimeMs = m_emplacement->m_lifetimeMs;
-		m_billboard->VTable0x08(m_emplacement->m_position);
+		m_billboard->SetPosition(m_emplacement->m_position);
 		projectileParams.m_gravity = g_cannonballGravity * g_emplacementGravityScale;
 		m_projectile.LaunchAtPosition(&projectileParams, &m_emplacement->m_targetPosition);
 	}
@@ -379,8 +379,8 @@ void CannonballAction::AdvanceState()
 	m_smokeParticle = m_owner->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticle != NULL) {
 		if (m_emplacement == NULL) {
-			m_ownerRacer->m_physics.m_carEntity->VTable0x48(&right, &forward);
-			m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
+			m_ownerRacer->m_physics.m_carEntity->GetAxes(&right, &forward);
+			m_ownerRacer->m_physics.m_carEntity->GetPosition(&position);
 		}
 		else {
 			GolVec3& positionBase = position;
@@ -425,7 +425,7 @@ void CannonballAction::AdvanceState()
 	}
 	else {
 		CarVisuals* racerField = &m_ownerRacer->m_visuals;
-		racerField->m_carEntity->VTable0x04(&position);
+		racerField->m_carEntity->GetPosition(&position);
 	}
 
 	m_soundSource->PlaySpatialSoundById(
@@ -459,7 +459,7 @@ void CannonballAction::OnHitRacer(Racer* p_racer)
 			p_racer->DropWhiteBrick();
 			SoundVector position;
 			p_racer->m_visuals.SetReactionFlags(c_racerCarVisualsFlags0x384Bit1);
-			p_racer->m_visuals.GetCarEntity()->VTable0x04(&position);
+			p_racer->m_visuals.GetCarEntity()->GetPosition(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundHit,
 				&position,

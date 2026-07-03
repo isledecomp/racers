@@ -722,7 +722,7 @@ void GolRenderDevice::SelectTextureFormat(
 void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
-	p_model->VTable0x14(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_unk0x4c, &result);
 	if (!result.m_visibility) {
 		return;
 	}
@@ -735,11 +735,11 @@ void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 		GolVec3 worldForward;
 		static_cast<GolModelEntity*>(p_model)->VTable0x5c(result.m_lodIndex);
 		node->VTable0x18(0)->VTable0x20(&worldRight, &worldForward);
-		p_model->VTable0x34(worldRight, &localRight);
-		p_model->VTable0x34(worldForward, &localForward);
+		p_model->RotateToWorld(worldRight, &localRight);
+		p_model->RotateToWorld(worldForward, &localForward);
 	}
 	else {
-		p_model->VTable0x48(&localRight, &localForward);
+		p_model->GetAxes(&localRight, &localForward);
 	}
 
 	if (localRight.m_x == 0.0f && localRight.m_y == 0.0f) {
@@ -770,14 +770,14 @@ void GolRenderDevice::VTable0xa0(
 )
 {
 	GolWorldEntity::ResultStruct result;
-	p_model->VTable0x14(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_unk0x4c, &result);
 	if (!result.m_visibility) {
 		return;
 	}
 
 	GolVec3 localRight;
 	GolVec3 localForward;
-	p_model->VTable0x48(&localRight, &localForward);
+	p_model->GetAxes(&localRight, &localForward);
 
 	LegoFloat normalDotRight = p_normal->m_z * localRight.m_z;
 	normalDotRight += p_normal->m_y * localRight.m_y;

@@ -146,10 +146,10 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 
 		GolAnimatedEntity* racerEntity = p_racer->m_visuals.m_carEntity;
 		GolVec3 position;
-		racerEntity->VTable0x04(&position);
+		racerEntity->GetPosition(&position);
 		LegoFloat positionZ = position.m_z;
 		position.m_z = positionZ + g_warpPortalHeightOffset;
-		m_modelEntity.VTable0x08(position);
+		m_modelEntity.SetPosition(position);
 		position.m_z -= g_warpPortalHeightOffset;
 		m_modelEntity.CopyOrientationFrom(*racerEntity);
 
@@ -219,16 +219,16 @@ void WarpAction::Update(LegoU32 p_elapsedMs)
 				}
 
 				CarVisuals* racerCarVisuals = &m_racer->m_visuals;
-				racerCarVisuals->m_carEntity->VTable0x04(&position);
+				racerCarVisuals->m_carEntity->GetPosition(&position);
 				m_racer->m_checkpointGraph->AdvanceAlongGraph(&position, distance, pathEntry);
 			}
 
-			m_racer->m_visuals.m_carEntity->VTable0x08(position);
-			m_racer->m_physics.m_physicsEntity.VTable0x08(position);
+			m_racer->m_visuals.m_carEntity->SetPosition(position);
+			m_racer->m_physics.m_physicsEntity.SetPosition(position);
 		} while (0);
 	}
 
-	m_modelEntity.VTable0x10(p_elapsedMs);
+	m_modelEntity.Update(p_elapsedMs);
 	PowerupActionBase::Update(p_elapsedMs);
 }
 
@@ -259,8 +259,8 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 
 	GolVec3 savedPosition;
 	GolMatrix3 savedOrientation;
-	entity->VTable0x04(&savedPosition);
-	entity->VTable0x44(&savedOrientation);
+	entity->GetPosition(&savedPosition);
+	entity->CopyOrientation(&savedOrientation);
 
 	GolVec3 direction;
 	direction.m_x = 0.0f;
@@ -274,8 +274,8 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 
 	GolVec3 position;
 	position.Clear();
-	entity->VTable0x08(position);
-	entity->VTable0x40(direction, up);
+	entity->SetPosition(position);
+	entity->SetDirectionUp(direction, up);
 
 	m_racer->m_cameraController->m_dirty = TRUE;
 	m_racer->m_cameraController->Update(0.0f);
@@ -313,8 +313,8 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 		racerField->Draw(p_renderer);
 	}
 
-	entity->VTable0x08(savedPosition);
-	entity->VTable0x3c(savedOrientation);
+	entity->SetPosition(savedPosition);
+	entity->SetOrientationMatrix(savedOrientation);
 	m_racer->InvalidateCamera();
 	animationList->Draw(p_renderer);
 	racerField->HideModels();
@@ -346,9 +346,9 @@ void WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 
 	CarVisuals* racerField = &m_racer->m_visuals;
 	GolAnimatedEntity* entity = racerField->m_carEntity;
-	entity->VTable0x04(&position);
-	m_modelEntity.VTable0x08(position);
-	m_modelEntity.VTable0x1c(*p_renderer);
+	entity->GetPosition(&position);
+	m_modelEntity.SetPosition(position);
+	m_modelEntity.Draw(*p_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x0045dc90
@@ -375,7 +375,7 @@ void WarpAction::AdvanceState()
 		CarVisuals* racerField = &m_racer->m_visuals;
 		GolAnimatedEntity** entitySlot = &racerField->m_carEntity;
 		GolAnimatedEntity* entity = *entitySlot;
-		entity->VTable0x04(&m_startPosition);
+		entity->GetPosition(&m_startPosition);
 
 		if (!m_isDemoRacer) {
 			m_soundSource->PlaySoundById(c_soundStart);
@@ -443,7 +443,7 @@ void WarpAction::AdvanceState()
 		up.m_z = 1.0f;
 
 		if (!m_isDemoRacer) {
-			entity->VTable0x40(direction, up);
+			entity->SetDirectionUp(direction, up);
 			m_racer->m_physics.m_physicsEntity.CopyOrientationFrom(*entity);
 
 			RacerPhysics* racerPhysics = &m_racer->m_physics;
@@ -498,7 +498,7 @@ void WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 		position = m_targetPosition;
 	}
 	else {
-		p_entity->VTable0x04(&position);
+		p_entity->GetPosition(&position);
 	}
 
 	GolVec3 start = position;
@@ -511,5 +511,5 @@ void WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 	m_manager->m_collisionWorld->IntersectSegment(&start, &end, &record, &position, NULL);
 
 	position.m_z += g_homingProjectileCollisionStartOffset;
-	p_entity->VTable0x08(position);
+	p_entity->SetPosition(position);
 }

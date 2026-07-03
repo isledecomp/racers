@@ -207,7 +207,7 @@ void GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 			GolVec3 racerPosition;
 			CarVisuals* racerField = &m_racer->m_visuals;
-			racerField->m_carEntity->VTable0x04(&racerPosition);
+			racerField->m_carEntity->GetPosition(&racerPosition);
 
 			GolVec3 force;
 			force.m_x = position.m_x - racerPosition.m_x;
@@ -238,7 +238,7 @@ void GrabberHazard::GetGrabPosition(GolVec3* p_position)
 	localPosition.m_y *= scale;
 	localPosition.m_z *= scale;
 
-	m_entity->VTable0x2c(localPosition, p_position);
+	m_entity->LocalToWorld(localPosition, p_position);
 }
 
 // FUNCTION: LEGORACERS 0x0048e230

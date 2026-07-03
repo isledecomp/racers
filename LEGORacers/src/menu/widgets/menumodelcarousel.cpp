@@ -306,19 +306,19 @@ void MenuModelCarousel::GetItemPosition(Item* p_item, GolVec3* p_position)
 	scale = (m_cameraDistance - x) / m_cameraDistance;
 	GolModelEntity* entity = &p_item->m_entity;
 
-	entity->VTable0x04(&oldPosition);
+	entity->GetPosition(&oldPosition);
 
 	p_position->m_x = x;
 	p_position->m_y = scale * itemPosition.m_y;
 	p_position->m_z = scale * itemPosition.m_z;
-	entity->VTable0x08(*p_position);
+	entity->SetPosition(*p_position);
 
 	entity->FUN_10027fe0(0, &center, &radius);
 
 	p_position->m_x -= center.m_x - p_position->m_x;
 	p_position->m_y -= center.m_y - p_position->m_y;
 	p_position->m_z -= center.m_z - p_position->m_z;
-	entity->VTable0x08(oldPosition);
+	entity->SetPosition(oldPosition);
 }
 
 // FUNCTION: LEGORACERS 0x0046d140
@@ -341,7 +341,7 @@ void MenuModelCarousel::VTable0x60(LegoS32 p_index)
 
 	GolVec3 position;
 	GetItemPosition(item, &position);
-	item->m_entity.VTable0x08(position);
+	item->m_entity.SetPosition(position);
 	item->m_model = item->m_entity.GetModel(0);
 }
 
@@ -371,7 +371,7 @@ void MenuModelCarousel::SnapToSelection()
 		if (item->m_entity.HasModel()) {
 			GolVec3 position;
 			GetItemPosition(item, &position);
-			item->m_entity.VTable0x08(position);
+			item->m_entity.SetPosition(position);
 			item->m_entity.ClearVelocity();
 		}
 	}
@@ -387,7 +387,7 @@ void MenuModelCarousel::StartScroll(undefined4)
 	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
 		if (item->m_entity.HasModel()) {
 			GolVec3 currentPosition;
-			item->m_entity.VTable0x04(&currentPosition);
+			item->m_entity.GetPosition(&currentPosition);
 
 			GolVec3 targetPosition;
 			GetItemPosition(item, &targetPosition);
@@ -559,7 +559,7 @@ undefined4 MenuModelCarousel::OnEvent(undefined4 p_elapsed)
 	Item* item = m_items;
 	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
 		LayoutItem(elapsed, &item->m_entity);
-		item->m_entity.VTable0x10(elapsed);
+		item->m_entity.Update(elapsed);
 	}
 
 	return 0;

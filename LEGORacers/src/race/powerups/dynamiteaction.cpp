@@ -134,7 +134,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	SoundVector position;
-	m_modelEntity.VTable0x04(&position);
+	m_modelEntity.GetPosition(&position);
 
 	if (m_projectile.GetState() != 0) {
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
@@ -186,7 +186,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 	direction.m_x = -up.m_z;
 	direction.m_y = 0.0f;
 	direction.m_z = up.m_x;
-	m_modelEntity.VTable0x40(direction, up);
+	m_modelEntity.SetDirectionUp(direction, up);
 
 	if (m_sparkParticle != NULL) {
 		position.m_x += up.m_x * g_dynamiteSparkOffsetScale;
@@ -217,7 +217,7 @@ void DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
 void DynamiteAction::AdvanceState()
 {
 	GolVec3 position;
-	m_modelEntity.VTable0x04(&position);
+	m_modelEntity.GetPosition(&position);
 
 	switch (m_state) {
 	case c_stateArmed: {
@@ -235,7 +235,7 @@ void DynamiteAction::AdvanceState()
 
 		CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		GolVec3 racerPosition;
-		racerField->m_carEntity->VTable0x04(&racerPosition);
+		racerField->m_carEntity->GetPosition(&racerPosition);
 
 		GolVec3 forward;
 		m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&forward);

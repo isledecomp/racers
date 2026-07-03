@@ -189,7 +189,7 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 	EmitRing(&localPosition, &m_baseColor, 0, 0);
 	m_textureColumn = 1;
 
-	m_entity.VTable0x08(*p_position);
+	m_entity.SetPosition(*p_position);
 
 	GolVec3 direction;
 	GolMath::NormalizeVector3(*p_direction, &direction);
@@ -201,7 +201,7 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 		up.m_z = 0.0f;
 	}
 
-	m_entity.VTable0x40(direction, up);
+	m_entity.SetDirectionUp(direction, up);
 }
 
 // FUNCTION: LEGORACERS 0x00494030
@@ -215,13 +215,13 @@ void BeamMesh::AdvanceSection(const GolVec3* p_position)
 	vector.m_z = m_lastPosition.m_z - m_startPosition.m_z;
 
 	GolVec3 transformed;
-	m_entity.VTable0x38(vector, &transformed);
+	m_entity.RotateToLocal(vector, &transformed);
 	transform->SetPosition(&transformed);
 
 	vector.m_x = p_position->m_x - m_lastPosition.m_x;
 	vector.m_y = p_position->m_y - m_lastPosition.m_y;
 	vector.m_z = p_position->m_z - m_lastPosition.m_z;
-	m_entity.VTable0x38(vector, &transformed);
+	m_entity.RotateToLocal(vector, &transformed);
 
 	vector.m_x = 0.0f;
 	vector.m_y = 0.0f;
@@ -451,7 +451,7 @@ void BeamMesh::SetColors(
 void BeamMesh::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & 1) {
-		m_entity.VTable0x1c(*p_renderer);
+		m_entity.Draw(*p_renderer);
 	}
 }
 
@@ -632,7 +632,7 @@ GolSceneNode* BeamEntity::VTable0x58(undefined4)
 }
 
 // STUB: LEGORACERS 0x00494ca0
-void BeamEntity::VTable0x1c(GolRenderDevice& p_renderer)
+void BeamEntity::Draw(GolRenderDevice& p_renderer)
 {
 	if (m_faceCamera != 0) {
 		GolVec3 cameraRight;
@@ -642,7 +642,7 @@ void BeamEntity::VTable0x1c(GolRenderDevice& p_renderer)
 		cameraRight.m_z = -cameraRight.m_z;
 
 		GolVec3 localRight;
-		VTable0x38(cameraRight, &localRight);
+		RotateToLocal(cameraRight, &localRight);
 
 		for (LegoU32 i = 0; i < m_sceneNode->GetCapacity(); i++) {
 			GolTransformBase* transform = m_sceneNode->VTable0x18(i);

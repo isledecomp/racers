@@ -406,7 +406,7 @@ void LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 void LightningAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_targetRacer != NULL) {
-		m_flashBillboard->VTable0x08(m_boltPoints[3]);
+		m_flashBillboard->SetPosition(m_boltPoints[3]);
 		p_renderer->VTable0xb4(*m_flashBillboard);
 	}
 
@@ -481,7 +481,7 @@ void LightningAction::UpdateBoltPath()
 	GolCameraBase::FUN_00404550(&position, &scaledDirection, &end);
 
 	if (m_targetRacer != NULL) {
-		m_targetRacer->m_visuals.m_carEntity->VTable0x04(&end);
+		m_targetRacer->m_visuals.m_carEntity->GetPosition(&end);
 
 		direction.m_x = end.m_x - position.m_x;
 		direction.m_y = end.m_y - position.m_y;
@@ -628,7 +628,7 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 			m_hitParticle = cutsceneAnimation->SpawnParticle("lghthit", NULL, NULL, NULL);
 
 			SoundVector position;
-			racerCarVisuals->m_carEntity->VTable0x04(&position);
+			racerCarVisuals->m_carEntity->GetPosition(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundZap,
 				&position,

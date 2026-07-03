@@ -237,7 +237,7 @@ void ShieldAction::Update(LegoU32 p_elapsedMs)
 
 	GolVec3 position;
 	CarVisuals* racerEntities = &m_racer->m_visuals;
-	racerEntities->m_carEntity->VTable0x04(&position);
+	racerEntities->m_carEntity->GetPosition(&position);
 
 	GolVec3 velocity = m_racer->m_physics.m_velocity;
 	if (m_sound) {
@@ -245,8 +245,8 @@ void ShieldAction::Update(LegoU32 p_elapsedMs)
 		m_sound->SetVelocity(velocity);
 	}
 
-	m_shieldEntity->VTable0x10(p_elapsedMs);
-	m_innerShieldEntity->VTable0x10(p_elapsedMs);
+	m_shieldEntity->Update(p_elapsedMs);
+	m_innerShieldEntity->Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x0045c160 FOLDED
@@ -257,19 +257,19 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	}
 
 	GolVec3 position;
-	m_racer->m_visuals.m_carEntity->VTable0x04(&position);
+	m_racer->m_visuals.m_carEntity->GetPosition(&position);
 	LegoFloat positionZ = position.m_z;
 	positionZ += g_violetShoalTwo;
 	position.m_z = positionZ;
-	m_shieldEntity->VTable0x08(position);
+	m_shieldEntity->SetPosition(position);
 
 	GolVec3 direction;
 	GolVec3 up;
-	m_racer->m_visuals.m_carEntity->VTable0x48(&direction, &up);
+	m_racer->m_visuals.m_carEntity->GetAxes(&direction, &up);
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
-	m_shieldEntity->VTable0x40(direction, up);
+	m_shieldEntity->SetDirectionUp(direction, up);
 
 	m_shieldEntity->CopyOrientationAndPositionTo(m_innerShieldEntity);
 
@@ -281,8 +281,8 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
-	m_innerShieldEntity->VTable0x1c(*p_renderer);
-	m_shieldEntity->VTable0x1c(*p_renderer);
+	m_innerShieldEntity->Draw(*p_renderer);
+	m_shieldEntity->Draw(*p_renderer);
 
 	if (m_state == 4) {
 		p_renderer->ClearAlphaOverride();
@@ -302,7 +302,7 @@ void ShieldAction::AdvanceState()
 
 		SoundVector position;
 		CarVisuals* racerEntities = &m_racer->m_visuals;
-		racerEntities->m_carEntity->VTable0x04(&position);
+		racerEntities->m_carEntity->GetPosition(&position);
 		LegoFloat positionZ = position.m_z;
 		positionZ += g_homingProjectileCollisionStartOffset;
 		position.m_z = positionZ;

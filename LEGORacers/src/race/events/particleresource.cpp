@@ -200,7 +200,7 @@ void ParticleResource::Update(LegoU32 p_elapsedMs)
 		position.m_y *= scale;
 		position.m_z *= scale;
 
-		m_trackedEntity->VTable0x2c(position, &transformedPosition);
+		m_trackedEntity->LocalToWorld(position, &transformedPosition);
 		if (m_particle->m_particle) {
 			m_particle->m_particle->SetPosition(&transformedPosition);
 		}

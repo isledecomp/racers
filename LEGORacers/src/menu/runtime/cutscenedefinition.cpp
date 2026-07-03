@@ -236,7 +236,7 @@ void CutsceneDefinition::Frame::ModelEvent::Destroy()
 void CutsceneDefinition::Frame::ModelEvent::Update(undefined4 p_elapsedMs)
 {
 	if (m_active) {
-		m_entity->VTable0x10(p_elapsedMs);
+		m_entity->Update(p_elapsedMs);
 
 		for (LegoU32 i = 0; i < m_animationCount; i++) {
 			m_animations[i].m_item->FUN_004104c0(
@@ -252,7 +252,7 @@ void CutsceneDefinition::Frame::ModelEvent::Update(undefined4 p_elapsedMs)
 void CutsceneDefinition::Frame::ModelEvent::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_active && !m_transparent) {
-		m_entity->VTable0x1c(*p_renderer);
+		m_entity->Draw(*p_renderer);
 	}
 }
 
@@ -260,7 +260,7 @@ void CutsceneDefinition::Frame::ModelEvent::Draw(GolD3DRenderDevice* p_renderer)
 void CutsceneDefinition::Frame::ModelEvent::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_active && m_transparent) {
-		m_entity->VTable0x1c(*p_renderer);
+		m_entity->Draw(*p_renderer);
 	}
 }
 
@@ -268,9 +268,9 @@ void CutsceneDefinition::Frame::ModelEvent::DrawTransparent(GolD3DRenderDevice* 
 void CutsceneDefinition::Frame::ModelEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
 	if (m_entity) {
-		m_transparent = m_entity->VTable0x20();
-		m_entity->VTable0x08(m_location);
-		m_entity->VTable0x40(m_direction, m_up);
+		m_transparent = m_entity->GetKind();
+		m_entity->SetPosition(m_location);
+		m_entity->SetDirectionUp(m_direction, m_up);
 
 		if (m_animationCount && (m_modelRefType == c_modelRefJointedModel || m_modelRefType == c_modelRefStaticModel ||
 								 m_modelRefType == c_modelRefBspModel)) {

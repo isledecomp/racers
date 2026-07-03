@@ -91,7 +91,7 @@ void DriverLicenseScreen::CreateDriverScene()
 	up.m_x = 0.0f;
 	up.m_y = -0.0348990f;
 	up.m_z = 0.9993910f;
-	m_modelSlot.GetDriverEntity()->VTable0x40(direction, up);
+	m_modelSlot.GetDriverEntity()->SetDirectionUp(direction, up);
 }
 
 // FUNCTION: LEGORACERS 0x0047b300

@@ -235,7 +235,7 @@ void RacerCarBody::ComputeWheelPositions()
 	GolOrientedEntity* entity = &m_physicsEntity;
 	WheelProbe* points = m_wheelProbes;
 	GolVec3* anchor = &points[1].m_wheelPosition;
-	entity->VTable0x2c(m_anchorWheelOffset, anchor);
+	entity->LocalToWorld(m_anchorWheelOffset, anchor);
 
 	GolVec3 lengthOffset;
 	entity->GetOrientationRow0(&lengthOffset);
@@ -283,7 +283,7 @@ void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_
 	WheelProbe* entries = m_wheelProbes;
 
 	GolVec3 center;
-	p_world->VTable0x30(entries[1].m_wheelPosition, &center);
+	p_world->WorldToLocal(entries[1].m_wheelPosition, &center);
 
 	entries[1].m_rayStart.m_x = center.m_x + zHeight.m_x;
 	entries[1].m_rayStart.m_y = center.m_y + zHeight.m_y;
@@ -303,10 +303,10 @@ void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_
 	row1.m_z = m_physicsEntity.GetOrientation().m_m[1][2];
 
 	GolVec3 localRow0;
-	p_world->VTable0x38(row0, &localRow0);
+	p_world->RotateToLocal(row0, &localRow0);
 
 	GolVec3 localRow1;
-	p_world->VTable0x38(row1, &localRow1);
+	p_world->RotateToLocal(row1, &localRow1);
 
 	localRow0.m_x *= m_wheelbase;
 	localRow0.m_y *= m_wheelbase;

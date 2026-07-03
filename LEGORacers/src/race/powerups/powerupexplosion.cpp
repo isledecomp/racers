@@ -160,18 +160,18 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 	m_growth = 0.050000001f;
 	m_growthRate = m_initialGrowthRate;
 
-	m_worldEntity.VTable0x08(*p_position);
+	m_worldEntity.SetPosition(*p_position);
 	m_worldEntity.FUN_10026fa0(0.1f);
 
 	if (m_billboard != NULL) {
 		m_billboard->SetWidth(0.1f);
 		m_billboard->SetHeight(0.2f);
-		m_billboard->VTable0x08(*p_position);
+		m_billboard->SetPosition(*p_position);
 	}
 
 	if (m_modelEntity.HasModel()) {
 		m_modelEntity.SetUnk0x58ThenInvalidateRadius(0.050000001f);
-		m_modelEntity.VTable0x08(*p_position);
+		m_modelEntity.SetPosition(*p_position);
 	}
 
 	GolVec3 position;
@@ -368,7 +368,7 @@ void PowerupExplosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
 
 		if (m_modelEntity.HasModel()) {
 			p_renderer->SetAlphaOverride(static_cast<LegoS32>(m_modelAlpha), 1);
-			m_modelEntity.VTable0x1c(*p_renderer);
+			m_modelEntity.Draw(*p_renderer);
 		}
 
 		p_renderer->ClearAlphaOverride();

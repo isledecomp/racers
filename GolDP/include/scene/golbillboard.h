@@ -42,11 +42,11 @@ public:
 	static void FUN_10014e20();
 
 	// FUNCTION: GOLDP 0x100156c0
-	void VTable0x08(const GolVec3& p_v) override { GolWorldEntity::VTable0x08(p_v); } // vtable+0x08
+	void SetPosition(const GolVec3& p_v) override { GolWorldEntity::SetPosition(p_v); } // vtable+0x08
 
-	void VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result) override; // vtable+0x14
-	void VTable0x1c(GolRenderDevice&) override;                                     // vtable+0x1c
-	LegoBool32 VTable0x20() override;                                               // vtable+0x20
+	void ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result) override; // vtable+0x14
+	void Draw(GolRenderDevice&) override;                                                  // vtable+0x1c
+	LegoBool32 GetKind() override;                                                         // vtable+0x20
 	virtual VTable0x4cReturn VTable0x4c(
 		GolMaterial* p_position,
 		LegoFloat p_width,

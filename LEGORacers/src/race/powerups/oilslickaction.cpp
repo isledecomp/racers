@@ -139,7 +139,7 @@ void OilSlickAction::Update(LegoU32 p_elapsedMs)
 		LegoFloat angle = static_cast<LegoFloat>(phase) * g_oilBubbleAngleScale;
 		LegoFloat offset = static_cast<LegoFloat>(distance);
 		GolVec3 position;
-		m_worldEntity.VTable0x04(&position);
+		m_worldEntity.GetPosition(&position);
 		CutsceneParticleRef* particleRef = m_bubbleParticle;
 		position.m_x += static_cast<LegoFloat>(::sin(angle)) * offset;
 		position.m_y += static_cast<LegoFloat>(::cos(angle)) * offset;
@@ -174,7 +174,7 @@ void OilSlickAction::AdvanceState()
 
 	SoundVector position;
 	ComputeDropPosition(m_ownerRacer, &position, NULL);
-	m_worldEntity.VTable0x08(position);
+	m_worldEntity.SetPosition(position);
 	m_worldEntity.FUN_10026fa0(3.0f);
 	m_ownerRacer->m_physics.ApplyPitchImpulse(0.0015f, 150);
 	m_soundSource
@@ -244,7 +244,7 @@ void OilSlickAction::OnHitRacer(Racer* p_racer)
 	m_stateTimerMs = 0;
 
 	SoundVector position;
-	p_racer->m_visuals.m_carEntity->VTable0x04(&position);
+	p_racer->m_visuals.m_carEntity->GetPosition(&position);
 	m_soundSource->PlaySpatialSoundById(
 		c_soundSlip,
 		&position,

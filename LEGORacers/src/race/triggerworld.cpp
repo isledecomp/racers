@@ -96,8 +96,8 @@ LegoBool32 TriggerWorld::IntersectSegment(
 			if (discriminant > 0.0f) {
 				LegoFloat distance = static_cast<LegoFloat>(dot - sqrt(discriminant));
 				if (distance * distance <= 0.0f) {
-					entity->VTable0x30(*p_unk0x04, &startLocal);
-					entity->VTable0x30(*p_unk0x08, &endLocal);
+					entity->WorldToLocal(*p_unk0x04, &startLocal);
+					entity->WorldToLocal(*p_unk0x08, &endLocal);
 
 					query = entity->GetUnk0x58();
 					query->SetUnk0x24(entity->GetMaterialTable());
@@ -131,13 +131,13 @@ finish:
 	return TRUE;
 
 hit:
-	entity->VTable0x2c(hitLocal, p_unk0x10);
+	entity->LocalToWorld(hitLocal, p_unk0x10);
 
 	planeLocal.m_y = record->m_normal.m_y;
 	planeLocal.m_z = record->m_normal.m_z;
 	planeLocal.m_x = record->m_normal.m_x;
 
-	entity->VTable0x34(planeLocal, &planeWorld);
+	entity->RotateToWorld(planeLocal, &planeWorld);
 
 	record->m_normal.m_x = planeWorld.m_x;
 	record->m_normal.m_y = planeWorld.m_y;

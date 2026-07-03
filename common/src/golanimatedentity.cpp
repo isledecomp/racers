@@ -434,7 +434,7 @@ void GolAnimatedEntity::TransitionToPart(
 
 // FUNCTION: GOLDP 0x10023b10
 // STUB: LEGORACERS 0x0040dd60
-void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
+void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 {
 	m_flags &= ~c_flagLoopWrapped;
 	if (m_flags & c_flagPartAnimation) {
@@ -519,7 +519,7 @@ void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
 					}
 
 					m_partTimeMs = wrappedTime;
-					GolModelEntity::VTable0x10(p_elapsed);
+					GolModelEntity::Update(p_elapsed);
 					return;
 				}
 				else {
@@ -539,7 +539,7 @@ void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
 		}
 	}
 
-	GolModelEntity::VTable0x10(p_elapsed);
+	GolModelEntity::Update(p_elapsed);
 }
 
 // STUB: GOLDP 0x10023ef0
@@ -594,14 +594,14 @@ void GolAnimatedEntity::VTable0x4c(LegoU32 p_index)
 	center *= scale;
 
 	GolVec3 position;
-	VTable0x2c(center, &position);
+	LocalToWorld(center, &position);
 	FUN_10026f70(position);
 	FUN_10026fa0(radius * scale);
 }
 
 // FUNCTION: GOLDP 0x100240b0
 // FUNCTION: LEGORACERS 0x0040e270
-void GolAnimatedEntity::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result)
+void GolAnimatedEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
 	GolVec3 position;
 	FUN_100286d0(&position);

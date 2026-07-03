@@ -18,7 +18,7 @@ LegoU8 DroppableBrick::DropAt(GolVec3 p_position)
 	position.m_z = p_position.m_z;
 
 	SnapToGround(&position);
-	m_worldEntity.VTable0x08(position);
+	m_worldEntity.SetPosition(position);
 
 	LegoU8 flags = m_flags;
 	m_state = 2;
@@ -45,7 +45,7 @@ void DroppableBrick::ReturnHome()
 		return;
 	}
 
-	m_worldEntity.VTable0x08(m_homePosition);
+	m_worldEntity.SetPosition(m_homePosition);
 	m_state = 2;
 	m_stateTimerMs = 0;
 }

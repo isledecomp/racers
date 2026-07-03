@@ -211,7 +211,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 		position.m_z *= scale;
 
 		GolVec3 worldPosition;
-		m_ghostEntity->VTable0x2c(position, &worldPosition);
+		m_ghostEntity->LocalToWorld(position, &worldPosition);
 		m_trigger.SetCenter(worldPosition);
 
 		if (m_trailParticle == NULL) {
@@ -257,16 +257,16 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 
 			GolMatrix3 orientation;
 			GolMath::FUN_00449340(&rotation, &orientation.m_m[0][0]);
-			modelEntity->VTable0x3c(orientation);
+			modelEntity->SetOrientationMatrix(orientation);
 
 			position.m_x *= scale;
 			position.m_y *= scale;
 			position.m_z *= scale;
-			modelEntity->VTable0x08(position);
+			modelEntity->SetPosition(position);
 		}
 
 		if (m_loopSound != NULL) {
-			m_ghostEntity->VTable0x2c(position, &worldPosition);
+			m_ghostEntity->LocalToWorld(position, &worldPosition);
 			m_loopSound->SetPosition(&worldPosition);
 
 			LegoU32 soundElapsedMs = m_soundJitterMs;
@@ -329,7 +329,7 @@ void GhostHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 	racer->PlayReaction(FALSE);
 
 	SoundVector position;
-	racer->m_visuals.m_carEntity->VTable0x04(&position);
+	racer->m_visuals.m_carEntity->GetPosition(&position);
 	m_soundSource->PlaySpatialSoundById(
 		c_soundId0xbc7,
 		&position,

@@ -10,7 +10,7 @@ public:
 	BeamEntity();
 	~BeamEntity();
 	BeamEntity* Destroy(undefined4 p_flags);
-	void VTable0x1c(GolRenderDevice& p_renderer) override; // vtable+0x1c
+	void Draw(GolRenderDevice& p_renderer) override; // vtable+0x1c
 	void Initialize(
 		GolModelBase* p_model,
 		GolSceneNode* p_sceneNode,

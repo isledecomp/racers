@@ -160,15 +160,15 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 		localPosition.m_y *= scale;
 		localPosition.m_z *= scale;
 		GolVec3 worldPosition;
-		m_entity->VTable0x2c(localPosition, &worldPosition);
+		m_entity->LocalToWorld(localPosition, &worldPosition);
 		m_body.m_centerOfMassWorld = worldPosition;
 
 		if (m_isRock) {
 			GolVec3 worldRight;
 			GolVec3 worldForward;
-			m_entity->VTable0x34(right, &worldRight);
-			m_entity->VTable0x34(forward, &worldForward);
-			m_bodyEntity.VTable0x40(worldRight, worldForward);
+			m_entity->RotateToWorld(right, &worldRight);
+			m_entity->RotateToWorld(forward, &worldForward);
+			m_bodyEntity.SetDirectionUp(worldRight, worldForward);
 		}
 
 		m_bodyEntity.SetCenter(worldPosition);

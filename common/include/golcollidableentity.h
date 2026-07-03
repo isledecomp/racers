@@ -15,8 +15,8 @@ class GolCollidableEntity : public GolModelEntity {
 public:
 	GolCollidableEntity();
 
-	void VTable0x1c(GolRenderDevice&) override; // vtable+0x1c
-	void VTable0x54() override;                 // vtable+0x54
+	void Draw(GolRenderDevice&) override; // vtable+0x1c
+	void VTable0x54() override;           // vtable+0x54
 	virtual void VTable0x60(GolModelBase* p_model, GolBoundingShape* p_shape,
 							LegoFloat p_modelDistance); // vtable+0x60
 

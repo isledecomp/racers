@@ -119,7 +119,7 @@ LegoS32 TetherProjectile::Update(LegoU32 p_elapsedMs)
 		m_currentWaveAmplitude = (1.0f - elapsed) * m_waveAmplitude;
 
 		GolVec3 position;
-		m_worldEntity->VTable0x04(&position);
+		m_worldEntity->GetPosition(&position);
 		RebuildBeam(&position, elapsedMs, m_currentWaveAmplitude);
 
 		result = c_stateFlying;
@@ -136,7 +136,7 @@ void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapse
 	elapsedStep *= 0.001f;
 
 	GolVec3 origin;
-	m_ownerRacer->m_visuals.m_carEntity->VTable0x04(&origin);
+	m_ownerRacer->m_visuals.m_carEntity->GetPosition(&origin);
 	origin.m_z += m_attachHeight;
 
 	LegoFloat deltaX = p_position->m_x - origin.m_x;
@@ -173,7 +173,7 @@ void TetherProjectile::Draw(GolD3DRenderDevice* p_renderer)
 LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 {
 	GolVec3 position;
-	m_ownerRacer->m_visuals.m_carEntity->VTable0x04(&position);
+	m_ownerRacer->m_visuals.m_carEntity->GetPosition(&position);
 	position.m_z += m_attachHeight;
 
 	GolVec3* target = &m_endPosition;
@@ -223,11 +223,11 @@ LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 {
 	GolVec3 targetPosition;
-	m_hitRacer->m_visuals.m_carEntity->VTable0x04(&targetPosition);
+	m_hitRacer->m_visuals.m_carEntity->GetPosition(&targetPosition);
 	targetPosition.m_z += g_tetherTargetHeightOffset;
 
 	GolVec3 currentPosition;
-	m_worldEntity->VTable0x04(&currentPosition);
+	m_worldEntity->GetPosition(&currentPosition);
 
 	if (!(m_flags & c_flagSnapped)) {
 		if (GolMath::FUN_00449a90(
@@ -245,10 +245,10 @@ LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 		currentPosition = targetPosition;
 	}
 
-	m_worldEntity->VTable0x08(currentPosition);
+	m_worldEntity->SetPosition(currentPosition);
 
 	GolVec3 origin;
-	m_ownerRacer->m_visuals.m_carEntity->VTable0x04(&origin);
+	m_ownerRacer->m_visuals.m_carEntity->GetPosition(&origin);
 	origin.m_z += m_attachHeight;
 
 	GolVec3 delta;

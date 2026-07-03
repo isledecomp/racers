@@ -51,7 +51,8 @@ public:
 			GolTextureList* m_altTextures;      // 0x50
 			DriverCosmetics m_cosmetics;        // 0x54
 			LegoU8 m_previewFaceIndex;          // 0x59
-			undefined m_unk0x5a[0x5c - 0x5a];   // 0x5a
+			LegoU8 m_finishPosition;            // 0x5a
+			undefined m_unk0x5b;                // 0x5b
 		};
 
 		// SIZE 0x0c
@@ -111,7 +112,7 @@ public:
 		undefined4 m_playerCount;                                           // 0x32c
 		PlayerRecordState m_playerRecordStates[c_playerRecordStateCount];   // 0x330
 		InputBindingState::Entry m_inputBindings[c_inputBindingEntryCount]; // 0x348
-		undefined4 m_unk0x398;                                              // 0x398
+		undefined4 m_cameraViewIndex;                                       // 0x398
 		LegoU32 m_saveRecordCount;                                          // 0x39c
 		SaveRecordData m_saveRecords[5];                                    // 0x3a0
 		PersistentGameState m_saveState;                                    // 0xe81

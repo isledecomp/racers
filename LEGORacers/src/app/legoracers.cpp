@@ -57,7 +57,7 @@ LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
 	m_context.m_raceMode = Context::c_raceModeSingle;
 	m_context.m_playerCount = 1;
 	m_context.m_nextMenuId = c_menuLegal;
-	m_context.m_unk0x398 = 0;
+	m_context.m_cameraViewIndex = 0;
 	m_context.m_raceSlots[0].m_enabled = 1;
 	strncpy(m_context.m_raceSlots[0].m_raceName, "racec0r0", sizeof(m_context.m_raceSlots[0].m_raceName));
 	strncpy(m_context.m_raceSlots[0].m_folderName, "racec0r0", sizeof(m_context.m_raceSlots[0].m_folderName));

@@ -100,7 +100,7 @@ void RaceSession::Reset()
 	m_powerupFileName[0] = '\0';
 	m_turboDatabaseName[0] = '\0';
 	m_powerupDatabaseName[0] = '\0';
-	m_unk0xeb[0] = '\0';
+	m_unusedFileName[0] = '\0';
 	m_racerTriggerFileName[0] = '\0';
 	m_eventFileName[0] = '\0';
 	m_triggerFileName[0] = '\0';
@@ -150,9 +150,9 @@ void RaceSession::Reset()
 	m_music = NULL;
 	m_musicVolume = g_unk0x004b07ec;
 	m_materialAnimationDatabase = NULL;
-	m_unk0x3a8 = 0;
+	m_powerupTrackDatabase = 0;
 	m_finishedCount = 0;
-	m_unk0x3358 = 0;
+	m_clearMode = 0;
 
 	for (LegoS32 i = 0; i < sizeOfArray(m_cameras); i++) {
 		m_listenerNodes[i] = NULL;
@@ -265,7 +265,7 @@ void RaceSession::Initialize(
 			strcpy(m_powerupDatabaseName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case e_unusedFile:
-			strcpy(m_unk0xeb, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_unusedFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case e_startPositions:
 			strcpy(m_startPositionsFileName, parser->ReadStringWithMaxLength(0x0c));
@@ -465,7 +465,7 @@ void RaceSession::Run()
 
 	Racer* field = m_raceState.GetPlayerRacer();
 	if (field) {
-		m_context->m_unk0x398 = field->m_cameraViewIndex;
+		m_context->m_cameraViewIndex = field->m_cameraViewIndex;
 	}
 
 	if (m_context->m_running && m_timeRaceManager) {
@@ -1077,7 +1077,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 			cameraController->SetRacer(racer);
 			racer->InitializeSounds(cameraController, FALSE);
-			racer->SetCameraView(m_context->m_unk0x398, m_splitScreen);
+			racer->SetCameraView(m_context->m_cameraViewIndex, m_splitScreen);
 			cameraController->Update(1.0f);
 			cameraController->SetMode(0);
 			cameraController->SnapPosition(&m_cameraStartPosition);
@@ -1259,7 +1259,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	powerupParams.m_trailManager = &m_trailManager;
 	powerupParams.m_racerTriggers = &m_racerTriggers;
 	powerupParams.m_animationList = &m_animationList;
-	powerupParams.m_trackDatabase = m_unk0x3a8;
+	powerupParams.m_trackDatabase = m_powerupTrackDatabase;
 	powerupParams.m_targetPoints = &m_targetPoints;
 	powerupParams.m_cameraFov = m_splitScreen ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
 	powerupParams.m_cheatFlags = m_context->m_cheatFlags;
@@ -1317,9 +1317,9 @@ void RaceSession::DestroyRaceContent()
 	m_powerupManager.Destroy();
 
 	if (m_golExport) {
-		if (m_unk0x3a8) {
-			m_golExport->VTable0x3c(m_unk0x3a8);
-			m_unk0x3a8 = NULL;
+		if (m_powerupTrackDatabase) {
+			m_golExport->VTable0x3c(m_powerupTrackDatabase);
+			m_powerupTrackDatabase = NULL;
 		}
 	}
 
@@ -1952,7 +1952,7 @@ void RaceSession::UpdateFinishedState()
 					racer->SetStandingsPosition(m_finishedCount);
 				}
 
-				m_context->m_playerSetupSlots[i].m_unk0x5a[0] = (LegoU8) racer->m_lapTimes[5];
+				m_context->m_playerSetupSlots[i].m_finishPosition = (LegoU8) racer->m_lapTimes[5];
 				i++;
 				racer++;
 			} while (i < m_context->m_racerCount);
@@ -2352,7 +2352,7 @@ void RaceSession::DrawPauseDialog()
 // FUNCTION: LEGORACERS 0x00435940
 void RaceSession::ClearViewport()
 {
-	if (m_unk0x3358) {
+	if (m_clearMode) {
 		m_renderer->VTable0x54(2);
 	}
 	else {
@@ -2758,7 +2758,7 @@ void RaceSession::RestartRace()
 {
 	Racer* racer = m_raceState.GetPlayerRacer();
 	if (racer) {
-		m_context->m_unk0x398 = racer->m_cameraViewIndex;
+		m_context->m_cameraViewIndex = racer->m_cameraViewIndex;
 	}
 
 	m_raceReset.FinishRace();
@@ -2774,7 +2774,7 @@ void RaceSession::RestartRace()
 
 			m_playerControls[playerIndex].Reset();
 			m_forceFeedback[playerIndex].StopEngineEffect();
-			m_raceState.m_playerRacers[playerIndex]->SetCameraView(m_context->m_unk0x398, m_splitScreen);
+			m_raceState.m_playerRacers[playerIndex]->SetCameraView(m_context->m_cameraViewIndex, m_splitScreen);
 			cameraController->Update(1.0f);
 			cameraController->SetMode(0);
 			cameraController->SnapPosition(&m_cameraStartPosition);

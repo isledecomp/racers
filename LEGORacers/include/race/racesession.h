@@ -248,7 +248,7 @@ private:
 	LegoChar m_powerupFileName[0x0d1 - 0xc4];              // 0xc4
 	LegoChar m_powerupDatabaseName[0x0de - 0xd1];          // 0xd1
 	LegoChar m_turboDatabaseName[0x0eb - 0xde];            // 0xde
-	LegoChar m_unk0xeb[0x0f8 - 0xeb];                      // 0xeb
+	LegoChar m_unusedFileName[0x0f8 - 0xeb];               // 0xeb
 	LegoChar m_racerTriggerFileName[0x105 - 0xf8];         // 0xf8
 	LegoChar m_eventFileName[0x112 - 0x105];               // 0x105
 	LegoChar m_triggerFileName[0x11f - 0x112];             // 0x112
@@ -283,7 +283,7 @@ private:
 	GolWorldDatabase* m_effectsDatabase;                   // 0x39c
 	GolWorldDatabase* m_triggerDatabase;                   // 0x3a0
 	GolWorldDatabase* m_materialAnimationDatabase;         // 0x3a4
-	GolWorldDatabase* m_unk0x3a8;                          // 0x3a8
+	GolWorldDatabase* m_powerupTrackDatabase;              // 0x3a8
 	GolCameraBase* m_trackCamera;                          // 0x3ac
 	GolBoundedEntity* m_collisionWorld;                    // 0x3b0
 	GolBoundedEntity* m_triggerWorldEntity;                // 0x3b4
@@ -344,7 +344,7 @@ private:
 	undefined4 m_demoTextMs;                               // 0x334c
 	undefined4 m_demoMode;                                 // 0x3350
 	undefined4 m_splitScreen;                              // 0x3354
-	undefined4 m_unk0x3358;                                // 0x3358
+	undefined4 m_clearMode;                                // 0x3358
 	undefined4 m_returnToGarage;                           // 0x335c
 	undefined4 m_pendingAction;                            // 0x3360
 	TimeRaceManager* m_timeRaceManager;                    // 0x3364

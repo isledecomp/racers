@@ -12,6 +12,10 @@ class GolRenderDevice;
 // SIZE 0x0c
 class GolModelMaterialTable : public MaterialTable {
 public:
+	enum {
+		e_unknown0x27 = 0x27,
+	};
+
 	GolModelMaterialTable();
 	~GolModelMaterialTable();
 

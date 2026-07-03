@@ -46,7 +46,7 @@ public:
 	}
 
 protected:
-	Indices* m_indices;
+	Indices* m_indices; // 0x08
 };
 
 #endif // GDBMODELINDEXARRAY_H

@@ -232,14 +232,14 @@ void GolMaterialLibrary::Load(GolRenderDevice* p_renderer, const LegoChar* p_fil
 				params.m_flags &= ~GolMaterial::c_flagWrap;
 				params.m_flags |= GolMaterial::c_flagClamp;
 				break;
-			case GolFileParser::e_unknown0x4a:
+			case MdbTxtParser::e_unknown0x4a:
 				params.m_flags |= GolMaterial::c_flagBit17;
 				break;
-			case GolFileParser::e_unknown0x4b:
+			case MdbTxtParser::e_unknown0x4b:
 				params.m_flags &= ~GolMaterial::c_flagBit20;
 				params.m_flags |= GolMaterial::c_flagBit19;
 				break;
-			case GolFileParser::e_unknown0x4c:
+			case MdbTxtParser::e_unknown0x4c:
 				params.m_flags &= ~GolMaterial::c_flagBit22;
 				params.m_flags |= GolMaterial::c_flagBit21;
 				break;

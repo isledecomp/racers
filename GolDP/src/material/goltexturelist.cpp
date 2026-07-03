@@ -135,10 +135,10 @@ void GolTextureList::Load(GolD3DRenderDevice* p_renderer, const LegoChar* p_file
 				colorKey.m_grn = static_cast<LegoU8>(parser->ReadInteger());
 				colorKey.m_blu = static_cast<LegoU8>(parser->ReadInteger());
 				break;
-			case GolFileParser::e_unknown0x2d:
+			case TdbTxtParser::e_unknown0x2d:
 				flags |= GolTexture::c_textureFlagBit8;
 				break;
-			case GolFileParser::e_unknown0x2e:
+			case TdbTxtParser::e_unknown0x2e:
 				flags |= GolTexture::c_textureFlagBit9;
 				break;
 			default:

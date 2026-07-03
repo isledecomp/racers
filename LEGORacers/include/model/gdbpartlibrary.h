@@ -19,7 +19,18 @@ class GdbPartLibrary : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004af434
 	// SIZE 0x1fc
-	class GdbTxtParser : public GolTxtParser {};
+	class GdbTxtParser : public GolTxtParser {
+	public:
+		enum {
+			e_unknown0x27 = 0x27,
+			e_unknown0x28 = 0x28,
+			e_unknown0x29 = 0x29,
+			e_unknown0x2a = 0x2a,
+			e_unknown0x2b = 0x2b,
+			e_unknown0x2c = 0x2c,
+			e_unknown0x2d = 0x2d,
+		};
+	};
 
 	GdbPartLibrary();
 	~GdbPartLibrary() override; // vtable+0x00

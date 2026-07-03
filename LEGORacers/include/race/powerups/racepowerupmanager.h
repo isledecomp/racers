@@ -93,6 +93,8 @@ public:
 			e_colorGreen = 0x2d,
 			e_respawnMs = 0x2e,
 			e_whiteBricks = 0x2f,
+			e_unknown0x30 = 0x30,
+			e_unknown0x31 = 0x31,
 		};
 	};
 

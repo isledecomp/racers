@@ -46,45 +46,45 @@ public:
 			e_leaf = 1,
 		};
 
-		LegoU16 m_type;
-		LegoU16 m_nextLeafIndex;
+		LegoU16 m_type;          // 0x00
+		LegoU16 m_nextLeafIndex; // 0x02
 
 		// SIZE 0x1c
 		struct Node {
-			LegoU32 m_firstGroup;
-			LegoU32 m_groupCount;
-			undefined4 m_unk0x08;
-			Node* m_next;
-			Node* m_previous;
-			LegoS16 m_pvsStart;
-			LegoU16 m_pvsCount;
-			LegoU16 m_boundsIndex;
-			LegoU16 m_linked;
+			LegoU32 m_firstGroup;  // 0x00
+			LegoU32 m_groupCount;  // 0x04
+			undefined4 m_unk0x08;  // 0x08
+			Node* m_next;          // 0x0c
+			Node* m_previous;      // 0x10
+			LegoS16 m_pvsStart;    // 0x14
+			LegoU16 m_pvsCount;    // 0x16
+			LegoU16 m_boundsIndex; // 0x18
+			LegoU16 m_linked;      // 0x1a
 		};
 
 		// SIZE 0x1c
 		union Payload {
 			struct {
-				LegoFloat m_normalX;
-				LegoFloat m_normalY;
-				LegoFloat m_normalZ;
-				LegoFloat m_distance;
-				LegoU32 m_frontStamp;
-				LegoU32 m_backStamp;
-				LegoU16 m_frontChild;
-				LegoU16 m_backChild;
-			} m_plane;
-			Node m_node;
-		} m_data;
+				LegoFloat m_normalX;  // 0x00
+				LegoFloat m_normalY;  // 0x04
+				LegoFloat m_normalZ;  // 0x08
+				LegoFloat m_distance; // 0x0c
+				LegoU32 m_frontStamp; // 0x10
+				LegoU32 m_backStamp;  // 0x14
+				LegoU16 m_frontChild; // 0x18
+				LegoU16 m_backChild;  // 0x1a
+			} m_plane;                // 0x00
+			Node m_node;              // 0x00
+		} m_data;                     // 0x04
 	};
 	// SIZE 0x18
 	struct Bounds {
-		LegoFloat m_minX;
-		LegoFloat m_minY;
-		LegoFloat m_minZ;
-		LegoFloat m_maxX;
-		LegoFloat m_maxY;
-		LegoFloat m_maxZ;
+		LegoFloat m_minX; // 0x00
+		LegoFloat m_minY; // 0x04
+		LegoFloat m_minZ; // 0x08
+		LegoFloat m_maxX; // 0x0c
+		LegoFloat m_maxY; // 0x10
+		LegoFloat m_maxZ; // 0x14
 	};
 
 	GolBoundingShape();
@@ -110,16 +110,16 @@ private:
 	void ParseNodes(GolFileParser& p_parser);
 	void ParseBounds(GolFileParser& p_parser);
 
-	LegoU32 m_nodeCount;
-	TreeNode* m_nodes;
-	TreeNode* m_root;
-	undefined4 m_visitStamp;
-	LegoS32 m_boundsCount;
-	Bounds* m_bounds;
-	LegoS32 m_pvsIndexCount;
-	LegoU16* m_pvsIndices;
-	TreeNode::Node* m_firstVisibleLeaf;
-	TreeNode::Node* m_lastVisibleLeaf;
+	LegoU32 m_nodeCount;                // 0x04
+	TreeNode* m_nodes;                  // 0x08
+	TreeNode* m_root;                   // 0x0c
+	undefined4 m_visitStamp;            // 0x10
+	LegoS32 m_boundsCount;              // 0x14
+	Bounds* m_bounds;                   // 0x18
+	LegoS32 m_pvsIndexCount;            // 0x1c
+	LegoU16* m_pvsIndices;              // 0x20
+	TreeNode::Node* m_firstVisibleLeaf; // 0x24
+	TreeNode::Node* m_lastVisibleLeaf;  // 0x28
 };
 
 #endif // GOLBOUNDINGSHAPE_H

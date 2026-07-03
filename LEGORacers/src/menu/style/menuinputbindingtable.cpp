@@ -281,7 +281,7 @@ void MenuInputBindingTable::ParseIconField(MenuIcon::CreateParams* p_entry)
 	case MidTxtParser::e_name:
 		::strncpy(p_entry->m_name, m_parser->ReadString(), 8);
 		return;
-	case GolFileParser::e_unknown0x34:
+	case MidTxtParser::e_unknown0x34:
 		p_entry->m_unk0x3c = m_parser->ReadInteger();
 		return;
 	case MidTxtParser::e_helpStringId:

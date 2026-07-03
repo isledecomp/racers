@@ -3,6 +3,7 @@
 #include "decomp.h"
 #include "golfileparser.h"
 #include "golmath.h"
+#include "race/hazardmanager.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/powerups/actiontarget.h"
 #include "race/powerups/racepowerupmanager.h"
@@ -77,10 +78,10 @@ void SweepCannonHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	GolFileParser::ParserTokenType token;
 	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x42:
+		case HazardManager::HzbTxtParser::e_entity:
 			::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 			break;
-		case GolFileParser::e_unknown0x37:
+		case HazardManager::HzbTxtParser::e_unknown0x37:
 			m_source.m_x = p_parser->ReadFloat();
 			m_source.m_y = p_parser->ReadFloat();
 			m_source.m_z = p_parser->ReadFloat();
@@ -88,13 +89,13 @@ void SweepCannonHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 				m_source.m_y = -m_source.m_y;
 			}
 			break;
-		case GolFileParser::e_unknown0x46:
+		case HazardManager::HzbTxtParser::e_unknown0x46:
 			m_periodMs = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x3b:
+		case HazardManager::HzbTxtParser::e_trigger:
 			m_triggerId = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x47:
+		case HazardManager::HzbTxtParser::e_unknown0x47:
 			m_sweepAngle = p_parser->ReadFloat();
 			m_verticalRange = p_parser->ReadFloat();
 			m_verticalBase = p_parser->ReadFloat();

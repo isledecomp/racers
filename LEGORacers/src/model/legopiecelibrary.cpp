@@ -313,7 +313,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27: {
+		case LebTxtParser::e_unknown0x27: {
 			m_pieceCount = ReadBracketedCountAndLeftCurly(parser);
 			m_pieces = new PieceRecord[m_pieceCount];
 
@@ -329,7 +329,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 			SkipCurrentBlock(*parser);
 			break;
 		}
-		case GolFileParser::e_unknown0x28: {
+		case LebTxtParser::e_unknown0x28: {
 			m_indexCount = ReadBracketedCountAndLeftCurly(parser);
 			m_indices = new LegoU16[m_indexCount];
 			if (m_indices == NULL) {
@@ -342,7 +342,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 			SkipCurrentBlock(*parser);
 			break;
 		}
-		case GolFileParser::e_unknown0x29: {
+		case LebTxtParser::e_unknown0x29: {
 			m_colorCount = ReadBracketedCountAndLeftCurly(parser);
 			m_colors = new Color[m_colorCount];
 			if (m_colors == NULL) {
@@ -361,7 +361,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 			SkipCurrentBlock(*parser);
 			break;
 		}
-		case GolFileParser::e_unknown0x2a: {
+		case LebTxtParser::e_unknown0x2a: {
 			m_colorTripleCount = ReadBracketedCountAndLeftCurly(parser);
 			m_colorTriples = new LegoU8[m_colorTripleCount * 3];
 			if (m_colors == NULL) {
@@ -380,7 +380,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 			SkipCurrentBlock(*parser);
 			break;
 		}
-		case GolFileParser::e_unknown0x2b: {
+		case LebTxtParser::e_unknown0x2b: {
 			m_textureCoordinateCount = ReadBracketedCountAndLeftCurly(parser);
 			m_textureCoordinates = new TextureCoordinate[m_textureCoordinateCount];
 			if (m_textureCoordinates == NULL) {
@@ -397,7 +397,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 			SkipCurrentBlock(*parser);
 			break;
 		}
-		case GolFileParser::e_unknown0x2c: {
+		case LebTxtParser::e_unknown0x2c: {
 			m_shapeDataPairCount = ReadBracketedCountAndLeftCurly(parser);
 			m_shapeData = new ShapeCell[m_shapeDataPairCount];
 			if (m_shapeData == NULL) {

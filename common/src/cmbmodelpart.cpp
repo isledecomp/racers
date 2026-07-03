@@ -54,13 +54,13 @@ void CmbModelPart::Load(const LegoChar* p_name, LegoBool32 p_binary)
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27:
+		case CmbModelPart::e_unknown0x27:
 			m_data.Parse(*parser);
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case CmbModelPart::e_unknown0x2b:
 			ParseTracks(*parser);
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case CmbModelPart::e_unknown0x2c:
 			ParseParts(*parser);
 			break;
 		default:
@@ -141,7 +141,7 @@ void CmbModelPart::ParseParts(GolFileParser& p_parser)
 
 	LegoU32 i;
 	for (i = 0; i < m_partCount; i++) {
-		if (p_parser.GetNextToken() != GolFileParser::e_unknown0x2c) {
+		if (p_parser.GetNextToken() != CmbModelPart::e_unknown0x2c) {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 

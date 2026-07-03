@@ -103,13 +103,13 @@ void GdbPartLibrary::Load(const LegoChar* p_filename, LegoBool32 p_binary)
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case GolFileParser::e_unknown0x28:
+		case GdbPartLibrary::GdbTxtParser::e_unknown0x28:
 			m_vertexPool->Read(*parser, 2);
 			break;
-		case GolFileParser::e_unknown0x29:
+		case GdbPartLibrary::GdbTxtParser::e_unknown0x29:
 			m_vertexPool->Read(*parser, 1);
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case GdbPartLibrary::GdbTxtParser::e_unknown0x2c:
 			ReadParts(*parser);
 			break;
 		default:
@@ -132,7 +132,9 @@ void GdbPartLibrary::ReadParts(GolFileParser& p_parser)
 	m_parts = new GdbPartDefinition[m_partCount];
 	for (LegoU32 i = 0; i < m_partCount; i++) {
 		GolName name;
-		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2c);
+		p_parser.AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(GdbPartLibrary::GdbTxtParser::e_unknown0x2c)
+		);
 		p_parser.ReadString();
 		::strncpy(name, p_parser.GetLastString(), sizeof(name));
 		AddName(name, &m_parts[i]);

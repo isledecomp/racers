@@ -18,9 +18,9 @@ public:
 		typedef LegoU32 ResultValue;
 
 		union Result {
-			void* m_pointer;
-			LegoBool32 m_result;
-			ResultValue m_value;
+			void* m_pointer;     // 0x00
+			LegoBool32 m_result; // 0x00
+			ResultValue m_value; // 0x00
 		};
 
 		virtual ResultValue OnKeyDown(

@@ -9,9 +9,9 @@
 #pragma pack(push, 1)
 struct FourBytes {
 	union {
-		LegoChar m_bytes[4];
-		LegoU8 m_uBytes[4];
-		LegoU32 m_u32;
+		LegoChar m_bytes[4]; // 0x00
+		LegoU8 m_uBytes[4];  // 0x00
+		LegoU32 m_u32;       // 0x00
 	};
 };
 #pragma pack(pop)

@@ -37,8 +37,8 @@ union DisplayDriverGuid {
 		};
 	};
 
-	GUID m_guid;
-	LegoU32 m_words[c_wordCount];
+	GUID m_guid;                  // 0x00
+	LegoU32 m_words[c_wordCount]; // 0x00
 
 	const LegoU32* GetWords() const { return m_words; }
 	LegoU32* GetWords() { return m_words; }

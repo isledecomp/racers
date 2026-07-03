@@ -62,6 +62,9 @@ public:
 			e_transparency3 = 0x4e,
 			e_transparency4 = 0x4f,
 			e_transparency5 = 0x50,
+			e_unknown0x4a = 0x4a,
+			e_unknown0x4b = 0x4b,
+			e_unknown0x4c = 0x4c,
 		};
 
 		// SYNTHETIC: GOLDP 0x10030050 FOLDED

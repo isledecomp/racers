@@ -46,6 +46,8 @@ public:
 			e_bmp = 0x2a,
 			e_tga = 0x2b,
 			e_colorKey = 0x2c,
+			e_unknown0x2d = 0x2d,
+			e_unknown0x2e = 0x2e,
 		};
 
 		// SYNTHETIC: GOLDP 0x10030050 FOLDED

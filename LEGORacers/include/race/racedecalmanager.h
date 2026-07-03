@@ -55,8 +55,8 @@ public:
 
 			// SIZE 0x04
 			union FloatBits {
-				LegoFloat m_float;
-				LegoU32 m_bits;
+				LegoFloat m_float; // 0x00
+				LegoU32 m_bits;    // 0x00
 			};
 
 			// SIZE 0x08

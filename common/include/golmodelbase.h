@@ -87,17 +87,17 @@ public:
 	// GolModelBase::`scalar deleting destructor'
 
 protected:
-	GolModelMaterialTable m_materialTable;
-	GdbVertexArray* m_vertexArray;
-	GdbVertexArray* m_ownedVertexArray;
-	GdbModelIndexArrayBase* m_indexArray;
-	undefined4* m_unk0x1c;
-	LegoU32 m_groupCount;
-	LegoU32* m_groups;
-	GolVec3 m_center;
-	LegoFloat m_radius;
-	LegoFloat m_scale;
-	LegoBool32 m_dirty;
+	GolModelMaterialTable m_materialTable; // 0x04
+	GdbVertexArray* m_vertexArray;         // 0x10
+	GdbVertexArray* m_ownedVertexArray;    // 0x14
+	GdbModelIndexArrayBase* m_indexArray;  // 0x18
+	undefined4* m_unk0x1c;                 // 0x1c
+	LegoU32 m_groupCount;                  // 0x20
+	LegoU32* m_groups;                     // 0x24
+	GolVec3 m_center;                      // 0x28
+	LegoFloat m_radius;                    // 0x34
+	LegoFloat m_scale;                     // 0x38
+	LegoBool32 m_dirty;                    // 0x3c
 };
 
 #endif // GOLMODELBASE_H

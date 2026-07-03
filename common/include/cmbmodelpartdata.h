@@ -11,6 +11,15 @@ class GolFileParser;
 class CmbModelPartData {
 	friend class CmbModelPart;
 
+	enum {
+		e_unknown0x2b = 0x2b,
+		e_unknown0x2d = 0x2d,
+		e_unknown0x2e = 0x2e,
+		e_unknown0x2f = 0x2f,
+		e_unknown0x30 = 0x30,
+		e_unknown0x31 = 0x31,
+	};
+
 public:
 	CmbModelPartData();
 	void Parse(GolFileParser& p_parser);

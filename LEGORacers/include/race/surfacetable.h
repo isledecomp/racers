@@ -71,8 +71,7 @@ public:
 	// SIZE 0x1fc
 	class TmbTxtParser : public GolTxtParser {
 	public:
-		// .tmb tokens for fields with proven names; unnamed payloads stay on
-		// GolFileParser::e_unknown0xNN at the use sites
+		// .tmb tokens
 		enum {
 			e_surface = 0x27,
 			e_enterEvent = 0x28,
@@ -85,6 +84,14 @@ public:
 			e_friction = 0x33,
 			e_lateralGrip = 0x34,
 			e_rollingResistance = 0x36,
+			e_unknown0x2b = 0x2b,
+			e_unknown0x2c = 0x2c,
+			e_unknown0x2f = 0x2f,
+			e_unknown0x30 = 0x30,
+			e_unknown0x35 = 0x35,
+			e_unknown0x37 = 0x37,
+			e_unknown0x38 = 0x38,
+			e_unknown0x39 = 0x39,
 		};
 	};
 

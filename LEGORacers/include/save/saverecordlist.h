@@ -40,13 +40,13 @@ public:
 		LegoU8* GetCarData() { return &m_data[0x29]; }
 		const LegoU8* GetCarData() const { return &m_data[0x29]; }
 
-		SaveRecordList* m_owner; // 0x00
-		Record* m_next;          // 0x04
-		LegoU32 m_recordSource;  // 0x08
-		LegoU32 m_saveIndex;     // 0x0c
-		LegoU32 m_recordId;      // 0x10
-		SaveRecordData m_data;   // 0x14
-		undefined m_unk0x241[0x244 - 0x241];
+		SaveRecordList* m_owner;             // 0x00
+		Record* m_next;                      // 0x04
+		LegoU32 m_recordSource;              // 0x08
+		LegoU32 m_saveIndex;                 // 0x0c
+		LegoU32 m_recordId;                  // 0x10
+		SaveRecordData m_data;               // 0x14
+		undefined m_unk0x241[0x244 - 0x241]; // 0x241
 
 	private:
 		void Initialize();

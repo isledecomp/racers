@@ -25,7 +25,16 @@ public:
 	public:
 		// VTABLE: LEGORACERS 0x004b3498
 		// SIZE 0x1fc
-		class MidTxtParser : public GolTxtParser {};
+		class MidTxtParser : public GolTxtParser {
+		public:
+			enum {
+				e_image = 0x28,
+				e_font = 0x29,
+				e_colors = 0x2a,
+				e_value = 0x33,
+				e_button = 0x46,
+			};
+		};
 
 		ButtonBindingTable();
 		~ButtonBindingTable() override;                  // vtable+0x00

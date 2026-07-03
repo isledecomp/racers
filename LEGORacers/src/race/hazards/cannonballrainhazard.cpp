@@ -6,6 +6,7 @@
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
+#include "race/hazardmanager.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/powerups/actiontarget.h"
 #include "race/powerups/racepowerupmanager.h"
@@ -64,20 +65,20 @@ void CannonballRainHazard::Load(HazardContext* p_context, GolFileParser* p_parse
 	GolFileParser::ParserTokenType token;
 	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x45:
+		case HazardManager::HzbTxtParser::e_unknown0x45:
 			::strncpy(
 				m_materialName,
 				p_parser->ReadStringWithMaxLength(sizeof(m_materialName)),
 				sizeof(m_materialName)
 			);
 			break;
-		case GolFileParser::e_unknown0x42:
+		case HazardManager::HzbTxtParser::e_entity:
 			::strncpy(entityName, p_parser->ReadStringWithMaxLength(sizeof(entityName)), sizeof(entityName));
 			break;
-		case GolFileParser::e_unknown0x3b:
+		case HazardManager::HzbTxtParser::e_trigger:
 			m_triggerId = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x44:
+		case HazardManager::HzbTxtParser::e_unknown0x44:
 			m_intervalMs = p_parser->ReadInteger();
 			break;
 		default:

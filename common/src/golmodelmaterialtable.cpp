@@ -63,7 +63,7 @@ void GolModelMaterialTable::Load(GolRenderDevice* p_renderer, const LegoChar* p_
 	}
 
 	parser->OpenFileForRead(p_fileName);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(GolModelMaterialTable::e_unknown0x27));
 	Parse(p_renderer, *parser);
 
 	parser->Dispose();

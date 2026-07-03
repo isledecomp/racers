@@ -163,7 +163,7 @@ void RacerTriggerList::Load(
 		}
 
 		for (LegoU32 i = 0; i < m_count; i++) {
-			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(RacerTriggerList::e_unknown0x27));
 			parser->ReadLeftCurly();
 
 			EntryParams params;
@@ -186,10 +186,10 @@ void RacerTriggerList::Load(
 			GolFileParser::ParserTokenType token = parser->GetNextToken();
 			while (token != GolFileParser::e_rightCurly) {
 				switch (token) {
-				case GolFileParser::e_unknown0x2c:
+				case RacerTriggerList::e_unknown0x2c:
 					params.m_triggerOnProjectiles = TRUE;
 					break;
-				case GolFileParser::e_unknown0x2d: {
+				case RacerTriggerList::e_unknown0x2d: {
 					LegoChar name[8];
 					strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
@@ -211,7 +211,7 @@ void RacerTriggerList::Load(
 					params.m_hasCollisionWorld = TRUE;
 					break;
 				}
-				case GolFileParser::e_unknown0x2e:
+				case RacerTriggerList::e_unknown0x2e:
 					params.m_lapNumber = parser->ReadInteger();
 					params.m_hasLapNumber = TRUE;
 					break;

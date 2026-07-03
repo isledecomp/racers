@@ -26,7 +26,7 @@ public:
 	friend class GolRenderTarget;
 
 protected:
-	LPDIRECTDRAWSURFACE4 m_surface;
+	LPDIRECTDRAWSURFACE4 m_surface; // 0x34
 };
 
 #endif // GOLDEPTHBUFFER_H

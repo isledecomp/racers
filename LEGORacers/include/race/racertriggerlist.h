@@ -10,6 +10,13 @@ class RaceState;
 // SIZE 0x18
 class RacerTriggerList : public TriggerList {
 public:
+	enum {
+		e_unknown0x27 = 0x27,
+		e_unknown0x2c = 0x2c,
+		e_unknown0x2d = 0x2d,
+		e_unknown0x2e = 0x2e,
+	};
+
 	class EntryParams;
 
 	// VTABLE: LEGORACERS 0x004b1c5c

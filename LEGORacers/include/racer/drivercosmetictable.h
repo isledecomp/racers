@@ -48,6 +48,7 @@ public:
 			e_legs = 0x38,
 			e_expression = 0x39,
 			e_aiCharge = 0x3a,
+			e_unknown0x33 = 0x33,
 		};
 	};
 

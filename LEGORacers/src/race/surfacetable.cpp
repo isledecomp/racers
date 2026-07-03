@@ -68,11 +68,11 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_touchEventId = p_parser->ReadInteger();
 				m_flags |= c_flagTouchEventId;
 				break;
-			case GolFileParser::e_unknown0x2b:
+			case TmbTxtParser::e_unknown0x2b:
 				m_projectileEventId = p_parser->ReadInteger();
 				m_flags |= c_flagUnk0x18;
 				break;
-			case GolFileParser::e_unknown0x2c:
+			case TmbTxtParser::e_unknown0x2c:
 				m_unk0x1c.m_x = p_parser->ReadFloat();
 				m_unk0x1c.m_y = p_parser->ReadFloat();
 				m_unk0x1c.m_z = p_parser->ReadFloat();
@@ -94,11 +94,11 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_surfaceSoundId = p_parser->ReadInteger();
 				m_flags |= c_flagSurfaceSoundId;
 				break;
-			case GolFileParser::e_unknown0x2f:
+			case TmbTxtParser::e_unknown0x2f:
 				m_unk0x38 = p_parser->ReadInteger();
 				m_flags |= c_flagUnk0x38;
 				break;
-			case GolFileParser::e_unknown0x30:
+			case TmbTxtParser::e_unknown0x30:
 				m_unk0x3c = p_parser->ReadInteger();
 				m_flags |= c_flagUnk0x3c;
 				break;
@@ -118,7 +118,7 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_lateralGrip = p_parser->ReadFloat();
 				m_flags |= c_flagLateralGrip;
 				break;
-			case GolFileParser::e_unknown0x35:
+			case TmbTxtParser::e_unknown0x35:
 				m_unk0x54 = p_parser->ReadFloat();
 				m_flags |= c_flagUnk0x54;
 				break;
@@ -126,13 +126,13 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_rollingResistance = p_parser->ReadFloat();
 				m_flags |= c_flagRollingResistance;
 				break;
-			case GolFileParser::e_unknown0x37:
+			case TmbTxtParser::e_unknown0x37:
 				m_flags |= c_flagBit16;
 				break;
-			case GolFileParser::e_unknown0x38:
+			case TmbTxtParser::e_unknown0x38:
 				m_flags |= c_flagBit17;
 				break;
-			case GolFileParser::e_unknown0x39:
+			case TmbTxtParser::e_unknown0x39:
 				m_flags |= c_flagBit18;
 				break;
 			default:

@@ -14,7 +14,15 @@ class LoadingScreen {
 public:
 	// VTABLE: LEGORACERS 0x004b0698
 	// SIZE 0x1fc
-	class LsbTxtParser : public GolTxtParser {};
+	class LsbTxtParser : public GolTxtParser {
+	public:
+		enum {
+			e_unknown0x27 = 0x27,
+			e_unknown0x28 = 0x28,
+			e_unknown0x29 = 0x29,
+			e_unknown0x2a = 0x2a,
+		};
+	};
 
 	LoadingScreen();
 	~LoadingScreen();

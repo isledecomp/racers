@@ -49,6 +49,7 @@ public:
 			e_imageRef = 0x38,
 			e_bindingRef = 0x3a,
 			e_button = 0x3b,
+			e_unknown0x34 = 0x34,
 		};
 	};
 

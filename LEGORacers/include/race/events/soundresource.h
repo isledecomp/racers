@@ -13,6 +13,10 @@ class SpatialSoundInstance;
 // SIZE 0x5c
 class SoundResource : public RaceEventResource {
 public:
+	enum {
+		e_unknown0x2e = 0x2e,
+	};
+
 	// .evb sound field tokens
 	enum {
 		e_soundId = 0x2c,

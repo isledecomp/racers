@@ -32,30 +32,30 @@ void CmbModelPartData::Parse(GolFileParser& p_parser)
 
 	while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2b:
+		case CmbModelPartData::e_unknown0x2b:
 			m_trackIndex = p_parser.ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case CmbModelPartData::e_unknown0x2d:
 			if (p_parser.GetNextToken() != GolFileParser::e_int) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 			}
 			m_frameCount = p_parser.GetLastInt();
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case CmbModelPartData::e_unknown0x2e:
 			if (p_parser.GetNextToken() != GolFileParser::e_int) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 			}
 			m_loopFrameCount = p_parser.GetLastInt();
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case CmbModelPartData::e_unknown0x2f:
 			m_msPerFrame = static_cast<LegoFloat>(p_parser.ReadInteger()) / 1000.0f;
 			break;
-		case GolFileParser::e_unknown0x30:
+		case CmbModelPartData::e_unknown0x30:
 			m_velocity.m_x = p_parser.ReadFloat();
 			m_velocity.m_y = p_parser.ReadFloat();
 			m_velocity.m_z = p_parser.ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x31:
+		case CmbModelPartData::e_unknown0x31:
 			m_bounds.m_x = p_parser.ReadFloat();
 			m_bounds.m_y = p_parser.ReadFloat();
 			m_bounds.m_z = p_parser.ReadFloat();

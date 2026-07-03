@@ -175,7 +175,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			GolFileParser::ParserTokenType token;
 			while ((token = parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 				switch (token) {
-				case GolFileParser::e_unknown0x33:
+				case DdfTxtParser::e_unknown0x33:
 					m_entries[i].m_unk0x00 = parser->ReadInteger();
 					break;
 				case DdfTxtParser::e_material:

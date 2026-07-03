@@ -34,7 +34,7 @@ void CmbModelPartTrackData::Parse(GolFileParser& p_parser)
 	GolFileParser::ParserTokenType token;
 	while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x28:
+		case CmbModelPartTrackData::e_unknown0x28:
 			count = p_parser.ReadBracketedCountAndLeftCurly();
 			if (count == 0) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
@@ -51,7 +51,7 @@ void CmbModelPartTrackData::Parse(GolFileParser& p_parser)
 			}
 			p_parser.ReadRightCurly();
 			break;
-		case GolFileParser::e_unknown0x29:
+		case CmbModelPartTrackData::e_unknown0x29:
 			count = p_parser.ReadBracketedCountAndLeftCurly();
 			if (count == 0) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
@@ -69,7 +69,7 @@ void CmbModelPartTrackData::Parse(GolFileParser& p_parser)
 			}
 			p_parser.ReadRightCurly();
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case CmbModelPartTrackData::e_unknown0x2a:
 			count = p_parser.ReadBracketedCountAndLeftCurly();
 			if (count == 0) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);

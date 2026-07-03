@@ -11,6 +11,13 @@ class LegoColorTable;
 // SIZE 0x14
 class CarPartSet {
 public:
+	enum {
+		e_unknown0x2e = 0x2e,
+		e_unknown0x2f = 0x2f,
+		e_unknown0x30 = 0x30,
+		e_unknown0x31 = 0x31,
+	};
+
 	// SIZE 0x04
 	struct PartChoice {
 		LegoU16 m_pieceType;       // 0x00

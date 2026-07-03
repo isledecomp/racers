@@ -57,11 +57,11 @@ public:
 	};
 
 private:
-	RaceSkyState* m_skyState; // 0x20
-	GolName m_skyName;        // 0x24
-	LegoU32 m_durationMs;     // 0x2c
-	LegoU8 m_skyFlags;        // 0x30
-	undefined m_unk0x31[0x34 - 0x31];
+	RaceSkyState* m_skyState;         // 0x20
+	GolName m_skyName;                // 0x24
+	LegoU32 m_durationMs;             // 0x2c
+	LegoU8 m_skyFlags;                // 0x30
+	undefined m_unk0x31[0x34 - 0x31]; // 0x31
 };
 
 #endif // SKYSTATERESOURCE_H

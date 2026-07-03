@@ -1,6 +1,7 @@
 #include "model/gdbpartdefinition.h"
 
 #include "golfileparser.h"
+#include "model/gdbpartlibrary.h"
 
 DECOMP_SIZE_ASSERT(GdbPartDefinition, 0x0c)
 
@@ -29,7 +30,7 @@ void GdbPartDefinition::Read(GolFileParser& p_parser)
 	GolFileParser::ParserTokenType token = p_parser.GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2b: {
+		case GdbPartLibrary::GdbTxtParser::e_unknown0x2b: {
 			m_groupCount = p_parser.ReadBracketedCountAndLeftCurly();
 			m_groups = new GdbPartFaceGroup[m_groupCount];
 			for (LegoU32 i = 0; i < m_groupCount; i++) {
@@ -38,7 +39,7 @@ void GdbPartDefinition::Read(GolFileParser& p_parser)
 			p_parser.ReadRightCurly();
 			break;
 		}
-		case GolFileParser::e_unknown0x2d:
+		case GdbPartLibrary::GdbTxtParser::e_unknown0x2d:
 			m_scale = p_parser.ReadFloat();
 			break;
 		default:

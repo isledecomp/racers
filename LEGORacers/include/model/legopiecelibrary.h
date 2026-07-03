@@ -12,7 +12,17 @@ class LegoPieceLibrary {
 public:
 	// VTABLE: LEGORACERS 0x004b4810
 	// SIZE 0x1fc
-	class LebTxtParser : public GolTxtParser {};
+	class LebTxtParser : public GolTxtParser {
+	public:
+		enum {
+			e_unknown0x27 = 0x27,
+			e_unknown0x28 = 0x28,
+			e_unknown0x29 = 0x29,
+			e_unknown0x2a = 0x2a,
+			e_unknown0x2b = 0x2b,
+			e_unknown0x2c = 0x2c,
+		};
+	};
 
 	// Shape blob layout: a header cell {width, height} followed by
 	// width*height cells and a trailing u16 part type. Each cell packs the

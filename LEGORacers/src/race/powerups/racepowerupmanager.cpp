@@ -815,10 +815,10 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 			case PwbTxtParser::e_respawnMs:
 				duration = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x30:
+			case PwbTxtParser::e_unknown0x30:
 				p_parser->ReadStringWithMaxLength(sizeof(GolName));
 				// Intentional fall-through: the original consumes the following integer too.
-			case GolFileParser::e_unknown0x31:
+			case PwbTxtParser::e_unknown0x31:
 				p_parser->ReadInteger();
 				break;
 			default:
@@ -898,10 +898,10 @@ void RacePowerupManager::ParseWhiteBricks(GolFileParser* p_parser, LegoBool32 p_
 				position.m_y = p_parser->ReadFloat();
 				position.m_z = p_parser->ReadFloat();
 				break;
-			case GolFileParser::e_unknown0x30:
+			case PwbTxtParser::e_unknown0x30:
 				p_parser->ReadStringWithMaxLength(sizeof(GolName));
 				// Intentional fall-through: the original consumes the following integer too.
-			case GolFileParser::e_unknown0x31:
+			case PwbTxtParser::e_unknown0x31:
 				p_parser->ReadInteger();
 				break;
 			default:

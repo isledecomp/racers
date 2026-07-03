@@ -10,8 +10,8 @@ class MenuIcon;
 class MenuWidget;
 
 union MenuEventResult {
-	MenuWidget* m_widget;
-	LegoBool32 m_result;
+	MenuWidget* m_widget; // 0x00
+	LegoBool32 m_result;  // 0x00
 
 	MenuEventResult() {}
 	MenuEventResult(MenuWidget* p_widget) : m_widget(p_widget) {}

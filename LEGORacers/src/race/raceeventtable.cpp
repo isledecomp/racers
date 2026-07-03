@@ -281,7 +281,7 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 			case SoundResource::e_soundId:
 				params.m_soundId = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x2e:
+			case SoundResource::e_unknown0x2e:
 				params.m_unk0x1c = p_parser->ReadInteger();
 				break;
 			case SoundResource::e_volume:

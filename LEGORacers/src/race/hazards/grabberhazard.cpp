@@ -6,6 +6,7 @@
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
+#include "race/hazardmanager.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/racer/racer.h"
 #include "types.h"
@@ -59,10 +60,10 @@ void GrabberHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	GolFileParser::ParserTokenType token;
 	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x3b:
+		case HazardManager::HzbTxtParser::e_trigger:
 			m_triggerId = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x42:
+		case HazardManager::HzbTxtParser::e_entity:
 			::strncpy(entityName, p_parser->ReadStringWithMaxLength(sizeof(entityName)), sizeof(entityName));
 			m_pullStrength = p_parser->ReadFloat();
 			m_grabFrameLow = p_parser->ReadFloat();

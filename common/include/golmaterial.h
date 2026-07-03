@@ -31,14 +31,14 @@ struct GolMaterialParams {
 	GolMaterialParams() {}
 	GolMaterialParams(LegoU8 p_fullIntensity);
 
-	LegoU32 m_flags;
-	GolTexture* m_texture;
-	GolMaterialColor m_ambient;
-	GolMaterialColor m_diffuse;
-	undefined m_alphaFunc; // 0x10
-	undefined m_alphaRef;  // 0x11
-	undefined m_srcBlend;  // 0x12
-	undefined m_destBlend; // 0x13
+	LegoU32 m_flags;            // 0x00
+	GolTexture* m_texture;      // 0x04
+	GolMaterialColor m_ambient; // 0x08
+	GolMaterialColor m_diffuse; // 0x0c
+	undefined m_alphaFunc;      // 0x10
+	undefined m_alphaRef;       // 0x11
+	undefined m_srcBlend;       // 0x12
+	undefined m_destBlend;      // 0x13
 };
 
 // VTABLE: GOLDP 0x10057030

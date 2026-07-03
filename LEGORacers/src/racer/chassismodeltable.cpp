@@ -192,7 +192,7 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 			case CmbTxtParser::e_mass:
 				m_items[i].m_baseMass = parser->ReadFloat();
 				break;
-			case GolFileParser::e_unknown0x2d:
+			case CmbTxtParser::e_unknown0x2d:
 				m_items[i].m_unk0xd4.m_x = parser->ReadFloat();
 				m_items[i].m_unk0xd4.m_y = parser->ReadFloat();
 				break;
@@ -225,10 +225,10 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 				parser->ReadRightCurly();
 				break;
 			}
-			case GolFileParser::e_unknown0x32:
+			case CmbTxtParser::e_unknown0x32:
 				m_items[i].m_unk0xf0 = parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x33:
+			case CmbTxtParser::e_unknown0x33:
 				m_items[i].m_unk0xf4 = parser->ReadInteger();
 				break;
 			case CmbTxtParser::e_handlingStat:

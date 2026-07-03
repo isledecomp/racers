@@ -96,10 +96,10 @@ private:
 	static INT_PTR_COMPAT CALLBACK SelectDeviceDlgProc(HWND p_hWnd, UINT p_uMsg, WPARAM p_wParam, LPARAM p_lParam);
 
 public:
-	LegoU32 m_countDrivers;
-	GolD3DDriverInfo* m_drivers;
-	LegoU32 m_driverIndex;
-	LegoU32 m_deviceIndex;
+	LegoU32 m_countDrivers;      // 0x00
+	GolD3DDriverInfo* m_drivers; // 0x04
+	LegoU32 m_driverIndex;       // 0x08
+	LegoU32 m_deviceIndex;       // 0x0c
 
 	static GolDeviceList* g_dialogDeviceList;
 };

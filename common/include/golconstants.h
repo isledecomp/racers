@@ -7,7 +7,7 @@ class FloatConstant {
 public:
 	FloatConstant(LegoFloat p_value) { m_value = p_value; }
 
-	LegoFloat m_value;
+	LegoFloat m_value; // 0x00
 };
 
 // GLOBAL: GOLDP 0x10065b54

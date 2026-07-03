@@ -13,8 +13,8 @@ public:
 
 	// size unknown, confirmed to be at least 5
 
-	CutsceneParticle* m_particle;
-	LegoU8 m_flags;
+	CutsceneParticle* m_particle; // 0x00
+	LegoU8 m_flags;               // 0x04
 };
 
 #endif // CUTSCENEPARTICLEREF_H

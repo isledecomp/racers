@@ -16,7 +16,16 @@ class TriggerList {
 public:
 	// VTABLE: LEGORACERS 0x004b1d64
 	// SIZE 0x1fc
-	class TrbTxtParser : public GolTxtParser {};
+	class TrbTxtParser : public GolTxtParser {
+	public:
+		enum {
+			e_unknown0x27 = 0x27,
+			e_unknown0x29 = 0x29,
+			e_unknown0x2a = 0x2a,
+			e_unknown0x2b = 0x2b,
+			e_unknown0x2f = 0x2f,
+		};
+	};
 
 	class EntryParams;
 

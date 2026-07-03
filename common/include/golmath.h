@@ -11,15 +11,15 @@
 
 // SIZE 0x8
 struct GolVec2 {
-	LegoFloat m_x;
-	LegoFloat m_y;
+	LegoFloat m_x; // 0x00
+	LegoFloat m_y; // 0x04
 };
 
 // SIZE 0xc
 struct GolVec3 {
-	LegoFloat m_x;
-	LegoFloat m_y;
-	LegoFloat m_z;
+	LegoFloat m_x; // 0x00
+	LegoFloat m_y; // 0x04
+	LegoFloat m_z; // 0x08
 
 	void Clear()
 	{
@@ -88,10 +88,10 @@ struct GolVec3 {
 
 // SIZE 0x10
 struct GolVec4 {
-	LegoFloat m_x;
-	LegoFloat m_y;
-	LegoFloat m_z;
-	LegoFloat m_u;
+	LegoFloat m_x; // 0x00
+	LegoFloat m_y; // 0x04
+	LegoFloat m_z; // 0x08
+	LegoFloat m_u; // 0x0c
 };
 
 inline GolVec3 operator*(LegoFloat p_f, const GolVec3& p_rhs)
@@ -105,10 +105,10 @@ inline GolVec3 operator*(LegoFloat p_f, const GolVec3& p_rhs)
 
 // SIZE 0x10
 struct GolQuat {
-	LegoFloat m_x;
-	LegoFloat m_y;
-	LegoFloat m_z;
-	LegoFloat m_w;
+	LegoFloat m_x; // 0x00
+	LegoFloat m_y; // 0x04
+	LegoFloat m_z; // 0x08
+	LegoFloat m_w; // 0x0c
 };
 
 // SIZE 0x24
@@ -132,7 +132,7 @@ struct GolMatrix34 {
 
 // SIZE 0x40
 struct GolMatrix4 {
-	LegoFloat m_m[4][4];
+	LegoFloat m_m[4][4]; // 0x00
 };
 
 class GolMath {

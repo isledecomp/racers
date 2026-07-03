@@ -48,6 +48,9 @@ public:
 			e_model = 0x36,
 			e_sceneNode = 0x37,
 			e_modelPart = 0x38,
+			e_unknown0x2d = 0x2d,
+			e_unknown0x32 = 0x32,
+			e_unknown0x33 = 0x33,
 		};
 	};
 
@@ -97,7 +100,7 @@ public:
 		LegoU8 m_handlingStat;               // 0x100
 		LegoU8 m_accelerationStat;           // 0x101
 		LegoU8 m_topSpeedStat;               // 0x102
-		undefined m_unk0x103[0x104 - 0x103];
+		undefined m_unk0x103[0x104 - 0x103]; // 0x103
 	};
 
 private:

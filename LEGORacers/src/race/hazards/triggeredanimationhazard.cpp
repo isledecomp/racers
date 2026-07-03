@@ -7,6 +7,7 @@
 #include "golfileparser.h"
 #include "golmath.h"
 #include "golnametable.h"
+#include "race/hazardmanager.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/raceeventtable.h"
 #include "render/gold3drenderdevice.h"
@@ -64,13 +65,13 @@ void TriggeredAnimationHazard::Load(HazardContext* p_context, GolFileParser* p_p
 		GolName* modelName = modelNames;
 		do {
 			switch (token) {
-			case GolFileParser::e_unknown0x3b:
+			case HazardManager::HzbTxtParser::e_trigger:
 				m_triggerId = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x41:
+			case HazardManager::HzbTxtParser::e_unknown0x41:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 				break;
-			case GolFileParser::e_unknown0x42:
+			case HazardManager::HzbTxtParser::e_entity:
 				::strncpy(*modelName, p_parser->ReadStringWithMaxLength(sizeof(*modelName)), sizeof(*modelName));
 				modelName++;
 				break;

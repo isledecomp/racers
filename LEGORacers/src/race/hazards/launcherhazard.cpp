@@ -3,6 +3,7 @@
 #include "decomp.h"
 #include "golfileparser.h"
 #include "golmath.h"
+#include "race/hazardmanager.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/powerups/powerupprojectile.h"
 #include "race/powerups/racepowerupmanager.h"
@@ -71,27 +72,27 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x37:
+		case HazardManager::HzbTxtParser::e_unknown0x37:
 			m_launchPosition.m_x = p_parser->ReadFloat();
 			m_launchPosition.m_y = p_parser->ReadFloat();
 			m_launchPosition.m_z = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x38:
+		case HazardManager::HzbTxtParser::e_unknown0x38:
 			m_targetPosition.m_x = p_parser->ReadFloat();
 			m_targetPosition.m_y = p_parser->ReadFloat();
 			m_targetPosition.m_z = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x39:
+		case HazardManager::HzbTxtParser::e_unknown0x39:
 			m_triggerPosition.m_x = p_parser->ReadFloat();
 			m_triggerPosition.m_y = p_parser->ReadFloat();
 			m_triggerPosition.m_z = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x3a: {
+		case HazardManager::HzbTxtParser::e_unknown0x3a: {
 			LegoFloat radius = p_parser->ReadFloat();
 			m_triggerRadiusSquared = radius * radius;
 			break;
 		}
-		case GolFileParser::e_unknown0x3b:
+		case HazardManager::HzbTxtParser::e_trigger:
 			m_triggerEventId = p_parser->ReadInteger();
 			break;
 		default:

@@ -15,6 +15,12 @@ class GolFileParser;
 // SIZE 0x34
 class CmbModelPart : public GolNameTable {
 public:
+	enum {
+		e_unknown0x27 = 0x27,
+		e_unknown0x2b = 0x2b,
+		e_unknown0x2c = 0x2c,
+	};
+
 	// VTABLE: GOLDP 0x10056a68
 	// VTABLE: LEGORACERS 0x004af23c
 	// SIZE 0x1fc

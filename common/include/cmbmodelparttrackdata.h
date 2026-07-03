@@ -20,6 +20,12 @@ struct CmbModelPartTrack {
 // SIZE 0x18
 class CmbModelPartTrackData {
 public:
+	enum {
+		e_unknown0x28 = 0x28,
+		e_unknown0x29 = 0x29,
+		e_unknown0x2a = 0x2a,
+	};
+
 	CmbModelPartTrackData();
 	~CmbModelPartTrackData();
 	void Clear();

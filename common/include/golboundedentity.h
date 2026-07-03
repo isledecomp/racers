@@ -31,9 +31,9 @@ public:
 protected:
 	friend class GolWorldDatabase;
 
-	GolBoundingVolume* m_boundingVolume;
-	GolModelMaterialTable* m_materialTableOverride;
-	LegoU32 m_boundedFlags;
+	GolBoundingVolume* m_boundingVolume;            // 0x58
+	GolModelMaterialTable* m_materialTableOverride; // 0x5c
+	LegoU32 m_boundedFlags;                         // 0x60
 };
 
 #endif // GOLBOUNDEDENTITY_H

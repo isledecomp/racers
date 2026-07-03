@@ -25,7 +25,13 @@ class CutsceneDefinition : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004af398
 	// SIZE 0x1fc
-	class CdbTxtParser : public GolTxtParser {};
+	class CdbTxtParser : public GolTxtParser {
+	public:
+		enum {
+			e_unknown0x27 = 0x27,
+			e_unknown0x28 = 0x28,
+		};
+	};
 
 	enum ParserToken {
 		c_tokenCameraBlock = 0x29,

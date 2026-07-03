@@ -36,7 +36,7 @@ public:
 	void Reset();
 	void SetFillColor(ColorRGBA* p_color);
 	void SetSilhouetteColor(ColorRGBA* p_color);
-	void BeginCapture(const LegoFloat* p_origin, LegoFloat p_unk0x08, LegoFloat p_unk0x0c, LegoU32 p_flags);
+	void BeginCapture(const LegoFloat* p_origin, LegoFloat p_width, LegoFloat p_height, LegoU32 p_flags);
 	void RenderEntity(GolModelEntity* p_model, LegoU32 p_lodIndex);
 	void EndCapture();
 

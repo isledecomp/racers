@@ -62,19 +62,19 @@ public:
 		m_dirty = 1;
 		m_state.m_lapCount = static_cast<LegoU8>(p_lapCount);
 	}
-	void SetInputBindingPlayer0Unk0x00(undefined4 p_unk0x00)
+	void SetPlayer0SelectedRecordId(undefined4 p_recordId)
 	{
-		m_state.m_inputBindings.m_players[0].m_selectedRecordId = static_cast<LegoU8>(p_unk0x00);
+		m_state.m_inputBindings.m_players[0].m_selectedRecordId = static_cast<LegoU8>(p_recordId);
 		m_dirty = 1;
 	}
-	void SetInputBindingPlayer0Unk0x01(undefined4 p_unk0x01)
+	void SetPlayer0SelectedRecordSource(undefined4 p_recordSource)
 	{
-		m_state.m_inputBindings.m_players[0].m_selectedRecordSource = static_cast<LegoU8>(p_unk0x01);
+		m_state.m_inputBindings.m_players[0].m_selectedRecordSource = static_cast<LegoU8>(p_recordSource);
 		m_dirty = 1;
 	}
-	void SetInputBindingPlayer0Unk0x02(undefined4 p_unk0x02)
+	void SetPlayer0SelectedSaveIndex(undefined4 p_saveIndex)
 	{
-		m_state.m_inputBindings.m_players[0].m_selectedSaveIndex = static_cast<LegoU8>(p_unk0x02);
+		m_state.m_inputBindings.m_players[0].m_selectedSaveIndex = static_cast<LegoU8>(p_saveIndex);
 		m_dirty = 1;
 	}
 	void SetInputBindingPlayer0RecordValues(const SaveRecordList::Record* p_record)

@@ -84,7 +84,7 @@ public:
 		LegoBool32 MovePieceX(LegoS32 p_delta);
 		LegoBool32 MovePieceY(LegoS32 p_delta);
 		LegoBool32 CommitPiece();
-		LegoBool32 UndoLastPiece(LegoS32* p_unk0x04, LegoS32* p_unk0x08, LegoS32* p_unk0x0c);
+		LegoBool32 UndoLastPiece(LegoS32* p_partType, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex);
 		void BeginResetAnimation();
 		void FocusCar();
 		void FocusPiece();

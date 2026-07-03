@@ -742,9 +742,9 @@ void RaceDecalManager::Trail::Decal::EmitPolygon(LegoU32 p_firstPolygon, LegoU32
 
 // FUNCTION: LEGORACERS 0x00415810
 void RaceDecalManager::Trail::Decal::EmitTriangle(
-	ProjectedVertex* p_unk0x04,
-	ProjectedVertex* p_unk0x08,
-	ProjectedVertex* p_unk0x0c
+	ProjectedVertex* p_vertex0,
+	ProjectedVertex* p_vertex1,
+	ProjectedVertex* p_vertex2
 )
 {
 	if (m_triangleCount < m_triangleCapacity) {
@@ -757,23 +757,23 @@ void RaceDecalManager::Trail::Decal::EmitTriangle(
 			m_batchFirstTriangle = polygonIndex;
 		}
 
-		m_vertices->SetPosition(m_vertexCount, p_unk0x04->m_position);
+		m_vertices->SetPosition(m_vertexCount, p_vertex0->m_position);
 		m_vertices->SetColor(m_vertexCount, m_color);
 		LegoU32 vertexIndex = m_vertexCount;
 		m_vertexCount = vertexIndex + 1;
-		m_vertices->SetTextureCoordinate(vertexIndex, p_unk0x04->m_projected.m_vec);
+		m_vertices->SetTextureCoordinate(vertexIndex, p_vertex0->m_projected.m_vec);
 
-		m_vertices->SetPosition(m_vertexCount, p_unk0x08->m_position);
+		m_vertices->SetPosition(m_vertexCount, p_vertex1->m_position);
 		m_vertices->SetColor(m_vertexCount, m_color);
 		vertexIndex = m_vertexCount;
 		m_vertexCount = vertexIndex + 1;
-		m_vertices->SetTextureCoordinate(vertexIndex, p_unk0x08->m_projected.m_vec);
+		m_vertices->SetTextureCoordinate(vertexIndex, p_vertex1->m_projected.m_vec);
 
-		m_vertices->SetPosition(m_vertexCount, p_unk0x0c->m_position);
+		m_vertices->SetPosition(m_vertexCount, p_vertex2->m_position);
 		m_vertices->SetColor(m_vertexCount, m_color);
 		vertexIndex = m_vertexCount;
 		m_vertexCount = vertexIndex + 1;
-		m_vertices->SetTextureCoordinate(vertexIndex, p_unk0x0c->m_projected.m_vec);
+		m_vertices->SetTextureCoordinate(vertexIndex, p_vertex2->m_projected.m_vec);
 
 		LegoU32 polygonIndex = m_triangleCount;
 		LegoU32 polygonCount = m_batchTriangleCount;

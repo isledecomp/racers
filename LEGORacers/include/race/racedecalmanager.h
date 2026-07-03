@@ -85,7 +85,7 @@ public:
 			void ComputeProjection();
 			LegoU32 TransformVertices(LegoU32 p_destIndex, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
 			void EmitPolygon(LegoU32 p_firstPolygon, LegoU32 p_polygonCount);
-			void EmitTriangle(ProjectedVertex* p_unk0x04, ProjectedVertex* p_unk0x08, ProjectedVertex* p_unk0x0c);
+			void EmitTriangle(ProjectedVertex* p_vertex0, ProjectedVertex* p_vertex1, ProjectedVertex* p_vertex2);
 			void FlushBatch();
 			GolVec3* ComputeQueryPoints();
 

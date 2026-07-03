@@ -889,9 +889,9 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::CommitPiece()
 
 // FUNCTION: LEGORACERS 0x004787e0
 LegoBool32 CarModelScreenBase::CarPartPlacement::UndoLastPiece(
-	LegoS32* p_unk0x04,
-	LegoS32* p_unk0x08,
-	LegoS32* p_unk0x0c
+	LegoS32* p_partType,
+	LegoS32* p_pieceType,
+	LegoS32* p_colorRecordIndex
 )
 {
 	CarBuildModel* carModel = &m_context->m_carBuildModel;
@@ -899,9 +899,9 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::UndoLastPiece(
 
 	if (count == 1) {
 		m_soundGroupBinding->PlaySoundByIndex(18);
-		*p_unk0x0c = 0;
-		*p_unk0x08 = 0;
-		*p_unk0x04 = 0;
+		*p_colorRecordIndex = 0;
+		*p_pieceType = 0;
+		*p_partType = 0;
 		return FALSE;
 	}
 
@@ -910,14 +910,14 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::UndoLastPiece(
 	LegoS32 y;
 	LegoS32 anchor;
 	LegoS32 rotation;
-	carModel->GetPieceInfo(count - 1, &pieceRecord, &x, &y, &anchor, &rotation, p_unk0x0c, p_unk0x04);
+	carModel->GetPieceInfo(count - 1, &pieceRecord, &x, &y, &anchor, &rotation, p_colorRecordIndex, p_partType);
 	carModel->RemoveLastPiece();
 	carModel->UpdateOffset(TRUE);
 	carModel->RebuildModel(1, 127);
-	m_placement.SetPiece(pieceRecord, *p_unk0x0c, 0);
+	m_placement.SetPiece(pieceRecord, *p_colorRecordIndex, 0);
 	m_placement.SetPlacement(x, y, rotation, 0);
 	carModel->RefreshOverlay(&m_placement, &m_pieceEntity);
-	*p_unk0x08 = pieceRecord->m_pieceType;
+	*p_pieceType = pieceRecord->m_pieceType;
 	m_context->m_saveSystem.GetActiveRecord().MarkCarModified();
 	m_soundGroupBinding->PlaySoundByIndex(13);
 	return TRUE;

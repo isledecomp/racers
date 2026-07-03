@@ -138,8 +138,8 @@ void CarShadowRenderState::SetSilhouetteColor(ColorRGBA* p_color)
 // FUNCTION: LEGORACERS 0x004098f0
 void CarShadowRenderState::BeginCapture(
 	const LegoFloat* p_origin,
-	LegoFloat p_unk0x08,
-	LegoFloat p_unk0x0c,
+	LegoFloat p_width,
+	LegoFloat p_height,
 	LegoU32 p_flags
 )
 {
@@ -149,15 +149,15 @@ void CarShadowRenderState::BeginCapture(
 	}
 
 	m_texture->LockPixels(&m_pixels, &m_pitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
-	LegoFloat halfUnk0x08 = p_unk0x08;
-	halfUnk0x08 *= 0.5f;
-	m_offsetX = halfUnk0x08 - p_origin[0];
+	LegoFloat halfWidth = p_width;
+	halfWidth *= 0.5f;
+	m_offsetX = halfWidth - p_origin[0];
 
-	LegoFloat halfUnk0x0c = p_unk0x0c;
-	halfUnk0x0c *= 0.5f;
-	m_offsetY = -p_origin[1] - halfUnk0x0c;
-	m_scaleX = m_textureWidth / p_unk0x08;
-	m_scaleY = -(m_textureHeight / p_unk0x0c);
+	LegoFloat halfHeight = p_height;
+	halfHeight *= 0.5f;
+	m_offsetY = -p_origin[1] - halfHeight;
+	m_scaleX = m_textureWidth / p_width;
+	m_scaleY = -(m_textureHeight / p_height);
 }
 
 // FUNCTION: LEGORACERS 0x00409970

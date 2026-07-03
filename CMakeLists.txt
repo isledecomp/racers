@@ -302,7 +302,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
   LEGORacers/src/race/racesession.cpp
-  LEGORacers/src/race/triggerlists.cpp
+  LEGORacers/src/race/racertriggerlist.cpp
+  LEGORacers/src/race/triggerlist.cpp
   LEGORacers/src/race/raceeventtable.cpp
   LEGORacers/src/race/events/lapzoneresource.cpp
   LEGORacers/src/race/events/externalforceresource.cpp
@@ -343,7 +344,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/raceinputrouter.cpp
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/racedecalmanager.cpp
-  LEGORacers/src/race/racedecal.cpp
+  LEGORacers/src/race/racedecaltrail.cpp
   LEGORacers/src/race/racer/drivecontroller.cpp
   LEGORacers/src/race/racecameracontroller.cpp
   LEGORacers/src/race/racer/racerphysicshelpers.cpp

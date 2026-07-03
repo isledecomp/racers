@@ -112,7 +112,7 @@ void DriverHeadBuilder::CreateHatModels()
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_hatModels[i]->VTable0x18(m_renderer, 2, 0x258, 0x12c, 0x64, 3);
+		m_hatModels[i]->Allocate(m_renderer, 2, 0x258, 0x12c, 0x64, 3);
 	}
 
 	::memset(m_hatModelUsed, 0, sizeof(m_hatModelUsed));

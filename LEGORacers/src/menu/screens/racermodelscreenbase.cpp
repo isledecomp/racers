@@ -152,7 +152,7 @@ void RacerModelScreenBase::CreateDriverModels()
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_driverModels[i]->VTable0x18(m_renderer, 2, modelParams[0], modelParams[1], modelParams[2], modelParams[3]);
+		m_driverModels[i]->Allocate(m_renderer, 2, modelParams[0], modelParams[1], modelParams[2], modelParams[3]);
 	}
 }
 

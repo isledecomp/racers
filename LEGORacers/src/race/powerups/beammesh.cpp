@@ -128,7 +128,7 @@ void BeamMesh::Initialize(const SetupParams* p_params)
 	LegoU32 stride = segmentCount * m_ringVertexCount;
 	LegoU32 vertexCount = m_sectionCount * (2 * (0x40 / stride) + 5) + 2;
 	m_model = m_golExport->VTable0x14();
-	m_model->VTable0x18(params->m_renderer, 1, m_vertexCapacity, doubledIndexCount, vertexCount, 1);
+	m_model->Allocate(params->m_renderer, 1, m_vertexCapacity, doubledIndexCount, vertexCount, 1);
 
 	m_sceneNode = m_golExport->VTable0x18();
 	m_sceneNode->Allocate(m_sectionCount);
@@ -162,10 +162,10 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
 
-	m_model->VTable0x28(&m_vertices);
+	m_model->GetVertexArray(&m_vertices);
 
 	GdbModelIndexArrayBase* indexArray;
-	m_model->VTable0x30(&indexArray);
+	m_model->GetIndexArrayInto(&indexArray);
 	m_indices = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
 
 	m_windowBaseVertex = 0;
@@ -279,8 +279,8 @@ void BeamMesh::Finish()
 		m_flags |= dirty;
 	}
 
-	m_model->VTable0x34(FALSE);
-	m_model->VTable0x2c(FALSE, FALSE);
+	m_model->AddFlags(FALSE);
+	m_model->AddFlagsWithBounds(FALSE, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x00494290

@@ -89,7 +89,7 @@ void ParticleSystem::Initialize(
 	LegoU32 materialCapacity = m_materialCapacity;
 	LegoU32 groupCapacity = materialCapacity + 2 * (materialCapacity + triangleCapacity / 10) + 1;
 
-	m_model->VTable0x18(p_renderer, 1, 3 * triangleCapacity, triangleCapacity, groupCapacity, materialCapacity);
+	m_model->Allocate(p_renderer, 1, 3 * triangleCapacity, triangleCapacity, groupCapacity, materialCapacity);
 	// LINE: LEGORACERS 0x004124b5
 	m_modelEntity.SetPrimaryModel(m_model, g_maxFloat);
 	// LINE: LEGORACERS 0x004124c8
@@ -388,10 +388,10 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 					m_batchVertexCount = 0;
 					m_batchTriangleCount = 0;
 
-					m_model->VTable0x28(&m_vertices);
+					m_model->GetVertexArray(&m_vertices);
 
 					GdbModelIndexArrayBase* indexArray;
-					m_model->VTable0x30(&indexArray);
+					m_model->GetIndexArrayInto(&indexArray);
 					m_indices = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
 
 					Particle* particle = m_activeList;
@@ -422,8 +422,8 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 
 					m_model->GetMutableGroups()[m_groupCount] = 0xc0000000;
 					m_model->SetDirty(TRUE);
-					m_model->VTable0x34(0);
-					m_model->VTable0x2c(0, FALSE);
+					m_model->AddFlags(0);
+					m_model->AddFlagsWithBounds(0, FALSE);
 					p_renderer->VTable0x94(&m_modelEntity);
 				}
 			}

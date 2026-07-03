@@ -168,8 +168,8 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 
 	GdbModelIndexArrayBase* indexArrayBase;
 	g_copyModel = p_model;
-	p_model->VTable0x28(&g_copyVertexArray);
-	g_copyModel->VTable0x30(&indexArrayBase);
+	p_model->GetVertexArray(&g_copyVertexArray);
+	g_copyModel->GetIndexArrayInto(&indexArrayBase);
 	g_copyIndices = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetMutableIndices();
 	g_copyBatchVertexStart = 0;
 	g_copyBatchVertexCount = 0;
@@ -207,8 +207,8 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 	GolModelBase* model = g_copyModel;
 	model->GetMutableGroups()[groupWrite] = 0xc0000000;
 	model->SetDirty(TRUE);
-	g_copyModel->VTable0x34(g_gdbPartModelDirty);
-	g_copyModel->VTable0x2c(g_gdbPartModelDirty, TRUE);
+	g_copyModel->AddFlags(g_gdbPartModelDirty);
+	g_copyModel->AddFlagsWithBounds(g_gdbPartModelDirty, TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x00407b40

@@ -1423,7 +1423,7 @@ void CarBuildModel::SetColorTable(LegoColorTable* p_colorTable)
 // FUNCTION: LEGORACERS 0x00499eb0
 void CarBuildModel::InitializeModel(GolModelBase* p_model)
 {
-	p_model->VTable0x18(m_renderer, 2, c_buildVertexCapacity, c_buildPrimitiveCapacity, 1610, 0);
+	p_model->Allocate(m_renderer, 2, c_buildVertexCapacity, c_buildPrimitiveCapacity, 1610, 0);
 }
 
 // FUNCTION: LEGORACERS 0x00499ee0
@@ -1436,7 +1436,7 @@ void CarBuildModel::AcquireBuffers()
 // FUNCTION: LEGORACERS 0x00499f00
 void CarBuildModel::ReleaseBuffers()
 {
-	m_model->VTable0x24();
+	m_model->Destroy();
 	FreeBuffers();
 }
 
@@ -1486,7 +1486,7 @@ LegoBool32 CarBuildModel::Initialize(
 	m_modelEntity.SetPrimaryModel(m_model, g_carBuildModelMaxFloat);
 
 	m_overlayModel = m_golExport->VTable0x14();
-	m_overlayModel->VTable0x18(renderer, 1, 384, 192, 112, 2);
+	m_overlayModel->Allocate(renderer, 1, 384, 192, 112, 2);
 	m_overlayEntity.SetPrimaryModel(m_overlayModel, g_carBuildModelMaxFloat);
 	m_overlayEntity.SetPrimaryMaterialTable(m_overlayModel->GetMaterialTable());
 
@@ -1603,10 +1603,10 @@ void CarBuildModel::BeginModelWrite(GolModelBase* p_model)
 	m_batchVertexCount = 0;
 	m_batchTriangleCount = 0;
 
-	p_model->VTable0x28(&m_modelVertices);
+	p_model->GetVertexArray(&m_modelVertices);
 
 	GdbModelIndexArrayBase* indexArray;
-	p_model->VTable0x30(&indexArray);
+	p_model->GetIndexArrayInto(&indexArray);
 	m_modelTriangles = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
 }
 
@@ -1649,8 +1649,8 @@ void CarBuildModel::EndModelWrite(GolModelBase* p_model)
 
 	p_model->GetMutableGroups()[m_modelGroupCount] = 0xc0000000;
 	p_model->SetDirty(TRUE);
-	p_model->VTable0x34(TRUE);
-	p_model->VTable0x2c(TRUE, TRUE);
+	p_model->AddFlags(TRUE);
+	p_model->AddFlagsWithBounds(TRUE, TRUE);
 	m_modelVertices = NULL;
 	m_modelTriangles = NULL;
 }
@@ -2962,12 +2962,12 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 		}
 	}
 
-	m_model->VTable0x28(&sourceVertices);
-	m_model->VTable0x30(&sourceIndexArray);
+	m_model->GetVertexArray(&sourceVertices);
+	m_model->GetIndexArrayInto(&sourceIndexArray);
 	const GdbModelIndexArray::Indices* sourceIndices = static_cast<GdbModelIndexArray*>(sourceIndexArray)->GetIndices();
 
-	outputModel->VTable0x28(&destVertices);
-	outputModel->VTable0x30(&destIndexArray);
+	outputModel->GetVertexArray(&destVertices);
+	outputModel->GetIndexArrayInto(&destIndexArray);
 	GdbModelIndexArray::Indices* destIndices = static_cast<GdbModelIndexArray*>(destIndexArray)->GetMutableIndices();
 	::memcpy(destIndices, sourceIndices, sizeof(*destIndices) * m_finalTriangleCount);
 
@@ -2982,10 +2982,10 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 		destVertices->VTable0x30(i, color);
 	}
 
-	m_model->VTable0x34(FALSE);
-	m_model->VTable0x2c(FALSE, FALSE);
-	outputModel->VTable0x34(TRUE);
-	outputModel->VTable0x2c(TRUE, TRUE);
+	m_model->AddFlags(FALSE);
+	m_model->AddFlagsWithBounds(FALSE, FALSE);
+	outputModel->AddFlags(TRUE);
+	outputModel->AddFlagsWithBounds(TRUE, TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x0049df20

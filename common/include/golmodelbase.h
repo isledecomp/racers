@@ -24,30 +24,30 @@ public:
 
 	GolModelBase();
 
-	virtual void VTable0x00(GolFileParser& p_parser);     // vtable+0x00
-	virtual void VTable0x04(GolFileParser& p_parser);     // vtable+0x04
-	virtual void VTable0x08(GolFileParser& p_parser);     // vtable+0x08
-	virtual void VTable0x0c(GolFileParser& p_parser) = 0; // vtable+0x0c
-	virtual void VTable0x10(GolFileParser& p_parser) = 0; // vtable+0x10
-	virtual void VTable0x14(GolFileParser& p_parser);     // vtable+0x14
-	virtual void VTable0x18(
+	virtual void ParseGroups(GolFileParser& p_parser);                // vtable+0x00
+	virtual void ParseIndices(GolFileParser& p_parser);               // vtable+0x04
+	virtual void ParseVertices(GolFileParser& p_parser);              // vtable+0x08
+	virtual void ParseUncoloredVertices(GolFileParser& p_parser) = 0; // vtable+0x0c
+	virtual void ParseColoredVertices(GolFileParser& p_parser) = 0;   // vtable+0x10
+	virtual void ParseNormalVertices(GolFileParser& p_parser);        // vtable+0x14
+	virtual void Allocate(
 		GolRenderDevice* p_renderer,
 		undefined2,
 		undefined4,
 		undefined4,
 		undefined4,
 		undefined4
-	) = 0;                                                                                             // vtable+0x18
-	virtual void VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x1c
-	virtual ~GolModelBase();                                                                           // vtable+0x20
-	virtual void VTable0x24();                                                                         // vtable+0x24
-	virtual void VTable0x28(GdbVertexArray** p_dest) const;                                            // vtable+0x28
-	virtual void VTable0x2c(LegoU32, LegoBool32);                                                      // vtable+0x2c
-	virtual void VTable0x30(GdbModelIndexArrayBase**) const;                                           // vtable+0x30
-	virtual void VTable0x34(LegoU32);                                                                  // vtable+0x34
-	virtual void VTable0x38(GolVec3*, LegoFloat*, LegoFloat) const;                                    // vtable+0x38
-	virtual void VTable0x3c(const ColorTransform&);                                                    // vtable+0x3c
-	virtual void VTable0x40();                                                                         // vtable+0x40
+	) = 0;                                                                                       // vtable+0x18
+	virtual void Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x1c
+	virtual ~GolModelBase();                                                                     // vtable+0x20
+	virtual void Destroy();                                                                      // vtable+0x24
+	virtual void GetVertexArray(GdbVertexArray** p_dest) const;                                  // vtable+0x28
+	virtual void AddFlagsWithBounds(LegoU32, LegoBool32);                                        // vtable+0x2c
+	virtual void GetIndexArrayInto(GdbModelIndexArrayBase**) const;                              // vtable+0x30
+	virtual void AddFlags(LegoU32);                                                              // vtable+0x34
+	virtual void ComputeBounds(GolVec3*, LegoFloat*, LegoFloat) const;                           // vtable+0x38
+	virtual void ApplyColorTransform(const ColorTransform&);                                     // vtable+0x3c
+	virtual void CommitColorTransform();                                                         // vtable+0x40
 
 	void FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups);
 	void FUN_00411090();

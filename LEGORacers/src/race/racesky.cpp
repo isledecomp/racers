@@ -408,7 +408,7 @@ void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_un
 	GdbVertexArray* vertices;
 	const ColorRGBA* color = NULL;
 
-	m_domeModel->VTable0x28(&vertices);
+	m_domeModel->GetVertexArray(&vertices);
 
 	LegoU32 i;
 	for (i = 0; i < 3; i++) {
@@ -429,7 +429,7 @@ void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_un
 		}
 	}
 
-	m_domeModel->VTable0x2c(1, FALSE);
+	m_domeModel->AddFlagsWithBounds(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0041d040
@@ -520,11 +520,11 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 
 	LegoU32 groupCount = static_cast<LegoU32>(ringCount) * 2 + 6;
 	p_params->m_model
-		->VTable0x18(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleBudget, groupCount, 1);
+		->Allocate(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleBudget, groupCount, 1);
 	LegoBool32 reverseWinding = p_params->m_reverseWinding != 0;
 
 	GdbVertexArray* vertices = NULL;
-	p_params->m_model->VTable0x28(&vertices);
+	p_params->m_model->GetVertexArray(&vertices);
 
 	ColorRGBA color;
 	color.m_red = 0xff;
@@ -622,14 +622,14 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		}
 	}
 
-	p_params->m_model->VTable0x2c(1, FALSE);
+	p_params->m_model->AddFlagsWithBounds(1, FALSE);
 
 	if (p_params->m_absoluteIndexArray != NULL) {
 		p_params->m_absoluteIndexArray->VTable0x0c(triangleBudget);
 	}
 
 	GdbModelIndexArrayBase* indexArrayBase = NULL;
-	p_params->m_model->VTable0x30(&indexArrayBase);
+	p_params->m_model->GetIndexArrayInto(&indexArrayBase);
 	GdbModelIndexArray* indices = static_cast<GdbModelIndexArray*>(indexArrayBase);
 
 	LegoU32* groups = p_params->m_model->GetMutableGroups();
@@ -822,7 +822,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 
 	groups[groupIndex] = 0xc0000000;
 
-	p_params->m_model->VTable0x34(1);
+	p_params->m_model->AddFlags(1);
 }
 
 // STUB: LEGORACERS 0x004910e0
@@ -851,7 +851,7 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 
 	LegoU32 groupCount = static_cast<LegoU32>(ringCount) * 2 + 6;
 	p_params->m_model
-		->VTable0x18(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleCount, groupCount, 1);
+		->Allocate(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleCount, groupCount, 1);
 
 	LegoBool32 reverseWinding = p_params->m_reverseWinding != 0;
 
@@ -862,7 +862,7 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 	color.m_alp = 0xff;
 
 	GdbVertexArray* vertices;
-	p_params->m_model->VTable0x28(&vertices);
+	p_params->m_model->GetVertexArray(&vertices);
 
 	LegoFloat textureHalfStep = 1.0f / (static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount)) * 2.0f);
 	LegoU32 vertexIndex = 0;
@@ -1002,14 +1002,14 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 		}
 	}
 
-	p_params->m_model->VTable0x2c(1, FALSE);
+	p_params->m_model->AddFlagsWithBounds(1, FALSE);
 
 	if (p_params->m_absoluteIndexArray != NULL) {
 		p_params->m_absoluteIndexArray->VTable0x0c(triangleCount);
 	}
 
 	GdbModelIndexArrayBase* indexArrayBase;
-	p_params->m_model->VTable0x30(&indexArrayBase);
+	p_params->m_model->GetIndexArrayInto(&indexArrayBase);
 	GdbModelIndexArray* indices = static_cast<GdbModelIndexArray*>(indexArrayBase);
 
 	LegoU32* groups = p_params->m_model->GetMutableGroups();
@@ -1201,5 +1201,5 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 		groups[groupIndex] = 0xc0000000;
 	}
 
-	p_params->m_model->VTable0x34(1);
+	p_params->m_model->AddFlags(1);
 }

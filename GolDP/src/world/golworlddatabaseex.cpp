@@ -209,7 +209,7 @@ undefined4* GolWorldDatabaseEx::VTable0x0c()
 	for (i = 0; i < m_unk0x24; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_unk0x28[i], ".gdf");
-		VTable0x38(i)->VTable0x1c(m_unk0x04, fileName, m_binary);
+		VTable0x38(i)->Load(m_unk0x04, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_unk0x2c; i++) {

@@ -793,7 +793,7 @@ void MenuManager::BuildPlayerCarModel(
 		p_slot->m_model = NULL;
 	}
 	p_slot->m_model = golExport->VTable0x14();
-	p_slot->m_model->VTable0x18(
+	p_slot->m_model->Allocate(
 		renderer,
 		3,
 		carBuildModel.GetFinalVertexCount(),
@@ -811,9 +811,9 @@ void MenuManager::BuildPlayerCarModel(
 	entity.ResetModelState();
 
 	GdbVertexArray* vertexArray;
-	p_slot->m_model->VTable0x28(&vertexArray);
+	p_slot->m_model->GetVertexArray(&vertexArray);
 	vertexArray->VTable0x10();
-	p_slot->m_model->VTable0x2c(1, FALSE);
+	p_slot->m_model->AddFlagsWithBounds(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0042de90
@@ -925,9 +925,9 @@ void MenuManager::BuildPlayerDriverModel(
 	entity.ResetModelState();
 
 	GdbVertexArray* vertexArray;
-	p_slot->m_altModel->VTable0x28(&vertexArray);
+	p_slot->m_altModel->GetVertexArray(&vertexArray);
 	vertexArray->VTable0x10();
-	p_slot->m_altModel->VTable0x2c(1, FALSE);
+	p_slot->m_altModel->AddFlagsWithBounds(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0042e1f0

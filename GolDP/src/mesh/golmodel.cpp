@@ -23,27 +23,27 @@ GolModel::GolModel()
 // FUNCTION: GOLDP 0x10006860
 GolModel::~GolModel()
 {
-	VTable0x24();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x100068e0
-void GolModel::VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
+void GolModel::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
 {
 	if (m_unk0x24) {
-		VTable0x24();
+		Destroy();
 	}
 
-	GolModelBase::VTable0x1c(p_renderer, p_name, p_binary);
+	GolModelBase::Load(p_renderer, p_name, p_binary);
 
 	if (m_unk0x40 != NULL) {
-		VTable0x38(&m_unk0x28, &m_unk0x34, m_unk0x38);
+		ComputeBounds(&m_unk0x28, &m_unk0x34, m_unk0x38);
 	}
 
 	m_unk0x3c = TRUE;
 }
 
 // FUNCTION: GOLDP 0x10006930
-void GolModel::VTable0x18(
+void GolModel::Allocate(
 	GolRenderDevice* p_renderer,
 	undefined2 p_vertexType,
 	undefined4 p_arg3,
@@ -53,7 +53,7 @@ void GolModel::VTable0x18(
 )
 {
 	if (m_unk0x24) {
-		VTable0x24();
+		Destroy();
 	}
 
 	if (p_arg6 > 0) {
@@ -86,7 +86,7 @@ void GolModel::VTable0x18(
 }
 
 // FUNCTION: GOLDP 0x10006a60
-void GolModel::VTable0x24()
+void GolModel::Destroy()
 {
 	if (m_unk0x40 != NULL) {
 		m_unk0x40->VTable0x0c();
@@ -95,11 +95,11 @@ void GolModel::VTable0x24()
 		m_unk0x10 = 0;
 	}
 
-	GolModelBase::VTable0x24();
+	GolModelBase::Destroy();
 }
 
 // FUNCTION: GOLDP 0x10006aa0
-void GolModel::VTable0x0c(GolFileParser& p_parser)
+void GolModel::ParseUncoloredVertices(GolFileParser& p_parser)
 {
 	if (m_unk0x40 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -115,7 +115,7 @@ void GolModel::VTable0x0c(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x10006b30
-void GolModel::VTable0x10(GolFileParser& p_parser)
+void GolModel::ParseColoredVertices(GolFileParser& p_parser)
 {
 	if (m_unk0x40 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -131,7 +131,7 @@ void GolModel::VTable0x10(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x10006bc0
-void GolModel::VTable0x14(GolFileParser& p_parser)
+void GolModel::ParseNormalVertices(GolFileParser& p_parser)
 {
 	if (m_unk0x40 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);

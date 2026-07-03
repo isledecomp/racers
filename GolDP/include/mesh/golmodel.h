@@ -42,19 +42,19 @@ public:
 	GolModel();
 	~GolModel() override; // vtable+0x20
 
-	void VTable0x0c(GolFileParser& p_parser) override; // vtable+0x0c
-	void VTable0x10(GolFileParser& p_parser) override; // vtable+0x10
-	void VTable0x14(GolFileParser& p_parser) override; // vtable+0x14
-	void VTable0x18(
+	void ParseUncoloredVertices(GolFileParser& p_parser) override; // vtable+0x0c
+	void ParseColoredVertices(GolFileParser& p_parser) override;   // vtable+0x10
+	void ParseNormalVertices(GolFileParser& p_parser) override;    // vtable+0x14
+	void Allocate(
 		GolRenderDevice* p_renderer,
 		undefined2,
 		undefined4,
 		undefined4,
 		undefined4,
 		undefined4
-	) override;                                                                                         // vtable+0x18
-	void VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
-	void VTable0x24() override;                                                                         // vtable+0x24
+	) override;                                                                                   // vtable+0x18
+	void Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
+	void Destroy() override;                                                                      // vtable+0x24
 	void FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable);
 	void FUN_10006e00(
 		GolD3DRenderDevice* p_renderer,

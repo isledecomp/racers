@@ -268,7 +268,7 @@ GolModelEntity* ChampionDefinitionList::CreateChampionModel(ChampionDefinition* 
 	m_models[m_entryCount] = m_golExport->VTable0x14();
 	::strncpy(name, p_definition->m_unk0x10, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
-	m_models[m_entryCount]->VTable0x1c(m_renderer, name, m_binary);
+	m_models[m_entryCount]->Load(m_renderer, name, m_binary);
 
 	m_modelEntities[m_entryCount].SetPrimaryModel(m_models[m_entryCount], g_unk0x004afde4);
 	m_entryCount++;

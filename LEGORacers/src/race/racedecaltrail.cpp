@@ -238,16 +238,16 @@ void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_unk0x04)
 {
 	ComputeProjection();
 
-	p_unk0x04->VTable0x28(&m_sourceVertices);
+	p_unk0x04->GetVertexArray(&m_sourceVertices);
 
 	GdbModelIndexArrayBase* indexArrayBase;
-	p_unk0x04->VTable0x30(&indexArrayBase);
+	p_unk0x04->GetIndexArrayInto(&indexArrayBase);
 	m_sourceIndexBytes = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetIndexBytes();
 
 	GolModelBase* model = m_model;
-	model->VTable0x28(&m_vertices);
+	model->GetVertexArray(&m_vertices);
 
-	m_model->VTable0x30(&indexArrayBase);
+	m_model->GetIndexArrayInto(&indexArrayBase);
 	LegoU8* destIndexBytes = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetIndexBytes();
 
 	m_vertexCount = 0;
@@ -320,10 +320,10 @@ void RaceDecalManager::Trail::Decal::EndGeometry(GolModelBase* p_unk0x04)
 	LegoU32 groupIndex = m_groupIndex;
 	model->GetMutableGroups()[groupIndex] = c_commandEnd;
 	model->SetDirty(TRUE);
-	GetModel()->VTable0x34(TRUE);
-	GetModel()->VTable0x2c(TRUE, FALSE);
-	p_unk0x04->VTable0x34(FALSE);
-	p_unk0x04->VTable0x2c(FALSE, FALSE);
+	GetModel()->AddFlags(TRUE);
+	GetModel()->AddFlagsWithBounds(TRUE, FALSE);
+	p_unk0x04->AddFlags(FALSE);
+	p_unk0x04->AddFlagsWithBounds(FALSE, FALSE);
 
 	if (m_triangleCount) {
 		m_flags |= c_hasGeometry;

@@ -499,7 +499,7 @@ void CarModelScreenBase::CarPartPlacement::CreatePieceModel()
 	}
 
 	LegoS32 maxHighPieceOffset = m_context->m_pieceLibrary.GetMaxHighPieceOffset();
-	m_pieceModel->VTable0x18(m_renderer, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
+	m_pieceModel->Allocate(m_renderer, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
 	m_pieceEntity.SetPrimaryModel(m_pieceModel, g_unk0x4b2e68);
 }
 

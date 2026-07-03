@@ -278,7 +278,7 @@ void GolModelEntity::ApplyColorTransform(ColorTransform* p_transform)
 		if (model == NULL) {
 			break;
 		}
-		model->VTable0x3c(*p_transform);
+		model->ApplyColorTransform(*p_transform);
 	}
 }
 
@@ -290,7 +290,7 @@ void GolModelEntity::VTable0x28()
 		if (m_models[i] == NULL) {
 			break;
 		}
-		m_models[i]->VTable0x40();
+		m_models[i]->CommitColorTransform();
 	}
 }
 

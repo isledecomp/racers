@@ -403,7 +403,7 @@ LegoU32 ChassisModelTable::InstantiateModels(
 		m_models[m_instantiatedCount] = m_golExport->VTable0x14();
 		::strncpy(name, p_item->m_modelNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';
-		m_models[m_instantiatedCount]->VTable0x1c(m_renderer, name, m_binary);
+		m_models[m_instantiatedCount]->Load(m_renderer, name, m_binary);
 
 		m_animatedEntities[m_instantiatedCount].SetModel(
 			m_models[m_instantiatedCount],

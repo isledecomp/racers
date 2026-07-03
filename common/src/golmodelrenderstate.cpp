@@ -137,13 +137,13 @@ void GolModelRenderState::UpdateMaterialCaches()
 void GolModelRenderState::VTable0x00(GolD3DRenderDevice*, GolModelEntity* p_model, LegoU32 p_lodIndex)
 {
 	m_model = p_model->GetModel(p_lodIndex);
-	m_model->VTable0x28(&m_vertexArray);
+	m_model->GetVertexArray(&m_vertexArray);
 }
 
 // FUNCTION: LEGORACERS 0x0040ed60
 void GolModelRenderState::VTable0x04(GolD3DRenderDevice*, GolModelEntity*, LegoU32)
 {
-	m_model->VTable0x2c(1, FALSE);
+	m_model->AddFlagsWithBounds(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0040ed70

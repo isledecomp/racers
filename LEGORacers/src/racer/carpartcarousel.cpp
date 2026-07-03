@@ -88,7 +88,7 @@ LegoS32 CarPartCarousel::InitializeItemModels()
 
 	for (LegoS32 i = 0; i < result; i++) {
 		GolModelBase* model = GetItemModel(i);
-		model->VTable0x18(m_renderer, 2, 3 * maxHighPieceOffset, maxHighPieceOffset, 100, 5);
+		model->Allocate(m_renderer, 2, 3 * maxHighPieceOffset, maxHighPieceOffset, 100, 5);
 		result = m_slotCount;
 	}
 

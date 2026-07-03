@@ -79,7 +79,7 @@ GolWorldDatabase* DriverPartResources::Load(const LoadParams* p_params, LegoS32 
 	NormalizeHeadGroupOrder();
 
 	m_hatModel = m_golExport->VTable0x14();
-	m_hatModel->VTable0x18(m_renderer, 2, 600, 300, 100, 3);
+	m_hatModel->Allocate(m_renderer, 2, 600, 300, 100, 3);
 
 	ComputeMaxVertexCounts();
 	ComputeMaxIndexCounts();
@@ -231,20 +231,20 @@ void DriverPartResources::ComputeMaxVertexCounts()
 	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetAnimatedEntityCount());
 		 bodyIndex++) {
 		GolModelBase* model = GetBodyModel(bodyIndex);
-		model->VTable0x28(&vertexArray);
+		model->GetVertexArray(&vertexArray);
 		if (static_cast<LegoS32>(vertexArray->GetCount()) > m_maxBodyVertexCount) {
 			m_maxBodyVertexCount = vertexArray->GetCount();
 		}
-		model->VTable0x2c(0, FALSE);
+		model->AddFlagsWithBounds(0, FALSE);
 	}
 
 	for (LegoS32 hatIndex = 0; hatIndex < m_partCatalog->GetHatCount(); hatIndex++) {
 		GolModelBase* model = LoadHatModel(hatIndex);
-		model->VTable0x28(&vertexArray);
+		model->GetVertexArray(&vertexArray);
 		if (static_cast<LegoS32>(vertexArray->GetCount()) > m_maxHatVertexCount) {
 			m_maxHatVertexCount = vertexArray->GetCount();
 		}
-		model->VTable0x2c(0, FALSE);
+		model->AddFlagsWithBounds(0, FALSE);
 	}
 }
 

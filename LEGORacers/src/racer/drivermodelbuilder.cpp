@@ -197,9 +197,9 @@ void DriverModelBuilder::SummarizeModel(GolModelBase* p_model, ModelSummary* p_s
 	p_summary->m_model = p_model;
 
 	GdbVertexArray* vertexArray;
-	p_model->VTable0x28(&vertexArray);
+	p_model->GetVertexArray(&vertexArray);
 	p_summary->m_vertexCount = vertexArray->GetCount();
-	p_model->VTable0x2c(0, FALSE);
+	p_model->AddFlagsWithBounds(0, FALSE);
 	p_summary->m_indexCount = p_model->GetIndexArray()->GetCount();
 	p_summary->m_groupCount = p_model->GetGroupCount();
 	p_summary->m_materialCount = p_model->GetMaterialTable()->GetCount();
@@ -248,11 +248,11 @@ LegoBool32 DriverModelBuilder::NeedsNewOutputModel(GolModelBase* p_model) const
 	if (p_model != NULL && p_model->GetGroups() != NULL) {
 		GdbVertexArray* bodyVertexArray;
 		GdbVertexArray* existingVertexArray;
-		bodyModel->VTable0x28(&bodyVertexArray);
-		p_model->VTable0x28(&existingVertexArray);
+		bodyModel->GetVertexArray(&bodyVertexArray);
+		p_model->GetVertexArray(&existingVertexArray);
 		result = bodyVertexArray->GetVertexType() != existingVertexArray->GetVertexType();
-		bodyModel->VTable0x2c(0, FALSE);
-		p_model->VTable0x2c(0, FALSE);
+		bodyModel->AddFlagsWithBounds(0, FALSE);
+		p_model->AddFlagsWithBounds(0, FALSE);
 	}
 
 	return result;
@@ -272,12 +272,12 @@ GolModelBase* DriverModelBuilder::CreateOutputModel(undefined4 p_vertexType)
 	LegoS32 materialCount = m_headSummary.m_materialCount + m_bodySummary.m_materialCount + 2;
 
 	GdbVertexArray* vertexArray;
-	m_bodySummary.m_model->VTable0x28(&vertexArray);
+	m_bodySummary.m_model->GetVertexArray(&vertexArray);
 	if (static_cast<undefined2>(p_vertexType) == 0) {
 		p_vertexType = vertexArray->GetVertexType();
 	}
 
-	model->VTable0x18(
+	model->Allocate(
 		m_renderer,
 		static_cast<undefined2>(p_vertexType),
 		vertexCount,
@@ -285,7 +285,7 @@ GolModelBase* DriverModelBuilder::CreateOutputModel(undefined4 p_vertexType)
 		groupCount,
 		materialCount
 	);
-	m_bodySummary.m_model->VTable0x2c(0, FALSE);
+	m_bodySummary.m_model->AddFlagsWithBounds(0, FALSE);
 
 	return model;
 }
@@ -303,8 +303,8 @@ void DriverModelBuilder::CopyModelVertices(
 	GolVec2 texCoord;
 	GolVec3 position;
 	GolVec3 normal;
-	p_sourceModel->VTable0x28(&sourceVertices);
-	p_destModel->VTable0x28(&destVertices);
+	p_sourceModel->GetVertexArray(&sourceVertices);
+	p_destModel->GetVertexArray(&destVertices);
 
 	LegoS32 vertexCount = sourceVertices->GetCount();
 	for (LegoS32 i = 0; i < vertexCount; i++) {
@@ -323,8 +323,8 @@ void DriverModelBuilder::CopyModelVertices(
 		destVertices->VTable0x30(destIndex, color);
 	}
 
-	p_sourceModel->VTable0x2c(0, FALSE);
-	p_destModel->VTable0x2c(0, FALSE);
+	p_sourceModel->AddFlagsWithBounds(0, FALSE);
+	p_destModel->AddFlagsWithBounds(0, FALSE);
 }
 
 // STUB: LEGORACERS 0x0049d880
@@ -332,8 +332,8 @@ void DriverModelBuilder::CopyModelIndices(GolModelBase* p_sourceModel, GolModelB
 {
 	GdbModelIndexArrayBase* sourceIndexArrayBase;
 	GdbModelIndexArrayBase* destIndexArrayBase;
-	p_sourceModel->VTable0x30(&sourceIndexArrayBase);
-	p_destModel->VTable0x30(&destIndexArrayBase);
+	p_sourceModel->GetIndexArrayInto(&sourceIndexArrayBase);
+	p_destModel->GetIndexArrayInto(&destIndexArrayBase);
 
 	GdbModelIndexArray* sourceIndexArray = static_cast<GdbModelIndexArray*>(sourceIndexArrayBase);
 	GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
@@ -348,8 +348,8 @@ void DriverModelBuilder::CopyModelIndices(GolModelBase* p_sourceModel, GolModelB
 		}
 	}
 
-	p_sourceModel->VTable0x34(0);
-	p_destModel->VTable0x34(0);
+	p_sourceModel->AddFlags(0);
+	p_destModel->AddFlags(0);
 }
 
 // FUNCTION: LEGORACERS 0x0049d920

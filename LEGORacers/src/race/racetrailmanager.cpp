@@ -93,7 +93,7 @@ void RaceTrailManager::Trail::Initialize(GolD3DRenderDevice* p_renderer, GolExpo
 {
 	m_golExport = p_golExport;
 	m_model = p_golExport->VTable0x14();
-	m_model->VTable0x18(p_renderer, 1, 0x6a, 0x35, 4, 1);
+	m_model->Allocate(p_renderer, 1, 0x6a, 0x35, 4, 1);
 	m_entity.SetPrimaryModel(m_model, g_raceTrailManagerMaxFloat);
 }
 
@@ -381,7 +381,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	GdbVertexArray* vertexArray;
 	LegoFloat uStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_pointCount + 1));
 	LegoFloat vStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
-	m_model->VTable0x28(&vertexArray);
+	m_model->GetVertexArray(&vertexArray);
 
 	ColorRGBA color = m_color;
 	LegoU8 alphaStep = static_cast<LegoU8>(static_cast<LegoS32>(
@@ -436,7 +436,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 		elapsedMs += frame->m_durationMs;
 	}
 
-	m_model->VTable0x2c(1, FALSE);
+	m_model->AddFlagsWithBounds(1, FALSE);
 
 	LegoU32 rowsPerGroup = 0x40 / m_pointCount;
 	LegoU32 groupCount;
@@ -449,7 +449,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	}
 
 	GdbModelIndexArrayBase* indexArrayBase;
-	m_model->VTable0x30(&indexArrayBase);
+	m_model->GetIndexArrayInto(&indexArrayBase);
 	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(indexArrayBase);
 	GdbModelIndexArray::Indices* indices = indexArray->GetMutableIndices();
 
@@ -490,7 +490,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 		}
 	}
 
-	m_model->VTable0x34(1);
+	m_model->AddFlags(1);
 
 	LegoU32* groups = m_model->GetMutableGroups();
 	groups[0] = GolModel::c_groupTypeMaterial;

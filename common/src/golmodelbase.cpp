@@ -33,14 +33,14 @@ GolModelBase::GolModelBase()
 // FUNCTION: GOLDP 0x10027090
 GolModelBase::~GolModelBase()
 {
-	VTable0x24();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x100270e0
-void GolModelBase::VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
+void GolModelBase::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
 {
 	if (m_unk0x24 != NULL) {
-		VTable0x24();
+		Destroy();
 	}
 
 	GolFileParser* parser;
@@ -70,28 +70,28 @@ void GolModelBase::VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_nam
 			m_unk0x04.FUN_10025f90(p_renderer, *parser);
 			break;
 		case GolFileParser::e_unknown0x28:
-			VTable0x0c(*parser);
+			ParseUncoloredVertices(*parser);
 			break;
 		case GolFileParser::e_unknown0x2a:
-			VTable0x10(*parser);
+			ParseColoredVertices(*parser);
 			break;
 		case GolFileParser::e_unknown0x29:
-			VTable0x14(*parser);
+			ParseNormalVertices(*parser);
 			break;
 		case GolFileParser::e_unknown0x2d:
-			VTable0x04(*parser);
+			ParseIndices(*parser);
 			break;
 		case GolFileParser::e_unknown0x2e:
 			if (m_unk0x24 != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			VTable0x00(*parser);
+			ParseGroups(*parser);
 			break;
 		case GolFileParser::e_unknown0x33:
 			m_unk0x38 = parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x34:
-			VTable0x08(*parser);
+			ParseVertices(*parser);
 			break;
 		default:
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -100,7 +100,7 @@ void GolModelBase::VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_nam
 	}
 
 	if (m_unk0x10 != 0) {
-		VTable0x38(&m_unk0x28, &m_unk0x34, m_unk0x38);
+		ComputeBounds(&m_unk0x28, &m_unk0x34, m_unk0x38);
 	}
 
 	parser->Dispose();
@@ -128,7 +128,7 @@ void GolModelBase::FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups)
 }
 
 // FUNCTION: GOLDP 0x100273b0
-void GolModelBase::VTable0x24()
+void GolModelBase::Destroy()
 {
 	if (m_unk0x14 != NULL) {
 		m_unk0x14->VTable0x0c();
@@ -155,7 +155,7 @@ void GolModelBase::VTable0x24()
 }
 
 // FUNCTION: GOLDP 0x10027430
-void GolModelBase::VTable0x00(GolFileParser& p_parser)
+void GolModelBase::ParseGroups(GolFileParser& p_parser)
 {
 	m_countGroups = p_parser.ReadBracketedCountAndLeftCurly();
 
@@ -277,7 +277,7 @@ void GolModelBase::VTable0x00(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x10027740
-void GolModelBase::VTable0x04(GolFileParser& p_parser)
+void GolModelBase::ParseIndices(GolFileParser& p_parser)
 {
 	if (m_unk0x18 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -292,34 +292,34 @@ void GolModelBase::VTable0x04(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x100277d0
-void GolModelBase::VTable0x28(GdbVertexArray** p_dest) const
+void GolModelBase::GetVertexArray(GdbVertexArray** p_dest) const
 {
 	*p_dest = m_unk0x10;
 }
 
 // FUNCTION: GOLDP 0x100277e0
-void GolModelBase::VTable0x2c(LegoU32 p_arg1, LegoBool32 p_arg2)
+void GolModelBase::AddFlagsWithBounds(LegoU32 p_arg1, LegoBool32 p_arg2)
 {
 	m_unk0x3c |= p_arg1;
 	if (p_arg2) {
-		VTable0x38(&m_unk0x28, &m_unk0x34, m_unk0x38);
+		ComputeBounds(&m_unk0x28, &m_unk0x34, m_unk0x38);
 	}
 }
 
 // FUNCTION: GOLDP 0x10027810
-void GolModelBase::VTable0x30(GdbModelIndexArrayBase** p_dest) const
+void GolModelBase::GetIndexArrayInto(GdbModelIndexArrayBase** p_dest) const
 {
 	*p_dest = m_unk0x18;
 }
 
 // FUNCTION: GOLDP 0x10027820
-void GolModelBase::VTable0x34(LegoU32 p_arg1)
+void GolModelBase::AddFlags(LegoU32 p_arg1)
 {
 	m_unk0x3c |= p_arg1;
 }
 
 // FUNCTION: GOLDP 0x10027830
-void GolModelBase::VTable0x08(GolFileParser& p_parser)
+void GolModelBase::ParseVertices(GolFileParser& p_parser)
 {
 	if (m_unk0x14 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -335,13 +335,13 @@ void GolModelBase::VTable0x08(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolModelBase::VTable0x14(GolFileParser& p_parser)
+void GolModelBase::ParseNormalVertices(GolFileParser& p_parser)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100278c0
-void GolModelBase::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat p_scale) const
+void GolModelBase::ComputeBounds(GolVec3* p_center, LegoFloat* p_radius, LegoFloat p_scale) const
 {
 	LegoU32 countGroups;
 	GolVec3 vertex;
@@ -431,13 +431,13 @@ void GolModelBase::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat 
 }
 
 // FUNCTION: GOLDP 0x10027b30
-void GolModelBase::VTable0x3c(const ColorTransform& p_details)
+void GolModelBase::ApplyColorTransform(const ColorTransform& p_details)
 {
 	m_unk0x10->VTable0x34(p_details);
 }
 
 // FUNCTION: GOLDP 0x10027b40
-void GolModelBase::VTable0x40()
+void GolModelBase::CommitColorTransform()
 {
 	m_unk0x10->VTable0x38();
 }
@@ -447,7 +447,7 @@ void GolModelBase::FUN_00411090()
 {
 	GdbModelIndexArrayBase* indexArray = NULL;
 	GdbVertexArray* vertexArray = NULL;
-	VTable0x28(&vertexArray);
+	GetVertexArray(&vertexArray);
 
 	LegoU32 vertexCount = vertexArray->GetCount();
 	LegoU32 i;
@@ -458,9 +458,9 @@ void GolModelBase::FUN_00411090()
 		vertexArray->VTable0x24(i, vertex);
 	}
 
-	VTable0x2c(1, TRUE);
+	AddFlagsWithBounds(1, TRUE);
 
-	VTable0x30(&indexArray);
+	GetIndexArrayInto(&indexArray);
 
 	GdbModelIndexArray* modelIndexArray = static_cast<GdbModelIndexArray*>(indexArray);
 	GdbModelIndexArray::Indices* indices = modelIndexArray->GetMutableIndices();
@@ -471,5 +471,5 @@ void GolModelBase::FUN_00411090()
 		indices[i].m_c = value;
 	}
 
-	VTable0x34(1);
+	AddFlags(1);
 }

@@ -46,7 +46,7 @@ void MainMenuModelSlot::CreateDriverModel()
 
 	undefined4 dimensions[5];
 	m_modelBuilder->GetMaxMergedCounts(dimensions);
-	m_driverModel->VTable0x18(m_renderer, 2, dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
+	m_driverModel->Allocate(m_renderer, 2, dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
 
 	undefined4 zero = 0;
 	GolModelBase* nullModel = NULL;

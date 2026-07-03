@@ -119,7 +119,7 @@ void RaceDecalManager::Trail::Initialize(
 	LegoU32 count = sizeOfArray(m_slots);
 	do {
 		slot->m_model = m_golExport->VTable0x14();
-		slot->m_model->VTable0x18(
+		slot->m_model->Allocate(
 			p_renderer,
 			1,
 			m_decal.m_vertexCapacity,
@@ -363,11 +363,11 @@ void RaceDecalManager::Trail::BakeSegment()
 	m_slots[currentIndex].m_entry.m_triangleCount = m_decal.GetTriangleCount();
 
 	GdbVertexArray* sourceVertices;
-	sourceModel->VTable0x28(&sourceVertices);
+	sourceModel->GetVertexArray(&sourceVertices);
 
 	GolModelBase* destModel = m_slots[m_slotIndex].m_model;
 	GdbVertexArray* destVertices;
-	destModel->VTable0x28(&destVertices);
+	destModel->GetVertexArray(&destVertices);
 
 	ColorRGBA color;
 	GolVec2 texCoord;
@@ -385,14 +385,14 @@ void RaceDecalManager::Trail::BakeSegment()
 		destVertices->VTable0x30(i, color);
 	}
 
-	sourceModel->VTable0x2c(0, FALSE);
-	m_slots[m_slotIndex].m_model->VTable0x2c(1, FALSE);
+	sourceModel->AddFlagsWithBounds(0, FALSE);
+	m_slots[m_slotIndex].m_model->AddFlagsWithBounds(1, FALSE);
 
 	GdbModelIndexArrayBase* sourceIndexArrayBase;
-	sourceModel->VTable0x30(&sourceIndexArrayBase);
+	sourceModel->GetIndexArrayInto(&sourceIndexArrayBase);
 
 	GdbModelIndexArrayBase* destIndexArrayBase;
-	m_slots[m_slotIndex].m_model->VTable0x30(&destIndexArrayBase);
+	m_slots[m_slotIndex].m_model->GetIndexArrayInto(&destIndexArrayBase);
 
 	GdbModelIndexArray* sourceIndexArray = static_cast<GdbModelIndexArray*>(sourceIndexArrayBase);
 	GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
@@ -407,8 +407,8 @@ void RaceDecalManager::Trail::BakeSegment()
 		index++;
 	}
 
-	sourceModel->VTable0x34(0);
-	m_slots[m_slotIndex].m_model->VTable0x34(1);
+	sourceModel->AddFlags(0);
+	m_slots[m_slotIndex].m_model->AddFlags(1);
 
 	for (i = 0; i < sourceModel->GetGroupCount(); i++) {
 		m_slots[m_slotIndex].m_model->GetMutableGroups()[i] = sourceModel->GetGroups()[i];
@@ -438,8 +438,8 @@ void RaceDecalManager::Trail::WeldVertices()
 	GolModelBase* previousModel = m_slots[currentIndex].m_model;
 	GdbVertexArray* sourceVertices;
 	GdbVertexArray* previousVertices;
-	sourceModel->VTable0x28(&sourceVertices);
-	previousModel->VTable0x28(&previousVertices);
+	sourceModel->GetVertexArray(&sourceVertices);
+	previousModel->GetVertexArray(&previousVertices);
 
 	for (LegoU32 previousIndex = 0; previousIndex < m_slots[currentIndex].m_entry.m_vertexCount; previousIndex++) {
 		GolVec3 previousPosition;
@@ -461,13 +461,13 @@ void RaceDecalManager::Trail::WeldVertices()
 	}
 
 	if (updatedCount) {
-		sourceModel->VTable0x2c(1, FALSE);
+		sourceModel->AddFlagsWithBounds(1, FALSE);
 	}
 	else {
-		sourceModel->VTable0x2c(0, FALSE);
+		sourceModel->AddFlagsWithBounds(0, FALSE);
 	}
 
-	previousModel->VTable0x2c(0, FALSE);
+	previousModel->AddFlagsWithBounds(0, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x004925e0

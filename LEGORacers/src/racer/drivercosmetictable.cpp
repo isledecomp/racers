@@ -336,7 +336,7 @@ GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry* p_entry)
 	m_models[m_loadedEntryCount] = m_golExport->VTable0x14();
 	::strncpy(name, p_entry->m_modelName, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
-	m_models[m_loadedEntryCount]->VTable0x1c(m_renderer, name, m_binary);
+	m_models[m_loadedEntryCount]->Load(m_renderer, name, m_binary);
 
 	m_loadedEntries[m_loadedEntryCount]
 		.SetModel(m_models[m_loadedEntryCount], m_rootNode, &m_modelParts, g_unk0x004b00a0);

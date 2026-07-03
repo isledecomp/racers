@@ -2391,7 +2391,7 @@ void CarBuildModel::UpdateOffset(LegoBool32 p_restoreCachedOffset)
 		GetPieceInfo(0, &pieceRecord, &x, &y, &height, &rotation, &colorRecordIndex, &partType);
 
 		library = pieceRecord->m_library;
-		partType = pieceRecord->FUN_0049f690();
+		partType = pieceRecord->GetPartType();
 		if (partType != 0xffff) {
 			library->GetColor(partType, &m_offsetX, &m_offsetY, &m_offsetZ);
 			m_offsetZ *= g_carBuildModelNegativeHeightScale;
@@ -2865,7 +2865,7 @@ LegoS32 CarBuildModel::ComputeHighPieceCentroid(LegoFloat* p_unk0x04, LegoFloat*
 				LegoS32 pieceX;
 				LegoS32 pieceY;
 				LegoS32 pieceZ;
-				LegoS32 count = pieceRecord->FUN_0049f560(x, y, height, rotation, &pieceX, &pieceY, &pieceZ);
+				LegoS32 count = pieceRecord->ComputeVolumeMoments(x, y, height, rotation, &pieceX, &pieceY, &pieceZ);
 				result += count;
 				xTotal += pieceX;
 				yTotal += pieceY;
@@ -3047,7 +3047,8 @@ void CarBuildModel::PieceGrid::StampPiece(
 
 							oldX = p_x + x - oldX;
 							oldY = p_y + y - oldY;
-							delta = oldRecord->GetCell(oldX, oldY, static_cast<LegoU8>(oldRotation))->FUN_0049ea40();
+							delta = oldRecord->GetCell(oldX, oldY, static_cast<LegoU8>(oldRotation))
+										->GetRaisedBottomHeight();
 						}
 
 						m_cellCallback(p_x + x, p_y + y, oldHeight, colorRecordIndex, delta);
@@ -3341,7 +3342,7 @@ void CarBuildModel::PieceGrid::ForEachOccupiedCell(CellCallback p_callback)
 
 					oldX = x - oldX;
 					oldY = y - oldY;
-					delta = oldRecord->GetCell(oldX, oldY, static_cast<LegoU8>(oldRotation))->FUN_0049ea40();
+					delta = oldRecord->GetCell(oldX, oldY, static_cast<LegoU8>(oldRotation))->GetRaisedBottomHeight();
 				}
 
 				p_callback(x, y, m_entries[index].m_height, colorRecordIndex, delta);

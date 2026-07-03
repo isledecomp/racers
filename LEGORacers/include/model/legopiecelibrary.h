@@ -14,11 +14,16 @@ public:
 	// SIZE 0x1fc
 	class LebTxtParser : public GolTxtParser {};
 
+	// Shape blob layout: a header cell {width, height} followed by
+	// width*height cells and a trailing u16 part type. Each cell packs the
+	// solid column's top height in m_first (bit 7 = occupied) and its bottom
+	// height in m_second, both masked with 0x3f; a bottom above the top marks
+	// a raised underside (arches).
 	// SIZE 0x02
 	struct ShapeCell {
-		LegoS32 FUN_0049ea40();
+		LegoS32 GetRaisedBottomHeight();
 		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation);
-		LegoS32 FUN_0049eae0();
+		LegoS32 GetPartType();
 		LegoS32 GetClampedLower()
 		{
 			LegoS32 lower = m_second & 0x3f;
@@ -43,15 +48,15 @@ public:
 		LegoS32 GetMaxCellValue() const;
 		LegoS32 CompareName(LegoChar* p_name);
 		PieceRecord* GetVariant(LegoS32 p_variant);
-		LegoS32 FUN_0049f690() const;
-		LegoS32 FUN_0049f560(
+		LegoS32 GetPartType() const;
+		LegoS32 ComputeVolumeMoments(
 			LegoS32 p_x,
 			LegoS32 p_y,
 			LegoS32 p_height,
 			LegoS32 p_rotation,
-			LegoS32* p_unk0x14,
-			LegoS32* p_unk0x18,
-			LegoS32* p_unk0x1c
+			LegoS32* p_momentX,
+			LegoS32* p_momentY,
+			LegoS32* p_momentZ
 		);
 		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation) const
 		{

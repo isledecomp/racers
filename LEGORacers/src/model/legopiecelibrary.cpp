@@ -42,7 +42,7 @@ LegoS32 LegoPieceLibrary::ReadBracketedCountAndLeftCurly(GolFileParser* p_parser
 }
 
 // FUNCTION: LEGORACERS 0x0049ea40
-LegoS32 LegoPieceLibrary::ShapeCell::FUN_0049ea40()
+LegoS32 LegoPieceLibrary::ShapeCell::GetRaisedBottomHeight()
 {
 	LegoS32 result = (m_second & g_shapeCellValueMask) - (m_first & g_shapeCellValueMask);
 	if (result < 0) {
@@ -79,7 +79,7 @@ LegoPieceLibrary::ShapeCell* LegoPieceLibrary::ShapeCell::GetCell(LegoS32 p_x, L
 }
 
 // FUNCTION: LEGORACERS 0x0049eae0
-LegoS32 LegoPieceLibrary::ShapeCell::FUN_0049eae0()
+LegoS32 LegoPieceLibrary::ShapeCell::GetPartType()
 {
 	LegoS32 index = static_cast<LegoS32>(m_second) * static_cast<LegoS32>(m_first) + 1;
 	return (this[index].m_second << 8) + this[index].m_first;
@@ -589,22 +589,22 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::PieceRecord::GetVariant(LegoS32
 }
 
 // FUNCTION: LEGORACERS 0x0049f560
-LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f560(
+LegoS32 LegoPieceLibrary::PieceRecord::ComputeVolumeMoments(
 	LegoS32 p_x,
 	LegoS32 p_y,
 	LegoS32 p_height,
 	LegoS32 p_rotation,
-	LegoS32* p_unk0x14,
-	LegoS32* p_unk0x18,
-	LegoS32* p_unk0x1c
+	LegoS32* p_momentX,
+	LegoS32* p_momentY,
+	LegoS32* p_momentZ
 )
 {
 	LegoS32 result = 0;
 
-	*p_unk0x1c = result;
+	*p_momentZ = result;
 	PieceRecord* pieceRecord = this;
-	*p_unk0x18 = result;
-	*p_unk0x14 = result;
+	*p_momentY = result;
+	*p_momentX = result;
 	p_rotation &= 3;
 
 	LegoS32 width;
@@ -635,10 +635,10 @@ LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f560(
 
 					LegoS32 delta = upper - lower;
 					result += delta;
-					*p_unk0x14 += delta * (x + p_x);
-					*p_unk0x18 += delta * yOffset;
+					*p_momentX += delta * (x + p_x);
+					*p_momentY += delta * yOffset;
 					for (LegoS32 z = lower; z < upper; z++) {
-						*p_unk0x1c += z + p_height;
+						*p_momentZ += z + p_height;
 					}
 
 					pieceRecord = this;
@@ -654,10 +654,10 @@ LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f560(
 }
 
 // FUNCTION: LEGORACERS 0x0049f690
-LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f690() const
+LegoS32 LegoPieceLibrary::PieceRecord::GetPartType() const
 {
 	if (m_pieceType < g_highPieceTypeBase) {
-		return m_shapeData->FUN_0049eae0();
+		return m_shapeData->GetPartType();
 	}
 
 	return 0xffff;

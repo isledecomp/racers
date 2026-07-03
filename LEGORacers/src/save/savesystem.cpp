@@ -139,7 +139,7 @@ void SaveSystem::LoadMemoryCardSaves(undefined4 p_createIfMissing)
 void SaveSystem::LoadFirstOpenSave()
 {
 	for (LegoU32 i = 0; i < m_memoryCardSaveCount; i++) {
-		if (m_memoryCardSaves[i].HasUnk0x4b4Flag0x01() && m_gameState.GetActiveSaveIndex() == 0xffffffff) {
+		if (m_memoryCardSaves[i].IsUsable() && m_gameState.GetActiveSaveIndex() == 0xffffffff) {
 			m_gameState.LoadFromSaveGame(&m_memoryCardSaves[i], i);
 			return;
 		}

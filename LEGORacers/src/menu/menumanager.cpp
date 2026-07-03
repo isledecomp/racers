@@ -1039,7 +1039,7 @@ LegoBool32 MenuManager::HasPendingMemoryCardSaves()
 	MemoryCardSaveGame* entry = m_gameContext.m_saveSystem.GetMemoryCardSaves();
 
 	for (LegoU32 i = 0; i < m_gameContext.m_saveSystem.GetMemoryCardSaveCount(); i++, entry++) {
-		if (entry->HasUnk0x4b4Flag0x01()) {
+		if (entry->IsUsable()) {
 			return TRUE;
 		}
 	}

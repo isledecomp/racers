@@ -54,7 +54,7 @@ void NewRacerScreen::CreateWidgets()
 	else {
 		MemoryCardSaveGame* memoryCardSave = &m_context->m_saveSystem.GetMemoryCardSaves()[m_saveSlot];
 		records = memoryCardSave;
-		if (!memoryCardSave->HasUnk0x4b4Flag0x01() || !memoryCardSave->GetAvailableRecordCount()) {
+		if (!memoryCardSave->IsUsable() || !memoryCardSave->GetAvailableRecordCount()) {
 			CreateImage(&m_statusPanelImage, 0x53, 0x53);
 			CreateImage(&m_statusIconImage, 0x54, 0x54);
 			CreateTextButton(&m_okButton, 0x99, 0x46, 0x72);

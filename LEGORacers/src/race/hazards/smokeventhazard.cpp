@@ -31,7 +31,7 @@ SmokeVentHazard::SmokeVentHazard()
 	m_entity = NULL;
 	m_particleAnimation = NULL;
 	m_smokeParticle = NULL;
-	m_unk0x1c = 0;
+	m_mirror = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0048e6c0
@@ -50,7 +50,7 @@ void SmokeVentHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_triggerId = 10;
 	m_eventTable = p_context->GetEventTable();
 	m_particleAnimation = p_context->GetParticleAnimation();
-	m_unk0x1c = p_context->GetMirror();
+	m_mirror = p_context->GetMirror();
 	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("dp_def");
 	m_state = 1;
 }
@@ -61,7 +61,7 @@ LegoS32 SmokeVentHazard::Reset()
 	OnDeactivate(NULL);
 	m_entity = NULL;
 	m_particleAnimation = NULL;
-	m_unk0x1c = 0;
+	m_mirror = 0;
 	return Hazard::Reset();
 }
 
@@ -114,7 +114,7 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 		vector.m_y *= inverseScale;
 		vector.m_z = g_smokeVentSmokeOffsets[offsetIndex].m_z;
 
-		LegoU32 flipOffset = m_unk0x1c;
+		LegoU32 flipOffset = m_mirror;
 		vector.m_z *= inverseScale;
 		if (flipOffset) {
 			vector.m_y = -vector.m_y;

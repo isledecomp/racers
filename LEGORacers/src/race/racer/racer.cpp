@@ -569,18 +569,18 @@ void Racer::Initialize(
 void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 {
 	RaceEventTable* eventTable;
-	void* unk0x2c;
+	void* surfaceTable;
 	GolBoundedEntity* unk0x0c;
 	GolBoundedEntity* unk0x10;
 	if (p_context) {
 		eventTable = p_context->m_eventTable;
-		unk0x2c = p_context->m_surfaceTable;
+		surfaceTable = p_context->m_surfaceTable;
 		unk0x0c = p_context->m_trackWorld;
 		unk0x10 = p_context->m_triggerWorld;
 	}
 	else {
 		eventTable = m_physics.m_eventTable;
-		unk0x2c = m_physics.m_unk0x6f8;
+		surfaceTable = m_physics.m_surfaceTable;
 		unk0x0c = m_physics.m_collisionWorlds[0];
 		unk0x10 = m_physics.m_triggerCollidable;
 	}
@@ -638,7 +638,7 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 	field0x3e8->Initialize(
 		this,
 		eventTable,
-		unk0x2c,
+		surfaceTable,
 		m_visuals.m_carEntity,
 		unk0x0c,
 		unk0x10,
@@ -1382,15 +1382,15 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 		(firstTarget->m_inverseMass + secondTarget->m_inverseMass) * collisionNormalLengthSquared;
 
 	GolVec3 firstContactOffset;
-	firstContactOffset.m_x = firstTarget->m_position.m_x - collision->m_contactPoint.m_x;
-	firstContactOffset.m_y = firstTarget->m_position.m_y - collision->m_contactPoint.m_y;
-	firstContactOffset.m_z = firstTarget->m_position.m_z - collision->m_contactPoint.m_z;
+	firstContactOffset.m_x = firstTarget->m_centerOfMassWorld.m_x - collision->m_contactPoint.m_x;
+	firstContactOffset.m_y = firstTarget->m_centerOfMassWorld.m_y - collision->m_contactPoint.m_y;
+	firstContactOffset.m_z = firstTarget->m_centerOfMassWorld.m_z - collision->m_contactPoint.m_z;
 	GolMath::NormalizeVector3(firstContactOffset, &firstContactOffset);
 
 	GolVec3 secondContactOffset;
-	secondContactOffset.m_x = secondTarget->m_position.m_x - collision->m_contactPoint.m_x;
-	secondContactOffset.m_y = secondTarget->m_position.m_y - collision->m_contactPoint.m_y;
-	secondContactOffset.m_z = secondTarget->m_position.m_z - collision->m_contactPoint.m_z;
+	secondContactOffset.m_x = secondTarget->m_centerOfMassWorld.m_x - collision->m_contactPoint.m_x;
+	secondContactOffset.m_y = secondTarget->m_centerOfMassWorld.m_y - collision->m_contactPoint.m_y;
+	secondContactOffset.m_z = secondTarget->m_centerOfMassWorld.m_z - collision->m_contactPoint.m_z;
 	GolMath::NormalizeVector3(secondContactOffset, &secondContactOffset);
 
 	GolVec3 firstAngularAxis;
@@ -1398,7 +1398,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 	firstAngularAxis.m_y = firstContactOffset.m_z * collisionNormal.m_x - collisionNormal.m_z * firstContactOffset.m_x;
 	firstAngularAxis.m_z = firstContactOffset.m_x * collisionNormal.m_y - firstContactOffset.m_y * collisionNormal.m_x;
 
-	const GolMatrix3& firstInertia = firstTarget->m_inverseInertia;
+	const GolMatrix3& firstInertia = firstTarget->m_worldInverseInertia;
 	GolVec3 firstAngular;
 	firstAngular.m_x = firstInertia.m_m[2][0] * firstAngularAxis.m_z + firstInertia.m_m[1][0] * firstAngularAxis.m_y +
 					   firstInertia.m_m[0][0] * firstAngularAxis.m_x;
@@ -1423,7 +1423,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 	secondAngularAxis.m_z =
 		secondContactOffset.m_x * collisionNormal.m_y - secondContactOffset.m_y * collisionNormal.m_x;
 
-	const GolMatrix3& secondInertia = secondTarget->m_inverseInertia;
+	const GolMatrix3& secondInertia = secondTarget->m_worldInverseInertia;
 	GolVec3 secondAngular;
 	secondAngular.m_x = secondInertia.m_m[2][0] * secondAngularAxis.m_z +
 						secondInertia.m_m[1][0] * secondAngularAxis.m_y +
@@ -1585,7 +1585,7 @@ void Racer::ApplyShove(GolVec3* p_impulse)
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_type = 1;
 	descriptor.m_maxFireCount = 1;
-	descriptor.m_unk0x10 = 750;
+	descriptor.m_intervalMs = 750;
 	if (m_raceState->GetRoster()->AllocateEvent(this, &descriptor) == NULL) {
 		return;
 	}

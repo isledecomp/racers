@@ -72,7 +72,7 @@ void CarModelScreenBase::CreatePlacementScene()
 	params.m_piecePosition.m_y = 0.0f;
 	params.m_piecePosition.m_z = 1.0f;
 	params.m_unk0x28 = 0.001f;
-	params.m_unk0x2c = m_context->m_context->m_useBinaryFiles;
+	params.m_useBinaryFiles = m_context->m_context->m_useBinaryFiles;
 	m_partPlacement.Create(&params);
 
 	m_sceneView.AddElement(&m_partPlacement);
@@ -186,7 +186,7 @@ LegoBool32 CarModelScreenBase::MovePieceByDrag(
 	LegoS32 p_deltaX,
 	LegoS32 p_deltaY,
 	LegoU16 p_sound,
-	LegoBool32 p_unk0x10
+	LegoBool32 p_independentAxes
 )
 {
 	LegoU32 fallbackSound = p_sound ? 8 : 0;
@@ -196,7 +196,7 @@ LegoBool32 CarModelScreenBase::MovePieceByDrag(
 	}
 
 	LegoS32 deltaX = p_deltaX;
-	if (deltaX && p_deltaY && !p_unk0x10) {
+	if (deltaX && p_deltaY && !p_independentAxes) {
 		CarPartPlacement* placement = &m_partPlacement;
 		if (placement->MovePieceX(deltaX) && placement->MovePieceY(p_deltaY)) {
 			m_soundGroupBinding->PlaySoundByIndex(p_sound & 0xffff);

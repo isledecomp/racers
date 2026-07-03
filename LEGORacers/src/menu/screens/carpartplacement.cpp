@@ -440,7 +440,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Create(CreateParams* p_createPa
 	m_piecePosition.m_z = p_createParams->m_piecePosition.m_z;
 
 	if (MenuSceneElement::Create(p_createParams)) {
-		CreateDriverModel(p_createParams->m_unk0x2c);
+		CreateDriverModel(p_createParams->m_useBinaryFiles);
 		CreateCarGroup();
 		ResetCamera();
 		CreatePieceModel();
@@ -544,14 +544,14 @@ void CarModelScreenBase::CarPartPlacement::CreateCarGroup()
 }
 
 // FUNCTION: LEGORACERS 0x00477e40
-void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_pieceType)
+void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_choice)
 {
 	CarPartSet::Entry* entry = m_context->m_partSet.GetSelectedEntry();
 	LegoS32 colorRecordIndex;
-	m_unk0x25c = p_pieceType;
-	entry->GetChoice(p_pieceType, &p_pieceType, &colorRecordIndex);
+	m_selectedChoice = p_choice;
+	entry->GetChoice(p_choice, &p_choice, &colorRecordIndex);
 
-	LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecord(p_pieceType, TRUE);
+	LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecord(p_choice, TRUE);
 	m_placement.SetPiece(pieceRecord, colorRecordIndex, entry->GetPieceType());
 
 	LegoS32 x;

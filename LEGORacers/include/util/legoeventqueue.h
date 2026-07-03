@@ -15,11 +15,13 @@ public:
 	// SIZE 0x18
 	class Descriptor {
 	public:
+		// Layout mirror of the racer physics chain (RacerRigidBody 0x04-0xd0,
+		// RacerBoxBody 0xd0-0xe4); racer bodies are the only implementers.
 		// SIZE 0xe4
 		class RigidBody {
 		public:
-			virtual void VTable0x00() = 0;           // vtable+0x00
-			virtual void VTable0x04() = 0;           // vtable+0x04
+			virtual void ComputeInertiaTensor() = 0; // vtable+0x00
+			virtual void Update(LegoS32) = 0;        // vtable+0x04
 			virtual GolWorldEntity* GetEntity() = 0; // vtable+0x08
 			LegoBool32 CalculateBoxContact(
 				RigidBody* p_other,
@@ -39,23 +41,23 @@ public:
 				LegoU32 m_controlMode;             // 0xd08
 			};
 
-			GolOrientedEntity* m_entity; // 0x004
-			GolVec3 m_velocity;          // 0x008
-			GolVec3 m_localCenter;       // 0x014
-			GolVec3 m_position;          // 0x020
-			GolMatrix3 m_unk0x02c;       // 0x02c
-			GolMatrix3 m_unk0x050;       // 0x050
-			GolMatrix3 m_inverseInertia; // 0x074
-			GolVec3 m_unk0x098;          // 0x098
-			GolVec3 m_unk0x0a4;          // 0x0a4
-			GolVec3 m_unk0x0b0;          // 0x0b0
-			GolVec3 m_unk0x0bc;          // 0x0bc
-			LegoFloat m_mass;            // 0x0c8
-			LegoFloat m_inverseMass;     // 0x0cc
-			LegoFloat m_boxSizeX;        // 0x0d0
-			LegoFloat m_boxSizeY;        // 0x0d4
-			LegoFloat m_boxSizeZ;        // 0x0d8
-			LegoFloat m_boxScale;        // 0x0dc
+			GolOrientedEntity* m_body;         // 0x004
+			GolVec3 m_velocity;                // 0x008
+			GolVec3 m_centerOfMassLocal;       // 0x014
+			GolVec3 m_centerOfMassWorld;       // 0x020
+			GolMatrix3 m_inertiaTensor;        // 0x02c
+			GolMatrix3 m_inverseInertiaTensor; // 0x050
+			GolMatrix3 m_worldInverseInertia;  // 0x074
+			GolVec3 m_angularVelocity;         // 0x098
+			GolVec3 m_angularMomentum;         // 0x0a4
+			GolVec3 m_force;                   // 0x0b0
+			GolVec3 m_torque;                  // 0x0bc
+			LegoFloat m_mass;                  // 0x0c8
+			LegoFloat m_inverseMass;           // 0x0cc
+			LegoFloat m_boxSizeX;              // 0x0d0
+			LegoFloat m_boxSizeY;              // 0x0d4
+			LegoFloat m_boxSizeZ;              // 0x0d8
+			LegoFloat m_boxScale;              // 0x0dc
 			union {
 				RacerView* m_ownerData; // 0x0e0
 				void* m_owner;          // 0x0e0
@@ -76,14 +78,14 @@ public:
 		undefined4 m_maxFireCount; // 0x08
 		undefined4 m_hitThreshold; // 0x0c
 		union {
-			LegoU32 m_unk0x10;             // 0x10
+			LegoU32 m_intervalMs;          // 0x10
 			void* m_data;                  // 0x10
 			GolWorldEntity* m_worldEntity; // 0x10
 			RigidBody* m_target;           // 0x10
 		};
 		union {
-			undefined4 m_unk0x14; // 0x14
-			Event* m_previous;    // 0x14
+			LegoU32 m_elapsedMs; // 0x14
+			Event* m_previous;   // 0x14
 		};
 	};
 
@@ -95,12 +97,12 @@ public:
 		undefined4 m_fireCount; // 0x08
 		undefined4 m_hitCount;  // 0x0c
 		union {
-			undefined4 m_unk0x10;             // 0x10
+			LegoU32 m_intervalMs;             // 0x10
 			GolWorldEntity* m_worldEntity0;   // 0x10
 			Descriptor::RigidBody* m_target0; // 0x10
 		};
 		union {
-			undefined4 m_unk0x14;                           // 0x14
+			LegoU32 m_elapsedMs;                            // 0x14
 			void* m_data;                                   // 0x14
 			GolWorldEntity* m_worldEntity1;                 // 0x14
 			Descriptor::RigidBody* m_target1;               // 0x14

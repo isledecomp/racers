@@ -229,7 +229,7 @@ void RacerPhysics::Reset()
 {
 	m_ownerRacer = NULL;
 	m_eventTable = NULL;
-	m_unk0x6f8 = 0;
+	m_surfaceTable = 0;
 	m_triggerCollidable = NULL;
 	SetHandlingStat(0x21);
 	SetAccelerationStat(0x21);
@@ -268,7 +268,7 @@ void RacerPhysics::Reset()
 void RacerPhysics::Initialize(
 	Racer* p_racer,
 	RaceEventTable* p_eventTable,
-	void* p_unk0x0c,
+	void* p_surfaceTable,
 	GolAnimatedEntity* p_carEntity,
 	GolBoundedEntity* p_trackWorld,
 	GolBoundedEntity* p_triggerWorld,
@@ -285,7 +285,7 @@ void RacerPhysics::Initialize(
 
 	m_ownerRacer = p_racer;
 	m_eventTable = p_eventTable;
-	m_unk0x6f8 = p_unk0x0c;
+	m_surfaceTable = p_surfaceTable;
 	m_triggerCollidable = p_triggerWorld;
 	RacerCarBody::Initialize(
 		p_carEntity,

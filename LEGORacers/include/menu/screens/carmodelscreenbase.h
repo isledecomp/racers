@@ -62,7 +62,7 @@ public:
 			CarModelScreenBase* m_screen;           // 0x18
 			GolVec3 m_piecePosition;                // 0x1c
 			LegoFloat m_unk0x28;                    // 0x28
-			undefined4 m_unk0x2c;                   // 0x2c
+			undefined4 m_useBinaryFiles;            // 0x2c
 		};
 
 		CarPartPlacement();
@@ -72,7 +72,7 @@ public:
 		LegoBool32 Draw() override;             // vtable+0x0c
 		LegoBool32 Update(undefined4) override; // vtable+0x10
 		LegoBool32 Create(CreateParams* p_createParams);
-		void SelectPieceChoice(LegoS32 p_pieceType);
+		void SelectPieceChoice(LegoS32 p_choice);
 		LegoBool32 RotateViewAnalog(LegoFloat p_delta);
 		LegoBool32 RotateViewStep(LegoS32 p_delta, LegoBool32 p_setCurrentAngle);
 		void SnapViewRotation();
@@ -100,7 +100,7 @@ public:
 	private:
 		void ResetCamera();
 		void CreatePieceModel();
-		void CreateDriverModel(undefined4 p_unk0x04);
+		void CreateDriverModel(undefined4 p_useBinaryFiles);
 		void CreateCarGroup();
 		void SetViewSlot(LegoS32 p_slot);
 		void ApplyViewAngle(LegoFloat p_angle);
@@ -130,7 +130,7 @@ public:
 		LegoU32 m_animFlags;                               // 0x248
 		LegoU32 m_feedbackMs;                              // 0x24c
 		GolVec3 m_piecePosition;                           // 0x250
-		undefined4 m_unk0x25c;                             // 0x25c
+		undefined4 m_selectedChoice;                       // 0x25c
 		undefined4 m_unk0x260;                             // 0x260
 		LegoU32 m_pieceAnimMs;                             // 0x264
 		LegoU32 m_bobMs;                                   // 0x268
@@ -189,7 +189,7 @@ protected:
 	void CreateCategoryCarousel();
 	void PopulateCategoryCarousel();
 	void SaveCarData();
-	LegoBool32 MovePieceByDrag(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10);
+	LegoBool32 MovePieceByDrag(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_independentAxes);
 	void ApplyModeChange();
 
 	MenuImage m_photoImage;                   // 0x3b4

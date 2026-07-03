@@ -130,7 +130,7 @@ void RaceTimerList::Resource::OnEvent(LegoEventQueue::CallbackData* p_data)
 		}
 
 		LegoU32 duration = m_offDurationMs;
-		LegoU32 elapsed = p_data->m_unk0x14 - m_onDurationMs;
+		LegoU32 elapsed = p_data->m_elapsedMs - m_onDurationMs;
 		if (elapsed < duration) {
 			duration -= elapsed;
 		}
@@ -157,7 +157,7 @@ void RaceTimerList::Resource::OnEvent(LegoEventQueue::CallbackData* p_data)
 	}
 
 	LegoU32 duration = m_onDurationMs;
-	LegoU32 elapsed = p_data->m_unk0x14 - m_offDurationMs;
+	LegoU32 elapsed = p_data->m_elapsedMs - m_offDurationMs;
 	if (elapsed < duration) {
 		duration -= elapsed;
 	}
@@ -185,7 +185,7 @@ LegoEventQueue::Event* RaceTimerList::Resource::Schedule(LegoU32 p_delayMs)
 	descriptor.m_maxFireCount = descriptor.m_type = 1;
 	descriptor.m_flags = 0;
 	descriptor.m_hitThreshold = 0;
-	descriptor.m_unk0x10 = p_delayMs;
+	descriptor.m_intervalMs = p_delayMs;
 
 	return m_event = m_eventQueue->AllocateEvent(callback, &descriptor);
 }

@@ -31,10 +31,10 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 		LegoFloat distance;
 		GolVec3 axes[3];
 		if (!shapeIndex) {
-			position = &m_position;
+			position = &m_centerOfMassWorld;
 			distance = distance0;
 
-			const GolMatrix3& orientation = m_entity->m_orientation;
+			const GolMatrix3& orientation = m_body->m_orientation;
 			LegoFloat halfX = m_boxSizeX * 0.5f;
 			axes[0].m_x = orientation.m_m[0][0] * halfX;
 			axes[0].m_y = orientation.m_m[0][1] * halfX;
@@ -68,10 +68,10 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 			}
 		}
 		else {
-			position = &p_other->m_position;
+			position = &p_other->m_centerOfMassWorld;
 			distance = distance1;
 
-			const GolMatrix3& orientation = p_other->m_entity->m_orientation;
+			const GolMatrix3& orientation = p_other->m_body->m_orientation;
 			LegoFloat halfX = p_other->m_boxSizeX * 0.5f;
 			axes[0].m_x = orientation.m_m[0][0] * halfX;
 			axes[0].m_y = orientation.m_m[0][1] * halfX;
@@ -213,13 +213,13 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 
 	CollisionScratch scratch;
 
-	m_entity->CopyOrientation(&scratch.m_orientation0);
-	p_other->m_entity->CopyOrientation(&scratch.m_absOrientation);
+	m_body->CopyOrientation(&scratch.m_orientation0);
+	p_other->m_body->CopyOrientation(&scratch.m_absOrientation);
 
 	GolMath::TransformVector(
-		p_other->m_position.m_x - m_position.m_x,
-		p_other->m_position.m_y - m_position.m_y,
-		p_other->m_position.m_z - m_position.m_z,
+		p_other->m_centerOfMassWorld.m_x - m_centerOfMassWorld.m_x,
+		p_other->m_centerOfMassWorld.m_y - m_centerOfMassWorld.m_y,
+		p_other->m_centerOfMassWorld.m_z - m_centerOfMassWorld.m_z,
 		&scratch.m_orientation0.m_m[0][0],
 		&scratch.m_delta
 	);
@@ -493,25 +493,25 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 		return FALSE;
 	}
 
-	scratch.m_thisRow0X = m_entity->m_orientation.m_m[0][0];
-	scratch.m_thisRow0Y = m_entity->m_orientation.m_m[0][1];
-	scratch.m_thisRow0Z = m_entity->m_orientation.m_m[0][2];
-	scratch.m_thisRow1X = m_entity->m_orientation.m_m[1][0];
-	scratch.m_thisRow1Y = m_entity->m_orientation.m_m[1][1];
-	scratch.m_thisRow1Z = m_entity->m_orientation.m_m[1][2];
-	scratch.m_thisRow2X = m_entity->m_orientation.m_m[2][0];
-	scratch.m_thisRow2Y = m_entity->m_orientation.m_m[2][1];
-	scratch.m_thisRow2Z = m_entity->m_orientation.m_m[2][2];
+	scratch.m_thisRow0X = m_body->m_orientation.m_m[0][0];
+	scratch.m_thisRow0Y = m_body->m_orientation.m_m[0][1];
+	scratch.m_thisRow0Z = m_body->m_orientation.m_m[0][2];
+	scratch.m_thisRow1X = m_body->m_orientation.m_m[1][0];
+	scratch.m_thisRow1Y = m_body->m_orientation.m_m[1][1];
+	scratch.m_thisRow1Z = m_body->m_orientation.m_m[1][2];
+	scratch.m_thisRow2X = m_body->m_orientation.m_m[2][0];
+	scratch.m_thisRow2Y = m_body->m_orientation.m_m[2][1];
+	scratch.m_thisRow2Z = m_body->m_orientation.m_m[2][2];
 
-	scratch.m_otherRow0X = p_other->m_entity->m_orientation.m_m[0][0];
-	scratch.m_otherRow0Y = p_other->m_entity->m_orientation.m_m[0][1];
-	scratch.m_otherRow0Z = p_other->m_entity->m_orientation.m_m[0][2];
-	scratch.m_otherRow1X = p_other->m_entity->m_orientation.m_m[1][0];
-	scratch.m_otherRow1Y = p_other->m_entity->m_orientation.m_m[1][1];
-	scratch.m_otherRow1Z = p_other->m_entity->m_orientation.m_m[1][2];
-	scratch.m_otherRow2X = p_other->m_entity->m_orientation.m_m[2][0];
-	scratch.m_otherRow2Y = p_other->m_entity->m_orientation.m_m[2][1];
-	scratch.m_otherRow2Z = p_other->m_entity->m_orientation.m_m[2][2];
+	scratch.m_otherRow0X = p_other->m_body->m_orientation.m_m[0][0];
+	scratch.m_otherRow0Y = p_other->m_body->m_orientation.m_m[0][1];
+	scratch.m_otherRow0Z = p_other->m_body->m_orientation.m_m[0][2];
+	scratch.m_otherRow1X = p_other->m_body->m_orientation.m_m[1][0];
+	scratch.m_otherRow1Y = p_other->m_body->m_orientation.m_m[1][1];
+	scratch.m_otherRow1Z = p_other->m_body->m_orientation.m_m[1][2];
+	scratch.m_otherRow2X = p_other->m_body->m_orientation.m_m[2][0];
+	scratch.m_otherRow2Y = p_other->m_body->m_orientation.m_m[2][1];
+	scratch.m_otherRow2Z = p_other->m_body->m_orientation.m_m[2][2];
 
 	switch (bestAxis) {
 	case 0:
@@ -602,9 +602,9 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 		break;
 	}
 
-	if ((m_position.m_y - p_other->m_position.m_y) * p_normal->m_y +
-			p_normal->m_z * (m_position.m_z - p_other->m_position.m_z) +
-			(m_position.m_x - p_other->m_position.m_x) * p_normal->m_x <
+	if ((m_centerOfMassWorld.m_y - p_other->m_centerOfMassWorld.m_y) * p_normal->m_y +
+			p_normal->m_z * (m_centerOfMassWorld.m_z - p_other->m_centerOfMassWorld.m_z) +
+			(m_centerOfMassWorld.m_x - p_other->m_centerOfMassWorld.m_x) * p_normal->m_x <
 		0.0f) {
 		p_normal->m_x = -p_normal->m_x;
 		p_normal->m_y = -p_normal->m_y;

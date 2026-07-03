@@ -43,7 +43,7 @@ private:
 	CutsceneAnimation* m_particleAnimation; // 0x10
 	CutsceneParticleRef* m_snowParticle;    // 0x14
 	LegoU32 m_resetMs;                      // 0x18
-	LegoU32 m_unk0x1c;                      // 0x1c
+	LegoU32 m_snowEnabled;                  // 0x1c
 };
 
 #endif // SNOWFALLHAZARD_H

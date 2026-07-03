@@ -331,7 +331,7 @@ public:
 	LegoU32 m_soundsEnabled;               // 0x6ec
 	Racer* m_ownerRacer;                   // 0x6f0
 	RaceEventTable* m_eventTable;          // 0x6f4
-	void* m_unk0x6f8;                      // 0x6f8
+	void* m_surfaceTable;                  // 0x6f8
 	GolBoundedEntity* m_triggerCollidable; // 0x6fc
 	GolVec3 m_resetPosition;               // 0x700
 	GolQuat m_resetRotation;               // 0x70c

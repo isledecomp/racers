@@ -76,7 +76,7 @@ LegoS32 LegoEventQueue::AddEvent(Event* p_event)
 	if (p_event->m_descriptor.m_type == 1) {
 		p_event->m_next = m_activeList;
 		m_activeList = p_event;
-		p_event->m_descriptor.m_unk0x14 = 0;
+		p_event->m_descriptor.m_elapsedMs = 0;
 
 		return 1;
 	}
@@ -122,16 +122,16 @@ void LegoEventQueue::Update(LegoU32 p_elapsedMs)
 	if (event) {
 		do {
 			Descriptor* descriptor = &event->m_descriptor;
-			LegoU32 elapsedMs = descriptor->m_unk0x14;
+			LegoU32 elapsedMs = descriptor->m_elapsedMs;
 			elapsedMs += p_elapsedMs;
-			descriptor->m_unk0x14 = elapsedMs;
-			LegoU32 durationMs = descriptor->m_unk0x10;
+			descriptor->m_elapsedMs = elapsedMs;
+			LegoU32 durationMs = descriptor->m_intervalMs;
 
 			if (elapsedMs >= durationMs) {
-				m_callbackData.m_unk0x10 = durationMs;
-				m_callbackData.m_unk0x14 = elapsedMs;
+				m_callbackData.m_intervalMs = durationMs;
+				m_callbackData.m_elapsedMs = elapsedMs;
 				event->Fire(this, &m_callbackData);
-				event->m_descriptor.m_unk0x14 = 0;
+				event->m_descriptor.m_elapsedMs = 0;
 			}
 
 			event = event->m_next;

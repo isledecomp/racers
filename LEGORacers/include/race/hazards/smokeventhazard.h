@@ -39,7 +39,7 @@ private:
 	GolAnimatedEntity* m_entity;            // 0x10
 	CutsceneAnimation* m_particleAnimation; // 0x14
 	CutsceneParticleRef* m_smokeParticle;   // 0x18
-	LegoU32 m_unk0x1c;                      // 0x1c
+	LegoU32 m_mirror;                       // 0x1c
 };
 
 #endif // SMOKEVENTHAZARD_H

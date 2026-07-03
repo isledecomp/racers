@@ -38,7 +38,7 @@ LegoS32 SnowfallHazard::ClearFields()
 	m_particleAnimation = NULL;
 	m_snowParticle = NULL;
 	m_resetMs = 0;
-	m_unk0x1c = 0;
+	m_snowEnabled = 0;
 	return 0;
 }
 
@@ -66,7 +66,7 @@ LegoS32 SnowfallHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048eab0
 void SnowfallHazard::OnActivate(void*)
 {
-	m_unk0x1c = 1;
+	m_snowEnabled = 1;
 	m_state = 2;
 }
 
@@ -96,7 +96,7 @@ void SnowfallHazard::Update(undefined4 p_elapsedMs)
 		m_snowParticle = NULL;
 	}
 
-	if (m_unk0x1c && !m_snowParticle) {
+	if (m_snowEnabled && !m_snowParticle) {
 		m_snowParticle = m_particleAnimation->SpawnParticle("snow", NULL, NULL, NULL);
 		if (m_snowParticle) {
 			m_resetMs = 0;
@@ -108,14 +108,14 @@ void SnowfallHazard::Update(undefined4 p_elapsedMs)
 void SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, Racer* p_racer)
 {
 	if (p_racer->m_visuals.m_hasColorTransform) {
-		m_unk0x1c = 0;
+		m_snowEnabled = 0;
 		if (m_snowParticle) {
 			m_particleAnimation->FinishRef(m_snowParticle);
 			m_snowParticle = NULL;
 		}
 	}
 	else {
-		m_unk0x1c = 1;
+		m_snowEnabled = 1;
 	}
 
 	if (m_snowParticle) {

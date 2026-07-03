@@ -56,7 +56,7 @@ public:
 	void Initialize(
 		Racer* p_racer,
 		RaceEventTable* p_eventTable,
-		void* p_unk0x0c,
+		void* p_surfaceTable,
 		GolAnimatedEntity* p_carEntity,
 		GolBoundedEntity* p_trackWorld,
 		GolBoundedEntity* p_triggerWorld,

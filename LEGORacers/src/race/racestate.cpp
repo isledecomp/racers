@@ -558,7 +558,7 @@ void RaceState::CreateRacer(
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &racer->m_physics;
-	descriptor.m_unk0x14 = 0;
+	descriptor.m_elapsedMs = 0;
 	m_roster.m_racerEvents[p_racerIndex] = m_roster.AllocateEvent(racer, &descriptor);
 }
 

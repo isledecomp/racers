@@ -12,8 +12,8 @@ LegoEventQueue::Event::Event()
 	m_descriptor.m_flags = 0;
 	m_descriptor.m_maxFireCount = 0;
 	m_descriptor.m_hitThreshold = 0;
-	m_descriptor.m_unk0x10 = 0;
-	m_descriptor.m_unk0x14 = 0;
+	m_descriptor.m_intervalMs = 0;
+	m_descriptor.m_elapsedMs = 0;
 	m_fireCount = 0;
 	m_hitCount = 0;
 	m_active = 0;

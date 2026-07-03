@@ -971,7 +971,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	RacePowerupManager::Params powerupParams;
 	RaceReset::Params resetParams;
 	RaceEventTable::Params params;
-	HazardManager::Context dispatcherContext;
+	HazardContext dispatcherContext;
 	RacerContext racerContext;
 	RaceState::CreateRacersParams racerParams;
 

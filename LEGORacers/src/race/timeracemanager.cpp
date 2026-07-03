@@ -43,19 +43,19 @@ void TimeRaceManager::Reset()
 	m_golExport = NULL;
 	m_racer = NULL;
 	m_recordGhostMarker = NULL;
-	m_unk0x390 = NULL;
-	m_unk0x208 = NULL;
+	m_recordGhostCarModel = NULL;
+	m_recordGhostDriver = NULL;
 	m_recordRun = NULL;
 	m_bestRun = NULL;
 	m_scratchRun = NULL;
 	m_elapsedTotalMs = 0;
 	m_flags = 0;
-	m_unk0x394.m_x = 0.0f;
-	m_unk0x394.m_y = 0.0f;
-	m_unk0x394.m_z = 0.0f;
-	m_unk0x3a0.m_x = 0.0f;
-	m_unk0x3a0.m_y = 0.0f;
-	m_unk0x3a0.m_z = 0.0f;
+	m_bestDriverMountOffset.m_x = 0.0f;
+	m_bestDriverMountOffset.m_y = 0.0f;
+	m_bestDriverMountOffset.m_z = 0.0f;
+	m_recordDriverMountOffset.m_x = 0.0f;
+	m_recordDriverMountOffset.m_y = 0.0f;
+	m_recordDriverMountOffset.m_z = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00422420
@@ -129,13 +129,13 @@ void TimeRaceManager::Initialize(
 	m_worldDatabase->VTable0x14(p_renderer, "ghost", p_binary, 1.0f);
 
 	m_recordGhostMarker = m_worldDatabase->GetAnimatedEntities();
-	m_unk0x208 = m_worldDatabase->GetAnimatedEntities() + 1;
-	m_unk0x390 = m_worldDatabase->GetModelEntities();
-	m_unk0x208->PlayPart(12);
+	m_recordGhostDriver = m_worldDatabase->GetAnimatedEntities() + 1;
+	m_recordGhostCarModel = m_worldDatabase->GetModelEntities();
+	m_recordGhostDriver->PlayPart(12);
 
-	m_unk0x3a0.m_x = -2.131681f;
-	m_unk0x3a0.m_y = 0.01123f;
-	m_unk0x3a0.m_z = 1.608f;
+	m_recordDriverMountOffset.m_x = -2.131681f;
+	m_recordDriverMountOffset.m_y = 0.01123f;
+	m_recordDriverMountOffset.m_z = 1.608f;
 
 	if (p_binary) {
 		m_flags |= c_flagBinaryGhosts;
@@ -145,16 +145,16 @@ void TimeRaceManager::Initialize(
 		m_flags |= c_flag0x3b4Bit5;
 	}
 
-	m_unk0x3ac = 0;
+	m_sampleCountdownMs = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00422670
 void TimeRaceManager::Shutdown()
 {
-	m_unk0x20c.VTable0x54();
-	m_unk0x114.VTable0x54();
+	m_bestGhostSecondary.VTable0x54();
+	m_bestGhostDriver.VTable0x54();
 	m_bestGhostMarker.VTable0x54();
-	m_ghostCarModel.VTable0x54();
+	m_bestGhostCarModel.VTable0x54();
 
 	if (m_worldDatabase) {
 		m_golExport->VTable0x3c(m_worldDatabase);
@@ -187,22 +187,22 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 	m_elapsedTotalMs += p_elapsedMs;
 
 	if (flags & c_flagBestRunValid) {
-		m_ghostCarModel.VTable0x10(p_elapsedMs);
+		m_bestGhostCarModel.VTable0x10(p_elapsedMs);
 		m_bestGhostMarker.VTable0x10(p_elapsedMs);
-		m_unk0x114.VTable0x10(p_elapsedMs);
-		if (m_unk0x20c.HasModel()) {
-			m_unk0x20c.VTable0x10(p_elapsedMs);
+		m_bestGhostDriver.VTable0x10(p_elapsedMs);
+		if (m_bestGhostSecondary.HasModel()) {
+			m_bestGhostSecondary.VTable0x10(p_elapsedMs);
 		}
 	}
 
 	if (m_flags & c_flagRecordRunValid) {
 		m_recordGhostMarker->VTable0x10(p_elapsedMs);
-		m_unk0x390->VTable0x10(p_elapsedMs);
-		m_unk0x208->VTable0x10(p_elapsedMs);
+		m_recordGhostCarModel->VTable0x10(p_elapsedMs);
+		m_recordGhostDriver->VTable0x10(p_elapsedMs);
 	}
 
-	if (p_elapsedMs >= m_unk0x3ac) {
-		m_unk0x3ac += c_ghostSampleIntervalMs - p_elapsedMs;
+	if (p_elapsedMs >= m_sampleCountdownMs) {
+		m_sampleCountdownMs += c_ghostSampleIntervalMs - p_elapsedMs;
 		if (m_scratchRun->m_sampleCount < GhostRunData::c_sampleCapacity) {
 			CarVisuals* racerField = &m_racer->m_visuals;
 			GolVec3 position;
@@ -238,7 +238,7 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 		}
 	}
 	else {
-		m_unk0x3ac -= p_elapsedMs;
+		m_sampleCountdownMs -= p_elapsedMs;
 	}
 }
 
@@ -273,12 +273,12 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			}
 
 			animatedEntity = &m_bestGhostMarker;
-			attachedEntity = &m_unk0x114;
-			if (m_unk0x20c.HasModel()) {
-				optionalEntity = &m_unk0x20c;
+			attachedEntity = &m_bestGhostDriver;
+			if (m_bestGhostSecondary.HasModel()) {
+				optionalEntity = &m_bestGhostSecondary;
 			}
-			modelEntity = &m_ghostCarModel;
-			attachedOffset = &m_unk0x394;
+			modelEntity = &m_bestGhostCarModel;
+			attachedOffset = &m_bestDriverMountOffset;
 		}
 		else {
 			flags = m_flags;
@@ -291,10 +291,10 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 				continue;
 			}
 
-			attachedEntity = m_unk0x208;
+			attachedEntity = m_recordGhostDriver;
 			animatedEntity = m_recordGhostMarker;
-			modelEntity = m_unk0x390;
-			attachedOffset = &m_unk0x3a0;
+			modelEntity = m_recordGhostCarModel;
+			attachedOffset = &m_recordDriverMountOffset;
 		}
 
 		if (!(flags & c_flagRunning)) {
@@ -435,11 +435,11 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 
 	if (m_flags & c_flagBestRunValid) {
 		GolModelEntity* sourceModel = p_racer->m_visuals.m_bodyModelEntity;
-		m_ghostCarModel.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
+		m_bestGhostCarModel.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
 		LegoU32 i;
 		for (i = 1; i < 3; i++) {
 			if (sourceModel->GetModel(i)) {
-				m_ghostCarModel.FUN_10027c50(sourceModel->GetModel(i), sourceModel->GetModelDistance(i));
+				m_bestGhostCarModel.FUN_10027c50(sourceModel->GetModel(i), sourceModel->GetModelDistance(i));
 			}
 		}
 
@@ -462,7 +462,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 		}
 
 		sourceAnimated = p_racer->m_visuals.m_driverEntity;
-		m_unk0x114.SetModel(
+		m_bestGhostDriver.SetModel(
 			sourceAnimated->GetModel(0),
 			sourceAnimated->VTable0x58(0),
 			sourceAnimated->GetModelPart(0),
@@ -470,7 +470,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 		);
 		for (i = 1; i < 3; i++) {
 			if (sourceAnimated->GetModel(i)) {
-				m_unk0x114.AddModel(
+				m_bestGhostDriver.AddModel(
 					sourceAnimated->GetModel(i),
 					sourceAnimated->VTable0x58(i),
 					sourceAnimated->GetModelPart(i),
@@ -481,7 +481,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 
 		sourceAnimated = p_racer->m_visuals.m_secondaryEntity;
 		if (sourceAnimated) {
-			m_unk0x20c.SetModel(
+			m_bestGhostSecondary.SetModel(
 				sourceAnimated->GetModel(0),
 				sourceAnimated->VTable0x58(0),
 				sourceAnimated->GetModelPart(0),
@@ -489,7 +489,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 			);
 			for (i = 1; i < 3; i++) {
 				if (sourceAnimated->GetModel(i)) {
-					m_unk0x20c.AddModel(
+					m_bestGhostSecondary.AddModel(
 						sourceAnimated->GetModel(i),
 						sourceAnimated->VTable0x58(i),
 						sourceAnimated->GetModelPart(i),
@@ -499,8 +499,8 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 			}
 		}
 
-		m_unk0x394 = p_racer->m_visuals.m_driverMountOffset;
-		m_unk0x114.PlayPart(13);
+		m_bestDriverMountOffset = p_racer->m_visuals.m_driverMountOffset;
+		m_bestGhostDriver.PlayPart(13);
 	}
 }
 

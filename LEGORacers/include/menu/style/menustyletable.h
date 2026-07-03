@@ -30,6 +30,12 @@ public:
 	// SIZE 0x14
 	class TextStyle {
 	public:
+		// .msb text-style field tokens
+		enum {
+			e_wrapWidth = 0x2e,
+			e_centered = 0x2f,
+		};
+
 		GolFont* m_font;          // 0x00
 		VisualStateColor m_color; // 0x04
 		LegoS32 m_wrapWidth;      // 0x08
@@ -40,6 +46,11 @@ public:
 	// SIZE 0x18
 	class CarouselStyle {
 	public:
+		enum {
+			e_scrollDurationMs = 0x2d,
+			e_pageMode = 0x2f,
+		};
+
 		undefined4 m_soundIds[3];   // 0x00
 		LegoS32 m_scrollDurationMs; // 0x0c
 		LegoS32 m_pageMode;         // 0x10
@@ -56,7 +67,14 @@ public:
 	};
 
 	// SIZE 0x90
-	class IconStyle : public MenuIcon::CreateState {};
+	class IconStyle : public MenuIcon::CreateState {
+	public:
+		// .msb icon-style field tokens
+		enum {
+			e_stateRects = 0x2c,
+			e_transitionDurationMs = 0x2d,
+		};
+	};
 
 	// SIZE 0x98
 	class SelectorStyleBase : public IconStyle {
@@ -74,19 +92,28 @@ public:
 	// SIZE 0x104
 	class TextButtonStyle : public IconStyle {
 	public:
+		enum {
+			e_rects = 0x2c,
+			e_maxTextWidth = 0x2e,
+		};
+
 		GolFont* m_stateFonts[6];          // 0x90
 		GolImage* m_stateImages[6];        // 0xa8
 		VisualStateColor m_stateColors[6]; // 0xc0
 		VisualStateColor m_unk0xd8;        // 0xd8
 		Rect m_unk0xdc;                    // 0xdc
 		Rect m_unk0xec;                    // 0xec
-		undefined4 m_unk0xfc;              // 0xfc
-		undefined4 m_unk0x100;             // 0x100
+		undefined4 m_maxTextWidth;         // 0xfc
+		undefined4 m_hasMaxTextWidth;      // 0x100
 	};
 
 	// SIZE 0x100
 	class MultiStateStyle : public IconStyle {
 	public:
+		enum {
+			e_rect = 0x2c,
+		};
+
 		GolFont* m_stateFonts[6];      // 0x90
 		GolImage* m_stateImages[6][3]; // 0xa8
 		Rect m_rect;                   // 0xf0
@@ -95,6 +122,12 @@ public:
 	// SIZE 0x150
 	class HotspotStyle : public IconStyle {
 	public:
+		enum {
+			e_hotspotCount = 0x2f,
+			e_hotspotRects = 0x30,
+			e_hotspotIds = 0x31,
+		};
+
 		undefined m_unk0x90[0xa8 - 0x90]; // 0x90
 		GolImage* m_image;                // 0xa8
 		LegoS32 m_hotspotCount;           // 0xac

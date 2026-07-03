@@ -27,7 +27,7 @@ public:
 protected:
 	LegoBool32 CreateFrame(CreateParams* p_createParams);
 
-	MenuFrame m_unk0xdc; // 0x0dc
+	MenuFrame m_frame; // 0x0dc
 };
 
 #endif // MENUFRAMEDSCENEVIEW_H

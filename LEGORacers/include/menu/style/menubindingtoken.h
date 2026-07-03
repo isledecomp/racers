@@ -29,6 +29,16 @@ enum MenuStyleFieldToken {
 	c_styleColors = 0x2a,
 	c_styleSounds = 0x2b,
 	c_styleIcon = 0x3a,
+	c_styleBlockImage = 0x32,
+	c_styleBlockText = 0x33,
+	c_styleBlockFrame = 0x34,
+	c_styleBlockButton = 0x35,
+	c_styleBlockMultiState = 0x36,
+	c_styleBlockHotspot = 0x37,
+	c_styleBlockCarousel = 0x38,
+	c_styleBlockSelector = 0x39,
+	c_styleBlockComposite = 0x3b,
+	c_styleBlockTextButton = 0x3e,
 };
 
 #endif // MENUBINDINGTOKEN_H

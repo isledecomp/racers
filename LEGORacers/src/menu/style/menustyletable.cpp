@@ -220,14 +220,14 @@ void MenuStyleTable::ParseTextStyle(TextStyle* p_entry)
 		case c_styleFont:
 			p_entry->m_font = m_renderer->FindFontByName(m_parser->ReadString());
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case TextStyle::e_centered:
 			p_entry->m_centered = m_parser->ReadInteger();
 			break;
 		case c_styleColors:
 			ReadVisualState(p_entry->m_color.m_bytes);
 			p_entry->m_hasColor = TRUE;
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case TextStyle::e_wrapWidth:
 			p_entry->m_wrapWidth = m_parser->ReadInteger();
 			break;
 		default:
@@ -280,7 +280,7 @@ void MenuStyleTable::ParseIconStyle(IconStyle* p_entry)
 		LegoS32 i;
 
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x2d:
+		case IconStyle::e_transitionDurationMs:
 			p_entry->m_transitionDurationMs = m_parser->ReadInteger();
 			break;
 		case c_styleSounds:
@@ -289,7 +289,7 @@ void MenuStyleTable::ParseIconStyle(IconStyle* p_entry)
 			}
 			p_entry->m_hasSoundIds = TRUE;
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case IconStyle::e_stateRects:
 			for (i = 0; i < 6; i++) {
 				ReadRect(&p_entry->m_stateRects[i].m_left);
 			}
@@ -355,7 +355,7 @@ void MenuStyleTable::ParseMultiStateStyle(MultiStateStyle* p_entry)
 		case c_styleIcon:
 			ParseIconStyle(p_entry);
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case MultiStateStyle::e_rect:
 			ReadRect(&p_entry->m_rect.m_left);
 			break;
 		case c_styleFont:
@@ -398,15 +398,15 @@ void MenuStyleTable::ParseHotspotStyle(HotspotStyle* p_entry)
 		case c_styleIcon:
 			ParseIconStyle(p_entry);
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case HotspotStyle::e_hotspotCount:
 			p_entry->m_hotspotCount = m_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x31:
+		case HotspotStyle::e_hotspotIds:
 			for (i = 0; i < p_entry->m_hotspotCount; i++) {
 				p_entry->m_hotspotIds[i] = m_parser->ReadInteger();
 			}
 			break;
-		case GolFileParser::e_unknown0x30:
+		case HotspotStyle::e_hotspotRects:
 			for (i = 0; i < p_entry->m_hotspotCount; i++) {
 				ReadRect(&p_entry->m_hotspotRects[i].m_left);
 			}
@@ -432,15 +432,15 @@ void MenuStyleTable::ParseCarouselStyle(CarouselStyle* p_entry)
 		LegoS32 i;
 
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x2b:
+		case c_styleSounds:
 			for (i = 0; i < 3; i++) {
 				p_entry->m_soundIds[i] = m_parser->ReadInteger();
 			}
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case CarouselStyle::e_scrollDurationMs:
 			p_entry->m_scrollDurationMs = m_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case CarouselStyle::e_pageMode:
 			p_entry->m_pageMode = m_parser->ReadInteger();
 			p_entry->m_wrap = m_parser->ReadInteger();
 			break;
@@ -474,12 +474,12 @@ void MenuStyleTable::ParseSelectorStyle(SelectorStyle* p_entry)
 				ParseIconStyle(p_entry);
 				readBase++;
 				break;
-			case GolFileParser::e_unknown0x35:
+			case c_styleBlockButton:
 				p_entry->m_prevButtonStyle = static_cast<ButtonStyle*>(FindStyle(m_parser->ReadString()));
 				p_entry->m_nextButtonStyle = static_cast<ButtonStyle*>(FindStyle(m_parser->ReadString()));
 				readPair++;
 				break;
-			case GolFileParser::e_unknown0x34:
+			case c_styleBlockFrame:
 				p_entry->m_frameStyle = static_cast<FrameStyle*>(FindStyle(m_parser->ReadString()));
 				readSingle++;
 				break;
@@ -530,12 +530,12 @@ void MenuStyleTable::ParseCompositeStyle(CompositeStyle* p_entry)
 				ParseIconStyle(p_entry);
 				readBase++;
 				break;
-			case GolFileParser::e_unknown0x35:
+			case c_styleBlockButton:
 				p_entry->m_prevButtonStyle = static_cast<IconStyle*>(FindStyle(m_parser->ReadString()));
 				p_entry->m_nextButtonStyle = static_cast<IconStyle*>(FindStyle(m_parser->ReadString()));
 				readPrimaryPair++;
 				break;
-			case GolFileParser::e_unknown0x32:
+			case c_styleBlockImage:
 				p_entry->m_trackStyle = static_cast<ImageStyle*>(FindStyle(m_parser->ReadString()));
 				p_entry->m_thumbStyle = static_cast<ImageStyle*>(FindStyle(m_parser->ReadString()));
 				readSecondaryPair++;
@@ -569,7 +569,7 @@ void MenuStyleTable::LoadImageStyles()
 	::memset(m_imageStyles, 0, sizeof(ImageStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x32) {
+		if (m_parser->GetNextToken() != c_styleBlockImage) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -588,7 +588,7 @@ void MenuStyleTable::LoadTextStyles()
 	::memset(m_textStyles, 0, sizeof(TextStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x33) {
+		if (m_parser->GetNextToken() != c_styleBlockText) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -607,7 +607,7 @@ void MenuStyleTable::LoadFrameStyles()
 	::memset(m_frameStyles, 0, sizeof(FrameStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x34) {
+		if (m_parser->GetNextToken() != c_styleBlockFrame) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -626,7 +626,7 @@ void MenuStyleTable::LoadButtonStyles()
 	::memset(m_buttonStyles, 0, sizeof(ButtonStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x35) {
+		if (m_parser->GetNextToken() != c_styleBlockButton) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -645,7 +645,7 @@ void MenuStyleTable::LoadMultiStateStyles()
 	::memset(m_multiStateStyles, 0, sizeof(MultiStateStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x36) {
+		if (m_parser->GetNextToken() != c_styleBlockMultiState) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -664,7 +664,7 @@ void MenuStyleTable::LoadHotspotStyles()
 	::memset(m_hotspotStyles, 0, sizeof(HotspotStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x37) {
+		if (m_parser->GetNextToken() != c_styleBlockHotspot) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -683,7 +683,7 @@ void MenuStyleTable::LoadCarouselStyles()
 	::memset(m_carouselStyles, 0, sizeof(CarouselStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x38) {
+		if (m_parser->GetNextToken() != c_styleBlockCarousel) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -702,7 +702,7 @@ void MenuStyleTable::LoadSelectorStyles()
 	::memset(m_selectorStyles, 0, sizeof(SelectorStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x39) {
+		if (m_parser->GetNextToken() != c_styleBlockSelector) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -721,7 +721,7 @@ void MenuStyleTable::LoadCompositeStyles()
 	::memset(m_compositeStyles, 0, sizeof(CompositeStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3b) {
+		if (m_parser->GetNextToken() != c_styleBlockComposite) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 

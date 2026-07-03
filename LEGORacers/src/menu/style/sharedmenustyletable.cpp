@@ -3,6 +3,7 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
+#include "menu/style/menubindingtoken.h"
 #include "render/gold3drenderdevice.h"
 
 #include <string.h>
@@ -67,7 +68,7 @@ void SharedMenuStyleTable::ParseSection(undefined4 p_arg1)
 	default:
 		MenuStyleTable::ParseSection(p_arg1);
 		return;
-	case GolFileParser::e_unknown0x3e:
+	case c_styleBlockTextButton:
 		LoadTextButtonStyles();
 		return;
 	}
@@ -86,20 +87,20 @@ void SharedMenuStyleTable::ParseTextButtonStyle(TextButtonStyle* p_entry)
 		LegoS32 i;
 
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x3a:
+		case c_styleIcon:
 			ParseIconStyle(p_entry);
 			break;
-		case GolFileParser::e_unknown0x29:
+		case c_styleFont:
 			for (i = 0; i < 6; i++) {
 				p_entry->m_stateFonts[i] = m_renderer->FindFontByName(m_parser->ReadString());
 			}
 			break;
-		case GolFileParser::e_unknown0x28:
+		case c_styleImage:
 			for (i = 0; i < 6; i++) {
 				p_entry->m_stateImages[i] = m_renderer->FindImageByName(m_parser->ReadString());
 			}
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case c_styleColors:
 			ReadVisualState(p_entry->m_unk0xd8.m_bytes);
 
 			for (i = 0; i < 6; i++) {
@@ -112,13 +113,13 @@ void SharedMenuStyleTable::ParseTextButtonStyle(TextButtonStyle* p_entry)
 
 			p_entry->m_hasStateColors = TRUE;
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case TextButtonStyle::e_rects:
 			ReadRect(&p_entry->m_unk0xdc.m_left);
 			ReadRect(&p_entry->m_unk0xec.m_left);
 			break;
-		case GolFileParser::e_unknown0x2e:
-			p_entry->m_unk0xfc = m_parser->ReadInteger();
-			p_entry->m_unk0x100 = TRUE;
+		case TextButtonStyle::e_maxTextWidth:
+			p_entry->m_maxTextWidth = m_parser->ReadInteger();
+			p_entry->m_hasMaxTextWidth = TRUE;
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
@@ -139,7 +140,7 @@ void SharedMenuStyleTable::LoadTextButtonStyles()
 	::memset(m_textButtonStyles, 0, sizeof(TextButtonStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3e) {
+		if (m_parser->GetNextToken() != c_styleBlockTextButton) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 

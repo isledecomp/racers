@@ -227,13 +227,13 @@ void MenuInputBindingTable::ParseWidgetBase(MenuWidget::CreateParams* p_entry)
 		case MidTxtParser::e_rect:
 			ReadRect(&p_entry->m_rect.m_left);
 			break;
-		case GolFileParser::e_unknown0x30: {
+		case MidTxtParser::e_id: {
 			LegoS32 value = m_parser->ReadInteger();
 			p_entry->m_id = value;
 			m_nextWidgetId = value + 1;
 			break;
 		}
-		case GolFileParser::e_unknown0x32: {
+		case MidTxtParser::e_attachToParent: {
 			LegoU8 value = m_parser->ReadInteger();
 			LegoU8 flags = p_entry->m_flags;
 			LegoU8 newFlags = flags;
@@ -275,7 +275,7 @@ void MenuInputBindingTable::ParseIconField(MenuIcon::CreateParams* p_entry)
 	case MidTxtParser::e_value:
 		p_entry->m_startEnabled = m_parser->ReadInteger();
 		return;
-	case GolFileParser::e_unknown0x32:
+	case MidTxtParser::e_attachToParent:
 		p_entry->m_attachToParent = m_parser->ReadInteger();
 		return;
 	case MidTxtParser::e_name:
@@ -294,7 +294,7 @@ void MenuInputBindingTable::ParseIconField(MenuIcon::CreateParams* p_entry)
 		p_entry->m_hasStateColors = TRUE;
 		return;
 	}
-	case GolFileParser::e_unknown0x2b: {
+	case MidTxtParser::e_soundIds: {
 		for (LegoS32 i = 0; i < 5; i++) {
 			p_entry->m_soundIds[i] = m_parser->ReadInteger();
 		}
@@ -317,7 +317,7 @@ void MenuInputBindingTable::ParseSelectorField(SelectorBinding* p_entry)
 		p_entry->m_nextButtonParams =
 			static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 		return;
-	case GolFileParser::e_unknown0x3a:
+	case MidTxtParser::e_bindingRef:
 		p_entry->m_frameParams = static_cast<MenuFrame::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 		return;
 	case MidTxtParser::e_value:
@@ -545,7 +545,7 @@ void MenuInputBindingTable::ParseModelCarouselBinding(ModelCarouselBinding* p_en
 			p_entry->m_focusedSlot = m_parser->ReadInteger();
 			p_entry->m_scrollStep = m_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x2f: {
+		case MidTxtParser::e_rect: {
 			if (!p_entry->m_slotCount) {
 				m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 			}
@@ -604,7 +604,7 @@ void MenuInputBindingTable::ParseCompositeBinding(CompositeBinding* p_entry)
 			}
 			break;
 		}
-		case GolFileParser::e_unknown0x2b:
+		case MidTxtParser::e_soundIds:
 			ParseIconField(p_entry);
 			p_entry->m_stepSoundIds.m_first = m_parser->ReadInteger();
 			p_entry->m_stepSoundIds.m_second = m_parser->ReadInteger();
@@ -631,7 +631,7 @@ void MenuInputBindingTable::ParseSceneBinding(SceneBinding* p_entry)
 		case MidTxtParser::e_sceneName:
 			::strncpy(p_entry->m_worldName, m_parser->ReadString(), 8);
 			break;
-		case GolFileParser::e_unknown0x3a:
+		case MidTxtParser::e_bindingRef:
 			p_entry->m_linkedBinding = ResolveEntryByName(m_parser->ReadString());
 			break;
 		case MidTxtParser::e_camera:
@@ -641,7 +641,7 @@ void MenuInputBindingTable::ParseSceneBinding(SceneBinding* p_entry)
 			p_entry->m_drawWorld = m_parser->ReadInteger();
 			p_entry->m_hasBlendedWorld = m_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x35:
+		case MidTxtParser::e_viewportClearMode:
 			p_entry->m_viewportClearMode = m_parser->ReadInteger();
 			break;
 		default:
@@ -701,7 +701,7 @@ void MenuInputBindingTable::ParseTextFieldBinding(TextFieldBinding* p_entry)
 		case MidTxtParser::e_value:
 			p_entry->m_maxLength = m_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2b: {
+		case MidTxtParser::e_soundIds: {
 			LegoS32 i;
 			for (i = 0; i < 5; i++) {
 				p_entry->m_soundIds[i] = m_parser->ReadInteger();
@@ -727,7 +727,7 @@ void MenuInputBindingTable::ParseRegionBindings()
 	::memset(m_regionBindings, 0, sizeof(RegionBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x37) {
+		if (m_parser->GetNextToken() != c_blockRegion) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -765,7 +765,7 @@ void MenuInputBindingTable::ParseTextLabelBindings()
 	::memset(m_textLabelBindings, 0, sizeof(TextLabelBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x39) {
+		if (m_parser->GetNextToken() != c_blockTextLabel) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -784,7 +784,7 @@ void MenuInputBindingTable::ParseFrameBindings()
 	::memset(m_frameBindings, 0, sizeof(FrameBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3a) {
+		if (m_parser->GetNextToken() != c_blockFrame) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -822,7 +822,7 @@ void MenuInputBindingTable::ParseMultiStateBindings()
 	::memset(m_multiStateBindings, 0, sizeof(MultiStateBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3c) {
+		if (m_parser->GetNextToken() != c_blockMultiState) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -841,7 +841,7 @@ void MenuInputBindingTable::ParseHotspotBindings()
 	::memset(m_hotspotBindings, 0, sizeof(HotspotBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3d) {
+		if (m_parser->GetNextToken() != c_blockHotspot) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -860,7 +860,7 @@ void MenuInputBindingTable::ParseSelectorBindings()
 	::memset(m_selectorBindings, 0, sizeof(SelectorBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3e) {
+		if (m_parser->GetNextToken() != c_blockSelector) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -880,7 +880,7 @@ void MenuInputBindingTable::ParseModelCarouselBindings()
 	::memset(m_modelCarouselBindings, 0, sizeof(ModelCarouselBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3f) {
+		if (m_parser->GetNextToken() != c_blockModelCarousel) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -899,7 +899,7 @@ void MenuInputBindingTable::ParseCompositeBindings()
 	::memset(m_compositeBindings, 0, sizeof(CompositeBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x40) {
+		if (m_parser->GetNextToken() != c_blockComposite) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -918,7 +918,7 @@ void MenuInputBindingTable::ParseSceneBindings()
 	::memset(m_sceneBindings, 0, sizeof(SceneBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x42) {
+		if (m_parser->GetNextToken() != c_blockScene) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -937,7 +937,7 @@ void MenuInputBindingTable::ParseSceneRefBindings()
 	::memset(m_sceneRefBindings, 0, sizeof(SceneRefBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x45) {
+		if (m_parser->GetNextToken() != c_blockSceneRef) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
@@ -956,7 +956,7 @@ void MenuInputBindingTable::ParseTextFieldBindings()
 	::memset(m_textFieldBindings, 0, sizeof(TextFieldBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x43) {
+		if (m_parser->GetNextToken() != c_blockTextField) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 

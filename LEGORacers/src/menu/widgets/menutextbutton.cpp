@@ -100,7 +100,7 @@ LegoBool32 MenuTextButton::Create(CreateParams* p_createParams, MenuStyleTable::
 		maxWidth = p_createParams->m_maxTextWidth;
 	}
 	else {
-		maxWidth = p_styleEntry->m_unk0xfc;
+		maxWidth = p_styleEntry->m_maxTextWidth;
 	}
 
 	m_maxTextWidth = maxWidth;

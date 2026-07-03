@@ -1,34 +1,34 @@
-#include "image/whitebaffoon0x50.h"
+#include "image/goltiledtexture.h"
 
 #include "golbmpfile.h"
-#include "golddune0x38.h"
 #include "golimgfile.h"
+#include "goltexture.h"
 #include "goltgafile.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 DECOMP_SIZE_ASSERT(FourBytes, 0x04)
-DECOMP_SIZE_ASSERT(WhiteBaffoon0x50, 0x50)
-DECOMP_SIZE_ASSERT(WhiteBaffoon0x50::WhiteBaffoonImageName, 0x09)
+DECOMP_SIZE_ASSERT(GolTiledTexture, 0x50)
+DECOMP_SIZE_ASSERT(GolTiledTexture::TileImageName, 0x09)
 
 extern const ColorRGBA g_unk0x10057668;
 extern GolTgaFile g_unk0x10063ca0;
 extern GolBmpFile g_unk0x10064280;
 
 // FUNCTION: GOLDP 0x1001f1e0
-WhiteBaffoon0x50::WhiteBaffoon0x50()
+GolTiledTexture::GolTiledTexture()
 {
 	Reset();
 }
 
 // FUNCTION: GOLDP 0x1001f2a0
-WhiteBaffoon0x50::~WhiteBaffoon0x50()
+GolTiledTexture::~GolTiledTexture()
 {
 	Reset();
 }
 
 // FUNCTION: GOLDP 0x1001f2f0
-void WhiteBaffoon0x50::Reset()
+void GolTiledTexture::Reset()
 {
 	m_renderer = NULL;
 	m_unk0x2c = 0;
@@ -50,10 +50,10 @@ void WhiteBaffoon0x50::Reset()
 }
 
 // FUNCTION: GOLDP 0x1001f330
-void WhiteBaffoon0x50::VTable0x10()
+void GolTiledTexture::VTable0x10()
 {
 	GolSurfaceFormat imageFormat;
-	WhiteBaffoon0x50::WhiteBaffoonImageName imageName;
+	GolTiledTexture::TileImageName imageName;
 	imageName.m_name[0] = m_name[0];
 	imageName.m_name[1] = m_name[1];
 	imageName.m_chars[8] = 0;
@@ -89,7 +89,7 @@ void WhiteBaffoon0x50::VTable0x10()
 }
 
 // STUB: GOLDP 0x1001f430
-void WhiteBaffoon0x50::FUN_1001f430()
+void GolTiledTexture::FUN_1001f430()
 {
 	// The legacy vtable name is inverted; renderer texture setup uses FALSE as square-only.
 	LegoBool32 supportsNonSquareTextures = m_renderer->TexturesMustBeSquare();
@@ -310,7 +310,7 @@ void WhiteBaffoon0x50::FUN_1001f430()
 }
 
 // STUB: GOLDP 0x1001f790
-void WhiteBaffoon0x50::FUN_1001f790()
+void GolTiledTexture::FUN_1001f790()
 {
 	LegoU32 bitsPerPixel = m_unk0x0c.m_bitsPerPixel;
 	LegoU32 minWidth = m_renderer->GetMinimumTextureWidth(bitsPerPixel);
@@ -375,27 +375,27 @@ void WhiteBaffoon0x50::FUN_1001f790()
 }
 
 // FUNCTION: GOLDP 0x1001fde0
-void WhiteBaffoon0x50::FUN_1001fde0()
+void GolTiledTexture::FUN_1001fde0()
 {
 	for (LegoU32 row = 0; row < m_unk0x2c; row++) {
 		for (LegoU32 column = 0; column < m_unk0x30; column++) {
-			PurpleDune0x7c* texture = VTable0x1c(row, column);
-			if (texture->GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
+			GolD3DTexture* texture = VTable0x1c(row, column);
+			if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				continue;
 			}
 
 			LegoU16 flags = m_flags;
 			if (m_renderer->VTable0x110()) {
-				flags |= GoldDune0x38::c_unk0x36Bit6;
+				flags |= GolTexture::c_unk0x36Bit6;
 			}
 			if ((flags & c_flagBit5) && (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9)) {
-				flags |= GoldDune0x38::c_unk0x36Bit7;
+				flags |= GolTexture::c_unk0x36Bit7;
 			}
 
 			texture->m_unk0x36 = flags;
 			texture->m_unk0x34 = 0;
 			texture->m_colorKey = m_colorKey;
-			flags |= GoldDune0x38::c_unk0x36Bit11;
+			flags |= GolTexture::c_unk0x36Bit11;
 			texture->m_colorKey.m_alp = 0;
 			texture->m_unk0x36 = flags;
 			VTable0x0c(row, column, &m_unk0x0c);

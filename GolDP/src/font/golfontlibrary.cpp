@@ -7,7 +7,7 @@
 #include "golstream.h"
 #include "golstring.h"
 #include "goltxtparser.h"
-#include "image/whitebaffoon0x50.h"
+#include "image/goltiledtexture.h"
 #include "render/gold3drenderdevice.h"
 
 #include <string.h>

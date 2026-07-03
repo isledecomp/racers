@@ -9,7 +9,7 @@
 #include "material/duskwindbananarelic0x30.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 #include "surface/slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(GolImage, 0xa4)
@@ -42,7 +42,7 @@ GolImage::~GolImage()
 {
 	FUN_100051c0();
 	m_unk0x58.VTable0x38();
-	WhiteBaffoon0x50::Reset();
+	GolTiledTexture::Reset();
 }
 
 // FUNCTION: GOLDP 0x100050b0
@@ -118,7 +118,7 @@ void GolImage::Reset()
 {
 	FUN_100051c0();
 	m_unk0x58.VTable0x38();
-	WhiteBaffoon0x50::Reset();
+	GolTiledTexture::Reset();
 }
 
 // FUNCTION: GOLDP 0x10005280
@@ -144,7 +144,7 @@ void GolImage::VTable0x08()
 {
 	LegoU32 count = m_unk0x30 * m_unk0x2c;
 
-	m_unk0x50 = new PurpleDune0x7c[count];
+	m_unk0x50 = new GolD3DTexture[count];
 	if (m_unk0x50 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -170,7 +170,7 @@ void GolImage::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_t
 }
 
 // FUNCTION: GOLDP 0x10005440
-void GolImage::FUN_10005440(GolRenderDevice* p_renderer, DuskwindBananaRelic0x30* p_material, GoldDune0x38* p_texture)
+void GolImage::FUN_10005440(GolRenderDevice* p_renderer, DuskwindBananaRelic0x30* p_material, GolTexture* p_texture)
 {
 	LegoU32 flags = (m_unk0x3c & c_flagBit1) ? 0x92a8a : 0x92a8c;
 	if (m_unk0x3c & c_flagBit4) {
@@ -399,7 +399,7 @@ void GolImage::FUN_10005510(
 }
 
 // FUNCTION: GOLDP 0x10005ae0
-PurpleDune0x7c* GolImage::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
+GolD3DTexture* GolImage::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
 {
 	return &m_unk0x50[p_row * m_unk0x30 + p_column];
 }
@@ -411,11 +411,7 @@ void GolImage::FUN_10005b00()
 
 	LegoU8* sourcePixels;
 	LegoU32 sourcePitch;
-	m_unk0x58.LockPixels(
-		&sourcePixels,
-		&sourcePitch,
-		SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite
-	);
+	m_unk0x58.LockPixels(&sourcePixels, &sourcePitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
 
 	ColorRGBA* paletteEntries;
 	LegoU32 paletteSize;
@@ -450,7 +446,7 @@ void GolImage::FUN_10005b00()
 	for (row = 0; row < m_unk0x2c; row++) {
 		LegoU32 sourceY = 0;
 		for (column = 0; column < m_unk0x30; column++) {
-			PurpleDune0x7c* texture = VTable0x1c(row, column);
+			GolD3DTexture* texture = VTable0x1c(row, column);
 			copyWidth = texture->GetWidth();
 
 			LegoU32 remainingWidth = m_unk0x58.GetWidth() - sourceX;
@@ -472,7 +468,7 @@ void GolImage::FUN_10005b00()
 
 			LegoU8* destPixels;
 			LegoU32 destPitch;
-			texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
+			texture->LockPixels(&destPixels, &destPitch, GolSurface::c_lockRequestWrite);
 
 			GolPaletteBase* destPalette = NULL;
 			if (m_unk0x0c.m_paletteMask != 0) {

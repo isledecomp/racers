@@ -4,7 +4,7 @@
 #include "golmaterial.h"
 #include "render/golrasterizers1.h"
 #include "render/golrasterizers2.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 #include <stdlib.h>
 
@@ -192,18 +192,18 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 	LegoU32 flags = p_material->GetUnk0x08();
 	LegoU32 rasterizerMode;
 
-	PurpleDune0x7c* texture = reinterpret_cast<PurpleDune0x7c*>(p_material->GetUnk0x04());
+	GolD3DTexture* texture = reinterpret_cast<GolD3DTexture*>(p_material->GetUnk0x04());
 
 	if (texture) {
 		m_unk0x34 = NULL;
-		FUN_100330d0(this, &reinterpret_cast<PurpleDune0x7c*>(p_material->GetUnk0x04())->GetMipmaps()[p_index]);
+		FUN_100330d0(this, &reinterpret_cast<GolD3DTexture*>(p_material->GetUnk0x04())->GetMipmaps()[p_index]);
 		rasterizerMode = c_flag0x2cBit8;
 
 		if (flags & GolMaterial::c_flag0x08Bit19) {
 			rasterizerMode = c_flag0x2cBit8 | c_flag0x2cBit9;
 		}
 
-		if (texture->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
+		if (texture->GetUnk0x36() & GolTexture::c_unk0x36Bit5) {
 			rasterizerMode |= c_flag0x2cBit1;
 		}
 

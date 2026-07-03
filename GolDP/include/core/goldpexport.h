@@ -24,7 +24,7 @@ public:
 	GolBoundingShape* CreateBoundingShape() override;          // vtable+0x1c
 	GolCamera* VTable0x20() override;                          // vtable+0x20
 	undefined4 VTable0x24() override;                          // vtable+0x24
-	WhiteBaffoon0x50* VTable0x28() override;                   // vtable+0x28
+	GolTiledTexture* VTable0x28() override;                    // vtable+0x28
 	GolFontBase* CreateFont() override;                        // vtable+0x2c
 	GolWorldEntity* VTable0x30() override;                     // vtable+0x30
 	GolImageDefinitionList* VTable0x34() override;             // vtable+0x34
@@ -37,7 +37,7 @@ public:
 	void DestroyBoundingShape(GolBoundingShape*) override;     // vtable+0x50
 	void VTable0x54(GolCamera*) override;                      // vtable+0x54
 	void VTable0x58(undefined4*) override;                     // vtable+0x58
-	void VTable0x5c(WhiteBaffoon0x50*) override;               // vtable+0x5c
+	void VTable0x5c(GolTiledTexture*) override;                // vtable+0x5c
 	void DestroyFont(GolFontBase*) override;                   // vtable+0x60
 	void VTable0x64(GolWorldEntity*) override;                 // vtable+0x64
 	void VTable0x68(GolImageDefinitionList*) override;         // vtable+0x68

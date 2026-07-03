@@ -7,7 +7,7 @@
 #include "types.h"
 
 class GolD3DRenderDevice;
-class PurpleDune0x7c;
+class GolD3DTexture;
 
 // SIZE 0x04
 // This type is needed because
@@ -25,7 +25,7 @@ struct FourBytes {
 
 // VTABLE: GOLDP 0x10056ee4
 // SIZE 0x50
-class WhiteBaffoon0x50 {
+class GolTiledTexture {
 public:
 	enum Flags {
 		c_flagBit1 = 0x0002,
@@ -46,23 +46,23 @@ public:
 	};
 
 	// SIZE 0x09
-	struct WhiteBaffoonImageName {
+	struct TileImageName {
 		union {
 			FourBytes m_name[2]; // 0x00
 			LegoChar m_chars[9]; // 0x00
 		};
 	};
 
-	WhiteBaffoon0x50();
+	GolTiledTexture();
 
 	virtual void VTable0x00() = 0;                                    // vtable+0x00
 	virtual void VTable0x04() = 0;                                    // vtable+0x04
 	virtual void VTable0x08() = 0;                                    // vtable+0x08
 	virtual void VTable0x0c(LegoU32, LegoU32, GolSurfaceFormat*) = 0; // vtable+0x0c
 	virtual void VTable0x10();                                        // vtable+0x10
-	virtual ~WhiteBaffoon0x50();                                      // vtable+0x14
+	virtual ~GolTiledTexture();                                       // vtable+0x14
 	virtual void Reset();                                             // vtable+0x18
-	virtual PurpleDune0x7c* VTable0x1c(LegoU32, LegoU32) = 0;         // vtable+0x1c
+	virtual GolD3DTexture* VTable0x1c(LegoU32, LegoU32) = 0;          // vtable+0x1c
 
 	void FUN_1001f430();
 	void FUN_1001f790();
@@ -77,7 +77,7 @@ public:
 	LegoS32 GetTileHeight(LegoU32 p_row) const { return m_unk0x08[p_row]; }
 
 	// SYNTHETIC: GOLDP 0x1001f240
-	// WhiteBaffoon0x50::`scalar deleting destructor'
+	// GolTiledTexture::`scalar deleting destructor'
 
 public:
 	LegoS32* m_unk0x04;             // 0x04

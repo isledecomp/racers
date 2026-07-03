@@ -1,6 +1,6 @@
 #include "golmaterial.h"
 
-#include "golddune0x38.h"
+#include "goltexture.h"
 #include "render/golrenderdevice.h"
 
 DECOMP_SIZE_ASSERT(DuskWindName0x8, 0x8)
@@ -40,7 +40,7 @@ void GolMaterial::FUN_100257e0(GolRenderDevice* p_renderer, const GolMaterialPar
 
 	if (m_unk0x08 & c_flag0x08Bit3) {
 		m_unk0x04 = p_params.m_unk0x04;
-		if (m_unk0x04->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
+		if (m_unk0x04->GetUnk0x36() & GolTexture::c_unk0x36Bit5) {
 			if (p_renderer->GetFlags() & (GolRenderDevice::c_flagBit7 | GolRenderDevice::c_flagBit8)) {
 				if ((p_renderer->GetFlags() & GolRenderDevice::c_flagBit7) && !(m_unk0x08 & c_flag0x08Bit12)) {
 					m_unk0x22 = 6;

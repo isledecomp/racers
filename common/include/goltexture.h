@@ -1,17 +1,17 @@
-#ifndef GOLDDUNE0X38_H
-#define GOLDDUNE0X38_H
+#ifndef GOLTEXTURE_H
+#define GOLTEXTURE_H
 
-#include "silverdune0x30.h"
+#include "golsurface.h"
 
 class GolRenderDevice;
 class GolImgFile;
 class GolTextureList;
-class WhiteBaffoon0x50;
+class GolTiledTexture;
 
 // VTABLE: GOLDP 0x1005766c
 // VTABLE: LEGORACERS 0x004af928
 // SIZE 0x38
-class GoldDune0x38 : public SilverDune0x30 {
+class GolTexture : public GolSurface {
 public:
 	enum {
 		c_unk0x36Bit0 = 0x01,
@@ -27,7 +27,7 @@ public:
 		c_unk0x36Bit10 = 0x400,
 		c_unk0x36Bit11 = 0x800,
 	};
-	GoldDune0x38();
+	GolTexture();
 
 	virtual void VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source); // vtable+0x30
 	virtual void VTable0x34(
@@ -69,19 +69,19 @@ public:
 
 	// SYNTHETIC: GOLDP 0x10004470 FOLDED
 	// SYNTHETIC: LEGORACERS 0x00408bd0 FOLDED
-	// GoldDune0x38::~GoldDune0x38
+	// GolTexture::~GolTexture
 
 	// SYNTHETIC: GOLDP 0x1002f380 FOLDED
 	// SYNTHETIC: LEGORACERS 0x00415c40
-	// GoldDune0x38::`scalar deleting destructor'
+	// GolTexture::`scalar deleting destructor'
 
 protected:
 	friend class GolTextureList;
-	friend class WhiteBaffoon0x50;
+	friend class GolTiledTexture;
 
 	ColorRGBA m_colorKey; // 0x30
 	undefined2 m_unk0x34; // 0x34
 	LegoU16 m_unk0x36;    // 0x36
 };
 
-#endif // GOLDDUNE0X38_H
+#endif // GOLTEXTURE_H

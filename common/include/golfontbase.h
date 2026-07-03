@@ -4,14 +4,14 @@
 #include "compat.h"
 #include "decomp.h"
 #include "golname.h"
-#include "image/whitebaffoon0x50.h"
+#include "image/goltiledtexture.h"
 #include "surface/color.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
 class GolRenderDevice;
 class GolString;
-class PurpleDune0x7c;
+class GolD3DTexture;
 struct Rect;
 
 // VTABLE: GOLDP 0x10056ea8
@@ -33,7 +33,7 @@ public:
 
 	virtual void Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer);                      // vtable+0x00
 	virtual void VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat) = 0; // vtable+0x04
-	virtual PurpleDune0x7c* GetTexture(LegoU32 p_index) = 0;                                        // vtable+0x08
+	virtual GolD3DTexture* GetTexture(LegoU32 p_index) = 0;                                         // vtable+0x08
 	virtual void VTable0x0c(GolRenderDevice* p_unk0x04, LegoU32 p_count) = 0;                       // vtable+0x0c
 	virtual void SelectSurface(LegoU32 p_index) = 0;                                                // vtable+0x10
 	virtual void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) = 0;                              // vtable+0x14

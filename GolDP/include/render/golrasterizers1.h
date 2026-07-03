@@ -1,7 +1,7 @@
 #ifndef GOLRASTERIZERS1_H
 #define GOLRASTERIZERS1_H
 
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 class GolSoftwareRenderer;
 

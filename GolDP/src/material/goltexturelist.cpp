@@ -6,7 +6,7 @@
 #include "golstream.h"
 #include "goltgafile.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 #include <string.h>
 
@@ -94,7 +94,7 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		LegoU16 flags;
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-		PurpleDune0x7c* texture = GetItem(i);
+		GolD3DTexture* texture = GetItem(i);
 		::strncpy(textureName, parser->ReadStringWithMaxLength(sizeof(textureName)), sizeof(textureName));
 
 		if (m_renderer->FindTextureByName(textureName) != NULL) {
@@ -115,31 +115,31 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 			 token = parser->GetNextToken()) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				flags |= GoldDune0x38::c_unk0x36Bit2;
+				flags |= GolTexture::c_unk0x36Bit2;
 				break;
 			case GolFileParser::e_unknown0x29:
 				mipmapCount = static_cast<LegoU16>(parser->ReadInteger());
-				flags |= GoldDune0x38::c_unk0x36Bit0;
+				flags |= GolTexture::c_unk0x36Bit0;
 				break;
 			case GolFileParser::e_unknown0x2a:
-				flags &= ~GoldDune0x38::c_unk0x36Bit4;
-				flags |= GoldDune0x38::c_unk0x36Bit3;
+				flags &= ~GolTexture::c_unk0x36Bit4;
+				flags |= GolTexture::c_unk0x36Bit3;
 				break;
 			case GolFileParser::e_unknown0x2b:
-				flags &= ~GoldDune0x38::c_unk0x36Bit3;
-				flags |= GoldDune0x38::c_unk0x36Bit4;
+				flags &= ~GolTexture::c_unk0x36Bit3;
+				flags |= GolTexture::c_unk0x36Bit4;
 				break;
 			case GolFileParser::e_unknown0x2c:
-				flags |= GoldDune0x38::c_unk0x36Bit5;
+				flags |= GolTexture::c_unk0x36Bit5;
 				colorKey.m_red = static_cast<LegoU8>(parser->ReadInteger());
 				colorKey.m_grn = static_cast<LegoU8>(parser->ReadInteger());
 				colorKey.m_blu = static_cast<LegoU8>(parser->ReadInteger());
 				break;
 			case GolFileParser::e_unknown0x2d:
-				flags |= GoldDune0x38::c_unk0x36Bit8;
+				flags |= GolTexture::c_unk0x36Bit8;
 				break;
 			case GolFileParser::e_unknown0x2e:
-				flags |= GoldDune0x38::c_unk0x36Bit9;
+				flags |= GolTexture::c_unk0x36Bit9;
 				break;
 			default:
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -170,8 +170,8 @@ void GolTextureList::LoadTextures()
 
 	if (m_unk0x14 != NULL) {
 		for (LegoU32 i = 0; i < m_numItems; i++) {
-			GoldDune0x38* texture = GetItem(i);
-			if (texture->GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
+			GolTexture* texture = GetItem(i);
+			if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				continue;
 			}
 
@@ -179,17 +179,17 @@ void GolTextureList::LoadTextures()
 
 			LegoU16 flags = sourceItem.m_flags;
 			if (m_renderer->VTable0x110()) {
-				flags |= GoldDune0x38::c_unk0x36Bit6;
+				flags |= GolTexture::c_unk0x36Bit6;
 			}
-			if ((flags & GoldDune0x38::c_unk0x36Bit5) && (m_renderer->GetFlags() & GolD3DRenderDevice::c_flagBit9)) {
-				flags |= GoldDune0x38::c_unk0x36Bit7;
+			if ((flags & GolTexture::c_unk0x36Bit5) && (m_renderer->GetFlags() & GolD3DRenderDevice::c_flagBit9)) {
+				flags |= GolTexture::c_unk0x36Bit7;
 			}
 
 			texture->SetTextureFlags(flags);
 			texture->SetSourceTextureDefinition(sourceItem.m_mipmapCount, flags, sourceItem.m_colorKey);
 
 			m_renderer
-				->SelectTextureFormat(sourceItem.m_textureFormat, &textureFormat, flags & GoldDune0x38::c_unk0x36Bit5);
+				->SelectTextureFormat(sourceItem.m_textureFormat, &textureFormat, flags & GolTexture::c_unk0x36Bit5);
 			VTable0x18(i, textureFormat, sourceItem.m_width, sourceItem.m_height);
 			m_unk0x14->VTable0x04(i, 0, texture);
 		}
@@ -201,8 +201,8 @@ void GolTextureList::LoadTextures()
 	}
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
-		PurpleDune0x7c* texture = GetItem(i);
-		if (texture->GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
+		GolD3DTexture* texture = GetItem(i);
+		if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 			continue;
 		}
 
@@ -216,7 +216,7 @@ void GolTextureList::LoadTextures()
 
 		LegoU8 textureFlags = static_cast<LegoU8>(texture->GetUnk0x36());
 		GolImgFile* imageFile = &g_unk0x10064280;
-		if (!(textureFlags & GoldDune0x38::c_unk0x36Bit3)) {
+		if (!(textureFlags & GolTexture::c_unk0x36Bit3)) {
 			imageFile = &g_unk0x10063ca0;
 		}
 

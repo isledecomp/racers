@@ -79,7 +79,7 @@ LegoU32 GolDrawState::GetDriverCount()
 void GolDrawState::VTable0x50()
 {
 	m_flags |= c_flagBit1;
-	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & SilverDune0x30::c_lockRequestRead)) {
+	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
 		m_unk0x14->VTable0x34();
 	}
 }
@@ -126,7 +126,7 @@ void GolDrawState::VTable0x4c()
 void GolDrawState::VTable0x48()
 {
 	m_flags &= ~c_flagBit0;
-	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & SilverDune0x30::c_lockRequestRead)) {
+	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
 		m_unk0x14->VTable0x34();
 	}
 }

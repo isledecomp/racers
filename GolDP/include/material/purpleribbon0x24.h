@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "material/goltexturelist.h"
 
-class PurpleDune0x7c;
+class GolD3DTexture;
 
 // VTABLE: GOLDP 0x100567f0
 // SIZE 0x24
@@ -22,13 +22,13 @@ public:
 		LegoU32 p_width,
 		LegoU32 p_height
 	) override;
-	PurpleDune0x7c* GetItem(LegoU32 p_index) override; // vtable+0x28
+	GolD3DTexture* GetItem(LegoU32 p_index) override; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x100177c0
 	// PurpleRibbon0x24::`vector deleting destructor'
 
 private:
-	PurpleDune0x7c* m_items; // 0x20
+	GolD3DTexture* m_items; // 0x20
 };
 
 #endif // PURPLERIBBON0x25_H

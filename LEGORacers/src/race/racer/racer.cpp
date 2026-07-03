@@ -17,7 +17,7 @@
 #include "race/racesession.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 #include "util/carshadowrenderstate.h"
 
 #include <float.h>

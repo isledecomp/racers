@@ -3,7 +3,7 @@
 
 #include "golnametable.h"
 #include "goltxtparser.h"
-#include "image/whitebaffoon0x50.h"
+#include "image/goltiledtexture.h"
 #include "surface/color.h"
 
 class GolD3DRenderDevice;

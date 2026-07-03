@@ -2,9 +2,9 @@
 
 #include "goldecompress.h"
 #include "golerror.h"
-#include "image/whitebaffoon0x50.h"
-#include "silverdune0x30.h"
-#include "surface/purpledune0x7c.h"
+#include "golsurface.h"
+#include "image/goltiledtexture.h"
+#include "surface/gold3dtexture.h"
 
 #include <string.h>
 
@@ -185,7 +185,7 @@ void GolTgaFile::VTable0x00()
 
 // FUNCTION: GOLDP 0x1002aa80
 // FUNCTION: LEGORACERS 0x00413d50
-void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
+void GolTgaFile::VTable0x20(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	LegoU8* rowBuffer2;
 	LegoU8* rowBuffer1;
@@ -213,7 +213,7 @@ void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGB
 	}
 
 	LegoU8* pixels;
-	p_texture->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite);
+	p_texture->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
 
 	LegoS32 rowPitch = pitch;
 	fileOffset = m_posImageData;
@@ -326,7 +326,7 @@ void GolTgaFile::VTable0x18(LegoU8* p_buffer)
 
 // STUB: GOLDP 0x1002ae50
 // STUB: LEGORACERS 0x00414120
-void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey)
+void GolTgaFile::VTable0x1c(GolTiledTexture* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	GolSurfaceFormat format;
 	LegoU32 column;
@@ -364,7 +364,7 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 				->LockPixels(
 					&tilePixels[index],
 					&tilePitches[index],
-					SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite
+					GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite
 				);
 		}
 	}
@@ -468,9 +468,9 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 	}
 
 	LegoU32 flags = p_image->GetUnk0x3c();
-	flags = (flags & 0xfffffff1) | WhiteBaffoon0x50::c_flagBit3;
+	flags = (flags & 0xfffffff1) | GolTiledTexture::c_flagBit3;
 	p_image->m_unk0x3c = flags;
-	if ((flags & (WhiteBaffoon0x50::c_flagBit4 | WhiteBaffoon0x50::c_flagBit5)) == 0) {
-		p_image->m_unk0x3c = flags | WhiteBaffoon0x50::c_flagBit4;
+	if ((flags & (GolTiledTexture::c_flagBit4 | GolTiledTexture::c_flagBit5)) == 0) {
+		p_image->m_unk0x3c = flags | GolTiledTexture::c_flagBit4;
 	}
 }

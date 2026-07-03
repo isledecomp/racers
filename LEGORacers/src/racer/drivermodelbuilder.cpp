@@ -20,7 +20,7 @@
 #include "racer/driverpartresources.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/color.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -130,7 +130,7 @@ void DriverModelBuilder::InitializeDefaultMaterialParams()
 // FUNCTION: LEGORACERS 0x0049d2e0
 void DriverModelBuilder::LoadFaceTexture(const LegoChar* p_name, GolBmpFile* p_imageFile)
 {
-	PurpleDune0x7c* texture = m_textureList->GetItem(m_textureCount++);
+	GolD3DTexture* texture = m_textureList->GetItem(m_textureCount++);
 
 	LegoChar fileName[13];
 	::memset(fileName, 0, sizeof(fileName));
@@ -139,7 +139,7 @@ void DriverModelBuilder::LoadFaceTexture(const LegoChar* p_name, GolBmpFile* p_i
 	p_imageFile->VTable0x08(fileName);
 
 	texture->SetNameFromBuffer(p_name);
-	texture->SetTextureFlags(GoldDune0x38::c_unk0x36Bit2);
+	texture->SetTextureFlags(GolTexture::c_unk0x36Bit2);
 	texture->VTable0x30(*m_renderer, p_imageFile);
 	m_textureList->AddName(p_name, texture);
 	p_imageFile->Destroy();

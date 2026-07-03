@@ -8,7 +8,7 @@
 
 class GolD3DRenderDevice;
 class GolModelEntity;
-class GoldDune0x38;
+class GolTexture;
 
 // VTABLE: LEGORACERS 0x004af574
 // SIZE 0x33c
@@ -38,7 +38,7 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00409790
 	// CarShadowRenderState::`scalar deleting destructor'
 
-	void Initialize(GolD3DRenderDevice* p_renderer, GoldDune0x38* p_texture);
+	void Initialize(GolD3DRenderDevice* p_renderer, GolTexture* p_texture);
 	void Reset();
 	void SetFillColor(ColorRGBA* p_color);
 	void SetSilhouetteColor(ColorRGBA* p_color);
@@ -61,7 +61,7 @@ private:
 	void DrawTriangles16Bpp(TransformedVertex** p_triangle);
 
 	GolD3DRenderDevice* m_renderer;      // 0x004
-	GoldDune0x38* m_texture;             // 0x008
+	GolTexture* m_texture;               // 0x008
 	LegoU32 m_fillValue;                 // 0x00c
 	LegoU32 m_silhouetteValue;           // 0x010
 	LegoU32 m_flags0x014;                // 0x014

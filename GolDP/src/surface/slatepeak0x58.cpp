@@ -550,7 +550,7 @@ void SlatePeak0x58::Fill(LegoU32 p_color)
 }
 
 // FUNCTION: GOLDP 0x10003d80
-void SlatePeak0x58::VTable0x28(Rect* p_destRect, SilverDune0x30* p_source, Rect* p_sourceRect)
+void SlatePeak0x58::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p_sourceRect)
 {
 	RECT destRect;
 	RECT sourceRect;

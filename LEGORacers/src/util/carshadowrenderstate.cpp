@@ -1,8 +1,8 @@
 #include "util/carshadowrenderstate.h"
 
 #include "device/golpalettebase.h"
-#include "golddune0x38.h"
 #include "golmodelentity.h"
+#include "goltexture.h"
 #include "render/gold3drenderdevice.h"
 
 #include <string.h>
@@ -79,7 +79,7 @@ CarShadowRenderState::~CarShadowRenderState()
 }
 
 // FUNCTION: LEGORACERS 0x004097c0
-void CarShadowRenderState::Initialize(GolD3DRenderDevice* p_renderer, GoldDune0x38* p_texture)
+void CarShadowRenderState::Initialize(GolD3DRenderDevice* p_renderer, GolTexture* p_texture)
 {
 	m_renderer = p_renderer;
 	m_texture = p_texture;
@@ -148,7 +148,7 @@ void CarShadowRenderState::BeginCapture(
 		m_texture->Fill(m_fillValue);
 	}
 
-	m_texture->LockPixels(&m_pixels, &m_pitch, SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite);
+	m_texture->LockPixels(&m_pixels, &m_pitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
 	LegoFloat halfUnk0x08 = p_unk0x08;
 	halfUnk0x08 *= 0.5f;
 	m_offsetX = halfUnk0x08 - p_origin[0];

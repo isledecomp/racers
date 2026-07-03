@@ -31,7 +31,7 @@ void FalconDuneBag0x10::Initialize(const GolSurfaceFormat& p_textureFormat)
 		Shutdown();
 	}
 
-	BronzeDuneBag0xc::Initialize(p_textureFormat);
+	GolTexturePalette::Initialize(p_textureFormat);
 
 	m_unk0x0c = new LegoU16[m_size];
 	if (m_unk0x0c == NULL) {
@@ -54,7 +54,7 @@ void FalconDuneBag0x10::Destroy()
 // FUNCTION: GOLDP 0x10014820
 void FalconDuneBag0x10::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
-	BronzeDuneBag0xc::SetEntries(p_entries, p_start, p_count);
+	GolTexturePalette::SetEntries(p_entries, p_start, p_count);
 
 	for (LegoU32 i = 0; i < p_count; i++) {
 		m_unk0x0c[p_start + i] = g_textureFormat.MapRGBA(p_entries[i]);
@@ -67,7 +67,7 @@ void FalconDuneBag0x10::CopyEntriesFrom(GolPaletteBase* p_source)
 	LegoU32 i;
 	ColorRGBA entry;
 
-	BronzeDuneBag0xc::CopyEntriesFrom(p_source);
+	GolTexturePalette::CopyEntriesFrom(p_source);
 
 	for (i = 0; i < m_size; i++) {
 		p_source->GetEntry(&entry, i);

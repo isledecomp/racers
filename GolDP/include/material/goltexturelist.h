@@ -7,8 +7,8 @@
 #include "goltxtparser.h"
 
 class GolD3DRenderDevice;
-class GoldDune0x38;
-class PurpleDune0x7c;
+class GolTexture;
+class GolD3DTexture;
 class RaceState;
 
 // SIZE 0x2c
@@ -27,8 +27,8 @@ struct MagentaRibbonSourceItem0x2c {
 // SIZE 0x04
 class MagentaRibbonSource0x4 {
 public:
-	virtual void VTable0x00(LegoU32 p_index, MagentaRibbonSourceItem0x2c* p_item) = 0;      // vtable+0x00
-	virtual void VTable0x04(LegoU32 p_index, LegoU32 p_flags, GoldDune0x38* p_texture) = 0; // vtable+0x04
+	virtual void VTable0x00(LegoU32 p_index, MagentaRibbonSourceItem0x2c* p_item) = 0;    // vtable+0x00
+	virtual void VTable0x04(LegoU32 p_index, LegoU32 p_flags, GolTexture* p_texture) = 0; // vtable+0x04
 };
 
 // VTABLE: GOLDP 0x100575ac
@@ -77,8 +77,8 @@ public:
 		GolD3DRenderDevice* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
-	);                                                    // vtable+0x24
-	virtual PurpleDune0x7c* GetItem(LegoU32 p_index) = 0; // vtable+0x28
+	);                                                   // vtable+0x24
+	virtual GolD3DTexture* GetItem(LegoU32 p_index) = 0; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x1002b500
 	// GolTextureList::`scalar deleting destructor'

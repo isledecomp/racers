@@ -4,12 +4,12 @@
 #include "golbmpfile.h"
 #include "golerror.h"
 #include "golstring.h"
+#include "golsurface.h"
 #include "goltgafile.h"
 #include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
-#include "silverdune0x30.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 #include "surface/slatepeak0x58.h"
 
 #include <math.h>
@@ -24,7 +24,7 @@ DECOMP_SIZE_ASSERT(GolFontBase, 0x40)
 static LegoU8 g_glyphIndexBuffer[0x80];
 
 // GLOBAL: GOLDP 0x10063c9c
-SilverDune0x30* g_fontSourceImage;
+GolSurface* g_fontSourceImage;
 
 // FUNCTION: GOLDP 0x1001dea0
 GolFontBase::GolFontBase()
@@ -142,7 +142,7 @@ void GolFontBase::ScanGlyphs(const LegoChar* p_name)
 
 	LegoU8* pixels;
 	LegoU32 pitch;
-	g_fontSourceImage->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead);
+	g_fontSourceImage->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead);
 	ReadSeparatorSignature(rowSignature, pixels, pitch);
 
 	LegoU32 step = g_fontSourceImage->GetTextureFormat().m_bitsPerPixel >> 2;
@@ -425,18 +425,18 @@ LegoU32 GolFontBase::PackGlyphTextures(GolD3DRenderDevice* p_renderer, GolSurfac
 void GolFontBase::CopyGlyphsToTextures()
 {
 	LegoU32 currentSurface = 0;
-	PurpleDune0x7c* texture = GetTexture(currentSurface);
+	GolD3DTexture* texture = GetTexture(currentSurface);
 	Rect sourceRect;
 	sourceRect.m_top = 0;
 	sourceRect.m_bottom = m_fontHeight;
 
 	LegoU8* sourcePixels;
 	LegoU32 sourcePitch;
-	g_fontSourceImage->LockPixels(&sourcePixels, &sourcePitch, SilverDune0x30::c_lockRequestRead);
+	g_fontSourceImage->LockPixels(&sourcePixels, &sourcePitch, GolSurface::c_lockRequestRead);
 
 	LegoU8* texturePixels;
 	LegoU32 texturePitch;
-	texture->LockPixels(&texturePixels, &texturePitch, SilverDune0x30::c_lockRequestWrite);
+	texture->LockPixels(&texturePixels, &texturePitch, GolSurface::c_lockRequestWrite);
 
 	for (LegoU32 i = 0; i < m_glyphCount; i++) {
 		Glyph* glyph = &m_glyphs[i];
@@ -444,7 +444,7 @@ void GolFontBase::CopyGlyphsToTextures()
 			texture->UnlockPixels();
 			currentSurface = glyph->m_surfaceIndex;
 			texture = GetTexture(currentSurface);
-			texture->LockPixels(&texturePixels, &texturePitch, SilverDune0x30::c_lockRequestWrite);
+			texture->LockPixels(&texturePixels, &texturePitch, GolSurface::c_lockRequestWrite);
 		}
 
 		sourceRect.m_left = glyph->m_sourceX;

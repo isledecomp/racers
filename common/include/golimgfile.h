@@ -11,8 +11,8 @@
 	((BUF)[0 + (POS)] + (((BUF)[1 + (POS)] + (((BUF)[2 + (POS)] + ((BUF)[3 + (POS)] << 8)) << 8)) << 8))
 
 class GolPaletteBase;
-class SilverDune0x30;
-class WhiteBaffoon0x50;
+class GolSurface;
+class GolTiledTexture;
 
 // SIZE 0x5b0
 // VTABLE: GOLDP 0x10056f04
@@ -28,14 +28,14 @@ public:
 	virtual const LegoChar* GetSuffix();                 // vtable+0x10
 	virtual void VTable0x14(
 		LegoU8* p_buffer,
-		SilverDune0x30* p_texture,
+		GolSurface* p_texture,
 		LegoU32 p_flags,
 		ColorRGBA* p_colorKey
 	);                                         // vtable+0x14
 	virtual void VTable0x18(LegoU8* p_buffer); // vtable+0x18
-	virtual void VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags,
-							ColorRGBA* p_colorKey);                                             // vtable+0x1c
-	virtual void VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey); // vtable+0x20
+	virtual void VTable0x1c(GolTiledTexture* p_image, LegoU32 p_flags,
+							ColorRGBA* p_colorKey);                                         // vtable+0x1c
+	virtual void VTable0x20(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey); // vtable+0x20
 
 	// FUNCTION: GOLDP 0x100226b0
 	// FUNCTION: LEGORACERS 0x00413790

@@ -1,13 +1,13 @@
-#include "bronzedunebag0xc.h"
+#include "goltexturepalette.h"
 
 #include "decomp.h"
 #include "golerror.h"
 
-DECOMP_SIZE_ASSERT(BronzeDuneBag0xc, 0x0c)
+DECOMP_SIZE_ASSERT(GolTexturePalette, 0x0c)
 
 // FUNCTION: GOLDP 0x1002a090
 // FUNCTION: LEGORACERS 0x004133e0
-BronzeDuneBag0xc::BronzeDuneBag0xc()
+GolTexturePalette::GolTexturePalette()
 {
 	m_entries = NULL;
 	m_size = 0;
@@ -15,14 +15,14 @@ BronzeDuneBag0xc::BronzeDuneBag0xc()
 
 // FUNCTION: GOLDP 0x1002a0f0
 // FUNCTION: LEGORACERS 0x00413420
-BronzeDuneBag0xc::~BronzeDuneBag0xc()
+GolTexturePalette::~GolTexturePalette()
 {
 	Shutdown();
 }
 
 // FUNCTION: GOLDP 0x1002a120
 // FUNCTION: LEGORACERS 0x00413430
-void BronzeDuneBag0xc::Initialize(const GolSurfaceFormat& p_textureFormat)
+void GolTexturePalette::Initialize(const GolSurfaceFormat& p_textureFormat)
 {
 	LegoU32 i;
 
@@ -46,7 +46,7 @@ void BronzeDuneBag0xc::Initialize(const GolSurfaceFormat& p_textureFormat)
 
 // FUNCTION: GOLDP 0x1002a1b0
 // FUNCTION: LEGORACERS 0x004134b0
-void BronzeDuneBag0xc::Shutdown()
+void GolTexturePalette::Shutdown()
 {
 	m_size = 0;
 	if (m_entries != NULL) {
@@ -57,7 +57,7 @@ void BronzeDuneBag0xc::Shutdown()
 
 // FUNCTION: GOLDP 0x1002a1e0
 // FUNCTION: LEGORACERS 0x004134e0
-void BronzeDuneBag0xc::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
+void GolTexturePalette::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	for (LegoU32 i = 0; i < p_count; i++) {
 		p_entries[i].m_red = m_entries[p_start + i].m_red;
@@ -69,7 +69,7 @@ void BronzeDuneBag0xc::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32
 
 // FUNCTION: GOLDP 0x1002a230
 // FUNCTION: LEGORACERS 0x00413530
-void BronzeDuneBag0xc::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
+void GolTexturePalette::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	for (LegoU32 i = 0; i < p_count; i++) {
 		m_entries[p_start].m_red = p_entries[i].m_red;
@@ -82,7 +82,7 @@ void BronzeDuneBag0xc::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32
 
 // FUNCTION: GOLDP 0x1002a290
 // FUNCTION: LEGORACERS 0x00413590
-void BronzeDuneBag0xc::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
+void GolTexturePalette::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
 {
 	p_entry->m_red = m_entries[p_index].m_red;
 	p_entry->m_grn = m_entries[p_index].m_grn;
@@ -92,14 +92,14 @@ void BronzeDuneBag0xc::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
 
 // FUNCTION: GOLDP 0x1002a2d0
 // FUNCTION: LEGORACERS 0x004135d0
-void BronzeDuneBag0xc::CopyEntriesFrom(GolPaletteBase* p_source)
+void GolTexturePalette::CopyEntriesFrom(GolPaletteBase* p_source)
 {
 	p_source->GetEntries(m_entries, 0, p_source->GetEntryCount());
 }
 
 // FUNCTION: GOLDP 0x1002a300
 // FUNCTION: LEGORACERS 0x00413600
-LegoS32 BronzeDuneBag0xc::FindEntry(const ColorRGBA& p_entry)
+LegoS32 GolTexturePalette::FindEntry(const ColorRGBA& p_entry)
 {
 	LegoU32 i;
 
@@ -115,21 +115,21 @@ LegoS32 BronzeDuneBag0xc::FindEntry(const ColorRGBA& p_entry)
 
 // FUNCTION: GOLDP 0x100016f0 FOLDED
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoU32 BronzeDuneBag0xc::GetFirstEntry()
+LegoU32 GolTexturePalette::GetFirstEntry()
 {
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1002a350 FOLDED
 // FUNCTION: LEGORACERS 0x00413650 FOLDED
-LegoU32 BronzeDuneBag0xc::GetEntryCount()
+LegoU32 GolTexturePalette::GetEntryCount()
 {
 	return m_size;
 }
 
 // FUNCTION: GOLDP 0x1002a350 FOLDED
 // FUNCTION: LEGORACERS 0x00413650 FOLDED
-LegoU32 BronzeDuneBag0xc::GetPaletteSize()
+LegoU32 GolTexturePalette::GetPaletteSize()
 {
 	return m_size;
 }

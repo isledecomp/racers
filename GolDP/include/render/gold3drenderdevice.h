@@ -14,7 +14,7 @@
 class GolD3DRenderSurface;
 class GolCamera;
 class GolModel;
-class GoldDune0x38;
+class GolTexture;
 class GolDrawDPState;
 class GolD3DRenderDevice;
 class GolSceneNode;
@@ -211,7 +211,7 @@ private:
 	void FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count);
 	void FUN_1000a2c0(GolMaterial*);
 	void FUN_1000a950(GolMaterial*);
-	void FUN_1000ac00(GoldDune0x38*);
+	void FUN_1000ac00(GolTexture*);
 	void FUN_1000acf0(LegoU32 p_index);
 	void FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData);
 	void FUN_1000b0f0(LegoU32 p_index, const Light* p_param);
@@ -296,7 +296,7 @@ private:
 	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)];           // 0xc53a0
 	LegoFloat m_unk0xc83a0;                                                        // 0xc83a0
 	LegoFloat m_unk0xc83a4;                                                        // 0xc83a4
-	GoldDune0x38* m_currentTexture;                                                // 0xc83a8
+	GolTexture* m_currentTexture;                                                  // 0xc83a8
 	undefined4 m_unk0xc83ac;                                                       // 0xc83ac
 	undefined4 m_unk0xc83b0;                                                       // 0xc83b0
 	Field0xc83b4 m_unk0xc83b4;                                                     // 0xc83b4

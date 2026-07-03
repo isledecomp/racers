@@ -2,9 +2,9 @@
 #define MENUINPUTDISPATCHER_H
 
 #include "decomp.h"
+#include "golsurface.h"
 #include "input/inputdevice.h"
 #include "input/inputeventqueue.h"
-#include "silverdune0x30.h"
 #include "types.h"
 
 class GolD3DRenderDevice;

@@ -2,7 +2,7 @@
 
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 DECOMP_SIZE_ASSERT(PurpleRibbon0x24, 0x24)
 
@@ -22,7 +22,7 @@ PurpleRibbon0x24::~PurpleRibbon0x24()
 void PurpleRibbon0x24::AllocateItems()
 {
 	if (GetItemCount() >= 1) {
-		m_items = new PurpleDune0x7c[GetItemCount()];
+		m_items = new GolD3DTexture[GetItemCount()];
 		if (m_items == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -35,7 +35,7 @@ void PurpleRibbon0x24::VTable0x0c()
 	LegoU32 i;
 	if (m_renderer != NULL) {
 		for (i = 0; i < GetItemCount(); i++) {
-			if (m_items[i].GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
+			if (m_items[i].GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				m_items[i].FUN_10016380();
 			}
 		}
@@ -48,7 +48,7 @@ void PurpleRibbon0x24::VTable0x10()
 	LegoU32 i;
 	if (m_renderer != NULL) {
 		for (i = 0; i < GetItemCount(); i++) {
-			if (m_items[i].GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
+			if (m_items[i].GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				m_items[i].FUN_10016440(*m_renderer);
 			}
 		}
@@ -66,7 +66,7 @@ void PurpleRibbon0x24::Clear()
 }
 
 // FUNCTION: GOLDP 0x10015af0
-PurpleDune0x7c* PurpleRibbon0x24::GetItem(LegoU32 p_index)
+GolD3DTexture* PurpleRibbon0x24::GetItem(LegoU32 p_index)
 {
 	return &m_items[p_index];
 }

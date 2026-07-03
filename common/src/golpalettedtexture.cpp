@@ -1,30 +1,30 @@
-#include "bronzedune0x4c.h"
+#include "golpalettedtexture.h"
 
 #include "golerror.h"
 
-DECOMP_SIZE_ASSERT(BronzeDune0x4c, 0x4c)
+DECOMP_SIZE_ASSERT(GolPalettedTexture, 0x4c)
 
 // GLOBAL: GOLDP 0x10063c50
 // GLOBAL: LEGORACERS 0x004c28e0
-BronzeDune0x4c g_bronzeDune0x4c;
+GolPalettedTexture g_bronzeDune0x4c;
 
 // FUNCTION: GOLDP 0x10004f80
 // FUNCTION: LEGORACERS 0x00408b90
-void BronzeDune0x4c::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
+void GolPalettedTexture::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
 {
-	GoldDune0x38::VTable0x30(p_renderer, p_source);
+	GolTexture::VTable0x30(p_renderer, p_source);
 }
 
 // FUNCTION: GOLDP 0x1002a360
 // FUNCTION: LEGORACERS 0x00413660
-BronzeDune0x4c::~BronzeDune0x4c()
+GolPalettedTexture::~GolPalettedTexture()
 {
 	VTable0x38();
 }
 
 // FUNCTION: GOLDP 0x1002a3e0
 // FUNCTION: LEGORACERS 0x004136c0
-void BronzeDune0x4c::VTable0x34(
+void GolPalettedTexture::VTable0x34(
 	GolRenderDevice& p_renderer,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
@@ -54,7 +54,7 @@ void BronzeDune0x4c::VTable0x34(
 
 // FUNCTION: GOLDP 0x1002a470
 // FUNCTION: LEGORACERS 0x00413750
-void BronzeDune0x4c::VTable0x38()
+void GolPalettedTexture::VTable0x38()
 {
 	m_unk0x40.Shutdown();
 	if (m_pixels != NULL) {
@@ -67,7 +67,7 @@ void BronzeDune0x4c::VTable0x38()
 
 // FUNCTION: GOLDP 0x1002a4a0
 // FUNCTION: LEGORACERS 0x00413780
-GolPaletteBase* BronzeDune0x4c::GetPalette()
+GolPaletteBase* GolPalettedTexture::GetPalette()
 {
 	return &m_unk0x40;
 }

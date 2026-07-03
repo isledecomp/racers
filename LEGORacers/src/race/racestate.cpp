@@ -17,7 +17,7 @@
 #include "race/racesession.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 #include "util/carshadowrenderstate.h"
 
 #include <float.h>
@@ -530,10 +530,10 @@ void RaceState::CreateRacer(
 
 	m_roster.m_racers[p_racerIndex].Initialize(p_context, &initParams, &racerParams, this, p_racerIndex);
 
-	PurpleDune0x7c* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
+	GolD3DTexture* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
 	GolMaterial* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
 	shadowTexture->SetNameFromBuffer(chassisItem->m_shadowName);
-	shadowTexture->SetTextureFlags(GoldDune0x38::c_unk0x36Bit2 | GoldDune0x38::c_unk0x36Bit3);
+	shadowTexture->SetTextureFlags(GolTexture::c_unk0x36Bit2 | GolTexture::c_unk0x36Bit3);
 	shadowMaterial->SetName(chassisItem->m_shadowName);
 
 	GolMaterialParams shadowMaterialParams;

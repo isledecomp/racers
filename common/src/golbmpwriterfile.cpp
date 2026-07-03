@@ -74,7 +74,7 @@ void GolBmpWriterFile::WriteSurface(const SlatePeak0x58* p_surface)
 	WritePalette();
 	FUN_100204d0(m_bmpFormat, NULL);
 
-	const_cast<SlatePeak0x58*>(p_surface)->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead);
+	const_cast<SlatePeak0x58*>(p_surface)->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead);
 
 	LegoU8* rowBuffer = new LegoU8[m_rowByteStride];
 	if (!rowBuffer) {

@@ -8,7 +8,7 @@
 #include <string.h>
 
 class GolRenderDevice;
-class GoldDune0x38;
+class GolTexture;
 
 // SIZE 0x04
 struct DuskwindBananaRelicColor {
@@ -32,7 +32,7 @@ struct GolMaterialParams {
 	GolMaterialParams(LegoU8 p_fullIntensity);
 
 	LegoU32 m_unk0x00;
-	GoldDune0x38* m_unk0x04;
+	GolTexture* m_unk0x04;
 	DuskwindBananaRelicColor m_unk0x08;
 	DuskwindBananaRelicColor m_unk0x0c;
 	undefined m_unk0x10;
@@ -88,7 +88,7 @@ public:
 	GolMaterial();
 	virtual ~GolMaterial(); // vtable+0x00
 
-	GoldDune0x38* GetUnk0x04() const { return m_unk0x04; }
+	GolTexture* GetUnk0x04() const { return m_unk0x04; }
 	LegoU32 GetUnk0x08() const { return m_unk0x08; }
 	const DuskwindBananaRelicColor& GetColor0x0c() const { return m_unk0x0c; }
 	const DuskwindBananaRelicColor& GetColor0x10() const { return m_unk0x10; }
@@ -112,7 +112,7 @@ public:
 	friend class GolSoftwareRenderer;
 
 protected:
-	GoldDune0x38* m_unk0x04;
+	GolTexture* m_unk0x04;
 	LegoU32 m_unk0x08;
 	DuskwindBananaRelicColor m_unk0x0c;
 	DuskwindBananaRelicColor m_unk0x10;

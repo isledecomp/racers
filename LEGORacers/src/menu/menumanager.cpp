@@ -8,7 +8,6 @@
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
 #include "golbmpwriterfile.h"
-#include "golddune0x38.h"
 #include "golhashtable.h"
 #include "golmaterial.h"
 #include "golmateriallibrary.h"
@@ -17,6 +16,7 @@
 #include "golmodelmaterialtable.h"
 #include "golname.h"
 #include "golstream.h"
+#include "goltexture.h"
 #include "input/inputmanager.h"
 #include "input/keyboarddevice.h"
 #include "material/golimagedefinitionlist.h"
@@ -26,7 +26,7 @@
 #include "render/golcommondrawstate.h"
 #include "render/goldrawstate.h"
 #include "save/memorycardsavegame.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 #include <float.h>
 #include <golerror.h>
@@ -901,8 +901,8 @@ void MenuManager::BuildPlayerDriverModel(
 		sourceMaterial->CopyParamsTo(&params);
 
 		if (sourceMaterial->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
-			PurpleDune0x7c* texture = p_slot->m_altTextures->GetItem(textureCount++);
-			texture->SetName(static_cast<PurpleDune0x7c*>(params.m_unk0x04)->GetName());
+			GolD3DTexture* texture = p_slot->m_altTextures->GetItem(textureCount++);
+			texture->SetName(static_cast<GolD3DTexture*>(params.m_unk0x04)->GetName());
 			texture->SetSourceTextureDefinition(
 				params.m_unk0x04->GetUnk0x34(),
 				params.m_unk0x04->GetUnk0x36(),

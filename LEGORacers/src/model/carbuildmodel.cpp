@@ -5,15 +5,15 @@
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
-#include "golddune0x38.h"
 #include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "golmodelbase.h"
+#include "goltexture.h"
 #include "material/goltexturelist.h"
 #include "model/legocolortable.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/color.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 #include "world/golworlddatabase.h"
 
 #include <float.h>
@@ -2935,8 +2935,8 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 
 			GolMaterial* outputMaterial = p_materials->GetItem(outputMaterialIndex);
 			if (sourceMaterial->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
-				PurpleDune0x7c* outputTexture = p_textures->GetItem(textureIndex);
-				PurpleDune0x7c* sourceTexture = static_cast<PurpleDune0x7c*>(sourceMaterial->GetUnk0x04());
+				GolD3DTexture* outputTexture = p_textures->GetItem(textureIndex);
+				GolD3DTexture* sourceTexture = static_cast<GolD3DTexture*>(sourceMaterial->GetUnk0x04());
 
 				outputTexture->CopySourceTextureDefinitionFrom(sourceTexture);
 				params.m_unk0x04 = outputTexture;

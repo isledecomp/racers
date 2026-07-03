@@ -1,15 +1,15 @@
 #ifndef FALCONDUNEBAG0X10_H
 #define FALCONDUNEBAG0X10_H
 
-#include "bronzedunebag0xc.h"
 #include "decomp.h"
 #include "golsurfaceformat.h"
+#include "goltexturepalette.h"
 
 #include <windows.h>
 
 // VTABLE: GOLDP 0x10056708
 // SIZE 0x10
-class FalconDuneBag0x10 : public BronzeDuneBag0xc {
+class FalconDuneBag0x10 : public GolTexturePalette {
 public:
 	FalconDuneBag0x10();
 	~FalconDuneBag0x10() override; // vtable+0x20
@@ -31,7 +31,7 @@ private:
 
 	static GolSurfaceFormat g_textureFormat;
 
-	friend class PurpleDune0x7c;
+	friend class GolD3DTexture;
 };
 
 #endif // FALCONDUNEBAG0X10_H

@@ -1,22 +1,22 @@
 #ifndef GOLDP_UTOPIANPAN_H
 #define GOLDP_UTOPIANPAN_H
 
-#include "bronzedune0x4c.h"
 #include "decomp.h"
-#include "image/whitebaffoon0x50.h"
+#include "golpalettedtexture.h"
+#include "image/goltiledtexture.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
 class DuskwindBananaRelic0x30;
 class GolSurfaceFormat;
-class GoldDune0x38;
-class PurpleDune0x7c;
+class GolTexture;
+class GolD3DTexture;
 class GolRenderDevice;
 struct Rect;
 
 // SIZE 0xa4
 // VTABLE: GOLDP 0x10056340
-class GolImage : public WhiteBaffoon0x50 {
+class GolImage : public GolTiledTexture {
 public:
 	// SIZE 0x09
 	struct UtopianPanImageName {
@@ -35,11 +35,11 @@ public:
 	void VTable0x10() override;                                                                   // vtable+0x10
 	~GolImage() override;                                                                         // vtable+0x14
 	void Reset() override;                                                                        // vtable+0x18
-	PurpleDune0x7c* VTable0x1c(LegoU32 p_row, LegoU32 p_column) override;                         // vtable+0x1c
+	GolD3DTexture* VTable0x1c(LegoU32 p_row, LegoU32 p_column) override;                          // vtable+0x1c
 
 	void FUN_100051c0();
 	void FUN_10005210();
-	void FUN_10005440(GolRenderDevice* p_renderer, DuskwindBananaRelic0x30* p_material, GoldDune0x38* p_texture);
+	void FUN_10005440(GolRenderDevice* p_renderer, DuskwindBananaRelic0x30* p_material, GolTexture* p_texture);
 	void FUN_100054d0(GolD3DRenderDevice*, undefined4, Rect*, Rect* p_clipRect);
 	void FUN_10005510(GolD3DRenderDevice*, undefined4, Rect*, Rect*, Rect* p_clipRect);
 	void FUN_10005b00();
@@ -48,9 +48,9 @@ public:
 	// GolImage::`vector deleting destructor'
 
 protected:
-	PurpleDune0x7c* m_unk0x50;          // 0x50
+	GolD3DTexture* m_unk0x50;           // 0x50
 	DuskwindBananaRelic0x30* m_unk0x54; // 0x54
-	BronzeDune0x4c m_unk0x58;           // 0x58
+	GolPalettedTexture m_unk0x58;       // 0x58
 };
 
 #endif // GOLDP_UTOPIANPAN_H

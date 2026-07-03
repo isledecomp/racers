@@ -47,13 +47,13 @@ GolImage* GolRenderDevice::FindImageByName(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x004131d0
-GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
+GolTexture* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 {
 	GolTextureList* node = m_textureLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			GoldDune0x38* value = static_cast<GoldDune0x38*>(node->GetName(p_name));
+			GolTexture* value = static_cast<GolTexture*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}

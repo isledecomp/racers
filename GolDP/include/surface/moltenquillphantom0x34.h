@@ -2,13 +2,13 @@
 #define MOLTENQUILLPHANTOM0X34_H
 
 #include "decomp.h"
-#include "silverdune0x30.h"
+#include "golsurface.h"
 
 class SlatePeak0x58;
 
 // VTABLE: GOLDP 0x100577bc
 // SIZE 0x34
-class MoltenQuillPhantom0x34 : public SilverDune0x30 {
+class MoltenQuillPhantom0x34 : public GolSurface {
 public:
 	MoltenQuillPhantom0x34();
 

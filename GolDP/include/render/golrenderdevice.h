@@ -3,10 +3,10 @@
 
 #include "decomp.h"
 #include "golmath.h"
+#include "golsurface.h"
 #include "golsurfaceformat.h"
 #include "golviewfrustum.h"
 #include "render/gold3drenderstate.h"
-#include "silverdune0x30.h"
 #include "surface/color.h"
 #include "types.h"
 
@@ -29,7 +29,7 @@ struct Rect;
 class GolTextureList;
 class SlatePeak0x58;
 class GolImage;
-class GoldDune0x38;
+class GolTexture;
 
 // VTABLE: GOLDP 0x10057338
 // SIZE 0x140
@@ -227,7 +227,7 @@ public:
 	void RemoveImageList(GolImageList* p_param);
 	void AddTextureList(GolTextureList* p_param);
 	void RemoveTextureList(GolTextureList* p_param);
-	GoldDune0x38* FindTextureByName(const LegoChar* p_name);
+	GolTexture* FindTextureByName(const LegoChar* p_name);
 	void AddMaterialList(GolMaterialLibrary* p_param);
 	void RemoveMaterialList(GolMaterialLibrary* p_param);
 	GolMaterial* FindMaterialByName(const LegoChar* p_name);

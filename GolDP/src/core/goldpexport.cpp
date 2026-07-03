@@ -8,7 +8,7 @@
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golscenenode.h"
-#include "image/whitebaffoon0x50.h"
+#include "image/goltiledtexture.h"
 #include "material/amberhaze0x20.h"
 #include "material/golimagedefinitionlist.h"
 #include "material/purpleribbon0x24.h"
@@ -113,7 +113,7 @@ GolCamera* GolDPExport::VTable0x20()
 }
 
 // FUNCTION: GOLDP 0x100153b0
-WhiteBaffoon0x50* GolDPExport::VTable0x28()
+GolTiledTexture* GolDPExport::VTable0x28()
 {
 	GolImage* result = new GolImage;
 	if (result == NULL) {
@@ -223,7 +223,7 @@ void GolDPExport::VTable0x54(GolCamera* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015660
-void GolDPExport::VTable0x5c(WhiteBaffoon0x50* p_obj)
+void GolDPExport::VTable0x5c(GolTiledTexture* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;

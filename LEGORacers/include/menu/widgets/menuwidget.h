@@ -4,12 +4,12 @@
 #include "compat.h"
 #include "decomp.h"
 #include "golname.h"
+#include "golsurface.h"
 #include "input/inputeventqueue.h"
 #include "menu/menuinputdispatcher.h"
 #include "menu/screens/menuscreeninterface.h"
 #include "menu/widgets/visualstatecolor.h"
 #include "render/rectangle.h"
-#include "silverdune0x30.h"
 #include "surface/color.h"
 #include "types.h"
 

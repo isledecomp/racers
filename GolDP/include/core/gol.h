@@ -23,7 +23,7 @@ class GolFontTable;
 class GolNameTable;
 class GolModelBase;
 class GolTextureList;
-class WhiteBaffoon0x50;
+class GolTiledTexture;
 class GolSceneNode;
 class GolWorldDatabase;
 
@@ -58,7 +58,7 @@ public:
 	virtual GolBoundingShape* CreateBoundingShape() = 0;       // vtable+0x1c
 	virtual GolCamera* VTable0x20() = 0;                       // vtable+0x20
 	virtual undefined4 VTable0x24() = 0;                       // vtable+0x24
-	virtual WhiteBaffoon0x50* VTable0x28() = 0;                // vtable+0x28
+	virtual GolTiledTexture* VTable0x28() = 0;                 // vtable+0x28
 	virtual GolFontBase* CreateFont() = 0;                     // vtable+0x2c
 	virtual GolWorldEntity* VTable0x30() = 0;                  // vtable+0x30
 	virtual GolImageDefinitionList* VTable0x34() = 0;          // vtable+0x34
@@ -71,7 +71,7 @@ public:
 	virtual void DestroyBoundingShape(GolBoundingShape*) = 0;  // vtable+0x50
 	virtual void VTable0x54(GolCamera*) = 0;                   // vtable+0x54
 	virtual void VTable0x58(undefined4*) = 0;                  // vtable+0x58
-	virtual void VTable0x5c(WhiteBaffoon0x50*) = 0;            // vtable+0x5c
+	virtual void VTable0x5c(GolTiledTexture*) = 0;             // vtable+0x5c
 	virtual void DestroyFont(GolFontBase*) = 0;                // vtable+0x60
 	virtual void VTable0x64(GolWorldEntity*) = 0;              // vtable+0x64
 	virtual void VTable0x68(GolImageDefinitionList*) = 0;      // vtable+0x68

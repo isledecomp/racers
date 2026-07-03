@@ -5,12 +5,12 @@
 #include "golbmpfile.h"
 #include "golerror.h"
 #include "golimgfile.h"
+#include "golsurface.h"
 #include "goltgafile.h"
 #include "material/duskwindbananarelic0x30.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
-#include "silverdune0x30.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +20,7 @@ DECOMP_SIZE_ASSERT(GolFont, 0xa0)
 // GLOBAL: GOLDP 0x10062568
 static GolImgFile g_unk0x10062568;
 
-extern SilverDune0x30* g_fontSourceImage;
+extern GolSurface* g_fontSourceImage;
 
 extern GolTgaFile g_unk0x10063ca0;
 
@@ -121,7 +121,7 @@ void GolFont::RefreshSurfaces(GolD3DRenderDevice* p_renderer)
 // STUB: GOLDP 0x100047b0
 void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
-	m_textures = new PurpleDune0x7c[m_surfaceCount];
+	m_textures = new GolD3DTexture[m_surfaceCount];
 	if (m_textures == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -132,7 +132,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 	}
 
 	LegoU32 i = 0;
-	PurpleDune0x7c* texture = m_textures;
+	GolD3DTexture* texture = m_textures;
 	DuskwindBananaRelic0x30* material = m_materials;
 
 	for (; i < m_surfaceCount - 1; i++) {
@@ -197,7 +197,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 }
 
 // FUNCTION: GOLDP 0x10004b60
-PurpleDune0x7c* GolFont::GetTexture(LegoU32 p_index)
+GolD3DTexture* GolFont::GetTexture(LegoU32 p_index)
 {
 	return &m_textures[p_index];
 }
@@ -215,7 +215,7 @@ void GolFont::SelectSurface(LegoU32 p_index)
 	DuskwindBananaRelic0x30* material = &m_materials[index];
 	(m_renderer->*m_renderer->m_unk0xc876c)(material);
 
-	GoldDune0x38* texture = &m_textures[index];
+	GolTexture* texture = &m_textures[index];
 	m_renderer->FUN_1000ac00(texture);
 	m_inverseTextureWidth = 1.0f / static_cast<LegoFloat>(m_textures[index].GetWidth());
 	m_inverseTextureHeight = 1.0f / static_cast<LegoFloat>(m_textures[index].GetHeight());
@@ -280,7 +280,7 @@ void GolFont::CopyGlyphsToTextures(
 {
 	GolFont* font = this;
 	LegoU32 currentSurface = 0;
-	PurpleDune0x7c* texture = font->GetTexture(currentSurface);
+	GolD3DTexture* texture = font->GetTexture(currentSurface);
 
 	ColorRGBA* paletteEntries;
 	LegoU32 paletteSize;
@@ -309,18 +309,18 @@ void GolFont::CopyGlyphsToTextures(
 
 	LegoU8* sourcePixels;
 	LegoU32 sourcePitch;
-	font->m_sourceImage.LockPixels(&sourcePixels, &sourcePitch, SilverDune0x30::c_lockRequestRead);
+	font->m_sourceImage.LockPixels(&sourcePixels, &sourcePitch, GolSurface::c_lockRequestRead);
 
 	LegoU8* destPixels;
 	LegoU32 destPitch;
-	texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
+	texture->LockPixels(&destPixels, &destPitch, GolSurface::c_lockRequestWrite);
 
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(font->m_glyphCount); i++) {
 		if (font->m_glyphs[i].m_surfaceIndex != currentSurface) {
 			texture->UnlockPixels();
 			currentSurface = font->m_glyphs[i].m_surfaceIndex;
 			texture = font->GetTexture(currentSurface);
-			texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
+			texture->LockPixels(&destPixels, &destPitch, GolSurface::c_lockRequestWrite);
 		}
 
 		g_unk0x10062568.FUN_100226c0(

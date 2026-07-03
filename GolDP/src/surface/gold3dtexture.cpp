@@ -1,4 +1,4 @@
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 #include "device/ddrawutil.h"
 #include "device/goldirectdrawpalette.h"
@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(PurpleDune0x7c, 0x7c)
+DECOMP_SIZE_ASSERT(GolD3DTexture, 0x7c)
 
 extern const ColorRGBA g_unk0x10057668;
 
@@ -19,13 +19,13 @@ extern const ColorRGBA g_unk0x10057668;
 static GolImgFile g_unk0x100635c0;
 
 // FUNCTION: GOLDP 0x10015b70
-PurpleDune0x7c::PurpleDune0x7c()
+GolD3DTexture::GolD3DTexture()
 	: m_palette(NULL), m_mipmaps(NULL), m_surface(NULL), m_d3dTexture(NULL), m_unk0x74(0), m_unk0x78(0)
 {
 }
 
 // FUNCTION: GOLDP 0x10015bf0
-PurpleDune0x7c::~PurpleDune0x7c()
+GolD3DTexture::~GolD3DTexture()
 {
 	FUN_10016380();
 	m_unk0x50.Shutdown();
@@ -39,7 +39,7 @@ PurpleDune0x7c::~PurpleDune0x7c()
 }
 
 // FUNCTION: GOLDP 0x10015c80
-void PurpleDune0x7c::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
+void GolD3DTexture::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
 {
 	GolSurfaceFormat textureFormat = p_source->GetTextureFormat();
 
@@ -55,7 +55,7 @@ void PurpleDune0x7c::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_sourc
 }
 
 // FUNCTION: GOLDP 0x10015d00
-void PurpleDune0x7c::FUN_10015d00(
+void GolD3DTexture::FUN_10015d00(
 	GolD3DRenderDevice& p_renderer,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
@@ -75,7 +75,7 @@ void PurpleDune0x7c::FUN_10015d00(
 }
 
 // FUNCTION: GOLDP 0x10015d60
-void PurpleDune0x7c::VTable0x34(
+void GolD3DTexture::VTable0x34(
 	GolRenderDevice& p_renderer,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
@@ -104,7 +104,7 @@ void PurpleDune0x7c::VTable0x34(
 }
 
 // FUNCTION: GOLDP 0x10015e00
-void PurpleDune0x7c::VTable0x38()
+void GolD3DTexture::VTable0x38()
 {
 	FUN_10016380();
 	m_unk0x50.Shutdown();
@@ -118,7 +118,7 @@ void PurpleDune0x7c::VTable0x38()
 }
 
 // FUNCTION: GOLDP 0x10015e30
-void PurpleDune0x7c::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
+void GolD3DTexture::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
 {
 	if (p_flags & c_lockRequestRead) {
 		m_pixelFlags |= c_lockFlagRead;
@@ -176,7 +176,7 @@ void PurpleDune0x7c::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_f
 }
 
 // FUNCTION: GOLDP 0x10015f50
-void PurpleDune0x7c::UnlockPixels()
+void GolD3DTexture::UnlockPixels()
 {
 	if (m_pixelFlags & c_lockRequestWrite) {
 		if (m_pixels == NULL && m_mipmaps == NULL) {
@@ -196,7 +196,7 @@ void PurpleDune0x7c::UnlockPixels()
 }
 
 // FUNCTION: GOLDP 0x10015fb0
-void PurpleDune0x7c::FUN_10015fb0()
+void GolD3DTexture::FUN_10015fb0()
 {
 	DDCOLORKEY colorkey;
 	ColorRGBA rgba;
@@ -247,7 +247,7 @@ void PurpleDune0x7c::FUN_10015fb0()
 }
 
 // FUNCTION: GOLDP 0x100160e0
-GolPaletteBase* PurpleDune0x7c::GetPalette()
+GolPaletteBase* GolD3DTexture::GetPalette()
 {
 	if (m_pixels == NULL) {
 		if (m_mipmaps != NULL) {
@@ -266,7 +266,7 @@ GolPaletteBase* PurpleDune0x7c::GetPalette()
 }
 
 // FUNCTION: GOLDP 0x10016100
-void PurpleDune0x7c::FUN_10016100()
+void GolD3DTexture::FUN_10016100()
 {
 	ColorRGBA* colorKey;
 	LegoU8* dstPixels;
@@ -343,7 +343,7 @@ void PurpleDune0x7c::FUN_10016100()
 }
 
 // FUNCTION: GOLDP 0x10016260
-void PurpleDune0x7c::FUN_10016260()
+void GolD3DTexture::FUN_10016260()
 {
 	if (m_mipmaps != NULL) {
 		if (m_unk0x34 > 1) {
@@ -394,7 +394,7 @@ void PurpleDune0x7c::FUN_10016260()
 }
 
 // FUNCTION: GOLDP 0x10016380
-void PurpleDune0x7c::FUN_10016380()
+void GolD3DTexture::FUN_10016380()
 {
 	LegoU32 i;
 	MipmapLevel* mipmaps = m_mipmaps;
@@ -445,7 +445,7 @@ void PurpleDune0x7c::FUN_10016380()
 }
 
 // FUNCTION: GOLDP 0x10016440
-void PurpleDune0x7c::FUN_10016440(GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::FUN_10016440(GolD3DRenderDevice& p_renderer)
 {
 	if (m_pixelFlags & c_lockRequestRead) {
 		FUN_10016460(p_renderer);
@@ -454,7 +454,7 @@ void PurpleDune0x7c::FUN_10016440(GolD3DRenderDevice& p_renderer)
 }
 
 // FUNCTION: GOLDP 0x10016460
-void PurpleDune0x7c::FUN_10016460(GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::FUN_10016460(GolD3DRenderDevice& p_renderer)
 {
 	GolSurfaceFormat textureFormat;
 
@@ -516,7 +516,7 @@ void PurpleDune0x7c::FUN_10016460(GolD3DRenderDevice& p_renderer)
 }
 
 // FUNCTION: GOLDP 0x100165c0
-void PurpleDune0x7c::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDevice& p_renderer)
 {
 	LPDIRECTDRAW4 ddraw = p_renderer.GetDirectDraw4();
 
@@ -626,7 +626,7 @@ void PurpleDune0x7c::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderD
 }
 
 // FUNCTION: GOLDP 0x100168c0
-void PurpleDune0x7c::FUN_100168c0(GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::FUN_100168c0(GolD3DRenderDevice& p_renderer)
 {
 	LegoU32 width;
 	LegoU32 height;

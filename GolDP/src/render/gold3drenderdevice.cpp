@@ -7,13 +7,13 @@
 #include "gdbvertexarray0xc.h"
 #include "golboundingshape.h"
 #include "golcollidableentity.h"
-#include "golddune0x38.h"
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golmath.h"
 #include "golmodelbase.h"
 #include "golmodelentity.h"
 #include "golsurfaceformat.h"
+#include "goltexture.h"
 #include "image/golimage.h"
 #include "mesh/gdbvertexarraytypetwo0x20.h"
 #include "mesh/golmodel.h"
@@ -22,7 +22,7 @@
 #include "render/rectangle.h"
 #include "scene/golbillboard.h"
 #include "surface/falcondunebag0x10.h"
-#include "surface/purpledune0x7c.h"
+#include "surface/gold3dtexture.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -795,7 +795,7 @@ void GolD3DRenderDevice::ReleaseResources()
 		m_softwareRenderer.~GolSoftwareRenderer();
 	}
 
-	if (m_depthBuffer.GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
+	if (m_depthBuffer.GetPixelFlags() & GolSurface::c_lockRequestRead) {
 		m_depthBuffer.Release();
 	}
 
@@ -1367,7 +1367,7 @@ void GolD3DRenderDevice::VTable0x54(undefined4 p_flags)
 
 	m_unk0xc3848 = 0;
 
-	if (m_renderTargetInfo->m_pixelFlags & SilverDune0x30::c_lockFlagUnknown0x04) {
+	if (m_renderTargetInfo->m_pixelFlags & GolSurface::c_lockFlagUnknown0x04) {
 		m_renderTargetInfo->VTable0x18();
 	}
 
@@ -1423,7 +1423,7 @@ void GolD3DRenderDevice::VTable0xf0()
 			LegoU8* pixels;
 			LegoU32 pitch;
 			m_renderTargetInfo
-				->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite);
+				->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
 			if (pixels != NULL) {
 				m_softwareRenderer.SetRenderTarget(pixels, pitch);
 				m_softwareRenderer.FUN_10041a20(FALSE);
@@ -2389,7 +2389,7 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 }
 
 // FUNCTION: GOLDP 0x1000ac00
-void GolD3DRenderDevice::FUN_1000ac00(GoldDune0x38* p_texture)
+void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
 {
 	if (m_currentTexture == p_texture) {
 		return;
@@ -2404,7 +2404,7 @@ void GolD3DRenderDevice::FUN_1000ac00(GoldDune0x38* p_texture)
 	}
 
 	if (p_texture != NULL) {
-		if (p_texture->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
+		if (p_texture->GetUnk0x36() & GolTexture::c_unk0x36Bit5) {
 			if (m_unk0xc83f0 == 0) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, TRUE);
 				m_unk0xc83f0 = TRUE;
@@ -2415,7 +2415,7 @@ void GolD3DRenderDevice::FUN_1000ac00(GoldDune0x38* p_texture)
 			m_unk0xc83f0 = FALSE;
 		}
 
-		m_d3dDevice->SetTexture(0, static_cast<PurpleDune0x7c*>(m_currentTexture)->GetDirect3DTexture());
+		m_d3dDevice->SetTexture(0, static_cast<GolD3DTexture*>(m_currentTexture)->GetDirect3DTexture());
 	}
 	else if (m_unk0xc83f0 != 0) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, FALSE);

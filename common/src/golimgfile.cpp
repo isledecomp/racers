@@ -1219,7 +1219,7 @@ const LegoChar* GolImgFile::GetSuffix()
 	return ".img";
 }
 
-void GolImgFile::VTable0x14(LegoU8*, SilverDune0x30*, LegoU32, ColorRGBA*)
+void GolImgFile::VTable0x14(LegoU8*, GolSurface*, LegoU32, ColorRGBA*)
 {
 	// empty
 }
@@ -1557,14 +1557,14 @@ void GolImgFile::FUN_10022b80(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_dst)
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
 // FUNCTION: LEGORACERS 0x00416030 FOLDED
-void GolImgFile::VTable0x1c(WhiteBaffoon0x50*, LegoU32, ColorRGBA*)
+void GolImgFile::VTable0x1c(GolTiledTexture*, LegoU32, ColorRGBA*)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
 // FUNCTION: LEGORACERS 0x00416030 FOLDED
-void GolImgFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
+void GolImgFile::VTable0x20(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	// empty
 }

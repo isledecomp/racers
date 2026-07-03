@@ -2,13 +2,13 @@
 #define GOLDP_AZURERIDGE0X38_H
 
 #include "compat.h"
-#include "silverdune0x30.h"
+#include "golsurface.h"
 
 class GolDrawState;
 
 // VTABLE: GOLDP 0x10056dc4
 // SIZE 0x38
-class AzureRidge0x38 : public SilverDune0x30 {
+class AzureRidge0x38 : public GolSurface {
 public:
 	enum {
 		c_surfaceFlagWindowed = 0x01,

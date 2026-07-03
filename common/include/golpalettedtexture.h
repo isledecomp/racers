@@ -1,20 +1,20 @@
-#ifndef BRONZEDUNE0X4C_H
-#define BRONZEDUNE0X4C_H
+#ifndef GOLPALETTEDTEXTURE_H
+#define GOLPALETTEDTEXTURE_H
 
-#include "bronzedunebag0xc.h"
 #include "compat.h"
-#include "golddune0x38.h"
+#include "goltexture.h"
+#include "goltexturepalette.h"
 
 // SIZE 0x4c
 // VTABLE: GOLDP 0x10056300
 // VTABLE: LEGORACERS 0x004af520
-class BronzeDune0x4c : public GoldDune0x38 {
+class GolPalettedTexture : public GolTexture {
 public:
 	// FUNCTION: GOLDP 0x1001de50
 	// FUNCTION: LEGORACERS 0x00408b40
-	BronzeDune0x4c() {}
+	GolPalettedTexture() {}
 
-	~BronzeDune0x4c() override;                                                  // vtable+0x00
+	~GolPalettedTexture() override;                                              // vtable+0x00
 	GolPaletteBase* GetPalette() override;                                       // vtable+0x1c
 	void VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source) override; // vtable+0x30
 	void VTable0x34(
@@ -27,14 +27,14 @@ public:
 
 	// SYNTHETIC: GOLDP 0x10004450
 	// SYNTHETIC: LEGORACERS 0x00408bb0
-	// BronzeDune0x4c::`scalar deleting destructor'
+	// GolPalettedTexture::`scalar deleting destructor'
 
 	ColorRGBA* GetPaletteEntries() { return m_unk0x40.GetEntries(); }
 	LegoU32 GetPaletteSize() { return m_unk0x40.GetPaletteSize(); }
 
 protected:
 	undefined m_unk0x38[0x40 - 0x38];
-	BronzeDuneBag0xc m_unk0x40;
+	GolTexturePalette m_unk0x40;
 };
 
-#endif // BRONZEDUNE0X4C_H
+#endif // GOLPALETTEDTEXTURE_H

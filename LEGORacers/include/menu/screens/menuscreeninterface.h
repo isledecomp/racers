@@ -2,8 +2,8 @@
 #define MENUSCREENINTERFACE_H
 
 #include "decomp.h"
+#include "golsurface.h"
 #include "input/inputeventqueue.h"
-#include "silverdune0x30.h"
 #include "types.h"
 
 class MenuIcon;

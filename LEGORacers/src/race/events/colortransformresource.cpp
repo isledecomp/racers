@@ -46,13 +46,13 @@ void ColorTransformResource::FUN_00465570(InitParams* p_params)
 	m_colorTransform = p_params->m_colorTransform;
 	m_worldEntity = p_params->m_worldEntity;
 	if (flags & 1) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 	if (flags & 4) {
-		m_flags0x1c |= c_flags0x1cBit1;
+		m_flags0x1c |= c_flagNoEnd;
 	}
 
-	m_state0x18 = c_state0x18Four;
+	m_state0x18 = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x004655e0
@@ -76,7 +76,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 			p_racer->m_visuals.ClearColorTransform();
 		}
 
-		NotifyStateChange(c_state0x18One, c_state0x18One);
+		NotifyStateChange(c_stateIdle, c_stateIdle);
 		return;
 	}
 
@@ -87,7 +87,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 		p_racer->m_visuals.SetColorTransform(&m_colorTransform);
 	}
 
-	NotifyStateChange(c_state0x18One, c_state0x18One);
+	NotifyStateChange(c_stateIdle, c_stateIdle);
 }
 
 // FUNCTION: LEGORACERS 0x00465690
@@ -103,8 +103,8 @@ void ColorTransformResource::OnEndForRacer(Racer* p_racer)
 		}
 	}
 
-	NotifyStateChange(m_state0x18, c_state0x18Three);
-	m_state0x18 = c_state0x18Four;
+	NotifyStateChange(m_state0x18, c_stateActive);
+	m_state0x18 = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x004656d0

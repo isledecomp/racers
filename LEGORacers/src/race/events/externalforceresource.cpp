@@ -50,13 +50,13 @@ void ExternalForceResource::Initialize(InitParams* p_params)
 	m_channel = p_params->m_channel;
 	m_armEventId = p_params->m_armEventId;
 	if (p_params->m_unk0x28) {
-		m_flags0x1c |= c_flags0x1cBit1;
+		m_flags0x1c |= c_flagNoEnd;
 	}
 	if (p_params->m_unk0x2c) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x00462fc0
@@ -82,7 +82,7 @@ void ExternalForceResource::OnStartForRacer(Racer* p_racer)
 		}
 
 		NotifyStateChange(1, 1);
-		m_state0x18 = c_state0x18Three;
+		m_state0x18 = c_stateActive;
 	}
 }
 
@@ -101,7 +101,7 @@ void ExternalForceResource::OnEndForRacer(Racer* p_racer)
 	}
 
 	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x00463090

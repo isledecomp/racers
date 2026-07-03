@@ -49,10 +49,10 @@ void NodeTransformResource::FUN_00463900(InitParams* p_params)
 	m_modelEntity = p_params->m_modelEntity;
 	m_nodeIndex = p_params->m_unk0x1c;
 	if (p_params->m_unk0x20) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x00463970
@@ -67,20 +67,20 @@ void NodeTransformResource::FUN_00463970()
 void NodeTransformResource::OnStartAt(GolVec3*)
 {
 	NotifyStateChange(1, 1);
-	m_state0x18 = c_state0x18Three;
+	m_state0x18 = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x004639b0
 void NodeTransformResource::OnEnd()
 {
 	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004639d0
 void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state0x18 != c_state0x18One) {
+	if (m_state0x18 != c_stateIdle) {
 		RaceEventResource::Update(p_elapsedMs);
 
 		if (m_boundedEntity) {

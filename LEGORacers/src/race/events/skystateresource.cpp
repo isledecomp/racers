@@ -50,10 +50,10 @@ void SkyStateResource::Initialize(InitParams* p_params)
 	m_flags0x30 = p_params->m_flags0x28;
 	::strncpy(m_skyName, p_params->m_skyName, sizeof(m_skyName));
 	if (p_params->m_unk0x24) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 	m_flags0x1c &= ~c_flags0x1cBit5;
 }
 
@@ -89,14 +89,14 @@ void SkyStateResource::OnStartAt(GolVec3*)
 	}
 
 	NotifyStateChange(m_state0x18, 1);
-	m_state0x18 = c_state0x18Five;
+	m_state0x18 = c_stateEndPending;
 }
 
 // FUNCTION: LEGORACERS 0x0045e320
 void SkyStateResource::OnEnd()
 {
 	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 	m_flags0x1c &= ~c_flags0x1cBit5;
 }
 

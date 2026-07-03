@@ -34,21 +34,21 @@ void PartAnimationResource::FUN_00463330(InitParams* p_params)
 
 	m_eventTable = p_params->m_eventTable;
 	m_animatedEntity = p_params->m_animatedEntity;
-	m_unk0x24 = p_params->m_unk0x18;
-	m_unk0x28 = p_params->m_unk0x1c;
-	m_unk0x2c = p_params->m_unk0x20;
-	m_unk0x30 = p_params->m_unk0x24;
+	m_activePart = p_params->m_activePart;
+	m_idlePart = p_params->m_idlePart;
+	m_startPart = p_params->m_startPart;
+	m_endPart = p_params->m_endPart;
 
 	if (p_params->m_unk0x28) {
 		m_flags0x1c |= c_flags0x1cBit0;
 	}
 
 	if (p_params->m_unk0x2c) {
-		m_flags0x1c |= c_flags0x1cBit1;
+		m_flags0x1c |= c_flagNoEnd;
 	}
 
 	if (p_params->m_unk0x30) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 
 	if (p_params->m_unk0x34) {
@@ -60,7 +60,7 @@ void PartAnimationResource::FUN_00463330(InitParams* p_params)
 	}
 
 	m_animatedEntity->SetFlags(m_animatedEntity->GetFlags() | c_entityFlag0x200000);
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004633e0
@@ -80,11 +80,11 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 	LegoS32 currentPart = entity->GetCurrentPartIndex();
 
 	if (state == 2) {
-		if (currentPart == m_unk0x2c) {
+		if (currentPart == m_startPart) {
 			LegoU32 flags = entity->GetFlags();
 			if (!(flags & c_entityFlags0x120000) || static_cast<LegoU32>(entity->GetQueuedPartIndex()) == 0xffff) {
 				LegoU32 loop = m_flags0x1c & c_flags0x1cBit0;
-				entity->SetQueuedPartIndex(static_cast<LegoU16>(m_unk0x24));
+				entity->SetQueuedPartIndex(static_cast<LegoU16>(m_activePart));
 				flags = entity->GetFlags();
 				flags &= ~c_entityFlags0x4e0000;
 				flags |= GolAnimatedEntity::c_flagRestartQueuedPart;
@@ -96,10 +96,10 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 		}
 	}
 	else if (state == 4) {
-		if (currentPart == m_unk0x30) {
+		if (currentPart == m_endPart) {
 			LegoU32 flags = entity->GetFlags();
 			if (!(flags & c_entityFlags0x120000) || static_cast<LegoU32>(entity->GetQueuedPartIndex()) == 0xffff) {
-				entity->SetQueuedPartIndex(static_cast<LegoU16>(m_unk0x28));
+				entity->SetQueuedPartIndex(static_cast<LegoU16>(m_idlePart));
 				flags = entity->GetFlags();
 				flags &= ~c_entityFlags0x0e0000;
 				flags |= GolAnimatedEntity::c_flagRestartQueuedPart | GolAnimatedEntity::c_flagLoopQueuedPart;
@@ -108,12 +108,12 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 		}
 	}
 	else if (state == 3) {
-		if (!(m_flags0x1c & c_flags0x1cBit0) && currentPart == m_unk0x24) {
+		if (!(m_flags0x1c & c_flags0x1cBit0) && currentPart == m_activePart) {
 			LegoU32 flags = entity->GetFlags();
 			if (!(flags & c_entityFlags0x120000) || static_cast<LegoU32>(entity->GetQueuedPartIndex()) == 0xffff) {
-				LegoS32 queuedPart = m_unk0x30;
+				LegoS32 queuedPart = m_endPart;
 				if (queuedPart == -1) {
-					entity->SetQueuedPartIndex(static_cast<LegoU16>(m_unk0x28));
+					entity->SetQueuedPartIndex(static_cast<LegoU16>(m_idlePart));
 					flags = entity->GetFlags();
 					flags &= ~c_entityFlags0x0e0000;
 					flags |= GolAnimatedEntity::c_flagRestartQueuedPart | GolAnimatedEntity::c_flagLoopQueuedPart;
@@ -130,34 +130,34 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (currentPart == m_unk0x2c) {
+	if (currentPart == m_startPart) {
 		if (m_state0x18 != 2) {
 			NotifyStateChange(m_state0x18, 0);
 			m_state0x18 = 2;
 		}
 	}
-	else if (currentPart == m_unk0x24) {
+	else if (currentPart == m_activePart) {
 		if (m_state0x18 != 3) {
 			NotifyStateChange(m_state0x18, 1);
 			m_state0x18 = 3;
 		}
 	}
-	else if (currentPart == m_unk0x30) {
+	else if (currentPart == m_endPart) {
 		if (m_state0x18 != 4) {
 			NotifyStateChange(m_state0x18, 2);
 			m_state0x18 = 4;
 		}
 	}
-	else if (currentPart == m_unk0x28 && m_state0x18 != c_state0x18One) {
+	else if (currentPart == m_idlePart && m_state0x18 != c_stateIdle) {
 		NotifyStateChange(m_state0x18, 3);
-		m_state0x18 = c_state0x18One;
+		m_state0x18 = c_stateIdle;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00463570
 void PartAnimationResource::OnStartAt(GolVec3*)
 {
-	LegoS32 queuedPart = m_unk0x2c;
+	LegoS32 queuedPart = m_startPart;
 	GolAnimatedEntity* entity = m_animatedEntity;
 	if (queuedPart != -1) {
 		entity->SetQueuedPartIndex(static_cast<LegoU16>(queuedPart));
@@ -167,7 +167,7 @@ void PartAnimationResource::OnStartAt(GolVec3*)
 		entity->SetFlags(flags);
 	}
 	else {
-		queuedPart = m_unk0x24;
+		queuedPart = m_activePart;
 		entity->SetQueuedPartIndex(static_cast<LegoU16>(queuedPart));
 		LegoU32 flags = entity->GetFlags();
 		flags &= ~c_entityFlags0x0e0000;
@@ -181,17 +181,17 @@ void PartAnimationResource::OnEnd()
 {
 	LegoU32 state = m_state0x18;
 	LegoU32 nextState = state;
-	LegoU32 resetState = c_state0x18One;
+	LegoU32 resetState = c_stateIdle;
 	if (state != resetState) {
 		nextState = resetState;
 		GolAnimatedEntity* entity = m_animatedEntity;
-		LegoS32 targetPart = m_unk0x28;
+		LegoS32 targetPart = m_idlePart;
 		LegoS32 currentPart = entity->GetCurrentPartIndex();
 		if (currentPart != targetPart) {
-			LegoS32 queuedPart = m_unk0x30;
+			LegoS32 queuedPart = m_endPart;
 			if (queuedPart != -1) {
 				if (currentPart != queuedPart) {
-					queuedPart = m_unk0x30;
+					queuedPart = m_endPart;
 					if (queuedPart != -1) {
 						entity->SetQueuedPartIndex(static_cast<LegoU16>(queuedPart));
 						LegoU32 flags = entity->GetFlags();

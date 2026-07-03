@@ -20,7 +20,7 @@ public:
 		RaceEventTable* m_eventTable; // 0x10
 		LegoS32 m_holdEventId;        // 0x14
 		LegoU32 m_durationMs;         // 0x18
-		LegoBool32 m_forceable;       // 0x1c
+		LegoBool32 m_triggerOnEnd;    // 0x1c
 	};
 
 	TimerResource();

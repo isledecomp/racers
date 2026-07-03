@@ -182,7 +182,7 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_unk0x3c = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			params.m_unk0x3c = TRUE;
 			if (p_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 				p_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -305,7 +305,7 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		LegoS32 eventIndex = 1;
 		params.m_unk0x30 = 0;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			eventIndex = 1;
 			params.m_unk0x30 = 1;
 			if (p_parser->GetNextToken() != GolFileParser::e_leftCurly) {
@@ -320,11 +320,11 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 		params.m_stateEventIds[0] = -1;
 		params.m_animatedEntity = NULL;
 		params.m_stateEventIds[1] = -1;
-		params.m_unk0x18 = 0;
+		params.m_activePart = 0;
 		params.m_stateEventIds[2] = -1;
-		params.m_unk0x1c = 0;
-		params.m_unk0x20 = -1;
-		params.m_unk0x24 = -1;
+		params.m_idlePart = 0;
+		params.m_startPart = -1;
+		params.m_endPart = -1;
 		params.m_unk0x2c = FALSE;
 		params.m_unk0x28 = FALSE;
 		params.m_unk0x34 = FALSE;
@@ -360,17 +360,17 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 			case GolFileParser::e_unknown0x41:
 				params.m_unk0x38 = TRUE;
 				break;
-			case GolFileParser::e_unknown0x34:
-				params.m_unk0x18 = p_parser->ReadInteger();
+			case EvbTxtParser::e_active:
+				params.m_activePart = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x35:
-				params.m_unk0x1c = p_parser->ReadInteger();
+			case EvbTxtParser::e_idle:
+				params.m_idlePart = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x36:
-				params.m_unk0x20 = p_parser->ReadInteger();
+			case EvbTxtParser::e_start:
+				params.m_startPart = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x37:
-				params.m_unk0x24 = p_parser->ReadInteger();
+			case EvbTxtParser::e_end:
+				params.m_endPart = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2d:
 				params.m_unk0x28 = TRUE;
@@ -382,7 +382,7 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 				params.m_unk0x34 = TRUE;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventToken = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventToken = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventToken) {
 					eventToken -= 2;
 					if (eventToken) {
@@ -449,7 +449,7 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 		params.m_eventId = p_parser->ReadInteger();
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_unk0x30 = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			params.m_unk0x30 = TRUE;
 			if (p_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 				p_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -466,8 +466,8 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 		params.m_materialAnimation = NULL;
 		params.m_unk0x18 = NULL;
 		params.m_unk0x1c = 0;
-		params.m_unk0x20 = 0;
-		params.m_unk0x24 = 0;
+		params.m_activeTrackIndex = 0;
+		params.m_idleTrackIndex = 0;
 		params.m_unk0x28 = FALSE;
 		params.m_unk0x2c = FALSE;
 		params.m_unk0x34 = FALSE;
@@ -477,11 +477,11 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 			case GolFileParser::e_unknown0x38:
 				params.m_materialAnimation = field->m_materialAnimationDatabase->VTable0x4c(p_parser->ReadInteger());
 				break;
-			case GolFileParser::e_unknown0x34:
-				params.m_unk0x20 = p_parser->ReadInteger();
+			case EvbTxtParser::e_active:
+				params.m_activeTrackIndex = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x35:
-				params.m_unk0x24 = p_parser->ReadInteger();
+			case EvbTxtParser::e_idle:
+				params.m_idleTrackIndex = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2d:
 				params.m_unk0x28 = TRUE;
@@ -493,7 +493,7 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 				params.m_unk0x34 = TRUE;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventIndex) {
 					eventIndex -= 2;
 					if (eventIndex) {
@@ -587,7 +587,7 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		LegoS32 eventIndex;
 		params.m_unk0x54 = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			eventIndex = 1;
 			params.m_unk0x54 = eventIndex;
 			p_parser->ReadLeftCurly();
@@ -690,7 +690,7 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 				params.m_unk0x20 = p_parser->ReadInteger();
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventToken = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventToken = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventToken) {
 					eventToken -= 2;
 					if (eventToken) {
@@ -787,7 +787,7 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_unk0x24 = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			params.m_unk0x24 = TRUE;
 			p_parser->ReadLeftCurly();
 		}
@@ -829,7 +829,7 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 				params.m_flags0x28 |= 4;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventIndex) {
 					eventIndex -= 2;
 					if (eventIndex) {
@@ -883,7 +883,7 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_flags0x14 = 0;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			params.m_flags0x14 = 5;
 			p_parser->ReadLeftCurly();
 		}
@@ -952,7 +952,7 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 				params.m_flags0x14 |= 4;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventIndex) {
 					eventIndex -= 2;
 					if (eventIndex) {
@@ -1005,9 +1005,9 @@ void RaceEventTable::ParseTimers(GolFileParser* p_parser)
 		params.m_eventId = p_parser->ReadInteger();
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-		params.m_forceable = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
-			params.m_forceable = TRUE;
+		params.m_triggerOnEnd = FALSE;
+		if (token == EvbTxtParser::e_triggerOnEnd) {
+			params.m_triggerOnEnd = TRUE;
 			p_parser->ReadLeftCurly();
 		}
 		else if (token != GolFileParser::e_leftCurly) {
@@ -1030,7 +1030,7 @@ void RaceEventTable::ParseTimers(GolFileParser* p_parser)
 				params.m_holdEventId = p_parser->ReadInteger();
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventIndex) {
 					eventIndex -= 2;
 					if (eventIndex) {
@@ -1084,7 +1084,7 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_unk0x20 = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			params.m_unk0x20 = TRUE;
 			p_parser->ReadLeftCurly();
 		}
@@ -1122,13 +1122,13 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 			case EvbTxtParser::e_event: {
 				LegoS32 eventIndex;
 				switch (p_parser->GetNextToken()) {
-				case GolFileParser::e_unknown0x34:
+				case EvbTxtParser::e_active:
 					eventIndex = 1;
 					break;
-				case GolFileParser::e_unknown0x36:
+				case EvbTxtParser::e_start:
 					eventIndex = 0;
 					break;
-				case GolFileParser::e_unknown0x37:
+				case EvbTxtParser::e_end:
 					eventIndex = 2;
 					break;
 				default:
@@ -1171,7 +1171,7 @@ void RaceEventTable::ParseModelDistances(GolFileParser* p_parser)
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_unk0x1c = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			params.m_unk0x1c = TRUE;
 			p_parser->ReadLeftCurly();
 		}
@@ -1225,7 +1225,7 @@ void RaceEventTable::ParseModelDistances(GolFileParser* p_parser)
 				params.m_unk0x20 = eventIndex;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 tokenIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 tokenIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (tokenIndex) {
 					tokenIndex -= 2;
 					if (tokenIndex) {
@@ -1298,7 +1298,7 @@ void RaceEventTable::ParseLookTargets(GolFileParser* p_parser, LegoBool32 p_mirr
 					}
 					break;
 				case EvbTxtParser::e_event: {
-					LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+					LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 					if (eventIndex) {
 						eventIndex -= 2;
 						if (eventIndex) {
@@ -1353,7 +1353,7 @@ void RaceEventTable::ParseExternalForces(GolFileParser* p_parser, LegoBool32 p_m
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_unk0x2c = FALSE;
-		if (token == EvbTxtParser::e_forceable) {
+		if (token == EvbTxtParser::e_triggerOnEnd) {
 			params.m_unk0x2c = TRUE;
 			p_parser->ReadLeftCurly();
 		}
@@ -1389,7 +1389,7 @@ void RaceEventTable::ParseExternalForces(GolFileParser* p_parser, LegoBool32 p_m
 				params.m_armEventId = p_parser->ReadInteger();
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventIndex) {
 					eventIndex -= 2;
 					if (eventIndex) {
@@ -1451,14 +1451,14 @@ void RaceEventTable::ParseLapZones(GolFileParser* p_parser)
 		for (GolFileParser::ParserTokenType token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly;
 			 token = p_parser->GetNextToken()) {
 			switch (token) {
-			case GolFileParser::e_unknown0x36:
+			case EvbTxtParser::e_start:
 				params.m_unk0x14 = 0;
 				break;
-			case GolFileParser::e_unknown0x37:
+			case EvbTxtParser::e_end:
 				params.m_unk0x14 = 2;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
+				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
 				if (eventIndex) {
 					eventIndex -= 2;
 					if (eventIndex) {
@@ -1659,49 +1659,49 @@ void RaceEventTable::ForceAllEvents()
 
 	if (m_sounds) {
 		for (i = 0; i < m_soundCount; i++) {
-			m_sounds[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_sounds[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_partAnimations) {
 		for (i = 0; i < m_partAnimationCount; i++) {
-			m_partAnimations[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_partAnimations[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_materialAnimations) {
 		for (i = 0; i < m_materialAnimationCount; i++) {
-			m_materialAnimations[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_materialAnimations[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_particles) {
 		for (i = 0; i < m_particleCount; i++) {
-			m_particles[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_particles[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_skyStates) {
 		for (i = 0; i < m_skyStateCount; i++) {
-			m_skyStates[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_skyStates[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_timers) {
 		for (i = 0; i < m_timerCount; i++) {
-			m_timers[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_timers[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_nodeTransforms) {
 		for (i = 0; i < m_nodeTransformCount; i++) {
-			m_nodeTransforms[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_nodeTransforms[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_modelDistances) {
 		for (i = 0; i < m_modelDistanceCount; i++) {
-			m_modelDistances[i].SetState0x18(RaceEventResource::c_state0x18Five);
+			m_modelDistances[i].SetState0x18(RaceEventResource::c_stateEndPending);
 		}
 	}
 

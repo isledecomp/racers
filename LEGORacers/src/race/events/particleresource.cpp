@@ -90,18 +90,18 @@ void ParticleResource::Initialize(InitParams* p_params)
 	m_unk0x54.m_z = p_params->m_unk0x44.m_z;
 
 	if (p_params->m_unk0x50) {
-		m_flags0x1c |= c_flags0x1cBit1;
+		m_flags0x1c |= c_flagNoEnd;
 	}
 
 	if (p_params->m_unk0x54) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 
 	if (p_params->m_unk0x58) {
 		m_flags0x1c |= c_flags0x1cBit3;
 	}
 
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 	m_flags0x1c &= ~c_flags0x1cBit5;
 }
 
@@ -134,7 +134,7 @@ void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 	}
 
 	NotifyStateChange(m_state0x18, 1);
-	m_state0x18 = c_state0x18Three;
+	m_state0x18 = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0045eb90
@@ -152,7 +152,7 @@ void ParticleResource::OnEnd()
 	}
 
 	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 	m_flags0x1c &= ~c_flags0x1cBit5;
 }
 
@@ -160,7 +160,7 @@ void ParticleResource::OnEnd()
 void ParticleResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
-	if (m_state0x18 == c_state0x18One) {
+	if (m_state0x18 == c_stateIdle) {
 		return;
 	}
 

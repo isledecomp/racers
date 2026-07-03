@@ -17,10 +17,10 @@ LegoU32 MaterialAnimationResource::GetKind()
 MaterialAnimationResource::MaterialAnimationResource()
 {
 	m_materialAnimation = NULL;
-	m_unk0x24 = NULL;
-	m_unk0x28 = NULL;
-	m_unk0x2c = NULL;
-	m_unk0x30 = 0;
+	m_activeTrack = NULL;
+	m_idleTrack = NULL;
+	m_materialTable = NULL;
+	m_materialIndex = 0;
 	m_flags0x1c = 0;
 }
 
@@ -49,26 +49,26 @@ void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
 		m_flags0x1c |= c_flags0x1cBit0;
 	}
 	if (p_params->m_unk0x2c) {
-		m_flags0x1c |= c_flags0x1cBit1;
+		m_flags0x1c |= c_flagNoEnd;
 	}
 	if (p_params->m_unk0x30) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 	if (p_params->m_unk0x34) {
 		m_flags0x1c |= c_flags0x1cBit3;
 	}
 
-	m_unk0x24 = &m_materialAnimation->GetUnk0x0c()[p_params->m_unk0x20];
-	MabMaterialTrack* item = &m_materialAnimation->GetUnk0x0c()[p_params->m_unk0x24];
-	m_unk0x28 = item;
-	m_unk0x2c = item->GetUnk0x00();
-	m_unk0x30 = item->GetUnk0x04();
+	m_activeTrack = &m_materialAnimation->GetUnk0x0c()[p_params->m_activeTrackIndex];
+	MabMaterialTrack* item = &m_materialAnimation->GetUnk0x0c()[p_params->m_idleTrackIndex];
+	m_idleTrack = item;
+	m_materialTable = item->GetUnk0x00();
+	m_materialIndex = item->GetUnk0x04();
 	if (p_params->m_unk0x18) {
-		m_unk0x2c = p_params->m_unk0x18;
-		m_unk0x30 = p_params->m_unk0x1c;
+		m_materialTable = p_params->m_unk0x18;
+		m_materialIndex = p_params->m_unk0x1c;
 	}
 
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004631e0
@@ -83,7 +83,7 @@ void MaterialAnimationResource::FUN_004631e0()
 void MaterialAnimationResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
-	if (m_state0x18 == c_state0x18Three && !(m_flags0x1c & c_flags0x1cBit0) && !m_unk0x24->IsAssigned()) {
+	if (m_state0x18 == c_stateActive && !(m_flags0x1c & c_flags0x1cBit0) && !m_activeTrack->IsAssigned()) {
 		OnEnd();
 	}
 }
@@ -91,19 +91,19 @@ void MaterialAnimationResource::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00463230
 void MaterialAnimationResource::OnStartAt(GolVec3*)
 {
-	m_unk0x28->FUN_00410470();
-	m_unk0x24->FUN_10025da0(m_unk0x2c, m_unk0x30, m_flags0x1c & c_flags0x1cBit0);
-	m_unk0x24->FUN_00410480();
-	NotifyStateChange(m_state0x18, c_state0x18One);
-	m_state0x18 = c_state0x18Three;
+	m_idleTrack->FUN_00410470();
+	m_activeTrack->FUN_10025da0(m_materialTable, m_materialIndex, m_flags0x1c & c_flags0x1cBit0);
+	m_activeTrack->FUN_00410480();
+	NotifyStateChange(m_state0x18, c_stateIdle);
+	m_state0x18 = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x00463280
 void MaterialAnimationResource::OnEnd()
 {
-	m_unk0x24->FUN_00410470();
-	m_unk0x28->FUN_10025da0(m_unk0x2c, m_unk0x30, TRUE);
-	m_unk0x28->FUN_00410480();
-	NotifyStateChange(m_state0x18, c_state0x18Three);
-	m_state0x18 = c_state0x18One;
+	m_activeTrack->FUN_00410470();
+	m_idleTrack->FUN_10025da0(m_materialTable, m_materialIndex, TRUE);
+	m_idleTrack->FUN_00410480();
+	NotifyStateChange(m_state0x18, c_stateActive);
+	m_state0x18 = c_stateIdle;
 }

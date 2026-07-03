@@ -13,13 +13,17 @@ class Racer;
 // SIZE 0x20
 class RaceEventResource {
 public:
+	// Lifecycle states: Idle (never started / fully reset), Starting
+	// (intro phase), Active, Ended (outro phase / restartable), EndPending
+	// (auto-OnEnd on next Update).
 	enum {
-		c_state0x18One = 1,
-		c_state0x18Three = 3,
-		c_state0x18Four = 4,
-		c_state0x18Five = 5,
-		c_flags0x1cBit1 = 1 << 1,
-		c_flags0x1cBit2 = 1 << 2,
+		c_stateIdle = 1,
+		c_stateStarting = 2,
+		c_stateActive = 3,
+		c_stateEnded = 4,
+		c_stateEndPending = 5,
+		c_flagNoEnd = 1 << 1,
+		c_flagTriggerOnEnd = 1 << 2,
 		c_flags0x1cBit3 = 1 << 3,
 		c_flags0x1cBit5 = 1 << 5
 	};
@@ -29,7 +33,7 @@ public:
 	virtual void OnStartAt(GolVec3* p_position);  // vtable+0x04
 	virtual void OnEndForRacer(Racer* p_racer);   // vtable+0x08
 	virtual void OnEnd();                         // vtable+0x0c
-	virtual ~RaceEventResource();                          // vtable+0x10
+	virtual ~RaceEventResource();                 // vtable+0x10
 	virtual void Update(LegoU32 p_elapsedMs);     // vtable+0x14
 
 	void ForceEventStart(Racer* p_racer);

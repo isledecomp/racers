@@ -58,7 +58,7 @@ void RaceEventResource::Reset()
 // FUNCTION: LEGORACERS 0x0045edc0
 void RaceEventResource::Update(LegoU32)
 {
-	if (m_state0x18 == c_state0x18Five) {
+	if (m_state0x18 == c_stateEndPending) {
 		OnEnd();
 	}
 }
@@ -109,11 +109,11 @@ void RaceEventResource::NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
 void RaceEventResource::ForceEventEnd(Racer* p_racer)
 {
 	LegoU8 flags = m_flags0x1c;
-	if (flags & c_flags0x1cBit2) {
+	if (flags & c_flagTriggerOnEnd) {
 		LegoU32 state = m_state0x18;
-		if (state == c_state0x18One || state == c_state0x18Four) {
+		if (state == c_stateIdle || state == c_stateEnded) {
 			OnStartForRacer(p_racer);
-			if (m_flags0x1c & c_flags0x1cBit1) {
+			if (m_flags0x1c & c_flagNoEnd) {
 				return;
 			}
 
@@ -122,7 +122,7 @@ void RaceEventResource::ForceEventEnd(Racer* p_racer)
 		}
 	}
 
-	if (m_state0x18 != c_state0x18One && !(flags & c_flags0x1cBit1)) {
+	if (m_state0x18 != c_stateIdle && !(flags & c_flagNoEnd)) {
 		OnEndForRacer(p_racer);
 	}
 }

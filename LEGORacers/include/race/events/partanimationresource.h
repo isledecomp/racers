@@ -15,10 +15,10 @@ public:
 		LegoS32 m_stateEventIds[3];          // 0x04
 		RaceEventTable* m_eventTable;        // 0x10
 		GolAnimatedEntity* m_animatedEntity; // 0x14
-		LegoS32 m_unk0x18;                   // 0x18
-		LegoS32 m_unk0x1c;                   // 0x1c
-		LegoS32 m_unk0x20;                   // 0x20
-		LegoS32 m_unk0x24;                   // 0x24
+		LegoS32 m_activePart;                // 0x18
+		LegoS32 m_idlePart;                  // 0x1c
+		LegoS32 m_startPart;                 // 0x20
+		LegoS32 m_endPart;                   // 0x24
 		LegoBool32 m_unk0x28;                // 0x28
 		LegoBool32 m_unk0x2c;                // 0x2c
 		LegoBool32 m_unk0x30;                // 0x30
@@ -50,10 +50,10 @@ private:
 	};
 
 	GolAnimatedEntity* m_animatedEntity; // 0x20
-	LegoS32 m_unk0x24;                   // 0x24
-	LegoS32 m_unk0x28;                   // 0x28
-	LegoS32 m_unk0x2c;                   // 0x2c
-	LegoS32 m_unk0x30;                   // 0x30
+	LegoS32 m_activePart;                // 0x24
+	LegoS32 m_idlePart;                  // 0x28
+	LegoS32 m_startPart;                 // 0x2c
+	LegoS32 m_endPart;                   // 0x30
 };
 
 #endif // PARTANIMATIONRESOURCE_H

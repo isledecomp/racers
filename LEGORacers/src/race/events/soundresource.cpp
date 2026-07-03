@@ -61,16 +61,16 @@ void SoundResource::Initialize(InitParams* p_params)
 		m_flags0x1c |= c_flags0x1cBit0;
 	}
 	if (p_params->m_unk0x38) {
-		m_flags0x1c |= c_flags0x1cBit1;
+		m_flags0x1c |= c_flagNoEnd;
 	}
 	if (p_params->m_unk0x3c) {
-		m_flags0x1c |= c_flags0x1cBit2;
+		m_flags0x1c |= c_flagTriggerOnEnd;
 	}
 	if (p_params->m_positional) {
 		m_flags0x1c |= c_flags0x1cBit3;
 	}
 
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x00464290
@@ -98,7 +98,7 @@ void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 	}
 
 	if (m_probability < c_probabilityMax) {
-		m_state0x18 = c_state0x18Three;
+		m_state0x18 = c_stateActive;
 		return;
 	}
 
@@ -125,7 +125,7 @@ void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 		velocity.m_y = 0.0f;
 		velocity.m_z = 0.0f;
 		m_sound->SetVelocity(velocity);
-		m_state0x18 = c_state0x18Three;
+		m_state0x18 = c_stateActive;
 	}
 }
 
@@ -137,14 +137,14 @@ void SoundResource::OnEnd()
 		m_sound = NULL;
 	}
 
-	m_state0x18 = c_state0x18One;
+	m_state0x18 = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004643e0
 void SoundResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
-	if (m_state0x18 == c_state0x18One) {
+	if (m_state0x18 == c_stateIdle) {
 		return;
 	}
 

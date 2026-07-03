@@ -20,8 +20,8 @@ public:
 		MaterialTable* m_unk0x18;                  // 0x18
 		LegoU16 m_unk0x1c;                         // 0x1c
 		undefined m_unk0x1e[0x20 - 0x1e];          // 0x1e
-		LegoU32 m_unk0x20;                         // 0x20
-		LegoU32 m_unk0x24;                         // 0x24
+		LegoU32 m_activeTrackIndex;                // 0x20
+		LegoU32 m_idleTrackIndex;                  // 0x24
 		LegoBool32 m_unk0x28;                      // 0x28
 		LegoBool32 m_unk0x2c;                      // 0x2c
 		LegoBool32 m_unk0x30;                      // 0x30
@@ -47,10 +47,10 @@ private:
 	};
 
 	MabMaterialAnimation* m_materialAnimation; // 0x20
-	MabMaterialTrack* m_unk0x24;               // 0x24
-	MabMaterialTrack* m_unk0x28;               // 0x28
-	MaterialTable* m_unk0x2c;                  // 0x2c
-	LegoU16 m_unk0x30;                         // 0x30
+	MabMaterialTrack* m_activeTrack;           // 0x24
+	MabMaterialTrack* m_idleTrack;             // 0x28
+	MaterialTable* m_materialTable;            // 0x2c
+	LegoU16 m_materialIndex;                   // 0x30
 	undefined m_unk0x32[0x34 - 0x32];          // 0x32
 };
 

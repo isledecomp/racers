@@ -35,7 +35,7 @@ void LapZoneResource::Initialize(InitParams* p_params)
 
 	m_eventTable = params->m_eventTable;
 	m_zone = params->m_unk0x14;
-	m_state0x18 = c_state0x18Four;
+	m_state0x18 = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x00464660
@@ -70,5 +70,5 @@ void LapZoneResource::OnStartForRacer(Racer* p_racer)
 void LapZoneResource::OnEndForRacer(Racer*)
 {
 	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_state0x18Four;
+	m_state0x18 = c_stateEnded;
 }

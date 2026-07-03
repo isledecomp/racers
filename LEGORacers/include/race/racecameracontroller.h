@@ -64,11 +64,11 @@ public:
 	GolQuat m_smoothedRotation;          // 0x078
 	GolMatrix34 m_previousTransform;     // 0x088
 	GolQuat m_previousRotation;          // 0x0b8
-	LegoFloat m_unk0x0c8;                // 0x0c8
+	LegoFloat m_transitionMs;            // 0x0c8
 	LegoFloat m_elapsed;                 // 0x0cc
 	LegoS32 m_elapsedMs;                 // 0x0d0
 	Racer* m_racer;                      // 0x0d4
-	GolVec3 m_unk0x0d8;                  // 0x0d8
+	GolVec3 m_viewDirection;             // 0x0d8
 	GolVec3 m_lastRacerPosition;         // 0x0e4
 	LegoFloat m_unk0x0f0;                // 0x0f0
 	LegoFloat m_unk0x0f4;                // 0x0f4
@@ -81,14 +81,14 @@ public:
 	LegoFloat m_pitchSine;               // 0x110
 	LegoFloat m_pitchCosine;             // 0x114
 	LegoFloat m_followDistance;          // 0x118
-	LegoU32 m_unk0x11c;                  // 0x11c
-	LegoFloat m_unk0x120;                // 0x120
+	LegoU32 m_turboActive;               // 0x11c
+	LegoFloat m_followDistanceScale;     // 0x120
 	LegoFloat m_blendHeightSine;         // 0x124
 	LegoFloat m_blendPitchSine;          // 0x128
 	LegoFloat m_blendPitchCosine;        // 0x12c
 	LegoFloat m_blendFollowDistance;     // 0x130
 	LegoFloat m_targetFov;               // 0x134
-	LegoFloat m_unk0x138;                // 0x138
+	LegoFloat m_baseFov;                 // 0x138
 	LegoFloat m_shakeAmount;             // 0x13c
 	LegoU32 m_shakeMs;                   // 0x140
 	GolD3DRenderDevice* m_renderer;      // 0x144

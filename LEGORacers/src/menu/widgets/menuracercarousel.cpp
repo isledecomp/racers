@@ -82,7 +82,7 @@ LegoBool32 MenuRacerCarousel::Destroy()
 // FUNCTION: LEGORACERS 0x00483b60
 void MenuRacerCarousel::CreateMaterialTables(LegoS32)
 {
-	m_materialTables = new GolBillboard::Field0x2c[m_itemCount];
+	m_materialTables = new GolBillboard::ManagedMaterialTable[m_itemCount];
 	if (m_materialTables == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -93,7 +93,10 @@ void MenuRacerCarousel::CreateMaterialTables(LegoS32)
 }
 
 // FUNCTION: LEGORACERS 0x00483c20
-void MenuRacerCarousel::CopyModelMaterialTable(GolModelBase* p_model, GolBillboard::Field0x2c* p_materialTable)
+void MenuRacerCarousel::CopyModelMaterialTable(
+	GolModelBase* p_model,
+	GolBillboard::ManagedMaterialTable* p_materialTable
+)
 {
 	GolModelMaterialTable* source = p_model->GetMaterialTable();
 	LegoS32 count = source->GetCount();
@@ -259,7 +262,7 @@ void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 
 	entity->VTable0x50(model, g_maroonAtollMaxFloat);
 
-	GolBillboard::Field0x2c* materialTable = &m_materialTables[WrapIndex(m_ringBaseIndex + p_index)];
+	GolBillboard::ManagedMaterialTable* materialTable = &m_materialTables[WrapIndex(m_ringBaseIndex + p_index)];
 	CopyModelMaterialTable(model, materialTable);
 
 	LegoS32 materialIndex = model->GetMaterialTable()->FindEntryIndexByName(materialName);

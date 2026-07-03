@@ -31,7 +31,7 @@ public:
 	};
 
 	// SIZE 0x10
-	struct Field0xc83b4 {
+	struct RasterizerPipelineSet {
 		GolSoftwareRenderer::RasterizerPipeline* m_unk0x00[4]; // 0x00
 	};
 
@@ -48,8 +48,6 @@ public:
 	};
 
 	typedef GolD3DRenderState::CommandVertex CommandVertex;
-	typedef GolD3DRenderState Field0xc8524;
-	typedef GolD3DRenderState::MaterialCommand Field0xc854c;
 
 	GolD3DRenderDevice();
 
@@ -145,40 +143,40 @@ public:
 		const TexturedVertex* p_vertex2,
 		GolMaterial* p_material,
 		undefined4 p_flags
-	) override;                                                             // vtable+0x84
-	void VTable0x88(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x88
-	void VTable0x8c(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x8c
-	void VTable0x90(GolWorldEntity*) override;                              // vtable+0x90
-	void VTable0x94(GolWorldEntity*) override;                              // vtable+0x94
-	void VTable0x98(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x98
-	void VTable0x9c(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x9c
-	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;        // vtable+0xa8
-	void VTable0xac(GolModelEntity*, undefined4) override;                  // vtable+0xac
-	void VTable0xb0(GolModelEntity*, undefined4) override;                  // vtable+0xb0
-	void VTable0xb4(GolBillboard&) override;                                // vtable+0xb4
-	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override; // vtable+0xb8
-	void ClearAlphaOverride() override;                                     // vtable+0xbc
-	void VTable0xc0(const ColorRGBA&) override;                             // vtable+0xc0
-	void VTable0xc4() override;                                             // vtable+0xc4
-	void VTable0xc8() override;                                             // vtable+0xc8
-	void VTable0xcc() override;                                             // vtable+0xcc
-	void VTable0xd0() override;                                             // vtable+0xd0
-	void VTable0xd4() override;                                             // vtable+0xd4
-	void VTable0xd8() override;                                             // vtable+0xd8
-	void VTable0xdc() override;                                             // vtable+0xdc
-	void VTable0xe0() override;                                             // vtable+0xe0
-	void VTable0xe4() override;                                             // vtable+0xe4
-	void VTable0xe8(LegoBool32 p_arg) override;                             // vtable+0xe8
-	void VTable0xec(undefined4) override;                                   // vtable+0xec
-	void VTable0xf0() override;                                             // vtable+0xf0
-	void VTable0xf4() override;                                             // vtable+0xf4
-	LegoU32 GetMinimumTextureWidth(undefined4) const override;              // vtable+0xf8
-	LegoU32 GetMaximumTextureWidth(undefined4) const override;              // vtable+0xfc
-	LegoU32 GetMinimumTextureHeight(undefined4) const override;             // vtable+0x100
-	LegoU32 GetMaximumTextureHeight(undefined4) const override;             // vtable+0x104
-	LegoBool32 TexturesMustBeSquare() const override;                       // vtable+0x108
-	LegoBool32 TextureSizesMustBePowersOfTwo() const override;              // vtable+0x10c
-	LegoBool32 VTable0x110() const override;                                // vtable+0x110
+	) override;                                                                // vtable+0x84
+	void VTable0x88(GolModelEntity*, GolD3DRenderState*, undefined4) override; // vtable+0x88
+	void VTable0x8c(GolModelEntity*, GolD3DRenderState*, undefined4) override; // vtable+0x8c
+	void VTable0x90(GolWorldEntity*) override;                                 // vtable+0x90
+	void VTable0x94(GolWorldEntity*) override;                                 // vtable+0x94
+	void VTable0x98(GolModelEntity*, GolD3DRenderState*, undefined4) override; // vtable+0x98
+	void VTable0x9c(GolModelEntity*, GolD3DRenderState*, undefined4) override; // vtable+0x9c
+	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;           // vtable+0xa8
+	void VTable0xac(GolModelEntity*, undefined4) override;                     // vtable+0xac
+	void VTable0xb0(GolModelEntity*, undefined4) override;                     // vtable+0xb0
+	void VTable0xb4(GolBillboard&) override;                                   // vtable+0xb4
+	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override;    // vtable+0xb8
+	void ClearAlphaOverride() override;                                        // vtable+0xbc
+	void VTable0xc0(const ColorRGBA&) override;                                // vtable+0xc0
+	void VTable0xc4() override;                                                // vtable+0xc4
+	void VTable0xc8() override;                                                // vtable+0xc8
+	void VTable0xcc() override;                                                // vtable+0xcc
+	void VTable0xd0() override;                                                // vtable+0xd0
+	void VTable0xd4() override;                                                // vtable+0xd4
+	void VTable0xd8() override;                                                // vtable+0xd8
+	void VTable0xdc() override;                                                // vtable+0xdc
+	void VTable0xe0() override;                                                // vtable+0xe0
+	void VTable0xe4() override;                                                // vtable+0xe4
+	void VTable0xe8(LegoBool32 p_arg) override;                                // vtable+0xe8
+	void VTable0xec(undefined4) override;                                      // vtable+0xec
+	void VTable0xf0() override;                                                // vtable+0xf0
+	void VTable0xf4() override;                                                // vtable+0xf4
+	LegoU32 GetMinimumTextureWidth(undefined4) const override;                 // vtable+0xf8
+	LegoU32 GetMaximumTextureWidth(undefined4) const override;                 // vtable+0xfc
+	LegoU32 GetMinimumTextureHeight(undefined4) const override;                // vtable+0x100
+	LegoU32 GetMaximumTextureHeight(undefined4) const override;                // vtable+0x104
+	LegoBool32 TexturesMustBeSquare() const override;                          // vtable+0x108
+	LegoBool32 TextureSizesMustBePowersOfTwo() const override;                 // vtable+0x10c
+	LegoBool32 VTable0x110() const override;                                   // vtable+0x110
 
 	LegoS32 FUN_10007d90(GolDrawDPState*, GolRenderTarget*, LegoU32 p_flags);
 	LegoS32 FUN_10007e20(LegoU32 p_flags);
@@ -299,7 +297,7 @@ private:
 	GolTexture* m_currentTexture;                                                  // 0xc83a8
 	undefined4 m_unk0xc83ac;                                                       // 0xc83ac
 	undefined4 m_unk0xc83b0;                                                       // 0xc83b0
-	Field0xc83b4 m_unk0xc83b4;                                                     // 0xc83b4
+	RasterizerPipelineSet m_unk0xc83b4;                                            // 0xc83b4
 	undefined4 m_unk0xc83c4;                                                       // 0xc83c4
 	undefined4 m_unk0xc83c8;                                                       // 0xc83c8
 	undefined4 m_unk0xc83cc;                                                       // 0xc83cc
@@ -325,11 +323,11 @@ private:
 	GolMatrix4* m_unk0xc8518;                                                      // 0xc8518
 	undefined4 m_unk0xc851c;                                                       // 0xc851c
 	GolSceneNode* m_unk0xc8520;                                                    // 0xc8520
-	Field0xc8524* m_unk0xc8524;                                                    // 0xc8524
+	GolD3DRenderState* m_unk0xc8524;                                               // 0xc8524
 	undefined4 m_unk0xc8528;                                                       // 0xc8528
 	LegoFloat m_unk0xc852c;                                                        // 0xc852c
-	Field0xc8524::DrawCommand m_unk0xc8530;                                        // 0xc8530
-	Field0xc854c m_unk0xc854c;                                                     // 0xc854c
+	GolD3DRenderState::DrawCommand m_unk0xc8530;                                   // 0xc8530
+	GolD3DRenderState::MaterialCommand m_unk0xc854c;                               // 0xc854c
 	LegoBool32 m_unk0xc8568;                                                       // 0xc8568
 	ColorRGBA m_unk0xc856c;                                                        // 0xc856c
 	undefined4 m_unk0xc8570;                                                       // 0xc8570
@@ -341,7 +339,7 @@ private:
 	GolVec3 m_unk0xc85f0[7];                                                       // 0xc85f0
 	GolVec3 m_unk0xc8644[7];                                                       // 0xc8644
 	GolSoftwareRenderer m_softwareRenderer;                                        // 0xc8698
-	GolSoftwareRenderer::Command0x14* m_unk0xc86f0;                                // 0xc86f0
+	GolSoftwareRenderer::TriangleCommand* m_unk0xc86f0;                            // 0xc86f0
 	LegoS32 m_unk0xc86f4;                                                          // 0xc86f4
 	LegoS32 m_unk0xc86f8;                                                          // 0xc86f8
 	LegoFloat m_unk0xc86fc;                                                        // 0xc86fc

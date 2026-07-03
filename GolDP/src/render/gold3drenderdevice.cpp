@@ -29,10 +29,10 @@
 
 DECOMP_SIZE_ASSERT(GolD3DRenderDevice, 0xc8770)
 DECOMP_SIZE_ASSERT(GolD3DRenderDevice::TextureFormat, 0x18)
-DECOMP_SIZE_ASSERT(GolD3DRenderDevice::Field0xc83b4, 0x10)
+DECOMP_SIZE_ASSERT(GolD3DRenderDevice::RasterizerPipelineSet, 0x10)
 DECOMP_SIZE_ASSERT(GolD3DRenderDevice::VertexCacheEntry, 0x20)
 DECOMP_SIZE_ASSERT(GolD3DRenderDevice::CommandVertex, 0x20)
-DECOMP_SIZE_ASSERT(GolD3DRenderDevice::Field0xc8524::DrawCommand, 0x1c)
+DECOMP_SIZE_ASSERT(GolD3DRenderState::DrawCommand, 0x1c)
 DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
 DECOMP_SIZE_ASSERT(D3DTLVERTEX, 0x20)
 DECOMP_SIZE_ASSERT(Rect, 0x10)
@@ -1085,7 +1085,7 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 }
 
 // FUNCTION: GOLDP 0x10008dd0
-void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, Field0xc8524* p_renderState, undefined4 p_lodIndex)
+void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* p_renderState, undefined4 p_lodIndex)
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
@@ -1204,7 +1204,7 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 }
 
 // FUNCTION: GOLDP 0x100090b0
-void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, Field0xc8524* p_renderState, undefined4 p_lodIndex)
+void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* p_renderState, undefined4 p_lodIndex)
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
@@ -1279,14 +1279,14 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, Field0xc8524* p_ren
 }
 
 // FUNCTION: GOLDP 0x10009240
-void GolD3DRenderDevice::VTable0x9c(GolModelEntity* p_arg1, Field0xc8524* p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::VTable0x9c(GolModelEntity* p_arg1, GolD3DRenderState* p_arg2, undefined4 p_arg3)
 {
 	m_unk0xc8528 = TRUE;
 	VTable0x8c(p_arg1, p_arg2, p_arg3);
 }
 
 // FUNCTION: GOLDP 0x10009270
-void GolD3DRenderDevice::VTable0x98(GolModelEntity* p_arg1, Field0xc8524* p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::VTable0x98(GolModelEntity* p_arg1, GolD3DRenderState* p_arg2, undefined4 p_arg3)
 {
 	m_unk0xc8528 = TRUE;
 	VTable0x88(p_arg1, p_arg2, p_arg3);
@@ -1886,7 +1886,7 @@ void GolD3DRenderDevice::DrawTriangle(
 		LegoS32 commandIndex = m_unk0xc86f4;
 		LegoS32 nextCommandIndex = commandIndex + 1;
 		if (nextCommandIndex < m_unk0xc86f8) {
-			GolSoftwareRenderer::Command0x14* cmd = m_unk0xc86f0 + commandIndex;
+			GolSoftwareRenderer::TriangleCommand* cmd = m_unk0xc86f0 + commandIndex;
 			m_unk0xc86f4 = nextCommandIndex;
 			cmd->m_vertexIndex0 = m_unk0xc3848++;
 			cmd->m_vertexIndex1 = m_unk0xc3848++;
@@ -1930,11 +1930,11 @@ void GolD3DRenderDevice::FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count)
 			LegoS32 commandIndex = m_unk0xc86f4;
 			LegoS32 nextCommandIndex = commandIndex + triangleCount;
 			if (nextCommandIndex < m_unk0xc86f8) {
-				GolSoftwareRenderer::Command0x14* cmd = m_unk0xc86f0 + commandIndex;
+				GolSoftwareRenderer::TriangleCommand* cmd = m_unk0xc86f0 + commandIndex;
 				m_unk0xc86f4 = nextCommandIndex;
 
 				LegoS32 winding = 1;
-				GolSoftwareRenderer::Command0x14* command = cmd;
+				GolSoftwareRenderer::TriangleCommand* command = cmd;
 				for (LegoS32 i = 0; i < triangleCount;) {
 					i++;
 					command->m_vertexIndex0 = static_cast<LegoU16>(m_unk0xc3848 + i + winding);
@@ -2426,7 +2426,7 @@ void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
 // FUNCTION: GOLDP 0x1000acf0
 void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 {
-	Field0xc8524* useMatrix = m_unk0xc8524;
+	GolD3DRenderState* useMatrix = m_unk0xc8524;
 	GolTransform** orbits = &static_cast<GolSceneTransformNode*>(m_unk0xc8520)->m_unk0x18;
 	GolMatrix4* matrix;
 	if (useMatrix != NULL) {
@@ -4350,8 +4350,8 @@ void GolD3DRenderDevice::FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangl
 	LegoU8* triangle = m_unk0xc4c18 + (p_firstTriangle * 4);
 	LegoU8* triangleEnd = m_unk0xc4c18 + ((p_firstTriangle + p_triangleCount) * 4);
 	p_triangleCount = 0;
-	GolSoftwareRenderer::Command0x14* command = m_unk0xc86f0 + commandIndex;
-	GolSoftwareRenderer::Command0x14* commandStart = command;
+	GolSoftwareRenderer::TriangleCommand* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::TriangleCommand* commandStart = command;
 	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
 	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
 
@@ -4411,8 +4411,8 @@ void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangl
 	LegoU8* triangle = m_unk0xc4c18 + (p_firstTriangle * 4);
 	LegoU8* triangleEnd = m_unk0xc4c18 + ((p_firstTriangle + p_triangleCount) * 4);
 	p_triangleCount = 0;
-	GolSoftwareRenderer::Command0x14* command = m_unk0xc86f0 + commandIndex;
-	GolSoftwareRenderer::Command0x14* commandStart = command;
+	GolSoftwareRenderer::TriangleCommand* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::TriangleCommand* commandStart = command;
 	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
 	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
 
@@ -4471,8 +4471,8 @@ void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_t
 	LegoFloat farClip = m_unk0x0c->m_farClip;
 	LegoU8* triangle = m_unk0xc4c18 + (firstTriangle * 4);
 	LegoU8* triangleEnd = m_unk0xc4c18 + ((firstTriangle + triangleCount) * 4);
-	GolSoftwareRenderer::Command0x14* command = m_unk0xc86f0 + commandIndex;
-	GolSoftwareRenderer::Command0x14* commandStart = command;
+	GolSoftwareRenderer::TriangleCommand* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::TriangleCommand* commandStart = command;
 	LegoU32 emittedCount = 0;
 	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
 	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);

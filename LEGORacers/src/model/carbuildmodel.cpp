@@ -2464,7 +2464,7 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 		}
 
 		for (i = 0; i < activePieceCount; i++) {
-			PieceList::Entry0x1c* entry = &m_pieceList.m_entries[i];
+			PieceList::Entry* entry = &m_pieceList.m_entries[i];
 			LegoS32 x;
 			LegoS32 y;
 			LegoS32 height;
@@ -2853,7 +2853,7 @@ LegoS32 CarBuildModel::ComputeHighPieceCentroid(LegoFloat* p_unk0x04, LegoFloat*
 		LegoS32 entryIndex = 0;
 		LegoS32 remaining = entryCount;
 		do {
-			PieceList::Entry0x1c* entry = &m_pieceList.m_entries[entryIndex];
+			PieceList::Entry* entry = &m_pieceList.m_entries[entryIndex];
 			LegoPieceLibrary::PieceRecord* pieceRecord = entry->m_pieceRecord;
 			if (pieceRecord->m_pieceType >= g_highPieceTypeBase) {
 				LegoS32 x;
@@ -3033,7 +3033,7 @@ void CarBuildModel::PieceGrid::StampPiece(
 
 					if (oldHeight != p_height + cell->GetClampedLower() ||
 						(oldHeight == p_height + cell->GetClampedLower() && (cell->m_second & 0x40))) {
-						PieceList::Entry0x1c& oldEntry = m_pieceList->m_entries[m_entries[index].m_entryIndex];
+						PieceList::Entry& oldEntry = m_pieceList->m_entries[m_entries[index].m_entryIndex];
 						LegoS32 colorRecordIndex = oldEntry.m_colorRecordIndex;
 						LegoPieceLibrary::PieceRecord* oldRecord = oldEntry.m_pieceRecord;
 						LegoS32 delta = 0;
@@ -3327,7 +3327,7 @@ void CarBuildModel::PieceGrid::ForEachOccupiedCell(CellCallback p_callback)
 		for (LegoS32 y = 0; y < m_height; y++) {
 			LegoS32 index = m_height * x + y;
 			if (m_entries[index].m_occupied) {
-				PieceList::Entry0x1c& oldEntry = m_pieceList->m_entries[m_entries[index].m_entryIndex];
+				PieceList::Entry& oldEntry = m_pieceList->m_entries[m_entries[index].m_entryIndex];
 				LegoS32 colorRecordIndex = oldEntry.m_colorRecordIndex;
 				LegoPieceLibrary::PieceRecord* oldRecord = oldEntry.m_pieceRecord;
 				LegoS32 delta = 0;

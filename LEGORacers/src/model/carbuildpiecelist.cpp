@@ -1,15 +1,10 @@
 #include "model/carbuildmodel.h"
 
 DECOMP_SIZE_ASSERT(CarBuildModel::PieceList, 0x18)
-DECOMP_SIZE_ASSERT(CarBuildModel::PieceList::Entry0x1c, 0x1c)
+DECOMP_SIZE_ASSERT(CarBuildModel::PieceList::Entry, 0x1c)
 
 // FUNCTION: LEGORACERS 0x0049f6b0
-void CarBuildModel::PieceList::Entry0x1c::GetPlacement(
-	LegoS32* p_x,
-	LegoS32* p_y,
-	LegoS32* p_height,
-	LegoS32* p_rotation
-)
+void CarBuildModel::PieceList::Entry::GetPlacement(LegoS32* p_x, LegoS32* p_y, LegoS32* p_height, LegoS32* p_rotation)
 {
 	*p_x = m_x;
 	*p_y = m_y;
@@ -18,7 +13,7 @@ void CarBuildModel::PieceList::Entry0x1c::GetPlacement(
 }
 
 // FUNCTION: LEGORACERS 0x0049f6e0
-void CarBuildModel::PieceList::Entry0x1c::SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_rotation)
+void CarBuildModel::PieceList::Entry::SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_rotation)
 {
 	m_x = p_x;
 	m_y = p_y;
@@ -50,7 +45,7 @@ LegoS32 CarBuildModel::PieceList::AddEntry(
 LegoBool32 CarBuildModel::PieceList::RemoveEntry(LegoS32 p_index)
 {
 	if (p_index < m_entryCount && p_index >= 0) {
-		Entry0x1c saved = m_entries[p_index];
+		Entry saved = m_entries[p_index];
 		LegoS32 i;
 
 		m_entryCount--;
@@ -105,7 +100,7 @@ void CarBuildModel::PieceList::Clear()
 LegoBool32 CarBuildModel::PieceList::Initialize(LegoS32 p_capacity)
 {
 	Clear();
-	m_entries = new Entry0x1c[p_capacity];
+	m_entries = new Entry[p_capacity];
 	if (m_entries != NULL) {
 		m_capacity = p_capacity;
 		return TRUE;

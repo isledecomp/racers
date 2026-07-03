@@ -5,7 +5,7 @@
 
 // FUNCTION: LEGORACERS 0x004a00b0 FOLDED
 // FUNCTION: GOLDP 0x10025de0 FOLDED
-GolBillboard::Field0x2c::Field0x2c()
+GolBillboard::ManagedMaterialTable::ManagedMaterialTable()
 {
 	m_renderer = NULL;
 	m_count = 0;
@@ -14,14 +14,14 @@ GolBillboard::Field0x2c::Field0x2c()
 
 // FUNCTION: LEGORACERS 0x004105c0 FOLDED
 // FUNCTION: GOLDP 0x100260d0 FOLDED
-GolBillboard::Field0x2c::~Field0x2c()
+GolBillboard::ManagedMaterialTable::~ManagedMaterialTable()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x004105d0 FOLDED
 // FUNCTION: GOLDP 0x10025df0 FOLDED
-void GolBillboard::Field0x2c::Initialize(GolRenderDevice* p_renderer, LegoU32 p_count)
+void GolBillboard::ManagedMaterialTable::Initialize(GolRenderDevice* p_renderer, LegoU32 p_count)
 {
 	if (m_renderer != NULL) {
 		Clear();
@@ -39,7 +39,7 @@ void GolBillboard::Field0x2c::Initialize(GolRenderDevice* p_renderer, LegoU32 p_
 
 // FUNCTION: LEGORACERS 0x00410630 FOLDED
 // FUNCTION: GOLDP 0x100260d0 FOLDED
-void GolBillboard::Field0x2c::Clear()
+void GolBillboard::ManagedMaterialTable::Clear()
 {
 	if (m_entries != NULL) {
 		delete[] m_entries;

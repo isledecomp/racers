@@ -68,7 +68,7 @@ public:
 	// SIZE 0x18
 	struct PieceList {
 		// SIZE 0x1c
-		struct Entry0x1c {
+		struct Entry {
 			void GetPlacement(LegoS32* p_x, LegoS32* p_y, LegoS32* p_height, LegoS32* p_rotation);
 			void SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_rotation);
 
@@ -106,7 +106,7 @@ public:
 		LegoS32 m_variant;      // 0x00
 		LegoS32 m_capacity;     // 0x04
 		LegoS32 m_entryCount;   // 0x08
-		Entry0x1c* m_entries;   // 0x0c
+		Entry* m_entries;       // 0x0c
 		PieceGrid* m_pieceGrid; // 0x10
 		LegoU8* m_cursor;       // 0x14
 	};

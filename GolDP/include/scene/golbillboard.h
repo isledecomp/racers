@@ -30,9 +30,9 @@ public:
 #endif
 
 	// SIZE 0x0c
-	struct Field0x2c : public MaterialTable {
-		Field0x2c();
-		~Field0x2c();
+	struct ManagedMaterialTable : public MaterialTable {
+		ManagedMaterialTable();
+		~ManagedMaterialTable();
 
 		void Initialize(GolRenderDevice* p_renderer, LegoU32 p_count);
 		void Clear();

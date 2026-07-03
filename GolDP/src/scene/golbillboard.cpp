@@ -7,7 +7,7 @@
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(GolBillboard, 0x4c)
-DECOMP_SIZE_ASSERT(GolBillboard::Field0x2c, 0x0c)
+DECOMP_SIZE_ASSERT(GolBillboard::ManagedMaterialTable, 0x0c)
 
 // GLOBAL: GOLDP 0x100574fc
 float g_pontoonMaxFloat = FLT_MAX;

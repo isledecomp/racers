@@ -36,7 +36,7 @@ public:
 	void Initialize(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void LoadColors(const LegoChar* p_filename, undefined4 p_binary);
 	void LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c);
-	GolBillboard::Field0x2c* GetMaterialTable();
+	GolBillboard::ManagedMaterialTable* GetMaterialTable();
 	GolWorldDatabase* GetWorldDatabase() const { return m_wdf; }
 	void ResetMaterialUsage();
 	void MarkMaterialUsed(LegoS32 p_materialIndex);
@@ -56,18 +56,18 @@ private:
 	LegoS32 Reset();
 	void RebuildColorMaterialLookup();
 
-	GolExport* m_golExport;                  // 0x00
-	GolD3DRenderDevice* m_renderer;          // 0x04
-	GolWorldDatabase* m_wdf;                 // 0x08
-	GolMaterialLibrary* m_materials;         // 0x0c
-	GolBillboard::Field0x2c m_materialTable; // 0x10
-	LegoS32 m_colorRecordCount;              // 0x1c
-	ColorRecord* m_colorRecords;             // 0x20
-	LegoS32* m_colorMaterialIndices;         // 0x24
-	MaterialUsage* m_materialUsage;          // 0x28
-	LegoS32 m_materialCount;                 // 0x2c
-	LegoS32 m_usedMaterialCount;             // 0x30
-	LegoS32 m_transparentMaterialCount;      // 0x34
+	GolExport* m_golExport;                             // 0x00
+	GolD3DRenderDevice* m_renderer;                     // 0x04
+	GolWorldDatabase* m_wdf;                            // 0x08
+	GolMaterialLibrary* m_materials;                    // 0x0c
+	GolBillboard::ManagedMaterialTable m_materialTable; // 0x10
+	LegoS32 m_colorRecordCount;                         // 0x1c
+	ColorRecord* m_colorRecords;                        // 0x20
+	LegoS32* m_colorMaterialIndices;                    // 0x24
+	MaterialUsage* m_materialUsage;                     // 0x28
+	LegoS32 m_materialCount;                            // 0x2c
+	LegoS32 m_usedMaterialCount;                        // 0x30
+	LegoS32 m_transparentMaterialCount;                 // 0x34
 };
 
 #endif // LEGOCOLORTABLE_H

@@ -29,14 +29,14 @@ public:
 	};
 
 	// SIZE 0x14
-	struct Command0x14 {
+	struct TriangleCommand {
 		// SIZE 0x04
 		union SortKey {
 			LegoFloat m_value; // 0x00
 			LegoU8 m_bytes[4]; // 0x00
 		};
 
-		Command0x14* m_next;              // 0x00
+		TriangleCommand* m_next;          // 0x00
 		SortKey m_sortKey;                // 0x04
 		LegoU16 m_vertexIndex0;           // 0x08
 		LegoU16 m_vertexIndex1;           // 0x0a
@@ -80,12 +80,12 @@ public:
 
 	void SetUnk0x4c(D3DTLVERTEX* p_arg) { m_unk0x4c = p_arg; }
 	void SetUnk0x50(undefined4 p_unk0x50) { m_unk0x50 = p_unk0x50; }
-	Command0x14* GetCommands() { return m_nodes; }
+	TriangleCommand* GetCommands() { return m_nodes; }
 	LegoS32 GetNodeCapacity() const { return m_nodeCapacity; }
 
 	void FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial* p_material, LegoU32 p_index);
-	void FUN_100417a0(Command0x14* p_cmds, LegoU32 p_count, LegoFloat);
-	void FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count);
+	void FUN_100417a0(TriangleCommand* p_cmds, LegoU32 p_count, LegoFloat);
+	void FUN_100417c0(TriangleCommand* p_cmds, LegoU32 p_count);
 	void FUN_10041830(LegoS32 p_count, LegoBool p_sort);
 	void FUN_10041a20(LegoBool p_sort);
 
@@ -126,11 +126,11 @@ private:
 	LegoFloat m_unk0x38;                                    // 0x38
 	LegoFloat m_unk0x3c;                                    // 0x3c
 	LegoS32 m_nodeCapacity;                                 // 0x40
-	Command0x14* m_nodes;                                   // 0x44
+	TriangleCommand* m_nodes;                               // 0x44
 	LegoS32 m_commandCount;                                 // 0x48
 	D3DTLVERTEX* m_unk0x4c;                                 // 0x4c
 	undefined4 m_unk0x50;                                   // 0x50
-	Command0x14* m_commandHead;                             // 0x54
+	TriangleCommand* m_commandHead;                         // 0x54
 };
 
 // FUNCTION: GOLDP 0x1003ba20

@@ -9,7 +9,7 @@
 DECOMP_SIZE_ASSERT(GolBoundingVolume::HitTriangle, 0x34)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonId0x08, 0x08)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonRange0x14, 0x14)
-DECOMP_SIZE_ASSERT(GolBoundingVolume::TraversalEntry0x0c, 0x0c)
+DECOMP_SIZE_ASSERT(GolBoundingVolume::TraversalEntry, 0x0c)
 DECOMP_SIZE_ASSERT(GolBoundingVolume, 0x64)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::BvbTxtParser, 0x1fc)
 
@@ -107,7 +107,7 @@ void GolBoundingVolume::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* 
 	}
 	if (m_unk0x04 != 0) {
 		m_unk0x28 = FUN_1001be50();
-		m_unk0x2c = new TraversalEntry0x0c[m_unk0x28];
+		m_unk0x2c = new TraversalEntry[m_unk0x28];
 		if (m_unk0x2c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -338,7 +338,7 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 	m_unk0x5c = p_hitRecord;
 	m_unk0x60 = p_amountOut;
 
-	TraversalEntry0x0c* stack = m_unk0x2c;
+	TraversalEntry* stack = m_unk0x2c;
 	stack->m_unk0x0a = 0;
 	stack->m_unk0x08 = 0;
 

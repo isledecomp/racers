@@ -125,9 +125,9 @@ public:
 		private:
 			friend class BrickDebris;
 
-			GolBillboard::Field0x2c m_materialTable; // 0x00
-			GolAnimatedEntity* m_entity;             // 0x0c
-			LegoS32 m_state;                         // 0x10
+			GolBillboard::ManagedMaterialTable m_materialTable; // 0x00
+			GolAnimatedEntity* m_entity;                        // 0x0c
+			LegoS32 m_state;                                    // 0x10
 		};
 
 		BrickDebris();
@@ -171,7 +171,7 @@ public:
 	void ResetEffects();
 	LegoU32 GetUsedEffectEntityCount() const { return m_usedEffectEntityCount; }
 	undefined4 GetUnk0x19a0() const { return m_unk0x19a0; }
-	GolBillboard::Field0x2c* GetBillboardMaterialTable() { return &m_billboardMaterialTable; }
+	GolBillboard::ManagedMaterialTable* GetBillboardMaterialTable() { return &m_billboardMaterialTable; }
 	MabMaterialFrame* GetMaterialAnimationItems() const { return m_materialAnimation.GetUnk0x04(); }
 	LegoU32 GetMaterialAnimationItemCount() const { return m_materialAnimation.GetUnk0x08(); }
 	MabMaterialTrack* GetMaterialAnimationItems0x18() const { return m_materialAnimation.GetUnk0x0c(); }
@@ -268,80 +268,80 @@ private:
 		c_randomBurstMax = 3,
 	};
 
-	GolExport* m_golExport;                           // 0x000
-	GolD3DRenderDevice* m_renderer;                   // 0x004
-	GolBillboard::Field0x2c m_billboardMaterialTable; // 0x008
-	MabMaterialAnimation m_materialAnimation;         // 0x014
-	ColorBrick* m_colorBricks;                        // 0x028
-	WhiteBrick* m_whiteBricks;                        // 0x02c
-	LegoEventQueue::Event** m_brickEvents;            // 0x030
-	LegoU32 m_colorBrickCount;                        // 0x034
-	LegoU32 m_whiteBrickCount;                        // 0x038
-	RacerSoundSource* m_soundSource;                  // 0x03c
-	CutsceneAnimation* m_cutsceneAnimation;           // 0x040
-	RaceTrailManager* m_trailManager;                 // 0x044
-	void* m_unk0x048;                                 // 0x048
-	MenuAnimationList* m_animationList;               // 0x04c
-	TargetPointList* m_targetPoints;                  // 0x050
-	LegoFloat m_cameraFov;                            // 0x054
-	undefined4 m_cheatFlags;                          // 0x058
-	GolWorldDatabase* m_worldDatabase;                // 0x05c
-	GolWorldDatabase* m_trackDatabase;                // 0x060
-	GolWorldDatabase* m_turbo3Database;               // 0x064
-	TriggerWorld* m_collisionWorld;                   // 0x068
-	GolCollidableEntity* m_collidable;                // 0x06c
-	GolBoundedEntity* m_boundedEntity;                // 0x070
-	RaceState* m_raceState;                           // 0x074
-	PowerupAction* m_freeMagnetActions;               // 0x078
-	PowerupAction* m_freeOilSlickActions;             // 0x07c
-	PowerupAction* m_freeDynamiteActions;             // 0x080
-	PowerupAction* m_freeCurseActions;                // 0x084
-	PowerupAction* m_freeCannonballActions;           // 0x088
-	PowerupAction* m_freeGrapplingHookActions;        // 0x08c
-	PowerupAction* m_freeLightningActions;            // 0x090
-	PowerupAction* m_freeHomingMissileActions;        // 0x094
-	PowerupAction* m_freeShieldActions;               // 0x098
-	PowerupAction* m_freeTurboActions;                // 0x09c
-	PowerupAction* m_freeWarpActions;                 // 0x0a0
-	GolAnimatedEntity m_effectEntities[25];           // 0x0a4
-	LegoU32 m_effectEntityUsedMask;                   // 0x1878
-	LegoU32 m_usedEffectEntityCount;                  // 0x187c
-	PowerupAction* m_activeActions;                   // 0x1880
-	LegoU8 m_actionPoolCounts[11];                    // 0x1884
-	undefined m_unk0x188f;                            // 0x188f
-	MagnetAction* m_magnetActions;                    // 0x1890
-	OilSlickAction* m_oilSlickActions;                // 0x1894
-	DynamiteAction* m_dynamiteActions;                // 0x1898
-	CurseAction* m_curseActions;                      // 0x189c
-	CannonballAction* m_cannonballActions;            // 0x18a0
-	GrapplingHookAction* m_grapplingHookActions;      // 0x18a4
-	LightningAction* m_lightningActions;              // 0x18a8
-	HomingMissileAction* m_homingMissileActions;      // 0x18ac
-	ShieldAction* m_shieldActions;                    // 0x18b0
-	TurboAction* m_turboActions;                      // 0x18b4
-	WarpAction* m_warpActions;                        // 0x18b8
-	BrickDebris m_brickDebris;                        // 0x18bc
-	PowerupExplosion* m_activeExplosions;             // 0x193c
-	PowerupExplosion* m_activeSpikeExplosions;        // 0x1940
-	PowerupExplosion* m_freeExplosions;               // 0x1944
-	PowerupExplosion* m_freeSpikeExplosions;          // 0x1948
-	LegoU8 m_explosionPoolCount;                      // 0x194c
-	LegoU8 m_spikeExplosionPoolCount;                 // 0x194d
-	undefined m_unk0x194e[0x1950 - 0x194e];           // 0x194e
-	PowerupExplosion* m_explosionPool;                // 0x1950
-	PowerupExplosion* m_spikeExplosionPool;           // 0x1954
-	SpatialSoundInstance* m_cannonballFlightSound;    // 0x1958
-	SpatialSoundInstance* m_missileFlightSound;       // 0x195c
-	SpatialSoundInstance* m_grappleFlightSound;       // 0x1960
-	SpatialSoundInstance* m_grappleAttachedSound;     // 0x1964
-	GolAnimatedEntity* m_brickModel;                  // 0x1968
-	GolAnimatedEntity* m_brickBlendModel;             // 0x196c
-	GolAnimatedEntity* m_whiteBrickModel;             // 0x1970
-	GolAnimatedEntity* m_whiteBrickBlendModel;        // 0x1974
-	GolMaterial* m_brickMaterials[8];                 // 0x1978
-	ActionTarget* m_aimTarget;                        // 0x1998
-	LegoFloat m_brickSpinAngle;                       // 0x199c
-	undefined4 m_unk0x19a0;                           // 0x19a0
+	GolExport* m_golExport;                                      // 0x000
+	GolD3DRenderDevice* m_renderer;                              // 0x004
+	GolBillboard::ManagedMaterialTable m_billboardMaterialTable; // 0x008
+	MabMaterialAnimation m_materialAnimation;                    // 0x014
+	ColorBrick* m_colorBricks;                                   // 0x028
+	WhiteBrick* m_whiteBricks;                                   // 0x02c
+	LegoEventQueue::Event** m_brickEvents;                       // 0x030
+	LegoU32 m_colorBrickCount;                                   // 0x034
+	LegoU32 m_whiteBrickCount;                                   // 0x038
+	RacerSoundSource* m_soundSource;                             // 0x03c
+	CutsceneAnimation* m_cutsceneAnimation;                      // 0x040
+	RaceTrailManager* m_trailManager;                            // 0x044
+	void* m_unk0x048;                                            // 0x048
+	MenuAnimationList* m_animationList;                          // 0x04c
+	TargetPointList* m_targetPoints;                             // 0x050
+	LegoFloat m_cameraFov;                                       // 0x054
+	undefined4 m_cheatFlags;                                     // 0x058
+	GolWorldDatabase* m_worldDatabase;                           // 0x05c
+	GolWorldDatabase* m_trackDatabase;                           // 0x060
+	GolWorldDatabase* m_turbo3Database;                          // 0x064
+	TriggerWorld* m_collisionWorld;                              // 0x068
+	GolCollidableEntity* m_collidable;                           // 0x06c
+	GolBoundedEntity* m_boundedEntity;                           // 0x070
+	RaceState* m_raceState;                                      // 0x074
+	PowerupAction* m_freeMagnetActions;                          // 0x078
+	PowerupAction* m_freeOilSlickActions;                        // 0x07c
+	PowerupAction* m_freeDynamiteActions;                        // 0x080
+	PowerupAction* m_freeCurseActions;                           // 0x084
+	PowerupAction* m_freeCannonballActions;                      // 0x088
+	PowerupAction* m_freeGrapplingHookActions;                   // 0x08c
+	PowerupAction* m_freeLightningActions;                       // 0x090
+	PowerupAction* m_freeHomingMissileActions;                   // 0x094
+	PowerupAction* m_freeShieldActions;                          // 0x098
+	PowerupAction* m_freeTurboActions;                           // 0x09c
+	PowerupAction* m_freeWarpActions;                            // 0x0a0
+	GolAnimatedEntity m_effectEntities[25];                      // 0x0a4
+	LegoU32 m_effectEntityUsedMask;                              // 0x1878
+	LegoU32 m_usedEffectEntityCount;                             // 0x187c
+	PowerupAction* m_activeActions;                              // 0x1880
+	LegoU8 m_actionPoolCounts[11];                               // 0x1884
+	undefined m_unk0x188f;                                       // 0x188f
+	MagnetAction* m_magnetActions;                               // 0x1890
+	OilSlickAction* m_oilSlickActions;                           // 0x1894
+	DynamiteAction* m_dynamiteActions;                           // 0x1898
+	CurseAction* m_curseActions;                                 // 0x189c
+	CannonballAction* m_cannonballActions;                       // 0x18a0
+	GrapplingHookAction* m_grapplingHookActions;                 // 0x18a4
+	LightningAction* m_lightningActions;                         // 0x18a8
+	HomingMissileAction* m_homingMissileActions;                 // 0x18ac
+	ShieldAction* m_shieldActions;                               // 0x18b0
+	TurboAction* m_turboActions;                                 // 0x18b4
+	WarpAction* m_warpActions;                                   // 0x18b8
+	BrickDebris m_brickDebris;                                   // 0x18bc
+	PowerupExplosion* m_activeExplosions;                        // 0x193c
+	PowerupExplosion* m_activeSpikeExplosions;                   // 0x1940
+	PowerupExplosion* m_freeExplosions;                          // 0x1944
+	PowerupExplosion* m_freeSpikeExplosions;                     // 0x1948
+	LegoU8 m_explosionPoolCount;                                 // 0x194c
+	LegoU8 m_spikeExplosionPoolCount;                            // 0x194d
+	undefined m_unk0x194e[0x1950 - 0x194e];                      // 0x194e
+	PowerupExplosion* m_explosionPool;                           // 0x1950
+	PowerupExplosion* m_spikeExplosionPool;                      // 0x1954
+	SpatialSoundInstance* m_cannonballFlightSound;               // 0x1958
+	SpatialSoundInstance* m_missileFlightSound;                  // 0x195c
+	SpatialSoundInstance* m_grappleFlightSound;                  // 0x1960
+	SpatialSoundInstance* m_grappleAttachedSound;                // 0x1964
+	GolAnimatedEntity* m_brickModel;                             // 0x1968
+	GolAnimatedEntity* m_brickBlendModel;                        // 0x196c
+	GolAnimatedEntity* m_whiteBrickModel;                        // 0x1970
+	GolAnimatedEntity* m_whiteBrickBlendModel;                   // 0x1974
+	GolMaterial* m_brickMaterials[8];                            // 0x1978
+	ActionTarget* m_aimTarget;                                   // 0x1998
+	LegoFloat m_brickSpinAngle;                                  // 0x199c
+	undefined4 m_unk0x19a0;                                      // 0x19a0
 };
 
 #endif // RACEPOWERUPMANAGER_H

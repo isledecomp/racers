@@ -119,7 +119,7 @@ set(COMMON_SOURCES
   common/src/cmbmodelpartdata.cpp
   common/src/mabmaterialanimation.cpp
   common/src/materialtable.cpp
-  common/src/golbillboardfield0x2c.cpp
+  common/src/golbillboardmaterialtable.cpp
   common/src/golworldentity.cpp
   common/src/golworldentitygroup.cpp
   common/src/golorientedentity.cpp

@@ -10,8 +10,8 @@
 
 DECOMP_SIZE_ASSERT(GolSoftwareRenderer, 0x58)
 DECOMP_SIZE_ASSERT(GolSoftwareRenderer::RasterizerPipeline, 0x10)
-DECOMP_SIZE_ASSERT(GolSoftwareRenderer::Command0x14, 0x14)
-DECOMP_SIZE_ASSERT(GolSoftwareRenderer::Command0x14::SortKey, 0x04)
+DECOMP_SIZE_ASSERT(GolSoftwareRenderer::TriangleCommand, 0x14)
+DECOMP_SIZE_ASSERT(GolSoftwareRenderer::TriangleCommand::SortKey, 0x04)
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void NoopSpanRasterizer()
@@ -22,14 +22,14 @@ void NoopSpanRasterizer()
 static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*);
 
 static LegoS32 __fastcall BucketCommandArrayBySortByte0(
-	GolSoftwareRenderer::Command0x14** p_buckets,
-	GolSoftwareRenderer::Command0x14* p_command,
+	GolSoftwareRenderer::TriangleCommand** p_buckets,
+	GolSoftwareRenderer::TriangleCommand* p_command,
 	LegoS32 p_count
 );
 
 static LegoU8 __fastcall BucketCommandsBySortByte0(
-	GolSoftwareRenderer::Command0x14** p_buckets,
-	GolSoftwareRenderer::Command0x14* p_command
+	GolSoftwareRenderer::TriangleCommand** p_buckets,
+	GolSoftwareRenderer::TriangleCommand* p_command
 );
 
 static LegoU8 GetSoftwareTextureSizeCode(const MipmapLevel* p_level)
@@ -58,12 +58,12 @@ static LegoU8 GetSoftwareTextureSizeCode(const MipmapLevel* p_level)
 
 // STUB: GOLDP 0x10041000
 static LegoU8 __fastcall BucketCommandsBySortByte3(
-	GolSoftwareRenderer::Command0x14** p_buckets,
-	GolSoftwareRenderer::Command0x14* p_command
+	GolSoftwareRenderer::TriangleCommand** p_buckets,
+	GolSoftwareRenderer::TriangleCommand* p_command
 )
 {
 	LegoU32 bucketIndex = 0;
-	GolSoftwareRenderer::Command0x14* command;
+	GolSoftwareRenderer::TriangleCommand* command;
 
 	for (; p_command != NULL; p_buckets[bucketIndex] = command) {
 		bucketIndex = p_command->m_sortKey.m_bytes[3];
@@ -77,12 +77,12 @@ static LegoU8 __fastcall BucketCommandsBySortByte3(
 
 // STUB: GOLDP 0x10041030
 static LegoU8 __fastcall BucketCommandsBySortByte2(
-	GolSoftwareRenderer::Command0x14** p_buckets,
-	GolSoftwareRenderer::Command0x14* p_command
+	GolSoftwareRenderer::TriangleCommand** p_buckets,
+	GolSoftwareRenderer::TriangleCommand* p_command
 )
 {
 	LegoU32 bucketIndex = 0;
-	GolSoftwareRenderer::Command0x14* command;
+	GolSoftwareRenderer::TriangleCommand* command;
 
 	for (; p_command != NULL; p_buckets[bucketIndex] = command) {
 		bucketIndex = p_command->m_sortKey.m_bytes[2];
@@ -96,12 +96,12 @@ static LegoU8 __fastcall BucketCommandsBySortByte2(
 
 // STUB: GOLDP 0x10041060
 static LegoU8 __fastcall BucketCommandsBySortByte1(
-	GolSoftwareRenderer::Command0x14** p_buckets,
-	GolSoftwareRenderer::Command0x14* p_command
+	GolSoftwareRenderer::TriangleCommand** p_buckets,
+	GolSoftwareRenderer::TriangleCommand* p_command
 )
 {
 	LegoU32 bucketIndex = 0;
-	GolSoftwareRenderer::Command0x14* command;
+	GolSoftwareRenderer::TriangleCommand* command;
 
 	for (; p_command != NULL; p_buckets[bucketIndex] = command) {
 		bucketIndex = p_command->m_sortKey.m_bytes[1];
@@ -115,12 +115,12 @@ static LegoU8 __fastcall BucketCommandsBySortByte1(
 
 // STUB: GOLDP 0x10041090
 static LegoU8 __fastcall BucketCommandsBySortByte0(
-	GolSoftwareRenderer::Command0x14** p_buckets,
-	GolSoftwareRenderer::Command0x14* p_command
+	GolSoftwareRenderer::TriangleCommand** p_buckets,
+	GolSoftwareRenderer::TriangleCommand* p_command
 )
 {
 	LegoU32 bucketIndex = 0;
-	GolSoftwareRenderer::Command0x14* command;
+	GolSoftwareRenderer::TriangleCommand* command;
 
 	for (; p_command != NULL; p_buckets[bucketIndex] = command) {
 		bucketIndex = p_command->m_sortKey.m_bytes[0];
@@ -133,16 +133,16 @@ static LegoU8 __fastcall BucketCommandsBySortByte0(
 }
 
 // FUNCTION: GOLDP 0x100410c0
-static void SortCommandListBySortKey(GolSoftwareRenderer::Command0x14** p_head)
+static void SortCommandListBySortKey(GolSoftwareRenderer::TriangleCommand** p_head)
 {
-	GolSoftwareRenderer::Command0x14* buckets0[256];
-	GolSoftwareRenderer::Command0x14* buckets1[256];
+	GolSoftwareRenderer::TriangleCommand* buckets0[256];
+	GolSoftwareRenderer::TriangleCommand* buckets1[256];
 
 	::memset(buckets0, 0, sizeof(buckets0));
 	BucketCommandsBySortByte0(buckets0, *p_head);
 
 	::memset(buckets1, 0, sizeof(buckets1));
-	GolSoftwareRenderer::Command0x14** bucket = &buckets0[255];
+	GolSoftwareRenderer::TriangleCommand** bucket = &buckets0[255];
 	LegoS32 i = 256;
 	do {
 		BucketCommandsBySortByte1(buckets1, *bucket);
@@ -172,10 +172,10 @@ static void SortCommandListBySortKey(GolSoftwareRenderer::Command0x14** p_head)
 	bucket = buckets1;
 	i = 256;
 	do {
-		GolSoftwareRenderer::Command0x14* command = *bucket;
+		GolSoftwareRenderer::TriangleCommand* command = *bucket;
 		if (command != NULL) {
 			do {
-				GolSoftwareRenderer::Command0x14* next = command->m_next;
+				GolSoftwareRenderer::TriangleCommand* next = command->m_next;
 				command->m_next = *p_head;
 				*p_head = command;
 				command = next;
@@ -450,7 +450,7 @@ LegoBool GolSoftwareRenderer::Initialize(PixelFormat p_pixelFormat, LegoS32 p_no
 		p_nodeCapacity = 0xffff;
 	}
 
-	m_nodes = new Command0x14[p_nodeCapacity];
+	m_nodes = new TriangleCommand[p_nodeCapacity];
 	if (m_nodes == NULL) {
 		m_commandHead = NULL;
 		return FALSE;
@@ -471,7 +471,7 @@ GolSoftwareRenderer::~GolSoftwareRenderer()
 }
 
 // FUNCTION: GOLDP 0x100417a0
-void GolSoftwareRenderer::FUN_100417a0(Command0x14* p_cmds, LegoU32 p_count, LegoFloat p_arg3)
+void GolSoftwareRenderer::FUN_100417a0(TriangleCommand* p_cmds, LegoU32 p_count, LegoFloat p_arg3)
 {
 	while (p_count) {
 		p_cmds->m_sortKey.m_value = p_arg3;
@@ -481,7 +481,7 @@ void GolSoftwareRenderer::FUN_100417a0(Command0x14* p_cmds, LegoU32 p_count, Leg
 }
 
 // STUB: GOLDP 0x100417c0
-void GolSoftwareRenderer::FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count)
+void GolSoftwareRenderer::FUN_100417c0(TriangleCommand* p_cmds, LegoU32 p_count)
 {
 	while (p_count != 0) {
 		LegoFloat sortKey = m_unk0x4c[p_cmds->m_vertexIndex0].sz;
@@ -502,8 +502,8 @@ void GolSoftwareRenderer::FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count)
 // FUNCTION: GOLDP 0x10041830
 void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 {
-	Command0x14* buckets0[256];
-	Command0x14* buckets1[256];
+	TriangleCommand* buckets0[256];
+	TriangleCommand* buckets1[256];
 
 	if (p_count == 0) {
 		m_commandHead = NULL;
@@ -517,7 +517,7 @@ void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 		BucketCommandArrayBySortByte0(buckets0, m_nodes + p_count - 1, p_count);
 
 		::memset(buckets1, 0, sizeof(buckets1));
-		Command0x14** bucket = &buckets0[255];
+		TriangleCommand** bucket = &buckets0[255];
 		LegoS32 i = 256;
 		do {
 			BucketCommandsBySortByte1(buckets1, *bucket);
@@ -543,14 +543,14 @@ void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 			i--;
 		} while (i != 0);
 
-		Command0x14* head = NULL;
+		TriangleCommand* head = NULL;
 		bucket = buckets1;
 		i = 256;
 		do {
-			Command0x14* command = *bucket;
+			TriangleCommand* command = *bucket;
 			if (command != NULL) {
 				do {
-					Command0x14* next = command->m_next;
+					TriangleCommand* next = command->m_next;
 					command->m_next = head;
 					head = command;
 					command = next;
@@ -565,7 +565,7 @@ void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 
 	m_commandHead = m_nodes + p_count - 1;
 	if (p_count > 1) {
-		Command0x14* command = m_nodes + 1;
+		TriangleCommand* command = m_nodes + 1;
 		LegoS32 remaining = p_count - 1;
 		do {
 			command->m_next = command - 1;
@@ -578,8 +578,8 @@ void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 
 // STUB: GOLDP 0x10041980
 static LegoS32 __fastcall BucketCommandArrayBySortByte0(
-	GolSoftwareRenderer::Command0x14** p_buckets,
-	GolSoftwareRenderer::Command0x14* p_command,
+	GolSoftwareRenderer::TriangleCommand** p_buckets,
+	GolSoftwareRenderer::TriangleCommand* p_command,
 	LegoS32 p_count
 )
 {
@@ -588,7 +588,7 @@ static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 
 	do {
 		bucketIndex = p_command->m_sortKey.m_bytes[0];
-		GolSoftwareRenderer::Command0x14* command = p_command;
+		GolSoftwareRenderer::TriangleCommand* command = p_command;
 		p_command--;
 		result--;
 		command->m_next = p_buckets[bucketIndex];
@@ -601,7 +601,7 @@ static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 // STUB: GOLDP 0x100419b0
 void GolSoftwareRenderer::DrawCommandList()
 {
-	Command0x14* command = m_commandHead;
+	TriangleCommand* command = m_commandHead;
 
 	if (command != NULL) {
 		do {

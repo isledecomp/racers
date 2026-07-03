@@ -65,9 +65,9 @@ public:
 		void Open();
 		void BeginClose();
 		undefined4 GetResult() const;
-		void SetPopupIcon(MenuIcon* p_unk0x740) { m_popupIcon = p_unk0x740; }
-		void SetYesIcon(MenuIcon* p_unk0x744) { m_yesIcon = p_unk0x744; }
-		void SetNoIcon(MenuIcon* p_unk0x748) { m_noIcon = p_unk0x748; }
+		void SetPopupIcon(MenuIcon* p_popupIcon) { m_popupIcon = p_popupIcon; }
+		void SetYesIcon(MenuIcon* p_yesIcon) { m_yesIcon = p_yesIcon; }
+		void SetNoIcon(MenuIcon* p_noIcon) { m_noIcon = p_noIcon; }
 
 	private:
 		void AttachPopupIcon();
@@ -111,7 +111,7 @@ public:
 		undefined4 p_defaultYes
 	);
 	void DismissTop();
-	void Update(LegoU32 p_unk0x04);
+	void Update(LegoU32 p_elapsedMs);
 	void DrawCursors();
 	LegoBool32 Initialize(
 		MenuScreenCreateParams* p_createParams,

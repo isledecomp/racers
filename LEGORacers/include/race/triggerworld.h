@@ -16,10 +16,10 @@ class TriggerWorld {
 public:
 	TriggerWorld();
 	GolWorldDatabase* Initialize(
-		GolWorldDatabase* p_unk0x04,
+		GolWorldDatabase* p_triggerDatabase,
 		LegoChar* p_worldName,
-		RaceEventTable* p_unk0x0c,
-		GolNameTable* p_unk0x10
+		RaceEventTable* p_eventTable,
+		GolNameTable* p_recordNames
 	);
 	LegoBool32 IntersectSegment(
 		GolVec3* p_start,

@@ -860,7 +860,7 @@ void GolFontBase::DrawString(
 	LegoFloat p_scaleX,
 	LegoFloat p_scaleY,
 	Rect* p_rect,
-	undefined4 p_unk0x20
+	undefined4 p_centered
 )
 {
 	GolFontBase* font = this;
@@ -902,7 +902,7 @@ void GolFontBase::DrawString(
 				c = *cursor;
 			}
 
-			p_x = font->DrawGlyphRun(count, p_renderer, p_x, p_y, p_scaleX, p_scaleY, p_rect, p_unk0x20);
+			p_x = font->DrawGlyphRun(count, p_renderer, p_x, p_y, p_scaleX, p_scaleY, p_rect, p_centered);
 
 			if (!*cursor) {
 				return;
@@ -920,7 +920,7 @@ void GolFontBase::DrawString(
 	LegoFloat p_scaleX,
 	LegoFloat p_scaleY,
 	Rect* p_rect,
-	undefined4 p_unk0x20
+	undefined4 p_centered
 )
 {
 	GolFontBase* font = this;
@@ -969,7 +969,7 @@ void GolFontBase::DrawString(
 				g_glyphIndexBuffer[i] = static_cast<LegoU8>(mid);
 			}
 
-			p_x = font->DrawGlyphRun(count, p_renderer, p_x, p_y, p_scaleX, p_scaleY, p_rect, p_unk0x20);
+			p_x = font->DrawGlyphRun(count, p_renderer, p_x, p_y, p_scaleX, p_scaleY, p_rect, p_centered);
 			offset += count;
 		}
 	}
@@ -984,7 +984,7 @@ void GolFontBase::DrawStringFitted(
 	LegoFloat p_scaleX,
 	LegoFloat p_scaleY,
 	Rect* p_rect,
-	undefined4 p_unk0x20
+	undefined4 p_centered
 )
 {
 	if (p_string->SelectionLength()) {
@@ -999,7 +999,7 @@ void GolFontBase::DrawStringFitted(
 			p_scaleX / static_cast<LegoFloat>(width),
 			p_scaleY / static_cast<LegoFloat>(m_fontHeight),
 			p_rect,
-			p_unk0x20
+			p_centered
 		);
 	}
 }
@@ -1014,7 +1014,7 @@ LegoS32 GolFontBase::DrawGlyphRun(
 	LegoFloat p_scaleX,
 	LegoFloat p_scaleY,
 	Rect* p_rect,
-	undefined4 p_unk0x20
+	undefined4 p_centered
 )
 {
 	LegoS32 result = 0;

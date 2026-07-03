@@ -374,7 +374,7 @@ void RaceState::CreateRacer(
 	LegoRacers::Context::PlayerSetupSlot* p_slot,
 	RacerContext* p_context,
 	LegoU32 p_racerIndex,
-	undefined4 p_unk0x10
+	undefined4 p_splitScreen
 )
 {
 	Racer::SetupParams racerParams;
@@ -520,7 +520,7 @@ void RaceState::CreateRacer(
 			m_roster.m_placementSlots[p_racerIndex] = 1;
 		}
 	}
-	else if (p_unk0x10 && p_racerIndex == 0) {
+	else if (p_splitScreen && p_racerIndex == 0) {
 		m_roster.m_placementSlots[0] = 2;
 	}
 

@@ -1260,7 +1260,7 @@ void GolImgFile::ConvertImage(
 	LegoU32 p_pitch,
 	const GolSurfaceFormat& p_format,
 	GolPaletteBase* p_palette,
-	undefined4 p_unk0x20,
+	undefined4 p_flipVertical,
 	ColorRGBA* p_colorKey
 )
 {
@@ -1284,7 +1284,7 @@ void GolImgFile::ConvertImage(
 	}
 
 	LegoS32 pitch;
-	if (p_unk0x20 != 0) {
+	if (p_flipVertical != 0) {
 		pitch = p_pitch;
 		p_dst += (height - 1) * pitch;
 		pitch = -pitch;

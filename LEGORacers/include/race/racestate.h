@@ -143,7 +143,7 @@ private:
 		LegoRacers::Context::PlayerSetupSlot* p_slot,
 		RacerContext* p_context,
 		LegoU32 p_racerIndex,
-		undefined4 p_unk0x10
+		undefined4 p_splitScreen
 	);
 	void LoadStartPositions(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
 	void InitializeRacerVisuals(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);

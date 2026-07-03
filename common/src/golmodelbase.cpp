@@ -17,7 +17,7 @@ DECOMP_SIZE_ASSERT(GolModelBase::GdbTxtParser, 0x1fc)
 GolModelBase::GolModelBase()
 {
 	m_vertexArray = NULL;
-	m_unk0x14 = NULL;
+	m_ownedVertexArray = NULL;
 	m_indexArray = NULL;
 	m_unk0x1c = NULL;
 	m_countGroups = 0;
@@ -130,10 +130,10 @@ void GolModelBase::AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroup
 // FUNCTION: GOLDP 0x100273b0
 void GolModelBase::Destroy()
 {
-	if (m_unk0x14 != NULL) {
-		m_unk0x14->Destroy();
-		delete m_unk0x14;
-		m_unk0x14 = NULL;
+	if (m_ownedVertexArray != NULL) {
+		m_ownedVertexArray->Destroy();
+		delete m_ownedVertexArray;
+		m_ownedVertexArray = NULL;
 		m_vertexArray = NULL;
 	}
 	if (m_unk0x1c != NULL) {
@@ -321,17 +321,17 @@ void GolModelBase::AddFlags(LegoU32 p_arg1)
 // FUNCTION: GOLDP 0x10027830
 void GolModelBase::ParseVertices(GolFileParser& p_parser)
 {
-	if (m_unk0x14 != NULL) {
+	if (m_ownedVertexArray != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x14 = new GdbVertexArray;
-	m_vertexArray = m_unk0x14;
+	m_ownedVertexArray = new GdbVertexArray;
+	m_vertexArray = m_ownedVertexArray;
 	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x14->Parse(p_parser);
+	m_ownedVertexArray->Parse(p_parser);
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED

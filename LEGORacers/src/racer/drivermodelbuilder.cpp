@@ -451,7 +451,7 @@ GolModelBase* DriverModelBuilder::MergeModels(
 GolModelBase* DriverModelBuilder::BuildDriverModel(
 	DriverCosmetics* p_cosmetics,
 	GolModelBase* p_model,
-	undefined4 p_unk0x0c
+	undefined4 p_vertexType
 )
 {
 	DriverPartCatalog* partCatalog = m_partResources->GetPartCatalog();
@@ -463,7 +463,7 @@ GolModelBase* DriverModelBuilder::BuildDriverModel(
 	SummarizeModel(torsoLegModel, &m_bodySummary);
 	SummarizeModel(headModel, &m_headSummary);
 
-	return MergeModels(p_cosmetics, p_model, p_unk0x0c);
+	return MergeModels(p_cosmetics, p_model, p_vertexType);
 }
 
 // FUNCTION: LEGORACERS 0x0049dc10

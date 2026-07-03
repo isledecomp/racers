@@ -27,7 +27,7 @@ public:
 
 		void Reset();
 		void Destroy();
-		void FUN_004513d0(CarBuildModel* p_unk0x04);
+		void FUN_004513d0(CarBuildModel* p_buildModel);
 		void SetPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_partType);
 		void ClampToGrid();
 		void Rotate();
@@ -272,7 +272,7 @@ public:
 		LegoS32 p_height,
 		LegoS32 p_rotation,
 		LegoS32 p_colorRecordIndex,
-		LegoS32 p_unk0x20
+		LegoS32 p_partType
 	);
 	void CenterOnPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation);
 	void UpdateOffset(LegoBool32 p_restoreCachedOffset);

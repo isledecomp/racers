@@ -54,7 +54,7 @@ public:
 	undefined4 Load(const LoadParams* p_params);
 	LegoBool32 ReleaseMenuResources();
 	void RefreshMenuResources();
-	GolModelBase* BuildDriverModel(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_unk0x0c);
+	GolModelBase* BuildDriverModel(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_vertexType);
 	GolSceneNode* GetBodySceneNode(DriverCosmetics* p_cosmetics);
 	CmbModelPart* GetBodyModelPart(DriverCosmetics* p_cosmetics);
 	void GetMaxMergedCounts(undefined4* p_dest);

@@ -91,7 +91,7 @@ public:
 		LegoU32 p_pitch,
 		const GolSurfaceFormat& p_format,
 		GolPaletteBase* p_palette,
-		undefined4 p_unk0x20,
+		undefined4 p_flipVertical,
 		ColorRGBA* p_colorKey
 	);
 	void ConvertImageHalfSize(
@@ -101,7 +101,7 @@ public:
 		LegoU32 p_height,
 		LegoU32 p_pitch,
 		const GolSurfaceFormat& p_format,
-		undefined4 p_unk0x1c,
+		undefined4 p_flipVertical,
 		ColorRGBA* p_colorKey
 	);
 	void UpscaleRow(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledWidth, LegoU32 p_bitsPerPixel);

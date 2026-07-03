@@ -89,7 +89,7 @@ public:
 protected:
 	GolModelMaterialTable m_materialTable;
 	GdbVertexArray* m_vertexArray;
-	GdbVertexArray* m_unk0x14;
+	GdbVertexArray* m_ownedVertexArray;
 	GdbModelIndexArrayBase* m_indexArray;
 	undefined4* m_unk0x1c;
 	LegoU32 m_countGroups;

@@ -22,7 +22,7 @@ public:
 	public:
 		Entry();
 		~Entry();
-		void FUN_004513d0(CarBuildModel* p_unk0x04);
+		void FUN_004513d0(CarBuildModel* p_buildModel);
 		void SetIndex(LegoS32 p_index) { m_index = p_index; }
 		LegoS32 GetPieceType() const { return m_pieceType; }
 		LegoS32 GetIndex() const { return m_index; }
@@ -56,14 +56,14 @@ public:
 	void Load(
 		const LegoChar* p_filename,
 		LegoPieceLibrary* p_pieceLibrary,
-		LegoColorTable* p_unk0x0c,
+		LegoColorTable* p_colorTable,
 		undefined4 p_binary
 	);
 	Entry* FindEntry(LegoS32 p_index);
 	LegoS32 FindEntryIndex(LegoS32 p_index);
 	Entry* GetEntries() const { return m_entries; }
 	Entry* GetSelectedEntry() const { return m_selectedEntry; }
-	void SetSelectedEntry(Entry* p_unk0x10) { m_selectedEntry = p_unk0x10; }
+	void SetSelectedEntry(Entry* p_selectedEntry) { m_selectedEntry = p_selectedEntry; }
 
 private:
 	LegoColorTable* m_colorTable;     // 0x00

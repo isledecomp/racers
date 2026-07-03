@@ -360,7 +360,7 @@ void MenuSceneView::ApplySceneMaterials()
 			m_renderer->AddLight(&m_world->GetLight()[i]);
 		}
 
-		m_renderer->VTable0x60();
+		m_renderer->ApplyLights();
 	}
 }
 
@@ -371,7 +371,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	m_savedCamera = m_renderer->GetCurrentCamera();
 	m_renderer->SetCamera(m_camera);
 	m_renderer->ApplyCamera();
-	m_renderer->VTable0xec(m_viewportClearMode);
+	m_renderer->SelectViewport(m_viewportClearMode);
 	ApplySceneMaterials();
 
 	if (m_drawWorld || !m_elements) {
@@ -388,7 +388,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 
 	m_renderer->SetCamera(m_savedCamera);
 	m_renderer->ApplyCamera();
-	m_renderer->VTable0xec(6);
+	m_renderer->SelectViewport(6);
 	m_renderer->VTable0xe8(FALSE);
 
 	return NULL;

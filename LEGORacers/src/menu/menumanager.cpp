@@ -138,7 +138,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 		flag = TRUE;
 	}
 
-	m_renderer->VTable0x34(7, g_unk0x4beb78);
+	m_renderer->SetViewportRect(7, g_unk0x4beb78);
 
 	m_gameContext.m_menuStack.Allocate(10);
 	m_gameContext.m_menuStack.Push(m_gameContext.m_context->m_nextMenuId);
@@ -515,8 +515,8 @@ void MenuManager::Run()
 
 			menuAnimations = &m_gameContext.m_menuAnimations;
 			menuAnimations->Update(frameDeltaMs);
-			m_renderer->VTable0x54(TRUE);
-			m_renderer->VTable0xec(6);
+			m_renderer->BeginFrame(TRUE);
+			m_renderer->SelectViewport(6);
 			m_renderer->VTable0xe8(TRUE);
 
 			if (m_dialog.GetOpenCount() > 0) {
@@ -528,7 +528,7 @@ void MenuManager::Run()
 
 			menuAnimations->Draw(m_renderer);
 			m_renderer->VTable0xe4();
-			m_renderer->VTable0xf0();
+			m_renderer->EndFrame();
 
 			if (golApp->GetInputManager()->GetKeyboard()->GetButtonState(
 					InputDevice::MakeEvent(InputDevice::c_sourceKeyboard, 0xb7)

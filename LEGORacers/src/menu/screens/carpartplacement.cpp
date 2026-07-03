@@ -939,14 +939,14 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 	originalColor = material->GetColor();
 	if (m_focusedPane == 2) {
 		material->SetColor(highlightColor);
-		m_renderer->VTable0x60();
+		m_renderer->ApplyLights();
 	}
 
 	m_carGroup.Draw(*m_renderer);
 
 	if (m_focusedPane == 2) {
 		material->SetColor(originalColor);
-		m_renderer->VTable0x60();
+		m_renderer->ApplyLights();
 	}
 
 	if (m_previewDirty) {
@@ -963,7 +963,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 
 		if (m_focusedPane == 1) {
 			material->SetColor(highlightColor);
-			m_renderer->VTable0x60();
+			m_renderer->ApplyLights();
 		}
 
 		if (!(m_animFlags & (c_flagCommittingPart | c_flagResettingView))) {
@@ -1028,7 +1028,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 
 		if (m_focusedPane == 1) {
 			material->SetColor(originalColor);
-			m_renderer->VTable0x60();
+			m_renderer->ApplyLights();
 		}
 	}
 

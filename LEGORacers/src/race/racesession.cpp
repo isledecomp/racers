@@ -514,11 +514,11 @@ void RaceSession::AttachContext(LegoRacers::Context* p_context)
 	}
 
 	if (m_splitScreen) {
-		m_renderer->VTable0x34(3, &g_viewportRects[1]);
+		m_renderer->SetViewportRect(3, &g_viewportRects[1]);
 		m_lapCount = m_context->m_lapCount;
 	}
 	else {
-		m_renderer->VTable0x34(1, g_viewportRects);
+		m_renderer->SetViewportRect(1, g_viewportRects);
 		m_lapCount = 3;
 	}
 
@@ -2140,10 +2140,10 @@ void RaceSession::Draw()
 
 	LegoU32 viewportIndex = 1;
 	if (m_splitScreen) {
-		m_renderer->VTable0xec(viewportIndex);
+		m_renderer->SelectViewport(viewportIndex);
 	}
 	else {
-		m_renderer->VTable0xec(FALSE);
+		m_renderer->SelectViewport(FALSE);
 	}
 
 	if (m_raceState.m_playerRacers[0]->m_flags & Racer::c_flagGhost) {
@@ -2180,7 +2180,7 @@ void RaceSession::Draw()
 	while (viewportIndex < m_context->m_playerCount) {
 		m_renderer->SetCamera(m_cameras[viewportIndex]);
 		m_renderer->ApplyCamera();
-		m_renderer->VTable0xec(viewportIndex + 1);
+		m_renderer->SelectViewport(viewportIndex + 1);
 
 		if (m_raceState.m_playerRacers[viewportIndex]->m_flags & Racer::c_flagGhost) {
 			m_powerupManager.Draw(FALSE);
@@ -2217,7 +2217,7 @@ void RaceSession::Draw()
 	}
 
 	if (m_splitScreen) {
-		m_renderer->VTable0xec(FALSE);
+		m_renderer->SelectViewport(FALSE);
 	}
 
 	m_renderer->VTable0xe8(FALSE);
@@ -2353,10 +2353,10 @@ void RaceSession::DrawPauseDialog()
 void RaceSession::ClearViewport()
 {
 	if (m_clearMode) {
-		m_renderer->VTable0x54(2);
+		m_renderer->BeginFrame(2);
 	}
 	else {
-		m_renderer->VTable0x54(6);
+		m_renderer->BeginFrame(6);
 	}
 }
 
@@ -2430,18 +2430,18 @@ void RaceSession::DrawDemoText()
 // FUNCTION: LEGORACERS 0x00435ba0
 void RaceSession::DrawLoadProgress(LegoFloat p_progress)
 {
-	m_renderer->VTable0x54(FALSE);
-	m_renderer->VTable0xec(FALSE);
+	m_renderer->BeginFrame(FALSE);
+	m_renderer->SelectViewport(FALSE);
 	m_loadingScreen.SetProgress(p_progress);
 	m_loadingScreen.Draw();
-	m_renderer->VTable0xf0();
+	m_renderer->EndFrame();
 	m_golApp->PresentFrame();
 }
 
 // FUNCTION: LEGORACERS 0x00435bf0
 void RaceSession::FlushOverlays()
 {
-	m_renderer->VTable0xf0();
+	m_renderer->EndFrame();
 }
 
 // FUNCTION: LEGORACERS 0x00435c00

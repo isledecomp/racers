@@ -502,7 +502,7 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 
 	m_renderer->VTable0xe4();
 	PushCamera();
-	m_renderer->VTable0xec(m_viewportIndex);
+	m_renderer->SelectViewport(m_viewportIndex);
 
 	GolVec3 direction = m_renderer->GetCurrentLight(0)->m_direction;
 	m_light.SetDirection(direction);
@@ -516,13 +516,13 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 		if (item->m_entity.HasModel() & hasModelFlag) {
 			m_renderer->GetCurrentMaterialColor()->SetColor(item->m_primaryColor.m_color);
 			m_renderer->GetCurrentLight(0)->SetColor(item->m_secondaryColor.m_color);
-			m_renderer->VTable0x60();
+			m_renderer->ApplyLights();
 			m_renderer->DrawModelEntity(&item->m_entity);
 		}
 	}
 
 	PopCamera();
-	m_renderer->VTable0xec(6);
+	m_renderer->SelectViewport(6);
 	m_renderer->VTable0xe8(FALSE);
 
 	return NULL;

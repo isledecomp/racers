@@ -99,7 +99,7 @@ LegoBool32 MenuGameScreen::Destroy()
 	}
 
 	m_renderer->ClearLights();
-	m_renderer->VTable0x60();
+	m_renderer->ApplyLights();
 	return MenuScreen::Destroy();
 }
 
@@ -179,7 +179,7 @@ void MenuGameScreen::SetLighting(const ColorRGBA* p_materialColor, const ColorRG
 	m_renderer->ClearLights();
 	m_renderer->SetAmbient(&m_materialColor);
 	m_renderer->AddLight(&m_light);
-	m_renderer->VTable0x60();
+	m_renderer->ApplyLights();
 }
 
 // FUNCTION: LEGORACERS 0x0047ff50

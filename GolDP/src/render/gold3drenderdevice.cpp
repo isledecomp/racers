@@ -371,7 +371,7 @@ void GolD3DRenderDevice::Reset()
 	m_clearColor.m_grn = 0;
 	m_clearColor.m_blu = 0;
 	m_clearPixelValue = 0;
-	m_unk0x304 = NULL;
+	m_primaryRenderTarget = NULL;
 	m_renderTargetInfo = NULL;
 	m_unk0x30c = NULL;
 
@@ -485,7 +485,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007d90(GolDrawDPState* p_drawState, GolRenderT
 	}
 
 	m_drawState = p_drawState;
-	m_unk0x304 = p_parg2;
+	m_primaryRenderTarget = p_parg2;
 	m_renderTargetInfo = p_parg2;
 	m_currentCamera = NULL;
 	p_drawState->AddRenderer(this);
@@ -527,7 +527,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialHw;
 
 		if (m_flags & c_flagBit1 && !m_drawState->SupportsZBufferlessHsr()) {
-			LegoS32 r = m_depthBuffer.Create(m_drawState, m_unk0x304);
+			LegoS32 r = m_depthBuffer.Create(m_drawState, m_primaryRenderTarget);
 			if (r != 0) {
 				return r;
 			}
@@ -535,7 +535,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 
 		HRESULT hresult =
 			m_drawState->m_d3d3
-				->CreateDevice(m_drawState->m_deviceGuid, m_unk0x304->m_renderSurface, &m_d3dDevice, NULL);
+				->CreateDevice(m_drawState->m_deviceGuid, m_primaryRenderTarget->m_renderSurface, &m_d3dDevice, NULL);
 		if (hresult != D3D_OK) {
 			sprintf(errorMessage, "Unable to create Direct3D device\nerror %x", hresult);
 			GOL_FATALERROR_MESSAGE(errorMessage);
@@ -641,7 +641,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
 	m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
-	::memcpy(&swTextureFormat, &m_unk0x304->m_textureFormat, sizeof(swTextureFormat));
+	::memcpy(&swTextureFormat, &m_primaryRenderTarget->m_textureFormat, sizeof(swTextureFormat));
 
 	GolSoftwareRenderer::PixelFormat swPixelFormat;
 	if (swTextureFormat.m_bitsPerPixel == 8) {
@@ -690,8 +690,8 @@ void GolD3DRenderDevice::FUN_100082e0()
 	m_colorKeyEnabled = FALSE;
 	m_unk0xc83ec = 0;
 	m_unk0xc83e8 = FALSE;
-	if (m_flags & c_flagBit19) {
-		m_unk0xc83fc = ARGBU32(m_alpha, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
+	if (m_flags & c_flagColorOverride) {
+		m_unk0xc83fc = ARGBU32(m_alpha, m_colorOverride.m_red, m_colorOverride.m_grn, m_colorOverride.m_blu);
 	}
 	else {
 		m_unk0xc83f8 = FALSE;
@@ -1382,10 +1382,10 @@ void GolD3DRenderDevice::DrawCollidableEntity(GolWorldEntity* p_model)
 }
 
 // FUNCTION: GOLDP 0x10009420
-void GolD3DRenderDevice::VTable0x54(undefined4 p_flags)
+void GolD3DRenderDevice::BeginFrame(undefined4 p_flags)
 {
 	ApplyCamera();
-	VTable0x60();
+	ApplyLights();
 
 	m_unk0xc3848 = 0;
 
@@ -1429,7 +1429,7 @@ void GolD3DRenderDevice::VTable0x54(undefined4 p_flags)
 }
 
 // FUNCTION: GOLDP 0x10009540
-void GolD3DRenderDevice::VTable0xf0()
+void GolD3DRenderDevice::EndFrame()
 {
 	if (m_unk0xc83c4 == 0) {
 		HRESULT result = m_d3dDevice->EndScene();
@@ -1454,8 +1454,8 @@ void GolD3DRenderDevice::VTable0xf0()
 		}
 	}
 
-	if (m_renderTargetInfo != m_unk0x304) {
-		GolRenderTarget* renderTargetInfo = m_unk0x304;
+	if (m_renderTargetInfo != m_primaryRenderTarget) {
+		GolRenderTarget* renderTargetInfo = m_primaryRenderTarget;
 		m_renderTargetInfo = renderTargetInfo;
 
 		Rect rect;
@@ -2100,7 +2100,7 @@ void GolD3DRenderDevice::ApplyMaterialHw(GolMaterial* p_material)
 		m_unk0xc8578 = static_cast<LegoU32>(m_unk0xc856c.m_blu * c.m_blu) >> 8;
 		m_unk0xc857c = c.m_alp & 0xff;
 		c = p_material->GetDiffuse();
-		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+		for (LegoU32 i = 0; i < m_lightCount; i++) {
 			m_unk0xc859c[i].m_red =
 				static_cast<LegoFloat>(m_unk0xc8580[i].m_red) * static_cast<LegoFloat>(c.m_red & 0xff) / 256.0f;
 			m_unk0xc859c[i].m_grn =
@@ -2110,7 +2110,7 @@ void GolD3DRenderDevice::ApplyMaterialHw(GolMaterial* p_material)
 		}
 	}
 
-	if (m_flags & c_flagBit14) {
+	if (m_flags & c_flagAlphaOverride) {
 		newFlags &= ~(GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagNoTransparency);
 		newFlags |= GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagTransparent;
 	}
@@ -2193,8 +2193,9 @@ void GolD3DRenderDevice::ApplyMaterialHw(GolMaterial* p_material)
 		if (newFlags & GolMaterial::c_flagTextured) {
 			if (newFlags & GolMaterial::c_flagModulate) {
 				m_d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-				if (m_flags & c_flagBit19) {
-					m_unk0xc83fc = ARGBU32(m_alpha, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
+				if (m_flags & c_flagColorOverride) {
+					m_unk0xc83fc =
+						ARGBU32(m_alpha, m_colorOverride.m_red, m_colorOverride.m_grn, m_colorOverride.m_blu);
 				}
 				else {
 					m_unk0xc83f8 = FALSE;
@@ -2218,8 +2219,8 @@ void GolD3DRenderDevice::ApplyMaterialHw(GolMaterial* p_material)
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG2);
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
 			m_unk0xc83e8 = FALSE;
-			if (m_flags & c_flagBit19) {
-				m_unk0xc83fc = ARGBU32(m_alpha, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
+			if (m_flags & c_flagColorOverride) {
+				m_unk0xc83fc = ARGBU32(m_alpha, m_colorOverride.m_red, m_colorOverride.m_grn, m_colorOverride.m_blu);
 			}
 			else {
 				m_unk0xc83f8 = FALSE;
@@ -2345,14 +2346,14 @@ void GolD3DRenderDevice::ApplyMaterialSw(GolMaterial* p_material)
 		m_unk0xc857c = color.m_alp & 0xff;
 
 		color = p_material->GetDiffuse();
-		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+		for (LegoU32 i = 0; i < m_lightCount; i++) {
 			m_unk0xc859c[i].m_red = ScaleColorChannel(m_unk0xc8580[i].m_red, color.m_red & 0xff);
 			m_unk0xc859c[i].m_grn = ScaleColorChannel(m_unk0xc8580[i].m_grn, color.m_grn & 0xff);
 			m_unk0xc859c[i].m_blu = ScaleColorChannel(m_unk0xc8580[i].m_blu, color.m_blu & 0xff);
 		}
 	}
 
-	if (m_flags & c_flagBit14) {
+	if (m_flags & c_flagAlphaOverride) {
 		newFlags &= ~(GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagNoTransparency);
 		newFlags |= GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagTransparent;
 	}
@@ -2465,7 +2466,7 @@ void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 
 	if (m_unk0xc8568 != 0) {
 		GolMatrix4* lightMatrix = &(*orbits)[p_index].m_worldMatrix;
-		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+		for (LegoU32 i = 0; i < m_lightCount; i++) {
 			m_unk0xc8644[i].m_x = m_unk0xc85f0[i].m_x * lightMatrix->m_m[0][0];
 			m_unk0xc8644[i].m_y = m_unk0xc85f0[i].m_x * lightMatrix->m_m[1][0];
 			m_unk0xc8644[i].m_z = m_unk0xc85f0[i].m_x * lightMatrix->m_m[2][0];
@@ -2495,7 +2496,7 @@ void GolD3DRenderDevice::FUN_1000add0(GolWorldEntity* p_model, GolModel* p_model
 	GdbNormalVertexArray* vertexArray = static_cast<GdbNormalVertexArray*>(p_modelData->GetModelVertexArray());
 	m_unk0xc4c1c = vertexArray->GetNormals();
 
-	for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+	for (LegoU32 i = 0; i < m_lightCount; i++) {
 		m_unk0xc8644[i].m_x = m_unk0xc85f0[i].m_x * m_unk0xc8450.m_m[0][0];
 		m_unk0xc8644[i].m_y = m_unk0xc85f0[i].m_x * m_unk0xc8450.m_m[1][0];
 		m_unk0xc8644[i].m_z = m_unk0xc85f0[i].m_x * m_unk0xc8450.m_m[2][0];
@@ -2527,17 +2528,17 @@ void GolD3DRenderDevice::ClearAlphaOverride()
 }
 
 // FUNCTION: GOLDP 0x1000af20
-void GolD3DRenderDevice::VTable0xc0(const ColorRGBA& p_color)
+void GolD3DRenderDevice::SetColorOverride(const ColorRGBA& p_color)
 {
-	GolRenderDevice::VTable0xc0(p_color);
+	GolRenderDevice::SetColorOverride(p_color);
 	m_unk0xc83f8 = TRUE;
 	m_unk0xc83fc = ARGBU32(m_alpha, p_color.m_red, p_color.m_grn, p_color.m_blu);
 }
 
 // FUNCTION: GOLDP 0x1000af70
-void GolD3DRenderDevice::VTable0xc4()
+void GolD3DRenderDevice::ClearColorOverride()
 {
-	GolRenderDevice::VTable0xc4();
+	GolRenderDevice::ClearColorOverride();
 	m_unk0xc83f8 = FALSE;
 }
 
@@ -2583,15 +2584,15 @@ void GolD3DRenderDevice::SetAmbient(const MaterialColor* p_param)
 // FUNCTION: GOLDP 0x1000b0c0
 void GolD3DRenderDevice::AddLight(const Light* p_param)
 {
-	LegoU32 index = m_unk0x11c;
+	LegoU32 index = m_lightCount;
 	if (index < 7) {
-		FUN_1000b0f0(index, p_param);
+		SetLight(index, p_param);
 		GolRenderDevice::AddLight(p_param);
 	}
 }
 
 // FUNCTION: GOLDP 0x1000b0f0
-void GolD3DRenderDevice::FUN_1000b0f0(LegoU32 p_index, const Light* p_param)
+void GolD3DRenderDevice::SetLight(LegoU32 p_index, const Light* p_param)
 {
 	m_unk0xc8580[p_index] = p_param->m_color;
 	m_unk0xc85f0[p_index] = p_param->m_direction;
@@ -2612,21 +2613,21 @@ void GolD3DRenderDevice::FUN_1000b0f0(LegoU32 p_index, const Light* p_param)
 }
 
 // FUNCTION: GOLDP 0x1000b1f0
-void GolD3DRenderDevice::VTable0x60()
+void GolD3DRenderDevice::ApplyLights()
 {
-	if (m_flags & c_flagBit15) {
-		if (m_unk0x120 != NULL) {
-			SetAmbient(m_unk0x120);
+	if (m_flags & c_flagLightingEnabled) {
+		if (m_ambientColor != NULL) {
+			SetAmbient(m_ambientColor);
 		}
 
-		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
-			FUN_1000b0f0(i, m_unk0x124[i]);
+		for (LegoU32 i = 0; i < m_lightCount; i++) {
+			SetLight(i, m_lights[i]);
 		}
 	}
 }
 
 // FUNCTION: GOLDP 0x1000b240
-void GolD3DRenderDevice::VTable0xc8()
+void GolD3DRenderDevice::EnableWireframe()
 {
 	if (!m_unk0xc83c4) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_FILLMODE, D3DFILL_WIREFRAME);
@@ -2634,7 +2635,7 @@ void GolD3DRenderDevice::VTable0xc8()
 }
 
 // FUNCTION: GOLDP 0x1000b260
-void GolD3DRenderDevice::VTable0xcc()
+void GolD3DRenderDevice::DisableWireframe()
 {
 	if (!m_unk0xc83c4) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_FILLMODE, D3DFILL_SOLID);
@@ -2710,7 +2711,7 @@ void GolD3DRenderDevice::DestroyRenderTarget(GolRenderTarget* p_surface)
 // FUNCTION: GOLDP 0x1000b3d0
 void GolD3DRenderDevice::VTable0x58(GolRenderTarget* p_surface, undefined4 p_flags)
 {
-	m_renderTargetInfo = m_unk0x304;
+	m_renderTargetInfo = m_primaryRenderTarget;
 	GolD3DRenderSurface* surface = m_unk0x30c;
 	if (surface != NULL) {
 		GolD3DRenderSurface* target = static_cast<GolD3DRenderSurface*>(p_surface);
@@ -2729,18 +2730,18 @@ void GolD3DRenderDevice::VTable0x58(GolRenderTarget* p_surface, undefined4 p_fla
 
 				SetCamera(m_currentCamera);
 				m_currentCamera->SetViewport(&rect);
-				VTable0x54(p_flags);
+				BeginFrame(p_flags);
 				return;
 			}
 
 			surface = surface->m_next;
 		}
 
-		VTable0x54(p_flags);
+		BeginFrame(p_flags);
 		return;
 	}
 
-	VTable0x54(p_flags);
+	BeginFrame(p_flags);
 }
 
 // FUNCTION: GOLDP 0x100016f0 FOLDED
@@ -5172,7 +5173,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 		}
 
 		if (m_unk0xc8568) {
-			m_drawTriangleFn1 = g_unk0x1005c8a8[m_unk0x11c];
+			m_drawTriangleFn1 = g_unk0x1005c8a8[m_lightCount];
 			m_drawTriangleFn0 = g_unk0x1005c8c8[index];
 		}
 		else {
@@ -5280,13 +5281,13 @@ void GolD3DRenderDevice::VTable0xd0()
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolD3DRenderDevice::VTable0x34(LegoS32, const LegoFloat*)
+void GolD3DRenderDevice::SetViewportRect(LegoS32, const LegoFloat*)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolD3DRenderDevice::VTable0xec(undefined4)
+void GolD3DRenderDevice::SelectViewport(undefined4)
 {
 	// empty
 }

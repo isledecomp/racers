@@ -177,7 +177,7 @@ MenuWidget* MenuSceneScreen::SceneWidget::DrawSelf(Rect*, Rect*)
 	m_player.Draw(m_renderer);
 	m_player.DrawTransparent(m_renderer);
 	m_player.DrawOverlay(m_renderer);
-	m_renderer->VTable0xec(0);
+	m_renderer->SelectViewport(0);
 	m_renderer->VTable0xe8(0);
 
 	return NULL;

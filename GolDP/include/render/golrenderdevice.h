@@ -74,12 +74,12 @@ public:
 		c_flagBit11 = 1 << 11,
 		c_flagBit12 = 1 << 12,
 		c_flagBit13 = 1 << 13,
-		c_flagBit14 = 1 << 14,
-		c_flagBit15 = 1 << 15,
+		c_flagAlphaOverride = 1 << 14,
+		c_flagLightingEnabled = 1 << 15,
 		c_flagSoftwareRenderer = 1 << 16,
 		c_flagMipmapsEnabled = 1 << 17,
 		c_flagBit18 = 1 << 18,
-		c_flagBit19 = 1 << 19,
+		c_flagColorOverride = 1 << 19,
 		c_flagBit20 = 1 << 20,
 		c_flagBit24 = 1 << 24,
 	};
@@ -93,28 +93,28 @@ public:
 		const GolSurfaceFormat& p_requestedTextureFormat,
 		GolSurfaceFormat* p_actualTextureFormat,
 		LegoBool32
-	);                                                                       // vtable+0x0c
-	virtual GolCommonDrawState* GetDrawState() = 0;                          // vtable+0x10
-	virtual GolRenderTarget* GetRenderTargetInfo() = 0;                      // vtable+0x14
-	virtual void VTable0x18() = 0;                                           // vtable+0x18
-	virtual void SetClearColor(const ColorRGBA&) = 0;                        // vtable+0x1c
-	virtual void SetCamera(GolCamera*) = 0;                                  // vtable+0x20
-	virtual void DetachCamera();                                             // vtable+0x24
-	virtual void ClearLights();                                              // vtable+0x28
-	virtual void SetAmbient(const MaterialColor* p_param);                   // vtable+0x2c
-	virtual void AddLight(const Light* p_param);                             // vtable+0x30
-	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08);  // vtable+0x34
-	virtual void VTable0x38();                                               // vtable+0x38
-	virtual void EnableMipmaps(LegoU32);                                     // vtable+0x3c
-	virtual void DisableMipmaps();                                           // vtable+0x40
-	virtual void VTable0x44();                                               // vtable+0x44
-	virtual void VTable0x48();                                               // vtable+0x48
-	virtual GolRenderTarget* CreateRenderTarget(undefined2, undefined2);     // vtable+0x4c
-	virtual void DestroyRenderTarget(GolRenderTarget*);                      // vtable+0x50
-	virtual void VTable0x54(undefined4) = 0;                                 // vtable+0x54
-	virtual void VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2); // vtable+0x58
-	virtual void ApplyCamera() = 0;                                          // vtable+0x5c
-	virtual void VTable0x60();                                               // vtable+0x60
+	);                                                                           // vtable+0x0c
+	virtual GolCommonDrawState* GetDrawState() = 0;                              // vtable+0x10
+	virtual GolRenderTarget* GetRenderTargetInfo() = 0;                          // vtable+0x14
+	virtual void VTable0x18() = 0;                                               // vtable+0x18
+	virtual void SetClearColor(const ColorRGBA&) = 0;                            // vtable+0x1c
+	virtual void SetCamera(GolCamera*) = 0;                                      // vtable+0x20
+	virtual void DetachCamera();                                                 // vtable+0x24
+	virtual void ClearLights();                                                  // vtable+0x28
+	virtual void SetAmbient(const MaterialColor* p_param);                       // vtable+0x2c
+	virtual void AddLight(const Light* p_param);                                 // vtable+0x30
+	virtual void SetViewportRect(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
+	virtual void VTable0x38();                                                   // vtable+0x38
+	virtual void EnableMipmaps(LegoU32);                                         // vtable+0x3c
+	virtual void DisableMipmaps();                                               // vtable+0x40
+	virtual void VTable0x44();                                                   // vtable+0x44
+	virtual void VTable0x48();                                                   // vtable+0x48
+	virtual GolRenderTarget* CreateRenderTarget(undefined2, undefined2);         // vtable+0x4c
+	virtual void DestroyRenderTarget(GolRenderTarget*);                          // vtable+0x50
+	virtual void BeginFrame(undefined4) = 0;                                     // vtable+0x54
+	virtual void VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2);     // vtable+0x58
+	virtual void ApplyCamera() = 0;                                              // vtable+0x5c
+	virtual void ApplyLights();                                                  // vtable+0x60
 	virtual void DrawString(
 		GolString*,
 		GolFontBase*,
@@ -206,10 +206,10 @@ public:
 	virtual void DrawBillboard(GolBillboard&) = 0;                         // vtable+0xb4
 	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags); // vtable+0xb8
 	virtual void ClearAlphaOverride();                                     // vtable+0xbc
-	virtual void VTable0xc0(const ColorRGBA& p_param);                     // vtable+0xc0
-	virtual void VTable0xc4();                                             // vtable+0xc4
-	virtual void VTable0xc8();                                             // vtable+0xc8
-	virtual void VTable0xcc();                                             // vtable+0xcc
+	virtual void SetColorOverride(const ColorRGBA& p_param);               // vtable+0xc0
+	virtual void ClearColorOverride();                                     // vtable+0xc4
+	virtual void EnableWireframe();                                        // vtable+0xc8
+	virtual void DisableWireframe();                                       // vtable+0xcc
 	virtual void VTable0xd0() = 0;                                         // vtable+0xd0
 	virtual void VTable0xd4() = 0;                                         // vtable+0xd4
 	virtual void VTable0xd8() = 0;                                         // vtable+0xd8
@@ -217,8 +217,8 @@ public:
 	virtual void VTable0xe0() = 0;                                         // vtable+0xe0
 	virtual void VTable0xe4() = 0;                                         // vtable+0xe4
 	virtual void VTable0xe8(LegoBool32 p_arg) = 0;                         // vtable+0xe8
-	virtual void VTable0xec(undefined4);                                   // vtable+0xec
-	virtual void VTable0xf0() = 0;                                         // vtable+0xf0
+	virtual void SelectViewport(undefined4);                               // vtable+0xec
+	virtual void EndFrame() = 0;                                           // vtable+0xf0
 	virtual void VTable0xf4();                                             // vtable+0xf4
 	virtual LegoU32 GetMinimumTextureWidth(undefined4) const = 0;          // vtable+0xf8
 	virtual LegoU32 GetMaximumTextureWidth(undefined4) const = 0;          // vtable+0xfc
@@ -250,15 +250,15 @@ public:
 
 	undefined4 GetFlags() { return m_flags; }
 	GolCamera* GetCurrentCamera() { return m_currentCamera; }
-	MaterialColor* GetCurrentMaterialColor() { return const_cast<MaterialColor*>(m_unk0x120); }
-	Light* GetCurrentLight(LegoU32 p_index) { return const_cast<Light*>(m_unk0x124[p_index]); }
+	MaterialColor* GetCurrentMaterialColor() { return const_cast<MaterialColor*>(m_ambientColor); }
+	Light* GetCurrentLight(LegoU32 p_index) { return const_cast<Light*>(m_lights[p_index]); }
 
 protected:
 	friend class GolCommonDrawState;
 
 	undefined4 m_flags;                          // 0x04
-	undefined2 m_unk0x08;                        // 0x08
-	undefined2 m_unk0x0a;                        // 0x0a
+	undefined2 m_alphaOverrideFlags;             // 0x08
+	undefined2 m_alphaOverride;                  // 0x0a
 	GolCamera* m_currentCamera;                  // 0x0c
 	LegoU32 m_textureFormatIndex;                // 0x10
 	undefined4 m_requestedRedBitCount;           // 0x14
@@ -276,10 +276,10 @@ protected:
 	GolFontLibrary* m_fontLists;                 // 0x44
 	GolD3DRenderDevice* m_nextDrawStateRenderer; // 0x48
 	GolViewFrustum m_viewFrustum;                // 0x4c
-	ColorRGBA m_unk0x118;                        // 0x118
-	undefined4 m_unk0x11c;                       // 0x11c
-	const MaterialColor* m_unk0x120;             // 0x120
-	const Light* m_unk0x124[7];                  // 0x124
+	ColorRGBA m_colorOverride;                   // 0x118
+	undefined4 m_lightCount;                     // 0x11c
+	const MaterialColor* m_ambientColor;         // 0x120
+	const Light* m_lights[7];                    // 0x124
 };
 
 #endif // GOLRENDERDEVICE_H

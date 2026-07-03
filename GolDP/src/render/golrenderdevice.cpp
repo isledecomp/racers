@@ -170,12 +170,12 @@ GolRenderDevice::GolRenderDevice()
 	m_nextDrawStateRenderer = NULL;
 	m_currentCamera = NULL;
 	m_flags = 0;
-	m_unk0x0a = 0;
+	m_alphaOverride = 0;
 	::memset(&m_viewFrustum, 0, sizeof(m_viewFrustum));
-	m_unk0x11c = 0;
-	m_unk0x120 = 0;
-	::memset(&m_unk0x124, 0, sizeof(m_unk0x124));
-	m_unk0x124[0] = 0;
+	m_lightCount = 0;
+	m_ambientColor = 0;
+	::memset(&m_lights, 0, sizeof(m_lights));
+	m_lights[0] = 0;
 }
 
 // FUNCTION: GOLDP 0x100288e0
@@ -830,53 +830,53 @@ void GolRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_param1, Lego
 // FUNCTION: GOLDP 0x10029850
 void GolRenderDevice::SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags)
 {
-	m_flags |= c_flagBit14;
-	m_unk0x0a = p_alpha;
-	m_unk0x08 = p_flags;
+	m_flags |= c_flagAlphaOverride;
+	m_alphaOverride = p_alpha;
+	m_alphaOverrideFlags = p_flags;
 }
 
 // FUNCTION: GOLDP 0x10029870
 void GolRenderDevice::ClearAlphaOverride()
 {
-	m_flags &= ~c_flagBit14;
+	m_flags &= ~c_flagAlphaOverride;
 }
 
 // FUNCTION: GOLDP 0x10029880
-void GolRenderDevice::VTable0xc0(const ColorRGBA& p_param)
+void GolRenderDevice::SetColorOverride(const ColorRGBA& p_param)
 {
-	m_unk0x118 = p_param;
-	m_flags |= c_flagBit19;
+	m_colorOverride = p_param;
+	m_flags |= c_flagColorOverride;
 }
 
 // FUNCTION: GOLDP 0x100298a0
-void GolRenderDevice::VTable0xc4()
+void GolRenderDevice::ClearColorOverride()
 {
-	m_flags &= ~c_flagBit19;
+	m_flags &= ~c_flagColorOverride;
 }
 
 // FUNCTION: GOLDP 0x100298b0
 void GolRenderDevice::ClearLights()
 {
-	m_flags &= ~c_flagBit15;
-	m_unk0x11c = 0;
-	m_unk0x120 = 0;
-	m_unk0x124[0] = 0;
+	m_flags &= ~c_flagLightingEnabled;
+	m_lightCount = 0;
+	m_ambientColor = 0;
+	m_lights[0] = 0;
 }
 
 // FUNCTION: GOLDP 0x100298d0
 void GolRenderDevice::SetAmbient(const MaterialColor* p_param)
 {
-	m_flags |= c_flagBit15;
-	m_unk0x120 = p_param;
+	m_flags |= c_flagLightingEnabled;
+	m_ambientColor = p_param;
 }
 
 // FUNCTION: GOLDP 0x100298f0
 void GolRenderDevice::AddLight(const Light* p_param)
 {
-	if (m_unk0x11c < 7) {
-		m_flags |= c_flagBit15;
-		m_unk0x124[m_unk0x11c] = p_param;
-		m_unk0x11c++;
+	if (m_lightCount < 7) {
+		m_flags |= c_flagLightingEnabled;
+		m_lights[m_lightCount] = p_param;
+		m_lightCount++;
 	}
 }
 
@@ -895,7 +895,7 @@ void GolRenderDevice::VTable0x48()
 // FUNCTION: GOLDP 0x10029960
 void GolRenderDevice::VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2)
 {
-	VTable0x54(p_param2);
+	BeginFrame(p_param2);
 }
 
 // FUNCTION: GOLDP 0x10029970
@@ -929,7 +929,7 @@ void GolRenderDevice::DestroyRenderTarget(GolRenderTarget*)
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolRenderDevice::VTable0x60()
+void GolRenderDevice::ApplyLights()
 {
 	// empty
 }
@@ -985,7 +985,7 @@ LegoS32 GolViewFrustum::ClassifySphere(const GolVec3& p_center, LegoFloat p_radi
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolRenderDevice::VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08)
+void GolRenderDevice::SetViewportRect(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08)
 {
 	// empty
 }
@@ -1009,19 +1009,19 @@ void GolRenderDevice::EnableMipmaps(LegoU32)
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolRenderDevice::VTable0xc8()
+void GolRenderDevice::EnableWireframe()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolRenderDevice::VTable0xcc()
+void GolRenderDevice::DisableWireframe()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolRenderDevice::VTable0xec(undefined4)
+void GolRenderDevice::SelectViewport(undefined4)
 {
 	// empty
 }

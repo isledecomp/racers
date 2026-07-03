@@ -57,25 +57,25 @@ public:
 		const GolSurfaceFormat& p_requestedTextureFormat,
 		GolSurfaceFormat* p_actualTextureFormat,
 		LegoBool32
-	) override;                                                              // vtable+0x0c
-	GolCommonDrawState* GetDrawState() override;                             // vtable+0x10
-	GolRenderTarget* GetRenderTargetInfo() override;                         // vtable+0x14
-	void VTable0x18() override;                                              // vtable+0x18
-	void SetClearColor(const ColorRGBA&) override;                           // vtable+0x1c
-	void SetCamera(GolCamera*) override;                                     // vtable+0x20
-	void ClearLights() override;                                             // vtable+0x28
-	void SetAmbient(const MaterialColor*) override;                          // vtable+0x2c
-	void AddLight(const Light*) override;                                    // vtable+0x30
-	void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08) override; // vtable+0x34
-	void VTable0x38() override;                                              // vtable+0x38
-	void EnableMipmaps(LegoU32) override;                                    // vtable+0x3c
-	void DisableMipmaps() override;                                          // vtable+0x40
-	GolRenderTarget* CreateRenderTarget(undefined2, undefined2) override;    // vtable+0x4c
-	void DestroyRenderTarget(GolRenderTarget*) override;                     // vtable+0x50
-	void VTable0x54(undefined4) override;                                    // vtable+0x54
-	void VTable0x58(GolRenderTarget*, undefined4) override;                  // vtable+0x58
-	void ApplyCamera() override;                                             // vtable+0x5c
-	void VTable0x60() override;                                              // vtable+0x60
+	) override;                                                                   // vtable+0x0c
+	GolCommonDrawState* GetDrawState() override;                                  // vtable+0x10
+	GolRenderTarget* GetRenderTargetInfo() override;                              // vtable+0x14
+	void VTable0x18() override;                                                   // vtable+0x18
+	void SetClearColor(const ColorRGBA&) override;                                // vtable+0x1c
+	void SetCamera(GolCamera*) override;                                          // vtable+0x20
+	void ClearLights() override;                                                  // vtable+0x28
+	void SetAmbient(const MaterialColor*) override;                               // vtable+0x2c
+	void AddLight(const Light*) override;                                         // vtable+0x30
+	void SetViewportRect(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08) override; // vtable+0x34
+	void VTable0x38() override;                                                   // vtable+0x38
+	void EnableMipmaps(LegoU32) override;                                         // vtable+0x3c
+	void DisableMipmaps() override;                                               // vtable+0x40
+	GolRenderTarget* CreateRenderTarget(undefined2, undefined2) override;         // vtable+0x4c
+	void DestroyRenderTarget(GolRenderTarget*) override;                          // vtable+0x50
+	void BeginFrame(undefined4) override;                                         // vtable+0x54
+	void VTable0x58(GolRenderTarget*, undefined4) override;                       // vtable+0x58
+	void ApplyCamera() override;                                                  // vtable+0x5c
+	void ApplyLights() override;                                                  // vtable+0x60
 	void DrawString(
 		GolString*,
 		GolFontBase*,
@@ -156,10 +156,10 @@ public:
 	void DrawBillboard(GolBillboard&) override;                                                         // vtable+0xb4
 	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override;                             // vtable+0xb8
 	void ClearAlphaOverride() override;                                                                 // vtable+0xbc
-	void VTable0xc0(const ColorRGBA&) override;                                                         // vtable+0xc0
-	void VTable0xc4() override;                                                                         // vtable+0xc4
-	void VTable0xc8() override;                                                                         // vtable+0xc8
-	void VTable0xcc() override;                                                                         // vtable+0xcc
+	void SetColorOverride(const ColorRGBA&) override;                                                   // vtable+0xc0
+	void ClearColorOverride() override;                                                                 // vtable+0xc4
+	void EnableWireframe() override;                                                                    // vtable+0xc8
+	void DisableWireframe() override;                                                                   // vtable+0xcc
 	void VTable0xd0() override;                                                                         // vtable+0xd0
 	void VTable0xd4() override;                                                                         // vtable+0xd4
 	void VTable0xd8() override;                                                                         // vtable+0xd8
@@ -167,8 +167,8 @@ public:
 	void VTable0xe0() override;                                                                         // vtable+0xe0
 	void VTable0xe4() override;                                                                         // vtable+0xe4
 	void VTable0xe8(LegoBool32 p_arg) override;                                                         // vtable+0xe8
-	void VTable0xec(undefined4) override;                                                               // vtable+0xec
-	void VTable0xf0() override;                                                                         // vtable+0xf0
+	void SelectViewport(undefined4) override;                                                           // vtable+0xec
+	void EndFrame() override;                                                                           // vtable+0xf0
 	void VTable0xf4() override;                                                                         // vtable+0xf4
 	LegoU32 GetMinimumTextureWidth(undefined4) const override;                                          // vtable+0xf8
 	LegoU32 GetMaximumTextureWidth(undefined4) const override;                                          // vtable+0xfc
@@ -212,7 +212,7 @@ private:
 	void SetCurrentTexture(GolTexture*);
 	void FUN_1000acf0(LegoU32 p_index);
 	void FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData);
-	void FUN_1000b0f0(LegoU32 p_index, const Light* p_param);
+	void SetLight(LegoU32 p_index, const Light* p_param);
 	void FUN_1000b4a0();
 	void FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
 	void FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
@@ -274,7 +274,7 @@ private:
 	ColorRGBA m_clearColor;                                                        // 0x2cc
 	LegoU32 m_clearPixelValue;                                                     // 0x2d0
 	GolSoftwareMaterial m_unk0x2d4;                                                // 0x2d4
-	GolRenderTarget* m_unk0x304;                                                   // 0x304
+	GolRenderTarget* m_primaryRenderTarget;                                        // 0x304
 	GolRenderTarget* m_renderTargetInfo;                                           // 0x308
 	GolD3DRenderSurface* m_unk0x30c;                                               // 0x30c
 	GolDepthBuffer m_depthBuffer;                                                  // 0x310

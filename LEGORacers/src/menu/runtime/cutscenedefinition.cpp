@@ -1121,7 +1121,7 @@ void CutsceneDefinition::Frame::Draw(GolD3DRenderDevice* p_renderer, LegoU32 p_l
 
 		p_renderer->SetCamera(m_cameraStack[lensIndex]);
 		p_renderer->ApplyCamera();
-		p_renderer->VTable0xec(4);
+		p_renderer->SelectViewport(4);
 	}
 
 	p_renderer->ClearLights();

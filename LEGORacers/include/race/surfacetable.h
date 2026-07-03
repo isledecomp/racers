@@ -69,7 +69,24 @@ public:
 
 	// VTABLE: LEGORACERS 0x004b0c10
 	// SIZE 0x1fc
-	class TmbTxtParser : public GolTxtParser {};
+	class TmbTxtParser : public GolTxtParser {
+	public:
+		// .tmb tokens for fields with proven names; unnamed payloads stay on
+		// GolFileParser::e_unknown0xNN at the use sites
+		enum {
+			e_surface = 0x27,
+			e_enterEvent = 0x28,
+			e_leaveEvent = 0x29,
+			e_touchEvent = 0x2a,
+			e_surfaceForce = 0x2d,
+			e_surfaceSound = 0x2e,
+			e_wheelParticle = 0x31,
+			e_supportThreshold = 0x32,
+			e_friction = 0x33,
+			e_lateralGrip = 0x34,
+			e_rollingResistance = 0x36,
+		};
+	};
 
 	SurfaceTable();
 	~SurfaceTable() override;

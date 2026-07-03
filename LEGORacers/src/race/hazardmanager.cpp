@@ -67,7 +67,7 @@ void HazardManager::LoadHazards(void* p_context, const LegoChar* p_name, LegoBoo
 	}
 
 	parser->OpenFileForRead(p_name);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(HzbTxtParser::e_hazards));
 	m_count = parser->ReadBracketedCountAndLeftCurly();
 
 	if (m_count == 0) {
@@ -86,64 +86,64 @@ void HazardManager::LoadHazards(void* p_context, const LegoChar* p_name, LegoBoo
 		m_entries[i] = NULL;
 
 		switch (parser->GetNextToken()) {
-		case GolFileParser::e_unknown0x28:
+		case HzbTxtParser::e_fallingPillar:
 			m_entries[i] = new FallingPillarHazard;
 			break;
-		case GolFileParser::e_unknown0x29:
+		case HzbTxtParser::e_sphinx:
 			m_entries[i] = new SphinxHazard;
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case HzbTxtParser::e_hammer:
 			m_entries[i] = new HammerHazard;
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case HzbTxtParser::e_ghost:
 			m_entries[i] = new GhostHazard;
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case HzbTxtParser::e_lavaGeyser:
 			m_entries[i] = new LavaGeyserHazard;
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case HzbTxtParser::e_codePuzzle:
 			m_entries[i] = new CodePuzzleHazard;
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case HzbTxtParser::e_rocket:
 			m_entries[i] = new RocketHazard;
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case HzbTxtParser::e_snowfall:
 			m_entries[i] = new SnowfallHazard;
 			break;
-		case GolFileParser::e_unknown0x30:
+		case HzbTxtParser::e_smokeVent:
 			m_entries[i] = new SmokeVentHazard;
 			break;
-		case GolFileParser::e_unknown0x32:
+		case HzbTxtParser::e_movingObstacle:
 			m_entries[i] = new MovingObstacleHazard;
 			break;
-		case GolFileParser::e_unknown0x33:
+		case HzbTxtParser::e_launcher:
 			m_entries[i] = new LauncherHazard;
 			break;
-		case GolFileParser::e_unknown0x34:
+		case HzbTxtParser::e_triggeredAnimation:
 			m_entries[i] = new TriggeredAnimationHazard;
 			break;
-		case GolFileParser::e_unknown0x36:
+		case HzbTxtParser::e_oscillator:
 			m_entries[i] = new OscillatorHazard;
 			break;
-		case GolFileParser::e_unknown0x3d:
+		case HzbTxtParser::e_multiLauncher:
 			m_entries[i] = new MultiLauncherHazard;
 			break;
-		case GolFileParser::e_unknown0x3e:
+		case HzbTxtParser::e_rollingRock:
 			m_entries[i] = new RollingRockHazard;
 			break;
-		case GolFileParser::e_unknown0x3f:
+		case HzbTxtParser::e_curseDrop:
 			m_entries[i] = new CurseDropHazard;
 			break;
-		case GolFileParser::e_unknown0x40:
+		case HzbTxtParser::e_sweepCannon:
 			m_entries[i] = new SweepCannonHazard;
 			break;
-		case GolFileParser::e_unknown0x43:
+		case HzbTxtParser::e_cannonballRain:
 			m_entries[i] = new CannonballRainHazard;
 			break;
-		case GolFileParser::e_unknown0x48:
+		case HzbTxtParser::e_grabber:
 			m_entries[i] = new GrabberHazard;
 			break;
-		case GolFileParser::e_unknown0x49:
+		case HzbTxtParser::e_warpPad:
 			m_entries[i] = new WarpPadHazard;
 			break;
 		default:

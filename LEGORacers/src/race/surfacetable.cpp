@@ -48,7 +48,7 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 		Unload();
 	}
 
-	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TmbTxtParser::e_surface));
 	::memcpy(m_name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 	p_parser->ReadLeftCurly();
 
@@ -56,15 +56,15 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 	if (token != GolFileParser::e_rightCurly) {
 		do {
 			switch (token) {
-			case GolFileParser::e_unknown0x28:
+			case TmbTxtParser::e_enterEvent:
 				m_enterEventId = p_parser->ReadInteger();
 				m_flags |= c_flagEnterEventId;
 				break;
-			case GolFileParser::e_unknown0x29:
+			case TmbTxtParser::e_leaveEvent:
 				m_leaveEventId = p_parser->ReadInteger();
 				m_flags |= c_flagLeaveEventId;
 				break;
-			case GolFileParser::e_unknown0x2a:
+			case TmbTxtParser::e_touchEvent:
 				m_touchEventId = p_parser->ReadInteger();
 				m_flags |= c_flagTouchEventId;
 				break;
@@ -81,7 +81,7 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 					m_unk0x1c.m_y = -m_unk0x1c.m_y;
 				}
 				break;
-			case GolFileParser::e_unknown0x2d:
+			case TmbTxtParser::e_surfaceForce:
 				m_surfaceForce.m_x = p_parser->ReadFloat();
 				m_surfaceForce.m_y = p_parser->ReadFloat();
 				m_surfaceForce.m_z = p_parser->ReadFloat();
@@ -90,7 +90,7 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 					m_surfaceForce.m_y = -m_surfaceForce.m_y;
 				}
 				break;
-			case GolFileParser::e_unknown0x2e:
+			case TmbTxtParser::e_surfaceSound:
 				m_surfaceSoundId = p_parser->ReadInteger();
 				m_flags |= c_flagSurfaceSoundId;
 				break;
@@ -102,19 +102,19 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_unk0x3c = p_parser->ReadInteger();
 				m_flags |= c_flagUnk0x3c;
 				break;
-			case GolFileParser::e_unknown0x31:
+			case TmbTxtParser::e_wheelParticle:
 				::memcpy(m_wheelParticleName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 				m_flags |= c_flagWheelParticleName;
 				break;
-			case GolFileParser::e_unknown0x32:
+			case TmbTxtParser::e_supportThreshold:
 				m_supportThreshold = p_parser->ReadFloat();
 				m_flags |= c_flagSupportThreshold;
 				break;
-			case GolFileParser::e_unknown0x33:
+			case TmbTxtParser::e_friction:
 				m_friction = p_parser->ReadFloat();
 				m_flags |= c_flagFriction;
 				break;
-			case GolFileParser::e_unknown0x34:
+			case TmbTxtParser::e_lateralGrip:
 				m_lateralGrip = p_parser->ReadFloat();
 				m_flags |= c_flagLateralGrip;
 				break;
@@ -122,7 +122,7 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_unk0x54 = p_parser->ReadFloat();
 				m_flags |= c_flagUnk0x54;
 				break;
-			case GolFileParser::e_unknown0x36:
+			case TmbTxtParser::e_rollingResistance:
 				m_rollingResistance = p_parser->ReadFloat();
 				m_flags |= c_flagRollingResistance;
 				break;
@@ -189,7 +189,7 @@ void SurfaceTable::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 
 	}
 
 	parser->OpenFileForRead(p_name);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TmbTxtParser::e_surface));
 	m_count = parser->ReadBracketedCountAndLeftCurly();
 	GolNameTable::Allocate(m_count);
 

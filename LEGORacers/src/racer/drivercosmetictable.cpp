@@ -134,7 +134,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 	}
 
 	parser->OpenFileForRead(p_params->m_filename);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(DdfTxtParser::e_driver));
 
 	LegoU32 entryCount = parser->ReadBracketedCountAndLeftCurly();
 	if (entryCount != 0) {
@@ -168,7 +168,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			m_entries[i].m_cosmetics.m_legIndex = 0;
 			m_entries[i].m_cosmetics.m_expressionIndex = 0;
 
-			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(DdfTxtParser::e_driver));
 			::strncpy(name, parser->ReadStringWithMaxLength(sizeOfArray(name)), sizeOfArray(name));
 			parser->ReadLeftCurly();
 
@@ -178,71 +178,71 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 				case GolFileParser::e_unknown0x33:
 					m_entries[i].m_unk0x00 = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x28:
+				case DdfTxtParser::e_material:
 					::strncpy(
 						m_entries[i].m_materialName,
 						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_materialName)),
 						sizeOfArray(m_entries[i].m_materialName)
 					);
 					break;
-				case GolFileParser::e_unknown0x29:
+				case DdfTxtParser::e_texture:
 					::strncpy(
 						m_entries[i].m_textureName,
 						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_textureName)),
 						sizeOfArray(m_entries[i].m_textureName)
 					);
 					break;
-				case GolFileParser::e_unknown0x2a:
+				case DdfTxtParser::e_model:
 					::strncpy(
 						m_entries[i].m_modelName,
 						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_modelName)),
 						sizeOfArray(m_entries[i].m_modelName)
 					);
 					break;
-				case GolFileParser::e_unknown0x2b:
+				case DdfTxtParser::e_champion:
 					::strncpy(
 						m_entries[i].m_championName,
 						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_championName)),
 						sizeOfArray(m_entries[i].m_championName)
 					);
 					break;
-				case GolFileParser::e_unknown0x2c:
+				case DdfTxtParser::e_redStat:
 					m_entries[i].m_redStat = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x2d:
+				case DdfTxtParser::e_yellowStat:
 					m_entries[i].m_yellowStat = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x2e:
+				case DdfTxtParser::e_greenStat:
 					m_entries[i].m_greenStat = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x2f:
+				case DdfTxtParser::e_blueStat:
 					m_entries[i].m_blueStat = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x30:
+				case DdfTxtParser::e_stat4:
 					m_entries[i].m_stat4 = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x31:
+				case DdfTxtParser::e_stat5:
 					m_entries[i].m_stat5 = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x34:
+				case DdfTxtParser::e_voiceBank:
 					m_entries[i].m_voiceBankIndex = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x35:
+				case DdfTxtParser::e_hat:
 					m_entries[i].m_cosmetics.m_hatIndex = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x36:
+				case DdfTxtParser::e_face:
 					m_entries[i].m_cosmetics.m_faceIndex = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x37:
+				case DdfTxtParser::e_torso:
 					m_entries[i].m_cosmetics.m_torsoIndex = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x38:
+				case DdfTxtParser::e_legs:
 					m_entries[i].m_cosmetics.m_legIndex = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x39:
+				case DdfTxtParser::e_expression:
 					m_entries[i].m_cosmetics.m_expressionIndex = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x3a:
+				case DdfTxtParser::e_aiCharge:
 					m_entries[i].m_aiChargeColor = parser->ReadInteger();
 					m_entries[i].m_aiChargeTarget = parser->ReadInteger();
 					break;

@@ -15,7 +15,33 @@ class HazardManager {
 public:
 	// VTABLE: LEGORACERS 0x004b40f8
 	// SIZE 0x1fc
-	class HzbTxtParser : public GolTxtParser {};
+	class HzbTxtParser : public GolTxtParser {
+	public:
+		// .hzb tokens: one keyword per hazard type
+		enum {
+			e_hazards = 0x27,
+			e_fallingPillar = 0x28,
+			e_sphinx = 0x29,
+			e_hammer = 0x2a,
+			e_ghost = 0x2b,
+			e_lavaGeyser = 0x2c,
+			e_codePuzzle = 0x2d,
+			e_rocket = 0x2e,
+			e_snowfall = 0x2f,
+			e_smokeVent = 0x30,
+			e_movingObstacle = 0x32,
+			e_launcher = 0x33,
+			e_triggeredAnimation = 0x34,
+			e_oscillator = 0x36,
+			e_multiLauncher = 0x3d,
+			e_rollingRock = 0x3e,
+			e_curseDrop = 0x3f,
+			e_sweepCannon = 0x40,
+			e_cannonballRain = 0x43,
+			e_grabber = 0x48,
+			e_warpPad = 0x49,
+		};
+	};
 
 	HazardManager();
 	~HazardManager();

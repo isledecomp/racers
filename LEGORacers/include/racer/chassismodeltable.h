@@ -25,7 +25,26 @@ class ChassisModelTable : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004afe7c
 	// SIZE 0x1fc
-	class CmbTxtParser : public GolTxtParser {};
+	class CmbTxtParser : public GolTxtParser {
+	public:
+		// chassis-table tokens for fields with proven names
+		enum {
+			e_chassis = 0x27,
+			e_variantModels = 0x28,
+			e_altVariantModels = 0x29,
+			e_centerOfMass = 0x2a,
+			e_driverMountOffset = 0x2b,
+			e_mass = 0x2c,
+			e_shadowSize = 0x2e,
+			e_enginePitch = 0x2f,
+			e_skidWidths = 0x30,
+			e_wheelPositions = 0x31,
+			e_shadow = 0x39,
+			e_handlingStat = 0x3a,
+			e_topSpeedStat = 0x3b,
+			e_accelerationStat = 0x3c,
+		};
+	};
 
 	ChassisModelTable();
 	~ChassisModelTable() override; // vtable+0x00

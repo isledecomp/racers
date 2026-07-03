@@ -137,7 +137,7 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 	}
 
 	parser->OpenFileForRead(p_params->m_filename);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CmbTxtParser::e_chassis));
 	LegoU32 count = parser->ReadBracketedCountAndLeftCurly();
 	if (count != 0) {
 		m_items = new Item[count];
@@ -156,7 +156,7 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 	::memset(m_items, 0, count * sizeof(Item));
 	LegoU32 i;
 	for (i = 0; i < count; i++) {
-		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CmbTxtParser::e_chassis));
 		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 		parser->ReadLeftCurly();
@@ -166,44 +166,44 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 		GolFileParser::ParserTokenType token;
 		while ((token = parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
-			case GolFileParser::e_unknown0x28:
+			case CmbTxtParser::e_variantModels:
 				ParseVariantNames(parser, i, 0);
 				break;
-			case GolFileParser::e_unknown0x29:
+			case CmbTxtParser::e_altVariantModels:
 				ParseVariantNames(parser, i, 1);
 				break;
-			case GolFileParser::e_unknown0x39:
+			case CmbTxtParser::e_shadow:
 				::strncpy(
 					m_items[i].m_shadowName,
 					parser->ReadStringWithMaxLength(sizeof(m_items[i].m_shadowName)),
 					sizeof(m_items[i].m_shadowName)
 				);
 				break;
-			case GolFileParser::e_unknown0x2a:
+			case CmbTxtParser::e_centerOfMass:
 				m_items[i].m_centerOfMass.m_x = parser->ReadFloat();
 				m_items[i].m_centerOfMass.m_y = parser->ReadFloat();
 				m_items[i].m_centerOfMass.m_z = parser->ReadFloat();
 				break;
-			case GolFileParser::e_unknown0x2b:
+			case CmbTxtParser::e_driverMountOffset:
 				m_items[i].m_driverMountOffset.m_x = parser->ReadFloat();
 				m_items[i].m_driverMountOffset.m_y = parser->ReadFloat();
 				m_items[i].m_driverMountOffset.m_z = parser->ReadFloat();
 				break;
-			case GolFileParser::e_unknown0x2c:
+			case CmbTxtParser::e_mass:
 				m_items[i].m_baseMass = parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2d:
 				m_items[i].m_unk0xd4.m_x = parser->ReadFloat();
 				m_items[i].m_unk0xd4.m_y = parser->ReadFloat();
 				break;
-			case GolFileParser::e_unknown0x2e:
+			case CmbTxtParser::e_shadowSize:
 				m_items[i].m_shadowSize.m_x = parser->ReadFloat();
 				m_items[i].m_shadowSize.m_y = parser->ReadFloat();
 				break;
-			case GolFileParser::e_unknown0x2f:
+			case CmbTxtParser::e_enginePitch:
 				m_items[i].m_enginePitchScale = parser->ReadFloat();
 				break;
-			case GolFileParser::e_unknown0x30: {
+			case CmbTxtParser::e_skidWidths: {
 				parser->ReadLeftCurly();
 				m_items[i].m_skidWidths.m_x = parser->ReadFloat();
 				m_items[i].m_skidWidths.m_y = parser->ReadFloat();
@@ -215,7 +215,7 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 				parser->ReadRightCurly();
 				break;
 			}
-			case GolFileParser::e_unknown0x31: {
+			case CmbTxtParser::e_wheelPositions: {
 				parser->ReadLeftCurly();
 				for (LegoS32 j = 0; j < 4; j++) {
 					m_items[i].m_wheelPositions[j].m_x = parser->ReadFloat();
@@ -231,13 +231,13 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 			case GolFileParser::e_unknown0x33:
 				m_items[i].m_unk0xf4 = parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x3a:
+			case CmbTxtParser::e_handlingStat:
 				m_items[i].m_handlingStat = static_cast<LegoU8>(parser->ReadInteger());
 				break;
-			case GolFileParser::e_unknown0x3b:
+			case CmbTxtParser::e_topSpeedStat:
 				m_items[i].m_topSpeedStat = static_cast<LegoU8>(parser->ReadInteger());
 				break;
-			case GolFileParser::e_unknown0x3c:
+			case CmbTxtParser::e_accelerationStat:
 				m_items[i].m_accelerationStat = static_cast<LegoU8>(parser->ReadInteger());
 				break;
 			default:

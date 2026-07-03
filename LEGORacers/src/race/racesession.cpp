@@ -200,23 +200,23 @@ void RaceSession::Initialize(
 	}
 
 	parser->OpenFileForRead(p_raceName);
-	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_rabToken0x35));
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(e_race));
 	strcpy(m_displayName, parser->ReadStringWithMaxLength(0x3f));
 	parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case c_rabToken0x27:
+		case e_world:
 			strcpy(m_worldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x42:
+		case e_sky:
 			strcpy(m_skyName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x3b:
+		case e_sharedModel:
 			strcpy(m_sharedModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x28:
+		case e_cameraDirection:
 			m_cameraStartDirection.m_x = parser->ReadFloat();
 			m_cameraStartDirection.m_y = parser->ReadFloat();
 			m_cameraStartDirection.m_z = parser->ReadFloat();
@@ -224,94 +224,94 @@ void RaceSession::Initialize(
 			m_cameraStartUp.m_y = parser->ReadFloat();
 			m_cameraStartUp.m_z = parser->ReadFloat();
 			break;
-		case c_rabToken0x29:
+		case e_cameraPosition:
 			m_cameraStartPosition.m_x = parser->ReadFloat();
 			m_cameraStartPosition.m_y = parser->ReadFloat();
 			m_cameraStartPosition.m_z = parser->ReadFloat();
 			break;
-		case c_rabToken0x49:
+		case e_camera:
 			strncpy(m_cameraName, parser->ReadStringWithMaxLength(8), 8);
 			break;
-		case c_rabToken0x40:
+		case e_effectsModel:
 			strcpy(m_effectsModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x2b:
+		case e_collision:
 			strcpy(m_triggerModelName, parser->ReadStringWithMaxLength(0x0c));
 			strcpy(m_collisionWorldName, parser->ReadStringWithMaxLength(0x0c));
 			strcpy(m_triggerWorldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x2c:
+		case e_events:
 			strcpy(m_eventFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x2d:
+		case e_fonts:
 			strcpy(m_fontFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x2e:
+		case e_trackModel:
 			strcpy(m_trackModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x2f:
+		case e_images:
 			strcpy(m_imageFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x30:
+		case e_music:
 			strcpy(m_musicFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x31:
-		case c_rabToken0x32:
+		case e_unused0x31:
+		case e_unused0x32:
 			parser->ReadStringWithMaxLength(0x0c);
 			break;
-		case c_rabToken0x33:
+		case e_powerups:
 			strcpy(m_powerupFileName, parser->ReadStringWithMaxLength(0x0c));
 			strcpy(m_turboDatabaseName, parser->ReadStringWithMaxLength(0x0c));
 			strcpy(m_powerupDatabaseName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x34:
+		case e_unusedFile:
 			strcpy(m_unk0xeb, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x41:
+		case e_startPositions:
 			strcpy(m_startPositionsFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x3c:
+		case e_sounds:
 			strcpy(m_soundFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x3d:
+		case e_voices:
 			strcpy(m_voiceFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x3f:
+		case e_soundBank:
 			strcpy(m_soundBankName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x37:
+		case e_triggers:
 			strcpy(m_triggerFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x38:
+		case e_timers:
 			strcpy(m_timerFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x45:
+		case e_materialAnimationModel:
 			strcpy(m_materialAnimationModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x3a:
+		case e_particleAnimations:
 			strcpy(m_particleAnimationName, parser->ReadStringWithMaxLength(0x0c));
 			strcpy(m_sharedParticleAnimationName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x39:
+		case e_racerTriggers:
 			strcpy(m_racerTriggerFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x43:
+		case e_surfaces:
 			strcpy(m_surfaceFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x44:
+		case e_hazards:
 			strcpy(m_hazardFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x48:
+		case e_checkpoints:
 			strcpy(m_checkpointFileName, parser->ReadStringWithMaxLength(0x0c));
 			strcpy(m_extraTriggerWorldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x46:
+		case e_mapBounds:
 			m_mapMinX = parser->ReadFloat();
 			m_mapMaxY = parser->ReadFloat();
 			m_mapMaxX = parser->ReadFloat();
 			m_mapMinY = parser->ReadFloat();
 			break;
-		case c_rabToken0x4a:
+		case e_targets:
 			strcpy(m_targetFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		default:

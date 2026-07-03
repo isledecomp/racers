@@ -26,7 +26,30 @@ class DriverCosmeticTable : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004b00b0
 	// SIZE 0x1fc
-	class DdfTxtParser : public GolTxtParser {};
+	class DdfTxtParser : public GolTxtParser {
+	public:
+		// driver-definition tokens for fields with proven names
+		enum {
+			e_driver = 0x27,
+			e_material = 0x28,
+			e_texture = 0x29,
+			e_model = 0x2a,
+			e_champion = 0x2b,
+			e_redStat = 0x2c,
+			e_yellowStat = 0x2d,
+			e_greenStat = 0x2e,
+			e_blueStat = 0x2f,
+			e_stat4 = 0x30,
+			e_stat5 = 0x31,
+			e_voiceBank = 0x34,
+			e_hat = 0x35,
+			e_face = 0x36,
+			e_torso = 0x37,
+			e_legs = 0x38,
+			e_expression = 0x39,
+			e_aiCharge = 0x3a,
+		};
+	};
 
 	// SIZE 0x14
 	struct LoadParams {

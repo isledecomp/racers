@@ -32,12 +32,12 @@ public:
 	struct TreeNode {
 		enum {
 			c_invalidIndex = 0xffff,
-			e_type0 = 0,
-			e_type1 = 1,
+			e_plane = 0,
+			e_leaf = 1,
 		};
 
 		LegoU16 m_type;
-		LegoU16 m_unk0x02;
+		LegoU16 m_nextLeafIndex;
 
 		// SIZE 0x1c
 		struct Node {
@@ -49,34 +49,23 @@ public:
 			LegoS16 m_unk0x14;
 			LegoU16 m_unk0x16;
 			LegoU16 m_unk0x18;
-			LegoU16 m_unk0x1a;
+			LegoU16 m_linked;
 		};
 
 		// SIZE 0x1c
 		union Payload {
 			struct {
-				LegoFloat m_unk0x00;
-				LegoFloat m_unk0x04;
-				LegoFloat m_unk0x08;
-				LegoFloat m_unk0x0c;
-				LegoU32 m_unk0x10;
-				LegoU32 m_unk0x14;
-				LegoU16 m_unk0x18;
-				LegoU16 m_unk0x1a;
-			} m_t0;
-			struct {
-				undefined4 m_unk0x00;
-				undefined4 m_unk0x04;
-				undefined4 m_unk0x08;
-				TreeNode* m_unk0x0c;
-				TreeNode* m_unk0x10;
-				LegoS16 m_unk0x14;
-				LegoU16 m_unk0x16;
-				LegoU16 m_unk0x18;
-				undefined m_unk0x1a[0x1c - 0x1a];
-			} m_t1;
+				LegoFloat m_normalX;
+				LegoFloat m_normalY;
+				LegoFloat m_normalZ;
+				LegoFloat m_distance;
+				LegoU32 m_frontStamp;
+				LegoU32 m_backStamp;
+				LegoU16 m_frontChild;
+				LegoU16 m_backChild;
+			} m_plane;
 			Node m_node;
-		} m_unk0x04;
+		} m_data;
 	};
 	// SIZE 0x18
 	struct Bounds {
@@ -102,7 +91,7 @@ public:
 	);
 	void FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08);
 	void FUN_00403f20();
-	TreeNode::Node* GetUnk0x24() const { return m_unk0x24; }
+	TreeNode::Node* GetFirstVisibleLeaf() const { return m_firstVisibleLeaf; }
 
 	// SYNTHETIC: GOLDP 0x100179a0
 	// GolBoundingShape::`vector deleting destructor'
@@ -112,15 +101,15 @@ private:
 	void FUN_1001b1a0(GolFileParser& p_parser);
 
 	LegoU32 m_unk0x04;
-	TreeNode* m_unk0x08;
-	TreeNode* m_unk0x0c;
-	undefined4 m_unk0x10;
+	TreeNode* m_nodes;
+	TreeNode* m_root;
+	undefined4 m_visitStamp;
 	LegoS32 m_unk0x14;
 	Bounds* m_unk0x18;
 	LegoS32 m_unk0x1c;
 	LegoU16* m_unk0x20;
-	TreeNode::Node* m_unk0x24;
-	TreeNode::Node* m_unk0x28;
+	TreeNode::Node* m_firstVisibleLeaf;
+	TreeNode::Node* m_lastVisibleLeaf;
 };
 
 #endif // GOLBOUNDINGSHAPE_H

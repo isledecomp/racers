@@ -1344,7 +1344,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 	}
 
 	while (node != NULL) {
-		if (node->m_unk0x1a == 0) {
+		if (node->m_linked == 0) {
 			m_unk0xc83e4 = FALSE;
 			m_unk0xc8518 = &m_unk0xc84d8;
 		}

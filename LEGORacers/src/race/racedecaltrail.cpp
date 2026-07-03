@@ -58,80 +58,80 @@ RaceDecalManager::Trail::Decal::ProjectedVertex g_decalProjectedVertices[76];
 void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 {
 	LegoFloat planeOffset;
-	m_unk0x10++;
-	TreeNode* node = m_unk0x0c;
+	m_visitStamp++;
+	TreeNode* node = m_root;
 
-	while (node->m_type == TreeNode::e_type0) {
-		LegoFloat dot = node->m_unk0x04.m_t0.m_unk0x08;
+	while (node->m_type == TreeNode::e_plane) {
+		LegoFloat dot = node->m_data.m_plane.m_normalZ;
 		dot *= p_unk0x04->m_z;
-		dot += node->m_unk0x04.m_t0.m_unk0x04 * p_unk0x04->m_y;
+		dot += node->m_data.m_plane.m_normalY * p_unk0x04->m_y;
 		LegoFloat dotX = p_unk0x04->m_x;
-		dotX *= node->m_unk0x04.m_t0.m_unk0x00;
+		dotX *= node->m_data.m_plane.m_normalX;
 		dot += dotX;
-		dot += node->m_unk0x04.m_t0.m_unk0x0c;
+		dot += node->m_data.m_plane.m_distance;
 
 		LegoU32 nodeIndex;
-		if (dot < 0.0f && node->m_unk0x04.m_t0.m_unk0x1a != TreeNode::c_invalidIndex) {
-			node->m_unk0x04.m_t0.m_unk0x14 = m_unk0x10;
-			nodeIndex = node->m_unk0x04.m_t0.m_unk0x1a;
+		if (dot < 0.0f && node->m_data.m_plane.m_backChild != TreeNode::c_invalidIndex) {
+			node->m_data.m_plane.m_backStamp = m_visitStamp;
+			nodeIndex = node->m_data.m_plane.m_backChild;
 		}
-		else if (node->m_unk0x04.m_t0.m_unk0x18 == TreeNode::c_invalidIndex) {
-			node->m_unk0x04.m_t0.m_unk0x14 = m_unk0x10;
-			nodeIndex = node->m_unk0x04.m_t0.m_unk0x1a;
+		else if (node->m_data.m_plane.m_frontChild == TreeNode::c_invalidIndex) {
+			node->m_data.m_plane.m_backStamp = m_visitStamp;
+			nodeIndex = node->m_data.m_plane.m_backChild;
 		}
 		else {
-			node->m_unk0x04.m_t0.m_unk0x10 = m_unk0x10;
-			nodeIndex = node->m_unk0x04.m_t0.m_unk0x18;
+			node->m_data.m_plane.m_frontStamp = m_visitStamp;
+			nodeIndex = node->m_data.m_plane.m_frontChild;
 		}
 
-		node = &m_unk0x08[nodeIndex];
+		node = &m_nodes[nodeIndex];
 	}
 
-	node->m_unk0x04.m_node.m_previous = NULL;
-	node->m_unk0x04.m_node.m_next = NULL;
-	if (node->m_unk0x02 == TreeNode::c_invalidIndex) {
-		TreeNode::Node* entry = &node->m_unk0x04.m_node;
-		m_unk0x28 = entry;
-		m_unk0x24 = entry;
+	node->m_data.m_node.m_previous = NULL;
+	node->m_data.m_node.m_next = NULL;
+	if (node->m_nextLeafIndex == TreeNode::c_invalidIndex) {
+		TreeNode::Node* entry = &node->m_data.m_node;
+		m_lastVisibleLeaf = entry;
+		m_firstVisibleLeaf = entry;
 		return;
 	}
 
 	LegoU32 count = p_unk0x08;
 	TreeNode* firstNode = node;
 	TreeNode* previousNode = node;
-	node = &m_unk0x08[node->m_unk0x02];
+	node = &m_nodes[node->m_nextLeafIndex];
 	LegoU32 stamp;
 
 	for (;;) {
-		stamp = m_unk0x10;
+		stamp = m_visitStamp;
 
-		if (node->m_unk0x04.m_t0.m_unk0x10 != stamp) {
-			if (node->m_unk0x04.m_t0.m_unk0x14 != stamp) {
-				LegoFloat dot = node->m_unk0x04.m_t0.m_unk0x08;
+		if (node->m_data.m_plane.m_frontStamp != stamp) {
+			if (node->m_data.m_plane.m_backStamp != stamp) {
+				LegoFloat dot = node->m_data.m_plane.m_normalZ;
 				dot *= p_unk0x04->m_z;
-				dot += node->m_unk0x04.m_t0.m_unk0x04 * p_unk0x04->m_y;
-				dot += node->m_unk0x04.m_t0.m_unk0x00 * p_unk0x04->m_x;
+				dot += node->m_data.m_plane.m_normalY * p_unk0x04->m_y;
+				dot += node->m_data.m_plane.m_normalX * p_unk0x04->m_x;
 
-				if (dot < -node->m_unk0x04.m_t0.m_unk0x0c) {
-					node->m_unk0x04.m_t0.m_unk0x14 = stamp;
-					if (node->m_unk0x04.m_t0.m_unk0x1a == TreeNode::c_invalidIndex) {
+				if (dot < -node->m_data.m_plane.m_distance) {
+					node->m_data.m_plane.m_backStamp = stamp;
+					if (node->m_data.m_plane.m_backChild == TreeNode::c_invalidIndex) {
 						continue;
 					}
 
-					node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x1a];
+					node = &m_nodes[node->m_data.m_plane.m_backChild];
 				}
 				else {
-					node->m_unk0x04.m_t0.m_unk0x10 = stamp;
-					if (node->m_unk0x04.m_t0.m_unk0x18 == TreeNode::c_invalidIndex) {
+					node->m_data.m_plane.m_frontStamp = stamp;
+					if (node->m_data.m_plane.m_frontChild == TreeNode::c_invalidIndex) {
 						continue;
 					}
 
-					node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x18];
+					node = &m_nodes[node->m_data.m_plane.m_frontChild];
 				}
 			}
 			else {
-				node->m_unk0x04.m_t0.m_unk0x10 = stamp;
-				if (node->m_unk0x04.m_t0.m_unk0x18 == TreeNode::c_invalidIndex) {
+				node->m_data.m_plane.m_frontStamp = stamp;
+				if (node->m_data.m_plane.m_frontChild == TreeNode::c_invalidIndex) {
 					continue;
 				}
 				LegoU32 i = 1;
@@ -139,12 +139,12 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 					continue;
 				}
 
-				planeOffset = -node->m_unk0x04.m_t0.m_unk0x0c;
+				planeOffset = -node->m_data.m_plane.m_distance;
 				LegoFloat* vertexY = &p_unk0x04[i].m_y;
 				while (i < count) {
-					LegoFloat dot = vertexY[1] * node->m_unk0x04.m_t0.m_unk0x08;
-					dot += node->m_unk0x04.m_t0.m_unk0x04 * vertexY[0];
-					dot += vertexY[-1] * node->m_unk0x04.m_t0.m_unk0x00;
+					LegoFloat dot = vertexY[1] * node->m_data.m_plane.m_normalZ;
+					dot += node->m_data.m_plane.m_normalY * vertexY[0];
+					dot += vertexY[-1] * node->m_data.m_plane.m_normalX;
 					if (dot > planeOffset) {
 						break;
 					}
@@ -157,13 +157,13 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 					continue;
 				}
 
-				node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x18];
+				node = &m_nodes[node->m_data.m_plane.m_frontChild];
 			}
 		}
 		else {
-			if (node->m_unk0x04.m_t0.m_unk0x14 != stamp) {
-				node->m_unk0x04.m_t0.m_unk0x14 = stamp;
-				if (node->m_unk0x04.m_t0.m_unk0x1a == TreeNode::c_invalidIndex) {
+			if (node->m_data.m_plane.m_backStamp != stamp) {
+				node->m_data.m_plane.m_backStamp = stamp;
+				if (node->m_data.m_plane.m_backChild == TreeNode::c_invalidIndex) {
 					continue;
 				}
 				LegoU32 i = 1;
@@ -171,12 +171,12 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 					continue;
 				}
 
-				planeOffset = -node->m_unk0x04.m_t0.m_unk0x0c;
+				planeOffset = -node->m_data.m_plane.m_distance;
 				LegoFloat* vertexY = &p_unk0x04[i].m_y;
 				while (i < count) {
-					LegoFloat dot = vertexY[1] * node->m_unk0x04.m_t0.m_unk0x08;
-					dot += node->m_unk0x04.m_t0.m_unk0x04 * vertexY[0];
-					dot += vertexY[-1] * node->m_unk0x04.m_t0.m_unk0x00;
+					LegoFloat dot = vertexY[1] * node->m_data.m_plane.m_normalZ;
+					dot += node->m_data.m_plane.m_normalY * vertexY[0];
+					dot += vertexY[-1] * node->m_data.m_plane.m_normalX;
 					if (dot < planeOffset) {
 						break;
 					}
@@ -189,29 +189,29 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 					continue;
 				}
 
-				node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x1a];
+				node = &m_nodes[node->m_data.m_plane.m_backChild];
 			}
 			else {
-				if (node->m_unk0x02 == TreeNode::c_invalidIndex) {
+				if (node->m_nextLeafIndex == TreeNode::c_invalidIndex) {
 					break;
 				}
 
-				node = &m_unk0x08[node->m_unk0x02];
+				node = &m_nodes[node->m_nextLeafIndex];
 				continue;
 			}
 		}
 
-		if (node->m_type != TreeNode::e_type0) {
-			previousNode->m_unk0x04.m_node.m_next = &node->m_unk0x04.m_node;
-			node->m_unk0x04.m_node.m_previous = &previousNode->m_unk0x04.m_node;
-			node->m_unk0x04.m_node.m_next = NULL;
+		if (node->m_type != TreeNode::e_plane) {
+			previousNode->m_data.m_node.m_next = &node->m_data.m_node;
+			node->m_data.m_node.m_previous = &previousNode->m_data.m_node;
+			node->m_data.m_node.m_next = NULL;
 			previousNode = node;
-			node = &m_unk0x08[node->m_unk0x02];
+			node = &m_nodes[node->m_nextLeafIndex];
 		}
 	}
 
-	m_unk0x24 = &firstNode->m_unk0x04.m_node;
-	m_unk0x28 = &previousNode->m_unk0x04.m_node;
+	m_firstVisibleLeaf = &firstNode->m_data.m_node;
+	m_lastVisibleLeaf = &previousNode->m_data.m_node;
 }
 
 // FUNCTION: LEGORACERS 0x00414a30
@@ -224,7 +224,7 @@ void RaceDecalManager::Trail::Decal::Project(GolCollidableEntity* p_unk0x04)
 	boundingShape->FUN_00403cc0(g_decalQueryPoints, sizeOfArray(g_decalQueryPoints));
 	BeginGeometry(model);
 
-	GolBoundingShape::TreeNode::Node* entry = boundingShape->GetUnk0x24();
+	GolBoundingShape::TreeNode::Node* entry = boundingShape->GetFirstVisibleLeaf();
 	while (entry != NULL) {
 		ProcessGroups(model, entry->m_firstGroup, entry->m_groupCount);
 		entry = entry->m_next;

@@ -83,7 +83,7 @@ LegoBool32 MenuModelCarousel::Destroy()
 		if (m_items) {
 			for (LegoS32 i = 0; i < m_slotCount; i++) {
 				if (m_items[i].m_model) {
-					m_golExport->VTable0x48(m_items[i].m_model);
+					m_golExport->DestroyModel(m_items[i].m_model);
 				}
 			}
 
@@ -91,7 +91,7 @@ LegoBool32 MenuModelCarousel::Destroy()
 		}
 
 		if (m_camera) {
-			m_golExport->VTable0x54(m_camera);
+			m_golExport->DestroyCamera(m_camera);
 		}
 
 		result = MenuWidget::Destroy();
@@ -104,7 +104,7 @@ LegoBool32 MenuModelCarousel::Destroy()
 void MenuModelCarousel::SetupCamera(CreateParams* p_createParams)
 {
 	m_cameraDistance = p_createParams->m_cameraSettings[7];
-	GolCamera* camera = m_golExport->VTable0x20();
+	GolCamera* camera = m_golExport->CreateCamera();
 	m_camera = camera;
 
 	LegoFloat fov = p_createParams->m_cameraSettings[6];
@@ -210,7 +210,7 @@ void MenuModelCarousel::CreateItems(CreateParams* p_createParams)
 
 	Item* item = m_items;
 	for (LegoS32 i = 0; i < m_slotCount; i++) {
-		item->m_model = m_golExport->VTable0x14();
+		item->m_model = m_golExport->CreateModel();
 		if (!item->m_model) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

@@ -104,7 +104,7 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	m_driverEntity.ResetModelState();
 
 	if (m_driverModel) {
-		m_golExport->VTable0x48(m_driverModel);
+		m_golExport->DestroyModel(m_driverModel);
 		m_driverModel = NULL;
 	}
 

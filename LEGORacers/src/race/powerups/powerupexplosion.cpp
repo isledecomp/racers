@@ -93,7 +93,7 @@ void PowerupExplosion::Initialize(const Params* p_params)
 	m_alphaRate = -endRate;
 
 	if (p_params->m_billboardMaterial != NULL || p_params->m_billboardAnimation != NULL) {
-		m_billboard = static_cast<GolBillboard*>(m_golExport->VTable0x30());
+		m_billboard = static_cast<GolBillboard*>(m_golExport->CreateBillboard());
 	}
 
 	if (p_params->m_billboardAnimation != NULL) {
@@ -138,7 +138,7 @@ void PowerupExplosion::Destroy()
 
 	if (m_golExport != NULL && m_billboard != NULL) {
 		m_billboard->SetPrimaryModel();
-		m_golExport->VTable0x64(m_billboard);
+		m_golExport->DestroyBillboard(m_billboard);
 		m_billboard = NULL;
 	}
 

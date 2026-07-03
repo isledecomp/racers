@@ -174,11 +174,11 @@ LegoBool32 EditCarScreen::Destroy()
 	m_driverEntity.ResetModelState();
 
 	if (m_bodySceneNode) {
-		m_golExport->VTable0x4c(m_bodySceneNode);
+		m_golExport->DestroySceneNode(m_bodySceneNode);
 	}
 
 	if (m_driverModel) {
-		m_golExport->VTable0x48(m_driverModel);
+		m_golExport->DestroyModel(m_driverModel);
 	}
 
 	return MenuGameScreen::Destroy();
@@ -223,7 +223,7 @@ void EditCarScreen::LoadBuilderImages(MenuGameContext* p_context, MenuScreenCrea
 		return;
 	}
 
-	g_editCarImageList = p_createParams->m_golExport->VTable0x34();
+	g_editCarImageList = p_createParams->m_golExport->CreateImageList();
 	if (g_editCarImageList == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -295,7 +295,7 @@ void EditCarScreen::CreateDriverModel()
 
 	m_context->m_modelBuilder.ApplyFaceExpression(m_driverModel, &cosmetics);
 
-	m_bodySceneNode = m_golExport->VTable0x18();
+	m_bodySceneNode = m_golExport->CreateSceneNode();
 	m_bodySceneNode->CopyFrom(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
 	if (m_bodySceneNode == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -506,7 +506,7 @@ void EditCarScreen::Navigate()
 		m_context->m_menuStack.Pop();
 		m_context->m_partResources.SetResourceIndex(0);
 		if (g_editCarImageList) {
-			m_golExport->VTable0x68(g_editCarImageList);
+			m_golExport->DestroyImageList(g_editCarImageList);
 			g_editCarImageList = NULL;
 		}
 		m_context->m_carBuildModel.Serialize(m_carBuildSaveBuffer);
@@ -523,7 +523,7 @@ void EditCarScreen::Navigate()
 		}
 		m_context->m_partResources.SetResourceIndex(0);
 		if (g_editCarImageList) {
-			m_golExport->VTable0x68(g_editCarImageList);
+			m_golExport->DestroyImageList(g_editCarImageList);
 			g_editCarImageList = NULL;
 		}
 		break;

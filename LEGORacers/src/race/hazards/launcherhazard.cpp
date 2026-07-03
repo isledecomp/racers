@@ -62,7 +62,7 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	m_powerupManager = p_context->GetPowerupManager();
 	m_trailManager = p_context->GetTrailManager();
 
-	m_billboard = static_cast<GolBillboard*>(m_golExport->VTable0x30());
+	m_billboard = static_cast<GolBillboard*>(m_golExport->CreateBillboard());
 	GolMaterial* material = p_context->GetRenderer()->FindMaterialByName("cannonb");
 	m_billboard->Configure(material, 5.0f, 5.0f, g_launcherMaxDistanceSquared);
 
@@ -116,7 +116,7 @@ void LauncherHazard::Reset()
 {
 	OnDeactivate(NULL);
 	if (m_billboard != NULL) {
-		m_golExport->VTable0x64(m_billboard);
+		m_golExport->DestroyBillboard(m_billboard);
 		m_billboard = NULL;
 	}
 

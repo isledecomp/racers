@@ -42,7 +42,7 @@ void MainMenuModelSlot::Reset()
 void MainMenuModelSlot::CreateDriverModel()
 {
 	m_modelBuilder->SetExpressionMask(TRUE);
-	m_driverModel = m_golExport->VTable0x14();
+	m_driverModel = m_golExport->CreateModel();
 
 	undefined4 dimensions[5];
 	m_modelBuilder->GetMaxMergedCounts(dimensions);
@@ -60,7 +60,7 @@ void MainMenuModelSlot::CreateDriverModel()
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_bodySceneNode = m_golExport->VTable0x18();
+	m_bodySceneNode = m_golExport->CreateSceneNode();
 	if (m_bodySceneNode == nullNode) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -93,11 +93,11 @@ LegoBool32 MainMenuModelSlot::Destroy()
 	m_driverEntity.ResetModelState();
 
 	if (m_driverModel) {
-		m_golExport->VTable0x48(m_driverModel);
+		m_golExport->DestroyModel(m_driverModel);
 	}
 
 	if (m_bodySceneNode) {
-		m_golExport->VTable0x4c(m_bodySceneNode);
+		m_golExport->DestroySceneNode(m_bodySceneNode);
 	}
 
 	return MenuSceneElement::Destroy();

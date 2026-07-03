@@ -127,10 +127,10 @@ void BeamMesh::Initialize(const SetupParams* p_params)
 
 	LegoU32 stride = segmentCount * m_ringVertexCount;
 	LegoU32 vertexCount = m_sectionCount * (2 * (0x40 / stride) + 5) + 2;
-	m_model = m_golExport->VTable0x14();
+	m_model = m_golExport->CreateModel();
 	m_model->Allocate(params->m_renderer, 1, m_vertexCapacity, doubledIndexCount, vertexCount, 1);
 
-	m_sceneNode = m_golExport->VTable0x18();
+	m_sceneNode = m_golExport->CreateSceneNode();
 	m_sceneNode->Allocate(m_sectionCount);
 	m_entity.Initialize(m_model, m_sceneNode, params->m_faceCamera, params->m_modelDistance);
 	m_model->GetMaterialTable()->SetEntry(0, params->m_material);
@@ -143,11 +143,11 @@ void BeamMesh::Destroy()
 
 	if (m_golExport != NULL) {
 		if (m_sceneNode != NULL) {
-			m_golExport->VTable0x4c(m_sceneNode);
+			m_golExport->DestroySceneNode(m_sceneNode);
 		}
 
 		if (m_model != NULL) {
-			m_golExport->VTable0x48(m_model);
+			m_golExport->DestroyModel(m_model);
 		}
 	}
 

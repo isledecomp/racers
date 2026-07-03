@@ -1480,12 +1480,12 @@ LegoBool32 CarBuildModel::Initialize(
 	SetColorTable(p_colorTable);
 	m_pieceLibrary = p_pieceLibrary;
 	m_golExport = p_golExport;
-	m_model = m_golExport->VTable0x14();
+	m_model = m_golExport->CreateModel();
 	m_renderer = renderer;
 	AcquireBuffers();
 	m_modelEntity.SetPrimaryModel(m_model, g_carBuildModelMaxFloat);
 
-	m_overlayModel = m_golExport->VTable0x14();
+	m_overlayModel = m_golExport->CreateModel();
 	m_overlayModel->Allocate(renderer, 1, 384, 192, 112, 2);
 	m_overlayEntity.SetPrimaryModel(m_overlayModel, g_carBuildModelMaxFloat);
 	m_overlayEntity.SetPrimaryMaterialTable(m_overlayModel->GetMaterialTable());
@@ -1516,10 +1516,10 @@ void CarBuildModel::Destroy()
 
 	if (m_golExport != NULL) {
 		if (m_model != NULL) {
-			m_golExport->VTable0x48(m_model);
+			m_golExport->DestroyModel(m_model);
 		}
 		if (m_overlayModel != NULL) {
-			m_golExport->VTable0x48(m_overlayModel);
+			m_golExport->DestroyModel(m_overlayModel);
 		}
 	}
 

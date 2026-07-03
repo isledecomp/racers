@@ -104,7 +104,7 @@ void GrapplingHookAction::Initialize(
 	m_projectile.Initialize(&params);
 
 	m_state = 1;
-	m_billboard = static_cast<GolBillboard*>(params.m_golExport->VTable0x30());
+	m_billboard = static_cast<GolBillboard*>(params.m_golExport->CreateBillboard());
 }
 
 // FUNCTION: LEGORACERS 0x00453d90
@@ -113,7 +113,7 @@ void GrapplingHookAction::Shutdown()
 	Deactivate();
 
 	if (m_owner != NULL && m_billboard != NULL) {
-		m_owner->m_golExport->VTable0x64(m_billboard);
+		m_owner->m_golExport->DestroyBillboard(m_billboard);
 		m_billboard = NULL;
 		m_owner = NULL;
 	}

@@ -261,7 +261,7 @@ LegoBool32 DriverModelBuilder::NeedsNewOutputModel(GolModelBase* p_model) const
 // FUNCTION: LEGORACERS 0x0049d6e0
 GolModelBase* DriverModelBuilder::CreateOutputModel(undefined4 p_vertexType)
 {
-	GolModelBase* model = m_golExport->VTable0x14();
+	GolModelBase* model = m_golExport->CreateModel();
 	if (model == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}

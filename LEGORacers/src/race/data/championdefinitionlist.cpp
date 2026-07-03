@@ -73,7 +73,7 @@ void ChampionDefinitionList::Clear()
 
 	if (m_models != NULL) {
 		for (LegoU32 i = 0; i < m_entryCount; i++) {
-			m_golExport->VTable0x48(m_models[i]);
+			m_golExport->DestroyModel(m_models[i]);
 			m_models[i] = NULL;
 		}
 
@@ -265,7 +265,7 @@ GolModelEntity* ChampionDefinitionList::CreateChampionModel(ChampionDefinition* 
 	name[sizeof(GolName)] = '\0';
 	m_materialLists[m_entryCount]->Load(m_renderer, name, m_binary);
 
-	m_models[m_entryCount] = m_golExport->VTable0x14();
+	m_models[m_entryCount] = m_golExport->CreateModel();
 	::strncpy(name, p_definition->m_unk0x10, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
 	m_models[m_entryCount]->Load(m_renderer, name, m_binary);

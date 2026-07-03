@@ -60,7 +60,7 @@ void RaceDecalManager::Trail::Destroy()
 	for (i = 0; i < sizeOfArray(m_slots); i++) {
 		GolModelBase* model = m_slots[i].m_model;
 		if (model != NULL) {
-			m_golExport->VTable0x48(model);
+			m_golExport->DestroyModel(model);
 			m_slots[i].m_model = NULL;
 		}
 	}
@@ -118,7 +118,7 @@ void RaceDecalManager::Trail::Initialize(
 	ModelSlot* slot = m_slots;
 	LegoU32 count = sizeOfArray(m_slots);
 	do {
-		slot->m_model = m_golExport->VTable0x14();
+		slot->m_model = m_golExport->CreateModel();
 		slot->m_model->Allocate(
 			p_renderer,
 			1,

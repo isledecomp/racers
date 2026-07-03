@@ -84,17 +84,17 @@ LegoBool32 MenuSceneView::Destroy()
 
 	if (result & m_flags) {
 		if (m_camera && m_world && !m_world->GetCameraCount()) {
-			m_golExport->VTable0x54(m_camera);
+			m_golExport->DestroyCamera(m_camera);
 		}
 
 		if (m_world) {
 			m_world->Destroy();
-			m_golExport->VTable0x3c(m_world);
+			m_golExport->DestroyWorldDatabase(m_world);
 		}
 
 		if (m_blendedWorld) {
 			m_blendedWorld->Destroy();
-			m_golExport->VTable0x3c(m_blendedWorld);
+			m_golExport->DestroyWorldDatabase(m_blendedWorld);
 		}
 
 		result = MenuWidget::Destroy();
@@ -109,7 +109,7 @@ void MenuSceneView::LoadWorlds(CreateParams* p_createParams, undefined4 p_binary
 	m_drawWorld = p_createParams->m_drawWorld;
 	m_worldScale = p_createParams->m_worldScale;
 
-	m_world = m_golExport->VTable0x08();
+	m_world = m_golExport->CreateWorldDatabase();
 	if (!m_world) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -117,7 +117,7 @@ void MenuSceneView::LoadWorlds(CreateParams* p_createParams, undefined4 p_binary
 	m_world->Load(m_renderer, p_createParams->m_worldName, p_binary, m_worldScale);
 
 	if (p_createParams->m_hasBlendedWorld) {
-		m_blendedWorld = m_golExport->VTable0x08();
+		m_blendedWorld = m_golExport->CreateWorldDatabase();
 		if (!m_blendedWorld) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -137,7 +137,7 @@ void MenuSceneView::SetupCamera(CreateParams* p_createParams)
 	}
 	else {
 		GolVec3* cameraVectors = &p_createParams->m_cameraEye;
-		m_camera = m_golExport->VTable0x20();
+		m_camera = m_golExport->CreateCamera();
 		if (!m_camera) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

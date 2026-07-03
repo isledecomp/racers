@@ -154,7 +154,7 @@ void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_mana
 	m_beam.Initialize(&params);
 	m_beam.SetColors(&g_lightningBaseColor, &g_lightningSecondaryColor, &g_lightningTertiaryColor);
 
-	m_flashBillboard = static_cast<GolBillboard*>(p_export->VTable0x30());
+	m_flashBillboard = static_cast<GolBillboard*>(p_export->CreateBillboard());
 	GolMaterial* material = renderer->FindMaterialByName("ltflash");
 	m_flashBillboard->Configure(material, g_lightningFlashWidth, g_lightningFlashHeight, g_lightningFlashDrawDistance);
 
@@ -186,7 +186,7 @@ void LightningAction::Destroy()
 
 	if (m_flashBillboard != NULL) {
 		m_flashBillboard->SetPrimaryModel();
-		m_owner->m_golExport->VTable0x64(m_flashBillboard);
+		m_owner->m_golExport->DestroyBillboard(m_flashBillboard);
 		m_flashBillboard = NULL;
 	}
 

@@ -61,7 +61,7 @@ void ChassisModelTable::Clear()
 
 	if (m_sceneNodes != NULL) {
 		for (LegoU32 i = 0; i < m_instantiatedCount; i++) {
-			m_golExport->VTable0x4c(m_sceneNodes[i]);
+			m_golExport->DestroySceneNode(m_sceneNodes[i]);
 			m_sceneNodes[i] = NULL;
 		}
 		delete[] m_sceneNodes;
@@ -88,7 +88,7 @@ void ChassisModelTable::Clear()
 
 	if (m_models != NULL) {
 		for (LegoU32 i = 0; i < m_instantiatedCount; i++) {
-			m_golExport->VTable0x48(m_models[i]);
+			m_golExport->DestroyModel(m_models[i]);
 			m_models[i] = NULL;
 		}
 		delete[] m_models;
@@ -391,7 +391,7 @@ LegoU32 ChassisModelTable::InstantiateModels(
 		name[sizeof(GolName)] = '\0';
 		m_materialLists[m_instantiatedCount]->Load(m_renderer, name, m_binary);
 
-		m_sceneNodes[m_instantiatedCount] = m_golExport->VTable0x18();
+		m_sceneNodes[m_instantiatedCount] = m_golExport->CreateSceneNode();
 		::strncpy(name, p_item->m_nodeNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';
 		m_sceneNodes[m_instantiatedCount]->Load(name, m_binary);
@@ -400,7 +400,7 @@ LegoU32 ChassisModelTable::InstantiateModels(
 		name[sizeof(GolName)] = '\0';
 		m_modelParts[m_instantiatedCount].VTable0x14(name, m_binary);
 
-		m_models[m_instantiatedCount] = m_golExport->VTable0x14();
+		m_models[m_instantiatedCount] = m_golExport->CreateModel();
 		::strncpy(name, p_item->m_modelNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';
 		m_models[m_instantiatedCount]->Load(m_renderer, name, m_binary);

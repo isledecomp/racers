@@ -78,7 +78,7 @@ GolWorldDatabase* DriverPartResources::Load(const LoadParams* p_params, LegoS32 
 	LoadPartResource(p_params->m_binary);
 	NormalizeHeadGroupOrder();
 
-	m_hatModel = m_golExport->VTable0x14();
+	m_hatModel = m_golExport->CreateModel();
 	m_hatModel->Allocate(m_renderer, 2, 600, 300, 100, 3);
 
 	ComputeMaxVertexCounts();
@@ -96,7 +96,7 @@ LegoBool32 DriverPartResources::ReleaseResources()
 	}
 
 	if (m_hatModel != NULL) {
-		m_golExport->VTable0x48(m_hatModel);
+		m_golExport->DestroyModel(m_hatModel);
 	}
 	if (m_materialList != NULL) {
 		m_golExport->DestroyMaterialList(m_materialList);
@@ -105,7 +105,7 @@ LegoBool32 DriverPartResources::ReleaseResources()
 		m_golExport->DestroyTextureList(m_textureList);
 	}
 	if (m_partResource != NULL) {
-		m_golExport->VTable0x3c(m_partResource);
+		m_golExport->DestroyWorldDatabase(m_partResource);
 	}
 
 	Reset();
@@ -123,7 +123,7 @@ void DriverPartResources::LoadPartResource(LegoBool32 p_binary)
 		g_hashTable->SetCurrentEntryFromString(directory);
 	}
 
-	m_partResource = m_golExport->VTable0x08();
+	m_partResource = m_golExport->CreateWorldDatabase();
 	if (m_partResource == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}

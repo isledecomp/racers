@@ -1098,7 +1098,7 @@ void CutscenePlayer::Clear()
 	if (m_imageLists) {
 		for (i = 0; i < m_imageListCount; i++) {
 			if (m_imageLists[i]) {
-				m_golExport->VTable0x68(m_imageLists[i]);
+				m_golExport->DestroyImageList(m_imageLists[i]);
 			}
 		}
 		delete m_imageLists;
@@ -1473,7 +1473,7 @@ void CutscenePlayer::LoadImageLists(undefined4 p_binary)
 {
 	if (m_imageListNames != NULL) {
 		for (LegoU32 i = 0; i < m_imageListCount; i++) {
-			m_imageLists[i] = m_golExport->VTable0x34();
+			m_imageLists[i] = m_golExport->CreateImageList();
 			m_imageLists[i]->LoadImageDefinitions(m_renderer, &m_imageListNames[i * 9], p_binary);
 		}
 

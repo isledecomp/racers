@@ -48,7 +48,7 @@ void LoadingScreen::Destroy()
 	m_font = 0;
 
 	if (images) {
-		m_golExport->VTable0x68(images);
+		m_golExport->DestroyImageList(images);
 		m_images = NULL;
 	}
 
@@ -161,7 +161,7 @@ void LoadingScreen::Initialize(
 	p_font->MeasureString(&m_text, &textWidth, &textHeight);
 	m_textX = (static_cast<LegoU32>(static_cast<LegoS32>(renderTargetWidth)) - textWidth) >> 1;
 
-	m_images = m_golExport->VTable0x34();
+	m_images = m_golExport->CreateImageList();
 	m_images->LoadImageDefinitions(m_renderer, g_loadScreenName, p_binary);
 
 	GolImage* image = NULL;

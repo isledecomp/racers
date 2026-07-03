@@ -70,7 +70,7 @@ LegoBool32 CarPartCarousel::Destroy()
 
 	if (result & m_flags) {
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
-			m_golExport->VTable0x48(m_items[i].m_model);
+			m_golExport->DestroyModel(m_items[i].m_model);
 			m_items[i].m_model = NULL;
 		}
 

@@ -1445,7 +1445,7 @@ void CutsceneDefinition::Clear()
 			for (i = 0; i < m_worldDatabaseCount; i++) {
 				if (m_worldDatabases[i]) {
 					m_worldDatabases[i]->Destroy();
-					m_golExport->VTable0x3c(m_worldDatabases[i]);
+					m_golExport->DestroyWorldDatabase(m_worldDatabases[i]);
 				}
 			}
 		}
@@ -1497,7 +1497,7 @@ void CutsceneDefinition::LoadWorlds(LegoBool32 p_binary)
 {
 	if (m_worldNames) {
 		for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
-			m_worldDatabases[i] = m_golExport->VTable0x08();
+			m_worldDatabases[i] = m_golExport->CreateWorldDatabase();
 			m_worldDatabases[i]->Load(m_renderer, &m_worldNames[i * 9], p_binary, 1.0f);
 		}
 	}

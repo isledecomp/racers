@@ -460,17 +460,17 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Destroy()
 	}
 
 	if (m_pieceEntity.HasModel()) {
-		m_golExport->VTable0x48(m_pieceModel);
+		m_golExport->DestroyModel(m_pieceModel);
 	}
 
 	m_driverEntity.ResetModelState();
 
 	if (m_bodySceneNode) {
-		m_golExport->VTable0x4c(m_bodySceneNode);
+		m_golExport->DestroySceneNode(m_bodySceneNode);
 	}
 
 	if (m_driverModel) {
-		m_golExport->VTable0x48(m_driverModel);
+		m_golExport->DestroyModel(m_driverModel);
 	}
 
 	return MenuSceneElement::Destroy();
@@ -493,7 +493,7 @@ void CarModelScreenBase::CarPartPlacement::ResetCamera()
 // FUNCTION: LEGORACERS 0x00477c50
 void CarModelScreenBase::CarPartPlacement::CreatePieceModel()
 {
-	m_pieceModel = m_golExport->VTable0x14();
+	m_pieceModel = m_golExport->CreateModel();
 	if (m_pieceModel == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -517,7 +517,7 @@ void CarModelScreenBase::CarPartPlacement::CreateDriverModel(undefined4)
 
 	m_context->m_modelBuilder.ApplyFaceExpression(m_driverModel, &cosmetics);
 
-	m_bodySceneNode = m_golExport->VTable0x18();
+	m_bodySceneNode = m_golExport->CreateSceneNode();
 	m_bodySceneNode->CopyFrom(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
 	if (m_bodySceneNode == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);

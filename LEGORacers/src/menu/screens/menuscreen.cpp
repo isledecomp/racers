@@ -189,7 +189,7 @@ LegoBool32 MenuScreen::Destroy()
 	if (m_initialized) {
 		if (m_imageList) {
 			m_imageList->Clear();
-			m_golExport->VTable0x68(m_imageList);
+			m_golExport->DestroyImageList(m_imageList);
 		}
 
 		if (m_fontTable) {
@@ -249,7 +249,7 @@ LegoBool32 MenuScreen::LoadImagesAndFonts(MenuScreenCreateParams* p_createParams
 	strcat(fileName, idSuffix);
 
 	if (!GolStream::FindFile(fileName)) {
-		m_imageList = m_golExport->VTable0x34();
+		m_imageList = m_golExport->CreateImageList();
 		m_imageList->LoadImageDefinitions(m_renderer, fileName, p_createParams->m_useBinaryFiles);
 	}
 

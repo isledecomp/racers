@@ -49,7 +49,7 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 
 	m_driverEntity.ResetModelState();
 	if (m_driverModel) {
-		m_golExport->VTable0x48(m_driverModel);
+		m_golExport->DestroyModel(m_driverModel);
 		m_driverModel = NULL;
 	}
 
@@ -155,7 +155,7 @@ void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 		}
 
 		if (m_driverModel) {
-			m_golExport->VTable0x48(m_driverModel);
+			m_golExport->DestroyModel(m_driverModel);
 			m_driverModel = NULL;
 		}
 

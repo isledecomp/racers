@@ -125,7 +125,7 @@ void TimeRaceManager::Initialize(
 	m_recordRun->m_initialRotation.m_z = 0.0f;
 	m_recordRun->m_initialRotation.m_w = 0.0f;
 
-	m_worldDatabase = m_golExport->VTable0x08();
+	m_worldDatabase = m_golExport->CreateWorldDatabase();
 	m_worldDatabase->Load(p_renderer, "ghost", p_binary, 1.0f);
 
 	m_recordGhostMarker = m_worldDatabase->GetAnimatedEntities();
@@ -157,7 +157,7 @@ void TimeRaceManager::Shutdown()
 	m_bestGhostCarModel.ResetModelState();
 
 	if (m_worldDatabase) {
-		m_golExport->VTable0x3c(m_worldDatabase);
+		m_golExport->DestroyWorldDatabase(m_worldDatabase);
 		m_worldDatabase = NULL;
 	}
 	if (m_recordRun) {

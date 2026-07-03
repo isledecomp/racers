@@ -84,7 +84,7 @@ void ParticleSystem::Initialize(
 	m_materialCapacity = p_materialCapacity;
 	m_particleCapacity = p_particleCapacity;
 
-	m_model = p_golExport->VTable0x14();
+	m_model = p_golExport->CreateModel();
 	LegoU32 triangleCapacity = m_triangleCapacity;
 	LegoU32 materialCapacity = m_materialCapacity;
 	LegoU32 groupCapacity = materialCapacity + 2 * (materialCapacity + triangleCapacity / 10) + 1;
@@ -115,7 +115,7 @@ void ParticleSystem::Destroy()
 	m_modelEntity.ResetModelState();
 	if (m_golExport) {
 		if (m_model) {
-			m_golExport->VTable0x48(m_model);
+			m_golExport->DestroyModel(m_model);
 			m_model = NULL;
 		}
 		m_golExport = NULL;

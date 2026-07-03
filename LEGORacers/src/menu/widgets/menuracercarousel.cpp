@@ -49,7 +49,7 @@ LegoBool32 MenuRacerCarousel::Create(CreateParams* p_createParams, MenuStyleTabl
 
 	if (MenuModelCarousel::Create(p_createParams, p_styleEntry)) {
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
-			m_golExport->VTable0x48(m_items[i].m_model);
+			m_golExport->DestroyModel(m_items[i].m_model);
 			m_items[i].m_model = NULL;
 		}
 

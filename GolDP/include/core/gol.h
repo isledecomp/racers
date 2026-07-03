@@ -49,33 +49,33 @@ protected:
 	virtual ~GolExport() {} // vtable+0x00
 
 public:
-	virtual GolCommonDrawState* GetDrawState() = 0;            // vtable+0x04
-	virtual GolWorldDatabase* VTable0x08() = 0;                // vtable+0x08
-	virtual GolTextureList* CreateTextureList() = 0;           // vtable+0x0c
-	virtual GolMaterialLibrary* CreateMaterialList() = 0;      // vtable+0x10
-	virtual GolModelBase* VTable0x14() = 0;                    // vtable+0x14
-	virtual GolSceneNode* VTable0x18() = 0;                    // vtable+0x18
-	virtual GolBoundingShape* CreateBoundingShape() = 0;       // vtable+0x1c
-	virtual GolCamera* VTable0x20() = 0;                       // vtable+0x20
-	virtual undefined4 VTable0x24() = 0;                       // vtable+0x24
-	virtual GolTiledTexture* VTable0x28() = 0;                 // vtable+0x28
-	virtual GolFontBase* CreateFont() = 0;                     // vtable+0x2c
-	virtual GolWorldEntity* VTable0x30() = 0;                  // vtable+0x30
-	virtual GolImageDefinitionList* VTable0x34() = 0;          // vtable+0x34
-	virtual GolFontTable* CreateFontTable() = 0;               // vtable+0x38
-	virtual void VTable0x3c(GolWorldDatabase*) = 0;            // vtable+0x3c
-	virtual void DestroyTextureList(GolTextureList*) = 0;      // vtable+0x40
-	virtual void DestroyMaterialList(GolMaterialLibrary*) = 0; // vtable+0x44
-	virtual void VTable0x48(GolModelBase*) = 0;                // vtable+0x48
-	virtual void VTable0x4c(GolSceneNode*) = 0;                // vtable+0x4c
-	virtual void DestroyBoundingShape(GolBoundingShape*) = 0;  // vtable+0x50
-	virtual void VTable0x54(GolCamera*) = 0;                   // vtable+0x54
-	virtual void VTable0x58(undefined4*) = 0;                  // vtable+0x58
-	virtual void VTable0x5c(GolTiledTexture*) = 0;             // vtable+0x5c
-	virtual void DestroyFont(GolFontBase*) = 0;                // vtable+0x60
-	virtual void VTable0x64(GolWorldEntity*) = 0;              // vtable+0x64
-	virtual void VTable0x68(GolImageDefinitionList*) = 0;      // vtable+0x68
-	virtual void DestroyFontTable(GolNameTable*) = 0;          // vtable+0x6c
+	virtual GolCommonDrawState* GetDrawState() = 0;             // vtable+0x04
+	virtual GolWorldDatabase* CreateWorldDatabase() = 0;        // vtable+0x08
+	virtual GolTextureList* CreateTextureList() = 0;            // vtable+0x0c
+	virtual GolMaterialLibrary* CreateMaterialList() = 0;       // vtable+0x10
+	virtual GolModelBase* CreateModel() = 0;                    // vtable+0x14
+	virtual GolSceneNode* CreateSceneNode() = 0;                // vtable+0x18
+	virtual GolBoundingShape* CreateBoundingShape() = 0;        // vtable+0x1c
+	virtual GolCamera* CreateCamera() = 0;                      // vtable+0x20
+	virtual undefined4 VTable0x24() = 0;                        // vtable+0x24
+	virtual GolTiledTexture* CreateTiledTexture() = 0;          // vtable+0x28
+	virtual GolFontBase* CreateFont() = 0;                      // vtable+0x2c
+	virtual GolWorldEntity* CreateBillboard() = 0;              // vtable+0x30
+	virtual GolImageDefinitionList* CreateImageList() = 0;      // vtable+0x34
+	virtual GolFontTable* CreateFontTable() = 0;                // vtable+0x38
+	virtual void DestroyWorldDatabase(GolWorldDatabase*) = 0;   // vtable+0x3c
+	virtual void DestroyTextureList(GolTextureList*) = 0;       // vtable+0x40
+	virtual void DestroyMaterialList(GolMaterialLibrary*) = 0;  // vtable+0x44
+	virtual void DestroyModel(GolModelBase*) = 0;               // vtable+0x48
+	virtual void DestroySceneNode(GolSceneNode*) = 0;           // vtable+0x4c
+	virtual void DestroyBoundingShape(GolBoundingShape*) = 0;   // vtable+0x50
+	virtual void DestroyCamera(GolCamera*) = 0;                 // vtable+0x54
+	virtual void VTable0x58(undefined4*) = 0;                   // vtable+0x58
+	virtual void DestroyTiledTexture(GolTiledTexture*) = 0;     // vtable+0x5c
+	virtual void DestroyFont(GolFontBase*) = 0;                 // vtable+0x60
+	virtual void DestroyBillboard(GolWorldEntity*) = 0;         // vtable+0x64
+	virtual void DestroyImageList(GolImageDefinitionList*) = 0; // vtable+0x68
+	virtual void DestroyFontTable(GolNameTable*) = 0;           // vtable+0x6c
 };
 
 typedef GolExport* GolEntryCBFN(GolImport*);

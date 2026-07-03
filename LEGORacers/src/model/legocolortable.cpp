@@ -70,7 +70,7 @@ void LegoColorTable::Destroy()
 
 	if (m_golExport != NULL && m_wdf != NULL) {
 		m_wdf->Destroy();
-		m_golExport->VTable0x3c(m_wdf);
+		m_golExport->DestroyWorldDatabase(m_wdf);
 	}
 
 	if (m_colorRecords != NULL) {
@@ -188,7 +188,7 @@ void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_bina
 		m_wdf->Destroy();
 	}
 	else {
-		m_wdf = m_golExport->VTable0x08();
+		m_wdf = m_golExport->CreateWorldDatabase();
 	}
 
 	m_wdf->SetLoadTexturesImmediately(p_loadTextures);

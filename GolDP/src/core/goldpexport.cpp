@@ -38,7 +38,7 @@ GolCommonDrawState* GolDPExport::GetDrawState()
 }
 
 // FUNCTION: GOLDP 0x100150a0
-GolWorldDatabase* GolDPExport::VTable0x08()
+GolWorldDatabase* GolDPExport::CreateWorldDatabase()
 {
 	GolWorldDatabase* obj = new GolWorldDatabaseEx;
 
@@ -70,7 +70,7 @@ GolMaterialLibrary* GolDPExport::CreateMaterialList()
 }
 
 // FUNCTION: GOLDP 0x100151f0
-GolModelBase* GolDPExport::VTable0x14()
+GolModelBase* GolDPExport::CreateModel()
 {
 	GolModel* result = new GolModel;
 	if (result == NULL) {
@@ -81,7 +81,7 @@ GolModelBase* GolDPExport::VTable0x14()
 }
 
 // FUNCTION: GOLDP 0x10015260
-GolSceneNode* GolDPExport::VTable0x18()
+GolSceneNode* GolDPExport::CreateSceneNode()
 {
 	GolSceneTransformNode* result = new GolSceneTransformNode;
 	if (result == NULL) {
@@ -102,7 +102,7 @@ GolBoundingShape* GolDPExport::CreateBoundingShape()
 }
 
 // FUNCTION: GOLDP 0x10015340
-GolCamera* GolDPExport::VTable0x20()
+GolCamera* GolDPExport::CreateCamera()
 {
 	GolCamera* result = new GolCamera;
 	if (result == NULL) {
@@ -113,7 +113,7 @@ GolCamera* GolDPExport::VTable0x20()
 }
 
 // FUNCTION: GOLDP 0x100153b0
-GolTiledTexture* GolDPExport::VTable0x28()
+GolTiledTexture* GolDPExport::CreateTiledTexture()
 {
 	GolImage* result = new GolImage;
 	if (result == NULL) {
@@ -134,7 +134,7 @@ GolFontBase* GolDPExport::CreateFont()
 }
 
 // FUNCTION: GOLDP 0x10015490
-GolWorldEntity* GolDPExport::VTable0x30()
+GolWorldEntity* GolDPExport::CreateBillboard()
 {
 	GolWorldEntity* result = new GolBillboardEx;
 	if (result == NULL) {
@@ -145,7 +145,7 @@ GolWorldEntity* GolDPExport::VTable0x30()
 }
 
 // FUNCTION: GOLDP 0x10015500
-GolImageDefinitionList* GolDPExport::VTable0x34()
+GolImageDefinitionList* GolDPExport::CreateImageList()
 {
 	GolImageDefinitionList* result = new GolImageDefinitionList;
 	if (result == NULL) {
@@ -167,7 +167,7 @@ GolFontTable* GolDPExport::CreateFontTable()
 }
 
 // FUNCTION: GOLDP 0x100155e0
-void GolDPExport::VTable0x3c(GolWorldDatabase* p_obj)
+void GolDPExport::DestroyWorldDatabase(GolWorldDatabase* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -191,7 +191,7 @@ void GolDPExport::DestroyMaterialList(GolMaterialLibrary* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015620
-void GolDPExport::VTable0x48(GolModelBase* p_obj)
+void GolDPExport::DestroyModel(GolModelBase* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -199,7 +199,7 @@ void GolDPExport::VTable0x48(GolModelBase* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x4c(GolSceneNode* p_obj)
+void GolDPExport::DestroySceneNode(GolSceneNode* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -215,7 +215,7 @@ void GolDPExport::DestroyBoundingShape(GolBoundingShape* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015640
-void GolDPExport::VTable0x54(GolCamera* p_obj)
+void GolDPExport::DestroyCamera(GolCamera* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -223,7 +223,7 @@ void GolDPExport::VTable0x54(GolCamera* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015660
-void GolDPExport::VTable0x5c(GolTiledTexture* p_obj)
+void GolDPExport::DestroyTiledTexture(GolTiledTexture* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -239,7 +239,7 @@ void GolDPExport::DestroyFont(GolFontBase* p_obj)
 }
 
 // FUNCTION: GOLDP 0x100156a0
-void GolDPExport::VTable0x64(GolWorldEntity* p_obj)
+void GolDPExport::DestroyBillboard(GolWorldEntity* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -253,7 +253,7 @@ void GolDPExport::VTable0x58(undefined4*)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x68(GolImageDefinitionList* p_obj)
+void GolDPExport::DestroyImageList(GolImageDefinitionList* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;

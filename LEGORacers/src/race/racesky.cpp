@@ -219,7 +219,7 @@ void RaceSkyState::Load(
 	m_transitionMs = 0;
 	m_transitionElapsedMs = 0;
 
-	m_domeModel = m_golExport->VTable0x14();
+	m_domeModel = m_golExport->CreateModel();
 
 	{
 		ModelBuilder::Params params;
@@ -264,7 +264,7 @@ void RaceSkyState::Load(
 		m_domeModel->GetMaterialTable()->SetEntry(0, p_renderer->FindMaterialByName(materialName));
 	}
 
-	m_skyWorld = m_golExport->VTable0x08();
+	m_skyWorld = m_golExport->CreateWorldDatabase();
 	m_skyWorld->Load(p_renderer, p_worldName, p_binary, 1.0f);
 }
 
@@ -272,12 +272,12 @@ void RaceSkyState::Load(
 void RaceSkyState::Clear()
 {
 	if (m_skyWorld) {
-		m_golExport->VTable0x3c(m_skyWorld);
+		m_golExport->DestroyWorldDatabase(m_skyWorld);
 		m_skyWorld = NULL;
 	}
 
 	if (m_domeModel) {
-		m_golExport->VTable0x48(m_domeModel);
+		m_golExport->DestroyModel(m_domeModel);
 		m_domeModel = NULL;
 	}
 

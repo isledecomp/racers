@@ -79,7 +79,7 @@ void DecalGeometry::Initialize(GolExport* p_golExport, GolRenderDevice* p_render
 	}
 
 	m_golExport = p_golExport;
-	m_model = p_golExport->VTable0x14();
+	m_model = p_golExport->CreateModel();
 	m_triangleCapacity = p_count;
 	m_vertexCapacity = p_count * 3;
 	m_model->Allocate(p_renderer, 1, m_vertexCapacity, p_count, p_count * 2 + 2, 1);
@@ -98,7 +98,7 @@ void DecalGeometry::Destroy()
 
 	if (m_golExport != NULL) {
 		if (m_model != 0) {
-			m_golExport->VTable0x48(m_model);
+			m_golExport->DestroyModel(m_model);
 		}
 		m_golExport = NULL;
 	}

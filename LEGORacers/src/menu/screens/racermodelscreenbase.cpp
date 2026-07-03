@@ -75,7 +75,7 @@ void RacerModelScreenBase::CreateCarModels()
 
 	for (LegoS32 i = 0; i < m_slotCount; i++) {
 		if (m_carModels[i] == NULL) {
-			m_carModels[i] = m_golExport->VTable0x14();
+			m_carModels[i] = m_golExport->CreateModel();
 			if (m_carModels[i] == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
@@ -142,12 +142,12 @@ void RacerModelScreenBase::CreateDriverModels()
 	m_context->m_modelBuilder.GetMaxMergedCounts(modelParams);
 
 	for (LegoS32 i = 0; i < m_slotCount; i++) {
-		m_driverModels[i] = m_golExport->VTable0x14();
+		m_driverModels[i] = m_golExport->CreateModel();
 		if (m_driverModels[i] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_bodySceneNodes[i] = m_golExport->VTable0x18();
+		m_bodySceneNodes[i] = m_golExport->CreateSceneNode();
 		if (m_bodySceneNodes[i] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -274,11 +274,11 @@ LegoBool32 RacerModelScreenBase::Destroy()
 	for (LegoS32 i = 0; i < m_slotCount; i++) {
 		m_driverEntities[i].ResetModelState();
 		m_carModelEntities[i].ResetModelState();
-		m_golExport->VTable0x48(m_driverModels[i]);
-		m_golExport->VTable0x4c(m_bodySceneNodes[i]);
+		m_golExport->DestroyModel(m_driverModels[i]);
+		m_golExport->DestroySceneNode(m_bodySceneNodes[i]);
 
 		if (i != 0) {
-			m_golExport->VTable0x48(m_carModels[i]);
+			m_golExport->DestroyModel(m_carModels[i]);
 		}
 	}
 

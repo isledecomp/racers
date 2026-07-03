@@ -69,11 +69,11 @@ LegoBool32 DriverHeadBuilder::ReleaseResources()
 		return TRUE;
 	}
 
-	m_golExport->VTable0x3c(m_worldDatabase);
+	m_golExport->DestroyWorldDatabase(m_worldDatabase);
 
 	for (LegoS32 i = 0; i < 7; i++) {
 		if (m_hatModels[i] != NULL) {
-			m_golExport->VTable0x48(m_hatModels[i]);
+			m_golExport->DestroyModel(m_hatModels[i]);
 		}
 	}
 
@@ -91,7 +91,7 @@ void DriverHeadBuilder::LoadHeadResource(LegoBool32 p_binary)
 		g_hashTable->SetCurrentEntryFromString(headModelDirectory);
 	}
 
-	m_worldDatabase = m_golExport->VTable0x08();
+	m_worldDatabase = m_golExport->CreateWorldDatabase();
 	if (m_worldDatabase == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -107,7 +107,7 @@ void DriverHeadBuilder::LoadHeadResource(LegoBool32 p_binary)
 void DriverHeadBuilder::CreateHatModels()
 {
 	for (LegoS32 i = 0; i < 7; i++) {
-		m_hatModels[i] = m_golExport->VTable0x14();
+		m_hatModels[i] = m_golExport->CreateModel();
 		if (m_hatModels[i] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

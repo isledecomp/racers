@@ -76,7 +76,7 @@ void DriverCosmeticTable::Clear()
 
 	if (m_models != NULL) {
 		for (LegoU32 i = 0; i < m_loadedEntryCount; i++) {
-			m_golExport->VTable0x48(m_models[i]);
+			m_golExport->DestroyModel(m_models[i]);
 			m_models[i] = NULL;
 		}
 
@@ -85,7 +85,7 @@ void DriverCosmeticTable::Clear()
 	}
 
 	if (m_rootNode != NULL) {
-		m_golExport->VTable0x4c(m_rootNode);
+		m_golExport->DestroySceneNode(m_rootNode);
 		m_rootNode = NULL;
 	}
 
@@ -297,7 +297,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			m_materials[i] = NULL;
 		}
 
-		m_rootNode = m_golExport->VTable0x18();
+		m_rootNode = m_golExport->CreateSceneNode();
 		m_rootNode->Load("pelvis", m_binary);
 		m_modelParts.VTable0x14("pelvis", m_binary);
 	}
@@ -333,7 +333,7 @@ GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry* p_entry)
 	name[sizeof(GolName)] = '\0';
 	m_materials[m_loadedEntryCount]->Load(m_renderer, name, m_binary);
 
-	m_models[m_loadedEntryCount] = m_golExport->VTable0x14();
+	m_models[m_loadedEntryCount] = m_golExport->CreateModel();
 	::strncpy(name, p_entry->m_modelName, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
 	m_models[m_loadedEntryCount]->Load(m_renderer, name, m_binary);

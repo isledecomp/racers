@@ -39,7 +39,7 @@ RaceTrailManager::Trail::~Trail()
 void RaceTrailManager::Trail::Destroy()
 {
 	if (m_model) {
-		m_golExport->VTable0x48(m_model);
+		m_golExport->DestroyModel(m_model);
 		m_model = NULL;
 	}
 
@@ -92,7 +92,7 @@ void RaceTrailManager::Trail::Reset()
 void RaceTrailManager::Trail::Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport)
 {
 	m_golExport = p_golExport;
-	m_model = p_golExport->VTable0x14();
+	m_model = p_golExport->CreateModel();
 	m_model->Allocate(p_renderer, 1, 0x6a, 0x35, 4, 1);
 	m_entity.SetPrimaryModel(m_model, g_raceTrailManagerMaxFloat);
 }

@@ -124,7 +124,7 @@ void RaceModeRunner::ReleaseContextAssets()
 
 		if (slot.m_chassisName[0]) {
 			if (slot.m_model) {
-				golExport->VTable0x48(slot.m_model);
+				golExport->DestroyModel(slot.m_model);
 				slot.m_model = NULL;
 			}
 			if (slot.m_materials) {
@@ -136,7 +136,7 @@ void RaceModeRunner::ReleaseContextAssets()
 				slot.m_textures = NULL;
 			}
 			if (slot.m_altModel) {
-				golExport->VTable0x48(slot.m_altModel);
+				golExport->DestroyModel(slot.m_altModel);
 				slot.m_altModel = NULL;
 			}
 			if (slot.m_altMaterials) {

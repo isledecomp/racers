@@ -728,7 +728,7 @@ void RaceSession::DestroyStringsAndFonts()
 // FUNCTION: LEGORACERS 0x00432dc0
 void RaceSession::LoadHudImages()
 {
-	m_hudImages = m_golExport->VTable0x34();
+	m_hudImages = m_golExport->CreateImageList();
 	m_hudImages->LoadImageDefinitions(m_renderer, m_imageFileName, m_context->m_useBinaryFiles);
 }
 
@@ -737,7 +737,7 @@ void RaceSession::DestroyHudImages()
 {
 	if (m_golExport) {
 		if (m_hudImages) {
-			m_golExport->VTable0x68(m_hudImages);
+			m_golExport->DestroyImageList(m_hudImages);
 			m_hudImages = NULL;
 		}
 	}
@@ -746,7 +746,7 @@ void RaceSession::DestroyHudImages()
 // FUNCTION: LEGORACERS 0x00432e20
 void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 {
-	m_effectsDatabase = m_golExport->VTable0x08();
+	m_effectsDatabase = m_golExport->CreateWorldDatabase();
 	m_effectsDatabase->Load(m_renderer, m_effectsModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_effectsDatabase->ResetEntities();
@@ -759,7 +759,7 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
 	}
 
-	m_trackDatabase = m_golExport->VTable0x08();
+	m_trackDatabase = m_golExport->CreateWorldDatabase();
 	m_trackDatabase->Load(m_renderer, m_trackModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_trackDatabase->ResetEntities();
@@ -772,7 +772,7 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	}
 	DrawLoadProgress(0.26f);
 
-	m_triggerDatabase = m_golExport->VTable0x08();
+	m_triggerDatabase = m_golExport->CreateWorldDatabase();
 	m_triggerDatabase->Load(m_renderer, m_triggerModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_triggerDatabase->ResetEntities();
@@ -794,14 +794,14 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	}
 	DrawLoadProgress(0.38f);
 
-	m_sharedDatabase = m_golExport->VTable0x08();
+	m_sharedDatabase = m_golExport->CreateWorldDatabase();
 	m_sharedDatabase->Load(m_renderer, m_sharedModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_sharedDatabase->ResetEntities();
 	}
 	DrawLoadProgress(0.4f);
 
-	m_materialAnimationDatabase = m_golExport->VTable0x08();
+	m_materialAnimationDatabase = m_golExport->CreateWorldDatabase();
 	m_materialAnimationDatabase->Load(m_renderer, m_materialAnimationModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_materialAnimationDatabase->ResetEntities();
@@ -814,19 +814,19 @@ void RaceSession::DestroyDatabases()
 {
 	if (m_golExport) {
 		if (m_triggerDatabase) {
-			m_golExport->VTable0x3c(m_triggerDatabase);
+			m_golExport->DestroyWorldDatabase(m_triggerDatabase);
 		}
 		if (m_materialAnimationDatabase) {
-			m_golExport->VTable0x3c(m_materialAnimationDatabase);
+			m_golExport->DestroyWorldDatabase(m_materialAnimationDatabase);
 		}
 		if (m_sharedDatabase) {
-			m_golExport->VTable0x3c(m_sharedDatabase);
+			m_golExport->DestroyWorldDatabase(m_sharedDatabase);
 		}
 		if (m_trackDatabase) {
-			m_golExport->VTable0x3c(m_trackDatabase);
+			m_golExport->DestroyWorldDatabase(m_trackDatabase);
 		}
 		if (m_effectsDatabase) {
-			m_golExport->VTable0x3c(m_effectsDatabase);
+			m_golExport->DestroyWorldDatabase(m_effectsDatabase);
 		}
 	}
 
@@ -1318,7 +1318,7 @@ void RaceSession::DestroyRaceContent()
 
 	if (m_golExport) {
 		if (m_powerupTrackDatabase) {
-			m_golExport->VTable0x3c(m_powerupTrackDatabase);
+			m_golExport->DestroyWorldDatabase(m_powerupTrackDatabase);
 			m_powerupTrackDatabase = NULL;
 		}
 	}
@@ -1360,7 +1360,7 @@ void RaceSession::CreateCameras()
 
 	if (m_context->m_playerCount > 0) {
 		do {
-			GolCamera* camera = m_golExport->VTable0x20();
+			GolCamera* camera = m_golExport->CreateCamera();
 			m_cameras[i] = camera;
 
 			if (m_splitScreen) {
@@ -1430,7 +1430,7 @@ void RaceSession::DestroyCameras()
 	if (m_golExport) {
 		for (LegoS32 i = 0; i < sizeOfArray(m_cameras); i++) {
 			if (m_cameras[i]) {
-				m_golExport->VTable0x54(m_cameras[i]);
+				m_golExport->DestroyCamera(m_cameras[i]);
 			}
 			m_cameras[i] = NULL;
 		}

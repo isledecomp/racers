@@ -208,7 +208,7 @@ void MenuManager::SetupCamera()
 	GolVec3 position;
 	GolVec3 forward;
 	GolVec3 right;
-	GolCamera* lens = m_golExport->VTable0x20();
+	GolCamera* lens = m_golExport->CreateCamera();
 
 	lens->m_fov = m_gameContext.m_context->GetCameraFov();
 	lens->m_flags |= GolCamera::c_flagProjectionDirty;
@@ -239,7 +239,7 @@ void MenuManager::ReleaseRendererObject()
 {
 	GolCamera* object = m_renderer->GetCurrentCamera();
 	if (object) {
-		m_golExport->VTable0x54(object);
+		m_golExport->DestroyCamera(object);
 	}
 }
 
@@ -304,7 +304,7 @@ void MenuManager::ShutdownAudio()
 void MenuManager::LoadMenuImages()
 {
 	if (!m_imageTable) {
-		m_imageTable = m_golExport->VTable0x34();
+		m_imageTable = m_golExport->CreateImageList();
 	}
 
 	if (!m_fontTable) {
@@ -319,7 +319,7 @@ void MenuManager::UnloadMenuImages()
 {
 	if (m_imageTable) {
 		m_imageTable->Clear();
-		m_golExport->VTable0x68(m_imageTable);
+		m_golExport->DestroyImageList(m_imageTable);
 		m_imageTable = NULL;
 	}
 
@@ -789,10 +789,10 @@ void MenuManager::BuildPlayerCarModel(
 	p_slot->m_textures->Initialize(renderer, textureCount);
 
 	if (p_slot->m_model) {
-		golExport->VTable0x48(p_slot->m_model);
+		golExport->DestroyModel(p_slot->m_model);
 		p_slot->m_model = NULL;
 	}
-	p_slot->m_model = golExport->VTable0x14();
+	p_slot->m_model = golExport->CreateModel();
 	p_slot->m_model->Allocate(
 		renderer,
 		3,

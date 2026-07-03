@@ -17,7 +17,7 @@ DECOMP_SIZE_ASSERT(GolModel, 0x48)
 // FUNCTION: GOLDP 0x10006840
 GolModel::GolModel()
 {
-	m_unk0x40 = NULL;
+	m_modelVertexArray = NULL;
 }
 
 // FUNCTION: GOLDP 0x10006860
@@ -35,7 +35,7 @@ void GolModel::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBoo
 
 	GolModelBase::Load(p_renderer, p_name, p_binary);
 
-	if (m_unk0x40 != NULL) {
+	if (m_modelVertexArray != NULL) {
 		ComputeBounds(&m_center, &m_radius, m_scale);
 	}
 
@@ -62,36 +62,36 @@ void GolModel::Allocate(
 
 	switch (p_vertexType) {
 	case e_vertexType1:
-		m_unk0x40 = new GdbColoredVertexArray;
+		m_modelVertexArray = new GdbColoredVertexArray;
 		break;
 	case e_vertexType2:
-		m_unk0x40 = new GdbNormalVertexArray;
+		m_modelVertexArray = new GdbNormalVertexArray;
 		break;
 	case e_vertexType3:
-		m_unk0x40 = new GdbPrelitVertexArray;
+		m_modelVertexArray = new GdbPrelitVertexArray;
 		break;
 	default:
 		GOL_FATALERROR_MESSAGE("Unsupported vertex type");
 		break;
 	}
 
-	m_vertexArray = m_unk0x40;
+	m_vertexArray = m_modelVertexArray;
 	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	AllocateIndices(p_arg4, p_arg5);
-	m_unk0x40->VTable0x04(p_arg3);
+	m_modelVertexArray->VTable0x04(p_arg3);
 	m_dirty = 1;
 }
 
 // FUNCTION: GOLDP 0x10006a60
 void GolModel::Destroy()
 {
-	if (m_unk0x40 != NULL) {
-		m_unk0x40->VTable0x0c();
-		delete m_unk0x40;
-		m_unk0x40 = NULL;
+	if (m_modelVertexArray != NULL) {
+		m_modelVertexArray->VTable0x0c();
+		delete m_modelVertexArray;
+		m_modelVertexArray = NULL;
 		m_vertexArray = 0;
 	}
 
@@ -101,53 +101,53 @@ void GolModel::Destroy()
 // FUNCTION: GOLDP 0x10006aa0
 void GolModel::ParseUncoloredVertices(GolFileParser& p_parser)
 {
-	if (m_unk0x40 != NULL) {
+	if (m_modelVertexArray != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x40 = new GdbUncoloredVertexArray;
-	m_vertexArray = m_unk0x40;
+	m_modelVertexArray = new GdbUncoloredVertexArray;
+	m_vertexArray = m_modelVertexArray;
 	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x40->VTable0x08(p_parser);
+	m_modelVertexArray->VTable0x08(p_parser);
 }
 
 // FUNCTION: GOLDP 0x10006b30
 void GolModel::ParseColoredVertices(GolFileParser& p_parser)
 {
-	if (m_unk0x40 != NULL) {
+	if (m_modelVertexArray != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x40 = new GdbColoredVertexArray;
-	m_vertexArray = m_unk0x40;
+	m_modelVertexArray = new GdbColoredVertexArray;
+	m_vertexArray = m_modelVertexArray;
 	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x40->VTable0x08(p_parser);
+	m_modelVertexArray->VTable0x08(p_parser);
 }
 
 // FUNCTION: GOLDP 0x10006bc0
 void GolModel::ParseNormalVertices(GolFileParser& p_parser)
 {
-	if (m_unk0x40 != NULL) {
+	if (m_modelVertexArray != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x40 = new GdbNormalVertexArray;
-	m_vertexArray = m_unk0x40;
+	m_modelVertexArray = new GdbNormalVertexArray;
+	m_vertexArray = m_modelVertexArray;
 	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x40->VTable0x08(p_parser);
+	m_modelVertexArray->VTable0x08(p_parser);
 }
 
 // STUB: GOLDP 0x10006c50
-void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable)
+void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable)
 {
 	if (p_materialTable == NULL) {
 		p_materialTable = &m_materialTable;
@@ -167,7 +167,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 				triangleCount >>= c_groupDataUpperWordShift;
 				triangleCount &= c_triangleCountMask;
 				firstTriangle &= c_materialMatrixIndexMask;
-				LegoU32 lastVertex = FUN_10006fa0(firstTriangle, triangleCount) & c_vertexCountMask;
+				LegoU32 lastVertex = FindMaxVertexIndex(firstTriangle, triangleCount) & c_vertexCountMask;
 				*group = ((((lastVertex | c_vertexIndexHighFlag) << 7) | (triangleCount & c_triangleCountMask))
 						  << c_groupDataUpperWordShift) |
 						 (firstTriangle & c_materialMatrixIndexMask);
@@ -180,7 +180,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 		m_dirty = FALSE;
 	}
 
-	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_unk0x40);
+	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray);
 	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
 	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {
@@ -241,7 +241,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 }
 
 // STUB: GOLDP 0x10006e00
-void GolModel::FUN_10006e00(
+void GolModel::DrawNode(
 	GolD3DRenderDevice* p_renderer,
 	MaterialTable* p_materialTable,
 	GolBoundingShape::TreeNode::Node* p_node
@@ -265,7 +265,7 @@ void GolModel::FUN_10006e00(
 				triangleCount >>= c_groupDataUpperWordShift;
 				triangleCount &= c_triangleCountMask;
 				firstTriangle &= c_materialMatrixIndexMask;
-				LegoU32 lastVertex = FUN_10006fa0(firstTriangle, triangleCount);
+				LegoU32 lastVertex = FindMaxVertexIndex(firstTriangle, triangleCount);
 				lastVertex &= c_vertexCountMask;
 				*group = ((((lastVertex | c_vertexIndexHighFlag) << 7) | (triangleCount & c_triangleCountMask))
 						  << c_groupDataUpperWordShift) |
@@ -279,7 +279,7 @@ void GolModel::FUN_10006e00(
 		m_dirty = FALSE;
 	}
 
-	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_unk0x40);
+	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray);
 	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
 	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {
@@ -337,7 +337,7 @@ void GolModel::FUN_10006e00(
 }
 
 // FUNCTION: GOLDP 0x10006fa0
-LegoU32 GolModel::FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const
+LegoU32 GolModel::FindMaxVertexIndex(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const
 {
 	GdbModelIndexArray::Indices* indices = static_cast<GdbModelIndexArray*>(m_indexArray)->GetMutableIndices();
 	GdbModelIndexArray::Indices* triangle = indices + p_firstTriangle;

@@ -940,7 +940,7 @@ void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 
 	MaterialTable* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
-	model->FUN_10006c50(this, materialTable);
+	model->Draw(this, materialTable);
 }
 
 // FUNCTION: GOLDP 0x10008a50
@@ -1010,7 +1010,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
-	model->FUN_10006c50(this, materialTable);
+	model->Draw(this, materialTable);
 
 	m_unk0xc83cc = 0;
 	FUN_10012f50();
@@ -1081,7 +1081,7 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
-	model->FUN_10006c50(this, materialTable);
+	model->Draw(this, materialTable);
 }
 
 // FUNCTION: GOLDP 0x10008dd0
@@ -1141,7 +1141,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 	}
 
 	FUN_10012f50();
-	model->FUN_10006c50(this, materialTable);
+	model->Draw(this, materialTable);
 
 	m_unk0xc8524 = NULL;
 	m_unk0xc8528 = FALSE;
@@ -1197,7 +1197,7 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 	MaterialTable* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
 	FUN_10012f50();
-	model->FUN_10006c50(this, materialTable);
+	model->Draw(this, materialTable);
 
 	m_unk0xc83f4 = 0;
 	FUN_10012f50();
@@ -1265,7 +1265,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 
 	FUN_10012f50();
 	while (node != NULL) {
-		model->FUN_10006e00(this, materialTable, node);
+		model->DrawNode(this, materialTable, node);
 		node = (&node->m_next)[nextOffset];
 	}
 
@@ -1354,7 +1354,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 		}
 		FUN_10012f50();
 
-		model->FUN_10006e00(this, materialTable, node);
+		model->DrawNode(this, materialTable, node);
 		node = (&node->m_next)[nextOffset];
 	}
 }

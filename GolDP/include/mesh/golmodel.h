@@ -55,21 +55,21 @@ public:
 	) override;                                                                                   // vtable+0x18
 	void Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
 	void Destroy() override;                                                                      // vtable+0x24
-	void FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable);
-	void FUN_10006e00(
+	void Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable);
+	void DrawNode(
 		GolD3DRenderDevice* p_renderer,
 		MaterialTable* p_materialTable,
 		GolBoundingShape::TreeNode::Node* p_node
 	);
-	LegoU32 FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const;
-	GdbVertexArray* GetModelVertexArray() const { return m_unk0x40; }
+	LegoU32 FindMaxVertexIndex(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const;
+	GdbVertexArray* GetModelVertexArray() const { return m_modelVertexArray; }
 
 	// SYNTHETIC: GOLDP 0x100178e0
 	// GolModel::`vector deleting destructor'
 
 private:
-	GdbVertexArray* m_unk0x40;        // 0x40
-	undefined m_unk0x44[0x48 - 0x44]; // 0x44
+	GdbVertexArray* m_modelVertexArray; // 0x40
+	undefined m_unk0x44[0x48 - 0x44];   // 0x44
 };
 
 #endif // GOLMODEL_H

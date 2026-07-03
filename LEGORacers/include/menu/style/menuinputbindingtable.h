@@ -25,7 +25,25 @@ class MenuInputBindingTable : public MenuResourceTable {
 public:
 	// VTABLE: LEGORACERS 0x004b2198
 	// SIZE 0x1fc
-	class MidTxtParser : public GolTxtParser {};
+	class MidTxtParser : public GolTxtParser {
+	public:
+		// .mid field tokens shared across binding blocks (0x30/0x32/0x34/
+		// 0x35/0x2b/0x3a stay unnamed until their target fields are named)
+		enum {
+			e_image = 0x28,
+			e_font = 0x29,
+			e_colors = 0x2a,
+			e_helpStringId = 0x2c,
+			e_sceneName = 0x2d,
+			e_camera = 0x2e,
+			e_rect = 0x2f,
+			e_name = 0x31,
+			e_value = 0x33,
+			e_widget = 0x36,
+			e_imageRef = 0x38,
+			e_button = 0x3b,
+		};
+	};
 
 	// SIZE 0x38
 	class RegionBinding : public MenuWidget::CreateParams {

@@ -50,23 +50,23 @@ private:
 		c_delayMs = 2500,
 	};
 
-	GolModelEntity* m_codeModel1;  // 0x10
-	GolModelEntity* m_codeModel2;  // 0x14
-	GolModelEntity* m_codeModel3;  // 0x18
-	MabMaterialTrack* m_codeItem1; // 0x1c
-	MabMaterialTrack* m_codeItem2; // 0x20
-	MabMaterialTrack* m_codeItem3; // 0x24
-	MabMaterialFrame* m_unk0x28;   // 0x28
-	LegoU32 m_unk0x2c;             // 0x2c
-	LegoU8 m_unk0x30;              // 0x30
-	LegoU8 m_unk0x31;              // 0x31
-	LegoU8 m_unk0x32;              // 0x32
-	LegoU8 m_unk0x33;              // 0x33
-	LegoU8 m_unk0x34;              // 0x34
-	LegoU8 m_unk0x35;              // 0x35
-	LegoU8 m_unk0x36;              // 0x36
-	undefined m_unk0x37;           // 0x37
-	LegoU32 m_delayMs;             // 0x38
+	GolModelEntity* m_codeModel1;       // 0x10
+	GolModelEntity* m_codeModel2;       // 0x14
+	GolModelEntity* m_codeModel3;       // 0x18
+	MabMaterialTrack* m_codeItem1;      // 0x1c
+	MabMaterialTrack* m_codeItem2;      // 0x20
+	MabMaterialTrack* m_codeItem3;      // 0x24
+	MabMaterialFrame* m_materialFrames; // 0x28
+	LegoU32 m_materialFrameCount;       // 0x2c
+	LegoU8 m_codeEvent1;                // 0x30
+	LegoU8 m_codeEvent2;                // 0x31
+	LegoU8 m_codeEvent3;                // 0x32
+	LegoU8 m_resetEvent1;               // 0x33
+	LegoU8 m_resetEvent2;               // 0x34
+	LegoU8 m_resetEvent3;               // 0x35
+	LegoU8 m_codeProgress;              // 0x36
+	undefined m_unk0x37;                // 0x37
+	LegoU32 m_delayMs;                  // 0x38
 };
 
 #endif // CODEPUZZLEHAZARD_H

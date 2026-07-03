@@ -73,8 +73,8 @@ void CodePuzzleHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_codeItem1->SetUnk0x0c(0.003f);
 	m_codeItem2->SetUnk0x0c(0.004f);
 	m_codeItem3->SetUnk0x0c(0.005f);
-	m_unk0x28 = animation->GetUnk0x04();
-	m_unk0x2c = animation->GetUnk0x08();
+	m_materialFrames = animation->GetUnk0x04();
+	m_materialFrameCount = animation->GetUnk0x08();
 	m_state = 1;
 	OnActivate(NULL);
 }
@@ -94,23 +94,23 @@ LegoS32 CodePuzzleHazard::ClearFields()
 	m_codeItem1 = NULL;
 	m_codeItem2 = NULL;
 	m_codeItem3 = NULL;
-	m_unk0x30 = 0;
-	m_unk0x31 = 0;
-	m_unk0x32 = 0;
-	m_unk0x33 = 0;
-	m_unk0x34 = 0;
-	m_unk0x35 = 0;
-	m_unk0x36 = 0;
+	m_codeEvent1 = 0;
+	m_codeEvent2 = 0;
+	m_codeEvent3 = 0;
+	m_resetEvent1 = 0;
+	m_resetEvent2 = 0;
+	m_resetEvent3 = 0;
+	m_codeProgress = 0;
 	m_delayMs = 0;
-	m_unk0x28 = NULL;
-	m_unk0x2c = 0;
+	m_materialFrames = NULL;
+	m_materialFrameCount = 0;
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0048d450
 void CodePuzzleHazard::OnActivate(void*)
 {
-	m_unk0x36 = 0;
+	m_codeProgress = 0;
 	ResetCodeModels();
 	m_delayMs = 1;
 	m_state = 2;
@@ -125,20 +125,20 @@ void CodePuzzleHazard::OnDeactivate(void*)
 // FUNCTION: LEGORACERS 0x0048d480
 void CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 {
-	if (p_unk0x04 == m_unk0x33 || p_unk0x04 == m_unk0x34 || p_unk0x04 == m_unk0x35) {
-		m_unk0x36 = 0;
+	if (p_unk0x04 == m_resetEvent1 || p_unk0x04 == m_resetEvent2 || p_unk0x04 == m_resetEvent3) {
+		m_codeProgress = 0;
 	}
-	else if (p_unk0x04 == m_unk0x30) {
-		m_unk0x36 = 1;
+	else if (p_unk0x04 == m_codeEvent1) {
+		m_codeProgress = 1;
 	}
-	else if (p_unk0x04 == m_unk0x31) {
-		if (m_unk0x36 == 1) {
-			m_unk0x36 = 3;
+	else if (p_unk0x04 == m_codeEvent2) {
+		if (m_codeProgress == 1) {
+			m_codeProgress = 3;
 		}
 	}
-	else if (p_unk0x04 == m_unk0x32 && m_unk0x36 == 3) {
+	else if (p_unk0x04 == m_codeEvent3 && m_codeProgress == 3) {
 		m_eventTable->FireEventsAt(c_successFirstEvent, c_successFirstEvent, NULL);
-		m_unk0x36 = 0;
+		m_codeProgress = 0;
 		m_codeItem1->FUN_10025da0(m_codeItem1->GetUnk0x00(), m_codeItem1->GetUnk0x04(), TRUE);
 		m_codeItem2->FUN_10025da0(m_codeItem2->GetUnk0x00(), m_codeItem2->GetUnk0x04(), TRUE);
 		m_codeItem3->FUN_10025da0(m_codeItem3->GetUnk0x00(), m_codeItem3->GetUnk0x04(), TRUE);
@@ -159,7 +159,7 @@ void CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 		m_eventTable->FireEventsAt(c_badInputEvent, c_badInputEvent, static_cast<GolVec3*>(p_unk0x08));
 		return;
 	case 207:
-		if (m_unk0x30 == c_firstCodeEvent) {
+		if (m_codeEvent1 == c_firstCodeEvent) {
 			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		else {
@@ -167,7 +167,7 @@ void CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 		}
 		break;
 	case 208:
-		if (m_unk0x31 == c_secondCodeEvent) {
+		if (m_codeEvent2 == c_secondCodeEvent) {
 			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		else {
@@ -175,7 +175,7 @@ void CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 		}
 		break;
 	case 209:
-		if (m_unk0x32 == c_thirdCodeEvent) {
+		if (m_codeEvent3 == c_thirdCodeEvent) {
 			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		else {
@@ -197,31 +197,31 @@ void CodePuzzleHazard::Update(undefined4 p_elapsedMs)
 			m_delayMs = 0;
 			m_eventTable->EndEventsAt(c_successSecondEvent, NULL);
 
-			if (m_unk0x30 == c_firstCodeEvent) {
+			if (m_codeEvent1 == c_firstCodeEvent) {
 				m_codeItem1->FUN_00410480();
 			}
 			else {
 				m_codeItem1->FUN_00410490();
 			}
-			m_codeItem1->FUN_004104c0(0, m_unk0x28, m_unk0x2c);
+			m_codeItem1->FUN_004104c0(0, m_materialFrames, m_materialFrameCount);
 			m_codeItem1->FUN_00410470();
 
-			if (m_unk0x31 == c_secondCodeEvent) {
+			if (m_codeEvent2 == c_secondCodeEvent) {
 				m_codeItem2->FUN_00410480();
 			}
 			else {
 				m_codeItem2->FUN_00410490();
 			}
-			m_codeItem2->FUN_004104c0(0, m_unk0x28, m_unk0x2c);
+			m_codeItem2->FUN_004104c0(0, m_materialFrames, m_materialFrameCount);
 			m_codeItem2->FUN_00410470();
 
-			if (m_unk0x32 == c_thirdCodeEvent) {
+			if (m_codeEvent3 == c_thirdCodeEvent) {
 				m_codeItem3->FUN_00410480();
 			}
 			else {
 				m_codeItem3->FUN_00410490();
 			}
-			m_codeItem3->FUN_004104c0(0, m_unk0x28, m_unk0x2c);
+			m_codeItem3->FUN_004104c0(0, m_materialFrames, m_materialFrameCount);
 			m_codeItem3->FUN_00410470();
 		}
 		else {
@@ -237,35 +237,35 @@ void CodePuzzleHazard::ResetCodeModels()
 	g_randomTableIndex &= c_randomTableMask;
 	LegoS32 random = g_randomTable[g_randomTableIndex];
 	if (random % 2) {
-		m_unk0x30 = c_firstCodeEvent;
-		m_unk0x33 = c_firstCodeEvent + 1;
+		m_codeEvent1 = c_firstCodeEvent;
+		m_resetEvent1 = c_firstCodeEvent + 1;
 	}
 	else {
-		m_unk0x30 = c_firstCodeEvent + 1;
-		m_unk0x33 = c_firstCodeEvent;
+		m_codeEvent1 = c_firstCodeEvent + 1;
+		m_resetEvent1 = c_firstCodeEvent;
 	}
 
 	g_randomTableIndex++;
 	g_randomTableIndex &= c_randomTableMask;
 	random = g_randomTable[g_randomTableIndex];
 	if (random % 2) {
-		m_unk0x31 = c_secondCodeEvent;
-		m_unk0x34 = c_secondCodeEvent + 1;
+		m_codeEvent2 = c_secondCodeEvent;
+		m_resetEvent2 = c_secondCodeEvent + 1;
 	}
 	else {
-		m_unk0x31 = c_secondCodeEvent + 1;
-		m_unk0x34 = c_secondCodeEvent;
+		m_codeEvent2 = c_secondCodeEvent + 1;
+		m_resetEvent2 = c_secondCodeEvent;
 	}
 
 	g_randomTableIndex++;
 	g_randomTableIndex &= c_randomTableMask;
 	random = g_randomTable[g_randomTableIndex];
 	if (random % 2) {
-		m_unk0x32 = c_thirdCodeEvent;
-		m_unk0x35 = c_thirdCodeEvent + 1;
+		m_codeEvent3 = c_thirdCodeEvent;
+		m_resetEvent3 = c_thirdCodeEvent + 1;
 	}
 	else {
-		m_unk0x32 = c_thirdCodeEvent + 1;
-		m_unk0x35 = c_thirdCodeEvent;
+		m_codeEvent3 = c_thirdCodeEvent + 1;
+		m_resetEvent3 = c_thirdCodeEvent;
 	}
 }

@@ -52,22 +52,22 @@ public:
 
 	enum {
 		c_flagBit0 = 1 << 0,
-		c_flagBit1 = 1 << 1,
-		c_flagBit2 = 1 << 2,
-		c_flagBit3 = 1 << 3,
-		c_flagBit4 = 1 << 4,
-		c_flagBit5 = 1 << 5,
-		c_flagBit6 = 1 << 6,
-		c_flagBit7 = 1 << 7,
-		c_flagBit8 = 1 << 8,
-		c_flagBit9 = 1 << 9,
-		c_flagBit10 = 1 << 10,
-		c_flagBit11 = 1 << 11,
-		c_flagBit12 = 1 << 12,
-		c_flagBit13 = 1 << 13,
-		c_flagBit14 = 1 << 14,
-		c_flagBit15 = 1 << 15,
-		c_flagBit16 = 1 << 16,
+		c_flagFlatShading = 1 << 1,
+		c_flagGouraudShading = 1 << 2,
+		c_flagTextured = 1 << 3,
+		c_flagDecal = 1 << 4,
+		c_flagModulate = 1 << 5,
+		c_flagAlphaTest = 1 << 6,
+		c_flagNoAlphaTest = 1 << 7,
+		c_flagAlphaBlend = 1 << 8,
+		c_flagNoAlphaBlend = 1 << 9,
+		c_flagLinearFilter = 1 << 10,
+		c_flagPointFilter = 1 << 11,
+		c_flagTransparent = 1 << 12,
+		c_flagNoTransparency = 1 << 13,
+		c_flagRotateVertices = 1 << 14,
+		c_flagWrap = 1 << 15,
+		c_flagClamp = 1 << 16,
 		c_flagBit17 = 1 << 17,
 		c_flagBit18 = 1 << 18,
 		c_flagBit19 = 1 << 19,
@@ -125,9 +125,9 @@ inline GolMaterialParams::GolMaterialParams(LegoU8 p_fullIntensity)
 	m_ambient.m_grn = p_fullIntensity;
 	m_ambient.m_blu = p_fullIntensity;
 	m_ambient.m_alp = p_fullIntensity;
-	m_flags = GolMaterial::c_flagBit2 | GolMaterial::c_flagBit4 | GolMaterial::c_flagBit7 | GolMaterial::c_flagBit9 |
-			  GolMaterial::c_flagBit10 | GolMaterial::c_flagBit13 | GolMaterial::c_flagBit15 |
-			  GolMaterial::c_flagBit20 | GolMaterial::c_flagBit22;
+	m_flags = GolMaterial::c_flagGouraudShading | GolMaterial::c_flagDecal | GolMaterial::c_flagNoAlphaTest |
+			  GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagLinearFilter | GolMaterial::c_flagNoTransparency |
+			  GolMaterial::c_flagWrap | GolMaterial::c_flagBit20 | GolMaterial::c_flagBit22;
 	m_texture = NULL;
 	m_alphaFunc = 2;
 	m_alphaRef = 0;

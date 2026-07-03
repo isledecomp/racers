@@ -23,7 +23,7 @@ public:
 	LegoU32 GetBlueBitCount() const;
 	LegoU32 GetGreenBitCount() const;
 	LegoU32 GetAlphaBitCount() const;
-	LegoU32 GetIntensityBitShift() const;
+	LegoU32 GetIntensityBitCount() const;
 	LegoU32 GetPaletteBitCount() const;
 	LegoU32 GetRedBitShift() const;
 	LegoU32 GetBlueBitShift() const;

@@ -144,7 +144,7 @@ void RaceDecalManager::Trail::SetMaterialTable(MaterialTable* p_materialTable)
 	}
 
 	GolMaterial* material = static_cast<GolMaterial*>(p_materialTable->GetEntry(0));
-	if (material->GetFlags() & GolMaterial::c_flagBit12) {
+	if (material->GetFlags() & GolMaterial::c_flagTransparent) {
 		m_alphaScale = static_cast<LegoFloat>(material->GetDestBlend()) * g_inv255;
 	}
 	else {

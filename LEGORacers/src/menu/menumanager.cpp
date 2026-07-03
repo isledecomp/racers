@@ -882,7 +882,7 @@ void MenuManager::BuildPlayerDriverModel(
 			break;
 		}
 
-		if (material->GetFlags() & GolMaterial::c_flagBit3) {
+		if (material->GetFlags() & GolMaterial::c_flagTextured) {
 			textureCount++;
 		}
 	}
@@ -900,7 +900,7 @@ void MenuManager::BuildPlayerDriverModel(
 		GolMaterial* sourceMaterial = materialTable->GetMaterial(materialIndex);
 		sourceMaterial->CopyParamsTo(&params);
 
-		if (sourceMaterial->GetFlags() & GolMaterial::c_flagBit3) {
+		if (sourceMaterial->GetFlags() & GolMaterial::c_flagTextured) {
 			GolD3DTexture* texture = p_slot->m_altTextures->GetItem(textureCount++);
 			texture->SetName(static_cast<GolD3DTexture*>(params.m_texture)->GetName());
 			texture->SetSourceTextureDefinition(

@@ -207,11 +207,11 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 			rasterizerMode |= c_flag0x2cBit1;
 		}
 
-		if (flags & GolMaterial::c_flagBit12) {
+		if (flags & GolMaterial::c_flagTransparent) {
 			rasterizerMode |= c_flag0x2cBit2;
 		}
-		else if (!(flags & GolMaterial::c_flagBit4)) {
-			if (flags & GolMaterial::c_flagBit8) {
+		else if (!(flags & GolMaterial::c_flagDecal)) {
+			if (flags & GolMaterial::c_flagAlphaBlend) {
 				if ((p_material->m_srcBlend != 1) || (p_material->m_destBlend != 1)) {
 					rasterizerMode |= c_flag0x2cBit2;
 				}
@@ -220,7 +220,7 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 				}
 			}
 			else {
-				if (flags & GolMaterial::c_flagBit5) {
+				if (flags & GolMaterial::c_flagModulate) {
 					rasterizerMode |= c_flag0x2cBit3 | c_flag0x2cBit0;
 				}
 				else {
@@ -228,14 +228,14 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 				}
 			}
 		}
-		else if (flags & GolMaterial::c_flagBit8) {
+		else if (flags & GolMaterial::c_flagAlphaBlend) {
 			rasterizerMode |= c_flag0x2cBit2;
 		}
 	}
 	else {
 		FUN_100330d0(this, NULL);
 		// TODO: Can't get a `& 0xff` to appear
-		rasterizerMode = flags & GolMaterial::c_flagBit2 ? c_flag0x2cBit0 : 0;
+		rasterizerMode = flags & GolMaterial::c_flagGouraudShading ? c_flag0x2cBit0 : 0;
 	}
 
 	m_unk0x2c = rasterizerMode;

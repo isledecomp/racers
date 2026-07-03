@@ -541,10 +541,11 @@ void RaceState::CreateRacer(
 
 	GolMaterialParams shadowMaterialParams;
 	::memset(&shadowMaterialParams, 0, sizeof(shadowMaterialParams));
-	shadowMaterialParams.m_flags = GolMaterial::c_flagBit2 | GolMaterial::c_flagBit3 | GolMaterial::c_flagBit5 |
-								   GolMaterial::c_flagBit7 | GolMaterial::c_flagBit9 | GolMaterial::c_flagBit10 |
-								   GolMaterial::c_flagBit13 | GolMaterial::c_flagBit15 | GolMaterial::c_flagBit20 |
-								   GolMaterial::c_flagBit22;
+	shadowMaterialParams.m_flags = GolMaterial::c_flagGouraudShading | GolMaterial::c_flagTextured |
+								   GolMaterial::c_flagModulate | GolMaterial::c_flagNoAlphaTest |
+								   GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagLinearFilter |
+								   GolMaterial::c_flagNoTransparency | GolMaterial::c_flagWrap |
+								   GolMaterial::c_flagBit20 | GolMaterial::c_flagBit22;
 	shadowMaterialParams.m_texture = shadowTexture;
 	shadowMaterial->SetParams(p_context->m_renderer, shadowMaterialParams);
 

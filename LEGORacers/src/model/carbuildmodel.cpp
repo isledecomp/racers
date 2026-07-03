@@ -2934,7 +2934,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 			params.m_flags &= ~GolMaterial::c_flagBit0;
 
 			GolMaterial* outputMaterial = p_materials->GetItem(outputMaterialIndex);
-			if (sourceMaterial->GetFlags() & GolMaterial::c_flagBit3) {
+			if (sourceMaterial->GetFlags() & GolMaterial::c_flagTextured) {
 				GolD3DTexture* outputTexture = p_textures->GetItem(textureIndex);
 				GolD3DTexture* sourceTexture = static_cast<GolD3DTexture*>(sourceMaterial->GetTexture());
 

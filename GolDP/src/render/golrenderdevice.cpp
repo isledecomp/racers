@@ -159,7 +159,7 @@ GolRenderDevice::GolRenderDevice()
 	m_requestedGrnBitCount = 0;
 	m_requestedBluBitCount = 0;
 	m_requestedAlpBitCount = 0;
-	m_requestedUnk0x10BitCount = 0;
+	m_requestedIntensityBitCount = 0;
 	m_requestedPaletteBitCount = 0;
 	m_countTextureFormats = 0;
 	m_textureFormats = NULL;
@@ -199,7 +199,7 @@ void GolRenderDevice::Destroy()
 	m_requestedGrnBitCount = 0;
 	m_requestedBluBitCount = 0;
 	m_requestedAlpBitCount = 0;
-	m_requestedUnk0x10BitCount = 0;
+	m_requestedIntensityBitCount = 0;
 	m_requestedPaletteBitCount = 0;
 
 	while (amberHaze != NULL) {
@@ -268,7 +268,7 @@ void GolRenderDevice::ReleaseResources()
 	m_requestedGrnBitCount = 0;
 	m_requestedBluBitCount = 0;
 	m_requestedAlpBitCount = 0;
-	m_requestedUnk0x10BitCount = 0;
+	m_requestedIntensityBitCount = 0;
 	m_requestedPaletteBitCount = 0;
 }
 
@@ -459,13 +459,13 @@ void GolRenderDevice::SelectTextureFormat(
 	grnBitCount = p_requestedTextureFormat.GetGreenBitCount();
 	bluBitCount = p_requestedTextureFormat.GetBlueBitCount();
 	alpBitCount = p_requestedTextureFormat.GetAlphaBitCount();
-	LegoU32 textureFormatField0x10BitCount = p_requestedTextureFormat.GetIntensityBitShift();
+	LegoU32 intensityBitCount = p_requestedTextureFormat.GetIntensityBitCount();
 	LegoU32 paletteBitCount = p_requestedTextureFormat.GetPaletteBitCount();
 	LegoU32 bpp = p_requestedTextureFormat.m_bitsPerPixel;
 
 	if (m_requestedRedBitCount == redBitCount && m_requestedGrnBitCount == grnBitCount &&
 		m_requestedBluBitCount == bluBitCount && m_requestedAlpBitCount == alpBitCount &&
-		m_requestedUnk0x10BitCount == textureFormatField0x10BitCount && m_requestedPaletteBitCount == paletteBitCount) {
+		m_requestedIntensityBitCount == intensityBitCount && m_requestedPaletteBitCount == paletteBitCount) {
 		*p_actualTextureFormat = m_textureFormats[m_textureFormatIndex];
 		return;
 	}
@@ -474,7 +474,7 @@ void GolRenderDevice::SelectTextureFormat(
 	m_requestedGrnBitCount = grnBitCount;
 	m_requestedBluBitCount = bluBitCount;
 	m_requestedAlpBitCount = alpBitCount;
-	m_requestedUnk0x10BitCount = textureFormatField0x10BitCount;
+	m_requestedIntensityBitCount = intensityBitCount;
 	m_requestedPaletteBitCount = paletteBitCount;
 
 	if (alpBitCount != 0) {
@@ -489,10 +489,10 @@ void GolRenderDevice::SelectTextureFormat(
 				}
 			}
 		}
-		else if (textureFormatField0x10BitCount != 0) {
+		else if (intensityBitCount != 0) {
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
-					m_textureFormats[i].GetIntensityBitShift() == textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetIntensityBitCount() == intensityBitCount &&
 					m_textureFormats[i].GetAlphaBitCount() == alpBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
@@ -534,10 +534,10 @@ void GolRenderDevice::SelectTextureFormat(
 				}
 			}
 		}
-		else if (textureFormatField0x10BitCount != 0) {
+		else if (intensityBitCount != 0) {
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
-					m_textureFormats[i].GetIntensityBitShift() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetIntensityBitCount() >= intensityBitCount &&
 					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
@@ -547,9 +547,9 @@ void GolRenderDevice::SelectTextureFormat(
 
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
-					m_textureFormats[i].GetRedBitCount() >= textureFormatField0x10BitCount &&
-					m_textureFormats[i].GetGreenBitCount() >= textureFormatField0x10BitCount &&
-					m_textureFormats[i].GetBlueBitCount() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetRedBitCount() >= intensityBitCount &&
+					m_textureFormats[i].GetGreenBitCount() >= intensityBitCount &&
+					m_textureFormats[i].GetBlueBitCount() >= intensityBitCount &&
 					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
@@ -619,10 +619,10 @@ void GolRenderDevice::SelectTextureFormat(
 				}
 			}
 		}
-		else if (textureFormatField0x10BitCount != 0) {
+		else if (intensityBitCount != 0) {
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
-					m_textureFormats[i].GetIntensityBitShift() == textureFormatField0x10BitCount) {
+					m_textureFormats[i].GetIntensityBitCount() == intensityBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
 					return;
@@ -631,7 +631,7 @@ void GolRenderDevice::SelectTextureFormat(
 
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
-					m_textureFormats[i].GetIntensityBitShift() >= textureFormatField0x10BitCount) {
+					m_textureFormats[i].GetIntensityBitCount() >= intensityBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
 					return;
@@ -640,9 +640,9 @@ void GolRenderDevice::SelectTextureFormat(
 
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
-					m_textureFormats[i].GetRedBitCount() >= textureFormatField0x10BitCount &&
-					m_textureFormats[i].GetGreenBitCount() >= textureFormatField0x10BitCount &&
-					m_textureFormats[i].GetBlueBitCount() >= textureFormatField0x10BitCount) {
+					m_textureFormats[i].GetRedBitCount() >= intensityBitCount &&
+					m_textureFormats[i].GetGreenBitCount() >= intensityBitCount &&
+					m_textureFormats[i].GetBlueBitCount() >= intensityBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
 					return;
@@ -714,7 +714,7 @@ void GolRenderDevice::SelectTextureFormat(
 	m_requestedGrnBitCount = 0;
 	m_requestedBluBitCount = 0;
 	m_requestedAlpBitCount = 0;
-	m_requestedUnk0x10BitCount = 0;
+	m_requestedIntensityBitCount = 0;
 	m_requestedPaletteBitCount = 0;
 }
 

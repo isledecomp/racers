@@ -38,21 +38,21 @@ void GolMaterial::SetParams(GolRenderDevice* p_renderer, const GolMaterialParams
 	m_destBlend = p_params.m_destBlend;
 	m_destBlend = p_params.m_destBlend;
 
-	if (m_flags & c_flagBit3) {
+	if (m_flags & c_flagTextured) {
 		m_texture = p_params.m_texture;
 		if (m_texture->GetTextureFlags() & GolTexture::c_textureFlagBit5) {
 			if (p_renderer->GetFlags() & (GolRenderDevice::c_flagBit7 | GolRenderDevice::c_flagBit8)) {
-				if ((p_renderer->GetFlags() & GolRenderDevice::c_flagBit7) && !(m_flags & c_flagBit12)) {
+				if ((p_renderer->GetFlags() & GolRenderDevice::c_flagBit7) && !(m_flags & c_flagTransparent)) {
 					m_srcBlend = 6;
 					m_destBlend = 8;
-					m_flags &= ~(c_flagBit9 | c_flagBit5 | c_flagBit2);
-					m_flags |= c_flagBit8 | c_flagBit4 | c_flagBit1;
+					m_flags &= ~(c_flagNoAlphaBlend | c_flagModulate | c_flagGouraudShading);
+					m_flags |= c_flagAlphaBlend | c_flagDecal | c_flagFlatShading;
 				}
 				if (p_renderer->GetFlags() & GolRenderDevice::c_flagBit8) {
 					m_alphaFunc = 2;
 					m_alphaRef = 0;
-					m_flags &= ~c_flagBit7;
-					m_flags |= c_flagBit6;
+					m_flags &= ~c_flagNoAlphaTest;
+					m_flags |= c_flagAlphaTest;
 				}
 			}
 		}

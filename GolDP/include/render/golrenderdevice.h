@@ -257,7 +257,7 @@ protected:
 	undefined4 m_requestedGrnBitCount;           // 0x18
 	undefined4 m_requestedBluBitCount;           // 0x1c
 	undefined4 m_requestedAlpBitCount;           // 0x20
-	undefined4 m_requestedUnk0x10BitCount;       // 0x24
+	undefined4 m_requestedIntensityBitCount;     // 0x24
 	undefined4 m_requestedPaletteBitCount;       // 0x28
 	undefined4 m_unk0x2c;                        // 0x2c
 	LegoU32 m_countTextureFormats;               // 0x30

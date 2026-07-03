@@ -34,7 +34,7 @@ struct WdbModel {
 	enum {
 		e_flagBit1 = 0x1 << 1,
 		e_flagBit2 = 0x1 << 2,
-		e_flagBit3 = 0x1 << 3,
+		e_flagTextureScroll = 0x1 << 3,
 	};
 
 	GolName m_name;                    // 0x00
@@ -49,8 +49,8 @@ struct WdbModel {
 	GolVec3 m_direction;               // 0x5c
 	GolVec3 m_up;                      // 0x68
 	LegoFloat m_scale;                 // 0x74
-	Rect* m_rects;                     // 0x78
-	LegoU32 m_rectCount;               // 0x7c
+	Rect* m_animationBindings;         // 0x78 (left=animation, top=track, right=material, bottom=table)
+	LegoU32 m_animationBindingCount;   // 0x7c
 	LegoFloat m_textureScrollSpeedU;   // 0x80
 	LegoFloat m_textureScrollSpeedV;   // 0x84
 	LegoU32 m_flags;                   // 0x88
@@ -112,6 +112,54 @@ public:
 	// VTABLE: GOLDP 0x10057744
 	// SIZE 0x1fc
 	class WdbTxtParser : public GolTxtParser {
+	public:
+		// .wdb tokens; ids are section-scoped, so several carry one name per context
+		enum {
+			e_textureLists = 0x27,
+			e_materialLibraries = 0x28,
+			e_modelParts = 0x29,
+			e_models = 0x2a,
+			e_materialTables = 0x2b,
+			e_materialAssignment = 0x2b,
+			e_sceneNodes = 0x2c,
+			e_nodeLod = 0x2c,
+			e_boundingShapes = 0x2d,
+			e_modelEntities = 0x2e,
+			e_animatedEntities = 0x2f,
+			e_trackedEntity = 0x2f,
+			e_collidableEntities = 0x30,
+			e_position = 0x31,
+			e_orientation = 0x32,
+			e_jointedModel = 0x33,
+			e_collidableModel = 0x34,
+			e_node = 0x35,
+			e_scale = 0x36,
+			e_sprites = 0x37,
+			e_axis = 0x38,
+			e_materialName = 0x39,
+			e_width = 0x3a,
+			e_height = 0x3b,
+			e_maxDistance = 0x3c,
+			e_materialAnimations = 0x3d,
+			e_materialAnimation = 0x3e,
+			e_lod = 0x3f,
+			e_textureScroll = 0x3f,
+			e_boundingVolumes = 0x40,
+			e_boundingVolumeRef = 0x40,
+			e_boundedEntities = 0x41,
+			e_modelFlag1 = 0x42,
+			e_cameras = 0x43,
+			e_target = 0x44,
+			e_nearClip = 0x45,
+			e_farClip = 0x46,
+			e_fov = 0x47,
+			e_ambientLights = 0x48,
+			e_lights = 0x49,
+			e_color = 0x4a,
+			e_direction = 0x4b,
+			e_modelFlag2 = 0x4c,
+		};
+
 		// SYNTHETIC: GOLDP 0x10030050 FOLDED
 		// GolWorldDatabase::WdbTxtParser::`scalar deleting destructor'
 
@@ -249,7 +297,7 @@ protected:
 	void ParseBoundedEntities(GolFileParser&);
 	void ParseSprites(GolFileParser&);
 	void ParseMaterialAnimationNames(GolFileParser&);
-	void ParseRects(GolFileParser&, Rect**, LegoU32* p_count);
+	void ParseAnimationBindings(GolFileParser&, Rect**, LegoU32* p_count);
 	void ParseCameras(GolFileParser&);
 	void ParseAmbientLights(GolFileParser&);
 	void ParseLights(GolFileParser&);

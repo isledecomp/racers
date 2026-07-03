@@ -77,10 +77,10 @@ void CarPartSet::Entry::Load(
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case CarPartSet::e_unknown0x2e:
+		case CarPartSet::e_pieceType:
 			m_pieceType = parser->ReadInteger();
 			break;
-		case CarPartSet::e_unknown0x30: {
+		case CarPartSet::e_choices: {
 			m_choiceCount = LegoPieceLibrary::ReadBracketedCountAndLeftCurly(parser);
 			m_choices = new PartChoice[m_choiceCount];
 			if (m_choices == NULL) {
@@ -101,7 +101,7 @@ void CarPartSet::Entry::Load(
 			parser->ReadRightCurly();
 			break;
 		}
-		case CarPartSet::e_unknown0x31:
+		case CarPartSet::e_name:
 			::strncpy(m_name, parser->ReadString(), sizeof(m_name));
 			break;
 		default:
@@ -238,7 +238,7 @@ void CarPartSet::Load(
 		GOL_FATALERROR_MESSAGE("Unable to open LEGO Car Set file");
 	}
 
-	if (parser->GetNextToken() != CarPartSet::e_unknown0x2f) {
+	if (parser->GetNextToken() != CarPartSet::e_parts) {
 		parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 	m_entryCount = LegoPieceLibrary::ReadBracketedCountAndLeftCurly(parser);

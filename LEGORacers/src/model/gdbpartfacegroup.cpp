@@ -26,18 +26,16 @@ GdbPartFaceGroup::~GdbPartFaceGroup()
 // FUNCTION: LEGORACERS 0x00407e90
 void GdbPartFaceGroup::Read(GolFileParser& p_parser)
 {
-	p_parser.AssertNextTokenIs(
-		static_cast<GolFileParser::ParserTokenType>(GdbPartLibrary::GdbTxtParser::e_unknown0x2b)
-	);
+	p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(GdbPartLibrary::GdbTxtParser::e_groups));
 	p_parser.ReadLeftCurly();
 	GolFileParser::ParserTokenType token = p_parser.GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GdbPartLibrary::GdbTxtParser::e_unknown0x27:
+		case GdbPartLibrary::GdbTxtParser::e_material:
 			p_parser.ReadStringWithMaxLength(sizeof(m_materialName));
 			::strncpy(m_materialName, p_parser.GetLastString(), sizeof(m_materialName));
 			break;
-		case GdbPartLibrary::GdbTxtParser::e_unknown0x2a: {
+		case GdbPartLibrary::GdbTxtParser::e_triangles: {
 			m_triangleCount = static_cast<LegoU16>(p_parser.ReadBracketedCountAndLeftCurly());
 			LegoU32 indexCount = m_triangleCount * 3;
 			m_indices = new LegoU16[indexCount];

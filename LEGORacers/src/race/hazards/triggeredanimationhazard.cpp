@@ -68,7 +68,7 @@ void TriggeredAnimationHazard::Load(HazardContext* p_context, GolFileParser* p_p
 			case HazardManager::HzbTxtParser::e_trigger:
 				m_triggerId = p_parser->ReadInteger();
 				break;
-			case HazardManager::HzbTxtParser::e_unknown0x41:
+			case HazardManager::HzbTxtParser::e_collider:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 				break;
 			case HazardManager::HzbTxtParser::e_entity:

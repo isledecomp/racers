@@ -1412,10 +1412,10 @@ void CutsceneDefinition::Load(
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case CdbTxtParser::e_unknown0x27:
+		case CdbTxtParser::e_frames:
 			ParseFrames(parser);
 			break;
-		case CdbTxtParser::e_unknown0x28:
+		case CdbTxtParser::e_worlds:
 			ParseWorldNames(parser);
 			break;
 		default:
@@ -1523,7 +1523,7 @@ void CutsceneDefinition::ParseFrames(GolFileParser* p_parser)
 	}
 
 	for (LegoU32 i = 0; i < m_frameCount; i++) {
-		p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CdbTxtParser::e_unknown0x27));
+		p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CdbTxtParser::e_frames));
 
 		GolName name;
 		::strncpy(name, p_parser->ReadStringWithMaxLength(8), sizeof(name));

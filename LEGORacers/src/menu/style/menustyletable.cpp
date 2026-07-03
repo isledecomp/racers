@@ -740,7 +740,7 @@ void MenuStyleTable::LoadIconStyles()
 	::memset(m_iconStyles, 0, sizeof(IconStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3a) {
+		if (m_parser->GetNextToken() != c_styleIcon) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 

@@ -137,7 +137,7 @@ void TriggerList::Load(
 		}
 
 		for (LegoU32 i = 0; i < m_count; i++) {
-			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TrbTxtParser::e_unknown0x27));
+			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TrbTxtParser::e_triggers));
 			parser->ReadLeftCurly();
 
 			EntryParams params;
@@ -200,7 +200,7 @@ GolFileParser* TriggerList::CreateParser(const LegoChar* p_name, LegoBool32 p_bi
 	}
 
 	parser->OpenFileForRead(p_name);
-	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TrbTxtParser::e_unknown0x27));
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TrbTxtParser::e_triggers));
 	m_count = parser->ReadBracketedCountAndLeftCurly();
 	if (!m_count) {
 		parser->Dispose();
@@ -222,18 +222,18 @@ void TriggerList::DestroyParser(GolFileParser* p_parser)
 void TriggerList::ParseTrigger(GolFileParser* p_parser, EntryParams* p_params)
 {
 	switch (p_parser->GetCurrentToken()) {
-	case TrbTxtParser::e_unknown0x29:
+	case TrbTxtParser::e_position:
 		p_params->m_position.m_x = p_parser->ReadFloat();
 		p_params->m_position.m_y = p_parser->ReadFloat();
 		p_params->m_position.m_z = p_parser->ReadFloat();
 		break;
-	case TrbTxtParser::e_unknown0x2a:
+	case TrbTxtParser::e_radius:
 		p_params->m_radius = p_parser->ReadFloat();
 		break;
-	case TrbTxtParser::e_unknown0x2b:
+	case TrbTxtParser::e_event:
 		p_params->m_eventId = p_parser->ReadInteger();
 		break;
-	case TrbTxtParser::e_unknown0x2f:
+	case TrbTxtParser::e_mirror:
 		p_params->m_mirror = TRUE;
 		break;
 	default:

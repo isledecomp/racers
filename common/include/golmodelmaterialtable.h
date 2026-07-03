@@ -13,7 +13,7 @@ class GolRenderDevice;
 class GolModelMaterialTable : public MaterialTable {
 public:
 	enum {
-		e_unknown0x27 = 0x27,
+		e_materials = 0x27,
 	};
 
 	GolModelMaterialTable();

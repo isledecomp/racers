@@ -68,9 +68,9 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_touchEventId = p_parser->ReadInteger();
 				m_flags |= c_flagTouchEventId;
 				break;
-			case TmbTxtParser::e_unknown0x2b:
+			case TmbTxtParser::e_projectileEvent:
 				m_projectileEventId = p_parser->ReadInteger();
-				m_flags |= c_flagUnk0x18;
+				m_flags |= c_flagProjectileEventId;
 				break;
 			case TmbTxtParser::e_unknown0x2c:
 				m_unk0x1c.m_x = p_parser->ReadFloat();
@@ -126,14 +126,14 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_rollingResistance = p_parser->ReadFloat();
 				m_flags |= c_flagRollingResistance;
 				break;
-			case TmbTxtParser::e_unknown0x37:
-				m_flags |= c_flagBit16;
+			case TmbTxtParser::e_nonSolid:
+				m_flags |= c_flagNonSolid;
 				break;
-			case TmbTxtParser::e_unknown0x38:
-				m_flags |= c_flagBit17;
+			case TmbTxtParser::e_projectilePassThrough:
+				m_flags |= c_flagProjectilePassThrough;
 				break;
-			case TmbTxtParser::e_unknown0x39:
-				m_flags |= c_flagBit18;
+			case TmbTxtParser::e_finish:
+				m_flags |= c_flagFinish;
 				break;
 			default:
 				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);

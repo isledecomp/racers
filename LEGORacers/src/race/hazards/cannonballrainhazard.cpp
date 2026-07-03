@@ -65,7 +65,7 @@ void CannonballRainHazard::Load(HazardContext* p_context, GolFileParser* p_parse
 	GolFileParser::ParserTokenType token;
 	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case HazardManager::HzbTxtParser::e_unknown0x45:
+		case HazardManager::HzbTxtParser::e_material:
 			::strncpy(
 				m_materialName,
 				p_parser->ReadStringWithMaxLength(sizeof(m_materialName)),
@@ -78,7 +78,7 @@ void CannonballRainHazard::Load(HazardContext* p_context, GolFileParser* p_parse
 		case HazardManager::HzbTxtParser::e_trigger:
 			m_triggerId = p_parser->ReadInteger();
 			break;
-		case HazardManager::HzbTxtParser::e_unknown0x44:
+		case HazardManager::HzbTxtParser::e_interval:
 			m_intervalMs = p_parser->ReadInteger();
 			break;
 		default:

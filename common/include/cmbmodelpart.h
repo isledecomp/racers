@@ -16,9 +16,9 @@ class GolFileParser;
 class CmbModelPart : public GolNameTable {
 public:
 	enum {
-		e_unknown0x27 = 0x27,
-		e_unknown0x2b = 0x2b,
-		e_unknown0x2c = 0x2c,
+		e_data = 0x27,
+		e_tracks = 0x2b,
+		e_parts = 0x2c,
 	};
 
 	// VTABLE: GOLDP 0x10056a68

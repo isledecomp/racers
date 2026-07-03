@@ -37,11 +37,11 @@ void CutsceneTextVisual::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner,
 	GolFileParser::ParserTokenType token;
 	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case CutscenePlayer::CebTxtParser::e_unknown0x40:
+		case CutscenePlayer::CebTxtParser::e_string:
 			m_stringTableIndex = p_parser->ReadInteger();
 			m_stringIndex = p_parser->ReadInteger();
 			break;
-		case CutscenePlayer::CebTxtParser::e_unknown0x41: {
+		case CutscenePlayer::CebTxtParser::e_text: {
 			LegoChar* text = p_parser->ReadString();
 			m_rawString = new LegoChar[::strlen(text) + 1];
 			if (m_rawString == NULL) {
@@ -51,7 +51,7 @@ void CutsceneTextVisual::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner,
 			::strcpy(m_rawString, text);
 			break;
 		}
-		case CutscenePlayer::CebTxtParser::e_unknown0x42:
+		case CutscenePlayer::CebTxtParser::e_font:
 			::strncpy(m_fontName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 			break;
 		default:

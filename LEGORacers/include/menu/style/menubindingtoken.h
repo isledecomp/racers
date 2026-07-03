@@ -28,6 +28,7 @@ enum MenuStyleFieldToken {
 	c_styleFont = 0x29,
 	c_styleColors = 0x2a,
 	c_styleSounds = 0x2b,
+	c_resourceHeader = 0x27,
 	c_styleIcon = 0x3a,
 	c_styleBlockImage = 0x32,
 	c_styleBlockText = 0x33,

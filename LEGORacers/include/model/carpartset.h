@@ -12,10 +12,10 @@ class LegoColorTable;
 class CarPartSet {
 public:
 	enum {
-		e_unknown0x2e = 0x2e,
-		e_unknown0x2f = 0x2f,
-		e_unknown0x30 = 0x30,
-		e_unknown0x31 = 0x31,
+		e_pieceType = 0x2e,
+		e_parts = 0x2f,
+		e_choices = 0x30,
+		e_name = 0x31,
 	};
 
 	// SIZE 0x04

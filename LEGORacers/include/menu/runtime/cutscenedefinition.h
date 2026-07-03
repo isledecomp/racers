@@ -28,8 +28,8 @@ public:
 	class CdbTxtParser : public GolTxtParser {
 	public:
 		enum {
-			e_unknown0x27 = 0x27,
-			e_unknown0x28 = 0x28,
+			e_frames = 0x27,
+			e_worlds = 0x28,
 		};
 	};
 

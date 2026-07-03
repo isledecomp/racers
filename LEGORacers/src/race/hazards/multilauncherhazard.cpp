@@ -4,6 +4,7 @@
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golmath.h"
+#include "race/hazardmanager.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/raceeventtable.h"
 #include "types.h"
@@ -40,8 +41,8 @@ void MultiLauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_unknown0x33) {
-		if (token == GolFileParser::e_unknown0x38) {
+	while (token != HazardManager::HzbTxtParser::e_launcher) {
+		if (token == HazardManager::HzbTxtParser::e_target) {
 			p_parser->ReadLeftBracket();
 			m_targetPositionCount = p_parser->ReadInteger();
 			p_parser->ReadRightBracket();
@@ -70,7 +71,7 @@ void MultiLauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser
 
 			p_parser->ReadRightCurly();
 		}
-		else if (token == GolFileParser::e_unknown0x37) {
+		else if (token == HazardManager::HzbTxtParser::e_source) {
 			p_parser->ReadLeftBracket();
 			m_launchPositionCount = p_parser->ReadInteger();
 			p_parser->ReadRightBracket();

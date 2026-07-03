@@ -14,6 +14,10 @@ class GolWorldDatabase;
 // SIZE 0x38
 class LegoColorTable {
 public:
+	enum {
+		e_colors = 0x2d,
+	};
+
 	// SIZE 0x10
 	struct ColorRecord {
 		LegoChar* SetName(const LegoChar* p_name);

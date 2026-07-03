@@ -11,10 +11,10 @@ class RaceState;
 class RacerTriggerList : public TriggerList {
 public:
 	enum {
-		e_unknown0x27 = 0x27,
-		e_unknown0x2c = 0x2c,
-		e_unknown0x2d = 0x2d,
-		e_unknown0x2e = 0x2e,
+		e_triggers = 0x27,
+		e_projectiles = 0x2c,
+		e_entity = 0x2d,
+		e_lap = 0x2e,
 	};
 
 	class EntryParams;

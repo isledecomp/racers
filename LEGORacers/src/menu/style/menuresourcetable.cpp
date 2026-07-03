@@ -1,6 +1,7 @@
 #include "menu/style/menuresourcetable.h"
 
 #include "golname.h"
+#include "menu/style/menubindingtoken.h"
 
 #include <string.h>
 
@@ -56,7 +57,7 @@ void MenuResourceTable::Clear()
 // FUNCTION: LEGORACERS 0x0046b130
 LegoS32 MenuResourceTable::ReadHeader()
 {
-	if (m_parser->GetNextToken() != GolFileParser::e_unknown0x27) {
+	if (m_parser->GetNextToken() != c_resourceHeader) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 

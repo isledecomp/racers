@@ -137,7 +137,7 @@ void LegoColorTable::LoadColors(const LegoChar* p_filename, undefined4 p_binary)
 		GOL_FATALERROR_MESSAGE("Unable to open LEGO Color file");
 	}
 
-	if (parser->GetNextToken() != GolFileParser::e_unknown0x2d) {
+	if (parser->GetNextToken() != LegoColorTable::e_colors) {
 		parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 	m_colorRecordCount = LegoPieceLibrary::ReadBracketedCountAndLeftCurly(parser);

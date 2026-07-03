@@ -19,11 +19,11 @@ public:
 	class TrbTxtParser : public GolTxtParser {
 	public:
 		enum {
-			e_unknown0x27 = 0x27,
-			e_unknown0x29 = 0x29,
-			e_unknown0x2a = 0x2a,
-			e_unknown0x2b = 0x2b,
-			e_unknown0x2f = 0x2f,
+			e_triggers = 0x27,
+			e_position = 0x29,
+			e_radius = 0x2a,
+			e_event = 0x2b,
+			e_mirror = 0x2f,
 		};
 	};
 

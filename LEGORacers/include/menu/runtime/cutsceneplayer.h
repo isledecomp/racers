@@ -103,9 +103,9 @@ public:
 			e_imageAttached = 0x4e,
 			e_imageDetached = 0x4f,
 			e_visualColor = 0x66,
-			e_unknown0x40 = 0x40,
-			e_unknown0x41 = 0x41,
-			e_unknown0x42 = 0x42,
+			e_string = 0x40,
+			e_text = 0x41,
+			e_font = 0x42,
 		};
 	};
 

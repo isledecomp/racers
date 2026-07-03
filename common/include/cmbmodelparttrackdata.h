@@ -21,9 +21,9 @@ struct CmbModelPartTrack {
 class CmbModelPartTrackData {
 public:
 	enum {
-		e_unknown0x28 = 0x28,
-		e_unknown0x29 = 0x29,
-		e_unknown0x2a = 0x2a,
+		e_vertices = 0x28,
+		e_frames = 0x29,
+		e_keys = 0x2a,
 	};
 
 	CmbModelPartTrackData();

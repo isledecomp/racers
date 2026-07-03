@@ -17,10 +17,10 @@ public:
 	class LsbTxtParser : public GolTxtParser {
 	public:
 		enum {
-			e_unknown0x27 = 0x27,
-			e_unknown0x28 = 0x28,
-			e_unknown0x29 = 0x29,
-			e_unknown0x2a = 0x2a,
+			e_loadingScreen = 0x27,
+			e_image = 0x28,
+			e_dots = 0x29,
+			e_string = 0x2a,
 		};
 	};
 

@@ -31,7 +31,7 @@ public:
 			c_flagEnterEventId = 1 << 1,
 			c_flagLeaveEventId = 1 << 2,
 			c_flagTouchEventId = 1 << 3,
-			c_flagUnk0x18 = 1 << 4,
+			c_flagProjectileEventId = 1 << 4,
 			c_flagUnk0x1c = 1 << 5,
 			c_flagSurfaceForce = 1 << 6,
 			c_flagSurfaceSoundId = 1 << 7,
@@ -43,9 +43,9 @@ public:
 			c_flagLateralGrip = 1 << 13,
 			c_flagUnk0x54 = 1 << 14,
 			c_flagRollingResistance = 1 << 15,
-			c_flagBit16 = 1 << 16,
-			c_flagBit17 = 1 << 17,
-			c_flagBit18 = 1 << 18
+			c_flagNonSolid = 1 << 16,
+			c_flagProjectilePassThrough = 1 << 17,
+			c_flagFinish = 1 << 18
 		};
 
 		GolName m_name;                // 0x00
@@ -84,14 +84,14 @@ public:
 			e_friction = 0x33,
 			e_lateralGrip = 0x34,
 			e_rollingResistance = 0x36,
-			e_unknown0x2b = 0x2b,
+			e_projectileEvent = 0x2b,
 			e_unknown0x2c = 0x2c,
 			e_unknown0x2f = 0x2f,
 			e_unknown0x30 = 0x30,
 			e_unknown0x35 = 0x35,
-			e_unknown0x37 = 0x37,
-			e_unknown0x38 = 0x38,
-			e_unknown0x39 = 0x39,
+			e_nonSolid = 0x37,
+			e_projectilePassThrough = 0x38,
+			e_finish = 0x39,
 		};
 	};
 

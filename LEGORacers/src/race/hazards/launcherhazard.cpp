@@ -72,22 +72,22 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case HazardManager::HzbTxtParser::e_unknown0x37:
+		case HazardManager::HzbTxtParser::e_source:
 			m_launchPosition.m_x = p_parser->ReadFloat();
 			m_launchPosition.m_y = p_parser->ReadFloat();
 			m_launchPosition.m_z = p_parser->ReadFloat();
 			break;
-		case HazardManager::HzbTxtParser::e_unknown0x38:
+		case HazardManager::HzbTxtParser::e_target:
 			m_targetPosition.m_x = p_parser->ReadFloat();
 			m_targetPosition.m_y = p_parser->ReadFloat();
 			m_targetPosition.m_z = p_parser->ReadFloat();
 			break;
-		case HazardManager::HzbTxtParser::e_unknown0x39:
+		case HazardManager::HzbTxtParser::e_triggerPosition:
 			m_triggerPosition.m_x = p_parser->ReadFloat();
 			m_triggerPosition.m_y = p_parser->ReadFloat();
 			m_triggerPosition.m_z = p_parser->ReadFloat();
 			break;
-		case HazardManager::HzbTxtParser::e_unknown0x3a: {
+		case HazardManager::HzbTxtParser::e_triggerRadius: {
 			LegoFloat radius = p_parser->ReadFloat();
 			m_triggerRadiusSquared = radius * radius;
 			break;

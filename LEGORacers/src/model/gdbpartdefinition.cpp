@@ -30,7 +30,7 @@ void GdbPartDefinition::Read(GolFileParser& p_parser)
 	GolFileParser::ParserTokenType token = p_parser.GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GdbPartLibrary::GdbTxtParser::e_unknown0x2b: {
+		case GdbPartLibrary::GdbTxtParser::e_groups: {
 			m_groupCount = p_parser.ReadBracketedCountAndLeftCurly();
 			m_groups = new GdbPartFaceGroup[m_groupCount];
 			for (LegoU32 i = 0; i < m_groupCount; i++) {
@@ -39,7 +39,7 @@ void GdbPartDefinition::Read(GolFileParser& p_parser)
 			p_parser.ReadRightCurly();
 			break;
 		}
-		case GdbPartLibrary::GdbTxtParser::e_unknown0x2d:
+		case GdbPartLibrary::GdbTxtParser::e_scale:
 			m_scale = p_parser.ReadFloat();
 			break;
 		default:

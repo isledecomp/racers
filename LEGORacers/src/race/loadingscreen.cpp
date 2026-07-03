@@ -107,16 +107,16 @@ void LoadingScreen::Initialize(
 	}
 
 	parser->OpenFileForRead(g_loadScreenName);
-	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(LsbTxtParser::e_unknown0x27));
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(LsbTxtParser::e_loadingScreen));
 	parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case LsbTxtParser::e_unknown0x2a:
+		case LsbTxtParser::e_string:
 			stringIndex = parser->ReadInteger();
 			break;
-		case LsbTxtParser::e_unknown0x29: {
+		case LsbTxtParser::e_dots: {
 			m_dotCount = parser->ReadBracketedCountAndLeftCurly();
 			if (m_dotCount) {
 				m_dotPositions = new LegoS32[m_dotCount << 1];
@@ -132,7 +132,7 @@ void LoadingScreen::Initialize(
 			parser->ReadRightCurly();
 			break;
 		}
-		case LsbTxtParser::e_unknown0x28:
+		case LsbTxtParser::e_image:
 			::strncpy(imageName, parser->ReadStringWithMaxLength(sizeof(imageName) - 1), sizeof(imageName));
 			break;
 		default:

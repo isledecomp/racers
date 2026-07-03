@@ -80,11 +80,11 @@ public:
 
 private:
 	enum {
-		c_flag0x3b4Bit0 = 1 << 0,
-		c_flag0x3b4Bit1 = 1 << 1,
-		c_flag0x3b4Bit2 = 1 << 2,
-		c_flag0x3b4Bit3 = 1 << 3,
-		c_flag0x3b4Bit4 = 1 << 4,
+		c_flagBestRunValid = 1 << 0,
+		c_flagRunning = 1 << 1,
+		c_flagBinaryGhosts = 1 << 2,
+		c_flagRecordRunValid = 1 << 3,
+		c_flagBit4 = 1 << 4,
 		c_flag0x3b4Bit5 = 1 << 5,
 		c_lapCount = 3,
 		c_ghostSampleIntervalMs = 250,
@@ -101,10 +101,10 @@ private:
 	};
 
 public:
-	LegoBool32 HasBestGhostMarker() const { return (m_flags0x3b4 & c_flag0x3b4Bit0) && !m_bestRun->m_finished; }
-	LegoBool32 HasRecordGhostMarker() const { return (m_flags0x3b4 & c_flag0x3b4Bit3) && !m_recordRun->m_finished; }
-	LegoBool32 HasBestRunLapTimes() const { return m_flags0x3b4 & c_flag0x3b4Bit0; }
-	LegoBool32 HasRecordRunLapTimes() const { return m_flags0x3b4 & c_flag0x3b4Bit3; }
+	LegoBool32 HasBestGhostMarker() const { return (m_flags & c_flagBestRunValid) && !m_bestRun->m_finished; }
+	LegoBool32 HasRecordGhostMarker() const { return (m_flags & c_flagRecordRunValid) && !m_recordRun->m_finished; }
+	LegoBool32 HasBestRunLapTimes() const { return m_flags & c_flagBestRunValid; }
+	LegoBool32 HasRecordRunLapTimes() const { return m_flags & c_flagRecordRunValid; }
 	GolAnimatedEntity* GetBestGhostMarkerEntity() { return &m_bestGhostMarker; }
 	GolAnimatedEntity* GetRecordGhostMarkerEntity() { return m_recordGhostMarker; }
 
@@ -128,7 +128,7 @@ private:
 	GolVec3 m_unk0x3a0;                     // 0x3a0
 	LegoU32 m_unk0x3ac;                     // 0x3ac
 	LegoU32 m_elapsedTotalMs;               // 0x3b0
-	LegoU8 m_flags0x3b4;                    // 0x3b4
+	LegoU8 m_flags;                         // 0x3b4
 };
 
 #endif // TIMERACEMANAGER_H

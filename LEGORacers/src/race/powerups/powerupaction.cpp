@@ -68,7 +68,7 @@ LegoS32 WeaponActionBase::GetBrickColor()
 // FUNCTION: LEGORACERS 0x004562d0
 HazardActionBase::HazardActionBase()
 {
-	m_raceState0x018 = NULL;
+	m_raceState = NULL;
 	m_collisionEvent = 0;
 	m_collisionWorld = 0;
 	m_unk0x024 = 0;

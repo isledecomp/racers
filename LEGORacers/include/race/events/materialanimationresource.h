@@ -43,7 +43,7 @@ public:
 
 private:
 	enum {
-		c_flags0x1cBit0 = 1 << 0
+		c_flagBit0 = 1 << 0
 	};
 
 	MabMaterialAnimation* m_materialAnimation; // 0x20

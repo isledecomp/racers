@@ -79,7 +79,7 @@ void OilSlickAction::Initialize(
 )
 {
 	m_manager = p_manager;
-	m_raceState0x018 = p_raceState;
+	m_raceState = p_raceState;
 	m_collisionWorld = p_collisionWorld;
 	m_collidable = p_collidable;
 	m_particleAnimation = p_particleAnimation;
@@ -200,7 +200,7 @@ void OilSlickAction::AdvanceState()
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &m_worldEntity;
-	LegoEventQueue::Event* event = m_raceState0x018->GetEventQueue()->AllocateEvent(callback, &descriptor);
+	LegoEventQueue::Event* event = m_raceState->GetEventQueue()->AllocateEvent(callback, &descriptor);
 
 	CutsceneAnimation* animation = m_particleAnimation;
 	m_collisionEvent = event;

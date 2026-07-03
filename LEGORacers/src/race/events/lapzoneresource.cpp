@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(LapZoneResource::InitParams, 0x18)
 LapZoneResource::LapZoneResource()
 {
 	OnEnd();
-	m_flags0x1c = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004645c0
@@ -22,7 +22,7 @@ LapZoneResource::~LapZoneResource()
 // FUNCTION: LEGORACERS 0x00464610
 void LapZoneResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -35,7 +35,7 @@ void LapZoneResource::Initialize(InitParams* p_params)
 
 	m_eventTable = params->m_eventTable;
 	m_zone = params->m_unk0x14;
-	m_state0x18 = c_stateEnded;
+	m_state = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x00464660
@@ -69,6 +69,6 @@ void LapZoneResource::OnStartForRacer(Racer* p_racer)
 // FUNCTION: LEGORACERS 0x004646e0
 void LapZoneResource::OnEndForRacer(Racer*)
 {
-	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_stateEnded;
+	NotifyStateChange(m_state, 3);
+	m_state = c_stateEnded;
 }

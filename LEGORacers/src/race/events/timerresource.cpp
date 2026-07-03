@@ -9,7 +9,7 @@ DECOMP_SIZE_ASSERT(TimerResource, 0x30)
 TimerResource::TimerResource()
 {
 	ClearFields();
-	m_flags0x1c = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e780
@@ -24,13 +24,13 @@ void TimerResource::ClearFields()
 	m_holdEventId = -1;
 	m_durationMs = 0;
 	m_remainingMs = 0;
-	m_flags0x2c = 0;
+	m_timerFlags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e7f0
 void TimerResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -46,10 +46,10 @@ void TimerResource::Initialize(InitParams* p_params)
 	m_durationMs = p_params->m_durationMs;
 	m_remainingMs = 0;
 	if (p_params->m_triggerOnEnd) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 
-	m_state0x18 = c_stateEnded;
+	m_state = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x0045e860
@@ -65,15 +65,15 @@ void TimerResource::OnStartAt(GolVec3*)
 {
 	m_remainingMs = m_durationMs;
 	NotifyStateChange(1, 1);
-	m_state0x18 = c_stateActive;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0045e8a0
 void TimerResource::OnEnd()
 {
-	if (m_remainingMs <= 0 && !(m_flags0x2c & 1)) {
-		NotifyStateChange(m_state0x18, 3);
-		m_state0x18 = c_stateEnded;
+	if (m_remainingMs <= 0 && !(m_timerFlags & 1)) {
+		NotifyStateChange(m_state, 3);
+		m_state = c_stateEnded;
 	}
 }
 
@@ -81,7 +81,7 @@ void TimerResource::OnEnd()
 void TimerResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
-	if (m_state0x18 != c_stateEnded) {
+	if (m_state != c_stateEnded) {
 		if (p_elapsedMs > m_remainingMs) {
 			m_remainingMs = 0;
 		}

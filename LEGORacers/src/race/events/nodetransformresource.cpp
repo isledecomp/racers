@@ -14,7 +14,7 @@ DECOMP_SIZE_ASSERT(NodeTransformResource, 0x2c)
 NodeTransformResource::NodeTransformResource()
 {
 	ClearFields();
-	m_flags0x1c = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004638a0
@@ -34,7 +34,7 @@ void NodeTransformResource::ClearFields()
 // FUNCTION: LEGORACERS 0x00463900
 void NodeTransformResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -49,10 +49,10 @@ void NodeTransformResource::Initialize(InitParams* p_params)
 	m_modelEntity = p_params->m_modelEntity;
 	m_nodeIndex = p_params->m_unk0x1c;
 	if (p_params->m_unk0x20) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 
-	m_state0x18 = c_stateIdle;
+	m_state = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x00463970
@@ -67,20 +67,20 @@ void NodeTransformResource::Destroy()
 void NodeTransformResource::OnStartAt(GolVec3*)
 {
 	NotifyStateChange(1, 1);
-	m_state0x18 = c_stateActive;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x004639b0
 void NodeTransformResource::OnEnd()
 {
-	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_stateIdle;
+	NotifyStateChange(m_state, 3);
+	m_state = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004639d0
 void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state0x18 != c_stateIdle) {
+	if (m_state != c_stateIdle) {
 		RaceEventResource::Update(p_elapsedMs);
 
 		if (m_boundedEntity) {

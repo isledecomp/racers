@@ -23,7 +23,7 @@ LookTargetResource::~LookTargetResource()
 // FUNCTION: LEGORACERS 0x0045e650
 void LookTargetResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -38,7 +38,7 @@ void LookTargetResource::Initialize(InitParams* p_params)
 	m_lookPosition.m_x = p_params->m_lookPosition.m_x;
 	m_lookPosition.m_y = p_params->m_lookPosition.m_y;
 	m_lookPosition.m_z = p_params->m_lookPosition.m_z;
-	m_state0x18 = c_stateEnded;
+	m_state = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x0045e6b0
@@ -62,12 +62,12 @@ void LookTargetResource::OnStartForRacer(Racer* p_racer)
 // FUNCTION: LEGORACERS 0x0045e6f0
 void LookTargetResource::OnEndForRacer(Racer* p_racer)
 {
-	NotifyStateChange(m_state0x18, 3);
+	NotifyStateChange(m_state, 3);
 	if (p_racer) {
 		p_racer->ClearLookTarget();
 	}
 
-	m_state0x18 = c_stateEnded;
+	m_state = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x0045e720

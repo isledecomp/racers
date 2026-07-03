@@ -22,15 +22,15 @@ ColorTransformResource::~ColorTransformResource()
 void ColorTransformResource::ClearFields()
 {
 	m_eventTable = NULL;
-	m_flags0x20 = 0;
-	m_state0x18 = 0;
+	m_transformFlags = 0;
+	m_state = 0;
 	m_eventId = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00465570
 void ColorTransformResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -41,18 +41,18 @@ void ColorTransformResource::Initialize(InitParams* p_params)
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	LegoU32 flags = p_params->m_flags0x14;
-	m_flags0x20 = flags;
+	LegoU32 flags = p_params->m_flags;
+	m_transformFlags = flags;
 	m_colorTransform = p_params->m_colorTransform;
 	m_worldEntity = p_params->m_worldEntity;
 	if (flags & 1) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 	if (flags & 4) {
-		m_flags0x1c |= c_flagNoEnd;
+		m_flags |= c_flagNoEnd;
 	}
 
-	m_state0x18 = c_stateEnded;
+	m_state = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x004655e0
@@ -66,9 +66,9 @@ void ColorTransformResource::Destroy()
 // FUNCTION: LEGORACERS 0x00465600
 void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 {
-	LegoU8 flags = static_cast<LegoU8>(m_flags0x20);
+	LegoU8 flags = static_cast<LegoU8>(m_transformFlags);
 	GolWorldEntity* entity = m_worldEntity;
-	if (flags & c_flags0x20Bit1) {
+	if (flags & c_transformFlagBit1) {
 		if (entity) {
 			entity->VTable0x28();
 		}
@@ -93,7 +93,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 // FUNCTION: LEGORACERS 0x00465690
 void ColorTransformResource::OnEndForRacer(Racer* p_racer)
 {
-	if (!(static_cast<LegoU8>(m_flags0x20) & c_flags0x20Bit1)) {
+	if (!(static_cast<LegoU8>(m_transformFlags) & c_transformFlagBit1)) {
 		GolWorldEntity* entity = m_worldEntity;
 		if (entity) {
 			entity->VTable0x28();
@@ -103,8 +103,8 @@ void ColorTransformResource::OnEndForRacer(Racer* p_racer)
 		}
 	}
 
-	NotifyStateChange(m_state0x18, c_stateActive);
-	m_state0x18 = c_stateEnded;
+	NotifyStateChange(m_state, c_stateActive);
+	m_state = c_stateEnded;
 }
 
 // FUNCTION: LEGORACERS 0x004656d0

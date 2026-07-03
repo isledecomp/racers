@@ -28,7 +28,7 @@ void ParticleResource::FUN_004513d0(undefined4)
 ParticleResource::ParticleResource()
 {
 	ClearFields();
-	m_flags0x1c = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e970
@@ -63,7 +63,7 @@ void ParticleResource::ClearFields()
 // FUNCTION: LEGORACERS 0x0045ea00
 void ParticleResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -90,19 +90,19 @@ void ParticleResource::Initialize(InitParams* p_params)
 	m_unk0x54.m_z = p_params->m_unk0x44.m_z;
 
 	if (p_params->m_unk0x50) {
-		m_flags0x1c |= c_flagNoEnd;
+		m_flags |= c_flagNoEnd;
 	}
 
 	if (p_params->m_unk0x54) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 
 	if (p_params->m_unk0x58) {
-		m_flags0x1c |= c_flags0x1cBit3;
+		m_flags |= c_flagBit3;
 	}
 
-	m_state0x18 = c_stateIdle;
-	m_flags0x1c &= ~c_flags0x1cBit5;
+	m_state = c_stateIdle;
+	m_flags &= ~c_flagBit5;
 }
 
 // FUNCTION: LEGORACERS 0x0045ead0
@@ -116,7 +116,7 @@ void ParticleResource::Destroy()
 // FUNCTION: LEGORACERS 0x0045eaf0
 void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 {
-	if (p_unk0x04 && (m_flags0x1c & c_flags0x1cBit3)) {
+	if (p_unk0x04 && (m_flags & c_flagBit3)) {
 		m_unk0x3c = *p_unk0x04;
 	}
 
@@ -130,11 +130,11 @@ void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 	}
 
 	if (m_particle) {
-		m_flags0x1c |= c_flags0x1cBit5;
+		m_flags |= c_flagBit5;
 	}
 
-	NotifyStateChange(m_state0x18, 1);
-	m_state0x18 = c_stateActive;
+	NotifyStateChange(m_state, 1);
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0045eb90
@@ -151,20 +151,20 @@ void ParticleResource::OnEnd()
 		m_particle = NULL;
 	}
 
-	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_stateIdle;
-	m_flags0x1c &= ~c_flags0x1cBit5;
+	NotifyStateChange(m_state, 3);
+	m_state = c_stateIdle;
+	m_flags &= ~c_flagBit5;
 }
 
 // FUNCTION: LEGORACERS 0x0045ebe0
 void ParticleResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
-	if (m_state0x18 == c_stateIdle) {
+	if (m_state == c_stateIdle) {
 		return;
 	}
 
-	if (!(m_flags0x1c & c_flags0x1cBit5)) {
+	if (!(m_flags & c_flagBit5)) {
 		if (m_particleAnimation->HasEmitter(m_particleName)) {
 			m_partAnimations = 1;
 			m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
@@ -175,7 +175,7 @@ void ParticleResource::Update(LegoU32 p_elapsedMs)
 		}
 
 		if (m_particle) {
-			m_flags0x1c |= c_flags0x1cBit5;
+			m_flags |= c_flagBit5;
 		}
 	}
 

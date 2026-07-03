@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(PartAnimationResource, 0x34)
 PartAnimationResource::PartAnimationResource()
 {
 	m_animatedEntity = NULL;
-	m_flags0x1c = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004632e0
@@ -22,7 +22,7 @@ PartAnimationResource::~PartAnimationResource()
 // FUNCTION: LEGORACERS 0x00463330
 void PartAnimationResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -40,27 +40,27 @@ void PartAnimationResource::Initialize(InitParams* p_params)
 	m_endPart = p_params->m_endPart;
 
 	if (p_params->m_unk0x28) {
-		m_flags0x1c |= c_flags0x1cBit0;
+		m_flags |= c_flagBit0;
 	}
 
 	if (p_params->m_unk0x2c) {
-		m_flags0x1c |= c_flagNoEnd;
+		m_flags |= c_flagNoEnd;
 	}
 
 	if (p_params->m_unk0x30) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 
 	if (p_params->m_unk0x34) {
-		m_flags0x1c |= c_flags0x1cBit3;
+		m_flags |= c_flagBit3;
 	}
 
 	if (p_params->m_unk0x38) {
-		m_flags0x1c |= c_flags0x1cBit4;
+		m_flags |= c_flags0x1cBit4;
 	}
 
 	m_animatedEntity->SetFlags(m_animatedEntity->GetFlags() | c_entityFlag0x200000);
-	m_state0x18 = c_stateIdle;
+	m_state = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004633e0
@@ -76,14 +76,14 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 	RaceEventResource::Update(p_elapsedMs);
 
 	GolAnimatedEntity* entity = m_animatedEntity;
-	LegoU32 state = m_state0x18;
+	LegoU32 state = m_state;
 	LegoS32 currentPart = entity->GetCurrentPartIndex();
 
 	if (state == 2) {
 		if (currentPart == m_startPart) {
 			LegoU32 flags = entity->GetFlags();
 			if (!(flags & c_entityFlags0x120000) || static_cast<LegoU32>(entity->GetQueuedPartIndex()) == 0xffff) {
-				LegoU32 loop = m_flags0x1c & c_flags0x1cBit0;
+				LegoU32 loop = m_flags & c_flagBit0;
 				entity->SetQueuedPartIndex(static_cast<LegoU16>(m_activePart));
 				flags = entity->GetFlags();
 				flags &= ~c_entityFlags0x4e0000;
@@ -108,7 +108,7 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 		}
 	}
 	else if (state == 3) {
-		if (!(m_flags0x1c & c_flags0x1cBit0) && currentPart == m_activePart) {
+		if (!(m_flags & c_flagBit0) && currentPart == m_activePart) {
 			LegoU32 flags = entity->GetFlags();
 			if (!(flags & c_entityFlags0x120000) || static_cast<LegoU32>(entity->GetQueuedPartIndex()) == 0xffff) {
 				LegoS32 queuedPart = m_endPart;
@@ -131,26 +131,26 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (currentPart == m_startPart) {
-		if (m_state0x18 != 2) {
-			NotifyStateChange(m_state0x18, 0);
-			m_state0x18 = 2;
+		if (m_state != 2) {
+			NotifyStateChange(m_state, 0);
+			m_state = 2;
 		}
 	}
 	else if (currentPart == m_activePart) {
-		if (m_state0x18 != 3) {
-			NotifyStateChange(m_state0x18, 1);
-			m_state0x18 = 3;
+		if (m_state != 3) {
+			NotifyStateChange(m_state, 1);
+			m_state = 3;
 		}
 	}
 	else if (currentPart == m_endPart) {
-		if (m_state0x18 != 4) {
-			NotifyStateChange(m_state0x18, 2);
-			m_state0x18 = 4;
+		if (m_state != 4) {
+			NotifyStateChange(m_state, 2);
+			m_state = 4;
 		}
 	}
-	else if (currentPart == m_idlePart && m_state0x18 != c_stateIdle) {
-		NotifyStateChange(m_state0x18, 3);
-		m_state0x18 = c_stateIdle;
+	else if (currentPart == m_idlePart && m_state != c_stateIdle) {
+		NotifyStateChange(m_state, 3);
+		m_state = c_stateIdle;
 	}
 }
 
@@ -179,7 +179,7 @@ void PartAnimationResource::OnStartAt(GolVec3*)
 // FUNCTION: LEGORACERS 0x004635c0
 void PartAnimationResource::OnEnd()
 {
-	LegoU32 state = m_state0x18;
+	LegoU32 state = m_state;
 	LegoU32 nextState = state;
 	LegoU32 resetState = c_stateIdle;
 	if (state != resetState) {
@@ -198,7 +198,7 @@ void PartAnimationResource::OnEnd()
 						flags &= ~c_entityFlags0x4e0000;
 						flags |= GolAnimatedEntity::c_flagRestartQueuedPart;
 						entity->SetFlags(flags);
-						SetState0x18(nextState);
+						SetState(nextState);
 						return;
 					}
 				}
@@ -213,7 +213,7 @@ void PartAnimationResource::OnEnd()
 		}
 	}
 
-	SetState0x18(nextState);
+	SetState(nextState);
 }
 
 #pragma code_seg(".text$animatedpartresource_vt18")

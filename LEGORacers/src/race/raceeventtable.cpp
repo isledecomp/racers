@@ -802,7 +802,7 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 		params.m_stateEventIds[2] = -1;
 		params.m_skyName[0] = '\0';
 		params.m_unk0x20 = 0;
-		params.m_flags0x28 = 0;
+		params.m_skyFlags = 0;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
@@ -817,16 +817,16 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 				params.m_unk0x20 = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x45:
-				params.m_flags0x28 |= 2;
+				params.m_skyFlags |= 2;
 				break;
 			case GolFileParser::e_unknown0x46:
-				params.m_flags0x28 |= 1;
+				params.m_skyFlags |= 1;
 				break;
 			case GolFileParser::e_unknown0x47:
-				params.m_flags0x28 |= 8;
+				params.m_skyFlags |= 8;
 				break;
 			case GolFileParser::e_unknown0x48:
-				params.m_flags0x28 |= 4;
+				params.m_skyFlags |= 4;
 				break;
 			case EvbTxtParser::e_event: {
 				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
@@ -882,9 +882,9 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 		params.m_eventId = p_parser->ReadInteger();
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-		params.m_flags0x14 = 0;
+		params.m_flags = 0;
 		if (token == EvbTxtParser::e_triggerOnEnd) {
-			params.m_flags0x14 = 5;
+			params.m_flags = 5;
 			p_parser->ReadLeftCurly();
 		}
 		else if (token != GolFileParser::e_leftCurly) {
@@ -946,10 +946,10 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 				params.m_colorTransform.m_alpOffset = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x50:
-				params.m_flags0x14 |= 2;
+				params.m_flags |= 2;
 				break;
 			case GolFileParser::e_unknown0x3a:
-				params.m_flags0x14 |= 4;
+				params.m_flags |= 4;
 				break;
 			case EvbTxtParser::e_event: {
 				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
@@ -1659,49 +1659,49 @@ void RaceEventTable::ForceAllEvents()
 
 	if (m_sounds) {
 		for (i = 0; i < m_soundCount; i++) {
-			m_sounds[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_sounds[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_partAnimations) {
 		for (i = 0; i < m_partAnimationCount; i++) {
-			m_partAnimations[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_partAnimations[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_materialAnimations) {
 		for (i = 0; i < m_materialAnimationCount; i++) {
-			m_materialAnimations[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_materialAnimations[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_particles) {
 		for (i = 0; i < m_particleCount; i++) {
-			m_particles[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_particles[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_skyStates) {
 		for (i = 0; i < m_skyStateCount; i++) {
-			m_skyStates[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_skyStates[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_timers) {
 		for (i = 0; i < m_timerCount; i++) {
-			m_timers[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_timers[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_nodeTransforms) {
 		for (i = 0; i < m_nodeTransformCount; i++) {
-			m_nodeTransforms[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_nodeTransforms[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 
 	if (m_modelDistances) {
 		for (i = 0; i < m_modelDistanceCount; i++) {
-			m_modelDistances[i].SetState0x18(RaceEventResource::c_stateEndPending);
+			m_modelDistances[i].SetState(RaceEventResource::c_stateEndPending);
 		}
 	}
 

@@ -26,7 +26,7 @@ public:
 protected:
 	void ComputeDropPosition(Racer* p_racer, GolVec3* p_position, GolBoundingVolume::HitTriangle* p_record);
 
-	RaceState* m_raceState0x018;             // 0x018
+	RaceState* m_raceState;                  // 0x018
 	LegoEventQueue::Event* m_collisionEvent; // 0x01c
 	TriggerWorld* m_collisionWorld;          // 0x020
 	undefined4 m_unk0x024;                   // 0x024

@@ -33,9 +33,9 @@ RaceEventResource::RaceEventResource()
 	m_stateEventIds[0] = -1;
 	m_stateEventIds[1] = -1;
 	m_stateEventIds[2] = -1;
-	m_state0x18 = 0;
+	m_state = 0;
 	m_eventId = 0;
-	m_flags0x1c = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045ed90
@@ -51,14 +51,14 @@ void RaceEventResource::Reset()
 	m_stateEventIds[0] = -1;
 	m_stateEventIds[1] = -1;
 	m_stateEventIds[2] = -1;
-	m_state0x18 = 0;
+	m_state = 0;
 	m_eventId = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045edc0
 void RaceEventResource::Update(LegoU32)
 {
-	if (m_state0x18 == c_stateEndPending) {
+	if (m_state == c_stateEndPending) {
 		OnEnd();
 	}
 }
@@ -108,12 +108,12 @@ void RaceEventResource::NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
 // FUNCTION: LEGORACERS 0x0045eee0 FOLDED
 void RaceEventResource::ForceEventEnd(Racer* p_racer)
 {
-	LegoU8 flags = m_flags0x1c;
+	LegoU8 flags = m_flags;
 	if (flags & c_flagTriggerOnEnd) {
-		LegoU32 state = m_state0x18;
+		LegoU32 state = m_state;
 		if (state == c_stateIdle || state == c_stateEnded) {
 			OnStartForRacer(p_racer);
-			if (m_flags0x1c & c_flagNoEnd) {
+			if (m_flags & c_flagNoEnd) {
 				return;
 			}
 
@@ -122,7 +122,7 @@ void RaceEventResource::ForceEventEnd(Racer* p_racer)
 		}
 	}
 
-	if (m_state0x18 != c_stateIdle && !(flags & c_flagNoEnd)) {
+	if (m_state != c_stateIdle && !(flags & c_flagNoEnd)) {
 		OnEndForRacer(p_racer);
 	}
 }

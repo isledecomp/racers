@@ -78,7 +78,7 @@ void ColorBrick::Update(LegoU32 p_elapsedMs)
 			m_trailMaterial = m_manager->GetTrailMaterial(&m_currentColor);
 			SetTouchable(FALSE);
 
-			if (m_state == c_stateActive && (m_flags0x50 & c_flagAudible)) {
+			if (m_state == c_stateActive && (m_flags & c_flagAudible)) {
 				playSound = TRUE;
 			}
 		}
@@ -93,7 +93,7 @@ void ColorBrick::Update(LegoU32 p_elapsedMs)
 	case c_stateWait: {
 		LegoU32 elapsedMs = m_stateTimerMs;
 		if (m_respawnMs <= elapsedMs) {
-			LegoU8 flags = m_flags0x50;
+			LegoU8 flags = m_flags;
 			m_stateTimerMs = 0;
 			m_state = c_stateActive;
 			if (flags & c_flagAudible) {
@@ -124,7 +124,7 @@ void ColorBrick::OnTouched(Racer* p_racer)
 		if (!racerState) {
 			m_nextColor = m_assignedColor;
 			m_nextState = c_stateWait;
-			if (m_flags0x50 & c_flagAudible) {
+			if (m_flags & c_flagAudible) {
 				m_soundSource
 					->PlaySpatialSoundById(c_soundCollect, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
 			}
@@ -132,7 +132,7 @@ void ColorBrick::OnTouched(Racer* p_racer)
 		else {
 			m_nextColor = racerState;
 			m_nextState = c_stateActive;
-			if (m_flags0x50 & c_flagAudible) {
+			if (m_flags & c_flagAudible) {
 				m_soundSource
 					->PlaySpatialSoundById(c_soundSwap, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
 			}

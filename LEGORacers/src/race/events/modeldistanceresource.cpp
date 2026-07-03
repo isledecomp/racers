@@ -9,7 +9,7 @@ DECOMP_SIZE_ASSERT(ModelDistanceResource, 0x34)
 // FUNCTION: LEGORACERS 0x00463640
 ModelDistanceResource::ModelDistanceResource()
 {
-	m_flags0x1c = 0;
+	m_flags = 0;
 	ClearFields();
 }
 
@@ -32,7 +32,7 @@ void ModelDistanceResource::ClearFields()
 // FUNCTION: LEGORACERS 0x00463700
 void ModelDistanceResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -47,10 +47,10 @@ void ModelDistanceResource::Initialize(InitParams* p_params)
 	m_modelEntity = p_params->m_modelEntity;
 	m_unk0x30 = p_params->m_unk0x20;
 	if (p_params->m_unk0x18) {
-		m_flags0x1c |= c_flagNoEnd;
+		m_flags |= c_flagNoEnd;
 	}
 	if (p_params->m_unk0x1c) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 
 	for (i = 0; i < sizeOfArray(m_modelDistances); i++) {
@@ -61,7 +61,7 @@ void ModelDistanceResource::Initialize(InitParams* p_params)
 		}
 	}
 
-	m_state0x18 = c_stateIdle;
+	m_state = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004637a0
@@ -85,7 +85,7 @@ void ModelDistanceResource::OnStartAt(GolVec3*)
 		m_modelEntity->SetModelDistance(i, modelDistance);
 	}
 
-	m_state0x18 = c_stateActive;
+	m_state = c_stateActive;
 }
 
 // FUNCTION: LEGORACERS 0x00463800
@@ -102,7 +102,7 @@ void ModelDistanceResource::OnEnd()
 		m_modelEntity->SetModelDistance(i, modelDistance);
 	}
 
-	m_state0x18 = c_stateIdle;
+	m_state = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x00463840

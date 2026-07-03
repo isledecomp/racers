@@ -25,8 +25,8 @@ public:
 	};
 
 	enum {
-		c_flags0x1cBit0 = 1 << 0,
-		c_flags0x1cBit3 = 1 << 3,
+		c_flagBit0 = 1 << 0,
+		c_flagBit3 = 1 << 3,
 		c_randomTableMask = 0x3ff,
 		c_randomDelayBaseMs = 500,
 		c_randomDelayRangeMs = 1000,

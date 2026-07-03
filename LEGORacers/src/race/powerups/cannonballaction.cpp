@@ -116,7 +116,7 @@ LegoU32 CannonballAction::Activate(ActionSetup* p_setup)
 		m_materialName = target->m_materialName;
 	}
 
-	GolD3DRenderDevice* renderDevice = m_owner0x01c->m_renderer;
+	GolD3DRenderDevice* renderDevice = m_owner->m_renderer;
 	const LegoChar* materialName = m_materialName;
 	GolMaterial* material;
 	if (materialName && materialName[0]) {
@@ -135,7 +135,7 @@ void CannonballAction::Deactivate()
 	m_projectile.Deactivate();
 
 	if (m_smokeParticle != NULL) {
-		m_owner0x01c->m_cutsceneAnimation->ReleaseRef(m_smokeParticle);
+		m_owner->m_cutsceneAnimation->ReleaseRef(m_smokeParticle);
 		m_smokeParticle = NULL;
 	}
 
@@ -149,8 +149,8 @@ void CannonballAction::Deactivate()
 	m_emplacement = 0;
 	m_state = 1;
 
-	if (m_owner0x01c != NULL && m_trail != NULL) {
-		m_owner0x01c->m_trailManager->ReleaseTrail(m_trail);
+	if (m_owner != NULL && m_trail != NULL) {
+		m_owner->m_trailManager->ReleaseTrail(m_trail);
 		m_trail = NULL;
 	}
 }
@@ -209,7 +209,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 					upwardHit = TRUE;
 				}
 
-				m_owner0x01c->SpawnExplosion(&position, upwardHit, m_ownerRacer);
+				m_owner->SpawnExplosion(&position, upwardHit, m_ownerRacer);
 				if (projectileState == PowerupProjectile::c_stateHitRacer &&
 					!(m_projectile.GetHitRacer()->m_flags & c_racerFlags0xd04Bit0)) {
 					m_projectile.GetVelocity(&direction);
@@ -217,7 +217,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 					direction.m_y = -direction.m_y;
 					direction.m_z = 0.0f;
 					GolMath::NormalizeVector3(direction, &direction);
-					m_owner0x01c->SpawnBrickDebris(&position, &direction, m_projectile.GetHitRacer());
+					m_owner->SpawnBrickDebris(&position, &direction, m_projectile.GetHitRacer());
 				}
 
 				AdvanceState();
@@ -246,7 +246,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 			}
 		}
 		else {
-			m_owner0x01c->m_cutsceneAnimation->FinishRef(m_smokeParticle);
+			m_owner->m_cutsceneAnimation->FinishRef(m_smokeParticle);
 			m_smokeParticle = NULL;
 		}
 	}
@@ -303,7 +303,7 @@ void CannonballAction::AdvanceState()
 		m_stateTimerMs = 0;
 		m_projectile.CancelCollisionEvent();
 		if (m_trail != NULL) {
-			m_owner0x01c->m_trailManager->ReleaseTrail(m_trail);
+			m_owner->m_trailManager->ReleaseTrail(m_trail);
 			m_trail = NULL;
 		}
 
@@ -343,7 +343,7 @@ void CannonballAction::AdvanceState()
 	projectileParams.m_worldEntity = m_billboard;
 	projectileParams.m_collisionWorld = m_collisionWorld;
 	projectileParams.m_gravity = g_cannonballGravity;
-	projectileParams.m_eventQueue = m_owner0x01c->m_raceState->GetEventQueue();
+	projectileParams.m_eventQueue = m_owner->m_raceState->GetEventQueue();
 	projectileParams.m_targetOffset.m_x = 0.0f;
 	projectileParams.m_targetOffset.m_y = 0.0f;
 	projectileParams.m_targetOffset.m_z = 0.0f;
@@ -376,7 +376,7 @@ void CannonballAction::AdvanceState()
 		m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &velocity, TRUE);
 	}
 
-	m_smokeParticle = m_owner0x01c->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
+	m_smokeParticle = m_owner->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticle != NULL) {
 		if (m_emplacement == NULL) {
 			m_ownerRacer->m_physics.m_carEntity->VTable0x48(&right, &forward);
@@ -409,13 +409,13 @@ void CannonballAction::AdvanceState()
 	trailParams.m_unk0x10 = 0;
 	trailParams.m_endScale = 0.1f;
 	trailParams.m_endAlpha = 0.0f;
-	m_trail = m_owner0x01c->m_trailManager->AcquireTrail(&trailParams);
+	m_trail = m_owner->m_trailManager->AcquireTrail(&trailParams);
 	if (m_trail != NULL) {
 		m_trail->SetColor(&g_cannonballTrailColor);
 
-		GolMaterial* material = m_owner0x01c->m_renderer->FindMaterialByName("canstrk");
+		GolMaterial* material = m_owner->m_renderer->FindMaterialByName("canstrk");
 		if (material != NULL) {
-			m_trail->SetMaterial(m_owner0x01c->m_renderer, material);
+			m_trail->SetMaterial(m_owner->m_renderer, material);
 		}
 	}
 

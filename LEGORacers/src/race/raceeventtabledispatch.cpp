@@ -41,7 +41,7 @@ LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_unk0x04)
 // FUNCTION: LEGORACERS 0x0045ee50
 void RaceEventResource::OnEventStart(GolVec3* p_unk0x04)
 {
-	if (!(m_flags0x1c & 4) && (m_state0x18 == 1 || m_state0x18 == 4)) {
+	if (!(m_flags & 4) && (m_state == 1 || m_state == 4)) {
 		OnStartAt(p_unk0x04);
 	}
 }
@@ -49,11 +49,11 @@ void RaceEventResource::OnEventStart(GolVec3* p_unk0x04)
 // FUNCTION: LEGORACERS 0x0045ee70
 void RaceEventResource::OnEventEnd(GolVec3* p_unk0x04)
 {
-	if (m_flags0x1c & 4) {
-		if (m_state0x18 == 1 || m_state0x18 == 4) {
+	if (m_flags & 4) {
+		if (m_state == 1 || m_state == 4) {
 			OnStartAt(p_unk0x04);
 
-			if (!(m_flags0x1c & 2)) {
+			if (!(m_flags & 2)) {
 				OnEnd();
 			}
 
@@ -61,7 +61,7 @@ void RaceEventResource::OnEventEnd(GolVec3* p_unk0x04)
 		}
 	}
 
-	if (m_state0x18 != 1 && !(m_flags0x1c & 2)) {
+	if (m_state != 1 && !(m_flags & 2)) {
 		OnEnd();
 	}
 }
@@ -69,7 +69,7 @@ void RaceEventResource::OnEventEnd(GolVec3* p_unk0x04)
 // FUNCTION: LEGORACERS 0x0045eec0
 void RaceEventResource::ForceEventStart(Racer* p_racer)
 {
-	if (!(m_flags0x1c & 4) && (m_state0x18 == 1 || m_state0x18 == 4)) {
+	if (!(m_flags & 4) && (m_state == 1 || m_state == 4)) {
 		OnStartForRacer(p_racer);
 	}
 }
@@ -124,7 +124,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 			}
 
 			if (m_timers[i].m_holdEventId == p_unk0x04) {
-				m_timers[i].m_flags0x2c |= 1;
+				m_timers[i].m_timerFlags |= 1;
 			}
 		}
 	}
@@ -156,7 +156,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_externalForces) {
 		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_armEventId == p_unk0x04) {
-				m_externalForces[i].m_flags0x34 |= 1;
+				m_externalForces[i].m_forceFlags |= 1;
 			}
 		}
 	}
@@ -215,7 +215,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 			}
 
 			if (m_timers[i].m_holdEventId == p_unk0x04) {
-				m_timers[i].m_flags0x2c &= ~1;
+				m_timers[i].m_timerFlags &= ~1;
 			}
 		}
 	}
@@ -239,7 +239,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_externalForces) {
 		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_armEventId == p_unk0x04) {
-				m_externalForces[i].m_flags0x34 &= ~1;
+				m_externalForces[i].m_forceFlags &= ~1;
 			}
 		}
 	}
@@ -253,7 +253,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_sounds) {
 		for (LegoU32 i = 0; i < m_soundCount; i++) {
 			if (m_sounds[i].m_eventId == p_unk0x04) {
-				m_sounds[i].m_state0x18 = 5;
+				m_sounds[i].m_state = 5;
 			}
 		}
 	}
@@ -261,7 +261,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_partAnimations) {
 		for (LegoU32 i = 0; i < m_partAnimationCount; i++) {
 			if (m_partAnimations[i].m_eventId == p_unk0x04) {
-				m_partAnimations[i].m_state0x18 = 5;
+				m_partAnimations[i].m_state = 5;
 			}
 		}
 	}
@@ -269,7 +269,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_materialAnimations) {
 		for (LegoU32 i = 0; i < m_materialAnimationCount; i++) {
 			if (m_materialAnimations[i].m_eventId == p_unk0x04) {
-				m_materialAnimations[i].m_state0x18 = 5;
+				m_materialAnimations[i].m_state = 5;
 			}
 		}
 	}
@@ -277,7 +277,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_particles) {
 		for (LegoU32 i = 0; i < m_particleCount; i++) {
 			if (m_particles[i].m_eventId == p_unk0x04) {
-				m_particles[i].m_state0x18 = 5;
+				m_particles[i].m_state = 5;
 			}
 		}
 	}
@@ -285,7 +285,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_skyStates) {
 		for (LegoU32 i = 0; i < m_skyStateCount; i++) {
 			if (m_skyStates[i].m_eventId == p_unk0x04) {
-				m_skyStates[i].m_state0x18 = 5;
+				m_skyStates[i].m_state = 5;
 			}
 		}
 	}
@@ -293,7 +293,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_timers) {
 		for (LegoU32 i = 0; i < m_timerCount; i++) {
 			if (m_timers[i].m_eventId == p_unk0x04) {
-				m_timers[i].m_state0x18 = 5;
+				m_timers[i].m_state = 5;
 			}
 		}
 	}
@@ -301,7 +301,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_nodeTransforms) {
 		for (LegoU32 i = 0; i < m_nodeTransformCount; i++) {
 			if (m_nodeTransforms[i].m_eventId == p_unk0x04) {
-				m_nodeTransforms[i].m_state0x18 = 5;
+				m_nodeTransforms[i].m_state = 5;
 			}
 		}
 	}
@@ -309,7 +309,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_colorTransforms) {
 		for (LegoU32 i = 0; i < m_colorTransformCount; i++) {
 			if (m_colorTransforms[i].m_eventId == p_unk0x04) {
-				m_colorTransforms[i].m_state0x18 = 5;
+				m_colorTransforms[i].m_state = 5;
 			}
 		}
 	}
@@ -317,7 +317,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_lapZones) {
 		for (LegoU32 i = 0; i < m_lapZoneCount; i++) {
 			if (m_lapZones[i].m_eventId == p_unk0x04) {
-				m_lapZones[i].m_state0x18 = 5;
+				m_lapZones[i].m_state = 5;
 			}
 		}
 	}
@@ -325,7 +325,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_modelDistances) {
 		for (LegoU32 i = 0; i < m_modelDistanceCount; i++) {
 			if (m_modelDistances[i].m_eventId == p_unk0x04) {
-				m_modelDistances[i].m_state0x18 = 5;
+				m_modelDistances[i].m_state = 5;
 			}
 		}
 	}
@@ -333,7 +333,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_lookTargets) {
 		for (LegoU32 i = 0; i < m_lookTargetCount; i++) {
 			if (m_lookTargets[i].m_eventId == p_unk0x04) {
-				m_lookTargets[i].m_state0x18 = 5;
+				m_lookTargets[i].m_state = 5;
 			}
 		}
 	}
@@ -341,7 +341,7 @@ void RaceEventTable::ForceEvents(undefined4 p_unk0x04)
 	if (m_externalForces) {
 		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_eventId == p_unk0x04) {
-				m_externalForces[i].m_state0x18 = 5;
+				m_externalForces[i].m_state = 5;
 			}
 		}
 	}
@@ -419,7 +419,7 @@ void RaceEventTable::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, Go
 			}
 
 			if (m_timers[i].m_holdEventId == p_unk0x04) {
-				m_timers[i].m_flags0x2c |= 1;
+				m_timers[i].m_timerFlags |= 1;
 			}
 
 			if (m_timers[i].m_eventId == p_unk0x08) {
@@ -427,7 +427,7 @@ void RaceEventTable::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, Go
 			}
 
 			if (m_timers[i].m_holdEventId == p_unk0x08) {
-				m_timers[i].m_flags0x2c &= ~1;
+				m_timers[i].m_timerFlags &= ~1;
 			}
 		}
 	}
@@ -467,11 +467,11 @@ void RaceEventTable::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, Go
 	if (m_externalForces) {
 		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_armEventId == p_unk0x04) {
-				m_externalForces[i].m_flags0x34 |= 1;
+				m_externalForces[i].m_forceFlags |= 1;
 			}
 
 			if (m_externalForces[i].m_armEventId == p_unk0x08) {
-				m_externalForces[i].m_flags0x34 &= ~1;
+				m_externalForces[i].m_forceFlags &= ~1;
 			}
 		}
 	}

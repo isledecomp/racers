@@ -42,7 +42,7 @@ public:
 	LegoS32 m_holdEventId;            // 0x20
 	LegoU32 m_durationMs;             // 0x24
 	LegoU32 m_remainingMs;            // 0x28
-	LegoU8 m_flags0x2c;               // 0x2c
+	LegoU8 m_timerFlags;              // 0x2c
 	undefined m_unk0x2d[0x30 - 0x2d]; // 0x2d
 };
 

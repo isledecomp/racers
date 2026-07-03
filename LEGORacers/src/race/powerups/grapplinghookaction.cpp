@@ -86,7 +86,7 @@ void GrapplingHookAction::Initialize(
 		Shutdown();
 	}
 
-	m_owner0x01c = p_manager;
+	m_owner = p_manager;
 	m_collisionWorld = p_collisionWorld;
 	m_hookEntity = 0;
 	m_smokeParticleRef = 0;
@@ -112,10 +112,10 @@ void GrapplingHookAction::Shutdown()
 {
 	Deactivate();
 
-	if (m_owner0x01c != NULL && m_billboard != NULL) {
-		m_owner0x01c->m_golExport->VTable0x64(m_billboard);
+	if (m_owner != NULL && m_billboard != NULL) {
+		m_owner->m_golExport->VTable0x64(m_billboard);
 		m_billboard = NULL;
-		m_owner0x01c = NULL;
+		m_owner = NULL;
 	}
 
 	m_projectile.Deactivate();
@@ -142,12 +142,12 @@ LegoU32 GrapplingHookAction::Activate(
 	m_billboardAnimation.FUN_004103c0(*p_billboardAnimation);
 	m_billboardAnimation.FUN_00410470();
 	m_billboardAnimation.FUN_00410480();
-	m_billboardAnimation.FUN_10025da0(m_owner0x01c->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
+	m_billboardAnimation.FUN_10025da0(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
 	m_billboardAnimation
-		.FUN_004104c0(0, m_owner0x01c->GetMaterialAnimationItems(), m_owner0x01c->GetMaterialAnimationItemCount());
+		.FUN_004104c0(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
 
 	return m_billboard->FUN_10029e90(
-		m_owner0x01c->GetBillboardMaterialTable(),
+		m_owner->GetBillboardMaterialTable(),
 		m_billboardMaterialIndex,
 		g_hookBillboardSize,
 		g_hookBillboardSize,
@@ -161,7 +161,7 @@ void GrapplingHookAction::Deactivate()
 	m_projectile.CancelCollisionEvent();
 
 	if (m_smokeParticleRef != NULL) {
-		m_owner0x01c->m_cutsceneAnimation->ReleaseRef(m_smokeParticleRef);
+		m_owner->m_cutsceneAnimation->ReleaseRef(m_smokeParticleRef);
 		m_smokeParticleRef = NULL;
 	}
 
@@ -295,8 +295,8 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		if (m_billboardAnimation.IsAssigned()) {
 			m_billboardAnimation.FUN_004104c0(
 				p_elapsedMs,
-				m_owner0x01c->GetMaterialAnimationItems(),
-				m_owner0x01c->GetMaterialAnimationItemCount()
+				m_owner->GetMaterialAnimationItems(),
+				m_owner->GetMaterialAnimationItemCount()
 			);
 			m_billboard->VTable0x10(p_elapsedMs);
 		}
@@ -311,7 +311,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	if (m_smokeParticleRef != NULL) {
 		CutsceneParticle* particle = m_smokeParticleRef->m_particle;
 		if (particle == NULL || particle->GetSpawnedCount() >= 3) {
-			m_owner0x01c->m_cutsceneAnimation->FinishRef(m_smokeParticleRef);
+			m_owner->m_cutsceneAnimation->FinishRef(m_smokeParticleRef);
 			m_smokeParticleRef = NULL;
 			return;
 		}
@@ -389,7 +389,7 @@ void GrapplingHookAction::AdvanceState()
 	projectileParams.m_worldEntity = m_hookEntity;
 	projectileParams.m_collisionWorld = m_collisionWorld;
 	projectileParams.m_gravity = g_hookGravity;
-	projectileParams.m_eventQueue = m_owner0x01c->m_raceState->GetEventQueue();
+	projectileParams.m_eventQueue = m_owner->m_raceState->GetEventQueue();
 	projectileParams.m_targetOffset.m_x = 0.0f;
 	projectileParams.m_targetOffset.m_y = 0.0f;
 	projectileParams.m_targetOffset.m_z = 0.0f;
@@ -423,7 +423,7 @@ void GrapplingHookAction::AdvanceState()
 
 	m_projectile.ResetRope();
 
-	m_smokeParticleRef = m_owner0x01c->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
+	m_smokeParticleRef = m_owner->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticleRef != NULL) {
 		m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
 		position.m_z += 4.0f;
@@ -511,9 +511,9 @@ void GrapplingHookAction::ReleaseHook(SoundVector* p_position)
 	m_stateTimerMs = 500;
 	m_billboardAnimation.FUN_00410470();
 	m_billboardAnimation.FUN_00410480();
-	m_billboardAnimation.FUN_10025da0(m_owner0x01c->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
+	m_billboardAnimation.FUN_10025da0(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
 	m_billboardAnimation
-		.FUN_004104c0(0, m_owner0x01c->GetMaterialAnimationItems(), m_owner0x01c->GetMaterialAnimationItemCount());
+		.FUN_004104c0(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
 	m_billboard->VTable0x08(*p_position);
 	m_projectile.Release(p_position);
 	m_projectile.CancelCollisionEvent();

@@ -57,7 +57,7 @@ LegoS32 PickupBrick::Reset()
 	m_nextState = c_stateWait;
 	m_stateTimerMs = 0;
 	m_respawnMs = 3000;
-	m_flags0x50 = 0;
+	m_flags = 0;
 
 	return 0;
 }
@@ -123,12 +123,12 @@ void PickupBrick::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	LegoU8 flags = m_flags0x50;
+	LegoU8 flags = m_flags;
 	if (flags & c_flagTouched) {
-		m_flags0x50 = (flags & ~(c_flagTouched | c_flagWasTouched)) | c_flagWasTouched;
+		m_flags = (flags & ~(c_flagTouched | c_flagWasTouched)) | c_flagWasTouched;
 	}
 	else {
-		m_flags0x50 = flags & ~c_flagWasTouched;
+		m_flags = flags & ~c_flagWasTouched;
 	}
 }
 
@@ -146,12 +146,12 @@ void PickupBrick::SetTouchable(LegoBool32 p_touchable)
 // FUNCTION: LEGORACERS 0x00453af0
 void PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	m_flags0x50 |= c_flagTouched;
+	m_flags |= c_flagTouched;
 
 	if (m_state == c_stateIdle) {
 		Racer* racer = static_cast<Racer*>(p_data->m_data);
 		if (!(racer->GetFlags() & c_flagGhost)) {
-			if (!(m_flags0x50 & c_flagWasTouched) || racer->GetHeldPowerupColor() == 0) {
+			if (!(m_flags & c_flagWasTouched) || racer->GetHeldPowerupColor() == 0) {
 				OnTouched(racer);
 			}
 		}

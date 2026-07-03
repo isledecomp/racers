@@ -78,7 +78,7 @@ void DynamiteAction::Initialize(
 	GolModelEntity* p_model
 )
 {
-	m_raceState0x018 = p_raceState;
+	m_raceState = p_raceState;
 	m_collisionWorld = p_collisionWorld;
 	m_manager = p_manager;
 	m_cutsceneAnimation = p_cutsceneAnimation;

@@ -15,7 +15,7 @@ public:
 		undefined4 m_eventId;            // 0x00
 		LegoS32 m_stateEventIds[3];      // 0x04
 		RaceEventTable* m_eventTable;    // 0x10
-		LegoU32 m_flags0x14;             // 0x14
+		LegoU32 m_flags;                 // 0x14
 		ColorTransform m_colorTransform; // 0x18
 		GolWorldEntity* m_worldEntity;   // 0x38
 	};
@@ -41,10 +41,10 @@ public:
 
 private:
 	enum {
-		c_flags0x20Bit1 = 1 << 1,
+		c_transformFlagBit1 = 1 << 1,
 	};
 
-	LegoU32 m_flags0x20;             // 0x20
+	LegoU32 m_transformFlags;        // 0x20
 	ColorTransform m_colorTransform; // 0x24
 	GolWorldEntity* m_worldEntity;   // 0x44
 };

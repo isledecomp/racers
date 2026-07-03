@@ -24,8 +24,8 @@ public:
 		c_stateEndPending = 5,
 		c_flagNoEnd = 1 << 1,
 		c_flagTriggerOnEnd = 1 << 2,
-		c_flags0x1cBit3 = 1 << 3,
-		c_flags0x1cBit5 = 1 << 5
+		c_flagBit3 = 1 << 3,
+		c_flagBit5 = 1 << 5
 	};
 
 	RaceEventResource();
@@ -42,7 +42,7 @@ public:
 	void NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
 	void OnEventStart(GolVec3* p_position);
 	void OnEventEnd(GolVec3* p_position);
-	void SetState0x18(LegoU32 p_state) { m_state0x18 = p_state; }
+	void SetState(LegoU32 p_state) { m_state = p_state; }
 
 	// SYNTHETIC: LEGORACERS 0x0045ed70
 	// RaceEventResource::`scalar deleting destructor'
@@ -51,8 +51,8 @@ public:
 	RaceEventTable* m_eventTable;     // 0x04
 	LegoS32 m_stateEventIds[3];       // 0x08
 	undefined4 m_eventId;             // 0x14
-	LegoU32 m_state0x18;              // 0x18
-	LegoU8 m_flags0x1c;               // 0x1c
+	LegoU32 m_state;                  // 0x18
+	LegoU8 m_flags;                   // 0x1c
 	undefined m_unk0x1d[0x20 - 0x1d]; // 0x1d
 };
 

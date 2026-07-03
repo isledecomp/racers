@@ -75,7 +75,7 @@ void MagnetAction::Initialize(
 )
 {
 	m_manager = p_manager;
-	m_raceState0x018 = p_raceState;
+	m_raceState = p_raceState;
 	m_collisionWorld = p_collisionWorld;
 	m_state = 1;
 }
@@ -482,7 +482,7 @@ void MagnetAction::Deploy()
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &m_worldEntity;
-	m_collisionEvent = m_raceState0x018->GetEventQueue()->AllocateEvent(this, &descriptor);
+	m_collisionEvent = m_raceState->GetEventQueue()->AllocateEvent(this, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x00458390

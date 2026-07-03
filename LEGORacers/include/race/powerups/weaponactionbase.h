@@ -18,8 +18,8 @@ public:
 protected:
 	PowerupProjectile* m_activeProjectile; // 0x018
 	union {
-		GolExport** m_golExportPtr;       // 0x01c
-		RacePowerupManager* m_owner0x01c; // 0x01c
+		GolExport** m_golExportPtr;  // 0x01c
+		RacePowerupManager* m_owner; // 0x01c
 	};
 	TriggerWorld* m_collisionWorld;        // 0x020
 	Racer* m_ownerRacer;                   // 0x024

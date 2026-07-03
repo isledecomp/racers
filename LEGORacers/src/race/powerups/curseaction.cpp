@@ -42,7 +42,7 @@ void CurseAction::Reset()
 	m_curseEntity = 0;
 	m_auraEntity = 0;
 	m_innerAuraEntity = 0;
-	m_raceState0x018 = NULL;
+	m_raceState = NULL;
 	m_collisionWorld = 0;
 	m_sound = 0;
 }
@@ -57,7 +57,7 @@ void CurseAction::Destroy()
 // FUNCTION: LEGORACERS 0x00452530
 void CurseAction::Initialize(RaceState* p_raceState, TriggerWorld* p_collisionWorld, RacePowerupManager* p_manager)
 {
-	m_raceState0x018 = p_raceState;
+	m_raceState = p_raceState;
 	m_collisionWorld = p_collisionWorld;
 	m_manager = p_manager;
 	m_state = 1;
@@ -345,7 +345,7 @@ void CurseAction::AdvanceState()
 	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_worldEntity = &m_worldEntity;
-	m_collisionEvent = m_raceState0x018->GetEventQueue()->AllocateEvent(this, &descriptor);
+	m_collisionEvent = m_raceState->GetEventQueue()->AllocateEvent(this, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x00452da0

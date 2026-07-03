@@ -20,7 +20,7 @@ SoundResource::SoundResource()
 {
 	m_sound = NULL;
 	m_soundSource = NULL;
-	m_flags0x1c = 0;
+	m_flags = 0;
 	m_unk0x28 = NULL;
 	m_unk0x2c = 0;
 	m_probability = 0xff;
@@ -35,7 +35,7 @@ SoundResource::~SoundResource()
 // FUNCTION: LEGORACERS 0x004641b0
 void SoundResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -58,19 +58,19 @@ void SoundResource::Initialize(InitParams* p_params)
 	m_unk0x58 = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
 
 	if (p_params->m_unk0x34) {
-		m_flags0x1c |= c_flags0x1cBit0;
+		m_flags |= c_flagBit0;
 	}
 	if (p_params->m_unk0x38) {
-		m_flags0x1c |= c_flagNoEnd;
+		m_flags |= c_flagNoEnd;
 	}
 	if (p_params->m_unk0x3c) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 	if (p_params->m_positional) {
-		m_flags0x1c |= c_flags0x1cBit3;
+		m_flags |= c_flagBit3;
 	}
 
-	m_state0x18 = c_stateIdle;
+	m_state = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x00464290
@@ -84,21 +84,21 @@ void SoundResource::Destroy()
 	m_soundSource = NULL;
 	m_unk0x28 = NULL;
 	m_unk0x2c = 0;
-	m_flags0x1c = 0;
+	m_flags = 0;
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004642c0
 void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 {
-	if (p_unk0x04 && (m_flags0x1c & c_flags0x1cBit3)) {
+	if (p_unk0x04 && (m_flags & c_flagBit3)) {
 		m_position.m_x = p_unk0x04->m_x;
 		m_position.m_y = p_unk0x04->m_y;
 		m_position.m_z = p_unk0x04->m_z;
 	}
 
 	if (m_probability < c_probabilityMax) {
-		m_state0x18 = c_stateActive;
+		m_state = c_stateActive;
 		return;
 	}
 
@@ -106,7 +106,7 @@ void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 		StopSound();
 	}
 
-	if (!(m_flags0x1c & c_flags0x1cBit0)) {
+	if (!(m_flags & c_flagBit0)) {
 		m_soundSource
 			->PlaySpatialSoundById(m_soundId, &m_position, m_minDistance, m_maxDistance, m_volume, m_frequencyScale);
 		return;
@@ -125,7 +125,7 @@ void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 		velocity.m_y = 0.0f;
 		velocity.m_z = 0.0f;
 		m_sound->SetVelocity(velocity);
-		m_state0x18 = c_stateActive;
+		m_state = c_stateActive;
 	}
 }
 
@@ -137,14 +137,14 @@ void SoundResource::OnEnd()
 		m_sound = NULL;
 	}
 
-	m_state0x18 = c_stateIdle;
+	m_state = c_stateIdle;
 }
 
 // FUNCTION: LEGORACERS 0x004643e0
 void SoundResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
-	if (m_state0x18 == c_stateIdle) {
+	if (m_state == c_stateIdle) {
 		return;
 	}
 

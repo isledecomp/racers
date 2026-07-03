@@ -40,8 +40,8 @@ public:
 	void Destroy();
 	LegoS32 Reset();
 
-	void SetAudible() { m_flags0x50 |= c_flagAudible; }
-	void ClearAudible() { m_flags0x50 &= ~c_flagAudible; }
+	void SetAudible() { m_flags |= c_flagAudible; }
+	void ClearAudible() { m_flags &= ~c_flagAudible; }
 	void ClearVelocityX() { m_worldEntity.ClearVelocityX(); }
 	GolWorldEntity* GetWorldEntity() { return &m_worldEntity; }
 
@@ -74,7 +74,7 @@ protected:
 	RacerSoundSource* m_soundSource;  // 0x44
 	LegoU32 m_respawnMs;              // 0x48
 	LegoU32 m_stateTimerMs;           // 0x4c
-	LegoU8 m_flags0x50;               // 0x50
+	LegoU8 m_flags;                   // 0x50
 	undefined m_unk0x51[0x54 - 0x51]; // 0x51
 };
 

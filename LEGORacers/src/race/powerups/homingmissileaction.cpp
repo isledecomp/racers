@@ -141,7 +141,7 @@ void HomingMissileAction::LaunchProjectile()
 	GolVec3 direction;
 	m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 
-	RaceState* raceState = m_owner0x01c->m_raceState;
+	RaceState* raceState = m_owner->m_raceState;
 	LegoU32 i = 0;
 	m_targetRacer = raceState->FindRacerInCone(
 		&position,
@@ -170,7 +170,7 @@ void HomingMissileAction::LaunchProjectile()
 	projectileParams.m_worldEntity = &m_missileEntity;
 	projectileParams.m_collisionWorld = m_collisionWorld;
 	projectileParams.m_gravity = g_missileGravity;
-	projectileParams.m_eventQueue = m_owner0x01c->m_raceState->GetEventQueue();
+	projectileParams.m_eventQueue = m_owner->m_raceState->GetEventQueue();
 	projectileParams.m_targetOffset.m_x = 0.0f;
 	projectileParams.m_targetOffset.m_y = 0.0f;
 	projectileParams.m_targetOffset.m_z = 0.0f;
@@ -224,8 +224,8 @@ void HomingMissileAction::Deactivate()
 	m_state = 1;
 	m_stateTimerMs = 0;
 
-	if (m_owner0x01c != NULL && m_trail != NULL) {
-		m_owner0x01c->m_trailManager->ReleaseTrail(m_trail);
+	if (m_owner != NULL && m_trail != NULL) {
+		m_owner->m_trailManager->ReleaseTrail(m_trail);
 		m_trail = NULL;
 	}
 }
@@ -255,7 +255,7 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 		m_missileEntity.VTable0x10(p_elapsedMs);
 		m_projectile.UpdateTargeting(
 			p_elapsedMs,
-			m_owner0x01c->m_raceState,
+			m_owner->m_raceState,
 			g_missileTargetMinDistanceSquared,
 			g_missileTargetMaxDistanceSquared,
 			g_missileTargetConeCosine
@@ -294,7 +294,7 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 					upwardHit = TRUE;
 				}
 
-				m_owner0x01c->FUN_0045b4d0(&position, upwardHit, m_ownerRacer);
+				m_owner->FUN_0045b4d0(&position, upwardHit, m_ownerRacer);
 				if (projectileState == PowerupProjectile::c_stateHitRacer &&
 					!(m_projectile.GetHitRacer()->m_flags & c_racerFlags0xd04Bit0)) {
 					m_projectile.GetVelocity(&direction);
@@ -302,7 +302,7 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 					direction.m_y = -direction.m_y;
 					direction.m_z = 0.0f;
 					GolMath::NormalizeVector3(direction, &direction);
-					m_owner0x01c->SpawnBrickDebris(&position, &direction, m_projectile.GetHitRacer());
+					m_owner->SpawnBrickDebris(&position, &direction, m_projectile.GetHitRacer());
 				}
 
 				AdvanceState();
@@ -428,7 +428,7 @@ void HomingMissileAction::AdvanceState()
 		RaceTrailManager::Trail::Params params;
 		params.m_sampleCount = 4;
 		params.m_pointCount = 4;
-		RacePowerupManager* owner = m_owner0x01c;
+		RacePowerupManager* owner = m_owner;
 		params.m_durationMs = 0x190;
 		params.m_unk0x0c = 1;
 		params.m_unk0x10 = 0;
@@ -439,9 +439,9 @@ void HomingMissileAction::AdvanceState()
 		m_trail = trailManager->AcquireTrail(&params);
 		if (m_trail != NULL) {
 			m_trail->SetColor(&g_missileTrailColor);
-			GolMaterial* material = m_owner0x01c->m_renderer->FindMaterialByName("mslstrk");
+			GolMaterial* material = m_owner->m_renderer->FindMaterialByName("mslstrk");
 			if (material != NULL) {
-				m_trail->SetMaterial(m_owner0x01c->m_renderer, material);
+				m_trail->SetMaterial(m_owner->m_renderer, material);
 			}
 		}
 		break;
@@ -451,7 +451,7 @@ void HomingMissileAction::AdvanceState()
 		m_stateTimerMs = 0;
 		m_projectile.CancelCollisionEvent();
 		if (m_trail != NULL) {
-			m_owner0x01c->m_trailManager->ReleaseTrail(m_trail);
+			m_owner->m_trailManager->ReleaseTrail(m_trail);
 			m_trail = NULL;
 		}
 		break;

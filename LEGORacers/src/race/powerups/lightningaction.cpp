@@ -121,7 +121,7 @@ void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_mana
 		Destroy();
 	}
 
-	m_owner0x01c = p_manager;
+	m_owner = p_manager;
 	m_collisionWorld = p_manager->m_collisionWorld;
 	m_jitterTimerMs = 0;
 	m_shockTimerMs = 0;
@@ -186,7 +186,7 @@ void LightningAction::Destroy()
 
 	if (m_flashBillboard != NULL) {
 		m_flashBillboard->VTable0x50();
-		m_owner0x01c->m_golExport->VTable0x64(m_flashBillboard);
+		m_owner->m_golExport->VTable0x64(m_flashBillboard);
 		m_flashBillboard = NULL;
 	}
 
@@ -289,8 +289,8 @@ void LightningAction::Deactivate()
 		m_targetRacer->EndSpinOut();
 	}
 
-	if (m_owner0x01c != NULL && m_hitParticle != NULL) {
-		m_owner0x01c->m_cutsceneAnimation->FinishRef(m_hitParticle);
+	if (m_owner != NULL && m_hitParticle != NULL) {
+		m_owner->m_cutsceneAnimation->FinishRef(m_hitParticle);
 		m_hitParticle = NULL;
 	}
 
@@ -429,8 +429,8 @@ void LightningAction::AdvanceState()
 		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 
-		if (m_owner0x01c != NULL && m_hitParticle != NULL) {
-			m_owner0x01c->m_cutsceneAnimation->FinishRef(m_hitParticle);
+		if (m_owner != NULL && m_hitParticle != NULL) {
+			m_owner->m_cutsceneAnimation->FinishRef(m_hitParticle);
 			m_hitParticle = NULL;
 		}
 
@@ -529,7 +529,7 @@ void LightningAction::FindVictim()
 	SoundVector position = *m_source;
 	position.m_z += g_lightningSourceHeightOffset;
 
-	RaceState* raceState = m_owner0x01c->m_raceState;
+	RaceState* raceState = m_owner->m_raceState;
 	racer = raceState->FindRacerInCone(
 		&position,
 		&m_source->m_forward,
@@ -620,7 +620,7 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 			m_targetRacer = racer;
 			m_beam.SetColors(&g_lightningHitColor, &g_lightningHitColor, &g_lightningHitColor);
 
-			CutsceneAnimation* cutsceneAnimation = m_owner0x01c->m_cutsceneAnimation;
+			CutsceneAnimation* cutsceneAnimation = m_owner->m_cutsceneAnimation;
 			if (m_hitParticle != NULL) {
 				cutsceneAnimation->FinishRef(m_hitParticle);
 			}
@@ -663,7 +663,7 @@ void LightningAction::UpdateHitParticle()
 	}
 
 	if (m_targetRacer == NULL) {
-		m_owner0x01c->m_cutsceneAnimation->FinishRef(m_hitParticle);
+		m_owner->m_cutsceneAnimation->FinishRef(m_hitParticle);
 		m_hitParticle = NULL;
 		return;
 	}

@@ -41,13 +41,13 @@ public:
 
 public:
 	enum {
-		c_flags0x34Bit0 = 1 << 0
+		c_forceFlagArmed = 1 << 0
 	};
 
 	GolVec3 m_force;                  // 0x20
 	LegoU32 m_channel;                // 0x2c
 	LegoS32 m_armEventId;             // 0x30
-	LegoU8 m_flags0x34;               // 0x34
+	LegoU8 m_forceFlags;              // 0x34
 	undefined m_unk0x35[0x38 - 0x35]; // 0x35
 };
 

@@ -19,7 +19,7 @@ public:
 		GolName m_skyName;                // 0x18
 		LegoU32 m_unk0x20;                // 0x20
 		LegoBool32 m_unk0x24;             // 0x24
-		LegoU8 m_flags0x28;               // 0x28
+		LegoU8 m_skyFlags;                // 0x28
 		undefined m_unk0x29[0x2c - 0x29]; // 0x29
 	};
 
@@ -52,7 +52,7 @@ private:
 	RaceSkyState* m_skyState; // 0x20
 	GolName m_skyName;        // 0x24
 	LegoU32 m_unk0x2c;        // 0x2c
-	LegoU8 m_flags0x30;       // 0x30
+	LegoU8 m_skyFlags;        // 0x30
 	undefined m_unk0x31[0x34 - 0x31];
 };
 

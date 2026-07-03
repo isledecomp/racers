@@ -12,7 +12,7 @@ DECOMP_SIZE_ASSERT(SkyStateResource, 0x34)
 SkyStateResource::SkyStateResource()
 {
 	ClearFields();
-	m_flags0x1c = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e1a0
@@ -27,13 +27,13 @@ void SkyStateResource::ClearFields()
 	m_skyState = NULL;
 	m_skyName[0] = '\0';
 	m_unk0x2c = 0;
-	m_flags0x30 = 0;
+	m_skyFlags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045e200
 void SkyStateResource::Initialize(InitParams* p_params)
 {
-	if (m_state0x18) {
+	if (m_state) {
 		Destroy();
 	}
 
@@ -47,14 +47,14 @@ void SkyStateResource::Initialize(InitParams* p_params)
 	m_eventTable = p_params->m_eventTable;
 	m_skyState = p_params->m_skyState;
 	m_unk0x2c = p_params->m_unk0x20;
-	m_flags0x30 = p_params->m_flags0x28;
+	m_skyFlags = p_params->m_skyFlags;
 	::strncpy(m_skyName, p_params->m_skyName, sizeof(m_skyName));
 	if (p_params->m_unk0x24) {
-		m_flags0x1c |= c_flagTriggerOnEnd;
+		m_flags |= c_flagTriggerOnEnd;
 	}
 
-	m_state0x18 = c_stateIdle;
-	m_flags0x1c &= ~c_flags0x1cBit5;
+	m_state = c_stateIdle;
+	m_flags &= ~c_flagBit5;
 }
 
 // FUNCTION: LEGORACERS 0x0045e280
@@ -72,32 +72,32 @@ void SkyStateResource::OnStartAt(GolVec3*)
 		m_skyState->StartTransition(m_skyName, m_unk0x2c);
 	}
 
-	if (m_flags0x30 & c_flags0x30Bit0) {
+	if (m_skyFlags & c_flags0x30Bit0) {
 		m_skyState->m_hideFlags &= ~RaceSkyState::c_hideDome;
 	}
 
-	if (m_flags0x30 & c_flags0x30Bit1) {
+	if (m_skyFlags & c_flags0x30Bit1) {
 		m_skyState->m_hideFlags |= RaceSkyState::c_hideDome;
 	}
 
-	if (m_flags0x30 & c_flags0x30Bit2) {
+	if (m_skyFlags & c_flags0x30Bit2) {
 		m_skyState->m_hideFlags &= ~RaceSkyState::c_hideSkyWorld;
 	}
 
-	if (m_flags0x30 & c_flags0x30Bit3) {
+	if (m_skyFlags & c_flags0x30Bit3) {
 		m_skyState->m_hideFlags |= RaceSkyState::c_hideSkyWorld;
 	}
 
-	NotifyStateChange(m_state0x18, 1);
-	m_state0x18 = c_stateEndPending;
+	NotifyStateChange(m_state, 1);
+	m_state = c_stateEndPending;
 }
 
 // FUNCTION: LEGORACERS 0x0045e320
 void SkyStateResource::OnEnd()
 {
-	NotifyStateChange(m_state0x18, 3);
-	m_state0x18 = c_stateIdle;
-	m_flags0x1c &= ~c_flags0x1cBit5;
+	NotifyStateChange(m_state, 3);
+	m_state = c_stateIdle;
+	m_flags &= ~c_flagBit5;
 }
 
 // FUNCTION: LEGORACERS 0x0045e340

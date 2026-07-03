@@ -49,7 +49,7 @@ void TimeRaceManager::Reset()
 	m_bestRun = NULL;
 	m_scratchRun = NULL;
 	m_elapsedTotalMs = 0;
-	m_flags0x3b4 = 0;
+	m_flags = 0;
 	m_unk0x394.m_x = 0.0f;
 	m_unk0x394.m_y = 0.0f;
 	m_unk0x394.m_z = 0.0f;
@@ -138,11 +138,11 @@ void TimeRaceManager::Initialize(
 	m_unk0x3a0.m_z = 1.608f;
 
 	if (p_binary) {
-		m_flags0x3b4 |= c_flag0x3b4Bit2;
+		m_flags |= c_flagBinaryGhosts;
 	}
 
 	if (p_mirror) {
-		m_flags0x3b4 |= c_flag0x3b4Bit5;
+		m_flags |= c_flag0x3b4Bit5;
 	}
 
 	m_unk0x3ac = 0;
@@ -179,14 +179,14 @@ void TimeRaceManager::Shutdown()
 // FUNCTION: LEGORACERS 0x00422710
 void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 {
-	LegoU8 flags = m_flags0x3b4;
-	if (!(flags & c_flag0x3b4Bit1)) {
+	LegoU8 flags = m_flags;
+	if (!(flags & c_flagRunning)) {
 		return;
 	}
 
 	m_elapsedTotalMs += p_elapsedMs;
 
-	if (flags & c_flag0x3b4Bit0) {
+	if (flags & c_flagBestRunValid) {
 		m_ghostCarModel.VTable0x10(p_elapsedMs);
 		m_bestGhostMarker.VTable0x10(p_elapsedMs);
 		m_unk0x114.VTable0x10(p_elapsedMs);
@@ -195,7 +195,7 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (m_flags0x3b4 & c_flag0x3b4Bit3) {
+	if (m_flags & c_flagRecordRunValid) {
 		m_recordGhostMarker->VTable0x10(p_elapsedMs);
 		m_unk0x390->VTable0x10(p_elapsedMs);
 		m_unk0x208->VTable0x10(p_elapsedMs);
@@ -262,8 +262,8 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 		GolVec3* attachedOffset;
 
 		if (i == 0) {
-			flags = m_flags0x3b4;
-			if (!(flags & c_flag0x3b4Bit0)) {
+			flags = m_flags;
+			if (!(flags & c_flagBestRunValid)) {
 				continue;
 			}
 
@@ -281,8 +281,8 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			attachedOffset = &m_unk0x394;
 		}
 		else {
-			flags = m_flags0x3b4;
-			if (!(flags & c_flag0x3b4Bit3)) {
+			flags = m_flags;
+			if (!(flags & c_flagRecordRunValid)) {
 				continue;
 			}
 
@@ -297,7 +297,7 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			attachedOffset = &m_unk0x3a0;
 		}
 
-		if (!(flags & c_flag0x3b4Bit1)) {
+		if (!(flags & c_flagRunning)) {
 			GolVec3* position = &ghostRun->m_initialPosition;
 			GolQuat* rotation = &ghostRun->m_initialRotation;
 
@@ -397,14 +397,14 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00422de0
 void TimeRaceManager::PrepareRun()
 {
-	m_flags0x3b4 &= ~c_flag0x3b4Bit3;
+	m_flags &= ~c_flagRecordRunValid;
 	LoadGhostRun(m_recordRun, "ghost");
 	if (0 < m_recordRun->m_sampleCount) {
-		m_flags0x3b4 |= c_flag0x3b4Bit3;
+		m_flags |= c_flagRecordRunValid;
 	}
 
 	m_elapsedTotalMs = 0;
-	m_flags0x3b4 &= ~c_flag0x3b4Bit1;
+	m_flags &= ~c_flagRunning;
 
 	for (LegoU32 i = 0; i < c_lapCount; i++) {
 		m_scratchRun->m_lapTimes[i] = 0;
@@ -428,12 +428,12 @@ void TimeRaceManager::PrepareRun()
 void TimeRaceManager::AttachRacer(Racer* p_racer)
 {
 	m_racer = p_racer;
-	m_flags0x3b4 |= c_flag0x3b4Bit1;
-	if (m_flags0x3b4 & c_flag0x3b4Bit4) {
-		m_flags0x3b4 |= c_flag0x3b4Bit0;
+	m_flags |= c_flagRunning;
+	if (m_flags & c_flagBit4) {
+		m_flags |= c_flagBestRunValid;
 	}
 
-	if (m_flags0x3b4 & c_flag0x3b4Bit0) {
+	if (m_flags & c_flagBestRunValid) {
 		GolModelEntity* sourceModel = p_racer->m_visuals.m_bodyModelEntity;
 		m_ghostCarModel.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
 		LegoU32 i;
@@ -526,7 +526,7 @@ void TimeRaceManager::UpdateBestRun()
 		m_scratchRun = previousBest;
 	}
 
-	m_flags0x3b4 = (m_flags0x3b4 & 0xfc) | c_flag0x3b4Bit4;
+	m_flags = (m_flags & 0xfc) | c_flagBit4;
 
 	m_racer = NULL;
 }
@@ -535,8 +535,8 @@ void TimeRaceManager::UpdateBestRun()
 void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_name)
 {
 	GolFileParser* parser;
-	LegoU8 flags = m_flags0x3b4;
-	if (flags & c_flag0x3b4Bit2) {
+	LegoU8 flags = m_flags;
+	if (flags & c_flagBinaryGhosts) {
 		parser = new GolBinParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -578,7 +578,7 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 			p_ghostRun->m_initialPosition.m_x = parser->ReadFloat();
 			p_ghostRun->m_initialPosition.m_y = parser->ReadFloat();
 			p_ghostRun->m_initialPosition.m_z = parser->ReadFloat();
-			if (m_flags0x3b4 & c_flag0x3b4Bit5) {
+			if (m_flags & c_flag0x3b4Bit5) {
 				p_ghostRun->m_initialPosition.m_y = -p_ghostRun->m_initialPosition.m_y;
 			}
 			break;
@@ -587,7 +587,7 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 			p_ghostRun->m_initialRotation.m_y = parser->ReadFloat();
 			p_ghostRun->m_initialRotation.m_z = parser->ReadFloat();
 			p_ghostRun->m_initialRotation.m_w = parser->ReadFloat();
-			if (m_flags0x3b4 & c_flag0x3b4Bit5) {
+			if (m_flags & c_flag0x3b4Bit5) {
 				p_ghostRun->m_initialRotation.m_y = -p_ghostRun->m_initialRotation.m_y;
 				p_ghostRun->m_initialRotation.m_w = -p_ghostRun->m_initialRotation.m_w;
 			}
@@ -607,7 +607,7 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 				sample->m_rotationZ = static_cast<LegoS8>(parser->ReadInteger());
 				sample->m_rotationW = static_cast<LegoS8>(parser->ReadInteger());
 
-				if (m_flags0x3b4 & c_flag0x3b4Bit5) {
+				if (m_flags & c_flag0x3b4Bit5) {
 					sample->m_positionY = -sample->m_positionY;
 					sample->m_rotationY = -sample->m_rotationY;
 					sample->m_rotationW = -sample->m_rotationW;
@@ -630,11 +630,11 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 // FUNCTION: LEGORACERS 0x004234b0
 LegoBool32 TimeRaceManager::HasBeatenRecord()
 {
-	LegoU8 flags = m_flags0x3b4;
-	if (!(flags & (c_flag0x3b4Bit0 | c_flag0x3b4Bit4))) {
+	LegoU8 flags = m_flags;
+	if (!(flags & (c_flagBestRunValid | c_flagBit4))) {
 		return FALSE;
 	}
-	if (!(flags & c_flag0x3b4Bit3)) {
+	if (!(flags & c_flagRecordRunValid)) {
 		return FALSE;
 	}
 
@@ -652,7 +652,7 @@ LegoBool32 TimeRaceManager::HasBeatenRecord()
 // FUNCTION: LEGORACERS 0x004234f0
 TimeRaceManager::GhostRunData* TimeRaceManager::ResetRun()
 {
-	m_flags0x3b4 &= ~c_flag0x3b4Bit1;
+	m_flags &= ~c_flagRunning;
 	m_elapsedTotalMs = 0;
 
 	for (LegoU32 i = 0; i < c_lapCount; i++) {

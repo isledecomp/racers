@@ -104,7 +104,7 @@ public:
 		p_dest->m_y = m_orientation.m_m[0][1];
 		p_dest->m_z = m_orientation.m_m[0][2];
 	}
-	void GetUnk0x34(GolVec3* p_dest) const
+	void GetOrientationRow1(GolVec3* p_dest) const
 	{
 		p_dest->m_x = m_orientation.m_m[1][0];
 		p_dest->m_y = m_orientation.m_m[1][1];

@@ -246,7 +246,7 @@ void RacerCarBody::ComputeWheelPositions()
 	lengthOffset.m_z *= lengthScale;
 
 	GolVec3 widthOffset;
-	entity->GetUnk0x34(&widthOffset);
+	entity->GetOrientationRow1(&widthOffset);
 	LegoFloat widthScale = m_trackWidth;
 	LegoFloat widthY = widthOffset.m_y;
 	widthOffset.m_x *= widthScale;

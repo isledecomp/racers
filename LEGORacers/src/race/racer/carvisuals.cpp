@@ -1283,7 +1283,7 @@ void CarVisuals::UpdateShadow(GolCamera* p_camera)
 		m_flags |= c_flagShadowVisible;
 
 		GolVec3 up;
-		m_carEntity->GetUnk0x34(&up);
+		m_carEntity->GetOrientationRow1(&up);
 
 		GolVec3 center;
 		m_carEntity->GetBoundsCenter(&center);

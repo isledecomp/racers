@@ -477,7 +477,7 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 		referenceDirection = m_physics->m_facingDirection;
 	}
 
-	m_physics->m_carEntity->GetUnk0x34(&pathDirection);
+	m_physics->m_carEntity->GetOrientationRow1(&pathDirection);
 	LegoBool32 positiveDirection;
 	if (pathDirection.m_z * delta.m_z + pathDirection.m_y * delta.m_y + pathDirection.m_x * delta.m_x >= 0.0f) {
 		activePathDirection = pathDirection;

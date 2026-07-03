@@ -167,10 +167,10 @@ void ShieldAction::Activate(
 	m_shieldEntity->PlayPart(0);
 	m_shieldEntity->SetFlags(m_shieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_shieldEntity->SetMsPerFrame(p_shieldTemplate->GetMsPerFrame());
-	m_shieldEntity->FUN_00411680(p_shieldTemplate->FUN_00411640());
-	m_shieldEntity->FUN_004116b0(p_shieldTemplate->FUN_00411660());
-	m_shieldEntity->FUN_00411700(p_shieldTemplate->FUN_004116e0());
-	m_shieldEntity->FUN_00411730(p_shieldTemplate->FUN_004116f0());
+	m_shieldEntity->SetTextureScrollU(p_shieldTemplate->GetTextureScrollU());
+	m_shieldEntity->SetTextureScrollV(p_shieldTemplate->GetTextureScrollV());
+	m_shieldEntity->SetTextureScrollSpeedU(p_shieldTemplate->GetTextureScrollSpeedU());
+	m_shieldEntity->SetTextureScrollSpeedV(p_shieldTemplate->GetTextureScrollSpeedV());
 	m_shieldEntity->CopyPositionFrom(*m_racer->m_visuals.m_carEntity);
 
 	m_innerShieldEntity->SetModel(
@@ -195,10 +195,10 @@ void ShieldAction::Activate(
 	m_innerShieldEntity->PlayPart(0);
 	m_innerShieldEntity->SetFlags(m_innerShieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_innerShieldEntity->SetMsPerFrame(p_innerShieldTemplate->GetMsPerFrame());
-	m_innerShieldEntity->FUN_00411680(p_innerShieldTemplate->FUN_00411640());
-	m_innerShieldEntity->FUN_004116b0(p_innerShieldTemplate->FUN_00411660());
-	m_innerShieldEntity->FUN_00411700(p_innerShieldTemplate->FUN_004116e0());
-	m_innerShieldEntity->FUN_00411730(p_innerShieldTemplate->FUN_004116f0());
+	m_innerShieldEntity->SetTextureScrollU(p_innerShieldTemplate->GetTextureScrollU());
+	m_innerShieldEntity->SetTextureScrollV(p_innerShieldTemplate->GetTextureScrollV());
+	m_innerShieldEntity->SetTextureScrollSpeedU(p_innerShieldTemplate->GetTextureScrollSpeedU());
+	m_innerShieldEntity->SetTextureScrollSpeedV(p_innerShieldTemplate->GetTextureScrollSpeedV());
 	m_innerShieldEntity->CopyPositionFrom(*m_shieldEntity);
 }
 

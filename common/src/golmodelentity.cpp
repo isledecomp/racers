@@ -32,10 +32,10 @@ GolModelEntity::GolModelEntity()
 	m_unk0x58 = 1.0f;
 	m_radius = -1.0f;
 	m_flags = 0;
-	m_unk0x60 = 0;
-	m_unk0x62 = 0;
-	m_unk0x64 = 0;
-	m_unk0x68 = 0;
+	m_textureScrollU = 0;
+	m_textureScrollV = 0;
+	m_textureScrollSpeedU = 0;
+	m_textureScrollSpeedV = 0;
 	for (i = 0; i < sizeOfArray(m_models); i++) {
 		m_models[i] = NULL;
 		m_modelDistances[i] = g_negativeOneFloat;
@@ -52,10 +52,10 @@ void GolModelEntity::VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance
 	}
 
 	m_models[0] = p_model;
-	m_unk0x60 = 0;
-	m_unk0x62 = 0;
-	m_unk0x64 = 0;
-	m_unk0x68 = 0;
+	m_textureScrollU = 0;
+	m_textureScrollV = 0;
+	m_textureScrollSpeedU = 0;
+	m_textureScrollSpeedV = 0;
 	m_modelDistances[0] = p_modelDistance;
 	m_unk0x58 = 1.0f;
 	m_radius = -1.0f;
@@ -70,10 +70,10 @@ void GolModelEntity::VTable0x54()
 
 	m_unk0x58 = 1.0f;
 	m_flags = 0;
-	m_unk0x60 = 0;
-	m_unk0x62 = 0;
-	m_unk0x64 = 0;
-	m_unk0x68 = 0;
+	m_textureScrollU = 0;
+	m_textureScrollV = 0;
+	m_textureScrollSpeedU = 0;
+	m_textureScrollSpeedV = 0;
 	for (i = 0; i < sizeOfArray(m_models); i++) {
 		m_models[i] = NULL;
 		m_modelDistances[i] = g_negativeOneFloat;
@@ -220,9 +220,9 @@ void GolModelEntity::VTable0x10(LegoS32 p_elapsed)
 	v += m_velocity * f;
 	VTable0x08(v);
 	m_radius = -1.0f;
-	if (m_unk0x64 != 0 || m_unk0x68 != 0) {
-		m_unk0x60 += m_unk0x64 * p_elapsed;
-		m_unk0x62 += m_unk0x68 * p_elapsed;
+	if (m_textureScrollSpeedU != 0 || m_textureScrollSpeedV != 0) {
+		m_textureScrollU += m_textureScrollSpeedU * p_elapsed;
+		m_textureScrollV += m_textureScrollSpeedV * p_elapsed;
 	}
 }
 
@@ -248,7 +248,7 @@ void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat
 void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	if (m_flags & (c_flagBit3 | c_flagBit2)) {
-		if (m_unk0x60 == 0 && m_unk0x62 == 0) {
+		if (m_textureScrollU == 0 && m_textureScrollV == 0) {
 			if (m_flags & c_flagBit2) {
 				p_renderer.VTable0xa4(this);
 				return;
@@ -259,8 +259,8 @@ void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
 			}
 		}
 		else {
-			LegoFloat value0x60 = FUN_00411640();
-			LegoFloat value0x62 = FUN_00411660();
+			LegoFloat value0x60 = GetTextureScrollU();
+			LegoFloat value0x62 = GetTextureScrollV();
 			p_renderer.VTable0xa8(this, value0x60, value0x62);
 			return;
 		}
@@ -295,65 +295,65 @@ void GolModelEntity::VTable0x28()
 }
 
 // FUNCTION: LEGORACERS 0x00411640
-LegoFloat GolModelEntity::FUN_00411640() const
+LegoFloat GolModelEntity::GetTextureScrollU() const
 {
 #ifdef BUILDING_GOL
-	return static_cast<LegoFloat>(m_unk0x60) * (1.0f / 65536.0f);
+	return static_cast<LegoFloat>(m_textureScrollU) * (1.0f / 65536.0f);
 #else
-	return static_cast<LegoFloat>(m_unk0x60) * g_unk0x004af7b4;
+	return static_cast<LegoFloat>(m_textureScrollU) * g_unk0x004af7b4;
 #endif
 }
 
 // FUNCTION: LEGORACERS 0x00411660
-LegoFloat GolModelEntity::FUN_00411660() const
+LegoFloat GolModelEntity::GetTextureScrollV() const
 {
 #ifdef BUILDING_GOL
-	return static_cast<LegoFloat>(m_unk0x62) * (1.0f / 65536.0f);
+	return static_cast<LegoFloat>(m_textureScrollV) * (1.0f / 65536.0f);
 #else
-	return static_cast<LegoFloat>(m_unk0x62) * g_unk0x004af7b4;
+	return static_cast<LegoFloat>(m_textureScrollV) * g_unk0x004af7b4;
 #endif
 }
 
 // FUNCTION: LEGORACERS 0x00411680
-void GolModelEntity::FUN_00411680(LegoFloat p_arg)
+void GolModelEntity::SetTextureScrollU(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-	m_unk0x60 = static_cast<LegoU16>(p_arg * 65536.0f);
+	m_textureScrollU = static_cast<LegoU16>(p_arg * 65536.0f);
 }
 
 // FUNCTION: LEGORACERS 0x004116b0
-void GolModelEntity::FUN_004116b0(LegoFloat p_arg)
+void GolModelEntity::SetTextureScrollV(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-	m_unk0x62 = static_cast<LegoU16>(p_arg * 65536.0f);
+	m_textureScrollV = static_cast<LegoU16>(p_arg * 65536.0f);
 }
 
 // FUNCTION: LEGORACERS 0x004116e0
-LegoFloat GolModelEntity::FUN_004116e0() const
+LegoFloat GolModelEntity::GetTextureScrollSpeedU() const
 {
-	return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x64)) * g_unk0x004af7b8;
+	return static_cast<LegoFloat>(static_cast<LegoS32>(m_textureScrollSpeedU)) * g_unk0x004af7b8;
 }
 
 // FUNCTION: LEGORACERS 0x004116f0
-LegoFloat GolModelEntity::FUN_004116f0() const
+LegoFloat GolModelEntity::GetTextureScrollSpeedV() const
 {
-	return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x68)) * g_unk0x004af7b8;
+	return static_cast<LegoFloat>(static_cast<LegoS32>(m_textureScrollSpeedV)) * g_unk0x004af7b8;
 }
 
 // FUNCTION: GOLDP 0x10028110
 // FUNCTION: LEGORACERS 0x00411700
-void GolModelEntity::FUN_00411700(LegoFloat p_arg)
+void GolModelEntity::SetTextureScrollSpeedU(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-	m_unk0x64 = static_cast<LegoS32>(p_arg * 65.536f);
+	m_textureScrollSpeedU = static_cast<LegoS32>(p_arg * 65.536f);
 }
 
 // FUNCTION: GOLDP 0x10028140
 // FUNCTION: LEGORACERS 0x00411730
-void GolModelEntity::FUN_00411730(LegoFloat p_arg)
+void GolModelEntity::SetTextureScrollSpeedV(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-	m_unk0x68 = static_cast<LegoS32>(p_arg * 65.536f);
+	m_textureScrollSpeedV = static_cast<LegoS32>(p_arg * 65.536f);
 }
 
 // FUNCTION: GOLDP 0x10028170

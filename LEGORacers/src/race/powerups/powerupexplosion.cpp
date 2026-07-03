@@ -110,10 +110,10 @@ void PowerupExplosion::Initialize(const Params* p_params)
 
 	if (p_params->m_model != NULL) {
 		m_modelEntity.VTable0x50(p_params->m_model->GetModel(0), 250000.0f);
-		m_modelEntity.FUN_00411680(p_params->m_model->FUN_00411640());
-		m_modelEntity.FUN_004116b0(p_params->m_model->FUN_00411660());
-		m_modelEntity.FUN_00411700(p_params->m_model->FUN_004116e0());
-		m_modelEntity.FUN_00411730(p_params->m_model->FUN_004116f0());
+		m_modelEntity.SetTextureScrollU(p_params->m_model->GetTextureScrollU());
+		m_modelEntity.SetTextureScrollV(p_params->m_model->GetTextureScrollV());
+		m_modelEntity.SetTextureScrollSpeedU(p_params->m_model->GetTextureScrollSpeedU());
+		m_modelEntity.SetTextureScrollSpeedV(p_params->m_model->GetTextureScrollSpeedV());
 	}
 
 	GolD3DRenderDevice* renderer = m_golExport->GetDrawState()->m_currentRenderer;

@@ -139,10 +139,10 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 			}
 		}
 
-		m_modelEntity.FUN_00411680(p_model->FUN_00411640());
-		m_modelEntity.FUN_004116b0(p_model->FUN_00411660());
-		m_modelEntity.FUN_00411700(p_model->FUN_004116e0());
-		m_modelEntity.FUN_00411730(p_model->FUN_004116f0());
+		m_modelEntity.SetTextureScrollU(p_model->GetTextureScrollU());
+		m_modelEntity.SetTextureScrollV(p_model->GetTextureScrollV());
+		m_modelEntity.SetTextureScrollSpeedU(p_model->GetTextureScrollSpeedU());
+		m_modelEntity.SetTextureScrollSpeedV(p_model->GetTextureScrollSpeedV());
 
 		GolAnimatedEntity* racerEntity = p_racer->m_visuals.m_carEntity;
 		GolVec3 position;
@@ -296,14 +296,14 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindAnimatedEntity("dbricks");
 	dbricks->ResetPartIndices();
 	dbricks->SetActiveValue(0.0f);
-	dbricks->FUN_00411680(0.0f);
-	dbricks->FUN_004116b0(0.0f);
+	dbricks->SetTextureScrollU(0.0f);
+	dbricks->SetTextureScrollV(0.0f);
 
 	GolAnimatedEntity* dtube = m_manager->m_turbo3Database->FindAnimatedEntity("dtube");
 	dtube->ResetPartIndices();
 	dtube->SetActiveValue(0.0f);
-	dtube->FUN_00411680(0.0f);
-	dtube->FUN_004116b0(0.0f);
+	dtube->SetTextureScrollU(0.0f);
+	dtube->SetTextureScrollV(0.0f);
 
 	m_manager->m_turbo3Database->Update(c_transitionDurationMs - m_stateTimerMs);
 	m_manager->m_turbo3Database->DrawWorld();

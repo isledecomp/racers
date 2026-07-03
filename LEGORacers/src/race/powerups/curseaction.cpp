@@ -127,10 +127,10 @@ void CurseAction::Activate(
 	}
 	m_auraEntity->SetFlags(m_auraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_auraEntity->PlayPart(0);
-	m_auraEntity->FUN_00411680(p_auraTemplate->FUN_00411640());
-	m_auraEntity->FUN_004116b0(p_auraTemplate->FUN_00411660());
-	m_auraEntity->FUN_00411700(p_auraTemplate->FUN_004116e0());
-	m_auraEntity->FUN_00411730(p_auraTemplate->FUN_004116f0());
+	m_auraEntity->SetTextureScrollU(p_auraTemplate->GetTextureScrollU());
+	m_auraEntity->SetTextureScrollV(p_auraTemplate->GetTextureScrollV());
+	m_auraEntity->SetTextureScrollSpeedU(p_auraTemplate->GetTextureScrollSpeedU());
+	m_auraEntity->SetTextureScrollSpeedV(p_auraTemplate->GetTextureScrollSpeedV());
 
 	m_innerAuraEntity->SetModel(
 		p_innerAuraTemplate->GetModel(0),
@@ -148,10 +148,10 @@ void CurseAction::Activate(
 	}
 	m_innerAuraEntity->SetFlags(m_innerAuraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_innerAuraEntity->PlayPart(0);
-	m_innerAuraEntity->FUN_00411680(p_innerAuraTemplate->FUN_00411640());
-	m_innerAuraEntity->FUN_004116b0(p_innerAuraTemplate->FUN_00411660());
-	m_innerAuraEntity->FUN_00411700(p_innerAuraTemplate->FUN_004116e0());
-	m_innerAuraEntity->FUN_00411730(p_innerAuraTemplate->FUN_004116f0());
+	m_innerAuraEntity->SetTextureScrollU(p_innerAuraTemplate->GetTextureScrollU());
+	m_innerAuraEntity->SetTextureScrollV(p_innerAuraTemplate->GetTextureScrollV());
+	m_innerAuraEntity->SetTextureScrollSpeedU(p_innerAuraTemplate->GetTextureScrollSpeedU());
+	m_innerAuraEntity->SetTextureScrollSpeedV(p_innerAuraTemplate->GetTextureScrollSpeedV());
 
 	if (m_ownerRacer == NULL) {
 		GolVec3 position = p_target->m_position;

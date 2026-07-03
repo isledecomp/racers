@@ -42,10 +42,10 @@ void GolAnimatedEntity::SetNode(GolSceneNode* p_node, CmbModelPart* p_modelParts
 {
 	m_modelDistances[0] = p_modelDistance;
 	m_radius = 0.0f;
-	m_unk0x60 = 0;
-	m_unk0x62 = 0;
-	m_unk0x64 = 0;
-	m_unk0x68 = 0;
+	m_textureScrollU = 0;
+	m_textureScrollV = 0;
+	m_textureScrollSpeedU = 0;
+	m_textureScrollSpeedV = 0;
 	m_unk0x58 = 1.0f;
 	m_nodes[0] = p_node;
 	m_modelParts[0] = p_modelParts;

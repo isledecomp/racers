@@ -98,11 +98,11 @@ void OscillatorHazard::Update(undefined4 p_elapsedMs)
 
 	LegoFloat amount = m_amplitude0;
 	amount *= scale;
-	m_entity->FUN_00411700(amount);
+	m_entity->SetTextureScrollSpeedU(amount);
 
 	amount = m_amplitude1;
 	amount *= scale;
-	m_entity->FUN_00411730(amount);
+	m_entity->SetTextureScrollSpeedV(amount);
 }
 
 // FUNCTION: LEGORACERS 0x0048d470 FOLDED

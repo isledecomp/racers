@@ -1398,8 +1398,8 @@ void GolWorldDatabase::FUN_1002e640()
 		runtime->m_unk0x58 = model->m_unk0x74;
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
-			runtime->FUN_00411700(model->m_unk0x80);
-			runtime->FUN_00411730(model->m_unk0x84);
+			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
+			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
 		}
 		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
 			runtime->m_flags |= GolModelEntity::c_flagBit1;
@@ -1502,8 +1502,8 @@ void GolWorldDatabase::FUN_1002e640()
 		runtime->m_unk0x58 = model->m_unk0x74;
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
-			runtime->FUN_00411700(model->m_unk0x80);
-			runtime->FUN_00411730(model->m_unk0x84);
+			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
+			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
 		}
 
 		if (model->m_unk0x48[0] != '\0') {
@@ -1595,8 +1595,8 @@ void GolWorldDatabase::FUN_1002e640()
 		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
-			runtime->FUN_00411700(model->m_unk0x80);
-			runtime->FUN_00411730(model->m_unk0x84);
+			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
+			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
 		}
 		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
 			runtime->m_flags |= GolModelEntity::c_flagBit1;

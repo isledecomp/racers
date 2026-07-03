@@ -141,10 +141,10 @@ void MagnetAction::Activate(
 			m_ringEntity->AddModel(model, p_ringTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_ringEntity->FUN_00411680(p_ringTemplate->FUN_00411640());
-	m_ringEntity->FUN_004116b0(p_ringTemplate->FUN_00411660());
-	m_ringEntity->FUN_00411700(p_ringTemplate->FUN_004116e0());
-	m_ringEntity->FUN_00411730(p_ringTemplate->FUN_004116f0());
+	m_ringEntity->SetTextureScrollU(p_ringTemplate->GetTextureScrollU());
+	m_ringEntity->SetTextureScrollV(p_ringTemplate->GetTextureScrollV());
+	m_ringEntity->SetTextureScrollSpeedU(p_ringTemplate->GetTextureScrollSpeedU());
+	m_ringEntity->SetTextureScrollSpeedV(p_ringTemplate->GetTextureScrollSpeedV());
 
 	m_insideEntity->SetModel(
 		p_insideTemplate->GetModel(0),
@@ -160,10 +160,10 @@ void MagnetAction::Activate(
 			m_insideEntity->AddModel(model, p_insideTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_insideEntity->FUN_00411680(p_insideTemplate->FUN_00411640());
-	m_insideEntity->FUN_004116b0(p_insideTemplate->FUN_00411660());
-	m_insideEntity->FUN_00411700(p_insideTemplate->FUN_004116e0());
-	m_insideEntity->FUN_00411730(p_insideTemplate->FUN_004116f0());
+	m_insideEntity->SetTextureScrollU(p_insideTemplate->GetTextureScrollU());
+	m_insideEntity->SetTextureScrollV(p_insideTemplate->GetTextureScrollV());
+	m_insideEntity->SetTextureScrollSpeedU(p_insideTemplate->GetTextureScrollSpeedU());
+	m_insideEntity->SetTextureScrollSpeedV(p_insideTemplate->GetTextureScrollSpeedV());
 }
 
 // FUNCTION: LEGORACERS 0x00455a90

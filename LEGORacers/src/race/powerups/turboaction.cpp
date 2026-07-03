@@ -200,10 +200,10 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 				->AddModel(lodModel, effect0->VTable0x58(i), effect0->GetModelPart(i), effect0->GetModelDistance(i));
 		}
 	}
-	m_flameEntity->FUN_00411680(effect0->FUN_00411640());
-	m_flameEntity->FUN_004116b0(effect0->FUN_00411660());
-	m_flameEntity->FUN_00411700(effect0->FUN_004116e0());
-	m_flameEntity->FUN_00411730(effect0->FUN_004116f0());
+	m_flameEntity->SetTextureScrollU(effect0->GetTextureScrollU());
+	m_flameEntity->SetTextureScrollV(effect0->GetTextureScrollV());
+	m_flameEntity->SetTextureScrollSpeedU(effect0->GetTextureScrollSpeedU());
+	m_flameEntity->SetTextureScrollSpeedV(effect0->GetTextureScrollSpeedV());
 
 	m_flame2Entity->SetModel(
 		effect1->GetModel(0),
@@ -218,10 +218,10 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 				->AddModel(lodModel, effect1->VTable0x58(i), effect1->GetModelPart(i), effect1->GetModelDistance(i));
 		}
 	}
-	m_flame2Entity->FUN_00411680(effect1->FUN_00411640());
-	m_flame2Entity->FUN_004116b0(effect1->FUN_00411660());
-	m_flame2Entity->FUN_00411700(effect1->FUN_004116e0());
-	m_flame2Entity->FUN_00411730(effect1->FUN_004116f0());
+	m_flame2Entity->SetTextureScrollU(effect1->GetTextureScrollU());
+	m_flame2Entity->SetTextureScrollV(effect1->GetTextureScrollV());
+	m_flame2Entity->SetTextureScrollSpeedU(effect1->GetTextureScrollSpeedU());
+	m_flame2Entity->SetTextureScrollSpeedV(effect1->GetTextureScrollSpeedV());
 
 	AnchorToRacer();
 	m_turboEntity->SetFlags(m_turboEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);

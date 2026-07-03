@@ -12,7 +12,7 @@ class GolRenderDevice;
 class GolMaterial;
 
 typedef void(__cdecl* GolBillboardInitializerFunction)();
-extern GolBillboardInitializerFunction g_unk0x1005c010;
+extern GolBillboardInitializerFunction g_billboardTexCoordInit;
 
 // VTABLE: GOLDP 0x10057500
 // SIZE 0x4c
@@ -39,7 +39,7 @@ public:
 	};
 
 	GolBillboard();
-	static void FUN_10014e20();
+	static void InitializeTexCoords();
 
 	// FUNCTION: GOLDP 0x100156c0
 	void SetPosition(const GolVec3& p_v) override { GolWorldEntity::SetPosition(p_v); } // vtable+0x08
@@ -55,8 +55,8 @@ public:
 	);                              // vtable+0x4c
 	virtual void SetPrimaryModel(); // vtable+0x50
 
-	LegoBool32 FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix);
-	void FUN_10014ff0(GolD3DRenderDevice* p_renderer);
+	LegoBool32 BuildModelMatrix(const GolVec3* p_right, const GolVec3* p_forward, GolMatrix4* p_matrix);
+	void DrawQuad(GolD3DRenderDevice* p_renderer);
 	void SetBoundsRadius(LegoFloat p_arg1);
 	VTable0x4cReturn ConfigureFromMaterialTable(
 		MaterialTable* p_container,
@@ -65,7 +65,7 @@ public:
 		LegoFloat p_height,
 		LegoFloat p_maxDistanceSquared
 	);
-	void FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result);
+	void TestVisibility(const GolVec3& p_cameraPosition, LegoBool32* p_visibility);
 	GolMaterial* ResolveMaterial();
 	MaterialTable* GetMaterialTable() const { return m_materialTable; }
 	LegoU16 GetFlags() const { return m_flags; }

@@ -181,18 +181,18 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 	}
 
 	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray);
-	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
-	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
+	p_renderer->m_sourcePositions = vertexArray->GetPositions();
+	p_renderer->m_sourceTexCoords = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {
-		p_renderer->m_unk0xc4c14 = vertexArray->GetTransformedColors();
+		p_renderer->m_sourceColors = vertexArray->GetTransformedColors();
 	}
 	else {
-		p_renderer->m_unk0xc4c14 = vertexArray->GetColors();
+		p_renderer->m_sourceColors = vertexArray->GetColors();
 	}
 
 	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_indexArray);
-	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
-	p_renderer->m_materialCommand.m_indices = p_renderer->m_unk0xc4c18;
+	p_renderer->m_sourceIndices = indexArray->GetIndexBytes();
+	p_renderer->m_materialCommand.m_indices = p_renderer->m_sourceIndices;
 
 	LegoU32* group = m_groups;
 	LegoU32* end = m_groups + m_countGroups;
@@ -280,18 +280,18 @@ void GolModel::DrawNode(
 	}
 
 	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray);
-	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
-	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
+	p_renderer->m_sourcePositions = vertexArray->GetPositions();
+	p_renderer->m_sourceTexCoords = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {
-		p_renderer->m_unk0xc4c14 = vertexArray->GetTransformedColors();
+		p_renderer->m_sourceColors = vertexArray->GetTransformedColors();
 	}
 	else {
-		p_renderer->m_unk0xc4c14 = vertexArray->GetColors();
+		p_renderer->m_sourceColors = vertexArray->GetColors();
 	}
 
 	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_indexArray);
-	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
-	p_renderer->m_materialCommand.m_indices = p_renderer->m_unk0xc4c18;
+	p_renderer->m_sourceIndices = indexArray->GetIndexBytes();
+	p_renderer->m_materialCommand.m_indices = p_renderer->m_sourceIndices;
 
 	LegoU32* group = m_groups + p_node->m_firstGroup;
 	LegoU32* end = m_groups + (p_node->m_firstGroup + p_node->m_groupCount);

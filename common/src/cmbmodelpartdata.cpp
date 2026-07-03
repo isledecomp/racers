@@ -10,9 +10,9 @@ DECOMP_SIZE_ASSERT(CmbModelPartData, 0x28)
 // FUNCTION: LEGORACERS 0x00401000
 CmbModelPartData::CmbModelPartData()
 {
-	m_unk0x24 = 0;
-	m_unk0x26 = 0;
-	m_unk0x20 = 0;
+	m_frameCount = 0;
+	m_loopFrameCount = 0;
+	m_trackIndex = 0;
 	m_msPerFrame = 0.0f;
 	m_velocity.m_x = 0.0f;
 	m_velocity.m_y = 0.0f;
@@ -33,19 +33,19 @@ void CmbModelPartData::Parse(GolFileParser& p_parser)
 	while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case GolFileParser::e_unknown0x2b:
-			m_unk0x20 = p_parser.ReadInteger();
+			m_trackIndex = p_parser.ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2d:
 			if (p_parser.GetNextToken() != GolFileParser::e_int) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 			}
-			m_unk0x24 = p_parser.GetLastInt();
+			m_frameCount = p_parser.GetLastInt();
 			break;
 		case GolFileParser::e_unknown0x2e:
 			if (p_parser.GetNextToken() != GolFileParser::e_int) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 			}
-			m_unk0x26 = p_parser.GetLastInt();
+			m_loopFrameCount = p_parser.GetLastInt();
 			break;
 		case GolFileParser::e_unknown0x2f:
 			m_msPerFrame = static_cast<LegoFloat>(p_parser.ReadInteger()) / 1000.0f;
@@ -72,7 +72,7 @@ void CmbModelPartData::Parse(GolFileParser& p_parser)
 // FUNCTION: LEGORACERS 0x00401150
 LegoFloat CmbModelPartData::WrapTime(LegoFloat p_time) const
 {
-	LegoFloat frameCount = static_cast<LegoFloat>(m_unk0x26);
+	LegoFloat frameCount = static_cast<LegoFloat>(m_loopFrameCount);
 	if (p_time >= frameCount) {
 		LegoFloat wrapCount = static_cast<LegoFloat>(static_cast<LegoS32>(p_time / frameCount));
 

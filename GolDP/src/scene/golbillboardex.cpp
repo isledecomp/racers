@@ -16,25 +16,25 @@ LegoU32 GolBillboard::g_billboardColors[4] = {0xffffffff, 0xffffffff, 0xffffffff
 LegoU8 GolBillboard::g_billboardTriangleIndices[8] = {1, 2, 0, 0, 3, 2, 1, 0};
 
 // GLOBAL: GOLDP 0x1005675c
-extern const LegoFloat g_unk0x1005675c = 1.0f;
+extern const LegoFloat g_billboardTexCoordMax = 1.0f;
 
 #pragma data_seg(".CRT$XCU")
 // GLOBAL: GOLDP 0x1005c010
-GolBillboardInitializerFunction g_unk0x1005c010 = &GolBillboard::FUN_10014e20;
+GolBillboardInitializerFunction g_billboardTexCoordInit = &GolBillboard::InitializeTexCoords;
 #pragma data_seg()
 
 // FUNCTION: GOLDP 0x10014e20
-void GolBillboard::FUN_10014e20()
+void GolBillboard::InitializeTexCoords()
 {
-	g_billboardTexCoords[1].m_y = g_unk0x1005675c;
-	g_billboardTexCoords[2].m_x = g_unk0x1005675c;
+	g_billboardTexCoords[1].m_y = g_billboardTexCoordMax;
+	g_billboardTexCoords[2].m_x = g_billboardTexCoordMax;
 	g_billboardTexCoords[2].m_y = 0.0f;
-	g_billboardTexCoords[3].m_x = g_unk0x1005675c;
-	g_billboardTexCoords[3].m_y = g_unk0x1005675c;
+	g_billboardTexCoords[3].m_x = g_billboardTexCoordMax;
+	g_billboardTexCoords[3].m_y = g_billboardTexCoordMax;
 }
 
 // FUNCTION: GOLDP 0x10014e50
-LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix)
+LegoBool32 GolBillboard::BuildModelMatrix(const GolVec3* p_right, const GolVec3* p_forward, GolMatrix4* p_matrix)
 {
 	GolVec3 row0;
 	GolVec3 row1;
@@ -43,9 +43,9 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 
 	GetBoundsCenter(&position);
 
-	row0.m_x = -p_arg1->m_x;
-	row0.m_y = -p_arg1->m_y;
-	row0.m_z = -p_arg1->m_z;
+	row0.m_x = -p_right->m_x;
+	row0.m_y = -p_right->m_y;
+	row0.m_z = -p_right->m_z;
 
 	if (m_flags & c_flagAxisLocked) {
 		row2 = &m_axis;
@@ -62,7 +62,7 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 		row0.m_z -= projection;
 	}
 	else {
-		row2 = p_arg2;
+		row2 = p_forward;
 	}
 
 	GolMath::NormalizeVector3(row0, &row0);
@@ -122,16 +122,16 @@ void GolBillboardEx::Configure(
 }
 
 // FUNCTION: GOLDP 0x10014ff0
-void GolBillboard::FUN_10014ff0(GolD3DRenderDevice* p_renderer)
+void GolBillboard::DrawQuad(GolD3DRenderDevice* p_renderer)
 {
 	GolMaterial* material = ResolveMaterial();
 	(p_renderer->*p_renderer->m_applyMaterialFn)(material);
 	p_renderer->SetCurrentTexture(material->GetTexture());
 
-	p_renderer->m_unk0xc4c0c = g_billboardPositions;
-	p_renderer->m_unk0xc4c10 = g_billboardTexCoords;
-	p_renderer->m_unk0xc4c14 = g_billboardColors;
-	p_renderer->m_unk0xc4c18 = g_billboardTriangleIndices;
+	p_renderer->m_sourcePositions = g_billboardPositions;
+	p_renderer->m_sourceTexCoords = g_billboardTexCoords;
+	p_renderer->m_sourceColors = g_billboardColors;
+	p_renderer->m_sourceIndices = g_billboardTriangleIndices;
 	p_renderer->m_materialCommand.m_indices = g_billboardTriangleIndices;
 
 	g_billboardPositions[0].m_z = m_height;

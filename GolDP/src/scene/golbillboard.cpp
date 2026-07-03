@@ -98,20 +98,20 @@ void GolBillboard::SetBoundsRadius(LegoFloat p_scalar)
 }
 
 // FUNCTION: GOLDP 0x10029fa0
-void GolBillboard::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result)
+void GolBillboard::TestVisibility(const GolVec3& p_cameraPosition, LegoBool32* p_visibility)
 {
 	GolVec3 position;
 
-	p_result[1] = FALSE;
+	p_visibility[1] = FALSE;
 	GetBoundsCenter(&position);
 
-	LegoFloat distanceSquared = position.DistanceSquaredTo(p_arg1);
+	LegoFloat distanceSquared = position.DistanceSquaredTo(p_cameraPosition);
 
 	if (distanceSquared != 0.0f && distanceSquared <= m_maxDistanceSquared) {
-		p_result[0] = TRUE;
+		p_visibility[0] = TRUE;
 	}
 	else {
-		p_result[0] = FALSE;
+		p_visibility[0] = FALSE;
 	}
 }
 

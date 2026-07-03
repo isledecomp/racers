@@ -285,11 +285,11 @@ private:
 	VertexCacheEntry m_unk0xc38ec[(0xc426c - 0xc38ec) / sizeof(VertexCacheEntry)]; // 0xc38ec
 	undefined m_unk0xc426c[0xc428c - 0xc426c];                                     // 0xc426c
 	CommandVertex m_unk0xc428c[(0xc4c0c - 0xc428c) / sizeof(CommandVertex)];       // 0xc428c
-	GolVec3* m_unk0xc4c0c;                                                         // 0xc4c0c
-	GolVec2* m_unk0xc4c10;                                                         // 0xc4c10
-	LegoU32* m_unk0xc4c14;                                                         // 0xc4c14
-	LegoU8* m_unk0xc4c18;                                                          // 0xc4c18
-	GolVec3* m_unk0xc4c1c;                                                         // 0xc4c1c
+	GolVec3* m_sourcePositions;                                                    // 0xc4c0c
+	GolVec2* m_sourceTexCoords;                                                    // 0xc4c10
+	LegoU32* m_sourceColors;                                                       // 0xc4c14
+	LegoU8* m_sourceIndices;                                                       // 0xc4c18
+	GolVec3* m_sourceNormals;                                                      // 0xc4c1c
 	LegoU16 m_unk0xc4c20[(0xc53a0 - 0xc4c20) / sizeof(LegoU16)];                   // 0xc4c20
 	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)];           // 0xc53a0
 	LegoFloat m_uvOffsetU;                                                         // 0xc83a0

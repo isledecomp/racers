@@ -34,7 +34,7 @@ void ColorTransformResource::FUN_00465570(InitParams* p_params)
 		FUN_004655e0();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
 		m_stateEventIds[i] = *eventId++;
@@ -43,8 +43,8 @@ void ColorTransformResource::FUN_00465570(InitParams* p_params)
 	m_eventTable = p_params->m_eventTable;
 	LegoU32 flags = p_params->m_flags0x14;
 	m_flags0x20 = flags;
-	m_colorTransform = p_params->m_unk0x18;
-	m_unk0x44 = p_params->m_unk0x38;
+	m_colorTransform = p_params->m_colorTransform;
+	m_worldEntity = p_params->m_worldEntity;
 	if (flags & 1) {
 		m_flags0x1c |= c_flags0x1cBit2;
 	}
@@ -67,7 +67,7 @@ void ColorTransformResource::FUN_004655e0()
 void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 {
 	LegoU8 flags = static_cast<LegoU8>(m_flags0x20);
-	GolWorldEntity* entity = m_unk0x44;
+	GolWorldEntity* entity = m_worldEntity;
 	if (flags & c_flags0x20Bit1) {
 		if (entity) {
 			entity->VTable0x28();
@@ -94,7 +94,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 void ColorTransformResource::OnEndForRacer(Racer* p_racer)
 {
 	if (!(static_cast<LegoU8>(m_flags0x20) & c_flags0x20Bit1)) {
-		GolWorldEntity* entity = m_unk0x44;
+		GolWorldEntity* entity = m_worldEntity;
 		if (entity) {
 			entity->VTable0x28();
 		}

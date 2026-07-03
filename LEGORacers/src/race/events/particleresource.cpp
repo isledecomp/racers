@@ -67,7 +67,7 @@ void ParticleResource::Initialize(InitParams* p_params)
 		Destroy();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
 		m_stateEventIds[i] = *eventId++;

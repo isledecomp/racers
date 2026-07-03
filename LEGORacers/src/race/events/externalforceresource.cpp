@@ -39,16 +39,16 @@ void ExternalForceResource::Initialize(InitParams* p_params)
 		Destroy();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
 		m_stateEventIds[i] = *eventId++;
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_force = p_params->m_unk0x14;
-	m_channel = p_params->m_unk0x20;
-	m_armEventId = p_params->m_unk0x24;
+	m_force = p_params->m_force;
+	m_channel = p_params->m_channel;
+	m_armEventId = p_params->m_armEventId;
 	if (p_params->m_unk0x28) {
 		m_flags0x1c |= c_flags0x1cBit1;
 	}

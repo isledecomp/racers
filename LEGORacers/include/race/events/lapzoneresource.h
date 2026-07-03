@@ -9,7 +9,7 @@ class LapZoneResource : public RaceEventResource {
 public:
 	// SIZE 0x18
 	struct InitParams {
-		undefined4 m_unk0x00;         // 0x00
+		undefined4 m_eventId;         // 0x00
 		LegoS32 m_stateEventIds[3];   // 0x04
 		RaceEventTable* m_eventTable; // 0x10
 		undefined4 m_unk0x14;         // 0x14

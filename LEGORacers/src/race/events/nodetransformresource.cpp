@@ -26,9 +26,9 @@ NodeTransformResource::~NodeTransformResource()
 // FUNCTION: LEGORACERS 0x004638f0
 void NodeTransformResource::FUN_004638f0()
 {
-	m_unk0x20 = NULL;
-	m_unk0x24 = NULL;
-	m_unk0x28 = 0;
+	m_boundedEntity = NULL;
+	m_modelEntity = NULL;
+	m_nodeIndex = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00463900
@@ -38,16 +38,16 @@ void NodeTransformResource::FUN_00463900(InitParams* p_params)
 		FUN_00463970();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
 		m_stateEventIds[i] = *eventId++;
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_unk0x20 = p_params->m_unk0x14;
-	m_unk0x24 = p_params->m_unk0x18;
-	m_unk0x28 = p_params->m_unk0x1c;
+	m_boundedEntity = p_params->m_boundedEntity;
+	m_modelEntity = p_params->m_modelEntity;
+	m_nodeIndex = p_params->m_unk0x1c;
 	if (p_params->m_unk0x20) {
 		m_flags0x1c |= c_flags0x1cBit2;
 	}
@@ -83,10 +83,10 @@ void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 	if (m_state0x18 != c_state0x18One) {
 		RaceEventResource::Update(p_elapsedMs);
 
-		if (m_unk0x20) {
-			m_unk0x24->VTable0x5c(0);
-			GolSceneNode* node = m_unk0x24->VTable0x58(0);
-			GolTransformBase* transform = node->VTable0x18(m_unk0x28);
+		if (m_boundedEntity) {
+			m_modelEntity->VTable0x5c(0);
+			GolSceneNode* node = m_modelEntity->VTable0x58(0);
+			GolTransformBase* transform = node->VTable0x18(m_nodeIndex);
 
 			GolVec3 position;
 			GolVec3 up;
@@ -95,7 +95,7 @@ void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 			transform->GetUp(&up);
 			transform->GetRight(&right);
 
-			LegoFloat scale = m_unk0x24->GetModel(0)->GetScale() * m_unk0x24->GetUnk0x58();
+			LegoFloat scale = m_modelEntity->GetModel(0)->GetScale() * m_modelEntity->GetUnk0x58();
 			position.m_x *= scale;
 			position.m_y *= scale;
 			position.m_z *= scale;
@@ -103,11 +103,11 @@ void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 			GolVec3 transformedPosition;
 			GolVec3 transformedUp;
 			GolVec3 transformedRight;
-			m_unk0x24->VTable0x2c(position, &transformedPosition);
-			m_unk0x24->VTable0x34(up, &transformedUp);
-			m_unk0x24->VTable0x34(right, &transformedRight);
-			m_unk0x20->VTable0x08(transformedPosition);
-			m_unk0x20->VTable0x40(transformedUp, transformedRight);
+			m_modelEntity->VTable0x2c(position, &transformedPosition);
+			m_modelEntity->VTable0x34(up, &transformedUp);
+			m_modelEntity->VTable0x34(right, &transformedRight);
+			m_boundedEntity->VTable0x08(transformedPosition);
+			m_boundedEntity->VTable0x40(transformedUp, transformedRight);
 		}
 	}
 }

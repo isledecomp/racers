@@ -9,7 +9,7 @@ DECOMP_SIZE_ASSERT(PartAnimationResource, 0x34)
 // FUNCTION: LEGORACERS 0x004632c0
 PartAnimationResource::PartAnimationResource()
 {
-	m_unk0x20 = NULL;
+	m_animatedEntity = NULL;
 	m_flags0x1c = 0;
 }
 
@@ -26,14 +26,14 @@ void PartAnimationResource::FUN_00463330(InitParams* p_params)
 		FUN_004633e0();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
 		m_stateEventIds[i] = *eventId++;
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_unk0x20 = p_params->m_unk0x14;
+	m_animatedEntity = p_params->m_animatedEntity;
 	m_unk0x24 = p_params->m_unk0x18;
 	m_unk0x28 = p_params->m_unk0x1c;
 	m_unk0x2c = p_params->m_unk0x20;
@@ -59,14 +59,14 @@ void PartAnimationResource::FUN_00463330(InitParams* p_params)
 		m_flags0x1c |= c_flags0x1cBit4;
 	}
 
-	m_unk0x20->SetFlags(m_unk0x20->GetFlags() | c_entityFlag0x200000);
+	m_animatedEntity->SetFlags(m_animatedEntity->GetFlags() | c_entityFlag0x200000);
 	m_state0x18 = c_state0x18One;
 }
 
 // FUNCTION: LEGORACERS 0x004633e0
 void PartAnimationResource::FUN_004633e0()
 {
-	m_unk0x20 = NULL;
+	m_animatedEntity = NULL;
 	Reset();
 }
 
@@ -75,7 +75,7 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
 
-	GolAnimatedEntity* entity = m_unk0x20;
+	GolAnimatedEntity* entity = m_animatedEntity;
 	LegoU32 state = m_state0x18;
 	LegoS32 currentPart = entity->GetCurrentPartIndex();
 
@@ -158,7 +158,7 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 void PartAnimationResource::OnStartAt(GolVec3*)
 {
 	LegoS32 queuedPart = m_unk0x2c;
-	GolAnimatedEntity* entity = m_unk0x20;
+	GolAnimatedEntity* entity = m_animatedEntity;
 	if (queuedPart != -1) {
 		entity->SetQueuedPartIndex(static_cast<LegoU16>(queuedPart));
 		LegoU32 flags = entity->GetFlags();
@@ -184,7 +184,7 @@ void PartAnimationResource::OnEnd()
 	LegoU32 resetState = c_state0x18One;
 	if (state != resetState) {
 		nextState = resetState;
-		GolAnimatedEntity* entity = m_unk0x20;
+		GolAnimatedEntity* entity = m_animatedEntity;
 		LegoS32 targetPart = m_unk0x28;
 		LegoS32 currentPart = entity->GetCurrentPartIndex();
 		if (currentPart != targetPart) {

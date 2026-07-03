@@ -27,7 +27,7 @@ void LapZoneResource::Initialize(InitParams* p_params)
 	}
 
 	InitParams* params = p_params;
-	m_eventId = params->m_unk0x00;
+	m_eventId = params->m_eventId;
 	LegoS32* eventId = params->m_stateEventIds;
 	for (LegoS32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
 		m_stateEventIds[i] = *eventId++;

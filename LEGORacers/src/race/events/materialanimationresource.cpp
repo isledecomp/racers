@@ -16,7 +16,7 @@ LegoU32 MaterialAnimationResource::GetKind()
 // FUNCTION: LEGORACERS 0x004630a0
 MaterialAnimationResource::MaterialAnimationResource()
 {
-	m_unk0x20 = NULL;
+	m_materialAnimation = NULL;
 	m_unk0x24 = NULL;
 	m_unk0x28 = NULL;
 	m_unk0x2c = NULL;
@@ -37,14 +37,14 @@ void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
 		FUN_004631e0();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
 		m_stateEventIds[i] = *eventId++;
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_unk0x20 = p_params->m_unk0x14;
+	m_materialAnimation = p_params->m_materialAnimation;
 	if (p_params->m_unk0x28) {
 		m_flags0x1c |= c_flags0x1cBit0;
 	}
@@ -58,8 +58,8 @@ void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
 		m_flags0x1c |= c_flags0x1cBit3;
 	}
 
-	m_unk0x24 = &m_unk0x20->GetUnk0x0c()[p_params->m_unk0x20];
-	MabMaterialTrack* item = &m_unk0x20->GetUnk0x0c()[p_params->m_unk0x24];
+	m_unk0x24 = &m_materialAnimation->GetUnk0x0c()[p_params->m_unk0x20];
+	MabMaterialTrack* item = &m_materialAnimation->GetUnk0x0c()[p_params->m_unk0x24];
 	m_unk0x28 = item;
 	m_unk0x2c = item->GetUnk0x00();
 	m_unk0x30 = item->GetUnk0x04();
@@ -75,7 +75,7 @@ void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
 void MaterialAnimationResource::FUN_004631e0()
 {
 	OnEnd();
-	m_unk0x20 = NULL;
+	m_materialAnimation = NULL;
 	Reset();
 }
 

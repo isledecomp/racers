@@ -7,14 +7,21 @@
 // SIZE 0x38
 class ExternalForceResource : public RaceEventResource {
 public:
+	// .evb external-force field tokens
+	enum {
+		e_force = 0x3e,
+		e_channel = 0x4c,
+		e_armEventId = 0x5a,
+	};
+
 	// SIZE 0x30
 	struct InitParams {
-		undefined4 m_unk0x00;         // 0x00
+		undefined4 m_eventId;         // 0x00
 		LegoS32 m_stateEventIds[3];   // 0x04
 		RaceEventTable* m_eventTable; // 0x10
-		GolVec3 m_unk0x14;            // 0x14
-		LegoU32 m_unk0x20;            // 0x20
-		LegoS32 m_unk0x24;            // 0x24
+		GolVec3 m_force;              // 0x14
+		LegoU32 m_channel;            // 0x20
+		LegoS32 m_armEventId;         // 0x24
 		LegoBool32 m_unk0x28;         // 0x28
 		LegoBool32 m_unk0x2c;         // 0x2c
 	};

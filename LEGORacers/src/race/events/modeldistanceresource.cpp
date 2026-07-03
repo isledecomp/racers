@@ -26,7 +26,7 @@ void ModelDistanceResource::FUN_004636e0()
 	m_modelDistances[1] = 0.0f;
 	m_modelDistances[2] = 0.0f;
 	m_unk0x30 = FALSE;
-	m_unk0x20 = NULL;
+	m_modelEntity = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00463700
@@ -36,7 +36,7 @@ void ModelDistanceResource::FUN_00463700(InitParams* p_params)
 		FUN_004637a0();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	LegoU32 i;
 	for (i = 0; i < sizeOfArray(m_stateEventIds); i++) {
@@ -44,7 +44,7 @@ void ModelDistanceResource::FUN_00463700(InitParams* p_params)
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_unk0x20 = p_params->m_unk0x14;
+	m_modelEntity = p_params->m_modelEntity;
 	m_unk0x30 = p_params->m_unk0x20;
 	if (p_params->m_unk0x18) {
 		m_flags0x1c |= c_flags0x1cBit1;
@@ -54,10 +54,10 @@ void ModelDistanceResource::FUN_00463700(InitParams* p_params)
 	}
 
 	for (i = 0; i < sizeOfArray(m_modelDistances); i++) {
-		m_modelDistances[i] = m_unk0x20->GetModelDistance(i);
+		m_modelDistances[i] = m_modelEntity->GetModelDistance(i);
 		if (!m_unk0x30) {
 			LegoFloat modelDistance = -1.0f;
-			m_unk0x20->SetModelDistance(i, modelDistance);
+			m_modelEntity->SetModelDistance(i, modelDistance);
 		}
 	}
 
@@ -82,7 +82,7 @@ void ModelDistanceResource::OnStartAt(GolVec3*)
 		else {
 			modelDistance = m_modelDistances[i];
 		}
-		m_unk0x20->SetModelDistance(i, modelDistance);
+		m_modelEntity->SetModelDistance(i, modelDistance);
 	}
 
 	m_state0x18 = c_state0x18Three;
@@ -99,7 +99,7 @@ void ModelDistanceResource::OnEnd()
 		else {
 			modelDistance = -1.0f;
 		}
-		m_unk0x20->SetModelDistance(i, modelDistance);
+		m_modelEntity->SetModelDistance(i, modelDistance);
 	}
 
 	m_state0x18 = c_state0x18One;

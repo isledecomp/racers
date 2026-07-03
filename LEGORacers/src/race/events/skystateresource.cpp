@@ -25,7 +25,7 @@ SkyStateResource::~SkyStateResource()
 void SkyStateResource::ClearFields()
 {
 	m_skyState = NULL;
-	m_unk0x24[0] = '\0';
+	m_skyName[0] = '\0';
 	m_unk0x2c = 0;
 	m_flags0x30 = 0;
 }
@@ -37,7 +37,7 @@ void SkyStateResource::Initialize(InitParams* p_params)
 		Destroy();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	LegoU32 i;
 	for (i = 0; i < sizeOfArray(m_stateEventIds); i++) {
@@ -45,10 +45,10 @@ void SkyStateResource::Initialize(InitParams* p_params)
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_skyState = p_params->m_unk0x14;
+	m_skyState = p_params->m_skyState;
 	m_unk0x2c = p_params->m_unk0x20;
 	m_flags0x30 = p_params->m_flags0x28;
-	::strncpy(m_unk0x24, p_params->m_unk0x18, sizeof(m_unk0x24));
+	::strncpy(m_skyName, p_params->m_skyName, sizeof(m_skyName));
 	if (p_params->m_unk0x24) {
 		m_flags0x1c |= c_flags0x1cBit2;
 	}
@@ -68,8 +68,8 @@ void SkyStateResource::Destroy()
 // FUNCTION: LEGORACERS 0x0045e2a0
 void SkyStateResource::OnStartAt(GolVec3*)
 {
-	if (m_unk0x24[0]) {
-		m_skyState->StartTransition(m_unk0x24, m_unk0x2c);
+	if (m_skyName[0]) {
+		m_skyState->StartTransition(m_skyName, m_unk0x2c);
 	}
 
 	if (m_flags0x30 & c_flags0x30Bit0) {

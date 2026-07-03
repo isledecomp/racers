@@ -11,13 +11,13 @@ class ModelDistanceResource : public RaceEventResource {
 public:
 	// SIZE 0x24
 	struct InitParams {
-		undefined4 m_unk0x00;         // 0x00
-		LegoS32 m_stateEventIds[3];   // 0x04
-		RaceEventTable* m_eventTable; // 0x10
-		GolModelEntity* m_unk0x14;    // 0x14
-		LegoBool32 m_unk0x18;         // 0x18
-		LegoBool32 m_unk0x1c;         // 0x1c
-		LegoBool32 m_unk0x20;         // 0x20
+		undefined4 m_eventId;          // 0x00
+		LegoS32 m_stateEventIds[3];    // 0x04
+		RaceEventTable* m_eventTable;  // 0x10
+		GolModelEntity* m_modelEntity; // 0x14
+		LegoBool32 m_unk0x18;          // 0x18
+		LegoBool32 m_unk0x1c;          // 0x1c
+		LegoBool32 m_unk0x20;          // 0x20
 	};
 
 	ModelDistanceResource();
@@ -34,7 +34,7 @@ public:
 	// ModelDistanceResource::`vector deleting destructor'
 
 private:
-	GolModelEntity* m_unk0x20;     // 0x20
+	GolModelEntity* m_modelEntity; // 0x20
 	LegoFloat m_modelDistances[3]; // 0x24
 	LegoBool32 m_unk0x30;          // 0x30
 };

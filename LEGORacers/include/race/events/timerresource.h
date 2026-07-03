@@ -7,14 +7,20 @@
 // SIZE 0x30
 class TimerResource : public RaceEventResource {
 public:
+	// .evb timer field tokens
+	enum {
+		e_durationMs = 0x49,
+		e_holdEventId = 0x4c,
+	};
+
 	// SIZE 0x20
 	struct InitParams {
-		undefined4 m_unk0x00;         // 0x00
+		undefined4 m_eventId;         // 0x00
 		LegoS32 m_stateEventIds[3];   // 0x04
 		RaceEventTable* m_eventTable; // 0x10
-		LegoS32 m_unk0x14;            // 0x14
-		LegoU32 m_unk0x18;            // 0x18
-		LegoBool32 m_unk0x1c;         // 0x1c
+		LegoS32 m_holdEventId;        // 0x14
+		LegoU32 m_durationMs;         // 0x18
+		LegoBool32 m_forceable;       // 0x1c
 	};
 
 	TimerResource();

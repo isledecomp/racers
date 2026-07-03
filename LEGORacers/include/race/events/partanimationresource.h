@@ -11,19 +11,19 @@ class PartAnimationResource : public RaceEventResource {
 public:
 	// SIZE 0x3c
 	struct InitParams {
-		undefined4 m_unk0x00;         // 0x00
-		LegoS32 m_stateEventIds[3];   // 0x04
-		RaceEventTable* m_eventTable; // 0x10
-		GolAnimatedEntity* m_unk0x14; // 0x14
-		LegoS32 m_unk0x18;            // 0x18
-		LegoS32 m_unk0x1c;            // 0x1c
-		LegoS32 m_unk0x20;            // 0x20
-		LegoS32 m_unk0x24;            // 0x24
-		LegoBool32 m_unk0x28;         // 0x28
-		LegoBool32 m_unk0x2c;         // 0x2c
-		LegoBool32 m_unk0x30;         // 0x30
-		LegoBool32 m_unk0x34;         // 0x34
-		LegoBool32 m_unk0x38;         // 0x38
+		undefined4 m_eventId;                // 0x00
+		LegoS32 m_stateEventIds[3];          // 0x04
+		RaceEventTable* m_eventTable;        // 0x10
+		GolAnimatedEntity* m_animatedEntity; // 0x14
+		LegoS32 m_unk0x18;                   // 0x18
+		LegoS32 m_unk0x1c;                   // 0x1c
+		LegoS32 m_unk0x20;                   // 0x20
+		LegoS32 m_unk0x24;                   // 0x24
+		LegoBool32 m_unk0x28;                // 0x28
+		LegoBool32 m_unk0x2c;                // 0x2c
+		LegoBool32 m_unk0x30;                // 0x30
+		LegoBool32 m_unk0x34;                // 0x34
+		LegoBool32 m_unk0x38;                // 0x38
 	};
 
 	PartAnimationResource();
@@ -49,11 +49,11 @@ private:
 		c_entityFlags0x120000 = 0x120000
 	};
 
-	GolAnimatedEntity* m_unk0x20; // 0x20
-	LegoS32 m_unk0x24;            // 0x24
-	LegoS32 m_unk0x28;            // 0x28
-	LegoS32 m_unk0x2c;            // 0x2c
-	LegoS32 m_unk0x30;            // 0x30
+	GolAnimatedEntity* m_animatedEntity; // 0x20
+	LegoS32 m_unk0x24;                   // 0x24
+	LegoS32 m_unk0x28;                   // 0x28
+	LegoS32 m_unk0x2c;                   // 0x2c
+	LegoS32 m_unk0x30;                   // 0x30
 };
 
 #endif // PARTANIMATIONRESOURCE_H

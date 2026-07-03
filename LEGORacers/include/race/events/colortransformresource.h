@@ -12,12 +12,18 @@ class ColorTransformResource : public RaceEventResource {
 public:
 	// SIZE 0x3c
 	struct InitParams {
-		undefined4 m_unk0x00;         // 0x00
-		LegoS32 m_stateEventIds[3];   // 0x04
-		RaceEventTable* m_eventTable; // 0x10
-		LegoU32 m_flags0x14;          // 0x14
-		ColorTransform m_unk0x18;     // 0x18
-		GolWorldEntity* m_unk0x38;    // 0x38
+		undefined4 m_eventId;            // 0x00
+		LegoS32 m_stateEventIds[3];      // 0x04
+		RaceEventTable* m_eventTable;    // 0x10
+		LegoU32 m_flags0x14;             // 0x14
+		ColorTransform m_colorTransform; // 0x18
+		GolWorldEntity* m_worldEntity;   // 0x38
+	};
+
+	// .evb color-transform field tokens
+	enum {
+		e_shifts = 0x4e,
+		e_offsets = 0x4f,
 	};
 
 	ColorTransformResource();
@@ -40,7 +46,7 @@ private:
 
 	LegoU32 m_flags0x20;             // 0x20
 	ColorTransform m_colorTransform; // 0x24
-	GolWorldEntity* m_unk0x44;       // 0x44
+	GolWorldEntity* m_worldEntity;   // 0x44
 };
 
 #endif // COLORTRANSFORMRESOURCE_H

@@ -27,7 +27,7 @@ void LookTargetResource::Initialize(InitParams* p_params)
 		Destroy();
 	}
 
-	m_eventId = p_params->m_unk0x00;
+	m_eventId = p_params->m_eventId;
 	LegoS32* eventId = p_params->m_stateEventIds;
 	LegoU32 i;
 	for (i = 0; i < sizeOfArray(m_stateEventIds); i++) {
@@ -35,9 +35,9 @@ void LookTargetResource::Initialize(InitParams* p_params)
 	}
 
 	m_eventTable = p_params->m_eventTable;
-	m_lookPosition.m_x = p_params->m_unk0x14.m_x;
-	m_lookPosition.m_y = p_params->m_unk0x14.m_y;
-	m_lookPosition.m_z = p_params->m_unk0x14.m_z;
+	m_lookPosition.m_x = p_params->m_lookPosition.m_x;
+	m_lookPosition.m_y = p_params->m_lookPosition.m_y;
+	m_lookPosition.m_z = p_params->m_lookPosition.m_z;
 	m_state0x18 = c_state0x18Four;
 }
 

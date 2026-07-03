@@ -51,7 +51,29 @@ public:
 public:
 	// VTABLE: LEGORACERS 0x004b1b4c
 	// SIZE 0x1fc
-	class EvbTxtParser : public GolTxtParser {};
+	class EvbTxtParser : public GolTxtParser {
+	public:
+		// .evb token meanings (section + record level; field tokens are
+		// section-scoped and live in each resource class)
+		enum {
+			e_event = 0x27,
+			e_partAnimations = 0x28,
+			e_materialAnimations = 0x29,
+			e_sounds = 0x2a,
+			e_entityName = 0x33,
+			e_eventLinks = 0x39,
+			e_forceable = 0x3c,
+			e_particles = 0x3d,
+			e_skyStates = 0x42,
+			e_timers = 0x4b,
+			e_colorTransforms = 0x4d,
+			e_lapZones = 0x51,
+			e_nodeTransforms = 0x52,
+			e_modelDistances = 0x53,
+			e_lookTargets = 0x55,
+			e_externalForces = 0x59,
+		};
+	};
 
 	// SIZE 0x34
 	struct Params {

@@ -120,7 +120,7 @@ void GolBinParser::OpenFileForRead(const LegoChar* p_fileName)
 	m_fileOffset = 0;
 	m_unk0x1f4 = 0;
 	m_currentToken = e_syntaxerror;
-	m_unk0x30 = 0;
+	m_replayToken = 0;
 }
 
 // FUNCTION: GOLDP 0x10030280
@@ -148,8 +148,8 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 	LegoS32 code;
 	LegoS32 lenRead;
 
-	if (m_unk0x30) {
-		m_unk0x30 = 0;
+	if (m_replayToken) {
+		m_replayToken = 0;
 		return (GolFileParser::ParserTokenType) m_currentToken;
 	}
 

@@ -138,7 +138,7 @@ public:
 
 	const LegoChar* ParserErrorCodeToString(LegoS32 p_code);
 
-	void SetUnk0x30(undefined4 p_arg) { m_unk0x30 = p_arg; }
+	void SetReplayToken(undefined4 p_arg) { m_replayToken = p_arg; }
 	ParserTokenType GetCurrentToken() const { return m_currentToken; }
 	LegoS32 GetLastInt() const { return m_lastInt; }
 	LegoFloat GetLastFloat() const { return m_lastFloat; }
@@ -149,7 +149,7 @@ public:
 	// GolFileParser::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x30;                       // 0x30
+	undefined4 m_replayToken;                       // 0x30
 	ParserTokenType m_currentToken;             // 0x34
 	LegoS32 m_lastInt;                          // 0x38
 	undefined m_unk0x3c[0x40 - 0x3c];           // 0x3c

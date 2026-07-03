@@ -550,7 +550,7 @@ void GolWorldDatabase::ParseModelEntities(GolFileParser& p_parser)
 		LegoU32 cnt = 0;
 		p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(WdbTxtParser::e_modelEntities));
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
-			p_parser.SetUnk0x30(1);
+			p_parser.SetReplayToken(1);
 			item->m_name[0] = '\0';
 		}
 		else {
@@ -664,7 +664,7 @@ void GolWorldDatabase::ParseAnimatedEntities(GolFileParser& p_parser)
 	for (i = 0; i < m_animatedEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(WdbTxtParser::e_animatedEntities));
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
-			p_parser.SetUnk0x30(1);
+			p_parser.SetReplayToken(1);
 			item->m_name[0] = '\0';
 		}
 		else {
@@ -809,7 +809,7 @@ void GolWorldDatabase::ParseCollidableEntities(GolFileParser& p_parser)
 	for (i = 0; i < m_collidableEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(WdbTxtParser::e_collidableEntities));
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
-			p_parser.SetUnk0x30(1);
+			p_parser.SetReplayToken(1);
 			item->m_name[0] = '\0';
 		}
 		else {
@@ -910,7 +910,7 @@ void GolWorldDatabase::ParseBoundedEntities(GolFileParser& p_parser)
 	for (i = 0; i < m_boundedEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(WdbTxtParser::e_boundedEntities));
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
-			p_parser.SetUnk0x30(1);
+			p_parser.SetReplayToken(1);
 			item->m_name[0] = '\0';
 		}
 		else {
@@ -1100,7 +1100,7 @@ void GolWorldDatabase::ParseCameras(GolFileParser& p_parser)
 	for (i = 0; i < m_cameraCount; item++, i++) {
 		p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(WdbTxtParser::e_cameras));
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
-			p_parser.SetUnk0x30(1);
+			p_parser.SetReplayToken(1);
 			item->m_name[0] = '\0';
 		}
 		else {
@@ -1201,7 +1201,7 @@ void GolWorldDatabase::ParseAmbientLights(GolFileParser& p_parser)
 	for (i = 0; i < m_ambientLightCount; i++) {
 		p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(WdbTxtParser::e_ambientLights));
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
-			p_parser.SetUnk0x30(1);
+			p_parser.SetReplayToken(1);
 		}
 		p_parser.ReadLeftCurly();
 		GolFileParser::ParserTokenType token;
@@ -1241,7 +1241,7 @@ void GolWorldDatabase::ParseLights(GolFileParser& p_parser)
 	for (i = 0; i < m_lightCount; i++) {
 		p_parser.AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(WdbTxtParser::e_lights));
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
-			p_parser.SetUnk0x30(1);
+			p_parser.SetReplayToken(1);
 		}
 		p_parser.ReadLeftCurly();
 		GolFileParser::ParserTokenType token;

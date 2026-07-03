@@ -39,7 +39,7 @@ const LegoChar* const g_parserErrorStrings[] = {
 // FUNCTION: LEGORACERS 0x0044e580
 GolFileParser::GolFileParser()
 {
-	m_unk0x30 = 0;
+	m_replayToken = 0;
 	m_currentToken = e_syntaxerror;
 	m_lastString[0] = '\0';
 	m_formatBuffer[0] = '\0';

@@ -165,7 +165,7 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 
 	for (LegoU32 j = 0; j < m_numItems; j++) {
 		GolImage* entry = GetItem(j);
-		if (!(entry->m_unk0x3c & GolImage::c_stateFlagBit0)) {
+		if (!(entry->m_textureFlags & GolImage::c_stateFlagBit0)) {
 			entry->VTable0x10();
 		}
 	}

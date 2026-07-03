@@ -32,16 +32,16 @@ GolBmpFile g_unk0x10064280;
 // FUNCTION: GOLDP 0x10004fd0
 GolImage::GolImage()
 {
-	m_unk0x04 = 0;
-	m_unk0x08 = 0;
-	m_unk0x50 = 0;
+	m_tileWidths = 0;
+	m_tileHeights = 0;
+	m_texture = 0;
 }
 
 // FUNCTION: GOLDP 0x10005040
 GolImage::~GolImage()
 {
 	FUN_100051c0();
-	m_unk0x58.VTable0x38();
+	m_surface.VTable0x38();
 	GolTiledTexture::Reset();
 }
 
@@ -59,9 +59,9 @@ void GolImage::VTable0x10()
 		imageFile = &g_unk0x10064280;
 	}
 
-	m_unk0x3c = (m_unk0x3c & ~(c_flagBit1 | c_flagBit2)) | c_flagBit3;
-	if (!(m_unk0x3c & (c_flagBit4 | c_flagBit5))) {
-		m_unk0x3c |= c_flagBit4;
+	m_textureFlags = (m_textureFlags & ~(c_flagBit1 | c_flagBit2)) | c_flagBit3;
+	if (!(m_textureFlags & (c_flagBit4 | c_flagBit5))) {
+		m_textureFlags |= c_flagBit4;
 	}
 
 	imageFile->Open(imageName.m_chars);
@@ -69,15 +69,15 @@ void GolImage::VTable0x10()
 	m_width = imageFile->GetWidth();
 	m_height = imageFile->GetHeight();
 
-	m_unk0x58.VTable0x34(*m_renderer, imageFormat, m_width, m_height);
+	m_surface.VTable0x34(*m_renderer, imageFormat, m_width, m_height);
 	imageFile->SetKeepNibbleOrder(TRUE);
 	imageFile->SetRemapPureBlack(FALSE);
-	imageFile->LoadSurface(&m_unk0x58, m_flags & c_flagBit2, NULL);
+	imageFile->LoadSurface(&m_surface, m_flags & c_flagBit2, NULL);
 	imageFile->SetKeepNibbleOrder(FALSE);
 	imageFile->Destroy();
 
-	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
-	m_renderer->SelectTextureFormat(textureFormat, &m_unk0x0c, m_flags & c_flagBit5);
+	GolSurfaceFormat textureFormat = m_surface.GetTextureFormat();
+	m_renderer->SelectTextureFormat(textureFormat, &m_format, m_flags & c_flagBit5);
 	FUN_1001f430();
 	FUN_10005b00();
 }
@@ -85,30 +85,30 @@ void GolImage::VTable0x10()
 // FUNCTION: GOLDP 0x100051c0
 void GolImage::FUN_100051c0()
 {
-	if (m_unk0x54 != NULL) {
-		delete[] m_unk0x54;
-		m_unk0x54 = NULL;
+	if (m_materials != NULL) {
+		delete[] m_materials;
+		m_materials = NULL;
 	}
-	if (m_unk0x50 != NULL) {
-		delete[] m_unk0x50;
-		m_unk0x50 = NULL;
+	if (m_texture != NULL) {
+		delete[] m_texture;
+		m_texture = NULL;
 	}
-	if (m_unk0x08 != NULL) {
-		delete[] m_unk0x08;
-		m_unk0x08 = NULL;
+	if (m_tileHeights != NULL) {
+		delete[] m_tileHeights;
+		m_tileHeights = NULL;
 	}
-	if (m_unk0x04 != NULL) {
-		delete[] m_unk0x04;
-		m_unk0x04 = NULL;
+	if (m_tileWidths != NULL) {
+		delete[] m_tileWidths;
+		m_tileWidths = NULL;
 	}
 }
 
 // FUNCTION: GOLDP 0x10005210
 void GolImage::FUN_10005210()
 {
-	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
+	GolSurfaceFormat textureFormat = m_surface.GetTextureFormat();
 
-	m_renderer->SelectTextureFormat(textureFormat, &m_unk0x0c, m_flags & c_flagBit5);
+	m_renderer->SelectTextureFormat(textureFormat, &m_format, m_flags & c_flagBit5);
 	FUN_1001f430();
 	FUN_10005b00();
 }
@@ -117,15 +117,15 @@ void GolImage::FUN_10005210()
 void GolImage::Reset()
 {
 	FUN_100051c0();
-	m_unk0x58.VTable0x38();
+	m_surface.VTable0x38();
 	GolTiledTexture::Reset();
 }
 
 // FUNCTION: GOLDP 0x10005280
 void GolImage::VTable0x00()
 {
-	m_unk0x04 = new LegoS32[m_unk0x2c];
-	if (m_unk0x04 == NULL) {
+	m_tileWidths = new LegoS32[m_tileColumnCount];
+	if (m_tileWidths == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
@@ -133,8 +133,8 @@ void GolImage::VTable0x00()
 // FUNCTION: GOLDP 0x100052b0
 void GolImage::VTable0x04()
 {
-	m_unk0x08 = new LegoS32[m_unk0x30];
-	if (m_unk0x08 == NULL) {
+	m_tileHeights = new LegoS32[m_tileRowCount];
+	if (m_tileHeights == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
@@ -142,15 +142,15 @@ void GolImage::VTable0x04()
 // FUNCTION: GOLDP 0x100052e0
 void GolImage::VTable0x08()
 {
-	LegoU32 count = m_unk0x30 * m_unk0x2c;
+	LegoU32 count = m_tileRowCount * m_tileColumnCount;
 
-	m_unk0x50 = new GolD3DTexture[count];
-	if (m_unk0x50 == NULL) {
+	m_texture = new GolD3DTexture[count];
+	if (m_texture == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x54 = new GolSoftwareMaterial[count];
-	if (m_unk0x54 == NULL) {
+	m_materials = new GolSoftwareMaterial[count];
+	if (m_materials == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
@@ -158,22 +158,22 @@ void GolImage::VTable0x08()
 // FUNCTION: GOLDP 0x100053d0
 void GolImage::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_textureFormat)
 {
-	LegoU32 index = p_row * m_unk0x30 + p_column;
+	LegoU32 index = p_row * m_tileRowCount + p_column;
 
-	m_unk0x50[index].FUN_10015d00(
+	m_texture[index].FUN_10015d00(
 		static_cast<GolD3DRenderDevice&>(*m_renderer),
 		*p_textureFormat,
-		m_unk0x04[p_row],
-		m_unk0x08[p_column]
+		m_tileWidths[p_row],
+		m_tileHeights[p_column]
 	);
-	FUN_10005440(m_renderer, &m_unk0x54[index], &m_unk0x50[index]);
+	FUN_10005440(m_renderer, &m_materials[index], &m_texture[index]);
 }
 
 // FUNCTION: GOLDP 0x10005440
 void GolImage::FUN_10005440(GolRenderDevice* p_renderer, GolSoftwareMaterial* p_material, GolTexture* p_texture)
 {
-	LegoU32 flags = (m_unk0x3c & c_flagBit1) ? 0x92a8a : 0x92a8c;
-	if (m_unk0x3c & c_flagBit4) {
+	LegoU32 flags = (m_textureFlags & c_flagBit1) ? 0x92a8a : 0x92a8c;
+	if (m_textureFlags & c_flagBit4) {
 		flags |= c_flagBit4;
 	}
 	else {
@@ -221,7 +221,7 @@ void GolImage::FUN_10005510(
 	Rect* p_clipRect
 )
 {
-	if (!(m_unk0x3c & c_flagBit3)) {
+	if (!(m_textureFlags & c_flagBit3)) {
 		return;
 	}
 
@@ -331,14 +331,14 @@ void GolImage::FUN_10005510(
 	g_unk0x100630c8[3].specular = 0xffffffff;
 
 	LegoFloat tileLeft = 0.0f;
-	for (LegoU32 row = 0; row < m_unk0x2c; row++) {
+	for (LegoU32 row = 0; row < m_tileColumnCount; row++) {
 		LegoFloat tileTop = 0.0f;
 		LegoFloat tileRight;
 
-		for (LegoU32 column = 0; column < m_unk0x30; column++) {
+		for (LegoU32 column = 0; column < m_tileRowCount; column++) {
 			LegoFloat tileBottom;
-			LegoFloat tileWidth = static_cast<LegoFloat>(m_unk0x04[row]);
-			LegoFloat tileHeight = static_cast<LegoFloat>(m_unk0x08[column]);
+			LegoFloat tileWidth = static_cast<LegoFloat>(m_tileWidths[row]);
+			LegoFloat tileHeight = static_cast<LegoFloat>(m_tileHeights[column]);
 			tileRight = tileLeft + tileWidth;
 			tileBottom = tileTop + tileHeight;
 
@@ -361,9 +361,9 @@ void GolImage::FUN_10005510(
 					clippedBottom = sourceBottom;
 				}
 
-				LegoU32 index = row * m_unk0x30 + column;
-				(p_renderer->*p_renderer->m_unk0xc876c)(&m_unk0x54[index]);
-				p_renderer->FUN_1000ac00(&m_unk0x50[index]);
+				LegoU32 index = row * m_tileRowCount + column;
+				(p_renderer->*p_renderer->m_unk0xc876c)(&m_materials[index]);
+				p_renderer->FUN_1000ac00(&m_texture[index]);
 
 				LegoFloat invTileWidth = 1.0f / tileWidth;
 				LegoFloat invTileHeight = 1.0f / tileHeight;
@@ -401,23 +401,23 @@ void GolImage::FUN_10005510(
 // FUNCTION: GOLDP 0x10005ae0
 GolD3DTexture* GolImage::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
 {
-	return &m_unk0x50[p_row * m_unk0x30 + p_column];
+	return &m_texture[p_row * m_tileRowCount + p_column];
 }
 
 // STUB: GOLDP 0x10005b00
 void GolImage::FUN_10005b00()
 {
-	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
+	GolSurfaceFormat textureFormat = m_surface.GetTextureFormat();
 
 	LegoU8* sourcePixels;
 	LegoU32 sourcePitch;
-	m_unk0x58.LockPixels(&sourcePixels, &sourcePitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
+	m_surface.LockPixels(&sourcePixels, &sourcePitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
 
 	ColorRGBA* paletteEntries;
 	LegoU32 paletteSize;
 	if (textureFormat.m_paletteMask != 0) {
-		paletteEntries = m_unk0x58.GetPaletteEntries();
-		paletteSize = m_unk0x58.GetPaletteSize();
+		paletteEntries = m_surface.GetPaletteEntries();
+		paletteSize = m_surface.GetPaletteSize();
 	}
 	else {
 		paletteEntries = NULL;
@@ -443,19 +443,19 @@ void GolImage::FUN_10005b00()
 	LegoU32 copyHeight = 0;
 	LegoU32 row;
 	LegoU32 column;
-	for (row = 0; row < m_unk0x2c; row++) {
+	for (row = 0; row < m_tileColumnCount; row++) {
 		LegoU32 sourceY = 0;
-		for (column = 0; column < m_unk0x30; column++) {
+		for (column = 0; column < m_tileRowCount; column++) {
 			GolD3DTexture* texture = VTable0x1c(row, column);
 			copyWidth = texture->GetWidth();
 
-			LegoU32 remainingWidth = m_unk0x58.GetWidth() - sourceX;
+			LegoU32 remainingWidth = m_surface.GetWidth() - sourceX;
 			if (copyWidth > remainingWidth) {
 				copyWidth = remainingWidth;
 			}
 
 			copyHeight = texture->GetHeight();
-			LegoU32 remainingHeight = m_unk0x58.GetHeight() - sourceY;
+			LegoU32 remainingHeight = m_surface.GetHeight() - sourceY;
 			if (copyHeight > remainingHeight) {
 				copyHeight = remainingHeight;
 			}
@@ -471,21 +471,12 @@ void GolImage::FUN_10005b00()
 			texture->LockPixels(&destPixels, &destPitch, GolSurface::c_lockRequestWrite);
 
 			GolPaletteBase* destPalette = NULL;
-			if (m_unk0x0c.m_paletteMask != 0) {
+			if (m_format.m_paletteMask != 0) {
 				destPalette = texture->GetPalette();
 			}
 
-			g_unk0x10062b18.ConvertImage(
-				source,
-				destPixels,
-				copyWidth,
-				copyHeight,
-				destPitch,
-				m_unk0x0c,
-				destPalette,
-				0,
-				colorKey
-			);
+			g_unk0x10062b18
+				.ConvertImage(source, destPixels, copyWidth, copyHeight, destPitch, m_format, destPalette, 0, colorKey);
 			texture->UnlockPixels();
 
 			sourceY += copyHeight;
@@ -494,5 +485,5 @@ void GolImage::FUN_10005b00()
 		sourceX += copyWidth;
 	}
 
-	m_unk0x58.UnlockPixels();
+	m_surface.UnlockPixels();
 }

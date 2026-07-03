@@ -31,11 +31,11 @@ GolTiledTexture::~GolTiledTexture()
 void GolTiledTexture::Reset()
 {
 	m_renderer = NULL;
-	m_unk0x2c = 0;
-	m_unk0x30 = 0;
+	m_tileColumnCount = 0;
+	m_tileRowCount = 0;
 	m_width = 0;
 	m_height = 0;
-	m_unk0x3c = c_flagBit5 | c_flagBit1;
+	m_textureFlags = c_flagBit5 | c_flagBit1;
 	m_flags = 0;
 	m_colorKey.m_red = 0;
 	m_colorKey.m_grn = 0;
@@ -45,8 +45,8 @@ void GolTiledTexture::Reset()
 	m_unk0x4a.m_uBytes[1] = 0xff;
 	m_unk0x4a.m_uBytes[2] = 0xff;
 	m_unk0x4a.m_uBytes[3] = 0xff;
-	m_unk0x04 = 0;
-	m_unk0x08 = 0;
+	m_tileWidths = 0;
+	m_tileHeights = 0;
 }
 
 // FUNCTION: GOLDP 0x1001f330
@@ -66,7 +66,7 @@ void GolTiledTexture::VTable0x10()
 	imageFile->Open(imageName.m_chars);
 
 	imageFormat = imageFile->GetTextureFormat();
-	m_renderer->SelectTextureFormat(imageFormat, &m_unk0x0c, m_flags & c_flagBit5);
+	m_renderer->SelectTextureFormat(imageFormat, &m_format, m_flags & c_flagBit5);
 	m_width = imageFile->GetWidth();
 	m_height = imageFile->GetHeight();
 	FUN_1001f430();
@@ -99,7 +99,7 @@ void GolTiledTexture::FUN_1001f430()
 		return;
 	}
 
-	LegoU32 bitsPerPixel = m_unk0x0c.m_bitsPerPixel;
+	LegoU32 bitsPerPixel = m_format.m_bitsPerPixel;
 	LegoU32 minWidth = m_renderer->GetMinimumTextureWidth(bitsPerPixel);
 	LegoU32 maxWidth = m_renderer->GetMaximumTextureWidth(bitsPerPixel);
 	LegoU32 minHeight = m_renderer->GetMinimumTextureHeight(bitsPerPixel);
@@ -121,16 +121,16 @@ void GolTiledTexture::FUN_1001f430()
 			tileHeight = tileWidth;
 		}
 
-		m_unk0x2c = (m_width + tileWidth - 1) / tileWidth;
-		m_unk0x30 = (m_height + tileHeight - 1) / tileHeight;
+		m_tileColumnCount = (m_width + tileWidth - 1) / tileWidth;
+		m_tileRowCount = (m_height + tileHeight - 1) / tileHeight;
 
 		VTable0x00();
 		VTable0x04();
 		VTable0x08();
 
-		for (i = 0; i < m_unk0x2c; i++) {
+		for (i = 0; i < m_tileColumnCount; i++) {
 			LegoU32 size = tileWidth;
-			if (i + 1 == m_unk0x2c) {
+			if (i + 1 == m_tileColumnCount) {
 				LegoU32 used = tileWidth * i;
 				if (used < m_width) {
 					size = m_width - used;
@@ -141,12 +141,12 @@ void GolTiledTexture::FUN_1001f430()
 				size = minWidth;
 			}
 
-			m_unk0x04[i] = size;
+			m_tileWidths[i] = size;
 		}
 
-		for (i = 0; i < m_unk0x30; i++) {
+		for (i = 0; i < m_tileRowCount; i++) {
 			LegoU32 size = tileHeight;
-			if (i + 1 == m_unk0x30) {
+			if (i + 1 == m_tileRowCount) {
 				LegoU32 used = tileHeight * i;
 				if (used < m_height) {
 					size = m_height - used;
@@ -157,7 +157,7 @@ void GolTiledTexture::FUN_1001f430()
 				size = minHeight;
 			}
 
-			m_unk0x08[i] = size;
+			m_tileHeights[i] = size;
 		}
 	}
 	else {
@@ -175,7 +175,7 @@ void GolTiledTexture::FUN_1001f430()
 		}
 
 		LegoU32 position = 0;
-		m_unk0x2c = 0;
+		m_tileColumnCount = 0;
 		while (position < m_width) {
 			LegoU32 remaining = m_width - position;
 			LegoU32 size;
@@ -203,11 +203,11 @@ void GolTiledTexture::FUN_1001f430()
 			}
 
 			position += size;
-			m_unk0x2c++;
+			m_tileColumnCount++;
 		}
 
 		position = 0;
-		m_unk0x30 = 0;
+		m_tileRowCount = 0;
 		while (position < m_height) {
 			LegoU32 remaining = m_height - position;
 			LegoU32 size;
@@ -235,7 +235,7 @@ void GolTiledTexture::FUN_1001f430()
 			}
 
 			position += size;
-			m_unk0x30++;
+			m_tileRowCount++;
 		}
 
 		VTable0x00();
@@ -243,7 +243,7 @@ void GolTiledTexture::FUN_1001f430()
 		VTable0x08();
 
 		position = 0;
-		for (i = 0; i < m_unk0x2c; i++) {
+		for (i = 0; i < m_tileColumnCount; i++) {
 			LegoU32 remaining = m_width - position;
 			LegoU32 size;
 			if (remaining < minWidth) {
@@ -269,12 +269,12 @@ void GolTiledTexture::FUN_1001f430()
 				}
 			}
 
-			m_unk0x04[i] = size;
+			m_tileWidths[i] = size;
 			position += size;
 		}
 
 		position = 0;
-		for (i = 0; i < m_unk0x30; i++) {
+		for (i = 0; i < m_tileRowCount; i++) {
 			LegoU32 remaining = m_height - position;
 			LegoU32 size;
 			if (remaining < minHeight) {
@@ -300,19 +300,19 @@ void GolTiledTexture::FUN_1001f430()
 				}
 			}
 
-			m_unk0x08[i] = size;
+			m_tileHeights[i] = size;
 			position += size;
 		}
 	}
 
 	FUN_1001fde0();
-	m_unk0x3c |= 0x281;
+	m_textureFlags |= 0x281;
 }
 
 // STUB: GOLDP 0x1001f790
 void GolTiledTexture::FUN_1001f790()
 {
-	LegoU32 bitsPerPixel = m_unk0x0c.m_bitsPerPixel;
+	LegoU32 bitsPerPixel = m_format.m_bitsPerPixel;
 	LegoU32 minWidth = m_renderer->GetMinimumTextureWidth(bitsPerPixel);
 	LegoU32 maxWidth = m_renderer->GetMaximumTextureWidth(bitsPerPixel);
 	LegoU32 minHeight = m_renderer->GetMinimumTextureHeight(bitsPerPixel);
@@ -356,29 +356,29 @@ void GolTiledTexture::FUN_1001f790()
 		}
 	}
 
-	m_unk0x2c = (m_width + tileSize - 1) / tileSize;
-	m_unk0x30 = (m_height + tileSize - 1) / tileSize;
+	m_tileColumnCount = (m_width + tileSize - 1) / tileSize;
+	m_tileRowCount = (m_height + tileSize - 1) / tileSize;
 
 	VTable0x00();
 	VTable0x04();
 	VTable0x08();
 
-	for (row = 0; row < m_unk0x2c; row++) {
-		m_unk0x04[row] = tileSize;
+	for (row = 0; row < m_tileColumnCount; row++) {
+		m_tileWidths[row] = tileSize;
 	}
-	for (column = 0; column < m_unk0x30; column++) {
-		m_unk0x08[column] = tileSize;
+	for (column = 0; column < m_tileRowCount; column++) {
+		m_tileHeights[column] = tileSize;
 	}
 
 	FUN_1001fde0();
-	m_unk0x3c |= 0x281;
+	m_textureFlags |= 0x281;
 }
 
 // FUNCTION: GOLDP 0x1001fde0
 void GolTiledTexture::FUN_1001fde0()
 {
-	for (LegoU32 row = 0; row < m_unk0x2c; row++) {
-		for (LegoU32 column = 0; column < m_unk0x30; column++) {
+	for (LegoU32 row = 0; row < m_tileColumnCount; row++) {
+		for (LegoU32 column = 0; column < m_tileRowCount; column++) {
 			GolD3DTexture* texture = VTable0x1c(row, column);
 			if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				continue;
@@ -398,7 +398,7 @@ void GolTiledTexture::FUN_1001fde0()
 			flags |= GolTexture::c_textureFlagBit11;
 			texture->m_colorKey.m_alp = 0;
 			texture->m_textureFlags = flags;
-			VTable0x0c(row, column, &m_unk0x0c);
+			VTable0x0c(row, column, &m_format);
 		}
 	}
 }

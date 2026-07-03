@@ -55,7 +55,7 @@ void GolImageDefinitionList::VTable0x10()
 
 	if (m_numItems > 0) {
 		for (i = 0; i < m_numItems; i++) {
-			if (m_items[i].m_unk0x3c & 1) {
+			if (m_items[i].m_textureFlags & 1) {
 				m_items[i].FUN_100051c0();
 			}
 		}
@@ -69,7 +69,7 @@ void GolImageDefinitionList::VTable0x14()
 
 	if (m_numItems > 0) {
 		for (i = 0; i < m_numItems; i++) {
-			if (m_items[i].m_unk0x3c & 1) {
+			if (m_items[i].m_textureFlags & 1) {
 				m_items[i].FUN_10005210();
 			}
 		}

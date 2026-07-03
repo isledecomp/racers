@@ -70,29 +70,29 @@ public:
 
 	LegoU32 GetWidth() const { return m_width; }
 	LegoU32 GetHeight() const { return m_height; }
-	LegoU32 GetUnk0x3c() const { return m_unk0x3c; }
-	LegoU32 GetTileColumnCount() const { return m_unk0x2c; }
-	LegoU32 GetTileRowCount() const { return m_unk0x30; }
-	LegoS32 GetTileWidth(LegoU32 p_column) const { return m_unk0x04[p_column]; }
-	LegoS32 GetTileHeight(LegoU32 p_row) const { return m_unk0x08[p_row]; }
+	LegoU32 GetTextureFlags() const { return m_textureFlags; }
+	LegoU32 GetTileColumnCount() const { return m_tileColumnCount; }
+	LegoU32 GetTileRowCount() const { return m_tileRowCount; }
+	LegoS32 GetTileWidth(LegoU32 p_column) const { return m_tileWidths[p_column]; }
+	LegoS32 GetTileHeight(LegoU32 p_row) const { return m_tileHeights[p_row]; }
 
 	// SYNTHETIC: GOLDP 0x1001f240
 	// GolTiledTexture::`scalar deleting destructor'
 
 public:
-	LegoS32* m_unk0x04;             // 0x04
-	LegoS32* m_unk0x08;             // 0x08
-	GolSurfaceFormat m_unk0x0c;     // 0x0c
+	LegoS32* m_tileWidths;          // 0x04
+	LegoS32* m_tileHeights;         // 0x08
+	GolSurfaceFormat m_format;      // 0x0c
 	GolD3DRenderDevice* m_renderer; // 0x24
 	union {
 		ColorRGBA m_colorKey;     // 0x28
 		LegoU32 m_colorKeyPacked; // 0x28
 	};
-	LegoU32 m_unk0x2c;                // 0x2c
-	LegoU32 m_unk0x30;                // 0x30
+	LegoU32 m_tileColumnCount;        // 0x2c
+	LegoU32 m_tileRowCount;           // 0x30
 	LegoU32 m_width;                  // 0x34
 	LegoU32 m_height;                 // 0x38
-	LegoU32 m_unk0x3c;                // 0x3c
+	LegoU32 m_textureFlags;           // 0x3c
 	LegoU16 m_flags;                  // 0x40
 	FourBytes m_name[2];              // 0x42
 	FourBytes m_unk0x4a;              // 0x4a

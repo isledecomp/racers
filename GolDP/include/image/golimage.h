@@ -48,9 +48,9 @@ public:
 	// GolImage::`vector deleting destructor'
 
 protected:
-	GolD3DTexture* m_unk0x50;       // 0x50
-	GolSoftwareMaterial* m_unk0x54; // 0x54
-	GolPalettedTexture m_unk0x58;   // 0x58
+	GolD3DTexture* m_texture;         // 0x50
+	GolSoftwareMaterial* m_materials; // 0x54
+	GolPalettedTexture m_surface;     // 0x58
 };
 
 #endif // GOLDP_UTOPIANPAN_H

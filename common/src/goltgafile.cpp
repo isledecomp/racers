@@ -467,10 +467,10 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		}
 	}
 
-	LegoU32 flags = p_image->GetUnk0x3c();
+	LegoU32 flags = p_image->GetTextureFlags();
 	flags = (flags & 0xfffffff1) | GolTiledTexture::c_flagBit3;
-	p_image->m_unk0x3c = flags;
+	p_image->m_textureFlags = flags;
 	if ((flags & (GolTiledTexture::c_flagBit4 | GolTiledTexture::c_flagBit5)) == 0) {
-		p_image->m_unk0x3c = flags | GolTiledTexture::c_flagBit4;
+		p_image->m_textureFlags = flags | GolTiledTexture::c_flagBit4;
 	}
 }

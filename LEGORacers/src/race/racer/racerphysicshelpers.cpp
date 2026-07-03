@@ -28,13 +28,13 @@ extern const LegoFloat g_routeBoostMaxSpeed = 176.0f;
 extern const LegoFloat g_movingSpeedThreshold = 0.04f;
 
 // GLOBAL: LEGORACERS 0x004b0438
-extern const LegoFloat g_unk0x004b0438 = 1.0f;
+extern const LegoFloat g_surfaceVolumeMax = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b043c
 extern const LegoFloat g_unk0x004b043c = 0.5f;
 
 // GLOBAL: LEGORACERS 0x004b0440
-extern const LegoFloat g_unk0x004b0440 = 2.0f;
+extern const LegoFloat g_surfaceFrequencyMax = 2.0f;
 
 // GLOBAL: LEGORACERS 0x004b0458
 extern const LegoFloat g_defaultLateralGrip = 3.0f;
@@ -194,8 +194,8 @@ extern const LegoFloat g_minTurnRadius;
 extern const LegoFloat g_wallMaxRiseSpeed;
 extern const LegoFloat g_carBuildModelHeightScale;
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
-extern const LegoFloat g_unk0x004b0430;
-extern const LegoFloat g_unk0x004b0434;
+extern const LegoFloat g_surfaceSoundMinDistance;
+extern const LegoFloat g_surfaceSoundMaxDistance;
 extern const LegoFloat g_unk0x004b0544;
 extern const LegoFloat g_ghostSpeedScale;
 extern const LegoFloat g_twoPi;
@@ -435,14 +435,14 @@ void RacerPhysics::Update(LegoS32 p_elapsedMs)
 		if (frequencyScale < g_unk0x004b043c) {
 			frequencyScale = g_unk0x004b043c;
 		}
-		else if (frequencyScale > g_unk0x004b0440) {
-			frequencyScale = g_unk0x004b0440;
+		else if (frequencyScale > g_surfaceFrequencyMax) {
+			frequencyScale = g_surfaceFrequencyMax;
 		}
 		m_surfaceSound->SetFrequencyScale(frequencyScale);
 
 		LegoFloat volume = static_cast<LegoFloat>(static_cast<LegoS32>(m_surfaceSoundMs)) / g_surfaceSoundFadeInMs;
-		if (volume > g_unk0x004b0438) {
-			volume = g_unk0x004b0438;
+		if (volume > g_surfaceVolumeMax) {
+			volume = g_surfaceVolumeMax;
 		}
 		m_surfaceSound->SetVolume(volume);
 	}
@@ -1384,7 +1384,10 @@ SpatialSoundInstance* RacerPhysics::PlaySurfaceSound(LegoS32 p_soundId)
 
 	if (m_surfaceSound != NULL) {
 		GolVec3 position;
-		m_surfaceSound->SetDistanceRangeWithMinSquared(g_unk0x004b0430 * g_unk0x004b0430, g_unk0x004b0434);
+		m_surfaceSound->SetDistanceRangeWithMinSquared(
+			g_surfaceSoundMinDistance * g_surfaceSoundMinDistance,
+			g_surfaceSoundMaxDistance
+		);
 		m_surfaceSound->Play(TRUE);
 		m_carEntity->GetPosition(&position);
 		m_surfaceSound->SetPositionAndVelocity(position, m_velocity);

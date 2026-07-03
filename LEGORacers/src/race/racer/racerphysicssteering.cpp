@@ -22,10 +22,10 @@ extern const LegoFloat g_minTurnRadius = 40.0f;
 extern const LegoFloat g_maxTurnRadius = 4096.0f;
 
 // GLOBAL: LEGORACERS 0x004b0430
-extern const LegoFloat g_unk0x004b0430 = 30.0f;
+extern const LegoFloat g_surfaceSoundMinDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b0434
-extern const LegoFloat g_unk0x004b0434 = 300.0f;
+extern const LegoFloat g_surfaceSoundMaxDistance = 300.0f;
 
 extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 extern const LegoFloat g_physicsSoundMinDistance;

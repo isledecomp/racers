@@ -54,7 +54,7 @@ LegoFloat g_unk0x004b07ec = 1.2f;
 extern const LegoFloat g_mirroredRaceStateRouteScale = 0.05f;
 
 // GLOBAL: LEGORACERS 0x004b08bc
-extern const LegoFloat g_unk0x004b08bc = 25.0f;
+extern const LegoFloat g_splitScreenFovDelta = 25.0f;
 
 // GLOBAL: LEGORACERS 0x004bee30
 const LegoChar* g_sideWinderForceFeedName = "Microsoft SideWinder Force Feed";
@@ -1261,7 +1261,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	powerupParams.m_animationList = &m_animationList;
 	powerupParams.m_trackDatabase = m_powerupTrackDatabase;
 	powerupParams.m_targetPoints = &m_targetPoints;
-	powerupParams.m_cameraFov = m_splitScreen ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
+	powerupParams.m_cameraFov = m_splitScreen ? m_context->m_cameraFov - g_splitScreenFovDelta : m_context->m_cameraFov;
 	powerupParams.m_cheatFlags = m_context->m_cheatFlags;
 	m_powerupManager.Initialize(&powerupParams);
 
@@ -1365,7 +1365,7 @@ void RaceSession::CreateCameras()
 
 			if (m_splitScreen) {
 				camera->SetLens(
-					m_context->m_cameraFov - g_unk0x004b08bc,
+					m_context->m_cameraFov - g_splitScreenFovDelta,
 					m_context->m_cameraNearClip,
 					m_context->m_cameraFarClip,
 					2.6666667f
@@ -2784,9 +2784,9 @@ void RaceSession::RestartRace()
 			if (m_splitScreen) {
 				GolCamera* currentCamera = m_cameras[playerIndex];
 				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagProjectionDirty;
-				currentCamera->m_fov = m_context->m_cameraFov - g_unk0x004b08bc;
+				currentCamera->m_fov = m_context->m_cameraFov - g_splitScreenFovDelta;
 				currentCamera->m_flags = cameraFlags;
-				fov = m_context->m_cameraFov - g_unk0x004b08bc;
+				fov = m_context->m_cameraFov - g_splitScreenFovDelta;
 			}
 			else {
 				GolCamera* currentCamera = m_cameras[playerIndex];

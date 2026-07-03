@@ -20,7 +20,7 @@ DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement, 0x2d0)
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement::CreateParams, 0x30)
 
 // GLOBAL: LEGORACERS 0x004b2e68
-LegoFloat g_unk0x4b2e68 = FLT_MAX;
+LegoFloat g_carPartPlacementMaxFloat = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b2e6c
 static const LegoFloat g_unk0x004b2e6c = 6.2831855f;
@@ -500,7 +500,7 @@ void CarModelScreenBase::CarPartPlacement::CreatePieceModel()
 
 	LegoS32 maxHighPieceOffset = m_context->m_pieceLibrary.GetMaxHighPieceOffset();
 	m_pieceModel->Allocate(m_renderer, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
-	m_pieceEntity.SetPrimaryModel(m_pieceModel, g_unk0x4b2e68);
+	m_pieceEntity.SetPrimaryModel(m_pieceModel, g_carPartPlacementMaxFloat);
 }
 
 // FUNCTION: LEGORACERS 0x00477cc0
@@ -524,7 +524,7 @@ void CarModelScreenBase::CarPartPlacement::CreateDriverModel(undefined4)
 	}
 
 	m_bodyModelPart = m_context->m_modelBuilder.GetBodyModelPart(&cosmetics);
-	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, m_bodyModelPart, g_unk0x4b2e68);
+	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, m_bodyModelPart, g_carPartPlacementMaxFloat);
 }
 
 // FUNCTION: LEGORACERS 0x00477dc0

@@ -26,7 +26,7 @@ extern const LegoFloat g_unk0x004b074c = 5.0f;
 extern const LegoFloat g_unk0x004b0750 = 16.0f;
 
 // GLOBAL: LEGORACERS 0x004b0754
-extern const LegoFloat g_unk0x004b0754 = 1.0f;
+extern const LegoFloat g_steeringLimit = 1.0f;
 
 // FUNCTION: LEGORACERS 0x00430020
 PlayerControls::PlayerControls()
@@ -87,8 +87,8 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 	LegoFloat turnRate;
 	LegoFloat delta;
 
-	limitPositive = g_unk0x004b0754;
-	limitNegative = -g_unk0x004b0754;
+	limitPositive = g_steeringLimit;
+	limitNegative = -g_steeringLimit;
 
 	if (m_racer->m_flags & c_racerFlags0xd04Bit7) {
 		if (m_racer->m_driveController.m_slideLeft == 1) {

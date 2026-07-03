@@ -21,7 +21,7 @@ SoundResource::SoundResource()
 	m_sound = NULL;
 	m_soundSource = NULL;
 	m_flags = 0;
-	m_unk0x28 = NULL;
+	m_trackedEntity = NULL;
 	m_nodeIndex = 0;
 	m_probability = 0xff;
 }
@@ -50,12 +50,13 @@ void SoundResource::Initialize(InitParams* p_params)
 	m_position.m_x = p_params->m_position.m_x;
 	m_position.m_y = p_params->m_position.m_y;
 	m_position.m_z = p_params->m_position.m_z;
-	m_unk0x28 = p_params->m_entity;
+	m_trackedEntity = p_params->m_entity;
 	m_nodeIndex = p_params->m_nodeIndex;
 	m_probability = static_cast<LegoU8>(p_params->m_probability * 255.0f);
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-	m_unk0x58 = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
+	m_retriggerDelayMs =
+		static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
 
 	if (p_params->m_looping) {
 		m_flags |= c_flagLooping;
@@ -82,7 +83,7 @@ void SoundResource::Destroy()
 	}
 
 	m_soundSource = NULL;
-	m_unk0x28 = NULL;
+	m_trackedEntity = NULL;
 	m_nodeIndex = 0;
 	m_flags = 0;
 	Reset();
@@ -102,7 +103,7 @@ void SoundResource::OnStartAt(GolVec3* p_position)
 		return;
 	}
 
-	if (m_unk0x28) {
+	if (m_trackedEntity) {
 		StopSound();
 	}
 
@@ -148,23 +149,24 @@ void SoundResource::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (m_unk0x58 > p_elapsedMs) {
-		m_unk0x58 -= p_elapsedMs;
+	if (m_retriggerDelayMs > p_elapsedMs) {
+		m_retriggerDelayMs -= p_elapsedMs;
 	}
 	else {
-		m_unk0x58 = 0;
+		m_retriggerDelayMs = 0;
 	}
 
-	if (m_unk0x28) {
+	if (m_trackedEntity) {
 		StopSound();
 	}
 
-	if (m_probability >= c_probabilityMax || m_unk0x58) {
+	if (m_probability >= c_probabilityMax || m_retriggerDelayMs) {
 		return;
 	}
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-	m_unk0x58 = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
+	m_retriggerDelayMs =
+		static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 	if (static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_probabilityMax >= m_probability) {
@@ -178,7 +180,7 @@ void SoundResource::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x004644b0
 void SoundResource::StopSound()
 {
-	GolSceneNode* node = m_unk0x28->GetSceneNode(0);
+	GolSceneNode* node = m_trackedEntity->GetSceneNode(0);
 	GolTransformBase* transform = node->GetTransform(m_nodeIndex);
 
 	GolVec3 position;
@@ -193,12 +195,12 @@ void SoundResource::StopSound()
 		transform = transform->m_parent;
 	} while (transform);
 
-	LegoFloat scale = m_unk0x28->GetModel(0)->GetScale() * m_unk0x28->GetScale();
+	LegoFloat scale = m_trackedEntity->GetModel(0)->GetScale() * m_trackedEntity->GetScale();
 	position.m_x = position.m_x * scale;
 	position.m_y = position.m_y * scale;
 	position.m_z = position.m_z * scale;
 
-	m_unk0x28->LocalToWorld(position, &m_position);
+	m_trackedEntity->LocalToWorld(position, &m_position);
 	if (m_sound) {
 		m_sound->SetPosition(&m_position);
 	}

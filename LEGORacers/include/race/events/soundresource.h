@@ -71,7 +71,7 @@ public:
 private:
 	SpatialSoundInstance* m_sound;    // 0x20
 	RacerSoundSource* m_soundSource;  // 0x24
-	GolModelEntity* m_unk0x28;        // 0x28
+	GolModelEntity* m_trackedEntity;  // 0x28
 	LegoU32 m_nodeIndex;              // 0x2c
 	SoundVector m_position;           // 0x30
 	LegoU32 m_soundId;                // 0x3c
@@ -82,7 +82,7 @@ private:
 	LegoFloat m_maxDistance;          // 0x50
 	LegoU8 m_probability;             // 0x54
 	undefined m_unk0x55[0x58 - 0x55]; // 0x55
-	LegoU32 m_unk0x58;                // 0x58
+	LegoU32 m_retriggerDelayMs;       // 0x58
 };
 
 #endif // SOUNDRESOURCE_H

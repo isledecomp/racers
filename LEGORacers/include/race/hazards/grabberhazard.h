@@ -51,12 +51,12 @@ private:
 	LegoEventQueue* m_eventQueue;            // 0x3c
 	LegoEventQueue::Event* m_collisionEvent; // 0x40
 	Racer* m_racer;                          // 0x44
-	LegoFloat m_unk0x48;                     // 0x48
-	LegoFloat m_unk0x4c;                     // 0x4c
-	LegoFloat m_unk0x50;                     // 0x50
+	LegoFloat m_grabFrameLow;                // 0x48
+	LegoFloat m_grabFrameHigh;               // 0x4c
+	LegoFloat m_pullStrength;                // 0x50
 	LegoU32 m_stateMs;                       // 0x54
 	LegoU32 m_grabState;                     // 0x58
-	LegoU32 m_unk0x5c;                       // 0x5c
+	LegoU32 m_grabTimerMs;                   // 0x5c
 };
 
 #endif // GRABBERHAZARD_H

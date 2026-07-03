@@ -21,18 +21,30 @@ class ChampionDefinitionList : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004afdf4
 	// SIZE 0x1fc
-	class CcbTxtParser : public GolTxtParser {};
+	class CcbTxtParser : public GolTxtParser {
+	public:
+		// .ccb tokens; ids proven by the field each one fills
+		enum {
+			e_champion = GolFileParser::e_unknown0x27,
+			e_materialLibrary = GolFileParser::e_unknown0x28,
+			e_textureList = GolFileParser::e_unknown0x29,
+			e_model = GolFileParser::e_unknown0x2a,
+			e_chassis = GolFileParser::e_unknown0x2b,
+			e_mass = GolFileParser::e_unknown0x2c,
+			e_centerOfMass = GolFileParser::e_unknown0x2d,
+		};
+	};
 
 	// SIZE 0x30
 	struct ChampionDefinition {
-		GolName m_unk0x00;         // 0x00
-		GolName m_unk0x08;         // 0x08
-		GolName m_unk0x10;         // 0x10
-		GolName m_chassisName;     // 0x18
-		LegoFloat m_mass;          // 0x20
-		LegoFloat m_centerOfMassX; // 0x24
-		LegoFloat m_centerOfMassY; // 0x28
-		LegoFloat m_centerOfMassZ; // 0x2c
+		GolName m_materialLibraryName; // 0x00
+		GolName m_textureListName;     // 0x08
+		GolName m_modelName;           // 0x10
+		GolName m_chassisName;         // 0x18
+		LegoFloat m_mass;              // 0x20
+		LegoFloat m_centerOfMassX;     // 0x24
+		LegoFloat m_centerOfMassY;     // 0x28
+		LegoFloat m_centerOfMassZ;     // 0x2c
 	};
 
 	// SIZE 0x14

@@ -35,12 +35,12 @@ LegoS32 GrabberHazard::ClearFields()
 {
 	m_entity = NULL;
 	m_racer = NULL;
-	m_unk0x48 = 0.0f;
-	m_unk0x4c = 0.0f;
-	m_unk0x50 = 0.0f;
+	m_grabFrameLow = 0.0f;
+	m_grabFrameHigh = 0.0f;
+	m_pullStrength = 0.0f;
 	m_collisionEvent = NULL;
 	m_grabState = 0;
-	m_unk0x5c = 0;
+	m_grabTimerMs = 0;
 
 	return 0;
 }
@@ -64,9 +64,9 @@ void GrabberHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 			break;
 		case GolFileParser::e_unknown0x42:
 			::strncpy(entityName, p_parser->ReadStringWithMaxLength(sizeof(entityName)), sizeof(entityName));
-			m_unk0x50 = p_parser->ReadFloat();
-			m_unk0x48 = p_parser->ReadFloat();
-			m_unk0x4c = p_parser->ReadFloat();
+			m_pullStrength = p_parser->ReadFloat();
+			m_grabFrameLow = p_parser->ReadFloat();
+			m_grabFrameHigh = p_parser->ReadFloat();
 			break;
 		default:
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -100,7 +100,7 @@ void GrabberHazard::OnActivate(void*)
 
 	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_grabState = 0;
-	m_unk0x5c = 0;
+	m_grabTimerMs = 0;
 	m_state = 2;
 }
 
@@ -115,7 +115,7 @@ void GrabberHazard::OnDeactivate(void*)
 
 	m_state = 1;
 	m_grabState = 0;
-	m_unk0x5c = 0;
+	m_grabTimerMs = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0048dfa0
@@ -137,22 +137,22 @@ void GrabberHazard::Update(undefined4 p_elapsedMs)
 			m_stateMs = 0;
 			ReleaseRacer();
 			m_grabState = 0;
-			m_unk0x5c = 0;
+			m_grabTimerMs = 0;
 		}
 		else {
 			m_stateMs -= elapsedMs;
 		}
 	}
 
-	if (m_unk0x5c) {
-		if (elapsedMs >= m_unk0x5c) {
-			m_unk0x5c = 0;
+	if (m_grabTimerMs) {
+		if (elapsedMs >= m_grabTimerMs) {
+			m_grabTimerMs = 0;
 			switch (m_grabState) {
 			case c_stateOne:
 				ReleaseRacer();
 				m_stateMs = 0;
 				m_grabState = c_stateTwo;
-				m_unk0x5c = c_timerMs;
+				m_grabTimerMs = c_timerMs;
 				break;
 			case c_stateTwo:
 				m_grabState = 0;
@@ -162,7 +162,7 @@ void GrabberHazard::Update(undefined4 p_elapsedMs)
 			}
 		}
 		else {
-			m_unk0x5c -= elapsedMs;
+			m_grabTimerMs -= elapsedMs;
 		}
 	}
 }
@@ -177,11 +177,11 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
 	RacerPhysics* field0x3e8 = &racer->m_physics;
-	if ((frame <= m_unk0x48 || frame >= m_unk0x4c) && !(racer->m_flags & c_racerFlags0xd04Bit0)) {
+	if ((frame <= m_grabFrameLow || frame >= m_grabFrameHigh) && !(racer->m_flags & c_racerFlags0xd04Bit0)) {
 		if (m_racer == NULL || m_racer == racer) {
 			if (m_racer == NULL) {
 				m_grabState = c_stateOne;
-				m_unk0x5c = c_timerMs;
+				m_grabTimerMs = c_timerMs;
 			}
 		}
 		else {
@@ -214,7 +214,7 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 			force.m_y = position.m_y - racerPosition.m_y;
 			force.m_z = 0.0f;
 			GolMath::NormalizeVector3(force, &force);
-			LegoFloat scale = m_unk0x50;
+			LegoFloat scale = m_pullStrength;
 			force.m_x = scale * force.m_x;
 			force.m_y = force.m_y * scale;
 			force.m_z = force.m_z * scale;

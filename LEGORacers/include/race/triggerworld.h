@@ -1,5 +1,5 @@
-#ifndef RACESESSIONFIELD0X32B4_H
-#define RACESESSIONFIELD0X32B4_H
+#ifndef TRIGGERWORLD_H
+#define TRIGGERWORLD_H
 
 #include "decomp.h"
 #include "golboundingvolume.h"
@@ -36,10 +36,10 @@ public:
 	);
 
 private:
-	GolWorldDatabase* m_unk0x00; // 0x00
-	RaceEventTable* m_unk0x04;   // 0x04
-	GolNameTable* m_unk0x08;     // 0x08
-	GolBoundedEntity* m_unk0x0c; // 0x0c
+	GolWorldDatabase* m_triggerDatabase; // 0x00
+	RaceEventTable* m_eventTable;        // 0x04
+	GolNameTable* m_recordNames;         // 0x08
+	GolBoundedEntity* m_boundsEntity;    // 0x0c
 };
 
-#endif // RACESESSIONFIELD0X32B4_H
+#endif // TRIGGERWORLD_H

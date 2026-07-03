@@ -13,10 +13,10 @@ DECOMP_SIZE_ASSERT(TriggerWorld, 0x10)
 // FUNCTION: LEGORACERS 0x0041f430
 TriggerWorld::TriggerWorld()
 {
-	m_unk0x00 = NULL;
-	m_unk0x04 = 0;
-	m_unk0x08 = NULL;
-	m_unk0x0c = NULL;
+	m_triggerDatabase = NULL;
+	m_eventTable = 0;
+	m_recordNames = NULL;
+	m_boundsEntity = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0041f440
@@ -27,23 +27,23 @@ GolWorldDatabase* TriggerWorld::Initialize(
 	GolNameTable* p_unk0x10
 )
 {
-	m_unk0x00 = p_unk0x04;
+	m_triggerDatabase = p_unk0x04;
 
 	LegoChar name[8];
 	::strncpy(name, p_unk0x08, sizeof(name));
 
-	m_unk0x0c = m_unk0x00->FindBoundedEntity(name);
+	m_boundsEntity = m_triggerDatabase->FindBoundedEntity(name);
 
-	m_unk0x04 = p_unk0x0c;
-	m_unk0x08 = p_unk0x10;
+	m_eventTable = p_unk0x0c;
+	m_recordNames = p_unk0x10;
 
-	GolWorldDatabase* result = m_unk0x00;
-	for (LegoU32 count = 0; count < m_unk0x00->GetBoundedEntityCount(); count++) {
-		GolBoundedEntity* item = &m_unk0x00->GetBoundedEntities()[count];
+	GolWorldDatabase* result = m_triggerDatabase;
+	for (LegoU32 count = 0; count < m_triggerDatabase->GetBoundedEntityCount(); count++) {
+		GolBoundedEntity* item = &m_triggerDatabase->GetBoundedEntities()[count];
 		LegoU32 flags = item->GetUnk0x60();
 		flags |= 1;
 		item->SetUnk0x60(flags);
-		result = m_unk0x00;
+		result = m_triggerDatabase;
 	}
 
 	return result;
@@ -76,7 +76,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	GolMath::NormalizeVector3(direction, &direction);
 
 	GolBoundingVolume::HitTriangle* record = p_unk0x0c;
-	GolWorldDatabase* root = m_unk0x00;
+	GolWorldDatabase* root = m_triggerDatabase;
 	count = 0;
 	if (!(0 < root->GetBoundedEntityCount())) {
 		goto fallback;
@@ -108,7 +108,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 			}
 		}
 
-		root = m_unk0x00;
+		root = m_triggerDatabase;
 		count++;
 		if (count >= root->GetBoundedEntityCount()) {
 			goto fallback;
@@ -116,7 +116,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	}
 
 fallback:
-	entity = m_unk0x0c;
+	entity = m_boundsEntity;
 	query = entity->GetUnk0x58();
 	query->SetUnk0x24(entity->GetMaterialTable());
 	if (!query->FUN_00403fa0(p_unk0x04, p_unk0x08, record, p_unk0x10, &hitRecord, 0)) {
@@ -168,8 +168,8 @@ LegoBool32 TriggerWorld::IntersectSegmentAndFireEvents(
 
 	if (hit) {
 		if (hit->m_flags & 0x10) {
-			m_unk0x04->StartEventsAt(hit->m_unk0x18, p_unk0x10);
-			m_unk0x04->EndEventsAt(hit->m_unk0x18, p_unk0x10);
+			m_eventTable->StartEventsAt(hit->m_unk0x18, p_unk0x10);
+			m_eventTable->EndEventsAt(hit->m_unk0x18, p_unk0x10);
 		}
 
 		if (hit->m_flags & 0x20000) {

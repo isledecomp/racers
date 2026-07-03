@@ -77,6 +77,7 @@ public:
 			e_lapZones = 0x51,
 			e_nodeTransforms = 0x52,
 			e_modelDistances = 0x53,
+			e_node = 0x54,
 			e_lookTargets = 0x55,
 			e_externalForces = 0x59,
 		};

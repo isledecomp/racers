@@ -63,9 +63,9 @@ void MaterialAnimationResource::Initialize(InitParams* p_params)
 	m_idleTrack = item;
 	m_materialTable = item->GetUnk0x00();
 	m_materialIndex = item->GetUnk0x04();
-	if (p_params->m_unk0x18) {
-		m_materialTable = p_params->m_unk0x18;
-		m_materialIndex = p_params->m_unk0x1c;
+	if (p_params->m_materialTable) {
+		m_materialTable = p_params->m_materialTable;
+		m_materialIndex = p_params->m_materialIndex;
 	}
 
 	m_state = c_stateIdle;

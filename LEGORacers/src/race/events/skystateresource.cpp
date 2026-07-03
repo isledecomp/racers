@@ -26,7 +26,7 @@ void SkyStateResource::ClearFields()
 {
 	m_skyState = NULL;
 	m_skyName[0] = '\0';
-	m_unk0x2c = 0;
+	m_durationMs = 0;
 	m_skyFlags = 0;
 }
 
@@ -46,7 +46,7 @@ void SkyStateResource::Initialize(InitParams* p_params)
 
 	m_eventTable = p_params->m_eventTable;
 	m_skyState = p_params->m_skyState;
-	m_unk0x2c = p_params->m_unk0x20;
+	m_durationMs = p_params->m_durationMs;
 	m_skyFlags = p_params->m_skyFlags;
 	::strncpy(m_skyName, p_params->m_skyName, sizeof(m_skyName));
 	if (p_params->m_triggerOnEnd) {
@@ -69,7 +69,7 @@ void SkyStateResource::Destroy()
 void SkyStateResource::OnStartAt(GolVec3*)
 {
 	if (m_skyName[0]) {
-		m_skyState->StartTransition(m_skyName, m_unk0x2c);
+		m_skyState->StartTransition(m_skyName, m_durationMs);
 	}
 
 	if (m_skyFlags & c_flags0x30Bit0) {

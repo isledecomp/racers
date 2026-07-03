@@ -51,7 +51,7 @@ public:
 		LegoBool32 m_triggerOnEnd;       // 0x3c
 		LegoBool32 m_positional;         // 0x40
 		GolModelEntity* m_entity;        // 0x44
-		LegoU32 m_unk0x48;               // 0x48
+		LegoU32 m_nodeIndex;             // 0x48
 	};
 
 	SoundResource();
@@ -72,7 +72,7 @@ private:
 	SpatialSoundInstance* m_sound;    // 0x20
 	RacerSoundSource* m_soundSource;  // 0x24
 	GolModelEntity* m_unk0x28;        // 0x28
-	LegoU32 m_unk0x2c;                // 0x2c
+	LegoU32 m_nodeIndex;              // 0x2c
 	SoundVector m_position;           // 0x30
 	LegoU32 m_soundId;                // 0x3c
 	LegoU32 m_unk0x40;                // 0x40

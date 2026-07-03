@@ -12,7 +12,7 @@ public:
 		undefined4 m_eventId;         // 0x00
 		LegoS32 m_stateEventIds[3];   // 0x04
 		RaceEventTable* m_eventTable; // 0x10
-		undefined4 m_unk0x14;         // 0x14
+		undefined4 m_zone;            // 0x14
 	};
 
 	LapZoneResource();

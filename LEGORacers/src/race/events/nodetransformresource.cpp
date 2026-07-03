@@ -47,7 +47,7 @@ void NodeTransformResource::Initialize(InitParams* p_params)
 	m_eventTable = p_params->m_eventTable;
 	m_boundedEntity = p_params->m_boundedEntity;
 	m_modelEntity = p_params->m_modelEntity;
-	m_nodeIndex = p_params->m_unk0x1c;
+	m_nodeIndex = p_params->m_nodeIndex;
 	if (p_params->m_triggerOnEnd) {
 		m_flags |= c_flagTriggerOnEnd;
 	}

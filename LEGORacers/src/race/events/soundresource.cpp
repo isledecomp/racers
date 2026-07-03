@@ -22,7 +22,7 @@ SoundResource::SoundResource()
 	m_soundSource = NULL;
 	m_flags = 0;
 	m_unk0x28 = NULL;
-	m_unk0x2c = 0;
+	m_nodeIndex = 0;
 	m_probability = 0xff;
 }
 
@@ -51,7 +51,7 @@ void SoundResource::Initialize(InitParams* p_params)
 	m_position.m_y = p_params->m_position.m_y;
 	m_position.m_z = p_params->m_position.m_z;
 	m_unk0x28 = p_params->m_entity;
-	m_unk0x2c = p_params->m_unk0x48;
+	m_nodeIndex = p_params->m_nodeIndex;
 	m_probability = static_cast<LegoU8>(p_params->m_probability * 255.0f);
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
@@ -83,7 +83,7 @@ void SoundResource::Destroy()
 
 	m_soundSource = NULL;
 	m_unk0x28 = NULL;
-	m_unk0x2c = 0;
+	m_nodeIndex = 0;
 	m_flags = 0;
 	Reset();
 }
@@ -179,7 +179,7 @@ void SoundResource::Update(LegoU32 p_elapsedMs)
 void SoundResource::StopSound()
 {
 	GolSceneNode* node = m_unk0x28->VTable0x58(0);
-	GolTransformBase* transform = node->VTable0x18(m_unk0x2c);
+	GolTransformBase* transform = node->VTable0x18(m_nodeIndex);
 
 	GolVec3 position;
 	position.m_x = 0.0f;

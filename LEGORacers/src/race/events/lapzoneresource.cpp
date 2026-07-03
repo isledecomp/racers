@@ -34,7 +34,7 @@ void LapZoneResource::Initialize(InitParams* p_params)
 	}
 
 	m_eventTable = params->m_eventTable;
-	m_zone = params->m_unk0x14;
+	m_zone = params->m_zone;
 	m_state = c_stateEnded;
 }
 

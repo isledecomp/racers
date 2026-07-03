@@ -204,7 +204,7 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 		params.m_soundSource = field->m_soundSource;
 		params.m_probability = 1.0f;
 		params.m_entity = NULL;
-		params.m_unk0x48 = 0;
+		params.m_nodeIndex = 0;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
@@ -255,8 +255,8 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 				}
 				break;
 			}
-			case GolFileParser::e_unknown0x54:
-				params.m_unk0x48 = p_parser->ReadInteger();
+			case EvbTxtParser::e_node:
+				params.m_nodeIndex = p_parser->ReadInteger();
 				break;
 			default:
 				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -464,8 +464,8 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 		params.m_stateEventIds[2] = -1;
 		params.m_eventTable = field;
 		params.m_materialAnimation = NULL;
-		params.m_unk0x18 = NULL;
-		params.m_unk0x1c = 0;
+		params.m_materialTable = NULL;
+		params.m_materialIndex = 0;
 		params.m_activeTrackIndex = 0;
 		params.m_idleTrackIndex = 0;
 		params.m_looping = FALSE;
@@ -549,8 +549,8 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 				else {
 					materialTable = entity->GetModel(0)->GetMaterialTable();
 				}
-				params.m_unk0x18 = materialTable;
-				params.m_unk0x1c = p_parser->ReadInteger();
+				params.m_materialTable = materialTable;
+				params.m_materialIndex = p_parser->ReadInteger();
 				break;
 			}
 			default:
@@ -686,7 +686,7 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 				}
 				break;
 			}
-			case GolFileParser::e_unknown0x54:
+			case EvbTxtParser::e_node:
 				params.m_nodeIndex = p_parser->ReadInteger();
 				break;
 			case EvbTxtParser::e_event: {
@@ -801,7 +801,7 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 		params.m_eventTable = field;
 		params.m_stateEventIds[2] = -1;
 		params.m_skyName[0] = '\0';
-		params.m_unk0x20 = 0;
+		params.m_durationMs = 0;
 		params.m_skyFlags = 0;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
@@ -814,7 +814,7 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 				);
 				break;
 			case GolFileParser::e_unknown0x44:
-				params.m_unk0x20 = p_parser->ReadInteger();
+				params.m_durationMs = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x45:
 				params.m_skyFlags |= 2;
@@ -1098,7 +1098,7 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 		params.m_eventTable = field;
 		params.m_boundedEntity = NULL;
 		params.m_modelEntity = NULL;
-		params.m_unk0x1c = 0;
+		params.m_nodeIndex = 0;
 
 		GolName name;
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
@@ -1116,8 +1116,8 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 					params.m_modelEntity = field->m_sharedDatabase->FindAnimatedEntity(name);
 				}
 				break;
-			case GolFileParser::e_unknown0x54:
-				params.m_unk0x1c = p_parser->ReadInteger();
+			case EvbTxtParser::e_node:
+				params.m_nodeIndex = p_parser->ReadInteger();
 				break;
 			case EvbTxtParser::e_event: {
 				LegoS32 eventIndex;
@@ -1446,16 +1446,16 @@ void RaceEventTable::ParseLapZones(GolFileParser* p_parser)
 		params.m_stateEventIds[1] = -1;
 		params.m_eventTable = field;
 		params.m_stateEventIds[2] = -1;
-		params.m_unk0x14 = 1;
+		params.m_zone = 1;
 
 		for (GolFileParser::ParserTokenType token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly;
 			 token = p_parser->GetNextToken()) {
 			switch (token) {
 			case EvbTxtParser::e_start:
-				params.m_unk0x14 = 0;
+				params.m_zone = 0;
 				break;
 			case EvbTxtParser::e_end:
-				params.m_unk0x14 = 2;
+				params.m_zone = 2;
 				break;
 			case EvbTxtParser::e_event: {
 				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;

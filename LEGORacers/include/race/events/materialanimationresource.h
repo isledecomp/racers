@@ -17,8 +17,8 @@ public:
 		LegoS32 m_stateEventIds[3];                // 0x04
 		RaceEventTable* m_eventTable;              // 0x10
 		MabMaterialAnimation* m_materialAnimation; // 0x14
-		MaterialTable* m_unk0x18;                  // 0x18
-		LegoU16 m_unk0x1c;                         // 0x1c
+		MaterialTable* m_materialTable;            // 0x18
+		LegoU16 m_materialIndex;                   // 0x1c
 		undefined m_unk0x1e[0x20 - 0x1e];          // 0x1e
 		LegoU32 m_activeTrackIndex;                // 0x20
 		LegoU32 m_idleTrackIndex;                  // 0x24

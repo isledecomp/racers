@@ -10,7 +10,7 @@
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
 #include "surface/gold3dtexture.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 DECOMP_SIZE_ASSERT(GolImage, 0xa4)
 DECOMP_SIZE_ASSERT(GolImage::UtopianPanImageName, 0x09)

@@ -2,7 +2,7 @@
 #include "menu/runtime/cutsceneplayer.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 // FUNCTION: LEGORACERS 0x004a3280
 CutsceneVisual::CutsceneVisual()

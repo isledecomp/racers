@@ -2,8 +2,8 @@
 #define CARBUILDMODEL_H
 
 #include "decomp.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golmath.h"
 #include "golmodelentity.h"
 #include "model/legopiecelibrary.h"
@@ -444,8 +444,8 @@ private:
 	LegoU32 m_finalGroupCount;                                     // 0x1ef0
 	LegoU32 m_finalTriangleCount;                                  // 0x1ef4
 	LegoU32 m_finalVertexCount;                                    // 0x1ef8
-	GdbVertexArray0xc* m_modelVertices;                            // 0x1efc
-	GdbModelIndexArray0xc::Indices* m_modelTriangles;              // 0x1f00
+	GdbVertexArray* m_modelVertices;                               // 0x1efc
+	GdbModelIndexArray::Indices* m_modelTriangles;                 // 0x1f00
 	LegoFloat m_offsetX;                                           // 0x1f04
 	LegoFloat m_offsetY;                                           // 0x1f08
 	LegoFloat m_offsetZ;                                           // 0x1f0c

@@ -27,7 +27,7 @@ class GolImageList;
 class GolBillboard;
 struct Rect;
 class GolTextureList;
-class SlatePeak0x58;
+class GolRenderTarget;
 class GolImage;
 class GolTexture;
 
@@ -93,28 +93,28 @@ public:
 		const GolSurfaceFormat& p_requestedTextureFormat,
 		GolSurfaceFormat* p_actualTextureFormat,
 		LegoBool32
-	);                                                                      // vtable+0x0c
-	virtual GolCommonDrawState* GetDrawState() = 0;                         // vtable+0x10
-	virtual SlatePeak0x58* GetRenderTargetInfo() = 0;                       // vtable+0x14
-	virtual void VTable0x18() = 0;                                          // vtable+0x18
-	virtual void VTable0x1c(const ColorRGBA&) = 0;                          // vtable+0x1c
-	virtual void VTable0x20(GolCamera*) = 0;                                // vtable+0x20
-	virtual void VTable0x24();                                              // vtable+0x24
-	virtual void VTable0x28();                                              // vtable+0x28
-	virtual void VTable0x2c(const MaterialColor* p_param);                  // vtable+0x2c
-	virtual void VTable0x30(const Light* p_param);                          // vtable+0x30
-	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
-	virtual void VTable0x38();                                              // vtable+0x38
-	virtual void VTable0x3c(LegoU32);                                       // vtable+0x3c
-	virtual void VTable0x40();                                              // vtable+0x40
-	virtual void VTable0x44();                                              // vtable+0x44
-	virtual void VTable0x48();                                              // vtable+0x48
-	virtual SlatePeak0x58* VTable0x4c(undefined2, undefined2);              // vtable+0x4c
-	virtual void VTable0x50(SlatePeak0x58*);                                // vtable+0x50
-	virtual void VTable0x54(undefined4) = 0;                                // vtable+0x54
-	virtual void VTable0x58(SlatePeak0x58* p_param1, undefined4 p_param2);  // vtable+0x58
-	virtual void VTable0x5c() = 0;                                          // vtable+0x5c
-	virtual void VTable0x60();                                              // vtable+0x60
+	);                                                                       // vtable+0x0c
+	virtual GolCommonDrawState* GetDrawState() = 0;                          // vtable+0x10
+	virtual GolRenderTarget* GetRenderTargetInfo() = 0;                      // vtable+0x14
+	virtual void VTable0x18() = 0;                                           // vtable+0x18
+	virtual void VTable0x1c(const ColorRGBA&) = 0;                           // vtable+0x1c
+	virtual void VTable0x20(GolCamera*) = 0;                                 // vtable+0x20
+	virtual void VTable0x24();                                               // vtable+0x24
+	virtual void VTable0x28();                                               // vtable+0x28
+	virtual void VTable0x2c(const MaterialColor* p_param);                   // vtable+0x2c
+	virtual void VTable0x30(const Light* p_param);                           // vtable+0x30
+	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08);  // vtable+0x34
+	virtual void VTable0x38();                                               // vtable+0x38
+	virtual void VTable0x3c(LegoU32);                                        // vtable+0x3c
+	virtual void VTable0x40();                                               // vtable+0x40
+	virtual void VTable0x44();                                               // vtable+0x44
+	virtual void VTable0x48();                                               // vtable+0x48
+	virtual GolRenderTarget* VTable0x4c(undefined2, undefined2);             // vtable+0x4c
+	virtual void VTable0x50(GolRenderTarget*);                               // vtable+0x50
+	virtual void VTable0x54(undefined4) = 0;                                 // vtable+0x54
+	virtual void VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2); // vtable+0x58
+	virtual void VTable0x5c() = 0;                                           // vtable+0x5c
+	virtual void VTable0x60();                                               // vtable+0x60
 	virtual void VTable0x64(
 		GolString*,
 		GolFontBase*,

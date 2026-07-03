@@ -3,14 +3,14 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbvertexarray.h"
 #include "golmath.h"
 #include "surface/color.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004af4b4
 // SIZE 0x14
-class GdbPartVertexPool : public GdbVertexArray0xc {
+class GdbPartVertexPool : public GdbVertexArray {
 public:
 	// SIZE 0x0e
 	struct Vertex {

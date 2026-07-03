@@ -2,16 +2,16 @@
 #define GDBCOMMONVERTEXARRAY0x1C_H
 
 #include "compat.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbvertexarray.h"
 
 // VTABLE: GOLDP 0x100568d0
 // SIZE 0x1c
-class GdbCommonVertexArray0x1c : public GdbVertexArray0xc {
+class GdbCommonVertexArray0x1c : public GdbVertexArray {
 public:
 	GdbCommonVertexArray0x1c();
 	~GdbCommonVertexArray0x1c() override; // vtable+0x00
 	void VTable0x0c() override;
-	void VTable0x34(const ColorTransform0x20& p_details) override;
+	void VTable0x34(const ColorTransform& p_details) override;
 	void VTable0x38() override;
 
 	// SYNTHETIC: GOLDP 0x10016f40

@@ -1,7 +1,7 @@
 #include "mesh/golmodel.h"
 
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golmaterial.h"
@@ -190,7 +190,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 		p_renderer->m_unk0xc4c14 = vertexArray->GetColors();
 	}
 
-	GdbModelIndexArray0xc* indexArray = static_cast<GdbModelIndexArray0xc*>(m_unk0x18);
+	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_unk0x18);
 	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
 	p_renderer->m_unk0xc854c.m_indices = p_renderer->m_unk0xc4c18;
 
@@ -289,7 +289,7 @@ void GolModel::FUN_10006e00(
 		p_renderer->m_unk0xc4c14 = vertexArray->GetColors();
 	}
 
-	GdbModelIndexArray0xc* indexArray = static_cast<GdbModelIndexArray0xc*>(m_unk0x18);
+	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_unk0x18);
 	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
 	p_renderer->m_unk0xc854c.m_indices = p_renderer->m_unk0xc4c18;
 
@@ -339,9 +339,9 @@ void GolModel::FUN_10006e00(
 // FUNCTION: GOLDP 0x10006fa0
 LegoU32 GolModel::FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const
 {
-	GdbModelIndexArray0xc::Indices* indices = static_cast<GdbModelIndexArray0xc*>(m_unk0x18)->GetMutableIndices();
-	GdbModelIndexArray0xc::Indices* triangle = indices + p_firstTriangle;
-	GdbModelIndexArray0xc::Indices* end = indices + (p_firstTriangle + p_triangleCount);
+	GdbModelIndexArray::Indices* indices = static_cast<GdbModelIndexArray*>(m_unk0x18)->GetMutableIndices();
+	GdbModelIndexArray::Indices* triangle = indices + p_firstTriangle;
+	GdbModelIndexArray::Indices* end = indices + (p_firstTriangle + p_triangleCount);
 	LegoU16 result = 0;
 
 	for (; triangle < end; triangle++) {

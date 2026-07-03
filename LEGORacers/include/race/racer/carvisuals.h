@@ -9,7 +9,7 @@
 #include "scene/golbillboard.h"
 #include "types.h"
 
-class ColorTransform0x20;
+class ColorTransform;
 class CutsceneAnimation;
 class GolCamera;
 class GolCollidableEntity;
@@ -117,9 +117,9 @@ public:
 	LegoBool32 IntersectSegment(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit);
 	void RenderShadowSilhouette(GolD3DRenderDevice* p_renderer);
 	void RebuildEntityGroup();
-	void SetColorTransform(ColorTransform0x20* p_unk0x04);
+	void SetColorTransform(ColorTransform* p_unk0x04);
 	void ClearColorTransform();
-	void FlashColor(ColorTransform0x20* p_unk0x04, undefined4 p_unk0x08);
+	void FlashColor(ColorTransform* p_unk0x04, undefined4 p_unk0x08);
 	void EndFlash();
 	void SetScale(LegoFloat p_unk0x04);
 	void ResetDriverAnimation();
@@ -175,7 +175,7 @@ public:
 	undefined4 m_unk0x394;                         // 0x394
 	LegoFloat m_pitchLean;                         // 0x398
 	LegoFloat m_rollLean;                          // 0x39c
-	ColorTransform0x20 m_baseColorTransform;       // 0x3a0
+	ColorTransform m_baseColorTransform;           // 0x3a0
 	LegoU32 m_hasColorTransform;                   // 0x3c0
 	LegoU32 m_isFlashing;                          // 0x3c4
 	undefined4 m_flashTimerMs;                     // 0x3c8

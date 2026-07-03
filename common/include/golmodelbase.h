@@ -7,11 +7,11 @@
 #include "goltxtparser.h"
 #include "types.h"
 
-class GdbVertexArray0xc;
+class GdbVertexArray;
 class GolFileParser;
 struct GolVec3;
-class IGdbModelIndexArray0x8;
-struct ColorTransform0x20;
+class GdbModelIndexArrayBase;
+struct ColorTransform;
 class GolRenderDevice;
 
 // VTABLE: GOLDP 0x10057224
@@ -41,19 +41,19 @@ public:
 	virtual void VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x1c
 	virtual ~GolModelBase();                                                                           // vtable+0x20
 	virtual void VTable0x24();                                                                         // vtable+0x24
-	virtual void VTable0x28(GdbVertexArray0xc** p_dest) const;                                         // vtable+0x28
+	virtual void VTable0x28(GdbVertexArray** p_dest) const;                                            // vtable+0x28
 	virtual void VTable0x2c(LegoU32, LegoBool32);                                                      // vtable+0x2c
-	virtual void VTable0x30(IGdbModelIndexArray0x8**) const;                                           // vtable+0x30
+	virtual void VTable0x30(GdbModelIndexArrayBase**) const;                                           // vtable+0x30
 	virtual void VTable0x34(LegoU32);                                                                  // vtable+0x34
 	virtual void VTable0x38(GolVec3*, LegoFloat*, LegoFloat) const;                                    // vtable+0x38
-	virtual void VTable0x3c(const ColorTransform0x20&);                                                // vtable+0x3c
+	virtual void VTable0x3c(const ColorTransform&);                                                    // vtable+0x3c
 	virtual void VTable0x40();                                                                         // vtable+0x40
 
 	void FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups);
 	void FUN_00411090();
 	GolModelMaterialTable* GetMaterialTable() { return &m_unk0x04; }
-	GdbVertexArray0xc* GetVertexArray() const { return m_unk0x10; }
-	IGdbModelIndexArray0x8* GetIndexArray() const { return m_unk0x18; }
+	GdbVertexArray* GetVertexArray() const { return m_unk0x10; }
+	GdbModelIndexArrayBase* GetIndexArray() const { return m_unk0x18; }
 	const GolVec3& GetCenter() const { return m_unk0x28; }
 	const GolVec3& GetBoundingCenter() const { return m_unk0x28; }
 	LegoFloat GetRadius() const { return m_unk0x34; }
@@ -70,9 +70,9 @@ public:
 
 protected:
 	GolModelMaterialTable m_unk0x04;
-	GdbVertexArray0xc* m_unk0x10;
-	GdbVertexArray0xc* m_unk0x14;
-	IGdbModelIndexArray0x8* m_unk0x18;
+	GdbVertexArray* m_unk0x10;
+	GdbVertexArray* m_unk0x14;
+	GdbModelIndexArrayBase* m_unk0x18;
 	undefined4* m_unk0x1c;
 	LegoU32 m_countGroups;
 	LegoU32* m_unk0x24;

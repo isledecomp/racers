@@ -10,8 +10,8 @@ class GolBmpWriterFile : public GolImgFileWriter {
 public:
 	GolBmpWriterFile();
 
-	const LegoChar* GetSuffix() override;                       // vtable+0x10
-	void WriteSurface(const SlatePeak0x58* p_surface) override; // vtable+0x24
+	const LegoChar* GetSuffix() override;                         // vtable+0x10
+	void WriteSurface(const GolRenderTarget* p_surface) override; // vtable+0x24
 
 	// SYNTHETIC: LEGORACERS 0x004036f0
 	// GolBmpWriterFile::`scalar deleting destructor'
@@ -20,7 +20,7 @@ public:
 	// GolBmpWriterFile::~GolBmpWriterFile
 
 private:
-	void InitializeFromSurface(const SlatePeak0x58* p_surface);
+	void InitializeFromSurface(const GolRenderTarget* p_surface);
 	void WriteHeader();
 	void WritePalette();
 

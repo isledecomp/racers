@@ -7,7 +7,7 @@
 #include "types.h"
 
 class GolRenderDevice;
-class GdbVertexArray0xc;
+class GdbVertexArray;
 class GolExport;
 class GolModelBase;
 
@@ -31,30 +31,30 @@ public:
 		c_hasGeometry = 1 << 2,
 	};
 
-	GolExport* m_golExport;        // 0x000
-	GolModelBase* m_model;         // 0x004
-	GdbVertexArray0xc* m_vertices; // 0x008
-	LegoU8* m_indexBytes;          // 0x00c
-	GolModelEntity m_entity;       // 0x010
-	LegoU32 m_vertexCapacity;      // 0x0a0
-	LegoU32 m_triangleCapacity;    // 0x0a4
-	LegoU32 m_batchFirstVertex;    // 0x0a8
-	LegoU32 m_batchFirstTriangle;  // 0x0ac
-	LegoU32 m_vertexCount;         // 0x0b0
-	LegoU32 m_triangleCount;       // 0x0b4
-	LegoU32 m_groupIndex;          // 0x0b8
-	LegoU32 m_batchVertexCount;    // 0x0bc
-	LegoU32 m_batchTriangleCount;  // 0x0c0
-	GolVec3 m_widthAxis;           // 0x0c4
-	GolVec3 m_lengthAxis;          // 0x0d0
-	GolVec3 m_normal;              // 0x0dc
-	GolVec3 m_center;              // 0x0e8
-	GolVec3 m_position;            // 0x0f4
-	LegoU32 m_flags0x100;          // 0x100
-	LegoFloat m_width;             // 0x104
-	LegoFloat m_length;            // 0x108
-	LegoFloat m_depth;             // 0x10c
-	ColorRGBA m_color;             // 0x110
+	GolExport* m_golExport;       // 0x000
+	GolModelBase* m_model;        // 0x004
+	GdbVertexArray* m_vertices;   // 0x008
+	LegoU8* m_indexBytes;         // 0x00c
+	GolModelEntity m_entity;      // 0x010
+	LegoU32 m_vertexCapacity;     // 0x0a0
+	LegoU32 m_triangleCapacity;   // 0x0a4
+	LegoU32 m_batchFirstVertex;   // 0x0a8
+	LegoU32 m_batchFirstTriangle; // 0x0ac
+	LegoU32 m_vertexCount;        // 0x0b0
+	LegoU32 m_triangleCount;      // 0x0b4
+	LegoU32 m_groupIndex;         // 0x0b8
+	LegoU32 m_batchVertexCount;   // 0x0bc
+	LegoU32 m_batchTriangleCount; // 0x0c0
+	GolVec3 m_widthAxis;          // 0x0c4
+	GolVec3 m_lengthAxis;         // 0x0d0
+	GolVec3 m_normal;             // 0x0dc
+	GolVec3 m_center;             // 0x0e8
+	GolVec3 m_position;           // 0x0f4
+	LegoU32 m_flags0x100;         // 0x100
+	LegoFloat m_width;            // 0x104
+	LegoFloat m_length;           // 0x108
+	LegoFloat m_depth;            // 0x10c
+	ColorRGBA m_color;            // 0x110
 };
 
 #endif // DECALGEOMETRY_H

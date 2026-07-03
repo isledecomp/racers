@@ -202,7 +202,7 @@ void GolWorldEntityGroup::VTable0x44(GolMatrix3* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x00412300
-void GolWorldEntityGroup::VTable0x24(ColorTransform0x20* p_transform)
+void GolWorldEntityGroup::VTable0x24(ColorTransform* p_transform)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->VTable0x24(p_transform);

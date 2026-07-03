@@ -4,7 +4,7 @@
 #include "core/gol.h"
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include <float.h>
 
@@ -158,7 +158,7 @@ void MenuModelCarousel::SetupCamera(CreateParams* p_createParams)
 // FUNCTION: LEGORACERS 0x0046cd30
 void MenuModelCarousel::UpdateViewport()
 {
-	const SlatePeak0x58* renderTarget = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTarget = m_renderer->GetRenderTargetInfo();
 
 	if (m_camera) {
 		Rect rect = *GetGlobalRect();

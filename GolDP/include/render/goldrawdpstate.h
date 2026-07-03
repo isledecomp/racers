@@ -3,7 +3,7 @@
 
 #include "device/goldevicelist.h"
 #include "render/golcommondrawstate.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include <ddraw.h>
 
@@ -60,7 +60,7 @@ public:
 	// GolDrawDPState::`scalar deleting destructor'
 
 	friend class GolDepthBuffer;
-	friend class SlatePeak0x58;
+	friend class GolRenderTarget;
 	friend class GolD3DRenderDevice;
 	friend class GolD3DRenderSurface;
 
@@ -82,7 +82,7 @@ private:
 	GolDeviceList m_deviceList;                // 0x2e4
 	LegoChar* m_driverName;                    // 0x2f4
 	LegoChar* m_deviceName;                    // 0x2f8
-	SlatePeak0x58 m_unk0x2fc;                  // 0x2fc
+	GolRenderTarget m_unk0x2fc;                // 0x2fc
 	GolD3DRenderDevice m_unk0x354;             // 0x354
 };
 

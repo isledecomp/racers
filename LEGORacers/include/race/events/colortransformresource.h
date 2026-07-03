@@ -1,7 +1,7 @@
 #ifndef COLORTRANSFORMRESOURCE_H
 #define COLORTRANSFORMRESOURCE_H
 
-#include "gdbvertexarray0xc.h"
+#include "gdbvertexarray.h"
 #include "race/events/raceeventresource.h"
 
 class GolWorldEntity;
@@ -16,7 +16,7 @@ public:
 		LegoS32 m_stateEventIds[3];   // 0x04
 		RaceEventTable* m_eventTable; // 0x10
 		LegoU32 m_flags0x14;          // 0x14
-		ColorTransform0x20 m_unk0x18; // 0x18
+		ColorTransform m_unk0x18;     // 0x18
 		GolWorldEntity* m_unk0x38;    // 0x38
 	};
 
@@ -38,9 +38,9 @@ private:
 		c_flags0x20Bit1 = 1 << 1,
 	};
 
-	LegoU32 m_flags0x20;                 // 0x20
-	ColorTransform0x20 m_colorTransform; // 0x24
-	GolWorldEntity* m_unk0x44;           // 0x44
+	LegoU32 m_flags0x20;             // 0x20
+	ColorTransform m_colorTransform; // 0x24
+	GolWorldEntity* m_unk0x44;       // 0x44
 };
 
 #endif // COLORTRANSFORMRESOURCE_H

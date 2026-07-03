@@ -61,7 +61,7 @@ public:
 		LegoBool32
 	) override;                                                              // vtable+0x0c
 	GolCommonDrawState* GetDrawState() override;                             // vtable+0x10
-	SlatePeak0x58* GetRenderTargetInfo() override;                           // vtable+0x14
+	GolRenderTarget* GetRenderTargetInfo() override;                         // vtable+0x14
 	void VTable0x18() override;                                              // vtable+0x18
 	void VTable0x1c(const ColorRGBA&) override;                              // vtable+0x1c
 	void VTable0x20(GolCamera*) override;                                    // vtable+0x20
@@ -72,10 +72,10 @@ public:
 	void VTable0x38() override;                                              // vtable+0x38
 	void VTable0x3c(LegoU32) override;                                       // vtable+0x3c
 	void VTable0x40() override;                                              // vtable+0x40
-	SlatePeak0x58* VTable0x4c(undefined2, undefined2) override;              // vtable+0x4c
-	void VTable0x50(SlatePeak0x58*) override;                                // vtable+0x50
+	GolRenderTarget* VTable0x4c(undefined2, undefined2) override;            // vtable+0x4c
+	void VTable0x50(GolRenderTarget*) override;                              // vtable+0x50
 	void VTable0x54(undefined4) override;                                    // vtable+0x54
-	void VTable0x58(SlatePeak0x58*, undefined4) override;                    // vtable+0x58
+	void VTable0x58(GolRenderTarget*, undefined4) override;                  // vtable+0x58
 	void VTable0x5c() override;                                              // vtable+0x5c
 	void VTable0x60() override;                                              // vtable+0x60
 	void VTable0x64(
@@ -180,7 +180,7 @@ public:
 	LegoBool32 TextureSizesMustBePowersOfTwo() const override;              // vtable+0x10c
 	LegoBool32 VTable0x110() const override;                                // vtable+0x110
 
-	LegoS32 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
+	LegoS32 FUN_10007d90(GolDrawDPState*, GolRenderTarget*, LegoU32 p_flags);
 	LegoS32 FUN_10007e20(LegoU32 p_flags);
 
 	LPDIRECT3D3 GetDirect3D3() const;
@@ -194,7 +194,7 @@ public:
 	// GolD3DRenderDevice::`scalar deleting destructor'
 
 	friend class GolDirectDrawPalette;
-	friend class SlatePeak0x58;
+	friend class GolRenderTarget;
 	friend class GolD3DRenderSurface;
 	friend class GolModel;
 	friend class GolFont;
@@ -276,8 +276,8 @@ private:
 	ColorRGBA m_clearColor;                                                        // 0x2cc
 	LegoU32 m_clearPixelValue;                                                     // 0x2d0
 	DuskwindBananaRelic0x30 m_unk0x2d4;                                            // 0x2d4
-	SlatePeak0x58* m_unk0x304;                                                     // 0x304
-	SlatePeak0x58* m_renderTargetInfo;                                             // 0x308
+	GolRenderTarget* m_unk0x304;                                                   // 0x304
+	GolRenderTarget* m_renderTargetInfo;                                           // 0x308
 	GolD3DRenderSurface* m_unk0x30c;                                               // 0x30c
 	GolDepthBuffer m_depthBuffer;                                                  // 0x310
 	D3DTLVERTEX m_unk0x348[25000];                                                 // 0x348

@@ -3,7 +3,7 @@
 #include "goltexture.h"
 #include "render/golrenderdevice.h"
 
-DECOMP_SIZE_ASSERT(DuskWindName0x8, 0x8)
+DECOMP_SIZE_ASSERT(GolMaterial::NameRecord, 0x8)
 DECOMP_SIZE_ASSERT(GolMaterial, 0x24)
 DECOMP_SIZE_ASSERT(GolMaterialParams, 0x14)
 

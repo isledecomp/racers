@@ -12,7 +12,7 @@
 
 class GolWorldDatabase;
 class GolModelBase;
-class GdbModelIndexArray0xc;
+class GdbModelIndexArray;
 class GolTextureList;
 class GolCamera;
 class GolD3DRenderDevice;
@@ -55,19 +55,19 @@ public:
 	public:
 		// SIZE 0x38
 		struct Params {
-			GolD3DRenderDevice* m_renderer;              // 0x00
-			GolModelBase* m_model;                       // 0x04
-			GolVec3 m_origin;                            // 0x08
-			LegoFloat m_radius;                          // 0x14
-			LegoU32 m_segmentCount;                      // 0x18
-			LegoU32 m_hemisphere;                        // 0x1c
-			LegoU32 m_hasTopCap;                         // 0x20
-			LegoU32 m_hasBottomCap;                      // 0x24
-			LegoU32 m_reverseWinding;                    // 0x28
-			LegoU32 m_useTextureSeam;                    // 0x2c
-			LegoU16 m_vertexType;                        // 0x30
-			undefined2 m_unk0x32;                        // 0x32
-			GdbModelIndexArray0xc* m_absoluteIndexArray; // 0x34
+			GolD3DRenderDevice* m_renderer;           // 0x00
+			GolModelBase* m_model;                    // 0x04
+			GolVec3 m_origin;                         // 0x08
+			LegoFloat m_radius;                       // 0x14
+			LegoU32 m_segmentCount;                   // 0x18
+			LegoU32 m_hemisphere;                     // 0x1c
+			LegoU32 m_hasTopCap;                      // 0x20
+			LegoU32 m_hasBottomCap;                   // 0x24
+			LegoU32 m_reverseWinding;                 // 0x28
+			LegoU32 m_useTextureSeam;                 // 0x2c
+			LegoU16 m_vertexType;                     // 0x30
+			undefined2 m_unk0x32;                     // 0x32
+			GdbModelIndexArray* m_absoluteIndexArray; // 0x34
 		};
 
 		void Build(Params* p_params);

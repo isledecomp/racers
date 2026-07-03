@@ -2,8 +2,8 @@
 #include "camera/goltransform.h"
 #include "core/gol.h"
 #include "decomp.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golmaterial.h"
 #include "golmath.h"
 #include "golmodelbase.h"
@@ -164,9 +164,9 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 
 	m_model->VTable0x28(&m_vertices);
 
-	IGdbModelIndexArray0x8* indexArray;
+	GdbModelIndexArrayBase* indexArray;
 	m_model->VTable0x30(&indexArray);
-	m_indices = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
+	m_indices = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
 
 	m_windowBaseVertex = 0;
 	m_ringVertexIndex = -static_cast<LegoS32>(m_ringVertexCount);
@@ -337,7 +337,7 @@ void BeamMesh::EmitRing(
 // FUNCTION: LEGORACERS 0x00494480
 void BeamMesh::EmitQuads()
 {
-	GdbModelIndexArray0xc::Indices* indices = &m_indices[m_indexCursor];
+	GdbModelIndexArray::Indices* indices = &m_indices[m_indexCursor];
 	m_indexCursor += m_ringQuadCount * 2;
 
 	for (LegoU32 i = 0; i < m_ringQuadCount; i++) {

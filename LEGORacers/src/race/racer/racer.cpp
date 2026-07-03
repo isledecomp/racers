@@ -2148,7 +2148,7 @@ void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 		m_curseSound->SetPosition(position);
 	}
 
-	ColorTransform0x20 transform;
+	ColorTransform transform;
 	transform.m_redShift = 0;
 	transform.m_grnShift = 1;
 	transform.m_bluShift = 0;

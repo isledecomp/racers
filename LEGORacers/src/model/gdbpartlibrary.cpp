@@ -1,7 +1,8 @@
 #include "model/gdbpartlibrary.h"
 
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbmodelindexarraybase.h"
+#include "gdbvertexarray.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
@@ -10,7 +11,6 @@
 #include "golmodelmaterialtable.h"
 #include "golname.h"
 #include "goltxtparser.h"
-#include "igdbmodelindexarray0x8.h"
 #include "model/gdbpartdefinition.h"
 #include "model/gdbpartfacegroup.h"
 #include "model/gdbpartvertexpool.h"
@@ -31,10 +31,10 @@ static LegoU16 g_copyBatchSourceVertices[g_gdbPartBatchVertexCapacity];
 static GolModelBase* g_copyModel;
 
 // GLOBAL: LEGORACERS 0x004c2838
-static GdbVertexArray0xc* g_copyVertexArray;
+static GdbVertexArray* g_copyVertexArray;
 
 // GLOBAL: LEGORACERS 0x004c283c
-static GdbModelIndexArray0xc::Indices* g_copyIndices;
+static GdbModelIndexArray::Indices* g_copyIndices;
 
 // GLOBAL: LEGORACERS 0x004c2840
 static LegoU32 g_copyBatchVertexStart;
@@ -166,11 +166,11 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 		GOL_FATALERROR_MESSAGE(message);
 	}
 
-	IGdbModelIndexArray0x8* indexArrayBase;
+	GdbModelIndexArrayBase* indexArrayBase;
 	g_copyModel = p_model;
 	p_model->VTable0x28(&g_copyVertexArray);
 	g_copyModel->VTable0x30(&indexArrayBase);
-	g_copyIndices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase)->GetMutableIndices();
+	g_copyIndices = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetMutableIndices();
 	g_copyBatchVertexStart = 0;
 	g_copyBatchVertexCount = 0;
 	g_copyIndexStart = 0;
@@ -253,7 +253,7 @@ void GdbPartLibrary::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU3
 		batchIndex2 = -1;
 	}
 
-	GdbModelIndexArray0xc::Indices* target = &g_copyIndices[g_copyIndexStart + g_copyBatchIndexCount];
+	GdbModelIndexArray::Indices* target = &g_copyIndices[g_copyIndexStart + g_copyBatchIndexCount];
 	g_copyBatchIndexCount++;
 
 	if (batchIndex0 < 0) {

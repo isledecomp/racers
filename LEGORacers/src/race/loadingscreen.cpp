@@ -8,7 +8,7 @@
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -83,7 +83,7 @@ void LoadingScreen::Initialize(
 	m_progress = 0.0f;
 
 	LegoU32 stringIndex = 0;
-	SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
+	GolRenderTarget* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 	LegoU32 renderTargetWidthU32 = 0;
 	LegoU32 renderTargetHeightU32 = 0;
 	renderTargetWidthU32 = renderTargetInfo->GetWidthU32();

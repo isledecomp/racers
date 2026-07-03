@@ -1,7 +1,7 @@
 #include "core/gol.h"
 #include "decomp.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golcollidableentity.h"
 #include "golerror.h"
 #include "golmaterial.h"
@@ -362,11 +362,11 @@ void RaceDecalManager::Trail::BakeSegment()
 	currentIndex = m_slotIndex;
 	m_slots[currentIndex].m_entry.m_triangleCount = m_decal.GetTriangleCount();
 
-	GdbVertexArray0xc* sourceVertices;
+	GdbVertexArray* sourceVertices;
 	sourceModel->VTable0x28(&sourceVertices);
 
 	GolModelBase* destModel = m_slots[m_slotIndex].m_model;
-	GdbVertexArray0xc* destVertices;
+	GdbVertexArray* destVertices;
 	destModel->VTable0x28(&destVertices);
 
 	ColorRGBA color;
@@ -388,17 +388,17 @@ void RaceDecalManager::Trail::BakeSegment()
 	sourceModel->VTable0x2c(0, FALSE);
 	m_slots[m_slotIndex].m_model->VTable0x2c(1, FALSE);
 
-	IGdbModelIndexArray0x8* sourceIndexArrayBase;
+	GdbModelIndexArrayBase* sourceIndexArrayBase;
 	sourceModel->VTable0x30(&sourceIndexArrayBase);
 
-	IGdbModelIndexArray0x8* destIndexArrayBase;
+	GdbModelIndexArrayBase* destIndexArrayBase;
 	m_slots[m_slotIndex].m_model->VTable0x30(&destIndexArrayBase);
 
-	GdbModelIndexArray0xc* sourceIndexArray = static_cast<GdbModelIndexArray0xc*>(sourceIndexArrayBase);
-	GdbModelIndexArray0xc* destIndexArray = static_cast<GdbModelIndexArray0xc*>(destIndexArrayBase);
+	GdbModelIndexArray* sourceIndexArray = static_cast<GdbModelIndexArray*>(sourceIndexArrayBase);
+	GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
 	LegoU32 index = 0;
 	while (index < m_slots[m_slotIndex].m_entry.m_triangleCount) {
-		LegoU32 offset = index * sizeof(GdbModelIndexArray0xc::Indices);
+		LegoU32 offset = index * sizeof(GdbModelIndexArray::Indices);
 		LegoU8* sourceIndexBytes = sourceIndexArray->GetIndexBytes() + offset;
 		LegoU8* destIndexBytes = destIndexArray->GetIndexBytes() + offset;
 		destIndexBytes[0] = sourceIndexBytes[0];
@@ -436,8 +436,8 @@ void RaceDecalManager::Trail::WeldVertices()
 	}
 
 	GolModelBase* previousModel = m_slots[currentIndex].m_model;
-	GdbVertexArray0xc* sourceVertices;
-	GdbVertexArray0xc* previousVertices;
+	GdbVertexArray* sourceVertices;
+	GdbVertexArray* previousVertices;
 	sourceModel->VTable0x28(&sourceVertices);
 	previousModel->VTable0x28(&previousVertices);
 

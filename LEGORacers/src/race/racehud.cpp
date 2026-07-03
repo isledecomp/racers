@@ -10,7 +10,7 @@
 #include "race/racer/racersoundsource.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -1081,8 +1081,8 @@ LegoS32 RaceHud::Initialize(
 	m_soundSource = p_soundSource;
 	m_timeRaceManager = p_timeRaceManager;
 
-	const SlatePeak0x58* renderTargetHeight = p_renderer->GetRenderTargetInfo();
-	const SlatePeak0x58* renderTargetWidth = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTargetHeight = p_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTargetWidth = m_renderer->GetRenderTargetInfo();
 	SetResolution(renderTargetWidth->GetWidth(), renderTargetHeight->GetHeight());
 
 	m_hideRaceInfo = p_hideRaceInfo;

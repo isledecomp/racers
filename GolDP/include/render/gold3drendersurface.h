@@ -2,13 +2,13 @@
 #define GOLD3DRENDERSURFACE_H
 
 #include "decomp.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 class GolD3DRenderDevice;
 
 // VTABLE: GOLDP 0x100566d0
 // SIZE 0x5c
-class GolD3DRenderSurface : public SlatePeak0x58 {
+class GolD3DRenderSurface : public GolRenderTarget {
 public:
 	GolD3DRenderSurface();
 	~GolD3DRenderSurface() override;      // vtable+0x00

@@ -7,7 +7,7 @@
 #include "compat.h"
 #include "core/gol.h"
 #include "decomp.h"
-#include "gdbmodelindexarray0xc.h"
+#include "gdbmodelindexarray.h"
 #include "golanimatedentity.h"
 #include "golmath.h"
 #include "golmodelentity.h"
@@ -73,7 +73,7 @@ class GolModelBase;
 class GolSceneNode;
 class GolBoundedEntity;
 class GolCollidableEntity;
-class GdbVertexArray0xc;
+class GdbVertexArray;
 class GolImageDefinitionList;
 class GolImage;
 class GolMaterial;

@@ -7,7 +7,7 @@
 #include "goltxtparser.h"
 #include "types.h"
 
-class GdbVertexArray0xc;
+class GdbVertexArray;
 class GolRenderDevice;
 class RaceEventRecord;
 
@@ -106,7 +106,7 @@ private:
 
 	undefined4 m_unk0x04;             // 0x04
 	PolygonRange0x14* m_unk0x08;      // 0x08
-	GdbVertexArray0xc* m_unk0x0c;     // 0x0c
+	GdbVertexArray* m_unk0x0c;        // 0x0c
 	undefined4 m_unk0x10;             // 0x10
 	PolygonId0x08* m_unk0x14;         // 0x14
 	GolModelMaterialTable m_unk0x18;  // 0x18

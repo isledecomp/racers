@@ -1,11 +1,10 @@
 #include "menu/menumanager.h"
 
-#include "amethystbreeze0x104.h"
 #include "app/cheatflags.h"
 #include "audio/musicinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbvertexarray.h"
 #include "golanimatedentity.h"
 #include "golbmpwriterfile.h"
 #include "golhashtable.h"
@@ -14,6 +13,7 @@
 #include "golmodelbase.h"
 #include "golmodelentity.h"
 #include "golmodelmaterialtable.h"
+#include "golmodelrenderstate.h"
 #include "golname.h"
 #include "golstream.h"
 #include "goltexture.h"
@@ -558,7 +558,7 @@ void MenuManager::PrepareRaceContext()
 	GolString string;
 	GolRenderDevice::MaterialColor materialColor;
 	GolRenderDevice::Light light;
-	AmethystBreeze0x104 rendererState;
+	GolModelRenderState rendererState;
 	LegoRacers::Context* context = m_gameContext.m_context;
 	ActiveRecordBuffer& selectedRecords = m_gameContext.m_saveSystem.GetActiveRecord();
 
@@ -748,7 +748,7 @@ void MenuManager::PrepareRaceContext()
 void MenuManager::BuildPlayerCarModel(
 	SaveRecordList::Record* p_record,
 	LegoRacers::Context::PlayerSetupSlot* p_slot,
-	AmethystBreeze0x104* p_rendererState
+	GolModelRenderState* p_rendererState
 )
 {
 	GolModelEntity entity;
@@ -810,7 +810,7 @@ void MenuManager::BuildPlayerCarModel(
 	renderer->VTable0x9c(&entity, p_rendererState, 0);
 	entity.VTable0x54();
 
-	GdbVertexArray0xc* vertexArray;
+	GdbVertexArray* vertexArray;
 	p_slot->m_model->VTable0x28(&vertexArray);
 	vertexArray->VTable0x10();
 	p_slot->m_model->VTable0x2c(1, FALSE);
@@ -857,7 +857,7 @@ void MenuManager::ReleasePartResources()
 void MenuManager::BuildPlayerDriverModel(
 	SaveRecordList::Record* p_record,
 	LegoRacers::Context::PlayerSetupSlot* p_slot,
-	AmethystBreeze0x104* p_rendererState
+	GolModelRenderState* p_rendererState
 )
 {
 	GolAnimatedEntity entity;
@@ -924,7 +924,7 @@ void MenuManager::BuildPlayerDriverModel(
 	renderer->VTable0x9c(&entity, p_rendererState, 0);
 	entity.VTable0x54();
 
-	GdbVertexArray0xc* vertexArray;
+	GdbVertexArray* vertexArray;
 	p_slot->m_altModel->VTable0x28(&vertexArray);
 	vertexArray->VTable0x10();
 	p_slot->m_altModel->VTable0x2c(1, FALSE);

@@ -2,7 +2,7 @@
 
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 DECOMP_SIZE_ASSERT(GolCamera, 0x344)
 
@@ -26,7 +26,7 @@ void GolCamera::FUN_10001f60(GolD3DRenderDevice* p_renderer)
 {
 	m_renderer = p_renderer;
 	if (p_renderer != NULL) {
-		const SlatePeak0x58* renderTargetInfo = p_renderer->GetRenderTargetInfo();
+		const GolRenderTarget* renderTargetInfo = p_renderer->GetRenderTargetInfo();
 		if (m_viewport.m_bottom == 0 || m_viewport.m_right == 0) {
 			m_viewport.m_left = 0;
 			m_viewport.m_top = 0;
@@ -318,7 +318,7 @@ void GolCamera::VTable0x20(const GolVec3* p_src, GolVec3* p_dest)
 // FUNCTION: GOLDP 0x10002860
 void GolCamera::FUN_10002860(D3DVIEWPORT2* p_viewport)
 {
-	const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 	p_viewport->dwX = 0;
 	p_viewport->dwY = 0;
 	p_viewport->dwWidth = renderTargetInfo->GetWidth();

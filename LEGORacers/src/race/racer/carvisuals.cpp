@@ -1529,7 +1529,7 @@ void CarVisuals::RebuildEntityGroup()
 }
 
 // FUNCTION: LEGORACERS 0x004400a0
-void CarVisuals::SetColorTransform(ColorTransform0x20* p_transform)
+void CarVisuals::SetColorTransform(ColorTransform* p_transform)
 {
 	m_baseColorTransform = *p_transform;
 
@@ -1553,7 +1553,7 @@ void CarVisuals::ClearColorTransform()
 }
 
 // FUNCTION: LEGORACERS 0x00440100
-void CarVisuals::FlashColor(ColorTransform0x20* p_transform, undefined4 p_durationMs)
+void CarVisuals::FlashColor(ColorTransform* p_transform, undefined4 p_durationMs)
 {
 	m_isFlashing = 1;
 	m_flashTimerMs = p_durationMs;

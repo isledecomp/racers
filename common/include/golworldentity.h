@@ -2,7 +2,7 @@
 #define GOLWORLDENTITY_H
 
 #include "decomp.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbvertexarray.h"
 #include "golmath.h"
 #include "golviewfrustum.h"
 
@@ -33,7 +33,7 @@ public:
 	virtual LegoBool32 VTable0x18(GolWorldEntity* p_model);                      // vtable+0x18
 	virtual void VTable0x1c(GolRenderDevice& p_renderer);                        // vtable+0x1c
 	virtual undefined4 VTable0x20();                                             // vtable+0x20
-	virtual void VTable0x24(ColorTransform0x20* p_transform);                    // vtable+0x24
+	virtual void VTable0x24(ColorTransform* p_transform);                        // vtable+0x24
 	virtual void VTable0x28();                                                   // vtable+0x28
 	virtual void VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const;        // vtable+0x2c
 	virtual void VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const;        // vtable+0x30

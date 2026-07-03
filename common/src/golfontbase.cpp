@@ -10,7 +10,7 @@
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
 #include "surface/gold3dtexture.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include <math.h>
 #include <stdio.h>

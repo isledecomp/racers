@@ -33,11 +33,11 @@ void GdbCommonVertexArray0x1c::VTable0x0c()
 		delete[] m_unk0x18;
 		m_unk0x18 = NULL;
 	}
-	GdbVertexArray0xc::VTable0x0c();
+	GdbVertexArray::VTable0x0c();
 }
 
 // FUNCTION: GOLDP 0x10017050
-void GdbCommonVertexArray0x1c::VTable0x34(const ColorTransform0x20& p_details)
+void GdbCommonVertexArray0x1c::VTable0x34(const ColorTransform& p_details)
 {
 	LegoU32* ptrIn;
 	LegoU32* ptrOut;

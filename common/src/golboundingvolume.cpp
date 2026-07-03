@@ -1,6 +1,6 @@
 #include "golboundingvolume.h"
 
-#include "gdbvertexarray0xc.h"
+#include "gdbvertexarray.h"
 #include "golbinparser.h"
 #include "golcamerabase.h"
 #include "golerror.h"
@@ -86,7 +86,7 @@ void GolBoundingVolume::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* 
 			if (m_unk0x0c != 0) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			m_unk0x0c = new GdbVertexArray0xc;
+			m_unk0x0c = new GdbVertexArray;
 			if (m_unk0x0c == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}

@@ -597,7 +597,7 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 			field0x3e8->ApplyImpulse(&impulse, &impulse);
 
 			CarVisuals* racerCarVisuals = &racer->m_visuals;
-			ColorTransform0x20 transform;
+			ColorTransform transform;
 			transform.m_redOffset = c_colorOffset0xe1;
 			transform.m_redShift = 0;
 			transform.m_grnOffset = c_colorOffset0xe1;

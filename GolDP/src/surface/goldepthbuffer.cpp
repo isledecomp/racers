@@ -1,7 +1,7 @@
 #include "surface/goldepthbuffer.h"
 
 #include "render/goldrawdpstate.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include <string.h>
 
@@ -20,7 +20,7 @@ GolDepthBuffer::~GolDepthBuffer()
 }
 
 // FUNCTION: GOLDP 0x10018370
-LegoS32 GolDepthBuffer::Create(GolDrawDPState* p_arg1, SlatePeak0x58* p_surface)
+LegoS32 GolDepthBuffer::Create(GolDrawDPState* p_arg1, GolRenderTarget* p_surface)
 {
 	LPDIRECTDRAW4 ddraw = p_arg1->m_ddraw4;
 	DDSURFACEDESC2 ddSurfaceDesc;

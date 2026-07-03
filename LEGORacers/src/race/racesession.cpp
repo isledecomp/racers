@@ -31,7 +31,7 @@
 #include "race/hazards/hazardcontext.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 #include "world/golworlddatabase.h"
 
 #include <memory.h>
@@ -1354,7 +1354,7 @@ void RaceSession::DestroyRaceContent()
 // FUNCTION: LEGORACERS 0x00434170
 void RaceSession::CreateCameras()
 {
-	const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 	LegoU32 width = renderTargetInfo->GetWidth();
 	LegoU32 height = renderTargetInfo->GetHeight();
 	LegoU32 i = 0;
@@ -2408,7 +2408,7 @@ void RaceSession::DrawDemoText()
 {
 	if (m_demoMode && m_demoTextMs > c_overlayDrawDelayMs) {
 		GolString string;
-		const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
+		const GolRenderTarget* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 		string.CopyFromBufSelection(m_stringTable.GetStringBuffer(c_overlayStringId), 0);
 
 		LegoS32 textWidth;
@@ -2529,14 +2529,14 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 
 		for (LegoU32 j = 0; j < materials->m_count; j++) {
 			GolMaterial* material = materials->GetMaterial(j);
-			DuskWindName0x8 materialName = material->GetNameRecord();
+			GolMaterial::NameRecord materialName = material->GetNameRecord();
 
 			void* materialPosition;
 			if (surfaceTable->GetNameEntries() == NULL) {
 				materialPosition = NULL;
 			}
 			else {
-				materialPosition = surfaceTable->GetName(materialName.m_unk0x0);
+				materialPosition = surfaceTable->GetName(materialName.m_name);
 			}
 			material->SetUnk0x14(materialPosition);
 			material->EnableFlag0x08Bit18();
@@ -2558,8 +2558,8 @@ void RaceSession::BindCheckpointMaterials()
 		if (materials->GetCount() > 0) {
 			do {
 				GolMaterial* material = materials->GetMaterial(materialIndex);
-				DuskWindName0x8 materialName = material->GetNameRecord();
-				if (materialName.m_unk0x0[0] >= '0' && materialName.m_unk0x0[0] <= '9') {
+				GolMaterial::NameRecord materialName = material->GetNameRecord();
+				if (materialName.m_name[0] >= '0' && materialName.m_name[0] <= '9') {
 					material->SetUnk0x14(m_checkpointGraph.GetCheckpoint(checkpointIndex));
 					material->EnableFlag0x08Bit18();
 					checkpointIndex++;
@@ -2570,7 +2570,7 @@ void RaceSession::BindCheckpointMaterials()
 						materialPosition = NULL;
 					}
 					else {
-						materialPosition = m_surfaceTable.GetName(materialName.m_unk0x0);
+						materialPosition = m_surfaceTable.GetName(materialName.m_name);
 					}
 
 					material->SetUnk0x14(materialPosition);

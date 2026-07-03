@@ -70,9 +70,9 @@ LegoS32 MaterialTable::FindEntryIndexByName(const LegoChar* p_name) const
 	while (TRUE) {
 		GolMaterial* material = static_cast<GolMaterial*>(m_entries[index]);
 		if (material != NULL) {
-			DuskWindName0x8 materialName;
+			GolMaterial::NameRecord materialName;
 			materialName = material->GetNameRecord();
-			if (::strncmp(p_name, materialName.m_unk0x0, sizeof(GolName)) == 0) {
+			if (::strncmp(p_name, materialName.m_name, sizeof(GolName)) == 0) {
 				break;
 			}
 		}

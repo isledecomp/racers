@@ -2,8 +2,8 @@
 
 #include "audio/directsoundconversions.h"
 #include "core/gol.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golanimatedentity.h"
 #include "golmaterial.h"
 #include "golmateriallibrary.h"
@@ -1605,9 +1605,9 @@ void CarBuildModel::BeginModelWrite(GolModelBase* p_model)
 
 	p_model->VTable0x28(&m_modelVertices);
 
-	IGdbModelIndexArray0x8* indexArray;
+	GdbModelIndexArrayBase* indexArray;
 	p_model->VTable0x30(&indexArray);
-	m_modelTriangles = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
+	m_modelTriangles = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
 }
 
 // FUNCTION: LEGORACERS 0x0049a300
@@ -2118,7 +2118,7 @@ void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitiv
 		}
 	}
 
-	GdbModelIndexArray0xc::Indices* indices = &m_modelTriangles[m_modelTriangleCount++];
+	GdbModelIndexArray::Indices* indices = &m_modelTriangles[m_modelTriangleCount++];
 	indices->m_a = static_cast<LegoU8>(batchIndices[0]);
 	indices->m_b = static_cast<LegoU8>(batchIndices[1]);
 	indices->m_c = static_cast<LegoU8>(batchIndices[2]);
@@ -2701,7 +2701,7 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_unk0x04, LegoS32 p_height)
 				m_modelVertices->VTable0x30(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
-				GdbModelIndexArray0xc::Indices* triangles = &m_modelTriangles[m_modelTriangleCount];
+				GdbModelIndexArray::Indices* triangles = &m_modelTriangles[m_modelTriangleCount];
 				triangles[0].m_a = static_cast<LegoU8>(m_batchVertexCount);
 				triangles[0].m_b = static_cast<LegoU8>(m_batchVertexCount + 1);
 				triangles[0].m_c = static_cast<LegoU8>(m_batchVertexCount + 3);
@@ -2909,16 +2909,16 @@ void CarBuildModel::Serialize(LegoU8* p_dest)
 // STUB: LEGORACERS 0x0049c840
 void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_materials, GolTextureList* p_textures)
 {
-	GdbVertexArray0xc* sourceVertices;
-	GdbVertexArray0xc* destVertices;
+	GdbVertexArray* sourceVertices;
+	GdbVertexArray* destVertices;
 	LegoS32 i;
 	LegoS32 materialCount = m_colorTable->GetMaterialCount();
 	const LegoColorTable::MaterialUsage* materialUsage = m_colorTable->GetMaterialUsage();
 	ColorRGBA color;
 	MaterialTable* materialTable = m_colorTable->GetMaterialTable();
 	GolModelBase* outputModel = p_model;
-	IGdbModelIndexArray0x8* sourceIndexArray;
-	IGdbModelIndexArray0x8* destIndexArray;
+	GdbModelIndexArrayBase* sourceIndexArray;
+	GdbModelIndexArrayBase* destIndexArray;
 	GolVec2 texCoord;
 	GolVec3 position;
 	GolVec3 normal;
@@ -2964,13 +2964,11 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 
 	m_model->VTable0x28(&sourceVertices);
 	m_model->VTable0x30(&sourceIndexArray);
-	const GdbModelIndexArray0xc::Indices* sourceIndices =
-		static_cast<GdbModelIndexArray0xc*>(sourceIndexArray)->GetIndices();
+	const GdbModelIndexArray::Indices* sourceIndices = static_cast<GdbModelIndexArray*>(sourceIndexArray)->GetIndices();
 
 	outputModel->VTable0x28(&destVertices);
 	outputModel->VTable0x30(&destIndexArray);
-	GdbModelIndexArray0xc::Indices* destIndices =
-		static_cast<GdbModelIndexArray0xc*>(destIndexArray)->GetMutableIndices();
+	GdbModelIndexArray::Indices* destIndices = static_cast<GdbModelIndexArray*>(destIndexArray)->GetMutableIndices();
 	::memcpy(destIndices, sourceIndices, sizeof(*destIndices) * m_finalTriangleCount);
 
 	for (i = 0; i < static_cast<LegoS32>(m_finalVertexCount); i++) {

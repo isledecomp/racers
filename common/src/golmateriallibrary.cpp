@@ -77,14 +77,10 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 
 	for (i = 0; i < m_numItems; i++) {
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-		DuskWindName0x8 name;
-		::strncpy(
-			name.m_unk0x0,
-			parser->ReadStringWithMaxLength(sizeOfArray(name.m_unk0x0)),
-			sizeOfArray(name.m_unk0x0)
-		);
+		GolMaterial::NameRecord name;
+		::strncpy(name.m_name, parser->ReadStringWithMaxLength(sizeOfArray(name.m_name)), sizeOfArray(name.m_name));
 		GolMaterial* material = GetItem(i);
-		AddName(name.m_unk0x0, material);
+		AddName(name.m_name, material);
 		parser->ReadLeftCurly();
 		GolMaterialParams params(fullIntensity);
 

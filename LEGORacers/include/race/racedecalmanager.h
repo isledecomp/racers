@@ -9,7 +9,7 @@
 
 class GolD3DRenderDevice;
 class GolExport;
-class GdbVertexArray0xc;
+class GdbVertexArray;
 class GolCollidableEntity;
 class GolModelBase;
 struct ColorRGBA;
@@ -90,8 +90,8 @@ public:
 			GolVec3* ComputeQueryPoints();
 
 		private:
-			GdbVertexArray0xc* m_sourceVertices; // 0x114
-			LegoU8* m_sourceIndexBytes;          // 0x118
+			GdbVertexArray* m_sourceVertices; // 0x114
+			LegoU8* m_sourceIndexBytes;       // 0x118
 		};
 
 		enum {

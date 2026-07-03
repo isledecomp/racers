@@ -1,6 +1,6 @@
 #include "core/gol.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golanimatedentity.h"
 #include "golbinparser.h"
 #include "golerror.h"
@@ -405,7 +405,7 @@ void RaceSkyState::LerpColor(const ColorRGBA* p_from, const ColorRGBA* p_to, Col
 // FUNCTION: LEGORACERS 0x0041cfc0
 void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c)
 {
-	GdbVertexArray0xc* vertices;
+	GdbVertexArray* vertices;
 	const ColorRGBA* color = NULL;
 
 	m_domeModel->VTable0x28(&vertices);
@@ -523,7 +523,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		->VTable0x18(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleBudget, groupCount, 1);
 	LegoBool32 reverseWinding = p_params->m_reverseWinding != 0;
 
-	GdbVertexArray0xc* vertices = NULL;
+	GdbVertexArray* vertices = NULL;
 	p_params->m_model->VTable0x28(&vertices);
 
 	ColorRGBA color;
@@ -628,9 +628,9 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		p_params->m_absoluteIndexArray->VTable0x0c(triangleBudget);
 	}
 
-	IGdbModelIndexArray0x8* indexArrayBase = NULL;
+	GdbModelIndexArrayBase* indexArrayBase = NULL;
 	p_params->m_model->VTable0x30(&indexArrayBase);
-	GdbModelIndexArray0xc* indices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
+	GdbModelIndexArray* indices = static_cast<GdbModelIndexArray*>(indexArrayBase);
 
 	LegoU32* groups = p_params->m_model->GetMutableGroups();
 	LegoU32 groupIndex = 0;
@@ -861,7 +861,7 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 	color.m_blu = 0xff;
 	color.m_alp = 0xff;
 
-	GdbVertexArray0xc* vertices;
+	GdbVertexArray* vertices;
 	p_params->m_model->VTable0x28(&vertices);
 
 	LegoFloat textureHalfStep = 1.0f / (static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount)) * 2.0f);
@@ -1008,9 +1008,9 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 		p_params->m_absoluteIndexArray->VTable0x0c(triangleCount);
 	}
 
-	IGdbModelIndexArray0x8* indexArrayBase;
+	GdbModelIndexArrayBase* indexArrayBase;
 	p_params->m_model->VTable0x30(&indexArrayBase);
-	GdbModelIndexArray0xc* indices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
+	GdbModelIndexArray* indices = static_cast<GdbModelIndexArray*>(indexArrayBase);
 
 	LegoU32* groups = p_params->m_model->GetMutableGroups();
 	LegoU32 groupIndex = 0;

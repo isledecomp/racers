@@ -1,25 +1,25 @@
-#include "gdbmodelindexarray0xc.h"
+#include "gdbmodelindexarray.h"
 
 #include "golerror.h"
 #include "golfileparser.h"
 
-DECOMP_SIZE_ASSERT(GdbModelIndexArray0xc, 0xc)
-DECOMP_SIZE_ASSERT(GdbModelIndexArray0xc::Indices, 0x4)
+DECOMP_SIZE_ASSERT(GdbModelIndexArray, 0xc)
+DECOMP_SIZE_ASSERT(GdbModelIndexArray::Indices, 0x4)
 
 // FUNCTION: GOLDP 0x1002b310
-GdbModelIndexArray0xc::GdbModelIndexArray0xc()
+GdbModelIndexArray::GdbModelIndexArray()
 {
 	m_unk0x08 = NULL;
 }
 
 // FUNCTION: GOLDP 0x1002b350
-GdbModelIndexArray0xc::~GdbModelIndexArray0xc()
+GdbModelIndexArray::~GdbModelIndexArray()
 {
 	VTable0x08();
 }
 
 // FUNCTION: GOLDP 0x1002b3c0
-void GdbModelIndexArray0xc::VTable0x04(GolFileParser& p_parser)
+void GdbModelIndexArray::VTable0x04(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
@@ -53,7 +53,7 @@ void GdbModelIndexArray0xc::VTable0x04(GolFileParser& p_parser)
 
 // FUNCTION: GOLDP 0x1002bfb0 FOLDED
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED
-void GdbModelIndexArray0xc::VTable0x08()
+void GdbModelIndexArray::VTable0x08()
 {
 	if (m_unk0x08 != NULL) {
 		delete[] m_unk0x08;
@@ -62,7 +62,7 @@ void GdbModelIndexArray0xc::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x1002b490
-void GdbModelIndexArray0xc::VTable0x0c(LegoU32 p_count)
+void GdbModelIndexArray::VTable0x0c(LegoU32 p_count)
 {
 	if (m_unk0x04 != 0) {
 		VTable0x08();

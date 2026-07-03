@@ -35,7 +35,7 @@
 #include "types.h"
 #include "util/stackoflegou16.h"
 
-class AmethystBreeze0x104;
+class GolModelRenderState;
 class GolExport;
 class MenuGameScreen;
 class SoundGroup;
@@ -92,14 +92,14 @@ private:
 	void BuildPlayerCarModel(
 		SaveRecordList::Record* p_record,
 		LegoRacers::Context::PlayerSetupSlot* p_slot,
-		AmethystBreeze0x104* p_rendererState
+		GolModelRenderState* p_rendererState
 	);
 	void LoadPartResources(LegoBool32 p_arg);
 	void ReleasePartResources();
 	void BuildPlayerDriverModel(
 		SaveRecordList::Record* p_record,
 		LegoRacers::Context::PlayerSetupSlot* p_slot,
-		AmethystBreeze0x104* p_rendererState
+		GolModelRenderState* p_rendererState
 	);
 
 	MenuGameContext m_gameContext;               // 0x04

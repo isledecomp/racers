@@ -3,7 +3,7 @@
 
 #include "golimgfile.h"
 
-class SlatePeak0x58;
+class GolRenderTarget;
 
 // VTABLE: LEGORACERS 0x004af5c0
 // SIZE 0x5b4
@@ -12,10 +12,10 @@ public:
 	GolImgFileWriter();
 	~GolImgFileWriter() override;
 
-	void VTable0x08(const LegoChar* p_fileName) override;          // vtable+0x08
-	void Destroy() override;                                       // vtable+0x0c
-	const LegoChar* GetSuffix() override = 0;                      // vtable+0x10
-	virtual void WriteSurface(const SlatePeak0x58* p_surface) = 0; // vtable+0x24
+	void VTable0x08(const LegoChar* p_fileName) override;            // vtable+0x08
+	void Destroy() override;                                         // vtable+0x0c
+	const LegoChar* GetSuffix() override = 0;                        // vtable+0x10
+	virtual void WriteSurface(const GolRenderTarget* p_surface) = 0; // vtable+0x24
 
 	// SYNTHETIC: LEGORACERS 0x0040d2c0
 	// GolImgFileWriter::`scalar deleting destructor'

@@ -5,7 +5,7 @@
 #include "golstringtable.h"
 #include "race/racestate.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include <memory.h>
 #include <stdio.h>
@@ -171,7 +171,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 	LegoU32 selected[c_racerCount];
 	Racer::StandingsDeltaEntry deltaEntries[c_racerCount];
 	GolD3DRenderDevice* renderer = m_context->m_golApp->GetRenderer();
-	const SlatePeak0x58* renderTargetInfo = renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTargetInfo = renderer->GetRenderTargetInfo();
 
 	if (!m_isVisible) {
 		return;

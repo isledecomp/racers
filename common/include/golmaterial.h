@@ -41,15 +41,15 @@ struct GolMaterialParams {
 	undefined m_unk0x13;
 };
 
-// SIZE 0x8
-struct DuskWindName0x8 {
-	GolName m_unk0x0;
-};
-
 // VTABLE: GOLDP 0x10057030
 // SIZE 0x24
 class GolMaterial {
 public:
+	// SIZE 0x8
+	struct NameRecord {
+		GolName m_name; // 0x0
+	};
+
 	enum {
 		c_flagBit0 = 1 << 0,
 		c_flagBit7 = 1 << 7,
@@ -96,9 +96,9 @@ public:
 	undefined GetAlphaRef() const { return m_unk0x21; }
 	undefined GetSrcBlend() const { return m_unk0x22; }
 	undefined GetDestBlend() const { return m_unk0x23; }
-	const LegoChar* GetName() const { return m_unk0x18.m_unk0x0; }
-	const DuskWindName0x8& GetNameRecord() const { return m_unk0x18; }
-	void SetName(const LegoChar* p_name) { ::memcpy(m_unk0x18.m_unk0x0, p_name, sizeof(GolName)); }
+	const LegoChar* GetName() const { return m_unk0x18.m_name; }
+	const GolMaterial::NameRecord& GetNameRecord() const { return m_unk0x18; }
+	void SetName(const LegoChar* p_name) { ::memcpy(m_unk0x18.m_name, p_name, sizeof(GolName)); }
 	void SetUnk0x14(void* p_unk0x14) { m_unk0x14 = p_unk0x14; }
 	void EnableFlag0x08Bit18() { m_unk0x08 |= c_flag0x08Bit18; }
 
@@ -117,7 +117,7 @@ protected:
 	DuskwindBananaRelicColor m_unk0x0c;
 	DuskwindBananaRelicColor m_unk0x10;
 	void* m_unk0x14;
-	DuskWindName0x8 m_unk0x18;
+	GolMaterial::NameRecord m_unk0x18;
 	undefined m_unk0x20;
 	undefined m_unk0x21;
 	undefined m_unk0x22;

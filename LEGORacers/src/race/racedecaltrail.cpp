@@ -1,6 +1,6 @@
 #include "decomp.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golboundingshape.h"
 #include "golcollidableentity.h"
 #include "golmaterial.h"
@@ -240,15 +240,15 @@ void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_unk0x04)
 
 	p_unk0x04->VTable0x28(&m_sourceVertices);
 
-	IGdbModelIndexArray0x8* indexArrayBase;
+	GdbModelIndexArrayBase* indexArrayBase;
 	p_unk0x04->VTable0x30(&indexArrayBase);
-	m_sourceIndexBytes = static_cast<GdbModelIndexArray0xc*>(indexArrayBase)->GetIndexBytes();
+	m_sourceIndexBytes = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetIndexBytes();
 
 	GolModelBase* model = m_model;
 	model->VTable0x28(&m_vertices);
 
 	m_model->VTable0x30(&indexArrayBase);
-	LegoU8* destIndexBytes = static_cast<GdbModelIndexArray0xc*>(indexArrayBase)->GetIndexBytes();
+	LegoU8* destIndexBytes = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetIndexBytes();
 
 	m_vertexCount = 0;
 	m_batchFirstVertex = 0;

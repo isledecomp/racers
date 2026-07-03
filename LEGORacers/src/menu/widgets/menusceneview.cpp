@@ -6,7 +6,7 @@
 #include "golerror.h"
 #include "golworldentity.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 #include "world/golworlddatabase.h"
 
 DECOMP_SIZE_ASSERT(MenuSceneView, 0xdc)
@@ -323,7 +323,7 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00465e40
 void MenuSceneView::ClampToScreen(Rect* p_rect)
 {
-	const SlatePeak0x58* renderTarget = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTarget = m_renderer->GetRenderTargetInfo();
 
 	if (p_rect->m_left < 0) {
 		p_rect->m_left = 0;

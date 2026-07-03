@@ -1,4 +1,4 @@
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 #include "golerror.h"
 #include "render/golcommondrawstate.h"
@@ -8,10 +8,10 @@
 #include <stdio.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(SlatePeak0x58, 0x58)
+DECOMP_SIZE_ASSERT(GolRenderTarget, 0x58)
 
 // FUNCTION: GOLDP 0x10003110
-SlatePeak0x58::SlatePeak0x58()
+GolRenderTarget::GolRenderTarget()
 {
 	m_drawState = NULL;
 	m_displaySurface = NULL;
@@ -21,13 +21,13 @@ SlatePeak0x58::SlatePeak0x58()
 }
 
 // FUNCTION: GOLDP 0x10003190
-SlatePeak0x58::~SlatePeak0x58()
+GolRenderTarget::~GolRenderTarget()
 {
-	SlatePeak0x58::VTable0x34();
+	GolRenderTarget::VTable0x34();
 }
 
 // FUNCTION: GOLDP 0x100031f0
-void SlatePeak0x58::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, undefined4 p_height, undefined4)
+void GolRenderTarget::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, undefined4 p_height, undefined4)
 {
 	DDSURFACEDESC2 surfaceDesc;
 	LegoChar errorMessage[100];
@@ -185,7 +185,7 @@ void SlatePeak0x58::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, un
 }
 
 // FUNCTION: GOLDP 0x10003680
-void SlatePeak0x58::VTable0x34()
+void GolRenderTarget::VTable0x34()
 {
 	m_palette.Release();
 
@@ -210,11 +210,11 @@ void SlatePeak0x58::VTable0x34()
 	}
 
 	m_drawState = NULL;
-	AzureRidge0x38::VTable0x34();
+	GolDisplaySurface::VTable0x34();
 }
 
 // FUNCTION: GOLDP 0x100036e0
-void SlatePeak0x58::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
+void GolRenderTarget::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
 {
 	DDSURFACEDESC2 surfaceDesc;
 
@@ -277,7 +277,7 @@ void SlatePeak0x58::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_fl
 }
 
 // FUNCTION: GOLDP 0x10003820
-void SlatePeak0x58::UnlockPixels()
+void GolRenderTarget::UnlockPixels()
 {
 	if (m_pixelFlags & c_lockFlagLocked) {
 		if (m_textureFormat.m_bitsPerPixel == 8 && m_palette.GetPalette() == NULL) {
@@ -294,7 +294,7 @@ void SlatePeak0x58::UnlockPixels()
 }
 
 // FUNCTION: GOLDP 0x10003880
-void SlatePeak0x58::SetDisplayPalette(GolD3DRenderDevice* p_renderer)
+void GolRenderTarget::SetDisplayPalette(GolD3DRenderDevice* p_renderer)
 {
 	LegoChar errorMessage[64];
 
@@ -317,7 +317,7 @@ void SlatePeak0x58::SetDisplayPalette(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: GOLDP 0x10003900
-void SlatePeak0x58::LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
+void GolRenderTarget::LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
 {
 	DDSURFACEDESC2 surfaceDesc;
 
@@ -380,7 +380,7 @@ void SlatePeak0x58::LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p
 }
 
 // FUNCTION: GOLDP 0x10003a40
-void SlatePeak0x58::UnlockAuxPixels()
+void GolRenderTarget::UnlockAuxPixels()
 {
 	if (m_auxFlags & c_lockFlagLocked) {
 		if (m_displaySurface->Unlock(NULL)) {
@@ -393,7 +393,7 @@ void SlatePeak0x58::UnlockAuxPixels()
 }
 
 // FUNCTION: GOLDP 0x10003a80
-void SlatePeak0x58::VTable0x14(undefined4 p_wait)
+void GolRenderTarget::VTable0x14(undefined4 p_wait)
 {
 	RECT destRect;
 
@@ -467,7 +467,7 @@ void SlatePeak0x58::VTable0x14(undefined4 p_wait)
 }
 
 // FUNCTION: GOLDP 0x10003bf0
-void SlatePeak0x58::VTable0x18()
+void GolRenderTarget::VTable0x18()
 {
 	if (m_pixelFlags & c_lockFlagUnknown0x04) {
 		LegoChar errorMessage[100];
@@ -493,7 +493,7 @@ void SlatePeak0x58::VTable0x18()
 }
 
 // FUNCTION: GOLDP 0x10003c70
-LegoS32 SlatePeak0x58::AttachDepthBuffer(GolDepthBuffer* p_depthBuffer)
+LegoS32 GolRenderTarget::AttachDepthBuffer(GolDepthBuffer* p_depthBuffer)
 {
 	LPDIRECTDRAWSURFACE4 surface = p_depthBuffer->m_surface;
 	if (m_renderSurface->AddAttachedSurface(surface)) {
@@ -505,14 +505,14 @@ LegoS32 SlatePeak0x58::AttachDepthBuffer(GolDepthBuffer* p_depthBuffer)
 }
 
 // FUNCTION: GOLDP 0x10003ca0
-void SlatePeak0x58::DetachDepthBuffer(GolDepthBuffer* p_depthBuffer)
+void GolRenderTarget::DetachDepthBuffer(GolDepthBuffer* p_depthBuffer)
 {
 	m_renderSurface->DeleteAttachedSurface(0, p_depthBuffer->m_surface);
 	m_depthBuffer = NULL;
 }
 
 // FUNCTION: GOLDP 0x10003cd0
-GolPaletteBase* SlatePeak0x58::GetPalette()
+GolPaletteBase* GolRenderTarget::GetPalette()
 {
 	if (m_palette.GetPalette()) {
 		return &m_palette;
@@ -522,7 +522,7 @@ GolPaletteBase* SlatePeak0x58::GetPalette()
 }
 
 // FUNCTION: GOLDP 0x10003ce0
-void SlatePeak0x58::Fill(LegoU32 p_color)
+void GolRenderTarget::Fill(LegoU32 p_color)
 {
 	DDBLTFX bltFx;
 	LegoChar errorMessage[100];
@@ -550,7 +550,7 @@ void SlatePeak0x58::Fill(LegoU32 p_color)
 }
 
 // FUNCTION: GOLDP 0x10003d80
-void SlatePeak0x58::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p_sourceRect)
+void GolRenderTarget::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p_sourceRect)
 {
 	RECT destRect;
 	RECT sourceRect;
@@ -574,7 +574,7 @@ void SlatePeak0x58::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p_s
 		VTable0x18();
 	}
 
-	SlatePeak0x58* source = static_cast<SlatePeak0x58*>(p_source);
+	GolRenderTarget* source = static_cast<GolRenderTarget*>(p_source);
 	if (source->m_pixelFlags & c_lockFlagUnknown0x04) {
 		source->VTable0x18();
 	}
@@ -599,7 +599,7 @@ void SlatePeak0x58::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p_s
 }
 
 // FUNCTION: GOLDP 0x10003e90
-void SlatePeak0x58::VTable0x2c()
+void GolRenderTarget::VTable0x2c()
 {
 	DDBLTFX bltFx;
 	RECT sourceRect;

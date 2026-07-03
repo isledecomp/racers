@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "surface/azureridge0x38.h"
+#include "surface/goldisplaysurface.h"
 #include "types.h"
 
 #include <windows.h>
@@ -63,11 +63,11 @@ public:
 
 	LegoU32 GetFlags() const { return m_flags; }
 
-	LegoS32 m_width;           // 0x04
-	LegoS32 m_height;          // 0x08
-	undefined4 m_bpp;          // 0x0c
-	LegoU32 m_flags;           // 0x10
-	AzureRidge0x38* m_unk0x14; // 0x14
+	LegoS32 m_width;              // 0x04
+	LegoS32 m_height;             // 0x08
+	undefined4 m_bpp;             // 0x0c
+	LegoU32 m_flags;              // 0x10
+	GolDisplaySurface* m_unk0x14; // 0x14
 };
 
 #endif // GOLDP_GOLSTATE_H

@@ -6,7 +6,7 @@
 #include "golboundingshape.h"
 #include "golmodelbase.h"
 
-class GdbVertexArray0xc;
+class GdbVertexArray;
 class GolD3DRenderDevice;
 struct MaterialTable;
 
@@ -62,13 +62,13 @@ public:
 		GolBoundingShape::StructField0x08::Node* p_node
 	);
 	LegoU32 FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const;
-	GdbVertexArray0xc* GetModelVertexArray() const { return m_unk0x40; }
+	GdbVertexArray* GetModelVertexArray() const { return m_unk0x40; }
 
 	// SYNTHETIC: GOLDP 0x100178e0
 	// GolModel::`vector deleting destructor'
 
 private:
-	GdbVertexArray0xc* m_unk0x40;     // 0x40
+	GdbVertexArray* m_unk0x40;        // 0x40
 	undefined m_unk0x44[0x48 - 0x44]; // 0x44
 };
 

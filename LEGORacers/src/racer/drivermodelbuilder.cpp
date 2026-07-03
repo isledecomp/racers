@@ -1,8 +1,9 @@
 #include "racer/drivermodelbuilder.h"
 
 #include "core/gol.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbmodelindexarraybase.h"
+#include "gdbvertexarray.h"
 #include "golbmpfile.h"
 #include "golerror.h"
 #include "golhashtable.h"
@@ -12,7 +13,6 @@
 #include "golmodelmaterialtable.h"
 #include "golname.h"
 #include "golstream.h"
-#include "igdbmodelindexarray0x8.h"
 #include "material/goltexturelist.h"
 #include "mesh/golmodel.h"
 #include "racer/drivercosmetics.h"
@@ -196,7 +196,7 @@ void DriverModelBuilder::SummarizeModel(GolModelBase* p_model, ModelSummary* p_s
 {
 	p_summary->m_model = p_model;
 
-	GdbVertexArray0xc* vertexArray;
+	GdbVertexArray* vertexArray;
 	p_model->VTable0x28(&vertexArray);
 	p_summary->m_vertexCount = vertexArray->GetCount();
 	p_model->VTable0x2c(0, FALSE);
@@ -229,10 +229,9 @@ void DriverModelBuilder::MergeHeadMaterials()
 			continue;
 		}
 
-		DuskWindName0x8 materialName;
+		GolMaterial::NameRecord materialName;
 		materialName = material->GetNameRecord();
-		LegoS32 existingIndex =
-			m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(materialName.m_unk0x0);
+		LegoS32 existingIndex = m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(materialName.m_name);
 		if (existingIndex == -1 || existingIndex >= outputIndex) {
 			LegoS32 setIndex = outputIndex++;
 			m_outputSummary.m_model->GetMaterialTable()->SetPosition(setIndex, material);
@@ -247,8 +246,8 @@ LegoBool32 DriverModelBuilder::NeedsNewOutputModel(GolModelBase* p_model) const
 	LegoBool32 result = TRUE;
 
 	if (p_model != NULL && p_model->GetGroups() != NULL) {
-		GdbVertexArray0xc* bodyVertexArray;
-		GdbVertexArray0xc* existingVertexArray;
+		GdbVertexArray* bodyVertexArray;
+		GdbVertexArray* existingVertexArray;
 		bodyModel->VTable0x28(&bodyVertexArray);
 		p_model->VTable0x28(&existingVertexArray);
 		result = bodyVertexArray->GetVertexType() != existingVertexArray->GetVertexType();
@@ -272,7 +271,7 @@ GolModelBase* DriverModelBuilder::CreateOutputModel(undefined4 p_vertexType)
 	LegoS32 groupCount = m_headSummary.m_groupCount + m_bodySummary.m_groupCount + 9;
 	LegoS32 materialCount = m_headSummary.m_materialCount + m_bodySummary.m_materialCount + 2;
 
-	GdbVertexArray0xc* vertexArray;
+	GdbVertexArray* vertexArray;
 	m_bodySummary.m_model->VTable0x28(&vertexArray);
 	if (static_cast<undefined2>(p_vertexType) == 0) {
 		p_vertexType = vertexArray->GetVertexType();
@@ -298,8 +297,8 @@ void DriverModelBuilder::CopyModelVertices(
 	LegoU32 p_vertexOffset
 )
 {
-	GdbVertexArray0xc* sourceVertices;
-	GdbVertexArray0xc* destVertices;
+	GdbVertexArray* sourceVertices;
+	GdbVertexArray* destVertices;
 	ColorRGBA color;
 	GolVec2 texCoord;
 	GolVec3 position;
@@ -331,18 +330,18 @@ void DriverModelBuilder::CopyModelVertices(
 // STUB: LEGORACERS 0x0049d880
 void DriverModelBuilder::CopyModelIndices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset)
 {
-	IGdbModelIndexArray0x8* sourceIndexArrayBase;
-	IGdbModelIndexArray0x8* destIndexArrayBase;
+	GdbModelIndexArrayBase* sourceIndexArrayBase;
+	GdbModelIndexArrayBase* destIndexArrayBase;
 	p_sourceModel->VTable0x30(&sourceIndexArrayBase);
 	p_destModel->VTable0x30(&destIndexArrayBase);
 
-	GdbModelIndexArray0xc* sourceIndexArray = static_cast<GdbModelIndexArray0xc*>(sourceIndexArrayBase);
-	GdbModelIndexArray0xc* destIndexArray = static_cast<GdbModelIndexArray0xc*>(destIndexArrayBase);
+	GdbModelIndexArray* sourceIndexArray = static_cast<GdbModelIndexArray*>(sourceIndexArrayBase);
+	GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
 
 	for (LegoU32 i = 0; i < sourceIndexArrayBase->GetCount(); i++) {
-		const GdbModelIndexArray0xc::Indices* sourceIndices = sourceIndexArray->GetIndex(i);
+		const GdbModelIndexArray::Indices* sourceIndices = sourceIndexArray->GetIndex(i);
 		if (sourceIndices != NULL) {
-			GdbModelIndexArray0xc::Indices* destIndices = destIndexArray->GetMutableIndex(p_indexOffset + i);
+			GdbModelIndexArray::Indices* destIndices = destIndexArray->GetMutableIndex(p_indexOffset + i);
 			destIndices->m_a = sourceIndices->m_a;
 			destIndices->m_b = sourceIndices->m_b;
 			destIndices->m_c = sourceIndices->m_c;
@@ -390,10 +389,10 @@ void DriverModelBuilder::ReplaceMaterialTexture(GolMaterial* p_material, const L
 	for (LegoS32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
 		GolMaterial* material = materialTable->GetMaterial(materialIndex);
 		if (material != NULL) {
-			DuskWindName0x8 materialName;
+			GolMaterial::NameRecord materialName;
 			materialName = material->GetNameRecord();
 
-			if (::strncmp(p_name, materialName.m_unk0x0, sizeof(GolName)) == 0) {
+			if (::strncmp(p_name, materialName.m_name, sizeof(GolName)) == 0) {
 				p_material->CopyParamsTo(params);
 				params->m_unk0x08.m_unk0x3 = m_defaultMaterialParams.m_unk0x08.m_unk0x3;
 				params->m_unk0x08.m_unk0x0 = m_defaultMaterialParams.m_unk0x08.m_unk0x0;
@@ -547,10 +546,10 @@ void DriverModelBuilder::CopyGroupsUntilFace()
 			}
 			else if (groupType == GolModel::c_groupTypeMaterial) {
 				GolMaterial* material = m_headSummary.m_model->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
-				DuskWindName0x8 materialName;
+				GolMaterial::NameRecord materialName;
 				materialName = material->GetNameRecord();
 				group = GolModel::c_groupTypeMaterial |
-						(m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(materialName.m_unk0x0) &
+						(m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(materialName.m_name) &
 						 0x00ffffff);
 			}
 			else if (groupType) {

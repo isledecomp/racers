@@ -1,7 +1,8 @@
 #include "racer/driverpartresources.h"
 
 #include "core/gol.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarraybase.h"
+#include "gdbvertexarray.h"
 #include "golanimatedentity.h"
 #include "golerror.h"
 #include "golhashtable.h"
@@ -11,7 +12,6 @@
 #include "golmodelmaterialtable.h"
 #include "golname.h"
 #include "golstream.h"
-#include "igdbmodelindexarray0x8.h"
 #include "material/goltexturelist.h"
 #include "racer/driverpartcatalog.h"
 #include "render/gold3drenderdevice.h"
@@ -201,11 +201,11 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 		if (materialCount > 1) {
 			do {
 				GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetPosition(materialIndex));
-				DuskWindName0x8 materialName;
+				GolMaterial::NameRecord materialName;
 				materialName = material->GetNameRecord();
 
 				if (material != NULL) {
-					if (::strncmp(materialName.m_unk0x0, "face", sizeof(GolName)) == 0) {
+					if (::strncmp(materialName.m_name, "face", sizeof(GolName)) == 0) {
 						GolMaterial* firstMaterial = static_cast<GolMaterial*>(materialTable->GetPosition(0));
 						materialTable->SetPosition(0, material);
 						materialTable->SetPosition(materialIndex, firstMaterial);
@@ -227,7 +227,7 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 // FUNCTION: LEGORACERS 0x00498300
 void DriverPartResources::ComputeMaxVertexCounts()
 {
-	GdbVertexArray0xc* vertexArray;
+	GdbVertexArray* vertexArray;
 	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetAnimatedEntityCount());
 		 bodyIndex++) {
 		GolModelBase* model = GetBodyModel(bodyIndex);

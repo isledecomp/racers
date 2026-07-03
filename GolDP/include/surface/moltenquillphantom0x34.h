@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "golsurface.h"
 
-class SlatePeak0x58;
+class GolRenderTarget;
 
 // VTABLE: GOLDP 0x100577bc
 // SIZE 0x34
@@ -16,7 +16,7 @@ public:
 	// MoltenQuillPhantom0x34::`scalar deleting destructor'
 
 protected:
-	SlatePeak0x58* m_attachedSurface; // 0x30
+	GolRenderTarget* m_attachedSurface; // 0x30
 };
 
 #endif // MOLTENQUILLPHANTOM0X34_H

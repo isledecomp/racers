@@ -1,4 +1,4 @@
-#include "amethystbreeze0x104.h"
+#include "golmodelrenderstate.h"
 
 #include "golmaterial.h"
 #include "golmodelbase.h"
@@ -6,32 +6,32 @@
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(AmethystBreeze0x104, 0x104)
+DECOMP_SIZE_ASSERT(GolModelRenderState, 0x104)
 DECOMP_SIZE_ASSERT(GolD3DRenderState::CommandVertex, 0x20)
 DECOMP_SIZE_ASSERT(GolD3DRenderState::MaterialCommand, 0x1c)
 DECOMP_SIZE_ASSERT(GolD3DRenderState::DrawCommand, 0x1c)
 
 // GLOBAL: GOLDP 0x1005ce10
 // GLOBAL: LEGORACERS 0x004be2d8
-AmethystBreeze0x104::DrawFunction AmethystBreeze0x104::g_drawFunctions[8] = {
-	&AmethystBreeze0x104::FUN_0040edb0,
-	&AmethystBreeze0x104::FUN_0040ede0,
-	&AmethystBreeze0x104::FUN_0040ef10,
-	&AmethystBreeze0x104::FUN_0040f0a0,
-	&AmethystBreeze0x104::FUN_0040f280,
-	&AmethystBreeze0x104::FUN_0040f4c0,
-	&AmethystBreeze0x104::FUN_0040f760,
-	&AmethystBreeze0x104::FUN_0040fa50,
+GolModelRenderState::DrawFunction GolModelRenderState::g_drawFunctions[8] = {
+	&GolModelRenderState::FUN_0040edb0,
+	&GolModelRenderState::FUN_0040ede0,
+	&GolModelRenderState::FUN_0040ef10,
+	&GolModelRenderState::FUN_0040f0a0,
+	&GolModelRenderState::FUN_0040f280,
+	&GolModelRenderState::FUN_0040f4c0,
+	&GolModelRenderState::FUN_0040f760,
+	&GolModelRenderState::FUN_0040fa50,
 };
 
 // FUNCTION: LEGORACERS 0x0040ead0
-AmethystBreeze0x104::AmethystBreeze0x104()
+GolModelRenderState::GolModelRenderState()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0040eaf0
-void AmethystBreeze0x104::Reset()
+void GolModelRenderState::Reset()
 {
 	m_materialColorValue.m_red = 0xff;
 	m_materialColorValue.m_grn = 0xff;
@@ -54,13 +54,13 @@ void AmethystBreeze0x104::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0040eb60
-void AmethystBreeze0x104::FUN_0040eb60()
+void GolModelRenderState::FUN_0040eb60()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0040eb70
-void AmethystBreeze0x104::FUN_0040eb70(const GolRenderDevice::MaterialColor* p_material)
+void GolModelRenderState::FUN_0040eb70(const GolRenderDevice::MaterialColor* p_material)
 {
 	m_materialColor = p_material;
 	m_materialColorValue = p_material->GetColor();
@@ -69,7 +69,7 @@ void AmethystBreeze0x104::FUN_0040eb70(const GolRenderDevice::MaterialColor* p_m
 }
 
 // FUNCTION: LEGORACERS 0x0040eba0
-void AmethystBreeze0x104::FUN_0040eba0(const GolRenderDevice::Light* p_light)
+void GolModelRenderState::FUN_0040eba0(const GolRenderDevice::Light* p_light)
 {
 	if (m_lightCount < sizeOfArray(m_lights)) {
 		m_lightColors[m_lightCount] = p_light->GetColor();
@@ -82,7 +82,7 @@ void AmethystBreeze0x104::FUN_0040eba0(const GolRenderDevice::Light* p_light)
 }
 
 // STUB: LEGORACERS 0x0040ec00
-void AmethystBreeze0x104::UpdateMaterialCaches()
+void GolModelRenderState::UpdateMaterialCaches()
 {
 	GolMaterial* activeMaterial = m_activeMaterial;
 	LegoU32 zero = 0;
@@ -134,20 +134,20 @@ void AmethystBreeze0x104::UpdateMaterialCaches()
 }
 
 // FUNCTION: LEGORACERS 0x0040ed40
-void AmethystBreeze0x104::VTable0x00(GolD3DRenderDevice*, GolModelEntity* p_model, LegoU32 p_lodIndex)
+void GolModelRenderState::VTable0x00(GolD3DRenderDevice*, GolModelEntity* p_model, LegoU32 p_lodIndex)
 {
 	m_model = p_model->GetModel(p_lodIndex);
 	m_model->VTable0x28(&m_vertexArray);
 }
 
 // FUNCTION: LEGORACERS 0x0040ed60
-void AmethystBreeze0x104::VTable0x04(GolD3DRenderDevice*, GolModelEntity*, LegoU32)
+void GolModelRenderState::VTable0x04(GolD3DRenderDevice*, GolModelEntity*, LegoU32)
 {
 	m_model->VTable0x2c(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0040ed70
-void AmethystBreeze0x104::VTable0x08(DrawCommand* p_command)
+void GolModelRenderState::VTable0x08(DrawCommand* p_command)
 {
 	if (p_command->m_material != m_activeMaterial) {
 		m_activeMaterial = p_command->m_material;
@@ -164,20 +164,20 @@ void AmethystBreeze0x104::VTable0x08(DrawCommand* p_command)
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void AmethystBreeze0x104::VTable0x0c(MaterialCommand*)
+void GolModelRenderState::VTable0x0c(MaterialCommand*)
 {
 	// empty
 }
 
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
-undefined4 AmethystBreeze0x104::VTable0x10(DrawCommand*)
+undefined4 GolModelRenderState::VTable0x10(DrawCommand*)
 {
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x10024780
 // FUNCTION: LEGORACERS 0x0040edb0
-void AmethystBreeze0x104::FUN_0040edb0(const CommandVertex*, LegoU32, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+void GolModelRenderState::FUN_0040edb0(const CommandVertex*, LegoU32, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	for (LegoU32 i = p_firstVertex; i < p_firstVertex + p_vertexCount; i++) {
 		m_vertexArray->VTable0x30(i, m_activeMaterialColor);
@@ -186,7 +186,7 @@ void AmethystBreeze0x104::FUN_0040edb0(const CommandVertex*, LegoU32, LegoU32 p_
 
 // FUNCTION: GOLDP 0x100247b0
 // FUNCTION: LEGORACERS 0x0040ede0
-void AmethystBreeze0x104::FUN_0040ede0(
+void GolModelRenderState::FUN_0040ede0(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
 	LegoU32 p_firstVertex,
@@ -248,7 +248,7 @@ void AmethystBreeze0x104::FUN_0040ede0(
 
 // STUB: GOLDP 0x100248e0
 // STUB: LEGORACERS 0x0040ef10
-void AmethystBreeze0x104::FUN_0040ef10(
+void GolModelRenderState::FUN_0040ef10(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
 	LegoU32 p_firstVertex,
@@ -316,7 +316,7 @@ void AmethystBreeze0x104::FUN_0040ef10(
 
 // STUB: GOLDP 0x10024a70
 // STUB: LEGORACERS 0x0040f0a0
-void AmethystBreeze0x104::FUN_0040f0a0(
+void GolModelRenderState::FUN_0040f0a0(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
 	LegoU32 p_firstVertex,
@@ -390,7 +390,7 @@ void AmethystBreeze0x104::FUN_0040f0a0(
 
 // STUB: GOLDP 0x10024c50
 // STUB: LEGORACERS 0x0040f280
-void AmethystBreeze0x104::FUN_0040f280(
+void GolModelRenderState::FUN_0040f280(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
 	LegoU32 p_firstVertex,
@@ -470,7 +470,7 @@ void AmethystBreeze0x104::FUN_0040f280(
 
 // STUB: GOLDP 0x10024e90
 // STUB: LEGORACERS 0x0040f4c0
-void AmethystBreeze0x104::FUN_0040f4c0(
+void GolModelRenderState::FUN_0040f4c0(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
 	LegoU32 p_firstVertex,
@@ -556,7 +556,7 @@ void AmethystBreeze0x104::FUN_0040f4c0(
 
 // STUB: GOLDP 0x10025130
 // STUB: LEGORACERS 0x0040f760
-void AmethystBreeze0x104::FUN_0040f760(
+void GolModelRenderState::FUN_0040f760(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
 	LegoU32 p_firstVertex,
@@ -648,7 +648,7 @@ void AmethystBreeze0x104::FUN_0040f760(
 
 // STUB: GOLDP 0x10025420
 // STUB: LEGORACERS 0x0040fa50
-void AmethystBreeze0x104::FUN_0040fa50(
+void GolModelRenderState::FUN_0040fa50(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
 	LegoU32 p_firstVertex,

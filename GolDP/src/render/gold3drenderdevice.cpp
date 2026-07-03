@@ -3,8 +3,8 @@
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "camera/goltransform.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golboundingshape.h"
 #include "golcollidableentity.h"
 #include "golerror.h"
@@ -478,7 +478,7 @@ GolCommonDrawState* GolD3DRenderDevice::GetDrawState()
 }
 
 // FUNCTION: GOLDP 0x10007d90
-LegoS32 GolD3DRenderDevice::FUN_10007d90(GolDrawDPState* p_drawState, SlatePeak0x58* p_parg2, LegoU32 p_flags)
+LegoS32 GolD3DRenderDevice::FUN_10007d90(GolDrawDPState* p_drawState, GolRenderTarget* p_parg2, LegoU32 p_flags)
 {
 	if (m_flags & c_flagBit0) {
 		VTable0x18();
@@ -927,7 +927,7 @@ void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 	}
 
 	GolModel* model = static_cast<GolModel*>(canoe->GetModel(result.m_lodIndex));
-	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	GdbVertexArray* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
 	if (m_unk0xc8568 != (vertexType == 2 || vertexType == 3)) {
 		m_unk0xc8568 = (vertexType == 2 || vertexType == 3);
@@ -997,7 +997,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 	}
 
 	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
-	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	GdbVertexArray* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
 	if (m_unk0xc8568 != (vertexType == 2 || vertexType == 3)) {
 		m_unk0xc8568 = (vertexType == 2 || vertexType == 3);
@@ -1068,7 +1068,7 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 	}
 
 	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
-	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	GdbVertexArray* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
 	if (m_unk0xc8568 != (vertexType == 2 || vertexType == 3)) {
 		m_unk0xc8568 = (vertexType == 2 || vertexType == 3);
@@ -1187,7 +1187,7 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 	}
 
 	GolModel* model = static_cast<GolModel*>(modelEntity->GetModel(result.m_lodIndex));
-	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	GdbVertexArray* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
 	m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
 	if (m_unk0xc8568) {
@@ -1244,7 +1244,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, Field0xc8524* p_ren
 
 	m_unk0xc8518 = modelMatrix;
 	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
-	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	GdbVertexArray* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
 	m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
 	if (m_unk0xc8568) {
@@ -1320,7 +1320,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 	GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 
 	GolModel* model = static_cast<GolModel*>(modelEntity->GetModel(result.m_lodIndex));
-	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	GdbVertexArray* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
 	if (m_unk0xc8568 != (vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3)) {
 		m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
@@ -1433,7 +1433,7 @@ void GolD3DRenderDevice::VTable0xf0()
 	}
 
 	if (m_renderTargetInfo != m_unk0x304) {
-		SlatePeak0x58* renderTargetInfo = m_unk0x304;
+		GolRenderTarget* renderTargetInfo = m_unk0x304;
 		m_renderTargetInfo = renderTargetInfo;
 
 		Rect rect;
@@ -1573,7 +1573,7 @@ LPDIRECTDRAW4 GolD3DRenderDevice::GetDirectDraw4() const
 }
 
 // FUNCTION: GOLDP 0x10009950
-SlatePeak0x58* GolD3DRenderDevice::GetRenderTargetInfo()
+GolRenderTarget* GolD3DRenderDevice::GetRenderTargetInfo()
 {
 	return m_renderTargetInfo;
 }
@@ -2633,7 +2633,7 @@ void GolD3DRenderDevice::VTable0x40()
 }
 
 // FUNCTION: GOLDP 0x1000b2c0
-SlatePeak0x58* GolD3DRenderDevice::VTable0x4c(undefined2 p_arg1, undefined2 p_arg2)
+GolRenderTarget* GolD3DRenderDevice::VTable0x4c(undefined2 p_arg1, undefined2 p_arg2)
 {
 	GolD3DRenderSurface* surface = new GolD3DRenderSurface;
 	if (surface == NULL) {
@@ -2647,7 +2647,7 @@ SlatePeak0x58* GolD3DRenderDevice::VTable0x4c(undefined2 p_arg1, undefined2 p_ar
 }
 
 // FUNCTION: GOLDP 0x1000b350
-void GolD3DRenderDevice::VTable0x50(SlatePeak0x58* p_surface)
+void GolD3DRenderDevice::VTable0x50(GolRenderTarget* p_surface)
 {
 	GolD3DRenderSurface* surface = m_unk0x30c;
 	if (surface == NULL) {
@@ -2683,7 +2683,7 @@ void GolD3DRenderDevice::VTable0x50(SlatePeak0x58* p_surface)
 }
 
 // FUNCTION: GOLDP 0x1000b3d0
-void GolD3DRenderDevice::VTable0x58(SlatePeak0x58* p_surface, undefined4 p_flags)
+void GolD3DRenderDevice::VTable0x58(GolRenderTarget* p_surface, undefined4 p_flags)
 {
 	m_renderTargetInfo = m_unk0x304;
 	GolD3DRenderSurface* surface = m_unk0x30c;

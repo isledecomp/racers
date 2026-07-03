@@ -2,7 +2,7 @@
 
 #include "device/golpalettebase.h"
 #include "golerror.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 DECOMP_SIZE_ASSERT(GolBmpWriterFile, 0x5d4)
 
@@ -20,7 +20,7 @@ const LegoChar* GolBmpWriterFile::GetSuffix()
 }
 
 // FUNCTION: LEGORACERS 0x00403730
-void GolBmpWriterFile::InitializeFromSurface(const SlatePeak0x58* p_surface)
+void GolBmpWriterFile::InitializeFromSurface(const GolRenderTarget* p_surface)
 {
 	m_width = p_surface->GetWidth();
 	m_height = p_surface->GetHeight();
@@ -58,13 +58,13 @@ void GolBmpWriterFile::InitializeFromSurface(const SlatePeak0x58* p_surface)
 	if (m_format.GetPaletteBitCount()) {
 		m_paletteEntryCount = 1 << m_format.m_bitsPerPixel;
 
-		GolPaletteBase* palette = const_cast<SlatePeak0x58*>(p_surface)->GetPalette();
+		GolPaletteBase* palette = const_cast<GolRenderTarget*>(p_surface)->GetPalette();
 		palette->GetEntries(m_palette, 0, m_paletteEntryCount);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00403870
-void GolBmpWriterFile::WriteSurface(const SlatePeak0x58* p_surface)
+void GolBmpWriterFile::WriteSurface(const GolRenderTarget* p_surface)
 {
 	LegoU8* pixels;
 	LegoU32 pitch;
@@ -74,7 +74,7 @@ void GolBmpWriterFile::WriteSurface(const SlatePeak0x58* p_surface)
 	WritePalette();
 	FUN_100204d0(m_bmpFormat, NULL);
 
-	const_cast<SlatePeak0x58*>(p_surface)->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead);
+	const_cast<GolRenderTarget*>(p_surface)->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead);
 
 	LegoU8* rowBuffer = new LegoU8[m_rowByteStride];
 	if (!rowBuffer) {
@@ -97,7 +97,7 @@ void GolBmpWriterFile::WriteSurface(const SlatePeak0x58* p_surface)
 		fileOffset += m_rowByteStride;
 	}
 
-	const_cast<SlatePeak0x58*>(p_surface)->UnlockPixels();
+	const_cast<GolRenderTarget*>(p_surface)->UnlockPixels();
 
 	rowBuffer[0] = 0;
 	rowBuffer[1] = 0;

@@ -3,7 +3,7 @@
 #include "golfontbase.h"
 #include "golstringtable.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 DECOMP_SIZE_ASSERT(RaceDialog, 0x68)
 
@@ -82,7 +82,7 @@ void RaceDialog::Open(
 )
 {
 	LegoS32 textHeight;
-	const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 	LegoS32 textWidth;
 	LegoU32 i;
 
@@ -140,7 +140,7 @@ void RaceDialog::Draw()
 		return;
 	}
 
-	const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 	DrawBackdrop();
 
 	LegoS32 selectedAlpha = c_selectedAlpha;

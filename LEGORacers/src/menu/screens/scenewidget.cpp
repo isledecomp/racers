@@ -3,7 +3,7 @@
 #include "input/inputdevice.h"
 #include "menu/screens/menuscenescreen.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 DECOMP_SIZE_ASSERT(MenuSceneScreen::SceneWidget, 0x2d0)
 
@@ -59,7 +59,7 @@ undefined4 MenuSceneScreen::SceneWidget::Create(MenuScreen::SceneRefBinding* p_c
 // FUNCTION: LEGORACERS 0x00466b90
 void MenuSceneScreen::SceneWidget::ComputeViewportRect()
 {
-	const SlatePeak0x58* renderTarget = m_renderer->GetRenderTargetInfo();
+	const GolRenderTarget* renderTarget = m_renderer->GetRenderTargetInfo();
 	Rect rect = *GetGlobalRect();
 
 	if (rect.m_left < 0) {

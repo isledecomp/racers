@@ -16,7 +16,7 @@ public:
 	void VTable0x08(const GolVec3& p_center) override;                         // vtable+0x08
 	void VTable0x10(LegoS32 p_elapsed) override;                               // vtable+0x10
 	void VTable0x1c(GolRenderDevice& p_renderer) override;                     // vtable+0x1c
-	void VTable0x24(ColorTransform0x20* p_transform) override;                 // vtable+0x24
+	void VTable0x24(ColorTransform* p_transform) override;                     // vtable+0x24
 	void VTable0x28() override;                                                // vtable+0x28
 	void VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const override;     // vtable+0x2c
 	void VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const override;     // vtable+0x30

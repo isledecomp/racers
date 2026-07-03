@@ -3,7 +3,7 @@
 #include "golcamerabase.h"
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/slatepeak0x58.h"
+#include "surface/golrendertarget.h"
 
 DECOMP_SIZE_ASSERT(MenuAnimationList, 0x8)
 DECOMP_SIZE_ASSERT(MenuAnimationList::Entry, 0x18)
@@ -111,7 +111,7 @@ void MenuAnimationList::Entry::Draw(GolD3DRenderDevice* p_renderer)
 	else {
 		scratch.m_rect.m_top = 0;
 		scratch.m_rect.m_left = 0;
-		const SlatePeak0x58* renderTargetInfo = p_renderer->GetRenderTargetInfo();
+		const GolRenderTarget* renderTargetInfo = p_renderer->GetRenderTargetInfo();
 		scratch.m_rect.m_bottom = renderTargetInfo->GetHeight();
 		renderTargetInfo = p_renderer->GetRenderTargetInfo();
 		scratch.m_rect.m_right = renderTargetInfo->GetWidth();

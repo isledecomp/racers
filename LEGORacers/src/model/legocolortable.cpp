@@ -95,8 +95,8 @@ void LegoColorTable::RebuildColorMaterialLookup()
 		m_colorMaterialIndices[m_colorRecords[i].m_materialIndex] = -1;
 		for (LegoS32 j = 0; j < materialCount; j++) {
 			GolMaterial* material = static_cast<GolMaterial*>(m_materialTable.m_entries[j]);
-			DuskWindName0x8 materialName = material->GetNameRecord();
-			if (::strncmp(materialName.m_unk0x0, m_colorRecords[i].m_name, sizeof(GolName)) == 0) {
+			GolMaterial::NameRecord materialName = material->GetNameRecord();
+			if (::strncmp(materialName.m_name, m_colorRecords[i].m_name, sizeof(GolName)) == 0) {
 				m_colorMaterialIndices[m_colorRecords[i].m_materialIndex] = j;
 				j = materialCount;
 			}

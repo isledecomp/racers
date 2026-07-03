@@ -1,7 +1,7 @@
 #include "golmodelbase.h"
 
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
@@ -114,12 +114,12 @@ void GolModelBase::FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups)
 {
 	m_countGroups = p_countGroups;
 
-	m_unk0x18 = new GdbModelIndexArray0xc;
+	m_unk0x18 = new GdbModelIndexArray;
 	m_unk0x24 = new LegoU32[m_countGroups];
 	if (m_unk0x18 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	static_cast<GdbModelIndexArray0xc*>(m_unk0x18)->VTable0x0c(p_countVertices);
+	static_cast<GdbModelIndexArray*>(m_unk0x18)->VTable0x0c(p_countVertices);
 	if (m_unk0x24 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -283,7 +283,7 @@ void GolModelBase::VTable0x04(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x18 = new GdbModelIndexArray0xc;
+	m_unk0x18 = new GdbModelIndexArray;
 	if (m_unk0x18 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -292,7 +292,7 @@ void GolModelBase::VTable0x04(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x100277d0
-void GolModelBase::VTable0x28(GdbVertexArray0xc** p_dest) const
+void GolModelBase::VTable0x28(GdbVertexArray** p_dest) const
 {
 	*p_dest = m_unk0x10;
 }
@@ -307,7 +307,7 @@ void GolModelBase::VTable0x2c(LegoU32 p_arg1, LegoBool32 p_arg2)
 }
 
 // FUNCTION: GOLDP 0x10027810
-void GolModelBase::VTable0x30(IGdbModelIndexArray0x8** p_dest) const
+void GolModelBase::VTable0x30(GdbModelIndexArrayBase** p_dest) const
 {
 	*p_dest = m_unk0x18;
 }
@@ -325,7 +325,7 @@ void GolModelBase::VTable0x08(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x14 = new GdbVertexArray0xc;
+	m_unk0x14 = new GdbVertexArray;
 	m_unk0x10 = m_unk0x14;
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -431,7 +431,7 @@ void GolModelBase::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat 
 }
 
 // FUNCTION: GOLDP 0x10027b30
-void GolModelBase::VTable0x3c(const ColorTransform0x20& p_details)
+void GolModelBase::VTable0x3c(const ColorTransform& p_details)
 {
 	m_unk0x10->VTable0x34(p_details);
 }
@@ -445,8 +445,8 @@ void GolModelBase::VTable0x40()
 // FUNCTION: LEGORACERS 0x00411090
 void GolModelBase::FUN_00411090()
 {
-	IGdbModelIndexArray0x8* indexArray = NULL;
-	GdbVertexArray0xc* vertexArray = NULL;
+	GdbModelIndexArrayBase* indexArray = NULL;
+	GdbVertexArray* vertexArray = NULL;
 	VTable0x28(&vertexArray);
 
 	LegoU32 vertexCount = vertexArray->GetCount();
@@ -462,8 +462,8 @@ void GolModelBase::FUN_00411090()
 
 	VTable0x30(&indexArray);
 
-	GdbModelIndexArray0xc* modelIndexArray = static_cast<GdbModelIndexArray0xc*>(indexArray);
-	GdbModelIndexArray0xc::Indices* indices = modelIndexArray->GetMutableIndices();
+	GdbModelIndexArray* modelIndexArray = static_cast<GdbModelIndexArray*>(indexArray);
+	GdbModelIndexArray::Indices* indices = modelIndexArray->GetMutableIndices();
 	LegoU32 indexCount = indexArray->GetCount();
 	for (i = 0; i < indexCount; i++) {
 		LegoU8 value = indices[i].m_b;

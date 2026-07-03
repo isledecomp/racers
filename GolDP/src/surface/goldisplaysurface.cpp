@@ -1,23 +1,23 @@
-#include "surface/azureridge0x38.h"
+#include "surface/goldisplaysurface.h"
 
-DECOMP_SIZE_ASSERT(AzureRidge0x38, 0x38)
+DECOMP_SIZE_ASSERT(GolDisplaySurface, 0x38)
 
 // FUNCTION: GOLDP 0x1001d730
-AzureRidge0x38::AzureRidge0x38()
+GolDisplaySurface::GolDisplaySurface()
 {
 	m_unk0x30 = NULL;
 	m_unk0x34 = 0;
 }
 
 // FUNCTION: GOLDP 0x1001d770
-AzureRidge0x38::~AzureRidge0x38()
+GolDisplaySurface::~GolDisplaySurface()
 {
 	m_unk0x30 = NULL;
 	m_unk0x34 = 0;
 }
 
 // FUNCTION: GOLDP 0x1001d790
-void AzureRidge0x38::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, undefined4 p_height, undefined4 p_bpp)
+void GolDisplaySurface::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, undefined4 p_height, undefined4 p_bpp)
 {
 	m_unk0x30 = p_drawState;
 	m_width = (LegoU16) p_width;
@@ -26,7 +26,7 @@ void AzureRidge0x38::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, u
 }
 
 // FUNCTION: GOLDP 0x1001d7c0
-void AzureRidge0x38::VTable0x34()
+void GolDisplaySurface::VTable0x34()
 {
 	m_unk0x30 = NULL;
 	m_unk0x34 = 0;

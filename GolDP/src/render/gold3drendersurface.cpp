@@ -112,5 +112,5 @@ void GolD3DRenderSurface::ReleaseResources()
 	}
 
 	m_renderSurface = NULL;
-	AzureRidge0x38::VTable0x34();
+	GolDisplaySurface::VTable0x34();
 }

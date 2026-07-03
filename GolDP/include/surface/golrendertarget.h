@@ -1,19 +1,19 @@
-#ifndef GOLDP_SLATEPEAK0X58_H
-#define GOLDP_SLATEPEAK0X58_H
+#ifndef GOLDP_GOLRENDERTARGET_H
+#define GOLDP_GOLRENDERTARGET_H
 
 #include "compat.h"
 #include "device/goldirectdrawpalette.h"
-#include "surface/azureridge0x38.h"
 #include "surface/goldepthbuffer.h"
+#include "surface/goldisplaysurface.h"
 
 class GolD3DRenderDevice;
 
 // VTABLE: GOLDP 0x1005627c
 // SIZE 0x58
-class SlatePeak0x58 : public AzureRidge0x38 {
+class GolRenderTarget : public GolDisplaySurface {
 public:
-	SlatePeak0x58();
-	~SlatePeak0x58() override;                                                         // vtable+0x00
+	GolRenderTarget();
+	~GolRenderTarget() override;                                                       // vtable+0x00
 	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override;    // vtable+0x04
 	void UnlockPixels() override;                                                      // vtable+0x08
 	void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x0c
@@ -34,7 +34,7 @@ public:
 	void VTable0x34() override; // vtable+0x34
 
 	// SYNTHETIC: GOLDP 0x10003170
-	// SlatePeak0x58::`scalar deleting destructor'
+	// GolRenderTarget::`scalar deleting destructor'
 
 	LPDIRECTDRAWSURFACE4 GetDisplaySurface() const { return m_displaySurface; }
 	LPDIRECTDRAWSURFACE4 GetRenderSurface() const { return m_renderSurface; }
@@ -55,4 +55,4 @@ protected:
 	GolDepthBuffer* m_depthBuffer;         // 0x54
 };
 
-#endif // GOLDP_SLATEPEAK0X58_H
+#endif // GOLDP_GOLRENDERTARGET_H

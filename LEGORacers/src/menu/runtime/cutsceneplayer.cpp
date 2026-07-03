@@ -3013,7 +3013,7 @@ void CutsceneColorEvent::Update(LegoFloat p_elapsedSeconds)
 // FUNCTION: LEGORACERS 0x004a4da0
 void CutsceneColorEvent::ApplyColorTransform()
 {
-	ColorTransform0x20 transform;
+	ColorTransform transform;
 	transform.m_redShift = m_shiftRed;
 	transform.m_grnShift = m_shiftGrn;
 	transform.m_bluShift = m_shiftBlu;

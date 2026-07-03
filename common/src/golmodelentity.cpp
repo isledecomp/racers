@@ -271,7 +271,7 @@ void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
 
 // FUNCTION: GOLDP 0x100280c0
 // FUNCTION: LEGORACERS 0x004115f0
-void GolModelEntity::VTable0x24(ColorTransform0x20* p_transform)
+void GolModelEntity::VTable0x24(ColorTransform* p_transform)
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
 		GolModelBase* model = m_models[i];

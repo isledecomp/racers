@@ -2,7 +2,7 @@
 
 #include "core/gol.h"
 #include "decomp.h"
-#include "gdbmodelindexarray0xc.h"
+#include "gdbmodelindexarray.h"
 #include "golerror.h"
 #include "mesh/golmodel.h"
 #include "render/gold3drenderdevice.h"
@@ -378,7 +378,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	center.m_z = activeFrame->m_points[2].m_z;
 	m_entity.VTable0x08(center);
 
-	GdbVertexArray0xc* vertexArray;
+	GdbVertexArray* vertexArray;
 	LegoFloat uStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_pointCount + 1));
 	LegoFloat vStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
 	m_model->VTable0x28(&vertexArray);
@@ -448,10 +448,10 @@ void RaceTrailManager::Trail::RebuildGeometry()
 		groupCount = frameCount / (rowsPerGroup - 1) + 1;
 	}
 
-	IGdbModelIndexArray0x8* indexArrayBase;
+	GdbModelIndexArrayBase* indexArrayBase;
 	m_model->VTable0x30(&indexArrayBase);
-	GdbModelIndexArray0xc* indexArray = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
-	GdbModelIndexArray0xc::Indices* indices = indexArray->GetMutableIndices();
+	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(indexArrayBase);
+	GdbModelIndexArray::Indices* indices = indexArray->GetMutableIndices();
 
 	LegoU32 triangleIndex = 0;
 	for (LegoU32 rowIndex = 0; rowIndex < rowsPerGroup - 1; rowIndex++) {

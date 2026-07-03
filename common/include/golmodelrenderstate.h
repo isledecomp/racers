@@ -1,5 +1,5 @@
-#ifndef AMETHYSTBREEZE0X104_H
-#define AMETHYSTBREEZE0X104_H
+#ifndef GOLMODELRENDERSTATE_H
+#define GOLMODELRENDERSTATE_H
 
 #include "decomp.h"
 #include "golmath.h"
@@ -7,26 +7,26 @@
 #include "surface/color.h"
 
 class GolMaterial;
-class GdbVertexArray0xc;
+class GdbVertexArray;
 class GolModelBase;
 class GolModelEntity;
 
 // VTABLE: LEGORACERS 0x004af64c
 // SIZE 0x104
-class AmethystBreeze0x104 : public GolD3DRenderState {
+class GolModelRenderState : public GolD3DRenderState {
 public:
 	typedef GolD3DRenderState::CommandVertex CommandVertex;
 	typedef GolD3DRenderState::DrawCommand DrawCommand;
 	typedef GolD3DRenderState::MaterialCommand MaterialCommand;
 
-	typedef void (AmethystBreeze0x104::*DrawFunction)(
+	typedef void (GolModelRenderState::*DrawFunction)(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
 
-	AmethystBreeze0x104();
+	GolModelRenderState();
 
 	void VTable0x00(
 		GolD3DRenderDevice* p_renderer,
@@ -107,11 +107,11 @@ private:
 	GolMaterial* m_activeMaterial;                         // 0x02c
 	ColorRGBA m_activeMaterialColor;                       // 0x030
 	GolModelBase* m_model;                                 // 0x034
-	GdbVertexArray0xc* m_vertexArray;                      // 0x038
+	GdbVertexArray* m_vertexArray;                         // 0x038
 	ColorRGBA m_lightColors[7];                            // 0x03c
 	FColorRGB m_lightColorProducts[7];                     // 0x058
 	GolVec3 m_lightDirections[7];                          // 0x0ac
 	DrawFunction m_drawFunction;                           // 0x100
 };
 
-#endif // AMETHYSTBREEZE0X104_H
+#endif // GOLMODELRENDERSTATE_H

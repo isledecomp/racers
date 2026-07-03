@@ -3,8 +3,8 @@
 #include "camera/golcamera.h"
 #include "cmbmodelpart.h"
 #include "core/goldpexport.h"
-#include "gdbmodelindexarray0xc.h"
-#include "gdbvertexarray0xc.h"
+#include "gdbmodelindexarray.h"
+#include "gdbvertexarray.h"
 #include "golerror.h"
 #include "golmaterial.h"
 #include "golmodelbase.h"
@@ -390,9 +390,9 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 
 					m_model->VTable0x28(&m_vertices);
 
-					IGdbModelIndexArray0x8* indexArray;
+					GdbModelIndexArrayBase* indexArray;
 					m_model->VTable0x30(&indexArray);
-					m_indices = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
+					m_indices = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
 
 					Particle* particle = m_activeList;
 					while (particle) {
@@ -518,7 +518,7 @@ void ParticleSystem::EmitQuad(Particle* p_particle)
 	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
 	m_vertices->VTable0x28(m_vertexCount++, texCoord);
 
-	GdbModelIndexArray0xc::Indices* indices = &m_indices[m_triangleCount++];
+	GdbModelIndexArray::Indices* indices = &m_indices[m_triangleCount++];
 	indices->m_c = m_batchVertexCount;
 	indices->m_b = m_batchVertexCount + 1;
 	indices->m_a = m_batchVertexCount + 2;

@@ -22,7 +22,7 @@ TriggerWorld::TriggerWorld()
 // FUNCTION: LEGORACERS 0x0041f440
 GolWorldDatabase* TriggerWorld::Initialize(
 	GolWorldDatabase* p_triggerDatabase,
-	LegoChar* p_unk0x08,
+	LegoChar* p_worldName,
 	RaceEventTable* p_eventTable,
 	GolNameTable* p_recordNames
 )
@@ -30,7 +30,7 @@ GolWorldDatabase* TriggerWorld::Initialize(
 	m_triggerDatabase = p_triggerDatabase;
 
 	LegoChar name[8];
-	::strncpy(name, p_unk0x08, sizeof(name));
+	::strncpy(name, p_worldName, sizeof(name));
 
 	m_boundsEntity = m_triggerDatabase->FindBoundedEntity(name);
 
@@ -51,11 +51,11 @@ GolWorldDatabase* TriggerWorld::Initialize(
 
 // STUB: LEGORACERS 0x0041f4d0
 LegoBool32 TriggerWorld::IntersectSegment(
-	GolVec3* p_unk0x04,
-	GolVec3* p_unk0x08,
-	GolBoundingVolume::HitTriangle* p_unk0x0c,
-	GolVec3* p_unk0x10,
-	RaceEventRecord::Target** p_unk0x14
+	GolVec3* p_start,
+	GolVec3* p_end,
+	GolBoundingVolume::HitTriangle* p_hitTriangle,
+	GolVec3* p_hitPosition,
+	RaceEventRecord::Target** p_hitTarget
 )
 {
 	LegoU32 count;
@@ -70,12 +70,12 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	GolBoundedEntity* entity;
 	GolBoundingVolume* query;
 
-	direction.m_x = p_unk0x08->m_x - p_unk0x04->m_x;
-	direction.m_y = p_unk0x08->m_y - p_unk0x04->m_y;
-	direction.m_z = p_unk0x08->m_z - p_unk0x04->m_z;
+	direction.m_x = p_end->m_x - p_start->m_x;
+	direction.m_y = p_end->m_y - p_start->m_y;
+	direction.m_z = p_end->m_z - p_start->m_z;
 	GolMath::NormalizeVector3(direction, &direction);
 
-	GolBoundingVolume::HitTriangle* record = p_unk0x0c;
+	GolBoundingVolume::HitTriangle* record = p_hitTriangle;
 	GolWorldDatabase* root = m_triggerDatabase;
 	count = 0;
 	if (!(0 < root->GetBoundedEntityCount())) {
@@ -88,16 +88,16 @@ LegoBool32 TriggerWorld::IntersectSegment(
 			entity->GetBoundsCenter(&center);
 
 			LegoFloat radius = entity->GetBoundsRadius();
-			LegoFloat x = center.m_x - p_unk0x04->m_x;
-			LegoFloat y = center.m_y - p_unk0x04->m_y;
-			LegoFloat z = center.m_z - p_unk0x04->m_z;
+			LegoFloat x = center.m_x - p_start->m_x;
+			LegoFloat y = center.m_y - p_start->m_y;
+			LegoFloat z = center.m_z - p_start->m_z;
 			LegoFloat dot = z * direction.m_z + y * direction.m_y + x * direction.m_x;
 			LegoFloat discriminant = radius * radius - (y * y + z * z + x * x - dot * dot);
 			if (discriminant > 0.0f) {
 				LegoFloat distance = static_cast<LegoFloat>(dot - sqrt(discriminant));
 				if (distance * distance <= 0.0f) {
-					entity->WorldToLocal(*p_unk0x04, &startLocal);
-					entity->WorldToLocal(*p_unk0x08, &endLocal);
+					entity->WorldToLocal(*p_start, &startLocal);
+					entity->WorldToLocal(*p_end, &endLocal);
 
 					query = entity->GetBoundingVolume();
 					query->SetMaterialTable(entity->GetMaterialTable());
@@ -119,19 +119,19 @@ fallback:
 	entity = m_boundsEntity;
 	query = entity->GetBoundingVolume();
 	query->SetMaterialTable(entity->GetMaterialTable());
-	if (!query->IntersectSegment(p_unk0x04, p_unk0x08, record, p_unk0x10, &hitRecord, 0)) {
+	if (!query->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
 		goto fail;
 	}
 
 finish:
-	if (p_unk0x14) {
-		*p_unk0x14 = hitRecord->m_target;
+	if (p_hitTarget) {
+		*p_hitTarget = hitRecord->m_target;
 	}
 
 	return TRUE;
 
 hit:
-	entity->LocalToWorld(hitLocal, p_unk0x10);
+	entity->LocalToWorld(hitLocal, p_hitPosition);
 
 	planeLocal.m_y = record->m_normal.m_y;
 	planeLocal.m_z = record->m_normal.m_z;
@@ -143,8 +143,8 @@ hit:
 	record->m_normal.m_y = planeWorld.m_y;
 	record->m_normal.m_z = planeWorld.m_z;
 	record->m_planeDistance =
-		-(record->m_normal.m_z * p_unk0x10->m_z + record->m_normal.m_y * p_unk0x10->m_y +
-		  p_unk0x10->m_x * record->m_normal.m_x);
+		-(record->m_normal.m_z * p_hitPosition->m_z + record->m_normal.m_y * p_hitPosition->m_y +
+		  p_hitPosition->m_x * record->m_normal.m_x);
 	goto finish;
 
 fail:
@@ -153,26 +153,26 @@ fail:
 
 // FUNCTION: LEGORACERS 0x0041f730
 LegoBool32 TriggerWorld::IntersectSegmentAndFireEvents(
-	GolVec3* p_unk0x04,
-	GolVec3* p_unk0x08,
-	GolBoundingVolume::HitTriangle* p_unk0x0c,
-	GolVec3* p_unk0x10
+	GolVec3* p_start,
+	GolVec3* p_end,
+	GolBoundingVolume::HitTriangle* p_hitTriangle,
+	GolVec3* p_hitPosition
 )
 {
 	RaceEventRecord::Target* hit;
-	LegoBool32 result = IntersectSegment(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10, &hit);
+	LegoBool32 result = IntersectSegment(p_start, p_end, p_hitTriangle, p_hitPosition, &hit);
 
 	if (!result) {
 		return result;
 	}
 
 	if (hit) {
-		if (hit->m_flags & 0x10) {
-			m_eventTable->StartEventsAt(hit->m_unk0x18, p_unk0x10);
-			m_eventTable->EndEventsAt(hit->m_unk0x18, p_unk0x10);
+		if (hit->m_flags & RaceEventRecord::Target::c_flagProjectileEvent) {
+			m_eventTable->StartEventsAt(hit->m_projectileEventId, p_hitPosition);
+			m_eventTable->EndEventsAt(hit->m_projectileEventId, p_hitPosition);
 		}
 
-		if (hit->m_flags & 0x20000) {
+		if (hit->m_flags & RaceEventRecord::Target::c_flagProjectilePassThrough) {
 			return FALSE;
 		}
 	}

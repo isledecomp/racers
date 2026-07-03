@@ -181,71 +181,71 @@ void HazardManager::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0048aad0
-void HazardManager::NotifyEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
+void HazardManager::NotifyEventStart(LegoS32 p_eventId, void* p_context)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
 		Hazard* item = m_entries[i];
-		if (item->m_triggerId != -1 && item->m_triggerId == p_unk0x04) {
+		if (item->m_triggerId != -1 && item->m_triggerId == p_eventId) {
 			item->Activate(NULL);
 		}
 
-		m_entries[i]->OnEventStart(p_unk0x04, p_unk0x08);
+		m_entries[i]->OnEventStart(p_eventId, p_context);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048ab20
-void HazardManager::NotifyEventEnd(LegoS32 p_unk0x04, void* p_unk0x08)
+void HazardManager::NotifyEventEnd(LegoS32 p_eventId, void* p_context)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
 		Hazard* item = m_entries[i];
-		if (item->m_triggerId != -1 && item->m_triggerId == p_unk0x04) {
+		if (item->m_triggerId != -1 && item->m_triggerId == p_eventId) {
 			item->Deactivate(NULL);
 		}
 
-		m_entries[i]->OnEventEnd(p_unk0x04, p_unk0x08);
+		m_entries[i]->OnEventEnd(p_eventId, p_context);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048ab70
-void HazardManager::ForceActivate(LegoS32 p_unk0x04)
+void HazardManager::ForceActivate(LegoS32 p_eventId)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
 		Hazard* item = m_entries[i];
-		if (item->m_triggerId != -1 && item->m_triggerId == p_unk0x04) {
+		if (item->m_triggerId != -1 && item->m_triggerId == p_eventId) {
 			item->m_state = 3;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048abb0
-void HazardManager::NotifyEventPair(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_unk0x0c)
+void HazardManager::NotifyEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_context)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
 		Hazard* item = m_entries[i];
-		if (item->m_triggerId != -1 && item->m_triggerId == p_unk0x04) {
+		if (item->m_triggerId != -1 && item->m_triggerId == p_startId) {
 			item->Activate(NULL);
 		}
 
 		item = m_entries[i];
-		if (item->m_triggerId != -1 && item->m_triggerId == p_unk0x08) {
+		if (item->m_triggerId != -1 && item->m_triggerId == p_endId) {
 			item->Deactivate(NULL);
 		}
 
-		m_entries[i]->OnEventStart(p_unk0x04, p_unk0x0c);
-		m_entries[i]->OnEventEnd(p_unk0x08, p_unk0x0c);
+		m_entries[i]->OnEventStart(p_startId, p_context);
+		m_entries[i]->OnEventEnd(p_endId, p_context);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048ac30
-void HazardManager::DispatchEventStart(LegoS32 p_unk0x04, void* p_context)
+void HazardManager::DispatchEventStart(LegoS32 p_eventId, void* p_context)
 {
 	HazardContext* context = static_cast<HazardContext*>(p_context);
 	undefined unk0x08[12];
@@ -255,18 +255,18 @@ void HazardManager::DispatchEventStart(LegoS32 p_unk0x04, void* p_context)
 		Hazard* item = m_entries[i];
 		if (item->m_triggerId != -1 && item->CanRetrigger()) {
 			item = m_entries[i];
-			if (item->m_triggerId == p_unk0x04) {
+			if (item->m_triggerId == p_eventId) {
 				item->Activate(p_context);
 			}
 		}
 
 		context->m_positionProvider->GetPosition(unk0x08);
-		m_entries[i]->OnEventStart(p_unk0x04, unk0x08);
+		m_entries[i]->OnEventStart(p_eventId, unk0x08);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048aca0
-void HazardManager::DispatchEventEnd(LegoS32 p_unk0x04, void* p_context)
+void HazardManager::DispatchEventEnd(LegoS32 p_eventId, void* p_context)
 {
 	HazardContext* context = static_cast<HazardContext*>(p_context);
 	undefined unk0x08[12];
@@ -276,18 +276,18 @@ void HazardManager::DispatchEventEnd(LegoS32 p_unk0x04, void* p_context)
 		Hazard* item = m_entries[i];
 		if (item->m_triggerId != -1 && item->CanRetrigger()) {
 			item = m_entries[i];
-			if (item->m_triggerId == p_unk0x04) {
+			if (item->m_triggerId == p_eventId) {
 				item->Deactivate(p_context);
 			}
 		}
 
 		context->m_positionProvider->GetPosition(unk0x08);
-		m_entries[i]->OnEventEnd(p_unk0x04, unk0x08);
+		m_entries[i]->OnEventEnd(p_eventId, unk0x08);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048ad10
-void HazardManager::DispatchEventPair(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_context)
+void HazardManager::DispatchEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_context)
 {
 	HazardContext* context = static_cast<HazardContext*>(p_context);
 	undefined unk0x0c[12];
@@ -298,7 +298,7 @@ void HazardManager::DispatchEventPair(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void
 		if (item->m_triggerId != -1) {
 			if (item->CanRetrigger()) {
 				item = m_entries[i];
-				if (item->m_triggerId == p_unk0x04) {
+				if (item->m_triggerId == p_startId) {
 					item->Activate(p_context);
 				}
 			}
@@ -307,34 +307,34 @@ void HazardManager::DispatchEventPair(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void
 		item = m_entries[i];
 		if (item->m_triggerId != -1 && item->CanRetrigger()) {
 			item = m_entries[i];
-			if (item->m_triggerId == p_unk0x08) {
+			if (item->m_triggerId == p_endId) {
 				item->Deactivate(p_context);
 			}
 		}
 
 		context->m_positionProvider->GetPosition(unk0x0c);
-		m_entries[i]->OnEventStart(p_unk0x04, unk0x0c);
-		m_entries[i]->OnEventEnd(p_unk0x08, unk0x0c);
+		m_entries[i]->OnEventStart(p_startId, unk0x0c);
+		m_entries[i]->OnEventEnd(p_endId, unk0x0c);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048add0
-void HazardManager::Update(undefined4 p_unk0x04)
+void HazardManager::Update(undefined4 p_elapsedMs)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
-		m_entries[i]->Update(p_unk0x04);
+		m_entries[i]->Update(p_elapsedMs);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048ae00
-void HazardManager::UpdatePerRacer(GolCamera* p_unk0x04, Racer* p_unk0x08)
+void HazardManager::UpdatePerRacer(GolCamera* p_camera, Racer* p_racer)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
-		m_entries[i]->UpdatePerRacer(p_unk0x04, p_unk0x08);
+		m_entries[i]->UpdatePerRacer(p_camera, p_racer);
 	}
 }
 

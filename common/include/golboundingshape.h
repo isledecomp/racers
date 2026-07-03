@@ -99,7 +99,7 @@ public:
 		TreeNode::Node** p_first,
 		TreeNode::Node** p_last
 	);
-	void CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x08);
+	void CollectLeavesAtPoints(GolVec3* p_points, LegoU32 p_pointCount);
 	void MirrorY();
 	TreeNode::Node* GetFirstVisibleLeaf() const { return m_firstVisibleLeaf; }
 

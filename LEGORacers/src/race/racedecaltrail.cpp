@@ -55,7 +55,7 @@ LegoFloat g_decalWOffset;
 RaceDecalManager::Trail::Decal::ProjectedVertex g_decalProjectedVertices[76];
 
 // FUNCTION: LEGORACERS 0x00403cc0
-void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
+void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_points, LegoU32 p_pointCount)
 {
 	LegoFloat planeOffset;
 	m_visitStamp++;
@@ -63,9 +63,9 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x
 
 	while (node->m_type == TreeNode::e_plane) {
 		LegoFloat dot = node->m_data.m_plane.m_normalZ;
-		dot *= p_unk0x04->m_z;
-		dot += node->m_data.m_plane.m_normalY * p_unk0x04->m_y;
-		LegoFloat dotX = p_unk0x04->m_x;
+		dot *= p_points->m_z;
+		dot += node->m_data.m_plane.m_normalY * p_points->m_y;
+		LegoFloat dotX = p_points->m_x;
 		dotX *= node->m_data.m_plane.m_normalX;
 		dot += dotX;
 		dot += node->m_data.m_plane.m_distance;
@@ -96,7 +96,7 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x
 		return;
 	}
 
-	LegoU32 count = p_unk0x08;
+	LegoU32 count = p_pointCount;
 	TreeNode* firstNode = node;
 	TreeNode* previousNode = node;
 	node = &m_nodes[node->m_nextLeafIndex];
@@ -108,9 +108,9 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x
 		if (node->m_data.m_plane.m_frontStamp != stamp) {
 			if (node->m_data.m_plane.m_backStamp != stamp) {
 				LegoFloat dot = node->m_data.m_plane.m_normalZ;
-				dot *= p_unk0x04->m_z;
-				dot += node->m_data.m_plane.m_normalY * p_unk0x04->m_y;
-				dot += node->m_data.m_plane.m_normalX * p_unk0x04->m_x;
+				dot *= p_points->m_z;
+				dot += node->m_data.m_plane.m_normalY * p_points->m_y;
+				dot += node->m_data.m_plane.m_normalX * p_points->m_x;
 
 				if (dot < -node->m_data.m_plane.m_distance) {
 					node->m_data.m_plane.m_backStamp = stamp;
@@ -140,7 +140,7 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x
 				}
 
 				planeOffset = -node->m_data.m_plane.m_distance;
-				LegoFloat* vertexY = &p_unk0x04[i].m_y;
+				LegoFloat* vertexY = &p_points[i].m_y;
 				while (i < count) {
 					LegoFloat dot = vertexY[1] * node->m_data.m_plane.m_normalZ;
 					dot += node->m_data.m_plane.m_normalY * vertexY[0];
@@ -172,7 +172,7 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x
 				}
 
 				planeOffset = -node->m_data.m_plane.m_distance;
-				LegoFloat* vertexY = &p_unk0x04[i].m_y;
+				LegoFloat* vertexY = &p_points[i].m_y;
 				while (i < count) {
 					LegoFloat dot = vertexY[1] * node->m_data.m_plane.m_normalZ;
 					dot += node->m_data.m_plane.m_normalY * vertexY[0];
@@ -215,12 +215,12 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x
 }
 
 // FUNCTION: LEGORACERS 0x00414a30
-void RaceDecalManager::Trail::Decal::Project(GolCollidableEntity* p_unk0x04)
+void RaceDecalManager::Trail::Decal::Project(GolCollidableEntity* p_collidable)
 {
 	ComputeQueryPoints();
 
-	GolBoundingShape* boundingShape = p_unk0x04->GetBoundingShape(0);
-	GolModelBase* model = p_unk0x04->GetModel(0);
+	GolBoundingShape* boundingShape = p_collidable->GetBoundingShape(0);
+	GolModelBase* model = p_collidable->GetModel(0);
 	boundingShape->CollectLeavesAtPoints(g_decalQueryPoints, sizeOfArray(g_decalQueryPoints));
 	BeginGeometry(model);
 
@@ -234,14 +234,14 @@ void RaceDecalManager::Trail::Decal::Project(GolCollidableEntity* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00414a90
-void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_unk0x04)
+void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_model)
 {
 	ComputeProjection();
 
-	p_unk0x04->GetVertexArray(&m_sourceVertices);
+	p_model->GetVertexArray(&m_sourceVertices);
 
 	GdbModelIndexArrayBase* indexArrayBase;
-	p_unk0x04->GetIndexArrayInto(&indexArrayBase);
+	p_model->GetIndexArrayInto(&indexArrayBase);
 	m_sourceIndexBytes = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetIndexBytes();
 
 	GolModelBase* model = m_model;
@@ -266,11 +266,15 @@ void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00414b30
-void RaceDecalManager::Trail::Decal::ProcessGroups(GolModelBase* p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c)
+void RaceDecalManager::Trail::Decal::ProcessGroups(
+	GolModelBase* p_model,
+	LegoU32 p_firstCommand,
+	LegoU32 p_commandCount
+)
 {
-	LegoU32 start = p_unk0x08;
-	GolModelBase* model = p_unk0x04;
-	LegoU32 count = p_unk0x0c;
+	LegoU32 start = p_firstCommand;
+	GolModelBase* model = p_model;
+	LegoU32 count = p_commandCount;
 	if (count == 0) {
 		count = model->GetGroupCount();
 	}
@@ -310,7 +314,7 @@ void RaceDecalManager::Trail::Decal::ProcessGroups(GolModelBase* p_unk0x04, Lego
 }
 
 // FUNCTION: LEGORACERS 0x00414c00
-void RaceDecalManager::Trail::Decal::EndGeometry(GolModelBase* p_unk0x04)
+void RaceDecalManager::Trail::Decal::EndGeometry(GolModelBase* p_model)
 {
 	if (m_batchTriangleCount) {
 		FlushBatch();
@@ -322,8 +326,8 @@ void RaceDecalManager::Trail::Decal::EndGeometry(GolModelBase* p_unk0x04)
 	model->SetDirty(TRUE);
 	GetModel()->AddFlags(TRUE);
 	GetModel()->AddFlagsWithBounds(TRUE, FALSE);
-	p_unk0x04->AddFlags(FALSE);
-	p_unk0x04->AddFlagsWithBounds(FALSE, FALSE);
+	p_model->AddFlags(FALSE);
+	p_model->AddFlagsWithBounds(FALSE, FALSE);
 
 	if (m_triangleCount) {
 		m_flags |= c_hasGeometry;
@@ -334,23 +338,23 @@ void RaceDecalManager::Trail::Decal::EndGeometry(GolModelBase* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00414c90
-void RaceDecalManager::Trail::Decal::SetOrientation(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
+void RaceDecalManager::Trail::Decal::SetOrientation(GolVec3* p_normal, GolVec3* p_lengthAxis)
 {
 	GolVec3* normalized = &m_normal;
-	GolMath::NormalizeVector3(*p_unk0x04, normalized);
+	GolMath::NormalizeVector3(*p_normal, normalized);
 
 	GolVec3* perpendicular = &m_lengthAxis;
-	LegoFloat dot = normalized->m_z * p_unk0x08->m_z;
-	dot += normalized->m_y * p_unk0x08->m_y;
-	dot += normalized->m_x * p_unk0x08->m_x;
+	LegoFloat dot = normalized->m_z * p_lengthAxis->m_z;
+	dot += normalized->m_y * p_lengthAxis->m_y;
+	dot += normalized->m_x * p_lengthAxis->m_x;
 
 	GolVec3 scaled;
 	scaled.m_x = dot * normalized->m_x;
 	scaled.m_y = normalized->m_y * dot;
 	scaled.m_z = dot * normalized->m_z;
-	perpendicular->m_x = p_unk0x08->m_x - scaled.m_x;
-	perpendicular->m_y = p_unk0x08->m_y - scaled.m_y;
-	perpendicular->m_z = p_unk0x08->m_z - scaled.m_z;
+	perpendicular->m_x = p_lengthAxis->m_x - scaled.m_x;
+	perpendicular->m_y = p_lengthAxis->m_y - scaled.m_y;
+	perpendicular->m_z = p_lengthAxis->m_z - scaled.m_z;
 	GolMath::NormalizeVector3(*perpendicular, perpendicular);
 
 	m_widthAxis.m_x = perpendicular->m_y * normalized->m_z - perpendicular->m_z * normalized->m_y;
@@ -416,12 +420,16 @@ void RaceDecalManager::Trail::Decal::ComputeProjection()
 }
 
 // FUNCTION: LEGORACERS 0x00414e40
-LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(LegoU32 p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c)
+LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(
+	LegoU32 p_destIndex,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	LegoU32 result = p_unk0x0c;
-	LegoU32 vertexIndex = p_unk0x08;
-	ProjectedVertex* projected = &g_decalProjectedVertices[p_unk0x04];
-	LegoU32 end = p_unk0x08 + p_unk0x0c;
+	LegoU32 result = p_vertexCount;
+	LegoU32 vertexIndex = p_firstVertex;
+	ProjectedVertex* projected = &g_decalProjectedVertices[p_destIndex];
+	LegoU32 end = p_firstVertex + p_vertexCount;
 	while (vertexIndex < end) {
 		m_sourceVertices->GetPosition(vertexIndex, &projected->m_position);
 
@@ -455,10 +463,10 @@ LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(LegoU32 p_unk0x04, Leg
 }
 
 // STUB: LEGORACERS 0x00414f40
-void RaceDecalManager::Trail::Decal::EmitPolygon(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
+void RaceDecalManager::Trail::Decal::EmitPolygon(LegoU32 p_firstPolygon, LegoU32 p_polygonCount)
 {
-	LegoU8* indices = m_sourceIndexBytes + 4 * p_unk0x04;
-	LegoU8* end = m_sourceIndexBytes + 4 * (p_unk0x04 + p_unk0x08);
+	LegoU8* indices = m_sourceIndexBytes + 4 * p_firstPolygon;
+	LegoU8* end = m_sourceIndexBytes + 4 * (p_firstPolygon + p_polygonCount);
 
 	while (indices < end) {
 		LegoU32 index0 = indices[0];

@@ -46,15 +46,15 @@ public:
 	HazardManager();
 	~HazardManager();
 
-	void NotifyEventStart(LegoS32 p_unk0x04, void* p_unk0x08);
-	void NotifyEventEnd(LegoS32 p_unk0x04, void* p_unk0x08);
-	void ForceActivate(LegoS32 p_unk0x04);
-	void NotifyEventPair(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_unk0x0c);
-	void DispatchEventStart(LegoS32 p_unk0x04, void* p_context);
-	void DispatchEventEnd(LegoS32 p_unk0x04, void* p_context);
-	void DispatchEventPair(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_context);
-	void Update(undefined4 p_unk0x04);
-	void UpdatePerRacer(GolCamera* p_unk0x04, Racer* p_unk0x08);
+	void NotifyEventStart(LegoS32 p_eventId, void* p_context);
+	void NotifyEventEnd(LegoS32 p_eventId, void* p_context);
+	void ForceActivate(LegoS32 p_eventId);
+	void NotifyEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_context);
+	void DispatchEventStart(LegoS32 p_eventId, void* p_context);
+	void DispatchEventEnd(LegoS32 p_eventId, void* p_context);
+	void DispatchEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_context);
+	void Update(undefined4 p_elapsedMs);
+	void UpdatePerRacer(GolCamera* p_camera, Racer* p_racer);
 	void Draw(GolD3DRenderDevice* p_renderer);
 	void ResetAll();
 

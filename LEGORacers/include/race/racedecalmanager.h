@@ -77,14 +77,14 @@ public:
 				undefined4 m_unk0x01c;            // 0x01c
 			};
 
-			void Project(GolCollidableEntity* p_unk0x04);
-			void BeginGeometry(GolModelBase* p_unk0x04);
-			void ProcessGroups(GolModelBase* p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c);
-			void EndGeometry(GolModelBase* p_unk0x04);
-			void SetOrientation(GolVec3* p_unk0x04, GolVec3* p_unk0x08);
+			void Project(GolCollidableEntity* p_collidable);
+			void BeginGeometry(GolModelBase* p_model);
+			void ProcessGroups(GolModelBase* p_model, LegoU32 p_firstCommand, LegoU32 p_commandCount);
+			void EndGeometry(GolModelBase* p_model);
+			void SetOrientation(GolVec3* p_normal, GolVec3* p_lengthAxis);
 			void ComputeProjection();
-			LegoU32 TransformVertices(LegoU32 p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c);
-			void EmitPolygon(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
+			LegoU32 TransformVertices(LegoU32 p_destIndex, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
+			void EmitPolygon(LegoU32 p_firstPolygon, LegoU32 p_polygonCount);
 			void EmitTriangle(ProjectedVertex* p_unk0x04, ProjectedVertex* p_unk0x08, ProjectedVertex* p_unk0x0c);
 			void FlushBatch();
 			GolVec3* ComputeQueryPoints();

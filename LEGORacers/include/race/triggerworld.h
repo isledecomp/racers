@@ -17,22 +17,22 @@ public:
 	TriggerWorld();
 	GolWorldDatabase* Initialize(
 		GolWorldDatabase* p_unk0x04,
-		LegoChar* p_unk0x08,
+		LegoChar* p_worldName,
 		RaceEventTable* p_unk0x0c,
 		GolNameTable* p_unk0x10
 	);
 	LegoBool32 IntersectSegment(
-		GolVec3* p_unk0x04,
-		GolVec3* p_unk0x08,
-		GolBoundingVolume::HitTriangle* p_unk0x0c,
-		GolVec3* p_unk0x10,
-		RaceEventRecord::Target** p_unk0x14
+		GolVec3* p_start,
+		GolVec3* p_end,
+		GolBoundingVolume::HitTriangle* p_hitTriangle,
+		GolVec3* p_hitPosition,
+		RaceEventRecord::Target** p_hitTarget
 	);
 	LegoBool32 IntersectSegmentAndFireEvents(
-		GolVec3* p_unk0x04,
-		GolVec3* p_unk0x08,
-		GolBoundingVolume::HitTriangle* p_unk0x0c,
-		GolVec3* p_unk0x10
+		GolVec3* p_start,
+		GolVec3* p_end,
+		GolBoundingVolume::HitTriangle* p_hitTriangle,
+		GolVec3* p_hitPosition
 	);
 
 private:

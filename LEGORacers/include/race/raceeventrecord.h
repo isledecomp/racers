@@ -18,6 +18,7 @@ public:
 			c_flagEnterEvent = 1 << 1,
 			c_flagLeaveEvent = 1 << 2,
 			c_flagTouchEvent = 1 << 3,
+			c_flagProjectileEvent = 1 << 4,
 			c_flagUnk0x1c = 1 << 5,
 			c_flagSurfaceForce = 1 << 6,
 			c_flagSurfaceSound = 1 << 7,
@@ -28,6 +29,7 @@ public:
 			c_flagUnk0x54 = 1 << 14,
 			c_flagRollingResistance = 1 << 15,
 			c_flagNonSolid = 1 << 16,
+			c_flagProjectilePassThrough = 1 << 17,
 			c_flagFinish = 1 << 18,
 		};
 
@@ -36,7 +38,7 @@ public:
 		LegoS32 m_enterEventId;        // 0x0c
 		LegoS32 m_leaveEventId;        // 0x10
 		LegoS32 m_touchEventId;        // 0x14
-		LegoS32 m_unk0x18;             // 0x18
+		LegoS32 m_projectileEventId;   // 0x18
 		GolVec3 m_unk0x1c;             // 0x1c
 		GolVec3 m_surfaceForce;        // 0x28
 		LegoS32 m_surfaceSoundId;      // 0x34

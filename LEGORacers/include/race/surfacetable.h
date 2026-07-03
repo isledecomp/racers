@@ -53,7 +53,7 @@ public:
 		LegoS32 m_enterEventId;        // 0x0c
 		LegoS32 m_leaveEventId;        // 0x10
 		LegoS32 m_touchEventId;        // 0x14
-		LegoS32 m_unk0x18;             // 0x18
+		LegoS32 m_projectileEventId;   // 0x18
 		GolVec3 m_unk0x1c;             // 0x1c
 		GolVec3 m_surfaceForce;        // 0x28
 		LegoS32 m_surfaceSoundId;      // 0x34

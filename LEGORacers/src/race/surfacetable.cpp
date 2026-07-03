@@ -23,7 +23,7 @@ void SurfaceTable::Entry::Reset()
 	m_enterEventId = 0;
 	m_leaveEventId = 0;
 	m_touchEventId = 0;
-	m_unk0x18 = 0;
+	m_projectileEventId = 0;
 	m_unk0x1c.m_x = 0.0f;
 	m_unk0x1c.m_y = 0.0f;
 	m_unk0x1c.m_z = 0.0f;
@@ -69,7 +69,7 @@ void SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 				m_flags |= c_flagTouchEventId;
 				break;
 			case GolFileParser::e_unknown0x2b:
-				m_unk0x18 = p_parser->ReadInteger();
+				m_projectileEventId = p_parser->ReadInteger();
 				m_flags |= c_flagUnk0x18;
 				break;
 			case GolFileParser::e_unknown0x2c:

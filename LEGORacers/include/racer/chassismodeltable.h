@@ -43,6 +43,11 @@ public:
 			e_handlingStat = 0x3a,
 			e_topSpeedStat = 0x3b,
 			e_accelerationStat = 0x3c,
+			e_materialLibrary = 0x34,
+			e_textureList = 0x35,
+			e_model = 0x36,
+			e_sceneNode = 0x37,
+			e_modelPart = 0x38,
 		};
 	};
 

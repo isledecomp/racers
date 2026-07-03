@@ -20,13 +20,13 @@ class GolFontBase {
 public:
 	enum Flags {
 		c_flagBit2 = 0x0004,
-		c_flagBit3 = 0x0008,
-		c_flagBit4 = 0x0010,
-		c_flagBit5 = 0x0020,
+		c_flagBmpSource = 0x0008,
+		c_flagTgaSource = 0x0010,
+		c_flagColorKeyed = 0x0020,
 		c_flagBit11 = 0x0800,
 		c_allFlags = 0xffff,
-		c_flagsWithoutBit3 = c_allFlags & ~c_flagBit3,
-		c_flagsWithoutBit4 = c_allFlags & ~c_flagBit4
+		c_flagsWithoutBmp = c_allFlags & ~c_flagBmpSource,
+		c_flagsWithoutTga = c_allFlags & ~c_flagTgaSource
 	};
 
 	GolFontBase();

@@ -305,35 +305,35 @@ void ChassisModelTable::ParseVariantNames(GolFileParser* p_parser, LegoU32 p_ind
 		LegoU32 index = p_index;
 		do {
 			switch (token) {
-			case GolFileParser::e_unknown0x34:
+			case CmbTxtParser::e_materialLibrary:
 				::strncpy(
 					m_items[index].m_materialNames[variant],
 					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
 					sizeof(GolName)
 				);
 				break;
-			case GolFileParser::e_unknown0x35:
+			case CmbTxtParser::e_textureList:
 				::strncpy(
 					m_items[index].m_textureNames[variant],
 					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
 					sizeof(GolName)
 				);
 				break;
-			case GolFileParser::e_unknown0x36:
+			case CmbTxtParser::e_model:
 				::strncpy(
 					m_items[index].m_modelNames[variant],
 					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
 					sizeof(GolName)
 				);
 				break;
-			case GolFileParser::e_unknown0x37:
+			case CmbTxtParser::e_sceneNode:
 				::strncpy(
 					m_items[index].m_nodeNames[variant],
 					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
 					sizeof(GolName)
 				);
 				break;
-			case GolFileParser::e_unknown0x38:
+			case CmbTxtParser::e_modelPart:
 				::strncpy(
 					m_items[index].m_modelPartNames[variant],
 					p_parser->ReadStringWithMaxLength(sizeof(GolName)),

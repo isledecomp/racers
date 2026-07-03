@@ -100,7 +100,7 @@ void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	GolTgaFile tgaFile;
 	GolBmpFile bmpFile;
 	GolImgFile* imageFile = &tgaFile;
-	if (!(m_flags & c_flagBit4)) {
+	if (!(m_flags & c_flagTgaSource)) {
 		imageFile = &bmpFile;
 	}
 
@@ -113,7 +113,7 @@ void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	}
 
 	ColorRGBA* colorKey = NULL;
-	if (m_flags & c_flagBit5) {
+	if (m_flags & c_flagColorKeyed) {
 		colorKey = &m_colorKey;
 	}
 
@@ -124,7 +124,7 @@ void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 
 	GolSurfaceFormat surfaceFormat = g_fontSourceImage->GetTextureFormat();
 	GolSurfaceFormat textureFormat;
-	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, m_flags & c_flagBit5);
+	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, m_flags & c_flagColorKeyed);
 	PackGlyphTextures(p_renderer, &textureFormat);
 	CreateSurfaces(p_renderer, &textureFormat);
 	CopyGlyphsToTextures();

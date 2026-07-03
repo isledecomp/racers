@@ -56,7 +56,7 @@ void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	GolSurfaceFormat sourceFormat;
 
 	GolImgFile* imageFile = &g_textureTgaFile;
-	if (!(m_flags & c_flagBit4)) {
+	if (!(m_flags & c_flagTgaSource)) {
 		imageFile = &g_textureBmpFile;
 	}
 
@@ -82,7 +82,7 @@ void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	GolSurfaceFormat textureFormat;
 	g_fontSourceImage = &m_sourceImage;
 	GolSurfaceFormat surfaceFormat = m_sourceImage.GetTextureFormat();
-	LegoU32 selectFlags = m_flags & c_flagBit5;
+	LegoU32 selectFlags = m_flags & c_flagColorKeyed;
 	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, selectFlags);
 	PackGlyphTextures(p_renderer, &textureFormat);
 	CreateSurfaces(p_renderer, &textureFormat);
@@ -112,7 +112,7 @@ void GolFont::RefreshSurfaces(GolD3DRenderDevice* p_renderer)
 
 	g_fontSourceImage = &m_sourceImage;
 	GolSurfaceFormat sourceFormat = m_sourceImage.GetTextureFormat();
-	p_renderer->SelectTextureFormat(sourceFormat, &textureFormat, m_flags & c_flagBit5);
+	p_renderer->SelectTextureFormat(sourceFormat, &textureFormat, m_flags & c_flagColorKeyed);
 	PackGlyphTextures(p_renderer, &textureFormat);
 	CreateSurfaces(p_renderer, &textureFormat);
 	CopyGlyphsToTextures(p_renderer, &sourceFormat, &textureFormat);
@@ -136,7 +136,7 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 	GolSoftwareMaterial* material = m_materials;
 
 	for (; i < m_surfaceCount - 1; i++) {
-		if (m_flags & c_flagBit5) {
+		if (m_flags & c_flagColorKeyed) {
 			texture->SetColorKey(m_colorKey);
 		}
 
@@ -169,7 +169,7 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 	texture = &m_textures[i];
 	material = &m_materials[i];
 
-	if (m_flags & c_flagBit5) {
+	if (m_flags & c_flagColorKeyed) {
 		texture->SetColorKey(m_colorKey);
 	}
 
@@ -294,7 +294,7 @@ void GolFont::CopyGlyphsToTextures(
 	}
 
 	ColorRGBA* colorKey;
-	if (font->m_flags & c_flagBit5) {
+	if (font->m_flags & c_flagColorKeyed) {
 		if (p_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey) {
 			g_fontImgFile.SetColorKeyReplacement(g_transparentBlack);
 		}

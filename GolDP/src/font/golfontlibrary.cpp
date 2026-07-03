@@ -113,13 +113,13 @@ void GolFontLibrary::LoadFontDefinitions(
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutBit4) | GolFontBase::c_flagBit3;
+				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutTga) | GolFontBase::c_flagBmpSource;
 				break;
 			case GolFileParser::e_unknown0x29:
-				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutBit3) | GolFontBase::c_flagBit4;
+				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutBmp) | GolFontBase::c_flagTgaSource;
 				break;
 			case GolFileParser::e_unknown0x2a:
-				style.m_flags |= GolFontBase::c_flagBit5;
+				style.m_flags |= GolFontBase::c_flagColorKeyed;
 				style.m_colorKey.m_red = parser->ReadInteger();
 				style.m_colorKey.m_grn = parser->ReadInteger();
 				style.m_colorKey.m_blu = parser->ReadInteger();
@@ -160,7 +160,7 @@ void GolFontLibrary::LoadFontDefinitions(
 		font->m_colorPacked = style.m_textColorPacked;
 		font->m_flags = flags;
 
-		if (flags & GolFontBase::c_flagBit5) {
+		if (flags & GolFontBase::c_flagColorKeyed) {
 			font->m_colorKeyPacked = style.m_colorKeyPacked;
 			font->m_flags = flags | GolFontBase::c_flagBit11;
 		}

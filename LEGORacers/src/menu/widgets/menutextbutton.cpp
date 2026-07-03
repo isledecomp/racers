@@ -132,9 +132,9 @@ LegoBool32 MenuTextButton::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00482790
-void MenuTextButton::SetTextByIndex(undefined4 p_unk0x04)
+void MenuTextButton::SetTextByIndex(undefined4 p_stringId)
 {
-	m_label.SetStringByIndex(static_cast<undefined2>(p_unk0x04), TRUE);
+	m_label.SetStringByIndex(static_cast<undefined2>(p_stringId), TRUE);
 
 	if (m_maxTextWidth && m_label.GetRect()->m_right - m_label.GetRect()->m_left > m_maxTextWidth) {
 		Rect rect = *m_label.GetRect();

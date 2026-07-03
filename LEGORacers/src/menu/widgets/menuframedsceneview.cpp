@@ -31,7 +31,7 @@ LegoBool32 MenuFramedSceneView::CreateFrame(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x004661f0
-LegoBool32 MenuFramedSceneView::Create(CreateParams* p_createParams, undefined4 p_unk0x08)
+LegoBool32 MenuFramedSceneView::Create(CreateParams* p_createParams, undefined4 p_binary)
 {
 	Destroy();
 
@@ -44,7 +44,7 @@ LegoBool32 MenuFramedSceneView::Create(CreateParams* p_createParams, undefined4 
 			m_unk0xdc.GetFill()->GetRect()->m_bottom - m_unk0xdc.GetFill()->GetRect()->m_top;
 		p_createParams->m_parent = m_unk0xdc.GetFill();
 
-		return MenuSceneView::Create(p_createParams, p_unk0x08);
+		return MenuSceneView::Create(p_createParams, p_binary);
 	}
 
 	return FALSE;

@@ -286,18 +286,18 @@ void OptionsRow::SnapThumbToValue()
 }
 
 // FUNCTION: LEGORACERS 0x0046e6f0
-void OptionsRow::SetValue(LegoS32 p_unk0x04)
+void OptionsRow::SetValue(LegoS32 p_value)
 {
-	if (p_unk0x04 != m_value) {
+	if (p_value != m_value) {
 		double step = m_stepWidth;
-		double index = p_unk0x04;
+		double index = p_value;
 		Rect rect = *m_thumb.GetRect();
 		LegoS32 width = rect.m_right - rect.m_left;
 		rect.m_left = m_trackMinX + static_cast<LegoS32>(step * index) - (width >> 1);
 		rect.m_right = width + rect.m_left;
 		m_thumb.SetRect(&rect);
 
-		m_value = p_unk0x04;
+		m_value = p_value;
 		if (m_eventHandler) {
 			m_eventHandler->OnWidgetValueChanged(this);
 		}

@@ -120,10 +120,10 @@ LegoBool32 MenuSceneScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00479a10
-LegoBool32 MenuSceneScreen::Update(undefined4 p_unk0x04)
+LegoBool32 MenuSceneScreen::Update(undefined4 p_elapsedMs)
 {
 	if (m_firstUpdate) {
-		p_unk0x04 = 0x11;
+		p_elapsedMs = 0x11;
 		m_firstUpdate = FALSE;
 	}
 
@@ -131,7 +131,7 @@ LegoBool32 MenuSceneScreen::Update(undefined4 p_unk0x04)
 		m_navPending = TRUE;
 	}
 
-	return MenuGameScreen::Update(p_unk0x04);
+	return MenuGameScreen::Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00479a50

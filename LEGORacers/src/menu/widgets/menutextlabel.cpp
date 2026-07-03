@@ -53,12 +53,12 @@ LegoBool32 MenuTextLabel::Create(CreateParams* p_createParams, MenuStyleTable::T
 }
 
 // FUNCTION: LEGORACERS 0x0046f580
-void MenuTextLabel::SetStringByIndex(undefined2 p_unk0x04, undefined4 p_unk0x08)
+void MenuTextLabel::SetStringByIndex(undefined2 p_stringId, undefined4 p_remeasure)
 {
 	GolString string;
 
-	m_stringTable->CopyStringByIndex(&string, p_unk0x04);
-	SetString(&string, p_unk0x08);
+	m_stringTable->CopyStringByIndex(&string, p_stringId);
+	SetString(&string, p_remeasure);
 }
 
 // FUNCTION: LEGORACERS 0x0046f600

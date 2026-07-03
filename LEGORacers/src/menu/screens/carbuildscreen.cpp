@@ -838,9 +838,9 @@ GolString* CarBuildScreen::GetHelpString(undefined4 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00474ba0
-GolFont* CarBuildScreen::GetHelpFont(undefined4 p_unk0x04)
+GolFont* CarBuildScreen::GetHelpFont(undefined4 p_helpStringId)
 {
-	if (!p_unk0x04) {
+	if (!p_helpStringId) {
 		return NULL;
 	}
 

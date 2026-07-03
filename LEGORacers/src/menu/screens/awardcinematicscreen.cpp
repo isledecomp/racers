@@ -563,13 +563,13 @@ void AwardCinematicScreen::Navigate()
 }
 
 // FUNCTION: LEGORACERS 0x00476ad0
-LegoBool32 AwardCinematicScreen::Update(undefined4 p_unk0x04)
+LegoBool32 AwardCinematicScreen::Update(undefined4 p_elapsedMs)
 {
 	if (m_resourceMenuId == c_menuCircuit7) {
 		m_sceneWidget.m_skippable = TRUE;
 	}
 
-	return MenuSceneScreen::Update(p_unk0x04);
+	return MenuSceneScreen::Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00476b00

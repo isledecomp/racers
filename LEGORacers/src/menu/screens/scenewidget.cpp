@@ -43,14 +43,14 @@ void MenuSceneScreen::SceneWidget::ResetState()
 }
 
 // FUNCTION: LEGORACERS 0x00466b50
-undefined4 MenuSceneScreen::SceneWidget::Create(SceneRefBinding* p_createParams, undefined4 p_unk0x08)
+undefined4 MenuSceneScreen::SceneWidget::Create(SceneRefBinding* p_createParams, undefined4 p_binary)
 {
 	if (m_flags & 1) {
 		Destroy();
 	}
 
 	if (CreateWidget(p_createParams)) {
-		LoadCutscene(p_createParams, p_unk0x08);
+		LoadCutscene(p_createParams, p_binary);
 	}
 
 	return m_flags & 1;
@@ -82,10 +82,10 @@ void MenuSceneScreen::SceneWidget::ComputeViewportRect()
 }
 
 // FUNCTION: LEGORACERS 0x00466bf0
-void MenuSceneScreen::SceneWidget::LoadCutscene(SceneRefBinding* p_createParams, undefined4 p_unk0x08)
+void MenuSceneScreen::SceneWidget::LoadCutscene(SceneRefBinding* p_createParams, undefined4 p_binary)
 {
 	ComputeViewportRect();
-	m_definition.Load(m_golExport, m_renderer, p_createParams->m_cutsceneName, p_unk0x08);
+	m_definition.Load(m_golExport, m_renderer, p_createParams->m_cutsceneName, p_binary);
 
 	if (!m_definition.GetFrameCount()) {
 		GOL_FATALERROR_MESSAGE("Invalid cinema file, at least 1 cinema is required");
@@ -97,7 +97,7 @@ void MenuSceneScreen::SceneWidget::LoadCutscene(SceneRefBinding* p_createParams,
 		p_createParams->m_soundGroupBinding->GetSoundManager(),
 		&m_definition,
 		p_createParams->m_cutsceneName,
-		p_unk0x08
+		p_binary
 	);
 	m_definition.SetEventSink(&m_player);
 

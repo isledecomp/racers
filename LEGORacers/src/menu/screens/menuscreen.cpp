@@ -766,14 +766,14 @@ undefined4 MenuScreen::CreateRegion(MenuWidget* p_source, undefined2 p_event)
 LegoBool32 MenuScreen::CreateTextField(
 	MenuTextField* p_source,
 	undefined2 p_event,
-	undefined2 p_unk0x0c,
-	undefined2 p_unk0x10,
-	GolString* p_unk0x14
+	undefined2 p_styleId,
+	undefined2 p_charsetStringId,
+	GolString* p_initialText
 )
 {
 	MenuTextField::CreateParams* sourceParams = static_cast<MenuTextField::CreateParams*>(GetBindingEntry(p_event));
-	MenuIcon::CreateState* styleEntry = static_cast<MenuIcon::CreateState*>(GetStyleEntry(p_unk0x0c));
-	if (!sourceParams || !styleEntry || !p_unk0x10) {
+	MenuIcon::CreateState* styleEntry = static_cast<MenuIcon::CreateState*>(GetStyleEntry(p_styleId));
+	if (!sourceParams || !styleEntry || !p_charsetStringId) {
 		return FALSE;
 	}
 
@@ -784,17 +784,17 @@ LegoBool32 MenuScreen::CreateTextField(
 		createParams.m_stringTable = m_menuTextStrings;
 	}
 
-	createParams.m_unk0x88 = p_unk0x10;
-	createParams.m_unk0x90 = p_unk0x14;
+	createParams.m_charsetStringId = p_charsetStringId;
+	createParams.m_initialText = p_initialText;
 	createParams.m_font = sourceParams->m_font;
 
 	return p_source->VTable0x70(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c6f0
-undefined4 MenuScreen::ShowConfirmDialog(MenuIcon* p_yesIcon, MenuIcon* p_noIcon, undefined2 p_unk0x0c)
+undefined4 MenuScreen::ShowConfirmDialog(MenuIcon* p_yesIcon, MenuIcon* p_noIcon, undefined2 p_notifyId)
 {
-	MenuDialog::DialogScreen* entry = m_dialog->OpenDialog(2, p_unk0x0c, this, 0);
+	MenuDialog::DialogScreen* entry = m_dialog->OpenDialog(2, p_notifyId, this, 0);
 	entry->SetYesIcon(p_yesIcon);
 	entry->SetNoIcon(p_noIcon);
 	entry->Open();

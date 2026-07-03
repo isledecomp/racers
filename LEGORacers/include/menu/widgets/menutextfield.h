@@ -31,10 +31,10 @@ public:
 	class CreateParams : public MenuIcon::CreateParams {
 	public:
 		GolStringTable* m_stringTable;    // 0x84
-		undefined2 m_unk0x88;             // 0x88
+		undefined2 m_charsetStringId;     // 0x88
 		undefined m_unk0x8a[0x8c - 0x8a]; // 0x8a
 		GolFontBase* m_font;              // 0x8c
-		GolString* m_unk0x90;             // 0x90
+		GolString* m_initialText;         // 0x90
 		undefined2 m_maxLength;           // 0x94
 		SoundIdSet m_soundIds;            // 0x96
 		undefined m_unk0x9e[0xa0 - 0x9e]; // 0x9e
@@ -51,7 +51,7 @@ public:
 	void Select(undefined4) override;                                                // vtable+0x4c
 	void Deselect(undefined4) override;                                              // vtable+0x50
 	virtual LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*);      // vtable+0x70
-	void HandleEditAction(undefined4 p_unk0x04);
+	void HandleEditAction(undefined4 p_action);
 	void SetText(GolString* p_string);
 	undefined2* GetBuffer() { return m_buffer; }
 

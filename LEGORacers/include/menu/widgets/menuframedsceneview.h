@@ -19,7 +19,7 @@ public:
 	MenuFramedSceneView();
 	~MenuFramedSceneView() override; // vtable+0x04
 
-	LegoBool32 Create(CreateParams* p_createParams, undefined4 p_unk0x08);
+	LegoBool32 Create(CreateParams* p_createParams, undefined4 p_binary);
 
 	// SYNTHETIC: LEGORACERS 0x00466100
 	// MenuFramedSceneView::`scalar deleting destructor'

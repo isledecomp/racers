@@ -50,10 +50,10 @@ LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIco
 	m_maxLength = p_createParams->m_maxLength;
 
 	m_text.CopyFromBufSelection(m_buffer, m_maxLength + 1);
-	m_charset.CopyFromBufSelection(m_stringTable->GetStringBuffer(p_createParams->m_unk0x88), 0);
+	m_charset.CopyFromBufSelection(m_stringTable->GetStringBuffer(p_createParams->m_charsetStringId), 0);
 
-	if (p_createParams->m_unk0x90) {
-		m_text.GolStrcpy(p_createParams->m_unk0x90);
+	if (p_createParams->m_initialText) {
+		m_text.GolStrcpy(p_createParams->m_initialText);
 		m_length = m_text.SelectionLength();
 	}
 
@@ -61,11 +61,11 @@ LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIco
 }
 
 // FUNCTION: LEGORACERS 0x00471100
-void MenuTextField::HandleEditAction(undefined4 p_unk0x04)
+void MenuTextField::HandleEditAction(undefined4 p_action)
 {
-	m_inputMode = p_unk0x04;
+	m_inputMode = p_action;
 
-	if (p_unk0x04 == 4) {
+	if (p_action == 4) {
 		if (m_length) {
 			m_length--;
 			m_charsetIndex = 0;

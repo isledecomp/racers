@@ -29,7 +29,7 @@ void MenuButton::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00466370
-LegoBool32 MenuButton::CreateImage(MenuImage* p_unk0x04, CreateParams* p_createParams)
+LegoBool32 MenuButton::CreateImage(MenuImage* p_image, CreateParams* p_createParams)
 {
 	MenuImage::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
@@ -41,7 +41,7 @@ LegoBool32 MenuButton::CreateImage(MenuImage* p_unk0x04, CreateParams* p_createP
 	createParams.m_parent = this;
 	createParams.m_image = image;
 
-	return p_unk0x04->Create(&createParams);
+	return p_image->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x004663d0

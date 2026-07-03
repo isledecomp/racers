@@ -1099,7 +1099,7 @@ LegoU32 RacerPhysics::OnCollisionRecord(
 	GolVec3* p_point,
 	RaceEventRecord* p_record,
 	GolBoundedEntity* p_world,
-	GolBoundingVolume::Field0x0c* p_context
+	GolBoundingVolume::HitTriangle* p_context
 )
 {
 	if (p_world == m_triggerCollidable) {
@@ -2650,8 +2650,8 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 
 	LegoFloat bestDistance = -FLT_MAX;
 	WheelProbe* selectedEntry = NULL;
-	GolBoundingVolume::Field0x0c* eventContext = g_carBodySavedWheels.GetEventContext();
-	GolBoundingVolume::Field0x0c* collisionContext = eventContext;
+	GolBoundingVolume::HitTriangle* eventContext = g_carBodySavedWheels.GetEventContext();
+	GolBoundingVolume::HitTriangle* collisionContext = eventContext;
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_collisionWorldCount; resourceIndex++) {
 		GolBoundedEntity* resource = m_collisionWorlds[resourceIndex];
@@ -2969,8 +2969,8 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 	LegoFloat bestDistance = -FLT_MAX;
 	WheelProbe* selectedEntry = NULL;
 	LegoS32 selectedIndex = 0;
-	GolBoundingVolume::Field0x0c* eventContext = g_carBodySavedWheels.GetEventContext();
-	GolBoundingVolume::Field0x0c* collisionContext = eventContext;
+	GolBoundingVolume::HitTriangle* eventContext = g_carBodySavedWheels.GetEventContext();
+	GolBoundingVolume::HitTriangle* collisionContext = eventContext;
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_collisionWorldCount; resourceIndex++) {
 		GolBoundedEntity* resource = m_collisionWorlds[resourceIndex];

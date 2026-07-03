@@ -16,7 +16,7 @@ class RaceEventRecord;
 class GolBoundingVolume {
 public:
 	// SIZE 0x34
-	class Field0x0c {
+	class HitTriangle {
 	public:
 		const LegoFloat* GetFloatData() const { return &m_unk0x00.m_x; }
 
@@ -59,7 +59,7 @@ public:
 	LegoBool32 FUN_00403fa0(
 		GolVec3* p_start,
 		GolVec3* p_end,
-		Field0x0c* p_record,
+		HitTriangle* p_record,
 		GolVec3* p_hit,
 		RaceEventRecord** p_hitRecord,
 		LegoFloat* p_amountOut
@@ -118,7 +118,7 @@ private:
 	LegoFloat m_unk0x48;              // 0x48
 	LegoFloat m_unk0x4c;              // 0x4c
 	PolygonRange0x14* m_unk0x50;      // 0x50
-	Field0x0c* m_unk0x54;             // 0x54
+	HitTriangle* m_unk0x54;           // 0x54
 	GolVec3* m_unk0x58;               // 0x58
 	RaceEventRecord** m_unk0x5c;      // 0x5c
 	LegoFloat* m_unk0x60;             // 0x60

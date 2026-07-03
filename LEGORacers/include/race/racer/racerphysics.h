@@ -29,7 +29,7 @@ public:
 		GolVec3* p_point,
 		RaceEventRecord* p_record,
 		GolBoundedEntity* p_world,
-		GolBoundingVolume::Field0x0c* p_context
+		GolBoundingVolume::HitTriangle* p_context
 	) override;
 	void UpdateWheelSurfaces() override;                                                // vtable+0x10
 	void SetThrust(LegoFloat p_thrust) override;                                        // vtable+0x14

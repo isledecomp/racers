@@ -6,7 +6,7 @@
 #include "golerror.h"
 #include "golmath.h"
 
-DECOMP_SIZE_ASSERT(GolBoundingVolume::Field0x0c, 0x34)
+DECOMP_SIZE_ASSERT(GolBoundingVolume::HitTriangle, 0x34)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonId0x08, 0x08)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonRange0x14, 0x14)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::TraversalEntry0x0c, 0x0c)
@@ -320,7 +320,7 @@ undefined4 GolBoundingVolume::FUN_1001be50()
 LegoBool32 GolBoundingVolume::FUN_00403fa0(
 	GolVec3* p_start,
 	GolVec3* p_end,
-	Field0x0c* p_record,
+	HitTriangle* p_record,
 	GolVec3* p_hit,
 	RaceEventRecord** p_hitRecord,
 	LegoFloat* p_amountOut

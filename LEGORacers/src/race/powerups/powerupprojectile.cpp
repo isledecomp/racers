@@ -406,7 +406,7 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 	vectors[0].m_z = (vectors[1].m_z + m_startPosition.m_z) + m_gravity * 0.5f * elapsed * elapsed;
 	m_worldEntity->VTable0x04(&vectors[1]);
 
-	GolBoundingVolume::Field0x0c record;
+	GolBoundingVolume::HitTriangle record;
 	if (m_collisionWorld->FUN_0041f730(&vectors[1], &vectors[0], &record, &m_hitPosition)) {
 		m_hitNormal.m_x = record.m_normal.m_x;
 		m_hitNormal.m_y = record.m_normal.m_y;

@@ -288,7 +288,7 @@ void CurseAction::AdvanceState()
 
 	GolVec3 position;
 	if (m_ownerRacer != NULL) {
-		GolBoundingVolume::Field0x0c record;
+		GolBoundingVolume::HitTriangle record;
 		ComputeDropPosition(m_ownerRacer, &position, &record);
 
 		GolVec3 direction;

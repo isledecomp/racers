@@ -258,7 +258,7 @@ LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 
 	m_tension += g_tetherTautnessRate * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 	if (m_tension >= 1.0f) {
-		GolBoundingVolume::Field0x0c record;
+		GolBoundingVolume::HitTriangle record;
 		m_tension = 1.0f;
 		if (m_collisionWorld->FUN_0041f730(&origin, &currentPosition, &record, &m_hitPosition)) {
 			m_hitNormal = record.m_normal;

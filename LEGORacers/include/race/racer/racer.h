@@ -187,7 +187,7 @@ private:
 	void PlayTaunt();
 	void UpdateFacing(LegoU32 p_elapsedMs);
 	void UpdateLookTarget(LegoU32 p_elapsedMs);
-	void OnCheckpointCrossed(CheckpointGraph::Entry* p_entry, GolBoundingVolume::Field0x0c* p_record);
+	void OnCheckpointCrossed(CheckpointGraph::Entry* p_entry, GolBoundingVolume::HitTriangle* p_record);
 
 public:
 	LegoBool32 CollectWhiteBrick(DroppableBrick* p_brick);

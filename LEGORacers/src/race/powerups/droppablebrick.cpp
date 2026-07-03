@@ -55,7 +55,7 @@ LegoS32 DroppableBrick::SnapToGround(GolVec3* p_position)
 {
 	GolVec3 start;
 	GolVec3 end;
-	GolBoundingVolume::Field0x0c record;
+	GolBoundingVolume::HitTriangle record;
 
 	start.m_x = p_position->m_x;
 	start.m_y = p_position->m_y;

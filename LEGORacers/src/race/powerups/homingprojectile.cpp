@@ -150,7 +150,7 @@ void HomingProjectile::UpdateTargeting(
 			start.m_z += g_homingProjectileCollisionStartOffset;
 			end.m_z -= g_homingProjectileCollisionProbeDepth;
 
-			GolBoundingVolume::Field0x0c record;
+			GolBoundingVolume::HitTriangle record;
 			if (m_collisionWorld->FUN_0041f730(&start, &end, &record, &hit)) {
 				m_hasWaypoint = 1;
 				m_waypointPosition.m_x = hit.m_x;
@@ -218,7 +218,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 	GolVec3 previousPosition;
 	GolVec3 start;
 	GolVec3 end;
-	GolBoundingVolume::Field0x0c record;
+	GolBoundingVolume::HitTriangle record;
 
 	Racer* target = m_targetRacer;
 	if (target != NULL) {

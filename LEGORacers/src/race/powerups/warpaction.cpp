@@ -507,7 +507,7 @@ void WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 	start.m_z += g_homingProjectileCollisionStartOffset;
 	start.m_z -= g_homingProjectileCollisionProbeDepth;
 
-	GolBoundingVolume::Field0x0c record;
+	GolBoundingVolume::HitTriangle record;
 	m_manager->m_collisionWorld->IntersectSegment(&start, &end, &record, &position, NULL);
 
 	position.m_z += g_homingProjectileCollisionStartOffset;

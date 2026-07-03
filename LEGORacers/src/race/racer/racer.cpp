@@ -2379,7 +2379,7 @@ void Racer::UpdateLookTarget(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x00439fc0
-void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_unk0x04, GolBoundingVolume::Field0x0c* p_unk0x08)
+void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_unk0x04, GolBoundingVolume::HitTriangle* p_unk0x08)
 {
 	LegoBool32 isForward;
 	if (p_unk0x08->m_normal.m_z * p_unk0x04->m_planeNormal.m_z +

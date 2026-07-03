@@ -25,7 +25,7 @@ public:
 		// GolSceneNode::DdfTxtParser::~DdfTxtParser
 	};
 
-	class Field0x14 {
+	class TransformComposer {
 	public:
 		virtual LegoBool32 VTable0x00(LegoU32 p_index) = 0; // vtable+0x00
 		virtual void VTable0x04(
@@ -71,9 +71,9 @@ public:
 protected:
 	void FUN_10029c60(GolFileParser* p_parser);
 
-	undefined4 m_unk0x0c; // 0x0c
-	LegoU32 m_capacity;   // 0x10
-	Field0x14* m_unk0x14; // 0x14
+	undefined4 m_unk0x0c;         // 0x0c
+	LegoU32 m_capacity;           // 0x10
+	TransformComposer* m_unk0x14; // 0x14
 };
 
 #endif // GOLSCENENODE_H

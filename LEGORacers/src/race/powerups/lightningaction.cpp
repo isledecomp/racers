@@ -472,7 +472,7 @@ void LightningAction::UpdateBoltPath()
 	GolVec3 end;
 	GolVec3 scaledDirection;
 	GolVec3 hit;
-	GolBoundingVolume::Field0x0c record;
+	GolBoundingVolume::HitTriangle record;
 	LegoFloat scale = m_boltLength;
 	scale *= g_ghostSpeedScale;
 	scaledDirection.m_x = direction.m_x * scale;

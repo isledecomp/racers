@@ -24,7 +24,7 @@ public:
 	virtual void OnHitRacer(Racer* p_racer);                         // vtable+0x20
 
 protected:
-	void ComputeDropPosition(Racer* p_racer, GolVec3* p_position, GolBoundingVolume::Field0x0c* p_record);
+	void ComputeDropPosition(Racer* p_racer, GolVec3* p_position, GolBoundingVolume::HitTriangle* p_record);
 
 	RaceState* m_raceState0x018;             // 0x018
 	LegoEventQueue::Event* m_collisionEvent; // 0x01c

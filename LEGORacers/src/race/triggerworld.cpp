@@ -53,7 +53,7 @@ GolWorldDatabase* TriggerWorld::Initialize(
 LegoBool32 TriggerWorld::IntersectSegment(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
-	GolBoundingVolume::Field0x0c* p_unk0x0c,
+	GolBoundingVolume::HitTriangle* p_unk0x0c,
 	GolVec3* p_unk0x10,
 	RaceEventRecord::Target** p_unk0x14
 )
@@ -75,7 +75,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	direction.m_z = p_unk0x08->m_z - p_unk0x04->m_z;
 	GolMath::NormalizeVector3(direction, &direction);
 
-	GolBoundingVolume::Field0x0c* record = p_unk0x0c;
+	GolBoundingVolume::HitTriangle* record = p_unk0x0c;
 	GolWorldDatabase* root = m_unk0x00;
 	count = 0;
 	if (!(0 < root->GetBoundedEntityCount())) {
@@ -155,7 +155,7 @@ fail:
 LegoBool32 TriggerWorld::FUN_0041f730(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
-	GolBoundingVolume::Field0x0c* p_unk0x0c,
+	GolBoundingVolume::HitTriangle* p_unk0x0c,
 	GolVec3* p_unk0x10
 )
 {

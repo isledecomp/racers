@@ -93,7 +93,11 @@ void HazardActionBase::VTable0x00(LegoEventQueue::CallbackData* p_param)
 }
 
 // STUB: LEGORACERS 0x00456360
-void HazardActionBase::ComputeDropPosition(Racer* p_racer, GolVec3* p_position, GolBoundingVolume::Field0x0c* p_record)
+void HazardActionBase::ComputeDropPosition(
+	Racer* p_racer,
+	GolVec3* p_position,
+	GolBoundingVolume::HitTriangle* p_record
+)
 {
 	GolVec3 start;
 	p_racer->m_visuals.m_carEntity->VTable0x04(&start);
@@ -104,7 +108,7 @@ void HazardActionBase::ComputeDropPosition(Racer* p_racer, GolVec3* p_position, 
 	GolVec3 end;
 	end = start - verticalOffset;
 
-	GolBoundingVolume::Field0x0c record;
+	GolBoundingVolume::HitTriangle record;
 	if (p_record == NULL) {
 		p_record = &record;
 	}

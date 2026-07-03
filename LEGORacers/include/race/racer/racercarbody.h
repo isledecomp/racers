@@ -94,9 +94,9 @@ public:
 	// SIZE 0x3c
 	class CollisionCacheRecord {
 	public:
-		GolBoundingVolume::Field0x0c m_plane; // 0x00
-		LegoU32 m_age;                        // 0x34
-		RaceEventRecord* m_record;            // 0x38
+		GolBoundingVolume::HitTriangle m_plane; // 0x00
+		LegoU32 m_age;                          // 0x34
+		RaceEventRecord* m_record;              // 0x38
 	};
 
 	// SIZE 0x70
@@ -121,7 +121,7 @@ public:
 	class SavedWheelStateBlock {
 	public:
 		SavedWheelState* GetEntries() { return m_entries; }
-		GolBoundingVolume::Field0x0c* GetEventContext() { return &m_eventContext; }
+		GolBoundingVolume::HitTriangle* GetEventContext() { return &m_eventContext; }
 
 		union {
 			struct {
@@ -129,9 +129,9 @@ public:
 				undefined m_unk0x1c0[0x1ec - 0x1c0]; // 0x1c0
 			};
 			struct {
-				undefined m_unk0x000[0x1b4 - 0x000];         // 0x000
-				GolBoundingVolume::Field0x0c m_eventContext; // 0x1b4
-				undefined m_unk0x1e8[0x1ec - 0x1e8];         // 0x1e8
+				undefined m_unk0x000[0x1b4 - 0x000];           // 0x000
+				GolBoundingVolume::HitTriangle m_eventContext; // 0x1b4
+				undefined m_unk0x1e8[0x1ec - 0x1e8];           // 0x1e8
 			};
 		};
 	};
@@ -159,7 +159,7 @@ public:
 		GolVec3* p_point,
 		RaceEventRecord* p_record,
 		GolBoundedEntity* p_world,
-		GolBoundingVolume::Field0x0c* p_context
+		GolBoundingVolume::HitTriangle* p_context
 	) = 0;
 	virtual void UpdateWheelSurfaces() = 0;                                            // vtable+0x10
 	virtual void SetThrust(LegoFloat p_thrust);                                        // vtable+0x14
@@ -226,7 +226,7 @@ public:
 	LegoFloat GetAverageSupportThreshold();
 	LegoFloat GetAverageFriction();
 	void AgePlaneCache();
-	CollisionCacheRecord* CachePlane(GolBoundingVolume::Field0x0c* p_plane, RaceEventRecord* p_record);
+	CollisionCacheRecord* CachePlane(GolBoundingVolume::HitTriangle* p_plane, RaceEventRecord* p_record);
 	LegoBool32 TestCachedPlanes(WheelProbe* p_probe);
 	static LegoBool32 TestCachedPlane(WheelProbe* p_probe, CollisionCacheRecord* p_record);
 	void ComputeWheelPositions();

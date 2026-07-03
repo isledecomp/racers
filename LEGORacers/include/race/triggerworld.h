@@ -24,22 +24,22 @@ public:
 	LegoBool32 IntersectSegment(
 		GolVec3* p_unk0x04,
 		GolVec3* p_unk0x08,
-		GolBoundingVolume::Field0x0c* p_unk0x0c,
+		GolBoundingVolume::HitTriangle* p_unk0x0c,
 		GolVec3* p_unk0x10,
 		RaceEventRecord::Target** p_unk0x14
 	);
 	LegoBool32 FUN_0041f730(
 		GolVec3* p_unk0x04,
 		GolVec3* p_unk0x08,
-		GolBoundingVolume::Field0x0c* p_unk0x0c,
+		GolBoundingVolume::HitTriangle* p_unk0x0c,
 		GolVec3* p_unk0x10
 	);
 
 private:
-	GolWorldDatabase* m_unk0x00;   // 0x00
-	RaceEventTable* m_unk0x04; // 0x04
-	GolNameTable* m_unk0x08;       // 0x08
-	GolBoundedEntity* m_unk0x0c;   // 0x0c
+	GolWorldDatabase* m_unk0x00; // 0x00
+	RaceEventTable* m_unk0x04;   // 0x04
+	GolNameTable* m_unk0x08;     // 0x08
+	GolBoundedEntity* m_unk0x0c; // 0x0c
 };
 
 #endif // RACESESSIONFIELD0X32B4_H

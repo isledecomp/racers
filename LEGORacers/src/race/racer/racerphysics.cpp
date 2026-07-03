@@ -123,7 +123,7 @@ void RacerCarBody::AgePlaneCache()
 
 // FUNCTION: LEGORACERS 0x00448a70
 RacerPhysics::CollisionCacheRecord* RacerCarBody::CachePlane(
-	GolBoundingVolume::Field0x0c* p_plane,
+	GolBoundingVolume::HitTriangle* p_plane,
 	RaceEventRecord* p_record
 )
 {

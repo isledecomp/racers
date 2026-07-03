@@ -72,7 +72,7 @@ LegoBool32 MenuTextEntry::CreateColorBox(CreateParams* p_createParams)
 	createParams.m_flags |= 1;
 	createParams.m_onDurationMs = 1000;
 	createParams.m_offDurationMs = 1000;
-	createParams.m_color.m_unk0x00 = -1;
+	createParams.m_color.m_packed = -1;
 
 	return m_caret.Create(&createParams);
 }

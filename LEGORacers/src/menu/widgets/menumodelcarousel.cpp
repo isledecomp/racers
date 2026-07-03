@@ -350,8 +350,8 @@ void MenuModelCarousel::SetItemColors(VisualStateColor* p_primaryColor, VisualSt
 {
 	Item* item = m_items;
 	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
-		item->m_primaryColor.m_unk0x00 = p_primaryColor->m_unk0x00;
-		item->m_secondaryColor.m_unk0x00 = p_secondaryColor->m_unk0x00;
+		item->m_primaryColor.m_packed = p_primaryColor->m_packed;
+		item->m_secondaryColor.m_packed = p_secondaryColor->m_packed;
 	}
 }
 
@@ -359,8 +359,8 @@ void MenuModelCarousel::SetItemColors(VisualStateColor* p_primaryColor, VisualSt
 void MenuModelCarousel::SetFocusedItemColors(VisualStateColor* p_primaryColor, VisualStateColor* p_secondaryColor)
 {
 	Item* item = &m_items[m_focusedSlot];
-	item->m_primaryColor.m_unk0x00 = p_primaryColor->m_unk0x00;
-	item->m_secondaryColor.m_unk0x00 = p_secondaryColor->m_unk0x00;
+	item->m_primaryColor.m_packed = p_primaryColor->m_packed;
+	item->m_secondaryColor.m_packed = p_secondaryColor->m_packed;
 }
 
 // FUNCTION: LEGORACERS 0x0046d240

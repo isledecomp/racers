@@ -1386,7 +1386,7 @@ void CarBuildModel::Reset()
 	m_colorTable = NULL;
 	UpdateOffset(NULL);
 	m_hasHighBasePiece = FALSE;
-	m_unk0xda = TRUE;
+	m_baseTextureEnabled = TRUE;
 	m_highBasePiece = NULL;
 }
 
@@ -1806,7 +1806,7 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 						);
 					}
 					else if (
-						!m_savedHasHighBasePiece && m_unk0xdb &&
+						!m_savedHasHighBasePiece && m_applyBaseTexture &&
 						(primitive->m_commandFlags == c_buildPrimitiveCommandMaterial2 ||
 						 primitive->m_commandFlags & c_buildPrimitiveCommandTextureBit)
 					) {
@@ -1843,11 +1843,12 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 					primitive->m_partIndex = p_partIndex;
 
 					if (materialIndex >= 3) {
-						if (!m_savedHasHighBasePiece && m_unk0xdb && (command & c_buildPrimitiveCommandTextureBit)) {
+						if (!m_savedHasHighBasePiece && m_applyBaseTexture &&
+							(command & c_buildPrimitiveCommandTextureBit)) {
 							primitive->m_materialIndex = materialIndex + 1;
 						}
 					}
-					else if (!m_savedHasHighBasePiece && m_unk0xdb && materialIndex == 2) {
+					else if (!m_savedHasHighBasePiece && m_applyBaseTexture && materialIndex == 2) {
 						primitive->m_materialIndex = static_cast<LegoU16>(colorMaterialIndex + 1);
 					}
 					else {
@@ -1935,7 +1936,7 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 							);
 						}
 						else if (
-							!m_savedHasHighBasePiece && m_unk0xdb &&
+							!m_savedHasHighBasePiece && m_applyBaseTexture &&
 							(primitive->m_commandFlags == c_buildPrimitiveCommandMaterial2 ||
 							 primitive->m_commandFlags & c_buildPrimitiveCommandTextureBit)
 						) {
@@ -1989,12 +1990,12 @@ LegoS16 CarBuildModel::EmitCellGeometry(
 	LegoS32 p_y,
 	LegoS32 p_height,
 	LegoS32 p_colorRecordIndex,
-	LegoS32 p_unk0x14
+	LegoS32 p_materialIndex
 )
 {
 	LegoS32 colorRecordIndex;
-	if (p_unk0x14) {
-		colorRecordIndex = m_colorTable->FindColorRecordIndexByMaterialIndex(p_unk0x14);
+	if (p_materialIndex) {
+		colorRecordIndex = m_colorTable->FindColorRecordIndexByMaterialIndex(p_materialIndex);
 	}
 	else {
 		colorRecordIndex = p_colorRecordIndex;
@@ -2171,7 +2172,7 @@ LegoS32 CarBuildModel::BuildPieceModel(
 	GolModelBase* model = p_entity->GetModel(0);
 	LegoPieceLibrary::PieceRecord* pieceRecord = p_pieceRecord->GetVariant(1);
 	m_savedHasHighBasePiece = m_hasHighBasePiece;
-	m_unk0xdb = m_unk0xda;
+	m_applyBaseTexture = m_baseTextureEnabled;
 	m_buildFlags = 0xef;
 	m_buildStatus = 0;
 
@@ -2452,15 +2453,15 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 		startFlags = m_buildStatus;
 		if (startFlags & 0xfc) {
 			m_savedHasHighBasePiece = FALSE;
-			m_unk0xdb = FALSE;
+			m_applyBaseTexture = FALSE;
 		}
 		else if (startFlags & 0xfe) {
 			m_savedHasHighBasePiece = FALSE;
-			m_unk0xdb = m_hasHighBasePiece || m_unk0xda;
+			m_applyBaseTexture = m_hasHighBasePiece || m_baseTextureEnabled;
 		}
 		else {
 			m_savedHasHighBasePiece = m_hasHighBasePiece;
-			m_unk0xdb = m_unk0xda;
+			m_applyBaseTexture = m_baseTextureEnabled;
 		}
 
 		for (i = 0; i < activePieceCount; i++) {

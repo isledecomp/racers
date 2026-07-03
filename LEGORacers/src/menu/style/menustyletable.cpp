@@ -184,7 +184,7 @@ void MenuStyleTable::ParseSection(undefined4 p_arg1)
 // FUNCTION: LEGORACERS 0x0046fe20
 void MenuStyleTable::ParseImageStyle(ImageStyle* p_entry)
 {
-	p_entry->m_color.m_unk0x00 = -1;
+	p_entry->m_color.m_packed = -1;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -209,7 +209,7 @@ void MenuStyleTable::ParseImageStyle(ImageStyle* p_entry)
 // FUNCTION: LEGORACERS 0x0046feb0
 void MenuStyleTable::ParseTextStyle(TextStyle* p_entry)
 {
-	p_entry->m_color.m_unk0x00 = -1;
+	p_entry->m_color.m_packed = -1;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -240,7 +240,7 @@ void MenuStyleTable::ParseTextStyle(TextStyle* p_entry)
 // FUNCTION: LEGORACERS 0x0046ff70
 void MenuStyleTable::ParseFrameStyle(FrameStyle* p_entry)
 {
-	p_entry->m_color1.m_unk0x00 = -1;
+	p_entry->m_color1.m_packed = -1;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);

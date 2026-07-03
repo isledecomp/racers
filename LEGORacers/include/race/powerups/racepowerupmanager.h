@@ -280,7 +280,7 @@ private:
 	RacerSoundSource* m_soundSource;                             // 0x03c
 	CutsceneAnimation* m_cutsceneAnimation;                      // 0x040
 	RaceTrailManager* m_trailManager;                            // 0x044
-	void* m_unk0x048;                                            // 0x048
+	void* m_racerTriggers;                                       // 0x048
 	MenuAnimationList* m_animationList;                          // 0x04c
 	TargetPointList* m_targetPoints;                             // 0x050
 	LegoFloat m_cameraFov;                                       // 0x054

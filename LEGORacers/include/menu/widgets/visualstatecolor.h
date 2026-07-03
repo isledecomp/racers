@@ -11,9 +11,9 @@
 class VisualStateColor {
 public:
 	union {
-		undefined4 m_unk0x00; // 0x00
-		LegoS8 m_bytes[4];    // 0x00
-		ColorRGBA m_color;    // 0x00
+		LegoU32 m_packed;  // 0x00
+		LegoS8 m_bytes[4]; // 0x00
+		ColorRGBA m_color; // 0x00
 	};
 };
 

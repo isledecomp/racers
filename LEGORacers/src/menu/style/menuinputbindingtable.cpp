@@ -211,7 +211,7 @@ void MenuInputBindingTable::ParseSection(undefined4 p_arg1)
 void MenuInputBindingTable::ParseWidgetBase(MenuWidget::CreateParams* p_entry)
 {
 	VisualStateColor* visualState = &p_entry->m_color;
-	visualState->m_unk0x00 = -1;
+	visualState->m_packed = -1;
 
 	LegoU8 flags = p_entry->m_flags;
 	flags |= 1;

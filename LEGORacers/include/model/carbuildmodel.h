@@ -392,7 +392,13 @@ private:
 		LegoS32 p_colorRecordIndex,
 		LegoU16 p_partIndex
 	);
-	LegoS16 EmitCellGeometry(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x14);
+	LegoS16 EmitCellGeometry(
+		LegoS32 p_x,
+		LegoS32 p_y,
+		LegoS32 p_height,
+		LegoS32 p_colorRecordIndex,
+		LegoS32 p_materialIndex
+	);
 	void FinalizeBuild(LegoU8 p_buildFlags);
 	void EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitive* p_primitive);
 	void EmitPrimitives(GolModelEntity* p_entity);
@@ -414,8 +420,8 @@ private:
 	LegoS32 m_placedPieceCount;                                    // 0x00d4
 	LegoBool m_hasHighBasePiece;                                   // 0x00d8
 	LegoBool m_savedHasHighBasePiece;                              // 0x00d9
-	LegoBool m_unk0xda;                                            // 0x00da
-	LegoBool m_unk0xdb;                                            // 0x00db
+	LegoBool m_baseTextureEnabled;                                 // 0x00da
+	LegoBool m_applyBaseTexture;                                   // 0x00db
 	LegoU8 m_buildStatus;                                          // 0x00dc
 	LegoU16 m_buildFlags;                                          // 0x00de
 	LegoPieceLibrary::PieceRecord* m_highBasePiece;                // 0x00e0

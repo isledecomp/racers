@@ -481,7 +481,7 @@ void RacePowerupManager::Reset()
 	m_exclusiveDraw = 0;
 	m_turbo3Database = 0;
 	m_boundedEntity = 0;
-	m_unk0x048 = 0;
+	m_racerTriggers = 0;
 	m_trackDatabase = 0;
 	m_actionPoolCounts[0] = 0;
 	m_actionPoolCounts[1] = 0;
@@ -549,7 +549,7 @@ void RacePowerupManager::Initialize(const Params* p_params)
 	m_cutsceneAnimation = p_params->m_cutsceneAnimation;
 	m_trailManager = p_params->m_trailManager;
 	m_trackDatabase = p_params->m_trackDatabase;
-	m_unk0x048 = p_params->m_racerTriggers;
+	m_racerTriggers = p_params->m_racerTriggers;
 	m_animationList = p_params->m_animationList;
 	m_targetPoints = p_params->m_targetPoints;
 	m_cameraFov = p_params->m_cameraFov;

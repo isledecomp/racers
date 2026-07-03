@@ -221,7 +221,7 @@ private:
 	void DrawOverlaysForState5();
 	void DrawPauseDialog();
 	void DrawDemoText();
-	void DrawLoadProgress(LegoFloat p_unk0x04);
+	void DrawLoadProgress(LegoFloat p_progress);
 	void FlushOverlays();
 	void BindSurfaceMaterials(LegoBool32 p_mirror);
 	void BindCheckpointMaterials();

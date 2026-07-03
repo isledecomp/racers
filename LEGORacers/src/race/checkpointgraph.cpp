@@ -209,23 +209,23 @@ LegoU32 CheckpointGraph::CountLapCheckpoints()
 }
 
 // FUNCTION: LEGORACERS 0x0041ea90
-LegoU32 CheckpointGraph::FindNextFractionedCheckpoint(LegoU32 p_unk0x04, LegoU32* p_unk0x08)
+LegoU32 CheckpointGraph::FindNextFractionedCheckpoint(LegoU32 p_startIndex, LegoU32* p_stepCount)
 {
-	*p_unk0x08 = 0;
+	*p_stepCount = 0;
 
-	Entry* entry = &m_entries[p_unk0x04];
+	Entry* entry = &m_entries[p_startIndex];
 	while (entry->m_lapFraction == g_minSoundPan) {
-		if (*p_unk0x08 >= m_count) {
+		if (*p_stepCount >= m_count) {
 			break;
 		}
 
-		LegoU32 count = *p_unk0x08 + 1;
-		p_unk0x04 = entry->m_next.m_items[0];
-		*p_unk0x08 = count;
-		entry = &m_entries[p_unk0x04];
+		LegoU32 count = *p_stepCount + 1;
+		p_startIndex = entry->m_next.m_items[0];
+		*p_stepCount = count;
+		entry = &m_entries[p_startIndex];
 	}
 
-	return p_unk0x04;
+	return p_startIndex;
 }
 
 // FUNCTION: LEGORACERS 0x0045c3b0 FOLDED

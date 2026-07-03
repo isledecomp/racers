@@ -179,7 +179,7 @@ static LegoS32 CompareColorRecords(const void* p_lhs, const void* p_rhs)
 }
 
 // FUNCTION: LEGORACERS 0x00497c30
-void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c)
+void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_loadTextures)
 {
 	if (m_materialTable.m_renderer != NULL) {
 		m_materialTable.Clear();
@@ -191,9 +191,9 @@ void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_bina
 		m_wdf = m_golExport->VTable0x08();
 	}
 
-	m_wdf->VTable0x54(p_unk0x0c);
+	m_wdf->SetLoadTexturesImmediately(p_loadTextures);
 	m_wdf->Load(m_renderer, p_filename, p_binary, 1.0f);
-	m_wdf->VTable0x54(TRUE);
+	m_wdf->SetLoadTexturesImmediately(TRUE);
 
 	m_materials = m_wdf->GetMaterialLibrary(0);
 	LegoS32 materialCount = m_materials->GetItemCount();

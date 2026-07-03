@@ -25,13 +25,13 @@ SaveGame::~SaveGame()
 }
 
 // FUNCTION: LEGORACERS 0x004426d0
-void SaveGame::Initialize(undefined4 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c)
+void SaveGame::Initialize(undefined4 p_count, undefined4 p_recordSource, undefined4 p_saveIndex)
 {
 	if (m_records) {
 		Destroy();
 	}
 
-	AllocateRecords(p_count, p_unk0x08, p_unk0x0c);
+	AllocateRecords(p_count, p_recordSource, p_saveIndex);
 }
 
 // FUNCTION: LEGORACERS 0x00442700

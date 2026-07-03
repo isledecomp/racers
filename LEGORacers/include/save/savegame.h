@@ -16,7 +16,7 @@ public:
 	~SaveGame();
 
 	LegoU8* GetFileImage() { return m_fileImage; }
-	void Initialize(undefined4 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	void Initialize(undefined4 p_count, undefined4 p_recordSource, undefined4 p_saveIndex);
 	LegoS32 LoadFromFile(GolFile& p_file);
 	void ReadPersistentGameState(PersistentGameState* p_state);
 	void WritePersistentGameState(PersistentGameState* p_state);

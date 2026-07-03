@@ -19,7 +19,7 @@ public:
 	virtual void OnActivate(void*) = 0;                             // vtable+0x04
 	virtual void OnDeactivate(void*) = 0;                           // vtable+0x08
 	virtual ~Hazard();                                              // vtable+0x0c
-	virtual void Load(HazardContext*, GolFileParser*) = 0;                // vtable+0x10
+	virtual void Load(HazardContext*, GolFileParser*) = 0;          // vtable+0x10
 	virtual void Update(undefined4 p_elapsedMs);                    // vtable+0x14
 	virtual void UpdatePerRacer(GolCamera*, Racer*);                // vtable+0x18
 	virtual void Draw(GolD3DRenderDevice*);                         // vtable+0x1c
@@ -29,8 +29,8 @@ public:
 	virtual void OnEventEnd(LegoS32, void*);                        // vtable+0x2c
 
 	LegoS32 Reset();
-	void Activate(void* p_unk0x04);
-	void Deactivate(void* p_unk0x04);
+	void Activate(void* p_context);
+	void Deactivate(void* p_context);
 
 	// SYNTHETIC: LEGORACERS 0x0048a420
 	// Hazard::`scalar deleting destructor'
@@ -42,6 +42,5 @@ protected:
 	LegoS32 m_triggerId;          // 0x08
 	LegoS32 m_state;              // 0x0c
 };
-
 
 #endif // HAZARD_H

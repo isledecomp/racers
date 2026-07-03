@@ -33,7 +33,7 @@ public:
 	void Destroy();
 	void Initialize(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void LoadColors(const LegoChar* p_filename, undefined4 p_binary);
-	void LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c);
+	void LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_loadTextures);
 	GolBillboard::ManagedMaterialTable* GetMaterialTable();
 	GolWorldDatabase* GetWorldDatabase() const { return m_wdf; }
 	void ResetMaterialUsage();

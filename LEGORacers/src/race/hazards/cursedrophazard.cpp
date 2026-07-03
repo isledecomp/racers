@@ -23,10 +23,10 @@ static const GolVec3 g_curseDropActionPositions[] = {
 
 #pragma code_seg(".text$hazard_masked_update")
 // FUNCTION: LEGORACERS 0x0048b060 FOLDED
-void CurseDropHazard::Update(undefined4 p_unk0x04)
+void CurseDropHazard::Update(undefined4 p_elapsedMs)
 {
 	if (m_state != 1) {
-		Hazard::Update(p_unk0x04);
+		Hazard::Update(p_elapsedMs);
 	}
 }
 #pragma code_seg()

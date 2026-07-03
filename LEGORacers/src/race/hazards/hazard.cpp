@@ -47,18 +47,18 @@ void Hazard::Update(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0048a470
-void Hazard::Activate(void* p_unk0x04)
+void Hazard::Activate(void* p_context)
 {
 	if (m_state == 1) {
-		OnActivate(p_unk0x04);
+		OnActivate(p_context);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048a490
-void Hazard::Deactivate(void* p_unk0x04)
+void Hazard::Deactivate(void* p_context)
 {
 	if (m_state != 1) {
-		OnDeactivate(p_unk0x04);
+		OnDeactivate(p_context);
 	}
 }
 

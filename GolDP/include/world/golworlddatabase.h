@@ -194,7 +194,7 @@ public:
 	virtual GolWorldEntity* GetWorldEntity(LegoU32 p_index) const = 0;             // vtable+0x48
 	virtual MabMaterialAnimation* GetMaterialAnimation(LegoU32 p_index) const = 0; // vtable+0x4c
 	virtual GolCameraBase* GetCamera(LegoU32 p_index) const = 0;                   // vtable+0x50
-	virtual void VTable0x54(undefined4);                                           // vtable+0x54
+	virtual void SetLoadTexturesImmediately(undefined4 p_immediate);               // vtable+0x54
 
 	// SYNTHETIC: GOLDP 0x1002c0c0
 	// GolWorldDatabase::`scalar deleting destructor'

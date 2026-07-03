@@ -1723,7 +1723,7 @@ void GolWorldDatabase::SetupCamera(LegoU32 p_cameraIndex, GolCameraBase* p_lens)
 }
 
 // FUNCTION: GOLDP 0x1002f350
-void GolWorldDatabase::VTable0x54(undefined4 p_arg)
+void GolWorldDatabase::SetLoadTexturesImmediately(undefined4 p_immediate)
 {
-	SetLoadTexturesImmediately(p_arg);
+	::SetLoadTexturesImmediately(p_immediate);
 }

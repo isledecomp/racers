@@ -114,10 +114,10 @@ void ParticleResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045eaf0
-void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
+void ParticleResource::OnStartAt(GolVec3* p_position)
 {
-	if (p_unk0x04 && (m_flags & c_flagAtEventPosition)) {
-		m_position = *p_unk0x04;
+	if (p_position && (m_flags & c_flagAtEventPosition)) {
+		m_position = *p_position;
 	}
 
 	if (m_particleAnimation->HasEmitter(m_particleName)) {

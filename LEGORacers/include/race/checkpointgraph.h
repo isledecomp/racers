@@ -58,7 +58,7 @@ public:
 	Entry* GetCheckpoint(LegoU32 p_index);
 	void ComputeLapFractions();
 	LegoU32 CountLapCheckpoints();
-	LegoU32 FindNextFractionedCheckpoint(LegoU32 p_unk0x04, LegoU32* p_unk0x08);
+	LegoU32 FindNextFractionedCheckpoint(LegoU32 p_startIndex, LegoU32* p_stepCount);
 	void AdvanceAlongGraph(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry);
 
 private:

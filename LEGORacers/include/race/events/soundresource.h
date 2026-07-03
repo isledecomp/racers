@@ -56,7 +56,7 @@ public:
 
 	SoundResource();
 	~SoundResource() override;
-	void OnStartAt(GolVec3* p_unk0x04) override;
+	void OnStartAt(GolVec3* p_position) override;
 	void OnEnd() override;
 	void Update(LegoU32 p_elapsedMs) override;
 	virtual LegoU32 GetKind(); // vtable+0x18

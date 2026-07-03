@@ -89,12 +89,12 @@ void SoundResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004642c0
-void SoundResource::OnStartAt(GolVec3* p_unk0x04)
+void SoundResource::OnStartAt(GolVec3* p_position)
 {
-	if (p_unk0x04 && (m_flags & c_flagAtEventPosition)) {
-		m_position.m_x = p_unk0x04->m_x;
-		m_position.m_y = p_unk0x04->m_y;
-		m_position.m_z = p_unk0x04->m_z;
+	if (p_position && (m_flags & c_flagAtEventPosition)) {
+		m_position.m_x = p_position->m_x;
+		m_position.m_y = p_position->m_y;
+		m_position.m_z = p_position->m_z;
 	}
 
 	if (m_probability < c_probabilityMax) {

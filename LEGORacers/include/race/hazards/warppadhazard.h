@@ -22,9 +22,9 @@ public:
 	WarpPadHazard();
 	~WarpPadHazard() override;
 	void OnActivate(void* p_racer) override;                      // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                  // vtable+0x08
+	void OnDeactivate(void* p_context) override;                  // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser*) override; // vtable+0x10
-	void Update(undefined4 p_unk0x04) override;                   // vtable+0x14
+	void Update(undefined4 p_elapsedMs) override;                 // vtable+0x14
 	LegoBool32 CanRetrigger() override;                           // vtable+0x20
 
 	LegoS32 Reset();

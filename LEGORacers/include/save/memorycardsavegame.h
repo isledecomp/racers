@@ -13,7 +13,7 @@ public:
 
 	LegoBool32 HasUnk0x4b4Flag0x01() const { return !m_slot->HasUnk0x04() && m_file.IsOpen(); }
 
-	void Initialize(SaveSlot* p_slot, undefined4 p_count, undefined4 p_unk0x0c, undefined4 p_unk0x10);
+	void Initialize(SaveSlot* p_slot, undefined4 p_count, undefined4 p_recordSource, undefined4 p_saveIndex);
 	void Destroy();
 	LegoS32 OpenExistingFile();
 	LegoS32 CreateSaveFile();

@@ -87,19 +87,19 @@ void WarpPadHazard::OnActivate(void* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0048b040
-void WarpPadHazard::OnDeactivate(void* p_unk0x04)
+void WarpPadHazard::OnDeactivate(void* p_context)
 {
-	if (p_unk0x04) {
+	if (p_context) {
 		m_state = 1;
 	}
 }
 
 #pragma code_seg(".text$hazard_masked_update")
 // FUNCTION: LEGORACERS 0x0048b060 FOLDED
-void WarpPadHazard::Update(undefined4 p_unk0x04)
+void WarpPadHazard::Update(undefined4 p_elapsedMs)
 {
 	if (m_state != 1) {
-		Hazard::Update(p_unk0x04);
+		Hazard::Update(p_elapsedMs);
 	}
 }
 #pragma code_seg()

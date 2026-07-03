@@ -2428,11 +2428,11 @@ void RaceSession::DrawDemoText()
 }
 
 // FUNCTION: LEGORACERS 0x00435ba0
-void RaceSession::DrawLoadProgress(LegoFloat p_unk0x04)
+void RaceSession::DrawLoadProgress(LegoFloat p_progress)
 {
 	m_renderer->VTable0x54(FALSE);
 	m_renderer->VTable0xec(FALSE);
-	m_loadingScreen.SetProgress(p_unk0x04);
+	m_loadingScreen.SetProgress(p_progress);
 	m_loadingScreen.Draw();
 	m_renderer->VTable0xf0();
 	m_golApp->PresentFrame();

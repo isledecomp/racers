@@ -20,13 +20,18 @@ MemoryCardSaveGame::~MemoryCardSaveGame()
 }
 
 // FUNCTION: LEGORACERS 0x004438a0
-void MemoryCardSaveGame::Initialize(SaveSlot* p_slot, undefined4 p_count, undefined4 p_unk0x0c, undefined4 p_unk0x10)
+void MemoryCardSaveGame::Initialize(
+	SaveSlot* p_slot,
+	undefined4 p_count,
+	undefined4 p_recordSource,
+	undefined4 p_saveIndex
+)
 {
 	if (HasRecords()) {
 		Destroy();
 	}
 
-	SaveGame::Initialize(p_count, p_unk0x0c, p_unk0x10);
+	SaveGame::Initialize(p_count, p_recordSource, p_saveIndex);
 	m_slot = p_slot;
 }
 

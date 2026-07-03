@@ -159,15 +159,15 @@ LegoU8 RaceDecalManager::Trail::SetColor(const ColorRGBA* p_color)
 }
 
 // FUNCTION: LEGORACERS 0x00491d90
-void RaceDecalManager::Trail::Start(LegoU32 p_unk0x04)
+void RaceDecalManager::Trail::Start(LegoU32 p_durationMs)
 {
 	m_flags = c_active | c_firstSample;
-	m_durationMs = p_unk0x04;
+	m_durationMs = p_durationMs;
 
-	LegoU32 value = p_unk0x04 >> 2;
+	LegoU32 value = p_durationMs >> 2;
 	m_segmentMs = value;
 	value <<= 2;
-	if (value != p_unk0x04) {
+	if (value != p_durationMs) {
 		m_durationMs = value;
 	}
 
@@ -526,7 +526,7 @@ void RaceDecalManager::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x004927c0
-RaceDecalManager::Trail* RaceDecalManager::AcquireTrail(LegoU32 p_unk0x04)
+RaceDecalManager::Trail* RaceDecalManager::AcquireTrail(LegoU32 p_durationMs)
 {
 	LegoU32 i = 0;
 	LegoU32 count = m_count;
@@ -538,15 +538,15 @@ RaceDecalManager::Trail* RaceDecalManager::AcquireTrail(LegoU32 p_unk0x04)
 		return NULL;
 	}
 
-	m_items[i].Start(p_unk0x04);
+	m_items[i].Start(p_durationMs);
 
 	return &m_items[i];
 }
 
 // FUNCTION: LEGORACERS 0x00492820
-void RaceDecalManager::ReleaseTrail(Trail* p_item, LegoU32 p_unk0x08)
+void RaceDecalManager::ReleaseTrail(Trail* p_item, LegoU32 p_fadeMs)
 {
-	p_item->StartFade(p_unk0x08);
+	p_item->StartFade(p_fadeMs);
 }
 
 // FUNCTION: LEGORACERS 0x00492840

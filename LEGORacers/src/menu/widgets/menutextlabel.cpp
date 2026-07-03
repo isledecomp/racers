@@ -31,13 +31,13 @@ void MenuTextLabel::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0046f520
-LegoBool32 MenuTextLabel::Create(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08)
+LegoBool32 MenuTextLabel::Create(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_style)
 {
 	Destroy();
 
 	m_font = p_createParams->m_font;
 	m_stringTable = p_createParams->m_stringTable;
-	m_style = p_unk0x08;
+	m_style = p_style;
 	LegoS32 unk0x44 = p_createParams->m_unk0x44;
 	m_wrapWidth = unk0x44;
 	if (unk0x44) {

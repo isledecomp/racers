@@ -132,7 +132,7 @@ undefined4 MenuGameScreen::CreateTextButton(
 	MenuTextButton* p_source,
 	undefined2 p_event,
 	undefined2 p_unk0x0c,
-	undefined2 p_unk0x10
+	undefined2 p_stringId
 )
 {
 	ButtonBindingTable::ButtonBinding* sourceParams = GetButtonBinding(p_event);
@@ -160,7 +160,7 @@ undefined4 MenuGameScreen::CreateTextButton(
 	}
 
 	createParams.m_stringTable = m_menuTextStrings;
-	createParams.m_stringId = p_unk0x10;
+	createParams.m_stringId = p_stringId;
 	return p_source->Create(&createParams, styleEntry);
 }
 

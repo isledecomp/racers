@@ -149,9 +149,9 @@ void CheckpointGraph::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool
 }
 
 // FUNCTION: LEGORACERS 0x0041e940 FOLDED
-CheckpointGraph::Entry* CheckpointGraph::GetCheckpoint(LegoU32 p_unk0x04)
+CheckpointGraph::Entry* CheckpointGraph::GetCheckpoint(LegoU32 p_index)
 {
-	return &m_entries[p_unk0x04];
+	return &m_entries[p_index];
 }
 
 // STUB: LEGORACERS 0x0041e950

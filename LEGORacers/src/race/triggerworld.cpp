@@ -21,21 +21,21 @@ TriggerWorld::TriggerWorld()
 
 // FUNCTION: LEGORACERS 0x0041f440
 GolWorldDatabase* TriggerWorld::Initialize(
-	GolWorldDatabase* p_unk0x04,
+	GolWorldDatabase* p_triggerDatabase,
 	LegoChar* p_unk0x08,
-	RaceEventTable* p_unk0x0c,
-	GolNameTable* p_unk0x10
+	RaceEventTable* p_eventTable,
+	GolNameTable* p_recordNames
 )
 {
-	m_triggerDatabase = p_unk0x04;
+	m_triggerDatabase = p_triggerDatabase;
 
 	LegoChar name[8];
 	::strncpy(name, p_unk0x08, sizeof(name));
 
 	m_boundsEntity = m_triggerDatabase->FindBoundedEntity(name);
 
-	m_eventTable = p_unk0x0c;
-	m_recordNames = p_unk0x10;
+	m_eventTable = p_eventTable;
+	m_recordNames = p_recordNames;
 
 	GolWorldDatabase* result = m_triggerDatabase;
 	for (LegoU32 count = 0; count < m_triggerDatabase->GetBoundedEntityCount(); count++) {

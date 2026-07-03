@@ -1159,7 +1159,11 @@ void GolD3DRenderDevice::DrawModelEntityWithState(
 }
 
 // FUNCTION: GOLDP 0x10008f70
-void GolD3DRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_model, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+void GolD3DRenderDevice::DrawModelEntityWithUvOffset(
+	GolWorldEntity* p_model,
+	LegoFloat p_uvOffsetU,
+	LegoFloat p_uvOffsetV
+)
 {
 	GolWorldEntity::ResultStruct result;
 	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
@@ -1169,9 +1173,9 @@ void GolD3DRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_model, Le
 	}
 
 	GolMatrix4* modelMatrix = &m_modelMatrix;
-	m_uvOffsetU = p_unk0x08;
+	m_uvOffsetU = p_uvOffsetU;
 	m_uvOffsetEnabled = 1;
-	m_uvOffsetV = p_unk0x0c;
+	m_uvOffsetV = p_uvOffsetV;
 	modelEntity->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = modelEntity->GetPosition();

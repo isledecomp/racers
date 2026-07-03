@@ -531,7 +531,7 @@ LegoBool32 MenuScreen::CreateTextLabel(
 	MenuTextLabel* p_source,
 	undefined2 p_event,
 	undefined2 p_unk0x0c,
-	undefined2 p_unk0x10
+	undefined2 p_stringId
 )
 {
 	MenuTextLabel::CreateParams* sourceParams = static_cast<MenuTextLabel::CreateParams*>(GetBindingEntry(p_event));
@@ -542,7 +542,7 @@ LegoBool32 MenuScreen::CreateTextLabel(
 
 	MenuTextLabel::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
-	createParams.m_stringId = p_unk0x10;
+	createParams.m_stringId = p_stringId;
 
 	if (!createParams.m_stringTable) {
 		createParams.m_stringTable = m_menuTextStrings;

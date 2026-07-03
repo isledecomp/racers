@@ -133,7 +133,7 @@ public:
 		void SetMaterialTable(MaterialTable* p_materialTable);
 		LegoU8 SetColor(const ColorRGBA* p_color);
 		void Start(LegoU32 p_unk0x04);
-		void StartFade(LegoU32 p_unk0x04);
+		void StartFade(LegoU32 p_durationMs);
 		void Stop();
 		void Update(LegoU32 p_elapsedMs);
 		void AddSample(LegoU32 p_elapsedMs, GolVec3 p_position);

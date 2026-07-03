@@ -1105,13 +1105,13 @@ void CarBuildModel::Placement::SelectAnchorQuadrant()
 // FUNCTION: LEGORACERS 0x00499890
 void CarBuildModel::Placement::SetPiece(
 	LegoPieceLibrary::PieceRecord* p_pieceRecord,
-	LegoS32 p_unk0x08,
+	LegoS32 p_colorRecordIndex,
 	LegoS32 p_partType
 )
 {
 	m_width = p_pieceRecord->GetWidth();
 	m_height = p_pieceRecord->GetHeight();
-	m_colorRecordIndex = p_unk0x08;
+	m_colorRecordIndex = p_colorRecordIndex;
 	m_partType = p_partType;
 
 	if (m_pieceRecord == NULL) {
@@ -2356,11 +2356,11 @@ void CarBuildModel::ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRec
 }
 
 // FUNCTION: LEGORACERS 0x0049b6f0
-void CarBuildModel::SetOffset(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+void CarBuildModel::SetOffset(LegoFloat p_offsetX, LegoFloat p_offsetY, LegoFloat p_offsetZ)
 {
-	m_offsetX = p_unk0x04;
-	m_offsetY = p_unk0x08;
-	m_offsetZ = p_unk0x0c;
+	m_offsetX = p_offsetX;
+	m_offsetY = p_offsetY;
+	m_offsetZ = p_offsetZ;
 }
 
 // FUNCTION: LEGORACERS 0x0049b720

@@ -9,7 +9,7 @@ class CutsceneEventLink {
 public:
 	CutsceneEventLink();
 
-	void Bind(undefined4 p_unk0x04, CutsceneEvent* p_event);
+	void Bind(undefined4 p_isStart, CutsceneEvent* p_event);
 	void Fire();
 	void Fire(CutsceneDefinition::Frame::CameraEvent* p_payload);
 	void Fire(CutsceneDefinition::Frame::ModelEvent* p_payload);

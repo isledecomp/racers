@@ -397,7 +397,7 @@ private:
 	void EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitive* p_primitive);
 	void EmitPrimitives(GolModelEntity* p_entity);
 	void ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation);
-	void SetOffset(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c);
+	void SetOffset(LegoFloat p_offsetX, LegoFloat p_offsetY, LegoFloat p_offsetZ);
 	void SetDefaultOffset();
 	LegoS32 GetCellEntryIndex(LegoS32 p_x, LegoS32 p_y) const;
 	void BuildOverlay(LegoBool32 p_unk0x04, LegoS32 p_height);

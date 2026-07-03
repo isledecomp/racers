@@ -77,10 +77,10 @@ LegoBool32 MenuDialog::Initialize(
 
 // FUNCTION: LEGORACERS 0x00468c50
 MenuDialog::DialogScreen* MenuDialog::OpenDialog(
-	undefined4 p_unk0x04,
-	undefined2 p_unk0x08,
-	MenuScreen* p_unk0x0c,
-	undefined4 p_unk0x10
+	undefined4 p_type,
+	undefined2 p_notifyId,
+	MenuScreen* p_eventHandler,
+	undefined4 p_defaultYes
 )
 {
 	if (!m_openCount) {
@@ -90,10 +90,10 @@ MenuDialog::DialogScreen* MenuDialog::OpenDialog(
 	DialogScreen::CreateParams createParams;
 	createParams.m_createParams = &m_createParams;
 	createParams.m_owner = this;
-	createParams.m_eventHandler = p_unk0x0c;
-	createParams.m_type = p_unk0x04;
-	createParams.m_notifyId = p_unk0x08;
-	createParams.m_defaultYes = p_unk0x10;
+	createParams.m_eventHandler = p_eventHandler;
+	createParams.m_type = p_type;
+	createParams.m_notifyId = p_notifyId;
+	createParams.m_defaultYes = p_defaultYes;
 
 	DialogScreen* entry = &m_entries[m_openCount];
 	entry->Initialize(&createParams);

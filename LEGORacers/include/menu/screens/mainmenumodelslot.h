@@ -35,10 +35,10 @@ public:
 	GolAnimatedEntity* GetDriverEntity() { return &m_driverEntity; }
 	CmbModelPart* GetBodyModelPart() { return &m_bodyModelPart; }
 	LegoBool32 Create(CreateParams* p_createParams);
-	void SetHat(LegoU32 p_unk0x04);
-	void SetFace(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
-	void SetTorso(LegoU32 p_unk0x04);
-	void SetLegs(LegoU32 p_unk0x04);
+	void SetHat(LegoU32 p_hatIndex);
+	void SetFace(LegoU32 p_faceIndex, LegoU32 p_expressionIndex);
+	void SetTorso(LegoU32 p_torsoIndex);
+	void SetLegs(LegoU32 p_legIndex);
 	void SetCosmetics(DriverCosmetics* p_cosmetics);
 
 	// SYNTHETIC: LEGORACERS 0x0047dee0

@@ -178,13 +178,13 @@ void RaceDecalManager::Trail::Start(LegoU32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00491de0
-void RaceDecalManager::Trail::StartFade(LegoU32 p_unk0x04)
+void RaceDecalManager::Trail::StartFade(LegoU32 p_durationMs)
 {
 	LegoU8 flags = m_flags;
 	m_elapsedMs = 0;
 	flags |= c_fading;
 	m_flags = flags;
-	m_durationMs = p_unk0x04;
+	m_durationMs = p_durationMs;
 }
 
 // FUNCTION: LEGORACERS 0x00491e10

@@ -1574,7 +1574,7 @@ void Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 }
 
 // FUNCTION: LEGORACERS 0x00438e60
-void Racer::ApplyShove(GolVec3* p_unk0x04)
+void Racer::ApplyShove(GolVec3* p_impulse)
 {
 	LegoEventQueue::Descriptor descriptor;
 	if (m_flags & c_flagShoveActive) {
@@ -1593,11 +1593,11 @@ void Racer::ApplyShove(GolVec3* p_unk0x04)
 	m_physics.StartSteering(2.5f, 0.89999998f, 3.1415927f);
 	LegoU32 flags = m_physics.m_flags;
 	if (!(flags & RacerPhysics::c_flagExternalForce0)) {
-		m_physics.StartExternalForce0(p_unk0x04);
+		m_physics.StartExternalForce0(p_impulse);
 		m_shoveForceSlot = 1;
 	}
 	else if (!(flags & RacerPhysics::c_flagExternalForce1)) {
-		m_physics.StartExternalForce1(p_unk0x04);
+		m_physics.StartExternalForce1(p_impulse);
 		m_shoveForceSlot = 2;
 	}
 
@@ -2331,12 +2331,12 @@ void Racer::UpdateFacing(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00439e60
-void Racer::SetLookTarget(GolVec3* p_unk0x04)
+void Racer::SetLookTarget(GolVec3* p_position)
 {
 	m_flags |= c_flagHasLookTarget;
-	m_lookTargetPosition.m_x = p_unk0x04->m_x;
-	m_lookTargetPosition.m_y = p_unk0x04->m_y;
-	m_lookTargetPosition.m_z = p_unk0x04->m_z;
+	m_lookTargetPosition.m_x = p_position->m_x;
+	m_lookTargetPosition.m_y = p_position->m_y;
+	m_lookTargetPosition.m_z = p_position->m_z;
 }
 
 // FUNCTION: LEGORACERS 0x00439e90
@@ -2379,12 +2379,11 @@ void Racer::UpdateLookTarget(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x00439fc0
-void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_unk0x04, GolBoundingVolume::HitTriangle* p_unk0x08)
+void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_entry, GolBoundingVolume::HitTriangle* p_record)
 {
 	LegoBool32 isForward;
-	if (p_unk0x08->m_normal.m_z * p_unk0x04->m_planeNormal.m_z +
-			p_unk0x08->m_normal.m_y * p_unk0x04->m_planeNormal.m_y +
-			p_unk0x08->m_normal.m_x * p_unk0x04->m_planeNormal.m_x <
+	if (p_record->m_normal.m_z * p_entry->m_planeNormal.m_z + p_record->m_normal.m_y * p_entry->m_planeNormal.m_y +
+			p_record->m_normal.m_x * p_entry->m_planeNormal.m_x <
 		0.0f) {
 		isForward = FALSE;
 	}
@@ -2392,8 +2391,8 @@ void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_unk0x04, GolBoundingVo
 		isForward = TRUE;
 	}
 
-	if (p_unk0x04 != m_checkpoint || isForward != m_checkpointForward) {
-		if (p_unk0x04->m_lapFraction == 0.0f) {
+	if (p_entry != m_checkpoint || isForward != m_checkpointForward) {
+		if (p_entry->m_lapFraction == 0.0f) {
 			LegoU32 flags = m_flags;
 			if (isForward) {
 				if (!(flags & c_flagCrossedBackward)) {
@@ -2406,7 +2405,7 @@ void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_unk0x04, GolBoundingVo
 				m_currentZone = 0;
 				m_previousZone = 2;
 				m_zoneBeforePrevious = 2;
-				m_checkpoint = p_unk0x04;
+				m_checkpoint = p_entry;
 				return;
 			}
 
@@ -2415,7 +2414,7 @@ void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_unk0x04, GolBoundingVo
 		else {
 			LegoU32 flags = m_flags;
 			if (!(flags & c_flagCrossedBackward)) {
-				m_checkpoint = p_unk0x04;
+				m_checkpoint = p_entry;
 				m_checkpointForward = isForward;
 				return;
 			}
@@ -2424,7 +2423,7 @@ void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_unk0x04, GolBoundingVo
 			m_flags = flags & ~c_flagCrossedBackward;
 		}
 
-		m_checkpoint = p_unk0x04;
+		m_checkpoint = p_entry;
 		m_checkpointForward = isForward;
 	}
 }

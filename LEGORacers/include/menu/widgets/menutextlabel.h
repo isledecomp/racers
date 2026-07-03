@@ -29,7 +29,7 @@ public:
 	MenuWidget* DrawSelf(Rect*, Rect*) override;           // vtable+0x38
 	virtual void SetString(GolString*, LegoS32);           // vtable+0x40
 	virtual void SetStringByIndex(undefined2, undefined4); // vtable+0x44
-	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08);
+	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_style);
 	void WrapText(LegoS32 p_rightMargin);
 	void SetFont(GolFont* p_font) { m_font = p_font; }
 

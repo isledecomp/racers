@@ -104,7 +104,12 @@ public:
 
 	LegoS32 Reset();
 	LegoS32 Destroy();
-	DialogScreen* OpenDialog(undefined4 p_unk0x04, undefined2 p_unk0x08, MenuScreen* p_unk0x0c, undefined4 p_unk0x10);
+	DialogScreen* OpenDialog(
+		undefined4 p_type,
+		undefined2 p_notifyId,
+		MenuScreen* p_eventHandler,
+		undefined4 p_defaultYes
+	);
 	void DismissTop();
 	void Update(LegoU32 p_unk0x04);
 	void DrawCursors();

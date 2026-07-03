@@ -671,9 +671,9 @@ CutsceneEventLink::CutsceneEventLink()
 }
 
 // FUNCTION: LEGORACERS 0x004a00c0
-void CutsceneEventLink::Bind(undefined4 p_unk0x04, CutsceneEvent* p_event)
+void CutsceneEventLink::Bind(undefined4 p_isStart, CutsceneEvent* p_event)
 {
-	m_isStart = p_unk0x04;
+	m_isStart = p_isStart;
 	m_event = p_event;
 }
 
@@ -855,7 +855,7 @@ void CutscenePlayer::Load(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
 	SoundManager* p_soundManager,
-	CutsceneDefinition* p_unk0x10,
+	CutsceneDefinition* p_definition,
 	const LegoChar* p_fileName,
 	undefined4 p_binary
 )
@@ -889,7 +889,7 @@ void CutscenePlayer::Load(
 
 	m_golExport = p_golExport;
 	m_renderer = p_renderer;
-	m_definition = p_unk0x10;
+	m_definition = p_definition;
 	m_soundManager = p_soundManager;
 
 	p_soundManager->AddActiveSoundNode(&m_listener);

@@ -104,32 +104,32 @@ LegoBool32 MainMenuModelSlot::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0047e130
-void MainMenuModelSlot::SetHat(LegoU32 p_unk0x04)
+void MainMenuModelSlot::SetHat(LegoU32 p_hatIndex)
 {
-	m_cosmetics.m_hatIndex = p_unk0x04;
+	m_cosmetics.m_hatIndex = p_hatIndex;
 	m_modelBuilder->BuildDriverModel(&m_cosmetics, m_driverModel, 0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e160
-void MainMenuModelSlot::SetFace(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
+void MainMenuModelSlot::SetFace(LegoU32 p_faceIndex, LegoU32 p_expressionIndex)
 {
-	m_cosmetics.m_faceIndex = p_unk0x04;
-	m_cosmetics.m_expressionIndex = p_unk0x08;
+	m_cosmetics.m_faceIndex = p_faceIndex;
+	m_cosmetics.m_expressionIndex = p_expressionIndex;
 	GolModelBase* model = m_modelBuilder->BuildDriverModel(&m_cosmetics, m_driverModel, 0);
 	m_modelBuilder->ApplyFaceExpression(model, &m_cosmetics);
 }
 
 // FUNCTION: LEGORACERS 0x0047e1b0
-void MainMenuModelSlot::SetTorso(LegoU32 p_unk0x04)
+void MainMenuModelSlot::SetTorso(LegoU32 p_torsoIndex)
 {
-	m_cosmetics.m_torsoIndex = p_unk0x04;
+	m_cosmetics.m_torsoIndex = p_torsoIndex;
 	m_modelBuilder->BuildDriverModel(&m_cosmetics, m_driverModel, 0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e1e0
-void MainMenuModelSlot::SetLegs(LegoU32 p_unk0x04)
+void MainMenuModelSlot::SetLegs(LegoU32 p_legIndex)
 {
-	m_cosmetics.m_legIndex = p_unk0x04;
+	m_cosmetics.m_legIndex = p_legIndex;
 	m_modelBuilder->BuildDriverModel(&m_cosmetics, m_driverModel, 0);
 }
 

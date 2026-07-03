@@ -423,7 +423,7 @@ LegoBool32 MenuManager::LoadLocalizedMenuResources(LegoU32 p_languageIndex, Lego
 
 		MenuStyleTable::ResourceLoadParams params;
 		params.m_renderer = m_renderer;
-		params.m_unk0x04 = 0;
+		params.m_fallback = 0;
 		params.m_fileName = "gstyles";
 		params.m_binary = m_gameContext.m_context->m_useBinaryFiles;
 		p_forceReload = m_menuStyles.Load(&params);

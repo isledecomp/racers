@@ -289,7 +289,7 @@ void MenuWidget::DrawString(
 	GolFontBase* p_font,
 	GolString* p_string,
 	LegoS32 p_wrapWidth,
-	LegoS32 p_unk0x18
+	LegoS32 p_centered
 )
 {
 	LegoU32 color = m_colorPacked;
@@ -307,7 +307,7 @@ void MenuWidget::DrawString(
 			m_scaleY,
 			p_dest,
 			&m_color,
-			p_unk0x18
+			p_centered
 		);
 	}
 	else {

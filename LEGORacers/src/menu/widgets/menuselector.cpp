@@ -447,8 +447,8 @@ undefined4 MenuSelector::OnEvent(undefined4)
 		m_scrollPending = 0;
 	}
 
-	m_carousel->SetItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
-	m_carousel->SetFocusedItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
+	m_carousel->SetItemColors(&GetStyleEntry()->m_itemColors[index], &GetStyleEntry()->m_itemColors[index + 1]);
+	m_carousel->SetFocusedItemColors(&GetStyleEntry()->m_itemColors[index], &GetStyleEntry()->m_itemColors[index + 1]);
 
 	if (m_prevButton.GetStateFlags() & c_flagFocused) {
 		StepPrevious();
@@ -459,7 +459,10 @@ undefined4 MenuSelector::OnEvent(undefined4)
 	else {
 		MenuCarousel* carousel = m_carousel;
 		MenuStyleTable::SelectorStyle* styleEntry = GetStyleEntry();
-		carousel->SetFocusedItemColors(&styleEntry->m_unk0xac[index], &styleEntry->m_unk0xac[index + 1]);
+		carousel->SetFocusedItemColors(
+			&styleEntry->m_focusedItemColors[index],
+			&styleEntry->m_focusedItemColors[index + 1]
+		);
 	}
 
 	return 0;

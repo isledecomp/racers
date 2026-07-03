@@ -292,7 +292,7 @@ LegoBool32 MenuScreen::LoadStylesAndBindings(MenuScreenCreateParams* p_createPar
 	if (!GolStream::FindFile(fileName)) {
 		MenuStyleTable::ResourceLoadParams params;
 		params.m_renderer = m_renderer;
-		params.m_unk0x04 = p_createParams->m_menuStyles;
+		params.m_fallback = p_createParams->m_menuStyles;
 		params.m_fileName = fileName;
 		params.m_binary = p_createParams->m_useBinaryFiles;
 

@@ -76,7 +76,7 @@ public:
 	void CenterRectIn(const Rect*, Rect*) const;
 	void MeasureText(GolFontBase*, GolString*, Rect*, Rect*, LegoS32);
 	void DrawImage(Rect*, Rect*, GolImage*);
-	void DrawString(Rect*, Rect*, GolFontBase*, GolString*, LegoS32, LegoS32);
+	void DrawString(Rect*, Rect*, GolFontBase*, GolString*, LegoS32 p_wrapWidth, LegoS32 p_centered);
 	Rect* TranslateRectByOffset(Rect*);
 	LegoBool32 PointInRect(Rect*, LegoS32, LegoS32);
 	void ScreenToLocal(undefined4&, undefined4&);

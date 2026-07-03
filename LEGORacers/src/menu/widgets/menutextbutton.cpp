@@ -84,7 +84,7 @@ LegoBool32 MenuTextButton::CreateLabel(CreateParams* p_createParams, MenuStyleTa
 	createParams.m_color = m_stateImageColors[0];
 	createParams.m_rect.m_left += right;
 	createParams.m_parent = this;
-	m_textStyle.m_unk0x10 = 0;
+	m_textStyle.m_centered = 0;
 
 	return m_label.Create(&createParams, &m_textStyle);
 }

@@ -58,7 +58,7 @@ LegoBool32 MenuStyleTable::Load(ResourceLoadParams* p_params)
 {
 	Clear();
 	m_renderer = p_params->m_renderer;
-	m_fallback = p_params->m_unk0x04;
+	m_fallback = p_params->m_fallback;
 
 	if (BeginLoad()) {
 		ParseFile(p_params);
@@ -221,7 +221,7 @@ void MenuStyleTable::ParseTextStyle(TextStyle* p_entry)
 			p_entry->m_font = m_renderer->FindFontByName(m_parser->ReadString());
 			break;
 		case GolFileParser::e_unknown0x2f:
-			p_entry->m_unk0x10 = m_parser->ReadInteger();
+			p_entry->m_centered = m_parser->ReadInteger();
 			break;
 		case c_styleColors:
 			ReadVisualState(p_entry->m_color.m_bytes);
@@ -464,8 +464,8 @@ void MenuStyleTable::ParseSelectorStyle(SelectorStyle* p_entry)
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 	}
 
-	::memset(p_entry->m_unk0x9c, 0xff, sizeof(p_entry->m_unk0x9c));
-	::memset(p_entry->m_unk0xac, 0xff, sizeof(p_entry->m_unk0xac));
+	::memset(p_entry->m_itemColors, 0xff, sizeof(p_entry->m_itemColors));
+	::memset(p_entry->m_focusedItemColors, 0xff, sizeof(p_entry->m_focusedItemColors));
 
 	if (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		do {
@@ -484,14 +484,14 @@ void MenuStyleTable::ParseSelectorStyle(SelectorStyle* p_entry)
 				readSingle++;
 				break;
 			case c_styleColors:
-				visualState = p_entry->m_unk0x9c;
+				visualState = p_entry->m_itemColors;
 				i = 4;
 				do {
 					ReadVisualState(visualState->m_bytes);
 					visualState++;
 				} while (--i);
 
-				visualState = p_entry->m_unk0xac;
+				visualState = p_entry->m_focusedItemColors;
 				i = 4;
 				do {
 					ReadVisualState(visualState->m_bytes);

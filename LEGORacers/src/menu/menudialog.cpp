@@ -215,6 +215,6 @@ MenuWidget* MenuDialog::TextLine::DrawSelf(Rect* p_rect, Rect* p_arg)
 	source.m_right = xOffset + m_rect.m_right - m_rect.m_left;
 	source.m_left = xOffset;
 
-	DrawString(&source, p_arg, m_font, &m_string, m_wrapWidth, m_style->m_unk0x10);
+	DrawString(&source, p_arg, m_font, &m_string, m_wrapWidth, m_style->m_centered);
 	return NULL;
 }

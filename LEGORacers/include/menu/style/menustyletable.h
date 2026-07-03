@@ -34,7 +34,7 @@ public:
 		VisualStateColor m_color; // 0x04
 		LegoS32 m_wrapWidth;      // 0x08
 		LegoBool32 m_hasColor;    // 0x0c
-		LegoS32 m_unk0x10;        // 0x10
+		LegoS32 m_centered;       // 0x10
 	};
 
 	// SIZE 0x18
@@ -105,9 +105,9 @@ public:
 	// SIZE 0xbc
 	class SelectorStyle : public SelectorStyleBase {
 	public:
-		FrameStyle* m_frameStyle;      // 0x98
-		VisualStateColor m_unk0x9c[4]; // 0x9c
-		VisualStateColor m_unk0xac[4]; // 0xac
+		FrameStyle* m_frameStyle;                // 0x98
+		VisualStateColor m_itemColors[4];        // 0x9c
+		VisualStateColor m_focusedItemColors[4]; // 0xac
 
 		ButtonStyle* GetPrevButtonStyle() const { return static_cast<ButtonStyle*>(m_prevButtonStyle); }
 		ButtonStyle* GetNextButtonStyle() const { return static_cast<ButtonStyle*>(m_nextButtonStyle); }
@@ -127,10 +127,10 @@ public:
 
 	// SIZE 0x10
 	struct ResourceLoadParams {
-		GolD3DRenderDevice* m_renderer;  // 0x00
-		SharedMenuStyleTable* m_unk0x04; // 0x04
-		const LegoChar* m_fileName;      // 0x08
-		undefined4 m_binary;             // 0x0c
+		GolD3DRenderDevice* m_renderer;   // 0x00
+		SharedMenuStyleTable* m_fallback; // 0x04
+		const LegoChar* m_fileName;       // 0x08
+		undefined4 m_binary;              // 0x0c
 	};
 
 	MenuStyleTable();

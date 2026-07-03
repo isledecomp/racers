@@ -38,9 +38,6 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004a22b0
 	// CutsceneMenuAnimationEvent::`vector deleting destructor'
 
-	// SYNTHETIC: LEGORACERS 0x004a20e0 FOLDED
-	// CutsceneMenuAnimationEvent::~CutsceneMenuAnimationEvent
-
 private:
 	MenuAnimationList* m_animationList;      // 0x14
 	GolMaterial* m_material;                 // 0x18

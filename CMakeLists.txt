@@ -480,6 +480,13 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/carpartset.cpp
   LEGORacers/src/model/legopiecelibrary.cpp
   LEGORacers/src/menu/runtime/cutsceneparticle.cpp
+  LEGORacers/src/menu/runtime/cutsceneanimation.cpp
+  LEGORacers/src/menu/runtime/cutsceneanimationevent.cpp
+  LEGORacers/src/menu/runtime/cutscenecolorevent.cpp
+  LEGORacers/src/menu/runtime/cutsceneimagevisual.cpp
+  LEGORacers/src/menu/runtime/cutscenemenuanimationevent.cpp
+  LEGORacers/src/menu/runtime/cutscenesoundevent.cpp
+  LEGORacers/src/menu/runtime/cutscenestreamingsoundevent.cpp
   LEGORacers/src/menu/runtime/cutsceneplayer.cpp
   LEGORacers/src/menu/runtime/cutscenetextvisual.cpp
   LEGORacers/src/menu/runtime/cutscenevisual.cpp

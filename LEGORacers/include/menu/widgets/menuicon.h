@@ -44,7 +44,7 @@ public:
 		undefined2 m_helpStringId;        // 0x40
 		undefined m_unk0x42[0x44 - 0x42]; // 0x42
 		MenuIcon* m_parent;               // 0x44
-		undefined2 m_unk0x48;             // 0x48
+		undefined2 m_parentId;            // 0x48
 		LegoU8 m_unk0x4a;                 // 0x4a
 		undefined m_unk0x4b[0x52 - 0x4b]; // 0x4b
 		VisualStateColor m_unk0x52[6];    // 0x52
@@ -52,10 +52,10 @@ public:
 			undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
 			undefined2 m_soundIds[5];         // 0x6a
 		};
-		undefined4 m_attachToParent;    // 0x74
-		undefined4 m_unk0x78;           // 0x78
-		undefined4 m_unk0x7c;           // 0x7c
-		MenuScreenInterface* m_unk0x80; // 0x80
+		undefined4 m_attachToParent;             // 0x74
+		undefined4 m_unk0x78;                    // 0x78
+		undefined4 m_unk0x7c;                    // 0x7c
+		MenuScreenInterface* m_iconEventHandler; // 0x80
 	};
 
 	// SIZE 0x90

@@ -72,7 +72,7 @@ public:
 	// SIZE 0x88
 	class SceneBinding : public MenuWidget::CreateParams {
 	public:
-		LegoFloat m_unk0x38[9];          // 0x38
+		LegoFloat m_cameraVectors[9];    // 0x38
 		LegoFloat m_unk0x5c;             // 0x5c
 		LegoChar m_unk0x60[0x70 - 0x60]; // 0x60
 		undefined4 m_unk0x70;            // 0x70
@@ -144,15 +144,6 @@ public:
 		undefined4 m_unk0xe8; // 0xe8
 	};
 
-	// SIZE 0x54
-	class SceneRefBinding : public MenuWidget::CreateParams {
-	public:
-		LegoChar m_unk0x38[0x48 - 0x38]; // 0x38
-		undefined4 m_unk0x48;            // 0x48
-		LegoU32 m_unk0x4c;               // 0x4c
-		LegoFloat m_unk0x50;             // 0x50
-	};
-
 	// SIZE 0x74
 	class ModelCarouselBinding : public MenuWidget::CreateParams {
 	public:
@@ -160,7 +151,7 @@ public:
 		Rect* m_unk0x3c;                  // 0x3c
 		LegoFloat m_unk0x40;              // 0x40
 		undefined4 m_unk0x44;             // 0x44
-		LegoFloat m_unk0x48[9];           // 0x48
+		LegoFloat m_cameraVectors[9];     // 0x48
 		undefined m_unk0x6c[0x74 - 0x6c]; // 0x6c
 	};
 

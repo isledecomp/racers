@@ -561,7 +561,7 @@ void MenuInputBindingTable::ParseModelCarouselBinding(ModelCarouselBinding* p_en
 			break;
 		}
 		case MidTxtParser::e_camera:
-			ReadNineFloats(p_entry->m_unk0x48);
+			ReadNineFloats(p_entry->m_cameraVectors);
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_invalidKeyword);
@@ -635,7 +635,7 @@ void MenuInputBindingTable::ParseSceneBinding(SceneBinding* p_entry)
 			p_entry->m_unk0x84 = ResolveEntryByName(m_parser->ReadString());
 			break;
 		case MidTxtParser::e_camera:
-			ReadNineFloats(p_entry->m_unk0x38);
+			ReadNineFloats(p_entry->m_cameraVectors);
 			break;
 		case MidTxtParser::e_value:
 			p_entry->m_unk0x70 = m_parser->ReadInteger();
@@ -658,20 +658,20 @@ void MenuInputBindingTable::ParseSceneRefBinding(SceneRefBinding* p_entry)
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 	}
 
-	p_entry->m_unk0x48 = 0;
-	p_entry->m_unk0x4c = 0;
+	p_entry->m_autoAdvance = 0;
+	p_entry->m_startFrameIndex = 0;
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case MidTxtParser::e_widget:
 			ParseWidgetBase(p_entry);
 			break;
 		case MidTxtParser::e_value:
-			p_entry->m_unk0x48 = m_parser->ReadInteger();
-			p_entry->m_unk0x4c = m_parser->ReadInteger();
+			p_entry->m_autoAdvance = m_parser->ReadInteger();
+			p_entry->m_startFrameIndex = m_parser->ReadInteger();
 			break;
 		case MidTxtParser::e_sceneName:
-			::strncpy(p_entry->m_unk0x38, m_parser->ReadStringWithMaxLength(8), 8);
-			p_entry->m_unk0x38[8] = 0;
+			::strncpy(p_entry->m_cutsceneName, m_parser->ReadStringWithMaxLength(8), 8);
+			p_entry->m_cutsceneName[8] = 0;
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);

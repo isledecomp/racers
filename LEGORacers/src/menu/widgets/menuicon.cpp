@@ -86,11 +86,11 @@ void MenuIcon::InitializeFromParams(CreateParams* p_createParams, const CreateSt
 	);
 	::memcpy(m_stateRects, p_createState->m_unk0x24, sizeof(m_stateRects));
 
-	m_eventHandler = p_createParams->m_unk0x80;
+	m_eventHandler = p_createParams->m_iconEventHandler;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
 	m_helpStringId = p_createParams->m_helpStringId;
 	m_transitionDurationMs = p_createState->m_unk0x84;
-	SetIconEventHandler(p_createParams->m_unk0x80);
+	SetIconEventHandler(p_createParams->m_iconEventHandler);
 }
 
 // FUNCTION: LEGORACERS 0x00471e30

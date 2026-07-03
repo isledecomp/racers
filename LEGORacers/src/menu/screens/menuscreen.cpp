@@ -354,15 +354,15 @@ void MenuScreen::ApplyWidgetDefaults(MenuWidget::CreateParams* p_createParams)
 				);
 
 			if (entry) {
-				p_createParams->m_unk0x26 = entry->m_id;
+				p_createParams->m_parentId = entry->m_id;
 			}
 		}
 
-		if (!p_createParams->m_unk0x26) {
-			p_createParams->m_unk0x26 = 1;
+		if (!p_createParams->m_parentId) {
+			p_createParams->m_parentId = 1;
 		}
 
-		p_createParams->m_parent = m_rootIcon.FindChildById(p_createParams->m_unk0x26);
+		p_createParams->m_parent = m_rootIcon.FindChildById(p_createParams->m_parentId);
 	}
 }
 
@@ -375,18 +375,18 @@ void MenuScreen::ApplyIconDefaults(MenuIcon::CreateParams* p_createParams)
 				(MenuInputBindingTable::IconBinding*) GetMenuInputBindings()->ResolveEntryByName(
 					p_createParams->m_name
 				);
-			p_createParams->m_unk0x48 = entry->m_id;
+			p_createParams->m_parentId = entry->m_id;
 		}
 
-		if (!p_createParams->m_unk0x48) {
-			p_createParams->m_unk0x48 = 1;
+		if (!p_createParams->m_parentId) {
+			p_createParams->m_parentId = 1;
 		}
 
-		p_createParams->m_parent = static_cast<MenuIcon*>(m_rootIcon.FindChildById(p_createParams->m_unk0x48));
+		p_createParams->m_parent = static_cast<MenuIcon*>(m_rootIcon.FindChildById(p_createParams->m_parentId));
 	}
 
-	if (!p_createParams->m_unk0x80) {
-		p_createParams->m_unk0x80 = this;
+	if (!p_createParams->m_iconEventHandler) {
+		p_createParams->m_iconEventHandler = this;
 	}
 
 	ApplyWidgetDefaults(p_createParams);
@@ -405,8 +405,8 @@ void MenuScreen::ApplySelectorDefaults(
 
 	p_createParams->m_prevButtonParams->m_startEnabled = p_createParams->m_startEnabled;
 	p_createParams->m_nextButtonParams->m_startEnabled = p_createParams->m_startEnabled;
-	p_createParams->m_prevButtonParams->m_unk0x80 = NULL;
-	p_createParams->m_nextButtonParams->m_unk0x80 = NULL;
+	p_createParams->m_prevButtonParams->m_iconEventHandler = NULL;
+	p_createParams->m_nextButtonParams->m_iconEventHandler = NULL;
 
 	for (LegoS32 i = 0; i < 6; i++) {
 		if (!p_createParams->m_prevButtonParams->m_images[i]) {
@@ -443,9 +443,9 @@ void MenuScreen::ApplyCompositeDefaults(
 	ApplyWidgetDefaults(p_createParams->m_unk0x8c);
 
 	p_createParams->m_prevButtonParams->m_startEnabled = p_createParams->m_startEnabled;
-	p_createParams->m_prevButtonParams->m_unk0x80 = NULL;
+	p_createParams->m_prevButtonParams->m_iconEventHandler = NULL;
 	p_createParams->m_nextButtonParams->m_startEnabled = p_createParams->m_startEnabled;
-	p_createParams->m_nextButtonParams->m_unk0x80 = NULL;
+	p_createParams->m_nextButtonParams->m_iconEventHandler = NULL;
 
 	for (LegoS32 i = 0; i < 6; i++) {
 		if (!p_createParams->m_prevButtonParams->m_images[i]) {

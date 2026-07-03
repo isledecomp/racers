@@ -47,7 +47,7 @@ void MenuTextEntry::Create(CreateParams*)
 // FUNCTION: LEGORACERS 0x00471a30
 void MenuTextEntry::UpdateCaret()
 {
-	if (m_unk0x1f8 == 4) {
+	if (m_inputMode == 4) {
 		m_text.SetCursorEnd(m_text.SelectionLength() - 1);
 	}
 

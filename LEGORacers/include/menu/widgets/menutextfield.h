@@ -66,13 +66,13 @@ protected:
 	SoundIdSet m_soundIds;                    // 0x1a8
 	GolStringTable* m_stringTable;            // 0x1b0
 	undefined2 m_buffer[(0x1f4 - 0x1b4) / 2]; // 0x1b4
-	undefined2 m_unk0x1f4;                    // 0x1f4
+	undefined2 m_charsetIndex;                // 0x1f4
 	undefined2 m_unk0x1f6;                    // 0x1f6
-	undefined4 m_unk0x1f8;                    // 0x1f8
+	undefined4 m_inputMode;                   // 0x1f8
 	GolString m_charset;                      // 0x1fc
 	GolString m_text;                         // 0x208
 	GolFontBase* m_font;                      // 0x214
-	Rect m_unk0x218;                          // 0x218
+	Rect m_textRect;                          // 0x218
 	undefined m_unk0x228[0x238 - 0x228];      // 0x228
 	undefined2 m_maxLength;                   // 0x238
 	undefined2 m_length;                      // 0x23a

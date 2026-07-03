@@ -31,10 +31,10 @@ void MenuTextField::Reset()
 	memset(m_buffer, 0, sizeof(m_buffer));
 	memset(&m_soundIds, 0, sizeof(m_soundIds));
 	m_font = NULL;
-	m_unk0x1f8 = 3;
+	m_inputMode = 3;
 	m_maxLength = 0x1f;
 	m_length = 0;
-	m_unk0x1f4 = 0;
+	m_charsetIndex = 0;
 	MenuIcon::Reset();
 }
 
@@ -63,25 +63,25 @@ LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIco
 // FUNCTION: LEGORACERS 0x00471100
 void MenuTextField::HandleEditAction(undefined4 p_unk0x04)
 {
-	m_unk0x1f8 = p_unk0x04;
+	m_inputMode = p_unk0x04;
 
 	if (p_unk0x04 == 4) {
 		if (m_length) {
 			m_length--;
-			m_unk0x1f4 = 0;
+			m_charsetIndex = 0;
 
-			while (m_unk0x1f4 < m_charset.SelectionLength()) {
-				if (*m_text.FromCursor(m_length) == *m_charset.FromCursor(m_unk0x1f4)) {
+			while (m_charsetIndex < m_charset.SelectionLength()) {
+				if (*m_text.FromCursor(m_length) == *m_charset.FromCursor(m_charsetIndex)) {
 					m_text.FirstLine();
 					return;
 				}
 
-				m_unk0x1f4++;
+				m_charsetIndex++;
 			}
 		}
 
 		*m_text.FromCursor(m_length) = *m_charset.FromCursor(0);
-		m_unk0x1f4 = 0;
+		m_charsetIndex = 0;
 		m_text.FirstLine();
 	}
 }
@@ -165,15 +165,15 @@ MenuWidget* MenuTextField::DrawSelf(Rect* p_rect, Rect* p_arg)
 	rect.m_right = p_rect->m_right;
 	rect.m_bottom = p_rect->m_bottom - 4;
 
-	MeasureText(m_font, &m_text, &rect, &m_unk0x218, 0);
+	MeasureText(m_font, &m_text, &rect, &m_textRect, 0);
 
-	m_unk0x218.m_right -= m_unk0x218.m_left;
+	m_textRect.m_right -= m_textRect.m_left;
 
 	rect.m_left = xOffset;
-	rect.m_top = m_unk0x218.m_top + yOffset;
-	rect.m_right = m_unk0x218.m_right + xOffset;
-	rect.m_bottom = m_unk0x218.m_bottom + yOffset;
-	m_unk0x218.m_left = 0;
+	rect.m_top = m_textRect.m_top + yOffset;
+	rect.m_right = m_textRect.m_right + xOffset;
+	rect.m_bottom = m_textRect.m_bottom + yOffset;
+	m_textRect.m_left = 0;
 
 	DrawString(&rect, &clip, m_font, &m_text, 0, 0);
 
@@ -234,8 +234,8 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 	case InputDevice::c_sourceJoystickButton | 0x4:
 		if (m_length <= m_maxLength) {
 			m_length++;
-			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
-			m_unk0x1f4 = 0;
+			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_charsetIndex);
+			m_charsetIndex = 0;
 			if (m_length <= m_maxLength) {
 				*m_text.FromCursor(m_length) = *m_charset.FromCursor(0);
 			}
@@ -254,8 +254,8 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 		if (m_length != 0) {
 			*m_text.FromCursor(m_length) = 0;
 			m_length--;
-			for (m_unk0x1f4 = 0; m_unk0x1f4 < m_charset.SelectionLength(); m_unk0x1f4++) {
-				if (*m_text.FromCursor(m_length) == *m_charset.FromCursor(m_unk0x1f4)) {
+			for (m_charsetIndex = 0; m_charsetIndex < m_charset.SelectionLength(); m_charsetIndex++) {
+				if (*m_text.FromCursor(m_length) == *m_charset.FromCursor(m_charsetIndex)) {
 					break;
 				}
 			}
@@ -270,8 +270,8 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 	case InputDevice::c_sourceJoystickButton | 0x7:
 	case InputDevice::c_sourceJoystickAxisButton | 0x0:
 		if (m_length != m_maxLength) {
-			m_unk0x1f4 = (m_unk0x1f4 + 1) % m_charset.SelectionLength();
-			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
+			m_charsetIndex = (m_charsetIndex + 1) % m_charset.SelectionLength();
+			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_charsetIndex);
 			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
 			break;
 		}
@@ -282,14 +282,14 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 	case InputDevice::c_sourceJoystickButton | 0x9:
 	case InputDevice::c_sourceJoystickAxisButton | 0x1:
 		if (m_length != m_maxLength) {
-			LegoU16 index = m_unk0x1f4;
+			LegoU16 index = m_charsetIndex;
 			if (index == 0) {
 				index = m_charset.SelectionLength();
 			}
 
 			index--;
-			m_unk0x1f4 = index;
-			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
+			m_charsetIndex = index;
+			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_charsetIndex);
 			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
 			break;
 		}
@@ -309,7 +309,7 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 MenuWidget* MenuTextField::OnKeyDown(InputEventQueue::Event* p_event, undefined4, undefined4)
 {
 	if (m_stateFlags & c_flagBit1) {
-		LegoU32 mode = m_unk0x1f8;
+		LegoU32 mode = m_inputMode;
 		if (mode == p_event->m_device->GetDeviceType()) {
 			switch (mode) {
 			case 3:

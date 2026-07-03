@@ -1223,7 +1223,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 	GolBoundingShape::TreeNode::Node* lastNode;
 	static_cast<GolCollidableEntity*>(p_model)
 		->GetBoundingShape(result.m_lodIndex)
-		->FUN_1001b2c0(&m_unk0x4c, &firstNode, &lastNode);
+		->CollectVisibleLeaves(&m_unk0x4c, &firstNode, &lastNode);
 
 	GolMatrix4* modelMatrix = &m_unk0xc8410;
 	p_model->FUN_10027e70(modelMatrix, result.m_lodIndex);
@@ -1306,7 +1306,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 	GolBoundingShape::TreeNode::Node* lastNode;
 	static_cast<GolCollidableEntity*>(p_model)
 		->GetBoundingShape(result.m_lodIndex)
-		->FUN_1001b2c0(&m_unk0x4c, &firstNode, &lastNode);
+		->CollectVisibleLeaves(&m_unk0x4c, &firstNode, &lastNode);
 
 	GolMatrix4* modelMatrix = &m_unk0xc8410;
 	modelEntity->FUN_10027e70(modelMatrix, result.m_lodIndex);

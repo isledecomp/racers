@@ -182,7 +182,7 @@ void MenuDialog::TextLine::SetString(GolString* p_string, LegoS32 p_unk0x08)
 	}
 
 	m_wrapped = TRUE;
-	m_font->FUN_00408d50(&m_string, m_wrapWidth, 0, m_scaleX, m_scaleY, &width, &height);
+	m_font->MeasureString(&m_string, m_wrapWidth, 0, m_scaleX, m_scaleY, &width, &height);
 
 	if (m_rect.m_right && m_rect.m_bottom && !p_unk0x08) {
 		LegoS32 bottom = m_rect.m_bottom - m_rect.m_top;

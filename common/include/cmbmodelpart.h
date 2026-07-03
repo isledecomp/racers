@@ -37,7 +37,7 @@ public:
 
 	CmbModelPartData* GetPartData() const { return m_unk0x2c; }
 	LegoU32 GetPartCount() const { return m_unk0x30; }
-	void FUN_004015e0();
+	void MirrorY();
 	CmbModelPartTrackData& GetAnimationData() { return m_data; }
 	const CmbModelPartTrack& GetTrack(LegoU32 p_index) const { return m_unk0x24[p_index]; }
 	CmbModelPartData* FindPart(const LegoChar* p_name) const { return static_cast<CmbModelPartData*>(GetName(p_name)); }

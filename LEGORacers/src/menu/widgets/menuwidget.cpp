@@ -262,7 +262,7 @@ void MenuWidget::MeasureText(
 	LegoS32 height;
 
 	if (p_wrapWidth) {
-		p_font->FUN_00408d50(p_string, p_wrapWidth, 0, m_scaleX, m_scaleY, &width, &height);
+		p_font->MeasureString(p_string, p_wrapWidth, 0, m_scaleX, m_scaleY, &width, &height);
 	}
 	else {
 		p_font->MeasureString(p_string, &width, &height);
@@ -296,7 +296,7 @@ void MenuWidget::DrawString(
 	p_font->SetColor(color);
 
 	if (p_wrapWidth) {
-		p_font->FUN_00408fe0(
+		p_font->DrawString(
 			p_string,
 			m_renderer,
 			p_source->m_left,

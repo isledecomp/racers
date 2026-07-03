@@ -60,12 +60,12 @@ void GolCollidableEntity::Draw(GolRenderDevice& p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00403c60
-void GolCollidableEntity::FUN_00403c60()
+void GolCollidableEntity::MirrorY()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_boundingShapes); i++) {
 		if (m_boundingShapes[i] != NULL) {
-			m_boundingShapes[i]->FUN_00403f20();
+			m_boundingShapes[i]->MirrorY();
 		}
 	}
-	MirrorY();
+	GolOrientedEntity::MirrorY();
 }

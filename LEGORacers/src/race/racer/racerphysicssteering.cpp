@@ -57,7 +57,7 @@ void RacerPhysics::AttachRouteAtLoop(RaceRouteRecord* p_record)
 	GolQuat rotation = p_record->m_loopRotation;
 
 	m_carEntity->SetPosition(position);
-	GolMath::FUN_00449340(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
+	GolMath::QuatToMatrix3(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
 	m_carEntity->LocalToWorld(m_centerOfMassLocal, &m_centerOfMassWorld);
 
 	for (LegoS32 i = 0; i < 4; i++) {

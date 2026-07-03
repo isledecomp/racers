@@ -46,9 +46,9 @@ public:
 			undefined4 m_unk0x08;
 			Node* m_next;
 			Node* m_previous;
-			LegoS16 m_unk0x14;
-			LegoU16 m_unk0x16;
-			LegoU16 m_unk0x18;
+			LegoS16 m_pvsStart;
+			LegoU16 m_pvsCount;
+			LegoU16 m_boundsIndex;
 			LegoU16 m_linked;
 		};
 
@@ -69,12 +69,12 @@ public:
 	};
 	// SIZE 0x18
 	struct Bounds {
-		LegoFloat m_unk0x00;
-		LegoFloat m_unk0x04;
-		LegoFloat m_unk0x08;
-		LegoFloat m_unk0x0c;
-		LegoFloat m_unk0x10;
-		LegoFloat m_unk0x14;
+		LegoFloat m_minX;
+		LegoFloat m_minY;
+		LegoFloat m_minZ;
+		LegoFloat m_maxX;
+		LegoFloat m_maxY;
+		LegoFloat m_maxZ;
 	};
 
 	GolBoundingShape();
@@ -82,32 +82,32 @@ public:
 	virtual void Deserialize(const LegoChar* p_path, LegoBool32 p_binary); // vtable+0x04
 	virtual void Destroy();                                                // vtable+0x08
 
-	void FUN_1001b2c0(const GolViewFrustum* p_frustum, TreeNode::Node** p_first, TreeNode::Node** p_last);
-	void FUN_1001b640(
+	void CollectVisibleLeaves(const GolViewFrustum* p_frustum, TreeNode::Node** p_first, TreeNode::Node** p_last);
+	void CollectLeavesFromPvs(
 		const GolViewFrustum* p_frustum,
 		TreeNode* p_entry,
 		TreeNode::Node** p_first,
 		TreeNode::Node** p_last
 	);
-	void FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08);
-	void FUN_00403f20();
+	void CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x08);
+	void MirrorY();
 	TreeNode::Node* GetFirstVisibleLeaf() const { return m_firstVisibleLeaf; }
 
 	// SYNTHETIC: GOLDP 0x100179a0
 	// GolBoundingShape::`vector deleting destructor'
 
 private:
-	void FUN_1001b010(GolFileParser& p_parser);
-	void FUN_1001b1a0(GolFileParser& p_parser);
+	void ParseNodes(GolFileParser& p_parser);
+	void ParseBounds(GolFileParser& p_parser);
 
-	LegoU32 m_unk0x04;
+	LegoU32 m_nodeCount;
 	TreeNode* m_nodes;
 	TreeNode* m_root;
 	undefined4 m_visitStamp;
-	LegoS32 m_unk0x14;
-	Bounds* m_unk0x18;
-	LegoS32 m_unk0x1c;
-	LegoU16* m_unk0x20;
+	LegoS32 m_boundsCount;
+	Bounds* m_bounds;
+	LegoS32 m_pvsIndexCount;
+	LegoU16* m_pvsIndices;
 	TreeNode::Node* m_firstVisibleLeaf;
 	TreeNode::Node* m_lastVisibleLeaf;
 };

@@ -61,7 +61,7 @@ void GolMath::SinCos(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos)
 }
 
 // FUNCTION: LEGORACERS 0x00449190
-void GolMath::FUN_00449190(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest)
+void GolMath::MultiplyMatrix3(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest)
 {
 	LegoFloat value = p_left[1] * p_right[3];
 	value += p_left[2] * p_right[6];
@@ -157,7 +157,7 @@ void __fastcall GolMath::NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest)
 }
 
 // FUNCTION: LEGORACERS 0x00449340
-void GolMath::FUN_00449340(const GolQuat* p_quat, LegoFloat* p_dest)
+void GolMath::QuatToMatrix3(const GolQuat* p_quat, LegoFloat* p_dest)
 {
 	LegoFloat scale = 2.0f / (p_quat->m_x * p_quat->m_x + p_quat->m_y * p_quat->m_y + p_quat->m_z * p_quat->m_z +
 							  p_quat->m_w * p_quat->m_w);
@@ -452,7 +452,7 @@ LegoBool32 GolMath::PointInTriangle(const GolVec3* p_point, const LegoFloat* p_t
 }
 
 // FUNCTION: LEGORACERS 0x00449a90
-LegoBool32 GolMath::FUN_00449a90(
+LegoBool32 GolMath::MoveToward(
 	GolVec3* p_target,
 	GolVec3* p_current,
 	LegoFloat p_minDistSq,

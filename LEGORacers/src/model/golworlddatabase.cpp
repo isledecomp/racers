@@ -67,7 +67,7 @@ void GolWorldDatabase::ResetEntities()
 	}
 
 	for (i = 0; i < m_collidableEntityCount; i++) {
-		m_collidableEntities[i].FUN_00403c60();
+		m_collidableEntities[i].MirrorY();
 	}
 
 	for (i = 0; i < m_boundedEntityCount; i++) {
@@ -87,7 +87,7 @@ void GolWorldDatabase::ResetEntities()
 	}
 
 	for (i = 0; i < m_modelPartCount; i++) {
-		GetModelPart(i)->FUN_004015e0();
+		GetModelPart(i)->MirrorY();
 	}
 
 	for (i = 0; i < m_sceneNodeCount; i++) {

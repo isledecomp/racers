@@ -103,7 +103,7 @@ void GolCameraBase::LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up
 }
 
 // FUNCTION: LEGORACERS 0x00404710
-void GolCameraBase::FUN_00404710(LegoFloat p_fov, LegoFloat p_nearClip, LegoFloat p_farClip, LegoFloat p_aspectRatio)
+void GolCameraBase::SetLens(LegoFloat p_fov, LegoFloat p_nearClip, LegoFloat p_farClip, LegoFloat p_aspectRatio)
 {
 	m_fov = p_fov;
 	m_nearClip = p_nearClip;

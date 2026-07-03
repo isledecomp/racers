@@ -59,7 +59,7 @@ public:
 	static LegoS32 __cdecl CompareGlyphChars(const void* p_left, const void* p_right);
 	void MeasureString(GolString* p_string, LegoS32* p_width, LegoS32* p_height) const;
 	void MeasureString(const LegoChar* p_string, LegoS32* p_width, LegoS32* p_height);
-	void FUN_00408d50(
+	void MeasureString(
 		GolString* p_string,
 		LegoS32 p_wrapWidth,
 		LegoS32 p_unk0x10,
@@ -68,7 +68,7 @@ public:
 		LegoS32* p_width,
 		LegoS32* p_height
 	);
-	void FUN_00408fe0(
+	void DrawString(
 		GolString* p_string,
 		GolRenderDevice* p_renderer,
 		LegoS32 p_x,

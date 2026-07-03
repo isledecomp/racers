@@ -38,14 +38,14 @@ static LegoBool32 HasNegativeCorner(const GolBoundingShape::TreeNode* p_entry, c
 // FUNCTION: GOLDP 0x1001adc0
 GolBoundingShape::GolBoundingShape()
 {
-	m_unk0x04 = 0;
+	m_nodeCount = 0;
 	m_nodes = NULL;
 	m_root = NULL;
 	m_visitStamp = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = NULL;
-	m_unk0x1c = 0;
-	m_unk0x20 = NULL;
+	m_boundsCount = 0;
+	m_bounds = NULL;
+	m_pvsIndexCount = 0;
+	m_pvsIndices = NULL;
 	m_firstVisibleLeaf = 0;
 	m_lastVisibleLeaf = 0;
 }
@@ -87,24 +87,24 @@ void GolBoundingShape::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 	while ((token = parser->GetNextToken()) != 0) {
 		switch (token) {
 		case GolFileParser::e_unknown0x27:
-			FUN_1001b010(*parser);
+			ParseNodes(*parser);
 			break;
 		case GolFileParser::e_unknown0x2a:
-			FUN_1001b1a0(*parser);
+			ParseBounds(*parser);
 			break;
 		case GolFileParser::e_unknown0x2b:
-			m_unk0x1c = parser->ReadBracketedCountAndLeftCurly();
-			if (m_unk0x1c == 0) {
+			m_pvsIndexCount = parser->ReadBracketedCountAndLeftCurly();
+			if (m_pvsIndexCount == 0) {
 				parser->HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
 			}
 
-			m_unk0x20 = new LegoU16[m_unk0x1c];
-			if (m_unk0x20 == NULL) {
+			m_pvsIndices = new LegoU16[m_pvsIndexCount];
+			if (m_pvsIndices == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			for (i = 0; i < m_unk0x1c; i++) {
-				m_unk0x20[i] = parser->ReadInteger();
+			for (i = 0; i < m_pvsIndexCount; i++) {
+				m_pvsIndices[i] = parser->ReadInteger();
 			}
 
 			parser->ReadRightCurly();
@@ -120,21 +120,21 @@ void GolBoundingShape::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 }
 
 // FUNCTION: GOLDP 0x1001b010
-void GolBoundingShape::FUN_1001b010(GolFileParser& p_parser)
+void GolBoundingShape::ParseNodes(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
-	m_unk0x04 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x04 == 0) {
+	m_nodeCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_nodeCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
 	}
 
-	m_root = m_nodes = new TreeNode[m_unk0x04];
+	m_root = m_nodes = new TreeNode[m_nodeCount];
 	if (m_nodes == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (i = 0; i < m_unk0x04; i++) {
+	for (i = 0; i < m_nodeCount; i++) {
 		GolFileParser::ParserTokenType type = p_parser.GetNextToken();
 		TreeNode* obj = &m_nodes[i];
 
@@ -186,9 +186,9 @@ void GolBoundingShape::FUN_1001b010(GolFileParser& p_parser)
 
 			obj->m_data.m_node.m_firstGroup = p_parser.ReadInteger();
 			obj->m_data.m_node.m_groupCount = p_parser.ReadInteger();
-			obj->m_data.m_node.m_unk0x18 = p_parser.ReadInteger();
-			obj->m_data.m_node.m_unk0x14 = p_parser.ReadInteger();
-			obj->m_data.m_node.m_unk0x16 = p_parser.ReadInteger();
+			obj->m_data.m_node.m_boundsIndex = p_parser.ReadInteger();
+			obj->m_data.m_node.m_pvsStart = p_parser.ReadInteger();
+			obj->m_data.m_node.m_pvsCount = p_parser.ReadInteger();
 		}
 		else {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -199,27 +199,27 @@ void GolBoundingShape::FUN_1001b010(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x1001b1a0
-void GolBoundingShape::FUN_1001b1a0(GolFileParser& p_parser)
+void GolBoundingShape::ParseBounds(GolFileParser& p_parser)
 {
 	LegoS32 i;
 
-	m_unk0x14 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x14 == 0) {
+	m_boundsCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_boundsCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
 	}
 
-	m_unk0x18 = new Bounds[m_unk0x14];
-	if (m_unk0x18 == NULL) {
+	m_bounds = new Bounds[m_boundsCount];
+	if (m_bounds == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (i = 0; i < m_unk0x14; i++) {
-		m_unk0x18[i].m_unk0x00 = p_parser.ReadFloat();
-		m_unk0x18[i].m_unk0x04 = p_parser.ReadFloat();
-		m_unk0x18[i].m_unk0x08 = p_parser.ReadFloat();
-		m_unk0x18[i].m_unk0x0c = p_parser.ReadFloat();
-		m_unk0x18[i].m_unk0x10 = p_parser.ReadFloat();
-		m_unk0x18[i].m_unk0x14 = p_parser.ReadFloat();
+	for (i = 0; i < m_boundsCount; i++) {
+		m_bounds[i].m_minX = p_parser.ReadFloat();
+		m_bounds[i].m_minY = p_parser.ReadFloat();
+		m_bounds[i].m_minZ = p_parser.ReadFloat();
+		m_bounds[i].m_maxX = p_parser.ReadFloat();
+		m_bounds[i].m_maxY = p_parser.ReadFloat();
+		m_bounds[i].m_maxZ = p_parser.ReadFloat();
 	}
 
 	p_parser.ReadRightCurly();
@@ -228,7 +228,7 @@ void GolBoundingShape::FUN_1001b1a0(GolFileParser& p_parser)
 // FUNCTION: GOLDP 0x1001b260
 void GolBoundingShape::Destroy()
 {
-	m_unk0x04 = 0;
+	m_nodeCount = 0;
 	m_visitStamp = 0;
 
 	if (m_nodes != NULL) {
@@ -236,18 +236,18 @@ void GolBoundingShape::Destroy()
 		m_nodes = NULL;
 	}
 
-	m_unk0x14 = 0;
+	m_boundsCount = 0;
 
-	if (m_unk0x18 != NULL) {
-		delete[] m_unk0x18;
-		m_unk0x18 = NULL;
+	if (m_bounds != NULL) {
+		delete[] m_bounds;
+		m_bounds = NULL;
 	}
 
-	m_unk0x1c = 0;
+	m_pvsIndexCount = 0;
 
-	if (m_unk0x20 != NULL) {
-		delete[] m_unk0x20;
-		m_unk0x20 = NULL;
+	if (m_pvsIndices != NULL) {
+		delete[] m_pvsIndices;
+		m_pvsIndices = NULL;
 	}
 
 	m_firstVisibleLeaf = 0;
@@ -255,10 +255,10 @@ void GolBoundingShape::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00403f20
-void GolBoundingShape::FUN_00403f20()
+void GolBoundingShape::MirrorY()
 {
 	LegoU32 i;
-	for (i = 0; i < m_unk0x04; i++) {
+	for (i = 0; i < m_nodeCount; i++) {
 		TreeNode* entry = &m_nodes[i];
 		if (entry->m_type == TreeNode::e_plane) {
 			entry->m_data.m_plane.m_normalY = -entry->m_data.m_plane.m_normalY;
@@ -266,14 +266,18 @@ void GolBoundingShape::FUN_00403f20()
 	}
 
 	LegoS32 j;
-	for (j = 0; j < m_unk0x14; j++) {
-		m_unk0x18[j].m_unk0x04 = -m_unk0x18[j].m_unk0x04;
-		m_unk0x18[j].m_unk0x10 = -m_unk0x18[j].m_unk0x10;
+	for (j = 0; j < m_boundsCount; j++) {
+		m_bounds[j].m_minY = -m_bounds[j].m_minY;
+		m_bounds[j].m_maxY = -m_bounds[j].m_maxY;
 	}
 }
 
 // STUB: GOLDP 0x1001b2c0
-void GolBoundingShape::FUN_1001b2c0(const GolViewFrustum* p_frustum, TreeNode::Node** p_first, TreeNode::Node** p_last)
+void GolBoundingShape::CollectVisibleLeaves(
+	const GolViewFrustum* p_frustum,
+	TreeNode::Node** p_first,
+	TreeNode::Node** p_last
+)
 {
 	m_visitStamp++;
 	LegoU32 stamp = m_visitStamp;
@@ -313,8 +317,8 @@ void GolBoundingShape::FUN_1001b2c0(const GolViewFrustum* p_frustum, TreeNode::N
 		return;
 	}
 
-	if (m_unk0x20 != NULL) {
-		FUN_1001b640(p_frustum, entry, p_first, p_last);
+	if (m_pvsIndices != NULL) {
+		CollectLeavesFromPvs(p_frustum, entry, p_first, p_last);
 		m_firstVisibleLeaf = *p_first;
 		m_lastVisibleLeaf = *p_last;
 		return;
@@ -378,11 +382,11 @@ void GolBoundingShape::FUN_1001b2c0(const GolViewFrustum* p_frustum, TreeNode::N
 				current->m_data.m_node.m_linked = 1;
 				LegoBool32 append = TRUE;
 
-				if (current->m_data.m_node.m_unk0x18 != TreeNode::c_invalidIndex) {
+				if (current->m_data.m_node.m_boundsIndex != TreeNode::c_invalidIndex) {
 					LegoS32 classification = GolViewFrustum::ClassifyBox(
 						p_frustum,
-						3 * current->m_data.m_node.m_unk0x18,
-						&m_unk0x18[current->m_data.m_node.m_unk0x18].m_unk0x00
+						3 * current->m_data.m_node.m_boundsIndex,
+						&m_bounds[current->m_data.m_node.m_boundsIndex].m_minX
 					);
 					if (classification == 0) {
 						append = FALSE;
@@ -415,19 +419,19 @@ void GolBoundingShape::FUN_1001b2c0(const GolViewFrustum* p_frustum, TreeNode::N
 }
 
 // STUB: GOLDP 0x1001b640
-void GolBoundingShape::FUN_1001b640(
+void GolBoundingShape::CollectLeavesFromPvs(
 	const GolViewFrustum* p_frustum,
 	TreeNode* p_entry,
 	TreeNode::Node** p_first,
 	TreeNode::Node** p_last
 )
 {
-	LegoS16 indexListStart = p_entry->m_data.m_node.m_unk0x14;
+	LegoS16 indexListStart = p_entry->m_data.m_node.m_pvsStart;
 	TreeNode::Node* first = &p_entry->m_data.m_node;
 	p_entry->m_data.m_node.m_next = NULL;
 	p_entry->m_data.m_node.m_previous = NULL;
 
-	if (indexListStart < 0 || p_entry->m_data.m_node.m_unk0x16 == 0) {
+	if (indexListStart < 0 || p_entry->m_data.m_node.m_pvsCount == 0) {
 		*p_last = first;
 		*p_first = first;
 		return;
@@ -435,13 +439,13 @@ void GolBoundingShape::FUN_1001b640(
 
 	TreeNode* previous = p_entry;
 	LegoS32 i = 0;
-	LegoU16* childIndex = &m_unk0x20[indexListStart];
+	LegoU16* childIndex = &m_pvsIndices[indexListStart];
 
-	while (i < p_entry->m_data.m_node.m_unk0x16) {
+	while (i < p_entry->m_data.m_node.m_pvsCount) {
 		TreeNode* child = &m_nodes[*childIndex];
 		child->m_data.m_node.m_linked = 1;
 
-		if (child->m_data.m_node.m_unk0x18 == TreeNode::c_invalidIndex) {
+		if (child->m_data.m_node.m_boundsIndex == TreeNode::c_invalidIndex) {
 			previous->m_data.m_node.m_next = &child->m_data.m_node;
 			child->m_data.m_node.m_previous = &previous->m_data.m_node;
 			child->m_data.m_node.m_next = NULL;
@@ -449,7 +453,7 @@ void GolBoundingShape::FUN_1001b640(
 		}
 		else {
 			LegoS32 classification =
-				GolViewFrustum::ClassifyBox(p_frustum, 0, &m_unk0x18[child->m_data.m_node.m_unk0x18].m_unk0x00);
+				GolViewFrustum::ClassifyBox(p_frustum, 0, &m_bounds[child->m_data.m_node.m_boundsIndex].m_minX);
 			if (classification != 0) {
 				if (classification == 2) {
 					child->m_data.m_node.m_linked = 0;

@@ -523,7 +523,7 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 		updatePath = TRUE;
 	}
 	else {
-		GolMath::FUN_00449340(&m_returnRotation, &basis.m_m[0][0]);
+		GolMath::QuatToMatrix3(&m_returnRotation, &basis.m_m[0][0]);
 		if (basis.m_m[0][0] * referenceDirection.m_x + basis.m_m[0][1] * referenceDirection.m_y +
 				basis.m_m[0][2] * referenceDirection.m_z <
 			0.5f) {

@@ -252,7 +252,7 @@ void CmbModelPartTrackData::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x0040ea20
-void CmbModelPartTrackData::FUN_0040ea20()
+void CmbModelPartTrackData::MirrorY()
 {
 	LegoU32 i;
 

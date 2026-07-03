@@ -1364,7 +1364,7 @@ void RaceSession::CreateCameras()
 			m_cameras[i] = camera;
 
 			if (m_splitScreen) {
-				camera->FUN_00404710(
+				camera->SetLens(
 					m_context->m_cameraFov - g_unk0x004b08bc,
 					m_context->m_cameraNearClip,
 					m_context->m_cameraFarClip,
@@ -1372,7 +1372,7 @@ void RaceSession::CreateCameras()
 				);
 			}
 			else {
-				camera->FUN_00404710(
+				camera->SetLens(
 					m_context->m_cameraFov,
 					m_context->m_cameraNearClip,
 					m_context->m_cameraFarClip,

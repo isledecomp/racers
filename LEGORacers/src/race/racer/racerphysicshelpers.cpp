@@ -395,7 +395,7 @@ void RacerPhysics::Update(LegoS32 p_elapsedMs)
 		entity->GetPosition(&position);
 		if (position.m_z < g_worldMinZ || position.m_z > g_worldMaxZ) {
 			entity->SetPosition(m_resetPosition);
-			GolMath::FUN_00449340(&m_resetRotation, &m_physicsEntity.GetOrientation().m_m[0][0]);
+			GolMath::QuatToMatrix3(&m_resetRotation, &m_physicsEntity.GetOrientation().m_m[0][0]);
 			m_velocity.m_x = 0.0f;
 			m_velocity.m_y = 0.0f;
 			m_velocity.m_z = 0.0f;
@@ -407,7 +407,7 @@ void RacerPhysics::Update(LegoS32 p_elapsedMs)
 		LegoU32 racerFlags = m_ownerRacer->m_flags;
 		if ((racerFlags & Racer::c_flagEngineSounds) && (racerFlags & Racer::c_flagPreStart)) {
 			entity->SetPosition(m_resetPosition);
-			GolMath::FUN_00449340(&m_resetRotation, &m_physicsEntity.GetOrientation().m_m[0][0]);
+			GolMath::QuatToMatrix3(&m_resetRotation, &m_physicsEntity.GetOrientation().m_m[0][0]);
 			m_velocity.m_x = 0.0f;
 			m_velocity.m_y = 0.0f;
 			m_velocity.m_z = 0.0f;
@@ -920,14 +920,14 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 void RacerPhysics::UpdateRouteSlideBank()
 {
 	GolQuat rotation = m_routeCursor.m_rotation;
-	GolMath::FUN_00449340(&rotation, &g_routeProbeOrientation.m_m[0][0]);
+	GolMath::QuatToMatrix3(&rotation, &g_routeProbeOrientation.m_m[0][0]);
 
 	GolVec3 currentDirection = g_routeProbeOrientation.m_rows[1];
 	g_routeProbeCursor = m_routeCursor;
 	g_routeProbeCursor.Advance(500.0f);
 
 	rotation = g_routeProbeCursor.m_rotation;
-	GolMath::FUN_00449340(&rotation, &g_routeProbeOrientation.m_m[0][0]);
+	GolMath::QuatToMatrix3(&rotation, &g_routeProbeOrientation.m_m[0][0]);
 
 	LegoFloat dot = g_routeProbeOrientation.m_rows[0].m_z * currentDirection.m_z;
 	dot += g_routeProbeOrientation.m_rows[0].m_y * currentDirection.m_y;
@@ -962,7 +962,7 @@ void RacerPhysics::SaveRouteState()
 void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 {
 	GolQuat rotation = m_routeCursor.m_rotation;
-	GolMath::FUN_00449340(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
+	GolMath::QuatToMatrix3(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
 
 	if ((m_flags & c_flagSliding) || m_slideBankAngle != 0.0f) {
 		const GolMatrix3& orientation = m_carEntity->GetOrientation();

@@ -364,7 +364,7 @@ void GolOrientedEntity::FUN_00410f30(const GolMatrix3& p_matrix, GolMatrix3* p_d
 	value += m_orientation.m_m[0][2] * p_matrix.m_m[0][2];
 	localMatrix.m_m[2][2] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][2];
 
-	GolMath::FUN_00449190(&localMatrix.m_m[0][0], &m_orientation.m_m[0][0], &p_dest->m_m[0][0]);
+	GolMath::MultiplyMatrix3(&localMatrix.m_m[0][0], &m_orientation.m_m[0][0], &p_dest->m_m[0][0]);
 }
 
 // FUNCTION: LEGORACERS 0x00411040

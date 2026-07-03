@@ -256,7 +256,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 			m_ghostEntity->SamplePartPosition(0, 1, 0, trailFrame, &position);
 
 			GolMatrix3 orientation;
-			GolMath::FUN_00449340(&rotation, &orientation.m_m[0][0]);
+			GolMath::QuatToMatrix3(&rotation, &orientation.m_m[0][0]);
 			modelEntity->SetOrientationMatrix(orientation);
 
 			position.m_x *= scale;

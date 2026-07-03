@@ -249,7 +249,7 @@ LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 			}
 
 			m_tooltipFont
-				->FUN_00408d50(m_tooltipString, m_tooltipWrapWidth, m_tooltipLineSpacing, 1.0f, 1.0f, &width, &height);
+				->MeasureString(m_tooltipString, m_tooltipWrapWidth, m_tooltipLineSpacing, 1.0f, 1.0f, &width, &height);
 
 			LegoU32 halfFontHeight = static_cast<LegoU32>(fontHeight) >> 1;
 			LegoS32 negativeHalfFontHeight = -static_cast<LegoS32>(halfFontHeight);
@@ -320,7 +320,7 @@ LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 		}
 		else {
 			m_tooltipFont
-				->FUN_00408d50(m_tooltipString, m_tooltipWrapWidth, m_tooltipLineSpacing, 1.0f, 1.0f, &width, &height);
+				->MeasureString(m_tooltipString, m_tooltipWrapWidth, m_tooltipLineSpacing, 1.0f, 1.0f, &width, &height);
 		}
 
 		m_layoutDirty = FALSE;
@@ -347,7 +347,7 @@ LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 	color.m_blu = 0x38;
 	m_renderer->DrawRectangle(m_tooltipRect, 0.0f, color, color, color, color, 0);
 
-	m_tooltipFont->FUN_00408fe0(
+	m_tooltipFont->DrawString(
 		m_tooltipString,
 		m_renderer,
 		m_tooltipX,

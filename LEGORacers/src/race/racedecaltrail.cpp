@@ -55,7 +55,7 @@ LegoFloat g_decalWOffset;
 RaceDecalManager::Trail::Decal::ProjectedVertex g_decalProjectedVertices[76];
 
 // FUNCTION: LEGORACERS 0x00403cc0
-void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
+void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 {
 	LegoFloat planeOffset;
 	m_visitStamp++;
@@ -221,7 +221,7 @@ void RaceDecalManager::Trail::Decal::Project(GolCollidableEntity* p_unk0x04)
 
 	GolBoundingShape* boundingShape = p_unk0x04->GetBoundingShape(0);
 	GolModelBase* model = p_unk0x04->GetModel(0);
-	boundingShape->FUN_00403cc0(g_decalQueryPoints, sizeOfArray(g_decalQueryPoints));
+	boundingShape->CollectLeavesAtPoints(g_decalQueryPoints, sizeOfArray(g_decalQueryPoints));
 	BeginGeometry(model);
 
 	GolBoundingShape::TreeNode::Node* entry = boundingShape->GetFirstVisibleLeaf();

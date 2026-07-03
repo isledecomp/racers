@@ -177,7 +177,7 @@ LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 	position.m_z += m_attachHeight;
 
 	GolVec3* target = &m_endPosition;
-	if (GolMath::FUN_00449a90(
+	if (GolMath::MoveToward(
 			target,
 			&position,
 			g_tetherRetractRadius,
@@ -230,7 +230,7 @@ LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 	m_worldEntity->GetPosition(&currentPosition);
 
 	if (!(m_flags & c_flagSnapped)) {
-		if (GolMath::FUN_00449a90(
+		if (GolMath::MoveToward(
 				&targetPosition,
 				&currentPosition,
 				g_tetherSnapRadius,

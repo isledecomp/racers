@@ -49,7 +49,7 @@ public:
 	}
 	void SetOrientationFromQuaternion(const GolQuat& p_rotation)
 	{
-		GolMath::FUN_00449340(&p_rotation, &m_orientation.m_m[0][0]);
+		GolMath::QuatToMatrix3(&p_rotation, &m_orientation.m_m[0][0]);
 	}
 	void CopyPositionFrom(const GolOrientedEntity& p_other)
 	{
@@ -85,7 +85,7 @@ public:
 		m_position.m_z = position.m_z;
 		m_radius = -1.0f;
 	}
-	void FUN_0043ebd0(const GolOrientedEntity& p_other);
+	void CopyOrientationFrom2(const GolOrientedEntity& p_other);
 	void CopyOrientationTo(GolMatrix3* p_orientation) const
 	{
 		p_orientation->m_m[0][0] = m_orientation.m_m[0][0];

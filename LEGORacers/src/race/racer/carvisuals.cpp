@@ -819,11 +819,11 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 
 	m_bodyModelEntity->LocalToWorld(m_driverMountOffset, &position);
 	m_driverEntity->SetPosition(position);
-	m_driverEntity->FUN_0043ebd0(*m_bodyModelEntity);
+	m_driverEntity->CopyOrientationFrom2(*m_bodyModelEntity);
 }
 
 // FUNCTION: LEGORACERS 0x0043ebd0
-void GolOrientedEntity::FUN_0043ebd0(const GolOrientedEntity& p_other)
+void GolOrientedEntity::CopyOrientationFrom2(const GolOrientedEntity& p_other)
 {
 	m_orientation.m_m[0][0] = p_other.m_orientation.m_m[0][0];
 	m_orientation.m_m[0][1] = p_other.m_orientation.m_m[0][1];
@@ -1242,7 +1242,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		GolMath::LerpQuat(desiredRotation, currentRotation, amount, &blendedRotation);
 
 		GolMatrix3 orientation;
-		GolMath::FUN_00449340(&blendedRotation, &orientation.m_m[0][0]);
+		GolMath::QuatToMatrix3(&blendedRotation, &orientation.m_m[0][0]);
 		entity->SetOrientationMatrix(orientation);
 	}
 	else {

@@ -155,7 +155,7 @@ void CmbModelPart::VTable0x10(GolFileParser& p_parser)
 }
 
 // STUB: LEGORACERS 0x004015e0
-void CmbModelPart::FUN_004015e0()
+void CmbModelPart::MirrorY()
 {
 	for (LegoU32 i = 0; i < m_unk0x30; i++) {
 		GolVec4 bounds = m_unk0x2c[i].m_unk0x10;
@@ -167,5 +167,5 @@ void CmbModelPart::FUN_004015e0()
 		m_unk0x2c[i].m_unk0x04 = position;
 	}
 
-	m_data.FUN_0040ea20();
+	m_data.MirrorY();
 }

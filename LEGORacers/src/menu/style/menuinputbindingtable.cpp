@@ -684,7 +684,7 @@ void MenuInputBindingTable::ParseSceneRefBinding(SceneRefBinding* p_entry)
 void MenuInputBindingTable::ParseTextFieldBinding(TextFieldBinding* p_entry)
 {
 	InitIconDefaults(p_entry);
-	p_entry->m_unk0x94 = 31;
+	p_entry->m_maxLength = 31;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -696,10 +696,10 @@ void MenuInputBindingTable::ParseTextFieldBinding(TextFieldBinding* p_entry)
 			ParseWidgetBase(p_entry);
 			break;
 		case MidTxtParser::e_font:
-			p_entry->m_unk0x8c = m_renderer->FindFontByName(m_parser->ReadString());
+			p_entry->m_font = m_renderer->FindFontByName(m_parser->ReadString());
 			break;
 		case MidTxtParser::e_value:
-			p_entry->m_unk0x94 = m_parser->ReadInteger();
+			p_entry->m_maxLength = m_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2b: {
 			LegoS32 i;

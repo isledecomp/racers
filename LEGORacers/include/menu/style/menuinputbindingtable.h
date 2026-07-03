@@ -106,9 +106,9 @@ public:
 	class TextFieldBinding : public IconBinding {
 	public:
 		undefined m_unk0x84[0x8c - 0x84]; // 0x84
-		GolFont* m_unk0x8c;               // 0x8c
+		GolFont* m_font;                  // 0x8c
 		undefined m_unk0x90[0x94 - 0x90]; // 0x90
-		undefined2 m_unk0x94;             // 0x94
+		undefined2 m_maxLength;           // 0x94
 		undefined2 m_unk0x96[4];          // 0x96
 		undefined m_unk0x9e[0xa0 - 0x9e]; // 0x9e
 	};

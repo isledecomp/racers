@@ -882,7 +882,7 @@ void MenuManager::BuildPlayerDriverModel(
 			break;
 		}
 
-		if (material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
+		if (material->GetFlags() & GolMaterial::c_flagBit3) {
 			textureCount++;
 		}
 	}
@@ -900,21 +900,21 @@ void MenuManager::BuildPlayerDriverModel(
 		GolMaterial* sourceMaterial = materialTable->GetMaterial(materialIndex);
 		sourceMaterial->CopyParamsTo(&params);
 
-		if (sourceMaterial->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
+		if (sourceMaterial->GetFlags() & GolMaterial::c_flagBit3) {
 			GolD3DTexture* texture = p_slot->m_altTextures->GetItem(textureCount++);
-			texture->SetName(static_cast<GolD3DTexture*>(params.m_unk0x04)->GetName());
+			texture->SetName(static_cast<GolD3DTexture*>(params.m_texture)->GetName());
 			texture->SetSourceTextureDefinition(
-				params.m_unk0x04->GetUnk0x34(),
-				params.m_unk0x04->GetUnk0x36(),
-				params.m_unk0x04->GetColorKey()
+				params.m_texture->GetUnk0x34(),
+				params.m_texture->GetUnk0x36(),
+				params.m_texture->GetColorKey()
 			);
-			params.m_unk0x04 = texture;
+			params.m_texture = texture;
 		}
 		else {
-			params.m_unk0x04 = NULL;
+			params.m_texture = NULL;
 		}
 
-		params.m_unk0x00 &= ~GolMaterial::c_flagBit0;
+		params.m_flags &= ~GolMaterial::c_flagBit0;
 		GolMaterial* material = p_slot->m_altMaterials->GetItem(materialIndex);
 		material->SetParams(renderer, params);
 		materialTable->SetEntry(materialIndex, material);

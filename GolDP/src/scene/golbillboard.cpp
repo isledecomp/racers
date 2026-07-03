@@ -138,5 +138,5 @@ LegoBool32 GolBillboard::GetKind()
 		m_material = static_cast<GolMaterial*>(m_materialTable->GetEntry(m_materialIndex));
 	}
 
-	return m_material->GetUnk0x08() & 0x1100;
+	return m_material->GetFlags() & 0x1100;
 }

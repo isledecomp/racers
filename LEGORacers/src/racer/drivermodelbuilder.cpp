@@ -153,7 +153,7 @@ void DriverModelBuilder::CreateFaceMaterial(const LegoChar* p_name)
 	sourceMaterial->CopyParamsTo(&params);
 
 	GolMaterial* material = m_materialList->GetItem(m_materialCount++);
-	params.m_unk0x04 = m_renderer->FindTextureByName(p_name);
+	params.m_texture = m_renderer->FindTextureByName(p_name);
 	material->SetName(p_name);
 	material->SetParams(m_renderer, params);
 	m_materialList->AddName(p_name, material);

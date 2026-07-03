@@ -189,17 +189,17 @@ static void SortCommandListBySortKey(GolSoftwareRenderer::TriangleCommand** p_he
 // FUNCTION: GOLDP 0x100411b0
 void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial* p_material, LegoU32 p_index)
 {
-	LegoU32 flags = p_material->GetUnk0x08();
+	LegoU32 flags = p_material->GetFlags();
 	LegoU32 rasterizerMode;
 
-	GolD3DTexture* texture = reinterpret_cast<GolD3DTexture*>(p_material->GetUnk0x04());
+	GolD3DTexture* texture = reinterpret_cast<GolD3DTexture*>(p_material->GetTexture());
 
 	if (texture) {
 		m_unk0x34 = NULL;
-		FUN_100330d0(this, &reinterpret_cast<GolD3DTexture*>(p_material->GetUnk0x04())->GetMipmaps()[p_index]);
+		FUN_100330d0(this, &reinterpret_cast<GolD3DTexture*>(p_material->GetTexture())->GetMipmaps()[p_index]);
 		rasterizerMode = c_flag0x2cBit8;
 
-		if (flags & GolMaterial::c_flag0x08Bit19) {
+		if (flags & GolMaterial::c_flagBit19) {
 			rasterizerMode = c_flag0x2cBit8 | c_flag0x2cBit9;
 		}
 
@@ -207,12 +207,12 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 			rasterizerMode |= c_flag0x2cBit1;
 		}
 
-		if (flags & GolMaterial::c_flag0x08Bit12) {
+		if (flags & GolMaterial::c_flagBit12) {
 			rasterizerMode |= c_flag0x2cBit2;
 		}
-		else if (!(flags & GolMaterial::c_flag0x08Bit4)) {
-			if (flags & GolMaterial::c_flag0x08Bit8) {
-				if ((p_material->m_unk0x22 != 1) || (p_material->m_unk0x23 != 1)) {
+		else if (!(flags & GolMaterial::c_flagBit4)) {
+			if (flags & GolMaterial::c_flagBit8) {
+				if ((p_material->m_srcBlend != 1) || (p_material->m_destBlend != 1)) {
 					rasterizerMode |= c_flag0x2cBit2;
 				}
 				else {
@@ -220,7 +220,7 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 				}
 			}
 			else {
-				if (flags & GolMaterial::c_flag0x08Bit5) {
+				if (flags & GolMaterial::c_flagBit5) {
 					rasterizerMode |= c_flag0x2cBit3 | c_flag0x2cBit0;
 				}
 				else {
@@ -228,14 +228,14 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 				}
 			}
 		}
-		else if (flags & GolMaterial::c_flag0x08Bit8) {
+		else if (flags & GolMaterial::c_flagBit8) {
 			rasterizerMode |= c_flag0x2cBit2;
 		}
 	}
 	else {
 		FUN_100330d0(this, NULL);
 		// TODO: Can't get a `& 0xff` to appear
-		rasterizerMode = flags & GolMaterial::c_flag0x08Bit2 ? c_flag0x2cBit0 : 0;
+		rasterizerMode = flags & GolMaterial::c_flagBit2 ? c_flag0x2cBit0 : 0;
 	}
 
 	m_unk0x2c = rasterizerMode;
@@ -282,7 +282,7 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 	}
 
 	if (m_unk0x34) {
-		if (flags & GolMaterial::c_flag0x08Bit21) {
+		if (flags & GolMaterial::c_flagBit21) {
 			if (m_unk0x34->m_paletteData) {
 				if ((rasterizerMode & c_flag0x2cBit1)) {
 					if (m_spanRasterizer == FUN_10034980) {

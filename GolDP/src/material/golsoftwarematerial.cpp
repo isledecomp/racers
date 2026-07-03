@@ -27,17 +27,17 @@ GolSoftwareMaterial::~GolSoftwareMaterial()
 // FUNCTION: GOLDP 0x10006320
 void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
 {
-	if (m_unk0x08 & c_flagBit0) {
+	if (m_flags & c_flagBit0) {
 		Destroy();
 	}
 
-	m_unk0x08 |= c_flagBit0;
+	m_flags |= c_flagBit0;
 	GolD3DRenderDevice* renderer = static_cast<GolD3DRenderDevice*>(p_renderer.GetDrawState()->m_currentRenderer);
 
 	if (renderer->GetFlags() & GolRenderDevice::c_flagBit16) {
 		LegoU32 textureCount;
-		if (m_unk0x04 != NULL) {
-			textureCount = m_unk0x04->GetUnk0x34();
+		if (m_texture != NULL) {
+			textureCount = m_texture->GetUnk0x34();
 		}
 		else {
 			textureCount = 1;
@@ -49,13 +49,13 @@ void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
 		}
 
 		::memset(m_unk0x2c, 0, textureCount * sizeof(*m_unk0x2c));
-		if (m_unk0x04 == NULL) {
+		if (m_texture == NULL) {
 			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c, this, 0);
 			FUN_100064d0(renderer);
 			return;
 		}
 
-		for (LegoU32 i = 0; i < m_unk0x04->GetUnk0x34(); i++) {
+		for (LegoU32 i = 0; i < m_texture->GetUnk0x34(); i++) {
 			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c + i, this, i);
 		}
 	}
@@ -83,7 +83,7 @@ void GolSoftwareMaterial::Destroy()
 		m_unk0x24 = NULL;
 	}
 	m_unk0x28 = 0;
-	m_unk0x08 &= ~c_flagBit0;
+	m_flags &= ~c_flagBit0;
 }
 
 // FUNCTION: GOLDP 0x100064d0

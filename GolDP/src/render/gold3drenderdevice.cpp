@@ -701,9 +701,9 @@ void GolD3DRenderDevice::FUN_100082e0()
 	m_unk0xc83d4 = 0;
 	m_unk0xc83d8 = 6;
 	m_unk0xc83dc = 8;
-	m_unk0xc83c8 = GolMaterial::c_flag0x08Bit2 | GolMaterial::c_flag0x08Bit4 | GolMaterial::c_flag0x08Bit7 |
-				   GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit10 | GolMaterial::c_flag0x08Bit13 |
-				   GolMaterial::c_flag0x08Bit15 | GolMaterial::c_flag0x08Bit20 | GolMaterial::c_flag0x08Bit22;
+	m_unk0xc83c8 = GolMaterial::c_flagBit2 | GolMaterial::c_flagBit4 | GolMaterial::c_flagBit7 |
+				   GolMaterial::c_flagBit9 | GolMaterial::c_flagBit10 | GolMaterial::c_flagBit13 |
+				   GolMaterial::c_flagBit15 | GolMaterial::c_flagBit20 | GolMaterial::c_flagBit22;
 	FUN_10012f50();
 
 	if (m_flags & c_flagBit16) {
@@ -980,7 +980,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 	m_unk0xc8410.m_m[1][2] = -m_unk0xc8410.m_m[1][2];
 	m_unk0xc8410.m_m[2][2] = -m_unk0xc8410.m_m[2][2];
 	m_unk0xc8410.m_m[3][2] = -m_unk0xc8410.m_m[3][2];
-	m_unk0xc83cc = GolMaterial::c_flag0x08Bit14;
+	m_unk0xc83cc = GolMaterial::c_flagBit14;
 	FUN_10012f50();
 
 	if (result.m_visibility == 1) {
@@ -1784,12 +1784,12 @@ void GolD3DRenderDevice::DrawTriangle(
 	}
 
 	(this->*m_unk0xc876c)(p_material);
-	FUN_1000ac00(p_material->GetUnk0x04());
+	FUN_1000ac00(p_material->GetTexture());
 
 	const TexturedVertex* v0;
 	const TexturedVertex* v1;
 	const TexturedVertex* v2;
-	if (p_material->GetUnk0x08() & GolMaterial::c_flagBit14) {
+	if (p_material->GetFlags() & GolMaterial::c_flagBit14) {
 		v2 = p_vertex0;
 		v0 = p_vertex1;
 		v1 = p_vertex2;
@@ -2067,7 +2067,7 @@ LegoBool32 GolD3DRenderDevice::TextureSizesMustBePowersOfTwo() const
 // FUNCTION: GOLDP 0x1000a2c0
 void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 {
-	LegoU32 newFlags = p_material->GetUnk0x08();
+	LegoU32 newFlags = p_material->GetFlags();
 
 	m_unk0xc8530.m_material = p_material;
 	if (m_unk0xc8568 != 0) {
@@ -2088,12 +2088,12 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 	}
 
 	if (m_flags & c_flagBit14) {
-		newFlags &= ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13);
-		newFlags |= GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12;
+		newFlags &= ~(GolMaterial::c_flagBit8 | GolMaterial::c_flagBit13);
+		newFlags |= GolMaterial::c_flagBit9 | GolMaterial::c_flagBit12;
 	}
 	else {
-		if (newFlags & (GolMaterial::c_flag0x08Bit6 | GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit12)) {
-			if (newFlags & GolMaterial::c_flag0x08Bit6) {
+		if (newFlags & (GolMaterial::c_flagBit6 | GolMaterial::c_flagBit8 | GolMaterial::c_flagBit12)) {
+			if (newFlags & GolMaterial::c_flagBit6) {
 				LegoU32 alphaFunc = p_material->GetAlphaFunc();
 				if (m_unk0xc83d0 != alphaFunc) {
 					m_unk0xc83d0 = alphaFunc;
@@ -2108,14 +2108,14 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 				}
 			}
 
-			if (newFlags & GolMaterial::c_flag0x08Bit12) {
+			if (newFlags & GolMaterial::c_flagBit12) {
 				LegoU32 destBlend = p_material->GetDestBlend();
 				m_alpha = destBlend;
-				newFlags &= ~GolMaterial::c_flag0x08Bit4;
-				newFlags |= GolMaterial::c_flag0x08Bit5;
+				newFlags &= ~GolMaterial::c_flagBit4;
+				newFlags |= GolMaterial::c_flagBit5;
 				m_unk0xc83fc = (destBlend << 24) | (m_unk0xc83fc & 0x00ffffff);
 			}
-			else if (newFlags & GolMaterial::c_flag0x08Bit8) {
+			else if (newFlags & GolMaterial::c_flagBit8) {
 				LegoU32 srcBlend = p_material->GetSrcBlend();
 				if (m_unk0xc83d8 != srcBlend) {
 					m_unk0xc83d8 = srcBlend;
@@ -2135,8 +2135,8 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		return;
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flag0x08Bit10 | GolMaterial::c_flag0x08Bit11)) {
-		if (!(newFlags & GolMaterial::c_flag0x08Bit11) && m_drawState->IsHwAccelerated()) {
+	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagBit10 | GolMaterial::c_flagBit11)) {
+		if (!(newFlags & GolMaterial::c_flagBit11) && m_drawState->IsHwAccelerated()) {
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTSS_COLORARG1);
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_LINEAR);
 		}
@@ -2146,8 +2146,8 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flag0x08Bit15 | GolMaterial::c_flag0x08Bit16)) {
-		if (newFlags & GolMaterial::c_flag0x08Bit16) {
+	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagBit15 | GolMaterial::c_flagBit16)) {
+		if (newFlags & GolMaterial::c_flagBit16) {
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESS, D3DTADDRESS_CLAMP);
 		}
 		else {
@@ -2155,8 +2155,8 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flag0x08Bit1 | GolMaterial::c_flag0x08Bit2)) {
-		if (newFlags & GolMaterial::c_flag0x08Bit2) {
+	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagBit1 | GolMaterial::c_flagBit2)) {
+		if (newFlags & GolMaterial::c_flagBit2) {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_SHADEMODE, D3DSHADE_GOURAUD);
 		}
 		else {
@@ -2164,10 +2164,9 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) &
-		(GolMaterial::c_flag0x08Bit3 | GolMaterial::c_flag0x08Bit4 | GolMaterial::c_flag0x08Bit5)) {
-		if (newFlags & GolMaterial::c_flag0x08Bit3) {
-			if (newFlags & GolMaterial::c_flag0x08Bit5) {
+	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagBit3 | GolMaterial::c_flagBit4 | GolMaterial::c_flagBit5)) {
+		if (newFlags & GolMaterial::c_flagBit3) {
+			if (newFlags & GolMaterial::c_flagBit5) {
 				m_d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 				if (m_flags & c_flagBit19) {
 					m_unk0xc83fc = ARGBU32(m_alpha, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
@@ -2181,7 +2180,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 				m_unk0xc83f8 = TRUE;
 				m_unk0xc83fc = ARGBU32(m_alpha, 0xff, 0xff, 0xff);
 			}
-			if (newFlags & (GolMaterial::c_flag0x08Bit12 | GolMaterial::c_flag0x08Bit5)) {
+			if (newFlags & (GolMaterial::c_flagBit12 | GolMaterial::c_flagBit5)) {
 				m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 				m_unk0xc83e8 = TRUE;
 			}
@@ -2204,8 +2203,8 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		FUN_10012f50();
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flag0x08Bit6 | GolMaterial::c_flag0x08Bit7)) {
-		if (newFlags & GolMaterial::c_flag0x08Bit6) {
+	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagBit6 | GolMaterial::c_flagBit7)) {
+		if (newFlags & GolMaterial::c_flagBit6) {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHATESTENABLE, TRUE);
 		}
 		else {
@@ -2213,17 +2212,17 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit9 |
-									 GolMaterial::c_flag0x08Bit12 | GolMaterial::c_flag0x08Bit13)) {
-		if (newFlags & (GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit12)) {
+	if ((newFlags ^ m_unk0xc83c8) &
+		(GolMaterial::c_flagBit8 | GolMaterial::c_flagBit9 | GolMaterial::c_flagBit12 | GolMaterial::c_flagBit13)) {
+		if (newFlags & (GolMaterial::c_flagBit8 | GolMaterial::c_flagBit12)) {
 			m_unk0xc83ec = 0;
-			if (newFlags & GolMaterial::c_flag0x08Bit12) {
+			if (newFlags & GolMaterial::c_flagBit12) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, D3DBLEND_SRCALPHA);
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, D3DBLEND_INVSRCALPHA);
 				m_unk0xc83d8 = 6;
 				m_unk0xc83dc = 8;
 				m_unk0xc83ec = 1;
-				if (newFlags & GolMaterial::c_flag0x08Bit3) {
+				if (newFlags & GolMaterial::c_flagBit3) {
 					m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 				}
 				else {
@@ -2231,8 +2230,8 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 				}
 			}
 			else {
-				if (newFlags & GolMaterial::c_flag0x08Bit3) {
-					if (newFlags & GolMaterial::c_flag0x08Bit5) {
+				if (newFlags & GolMaterial::c_flagBit3) {
+					if (newFlags & GolMaterial::c_flagBit5) {
 						m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 					}
 					else {
@@ -2255,9 +2254,9 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 			FUN_10012f50();
 		}
 		else {
-			if (m_unk0xc83c8 & GolMaterial::c_flag0x08Bit12) {
-				if (newFlags & GolMaterial::c_flag0x08Bit3) {
-					if (newFlags & GolMaterial::c_flag0x08Bit5) {
+			if (m_unk0xc83c8 & GolMaterial::c_flagBit12) {
+				if (newFlags & GolMaterial::c_flagBit3) {
+					if (newFlags & GolMaterial::c_flagBit5) {
 						m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 					}
 					else {
@@ -2282,7 +2281,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 	else {
-		if ((m_unk0xc83c8 ^ newFlags) & GolMaterial::c_flag0x08Bit14) {
+		if ((m_unk0xc83c8 ^ newFlags) & GolMaterial::c_flagBit14) {
 			m_unk0xc83c8 = newFlags;
 			FUN_10012f50();
 		}
@@ -2295,15 +2294,15 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 // FUNCTION: GOLDP 0x1000a950
 void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 {
-	LegoU32 newFlags = p_material->GetUnk0x08();
+	LegoU32 newFlags = p_material->GetFlags();
 	m_unk0xc8530.m_material = p_material;
 
 	LegoU32 textureCount;
-	if (p_material->GetUnk0x04() == NULL) {
+	if (p_material->GetTexture() == NULL) {
 		textureCount = 1;
 	}
 	else {
-		textureCount = p_material->GetUnk0x04()->GetUnk0x34();
+		textureCount = p_material->GetTexture()->GetUnk0x34();
 	}
 	m_unk0xc83ac = textureCount - 1;
 
@@ -2329,23 +2328,23 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 	}
 
 	if (m_flags & c_flagBit14) {
-		newFlags &= ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13);
-		newFlags |= GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12;
+		newFlags &= ~(GolMaterial::c_flagBit8 | GolMaterial::c_flagBit13);
+		newFlags |= GolMaterial::c_flagBit9 | GolMaterial::c_flagBit12;
 	}
-	else if (newFlags & (GolMaterial::c_flag0x08Bit6 | GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit12)) {
-		if (newFlags & GolMaterial::c_flag0x08Bit6) {
+	else if (newFlags & (GolMaterial::c_flagBit6 | GolMaterial::c_flagBit8 | GolMaterial::c_flagBit12)) {
+		if (newFlags & GolMaterial::c_flagBit6) {
 			m_unk0xc83d0 = p_material->GetAlphaFunc();
 			m_unk0xc83d4 = p_material->GetAlphaRef();
 		}
 
-		if (newFlags & GolMaterial::c_flag0x08Bit12) {
+		if (newFlags & GolMaterial::c_flagBit12) {
 			LegoU32 destBlend = p_material->GetDestBlend();
 			m_alpha = destBlend;
-			newFlags &= ~GolMaterial::c_flag0x08Bit4;
-			newFlags |= GolMaterial::c_flag0x08Bit5;
+			newFlags &= ~GolMaterial::c_flagBit4;
+			newFlags |= GolMaterial::c_flagBit5;
 			m_unk0xc83fc = (destBlend << 24) | (m_unk0xc83fc & 0x00ffffff);
 		}
-		else if (newFlags & GolMaterial::c_flag0x08Bit8) {
+		else if (newFlags & GolMaterial::c_flagBit8) {
 			m_unk0xc83d8 = p_material->GetSrcBlend();
 			m_unk0xc83dc = p_material->GetDestBlend();
 		}
@@ -2356,17 +2355,17 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 	}
 
 	LegoU32 changedFlags = newFlags ^ m_unk0xc83c8;
-	if (changedFlags & (GolMaterial::c_flag0x08Bit3 | GolMaterial::c_flag0x08Bit4 | GolMaterial::c_flag0x08Bit5)) {
+	if (changedFlags & (GolMaterial::c_flagBit3 | GolMaterial::c_flagBit4 | GolMaterial::c_flagBit5)) {
 		m_unk0xc83e8 = (newFlags >> 3) & 1;
 		FUN_10012f50();
 	}
 
 	changedFlags = newFlags ^ m_unk0xc83c8;
-	if (changedFlags & (GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12 |
-						GolMaterial::c_flag0x08Bit13)) {
+	if (changedFlags &
+		(GolMaterial::c_flagBit8 | GolMaterial::c_flagBit9 | GolMaterial::c_flagBit12 | GolMaterial::c_flagBit13)) {
 		m_unk0xc83ec = 0;
-		if (newFlags & (GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit12)) {
-			if (newFlags & GolMaterial::c_flag0x08Bit12) {
+		if (newFlags & (GolMaterial::c_flagBit8 | GolMaterial::c_flagBit12)) {
+			if (newFlags & GolMaterial::c_flagBit12) {
 				m_unk0xc83d8 = 6;
 				m_unk0xc83dc = 8;
 				m_unk0xc83ec = 1;
@@ -2382,7 +2381,7 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 	}
 	else {
 		m_unk0xc83c8 = newFlags;
-		if (changedFlags & GolMaterial::c_flag0x08Bit14) {
+		if (changedFlags & GolMaterial::c_flagBit14) {
 			FUN_10012f50();
 		}
 	}
@@ -4129,7 +4128,7 @@ void GolD3DRenderDevice::FUN_1000edf0(undefined4 p_firstTriangle, undefined4 p_t
 	LegoU32 directIndexCount = 0;
 	LegoU32 clippedIndexCount = 0;
 	LegoU32 clippedVertexCount = 0;
-	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & GolMaterial::c_flag0x08Bit14) != 0;
+	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & GolMaterial::c_flagBit14) != 0;
 	static const LegoU32 g_clipPlanes[] = {0x10, 0x20, 0x01, 0x02, 0x04, 0x08};
 
 	for (; triangle < triangleEnd; triangle += 4) {
@@ -4476,7 +4475,7 @@ void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_t
 	LegoU32 emittedCount = 0;
 	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
 	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
-	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & GolMaterial::c_flag0x08Bit14) != 0;
+	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & GolMaterial::c_flagBit14) != 0;
 	static const LegoU32 g_clipPlanes[] = {0x10, 0x20, 0x01, 0x02, 0x04, 0x08};
 
 	for (; triangle < triangleEnd; triangle += 4) {
@@ -5125,7 +5124,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 		}
 		else {
 			LegoU32 flags = m_unk0xc83c8 | m_unk0xc83cc;
-			if (flags & GolMaterial::c_flag0x08Bit14) {
+			if (flags & GolMaterial::c_flagBit14) {
 				if (m_unk0xc83c4) {
 					m_drawTriangleFn2 = &GolD3DRenderDevice::FUN_10010500;
 				}

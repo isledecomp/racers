@@ -298,7 +298,7 @@ void RaceDecalManager::Trail::Decal::ProcessGroups(GolModelBase* p_unk0x04, Lego
 					}
 				}
 				else {
-					enabled = model->GetMaterialTable()->GetMaterial(command & c_commandVertexMask)->GetUnk0x08() &
+					enabled = model->GetMaterialTable()->GetMaterial(command & c_commandVertexMask)->GetFlags() &
 							  c_commandModelFlagBit17;
 				}
 			}

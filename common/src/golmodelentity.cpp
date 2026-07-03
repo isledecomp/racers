@@ -371,8 +371,7 @@ LegoBool32 GolModelEntity::GetKind()
 
 	for (LegoU32 i = 0; i < materialTable->m_count; i++) {
 		GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetEntry(i));
-		if (material != NULL &&
-			(material->GetUnk0x08() & (GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit12))) {
+		if (material != NULL && (material->GetFlags() & (GolMaterial::c_flagBit8 | GolMaterial::c_flagBit12))) {
 			return TRUE;
 		}
 	}

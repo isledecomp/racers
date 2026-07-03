@@ -234,7 +234,7 @@ void LegoColorTable::MarkMaterialUsed(LegoS32 p_materialIndex)
 		m_usedMaterialCount++;
 
 		GolMaterial* material = static_cast<GolMaterial*>(m_materialTable.m_entries[p_materialIndex]);
-		if (material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
+		if (material->GetFlags() & GolMaterial::c_flagBit3) {
 			m_transparentMaterialCount++;
 		}
 	}

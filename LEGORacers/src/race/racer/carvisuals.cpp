@@ -1474,7 +1474,7 @@ LegoBool32 CarVisuals::IntersectSegment(const GolVec3* p_start, const GolVec3* p
 void CarVisuals::RenderShadowSilhouette(GolD3DRenderDevice* p_renderer)
 {
 	GolMaterial* material = p_renderer->FindMaterialByName(m_shadowTextureName);
-	g_carShadowRenderState.Initialize(p_renderer, material->GetUnk0x04());
+	g_carShadowRenderState.Initialize(p_renderer, material->GetTexture());
 
 	GolVec3 position;
 	m_carEntity->GetPosition(&position);

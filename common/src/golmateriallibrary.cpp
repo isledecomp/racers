@@ -100,77 +100,77 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 				params.m_diffuse.m_alp = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2a:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit2;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit1;
+				params.m_flags &= ~GolMaterial::c_flagBit2;
+				params.m_flags |= GolMaterial::c_flagBit1;
 				break;
 			case GolFileParser::e_unknown0x2b:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit1;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit2;
+				params.m_flags &= ~GolMaterial::c_flagBit1;
+				params.m_flags |= GolMaterial::c_flagBit2;
 				break;
 			case GolFileParser::e_unknown0x2c:
 				::strncpy(textureName, parser->ReadStringWithMaxLength(sizeOfArray(textureName)), sizeof(textureName));
-				params.m_unk0x04 = p_renderer->FindTextureByName(textureName);
-				if (params.m_unk0x04 == NULL) {
+				params.m_texture = p_renderer->FindTextureByName(textureName);
+				if (params.m_texture == NULL) {
 					char message[128];
 					::strcpy(message, "Mat def file references unknown texture: ");
 					::strcat(message, textureName);
 					GOL_FATALERROR_MESSAGE(message);
 				}
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit3;
+				params.m_flags |= GolMaterial::c_flagBit3;
 				break;
 			case GolFileParser::e_unknown0x2d:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit4;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit5;
+				params.m_flags &= ~GolMaterial::c_flagBit4;
+				params.m_flags |= GolMaterial::c_flagBit5;
 				break;
 			case GolFileParser::e_unknown0x2e:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit5;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit4;
+				params.m_flags &= ~GolMaterial::c_flagBit5;
+				params.m_flags |= GolMaterial::c_flagBit4;
 				break;
 			case GolFileParser::e_unknown0x2f:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit7;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit6;
+				params.m_flags &= ~GolMaterial::c_flagBit7;
+				params.m_flags |= GolMaterial::c_flagBit6;
 				switch (parser->GetNextToken()) {
 				case GolFileParser::e_unknown0x30:
-					params.m_unk0x10 = 0;
+					params.m_alphaFunc = 0;
 					break;
 				case GolFileParser::e_unknown0x31:
-					params.m_unk0x10 = 1;
-					params.m_unk0x11 = parser->ReadInteger();
+					params.m_alphaFunc = 1;
+					params.m_alphaRef = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x32:
-					params.m_unk0x10 = 2;
-					params.m_unk0x11 = parser->ReadInteger();
+					params.m_alphaFunc = 2;
+					params.m_alphaRef = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x33:
-					params.m_unk0x10 = 3;
-					params.m_unk0x11 = parser->ReadInteger();
+					params.m_alphaFunc = 3;
+					params.m_alphaRef = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x34:
-					params.m_unk0x10 = 4;
-					params.m_unk0x11 = parser->ReadInteger();
+					params.m_alphaFunc = 4;
+					params.m_alphaRef = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x35:
-					params.m_unk0x10 = 5;
-					params.m_unk0x11 = parser->ReadInteger();
+					params.m_alphaFunc = 5;
+					params.m_alphaRef = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x36:
-					params.m_unk0x10 = 6;
+					params.m_alphaFunc = 6;
 					break;
 				case GolFileParser::e_unknown0x37:
-					params.m_unk0x10 = 7;
-					params.m_unk0x11 = parser->ReadInteger();
+					params.m_alphaFunc = 7;
+					params.m_alphaRef = parser->ReadInteger();
 					break;
 				default:
-					if (params.m_unk0x10 != 0 && params.m_unk0x10 != 6) {
-						params.m_unk0x11 = parser->ReadInteger();
+					if (params.m_alphaFunc != 0 && params.m_alphaFunc != 6) {
+						params.m_alphaRef = parser->ReadInteger();
 					}
 					break;
 				}
 				break;
 			case GolFileParser::e_unknown0x38: {
-				undefined* ptr = &params.m_unk0x12;
-				params.m_unk0x00 &= ~(GolMaterial::c_flag0x08Bit12 | GolMaterial::c_flag0x08Bit9);
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13;
+				undefined* ptr = &params.m_srcBlend;
+				params.m_flags &= ~(GolMaterial::c_flagBit12 | GolMaterial::c_flagBit9);
+				params.m_flags |= GolMaterial::c_flagBit8 | GolMaterial::c_flagBit13;
 				for (j = 0; j < 2; j++) {
 					switch (parser->GetNextToken()) {
 					case GolFileParser::e_unknown0x39:
@@ -210,55 +210,55 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 						parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 						break;
 					}
-					ptr = &params.m_unk0x13;
+					ptr = &params.m_destBlend;
 				}
 			} break;
 			case GolFileParser::e_unknown0x44:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit11;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit10;
+				params.m_flags &= ~GolMaterial::c_flagBit11;
+				params.m_flags |= GolMaterial::c_flagBit10;
 				break;
 			case GolFileParser::e_unknown0x45:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit10;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit11;
+				params.m_flags &= ~GolMaterial::c_flagBit10;
+				params.m_flags |= GolMaterial::c_flagBit11;
 				break;
 			case GolFileParser::e_unknown0x47:
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit14;
+				params.m_flags |= GolMaterial::c_flagBit14;
 				break;
 			case GolFileParser::e_unknown0x48:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit16;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit15;
+				params.m_flags &= ~GolMaterial::c_flagBit16;
+				params.m_flags |= GolMaterial::c_flagBit15;
 				break;
 			case GolFileParser::e_unknown0x49:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit15;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit16;
+				params.m_flags &= ~GolMaterial::c_flagBit15;
+				params.m_flags |= GolMaterial::c_flagBit16;
 				break;
 			case GolFileParser::e_unknown0x4a:
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit17;
+				params.m_flags |= GolMaterial::c_flagBit17;
 				break;
 			case GolFileParser::e_unknown0x4b:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit20;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit19;
+				params.m_flags &= ~GolMaterial::c_flagBit20;
+				params.m_flags |= GolMaterial::c_flagBit19;
 				break;
 			case GolFileParser::e_unknown0x4c:
-				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit22;
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit21;
+				params.m_flags &= ~GolMaterial::c_flagBit22;
+				params.m_flags |= GolMaterial::c_flagBit21;
 				break;
 			case GolFileParser::e_unknown0x46:
 			case GolFileParser::e_unknown0x4e:
-				params.m_unk0x13 = parser->ReadInteger();
-				params.m_unk0x00 &= ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13);
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12;
+				params.m_destBlend = parser->ReadInteger();
+				params.m_flags &= ~(GolMaterial::c_flagBit8 | GolMaterial::c_flagBit13);
+				params.m_flags |= GolMaterial::c_flagBit9 | GolMaterial::c_flagBit12;
 				break;
 			case GolFileParser::e_unknown0x4f:
-				params.m_unk0x13 = parser->ReadInteger();
-				params.m_unk0x00 = (params.m_unk0x00 & ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13)) |
-								   (GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12);
+				params.m_destBlend = parser->ReadInteger();
+				params.m_flags = (params.m_flags & ~(GolMaterial::c_flagBit8 | GolMaterial::c_flagBit13)) |
+								 (GolMaterial::c_flagBit9 | GolMaterial::c_flagBit12);
 				break;
 			case GolFileParser::e_unknown0x4d:
 			case GolFileParser::e_unknown0x50:
-				params.m_unk0x13 = parser->ReadInteger();
-				params.m_unk0x00 &= ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13);
-				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12;
+				params.m_destBlend = parser->ReadInteger();
+				params.m_flags &= ~(GolMaterial::c_flagBit8 | GolMaterial::c_flagBit13);
+				params.m_flags |= GolMaterial::c_flagBit9 | GolMaterial::c_flagBit12;
 				break;
 			default:
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -266,7 +266,7 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 			}
 			token = parser->GetNextToken();
 		}
-		material->m_unk0x18 = name;
+		material->m_nameRecord = name;
 		material->SetParams(m_renderer, params);
 	}
 
@@ -285,7 +285,7 @@ void GolMaterialLibrary::CreateMaterials()
 	if (m_unk0x14 != NULL) {
 		for (i = 0; i < m_numItems; i++) {
 			GolMaterial* item = GetItem(i);
-			if (!(item->GetUnk0x08() & GolMaterial::c_flagBit0)) {
+			if (!(item->GetFlags() & GolMaterial::c_flagBit0)) {
 				GolMaterialParams params;
 				m_unk0x14->VTable0x00(i, &params);
 				item->SetParams(m_renderer, params);
@@ -296,7 +296,7 @@ void GolMaterialLibrary::CreateMaterials()
 	else {
 		for (i = 0; i < m_numItems; i++) {
 			GolMaterial* item = GetItem(i);
-			if (!(item->GetUnk0x08() & GolMaterial::c_flagBit0)) {
+			if (!(item->GetFlags() & GolMaterial::c_flagBit0)) {
 				VTable0x18(i);
 			}
 		}

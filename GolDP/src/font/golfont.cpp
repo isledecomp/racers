@@ -143,8 +143,8 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 		texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_maxTextureWidth, m_maxTextureHeight);
 
 		GolMaterialParams params;
-		params.m_unk0x00 = c_fontMaterialFlags;
-		params.m_unk0x04 = texture;
+		params.m_flags = c_fontMaterialFlags;
+		params.m_texture = texture;
 		params.m_ambient.m_red = 0xff;
 		params.m_ambient.m_grn = 0xff;
 		params.m_ambient.m_blu = 0xff;
@@ -153,10 +153,10 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 		params.m_diffuse.m_grn = 0xff;
 		params.m_diffuse.m_blu = 0xff;
 		params.m_diffuse.m_alp = 0xff;
-		params.m_unk0x10 = 2;
-		params.m_unk0x11 = 0;
-		params.m_unk0x12 = 1;
-		params.m_unk0x13 = 0;
+		params.m_alphaFunc = 2;
+		params.m_alphaRef = 0;
+		params.m_srcBlend = 1;
+		params.m_destBlend = 0;
 
 		material->SetParams(p_renderer, params);
 		material->FUN_10006320(*p_renderer);
@@ -177,8 +177,8 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 	texture->SetName(m_name);
 
 	GolMaterialParams params;
-	params.m_unk0x00 = c_fontMaterialFlags;
-	params.m_unk0x04 = texture;
+	params.m_flags = c_fontMaterialFlags;
+	params.m_texture = texture;
 	params.m_ambient.m_red = 0xff;
 	params.m_ambient.m_grn = 0xff;
 	params.m_ambient.m_blu = 0xff;
@@ -187,10 +187,10 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 	params.m_diffuse.m_grn = 0xff;
 	params.m_diffuse.m_blu = 0xff;
 	params.m_diffuse.m_alp = 0xff;
-	params.m_unk0x10 = 2;
-	params.m_unk0x11 = 0;
-	params.m_unk0x12 = 1;
-	params.m_unk0x13 = 0;
+	params.m_alphaFunc = 2;
+	params.m_alphaRef = 0;
+	params.m_srcBlend = 1;
+	params.m_destBlend = 0;
 
 	material->SetParams(p_renderer, params);
 	material->FUN_10006320(*p_renderer);

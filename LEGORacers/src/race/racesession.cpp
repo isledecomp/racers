@@ -2513,8 +2513,8 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 
 			for (LegoU32 j = zero; j < materials->m_count; j++) {
 				GolMaterial* material = materials->GetMaterial(j);
-				material->EnableFlag0x08Bit18();
-				material->SetUnk0x14(NULL);
+				material->EnableFlagBit18();
+				material->SetUserData(NULL);
 			}
 		}
 		return;
@@ -2537,8 +2537,8 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 			else {
 				materialPosition = surfaceTable->GetName(materialName.m_name);
 			}
-			material->SetUnk0x14(materialPosition);
-			material->EnableFlag0x08Bit18();
+			material->SetUserData(materialPosition);
+			material->EnableFlagBit18();
 		}
 	}
 }
@@ -2559,8 +2559,8 @@ void RaceSession::BindCheckpointMaterials()
 				GolMaterial* material = materials->GetMaterial(materialIndex);
 				GolMaterial::NameRecord materialName = material->GetNameRecord();
 				if (materialName.m_name[0] >= '0' && materialName.m_name[0] <= '9') {
-					material->SetUnk0x14(m_checkpointGraph.GetCheckpoint(checkpointIndex));
-					material->EnableFlag0x08Bit18();
+					material->SetUserData(m_checkpointGraph.GetCheckpoint(checkpointIndex));
+					material->EnableFlagBit18();
 					checkpointIndex++;
 				}
 				else {
@@ -2572,8 +2572,8 @@ void RaceSession::BindCheckpointMaterials()
 						materialPosition = m_surfaceTable.GetName(materialName.m_name);
 					}
 
-					material->SetUnk0x14(materialPosition);
-					material->EnableFlag0x08Bit18();
+					material->SetUserData(materialPosition);
+					material->EnableFlagBit18();
 				}
 
 				materialIndex++;

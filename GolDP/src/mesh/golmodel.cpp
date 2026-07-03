@@ -205,7 +205,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 				GolMaterial* material =
 					static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
 				(p_renderer->*p_renderer->m_unk0xc876c)(material);
-				p_renderer->FUN_1000ac00(material->GetUnk0x04());
+				p_renderer->FUN_1000ac00(material->GetTexture());
 			}
 			else if (groupType == c_groupTypeTriangles) {
 				LegoU32 vertexCount = groupData >> c_groupDataUpperWordShift;
@@ -304,7 +304,7 @@ void GolModel::FUN_10006e00(
 				GolMaterial* material =
 					static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
 				(p_renderer->*p_renderer->m_unk0xc876c)(material);
-				p_renderer->FUN_1000ac00(material->GetUnk0x04());
+				p_renderer->FUN_1000ac00(material->GetTexture());
 			}
 			else if (groupType == c_groupTypeTriangles) {
 				LegoU32 vertexCount = groupData >> c_groupDataUpperWordShift;

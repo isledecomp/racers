@@ -541,12 +541,11 @@ void RaceState::CreateRacer(
 
 	GolMaterialParams shadowMaterialParams;
 	::memset(&shadowMaterialParams, 0, sizeof(shadowMaterialParams));
-	shadowMaterialParams.m_unk0x00 = GolMaterial::c_flag0x08Bit2 | GolMaterial::c_flag0x08Bit3 |
-									 GolMaterial::c_flag0x08Bit5 | GolMaterial::c_flag0x08Bit7 |
-									 GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit10 |
-									 GolMaterial::c_flag0x08Bit13 | GolMaterial::c_flag0x08Bit15 |
-									 GolMaterial::c_flag0x08Bit20 | GolMaterial::c_flag0x08Bit22;
-	shadowMaterialParams.m_unk0x04 = shadowTexture;
+	shadowMaterialParams.m_flags = GolMaterial::c_flagBit2 | GolMaterial::c_flagBit3 | GolMaterial::c_flagBit5 |
+								   GolMaterial::c_flagBit7 | GolMaterial::c_flagBit9 | GolMaterial::c_flagBit10 |
+								   GolMaterial::c_flagBit13 | GolMaterial::c_flagBit15 | GolMaterial::c_flagBit20 |
+								   GolMaterial::c_flagBit22;
+	shadowMaterialParams.m_texture = shadowTexture;
 	shadowMaterial->SetParams(p_context->m_renderer, shadowMaterialParams);
 
 	Racer* racer = &m_roster.m_racers[p_racerIndex];

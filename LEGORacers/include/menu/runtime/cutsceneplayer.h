@@ -58,7 +58,40 @@ class CutscenePlayer : public CutsceneEventSink {
 public:
 	// VTABLE: LEGORACERS 0x004b49d4
 	// SIZE 0x1fc
-	class CebTxtParser : public GolTxtParser {};
+	class CebTxtParser : public GolTxtParser {
+	public:
+		// .ceb section + trigger-channel tokens (event field tokens live in
+		// the event classes)
+		enum {
+			e_animations = 0x27,
+			e_stringTables = 0x28,
+			e_fontTables = 0x29,
+			e_imageLists = 0x2a,
+			e_moveEvents = 0x2b,
+			e_soundEvents = 0x2f,
+			e_streamEvents = 0x36,
+			e_animationEvents = 0x3c,
+			e_textVisuals = 0x3f,
+			e_imageVisuals = 0x4d,
+			e_onEventStarted = 0x50,
+			e_onEventEnded = 0x51,
+			e_onCameraStarted = 0x52,
+			e_onCameraEnded = 0x53,
+			e_onModelStarted = 0x54,
+			e_onModelEnded = 0x55,
+			e_onTransformStarted = 0x56,
+			e_onTransformEnded = 0x57,
+			e_onAmbientStarted = 0x58,
+			e_onAmbientEnded = 0x59,
+			e_onDirectionalStarted = 0x5a,
+			e_onDirectionalEnded = 0x5b,
+			e_soundGroups = 0x5c,
+			e_jointedEntityName = 0x5d,
+			e_modelEntityName = 0x5e,
+			e_bspEntityName = 0x5f,
+			e_menuAnimationEvents = 0x60,
+		};
+	};
 
 	CutscenePlayer();
 

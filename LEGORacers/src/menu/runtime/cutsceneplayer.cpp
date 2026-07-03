@@ -148,7 +148,7 @@ void CutsceneAnimation::Load(
 	}
 
 	parser->OpenFileForRead(p_fileName);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(EmbTxtParser::e_emitters));
 
 	m_emitterCount = parser->ReadBracketedCountAndLeftCurly();
 
@@ -610,7 +610,7 @@ void CutsceneEvent::ParseCommonToken(
 	::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 
 	switch (p_token) {
-	case GolFileParser::e_unknown0x5d:
+	case CutscenePlayer::CebTxtParser::e_jointedEntityName:
 		m_parsedEntity = p_owner->FindJointedEntity(name);
 		m_entity = m_parsedEntity;
 		m_animatedEntity = static_cast<GolAnimatedEntity*>(m_parsedEntity);
@@ -622,7 +622,7 @@ void CutsceneEvent::ParseCommonToken(
 		::strcat(text, ": unable to find jointed model");
 		GOL_FATALERROR_MESSAGE(text);
 		break;
-	case GolFileParser::e_unknown0x5e:
+	case CutscenePlayer::CebTxtParser::e_modelEntityName:
 		m_parsedEntity = p_owner->FindModelEntity(name);
 		m_entity = m_parsedEntity;
 		if (m_parsedEntity) {
@@ -633,7 +633,7 @@ void CutsceneEvent::ParseCommonToken(
 		::strcat(text, ": unable to find model");
 		GOL_FATALERROR_MESSAGE(text);
 		break;
-	case GolFileParser::e_unknown0x5f:
+	case CutscenePlayer::CebTxtParser::e_bspEntityName:
 		m_parsedEntity = p_owner->FindBspEntity(name);
 		m_entity = m_parsedEntity;
 		if (m_parsedEntity) {
@@ -895,91 +895,145 @@ void CutscenePlayer::Load(
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27:
+		case CebTxtParser::e_animations:
 			ParseAnimationNames(parser);
 			break;
-		case GolFileParser::e_unknown0x28:
+		case CebTxtParser::e_stringTables:
 			ParseStringTableNames(parser);
 			break;
-		case GolFileParser::e_unknown0x5c:
+		case CebTxtParser::e_soundGroups:
 			ParseSoundGroupNames(parser);
 			break;
-		case GolFileParser::e_unknown0x29:
+		case CebTxtParser::e_fontTables:
 			ParseFontTableNames(parser);
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case CebTxtParser::e_imageLists:
 			ParseImageListNames(parser);
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case CebTxtParser::e_moveEvents:
 			ParseMoveEvents(parser);
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case CebTxtParser::e_soundEvents:
 			ParseSoundEvents(parser);
 			break;
-		case GolFileParser::e_unknown0x36:
+		case CebTxtParser::e_streamEvents:
 			ParseStreamEvents(parser);
 			break;
-		case GolFileParser::e_unknown0x3c:
+		case CebTxtParser::e_animationEvents:
 			ParseAnimationEvents(parser);
 			break;
-		case GolFileParser::e_unknown0x60:
+		case CebTxtParser::e_menuAnimationEvents:
 			ParseMenuAnimationEvents(parser);
 			break;
-		case GolFileParser::e_unknown0x3f:
+		case CebTxtParser::e_textVisuals:
 			ParseTextVisuals(parser);
 			break;
-		case GolFileParser::e_unknown0x4d:
+		case CebTxtParser::e_imageVisuals:
 			ParseImageVisuals(parser);
 			break;
-		case GolFileParser::e_unknown0x50:
-			ParseTriggerChannel(parser, 0x50, m_eventStartedCount, m_eventStartedLinks, m_eventStartedNames);
-			break;
-		case GolFileParser::e_unknown0x51:
-			ParseTriggerChannel(parser, 0x51, m_eventEndedCount, m_eventEndedLinks, m_eventEndedNames);
-			break;
-		case GolFileParser::e_unknown0x52:
-			ParseTriggerChannel(parser, 0x52, m_cameraStartedCount, m_cameraStartedLinks, m_cameraStartedNames);
-			break;
-		case GolFileParser::e_unknown0x53:
-			ParseTriggerChannel(parser, 0x53, m_cameraEndedCount, m_cameraEndedLinks, m_cameraEndedNames);
-			break;
-		case GolFileParser::e_unknown0x54:
-			ParseTriggerChannel(parser, 0x54, m_modelStartedCount, m_modelStartedLinks, m_modelStartedNames);
-			break;
-		case GolFileParser::e_unknown0x55:
-			ParseTriggerChannel(parser, 0x55, m_modelEndedCount, m_modelEndedLinks, m_modelEndedNames);
-			break;
-		case GolFileParser::e_unknown0x56:
+		case CebTxtParser::e_onEventStarted:
 			ParseTriggerChannel(
 				parser,
-				0x56,
+				CebTxtParser::e_onEventStarted,
+				m_eventStartedCount,
+				m_eventStartedLinks,
+				m_eventStartedNames
+			);
+			break;
+		case CebTxtParser::e_onEventEnded:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onEventEnded,
+				m_eventEndedCount,
+				m_eventEndedLinks,
+				m_eventEndedNames
+			);
+			break;
+		case CebTxtParser::e_onCameraStarted:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onCameraStarted,
+				m_cameraStartedCount,
+				m_cameraStartedLinks,
+				m_cameraStartedNames
+			);
+			break;
+		case CebTxtParser::e_onCameraEnded:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onCameraEnded,
+				m_cameraEndedCount,
+				m_cameraEndedLinks,
+				m_cameraEndedNames
+			);
+			break;
+		case CebTxtParser::e_onModelStarted:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onModelStarted,
+				m_modelStartedCount,
+				m_modelStartedLinks,
+				m_modelStartedNames
+			);
+			break;
+		case CebTxtParser::e_onModelEnded:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onModelEnded,
+				m_modelEndedCount,
+				m_modelEndedLinks,
+				m_modelEndedNames
+			);
+			break;
+		case CebTxtParser::e_onTransformStarted:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onTransformStarted,
 				m_transformStartedCount,
 				m_transformStartedLinks,
 				m_transformStartedNames
 			);
 			break;
-		case GolFileParser::e_unknown0x57:
-			ParseTriggerChannel(parser, 0x57, m_transformEndedCount, m_transformEndedLinks, m_transformEndedNames);
-			break;
-		case GolFileParser::e_unknown0x58:
-			ParseTriggerChannel(parser, 0x58, m_ambientStartedCount, m_ambientStartedLinks, m_ambientStartedNames);
-			break;
-		case GolFileParser::e_unknown0x59:
-			ParseTriggerChannel(parser, 0x59, m_ambientEndedCount, m_ambientEndedLinks, m_ambientEndedNames);
-			break;
-		case GolFileParser::e_unknown0x5a:
+		case CebTxtParser::e_onTransformEnded:
 			ParseTriggerChannel(
 				parser,
-				0x5a,
+				CebTxtParser::e_onTransformEnded,
+				m_transformEndedCount,
+				m_transformEndedLinks,
+				m_transformEndedNames
+			);
+			break;
+		case CebTxtParser::e_onAmbientStarted:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onAmbientStarted,
+				m_ambientStartedCount,
+				m_ambientStartedLinks,
+				m_ambientStartedNames
+			);
+			break;
+		case CebTxtParser::e_onAmbientEnded:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onAmbientEnded,
+				m_ambientEndedCount,
+				m_ambientEndedLinks,
+				m_ambientEndedNames
+			);
+			break;
+		case CebTxtParser::e_onDirectionalStarted:
+			ParseTriggerChannel(
+				parser,
+				CebTxtParser::e_onDirectionalStarted,
 				m_directionalStartedCount,
 				m_directionalStartedLinks,
 				m_directionalStartedNames
 			);
 			break;
-		case GolFileParser::e_unknown0x5b:
+		case CebTxtParser::e_onDirectionalEnded:
 			ParseTriggerChannel(
 				parser,
-				0x5b,
+				CebTxtParser::e_onDirectionalEnded,
 				m_directionalEndedCount,
 				m_directionalEndedLinks,
 				m_directionalEndedNames
@@ -1755,25 +1809,25 @@ void CutscenePlayer::ParseTriggerChannel(
 		::strncpy(targetName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 
 		switch (targetToken) {
-		case GolFileParser::e_unknown0x2b:
+		case CebTxtParser::e_moveEvents:
 			event = static_cast<CutsceneEvent*>(m_moveEventNames.GetName(targetName));
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case CebTxtParser::e_soundEvents:
 			event = static_cast<CutsceneEvent*>(m_soundEventNames.GetName(targetName));
 			break;
-		case GolFileParser::e_unknown0x36:
+		case CebTxtParser::e_streamEvents:
 			event = static_cast<CutsceneEvent*>(m_streamEventNames.GetName(targetName));
 			break;
-		case GolFileParser::e_unknown0x3c:
+		case CebTxtParser::e_animationEvents:
 			event = static_cast<CutsceneEvent*>(m_animEventNames.GetName(targetName));
 			break;
-		case GolFileParser::e_unknown0x60:
+		case CebTxtParser::e_menuAnimationEvents:
 			event = static_cast<CutsceneEvent*>(m_menuAnimEventNames.GetName(targetName));
 			break;
-		case GolFileParser::e_unknown0x3f:
+		case CebTxtParser::e_textVisuals:
 			event = static_cast<CutsceneEvent*>(m_textVisualNames.GetName(targetName));
 			break;
-		case GolFileParser::e_unknown0x4d:
+		case CebTxtParser::e_imageVisuals:
 			event = static_cast<CutsceneEvent*>(m_imageVisualNames.GetName(targetName));
 			break;
 		default:

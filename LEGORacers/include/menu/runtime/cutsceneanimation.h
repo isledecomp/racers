@@ -19,7 +19,13 @@ class CutsceneAnimation : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004b4048
 	// SIZE 0x1fc
-	class EmbTxtParser : public GolTxtParser {};
+	class EmbTxtParser : public GolTxtParser {
+	public:
+		// .emb token meanings
+		enum {
+			e_emitters = 0x27,
+		};
+	};
 
 	// SIZE 0x08
 	class Entry : public CutsceneParticleRef {

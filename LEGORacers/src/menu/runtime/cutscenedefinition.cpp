@@ -1116,11 +1116,11 @@ void CutsceneDefinition::Frame::Draw(GolD3DRenderDevice* p_renderer, LegoU32 p_l
 		}
 
 		if (m_flags & c_flagHasRect) {
-			m_cameraStack[lensIndex]->VTable0x0c(&m_viewportRect);
+			m_cameraStack[lensIndex]->SetViewport(&m_viewportRect);
 		}
 
 		p_renderer->SetCamera(m_cameraStack[lensIndex]);
-		p_renderer->VTable0x5c();
+		p_renderer->ApplyCamera();
 		p_renderer->VTable0xec(4);
 	}
 

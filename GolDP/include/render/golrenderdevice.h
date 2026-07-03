@@ -99,7 +99,7 @@ public:
 	virtual void VTable0x18() = 0;                                           // vtable+0x18
 	virtual void SetClearColor(const ColorRGBA&) = 0;                        // vtable+0x1c
 	virtual void SetCamera(GolCamera*) = 0;                                  // vtable+0x20
-	virtual void VTable0x24();                                               // vtable+0x24
+	virtual void DetachCamera();                                             // vtable+0x24
 	virtual void ClearLights();                                              // vtable+0x28
 	virtual void SetAmbient(const MaterialColor* p_param);                   // vtable+0x2c
 	virtual void AddLight(const Light* p_param);                             // vtable+0x30
@@ -113,7 +113,7 @@ public:
 	virtual void DestroyRenderTarget(GolRenderTarget*);                      // vtable+0x50
 	virtual void VTable0x54(undefined4) = 0;                                 // vtable+0x54
 	virtual void VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2); // vtable+0x58
-	virtual void VTable0x5c() = 0;                                           // vtable+0x5c
+	virtual void ApplyCamera() = 0;                                          // vtable+0x5c
 	virtual void VTable0x60();                                               // vtable+0x60
 	virtual void DrawString(
 		GolString*,
@@ -249,7 +249,7 @@ public:
 	// GolRenderDevice::`scalar deleting destructor'
 
 	undefined4 GetFlags() { return m_flags; }
-	GolCamera* GetUnk0x0c() { return m_unk0x0c; }
+	GolCamera* GetCurrentCamera() { return m_currentCamera; }
 	MaterialColor* GetCurrentMaterialColor() { return const_cast<MaterialColor*>(m_unk0x120); }
 	Light* GetCurrentLight(LegoU32 p_index) { return const_cast<Light*>(m_unk0x124[p_index]); }
 
@@ -259,7 +259,7 @@ protected:
 	undefined4 m_flags;                          // 0x04
 	undefined2 m_unk0x08;                        // 0x08
 	undefined2 m_unk0x0a;                        // 0x0a
-	GolCamera* m_unk0x0c;                        // 0x0c
+	GolCamera* m_currentCamera;                  // 0x0c
 	LegoU32 m_textureFormatIndex;                // 0x10
 	undefined4 m_requestedRedBitCount;           // 0x14
 	undefined4 m_requestedGrnBitCount;           // 0x18

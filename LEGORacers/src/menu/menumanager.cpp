@@ -211,11 +211,11 @@ void MenuManager::SetupCamera()
 	GolCamera* lens = m_golExport->VTable0x20();
 
 	lens->m_fov = m_gameContext.m_context->GetCameraFov();
-	lens->m_flags |= GolCamera::c_flagBit1;
+	lens->m_flags |= GolCamera::c_flagProjectionDirty;
 	lens->m_nearClip = m_gameContext.m_context->GetCameraNearClip();
-	lens->m_flags |= GolCamera::c_flagBit1;
+	lens->m_flags |= GolCamera::c_flagProjectionDirty;
 	lens->m_farClip = m_gameContext.m_context->GetCameraFarClip();
-	lens->m_flags |= GolCamera::c_flagBit1;
+	lens->m_flags |= GolCamera::c_flagProjectionDirty;
 
 	position.m_x = 0.0f;
 	position.m_y = 0.0f;
@@ -228,16 +228,16 @@ void MenuManager::SetupCamera()
 	right.m_z = 0.0f;
 
 	lens->GetTransform()->SetPosition(&position);
-	lens->m_flags |= GolCamera::c_flagBit0;
+	lens->m_flags |= GolCamera::c_flagViewDirty;
 	lens->GetTransform()->VTable0x24(&right, &forward);
-	lens->m_flags |= GolCamera::c_flagBit0;
+	lens->m_flags |= GolCamera::c_flagViewDirty;
 	m_renderer->SetCamera(lens);
 }
 
 // FUNCTION: LEGORACERS 0x0042ceb0
 void MenuManager::ReleaseRendererObject()
 {
-	GolCamera* object = m_renderer->GetUnk0x0c();
+	GolCamera* object = m_renderer->GetCurrentCamera();
 	if (object) {
 		m_golExport->VTable0x54(object);
 	}

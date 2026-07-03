@@ -2107,7 +2107,7 @@ void CutscenePlayer::Update(LegoU32 p_elapsedMs)
 void CutscenePlayer::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_golExport != NULL) {
-		UpdateListener(p_renderer->GetUnk0x0c());
+		UpdateListener(p_renderer->GetCurrentCamera());
 
 		for (LegoU32 i = 0; i < m_animationCount; i++) {
 			m_animations[i].Draw(p_renderer);

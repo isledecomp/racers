@@ -121,7 +121,7 @@ void RaceCameraController::UpdateFollow()
 		position.m_y = m_lastRacerPosition.m_y + m_lastRacerPosition.m_y - m_smoothedTransform.m_position.m_y;
 		position.m_z = m_smoothedTransform.m_position.m_z;
 		camera->GetTransform()->SetPosition(&position);
-		camera->m_flags |= GolCamera::c_flagBit0;
+		camera->m_flags |= GolCamera::c_flagViewDirty;
 
 		right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
 		right.m_y = -m_smoothedTransform.m_orientation.m_rows[2].m_y;
@@ -131,12 +131,12 @@ void RaceCameraController::UpdateFollow()
 		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
 
 		camera->GetTransform()->VTable0x24(&right, &forward);
-		camera->m_flags |= GolCamera::c_flagBit0;
+		camera->m_flags |= GolCamera::c_flagViewDirty;
 		return;
 	}
 	if (m_mode == 2 && m_lookBack) {
 		camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
-		camera->m_flags |= GolCamera::c_flagBit0;
+		camera->m_flags |= GolCamera::c_flagViewDirty;
 
 		forward.m_x = m_smoothedTransform.m_orientation.m_rows[1].m_x;
 		right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
@@ -146,16 +146,16 @@ void RaceCameraController::UpdateFollow()
 		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
 
 		camera->GetTransform()->VTable0x24(&right, &forward);
-		camera->m_flags |= GolCamera::c_flagBit0;
+		camera->m_flags |= GolCamera::c_flagViewDirty;
 		return;
 	}
 	camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
-	camera->m_flags |= GolCamera::c_flagBit0;
+	camera->m_flags |= GolCamera::c_flagViewDirty;
 	camera->GetTransform()->VTable0x24(
 		&m_smoothedTransform.m_orientation.m_rows[2],
 		&m_smoothedTransform.m_orientation.m_rows[1]
 	);
-	camera->m_flags |= GolCamera::c_flagBit0;
+	camera->m_flags |= GolCamera::c_flagViewDirty;
 }
 
 extern LegoU16 g_randomTable[1024];
@@ -221,16 +221,16 @@ void RaceCameraController::UpdateShake()
 		phase *= g_hazardPi;
 		LegoFloat angle = static_cast<LegoFloat>(cos(phase));
 		LegoFloat fov = angle * m_shakeAmount + (m_baseFov - m_shakeAmount);
-		camera->m_flags |= GolCamera::c_flagBit1;
+		camera->m_flags |= GolCamera::c_flagProjectionDirty;
 		camera->m_fov = fov;
-		m_renderer->VTable0x5c();
+		m_renderer->ApplyCamera();
 	}
 	else if (m_camera->m_fov != m_targetFov) {
 		GolCamera* camera = m_camera;
 		LegoFloat fov = m_targetFov;
-		camera->m_flags |= GolCamera::c_flagBit1;
+		camera->m_flags |= GolCamera::c_flagProjectionDirty;
 		camera->m_fov = fov;
-		m_renderer->VTable0x5c();
+		m_renderer->ApplyCamera();
 	}
 }
 

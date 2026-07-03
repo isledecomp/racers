@@ -17,17 +17,24 @@ class GolAnimatedEntity;
 class GolCameraBase {
 public:
 	GolCameraBase();
-	virtual void VTable0x00() = 0;                                                           // vtable+0x00
-	virtual void VTable0x04() = 0;                                                           // vtable+0x04
-	virtual ~GolCameraBase();                                                                // vtable+0x08
-	virtual void VTable0x0c(Rect* p_rect) = 0;                                               // vtable+0x0c
-	virtual void VTable0x10(const GolVec4* p_bounds) = 0;                                    // vtable+0x10
-	virtual void VTable0x14(GolMatrix4* p_dest) = 0;                                         // vtable+0x14
-	virtual void VTable0x18(GolMatrix4* p_dest) = 0;                                         // vtable+0x18
-	virtual void VTable0x1c(const GolVec3* p_src, GolVec3* p_dest) = 0;                      // vtable+0x1c
-	virtual void VTable0x20(const GolVec3* p_src, GolVec3* p_dest);                          // vtable+0x20
-	virtual LegoBool32 VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolVec4* p_bounds); // vtable+0x24
-	virtual void VTable0x28() = 0;                                                           // vtable+0x28
+	enum {
+		c_flagViewDirty = 1 << 0,
+		c_flagProjectionDirty = 1 << 1,
+		c_flagCustomViewBounds = 1 << 2,
+		c_flagFixedAspectRatio = 1 << 3,
+	};
+
+	virtual void UpdateViewMatrix() = 0;                                                        // vtable+0x00
+	virtual void UpdateProjectionMatrices() = 0;                                                // vtable+0x04
+	virtual ~GolCameraBase();                                                                   // vtable+0x08
+	virtual void SetViewport(Rect* p_rect) = 0;                                                 // vtable+0x0c
+	virtual void SetViewBounds(const GolVec4* p_bounds) = 0;                                    // vtable+0x10
+	virtual void GetViewMatrix(GolMatrix4* p_dest) = 0;                                         // vtable+0x14
+	virtual void GetViewScreenProjection(GolMatrix4* p_dest) = 0;                               // vtable+0x18
+	virtual void TransformToView(const GolVec3* p_src, GolVec3* p_dest) = 0;                    // vtable+0x1c
+	virtual void ProjectToScreen(const GolVec3* p_src, GolVec3* p_dest);                        // vtable+0x20
+	virtual LegoBool32 ProjectSphere(GolVec3* p_center, LegoFloat p_radius, GolVec4* p_bounds); // vtable+0x24
+	virtual void UpdateMatrices() = 0;                                                          // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x1001bf90
 	// GolCameraBase::`scalar deleting destructor'

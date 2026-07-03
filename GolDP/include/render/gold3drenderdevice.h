@@ -74,7 +74,7 @@ public:
 	void DestroyRenderTarget(GolRenderTarget*) override;                     // vtable+0x50
 	void VTable0x54(undefined4) override;                                    // vtable+0x54
 	void VTable0x58(GolRenderTarget*, undefined4) override;                  // vtable+0x58
-	void VTable0x5c() override;                                              // vtable+0x5c
+	void ApplyCamera() override;                                             // vtable+0x5c
 	void VTable0x60() override;                                              // vtable+0x60
 	void DrawString(
 		GolString*,
@@ -313,11 +313,11 @@ private:
 	undefined4 m_uvOffsetEnabled;                                                  // 0xc83f4
 	LegoBool32 m_unk0xc83f8;                                                       // 0xc83f8
 	LegoU32 m_unk0xc83fc;                                                          // 0xc83fc
-	LegoFloat m_unk0xc8400[4];                                                     // 0xc8400
+	LegoFloat m_viewportMetrics[4];                                                // 0xc8400
 	GolMatrix4 m_modelMatrix;                                                      // 0xc8410
 	GolMatrix4 m_unk0xc8450;                                                       // 0xc8450
-	GolMatrix4* m_unk0xc8490;                                                      // 0xc8490
-	GolMatrix4* m_unk0xc8494;                                                      // 0xc8494
+	GolMatrix4* m_viewProjectionMatrix;                                            // 0xc8490
+	GolMatrix4* m_viewScreenProjectionMatrix;                                      // 0xc8494
 	GolMatrix4 m_unk0xc8498[1];                                                    // 0xc8498
 	GolMatrix4 m_unk0xc84d8;                                                       // 0xc84d8
 	GolMatrix4* m_currentMatrix;                                                   // 0xc8518

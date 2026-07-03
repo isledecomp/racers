@@ -168,7 +168,7 @@ GolRenderDevice::GolRenderDevice()
 	m_imageLists = NULL;
 	m_fontLists = NULL;
 	m_nextDrawStateRenderer = NULL;
-	m_unk0x0c = NULL;
+	m_currentCamera = NULL;
 	m_flags = 0;
 	m_unk0x0a = 0;
 	::memset(&m_viewFrustum, 0, sizeof(m_viewFrustum));
@@ -899,9 +899,9 @@ void GolRenderDevice::VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2)
 }
 
 // FUNCTION: GOLDP 0x10029970
-void GolRenderDevice::VTable0x24()
+void GolRenderDevice::DetachCamera()
 {
-	m_unk0x0c = 0;
+	m_currentCamera = 0;
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

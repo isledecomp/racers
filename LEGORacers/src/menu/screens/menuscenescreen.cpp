@@ -35,7 +35,7 @@ LegoBool32 MenuSceneScreen::Initialize(MenuGameContext* p_context, MenuScreenCre
 
 	m_renderer = p_createParams->m_renderer;
 	p_context->m_context->m_golApp->ClearFileSourceDirectoryCaches();
-	m_savedCamera = m_renderer->GetUnk0x0c();
+	m_savedCamera = m_renderer->GetCurrentCamera();
 
 	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;

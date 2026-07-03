@@ -354,7 +354,7 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 
 				m_flags |= c_flagBit3;
 
-				GolCamera* camera = p_renderer->GetUnk0x0c();
+				GolCamera* camera = p_renderer->GetCurrentCamera();
 				GolVec3 center;
 				GolVec3 cameraPosition;
 				m_modelEntity.GetPosition(&center);

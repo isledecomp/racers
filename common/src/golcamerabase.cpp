@@ -116,13 +116,13 @@ void GolCameraBase::SetAspectRatio(LegoFloat p_aspect)
 {
 	if (p_aspect > 0.0f) {
 		m_aspectRatio = p_aspect;
-		m_flags |= 8;
+		m_flags |= c_flagFixedAspectRatio;
 	}
 	else {
-		m_flags &= ~8;
+		m_flags &= ~c_flagFixedAspectRatio;
 	}
 
-	m_flags |= 3;
+	m_flags |= c_flagViewDirty | c_flagProjectionDirty;
 }
 
 // FUNCTION: GOLDP 0x1001bf30
@@ -137,7 +137,7 @@ GolCameraBase::GolCameraBase()
 	m_nearHalfHeight = 0.0f;
 	m_farHalfHeight = 0.0f;
 	m_farHalfWidth = 0.0f;
-	m_flags = 3;
+	m_flags = c_flagViewDirty | c_flagProjectionDirty;
 	m_viewport.m_left = 0;
 	m_viewport.m_right = 0;
 	m_viewport.m_top = 0;
@@ -362,7 +362,7 @@ void GolCameraBase::ComputeFrustumFromBounds(GolViewFrustum* p_view)
 }
 
 // STUB: GOLDP 0x1001c900
-LegoBool32 GolCameraBase::VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolVec4* p_bounds)
+LegoBool32 GolCameraBase::ProjectSphere(GolVec3* p_center, LegoFloat p_radius, GolVec4* p_bounds)
 {
 	LegoBool32 visibility = m_viewFrustum.ClassifySphere(*p_center, p_radius);
 
@@ -390,7 +390,7 @@ LegoBool32 GolCameraBase::VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolV
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
 	tangentPoint.m_z = scale * up.m_z + p_center->m_z;
-	VTable0x20(&tangentPoint, &projectedPlanes[1]);
+	ProjectToScreen(&tangentPoint, &projectedPlanes[1]);
 
 	plane = &m_viewFrustum.m_planes[0];
 	dot = plane->m_normal.m_z;
@@ -403,7 +403,7 @@ LegoBool32 GolCameraBase::VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolV
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
 	tangentPoint.m_z = scale * up.m_z + p_center->m_z;
-	VTable0x20(&tangentPoint, &projectedPlanes[0]);
+	ProjectToScreen(&tangentPoint, &projectedPlanes[0]);
 
 	m_transform->GetForward(&forward);
 
@@ -418,7 +418,7 @@ LegoBool32 GolCameraBase::VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolV
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
 	tangentPoint.m_z = scale * forward.m_z + p_center->m_z;
-	VTable0x20(&tangentPoint, &projectedPlanes[2]);
+	ProjectToScreen(&tangentPoint, &projectedPlanes[2]);
 
 	plane = &m_viewFrustum.m_planes[2];
 	dot = plane->m_normal.m_z;
@@ -432,7 +432,7 @@ LegoBool32 GolCameraBase::VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolV
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
 	tangentPoint.m_z = scale * forward.m_z + p_center->m_z;
-	VTable0x20(&tangentPoint, &projectedPlanes[3]);
+	ProjectToScreen(&tangentPoint, &projectedPlanes[3]);
 
 	p_bounds->m_x = projectedPlanes[0].m_x;
 	p_bounds->m_z = projectedPlanes[1].m_x;
@@ -493,15 +493,15 @@ void GolCameraBase::UpdateFromTrackedEntity()
 
 	m_transform->SetPosition(&transformedPosition);
 	transformedForward.m_x = -transformedForward.m_x;
-	m_flags |= 1;
+	m_flags |= c_flagViewDirty;
 	transformedForward.m_y = -transformedForward.m_y;
 	transformedForward.m_z = -transformedForward.m_z;
 	m_transform->VTable0x24(&transformedRight, &transformedForward);
-	m_flags |= 1;
+	m_flags |= c_flagViewDirty;
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolCameraBase::VTable0x20(const GolVec3*, GolVec3*)
+void GolCameraBase::ProjectToScreen(const GolVec3*, GolVec3*)
 {
 	// empty
 }

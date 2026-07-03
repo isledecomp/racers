@@ -1382,10 +1382,10 @@ void RaceSession::CreateCameras()
 
 			GolCamera* currentCamera = m_cameras[i];
 			currentCamera->GetTransform()->SetPosition(&m_cameraStartPosition);
-			currentCamera->m_flags |= GolCamera::c_flagBit0;
+			currentCamera->m_flags |= GolCamera::c_flagViewDirty;
 
 			m_cameras[i]->GetTransform()->VTable0x24(&m_cameraStartDirection, &m_cameraStartUp);
-			m_cameras[i]->m_flags |= GolCamera::c_flagBit0;
+			m_cameras[i]->m_flags |= GolCamera::c_flagViewDirty;
 
 			Rect viewport;
 			if (!m_splitScreen) {
@@ -1411,7 +1411,7 @@ void RaceSession::CreateCameras()
 				}
 			}
 
-			m_cameras[i]->VTable0x0c(&viewport);
+			m_cameras[i]->SetViewport(&viewport);
 
 			RaceCameraController* cameraController = &m_cameraControllers[i];
 			cameraController->Initialize(m_cameras[i], m_renderer);
@@ -2179,7 +2179,7 @@ void RaceSession::Draw()
 
 	while (viewportIndex < m_context->m_playerCount) {
 		m_renderer->SetCamera(m_cameras[viewportIndex]);
-		m_renderer->VTable0x5c();
+		m_renderer->ApplyCamera();
 		m_renderer->VTable0xec(viewportIndex + 1);
 
 		if (m_raceState.m_playerRacers[viewportIndex]->m_flags & Racer::c_flagGhost) {
@@ -2783,14 +2783,14 @@ void RaceSession::RestartRace()
 			LegoFloat fov;
 			if (m_splitScreen) {
 				GolCamera* currentCamera = m_cameras[playerIndex];
-				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagBit1;
+				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagProjectionDirty;
 				currentCamera->m_fov = m_context->m_cameraFov - g_unk0x004b08bc;
 				currentCamera->m_flags = cameraFlags;
 				fov = m_context->m_cameraFov - g_unk0x004b08bc;
 			}
 			else {
 				GolCamera* currentCamera = m_cameras[playerIndex];
-				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagBit1;
+				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagProjectionDirty;
 				LegoFloat cameraFov = m_context->m_cameraFov;
 				currentCamera->m_fov = cameraFov;
 				currentCamera->m_flags = cameraFlags;

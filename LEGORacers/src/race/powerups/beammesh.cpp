@@ -636,7 +636,7 @@ void BeamEntity::Draw(GolRenderDevice& p_renderer)
 {
 	if (m_faceCamera != 0) {
 		GolVec3 cameraRight;
-		p_renderer.GetUnk0x0c()->GetTransform()->GetRight(&cameraRight);
+		p_renderer.GetCurrentCamera()->GetTransform()->GetRight(&cameraRight);
 		cameraRight.m_x = -cameraRight.m_x;
 		cameraRight.m_y = -cameraRight.m_y;
 		cameraRight.m_z = -cameraRight.m_z;

@@ -142,7 +142,7 @@ void MenuSceneView::SetupCamera(CreateParams* p_createParams)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		LegoU32 dirtyFlag = GolCamera::c_flagBit1;
+		LegoU32 dirtyFlag = GolCamera::c_flagProjectionDirty;
 		GolCamera* lens = m_camera;
 		LegoFloat value = cameraVectors[2].m_x;
 		lens->m_fov = value;
@@ -222,7 +222,7 @@ void MenuSceneView::GetEntityScreenRect(GolWorldEntity* p_entity, Rect* p_rect)
 
 	LegoFloat radius = p_entity->GetBoundsRadius();
 	GolVec4 bounds;
-	if (m_camera->VTable0x24(&center, radius, &bounds)) {
+	if (m_camera->ProjectSphere(&center, radius, &bounds)) {
 		p_rect->m_top = static_cast<LegoS32>(bounds.m_y);
 		p_rect->m_left = static_cast<LegoS32>(bounds.m_x);
 		p_rect->m_right = static_cast<LegoS32>(bounds.m_z);
@@ -255,7 +255,7 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 		LegoFloat value = lens->m_fov;
 		LegoU32 flags = lens->m_flags;
 		value += turn;
-		lens->m_flags = flags | GolCamera::c_flagBit1;
+		lens->m_flags = flags | GolCamera::c_flagProjectionDirty;
 		lens->m_fov = value;
 	}
 
@@ -314,10 +314,10 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 	position.m_z += (rightDelta + forwardDelta) * elapsed;
 	lens->GetTransform()->SetPosition(&position);
 
-	lens->m_flags |= GolCamera::c_flagBit0;
+	lens->m_flags |= GolCamera::c_flagViewDirty;
 	GolCamera* currentLens = m_camera;
 	currentLens->GetTransform()->VTable0x24(right, forward);
-	currentLens->m_flags |= GolCamera::c_flagBit0;
+	currentLens->m_flags |= GolCamera::c_flagViewDirty;
 }
 
 // FUNCTION: LEGORACERS 0x00465e40
@@ -343,7 +343,7 @@ void MenuSceneView::ClampToScreen(Rect* p_rect)
 		p_rect->m_bottom = height;
 	}
 
-	m_camera->VTable0x0c(p_rect);
+	m_camera->SetViewport(p_rect);
 }
 
 // FUNCTION: LEGORACERS 0x00465ea0
@@ -368,9 +368,9 @@ void MenuSceneView::ApplySceneMaterials()
 MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 {
 	m_renderer->VTable0xe4();
-	m_savedCamera = m_renderer->GetUnk0x0c();
+	m_savedCamera = m_renderer->GetCurrentCamera();
 	m_renderer->SetCamera(m_camera);
-	m_renderer->VTable0x5c();
+	m_renderer->ApplyCamera();
 	m_renderer->VTable0xec(m_viewportClearMode);
 	ApplySceneMaterials();
 
@@ -387,7 +387,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	}
 
 	m_renderer->SetCamera(m_savedCamera);
-	m_renderer->VTable0x5c();
+	m_renderer->ApplyCamera();
 	m_renderer->VTable0xec(6);
 	m_renderer->VTable0xe8(FALSE);
 

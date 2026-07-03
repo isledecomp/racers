@@ -108,19 +108,19 @@ void MenuModelCarousel::SetupCamera(CreateParams* p_createParams)
 	m_camera = camera;
 
 	LegoFloat fov = p_createParams->m_cameraSettings[6];
-	LegoU32 flags = camera->m_flags | GolCamera::c_flagBit1;
+	LegoU32 flags = camera->m_flags | GolCamera::c_flagProjectionDirty;
 	camera->m_fov = fov;
 	camera->m_flags = flags;
 
 	camera = m_camera;
 	LegoFloat nearClip = m_cameraDistance;
-	LegoU32 nearFlags = camera->m_flags | GolCamera::c_flagBit1;
+	LegoU32 nearFlags = camera->m_flags | GolCamera::c_flagProjectionDirty;
 	camera->m_nearClip = nearClip;
 	camera->m_flags = nearFlags;
 
 	camera = m_camera;
 	LegoFloat farClip = p_createParams->m_cameraSettings[8];
-	LegoU32 farFlags = camera->m_flags | GolCamera::c_flagBit1;
+	LegoU32 farFlags = camera->m_flags | GolCamera::c_flagProjectionDirty;
 	camera->m_farClip = farClip;
 	camera->m_flags = farFlags;
 
@@ -176,16 +176,16 @@ void MenuModelCarousel::UpdateViewport()
 			rect.m_bottom = renderTarget->GetHeight();
 		}
 
-		m_camera->VTable0x0c(&rect);
+		m_camera->SetViewport(&rect);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046cdc0
 void MenuModelCarousel::PushCamera()
 {
-	m_savedCamera = m_renderer->GetUnk0x0c();
+	m_savedCamera = m_renderer->GetCurrentCamera();
 	m_renderer->SetCamera(m_camera);
-	m_renderer->VTable0x5c();
+	m_renderer->ApplyCamera();
 }
 
 // FUNCTION: LEGORACERS 0x0046cdf0
@@ -193,7 +193,7 @@ void MenuModelCarousel::PopCamera()
 {
 	if (m_savedCamera) {
 		m_renderer->SetCamera(m_savedCamera);
-		m_renderer->VTable0x5c();
+		m_renderer->ApplyCamera();
 	}
 }
 

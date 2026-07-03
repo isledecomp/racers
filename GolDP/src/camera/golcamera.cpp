@@ -17,12 +17,12 @@ GolCamera::GolCamera()
 GolCamera::~GolCamera()
 {
 	if (m_renderer) {
-		m_renderer->VTable0x24();
+		m_renderer->DetachCamera();
 	}
 }
 
 // FUNCTION: GOLDP 0x10001f60
-void GolCamera::FUN_10001f60(GolD3DRenderDevice* p_renderer)
+void GolCamera::AttachToRenderer(GolD3DRenderDevice* p_renderer)
 {
 	m_renderer = p_renderer;
 	if (p_renderer != NULL) {
@@ -34,7 +34,7 @@ void GolCamera::FUN_10001f60(GolD3DRenderDevice* p_renderer)
 			m_viewport.m_bottom = renderTargetInfo->GetHeight();
 		}
 
-		if (!(m_flags & c_flagBit3)) {
+		if (!(m_flags & c_flagFixedAspectRatio)) {
 			LegoFloat width = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
 			LegoFloat height = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
 			m_aspectRatio = width / height;
@@ -44,16 +44,16 @@ void GolCamera::FUN_10001f60(GolD3DRenderDevice* p_renderer)
 		m_cameraMatrices.m_viewportHeight = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
 		m_cameraMatrices.m_viewportLeft = static_cast<LegoFloat>(m_viewport.m_left);
 		m_cameraMatrices.m_viewportTop = static_cast<LegoFloat>(m_viewport.m_top);
-		m_flags |= c_flagBit0 | c_flagBit1;
+		m_flags |= c_flagViewDirty | c_flagProjectionDirty;
 	}
 }
 
 // FUNCTION: GOLDP 0x10002060
-void GolCamera::VTable0x28()
+void GolCamera::UpdateMatrices()
 {
-	if (m_flags & (c_flagBit0 | c_flagBit1)) {
-		if (m_flags & c_flagBit1) {
-			if (!(m_flags & c_flagBit3)) {
+	if (m_flags & (c_flagViewDirty | c_flagProjectionDirty)) {
+		if (m_flags & c_flagProjectionDirty) {
+			if (!(m_flags & c_flagFixedAspectRatio)) {
 				LegoFloat width = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
 				LegoFloat height = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
 				m_aspectRatio = width / height;
@@ -65,12 +65,12 @@ void GolCamera::VTable0x28()
 			m_cameraMatrices.m_viewportTop = static_cast<LegoFloat>(m_viewport.m_top);
 		}
 
-		if (m_flags & c_flagBit0) {
-			VTable0x00();
+		if (m_flags & c_flagViewDirty) {
+			UpdateViewMatrix();
 		}
 
-		if (m_flags & c_flagBit1) {
-			VTable0x04();
+		if (m_flags & c_flagProjectionDirty) {
+			UpdateProjectionMatrices();
 		}
 
 		GolMath::MultiplyMatrix4(
@@ -87,7 +87,7 @@ void GolCamera::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x10002160
-void GolCamera::VTable0x00()
+void GolCamera::UpdateViewMatrix()
 {
 	GolVec3 position;
 	GolVec3 up;
@@ -113,9 +113,9 @@ void GolCamera::VTable0x00()
 	viewMatrix.m_m[3][1] = -(position.m_x * forward.m_x + position.m_y * forward.m_y + position.m_z * forward.m_z);
 	viewMatrix.m_m[3][3] = 1.0f;
 
-	m_flags &= ~c_flagBit0;
+	m_flags &= ~c_flagViewDirty;
 	viewMatrix.m_m[3][2] = -(position.m_x * right.m_x + position.m_y * right.m_y + position.m_z * right.m_z);
-	if (m_flags & c_flagBit2) {
+	if (m_flags & c_flagCustomViewBounds) {
 		ComputeFrustumFromBounds(&m_viewFrustum);
 	}
 	else {
@@ -126,16 +126,16 @@ void GolCamera::VTable0x00()
 // FUNCTION: GOLDP 0x100022b0
 void GolCamera::BuildProjection(
 	GolMatrix4* p_matrix,
-	LegoFloat p_unk0x08,
-	LegoFloat p_unk0x0c,
-	LegoFloat p_unk0x10,
-	LegoFloat p_unk0x14
+	LegoFloat p_scaleX,
+	LegoFloat p_scaleY,
+	LegoFloat p_offsetX,
+	LegoFloat p_offsetY
 )
 {
 	LegoFloat xScale = 1.0f / (m_viewBounds.m_z - m_viewBounds.m_x);
-	xScale *= p_unk0x08;
+	xScale *= p_scaleX;
 	LegoFloat yScale = 1.0f / (m_viewBounds.m_u - m_viewBounds.m_y);
-	yScale *= p_unk0x0c;
+	yScale *= p_scaleY;
 	LegoFloat zScale = m_farClip;
 	LegoFloat zDenominator = m_farClip - m_nearClip;
 	zScale /= zDenominator;
@@ -149,8 +149,8 @@ void GolCamera::BuildProjection(
 	p_matrix->m_m[1][1] = nearTwice * yScale;
 	p_matrix->m_m[1][2] = 0.0f;
 	p_matrix->m_m[1][3] = 0.0f;
-	p_matrix->m_m[2][0] = p_unk0x10 - ((m_viewBounds.m_x + m_viewBounds.m_z) * xScale);
-	p_matrix->m_m[2][1] = p_unk0x14 - ((m_viewBounds.m_y + m_viewBounds.m_u) * yScale);
+	p_matrix->m_m[2][0] = p_offsetX - ((m_viewBounds.m_x + m_viewBounds.m_z) * xScale);
+	p_matrix->m_m[2][1] = p_offsetY - ((m_viewBounds.m_y + m_viewBounds.m_u) * yScale);
 	p_matrix->m_m[2][2] = zScale;
 	p_matrix->m_m[2][3] = 1.0f;
 	p_matrix->m_m[3][0] = 0.0f;
@@ -160,9 +160,9 @@ void GolCamera::BuildProjection(
 }
 
 // FUNCTION: GOLDP 0x10002370
-void GolCamera::VTable0x04()
+void GolCamera::UpdateProjectionMatrices()
 {
-	if (!(m_flags & c_flagBit2)) {
+	if (!(m_flags & c_flagCustomViewBounds)) {
 		m_viewBounds.m_x = -m_nearHalfWidth;
 		m_viewBounds.m_y = -m_nearHalfHeight;
 		m_viewBounds.m_z = m_nearHalfWidth;
@@ -181,11 +181,11 @@ void GolCamera::VTable0x04()
 		halfHeight + m_cameraMatrices.m_viewportTop
 	);
 
-	m_flags &= ~c_flagBit1;
+	m_flags &= ~c_flagProjectionDirty;
 }
 
 // FUNCTION: GOLDP 0x10002430
-void GolCamera::VTable0x14(GolMatrix4* p_dest)
+void GolCamera::GetViewMatrix(GolMatrix4* p_dest)
 {
 	p_dest->m_m[0][0] = m_cameraMatrices.m_view.m_m[0][0];
 	p_dest->m_m[0][1] = m_cameraMatrices.m_view.m_m[0][1];
@@ -206,7 +206,7 @@ void GolCamera::VTable0x14(GolMatrix4* p_dest)
 }
 
 // FUNCTION: GOLDP 0x100024d0
-void GolCamera::VTable0x18(GolMatrix4* p_dest)
+void GolCamera::GetViewScreenProjection(GolMatrix4* p_dest)
 {
 	p_dest->m_m[0][0] = m_cameraMatrices.m_viewScreenProjection.m_m[0][0];
 	p_dest->m_m[0][1] = m_cameraMatrices.m_viewScreenProjection.m_m[0][1];
@@ -227,10 +227,10 @@ void GolCamera::VTable0x18(GolMatrix4* p_dest)
 }
 
 // FUNCTION: GOLDP 0x10002570
-void GolCamera::VTable0x1c(const GolVec3* p_src, GolVec3* p_dest)
+void GolCamera::TransformToView(const GolVec3* p_src, GolVec3* p_dest)
 {
-	if (m_flags & c_flagBit0) {
-		VTable0x00();
+	if (m_flags & c_flagViewDirty) {
+		UpdateViewMatrix();
 	}
 
 	LegoFloat x = m_cameraMatrices.m_view.m_m[0][0];
@@ -252,21 +252,21 @@ void GolCamera::VTable0x1c(const GolVec3* p_src, GolVec3* p_dest)
 }
 
 // FUNCTION: GOLDP 0x10002630
-void GolCamera::VTable0x10(const GolVec4* p_bounds)
+void GolCamera::SetViewBounds(const GolVec4* p_bounds)
 {
-	m_flags |= c_flagBit0 | c_flagBit1 | c_flagBit2;
+	m_flags |= c_flagViewDirty | c_flagProjectionDirty | c_flagCustomViewBounds;
 	m_viewBounds = *p_bounds;
 }
 
 // FUNCTION: GOLDP 0x10002660
-void GolCamera::VTable0x0c(Rect* p_rect)
+void GolCamera::SetViewport(Rect* p_rect)
 {
 	m_viewport.m_left = p_rect->m_left;
 	m_viewport.m_right = p_rect->m_right;
 	m_viewport.m_top = p_rect->m_top;
 	m_viewport.m_bottom = p_rect->m_bottom;
 
-	if (!(m_flags & c_flagBit3)) {
+	if (!(m_flags & c_flagFixedAspectRatio)) {
 		LegoFloat width = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
 		LegoFloat height = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
 		m_aspectRatio = width / height;
@@ -277,14 +277,14 @@ void GolCamera::VTable0x0c(Rect* p_rect)
 	m_cameraMatrices.m_viewportLeft = static_cast<LegoFloat>(m_viewport.m_left);
 	m_cameraMatrices.m_viewportTop = static_cast<LegoFloat>(m_viewport.m_top);
 
-	if (m_flags & c_flagBit2) {
+	if (m_flags & c_flagCustomViewBounds) {
 		ComputeFrustumFromBounds(&m_viewFrustum);
 	}
 	else {
 		ComputeFrustum(&m_viewFrustum);
 	}
 
-	VTable0x04();
+	UpdateProjectionMatrices();
 	GolMath::MultiplyMatrix4(
 		m_cameraMatrices.m_view,
 		m_cameraMatrices.m_projection,
@@ -298,9 +298,9 @@ void GolCamera::VTable0x0c(Rect* p_rect)
 }
 
 // FUNCTION: GOLDP 0x10002770
-void GolCamera::VTable0x20(const GolVec3* p_src, GolVec3* p_dest)
+void GolCamera::ProjectToScreen(const GolVec3* p_src, GolVec3* p_dest)
 {
-	VTable0x28();
+	UpdateMatrices();
 
 	LegoFloat x = m_cameraMatrices.m_viewScreenProjection.m_m[0][0];
 	p_dest->m_x = x * p_src->m_x;
@@ -332,7 +332,7 @@ void GolCamera::VTable0x20(const GolVec3* p_src, GolVec3* p_dest)
 }
 
 // FUNCTION: GOLDP 0x10002860
-void GolCamera::FUN_10002860(D3DVIEWPORT2* p_viewport)
+void GolCamera::BuildD3DViewport(D3DVIEWPORT2* p_viewport)
 {
 	const GolRenderTarget* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 	p_viewport->dwX = 0;

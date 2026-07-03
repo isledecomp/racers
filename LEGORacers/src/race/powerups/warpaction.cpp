@@ -249,7 +249,7 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 		return;
 	}
 
-	GolCamera* camera = p_renderer->GetUnk0x0c();
+	GolCamera* camera = p_renderer->GetCurrentCamera();
 	if (cameraController->m_camera != camera) {
 		return;
 	}
@@ -287,10 +287,10 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat tableValue = g_cosineTable[tableIndex];
 	LegoFloat fov = tableValue * g_warpFovRange + m_cameraFov;
-	camera->m_flags |= GolCamera::c_flagBit1;
+	camera->m_flags |= GolCamera::c_flagProjectionDirty;
 	camera->m_fov = fov;
 
-	p_renderer->VTable0x5c();
+	p_renderer->ApplyCamera();
 	racerField->ShowModels();
 
 	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindAnimatedEntity("dbricks");
@@ -321,7 +321,7 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 
 	LegoFloat restoredFov = m_cameraFov;
 	camera->m_fov = restoredFov;
-	camera->m_flags |= GolCamera::c_flagBit1;
+	camera->m_flags |= GolCamera::c_flagProjectionDirty;
 }
 
 // FUNCTION: LEGORACERS 0x0045dbe0
@@ -367,7 +367,7 @@ void WarpAction::AdvanceState()
 			GolCamera* camera = cameraController->m_camera;
 			LegoFloat fov = m_cameraFov;
 			camera->m_fov = fov;
-			camera->m_flags |= GolCamera::c_flagBit1;
+			camera->m_flags |= GolCamera::c_flagProjectionDirty;
 			fov = m_cameraFov;
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
@@ -404,7 +404,7 @@ void WarpAction::AdvanceState()
 			GolCamera* camera = cameraController->m_camera;
 			LegoFloat fov = m_cameraFov;
 			camera->m_fov = fov;
-			camera->m_flags |= GolCamera::c_flagBit1;
+			camera->m_flags |= GolCamera::c_flagProjectionDirty;
 			fov = m_cameraFov;
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
@@ -478,7 +478,7 @@ void WarpAction::Deactivate()
 			GolCamera* camera = cameraController->m_camera;
 			LegoFloat fov = m_cameraFov;
 			camera->m_fov = fov;
-			camera->m_flags |= GolCamera::c_flagBit1;
+			camera->m_flags |= GolCamera::c_flagProjectionDirty;
 			fov = m_cameraFov;
 			m_racer->m_cameraController->m_targetFov = fov;
 		}

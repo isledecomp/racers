@@ -178,7 +178,7 @@ void CutsceneVisual::Draw(GolD3DRenderDevice* p_renderer)
 // STUB: LEGORACERS 0x004a36e0
 void CutsceneVisual::ComputeLayout(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height)
 {
-	const Rect* viewport = &p_renderer->GetUnk0x0c()->m_viewport;
+	const Rect* viewport = &p_renderer->GetCurrentCamera()->m_viewport;
 	LegoS32 viewportX = viewport->m_left;
 	LegoS32 viewportY = viewport->m_top;
 	LegoS32 viewportWidth = viewport->m_right - viewportX;

@@ -155,7 +155,7 @@ undefined4 MenuGameScreen::CreateTextButton(
 		}
 	}
 
-	if (!createParams.m_unk0x78 && styleEntry->m_unk0x88) {
+	if (!createParams.m_hasStateColors && styleEntry->m_hasStateColors) {
 		::memcpy(createParams.m_stateColors, styleEntry->m_stateColors, sizeof(createParams.m_stateColors));
 	}
 

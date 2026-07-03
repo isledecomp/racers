@@ -107,10 +107,10 @@ void SharedMenuStyleTable::ParseTextButtonStyle(TextButtonStyle* p_entry)
 			}
 
 			for (i = 0; i < 6; i++) {
-				ReadVisualState(p_entry->m_unk0x00[i].m_bytes);
+				ReadVisualState(p_entry->m_iconStateColors[i].m_bytes);
 			}
 
-			p_entry->m_unk0x88 = TRUE;
+			p_entry->m_hasStateColors = TRUE;
 			break;
 		case GolFileParser::e_unknown0x2c:
 			ReadRect(&p_entry->m_unk0xdc.m_left);

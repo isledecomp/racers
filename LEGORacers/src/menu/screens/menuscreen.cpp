@@ -370,7 +370,7 @@ void MenuScreen::ApplyWidgetDefaults(MenuWidget::CreateParams* p_createParams)
 void MenuScreen::ApplyIconDefaults(MenuIcon::CreateParams* p_createParams)
 {
 	if (!p_createParams->m_parent && p_createParams->m_attachToParent) {
-		if (p_createParams->m_unk0x4a) {
+		if (p_createParams->m_resolveParentByName) {
 			MenuInputBindingTable::IconBinding* entry =
 				(MenuInputBindingTable::IconBinding*) GetMenuInputBindings()->ResolveEntryByName(
 					p_createParams->m_name

@@ -31,43 +31,43 @@ public:
 	// SIZE 0x04
 	class SoundIdPair {
 	public:
-		LegoU16 m_unk0x00; // 0x00
-		LegoU16 m_unk0x02; // 0x02
+		LegoU16 m_first;  // 0x00
+		LegoU16 m_second; // 0x02
 	};
 
 	// SIZE 0x84
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		LegoBool m_startEnabled;          // 0x38
-		undefined m_unk0x39[0x3c - 0x39]; // 0x39
-		undefined4 m_unk0x3c;             // 0x3c
-		undefined2 m_helpStringId;        // 0x40
-		undefined m_unk0x42[0x44 - 0x42]; // 0x42
-		MenuIcon* m_parent;               // 0x44
-		undefined2 m_parentId;            // 0x48
-		LegoU8 m_unk0x4a;                 // 0x4a
-		undefined m_unk0x4b[0x52 - 0x4b]; // 0x4b
-		VisualStateColor m_unk0x52[6];    // 0x52
+		LegoBool m_startEnabled;               // 0x38
+		undefined m_unk0x39[0x3c - 0x39];      // 0x39
+		undefined4 m_unk0x3c;                  // 0x3c
+		undefined2 m_helpStringId;             // 0x40
+		undefined m_unk0x42[0x44 - 0x42];      // 0x42
+		MenuIcon* m_parent;                    // 0x44
+		undefined2 m_parentId;                 // 0x48
+		LegoU8 m_resolveParentByName;          // 0x4a
+		undefined m_unk0x4b[0x52 - 0x4b];      // 0x4b
+		VisualStateColor m_iconStateColors[6]; // 0x52
 		union {
 			undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
 			undefined2 m_soundIds[5];         // 0x6a
 		};
 		undefined4 m_attachToParent;             // 0x74
-		undefined4 m_unk0x78;                    // 0x78
-		undefined4 m_unk0x7c;                    // 0x7c
+		undefined4 m_hasStateColors;             // 0x78
+		undefined4 m_hasSoundIds;                // 0x7c
 		MenuScreenInterface* m_iconEventHandler; // 0x80
 	};
 
 	// SIZE 0x90
 	class CreateState {
 	public:
-		VisualStateColor m_unk0x00[6]; // 0x00
-		undefined2 m_unk0x18[5];       // 0x18
-		undefined2 m_unk0x22;          // 0x22
-		Rect m_unk0x24[6];             // 0x24
-		undefined4 m_unk0x84;          // 0x84
-		undefined4 m_unk0x88;          // 0x88
-		undefined4 m_unk0x8c;          // 0x8c
+		VisualStateColor m_iconStateColors[6]; // 0x00
+		undefined2 m_iconSoundIds[5];          // 0x18
+		undefined2 m_unk0x22;                  // 0x22
+		Rect m_stateRects[6];                  // 0x24
+		undefined4 m_transitionDurationMs;     // 0x84
+		undefined4 m_hasStateColors;           // 0x88
+		undefined4 m_hasSoundIds;              // 0x8c
 	};
 
 	enum {

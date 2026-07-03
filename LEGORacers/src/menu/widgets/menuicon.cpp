@@ -73,23 +73,23 @@ void MenuIcon::Reset()
 // FUNCTION: LEGORACERS 0x00471d90
 void MenuIcon::InitializeFromParams(CreateParams* p_createParams, const CreateState* p_createState)
 {
-	const VisualStateColor* defaultRects = p_createParams->m_unk0x52;
-	if (!p_createParams->m_unk0x78) {
-		defaultRects = p_createState->m_unk0x00;
+	const VisualStateColor* defaultRects = p_createParams->m_iconStateColors;
+	if (!p_createParams->m_hasStateColors) {
+		defaultRects = p_createState->m_iconStateColors;
 	}
 
 	::memcpy(m_stateColors, defaultRects, sizeof(m_stateColors));
 	::memcpy(
 		m_soundIds,
-		p_createParams->m_unk0x7c ? p_createParams->m_soundIds : p_createState->m_unk0x18,
+		p_createParams->m_hasSoundIds ? p_createParams->m_soundIds : p_createState->m_iconSoundIds,
 		sizeof(m_soundIds)
 	);
-	::memcpy(m_stateRects, p_createState->m_unk0x24, sizeof(m_stateRects));
+	::memcpy(m_stateRects, p_createState->m_stateRects, sizeof(m_stateRects));
 
 	m_eventHandler = p_createParams->m_iconEventHandler;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
 	m_helpStringId = p_createParams->m_helpStringId;
-	m_transitionDurationMs = p_createState->m_unk0x84;
+	m_transitionDurationMs = p_createState->m_transitionDurationMs;
 	SetIconEventHandler(p_createParams->m_iconEventHandler);
 }
 

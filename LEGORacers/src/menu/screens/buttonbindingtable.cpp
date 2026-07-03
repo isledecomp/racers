@@ -104,10 +104,10 @@ void MenuGameScreen::ButtonBindingTable::ParseButtonBinding(ButtonBinding* p_ent
 			}
 
 			for (i = 0; i < 6; i++) {
-				ReadVisualState(p_entry->m_unk0x52[i].m_bytes);
+				ReadVisualState(p_entry->m_iconStateColors[i].m_bytes);
 			}
 
-			p_entry->m_unk0x78 = TRUE;
+			p_entry->m_hasStateColors = TRUE;
 			break;
 		}
 		case GolFileParser::e_unknown0x33:

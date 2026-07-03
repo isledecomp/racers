@@ -262,7 +262,7 @@ void MenuInputBindingTable::InitIconDefaults(MenuIcon::CreateParams* p_entry)
 {
 	p_entry->m_startEnabled = TRUE;
 	p_entry->m_attachToParent = TRUE;
-	::memset(p_entry->m_unk0x52, 0xff, sizeof(p_entry->m_unk0x52));
+	::memset(p_entry->m_iconStateColors, 0xff, sizeof(p_entry->m_iconStateColors));
 }
 
 // FUNCTION: LEGORACERS 0x00469b50
@@ -289,16 +289,16 @@ void MenuInputBindingTable::ParseIconField(MenuIcon::CreateParams* p_entry)
 		return;
 	case MidTxtParser::e_colors: {
 		for (LegoS32 i = 0; i < 6; i++) {
-			ReadVisualState(p_entry->m_unk0x52[i].m_bytes);
+			ReadVisualState(p_entry->m_iconStateColors[i].m_bytes);
 		}
-		p_entry->m_unk0x78 = TRUE;
+		p_entry->m_hasStateColors = TRUE;
 		return;
 	}
 	case GolFileParser::e_unknown0x2b: {
 		for (LegoS32 i = 0; i < 5; i++) {
 			p_entry->m_soundIds[i] = m_parser->ReadInteger();
 		}
-		p_entry->m_unk0x7c = TRUE;
+		p_entry->m_hasSoundIds = TRUE;
 		return;
 	}
 	default:
@@ -606,8 +606,8 @@ void MenuInputBindingTable::ParseCompositeBinding(CompositeBinding* p_entry)
 		}
 		case GolFileParser::e_unknown0x2b:
 			ParseIconField(p_entry);
-			p_entry->m_unk0xac.m_unk0x00 = m_parser->ReadInteger();
-			p_entry->m_unk0xac.m_unk0x02 = m_parser->ReadInteger();
+			p_entry->m_unk0xac.m_first = m_parser->ReadInteger();
+			p_entry->m_unk0xac.m_second = m_parser->ReadInteger();
 			break;
 		default:
 			ParseIconField(p_entry);
@@ -709,7 +709,7 @@ void MenuInputBindingTable::ParseTextFieldBinding(TextFieldBinding* p_entry)
 			for (i = 0; i < 4; i++) {
 				p_entry->m_unk0x96[i] = m_parser->ReadInteger();
 			}
-			p_entry->m_unk0x7c = TRUE;
+			p_entry->m_hasSoundIds = TRUE;
 			break;
 		}
 		default:

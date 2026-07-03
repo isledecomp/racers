@@ -50,7 +50,7 @@ LegoBool32 OptionsRowBase::Create(
 	m_stepCount = p_createParams->m_unk0xb4;
 
 	MenuIcon::SoundIdPair* soundIds = &p_createParams->m_unk0xac;
-	if (!p_createParams->m_unk0x7c) {
+	if (!p_createParams->m_hasSoundIds) {
 		soundIds = &p_styleEntry->m_soundIds;
 	}
 
@@ -90,11 +90,11 @@ void OptionsRowBase::StepPrevious()
 			m_eventHandler->OnWidgetValueChanged(this);
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_first);
 		return;
 	}
 
-	m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x02);
+	m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_second);
 }
 
 // FUNCTION: LEGORACERS 0x0046e130
@@ -106,11 +106,11 @@ void OptionsRowBase::StepNext()
 			m_eventHandler->OnWidgetValueChanged(this);
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_first);
 		return;
 	}
 
-	m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x02);
+	m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_second);
 }
 
 // FUNCTION: LEGORACERS 0x0046e190
@@ -156,7 +156,7 @@ MenuWidget* OptionsRowBase::OnKeyDown(InputEventQueue::Event* p_event, undefined
 
 				if (m_thumb.HitTest(x, y)) {
 					m_activeKeyCode = p_event->m_keyCode;
-					m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
+					m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_first);
 					SetFocus();
 					Focus(0);
 					return this;
@@ -196,7 +196,7 @@ MenuWidget* OptionsRowBase::OnKeyUp(InputEventQueue::Event* p_event, undefined4 
 	}
 
 	if ((result & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_first);
 		SnapThumbToValue();
 		ClearFocus();
 	}

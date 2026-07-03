@@ -270,7 +270,7 @@ void MenuStyleTable::ParseFrameStyle(FrameStyle* p_entry)
 // FUNCTION: LEGORACERS 0x00470020
 void MenuStyleTable::ParseIconStyle(IconStyle* p_entry)
 {
-	::memset(p_entry->m_unk0x00, 0xff, sizeof(p_entry->m_unk0x00));
+	::memset(p_entry->m_iconStateColors, 0xff, sizeof(p_entry->m_iconStateColors));
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -281,24 +281,24 @@ void MenuStyleTable::ParseIconStyle(IconStyle* p_entry)
 
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x2d:
-			p_entry->m_unk0x84 = m_parser->ReadInteger();
+			p_entry->m_transitionDurationMs = m_parser->ReadInteger();
 			break;
 		case c_styleSounds:
 			for (i = 0; i < 5; i++) {
-				p_entry->m_unk0x18[i] = m_parser->ReadInteger();
+				p_entry->m_iconSoundIds[i] = m_parser->ReadInteger();
 			}
-			p_entry->m_unk0x8c = TRUE;
+			p_entry->m_hasSoundIds = TRUE;
 			break;
 		case GolFileParser::e_unknown0x2c:
 			for (i = 0; i < 6; i++) {
-				ReadRect(&p_entry->m_unk0x24[i].m_left);
+				ReadRect(&p_entry->m_stateRects[i].m_left);
 			}
 			break;
 		case c_styleColors:
 			for (i = 0; i < 6; i++) {
-				ReadVisualState(p_entry->m_unk0x00[i].m_bytes);
+				ReadVisualState(p_entry->m_iconStateColors[i].m_bytes);
 			}
-			p_entry->m_unk0x88 = TRUE;
+			p_entry->m_hasStateColors = TRUE;
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
@@ -546,8 +546,8 @@ void MenuStyleTable::ParseCompositeStyle(CompositeStyle* p_entry)
 				}
 				break;
 			case c_styleSounds:
-				p_entry->m_soundIds.m_unk0x00 = m_parser->ReadInteger();
-				p_entry->m_soundIds.m_unk0x02 = m_parser->ReadInteger();
+				p_entry->m_soundIds.m_first = m_parser->ReadInteger();
+				p_entry->m_soundIds.m_second = m_parser->ReadInteger();
 				break;
 			default:
 				m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);

@@ -20,7 +20,7 @@
 WhiteBrick::WhiteBrick()
 {
 	m_droppedTimeMs = 0;
-	m_flags0x64 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004535c0
@@ -33,7 +33,7 @@ WhiteBrick::~WhiteBrick()
 void WhiteBrick::Reset()
 {
 	m_droppedTimeMs = 0;
-	m_flags0x64 = 0;
+	m_flags = 0;
 	Destroy();
 }
 
@@ -43,7 +43,7 @@ void WhiteBrick::CaptureHomePosition()
 	m_worldEntity.VTable0x04(&m_homePosition);
 	m_state = c_stateActive;
 	m_droppedTimeMs = 0;
-	m_flags0x64 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00453650
@@ -53,7 +53,7 @@ void WhiteBrick::Respawn()
 	m_worldEntity.VTable0x08(m_homePosition);
 	m_state = c_stateActive;
 	m_droppedTimeMs = 0;
-	m_flags0x64 = 0;
+	m_flags = 0;
 	m_stateTimerMs = 0;
 	SetTouchable(FALSE);
 }
@@ -67,7 +67,7 @@ void WhiteBrick::Update(LegoU32 p_elapsedMs)
 
 	PickupBrick::Update(p_elapsedMs);
 
-	if (m_flags0x64 & c_flagDropped) {
+	if (m_flags & c_flagDropped) {
 		m_droppedTimeMs += p_elapsedMs;
 		if (m_droppedTimeMs > 10000) {
 			ReturnHome();
@@ -77,9 +77,9 @@ void WhiteBrick::Update(LegoU32 p_elapsedMs)
 	LegoU32 state = m_state;
 	if (state != c_stateActive) {
 		if (state == c_stateTransition && m_stateTimerMs > 250) {
-			LegoU8 flags = m_flags0x64;
+			LegoU8 flags = m_flags;
 			if (flags & c_flagReturnHome) {
-				m_flags0x64 = flags & ~c_flagReturnHome;
+				m_flags = flags & ~c_flagReturnHome;
 				m_worldEntity.VTable0x08(m_homePosition);
 				m_state = c_stateActive;
 			}
@@ -105,7 +105,7 @@ void WhiteBrick::OnTouched(Racer* p_racer)
 		m_nextState = c_stateWait;
 		m_state = c_stateTransition;
 		m_stateTimerMs = 0;
-		m_flags0x64 &= ~c_flagDropped;
+		m_flags &= ~c_flagDropped;
 		m_droppedTimeMs = 0;
 	}
 }

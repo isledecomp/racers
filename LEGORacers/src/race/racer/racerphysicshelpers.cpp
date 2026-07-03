@@ -1119,16 +1119,16 @@ LegoU32 RacerPhysics::OnCollisionRecord(
 		return TRUE;
 	}
 
-	if (target->m_flags0x08 & RaceEventRecord::Target::c_flagFinish) {
+	if (target->m_flags & RaceEventRecord::Target::c_flagFinish) {
 		m_ownerRacer->m_lapsCompleted = m_ownerRacer->m_lapCount;
 	}
 
-	if (target->m_flags0x08 & RaceEventRecord::Target::c_flagTouchEvent) {
+	if (target->m_flags & RaceEventRecord::Target::c_flagTouchEvent) {
 		m_eventTable->FireEventsAt(target->m_touchEventId, target->m_touchEventId, p_point);
 		m_eventTable->FireEventsForRacer(target->m_touchEventId, target->m_touchEventId, m_ownerRacer);
 	}
 
-	return (~target->m_flags0x08 >> 16) & 1;
+	return (~target->m_flags >> 16) & 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042a900
@@ -1209,7 +1209,7 @@ void RacerPhysics::UpdateWheelSurfaces()
 // FUNCTION: LEGORACERS 0x0042aa30
 void RacerPhysics::NotifySurfaceEnter(WheelProbe* p_probe, RaceEventRecord::Target* p_target)
 {
-	if (p_target->m_flags0x08 & RaceEventRecord::Target::c_flagEnterEvent) {
+	if (p_target->m_flags & RaceEventRecord::Target::c_flagEnterEvent) {
 		m_eventTable->StartEventsAt(p_target->m_enterEventId, &p_probe->m_wheelPosition);
 		m_eventTable->StartEventsForRacer(p_target->m_enterEventId, m_ownerRacer);
 	}
@@ -1218,13 +1218,13 @@ void RacerPhysics::NotifySurfaceEnter(WheelProbe* p_probe, RaceEventRecord::Targ
 // FUNCTION: LEGORACERS 0x0042aa70
 void RacerPhysics::NotifySurfaceLeave(WheelProbe* p_probe, RaceEventRecord::Target* p_target)
 {
-	if (p_target->m_flags0x08 & RaceEventRecord::Target::c_flagSurfaceSound) {
+	if (p_target->m_flags & RaceEventRecord::Target::c_flagSurfaceSound) {
 		if (p_target->m_surfaceSoundId == m_surfaceSoundId) {
 			StopSurfaceSound();
 		}
 	}
 
-	if (p_target->m_flags0x08 & RaceEventRecord::Target::c_flagLeaveEvent) {
+	if (p_target->m_flags & RaceEventRecord::Target::c_flagLeaveEvent) {
 		m_eventTable->EndEventsAt(p_target->m_leaveEventId, &p_probe->m_wheelPosition);
 		m_eventTable->EndEventsForRacer(p_target->m_leaveEventId, m_ownerRacer);
 	}
@@ -1238,12 +1238,12 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 		return;
 	}
 
-	if (p_target->m_flags0x08 & RaceEventRecord::Target::c_flagSurfaceSound) {
+	if (p_target->m_flags & RaceEventRecord::Target::c_flagSurfaceSound) {
 		PlaySurfaceSound(p_target->m_surfaceSoundId);
 	}
 
 	LegoU32 disabledMask = c_flagIgnoreSurfaces;
-	if ((p_target->m_flags0x08 & RaceEventRecord::Target::c_flagRollingResistance) && !(m_flags & disabledMask)) {
+	if ((p_target->m_flags & RaceEventRecord::Target::c_flagRollingResistance) && !(m_flags & disabledMask)) {
 		LegoFloat value = p_target->m_rollingResistance;
 		p_probe->m_rollingResistance = value;
 		if (m_ownerRacer->m_forceFeedback) {
@@ -1257,7 +1257,7 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 		}
 	}
 
-	if ((p_target->m_flags0x08 & RaceEventRecord::Target::c_flagSupportThreshold) && !(m_flags & disabledMask)) {
+	if ((p_target->m_flags & RaceEventRecord::Target::c_flagSupportThreshold) && !(m_flags & disabledMask)) {
 		LegoFloat value = p_target->m_supportThreshold;
 		p_probe->m_supportThreshold = value;
 	}
@@ -1265,7 +1265,7 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 		p_probe->m_supportThreshold = g_defaultSupportThreshold;
 	}
 
-	if ((p_target->m_flags0x08 & RaceEventRecord::Target::c_flagFriction) && !(m_flags & disabledMask)) {
+	if ((p_target->m_flags & RaceEventRecord::Target::c_flagFriction) && !(m_flags & disabledMask)) {
 		LegoFloat value = p_target->m_friction;
 		p_probe->m_friction = value;
 	}
@@ -1273,7 +1273,7 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 		p_probe->m_friction = g_defaultFriction;
 	}
 
-	if ((p_target->m_flags0x08 & RaceEventRecord::Target::c_flagLateralGrip) && !(m_flags & disabledMask)) {
+	if ((p_target->m_flags & RaceEventRecord::Target::c_flagLateralGrip) && !(m_flags & disabledMask)) {
 		LegoFloat value = p_target->m_lateralGrip;
 		p_probe->m_lateralGrip = value;
 	}
@@ -1281,7 +1281,7 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 		p_probe->m_lateralGrip = g_defaultLateralGrip;
 	}
 
-	if ((p_target->m_flags0x08 & RaceEventRecord::Target::c_flagUnk0x54) && !(m_flags & disabledMask)) {
+	if ((p_target->m_flags & RaceEventRecord::Target::c_flagUnk0x54) && !(m_flags & disabledMask)) {
 		LegoFloat value = p_target->m_unk0x54;
 		p_probe->m_unk0x060 = value;
 	}
@@ -1289,7 +1289,7 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 		p_probe->m_unk0x060 = g_unk0x004b045c;
 	}
 
-	if ((p_target->m_flags0x08 & RaceEventRecord::Target::c_flagSurfaceForce) && !(m_flags & disabledMask)) {
+	if ((p_target->m_flags & RaceEventRecord::Target::c_flagSurfaceForce) && !(m_flags & disabledMask)) {
 		p_probe->m_surfaceForce = p_target->m_surfaceForce;
 	}
 	else {
@@ -1298,7 +1298,7 @@ void RacerPhysics::ApplyWheelSurface(WheelProbe* p_probe, RaceEventRecord::Targe
 		p_probe->m_surfaceForce.m_z = 0.0f;
 	}
 
-	if ((p_target->m_flags0x08 & RaceEventRecord::Target::c_flagWheelParticle) &&
+	if ((p_target->m_flags & RaceEventRecord::Target::c_flagWheelParticle) &&
 		!(m_flags & (c_flagSliding | c_flagSpinOut)) && m_forwardSpeed > g_wheelParticleMinSpeed &&
 		m_ownerRacer->m_controlMode != 2) {
 		GolName name;

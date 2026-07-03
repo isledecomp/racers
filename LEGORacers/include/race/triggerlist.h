@@ -52,7 +52,7 @@ public:
 		LegoEventQueue::Event* m_event; // 0x2c
 		RaceEventTable* m_eventTable;   // 0x30
 		LegoS32 m_eventId;              // 0x34
-		LegoU32 m_flags0x38;            // 0x38
+		LegoU32 m_flags;                // 0x38
 	};
 
 	// SIZE 0x1c

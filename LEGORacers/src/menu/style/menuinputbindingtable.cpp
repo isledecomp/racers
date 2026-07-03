@@ -462,7 +462,7 @@ void MenuInputBindingTable::ParseMultiStateBinding(MultiStateBinding* p_entry)
 	}
 
 	if (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
-		GolImage** image = p_entry->m_utopianunk0xa0;
+		GolImage** image = p_entry->m_imagesFlat;
 		do {
 			switch (m_parser->GetCurrentToken()) {
 			case MidTxtParser::e_image: {

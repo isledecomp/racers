@@ -32,7 +32,7 @@ public:
 		};
 
 		GolName m_name;                // 0x00
-		LegoU32 m_flags0x08;           // 0x08
+		LegoU32 m_flags;               // 0x08
 		LegoS32 m_enterEventId;        // 0x0c
 		LegoS32 m_leaveEventId;        // 0x10
 		LegoS32 m_touchEventId;        // 0x14

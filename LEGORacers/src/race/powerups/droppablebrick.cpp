@@ -20,11 +20,11 @@ LegoU8 DroppableBrick::DropAt(GolVec3 p_position)
 	SnapToGround(&position);
 	m_worldEntity.VTable0x08(position);
 
-	LegoU8 flags = m_flags0x64;
+	LegoU8 flags = m_flags;
 	m_state = 2;
 	LegoU8 result = flags | 1;
 	m_stateTimerMs = 0;
-	m_flags0x64 = result;
+	m_flags = result;
 	return result;
 }
 
@@ -32,15 +32,15 @@ LegoU8 DroppableBrick::DropAt(GolVec3 p_position)
 void DroppableBrick::ReturnHome()
 {
 	LegoU32 state = m_state;
-	LegoU8 flags = m_flags0x64;
+	LegoU8 flags = m_flags;
 	flags &= 0xfe;
 	m_droppedTimeMs = 0;
-	m_flags0x64 = flags;
+	m_flags = flags;
 
 	if (!state) {
 		flags |= 2;
 		m_state = 3;
-		m_flags0x64 = flags;
+		m_flags = flags;
 		m_stateTimerMs = 0;
 		return;
 	}

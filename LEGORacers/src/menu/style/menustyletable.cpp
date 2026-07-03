@@ -346,7 +346,7 @@ void MenuStyleTable::ParseMultiStateStyle(MultiStateStyle* p_entry)
 		return;
 	}
 
-	GolImage** image = p_entry->m_utopianunk0xa8;
+	GolImage** image = p_entry->m_imagesFlat;
 	do {
 		LegoS32 i;
 

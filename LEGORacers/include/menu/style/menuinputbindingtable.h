@@ -141,8 +141,8 @@ public:
 		undefined4 m_unk0x84;  // 0x84
 		GolFont* m_unk0x88[6]; // 0x88
 		union {
-			ImageTriplet m_unk0xa0[6];      // 0xa0
-			GolImage* m_utopianunk0xa0[18]; // 0xa0
+			ImageTriplet m_unk0xa0[6];  // 0xa0
+			GolImage* m_imagesFlat[18]; // 0xa0
 		};
 		undefined4 m_unk0xe8; // 0xe8
 	};

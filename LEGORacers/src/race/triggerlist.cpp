@@ -18,7 +18,7 @@ TriggerList::Entry::Entry()
 	m_eventTable = NULL;
 	m_event = NULL;
 	m_eventId = 0;
-	m_flags0x38 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00464e70
@@ -36,7 +36,7 @@ void TriggerList::Entry::Initialize(const EntryParams* p_params)
 	m_eventId = p_params->m_eventId;
 
 	if (p_params->m_mirror) {
-		m_flags0x38 |= c_mirror;
+		m_flags |= c_mirror;
 	}
 }
 
@@ -51,15 +51,15 @@ void TriggerList::Entry::Destroy()
 	}
 
 	m_eventId = 0;
-	m_flags0x38 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00464ef0
 void TriggerList::Entry::Update(LegoU32)
 {
-	LegoU32 flags = m_flags0x38;
+	LegoU32 flags = m_flags;
 	if ((flags & c_eventsActive) && !(flags & c_touchedThisFrame)) {
-		m_flags0x38 = flags & ~c_eventsActive;
+		m_flags = flags & ~c_eventsActive;
 
 		GolVec3 position;
 		GolWorldEntity* entity = &m_body;
@@ -70,15 +70,15 @@ void TriggerList::Entry::Update(LegoU32)
 		}
 	}
 
-	m_flags0x38 &= ~c_touchedThisFrame;
+	m_flags &= ~c_touchedThisFrame;
 }
 
 // FUNCTION: LEGORACERS 0x00464f40
 void TriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData*)
 {
-	LegoU32 flags = m_flags0x38;
+	LegoU32 flags = m_flags;
 	if (!(flags & c_eventsActive)) {
-		m_flags0x38 = flags | c_eventsActive;
+		m_flags = flags | c_eventsActive;
 
 		GolVec3 position;
 		GolWorldEntity* entity = &m_body;
@@ -89,13 +89,13 @@ void TriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData*)
 		}
 	}
 
-	m_flags0x38 |= c_touchedThisFrame;
+	m_flags |= c_touchedThisFrame;
 }
 
 // FUNCTION: LEGORACERS 0x00464f90
 void TriggerList::Entry::Reset()
 {
-	m_flags0x38 &= ~(c_touchedThisFrame | c_eventsActive);
+	m_flags &= ~(c_touchedThisFrame | c_eventsActive);
 }
 
 // FUNCTION: LEGORACERS 0x00464fa0
@@ -247,7 +247,7 @@ LegoEventQueue::Event* TriggerList::RegisterTrigger(Entry* p_entry, LegoBool32 p
 {
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_flags = 1;
-	if (p_entry->m_flags0x38 & Entry::c_mirror) {
+	if (p_entry->m_flags & Entry::c_mirror) {
 		descriptor.m_flags = 9;
 	}
 

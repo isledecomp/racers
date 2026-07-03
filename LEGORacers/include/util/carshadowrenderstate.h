@@ -64,7 +64,7 @@ private:
 	GolTexture* m_texture;               // 0x008
 	LegoU32 m_fillValue;                 // 0x00c
 	LegoU32 m_silhouetteValue;           // 0x010
-	LegoU32 m_flags0x014;                // 0x014
+	LegoU32 m_flags;                     // 0x014
 	LegoFloat m_offsetX;                 // 0x018
 	LegoFloat m_offsetY;                 // 0x01c
 	LegoFloat m_scaleX;                  // 0x020
@@ -74,7 +74,7 @@ private:
 	LegoU8* m_pixels;                    // 0x030
 	LegoU32 m_pitch;                     // 0x034
 	TransformedVertex m_transformed[64]; // 0x038
-	DrawFunction m_drawFunction0x338;    // 0x338
+	DrawFunction m_drawFunction;         // 0x338
 };
 
 extern CarShadowRenderState g_carShadowRenderState;

@@ -40,15 +40,15 @@ void RacerTriggerList::Entry::Initialize(const EntryParams* p_params)
 	m_lapNumber = p_params->m_lapNumber;
 
 	if (p_params->m_triggerOnProjectiles) {
-		m_flags0x38 |= c_triggerOnProjectiles;
+		m_flags |= c_triggerOnProjectiles;
 	}
 
 	if (p_params->m_hasCollisionWorld) {
-		m_flags0x38 |= c_activatesCollisionWorld;
+		m_flags |= c_activatesCollisionWorld;
 	}
 
 	if (p_params->m_hasLapNumber) {
-		m_flags0x38 |= c_lapGated;
+		m_flags |= c_lapGated;
 	}
 }
 
@@ -96,11 +96,11 @@ void RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData* p_data)
 	}
 	else if (p_data->m_type == 4) {
 		racer = static_cast<Racer*>(p_data->m_data);
-		if ((m_flags0x38 & c_lapGated) && racer->m_lapsCompleted != m_lapNumber) {
+		if ((m_flags & c_lapGated) && racer->m_lapsCompleted != m_lapNumber) {
 			return;
 		}
 
-		if (m_flags0x38 & c_activatesCollisionWorld) {
+		if (m_flags & c_activatesCollisionWorld) {
 			m_collisionWorlds->ActivateWorld(racer, m_collisionWorldIndex);
 		}
 	}

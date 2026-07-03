@@ -16,7 +16,7 @@ public:
 protected:
 	GolVec3 m_homePosition;           // 0x54
 	LegoU32 m_droppedTimeMs;          // 0x60
-	LegoU8 m_flags0x64;               // 0x64
+	LegoU8 m_flags;                   // 0x64
 	undefined m_unk0x65[0x68 - 0x65]; // 0x65
 };
 #endif // DROPPABLEBRICK_H

@@ -166,7 +166,7 @@ void RaceRoster::TestRacerCollisions()
 						if (model->VTable0x18(otherModel)) {
 							m_callbackData.m_type = 4;
 							m_callbackData.m_worldEntity0 = otherModel;
-							m_callbackData.m_field0x0e0 = target;
+							m_callbackData.m_racerView1 = target;
 							other->Fire(this, &m_callbackData);
 						}
 					}

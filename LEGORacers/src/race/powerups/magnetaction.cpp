@@ -57,7 +57,7 @@ void MagnetAction::Reset()
 	m_sound = 0;
 	m_heldRacer = 0;
 	m_pulledRacer = 0;
-	m_flags0x80 = 0;
+	m_flags = 0;
 	m_direction.m_x = 0.0f;
 	m_direction.m_y = 0.0f;
 	m_direction.m_z = 0.0f;
@@ -205,7 +205,7 @@ void MagnetAction::Deactivate()
 	}
 
 	m_pulledRacer = NULL;
-	m_flags0x80 = 0;
+	m_flags = 0;
 	m_direction.m_x = 0.0f;
 	m_direction.m_y = 0.0f;
 	m_direction.m_z = 0.0f;
@@ -267,7 +267,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 
 		if (m_heldRacer != NULL) {
 			if (m_heldRacer->m_physics.m_speed <= 0.002f) {
-				m_flags0x80 |= c_flagVictimStopped;
+				m_flags |= c_flagVictimStopped;
 
 				if (!(m_heldRacer->m_flags & c_flagHalted)) {
 					if (m_stateTimerMs > c_fadeDurationMs) {
@@ -278,8 +278,8 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 				m_heldRacer->Halt();
 			}
 
-			if (m_heldRacer->m_physics.m_routeMode == 0 && (m_flags0x80 & c_flagVictimStopped) &&
-				!(m_flags0x80 & c_flagVictimLifted)) {
+			if (m_heldRacer->m_physics.m_routeMode == 0 && (m_flags & c_flagVictimStopped) &&
+				!(m_flags & c_flagVictimLifted)) {
 				modelPosition.m_z -= 30.0f;
 				direction.m_x = modelPosition.m_x - racerPosition.m_x;
 				direction.m_y = modelPosition.m_y - racerPosition.m_y;
@@ -296,7 +296,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 						direction.m_x * direction.m_x + direction.m_y * direction.m_y + direction.m_z * direction.m_z;
 
 					if (distanceSquared <= 100.0f) {
-						m_flags0x80 |= c_flagVictimLifted;
+						m_flags |= c_flagVictimLifted;
 					}
 				}
 			}

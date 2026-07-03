@@ -97,8 +97,8 @@ public:
 
 		GolFont* m_stateFonts[6]; // 0x90
 		union {
-			ImageTriplet m_unk0xa8[6];      // 0xa8
-			GolImage* m_utopianunk0xa8[18]; // 0xa8
+			ImageTriplet m_unk0xa8[6];  // 0xa8
+			GolImage* m_imagesFlat[18]; // 0xa8
 		};
 		Rect m_rect; // 0xf0
 	};

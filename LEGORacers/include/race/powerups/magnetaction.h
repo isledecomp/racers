@@ -71,7 +71,7 @@ private:
 	undefined m_unk0x74[0x78 - 0x74];  // 0x74
 	Racer* m_heldRacer;                // 0x78
 	Racer* m_pulledRacer;              // 0x7c
-	LegoU8 m_flags0x80;                // 0x80
+	LegoU8 m_flags;                    // 0x80
 	undefined m_unk0x81[0x84 - 0x81];  // 0x81
 };
 

@@ -167,12 +167,12 @@ LegoBool32 TriggerWorld::IntersectSegmentAndFireEvents(
 	}
 
 	if (hit) {
-		if (hit->m_flags0x08 & 0x10) {
+		if (hit->m_flags & 0x10) {
 			m_unk0x04->StartEventsAt(hit->m_unk0x18, p_unk0x10);
 			m_unk0x04->EndEventsAt(hit->m_unk0x18, p_unk0x10);
 		}
 
-		if (hit->m_flags0x08 & 0x20000) {
+		if (hit->m_flags & 0x20000) {
 			return FALSE;
 		}
 	}

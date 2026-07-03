@@ -104,7 +104,7 @@ public:
 			void* m_data;                                   // 0x14
 			GolWorldEntity* m_worldEntity1;                 // 0x14
 			Descriptor::RigidBody* m_target1;               // 0x14
-			Descriptor::RigidBody::RacerView* m_field0x0e0; // 0x14
+			Descriptor::RigidBody::RacerView* m_racerView1; // 0x14
 		};
 	};
 

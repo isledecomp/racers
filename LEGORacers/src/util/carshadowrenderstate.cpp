@@ -61,8 +61,8 @@ CarShadowRenderState::CarShadowRenderState()
 	m_texture = NULL;
 	m_fillValue = 0;
 	m_silhouetteValue = 0;
-	m_drawFunction0x338 = &CarShadowRenderState::DrawTriangles8Bpp;
-	m_flags0x014 = 0;
+	m_drawFunction = &CarShadowRenderState::DrawTriangles8Bpp;
+	m_flags = 0;
 	m_offsetX = 0.0f;
 	m_offsetY = 0.0f;
 	m_pixels = NULL;
@@ -86,13 +86,13 @@ void CarShadowRenderState::Initialize(GolD3DRenderDevice* p_renderer, GolTexture
 
 	switch (p_texture->GetTextureFormat().m_bitsPerPixel) {
 	case 4:
-		m_drawFunction0x338 = &CarShadowRenderState::DrawTriangles4Bpp;
+		m_drawFunction = &CarShadowRenderState::DrawTriangles4Bpp;
 		break;
 	case 8:
-		m_drawFunction0x338 = &CarShadowRenderState::DrawTriangles8Bpp;
+		m_drawFunction = &CarShadowRenderState::DrawTriangles8Bpp;
 		break;
 	case 16:
-		m_drawFunction0x338 = &CarShadowRenderState::DrawTriangles16Bpp;
+		m_drawFunction = &CarShadowRenderState::DrawTriangles16Bpp;
 		break;
 	}
 
@@ -143,7 +143,7 @@ void CarShadowRenderState::BeginCapture(
 	LegoU32 p_flags
 )
 {
-	m_flags0x014 = p_flags;
+	m_flags = p_flags;
 	if (g_silhouetteClearMask & p_flags) {
 		m_texture->Fill(m_fillValue);
 	}
@@ -165,14 +165,14 @@ void CarShadowRenderState::RenderEntity(GolModelEntity* p_model, LegoU32 p_lodIn
 {
 	GolMatrix3 orientation;
 
-	if (g_silhouetteFlattenMask & m_flags0x014) {
+	if (g_silhouetteFlattenMask & m_flags) {
 		p_model->VTable0x44(&orientation);
 		p_model->VTable0x3c(g_identityMatrix);
 	}
 
 	m_renderer->VTable0x9c(p_model, this, p_lodIndex);
 
-	if (g_silhouetteFlattenMask & m_flags0x014) {
+	if (g_silhouetteFlattenMask & m_flags) {
 		p_model->VTable0x3c(orientation);
 	}
 }
@@ -227,7 +227,7 @@ void CarShadowRenderState::VTable0x0c(MaterialCommand* p_command)
 		triangleVertices[2] = &m_transformed[triangle[-4]];
 
 		if (!(triangleVertices[0]->m_clipped | triangleVertices[1]->m_clipped | triangleVertices[2]->m_clipped)) {
-			(this->*m_drawFunction0x338)(triangleVertices);
+			(this->*m_drawFunction)(triangleVertices);
 		}
 	}
 }

@@ -38,20 +38,17 @@ public:
 	// SIZE 0x84
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		LegoBool m_startEnabled;               // 0x38
-		undefined m_unk0x39[0x3c - 0x39];      // 0x39
-		undefined4 m_unk0x3c;                  // 0x3c
-		undefined2 m_helpStringId;             // 0x40
-		undefined m_unk0x42[0x44 - 0x42];      // 0x42
-		MenuIcon* m_parent;                    // 0x44
-		undefined2 m_parentId;                 // 0x48
-		LegoU8 m_resolveParentByName;          // 0x4a
-		undefined m_unk0x4b[0x52 - 0x4b];      // 0x4b
-		VisualStateColor m_iconStateColors[6]; // 0x52
-		union {
-			undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
-			undefined2 m_soundIds[5];         // 0x6a
-		};
+		LegoBool m_startEnabled;                 // 0x38
+		undefined m_unk0x39[0x3c - 0x39];        // 0x39
+		undefined4 m_unk0x3c;                    // 0x3c
+		undefined2 m_helpStringId;               // 0x40
+		undefined m_unk0x42[0x44 - 0x42];        // 0x42
+		MenuIcon* m_parent;                      // 0x44
+		undefined2 m_parentId;                   // 0x48
+		LegoU8 m_resolveParentByName;            // 0x4a
+		undefined m_unk0x4b[0x52 - 0x4b];        // 0x4b
+		VisualStateColor m_iconStateColors[6];   // 0x52
+		undefined2 m_soundIds[5];                // 0x6a
 		undefined4 m_attachToParent;             // 0x74
 		undefined4 m_hasStateColors;             // 0x78
 		undefined4 m_hasSoundIds;                // 0x7c

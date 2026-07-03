@@ -124,10 +124,7 @@ public:
 		GolBoundingVolume::HitTriangle* GetEventContext() { return &m_eventContext; }
 
 		union {
-			struct {
-				SavedWheelState m_entries[4];        // 0x000
-				undefined m_unk0x1c0[0x1ec - 0x1c0]; // 0x1c0
-			};
+			SavedWheelState m_entries[4]; // 0x000
 			struct {
 				undefined m_unk0x000[0x1b4 - 0x000];           // 0x000
 				GolBoundingVolume::HitTriangle m_eventContext; // 0x1b4

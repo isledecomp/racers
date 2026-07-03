@@ -1440,7 +1440,7 @@ void GolD3DRenderDevice::EndFrame()
 	else {
 		m_softwareRenderer.FUN_10041830(m_unk0xc86f4, TRUE);
 		if (m_unk0xc86f4 != 0) {
-			m_softwareRenderer.SetUnk0x50(m_unk0xc3848);
+			m_softwareRenderer.SetTlVertexCount(m_unk0xc3848);
 
 			LegoU8* pixels;
 			LegoU32 pitch;

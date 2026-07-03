@@ -195,7 +195,7 @@ void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMateria
 	GolD3DTexture* texture = reinterpret_cast<GolD3DTexture*>(p_material->GetTexture());
 
 	if (texture) {
-		m_unk0x34 = NULL;
+		m_currentMipmap = NULL;
 		FUN_100330d0(this, &reinterpret_cast<GolD3DTexture*>(p_material->GetTexture())->GetMipmaps()[p_index]);
 		rasterizerMode = c_flag0x2cBit8;
 
@@ -238,12 +238,12 @@ void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMateria
 		rasterizerMode = flags & GolMaterial::c_flagGouraudShading ? c_flag0x2cBit0 : 0;
 	}
 
-	m_unk0x2c = rasterizerMode;
+	m_rasterizerFlags = rasterizerMode;
 
 	if (m_pixelFormat == e_formatIndex8) {
 		p_buffer->m_spanRasterizer = NULL;
-		if (m_unk0x34) {
-			switch (m_unk0x34->m_sizeLog2) {
+		if (m_currentMipmap) {
+			switch (m_currentMipmap->m_sizeLog2) {
 			case MipmapLevel::c_size8:
 				p_buffer->m_triangleRasterizer = FUN_10045520;
 				break;
@@ -281,9 +281,9 @@ void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMateria
 		p_buffer->m_spanRasterizer = m_spanRasterizer;
 	}
 
-	if (m_unk0x34) {
+	if (m_currentMipmap) {
 		if (flags & GolMaterial::c_flagBit21) {
-			if (m_unk0x34->m_paletteData) {
+			if (m_currentMipmap->m_paletteData) {
 				if ((rasterizerMode & c_flag0x2cBit1)) {
 					if (m_spanRasterizer == FUN_10034980) {
 						p_buffer->m_triangleRasterizer = FUN_10046420;
@@ -397,9 +397,9 @@ void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMateria
 		}
 	}
 
-	p_buffer->m_texture = m_unk0x34;
-	if (m_unk0x34) {
-		p_buffer->m_unk0x0c = m_unk0x34->m_paletteData;
+	p_buffer->m_texture = m_currentMipmap;
+	if (m_currentMipmap) {
+		p_buffer->m_unk0x0c = m_currentMipmap->m_paletteData;
 	}
 	else {
 		p_buffer->m_unk0x0c = NULL;
@@ -427,8 +427,8 @@ LegoBool GolSoftwareRenderer::Initialize(PixelFormat p_pixelFormat, LegoS32 p_no
 	PixelFormat indexedPixelFormat = e_formatIndex8;
 	m_currentTriangleRasterizer = NoopTriangleRasterizer;
 	m_triangleRasterizer = NoopTriangleRasterizer;
-	m_unk0x34 = 0;
-	m_unk0x2c = 0;
+	m_currentMipmap = 0;
+	m_rasterizerFlags = 0;
 	m_spanRasterizer = NoopSpanRasterizer;
 	m_unk0x38 = 10000.0f;
 	m_unk0x3c = 225.0f;
@@ -607,7 +607,7 @@ void GolSoftwareRenderer::DrawCommandList()
 		do {
 			RasterizerPipeline* rasterizer = command->m_rasterizer;
 			m_spanRasterizer = rasterizer->m_spanRasterizer;
-			m_unk0x34 = rasterizer->m_texture;
+			m_currentMipmap = rasterizer->m_texture;
 			rasterizer->m_triangleRasterizer(
 				this,
 				&m_tlVertices[command->m_vertexIndex0],

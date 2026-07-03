@@ -79,7 +79,7 @@ public:
 	}
 
 	void SetTlVertices(D3DTLVERTEX* p_tlVertices) { m_tlVertices = p_tlVertices; }
-	void SetUnk0x50(undefined4 p_unk0x50) { m_unk0x50 = p_unk0x50; }
+	void SetTlVertexCount(undefined4 p_count) { m_tlVertexCount = p_count; }
 	TriangleCommand* GetCommands() { return m_nodes; }
 	LegoS32 GetNodeCapacity() const { return m_nodeCapacity; }
 
@@ -101,10 +101,10 @@ public:
 		m_triangleRasterizer = p_triangleRasterizer;
 	}
 	void SetSpanRasterizer(SpanRasterizerCallback p_spanRasterizer) { m_spanRasterizer = p_spanRasterizer; }
-	undefined4 GetUnk0x2c() { return m_unk0x2c; }
-	void SetUnk0x2c(undefined4 p_unk0x2c) { m_unk0x2c = p_unk0x2c; }
-	MipmapLevel* GetUnk0x34() { return m_unk0x34; }
-	void SetUnk0x34(MipmapLevel* p_unk0x34) { m_unk0x34 = p_unk0x34; }
+	undefined4 GetRasterizerFlags() { return m_rasterizerFlags; }
+	void SetRasterizerFlags(undefined4 p_flags) { m_rasterizerFlags = p_flags; }
+	MipmapLevel* GetCurrentMipmap() { return m_currentMipmap; }
+	void SetCurrentMipmap(MipmapLevel* p_mipmap) { m_currentMipmap = p_mipmap; }
 
 private:
 	void DrawCommandList();
@@ -120,16 +120,16 @@ private:
 	TriangleRasterizerCallback m_currentTriangleRasterizer; // 0x20
 	TriangleRasterizerCallback m_triangleRasterizer;        // 0x24
 	SpanRasterizerCallback m_spanRasterizer;                // 0x28
-	undefined4 m_unk0x2c;                                   // 0x2c
+	undefined4 m_rasterizerFlags;                           // 0x2c
 	undefined m_unk0x30[0x34 - 0x30];                       // 0x30
-	MipmapLevel* m_unk0x34;                                 // 0x34
+	MipmapLevel* m_currentMipmap;                           // 0x34
 	LegoFloat m_unk0x38;                                    // 0x38
 	LegoFloat m_unk0x3c;                                    // 0x3c
 	LegoS32 m_nodeCapacity;                                 // 0x40
 	TriangleCommand* m_nodes;                               // 0x44
 	LegoS32 m_commandCount;                                 // 0x48
 	D3DTLVERTEX* m_tlVertices;                              // 0x4c
-	undefined4 m_unk0x50;                                   // 0x50
+	undefined4 m_tlVertexCount;                             // 0x50
 	TriangleCommand* m_commandHead;                         // 0x54
 };
 

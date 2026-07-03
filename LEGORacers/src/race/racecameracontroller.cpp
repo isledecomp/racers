@@ -115,7 +115,7 @@ void RaceCameraController::UpdateFollow()
 
 	GolVec3 right;
 	GolVec3 forward;
-	if (m_mode == 1 && m_lookBack) {
+	if (m_mode == c_modeChase && m_lookBack) {
 		GolVec3 position;
 		position.m_x = m_lastRacerPosition.m_x + m_lastRacerPosition.m_x - m_smoothedTransform.m_position.m_x;
 		position.m_y = m_lastRacerPosition.m_y + m_lastRacerPosition.m_y - m_smoothedTransform.m_position.m_y;
@@ -134,7 +134,7 @@ void RaceCameraController::UpdateFollow()
 		camera->m_flags |= GolCamera::c_flagViewDirty;
 		return;
 	}
-	if (m_mode == 2 && m_lookBack) {
+	if (m_mode == c_modeCockpit && m_lookBack) {
 		camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
 		camera->m_flags |= GolCamera::c_flagViewDirty;
 
@@ -379,7 +379,7 @@ void RaceCameraController::SetView(LegoS32 p_viewIndex, LegoBool32 p_alternate)
 
 	SetMode(g_cameraProfiles[profileIndex].m_mode);
 
-	if (m_mode == 3) {
+	if (m_mode == c_modeFinish) {
 		m_blendHeightSine = m_heightSine;
 		m_blendPitchSine = m_pitchSine;
 		m_blendPitchCosine = m_pitchCosine;
@@ -392,7 +392,7 @@ void RaceCameraController::SetView(LegoS32 p_viewIndex, LegoBool32 p_alternate)
 	SetPositionLag(g_cameraProfiles[profileIndex].m_positionLag);
 	SetRotationLag(g_cameraProfiles[profileIndex].m_rotationLag);
 
-	if (m_mode == 3) {
+	if (m_mode == c_modeFinish) {
 		m_blendHeightSine -= m_heightSine;
 		m_blendPitchSine -= m_pitchSine;
 		m_blendPitchCosine -= m_pitchCosine;
@@ -405,7 +405,7 @@ void RaceCameraController::SetView(LegoS32 p_viewIndex, LegoBool32 p_alternate)
 // STUB: LEGORACERS 0x00428500
 GolVec3* RaceCameraController::GetViewDirection(GolVec3* p_dest)
 {
-	if (m_mode == 3) {
+	if (m_mode == c_modeFinish) {
 		GolVec3* source = &m_viewDirection;
 		p_dest->m_x = source->m_x;
 		p_dest->m_y = source->m_y;
@@ -658,7 +658,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		LegoFloat verticalOffset = m_heightSine;
 		LegoFloat height;
 		GolVec3 cameraOffset;
-		if (m_mode == 3) {
+		if (m_mode == c_modeFinish) {
 			m_transitionMs += m_elapsed;
 			if (m_transitionMs <= 2000.0f) {
 				LegoFloat profileAmount = 1.0f - m_transitionMs * 0.00050000002f;

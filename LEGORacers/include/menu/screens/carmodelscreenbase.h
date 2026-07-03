@@ -32,6 +32,14 @@ class GolWorldEntity;
 class CarModelScreenBase : public CarBuildScreenBase {
 public:
 	enum {
+		c_modeBrowse = 1,
+		c_modeCarView = 2,
+		c_modePieceView = 3,
+		c_modeResetView = 5,
+		c_modeBusy = 6,
+	};
+
+	enum {
 		c_carBuildSaveBufferSize = 0x202,
 		c_partCategoryCount = 12,
 		c_alwaysAvailablePartCategoryCount = 4,

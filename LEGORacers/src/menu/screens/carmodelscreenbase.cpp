@@ -31,8 +31,8 @@ CarModelScreenBase::~CarModelScreenBase()
 // FUNCTION: LEGORACERS 0x00476ff0
 void CarModelScreenBase::Reset()
 {
-	m_mode = 1;
-	m_nextMode = 1;
+	m_mode = c_modeBrowse;
+	m_nextMode = c_modeBrowse;
 
 	m_carouselAction = 0;
 	m_unk0x2ad8 = 0;
@@ -191,7 +191,7 @@ LegoBool32 CarModelScreenBase::MovePieceByDrag(
 {
 	LegoU32 fallbackSound = p_sound ? 8 : 0;
 
-	if (m_mode == 6) {
+	if (m_mode == c_modeBusy) {
 		return FALSE;
 	}
 
@@ -239,7 +239,7 @@ void CarModelScreenBase::OnIconUnfocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x00477650
 void CarModelScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 {
-	if (m_mode == 6) {
+	if (m_mode == c_modeBusy) {
 		return;
 	}
 
@@ -274,7 +274,7 @@ void CarModelScreenBase::OnCarouselSettled(MenuWidget* p_source)
 			m_partPlacement.SelectPieceChoice(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
 		}
 		case 5:
-			m_nextMode = 1;
+			m_nextMode = c_modeBrowse;
 			break;
 		}
 	}
@@ -284,39 +284,39 @@ void CarModelScreenBase::OnCarouselSettled(MenuWidget* p_source)
 void CarModelScreenBase::ApplyModeChange()
 {
 	switch (m_mode) {
-	case 1:
+	case c_modeBrowse:
 		ExitBrowseMode();
 		break;
-	case 2:
+	case c_modeCarView:
 		ExitCarViewMode();
 		break;
-	case 3:
+	case c_modePieceView:
 		ExitPieceViewMode();
 		break;
-	case 6:
+	case c_modeBusy:
 		ExitBusyMode();
 		break;
 	}
 
 	switch (m_nextMode) {
-	case 1:
+	case c_modeBrowse:
 		EnterBrowseMode();
 		if (m_rootIcon.GetFlags() & 8) {
 			m_rootIcon.ClearFocus();
 		}
 		break;
-	case 2:
+	case c_modeCarView:
 		EnterCarViewMode();
 		break;
-	case 3:
+	case c_modePieceView:
 		EnterPieceViewMode();
 		break;
-	case 5:
-		m_nextMode = 6;
+	case c_modeResetView:
+		m_nextMode = c_modeBusy;
 		m_carouselAction = 5;
 		m_partPlacement.BeginResetAnimation();
 		break;
-	case 6:
+	case c_modeBusy:
 		EnterBusyMode();
 		break;
 	}

@@ -13,6 +13,12 @@ struct SoundNode;
 // SIZE 0x150
 class RaceCameraController {
 public:
+	enum {
+		c_modeChase = 1,
+		c_modeCockpit = 2,
+		c_modeFinish = 3,
+	};
+
 	// SIZE 0x18
 	struct Profile {
 		LegoFloat GetFollowDistance() const { return m_followDistance; }

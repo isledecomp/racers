@@ -16,7 +16,7 @@ public:
 	~MenuTextEntry() override;                                                       // vtable+0x04
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
-	LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*) override;     // vtable+0x70
+	LegoBool32 CreateField(CreateParams*, const MenuIcon::CreateState*) override;    // vtable+0x70
 
 	undefined2* GetEntryBuffer() { return m_entryBuffer; }
 	DriverCosmetics* GetCosmetics() { return &m_cosmetics; }

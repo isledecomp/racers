@@ -17,8 +17,11 @@ public:
 
 	void Draw(GolRenderDevice&) override; // vtable+0x1c
 	void ResetModelState() override;      // vtable+0x54
-	virtual void VTable0x60(GolModelBase* p_model, GolBoundingShape* p_shape,
-							LegoFloat p_modelDistance); // vtable+0x60
+	virtual void SetPrimaryModelAndShape(
+		GolModelBase* p_model,
+		GolBoundingShape* p_shape,
+		LegoFloat p_modelDistance
+	); // vtable+0x60
 
 	void AddModel(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance);
 	void MirrorY();

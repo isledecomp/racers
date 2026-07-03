@@ -788,7 +788,7 @@ LegoBool32 MenuScreen::CreateTextField(
 	createParams.m_initialText = p_initialText;
 	createParams.m_font = sourceParams->m_font;
 
-	return p_source->VTable0x70(&createParams, styleEntry);
+	return p_source->CreateField(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c6f0

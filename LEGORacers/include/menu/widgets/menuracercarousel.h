@@ -25,13 +25,13 @@ public:
 
 	MenuRacerCarousel();
 
-	void Reset() override;                  // vtable+0x00
-	~MenuRacerCarousel() override;          // vtable+0x04
-	LegoBool32 Destroy() override;          // vtable+0x08
-	void SetSelection(undefined4) override; // vtable+0x50
-	LegoS32 ScrollNext() override;          // vtable+0x54
-	LegoS32 ScrollPrevious() override;      // vtable+0x58
-	void VTable0x60(LegoS32) override;      // vtable+0x60
+	void Reset() override;                   // vtable+0x00
+	~MenuRacerCarousel() override;           // vtable+0x04
+	LegoBool32 Destroy() override;           // vtable+0x08
+	void SetSelection(undefined4) override;  // vtable+0x50
+	LegoS32 ScrollNext() override;           // vtable+0x54
+	LegoS32 ScrollPrevious() override;       // vtable+0x58
+	void RefreshItemModel(LegoS32) override; // vtable+0x60
 
 	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
 	void SelectValue(LegoS32 p_index);

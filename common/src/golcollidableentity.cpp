@@ -14,7 +14,11 @@ GolCollidableEntity::GolCollidableEntity()
 }
 
 // FUNCTION: GOLDP 0x1001aca0
-void GolCollidableEntity::VTable0x60(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance)
+void GolCollidableEntity::SetPrimaryModelAndShape(
+	GolModelBase* p_model,
+	GolBoundingShape* p_shape,
+	LegoFloat p_modelDistance
+)
 {
 	GolModelEntity::SetPrimaryModel(p_model, p_modelDistance);
 	m_boundingShapes[0] = p_shape;

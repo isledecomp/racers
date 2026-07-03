@@ -96,6 +96,6 @@ void FallingPillarHazard::ResetState()
 	m_collider->m_flags |= ColliderRecord::c_flagBit17;
 	m_entity->SetFlags(m_entity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_entity->PlayPartScaled(0, 0);
-	m_entity->VTable0x5c(0);
+	m_entity->ApplyPartAnimation(0);
 	m_entity->SetFlags(m_entity->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 }

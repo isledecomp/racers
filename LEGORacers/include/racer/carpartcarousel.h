@@ -39,7 +39,7 @@ public:
 	LegoS32 ScrollNext() override;                         // vtable+0x54
 	LegoS32 ScrollPrevious() override;                     // vtable+0x58
 	void LayoutItem(undefined4, GolModelEntity*) override; // vtable+0x5c
-	void VTable0x60(LegoS32) override;                     // vtable+0x60
+	void RefreshItemModel(LegoS32) override;               // vtable+0x60
 
 	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
 	LegoS32 InitializeItemModels();

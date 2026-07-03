@@ -121,7 +121,7 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 		return;
 	}
 
-	m_emitterEntity->VTable0x5c(0);
+	m_emitterEntity->ApplyPartAnimation(0);
 	GolSceneNode* node = m_emitterEntity->GetSceneNode(0);
 	GolTransformBase* transform = node->GetTransform(1);
 

@@ -33,7 +33,7 @@ public:
 	void ComputeBoundsFromModel(LegoU32 p_index) override;                                 // vtable+0x4c
 	void ResetModelState() override;                                                       // vtable+0x54
 	GolSceneNode* GetSceneNode(LegoU32 p_arg1) override;                                   // vtable+0x58
-	void VTable0x5c(LegoU32 p_arg1) override;                                              // vtable+0x5c
+	void ApplyPartAnimation(LegoU32 p_arg1) override;                                      // vtable+0x5c
 
 	void SetModel(GolModelBase* p_model, GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);
 	void SetNode(GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);

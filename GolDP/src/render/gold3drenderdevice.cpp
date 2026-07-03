@@ -881,7 +881,7 @@ void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodInde
 	GolModelEntity* canoe = static_cast<GolModelEntity*>(p_model);
 	m_currentSceneNode = canoe->GetSceneNode(p_lodIndex);
 	if (m_currentSceneNode != NULL) {
-		canoe->VTable0x5c(p_lodIndex);
+		canoe->ApplyPartAnimation(p_lodIndex);
 		if (m_unk0xc83e4) {
 			static_cast<GolSceneTransformNode*>(m_currentSceneNode)
 				->UpdateWorldViewMatrices(m_unk0xc8498[0], m_modelMatrix, *m_viewProjectionMatrix);
@@ -1137,7 +1137,7 @@ void GolD3DRenderDevice::DrawModelEntityWithState(
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	m_currentSceneNode = p_model->GetSceneNode(result.m_lodIndex);
 	if (m_currentSceneNode != NULL) {
-		p_model->VTable0x5c(result.m_lodIndex);
+		p_model->ApplyPartAnimation(result.m_lodIndex);
 		if (m_unk0xc8568) {
 			m_currentSceneNode->UpdateWorldMatrices(m_unk0xc8450);
 		}

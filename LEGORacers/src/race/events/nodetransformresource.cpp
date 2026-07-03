@@ -84,7 +84,7 @@ void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 		RaceEventResource::Update(p_elapsedMs);
 
 		if (m_boundedEntity) {
-			m_modelEntity->VTable0x5c(0);
+			m_modelEntity->ApplyPartAnimation(0);
 			GolSceneNode* node = m_modelEntity->GetSceneNode(0);
 			GolTransformBase* transform = node->GetTransform(m_nodeIndex);
 

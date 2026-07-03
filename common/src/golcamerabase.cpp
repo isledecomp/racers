@@ -464,7 +464,7 @@ void GolCameraBase::UpdateFromTrackedEntity()
 		return;
 	}
 
-	m_trackedEntity->VTable0x5c(0);
+	m_trackedEntity->ApplyPartAnimation(0);
 	GolSceneNode* frameSet = m_trackedEntity->GetSceneNode(0);
 	GolTransformBase* orbit = frameSet->GetTransform(m_trackedNodeIndex);
 

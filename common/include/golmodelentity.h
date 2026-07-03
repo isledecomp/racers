@@ -29,7 +29,7 @@ public:
 	virtual void SetPrimaryModel(GolModelBase* p_model, LegoFloat p_modelDistance);        // vtable+0x50
 	virtual void ResetModelState();                                                        // vtable+0x54
 	virtual GolSceneNode* GetSceneNode(undefined4);                                        // vtable+0x58
-	virtual void VTable0x5c(undefined4);                                                   // vtable+0x5c
+	virtual void ApplyPartAnimation(undefined4);                                           // vtable+0x5c
 
 	void AddModel(GolModelBase* p_model, LegoFloat p_modelDistance);
 	void SelectLod(const GolVec3& p_vector, ResultStruct* p_result);

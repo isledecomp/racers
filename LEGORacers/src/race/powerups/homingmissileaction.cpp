@@ -388,7 +388,7 @@ void HomingMissileAction::AdvanceState()
 	case c_stateArmed: {
 		m_state = c_stateFlying;
 		m_stateTimerMs = c_flightTimeMs;
-		m_missileEntity.VTable0x5c(0);
+		m_missileEntity.ApplyPartAnimation(0);
 
 		GolAnimatedEntity* animatedEntity = &m_missileEntity;
 		GolSceneNode* node = animatedEntity->GetSceneNode(0);

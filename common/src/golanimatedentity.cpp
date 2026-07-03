@@ -94,7 +94,7 @@ void GolAnimatedEntity::ResetPartIndices()
 
 // STUB: GOLDP 0x10023580
 // STUB: LEGORACERS 0x0040d670
-void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
+void GolAnimatedEntity::ApplyPartAnimation(LegoU32 p_index)
 {
 	if (!(m_flags & c_flagPartAnimation)) {
 		return;

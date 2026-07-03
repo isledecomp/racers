@@ -61,7 +61,7 @@ public:
 	LegoS32 ScrollNext() override;                                                   // vtable+0x54
 	LegoS32 ScrollPrevious() override;                                               // vtable+0x58
 	virtual void LayoutItem(undefined4, GolModelEntity*);                            // vtable+0x5c
-	virtual void VTable0x60(LegoS32);                                                // vtable+0x60
+	virtual void RefreshItemModel(LegoS32);                                          // vtable+0x60
 
 	// SYNTHETIC: LEGORACERS 0x0046ca60
 	// MenuModelCarousel::`scalar deleting destructor'

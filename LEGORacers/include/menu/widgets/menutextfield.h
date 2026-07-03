@@ -50,7 +50,7 @@ public:
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
 	void Select(undefined4) override;                                                // vtable+0x4c
 	void Deselect(undefined4) override;                                              // vtable+0x50
-	virtual LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*);      // vtable+0x70
+	virtual LegoBool32 CreateField(CreateParams*, const MenuIcon::CreateState*);     // vtable+0x70
 	void HandleEditAction(undefined4 p_action);
 	void SetText(GolString* p_string);
 	undefined2* GetBuffer() { return m_buffer; }

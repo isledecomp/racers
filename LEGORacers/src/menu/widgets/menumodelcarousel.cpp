@@ -334,7 +334,7 @@ GolModelBase* MenuModelCarousel::GetItemModel(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0046d180
-void MenuModelCarousel::VTable0x60(LegoS32 p_index)
+void MenuModelCarousel::RefreshItemModel(LegoS32 p_index)
 {
 	Item* item = &m_items[p_index];
 	InitializeItem(item);

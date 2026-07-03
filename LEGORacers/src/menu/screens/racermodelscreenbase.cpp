@@ -437,7 +437,7 @@ void RacerModelScreenBase::AlignCarSlots()
 				source = database->GetAnimatedEntityByName("crsdow");
 			}
 
-			source->VTable0x5c(0);
+			source->ApplyPartAnimation(0);
 			GolSceneNode* node = source->GetSceneNode(0);
 
 			GolVec3 localVector;

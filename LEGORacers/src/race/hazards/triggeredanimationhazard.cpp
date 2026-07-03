@@ -220,7 +220,7 @@ void TriggeredAnimationHazard::ResetState()
 		if (*entity != NULL) {
 			(*entity)->SetFlags((*entity)->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 			(*entity)->PlayPartScaled(0, 0);
-			(*entity)->VTable0x5c(0);
+			(*entity)->ApplyPartAnimation(0);
 			(*entity)->SetFlags((*entity)->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 
 			LegoFloat* modelDistances = &m_unk0x24.m_x;

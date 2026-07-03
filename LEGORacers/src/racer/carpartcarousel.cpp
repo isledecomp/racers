@@ -125,7 +125,7 @@ void CarPartCarousel::SelectPartByType(LegoS32 p_pieceType)
 }
 
 // FUNCTION: LEGORACERS 0x004854a0
-void CarPartCarousel::VTable0x60(LegoS32 p_index)
+void CarPartCarousel::RefreshItemModel(LegoS32 p_index)
 {
 	GolModelEntity* entity = GetItemEntity(p_index);
 	GolModelBase* model = GetItemModel(p_index);
@@ -141,7 +141,7 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceLibrary->FindPieceRecord(pieceType, 1);
 	m_buildModel->CenterOnPiece(pieceRecord, 0);
 	m_buildModel->BuildPieceModel(entity, pieceRecord, 0, 0, 0, 0, colorRecordIndex, 239);
-	MenuModelCarousel::VTable0x60(p_index);
+	MenuModelCarousel::RefreshItemModel(p_index);
 }
 
 // FUNCTION: LEGORACERS 0x00485550
@@ -166,7 +166,7 @@ void CarPartCarousel::SetSelection(undefined4 p_index)
 		if (!m_scrolling) {
 			if (m_itemCount >= m_slotCount - 1) {
 				for (LegoS32 i = 0; i < m_slotCount; i++) {
-					VTable0x60(i);
+					RefreshItemModel(i);
 				}
 			}
 			else {
@@ -174,7 +174,7 @@ void CarPartCarousel::SetSelection(undefined4 p_index)
 					GetItemEntity(i)->ResetModelState();
 				}
 
-				VTable0x60(m_focusedSlot);
+				RefreshItemModel(m_focusedSlot);
 
 				LegoS32 index = m_focusedSlot;
 				LegoS32 previousVisibleIndex = index - 1;
@@ -186,7 +186,7 @@ void CarPartCarousel::SetSelection(undefined4 p_index)
 				if (index >= 0) {
 					LegoS32 count = index + 1;
 					do {
-						VTable0x60(previousVisibleIndex--);
+						RefreshItemModel(previousVisibleIndex--);
 					} while (--count);
 				}
 
@@ -201,7 +201,7 @@ void CarPartCarousel::SetSelection(undefined4 p_index)
 				}
 
 				while (count--) {
-					VTable0x60(nextVisibleIndex++);
+					RefreshItemModel(nextVisibleIndex++);
 				}
 			}
 
@@ -242,7 +242,7 @@ LegoS32 CarPartCarousel::ScrollNext()
 
 		if (m_itemCount >= m_slotCount - 1 ||
 			m_itemCount - m_selectedIndex > m_slotCount - static_cast<LegoS32>(m_focusedSlot) - 1) {
-			VTable0x60(m_slotCount - 1);
+			RefreshItemModel(m_slotCount - 1);
 		}
 
 		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[0]);
@@ -268,7 +268,7 @@ LegoS32 CarPartCarousel::ScrollPrevious()
 		SetSelection(WrapIndex(m_selectedIndex - 1));
 
 		if (m_itemCount >= m_slotCount - 1 || m_selectedIndex > static_cast<LegoS32>(m_focusedSlot) - 1) {
-			VTable0x60(0);
+			RefreshItemModel(0);
 		}
 
 		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[1]);

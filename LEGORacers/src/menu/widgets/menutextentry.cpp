@@ -78,11 +78,11 @@ LegoBool32 MenuTextEntry::CreateColorBox(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x00471b20
-LegoBool32 MenuTextEntry::VTable0x70(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
+LegoBool32 MenuTextEntry::CreateField(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
 {
 	Destroy();
 
-	if (MenuTextField::VTable0x70(p_createParams, p_createState)) {
+	if (MenuTextField::CreateField(p_createParams, p_createState)) {
 		if (CreateColorBox(p_createParams)) {
 			Create(p_createParams);
 		}

@@ -39,7 +39,7 @@ void MenuTextField::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00471040
-LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
+LegoBool32 MenuTextField::CreateField(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
 {
 	Destroy();
 

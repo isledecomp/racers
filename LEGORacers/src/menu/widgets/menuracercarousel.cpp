@@ -224,7 +224,7 @@ void MenuRacerCarousel::CollectItems()
 }
 
 // FUNCTION: LEGORACERS 0x00483f70
-void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
+void MenuRacerCarousel::RefreshItemModel(LegoS32 p_index)
 {
 	GolModelEntity* entity = GetItemEntity(p_index);
 	LegoS32 modelIndex = m_itemValues[WrapIndex(m_ringBaseIndex + p_index)];
@@ -271,7 +271,7 @@ void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 		entity->SetPrimaryMaterialTable(materialTable);
 	}
 
-	MenuModelCarousel::VTable0x60(p_index);
+	MenuModelCarousel::RefreshItemModel(p_index);
 }
 
 // FUNCTION: LEGORACERS 0x00484100
@@ -287,7 +287,7 @@ void MenuRacerCarousel::SetSelection(undefined4 p_index)
 			}
 
 			for (LegoS32 i = 0; i < m_slotCount; i++) {
-				VTable0x60(i);
+				RefreshItemModel(i);
 			}
 
 			SnapToSelection();
@@ -325,7 +325,7 @@ LegoS32 MenuRacerCarousel::ScrollNext()
 
 		LegoS32 firstVisibleIndex = static_cast<LegoS32>(m_focusedSlot);
 		if (m_itemCount >= m_slotCount - 1 || m_itemCount - m_selectedIndex > m_slotCount - firstVisibleIndex - 1) {
-			VTable0x60(m_slotCount - 1);
+			RefreshItemModel(m_slotCount - 1);
 		}
 
 		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[0]);
@@ -362,7 +362,7 @@ LegoS32 MenuRacerCarousel::ScrollPrevious()
 
 		LegoS32 firstVisibleIndex = static_cast<LegoS32>(m_focusedSlot);
 		if (m_itemCount >= m_slotCount - 1 || m_selectedIndex > firstVisibleIndex - 1) {
-			VTable0x60(0);
+			RefreshItemModel(0);
 		}
 
 		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[1]);

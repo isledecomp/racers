@@ -1578,7 +1578,7 @@ void GolWorldDatabase::InitializeEntities()
 			}
 		}
 
-		runtime->VTable0x60(
+		runtime->SetPrimaryModelAndShape(
 			GetModel(model->m_modelIndices[0]),
 			GetBoundingShape(model->m_sceneNodeIndices[0]),
 			maxDistances[0]

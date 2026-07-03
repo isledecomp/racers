@@ -46,7 +46,7 @@ void GolAnimatedEntity::SetNode(GolSceneNode* p_node, CmbModelPart* p_modelParts
 	m_textureScrollV = 0;
 	m_textureScrollSpeedU = 0;
 	m_textureScrollSpeedV = 0;
-	m_unk0x58 = 1.0f;
+	m_scale = 1.0f;
 	m_nodes[0] = p_node;
 	m_modelParts[0] = p_modelParts;
 	m_flags |= c_flagBit0;
@@ -583,12 +583,12 @@ void GolAnimatedEntity::ComputeBoundsFromModel(LegoU32 p_index)
 			radius += static_cast<LegoFloat>(sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ));
 		}
 
-		scale = model->GetScale() * m_unk0x58;
+		scale = model->GetScale() * m_scale;
 	}
 	else {
 		center = model->GetBoundingCenter();
 		radius = model->GetBoundingRadius();
-		scale = m_unk0x58;
+		scale = m_scale;
 	}
 
 	center *= scale;

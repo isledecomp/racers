@@ -132,7 +132,7 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 	transform->GetRight(&right);
 
 	LegoFloat scale = m_emitterEntity->GetModel(0)->GetScale();
-	scale *= m_emitterEntity->GetUnk0x58();
+	scale *= m_emitterEntity->GetScale();
 	position.m_x *= scale;
 	position.m_y *= scale;
 	position.m_z *= scale;

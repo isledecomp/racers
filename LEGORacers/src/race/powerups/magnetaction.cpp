@@ -319,7 +319,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (m_state == 4) {
-		m_magnetEntity->SetUnk0x58AndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
+		m_magnetEntity->SetScaleAndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
 	}
 
 	m_ringEntity->CopyOrientationFrom(*m_magnetEntity);

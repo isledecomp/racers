@@ -193,7 +193,7 @@ void SoundResource::StopSound()
 		transform = transform->m_parent;
 	} while (transform);
 
-	LegoFloat scale = m_unk0x28->GetModel(0)->GetScale() * m_unk0x28->GetUnk0x58();
+	LegoFloat scale = m_unk0x28->GetModel(0)->GetScale() * m_unk0x28->GetScale();
 	position.m_x = position.m_x * scale;
 	position.m_y = position.m_y * scale;
 	position.m_z = position.m_z * scale;

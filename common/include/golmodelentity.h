@@ -67,7 +67,7 @@ public:
 			modelDistances[i] = m_modelDistances[i];
 		}
 	}
-	LegoFloat GetUnk0x58() const { return m_unk0x58; }
+	LegoFloat GetScale() const { return m_scale; }
 	LegoBool32 HasModel() const { return m_flags & c_flagBit0; }
 	void CopyOrientationAndPositionFrom(const GolModelEntity& p_other)
 	{
@@ -97,15 +97,15 @@ public:
 		p_dest->m_radius = -1.0f;
 	}
 	void InvalidateRadius() { m_radius = -1.0f; }
-	void SetUnk0x58ThenInvalidateRadius(LegoFloat p_unk0x58)
+	void SetScaleThenInvalidateRadius(LegoFloat p_scale)
 	{
-		m_unk0x58 = p_unk0x58;
+		m_scale = p_scale;
 		m_radius = -1.0f;
 	}
-	void SetUnk0x58AndInvalidateRadius(LegoFloat p_unk0x58)
+	void SetScaleAndInvalidateRadius(LegoFloat p_scale)
 	{
 		m_radius = -1.0f;
-		m_unk0x58 = p_unk0x58;
+		m_scale = p_scale;
 	}
 	MaterialTable* GetPrimaryMaterialTable() const { return m_materialTables[0]; }
 	void SetPrimaryMaterialTable(MaterialTable* p_materialTable) { m_materialTables[0] = p_materialTable; }
@@ -121,7 +121,7 @@ protected:
 		c_flagBit3 = 1 << 3,
 	};
 
-	LegoFloat m_unk0x58;                // 0x58
+	LegoFloat m_scale;                  // 0x58
 	LegoU32 m_flags;                    // 0x5c
 	LegoU16 m_textureScrollU;           // 0x60
 	LegoU16 m_textureScrollV;           // 0x62

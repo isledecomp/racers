@@ -95,7 +95,7 @@ void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 			transform->GetUp(&up);
 			transform->GetRight(&right);
 
-			LegoFloat scale = m_modelEntity->GetModel(0)->GetScale() * m_modelEntity->GetUnk0x58();
+			LegoFloat scale = m_modelEntity->GetModel(0)->GetScale() * m_modelEntity->GetScale();
 			position.m_x *= scale;
 			position.m_y *= scale;
 			position.m_z *= scale;

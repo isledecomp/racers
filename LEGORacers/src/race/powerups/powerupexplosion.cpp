@@ -175,7 +175,7 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 	}
 
 	if (m_modelEntity.HasModel()) {
-		m_modelEntity.SetUnk0x58ThenInvalidateRadius(0.050000001f);
+		m_modelEntity.SetScaleThenInvalidateRadius(0.050000001f);
 		m_modelEntity.SetPosition(*p_position);
 	}
 
@@ -326,7 +326,7 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 		}
 
 		if (m_modelEntity.HasModel()) {
-			m_modelEntity.SetUnk0x58ThenInvalidateRadius(value);
+			m_modelEntity.SetScaleThenInvalidateRadius(value);
 		}
 
 		m_alpha = (g_violetShoalTwo - (m_growth + m_growth)) * 255.0f;

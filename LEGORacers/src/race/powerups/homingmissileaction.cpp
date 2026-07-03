@@ -403,7 +403,7 @@ void HomingMissileAction::AdvanceState()
 		GolVec3 right;
 		transform->GetRight(&right);
 
-		LegoFloat scale = animatedEntity->GetModel(0)->GetScale() * animatedEntity->GetUnk0x58();
+		LegoFloat scale = animatedEntity->GetModel(0)->GetScale() * animatedEntity->GetScale();
 		position.m_x *= scale;
 		position.m_y *= scale;
 		position.m_z *= scale;

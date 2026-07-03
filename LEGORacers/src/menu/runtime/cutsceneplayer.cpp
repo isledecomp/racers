@@ -571,7 +571,7 @@ void CutsceneEvent::GetJointPosition(undefined4 p_param1, GolVec3* p_param2)
 
 	falconNode->TransformPointToWorld(p_param1, &vec1, &vec2);
 
-	LegoFloat scale = m_animatedEntity->GetModel(0)->GetScale() * m_animatedEntity->GetUnk0x58();
+	LegoFloat scale = m_animatedEntity->GetModel(0)->GetScale() * m_animatedEntity->GetScale();
 	vec2.m_x *= scale;
 	vec2.m_y *= scale;
 	vec2.m_z *= scale;

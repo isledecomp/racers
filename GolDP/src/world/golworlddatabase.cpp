@@ -1391,7 +1391,7 @@ void GolWorldDatabase::InitializeEntities()
 		runtime->SetPosition(model->m_position);
 		runtime->SetDirectionUp(model->m_direction, model->m_up);
 		runtime->m_radius = -1.0f;
-		runtime->m_unk0x58 = model->m_scale;
+		runtime->m_scale = model->m_scale;
 
 		if (model->m_flags & WdbModel::e_flagTextureScroll) {
 			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
@@ -1495,7 +1495,7 @@ void GolWorldDatabase::InitializeEntities()
 		runtime->SetPosition(model->m_position);
 		runtime->SetDirectionUp(model->m_direction, model->m_up);
 		runtime->m_radius = -1.0f;
-		runtime->m_unk0x58 = model->m_scale;
+		runtime->m_scale = model->m_scale;
 
 		if (model->m_flags & WdbModel::e_flagTextureScroll) {
 			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);

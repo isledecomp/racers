@@ -133,7 +133,7 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 	}
 
 	LegoFloat frame = m_entity->GetPartTimeMs();
-	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
+	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
 	GolSceneNode* node = m_entity->GetSceneNode(0);
 	GolTransformBase* transform = node->GetTransform(0);
 	LegoU32 elapsedMs = p_elapsedMs;

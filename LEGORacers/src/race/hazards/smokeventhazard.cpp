@@ -89,7 +89,7 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 		return;
 	}
 
-	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
+	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
 	LegoFloat inverseScale = 1.0f / scale;
 	Hazard::Update(p_elapsedMs);
 

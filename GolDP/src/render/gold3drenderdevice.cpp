@@ -1127,7 +1127,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 	if (m_unk0xc8568) {
 		FUN_1000add0(p_model, model);
 		m_unk0xc8518 = &m_unk0xc8450;
-		m_unk0xc852c = p_model->GetModel(result.m_lodIndex)->GetScale() * p_model->GetUnk0x58();
+		m_unk0xc852c = p_model->GetModel(result.m_lodIndex)->GetScale() * p_model->GetScale();
 	}
 
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);

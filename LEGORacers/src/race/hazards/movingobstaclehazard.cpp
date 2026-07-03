@@ -142,7 +142,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 		transform = transform->m_parent;
 	} while (transform != NULL);
 
-	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
+	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
 	offset.m_x *= scale;
 	offset.m_y *= scale;
 	offset.m_z *= scale;

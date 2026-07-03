@@ -228,7 +228,7 @@ void GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 // FUNCTION: LEGORACERS 0x0048e1c0
 void GrabberHazard::GetGrabPosition(GolVec3* p_position)
 {
-	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
+	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
 	GolSceneNode* node = m_entity->GetSceneNode(0);
 	GolTransformBase* transform = node->GetTransform(0);
 

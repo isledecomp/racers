@@ -155,7 +155,7 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 			} while (transform != NULL);
 		}
 
-		LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
+		LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
 		localPosition.m_x *= scale;
 		localPosition.m_y *= scale;
 		localPosition.m_z *= scale;

@@ -1249,13 +1249,13 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		entity->SetDirectionUp(right, up);
 	}
 
-	LegoFloat scale = entity->GetUnk0x58();
+	LegoFloat scale = entity->GetScale();
 	if (scale > 0.66600001f) {
 		scale -= elapsed * 0.0099999998f * 0.065999999f;
 		if (scale < 0.66600001f) {
 			scale = 0.66600001f;
 		}
-		entity->SetUnk0x58ThenInvalidateRadius(scale);
+		entity->SetScaleThenInvalidateRadius(scale);
 	}
 
 	entity->Update(p_elapsedMs);
@@ -1288,7 +1288,7 @@ void CarVisuals::UpdateShadow(GolCamera* p_camera)
 		GolVec3 center;
 		m_carEntity->GetBoundsCenter(&center);
 
-		LegoFloat scale = m_carEntity->GetUnk0x58();
+		LegoFloat scale = m_carEntity->GetScale();
 		if (scale != 1.0f) {
 			m_shadowDecal.m_width = m_shadowWidth * scale;
 			m_shadowDecal.m_length = scale * m_shadowLength;
@@ -1578,14 +1578,14 @@ void CarVisuals::EndFlash()
 // FUNCTION: LEGORACERS 0x00440160
 void CarVisuals::SetScale(LegoFloat p_scale)
 {
-	m_carEntity->SetUnk0x58AndInvalidateRadius(p_scale);
-	m_bodyModelEntity->SetUnk0x58AndInvalidateRadius(p_scale);
+	m_carEntity->SetScaleAndInvalidateRadius(p_scale);
+	m_bodyModelEntity->SetScaleAndInvalidateRadius(p_scale);
 
 	if (m_secondaryEntity) {
-		m_secondaryEntity->SetUnk0x58AndInvalidateRadius(p_scale);
+		m_secondaryEntity->SetScaleAndInvalidateRadius(p_scale);
 	}
 
-	m_driverEntity->SetUnk0x58AndInvalidateRadius(p_scale);
+	m_driverEntity->SetScaleAndInvalidateRadius(p_scale);
 }
 
 // FUNCTION: LEGORACERS 0x004401a0

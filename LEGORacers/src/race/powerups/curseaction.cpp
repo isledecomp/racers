@@ -245,7 +245,7 @@ void CurseAction::Draw(GolD3DRenderDevice* p_renderer)
 	}
 
 	if (m_state == c_stateFade) {
-		m_curseEntity->SetUnk0x58AndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
+		m_curseEntity->SetScaleAndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
 	}
 
 	p_renderer->VTable0x94(m_curseEntity);
@@ -260,8 +260,8 @@ void CurseAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 
 	if (m_state == c_stateFade) {
 		LegoFloat scale = static_cast<LegoS32>(m_stateTimerMs) * 0.001f;
-		m_auraEntity->SetUnk0x58AndInvalidateRadius(scale);
-		m_innerAuraEntity->SetUnk0x58ThenInvalidateRadius(m_auraEntity->GetUnk0x58());
+		m_auraEntity->SetScaleAndInvalidateRadius(scale);
+		m_innerAuraEntity->SetScaleThenInvalidateRadius(m_auraEntity->GetScale());
 	}
 
 	m_auraEntity->Draw(*p_renderer);

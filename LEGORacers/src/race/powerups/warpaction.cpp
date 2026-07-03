@@ -338,7 +338,7 @@ void WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	phase *= g_negativeRadiansToTableIndex;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat scale = g_cosineTable[tableIndex];
-	m_modelEntity.SetUnk0x58AndInvalidateRadius(scale);
+	m_modelEntity.SetScaleAndInvalidateRadius(scale);
 
 	if (m_stateTimerMs < 250) {
 		m_racer->m_visuals.SetScale(scale);

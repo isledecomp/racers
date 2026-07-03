@@ -29,7 +29,7 @@ GolModelEntity::GolModelEntity()
 {
 	LegoU32 i;
 
-	m_unk0x58 = 1.0f;
+	m_scale = 1.0f;
 	m_radius = -1.0f;
 	m_flags = 0;
 	m_textureScrollU = 0;
@@ -57,7 +57,7 @@ void GolModelEntity::SetPrimaryModel(GolModelBase* p_model, LegoFloat p_modelDis
 	m_textureScrollSpeedU = 0;
 	m_textureScrollSpeedV = 0;
 	m_modelDistances[0] = p_modelDistance;
-	m_unk0x58 = 1.0f;
+	m_scale = 1.0f;
 	m_radius = -1.0f;
 	m_flags |= c_flagBit0;
 }
@@ -68,7 +68,7 @@ void GolModelEntity::ResetModelState()
 {
 	LegoU32 i;
 
-	m_unk0x58 = 1.0f;
+	m_scale = 1.0f;
 	m_flags = 0;
 	m_textureScrollU = 0;
 	m_textureScrollV = 0;
@@ -178,7 +178,7 @@ void GolModelEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultStruc
 void GolModelEntity::BuildModelMatrix(GolMatrix4* p_dest, LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];
-	CopyScaledOrientationTo(p_dest, model->GetScale() * m_unk0x58);
+	CopyScaledOrientationTo(p_dest, model->GetScale() * m_scale);
 }
 
 // FUNCTION: GOLDP 0x10027e90
@@ -198,7 +198,7 @@ void GolModelEntity::ComputeBoundsFromModel(LegoU32 p_index)
 		return;
 	}
 
-	LegoFloat scale = m_unk0x58;
+	LegoFloat scale = m_scale;
 	GolVec3 center = model->GetCenter();
 	LegoFloat radius = model->GetRadius();
 	center.m_x *= scale;
@@ -207,7 +207,7 @@ void GolModelEntity::ComputeBoundsFromModel(LegoU32 p_index)
 	GolVec3 position;
 	LocalToWorld(center, &position);
 	SetBoundsCenterAndSpan(position);
-	SetBoundsRadius(m_unk0x58 * radius);
+	SetBoundsRadius(m_scale * radius);
 }
 
 // FUNCTION: GOLDP 0x10027f40

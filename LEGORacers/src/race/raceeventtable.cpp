@@ -30,6 +30,7 @@ DECOMP_SIZE_ASSERT(RaceEventTable, 0x90)
 DECOMP_SIZE_ASSERT(RaceEventTable::EvbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(RaceEventTable::Params, 0x34)
 DECOMP_SIZE_ASSERT(RaceEventTable::EventLink, 0x08)
+DECOMP_SIZE_ASSERT(RaceActionSource, 0x24)
 
 // FUNCTION: LEGORACERS 0x0045ef40
 RaceEventTable::RaceEventTable()

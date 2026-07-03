@@ -46,6 +46,7 @@ extern LegoU32 g_randomTableIndex;
 DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
 DECOMP_SIZE_ASSERT(InputEventSink, 0x04)
 DECOMP_SIZE_ASSERT(RaceSession::RabTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(RacerContext, 0x40)
 
 // GLOBAL: LEGORACERS 0x004b07ec
 LegoFloat g_defaultMusicVolume = 1.2f;

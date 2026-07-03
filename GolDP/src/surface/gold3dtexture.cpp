@@ -12,6 +12,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(GolD3DTexture, 0x7c)
+DECOMP_SIZE_ASSERT(MipmapLevel, 0x18)
 
 extern const ColorRGBA g_transparentBlack;
 

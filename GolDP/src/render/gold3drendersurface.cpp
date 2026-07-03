@@ -1,5 +1,9 @@
 #include "render/gold3drendersurface.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolD3DRenderSurface, 0x5c)
+
 #include "golerror.h"
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"

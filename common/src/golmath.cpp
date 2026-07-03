@@ -6,6 +6,9 @@ DECOMP_SIZE_ASSERT(GolVec2, 0x8)
 DECOMP_SIZE_ASSERT(GolVec3, 0xc)
 DECOMP_SIZE_ASSERT(GolMatrix4, 0x40)
 DECOMP_SIZE_ASSERT(GolQuat, 0x10)
+DECOMP_SIZE_ASSERT(GolVec4, 0x10)
+DECOMP_SIZE_ASSERT(GolMatrix3, 0x24)
+DECOMP_SIZE_ASSERT(GolMatrix34, 0x30)
 
 // FUNCTION: GOLDP 0x1002f3a0
 void GolMath::MultiplyMatrix4(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest)

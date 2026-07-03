@@ -1,5 +1,9 @@
 #include "goltxtparser.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolTxtParser, 0x1fc)
+
 #include "golerror.h"
 
 #include <stdio.h>

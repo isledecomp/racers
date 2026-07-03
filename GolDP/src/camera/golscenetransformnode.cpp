@@ -1,5 +1,9 @@
 #include "camera/golscenetransformnode.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolSceneTransformNode, 0x1c)
+
 #include "camera/goltransform.h"
 #include "golerror.h"
 

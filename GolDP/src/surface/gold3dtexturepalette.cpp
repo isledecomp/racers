@@ -1,5 +1,9 @@
 #include "surface/gold3dtexturepalette.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolD3DTexturePalette, 0x10)
+
 #include "golerror.h"
 
 #include <string.h>

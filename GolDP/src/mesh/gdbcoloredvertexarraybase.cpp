@@ -1,5 +1,9 @@
 #include "mesh/gdbcoloredvertexarraybase.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GdbColoredVertexArrayBase, 0x1c)
+
 #include "golerror.h"
 #include "golmath.h"
 

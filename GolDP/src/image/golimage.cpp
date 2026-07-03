@@ -13,6 +13,8 @@
 #include "surface/golrendertarget.h"
 
 DECOMP_SIZE_ASSERT(GolImage, 0xa4)
+DECOMP_SIZE_ASSERT(ColorBGR, 0x3)
+DECOMP_SIZE_ASSERT(FColorRGB, 0xc)
 
 extern const ColorRGBA g_transparentBlack;
 

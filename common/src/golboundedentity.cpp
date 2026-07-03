@@ -1,5 +1,9 @@
 #include "golboundedentity.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolBoundedEntity, 0x64)
+
 #include "golboundingvolume.h"
 
 // FUNCTION: GOLDP 0x1001b740

@@ -1,5 +1,9 @@
 #include "material/golsoftwaremateriallibrary.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolSoftwareMaterialLibrary, 0x20)
+
 #include "golerror.h"
 #include "material/golsoftwarematerial.h"
 

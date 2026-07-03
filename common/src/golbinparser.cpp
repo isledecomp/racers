@@ -1,5 +1,9 @@
 #include "golbinparser.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolBinParser, 0x650)
+
 #include "golconstants.h"
 #include "golerror.h"
 

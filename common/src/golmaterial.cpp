@@ -6,6 +6,7 @@
 DECOMP_SIZE_ASSERT(GolMaterial::NameRecord, 0x8)
 DECOMP_SIZE_ASSERT(GolMaterial, 0x24)
 DECOMP_SIZE_ASSERT(GolMaterialParams, 0x14)
+DECOMP_SIZE_ASSERT(GolMaterialColor, 0x04)
 
 // FUNCTION: GOLDP 0x10025770
 GolMaterial::GolMaterial() : m_diffuse(0xff, 0xff, 0xff, 0xff), m_ambient(0xff, 0xff, 0xff, 0xff)

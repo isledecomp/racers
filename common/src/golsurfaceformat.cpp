@@ -1,5 +1,9 @@
 #include "golsurfaceformat.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolSurfaceFormat, 0x18)
+
 // FUNCTION: GOLDP 0x1001cb50
 // FUNCTION: LEGORACERS 0x00407210
 LegoU32 GolSurfaceFormat::GetRedBitCount() const

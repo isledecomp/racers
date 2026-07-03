@@ -1,5 +1,9 @@
 #include "scene/golbillboardex.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolBillboardEx, 0x4c)
+
 #include "golmaterial.h"
 #include "render/gold3drenderdevice.h"
 

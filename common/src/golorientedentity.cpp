@@ -1,5 +1,9 @@
 #include "golorientedentity.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolOrientedEntity, 0x58)
+
 // FUNCTION: GOLDP 0x1001ad90 FOLDED
 // FUNCTION: LEGORACERS 0x00403c90
 void GolOrientedEntity::GetAxes(GolVec3* p_dest1, GolVec3* p_dest2) const

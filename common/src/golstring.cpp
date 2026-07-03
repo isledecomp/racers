@@ -1,5 +1,9 @@
 #include "golstring.h"
 
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolString, 0x0c)
+
 #include "types.h"
 
 #include <ctype.h>

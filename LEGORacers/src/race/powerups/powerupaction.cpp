@@ -13,6 +13,9 @@
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"
 
+DECOMP_SIZE_ASSERT(ActionTarget, 0x1c)
+DECOMP_SIZE_ASSERT(ActionSetup, 0x14)
+
 #include <float.h>
 #include <math.h>
 

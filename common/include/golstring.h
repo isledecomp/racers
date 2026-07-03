@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "types.h"
 
-// SIZE 0x0a
+// SIZE 0x0c
 class GolString {
 public:
 	GolString();

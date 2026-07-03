@@ -27,6 +27,7 @@ DECOMP_SIZE_ASSERT(GolWorldDatabase::WdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(WdbModel, 0x8c)
 DECOMP_SIZE_ASSERT(WdbCamera, 0x4c)
 DECOMP_SIZE_ASSERT(WdbLight, 0x10)
+DECOMP_SIZE_ASSERT(WdbBillboardSprite, 0x38)
 
 // GLOBAL: GOLDP 0x100576e4
 LegoFloat g_fltMax0x100576e4 = FLT_MAX;

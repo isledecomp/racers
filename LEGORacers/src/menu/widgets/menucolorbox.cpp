@@ -18,13 +18,13 @@ MenuColorBox::~MenuColorBox()
 // FUNCTION: LEGORACERS 0x00467f30
 void MenuColorBox::Reset()
 {
-	m_unk0xb0 = 0;
-	m_unk0xa8 = 0;
-	m_unk0xac = 0;
+	m_blinkMs = 0;
+	m_onDurationMs = 0;
+	m_offDurationMs = 0;
 	m_width = 0;
 	m_height = 0;
-	m_unk0xb4 = 1;
-	m_unk0xa4 = 1;
+	m_blinkEnabled = 1;
+	m_visible = 1;
 	MenuWidget::Reset();
 }
 
@@ -33,9 +33,9 @@ LegoBool32 MenuColorBox::Create(CreateParams* p_createParams)
 {
 	Destroy();
 
-	m_unk0xa8 = p_createParams->m_unk0x3c;
-	m_unk0xac = p_createParams->m_unk0x40;
-	m_unk0xb4 = p_createParams->m_unk0x38;
+	m_onDurationMs = p_createParams->m_onDurationMs;
+	m_offDurationMs = p_createParams->m_offDurationMs;
+	m_blinkEnabled = p_createParams->m_blinkEnabled;
 	m_width = p_createParams->m_rect.m_right - p_createParams->m_rect.m_left;
 	m_height = p_createParams->m_rect.m_bottom - p_createParams->m_rect.m_top;
 
@@ -95,7 +95,7 @@ void MenuColorBox::SetRect(Rect* p_rect)
 // FUNCTION: LEGORACERS 0x004680b0
 MenuWidget* MenuColorBox::DrawSelf(Rect* p_param1, Rect* p_param2)
 {
-	if (!m_unk0xa4) {
+	if (!m_visible) {
 		return NULL;
 	}
 
@@ -105,18 +105,18 @@ MenuWidget* MenuColorBox::DrawSelf(Rect* p_param1, Rect* p_param2)
 // FUNCTION: LEGORACERS 0x004680e0
 undefined4 MenuColorBox::OnEvent(undefined4 p_param)
 {
-	if (m_unk0xb4) {
-		if (p_param < m_unk0xb0) {
-			m_unk0xb0 -= p_param;
+	if (m_blinkEnabled) {
+		if (p_param < m_blinkMs) {
+			m_blinkMs -= p_param;
 		}
 		else {
-			m_unk0xa4 = (m_unk0xa4 == 0);
+			m_visible = (m_visible == 0);
 
-			if (m_unk0xa4) {
-				m_unk0xb0 = m_unk0xa8;
+			if (m_visible) {
+				m_blinkMs = m_onDurationMs;
 			}
 			else {
-				m_unk0xb0 = m_unk0xac;
+				m_blinkMs = m_offDurationMs;
 			}
 		}
 	}

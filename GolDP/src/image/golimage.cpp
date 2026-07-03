@@ -182,14 +182,14 @@ void GolImage::FUN_10005440(GolRenderDevice* p_renderer, GolSoftwareMaterial* p_
 
 	GolMaterialParams params;
 	params.m_unk0x04 = p_texture;
-	params.m_unk0x08.m_unk0x0 = 0xff;
-	params.m_unk0x08.m_unk0x1 = 0xff;
-	params.m_unk0x08.m_unk0x2 = 0xff;
-	params.m_unk0x08.m_unk0x3 = 0xff;
-	params.m_unk0x0c.m_unk0x0 = 0xff;
-	params.m_unk0x0c.m_unk0x1 = 0xff;
-	params.m_unk0x0c.m_unk0x2 = 0xff;
-	params.m_unk0x0c.m_unk0x3 = 0xff;
+	params.m_ambient.m_red = 0xff;
+	params.m_ambient.m_grn = 0xff;
+	params.m_ambient.m_blu = 0xff;
+	params.m_ambient.m_alp = 0xff;
+	params.m_diffuse.m_red = 0xff;
+	params.m_diffuse.m_grn = 0xff;
+	params.m_diffuse.m_blu = 0xff;
+	params.m_diffuse.m_alp = 0xff;
 	params.m_unk0x11 = 0;
 	params.m_unk0x13 = 0;
 	params.m_unk0x00 = flags;

@@ -2071,19 +2071,19 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 
 	m_unk0xc8530.m_material = p_material;
 	if (m_unk0xc8568 != 0) {
-		DuskwindBananaRelicColor c = p_material->GetColor0x10();
-		m_unk0xc8570 = static_cast<LegoU32>(m_unk0xc856c.m_red * c.m_unk0x0) >> 8;
-		m_unk0xc8574 = static_cast<LegoU32>(m_unk0xc856c.m_grn * c.m_unk0x1) >> 8;
-		m_unk0xc8578 = static_cast<LegoU32>(m_unk0xc856c.m_blu * c.m_unk0x2) >> 8;
-		m_unk0xc857c = c.m_unk0x3 & 0xff;
-		c = p_material->GetColor0x0c();
+		GolMaterialColor c = p_material->GetAmbient();
+		m_unk0xc8570 = static_cast<LegoU32>(m_unk0xc856c.m_red * c.m_red) >> 8;
+		m_unk0xc8574 = static_cast<LegoU32>(m_unk0xc856c.m_grn * c.m_grn) >> 8;
+		m_unk0xc8578 = static_cast<LegoU32>(m_unk0xc856c.m_blu * c.m_blu) >> 8;
+		m_unk0xc857c = c.m_alp & 0xff;
+		c = p_material->GetDiffuse();
 		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
 			m_unk0xc859c[i].m_red =
-				static_cast<LegoFloat>(m_unk0xc8580[i].m_red) * static_cast<LegoFloat>(c.m_unk0x0 & 0xff) / 256.0f;
+				static_cast<LegoFloat>(m_unk0xc8580[i].m_red) * static_cast<LegoFloat>(c.m_red & 0xff) / 256.0f;
 			m_unk0xc859c[i].m_grn =
-				static_cast<LegoFloat>(m_unk0xc8580[i].m_grn) * static_cast<LegoFloat>(c.m_unk0x1 & 0xff) / 256.0f;
+				static_cast<LegoFloat>(m_unk0xc8580[i].m_grn) * static_cast<LegoFloat>(c.m_grn & 0xff) / 256.0f;
 			m_unk0xc859c[i].m_blu =
-				static_cast<LegoFloat>(m_unk0xc8580[i].m_blu) * static_cast<LegoFloat>(c.m_unk0x2 & 0xff) / 256.0f;
+				static_cast<LegoFloat>(m_unk0xc8580[i].m_blu) * static_cast<LegoFloat>(c.m_blu & 0xff) / 256.0f;
 		}
 	}
 
@@ -2314,17 +2314,17 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 	}
 
 	if (m_unk0xc8568 != 0) {
-		DuskwindBananaRelicColor color = p_material->GetColor0x10();
-		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_unk0x0 & 0xff)) >> 8;
-		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_unk0x1 & 0xff)) >> 8;
-		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_unk0x2 & 0xff)) >> 8;
-		m_unk0xc857c = color.m_unk0x3 & 0xff;
+		GolMaterialColor color = p_material->GetAmbient();
+		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_red & 0xff)) >> 8;
+		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_grn & 0xff)) >> 8;
+		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_blu & 0xff)) >> 8;
+		m_unk0xc857c = color.m_alp & 0xff;
 
-		color = p_material->GetColor0x0c();
+		color = p_material->GetDiffuse();
 		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
-			m_unk0xc859c[i].m_red = ScaleColorChannel(m_unk0xc8580[i].m_red, color.m_unk0x0 & 0xff);
-			m_unk0xc859c[i].m_grn = ScaleColorChannel(m_unk0xc8580[i].m_grn, color.m_unk0x1 & 0xff);
-			m_unk0xc859c[i].m_blu = ScaleColorChannel(m_unk0xc8580[i].m_blu, color.m_unk0x2 & 0xff);
+			m_unk0xc859c[i].m_red = ScaleColorChannel(m_unk0xc8580[i].m_red, color.m_red & 0xff);
+			m_unk0xc859c[i].m_grn = ScaleColorChannel(m_unk0xc8580[i].m_grn, color.m_grn & 0xff);
+			m_unk0xc859c[i].m_blu = ScaleColorChannel(m_unk0xc8580[i].m_blu, color.m_blu & 0xff);
 		}
 	}
 
@@ -2525,11 +2525,11 @@ void GolD3DRenderDevice::VTable0x28()
 	m_unk0xc856c.m_alp = 0xff;
 
 	if (m_unk0xc8530.m_material != NULL) {
-		DuskwindBananaRelicColor color = m_unk0xc8530.m_material->GetColor0x10();
-		m_unk0xc8570 = color.m_unk0x0 & 0xff;
-		m_unk0xc8574 = color.m_unk0x1 & 0xff;
-		m_unk0xc8578 = color.m_unk0x2 & 0xff;
-		m_unk0xc857c = color.m_unk0x3 & 0xff;
+		GolMaterialColor color = m_unk0xc8530.m_material->GetAmbient();
+		m_unk0xc8570 = color.m_red & 0xff;
+		m_unk0xc8574 = color.m_grn & 0xff;
+		m_unk0xc8578 = color.m_blu & 0xff;
+		m_unk0xc857c = color.m_alp & 0xff;
 	}
 }
 
@@ -2540,11 +2540,11 @@ void GolD3DRenderDevice::VTable0x2c(const MaterialColor* p_param)
 	m_unk0xc856c = p_param->m_color;
 
 	if (m_unk0xc8530.m_material != NULL) {
-		DuskwindBananaRelicColor color = m_unk0xc8530.m_material->GetColor0x10();
-		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_unk0x0 & 0xff)) >> 8;
-		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_unk0x1 & 0xff)) >> 8;
-		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_unk0x2 & 0xff)) >> 8;
-		m_unk0xc857c = color.m_unk0x3 & 0xff;
+		GolMaterialColor color = m_unk0xc8530.m_material->GetAmbient();
+		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_red & 0xff)) >> 8;
+		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_grn & 0xff)) >> 8;
+		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_blu & 0xff)) >> 8;
+		m_unk0xc857c = color.m_alp & 0xff;
 	}
 	else {
 		m_unk0xc8570 = 0;
@@ -2570,19 +2570,19 @@ void GolD3DRenderDevice::FUN_1000b0f0(LegoU32 p_index, const Light* p_param)
 	m_unk0xc8580[p_index] = p_param->m_color;
 	m_unk0xc85f0[p_index] = p_param->m_direction;
 
-	DuskwindBananaRelicColor color;
+	GolMaterialColor color;
 	if (m_unk0xc8530.m_material != NULL) {
-		color = m_unk0xc8530.m_material->GetColor0x0c();
+		color = m_unk0xc8530.m_material->GetDiffuse();
 	}
 	else {
-		color.m_unk0x0 = 0;
-		color.m_unk0x1 = 0;
-		color.m_unk0x2 = 0;
+		color.m_red = 0;
+		color.m_grn = 0;
+		color.m_blu = 0;
 	}
 
-	m_unk0xc859c[p_index].m_red = ScaleColorChannel(color.m_unk0x0 & 0xff, m_unk0xc8580[p_index].m_red);
-	m_unk0xc859c[p_index].m_grn = ScaleColorChannel(m_unk0xc8580[p_index].m_grn, color.m_unk0x1 & 0xff);
-	m_unk0xc859c[p_index].m_blu = ScaleColorChannel(m_unk0xc8580[p_index].m_blu, color.m_unk0x2 & 0xff);
+	m_unk0xc859c[p_index].m_red = ScaleColorChannel(color.m_red & 0xff, m_unk0xc8580[p_index].m_red);
+	m_unk0xc859c[p_index].m_grn = ScaleColorChannel(m_unk0xc8580[p_index].m_grn, color.m_grn & 0xff);
+	m_unk0xc859c[p_index].m_blu = ScaleColorChannel(m_unk0xc8580[p_index].m_blu, color.m_blu & 0xff);
 }
 
 // FUNCTION: GOLDP 0x1000b1f0

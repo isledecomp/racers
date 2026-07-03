@@ -88,16 +88,16 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				params.m_unk0x08.m_unk0x0 = parser->ReadInteger();
-				params.m_unk0x08.m_unk0x1 = parser->ReadInteger();
-				params.m_unk0x08.m_unk0x2 = parser->ReadInteger();
-				params.m_unk0x08.m_unk0x3 = parser->ReadInteger();
+				params.m_ambient.m_red = parser->ReadInteger();
+				params.m_ambient.m_grn = parser->ReadInteger();
+				params.m_ambient.m_blu = parser->ReadInteger();
+				params.m_ambient.m_alp = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x29:
-				params.m_unk0x0c.m_unk0x0 = parser->ReadInteger();
-				params.m_unk0x0c.m_unk0x1 = parser->ReadInteger();
-				params.m_unk0x0c.m_unk0x2 = parser->ReadInteger();
-				params.m_unk0x0c.m_unk0x3 = parser->ReadInteger();
+				params.m_diffuse.m_red = parser->ReadInteger();
+				params.m_diffuse.m_grn = parser->ReadInteger();
+				params.m_diffuse.m_blu = parser->ReadInteger();
+				params.m_diffuse.m_alp = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2a:
 				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit2;

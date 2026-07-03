@@ -8,7 +8,7 @@ DECOMP_SIZE_ASSERT(GolMaterial, 0x24)
 DECOMP_SIZE_ASSERT(GolMaterialParams, 0x14)
 
 // FUNCTION: GOLDP 0x10025770
-GolMaterial::GolMaterial() : m_unk0x0c(0xff, 0xff, 0xff, 0xff), m_unk0x10(0xff, 0xff, 0xff, 0xff)
+GolMaterial::GolMaterial() : m_diffuse(0xff, 0xff, 0xff, 0xff), m_ambient(0xff, 0xff, 0xff, 0xff)
 {
 	m_unk0x14 = NULL;
 	m_unk0x08 = 0x50a694;
@@ -28,8 +28,8 @@ GolMaterial::~GolMaterial()
 // FUNCTION: LEGORACERS 0x0040fda0
 void GolMaterial::FUN_100257e0(GolRenderDevice* p_renderer, const GolMaterialParams& p_params)
 {
-	m_unk0x10 = p_params.m_unk0x08;
-	m_unk0x0c = p_params.m_unk0x0c;
+	m_ambient = p_params.m_ambient;
+	m_diffuse = p_params.m_diffuse;
 	m_unk0x08 = p_params.m_unk0x00;
 	m_unk0x20 = p_params.m_unk0x10;
 	m_unk0x21 = p_params.m_unk0x11;
@@ -67,8 +67,8 @@ void GolMaterial::CopyParamsTo(GolMaterialParams* p_params) const
 {
 	p_params->m_unk0x00 = m_unk0x08;
 	p_params->m_unk0x04 = m_unk0x04;
-	p_params->m_unk0x08 = m_unk0x10;
-	p_params->m_unk0x0c = m_unk0x0c;
+	p_params->m_ambient = m_ambient;
+	p_params->m_diffuse = m_diffuse;
 	p_params->m_unk0x10 = m_unk0x20;
 	p_params->m_unk0x11 = m_unk0x21;
 	p_params->m_unk0x12 = m_unk0x22;

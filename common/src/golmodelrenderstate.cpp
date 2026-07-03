@@ -102,18 +102,18 @@ void GolModelRenderState::UpdateMaterialCaches()
 		return;
 	}
 
-	DuskwindBananaRelicColor ambient = activeMaterial->GetColor0x10();
-	m_activeMaterialColor.m_red = (static_cast<LegoU32>(ambient.m_unk0x0 & 0xff) * m_materialColorValue.m_red) >> 8;
-	m_activeMaterialColor.m_grn = (static_cast<LegoU32>(ambient.m_unk0x1 & 0xff) * m_materialColorValue.m_grn) >> 8;
-	m_activeMaterialColor.m_blu = (static_cast<LegoU32>(ambient.m_unk0x2 & 0xff) * m_materialColorValue.m_blu) >> 8;
-	m_activeMaterialColor.m_alp = ambient.m_unk0x3;
+	GolMaterialColor ambient = activeMaterial->GetAmbient();
+	m_activeMaterialColor.m_red = (static_cast<LegoU32>(ambient.m_red & 0xff) * m_materialColorValue.m_red) >> 8;
+	m_activeMaterialColor.m_grn = (static_cast<LegoU32>(ambient.m_grn & 0xff) * m_materialColorValue.m_grn) >> 8;
+	m_activeMaterialColor.m_blu = (static_cast<LegoU32>(ambient.m_blu & 0xff) * m_materialColorValue.m_blu) >> 8;
+	m_activeMaterialColor.m_alp = ambient.m_alp;
 
-	DuskwindBananaRelicColor diffuse = activeMaterial->GetColor0x0c();
+	GolMaterialColor diffuse = activeMaterial->GetDiffuse();
 	if (m_lightCount > zero) {
 		LegoU32 i = 0;
-		LegoU32 red = diffuse.m_unk0x0 & 0xff;
-		LegoU32 grn = diffuse.m_unk0x1 & 0xff;
-		LegoU32 blu = diffuse.m_unk0x2 & 0xff;
+		LegoU32 red = diffuse.m_red & 0xff;
+		LegoU32 grn = diffuse.m_grn & 0xff;
+		LegoU32 blu = diffuse.m_blu & 0xff;
 		FColorRGB* lightProduct = m_lightColorProducts;
 		ColorRGBA* lightColor = m_lightColors;
 

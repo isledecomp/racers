@@ -117,14 +117,14 @@ void DriverModelBuilder::InitializeDefaultMaterialParams()
 {
 	GolMaterial* material = m_partResources->FindFaceMaterial(0);
 	material->CopyParamsTo(&m_defaultMaterialParams);
-	m_defaultMaterialParams.m_unk0x08.m_unk0x3 = 0xff;
-	m_defaultMaterialParams.m_unk0x08.m_unk0x0 = 200;
-	m_defaultMaterialParams.m_unk0x08.m_unk0x2 = 200;
-	m_defaultMaterialParams.m_unk0x08.m_unk0x1 = 200;
-	m_defaultMaterialParams.m_unk0x0c.m_unk0x3 = 0xff;
-	m_defaultMaterialParams.m_unk0x0c.m_unk0x0 = 200;
-	m_defaultMaterialParams.m_unk0x0c.m_unk0x2 = 200;
-	m_defaultMaterialParams.m_unk0x0c.m_unk0x1 = 200;
+	m_defaultMaterialParams.m_ambient.m_alp = 0xff;
+	m_defaultMaterialParams.m_ambient.m_red = 200;
+	m_defaultMaterialParams.m_ambient.m_blu = 200;
+	m_defaultMaterialParams.m_ambient.m_grn = 200;
+	m_defaultMaterialParams.m_diffuse.m_alp = 0xff;
+	m_defaultMaterialParams.m_diffuse.m_red = 200;
+	m_defaultMaterialParams.m_diffuse.m_blu = 200;
+	m_defaultMaterialParams.m_diffuse.m_grn = 200;
 }
 
 // FUNCTION: LEGORACERS 0x0049d2e0
@@ -394,14 +394,14 @@ void DriverModelBuilder::ReplaceMaterialTexture(GolMaterial* p_material, const L
 
 			if (::strncmp(p_name, materialName.m_name, sizeof(GolName)) == 0) {
 				p_material->CopyParamsTo(params);
-				params->m_unk0x08.m_unk0x3 = m_defaultMaterialParams.m_unk0x08.m_unk0x3;
-				params->m_unk0x08.m_unk0x0 = m_defaultMaterialParams.m_unk0x08.m_unk0x0;
-				params->m_unk0x08.m_unk0x1 = m_defaultMaterialParams.m_unk0x08.m_unk0x1;
-				params->m_unk0x08.m_unk0x2 = m_defaultMaterialParams.m_unk0x08.m_unk0x2;
-				params->m_unk0x0c.m_unk0x3 = m_defaultMaterialParams.m_unk0x0c.m_unk0x3;
-				params->m_unk0x0c.m_unk0x0 = m_defaultMaterialParams.m_unk0x0c.m_unk0x0;
-				params->m_unk0x0c.m_unk0x1 = m_defaultMaterialParams.m_unk0x0c.m_unk0x1;
-				params->m_unk0x0c.m_unk0x2 = m_defaultMaterialParams.m_unk0x0c.m_unk0x2;
+				params->m_ambient.m_alp = m_defaultMaterialParams.m_ambient.m_alp;
+				params->m_ambient.m_red = m_defaultMaterialParams.m_ambient.m_red;
+				params->m_ambient.m_grn = m_defaultMaterialParams.m_ambient.m_grn;
+				params->m_ambient.m_blu = m_defaultMaterialParams.m_ambient.m_blu;
+				params->m_diffuse.m_alp = m_defaultMaterialParams.m_diffuse.m_alp;
+				params->m_diffuse.m_red = m_defaultMaterialParams.m_diffuse.m_red;
+				params->m_diffuse.m_grn = m_defaultMaterialParams.m_diffuse.m_grn;
+				params->m_diffuse.m_blu = m_defaultMaterialParams.m_diffuse.m_blu;
 
 				p_material->FUN_100257e0(m_renderer, *params);
 				materialTable->SetPosition(materialIndex, p_material);

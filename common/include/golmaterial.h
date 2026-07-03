@@ -11,19 +11,19 @@ class GolRenderDevice;
 class GolTexture;
 
 // SIZE 0x04
-struct DuskwindBananaRelicColor {
-	DuskwindBananaRelicColor() {}
-	DuskwindBananaRelicColor(undefined4 p_arg0, undefined4 p_arg1, undefined4 p_arg2, undefined4 p_arg3)
+struct GolMaterialColor {
+	GolMaterialColor() {}
+	GolMaterialColor(undefined4 p_arg0, undefined4 p_arg1, undefined4 p_arg2, undefined4 p_arg3)
 	{
-		m_unk0x0 = p_arg0;
-		m_unk0x1 = p_arg1;
-		m_unk0x2 = p_arg2;
-		m_unk0x3 = p_arg3;
+		m_red = p_arg0;
+		m_grn = p_arg1;
+		m_blu = p_arg2;
+		m_alp = p_arg3;
 	}
-	undefined m_unk0x0; // 0x0
-	undefined m_unk0x1; // 0x1
-	undefined m_unk0x2; // 0x2
-	undefined m_unk0x3; // 0x3
+	undefined m_red; // 0x0
+	undefined m_grn; // 0x1
+	undefined m_blu; // 0x2
+	undefined m_alp; // 0x3
 };
 
 // SIZE 0x14
@@ -33,8 +33,8 @@ struct GolMaterialParams {
 
 	LegoU32 m_unk0x00;
 	GolTexture* m_unk0x04;
-	DuskwindBananaRelicColor m_unk0x08;
-	DuskwindBananaRelicColor m_unk0x0c;
+	GolMaterialColor m_ambient;
+	GolMaterialColor m_diffuse;
 	undefined m_unk0x10;
 	undefined m_unk0x11;
 	undefined m_unk0x12;
@@ -90,8 +90,8 @@ public:
 
 	GolTexture* GetUnk0x04() const { return m_unk0x04; }
 	LegoU32 GetUnk0x08() const { return m_unk0x08; }
-	const DuskwindBananaRelicColor& GetColor0x0c() const { return m_unk0x0c; }
-	const DuskwindBananaRelicColor& GetColor0x10() const { return m_unk0x10; }
+	const GolMaterialColor& GetDiffuse() const { return m_diffuse; }
+	const GolMaterialColor& GetAmbient() const { return m_ambient; }
 	undefined GetAlphaFunc() const { return m_unk0x20; }
 	undefined GetAlphaRef() const { return m_unk0x21; }
 	undefined GetSrcBlend() const { return m_unk0x22; }
@@ -114,8 +114,8 @@ public:
 protected:
 	GolTexture* m_unk0x04;
 	LegoU32 m_unk0x08;
-	DuskwindBananaRelicColor m_unk0x0c;
-	DuskwindBananaRelicColor m_unk0x10;
+	GolMaterialColor m_diffuse;
+	GolMaterialColor m_ambient;
 	void* m_unk0x14;
 	GolMaterial::NameRecord m_unk0x18;
 	undefined m_unk0x20;
@@ -126,14 +126,14 @@ protected:
 
 inline GolMaterialParams::GolMaterialParams(LegoU8 p_fullIntensity)
 {
-	m_unk0x0c.m_unk0x0 = p_fullIntensity;
-	m_unk0x0c.m_unk0x1 = p_fullIntensity;
-	m_unk0x0c.m_unk0x2 = p_fullIntensity;
-	m_unk0x0c.m_unk0x3 = p_fullIntensity;
-	m_unk0x08.m_unk0x0 = p_fullIntensity;
-	m_unk0x08.m_unk0x1 = p_fullIntensity;
-	m_unk0x08.m_unk0x2 = p_fullIntensity;
-	m_unk0x08.m_unk0x3 = p_fullIntensity;
+	m_diffuse.m_red = p_fullIntensity;
+	m_diffuse.m_grn = p_fullIntensity;
+	m_diffuse.m_blu = p_fullIntensity;
+	m_diffuse.m_alp = p_fullIntensity;
+	m_ambient.m_red = p_fullIntensity;
+	m_ambient.m_grn = p_fullIntensity;
+	m_ambient.m_blu = p_fullIntensity;
+	m_ambient.m_alp = p_fullIntensity;
 	m_unk0x00 = GolMaterial::c_flag0x08Bit2 | GolMaterial::c_flag0x08Bit4 | GolMaterial::c_flag0x08Bit7 |
 				GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit10 | GolMaterial::c_flag0x08Bit13 |
 				GolMaterial::c_flag0x08Bit15 | GolMaterial::c_flag0x08Bit20 | GolMaterial::c_flag0x08Bit22;

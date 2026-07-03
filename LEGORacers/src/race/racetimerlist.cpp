@@ -120,7 +120,7 @@ void RaceTimerList::Resource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004648d0
-void RaceTimerList::Resource::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void RaceTimerList::Resource::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	m_event = NULL;
 

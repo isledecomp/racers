@@ -74,7 +74,7 @@ void TriggerList::Entry::Update(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x00464f40
-void TriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData*)
+void TriggerList::Entry::OnEvent(LegoEventQueue::CallbackData*)
 {
 	LegoU32 flags = m_flags;
 	if (!(flags & c_eventsActive)) {

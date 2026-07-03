@@ -130,12 +130,12 @@ void CollisionEventQueue::TestBodyPairs()
 
 	do {
 		if (event->m_active) {
-			model = event->m_descriptor.m_target->VTable0x08();
+			model = event->m_descriptor.m_target->GetEntity();
 			other = event->m_next;
 
 			if (other) {
 				do {
-					otherModel = other->m_descriptor.m_target->VTable0x08();
+					otherModel = other->m_descriptor.m_target->GetEntity();
 
 					if (model->GetRadius() < 0.0f) {
 						model->UpdateBounds();
@@ -183,7 +183,7 @@ void CollisionEventQueue::SortBodyList()
 		return;
 	}
 
-	GolWorldEntity* model = previous->m_descriptor.m_target->VTable0x08();
+	GolWorldEntity* model = previous->m_descriptor.m_target->GetEntity();
 	if (model->GetRadius() < 0.0f) {
 		model->UpdateBounds();
 	}
@@ -197,7 +197,7 @@ void CollisionEventQueue::SortBodyList()
 
 	do {
 		Event* next = event->m_next;
-		GolWorldEntity* eventModel = event->m_descriptor.m_target->VTable0x08();
+		GolWorldEntity* eventModel = event->m_descriptor.m_target->GetEntity();
 
 		if (eventModel->GetRadius() < 0.0f) {
 			eventModel->UpdateBounds();
@@ -212,7 +212,7 @@ void CollisionEventQueue::SortBodyList()
 			Event* insertAfter = previous->m_descriptor.m_previous;
 			if (insertAfter) {
 				do {
-					GolWorldEntity* insertModel = insertAfter->m_descriptor.m_target->VTable0x08();
+					GolWorldEntity* insertModel = insertAfter->m_descriptor.m_target->GetEntity();
 
 					if (eventModel->GetRadius() < 0.0f) {
 						eventModel->UpdateBounds();

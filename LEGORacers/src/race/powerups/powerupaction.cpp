@@ -76,7 +76,7 @@ HazardActionBase::HazardActionBase()
 }
 
 // FUNCTION: LEGORACERS 0x00456320
-void HazardActionBase::VTable0x00(LegoEventQueue::CallbackData* p_param)
+void HazardActionBase::OnEvent(LegoEventQueue::CallbackData* p_param)
 {
 	Racer* racer = static_cast<Racer*>(p_param->m_data);
 	if (racer != m_ownerRacer) {

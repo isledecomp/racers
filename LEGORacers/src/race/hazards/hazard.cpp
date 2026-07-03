@@ -18,7 +18,7 @@ Hazard::Hazard()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void Hazard::VTable0x00(LegoEventQueue::CallbackData*)
+void Hazard::OnEvent(LegoEventQueue::CallbackData*)
 {
 }
 

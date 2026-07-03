@@ -215,7 +215,7 @@ void MovingObstacleHazard::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00490490
-void MovingObstacleHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void MovingObstacleHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
 	RacerPhysics* field0x3e8 = &racer->m_physics;

@@ -26,8 +26,8 @@ class TimeRaceManager;
 class Racer : public LegoEventQueue::Callback {
 public:
 	Racer();
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-	virtual ~Racer();                                               // vtable+0x04
+	void OnEvent(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
+	virtual ~Racer();                                            // vtable+0x04
 
 	// SYNTHETIC: LEGORACERS 0x0043b420
 	// Racer::`vector deleting destructor'

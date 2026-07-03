@@ -24,7 +24,7 @@ class MovingObstacleHazard : public Hazard {
 public:
 	MovingObstacleHazard();
 	~MovingObstacleHazard() override;
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
+	void OnEvent(LegoEventQueue::CallbackData* p_data) override;           // vtable+0x00
 	void OnActivate(void* p_racer) override;                               // vtable+0x04
 	void OnDeactivate(void* p_context) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10

@@ -300,7 +300,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0048ce90
-void GhostHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void GhostHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
 	RacerPhysics* field0x3e8 = &racer->m_physics;

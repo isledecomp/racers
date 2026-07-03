@@ -49,7 +49,7 @@ void LegoEventQueue::Event::Fire(LegoEventQueue*, CallbackData* p_data)
 		m_fireCount++;
 		p_data->m_fireCount = m_fireCount;
 		p_data->m_flags = m_descriptor.m_flags;
-		m_callback->VTable0x00(p_data);
+		m_callback->OnEvent(p_data);
 
 		if (!(m_descriptor.m_flags & 1)) {
 			if (m_fireCount >= m_descriptor.m_maxFireCount) {

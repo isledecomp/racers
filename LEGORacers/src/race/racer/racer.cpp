@@ -1313,7 +1313,7 @@ void Racer::StopEngineSounds()
 }
 
 // STUB: LEGORACERS 0x00438560
-void Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	if (p_data->m_type == 1) {
 		LegoU32 flags = m_flags;

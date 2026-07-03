@@ -20,14 +20,14 @@ class TriggerWorld;
 // SIZE 0x18
 class PowerupAction : public LegoEventQueue::Callback {
 public:
-	void VTable0x00(LegoEventQueue::CallbackData* p_param) override = 0; // vtable+0x00
-	virtual PowerupAction* Destroy(undefined4 p_flags) = 0;              // vtable+0x04
-	virtual void Update(LegoU32 p_elapsedMs) = 0;                        // vtable+0x08
-	virtual void Draw(GolD3DRenderDevice*) = 0;                          // vtable+0x0c
-	virtual void DrawTransparent(GolD3DRenderDevice*) = 0;               // vtable+0x10
-	virtual void AdvanceState() = 0;                                     // vtable+0x14
-	virtual LegoS32 GetBrickColor() = 0;                                 // vtable+0x18
-	virtual void Deactivate() = 0;                                       // vtable+0x1c
+	void OnEvent(LegoEventQueue::CallbackData* p_param) override = 0; // vtable+0x00
+	virtual PowerupAction* Destroy(undefined4 p_flags) = 0;           // vtable+0x04
+	virtual void Update(LegoU32 p_elapsedMs) = 0;                     // vtable+0x08
+	virtual void Draw(GolD3DRenderDevice*) = 0;                       // vtable+0x0c
+	virtual void DrawTransparent(GolD3DRenderDevice*) = 0;            // vtable+0x10
+	virtual void AdvanceState() = 0;                                  // vtable+0x14
+	virtual LegoS32 GetBrickColor() = 0;                              // vtable+0x18
+	virtual void Deactivate() = 0;                                    // vtable+0x1c
 
 	PowerupAction* GetNext() { return m_next; }
 	LegoS32 GetState() const { return m_state; }

@@ -388,7 +388,7 @@ void PowerupExplosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
 }
 
 // STUB: LEGORACERS 0x00421c00
-void PowerupExplosion::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	LegoU32 mode = m_blastMode;
 	if (!mode) {

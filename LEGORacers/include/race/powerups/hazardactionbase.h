@@ -18,10 +18,10 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00456300
 	// HazardActionBase::`scalar deleting destructor'
 
-	void VTable0x00(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
-	void AdvanceState() override;                                    // vtable+0x14
-	LegoS32 GetBrickColor() override;                                // vtable+0x18
-	virtual void OnHitRacer(Racer* p_racer);                         // vtable+0x20
+	void OnEvent(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
+	void AdvanceState() override;                                 // vtable+0x14
+	LegoS32 GetBrickColor() override;                             // vtable+0x18
+	virtual void OnHitRacer(Racer* p_racer);                      // vtable+0x20
 
 protected:
 	void ComputeDropPosition(Racer* p_racer, GolVec3* p_position, GolBoundingVolume::HitTriangle* p_record);

@@ -421,7 +421,7 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00431660
-void PowerupProjectile::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void PowerupProjectile::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* previousContext = m_ownerRacer;
 	if (p_data->m_data != previousContext && m_state == c_stateFlying) {

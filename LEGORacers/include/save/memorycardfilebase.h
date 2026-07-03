@@ -8,7 +8,7 @@
 class MemoryCardFileBase : public SaveGameFile {
 public:
 	MemoryCardFileBase();
-	LegoS32 VTable0x38(SaveSlot* p_slot, const LegoChar* p_fileName, undefined4) override; // vtable+0x38
+	LegoS32 OpenSlotFile(SaveSlot* p_slot, const LegoChar* p_fileName, undefined4) override; // vtable+0x38
 
 	// SYNTHETIC: LEGORACERS 0x00450e70 FOLDED
 	// MemoryCardFileBase::~MemoryCardFileBase

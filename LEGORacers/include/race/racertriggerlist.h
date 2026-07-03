@@ -17,11 +17,11 @@ public:
 	class Entry : public TriggerList::Entry {
 	public:
 		Entry();
-		void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-		~Entry() override;                                              // vtable+0x04
-		void Destroy() override;                                        // vtable+0x08
-		void Update(LegoU32 p_elapsedMs) override;                      // vtable+0x0c
-		void Reset() override;                                          // vtable+0x10
+		void OnEvent(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
+		~Entry() override;                                           // vtable+0x04
+		void Destroy() override;                                     // vtable+0x08
+		void Update(LegoU32 p_elapsedMs) override;                   // vtable+0x0c
+		void Reset() override;                                       // vtable+0x10
 
 		void Initialize(const EntryParams* p_params);
 

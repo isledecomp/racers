@@ -168,7 +168,7 @@ void GrabberHazard::Update(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0048e050
-void GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	LegoFloat frame = m_entity->GetActiveValue();
 	if (m_grabState == c_stateTwo) {

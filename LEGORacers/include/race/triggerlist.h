@@ -25,11 +25,11 @@ public:
 	class Entry : public LegoEventQueue::Callback {
 	public:
 		Entry();
-		void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-		virtual ~Entry();                                               // vtable+0x04
-		virtual void Destroy();                                         // vtable+0x08
-		virtual void Update(LegoU32 p_elapsedMs);                       // vtable+0x0c
-		virtual void Reset();                                           // vtable+0x10
+		void OnEvent(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
+		virtual ~Entry();                                            // vtable+0x04
+		virtual void Destroy();                                      // vtable+0x08
+		virtual void Update(LegoU32 p_elapsedMs);                    // vtable+0x0c
+		virtual void Reset();                                        // vtable+0x10
 
 	protected:
 		friend class TriggerList;
@@ -43,7 +43,7 @@ public:
 
 		void Initialize(const EntryParams* p_params);
 		void CallBaseInitialize(const EntryParams* p_params) { Entry::Initialize(p_params); }
-		void CallBaseVTable0x00(LegoEventQueue::CallbackData* p_data) { Entry::VTable0x00(p_data); }
+		void CallBaseOnEvent(LegoEventQueue::CallbackData* p_data) { Entry::OnEvent(p_data); }
 		void CallBaseDestroy() { Entry::Destroy(); }
 		void CallBaseUpdate(LegoU32 p_elapsedMs) { Entry::Update(p_elapsedMs); }
 		void CallBaseReset() { Entry::Reset(); }

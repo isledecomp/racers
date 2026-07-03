@@ -20,12 +20,12 @@ LegoS32 SaveGameFile::BufferedOpen(const LegoChar*, LegoS32, LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x0044e140
-LegoS32 SaveGameFile::VTable0x3c(
+LegoS32 SaveGameFile::BufferedOpenSlotFile(
 	SaveSlot* p_slot,
 	const LegoChar* p_fileName,
 	LegoS32 p_mode,
 	LegoU32 p_bufferSize,
-	undefined4 p_unk0x14
+	undefined4 p_createSize
 )
 {
 	m_mode = p_mode;
@@ -35,7 +35,7 @@ LegoS32 SaveGameFile::VTable0x3c(
 	m_bufferEnd = 0;
 	m_position = 0;
 
-	LegoS32 result = VTable0x38(p_slot, p_fileName, p_unk0x14);
+	LegoS32 result = OpenSlotFile(p_slot, p_fileName, p_createSize);
 	if (result != e_ioSuccess) {
 		return result;
 	}

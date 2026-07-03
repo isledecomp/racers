@@ -56,8 +56,8 @@ public:
 	};
 
 	PowerupExplosion();
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-	virtual PowerupExplosion* Destroy(undefined4 p_flags);          // vtable+0x04
+	void OnEvent(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
+	virtual PowerupExplosion* Destroy(undefined4 p_flags);       // vtable+0x04
 
 	~PowerupExplosion();
 	PowerupExplosion* GetNext() { return m_next; }

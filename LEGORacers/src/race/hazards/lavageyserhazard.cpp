@@ -224,7 +224,7 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0048dcd0
-void LavaGeyserHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void LavaGeyserHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
 	RacerPhysics* field0x3e8 = &racer->m_physics;

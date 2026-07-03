@@ -19,12 +19,12 @@ class TriggerWorld;
 // SIZE 0x54
 class PickupBrick : public LegoEventQueue::Callback {
 public:
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-	virtual void OnTouched(Racer* p_racer) = 0;                     // vtable+0x04
-	virtual ~PickupBrick();                                         // vtable+0x08
-	virtual void Respawn();                                         // vtable+0x0c
-	virtual void Draw(GolD3DRenderDevice* p_renderer);              // vtable+0x10
-	virtual void DrawTransparent(GolD3DRenderDevice* p_renderer);   // vtable+0x14
+	void OnEvent(LegoEventQueue::CallbackData* p_data) override;  // vtable+0x00
+	virtual void OnTouched(Racer* p_racer) = 0;                   // vtable+0x04
+	virtual ~PickupBrick();                                       // vtable+0x08
+	virtual void Respawn();                                       // vtable+0x0c
+	virtual void Draw(GolD3DRenderDevice* p_renderer);            // vtable+0x10
+	virtual void DrawTransparent(GolD3DRenderDevice* p_renderer); // vtable+0x14
 
 	// SYNTHETIC: LEGORACERS 0x00453940
 	// PickupBrick::`scalar deleting destructor'

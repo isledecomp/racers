@@ -18,9 +18,9 @@ public:
 		// SIZE 0xe4
 		class RigidBody {
 		public:
-			virtual void VTable0x00() = 0;            // vtable+0x00
-			virtual void VTable0x04() = 0;            // vtable+0x04
-			virtual GolWorldEntity* VTable0x08() = 0; // vtable+0x08
+			virtual void VTable0x00() = 0;           // vtable+0x00
+			virtual void VTable0x04() = 0;           // vtable+0x04
+			virtual GolWorldEntity* GetEntity() = 0; // vtable+0x08
 			LegoBool32 CalculateBoxContact(
 				RigidBody* p_other,
 				LegoFloat* p_penetration,
@@ -112,7 +112,7 @@ public:
 	// SIZE 0x04
 	class Callback {
 	public:
-		virtual void VTable0x00(CallbackData* p_data) = 0; // vtable+0x00
+		virtual void OnEvent(CallbackData* p_data) = 0; // vtable+0x00
 	};
 
 	// SIZE 0x2c

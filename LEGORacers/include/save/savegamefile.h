@@ -14,13 +14,13 @@ public:
 
 	LegoS32 BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize) override; // vtable+0x1c
 	LegoS32 Dispose() override;                                                                      // vtable+0x20
-	virtual LegoS32 VTable0x38(SaveSlot* p_slot, const LegoChar* p_fileName, undefined4) = 0;        // vtable+0x38
-	virtual LegoS32 VTable0x3c(
+	virtual LegoS32 OpenSlotFile(SaveSlot* p_slot, const LegoChar* p_fileName, undefined4) = 0;      // vtable+0x38
+	virtual LegoS32 BufferedOpenSlotFile(
 		SaveSlot* p_slot,
 		const LegoChar* p_fileName,
 		LegoS32 p_mode,
 		LegoU32 p_bufferSize,
-		undefined4 p_unk0x14
+		undefined4 p_createSize
 	); // vtable+0x3c
 
 	// SYNTHETIC: LEGORACERS 0x0044e110

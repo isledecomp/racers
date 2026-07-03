@@ -108,7 +108,7 @@ void PowerupActionBase::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupActionBase::VTable0x00(LegoEventQueue::CallbackData*)
+void PowerupActionBase::OnEvent(LegoEventQueue::CallbackData*)
 {
 }
 

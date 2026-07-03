@@ -86,7 +86,7 @@ void RacerTriggerList::Entry::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00463c70
-void RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void RacerTriggerList::Entry::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	Racer* racer = NULL;
 	if (p_data->m_type == 2) {
@@ -105,7 +105,7 @@ void RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		}
 	}
 
-	CallBaseVTable0x00(p_data);
+	CallBaseOnEvent(p_data);
 	if (racer) {
 		LegoU32 bit = 1 << racer->m_materialIndex;
 		LegoU32 previousFlags = m_previousInsideMask;

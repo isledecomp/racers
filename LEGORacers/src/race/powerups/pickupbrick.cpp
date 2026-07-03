@@ -144,7 +144,7 @@ void PickupBrick::SetTouchable(LegoBool32 p_touchable)
 }
 
 // FUNCTION: LEGORACERS 0x00453af0
-void PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void PickupBrick::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	m_flags |= c_flagTouched;
 

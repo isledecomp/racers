@@ -37,7 +37,7 @@ public:
 
 	PowerupProjectile();
 	~PowerupProjectile();
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;       // vtable+0x00
+	void OnEvent(LegoEventQueue::CallbackData* p_data) override;          // vtable+0x00
 	virtual void LaunchAtPosition(Params* p_params, GolVec3* p_position); // vtable+0x04
 	virtual void LaunchAtPoint(                                      // vtable+0x08
 		Params* p_params,

@@ -195,7 +195,7 @@ void RocketHazard::ShowOffModel()
 }
 
 // FUNCTION: LEGORACERS 0x0048e660
-void RocketHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void RocketHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	if (p_data->m_racerView1->GetFlags() & c_field0x0e0Flags0xd04Bit0) {
 		m_unk0x58 = 0;

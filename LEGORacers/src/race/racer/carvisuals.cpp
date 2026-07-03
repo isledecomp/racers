@@ -38,15 +38,15 @@ extern const LegoFloat g_unk0x004b0544;
 extern const LegoFloat g_hiddenModelDistance;
 extern const LegoFloat g_unk0x004b0af0;
 extern const LegoFloat g_shadowProbeHeight;
-extern const LegoFloat g_unk0x004b0b24;
-extern const LegoFloat g_unk0x004b0b28;
-extern const LegoFloat g_unk0x004b0b2c;
-extern const LegoFloat g_unk0x004b0b30;
-extern const LegoFloat g_unk0x004b0b34;
+extern const LegoFloat g_lookTargetRangeSquared;
+extern const LegoFloat g_pitchLeanRate;
+extern const LegoFloat g_rollLeanRate;
+extern const LegoFloat g_pitchLeanDamping;
+extern const LegoFloat g_rollLeanDamping;
 extern const LegoFloat g_shadowFadeNearSquared;
 extern const LegoFloat g_shadowFadeFarSquared;
-extern const LegoFloat g_unk0x004b0b40;
-extern const LegoFloat g_unk0x004b0b44;
+extern const LegoFloat g_lookAtDotBehind;
+extern const LegoFloat g_lookAtDotBeside;
 extern LegoU32 g_silhouetteClearFlag;
 extern LegoU32 g_silhouetteFlattenFlag;
 extern LegoU32 g_raceLapCount;
@@ -745,11 +745,11 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	}
 
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
-	LegoFloat scale = g_unk0x004b0b28;
+	LegoFloat scale = g_pitchLeanRate;
 	scale = -scale;
 	m_pitchLean += (scale * length) * elapsed / m_racerPhysics->m_mass;
 	LegoFloat decay = elapsed;
-	decay *= g_unk0x004b0b30;
+	decay *= g_pitchLeanDamping;
 	decay *= m_pitchLean;
 	if ((m_pitchLean > 0.0f && decay < m_pitchLean) || (m_pitchLean < 0.0f && decay > m_pitchLean)) {
 		m_pitchLean -= decay;
@@ -772,11 +772,11 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		length = -length;
 	}
 
-	scale = g_unk0x004b0b2c;
+	scale = g_rollLeanRate;
 	scale = -scale;
 	m_rollLean += (scale * length) * elapsed / m_racerPhysics->m_mass;
 	decay = elapsed;
-	decay *= g_unk0x004b0b34;
+	decay *= g_rollLeanDamping;
 	decay *= m_rollLean;
 	if ((m_rollLean > 0.0f && decay < m_rollLean) || (m_rollLean < 0.0f && decay > m_rollLean)) {
 		m_rollLean -= decay;
@@ -943,7 +943,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 
 		Racer* racer = m_racer;
 		RaceState* raceState = racer->m_raceState;
-		Racer* nearbyRacer = raceState->FindNearestRacerInRange(&position, 2.0f, g_unk0x004b0b24);
+		Racer* nearbyRacer = raceState->FindNearestRacerInRange(&position, 2.0f, g_lookTargetRangeSquared);
 		m_nearbyRacer = nearbyRacer;
 
 		if (nearbyRacer != NULL) {
@@ -962,11 +962,11 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 
 			LegoFloat forwardDot = row0.m_z * direction.m_z + row0.m_y * direction.m_y + row0.m_x * direction.m_x;
 			LegoU32 animationPart = 0;
-			if (forwardDot < g_unk0x004b02e0 && forwardDot > g_unk0x004b0b44) {
+			if (forwardDot < g_unk0x004b02e0 && forwardDot > g_lookAtDotBeside) {
 				LegoFloat sideDot = row1.m_z * direction.m_z + row1.m_y * direction.m_y + row1.m_x * direction.m_x;
 				animationPart = sideDot < 0.0f ? c_animationPart7 : c_animationPart16;
 			}
-			else if (forwardDot < g_unk0x004b02e0 && forwardDot > g_unk0x004b0b40) {
+			else if (forwardDot < g_unk0x004b02e0 && forwardDot > g_lookAtDotBehind) {
 				LegoFloat sideDot = row1.m_z * direction.m_z + row1.m_y * direction.m_y + row1.m_x * direction.m_x;
 				animationPart = sideDot < 0.0f ? c_animationPart8 : c_animationPart17;
 			}

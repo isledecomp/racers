@@ -11,10 +11,10 @@ DECOMP_SIZE_ASSERT(CarShadowRenderState::TransformedVertex, 0x0c)
 DECOMP_SIZE_ASSERT(CarShadowRenderState, 0x33c)
 
 // GLOBAL: LEGORACERS 0x004af55c
-LegoU32 g_unk0x004af55c[3] = {1, 2, 0};
+LegoU32 g_nextVertexIndex[3] = {1, 2, 0};
 
 // GLOBAL: LEGORACERS 0x004af568
-LegoU32 g_unk0x004af568[3] = {2, 0, 1};
+LegoU32 g_previousVertexIndex[3] = {2, 0, 1};
 
 // GLOBAL: LEGORACERS 0x004be22c
 LegoU32 g_silhouetteClearMask = 1;
@@ -252,8 +252,8 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 
 	TransformedVertex* base0 = vertices[topIndex];
 	TransformedVertex* base1 = base0;
-	LegoU32 edge0Index = g_unk0x004af568[topIndex];
-	LegoU32 edge1Index = g_unk0x004af55c[topIndex];
+	LegoU32 edge0Index = g_previousVertexIndex[topIndex];
+	LegoU32 edge1Index = g_nextVertexIndex[topIndex];
 	TransformedVertex* edge0 = vertices[edge0Index];
 	TransformedVertex* edge1 = vertices[edge1Index];
 	LegoS32 x0 = static_cast<LegoS32>(65536.0f * base0->m_x);
@@ -263,7 +263,7 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 	LegoFloat deltaY0 = edge0->m_y - base0->m_y;
 	if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
 		base0 = edge0;
-		edge0Index = g_unk0x004af568[edge0Index];
+		edge0Index = g_previousVertexIndex[edge0Index];
 		edge0 = vertices[edge0Index];
 		deltaY0 = edge0->m_y - base0->m_y;
 		if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
@@ -280,7 +280,7 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 	LegoFloat deltaY1 = edge1->m_y - base1->m_y;
 	if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
 		base1 = edge1;
-		edge1Index = g_unk0x004af55c[edge1Index];
+		edge1Index = g_nextVertexIndex[edge1Index];
 		edge1 = vertices[edge1Index];
 		deltaY1 = edge1->m_y - base1->m_y;
 		if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
@@ -315,7 +315,7 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 			LegoFloat yEndValue;
 			if (edge1EndsFirst) {
 				base1 = edge1;
-				edge1Index = g_unk0x004af55c[edge1Index];
+				edge1Index = g_nextVertexIndex[edge1Index];
 				edge1 = vertices[edge1Index];
 				deltaY1 = edge1->m_y - base1->m_y;
 				if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
@@ -327,7 +327,7 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 			}
 			else {
 				base0 = edge0;
-				edge0Index = g_unk0x004af568[edge0Index];
+				edge0Index = g_previousVertexIndex[edge0Index];
 				edge0 = vertices[edge0Index];
 				deltaY0 = edge0->m_y - base0->m_y;
 				if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
@@ -401,8 +401,8 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 
 	TransformedVertex* base0 = vertices[topIndex];
 	TransformedVertex* base1 = base0;
-	LegoU32 edge0Index = g_unk0x004af568[topIndex];
-	LegoU32 edge1Index = g_unk0x004af55c[topIndex];
+	LegoU32 edge0Index = g_previousVertexIndex[topIndex];
+	LegoU32 edge1Index = g_nextVertexIndex[topIndex];
 	TransformedVertex* edge0 = vertices[edge0Index];
 	TransformedVertex* edge1 = vertices[edge1Index];
 	LegoS32 x0 = static_cast<LegoS32>(65536.0f * base0->m_x);
@@ -412,7 +412,7 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 	LegoFloat deltaY0 = edge0->m_y - base0->m_y;
 	if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
 		base0 = edge0;
-		edge0Index = g_unk0x004af568[edge0Index];
+		edge0Index = g_previousVertexIndex[edge0Index];
 		edge0 = vertices[edge0Index];
 		deltaY0 = edge0->m_y - base0->m_y;
 		if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
@@ -429,7 +429,7 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 	LegoFloat deltaY1 = edge1->m_y - base1->m_y;
 	if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
 		base1 = edge1;
-		edge1Index = g_unk0x004af55c[edge1Index];
+		edge1Index = g_nextVertexIndex[edge1Index];
 		edge1 = vertices[edge1Index];
 		deltaY1 = edge1->m_y - base1->m_y;
 		if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
@@ -462,7 +462,7 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 			LegoFloat yEndValue;
 			if (edge1EndsFirst) {
 				base1 = edge1;
-				edge1Index = g_unk0x004af55c[edge1Index];
+				edge1Index = g_nextVertexIndex[edge1Index];
 				edge1 = vertices[edge1Index];
 				deltaY1 = edge1->m_y - base1->m_y;
 				if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
@@ -474,7 +474,7 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 			}
 			else {
 				base0 = edge0;
-				edge0Index = g_unk0x004af568[edge0Index];
+				edge0Index = g_previousVertexIndex[edge0Index];
 				edge0 = vertices[edge0Index];
 				deltaY0 = edge0->m_y - base0->m_y;
 				if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
@@ -531,8 +531,8 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 
 	TransformedVertex* base0 = vertices[topIndex];
 	TransformedVertex* base1 = base0;
-	LegoU32 edge0Index = g_unk0x004af568[topIndex];
-	LegoU32 edge1Index = g_unk0x004af55c[topIndex];
+	LegoU32 edge0Index = g_previousVertexIndex[topIndex];
+	LegoU32 edge1Index = g_nextVertexIndex[topIndex];
 	TransformedVertex* edge0 = vertices[edge0Index];
 	TransformedVertex* edge1 = vertices[edge1Index];
 	LegoS32 x0 = static_cast<LegoS32>(65536.0f * base0->m_x);
@@ -542,7 +542,7 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 	LegoFloat deltaY0 = edge0->m_y - base0->m_y;
 	if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
 		base0 = edge0;
-		edge0Index = g_unk0x004af568[edge0Index];
+		edge0Index = g_previousVertexIndex[edge0Index];
 		edge0 = vertices[edge0Index];
 		deltaY0 = edge0->m_y - base0->m_y;
 		if (deltaY0 < 0.001f && deltaY0 > -0.001f) {
@@ -559,7 +559,7 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 	LegoFloat deltaY1 = edge1->m_y - base1->m_y;
 	if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
 		base1 = edge1;
-		edge1Index = g_unk0x004af55c[edge1Index];
+		edge1Index = g_nextVertexIndex[edge1Index];
 		edge1 = vertices[edge1Index];
 		deltaY1 = edge1->m_y - base1->m_y;
 		if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
@@ -592,7 +592,7 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 			LegoFloat yEndValue;
 			if (edge1EndsFirst) {
 				base1 = edge1;
-				edge1Index = g_unk0x004af55c[edge1Index];
+				edge1Index = g_nextVertexIndex[edge1Index];
 				edge1 = vertices[edge1Index];
 				deltaY1 = edge1->m_y - base1->m_y;
 				if (deltaY1 < 0.001f && deltaY1 > -0.001f) {
@@ -604,7 +604,7 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 			}
 			else {
 				base0 = edge0;
-				edge0Index = g_unk0x004af568[edge0Index];
+				edge0Index = g_previousVertexIndex[edge0Index];
 				edge0 = vertices[edge0Index];
 				deltaY0 = edge0->m_y - base0->m_y;
 				if (deltaY0 < 0.001f && deltaY0 > -0.001f) {

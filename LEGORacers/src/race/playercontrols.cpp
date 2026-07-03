@@ -17,7 +17,7 @@ extern const LegoFloat g_unk0x004b0740 = 2.5f;
 extern const LegoFloat g_unk0x004b0744 = 1.25f;
 
 // GLOBAL: LEGORACERS 0x004b0748
-extern const LegoFloat g_unk0x004b0748 = 8.25f;
+extern const LegoFloat g_steeringReturnRate = 8.25f;
 
 // GLOBAL: LEGORACERS 0x004b074c
 extern const LegoFloat g_unk0x004b074c = 5.0f;
@@ -108,7 +108,7 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 	if (hasSteerInput) {
 		if ((inputFlags & c_inputFlagSteerPositive) && !(inputFlags & c_inputFlagSteerNegative)) {
 			if (m_input.m_steering < 0.0f) {
-				delta = g_unk0x004b0748;
+				delta = g_steeringReturnRate;
 			}
 			else {
 				delta = turnRate;
@@ -116,18 +116,18 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 		}
 		else if (!(inputFlags & c_inputFlagSteerPositive) && (inputFlags & c_inputFlagSteerNegative)) {
 			if (m_input.m_steering > 0.0f) {
-				delta = -g_unk0x004b0748;
+				delta = -g_steeringReturnRate;
 			}
 			else {
 				delta = -turnRate;
 			}
 		}
 		else if (m_input.m_steering > 0.0f) {
-			delta = -g_unk0x004b0748;
+			delta = -g_steeringReturnRate;
 			limitNegative = 0.0f;
 		}
 		else if (m_input.m_steering < 0.0f) {
-			delta = g_unk0x004b0748;
+			delta = g_steeringReturnRate;
 			limitPositive = 0.0f;
 		}
 		else {
@@ -150,7 +150,7 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 		if (analogValue > 0.0f) {
 			limitPositive = analogValue;
 			if (m_input.m_steering < 0.0f) {
-				delta = g_unk0x004b0748;
+				delta = g_steeringReturnRate;
 			}
 			else {
 				delta = 1.0f - analogValue;
@@ -162,7 +162,7 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 		else if (analogValue < 0.0f) {
 			limitNegative = analogValue;
 			if (m_input.m_steering > 0.0f) {
-				delta = -g_unk0x004b0748;
+				delta = -g_steeringReturnRate;
 			}
 			else {
 				delta = analogValue + 1.0f;
@@ -178,11 +178,11 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 
 	if (delta == 0.0f) {
 		if (m_input.m_steering > 0.0f) {
-			delta = -g_unk0x004b0748;
+			delta = -g_steeringReturnRate;
 			limitNegative = 0.0f;
 		}
 		else if (m_input.m_steering < 0.0f) {
-			delta = g_unk0x004b0748;
+			delta = g_steeringReturnRate;
 			limitPositive = 0.0f;
 		}
 		else {

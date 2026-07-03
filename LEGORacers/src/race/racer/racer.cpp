@@ -185,19 +185,19 @@ extern const LegoFloat g_unk0x004b0af0 = 15.0f;
 extern const LegoFloat g_shadowProbeHeight = 6.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b24
-extern const LegoFloat g_unk0x004b0b24 = 40000.0f;
+extern const LegoFloat g_lookTargetRangeSquared = 40000.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b28
-extern const LegoFloat g_unk0x004b0b28 = 30.0f;
+extern const LegoFloat g_pitchLeanRate = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b2c
-extern const LegoFloat g_unk0x004b0b2c = 100.0f;
+extern const LegoFloat g_rollLeanRate = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b30
-extern const LegoFloat g_unk0x004b0b30 = 0.0099999998f;
+extern const LegoFloat g_pitchLeanDamping = 0.0099999998f;
 
 // GLOBAL: LEGORACERS 0x004b0b34
-extern const LegoFloat g_unk0x004b0b34 = 0.029999999f;
+extern const LegoFloat g_rollLeanDamping = 0.029999999f;
 
 // GLOBAL: LEGORACERS 0x004b0b38
 extern const LegoFloat g_shadowFadeNearSquared = 2500.0f;
@@ -206,10 +206,10 @@ extern const LegoFloat g_shadowFadeNearSquared = 2500.0f;
 extern const LegoFloat g_shadowFadeFarSquared = 10000.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b40
-extern const LegoFloat g_unk0x004b0b40 = -0.60000002f;
+extern const LegoFloat g_lookAtDotBehind = -0.60000002f;
 
 // GLOBAL: LEGORACERS 0x004b0b44
-extern const LegoFloat g_unk0x004b0b44 = -0.2f;
+extern const LegoFloat g_lookAtDotBeside = -0.2f;
 
 // GLOBAL: LEGORACERS 0x004b0b4c
 extern const LegoFloat g_fadeAlphaScale = 191.0f;

@@ -35,7 +35,7 @@ const LegoFloat g_carPartCameraPositions[] = {
 extern const LegoFloat g_carPartHoverHeight = 1.2f;
 
 // GLOBAL: LEGORACERS 0x004b2ed8
-LegoFloat g_unk0x4b2ed8 = 1.0f;
+LegoFloat g_pieceCommitHeight = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004c7668
 LegoFloat g_fieldAt0x2308AngleStep = g_unk0x004b2e6c * 0.125f;
@@ -882,7 +882,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::CommitPiece()
 
 	m_context->m_saveSystem.GetActiveRecord().MarkCarModified();
 	m_animFlags |= c_flagCommittingPart;
-	m_commitHeight = g_unk0x4b2ed8;
+	m_commitHeight = g_pieceCommitHeight;
 	m_feedbackMs = 2500;
 	return TRUE;
 }
@@ -1015,7 +1015,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 			position.m_z = m_commitHeight;
 		}
 		else {
-			position.m_z = g_unk0x4b2ed8;
+			position.m_z = g_pieceCommitHeight;
 		}
 
 		entity->SetPosition(position);
@@ -1115,7 +1115,7 @@ void CarModelScreenBase::CarPartPlacement::UpdatePieceBob(LegoS32 p_elapsed)
 	}
 
 	m_pieceRestHeight =
-		(m_context->m_carBuildModel.GetOverlayHeight() * g_carBuildModelHeightScale) + (g_unk0x4b2ed8 - 8.4f);
+		(m_context->m_carBuildModel.GetOverlayHeight() * g_carBuildModelHeightScale) + (g_pieceCommitHeight - 8.4f);
 
 	feedbackFlags = m_pieceAnimPhase;
 	if (feedbackFlags & c_placementFeedbackMask) {
@@ -1140,7 +1140,7 @@ void CarModelScreenBase::CarPartPlacement::UpdatePieceBob(LegoS32 p_elapsed)
 		}
 		else if (feedbackFlags & c_placementFeedbackRaising) {
 			m_pieceHeight += p_elapsed * 0.01f;
-			LegoFloat limit = g_unk0x4b2ed8 - (g_carPartHoverHeight + g_carPartHoverHeight);
+			LegoFloat limit = g_pieceCommitHeight - (g_carPartHoverHeight + g_carPartHoverHeight);
 			if (m_pieceHeight >= limit) {
 				m_pieceAnimMs = 0;
 				m_pieceHeight = limit;
@@ -1309,9 +1309,9 @@ void CarModelScreenBase::CarPartPlacement::UpdateResetAnimation(LegoS32 p_elapse
 	}
 
 	m_commitHeight += p_elapsed * 0.006f;
-	if (m_commitHeight > g_unk0x4b2ed8) {
+	if (m_commitHeight > g_pieceCommitHeight) {
 		m_feedbackMs = 0;
-		m_commitHeight = g_unk0x4b2ed8;
+		m_commitHeight = g_pieceCommitHeight;
 	}
 }
 

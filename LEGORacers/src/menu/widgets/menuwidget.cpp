@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(VisualStateColor, 0x04)
 DECOMP_SIZE_ASSERT(MenuWidget::CreateParams, 0x38)
 
 // GLOBAL: LEGORACERS 0x004c7650
-Rect g_unk0x4c7650;
+Rect g_globalRect;
 
 // FUNCTION: LEGORACERS 0x004729b0
 MenuWidget::MenuWidget()
@@ -361,19 +361,19 @@ Rect* MenuWidget::GetGlobalRect()
 {
 	MenuWidget* node = this;
 
-	g_unk0x4c7650.m_top = 0;
-	g_unk0x4c7650.m_left = 0;
+	g_globalRect.m_top = 0;
+	g_globalRect.m_left = 0;
 
 	while (node) {
-		g_unk0x4c7650.m_left += node->m_rect.m_left;
-		g_unk0x4c7650.m_top += node->m_rect.m_top;
+		g_globalRect.m_left += node->m_rect.m_left;
+		g_globalRect.m_top += node->m_rect.m_top;
 		node = node->m_parent;
 	}
 
-	g_unk0x4c7650.m_right = (m_rect.m_right - m_rect.m_left) + g_unk0x4c7650.m_left;
-	g_unk0x4c7650.m_bottom = (m_rect.m_bottom - m_rect.m_top) + g_unk0x4c7650.m_top;
+	g_globalRect.m_right = (m_rect.m_right - m_rect.m_left) + g_globalRect.m_left;
+	g_globalRect.m_bottom = (m_rect.m_bottom - m_rect.m_top) + g_globalRect.m_top;
 
-	return &g_unk0x4c7650;
+	return &g_globalRect;
 }
 
 // FUNCTION: LEGORACERS 0x00472ef0

@@ -23,7 +23,7 @@ DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement::CreateParams, 0x30)
 LegoFloat g_carPartPlacementMaxFloat = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b2e6c
-static const LegoFloat g_unk0x004b2e6c = 6.2831855f;
+static const LegoFloat g_twoPiPlacement = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004b2e80
 const LegoFloat g_carPartCameraPositions[] = {
@@ -38,7 +38,7 @@ extern const LegoFloat g_carPartHoverHeight = 1.2f;
 LegoFloat g_pieceCommitHeight = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004c7668
-LegoFloat g_fieldAt0x2308AngleStep = g_unk0x004b2e6c * 0.125f;
+LegoFloat g_viewAngleStep = g_twoPiPlacement * 0.125f;
 
 // GLOBAL: LEGORACERS 0x004b02f4
 extern const LegoFloat g_negativeRadiansToTableIndex = -162.97466f;
@@ -381,7 +381,7 @@ CarModelScreenBase::CarPartPlacement::CarPartPlacement()
 
 	for (LegoS32 i = 0; i < 8; i++) {
 		m_viewAngles[i] = angle;
-		angle += g_fieldAt0x2308AngleStep;
+		angle += g_viewAngleStep;
 		if (angle >= g_twoPi) {
 			angle -= g_twoPi;
 		}
@@ -607,7 +607,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::RotateViewAnalog(LegoFloat p_de
 	}
 
 	LegoS32 index = static_cast<LegoS32>(m_viewAngleF);
-	m_viewAngle = m_viewAngles[index] + ((m_viewAngleF - index) * g_fieldAt0x2308AngleStep);
+	m_viewAngle = m_viewAngles[index] + ((m_viewAngleF - index) * g_viewAngleStep);
 	ApplyViewAngle(m_viewAngle);
 	return TRUE;
 }

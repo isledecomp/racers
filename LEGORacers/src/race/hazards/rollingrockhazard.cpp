@@ -20,7 +20,7 @@ DECOMP_SIZE_ASSERT(RollingRockHazard, 0x204)
 extern const LegoFloat g_rollingRockModelDistance = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b42ec
-extern const LegoFloat g_unk0x004b42ec = 20000.0f;
+extern const LegoFloat g_rollingRockMass = 20000.0f;
 
 // FUNCTION: LEGORACERS 0x0048bb00
 RollingRockHazard::RollingRockHazard()
@@ -80,7 +80,7 @@ void RollingRockHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	}
 
 	m_bodyEntity.SetBoundsRadius(radius);
-	m_body.Initialize(&m_bodyEntity, g_unk0x004b42ec, m_sizeX, m_sizeY, m_sizeZ);
+	m_body.Initialize(&m_bodyEntity, g_rollingRockMass, m_sizeX, m_sizeY, m_sizeZ);
 	m_state = state;
 }
 

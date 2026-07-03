@@ -48,7 +48,7 @@ DECOMP_SIZE_ASSERT(InputEventSink, 0x04)
 DECOMP_SIZE_ASSERT(RaceSession::RabTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004b07ec
-LegoFloat g_unk0x004b07ec = 1.2f;
+LegoFloat g_defaultMusicVolume = 1.2f;
 
 // GLOBAL: LEGORACERS 0x004b07f0
 extern const LegoFloat g_mirroredRaceStateRouteScale = 0.05f;
@@ -148,7 +148,7 @@ void RaceSession::Reset()
 	m_hudImages = 0;
 	m_musicGroup = NULL;
 	m_music = NULL;
-	m_musicVolume = g_unk0x004b07ec;
+	m_musicVolume = g_defaultMusicVolume;
 	m_materialAnimationDatabase = NULL;
 	m_powerupTrackDatabase = 0;
 	m_finishedCount = 0;

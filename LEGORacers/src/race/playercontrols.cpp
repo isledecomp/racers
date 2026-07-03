@@ -11,19 +11,19 @@ extern const LegoChar* g_sideWinderForceFeedName;
 extern LegoFloat g_minSoundPan;
 
 // GLOBAL: LEGORACERS 0x004b0740
-extern const LegoFloat g_unk0x004b0740 = 2.5f;
+extern const LegoFloat g_idleTurnRate = 2.5f;
 
 // GLOBAL: LEGORACERS 0x004b0744
-extern const LegoFloat g_unk0x004b0744 = 1.25f;
+extern const LegoFloat g_inputTurnRate = 1.25f;
 
 // GLOBAL: LEGORACERS 0x004b0748
 extern const LegoFloat g_steeringReturnRate = 8.25f;
 
 // GLOBAL: LEGORACERS 0x004b074c
-extern const LegoFloat g_unk0x004b074c = 5.0f;
+extern const LegoFloat g_driftTurnRate = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b0750
-extern const LegoFloat g_unk0x004b0750 = 16.0f;
+extern const LegoFloat g_slideTurnRate = 16.0f;
 
 // GLOBAL: LEGORACERS 0x004b0754
 extern const LegoFloat g_steeringLimit = 1.0f;
@@ -92,17 +92,17 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 
 	if (m_racer->m_flags & Racer::c_flagDrifting) {
 		if (m_racer->m_driveController.m_slideLeft == 1) {
-			turnRate = g_unk0x004b0750;
+			turnRate = g_slideTurnRate;
 		}
 		else {
-			turnRate = g_unk0x004b074c;
+			turnRate = g_driftTurnRate;
 		}
 	}
 	else if (hasSteerInput) {
-		turnRate = g_unk0x004b0744;
+		turnRate = g_inputTurnRate;
 	}
 	else {
-		turnRate = g_unk0x004b0740;
+		turnRate = g_idleTurnRate;
 	}
 
 	if (hasSteerInput) {

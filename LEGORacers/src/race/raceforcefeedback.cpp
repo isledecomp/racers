@@ -5,8 +5,8 @@
 
 DECOMP_SIZE_ASSERT(RaceForceFeedback, 0x28)
 
-static const LegoFloat g_unk0x004b0174 = 0.2f;
-static const LegoFloat g_unk0x004b0180 = 1000000.0f;
+static const LegoFloat g_engineEffectPeriodSeconds = 0.2f;
+static const LegoFloat g_microsecondsPerSecond = 1000000.0f;
 
 // FUNCTION: LEGORACERS 0x00421da0
 RaceForceFeedback::RaceForceFeedback()
@@ -309,8 +309,8 @@ void RaceForceFeedback::CreateEngineEffect()
 
 	if (device) {
 		if (device->IsForceFeedbackAvailable()) {
-			LegoFloat period = g_unk0x004b0174;
-			period *= g_unk0x004b0180;
+			LegoFloat period = g_engineEffectPeriodSeconds;
+			period *= g_microsecondsPerSecond;
 
 			axes[0] = zero;
 			axes[1] = DIJOFS_Y;

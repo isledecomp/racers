@@ -46,7 +46,7 @@ const LegoFloat g_menuManagerMaxFloat = FLT_MAX;
 LegoFloat g_inv255 = 1.0f / 255.0f;
 
 // GLOBAL: LEGORACERS 0x004beb78
-LegoFloat g_unk0x4beb78[7] = {0.04f, 0.04f, 0.04f, 0.04f, 0.39f, 0.4f, 0.04f};
+LegoFloat g_menuViewportParams[7] = {0.04f, 0.04f, 0.04f, 0.04f, 0.39f, 0.4f, 0.04f};
 
 // GLOBAL: LEGORACERS 0x004c4918
 MenuManager* g_menuManager = NULL;
@@ -138,7 +138,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 		flag = TRUE;
 	}
 
-	m_renderer->SetViewportRect(7, g_unk0x4beb78);
+	m_renderer->SetViewportRect(7, g_menuViewportParams);
 
 	m_gameContext.m_menuStack.Allocate(10);
 	m_gameContext.m_menuStack.Push(m_gameContext.m_context->m_nextMenuId);

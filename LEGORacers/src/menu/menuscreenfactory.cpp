@@ -26,10 +26,10 @@
 DECOMP_SIZE_ASSERT(MenuScreenFactory, 0x4)
 
 // GLOBAL: LEGORACERS 0x004b3510
-static const LegoFloat g_unk0x004b3510 = 6.2831855f;
+static const LegoFloat g_twoPiFactory = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004c7670
-LegoFloat g_unk0x004c7670 = g_unk0x004b3510 * 0.125f;
+LegoFloat g_menuViewAngleStep = g_twoPiFactory * 0.125f;
 
 // FUNCTION: LEGORACERS 0x0047f4c0
 MenuScreenFactory::~MenuScreenFactory()

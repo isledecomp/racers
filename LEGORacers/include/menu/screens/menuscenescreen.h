@@ -36,10 +36,10 @@ public:
 		// SYNTHETIC: LEGORACERS 0x00466a80
 		// MenuSceneScreen::SceneWidget::`scalar deleting destructor'
 
-		undefined4 Create(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);
+		undefined4 Create(SceneRefBinding* p_createParams, undefined4 p_unk0x08);
 		void ResetState();
 		void ComputeViewportRect();
-		void LoadCutscene(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);
+		void LoadCutscene(SceneRefBinding* p_createParams, undefined4 p_unk0x08);
 		void SetFrame(CutsceneDefinition::Frame* p_frame);
 
 		CutsceneDefinition m_definition;    // 0x058

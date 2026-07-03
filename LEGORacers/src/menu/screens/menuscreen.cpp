@@ -32,7 +32,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(MenuScreen, 0x290)
-DECOMP_SIZE_ASSERT(MenuScreen::SceneRefBinding, 0x54)
+DECOMP_SIZE_ASSERT(SceneRefBinding, 0x54)
 
 // GLOBAL: LEGORACERS 0x004b2240
 const undefined4 g_rootIconParams[14] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
@@ -343,7 +343,7 @@ void MenuScreen::ApplyWidgetDefaults(MenuWidget::CreateParams* p_createParams)
 	}
 
 	if (!(p_createParams->m_flags & 2)) {
-		::memset(&p_createParams->m_unk0x22, 0xff, sizeof(p_createParams->m_unk0x22));
+		::memset(&p_createParams->m_color, 0xff, sizeof(p_createParams->m_color));
 	}
 
 	if (!p_createParams->m_parent && (p_createParams->m_flags & 1)) {
@@ -354,7 +354,7 @@ void MenuScreen::ApplyWidgetDefaults(MenuWidget::CreateParams* p_createParams)
 				);
 
 			if (entry) {
-				p_createParams->m_unk0x26 = entry->m_unk0x20;
+				p_createParams->m_unk0x26 = entry->m_id;
 			}
 		}
 
@@ -375,7 +375,7 @@ void MenuScreen::ApplyIconDefaults(MenuIcon::CreateParams* p_createParams)
 				(MenuInputBindingTable::IconBinding*) GetMenuInputBindings()->ResolveEntryByName(
 					p_createParams->m_name
 				);
-			p_createParams->m_unk0x48 = entry->m_unk0x20;
+			p_createParams->m_unk0x48 = entry->m_id;
 		}
 
 		if (!p_createParams->m_unk0x48) {
@@ -557,7 +557,7 @@ LegoBool32 MenuScreen::CreateTextLabel(
 	}
 
 	if (styleEntry->m_hasColor && !(createParams.m_flags & 2)) {
-		createParams.m_unk0x22 = styleEntry->m_color;
+		createParams.m_color = styleEntry->m_color;
 	}
 
 	return p_source->Create(&createParams, styleEntry);
@@ -586,7 +586,7 @@ LegoBool32 MenuScreen::CreateFrame(MenuFrame* p_source, undefined2 p_event, unde
 	}
 
 	if (!(sourceParams->m_flags & 2) && styleEntry->m_hasColors) {
-		createParams.m_unk0x22 = styleEntry->m_color0;
+		createParams.m_color = styleEntry->m_color0;
 		createParams.m_fillColor = styleEntry->m_color1;
 	}
 

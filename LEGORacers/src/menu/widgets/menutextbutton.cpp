@@ -47,7 +47,7 @@ LegoBool32 MenuTextButton::CreateImage(CreateParams* p_createParams)
 	createParams.m_unk0x38 = m_stateImages[0];
 	createParams.m_rect.m_bottom = 0;
 	createParams.m_parent = this;
-	createParams.m_unk0x22 = m_stateImageColors[0];
+	createParams.m_color = m_stateImageColors[0];
 
 	return m_image.Create(&createParams);
 }
@@ -81,7 +81,7 @@ LegoBool32 MenuTextButton::CreateLabel(CreateParams* p_createParams, MenuStyleTa
 	createParams.m_stringTable = p_createParams->m_stringTable;
 	createParams.m_font = m_stateFonts[0];
 	createParams.m_stringId = p_createParams->m_stringId;
-	createParams.m_unk0x22 = m_stateImageColors[0];
+	createParams.m_color = m_stateImageColors[0];
 	createParams.m_rect.m_left += right;
 	createParams.m_parent = this;
 	m_textStyle.m_unk0x10 = 0;

@@ -36,8 +36,8 @@ LegoBool32 MenuButton::FUN_00466370(MenuImage* p_unk0x04, CreateParams* p_create
 
 	GolImage* image = p_createParams->m_images[0];
 	::memcpy(&createParams, p_createParams, sizeof(MenuWidget::CreateParams));
-	createParams.m_unk0x20 = m_id;
-	createParams.m_unk0x22 = m_stateColors[0];
+	createParams.m_id = m_id;
+	createParams.m_color = m_stateColors[0];
 	createParams.m_parent = this;
 	createParams.m_unk0x38 = image;
 

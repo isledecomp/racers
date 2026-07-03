@@ -48,12 +48,12 @@ LegoBool32 MenuFrame::CreateFill(CreateParams* p_createParams)
 		::memcpy(&createParams, p_createParams, sizeof(MenuWidget::CreateParams));
 		createParams.m_parent = this;
 		createParams.m_flags |= 1;
-		createParams.m_unk0x20 = 0x400;
+		createParams.m_id = 0x400;
 
 		GolImage* image = p_createParams->m_images[i];
 		createParams.m_unk0x38 = image;
 		m_images[i] = image;
-		createParams.m_unk0x22 = p_createParams->m_unk0x22;
+		createParams.m_color = p_createParams->m_color;
 
 		if (!m_borderImages[i].Create(&createParams)) {
 			return FALSE;
@@ -68,10 +68,10 @@ LegoBool32 MenuFrame::CreateBorder(CreateParams* p_createParams)
 {
 	CreateParamsPrefix createParams;
 	::memcpy(&createParams, p_createParams, sizeof(createParams));
-	createParams.m_unk0x20 = 0x29a;
+	createParams.m_id = 0x29a;
 	createParams.m_parent = this;
 	createParams.m_flags |= 1;
-	createParams.m_unk0x22 = p_createParams->m_fillColor;
+	createParams.m_color = p_createParams->m_fillColor;
 
 	return m_fill.Create(&createParams);
 }

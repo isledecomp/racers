@@ -32,8 +32,8 @@ public:
 		SoundGroupBinding* m_soundGroupBinding; // 0x08
 		MenuScreenInterface* m_eventHandler;    // 0x0c
 		Rect m_rect;                            // 0x10
-		undefined2 m_unk0x20;                   // 0x20
-		VisualStateColor m_unk0x22;             // 0x22
+		undefined2 m_id;                        // 0x20
+		VisualStateColor m_color;               // 0x22
 		undefined2 m_unk0x26;                   // 0x26
 		MenuWidget* m_parent;                   // 0x28
 		LegoU8 m_flags;                         // 0x2c

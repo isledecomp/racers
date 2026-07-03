@@ -56,10 +56,10 @@ LegoBool32 MenuWidget::CreateWidget(CreateParams* p_createParams)
 
 	m_golExport = p_createParams->m_golExport;
 	m_renderer = p_createParams->m_renderer;
-	m_id = p_createParams->m_unk0x20;
+	m_id = p_createParams->m_id;
 	m_notifyHandler = p_createParams->m_eventHandler;
 	SetRect(&p_createParams->m_rect);
-	SetColor(&p_createParams->m_unk0x22);
+	SetColor(&p_createParams->m_color);
 
 	if (p_createParams->m_parent && (p_createParams->m_flags & 1)) {
 		SetParent(p_createParams->m_parent);

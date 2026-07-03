@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "goltxtparser.h"
 #include "menu/style/menuresourcetable.h"
+#include "menu/style/scenerefbinding.h"
 #include "menu/widgets/menubutton.h"
 #include "menu/widgets/menuframe.h"
 #include "menu/widgets/menuicon.h"
@@ -209,22 +210,22 @@ protected:
 	void InitIconDefaults(MenuIcon::CreateParams* p_entry);
 	void ParseIconField(MenuIcon::CreateParams* p_entry);
 
-	RegionBinding* m_unk0x20;        // 0x20
-	ImageBinding* m_unk0x24;         // 0x24
-	TextLabelBinding* m_unk0x28;     // 0x28
-	FrameBinding* m_unk0x2c;         // 0x2c
-	ButtonBinding* m_unk0x30;        // 0x30
-	MultiStateBinding* m_unk0x34;    // 0x34
-	HotspotBinding* m_unk0x38;       // 0x38
-	SelectorBinding* m_unk0x3c;      // 0x3c
-	ModelCarouselBinding* m_unk0x40; // 0x40
-	CompositeBinding* m_unk0x44;     // 0x44
-	SceneBinding* m_unk0x48;         // 0x48
-	TextFieldBinding* m_unk0x4c;     // 0x4c
-	SceneRefBinding* m_unk0x50;      // 0x50
-	undefined2 m_unk0x54;            // 0x54
-	undefined m_unk0x56[2];          // 0x56
-	LegoS32 m_unk0x58;               // 0x58
+	RegionBinding* m_regionBindings;               // 0x20
+	ImageBinding* m_imageBindings;                 // 0x24
+	TextLabelBinding* m_textLabelBindings;         // 0x28
+	FrameBinding* m_frameBindings;                 // 0x2c
+	ButtonBinding* m_buttonBindings;               // 0x30
+	MultiStateBinding* m_multiStateBindings;       // 0x34
+	HotspotBinding* m_hotspotBindings;             // 0x38
+	SelectorBinding* m_selectorBindings;           // 0x3c
+	ModelCarouselBinding* m_modelCarouselBindings; // 0x40
+	CompositeBinding* m_compositeBindings;         // 0x44
+	SceneBinding* m_sceneBindings;                 // 0x48
+	TextFieldBinding* m_textFieldBindings;         // 0x4c
+	SceneRefBinding* m_sceneRefBindings;           // 0x50
+	undefined2 m_nextWidgetId;                     // 0x54
+	undefined m_unk0x56[2];                        // 0x56
+	LegoS32 m_entryCount;                          // 0x58
 };
 
 #endif // MENUINPUTBINDINGTABLE_H

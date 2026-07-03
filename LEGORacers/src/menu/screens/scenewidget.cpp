@@ -43,7 +43,7 @@ void MenuSceneScreen::SceneWidget::ResetState()
 }
 
 // FUNCTION: LEGORACERS 0x00466b50
-undefined4 MenuSceneScreen::SceneWidget::Create(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08)
+undefined4 MenuSceneScreen::SceneWidget::Create(SceneRefBinding* p_createParams, undefined4 p_unk0x08)
 {
 	if (m_flags & 1) {
 		Destroy();
@@ -82,7 +82,7 @@ void MenuSceneScreen::SceneWidget::ComputeViewportRect()
 }
 
 // FUNCTION: LEGORACERS 0x00466bf0
-void MenuSceneScreen::SceneWidget::LoadCutscene(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08)
+void MenuSceneScreen::SceneWidget::LoadCutscene(SceneRefBinding* p_createParams, undefined4 p_unk0x08)
 {
 	ComputeViewportRect();
 	m_definition.Load(m_golExport, m_renderer, p_createParams->m_cutsceneName, p_unk0x08);

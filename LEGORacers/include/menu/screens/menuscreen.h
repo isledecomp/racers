@@ -7,6 +7,7 @@
 #include "menu/screens/menuscreeninterface.h"
 #include "menu/style/menuinputbindingtable.h"
 #include "menu/style/menustyletable.h"
+#include "menu/style/scenerefbinding.h"
 #include "menu/widgets/menuicon.h"
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menuselector.h"
@@ -40,14 +41,6 @@ class GolImageDefinitionList;
 class MenuScreen : public MenuScreenInterface {
 public:
 	// SIZE 0x54
-	class SceneRefBinding : public MenuWidget::CreateParams {
-	public:
-		LegoChar m_cutsceneName[0x48 - 0x38]; // 0x38
-		undefined4 m_autoAdvance;             // 0x48
-		LegoU32 m_startFrameIndex;            // 0x4c
-		LegoFloat m_aspectScale;              // 0x50
-	};
-
 	MenuScreen();
 
 	void OnWidgetCreated(MenuWidget*) override;                                                      // vtable+0x00

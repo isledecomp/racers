@@ -67,12 +67,12 @@ LegoBool32 MenuTextEntry::FUN_00471aa0(CreateParams* p_createParams)
 	memcpy(&createParams, p_createParams, sizeof(MenuWidget::CreateParams));
 
 	createParams.m_parent = MenuWidget::m_parent;
-	createParams.m_unk0x20 = 0x400;
+	createParams.m_id = 0x400;
 	createParams.m_unk0x38 = 1;
 	createParams.m_flags |= 1;
 	createParams.m_unk0x3c = 1000;
 	createParams.m_unk0x40 = 1000;
-	createParams.m_unk0x22.m_unk0x00 = -1;
+	createParams.m_color.m_unk0x00 = -1;
 
 	return m_caret.Create(&createParams);
 }

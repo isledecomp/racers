@@ -30,14 +30,14 @@ void MenuInputHandler::Initialize(InputManager* p_inputManager)
 	m_inputManager = p_inputManager;
 	m_inputEvents.Allocate(32);
 
-	KeyboardInputDevice* keyboard = m_inputManager->GetKeyboard();
+	KeyboardDevice* keyboard = m_inputManager->GetKeyboard();
 	if (keyboard != NULL) {
 		keyboard->SetCallback(&m_inputEvents);
 		keyboard->SetRepeatDelays(250, 500);
 		keyboard->Acquire();
 	}
 
-	MouseInputDevice* mouse = m_inputManager->GetMouse();
+	MouseDevice* mouse = m_inputManager->GetMouse();
 	m_mouse = mouse;
 	if (mouse != NULL) {
 		mouse->SetCallback(&m_inputEvents);
@@ -47,7 +47,7 @@ void MenuInputHandler::Initialize(InputManager* p_inputManager)
 	}
 
 	for (LegoS32 i = 0; i < m_inputManager->GetJoystickCount(); i++) {
-		JoystickInputDevice* joystick = m_inputManager->GetJoystick(i);
+		JoystickDevice* joystick = m_inputManager->GetJoystick(i);
 		if (joystick != NULL) {
 			joystick->SetCallback(&m_inputEvents);
 			joystick->SetAxisButtonEventsEnabled(TRUE);
@@ -73,7 +73,7 @@ void MenuInputHandler::Initialize(InputManager* p_inputManager)
 void MenuInputHandler::Shutdown()
 {
 	if (m_inputManager != NULL) {
-		KeyboardInputDevice* keyboard = m_inputManager->GetKeyboard();
+		KeyboardDevice* keyboard = m_inputManager->GetKeyboard();
 
 		if (keyboard != NULL) {
 			keyboard->SetCallback(NULL);
@@ -82,7 +82,7 @@ void MenuInputHandler::Shutdown()
 			keyboard->SetEventMappings(NULL, NULL);
 		}
 
-		MouseInputDevice* mouse = m_inputManager->GetMouse();
+		MouseDevice* mouse = m_inputManager->GetMouse();
 		if (mouse != NULL) {
 			mouse->SetCallback(NULL);
 			mouse->Unacquire();
@@ -92,7 +92,7 @@ void MenuInputHandler::Shutdown()
 		}
 
 		for (LegoS32 i = 0; i < m_inputManager->GetJoystickCount(); i++) {
-			JoystickInputDevice* joystick = m_inputManager->GetJoystick(i);
+			JoystickDevice* joystick = m_inputManager->GetJoystick(i);
 
 			if (joystick != NULL) {
 				joystick->SetCallback(NULL);
@@ -120,7 +120,7 @@ LegoBool32 MenuInputHandler::HasKeyboard() const
 void MenuInputHandler::MapAllJoystickButtons()
 {
 	for (LegoS32 i = 0; i < m_inputManager->GetJoystickCount(); i++) {
-		JoystickInputDevice* joystick = m_inputManager->GetJoystick(i);
+		JoystickDevice* joystick = m_inputManager->GetJoystick(i);
 
 		if (joystick != NULL) {
 			for (LegoS32 j = 0; j < joystick->GetButtonCountFast(); j++) {

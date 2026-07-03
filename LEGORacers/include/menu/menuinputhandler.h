@@ -6,7 +6,7 @@
 #include "input/inputeventqueue.h"
 
 class InputManager;
-class MouseInputDevice;
+class MouseDevice;
 
 // SIZE 0x248
 class MenuInputHandler {
@@ -27,7 +27,7 @@ private:
 
 	InputManager* m_inputManager;               // 0x000
 	undefined2 m_unk0x004[256];                 // 0x004
-	MouseInputDevice* m_mouse;                  // 0x204
+	MouseDevice* m_mouse;                       // 0x204
 	InputEventQueue m_inputEvents;              // 0x208
 	InputDevice::DirectionalTrigger m_unk0x224; // 0x224
 };

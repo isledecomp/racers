@@ -77,7 +77,7 @@ void InputManager::SuspendActiveDevices()
 }
 
 // FUNCTION: LEGORACERS 0x0044c0c0
-JoystickInputDevice* InputManager::FindJoystickByDeviceId(LegoS32 p_deviceId) const
+JoystickDevice* InputManager::FindJoystickByDeviceId(LegoS32 p_deviceId) const
 {
 	for (LegoS32 i = 0; i < m_joystickCount; i++) {
 		if (m_joysticks[i]->GetDeviceId() == p_deviceId) {

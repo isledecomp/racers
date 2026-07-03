@@ -91,7 +91,7 @@ LegoS32 MenuInputDispatcher::Cursor::Shutdown()
 LegoS32 MenuInputDispatcher::Cursor::UpdatePosition(undefined4)
 {
 	if (m_golExport && m_isCursorVisible && m_cursorEnabled) {
-		MouseInputDevice* mouse = m_inputManager->GetMouse();
+		MouseDevice* mouse = m_inputManager->GetMouse();
 
 		m_cursorX += (LegoS32) mouse->GetAxisValue(1);
 		m_cursorY += (LegoS32) mouse->GetAxisValue(2);
@@ -272,7 +272,7 @@ LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_
 }
 
 // FUNCTION: LEGORACERS 0x004691e0
-void MenuInputDispatcher::DispatchMouseMove(MouseInputDevice* p_mouse)
+void MenuInputDispatcher::DispatchMouseMove(MouseDevice* p_mouse)
 {
 	MenuIcon* icon = m_activeScreen->GetRootIcon();
 	MenuWidget* active = icon->FindFocusedLeaf();
@@ -376,7 +376,7 @@ LegoS32 MenuInputDispatcher::Update(undefined4 p_elapsedMs)
 	}
 
 	if (m_cursor.m_golExport) {
-		MouseInputDevice* mouse = m_inputManager->GetMouse();
+		MouseDevice* mouse = m_inputManager->GetMouse();
 
 		if (mouse->GetAxisValue(1) != 0.0f || mouse->GetAxisValue(2) != 0.0f) {
 			DispatchMouseMove(mouse);

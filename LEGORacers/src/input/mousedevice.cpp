@@ -1,40 +1,40 @@
 #include "input/mousedevice.h"
 
-DECOMP_SIZE_ASSERT(MouseInputDevice, 0xe8)
+DECOMP_SIZE_ASSERT(MouseDevice, 0xe8)
 
 // FUNCTION: LEGORACERS 0x0044f520
-MouseInputDevice::MouseInputDevice()
+MouseDevice::MouseDevice()
 {
 	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044f570 FOLDED
-LegoS32 MouseInputDevice::GetButtonCount()
+LegoS32 MouseDevice::GetButtonCount()
 {
 	return 4;
 }
 
 // FUNCTION: LEGORACERS 0x0044f580 FOLDED
-LegoS32 MouseInputDevice::GetAxisCount()
+LegoS32 MouseDevice::GetAxisCount()
 {
 	return 3;
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
 #pragma code_seg(".text$fold_44f590")
-void MouseInputDevice::SetDeadZonePercent(LegoU32)
+void MouseDevice::SetDeadZonePercent(LegoU32)
 {
 }
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0044f5c0
-MouseInputDevice::~MouseInputDevice()
+MouseDevice::~MouseDevice()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0044f610
-void MouseInputDevice::Initialize()
+void MouseDevice::Initialize()
 {
 	DirectInputDevice::Initialize();
 	// These arrays are contiguous; zero both in a single call so MSVC fuses the stores.
@@ -43,7 +43,7 @@ void MouseInputDevice::Initialize()
 }
 
 // FUNCTION: LEGORACERS 0x0044f640
-LegoBool32 MouseInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
+LegoBool32 MouseDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
 {
 	Destroy();
 	p_params->m_dataFormat = &c_dfDIMouse;
@@ -63,9 +63,9 @@ LegoBool32 MouseInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_par
 }
 
 // FUNCTION: LEGORACERS 0x0044f6d0
-BOOL MouseInputDevice::StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
+BOOL MouseDevice::StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
 {
-	MouseInputDevice* mouse = static_cast<MouseInputDevice*>(p_context);
+	MouseDevice* mouse = static_cast<MouseDevice*>(p_context);
 	DWORD offset = p_object->dwOfs - DIMOFS_BUTTON0;
 
 	mouse->m_buttonNameIndices[offset] = mouse->StoreString(p_object->tszName);
@@ -73,9 +73,9 @@ BOOL MouseInputDevice::StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE p_objec
 }
 
 // FUNCTION: LEGORACERS 0x0044f700
-BOOL MouseInputDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
+BOOL MouseDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
 {
-	MouseInputDevice* mouse = static_cast<MouseInputDevice*>(p_context);
+	MouseDevice* mouse = static_cast<MouseDevice*>(p_context);
 	undefined4 mask = mouse->GetAxisMask(p_object->guidType);
 	DWORD offset = static_cast<LegoS32>(p_object->dwOfs) >> 2;
 	LegoS16 v = mouse->StoreString(p_object->tszName);
@@ -86,7 +86,7 @@ BOOL MouseInputDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object,
 }
 
 // FUNCTION: LEGORACERS 0x0044f750
-void MouseInputDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data)
+void MouseDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data)
 {
 	undefined4 event;
 
@@ -127,7 +127,7 @@ void MouseInputDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data)
 }
 
 // FUNCTION: LEGORACERS 0x0044f850
-undefined4 MouseInputDevice::GetButtonState(undefined4 p_key)
+undefined4 MouseDevice::GetButtonState(undefined4 p_key)
 {
 	if (GetKeySource(p_key) == c_sourceMouse) {
 		LegoU32 index = p_key & 0xffff;
@@ -141,7 +141,7 @@ undefined4 MouseInputDevice::GetButtonState(undefined4 p_key)
 }
 
 // FUNCTION: LEGORACERS 0x0044f890
-LegoFloat MouseInputDevice::GetAxisValue(undefined4 p_arg)
+LegoFloat MouseDevice::GetAxisValue(undefined4 p_arg)
 {
 	switch (p_arg) {
 	case c_axisX:
@@ -156,7 +156,7 @@ LegoFloat MouseInputDevice::GetAxisValue(undefined4 p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x0044f8d0
-void MouseInputDevice::SetAxisValue(undefined4 p_arg1, LegoFloat p_arg2)
+void MouseDevice::SetAxisValue(undefined4 p_arg1, LegoFloat p_arg2)
 {
 	switch (p_arg1) {
 	case c_axisX:
@@ -172,7 +172,7 @@ void MouseInputDevice::SetAxisValue(undefined4 p_arg1, LegoFloat p_arg2)
 }
 
 // FUNCTION: LEGORACERS 0x0044f910
-void MouseInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
+void MouseDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
 	undefined4 keyCode = p_event & c_sourceMask;
 	undefined4 originalEvent = p_event;

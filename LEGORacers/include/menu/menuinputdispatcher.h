@@ -13,7 +13,7 @@ class GolCommonDrawState;
 class MenuScreen;
 class MenuGameScreen;
 class InputManager;
-class MouseInputDevice;
+class MouseDevice;
 class MenuIcon;
 class GolImage;
 
@@ -115,7 +115,7 @@ public:
 private:
 	LegoS32 InitializeCursor(InitStruct* p_initStruct);
 	LegoS32 DispatchMouseButtonEvent(InputEventQueue::Event* p_item);
-	void DispatchMouseMove(MouseInputDevice* p_mouse);
+	void DispatchMouseMove(MouseDevice* p_mouse);
 
 	GolCommonDrawState* m_drawState; // 0x04
 	InputManager* m_inputManager;    // 0x08

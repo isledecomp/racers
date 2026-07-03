@@ -1,15 +1,15 @@
 #include "input/keyboarddevice.h"
 
-DECOMP_SIZE_ASSERT(KeyboardInputDevice, 0x2cc)
+DECOMP_SIZE_ASSERT(KeyboardDevice, 0x2cc)
 
 // FUNCTION: LEGORACERS 0x0044f270
-KeyboardInputDevice::KeyboardInputDevice()
+KeyboardDevice::KeyboardDevice()
 {
 	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044f2c0 FOLDED
-LegoFloat KeyboardInputDevice::GetAxisValue(undefined4)
+LegoFloat KeyboardDevice::GetAxisValue(undefined4)
 {
 	return 0.0f;
 }
@@ -20,7 +20,7 @@ LegoFloat KeyboardInputDevice::GetAxisValue(undefined4)
 
 // FUNCTION: LEGORACERS 0x0044f2d0
 #pragma code_seg(".text$kbd_vt1c")
-LegoS32 KeyboardInputDevice::GetButtonCount()
+LegoS32 KeyboardDevice::GetButtonCount()
 {
 	return sizeOfArray(m_keyStates);
 }
@@ -28,7 +28,7 @@ LegoS32 KeyboardInputDevice::GetButtonCount()
 
 // FUNCTION: LEGORACERS 0x0044f2e0 FOLDED
 #pragma code_seg(".text$kbd_vt20")
-LegoS32 KeyboardInputDevice::GetAxisCount()
+LegoS32 KeyboardDevice::GetAxisCount()
 {
 	return 0;
 }
@@ -36,26 +36,26 @@ LegoS32 KeyboardInputDevice::GetAxisCount()
 
 // FUNCTION: LEGORACERS 0x0044f2f0
 #pragma code_seg(".text$kbd_vt08")
-void KeyboardInputDevice::SetAxisValue(undefined4, LegoFloat)
+void KeyboardDevice::SetAxisValue(undefined4, LegoFloat)
 {
 }
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0044f320
-KeyboardInputDevice::~KeyboardInputDevice()
+KeyboardDevice::~KeyboardDevice()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0044f370
-void KeyboardInputDevice::Initialize()
+void KeyboardDevice::Initialize()
 {
 	::memset(m_keyStates, 0, sizeof(m_keyStates));
 	DirectInputDevice::Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044f390
-undefined4 KeyboardInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
+undefined4 KeyboardDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
 {
 	Destroy();
 	p_params->m_dataFormat = &c_dfDIKeyboard;
@@ -76,9 +76,9 @@ undefined4 KeyboardInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_
 }
 
 // FUNCTION: LEGORACERS 0x0044f400
-BOOL KeyboardInputDevice::StoreKeyNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
+BOOL KeyboardDevice::StoreKeyNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
 {
-	KeyboardInputDevice* keyboard = static_cast<KeyboardInputDevice*>(p_context);
+	KeyboardDevice* keyboard = static_cast<KeyboardDevice*>(p_context);
 	DWORD offset = p_object->dwOfs;
 
 	keyboard->m_buttonNameIndices[offset] = keyboard->StoreString(p_object->tszName);
@@ -86,7 +86,7 @@ BOOL KeyboardInputDevice::StoreKeyNameCallback(LPCDIDEVICEOBJECTINSTANCE p_objec
 }
 
 // FUNCTION: LEGORACERS 0x0044f430
-void KeyboardInputDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data)
+void KeyboardDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data)
 {
 	m_keyStates[p_data.dwOfs] = static_cast<undefined2>(p_data.dwData);
 
@@ -96,7 +96,7 @@ void KeyboardInputDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data)
 }
 
 // FUNCTION: LEGORACERS 0x0044f470
-undefined4 KeyboardInputDevice::GetButtonState(undefined4 p_key)
+undefined4 KeyboardDevice::GetButtonState(undefined4 p_key)
 {
 	p_key = LOWORD(p_key);
 
@@ -108,7 +108,7 @@ undefined4 KeyboardInputDevice::GetButtonState(undefined4 p_key)
 }
 
 // FUNCTION: LEGORACERS 0x0044f4a0
-void KeyboardInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
+void KeyboardDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
 	undefined4 keyCode = p_event & c_sourceMask;
 	undefined4 originalEvent = p_event;
@@ -138,7 +138,7 @@ void KeyboardInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, Leg
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
 #pragma code_seg(".text$fold_44f590")
-void KeyboardInputDevice::SetDeadZonePercent(LegoU32)
+void KeyboardDevice::SetDeadZonePercent(LegoU32)
 {
 }
 #pragma code_seg()

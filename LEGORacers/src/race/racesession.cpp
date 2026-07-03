@@ -1474,14 +1474,14 @@ void RaceSession::InitializeInput()
 	InputEventQueue* inputEvents = &session->m_inputEvents;
 	inputEvents->Allocate(32);
 
-	MouseInputDevice* mouse = session->m_inputManager->GetMouse();
+	MouseDevice* mouse = session->m_inputManager->GetMouse();
 	if (mouse) {
 		mouse->SetCallback(inputEvents);
 		mouse->SetExclusiveMode();
 		mouse->Acquire();
 	}
 
-	KeyboardInputDevice* keyboard = session->m_inputManager->GetKeyboard();
+	KeyboardDevice* keyboard = session->m_inputManager->GetKeyboard();
 	if (keyboard) {
 		session->m_inputRouter.Initialize(keyboard, inputEvents);
 		session->m_inputRouter.AcquireDevice();
@@ -1511,7 +1511,7 @@ void RaceSession::InitializeInput()
 
 			InputBindingState::Entry* binding = &session->m_context->m_inputBindings[playerIndex];
 			if (binding->m_deviceType == DIDEVTYPE_JOYSTICK && binding->m_deviceId < 16) {
-				JoystickInputDevice* joystick = session->m_inputManager->FindJoystickByDeviceId(binding->m_deviceId);
+				JoystickDevice* joystick = session->m_inputManager->FindJoystickByDeviceId(binding->m_deviceId);
 				if (joystick && joystick->GetDeviceSubType() == binding->m_deviceSubType) {
 					joystick->SetCallback(inputEvents);
 					bindingAcquired = TRUE;

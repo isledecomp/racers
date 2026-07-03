@@ -125,7 +125,7 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 
 	for (i = 0; i < 2; i++) {
 		InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[i];
-		JoystickInputDevice* joystick = p_inputManager->FindJoystickByDeviceId(i);
+		JoystickDevice* joystick = p_inputManager->FindJoystickByDeviceId(i);
 
 		if (joystick == NULL) {
 			entry->m_deviceType = 4;
@@ -151,7 +151,7 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 		}
 	}
 
-	KeyboardInputDevice* keyboard = p_inputManager->GetKeyboard();
+	KeyboardDevice* keyboard = p_inputManager->GetKeyboard();
 
 	for (i = 0; i < sizeOfArray(g_keyboardInputBindingEvents); i++) {
 		if (keyboard == NULL) {
@@ -200,7 +200,7 @@ LegoU32 GameState::FindAvailableInputBindingEntry(LegoU32 p_playerIndex)
 	if (p_playerIndex && otherEntryIndex < c_joystickBindingCount) {
 		InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[otherEntryIndex];
 		LegoU32 deviceId = entry->m_deviceId;
-		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(deviceId);
+		JoystickDevice* joystick = m_inputManager->FindJoystickByDeviceId(deviceId);
 
 		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) >= c_inputBindingEventCount) {
 			return c_keyboardBindingStart;
@@ -410,7 +410,7 @@ LegoU32 GameState::GetDefaultInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventInd
 			return result;
 		}
 
-		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(entry->m_deviceId);
+		JoystickDevice* joystick = m_inputManager->FindJoystickByDeviceId(entry->m_deviceId);
 		p_eventIndex -= 2;
 
 		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) > p_eventIndex) {

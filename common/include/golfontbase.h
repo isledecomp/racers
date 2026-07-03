@@ -3,8 +3,8 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "fourbytes.h"
 #include "golname.h"
-#include "image/goltiledtexture.h"
 #include "surface/color.h"
 #include "types.h"
 
@@ -12,6 +12,7 @@ class GolD3DRenderDevice;
 class GolRenderDevice;
 class GolString;
 class GolD3DTexture;
+class GolSurfaceFormat;
 struct Rect;
 
 // VTABLE: GOLDP 0x10056ea8

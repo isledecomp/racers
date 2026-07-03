@@ -7,19 +7,19 @@
 
 // VTABLE: LEGORACERS 0x004b1074
 // SIZE 0x23c
-class JoystickInputDevice : public DirectInputDevice {
+class JoystickDevice : public DirectInputDevice {
 public:
 	enum {
 		c_defaultDeadZonePercent = 35,
 		c_directInputDeadZoneScale = 100,
 	};
 
-	JoystickInputDevice();
+	JoystickDevice();
 
 	void Initialize() override;                                                            // vtable+0x00
 	void SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify) override; // vtable+0x04
 	void SetAxisValue(undefined4, LegoFloat) override;                                     // vtable+0x08
-	~JoystickInputDevice() override;                                                       // vtable+0x0c
+	~JoystickDevice() override;                                                            // vtable+0x0c
 	undefined4 Poll(LegoS32 p_elapsedMs) override;                                         // vtable+0x14
 	LegoS32 GetButtonCount() override;                                                     // vtable+0x1c
 	LegoS32 GetAxisCount() override;                                                       // vtable+0x20
@@ -31,7 +31,7 @@ public:
 	void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) override;                     // vtable+0x68
 
 	// SYNTHETIC: LEGORACERS 0x0044ea70
-	// JoystickInputDevice::`scalar deleting destructor'
+	// JoystickDevice::`scalar deleting destructor'
 
 	void SetAxisRangeAndDeadZone(DWORD p_object, DWORD p_deadZone);
 	static BOOL CALLBACK StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE, LPVOID);

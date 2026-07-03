@@ -7,6 +7,10 @@
 #include "goltxtparser.h"
 #include "render/golrenderdevice.h"
 #include "surface/color.h"
+#include "world/wdbbillboardsprite.h"
+#include "world/wdbcamera.h"
+#include "world/wdblight.h"
+#include "world/wdbmodel.h"
 
 class GolCameraBase;
 class GolCamera;
@@ -28,80 +32,6 @@ class GolModelMaterialTable;
 class GolRenderDevice;
 class GolSceneNode;
 struct Rect;
-
-// SIZE 0x8c
-struct WdbModel {
-	enum {
-		e_flagBit1 = 0x1 << 1,
-		e_flagBit2 = 0x1 << 2,
-		e_flagTextureScroll = 0x1 << 3,
-	};
-
-	GolName m_name;                    // 0x00
-	LegoS32 m_modelIndices[3];         // 0x08
-	LegoS32 m_sceneNodeIndices[3];     // 0x14 (bounding-volume index in [0] for bounded entities)
-	LegoS32 m_modelPartIndices[3];     // 0x20
-	LegoS32 m_materialTableIndices[3]; // 0x2c
-	LegoFloat m_modelDistances[3];     // 0x38
-	LegoS32 m_nodeIndex;               // 0x44
-	GolName m_nodeName;                // 0x48
-	GolVec3 m_position;                // 0x50
-	GolVec3 m_direction;               // 0x5c
-	GolVec3 m_up;                      // 0x68
-	LegoFloat m_scale;                 // 0x74
-	Rect* m_animationBindings;         // 0x78 (left=animation, top=track, right=material, bottom=table)
-	LegoU32 m_animationBindingCount;   // 0x7c
-	LegoFloat m_textureScrollSpeedU;   // 0x80
-	LegoFloat m_textureScrollSpeedV;   // 0x84
-	LegoU32 m_flags;                   // 0x88
-};
-
-// SIZE 0x38
-struct WdbBillboardSprite {
-	enum {
-		c_flagAxisLocked = 0x1 << 1,
-		c_flagMaterialAssignment = 0x1 << 2,
-	};
-
-	GolName m_materialName;              // 0x00
-	GolVec3 m_position;                  // 0x08
-	GolVec3 m_axis;                      // 0x14
-	LegoFloat m_width;                   // 0x20
-	LegoFloat m_height;                  // 0x24
-	LegoFloat m_maxDistance;             // 0x28
-	LegoU8 m_flags;                      // 0x2c
-	undefined m_unk0x2d[0x2e - 0x2d];    // 0x2d
-	undefined2 m_materialAnimationIndex; // 0x2e
-	undefined2 m_materialTrackIndex;     // 0x30
-	undefined2 m_hasMaterialAnimation;   // 0x32
-	undefined2 m_materialTableIndex;     // 0x34
-	undefined2 m_materialIndex;          // 0x36
-};
-
-// SIZE 0x4c
-struct WdbCamera {
-	LegoFloat GetNearClip() const { return m_nearClip; }
-	LegoFloat GetFarClip() const { return m_farClip; }
-	LegoFloat GetFov() const { return m_fov; }
-
-	GolName m_name;                // 0x00
-	LegoS32 m_animatedEntityIndex; // 0x08
-	undefined4 m_trackedNodeIndex; // 0x0c
-	LegoS32 m_partIndex;           // 0x10
-	GolName m_partName;            // 0x14
-	GolVec3 m_position;            // 0x1c
-	GolVec3 m_direction;           // 0x28
-	GolVec3 m_up;                  // 0x34
-	LegoFloat m_nearClip;          // 0x40
-	LegoFloat m_farClip;           // 0x44
-	LegoFloat m_fov;               // 0x48
-};
-
-// SIZE 0x10
-struct WdbLight {
-	ColorRGBA m_color;   // 0x00
-	GolVec3 m_direction; // 0x04
-};
 
 // VTABLE: GOLDP 0x100576ec
 // SIZE 0xf0

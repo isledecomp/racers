@@ -9,7 +9,6 @@
 class GolD3DRenderDevice;
 class GolTexture;
 class GolD3DTexture;
-class RaceState;
 
 // SIZE 0x2c
 struct GolTextureSourceItem {
@@ -86,11 +85,9 @@ public:
 	void SetNext(GolTextureList* p_next) { m_next = p_next; }
 	LegoU32 GetItemCount() const { return m_numItems; }
 
-protected:
-	friend class RaceState;
-
 	void LoadTextures();
 
+protected:
 	GolD3DRenderDevice* m_renderer;        // 0x0c
 	GolTextureList* m_next;                // 0x10
 	GolTextureSource* m_textureSource;     // 0x14

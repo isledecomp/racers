@@ -1,21 +1,21 @@
 #include "input/joystickdevice.h"
 
-DECOMP_SIZE_ASSERT(JoystickInputDevice, 0x23c)
+DECOMP_SIZE_ASSERT(JoystickDevice, 0x23c)
 
 // FUNCTION: LEGORACERS 0x0044ea20
-JoystickInputDevice::JoystickInputDevice()
+JoystickDevice::JoystickDevice()
 {
 	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044ea90
-JoystickInputDevice::~JoystickInputDevice()
+JoystickDevice::~JoystickDevice()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0044eae0
-void JoystickInputDevice::Initialize()
+void JoystickDevice::Initialize()
 {
 	::memset(&m_joyState, 0, sizeof(m_joyState));
 	::memset(&m_axisButtonStates, 0, sizeof(m_axisButtonStates));
@@ -24,7 +24,7 @@ void JoystickInputDevice::Initialize()
 }
 
 // FUNCTION: LEGORACERS 0x0044eb20
-LegoBool32 JoystickInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
+LegoBool32 JoystickDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
 {
 	Destroy();
 	p_params->m_dataFormat = &c_dfDIJoystick2;
@@ -45,9 +45,9 @@ LegoBool32 JoystickInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_
 }
 
 // FUNCTION: LEGORACERS 0x0044ebb0
-BOOL JoystickInputDevice::StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
+BOOL JoystickDevice::StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
 {
-	JoystickInputDevice* joystick = static_cast<JoystickInputDevice*>(p_context);
+	JoystickDevice* joystick = static_cast<JoystickDevice*>(p_context);
 	LegoU32 offset = p_object->dwOfs - DIJOFS_BUTTON0;
 
 	joystick->m_buttonNameIndices[offset] = joystick->StoreString(p_object->tszName);
@@ -55,9 +55,9 @@ BOOL JoystickInputDevice::StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE p_ob
 }
 
 // FUNCTION: LEGORACERS 0x0044ebe0
-BOOL JoystickInputDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
+BOOL JoystickDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
 {
-	JoystickInputDevice* joystick = static_cast<JoystickInputDevice*>(p_context);
+	JoystickDevice* joystick = static_cast<JoystickDevice*>(p_context);
 	undefined4 mask = joystick->GetAxisMask(p_object->guidType);
 
 	if (mask != 0) {
@@ -72,7 +72,7 @@ BOOL JoystickInputDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_obje
 }
 
 // FUNCTION: LEGORACERS 0x0044ec30
-void JoystickInputDevice::SetAxisRangeAndDeadZone(DWORD p_object, DWORD p_deadZone)
+void JoystickDevice::SetAxisRangeAndDeadZone(DWORD p_object, DWORD p_deadZone)
 {
 	undefined4 result = IsAcquired();
 
@@ -103,7 +103,7 @@ void JoystickInputDevice::SetAxisRangeAndDeadZone(DWORD p_object, DWORD p_deadZo
 }
 
 // FUNCTION: LEGORACERS 0x0044ecf0
-void JoystickInputDevice::SetDeadZonePercent(LegoU32 p_deadZonePercent)
+void JoystickDevice::SetDeadZonePercent(LegoU32 p_deadZonePercent)
 {
 	undefined4 result = IsAcquired();
 	DWORD deadZone = p_deadZonePercent * c_directInputDeadZoneScale;
@@ -146,7 +146,7 @@ void JoystickInputDevice::SetDeadZonePercent(LegoU32 p_deadZonePercent)
 }
 
 // FUNCTION: LEGORACERS 0x0044eda0
-void JoystickInputDevice::UpdateAxisValues(const DIJOYSTATE2& p_state)
+void JoystickDevice::UpdateAxisValues(const DIJOYSTATE2& p_state)
 {
 	if (m_axisMask & c_axisX) {
 		m_axisValues[0] = static_cast<LegoFloat>(p_state.lX) / 1000.0f;
@@ -178,7 +178,7 @@ void JoystickInputDevice::UpdateAxisValues(const DIJOYSTATE2& p_state)
 }
 
 // FUNCTION: LEGORACERS 0x0044ee40
-void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
+void JoystickDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 {
 	if (m_axisMask & c_axisX) {
 		DispatchAxisButtonStateChanges(
@@ -238,7 +238,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 }
 
 // FUNCTION: LEGORACERS 0x0044ef60
-void JoystickInputDevice::DispatchPolledStateChanges(const DIJOYSTATE2& p_state)
+void JoystickDevice::DispatchPolledStateChanges(const DIJOYSTATE2& p_state)
 {
 	if (m_callback != NULL) {
 		for (LegoS32 i = 0; i < m_buttonCount; i++) {
@@ -254,7 +254,7 @@ void JoystickInputDevice::DispatchPolledStateChanges(const DIJOYSTATE2& p_state)
 }
 
 // FUNCTION: LEGORACERS 0x0044efc0
-undefined4 JoystickInputDevice::Poll(LegoS32 p_elapsedMs)
+undefined4 JoystickDevice::Poll(LegoS32 p_elapsedMs)
 {
 	DIJOYSTATE2 joyState;
 
@@ -277,7 +277,7 @@ undefined4 JoystickInputDevice::Poll(LegoS32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0044f080
-undefined4 JoystickInputDevice::GetButtonState(undefined4 p_key)
+undefined4 JoystickDevice::GetButtonState(undefined4 p_key)
 {
 	if (!m_created) {
 		return 0;
@@ -301,7 +301,7 @@ undefined4 JoystickInputDevice::GetButtonState(undefined4 p_key)
 }
 
 // FUNCTION: LEGORACERS 0x0044f0e0
-LegoFloat JoystickInputDevice::GetAxisValue(undefined4 p_arg)
+LegoFloat JoystickDevice::GetAxisValue(undefined4 p_arg)
 {
 	LegoU32 flag = 0x01;
 
@@ -318,7 +318,7 @@ LegoFloat JoystickInputDevice::GetAxisValue(undefined4 p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x0044f120
-void JoystickInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
+void JoystickDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
 	undefined4 keyCode = p_event & c_sourceMask;
 	undefined4 originalEvent = p_event;
@@ -360,7 +360,7 @@ void JoystickInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, Leg
 }
 
 // FUNCTION: LEGORACERS 0x0044f1e0
-void JoystickInputDevice::SetAxisValue(undefined4 p_arg1, LegoFloat p_arg2)
+void JoystickDevice::SetAxisValue(undefined4 p_arg1, LegoFloat p_arg2)
 {
 	LegoU32 flag = 0x01;
 
@@ -375,7 +375,7 @@ void JoystickInputDevice::SetAxisValue(undefined4 p_arg1, LegoFloat p_arg2)
 }
 
 // FUNCTION: LEGORACERS 0x0044f240
-LegoS32 JoystickInputDevice::GetButtonCount()
+LegoS32 JoystickDevice::GetButtonCount()
 {
 	return m_buttonCount;
 }
@@ -385,21 +385,21 @@ LegoS32 JoystickInputDevice::GetButtonCount()
 
 // FUNCTION: LEGORACERS 0x0044f250
 #pragma code_seg(".text$joy_vt20")
-LegoS32 JoystickInputDevice::GetAxisCount()
+LegoS32 JoystickDevice::GetAxisCount()
 {
 	return 16;
 }
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0044f260
-LegoFloat JoystickInputDevice::GetAxisValueByIndex(undefined4 p_arg)
+LegoFloat JoystickDevice::GetAxisValueByIndex(undefined4 p_arg)
 {
 	return m_axisValues[p_arg];
 }
 
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
 #pragma code_seg(".text$fold_44f590")
-void JoystickInputDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA&)
+void JoystickDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA&)
 {
 }
 #pragma code_seg()

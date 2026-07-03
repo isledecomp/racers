@@ -2,6 +2,7 @@
 #define GOLTILEDTEXTURE_H
 
 #include "decomp.h"
+#include "fourbytes.h"
 #include "golsurfaceformat.h"
 #include "goltexture.h"
 #include "surface/color.h"
@@ -11,19 +12,6 @@ class GolD3DRenderDevice;
 class GolD3DTexture;
 
 // SIZE 0x04
-// This type is needed because
-// - instances of this type have component access like `char[4]`, but copy like an `int`,
-// - instances of this type are not aligned to 4 bytes.
-#pragma pack(push, 1)
-struct FourBytes {
-	union {
-		LegoChar m_bytes[4];
-		LegoU8 m_uBytes[4];
-		LegoU32 m_u32;
-	};
-};
-#pragma pack(pop)
-
 // VTABLE: GOLDP 0x10056ee4
 // SIZE 0x50
 class GolTiledTexture {

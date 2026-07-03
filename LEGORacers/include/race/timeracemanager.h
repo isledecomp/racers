@@ -38,10 +38,10 @@ public:
 	void Reset();
 	void Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, LegoBool32 p_binary, LegoBool32 p_mirror);
 	void Shutdown();
-	void FUN_00422710(LegoU32 p_elapsedMs);
-	void FUN_00422960(GolD3DRenderDevice* p_renderer);
-	void FUN_00422de0();
-	void FUN_00422eb0(Racer* p_racer);
+	void Update(LegoU32 p_elapsedMs);
+	void Draw(GolD3DRenderDevice* p_renderer);
+	void PrepareRun();
+	void AttachRacer(Racer* p_racer);
 	void UpdateBestRun();
 	LegoBool32 HasBeatenRecord();
 	GhostRunData* ResetRun();
@@ -109,7 +109,7 @@ public:
 	GolAnimatedEntity* GetRecordGhostMarkerEntity() { return m_recordGhostMarker; }
 
 private:
-	void FUN_00423160(GhostRunData* p_ghostRun, const LegoChar* p_name);
+	void LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_name);
 
 	GolWorldDatabase* m_worldDatabase;      // 0x04
 	GolExport* m_golExport;                 // 0x08
@@ -122,7 +122,7 @@ private:
 	GolAnimatedEntity m_unk0x114;           // 0x114
 	GolAnimatedEntity* m_unk0x208;          // 0x208
 	GolAnimatedEntity m_unk0x20c;           // 0x20c
-	GolModelEntity m_unk0x300;              // 0x300
+	GolModelEntity m_ghostCarModel;         // 0x300
 	GolModelEntity* m_unk0x390;             // 0x390
 	GolVec3 m_unk0x394;                     // 0x394
 	GolVec3 m_unk0x3a0;                     // 0x3a0

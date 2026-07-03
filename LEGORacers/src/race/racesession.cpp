@@ -350,7 +350,7 @@ void RaceSession::Initialize(
 
 	m_timeRaceManager = p_timeRaceManager;
 	if (p_timeRaceManager) {
-		p_timeRaceManager->FUN_00422de0();
+		p_timeRaceManager->PrepareRun();
 	}
 
 	m_elapsedMs = 0;
@@ -1794,7 +1794,7 @@ void RaceSession::UpdateCountdownState()
 	m_powerupManager.SetBricksAudible();
 
 	if (m_timeRaceManager) {
-		m_timeRaceManager->FUN_00422eb0(m_raceState.m_playerRacers[0]);
+		m_timeRaceManager->AttachRacer(m_raceState.m_playerRacers[0]);
 	}
 
 	if (m_music) {
@@ -2105,7 +2105,7 @@ void RaceSession::Update()
 
 			remainingMs = remainingAfterStep;
 			if (m_timeRaceManager) {
-				m_timeRaceManager->FUN_00422710(stepMs);
+				m_timeRaceManager->Update(stepMs);
 			}
 		}
 
@@ -2391,7 +2391,7 @@ void RaceSession::DrawTransparent()
 	m_decalManager.DrawTransparent(m_renderer);
 
 	if (m_timeRaceManager) {
-		m_timeRaceManager->FUN_00422960(m_renderer);
+		m_timeRaceManager->Draw(m_renderer);
 	}
 }
 
@@ -2715,7 +2715,7 @@ void RaceSession::ProcessPauseDialog()
 	case 2:
 		if (!selectionIndex) {
 			if (m_timeRaceManager) {
-				m_timeRaceManager->FUN_00422de0();
+				m_timeRaceManager->PrepareRun();
 			}
 			RestartRace();
 		}

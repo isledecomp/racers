@@ -154,7 +154,7 @@ void TimeRaceManager::Shutdown()
 	m_unk0x20c.VTable0x54();
 	m_unk0x114.VTable0x54();
 	m_bestGhostMarker.VTable0x54();
-	m_unk0x300.VTable0x54();
+	m_ghostCarModel.VTable0x54();
 
 	if (m_worldDatabase) {
 		m_golExport->VTable0x3c(m_worldDatabase);
@@ -177,7 +177,7 @@ void TimeRaceManager::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x00422710
-void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
+void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 {
 	LegoU8 flags = m_flags0x3b4;
 	if (!(flags & c_flag0x3b4Bit1)) {
@@ -187,7 +187,7 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 	m_elapsedTotalMs += p_elapsedMs;
 
 	if (flags & c_flag0x3b4Bit0) {
-		m_unk0x300.VTable0x10(p_elapsedMs);
+		m_ghostCarModel.VTable0x10(p_elapsedMs);
 		m_bestGhostMarker.VTable0x10(p_elapsedMs);
 		m_unk0x114.VTable0x10(p_elapsedMs);
 		if (m_unk0x20c.HasModel()) {
@@ -243,7 +243,7 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x00422960
-void TimeRaceManager::FUN_00422960(GolD3DRenderDevice* p_renderer)
+void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 {
 	GolAnimatedEntity* optionalEntity = NULL;
 
@@ -277,7 +277,7 @@ void TimeRaceManager::FUN_00422960(GolD3DRenderDevice* p_renderer)
 			if (m_unk0x20c.HasModel()) {
 				optionalEntity = &m_unk0x20c;
 			}
-			modelEntity = &m_unk0x300;
+			modelEntity = &m_ghostCarModel;
 			attachedOffset = &m_unk0x394;
 		}
 		else {
@@ -395,10 +395,10 @@ void TimeRaceManager::FUN_00422960(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00422de0
-void TimeRaceManager::FUN_00422de0()
+void TimeRaceManager::PrepareRun()
 {
 	m_flags0x3b4 &= ~c_flag0x3b4Bit3;
-	FUN_00423160(m_recordRun, "ghost");
+	LoadGhostRun(m_recordRun, "ghost");
 	if (0 < m_recordRun->m_sampleCount) {
 		m_flags0x3b4 |= c_flag0x3b4Bit3;
 	}
@@ -425,7 +425,7 @@ void TimeRaceManager::FUN_00422de0()
 }
 
 // FUNCTION: LEGORACERS 0x00422eb0
-void TimeRaceManager::FUN_00422eb0(Racer* p_racer)
+void TimeRaceManager::AttachRacer(Racer* p_racer)
 {
 	m_racer = p_racer;
 	m_flags0x3b4 |= c_flag0x3b4Bit1;
@@ -435,11 +435,11 @@ void TimeRaceManager::FUN_00422eb0(Racer* p_racer)
 
 	if (m_flags0x3b4 & c_flag0x3b4Bit0) {
 		GolModelEntity* sourceModel = p_racer->m_visuals.m_bodyModelEntity;
-		m_unk0x300.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
+		m_ghostCarModel.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
 		LegoU32 i;
 		for (i = 1; i < 3; i++) {
 			if (sourceModel->GetModel(i)) {
-				m_unk0x300.FUN_10027c50(sourceModel->GetModel(i), sourceModel->GetModelDistance(i));
+				m_ghostCarModel.FUN_10027c50(sourceModel->GetModel(i), sourceModel->GetModelDistance(i));
 			}
 		}
 
@@ -532,7 +532,7 @@ void TimeRaceManager::UpdateBestRun()
 }
 
 // FUNCTION: LEGORACERS 0x00423160
-void TimeRaceManager::FUN_00423160(GhostRunData* p_ghostRun, const LegoChar* p_name)
+void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_name)
 {
 	GolFileParser* parser;
 	LegoU8 flags = m_flags0x3b4;

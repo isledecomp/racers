@@ -292,42 +292,42 @@ private:
 	GolVec3* m_unk0xc4c1c;                                                         // 0xc4c1c
 	LegoU16 m_unk0xc4c20[(0xc53a0 - 0xc4c20) / sizeof(LegoU16)];                   // 0xc4c20
 	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)];           // 0xc53a0
-	LegoFloat m_unk0xc83a0;                                                        // 0xc83a0
-	LegoFloat m_unk0xc83a4;                                                        // 0xc83a4
+	LegoFloat m_uvOffsetU;                                                         // 0xc83a0
+	LegoFloat m_uvOffsetV;                                                         // 0xc83a4
 	GolTexture* m_currentTexture;                                                  // 0xc83a8
 	undefined4 m_unk0xc83ac;                                                       // 0xc83ac
 	undefined4 m_unk0xc83b0;                                                       // 0xc83b0
 	RasterizerPipelineSet m_unk0xc83b4;                                            // 0xc83b4
 	undefined4 m_unk0xc83c4;                                                       // 0xc83c4
-	undefined4 m_unk0xc83c8;                                                       // 0xc83c8
-	undefined4 m_unk0xc83cc;                                                       // 0xc83cc
-	undefined4 m_unk0xc83d0;                                                       // 0xc83d0
-	undefined4 m_unk0xc83d4;                                                       // 0xc83d4
-	undefined4 m_unk0xc83d8;                                                       // 0xc83d8
-	undefined4 m_unk0xc83dc;                                                       // 0xc83dc
+	undefined4 m_activeMaterialFlags;                                              // 0xc83c8
+	undefined4 m_forcedMaterialFlags;                                              // 0xc83cc
+	undefined4 m_activeAlphaFunc;                                                  // 0xc83d0
+	undefined4 m_activeAlphaRef;                                                   // 0xc83d4
+	undefined4 m_activeSrcBlend;                                                   // 0xc83d8
+	undefined4 m_activeDestBlend;                                                  // 0xc83dc
 	LegoU32 m_alpha;                                                               // 0xc83e0
 	LegoBool32 m_unk0xc83e4;                                                       // 0xc83e4
 	LegoBool32 m_unk0xc83e8;                                                       // 0xc83e8
 	undefined4 m_unk0xc83ec;                                                       // 0xc83ec
 	undefined4 m_unk0xc83f0;                                                       // 0xc83f0
-	undefined4 m_unk0xc83f4;                                                       // 0xc83f4
+	undefined4 m_uvOffsetEnabled;                                                  // 0xc83f4
 	LegoBool32 m_unk0xc83f8;                                                       // 0xc83f8
 	LegoU32 m_unk0xc83fc;                                                          // 0xc83fc
 	LegoFloat m_unk0xc8400[4];                                                     // 0xc8400
-	GolMatrix4 m_unk0xc8410;                                                       // 0xc8410
+	GolMatrix4 m_modelMatrix;                                                      // 0xc8410
 	GolMatrix4 m_unk0xc8450;                                                       // 0xc8450
 	GolMatrix4* m_unk0xc8490;                                                      // 0xc8490
 	GolMatrix4* m_unk0xc8494;                                                      // 0xc8494
 	GolMatrix4 m_unk0xc8498[1];                                                    // 0xc8498
 	GolMatrix4 m_unk0xc84d8;                                                       // 0xc84d8
-	GolMatrix4* m_unk0xc8518;                                                      // 0xc8518
+	GolMatrix4* m_currentMatrix;                                                   // 0xc8518
 	undefined4 m_unk0xc851c;                                                       // 0xc851c
-	GolSceneNode* m_unk0xc8520;                                                    // 0xc8520
-	GolD3DRenderState* m_unk0xc8524;                                               // 0xc8524
-	undefined4 m_unk0xc8528;                                                       // 0xc8528
-	LegoFloat m_unk0xc852c;                                                        // 0xc852c
-	GolD3DRenderState::DrawCommand m_unk0xc8530;                                   // 0xc8530
-	GolD3DRenderState::MaterialCommand m_unk0xc854c;                               // 0xc854c
+	GolSceneNode* m_currentSceneNode;                                              // 0xc8520
+	GolD3DRenderState* m_renderState;                                              // 0xc8524
+	undefined4 m_stateBeginPending;                                                // 0xc8528
+	LegoFloat m_currentScale;                                                      // 0xc852c
+	GolD3DRenderState::DrawCommand m_drawCommand;                                  // 0xc8530
+	GolD3DRenderState::MaterialCommand m_materialCommand;                          // 0xc854c
 	LegoBool32 m_unk0xc8568;                                                       // 0xc8568
 	ColorRGBA m_unk0xc856c;                                                        // 0xc856c
 	undefined4 m_unk0xc8570;                                                       // 0xc8570
@@ -345,8 +345,8 @@ private:
 	LegoFloat m_unk0xc86fc;                                                        // 0xc86fc
 	undefined4 m_unk0xc8700;                                                       // 0xc8700
 	undefined4 m_unk0xc8704;                                                       // 0xc8704
-	D3DBLEND m_unk0xc8708[11];                                                     // 0xc8708
-	D3DBLEND m_unk0xc8734[11];                                                     // 0xc8734
+	D3DBLEND m_srcBlendOps[11];                                                    // 0xc8708
+	D3DBLEND m_destBlendOps[11];                                                   // 0xc8734
 	BronzeFalconDrawFunction m_drawTriangleFn0;                                    // 0xc8760
 	BronzeFalconDrawFunction m_drawTriangleFn1;                                    // 0xc8764
 	BronzeFalconDrawFunction m_drawTriangleFn2;                                    // 0xc8768

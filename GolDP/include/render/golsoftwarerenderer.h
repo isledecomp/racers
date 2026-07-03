@@ -78,7 +78,7 @@ public:
 		m_height = p_height;
 	}
 
-	void SetUnk0x4c(D3DTLVERTEX* p_arg) { m_unk0x4c = p_arg; }
+	void SetTlVertices(D3DTLVERTEX* p_tlVertices) { m_tlVertices = p_tlVertices; }
 	void SetUnk0x50(undefined4 p_unk0x50) { m_unk0x50 = p_unk0x50; }
 	TriangleCommand* GetCommands() { return m_nodes; }
 	LegoS32 GetNodeCapacity() const { return m_nodeCapacity; }
@@ -128,7 +128,7 @@ private:
 	LegoS32 m_nodeCapacity;                                 // 0x40
 	TriangleCommand* m_nodes;                               // 0x44
 	LegoS32 m_commandCount;                                 // 0x48
-	D3DTLVERTEX* m_unk0x4c;                                 // 0x4c
+	D3DTLVERTEX* m_tlVertices;                              // 0x4c
 	undefined4 m_unk0x50;                                   // 0x50
 	TriangleCommand* m_commandHead;                         // 0x54
 };

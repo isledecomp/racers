@@ -410,7 +410,7 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 GolSoftwareRenderer::GolSoftwareRenderer()
 {
 	DetectCPU();
-	m_unk0x4c = 0;
+	m_tlVertices = 0;
 	m_nodes = NULL;
 	m_commandHead = 0;
 }
@@ -484,13 +484,13 @@ void GolSoftwareRenderer::FUN_100417a0(TriangleCommand* p_cmds, LegoU32 p_count,
 void GolSoftwareRenderer::FUN_100417c0(TriangleCommand* p_cmds, LegoU32 p_count)
 {
 	while (p_count != 0) {
-		LegoFloat sortKey = m_unk0x4c[p_cmds->m_vertexIndex0].sz;
+		LegoFloat sortKey = m_tlVertices[p_cmds->m_vertexIndex0].sz;
 
-		if (sortKey < m_unk0x4c[p_cmds->m_vertexIndex1].sz) {
-			sortKey = m_unk0x4c[p_cmds->m_vertexIndex1].sz;
+		if (sortKey < m_tlVertices[p_cmds->m_vertexIndex1].sz) {
+			sortKey = m_tlVertices[p_cmds->m_vertexIndex1].sz;
 		}
-		if (sortKey < m_unk0x4c[p_cmds->m_vertexIndex2].sz) {
-			sortKey = m_unk0x4c[p_cmds->m_vertexIndex2].sz;
+		if (sortKey < m_tlVertices[p_cmds->m_vertexIndex2].sz) {
+			sortKey = m_tlVertices[p_cmds->m_vertexIndex2].sz;
 		}
 
 		p_cmds->m_sortKey.m_value = sortKey;
@@ -610,9 +610,9 @@ void GolSoftwareRenderer::DrawCommandList()
 			m_unk0x34 = rasterizer->m_texture;
 			rasterizer->m_triangleRasterizer(
 				this,
-				&m_unk0x4c[command->m_vertexIndex0],
-				&m_unk0x4c[command->m_vertexIndex1],
-				&m_unk0x4c[command->m_vertexIndex2]
+				&m_tlVertices[command->m_vertexIndex0],
+				&m_tlVertices[command->m_vertexIndex1],
+				&m_tlVertices[command->m_vertexIndex2]
 			);
 			command = command->m_next;
 		} while (command != NULL);

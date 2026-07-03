@@ -383,7 +383,7 @@ void GolD3DRenderDevice::Reset()
 	m_unk0xc86f8 = 0;
 	m_unk0xc83ac = 0;
 	m_unk0xc83b0 = 0;
-	m_unk0xc852c = 1.0f;
+	m_currentScale = 1.0f;
 	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 	m_unk0xc83c4 = 0;
 	m_unk0xc86fc = 0.0f;
@@ -398,12 +398,12 @@ void GolD3DRenderDevice::Reset()
 	m_unk0xc83f0 = 0;
 	m_unk0xc83ec = 0;
 	m_unk0xc876c = &GolD3DRenderDevice::FUN_1000a2c0;
-	m_unk0xc83f4 = 0;
-	m_unk0xc83a0 = 0;
-	m_unk0xc83a4 = 0;
+	m_uvOffsetEnabled = 0;
+	m_uvOffsetU = 0;
+	m_uvOffsetV = 0;
 	m_currentTexture = 0;
-	m_unk0xc83c8 = 0;
-	m_unk0xc83cc = 0;
+	m_activeMaterialFlags = 0;
+	m_forcedMaterialFlags = 0;
 	m_alpha = 255;
 	m_unk0xc8568 = 0;
 	m_unk0xc83f8 = 0;
@@ -411,49 +411,49 @@ void GolD3DRenderDevice::Reset()
 	::memset(m_unk0xc8400, 0, sizeof(m_unk0xc8400));
 	m_unk0xc8490 = 0;
 	m_unk0xc8494 = 0;
-	m_unk0xc8518 = 0;
+	m_currentMatrix = 0;
 	m_unk0xc851c = 0;
-	m_unk0xc8520 = 0;
-	m_unk0xc8524 = 0;
-	m_unk0xc8528 = 0;
-	::memset(&m_unk0xc8530, 0, sizeof(m_unk0xc8530));
-	::memset(&m_unk0xc854c, 0, 0xc8568 - 0xc854c);
-	m_unk0xc8530.m_renderer = this;
-	m_unk0xc8530.m_vertices = m_unk0xc428c;
-	m_unk0xc8530.m_material = NULL;
-	m_unk0xc854c.m_renderer = this;
-	m_unk0xc854c.m_vertices = m_unk0xc428c;
-	m_unk0xc8410.m_m[0][0] = 1.0f;
+	m_currentSceneNode = 0;
+	m_renderState = 0;
+	m_stateBeginPending = 0;
+	::memset(&m_drawCommand, 0, sizeof(m_drawCommand));
+	::memset(&m_materialCommand, 0, 0xc8568 - 0xc854c);
+	m_drawCommand.m_renderer = this;
+	m_drawCommand.m_vertices = m_unk0xc428c;
+	m_drawCommand.m_material = NULL;
+	m_materialCommand.m_renderer = this;
+	m_materialCommand.m_vertices = m_unk0xc428c;
+	m_modelMatrix.m_m[0][0] = 1.0f;
 	m_unk0xc8450.m_m[0][0] = 1.0f;
-	m_unk0xc8410.m_m[0][1] = 0.0f;
+	m_modelMatrix.m_m[0][1] = 0.0f;
 	m_unk0xc8450.m_m[0][1] = 0.0f;
-	m_unk0xc8410.m_m[0][2] = 0.0f;
+	m_modelMatrix.m_m[0][2] = 0.0f;
 	m_unk0xc8450.m_m[0][2] = 0.0f;
-	m_unk0xc8410.m_m[0][3] = 0.0f;
+	m_modelMatrix.m_m[0][3] = 0.0f;
 	m_unk0xc8450.m_m[0][3] = 0.0f;
-	m_unk0xc8410.m_m[1][0] = 0.0f;
+	m_modelMatrix.m_m[1][0] = 0.0f;
 	m_unk0xc8450.m_m[1][0] = 0.0f;
-	m_unk0xc8410.m_m[1][1] = 1.0f;
+	m_modelMatrix.m_m[1][1] = 1.0f;
 	m_unk0xc8450.m_m[1][1] = 1.0f;
-	m_unk0xc8410.m_m[1][2] = 0.0f;
+	m_modelMatrix.m_m[1][2] = 0.0f;
 	m_unk0xc8450.m_m[1][2] = 0.0f;
-	m_unk0xc8410.m_m[1][3] = 0.0f;
+	m_modelMatrix.m_m[1][3] = 0.0f;
 	m_unk0xc8450.m_m[1][3] = 0.0f;
-	m_unk0xc8410.m_m[2][0] = 0.0f;
+	m_modelMatrix.m_m[2][0] = 0.0f;
 	m_unk0xc8450.m_m[2][0] = 0.0f;
-	m_unk0xc8410.m_m[2][1] = 0.0f;
+	m_modelMatrix.m_m[2][1] = 0.0f;
 	m_unk0xc8450.m_m[2][1] = 0.0f;
-	m_unk0xc8410.m_m[2][2] = 1.0f;
+	m_modelMatrix.m_m[2][2] = 1.0f;
 	m_unk0xc8450.m_m[2][2] = 1.0f;
-	m_unk0xc8410.m_m[2][3] = 0.0f;
+	m_modelMatrix.m_m[2][3] = 0.0f;
 	m_unk0xc8450.m_m[2][3] = 0.0f;
-	m_unk0xc8410.m_m[3][0] = 0.0f;
+	m_modelMatrix.m_m[3][0] = 0.0f;
 	m_unk0xc8450.m_m[3][0] = 0.0f;
-	m_unk0xc8410.m_m[3][1] = 0.0f;
+	m_modelMatrix.m_m[3][1] = 0.0f;
 	m_unk0xc8450.m_m[3][1] = 0.0f;
-	m_unk0xc8410.m_m[3][2] = 0.0f;
+	m_modelMatrix.m_m[3][2] = 0.0f;
 	m_unk0xc8450.m_m[3][2] = 0.0f;
-	m_unk0xc8410.m_m[3][3] = 1.0f;
+	m_modelMatrix.m_m[3][3] = 1.0f;
 	m_unk0xc8450.m_m[3][3] = 1.0f;
 	m_drawTriangleFn1 = &GolD3DRenderDevice::FUN_1000c630;
 	m_drawTriangleFn2 = &GolD3DRenderDevice::FUN_1000edf0;
@@ -556,21 +556,21 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 				::memcpy(&m_d3dDeviceDesc, &helCaps, sizeof(helCaps));
 			}
 
-			for (i = 0; i < sizeOfArray(m_unk0xc8708); i++) {
+			for (i = 0; i < sizeOfArray(m_srcBlendOps); i++) {
 				if (m_d3dDeviceDesc.dpcTriCaps.dwSrcBlendCaps & g_d3dBlendOpMasks[i]) {
-					m_unk0xc8708[i] = g_d3dBlendOps[i];
+					m_srcBlendOps[i] = g_d3dBlendOps[i];
 				}
 				else {
-					m_unk0xc8708[i] = D3DBLEND_SRCALPHA;
+					m_srcBlendOps[i] = D3DBLEND_SRCALPHA;
 				}
 			}
 
-			for (i = 0; i < sizeOfArray(m_unk0xc8708); i++) {
+			for (i = 0; i < sizeOfArray(m_srcBlendOps); i++) {
 				if (m_d3dDeviceDesc.dpcTriCaps.dwDestBlendCaps & g_d3dBlendOpMasks[i]) {
-					m_unk0xc8734[i] = g_d3dBlendOps[i];
+					m_destBlendOps[i] = g_d3dBlendOps[i];
 				}
 				else {
-					m_unk0xc8734[i] = D3DBLEND_INVSRCALPHA;
+					m_destBlendOps[i] = D3DBLEND_INVSRCALPHA;
 				}
 			}
 
@@ -664,7 +664,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 		GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
 	}
 
-	m_softwareRenderer.SetUnk0x4c(m_unk0x348);
+	m_softwareRenderer.SetTlVertices(m_unk0x348);
 	FUN_1000b4a0();
 	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 
@@ -697,14 +697,14 @@ void GolD3DRenderDevice::FUN_100082e0()
 		m_unk0xc83f8 = FALSE;
 	}
 
-	m_unk0xc83d0 = 0;
-	m_unk0xc83d4 = 0;
-	m_unk0xc83d8 = 6;
-	m_unk0xc83dc = 8;
-	m_unk0xc83c8 = GolMaterial::c_flagGouraudShading | GolMaterial::c_flagDecal | GolMaterial::c_flagNoAlphaTest |
-				   GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagLinearFilter |
-				   GolMaterial::c_flagNoTransparency | GolMaterial::c_flagWrap | GolMaterial::c_flagBit20 |
-				   GolMaterial::c_flagBit22;
+	m_activeAlphaFunc = 0;
+	m_activeAlphaRef = 0;
+	m_activeSrcBlend = 6;
+	m_activeDestBlend = 8;
+	m_activeMaterialFlags = GolMaterial::c_flagGouraudShading | GolMaterial::c_flagDecal |
+							GolMaterial::c_flagNoAlphaTest | GolMaterial::c_flagNoAlphaBlend |
+							GolMaterial::c_flagLinearFilter | GolMaterial::c_flagNoTransparency |
+							GolMaterial::c_flagWrap | GolMaterial::c_flagBit20 | GolMaterial::c_flagBit22;
 	FUN_10012f50();
 
 	if (m_flags & c_flagBit16) {
@@ -775,8 +775,8 @@ void GolD3DRenderDevice::FUN_100082e0()
 	m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, FALSE);
 	m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAFUNC, g_d3dCmpFuncLookup[0]);
 	m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAREF, 0);
-	m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, m_unk0xc8708[m_unk0xc83d8]);
-	m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, m_unk0xc8734[m_unk0xc83dc]);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, m_srcBlendOps[m_activeSrcBlend]);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, m_destBlendOps[m_activeDestBlend]);
 	m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 }
@@ -871,7 +871,7 @@ void GolD3DRenderDevice::VTable0x5c()
 
 	m_unk0xc8490 = &lens->m_cameraMatrices.m_viewProjection;
 	m_unk0xc8494 = &lens->m_cameraMatrices.m_viewScreenProjection;
-	::memcpy(&m_unk0x4c, &lens->m_viewFrustum, sizeof(m_unk0x4c));
+	::memcpy(&m_viewFrustum, &lens->m_viewFrustum, sizeof(m_viewFrustum));
 	::memcpy(m_unk0xc8400, &lens->m_cameraMatrices.m_viewportWidth, sizeof(m_unk0xc8400));
 }
 
@@ -879,20 +879,20 @@ void GolD3DRenderDevice::VTable0x5c()
 void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodIndex)
 {
 	GolModelEntity* canoe = static_cast<GolModelEntity*>(p_model);
-	m_unk0xc8520 = canoe->GetSceneNode(p_lodIndex);
-	if (m_unk0xc8520 != NULL) {
+	m_currentSceneNode = canoe->GetSceneNode(p_lodIndex);
+	if (m_currentSceneNode != NULL) {
 		canoe->VTable0x5c(p_lodIndex);
 		if (m_unk0xc83e4) {
-			static_cast<GolSceneTransformNode*>(m_unk0xc8520)
-				->UpdateWorldViewMatrices(m_unk0xc8498[0], m_unk0xc8410, *m_unk0xc8490);
+			static_cast<GolSceneTransformNode*>(m_currentSceneNode)
+				->UpdateWorldViewMatrices(m_unk0xc8498[0], m_modelMatrix, *m_unk0xc8490);
 		}
 		else {
-			static_cast<GolSceneTransformNode*>(m_unk0xc8520)
-				->UpdateWorldViewMatrices(m_unk0xc84d8, m_unk0xc8410, *m_unk0xc8494);
+			static_cast<GolSceneTransformNode*>(m_currentSceneNode)
+				->UpdateWorldViewMatrices(m_unk0xc84d8, m_modelMatrix, *m_unk0xc8494);
 		}
 
 		if (m_unk0xc8568) {
-			m_unk0xc8520->UpdateWorldMatrices(m_unk0xc8450);
+			m_currentSceneNode->UpdateWorldMatrices(m_unk0xc8450);
 		}
 	}
 }
@@ -901,12 +901,12 @@ void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodInde
 void GolD3DRenderDevice::DrawModelEntity(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
-	p_model->ComputeVisibility(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_viewFrustum, &result);
 	if (!result.m_visibility) {
 		return;
 	}
 
-	GolMatrix4* modelMatrix = &m_unk0xc8410;
+	GolMatrix4* modelMatrix = &m_modelMatrix;
 	GolModelEntity* canoe = static_cast<GolModelEntity*>(p_model);
 	canoe->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
@@ -917,13 +917,13 @@ void GolD3DRenderDevice::DrawModelEntity(GolWorldEntity* p_model)
 
 	if (result.m_visibility == 1) {
 		m_unk0xc83e4 = TRUE;
-		m_unk0xc8518 = m_unk0xc8498;
+		m_currentMatrix = m_unk0xc8498;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
-		m_unk0xc8518 = &m_unk0xc84d8;
+		m_currentMatrix = &m_unk0xc84d8;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
@@ -952,7 +952,7 @@ void GolD3DRenderDevice::DrawModelEntityLodMirrored(GolModelEntity* p_model, und
 	GolMatrix4* modelMatrix;
 
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->SelectLod(m_unk0x4c.m_position, &result);
+		p_model->SelectLod(m_viewFrustum.m_position, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -965,12 +965,12 @@ void GolD3DRenderDevice::DrawModelEntityLodMirrored(GolModelEntity* p_model, und
 	LegoFloat radius;
 	p_model->GetModelBounds(result.m_lodIndex, &center, &radius);
 	center.m_z = -center.m_z;
-	result.m_visibility = m_unk0x4c.ClassifySphere(center, radius);
+	result.m_visibility = m_viewFrustum.ClassifySphere(center, radius);
 	if (!result.m_visibility) {
 		return;
 	}
 
-	modelMatrix = &m_unk0xc8410;
+	modelMatrix = &m_modelMatrix;
 	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
@@ -978,22 +978,22 @@ void GolD3DRenderDevice::DrawModelEntityLodMirrored(GolModelEntity* p_model, und
 	modelMatrix->m_m[3][1] = position.m_y;
 	modelMatrix->m_m[3][2] = position.m_z;
 
-	m_unk0xc8410.m_m[0][2] = -m_unk0xc8410.m_m[0][2];
-	m_unk0xc8410.m_m[1][2] = -m_unk0xc8410.m_m[1][2];
-	m_unk0xc8410.m_m[2][2] = -m_unk0xc8410.m_m[2][2];
-	m_unk0xc8410.m_m[3][2] = -m_unk0xc8410.m_m[3][2];
-	m_unk0xc83cc = GolMaterial::c_flagRotateVertices;
+	m_modelMatrix.m_m[0][2] = -m_modelMatrix.m_m[0][2];
+	m_modelMatrix.m_m[1][2] = -m_modelMatrix.m_m[1][2];
+	m_modelMatrix.m_m[2][2] = -m_modelMatrix.m_m[2][2];
+	m_modelMatrix.m_m[3][2] = -m_modelMatrix.m_m[3][2];
+	m_forcedMaterialFlags = GolMaterial::c_flagRotateVertices;
 	FUN_10012f50();
 
 	if (result.m_visibility == 1) {
 		m_unk0xc83e4 = TRUE;
-		m_unk0xc8518 = m_unk0xc8498;
+		m_currentMatrix = m_unk0xc8498;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
-		m_unk0xc8518 = &m_unk0xc84d8;
+		m_currentMatrix = &m_unk0xc84d8;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
@@ -1014,7 +1014,7 @@ void GolD3DRenderDevice::DrawModelEntityLodMirrored(GolModelEntity* p_model, und
 	FUN_10008880(p_model, result.m_lodIndex);
 	model->Draw(this, materialTable);
 
-	m_unk0xc83cc = 0;
+	m_forcedMaterialFlags = 0;
 	FUN_10012f50();
 }
 
@@ -1025,7 +1025,7 @@ void GolD3DRenderDevice::DrawModelEntityLod(GolModelEntity* p_model, undefined4 
 	GolMatrix4* modelMatrix;
 
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->SelectLod(m_unk0x4c.m_position, &result);
+		p_model->SelectLod(m_viewFrustum.m_position, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -1038,12 +1038,12 @@ void GolD3DRenderDevice::DrawModelEntityLod(GolModelEntity* p_model, undefined4 
 	LegoFloat radius;
 	p_model->GetModelBounds(result.m_lodIndex, &center, &radius);
 	center.m_z = 0.0f;
-	result.m_visibility = m_unk0x4c.ClassifySphere(center, radius);
+	result.m_visibility = m_viewFrustum.ClassifySphere(center, radius);
 	if (!result.m_visibility) {
 		return;
 	}
 
-	modelMatrix = &m_unk0xc8410;
+	modelMatrix = &m_modelMatrix;
 	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
@@ -1051,20 +1051,20 @@ void GolD3DRenderDevice::DrawModelEntityLod(GolModelEntity* p_model, undefined4 
 	modelMatrix->m_m[3][1] = position.m_y;
 	modelMatrix->m_m[3][2] = position.m_z;
 
-	m_unk0xc8410.m_m[0][2] = 0.0f;
-	m_unk0xc8410.m_m[1][2] = 0.0f;
-	m_unk0xc8410.m_m[2][2] = 0.0f;
-	m_unk0xc8410.m_m[3][2] = 0.0f;
+	m_modelMatrix.m_m[0][2] = 0.0f;
+	m_modelMatrix.m_m[1][2] = 0.0f;
+	m_modelMatrix.m_m[2][2] = 0.0f;
+	m_modelMatrix.m_m[3][2] = 0.0f;
 
 	if (result.m_visibility == 1) {
 		m_unk0xc83e4 = TRUE;
-		m_unk0xc8518 = m_unk0xc8498;
+		m_currentMatrix = m_unk0xc8498;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
-		m_unk0xc8518 = &m_unk0xc84d8;
+		m_currentMatrix = &m_unk0xc84d8;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
@@ -1095,7 +1095,7 @@ void GolD3DRenderDevice::DrawModelEntityWithState(
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->ComputeVisibility(m_unk0x4c, &result);
+		p_model->ComputeVisibility(m_viewFrustum, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -1104,10 +1104,10 @@ void GolD3DRenderDevice::DrawModelEntityWithState(
 		result.m_lodIndex = p_lodIndex;
 	}
 
-	GolMatrix4* modelMatrix = &m_unk0xc8410;
-	m_unk0xc8524 = p_renderState;
-	m_unk0xc8530.m_model = p_model;
-	m_unk0xc854c.m_model = p_model;
+	GolMatrix4* modelMatrix = &m_modelMatrix;
+	m_renderState = p_renderState;
+	m_drawCommand.m_model = p_model;
+	m_materialCommand.m_model = p_model;
 	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
@@ -1115,45 +1115,45 @@ void GolD3DRenderDevice::DrawModelEntityWithState(
 	modelMatrix->m_m[3][1] = position.m_y;
 	modelMatrix->m_m[3][2] = position.m_z;
 
-	if (!m_unk0xc8528) {
+	if (!m_stateBeginPending) {
 		m_unk0xc83e4 = TRUE;
-		m_unk0xc8518 = m_unk0xc8498;
+		m_currentMatrix = m_unk0xc8498;
 		FUN_10012f50();
 	}
 	else {
 		p_renderState->Begin(this, p_model, result.m_lodIndex);
 	}
 
-	m_unk0xc8518 = modelMatrix;
+	m_currentMatrix = modelMatrix;
 	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
 	LegoU16 vertexType = model->GetVertexArray()->GetVertexType();
 	m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
 	if (m_unk0xc8568) {
 		FUN_1000add0(p_model, model);
-		m_unk0xc8518 = &m_unk0xc8450;
-		m_unk0xc852c = p_model->GetModel(result.m_lodIndex)->GetScale() * p_model->GetScale();
+		m_currentMatrix = &m_unk0xc8450;
+		m_currentScale = p_model->GetModel(result.m_lodIndex)->GetScale() * p_model->GetScale();
 	}
 
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
-	m_unk0xc8520 = p_model->GetSceneNode(result.m_lodIndex);
-	if (m_unk0xc8520 != NULL) {
+	m_currentSceneNode = p_model->GetSceneNode(result.m_lodIndex);
+	if (m_currentSceneNode != NULL) {
 		p_model->VTable0x5c(result.m_lodIndex);
 		if (m_unk0xc8568) {
-			m_unk0xc8520->UpdateWorldMatrices(m_unk0xc8450);
+			m_currentSceneNode->UpdateWorldMatrices(m_unk0xc8450);
 		}
 		else {
-			m_unk0xc8520->UpdateWorldMatrices(*modelMatrix);
+			m_currentSceneNode->UpdateWorldMatrices(*modelMatrix);
 		}
 	}
 
 	FUN_10012f50();
 	model->Draw(this, materialTable);
 
-	m_unk0xc8524 = NULL;
-	m_unk0xc8528 = FALSE;
+	m_renderState = NULL;
+	m_stateBeginPending = FALSE;
 	FUN_10012f50();
 
-	if (m_unk0xc8528) {
+	if (m_stateBeginPending) {
 		p_renderState->End(this, p_model, result.m_lodIndex);
 	}
 }
@@ -1163,15 +1163,15 @@ void GolD3DRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_model, Le
 {
 	GolWorldEntity::ResultStruct result;
 	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
-	p_model->ComputeVisibility(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_viewFrustum, &result);
 	if (!result.m_visibility) {
 		return;
 	}
 
-	GolMatrix4* modelMatrix = &m_unk0xc8410;
-	m_unk0xc83a0 = p_unk0x08;
-	m_unk0xc83f4 = 1;
-	m_unk0xc83a4 = p_unk0x0c;
+	GolMatrix4* modelMatrix = &m_modelMatrix;
+	m_uvOffsetU = p_unk0x08;
+	m_uvOffsetEnabled = 1;
+	m_uvOffsetV = p_unk0x0c;
 	modelEntity->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = modelEntity->GetPosition();
@@ -1181,13 +1181,13 @@ void GolD3DRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_model, Le
 
 	if (result.m_visibility == 1) {
 		m_unk0xc83e4 = TRUE;
-		m_unk0xc8518 = m_unk0xc8498;
+		m_currentMatrix = m_unk0xc8498;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
-		m_unk0xc8518 = &m_unk0xc84d8;
+		m_currentMatrix = &m_unk0xc84d8;
 		FUN_10012f50();
 		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
@@ -1205,7 +1205,7 @@ void GolD3DRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_model, Le
 	FUN_10012f50();
 	model->Draw(this, materialTable);
 
-	m_unk0xc83f4 = 0;
+	m_uvOffsetEnabled = 0;
 	FUN_10012f50();
 }
 
@@ -1218,7 +1218,7 @@ void GolD3DRenderDevice::DrawCollidableEntityWithState(
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->ComputeVisibility(m_unk0x4c, &result);
+		p_model->ComputeVisibility(m_viewFrustum, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -1227,15 +1227,15 @@ void GolD3DRenderDevice::DrawCollidableEntityWithState(
 		result.m_lodIndex = p_lodIndex;
 	}
 
-	m_unk0xc8524 = p_renderState;
+	m_renderState = p_renderState;
 
 	GolBoundingShape::TreeNode::Node* firstNode;
 	GolBoundingShape::TreeNode::Node* lastNode;
 	static_cast<GolCollidableEntity*>(p_model)
 		->GetBoundingShape(result.m_lodIndex)
-		->CollectVisibleLeaves(&m_unk0x4c, &firstNode, &lastNode);
+		->CollectVisibleLeaves(&m_viewFrustum, &firstNode, &lastNode);
 
-	GolMatrix4* modelMatrix = &m_unk0xc8410;
+	GolMatrix4* modelMatrix = &m_modelMatrix;
 	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
@@ -1243,16 +1243,16 @@ void GolD3DRenderDevice::DrawCollidableEntityWithState(
 	modelMatrix->m_m[3][1] = position.m_y;
 	modelMatrix->m_m[3][2] = position.m_z;
 
-	if (!m_unk0xc8528) {
+	if (!m_stateBeginPending) {
 		m_unk0xc83e4 = TRUE;
-		m_unk0xc8518 = m_unk0xc8498;
+		m_currentMatrix = m_unk0xc8498;
 		FUN_10012f50();
 	}
 	else {
 		p_renderState->Begin(this, p_model, result.m_lodIndex);
 	}
 
-	m_unk0xc8518 = modelMatrix;
+	m_currentMatrix = modelMatrix;
 	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
 	GdbVertexArray* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
@@ -1279,11 +1279,11 @@ void GolD3DRenderDevice::DrawCollidableEntityWithState(
 		node = (&node->m_next)[nextOffset];
 	}
 
-	m_unk0xc8524 = NULL;
-	m_unk0xc8528 = FALSE;
+	m_renderState = NULL;
+	m_stateBeginPending = FALSE;
 	FUN_10012f50();
 
-	if (m_unk0xc8528) {
+	if (m_stateBeginPending) {
 		p_renderState->End(this, p_model, result.m_lodIndex);
 	}
 }
@@ -1295,7 +1295,7 @@ void GolD3DRenderDevice::DrawModelEntityWithScopedState(
 	undefined4 p_arg3
 )
 {
-	m_unk0xc8528 = TRUE;
+	m_stateBeginPending = TRUE;
 	DrawModelEntityWithState(p_arg1, p_arg2, p_arg3);
 }
 
@@ -1306,7 +1306,7 @@ void GolD3DRenderDevice::DrawCollidableEntityWithScopedState(
 	undefined4 p_arg3
 )
 {
-	m_unk0xc8528 = TRUE;
+	m_stateBeginPending = TRUE;
 	DrawCollidableEntityWithState(p_arg1, p_arg2, p_arg3);
 }
 
@@ -1315,7 +1315,7 @@ void GolD3DRenderDevice::DrawCollidableEntity(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
 	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
-	p_model->ComputeVisibility(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_viewFrustum, &result);
 	if (!result.m_visibility) {
 		return;
 	}
@@ -1324,9 +1324,9 @@ void GolD3DRenderDevice::DrawCollidableEntity(GolWorldEntity* p_model)
 	GolBoundingShape::TreeNode::Node* lastNode;
 	static_cast<GolCollidableEntity*>(p_model)
 		->GetBoundingShape(result.m_lodIndex)
-		->CollectVisibleLeaves(&m_unk0x4c, &firstNode, &lastNode);
+		->CollectVisibleLeaves(&m_viewFrustum, &firstNode, &lastNode);
 
-	GolMatrix4* modelMatrix = &m_unk0xc8410;
+	GolMatrix4* modelMatrix = &m_modelMatrix;
 	modelEntity->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = modelEntity->GetPosition();
@@ -1364,11 +1364,11 @@ void GolD3DRenderDevice::DrawCollidableEntity(GolWorldEntity* p_model)
 	while (node != NULL) {
 		if (node->m_linked == 0) {
 			m_unk0xc83e4 = FALSE;
-			m_unk0xc8518 = &m_unk0xc84d8;
+			m_currentMatrix = &m_unk0xc84d8;
 		}
 		else {
 			m_unk0xc83e4 = TRUE;
-			m_unk0xc8518 = m_unk0xc8498;
+			m_currentMatrix = m_unk0xc8498;
 		}
 		FUN_10012f50();
 
@@ -1464,7 +1464,7 @@ void GolD3DRenderDevice::VTable0xf0()
 		m_unk0x0c->VTable0x0c(&rect);
 	}
 
-	m_unk0xc8530.m_material = NULL;
+	m_drawCommand.m_material = NULL;
 }
 
 // FUNCTION: GOLDP 0x10009640
@@ -1666,7 +1666,7 @@ void GolD3DRenderDevice::VTable0x70(
 void GolD3DRenderDevice::DrawBillboard(GolBillboard& p_param)
 {
 	LegoBool32 visibility[2];
-	p_param.FUN_10029fa0(m_unk0x4c.m_position, visibility);
+	p_param.FUN_10029fa0(m_viewFrustum.m_position, visibility);
 	if (visibility[0]) {
 		GolVec3 forward;
 		GolVec3 right;
@@ -1677,12 +1677,12 @@ void GolD3DRenderDevice::DrawBillboard(GolBillboard& p_param)
 		forward.m_y = -forward.m_y;
 		forward.m_z = -forward.m_z;
 
-		LegoBool32 builtMatrix = p_param.FUN_10014e50(&right, &forward, &m_unk0xc8410);
+		LegoBool32 builtMatrix = p_param.FUN_10014e50(&right, &forward, &m_modelMatrix);
 		if (builtMatrix) {
-			GolMath::MultiplyMatrix4(m_unk0xc8410, *m_unk0xc8490, m_unk0xc8498);
+			GolMath::MultiplyMatrix4(m_modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 			m_unk0xc8568 = 0;
 			m_unk0xc83e4 = 1;
-			m_unk0xc8518 = m_unk0xc8498;
+			m_currentMatrix = m_unk0xc8498;
 			FUN_10012f50();
 			p_param.FUN_10014ff0(this);
 		}
@@ -2087,7 +2087,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 {
 	LegoU32 newFlags = p_material->GetFlags();
 
-	m_unk0xc8530.m_material = p_material;
+	m_drawCommand.m_material = p_material;
 	if (m_unk0xc8568 != 0) {
 		GolMaterialColor c = p_material->GetAmbient();
 		m_unk0xc8570 = static_cast<LegoU32>(m_unk0xc856c.m_red * c.m_red) >> 8;
@@ -2114,14 +2114,14 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 			(GolMaterial::c_flagAlphaTest | GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)) {
 			if (newFlags & GolMaterial::c_flagAlphaTest) {
 				LegoU32 alphaFunc = p_material->GetAlphaFunc();
-				if (m_unk0xc83d0 != alphaFunc) {
-					m_unk0xc83d0 = alphaFunc;
+				if (m_activeAlphaFunc != alphaFunc) {
+					m_activeAlphaFunc = alphaFunc;
 					m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAFUNC, g_d3dCmpFuncLookup[alphaFunc]);
 				}
 
 				LegoU32 alphaRef = p_material->GetAlphaRef();
-				if (m_unk0xc83d4 != alphaRef) {
-					m_unk0xc83d4 = alphaRef;
+				if (m_activeAlphaRef != alphaRef) {
+					m_activeAlphaRef = alphaRef;
 					// BUG? documentation specifies range from 0x00000000 to 0x000000FF.
 					m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAREF, alphaRef << 16);
 				}
@@ -2136,25 +2136,25 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 			}
 			else if (newFlags & GolMaterial::c_flagAlphaBlend) {
 				LegoU32 srcBlend = p_material->GetSrcBlend();
-				if (m_unk0xc83d8 != srcBlend) {
-					m_unk0xc83d8 = srcBlend;
-					m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, m_unk0xc8708[srcBlend]);
+				if (m_activeSrcBlend != srcBlend) {
+					m_activeSrcBlend = srcBlend;
+					m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, m_srcBlendOps[srcBlend]);
 				}
 
 				LegoU32 destBlend = p_material->GetDestBlend();
-				if (m_unk0xc83dc != destBlend) {
-					m_unk0xc83dc = destBlend;
-					m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, m_unk0xc8734[destBlend]);
+				if (m_activeDestBlend != destBlend) {
+					m_activeDestBlend = destBlend;
+					m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, m_destBlendOps[destBlend]);
 				}
 			}
 		}
 	}
 
-	if (newFlags == m_unk0xc83c8) {
+	if (newFlags == m_activeMaterialFlags) {
 		return;
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagLinearFilter | GolMaterial::c_flagPointFilter)) {
+	if ((newFlags ^ m_activeMaterialFlags) & (GolMaterial::c_flagLinearFilter | GolMaterial::c_flagPointFilter)) {
 		if (!(newFlags & GolMaterial::c_flagPointFilter) && m_drawState->IsHwAccelerated()) {
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTSS_COLORARG1);
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_LINEAR);
@@ -2165,7 +2165,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagWrap | GolMaterial::c_flagClamp)) {
+	if ((newFlags ^ m_activeMaterialFlags) & (GolMaterial::c_flagWrap | GolMaterial::c_flagClamp)) {
 		if (newFlags & GolMaterial::c_flagClamp) {
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESS, D3DTADDRESS_CLAMP);
 		}
@@ -2174,7 +2174,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagFlatShading | GolMaterial::c_flagGouraudShading)) {
+	if ((newFlags ^ m_activeMaterialFlags) & (GolMaterial::c_flagFlatShading | GolMaterial::c_flagGouraudShading)) {
 		if (newFlags & GolMaterial::c_flagGouraudShading) {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_SHADEMODE, D3DSHADE_GOURAUD);
 		}
@@ -2183,7 +2183,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) &
+	if ((newFlags ^ m_activeMaterialFlags) &
 		(GolMaterial::c_flagTextured | GolMaterial::c_flagDecal | GolMaterial::c_flagModulate)) {
 		if (newFlags & GolMaterial::c_flagTextured) {
 			if (newFlags & GolMaterial::c_flagModulate) {
@@ -2223,7 +2223,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		FUN_10012f50();
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagAlphaTest | GolMaterial::c_flagNoAlphaTest)) {
+	if ((newFlags ^ m_activeMaterialFlags) & (GolMaterial::c_flagAlphaTest | GolMaterial::c_flagNoAlphaTest)) {
 		if (newFlags & GolMaterial::c_flagAlphaTest) {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHATESTENABLE, TRUE);
 		}
@@ -2232,15 +2232,15 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 		}
 	}
 
-	if ((newFlags ^ m_unk0xc83c8) & (GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagNoAlphaBlend |
-									 GolMaterial::c_flagTransparent | GolMaterial::c_flagNoTransparency)) {
+	if ((newFlags ^ m_activeMaterialFlags) & (GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagNoAlphaBlend |
+											  GolMaterial::c_flagTransparent | GolMaterial::c_flagNoTransparency)) {
 		if (newFlags & (GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)) {
 			m_unk0xc83ec = 0;
 			if (newFlags & GolMaterial::c_flagTransparent) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, D3DBLEND_SRCALPHA);
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, D3DBLEND_INVSRCALPHA);
-				m_unk0xc83d8 = 6;
-				m_unk0xc83dc = 8;
+				m_activeSrcBlend = 6;
+				m_activeDestBlend = 8;
 				m_unk0xc83ec = 1;
 				if (newFlags & GolMaterial::c_flagTextured) {
 					m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
@@ -2270,11 +2270,11 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 			else {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, TRUE);
 			}
-			m_unk0xc83c8 = newFlags;
+			m_activeMaterialFlags = newFlags;
 			FUN_10012f50();
 		}
 		else {
-			if (m_unk0xc83c8 & GolMaterial::c_flagTransparent) {
+			if (m_activeMaterialFlags & GolMaterial::c_flagTransparent) {
 				if (newFlags & GolMaterial::c_flagTextured) {
 					if (newFlags & GolMaterial::c_flagModulate) {
 						m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
@@ -2296,17 +2296,17 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, FALSE);
 			}
 			m_unk0xc83ec = 0;
-			m_unk0xc83c8 = newFlags;
+			m_activeMaterialFlags = newFlags;
 			FUN_10012f50();
 		}
 	}
 	else {
-		if ((m_unk0xc83c8 ^ newFlags) & GolMaterial::c_flagRotateVertices) {
-			m_unk0xc83c8 = newFlags;
+		if ((m_activeMaterialFlags ^ newFlags) & GolMaterial::c_flagRotateVertices) {
+			m_activeMaterialFlags = newFlags;
 			FUN_10012f50();
 		}
 		else {
-			m_unk0xc83c8 = newFlags;
+			m_activeMaterialFlags = newFlags;
 		}
 	}
 }
@@ -2315,7 +2315,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 {
 	LegoU32 newFlags = p_material->GetFlags();
-	m_unk0xc8530.m_material = p_material;
+	m_drawCommand.m_material = p_material;
 
 	LegoU32 textureCount;
 	if (p_material->GetTexture() == NULL) {
@@ -2355,8 +2355,8 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 		newFlags & (GolMaterial::c_flagAlphaTest | GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)
 	) {
 		if (newFlags & GolMaterial::c_flagAlphaTest) {
-			m_unk0xc83d0 = p_material->GetAlphaFunc();
-			m_unk0xc83d4 = p_material->GetAlphaRef();
+			m_activeAlphaFunc = p_material->GetAlphaFunc();
+			m_activeAlphaRef = p_material->GetAlphaRef();
 		}
 
 		if (newFlags & GolMaterial::c_flagTransparent) {
@@ -2367,42 +2367,42 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 			m_unk0xc83fc = (destBlend << 24) | (m_unk0xc83fc & 0x00ffffff);
 		}
 		else if (newFlags & GolMaterial::c_flagAlphaBlend) {
-			m_unk0xc83d8 = p_material->GetSrcBlend();
-			m_unk0xc83dc = p_material->GetDestBlend();
+			m_activeSrcBlend = p_material->GetSrcBlend();
+			m_activeDestBlend = p_material->GetDestBlend();
 		}
 	}
 
-	if (newFlags == m_unk0xc83c8) {
+	if (newFlags == m_activeMaterialFlags) {
 		return;
 	}
 
-	LegoU32 changedFlags = newFlags ^ m_unk0xc83c8;
+	LegoU32 changedFlags = newFlags ^ m_activeMaterialFlags;
 	if (changedFlags & (GolMaterial::c_flagTextured | GolMaterial::c_flagDecal | GolMaterial::c_flagModulate)) {
 		m_unk0xc83e8 = (newFlags >> 3) & 1;
 		FUN_10012f50();
 	}
 
-	changedFlags = newFlags ^ m_unk0xc83c8;
+	changedFlags = newFlags ^ m_activeMaterialFlags;
 	if (changedFlags & (GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagNoAlphaBlend |
 						GolMaterial::c_flagTransparent | GolMaterial::c_flagNoTransparency)) {
 		m_unk0xc83ec = 0;
 		if (newFlags & (GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)) {
 			if (newFlags & GolMaterial::c_flagTransparent) {
-				m_unk0xc83d8 = 6;
-				m_unk0xc83dc = 8;
+				m_activeSrcBlend = 6;
+				m_activeDestBlend = 8;
 				m_unk0xc83ec = 1;
-				m_unk0xc83c8 = newFlags;
+				m_activeMaterialFlags = newFlags;
 				FUN_10012f50();
 				return;
 			}
 			m_alpha = 0xff;
 		}
 
-		m_unk0xc83c8 = newFlags;
+		m_activeMaterialFlags = newFlags;
 		FUN_10012f50();
 	}
 	else {
-		m_unk0xc83c8 = newFlags;
+		m_activeMaterialFlags = newFlags;
 		if (changedFlags & GolMaterial::c_flagRotateVertices) {
 			FUN_10012f50();
 		}
@@ -2447,8 +2447,8 @@ void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
 // FUNCTION: GOLDP 0x1000acf0
 void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 {
-	GolD3DRenderState* useMatrix = m_unk0xc8524;
-	GolTransform** orbits = &static_cast<GolSceneTransformNode*>(m_unk0xc8520)->m_transforms;
+	GolD3DRenderState* useMatrix = m_renderState;
+	GolTransform** orbits = &static_cast<GolSceneTransformNode*>(m_currentSceneNode)->m_transforms;
 	GolMatrix4* matrix;
 	if (useMatrix != NULL) {
 		matrix = &(*orbits)[p_index].m_worldMatrix;
@@ -2456,7 +2456,7 @@ void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 	else {
 		matrix = &(*orbits)[p_index].m_worldViewMatrix;
 	}
-	m_unk0xc8518 = matrix;
+	m_currentMatrix = matrix;
 
 	if (m_unk0xc8568 != 0) {
 		GolMatrix4* lightMatrix = &(*orbits)[p_index].m_worldMatrix;
@@ -2545,8 +2545,8 @@ void GolD3DRenderDevice::VTable0x28()
 	m_unk0xc856c.m_blu = 0xff;
 	m_unk0xc856c.m_alp = 0xff;
 
-	if (m_unk0xc8530.m_material != NULL) {
-		GolMaterialColor color = m_unk0xc8530.m_material->GetAmbient();
+	if (m_drawCommand.m_material != NULL) {
+		GolMaterialColor color = m_drawCommand.m_material->GetAmbient();
 		m_unk0xc8570 = color.m_red & 0xff;
 		m_unk0xc8574 = color.m_grn & 0xff;
 		m_unk0xc8578 = color.m_blu & 0xff;
@@ -2560,8 +2560,8 @@ void GolD3DRenderDevice::VTable0x2c(const MaterialColor* p_param)
 	GolRenderDevice::VTable0x2c(p_param);
 	m_unk0xc856c = p_param->m_color;
 
-	if (m_unk0xc8530.m_material != NULL) {
-		GolMaterialColor color = m_unk0xc8530.m_material->GetAmbient();
+	if (m_drawCommand.m_material != NULL) {
+		GolMaterialColor color = m_drawCommand.m_material->GetAmbient();
 		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_red & 0xff)) >> 8;
 		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_grn & 0xff)) >> 8;
 		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_blu & 0xff)) >> 8;
@@ -2592,8 +2592,8 @@ void GolD3DRenderDevice::FUN_1000b0f0(LegoU32 p_index, const Light* p_param)
 	m_unk0xc85f0[p_index] = p_param->m_direction;
 
 	GolMaterialColor color;
-	if (m_unk0xc8530.m_material != NULL) {
-		color = m_unk0xc8530.m_material->GetDiffuse();
+	if (m_drawCommand.m_material != NULL) {
+		color = m_drawCommand.m_material->GetDiffuse();
 	}
 	else {
 		color.m_red = 0;
@@ -2926,21 +2926,21 @@ void GolD3DRenderDevice::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
-		vertex->sx = m_unk0xc8518->m_m[0][0] * position->m_x;
-		vertex->sy = m_unk0xc8518->m_m[0][1] * position->m_x;
-		vertex->rhw = m_unk0xc8518->m_m[0][3] * position->m_x;
+		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
+		vertex->sy = m_currentMatrix->m_m[0][1] * position->m_x;
+		vertex->rhw = m_currentMatrix->m_m[0][3] * position->m_x;
 
-		vertex->sx += m_unk0xc8518->m_m[1][0] * position->m_y;
-		vertex->sy += m_unk0xc8518->m_m[1][1] * position->m_y;
-		vertex->rhw += m_unk0xc8518->m_m[1][3] * position->m_y;
+		vertex->sx += m_currentMatrix->m_m[1][0] * position->m_y;
+		vertex->sy += m_currentMatrix->m_m[1][1] * position->m_y;
+		vertex->rhw += m_currentMatrix->m_m[1][3] * position->m_y;
 
-		vertex->sx += m_unk0xc8518->m_m[2][0] * position->m_z;
-		vertex->sy += m_unk0xc8518->m_m[2][1] * position->m_z;
-		vertex->rhw += m_unk0xc8518->m_m[2][3] * position->m_z;
+		vertex->sx += m_currentMatrix->m_m[2][0] * position->m_z;
+		vertex->sy += m_currentMatrix->m_m[2][1] * position->m_z;
+		vertex->rhw += m_currentMatrix->m_m[2][3] * position->m_z;
 
-		vertex->sx += m_unk0xc8518->m_m[3][0];
-		vertex->sy += m_unk0xc8518->m_m[3][1];
-		vertex->rhw = 1.0f / (vertex->rhw + m_unk0xc8518->m_m[3][3]);
+		vertex->sx += m_currentMatrix->m_m[3][0];
+		vertex->sy += m_currentMatrix->m_m[3][1];
+		vertex->rhw = 1.0f / (vertex->rhw + m_currentMatrix->m_m[3][3]);
 
 		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
 		vertexMap++;
@@ -2972,21 +2972,21 @@ void GolD3DRenderDevice::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
-		vertex->sx = m_unk0xc8518->m_m[0][0] * position->m_x;
-		vertex->sy = m_unk0xc8518->m_m[0][1] * position->m_x;
-		vertex->rhw = m_unk0xc8518->m_m[0][3] * position->m_x;
+		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
+		vertex->sy = m_currentMatrix->m_m[0][1] * position->m_x;
+		vertex->rhw = m_currentMatrix->m_m[0][3] * position->m_x;
 
-		vertex->sx += m_unk0xc8518->m_m[1][0] * position->m_y;
-		vertex->sy += m_unk0xc8518->m_m[1][1] * position->m_y;
-		vertex->rhw += m_unk0xc8518->m_m[1][3] * position->m_y;
+		vertex->sx += m_currentMatrix->m_m[1][0] * position->m_y;
+		vertex->sy += m_currentMatrix->m_m[1][1] * position->m_y;
+		vertex->rhw += m_currentMatrix->m_m[1][3] * position->m_y;
 
-		vertex->sx += m_unk0xc8518->m_m[2][0] * position->m_z;
-		vertex->sy += m_unk0xc8518->m_m[2][1] * position->m_z;
-		vertex->rhw += m_unk0xc8518->m_m[2][3] * position->m_z;
+		vertex->sx += m_currentMatrix->m_m[2][0] * position->m_z;
+		vertex->sy += m_currentMatrix->m_m[2][1] * position->m_z;
+		vertex->rhw += m_currentMatrix->m_m[2][3] * position->m_z;
 
-		vertex->sx += m_unk0xc8518->m_m[3][0];
-		vertex->sy += m_unk0xc8518->m_m[3][1];
-		vertex->rhw = 1.0f / (vertex->rhw + m_unk0xc8518->m_m[3][3]);
+		vertex->sx += m_currentMatrix->m_m[3][0];
+		vertex->sy += m_currentMatrix->m_m[3][1];
+		vertex->rhw = 1.0f / (vertex->rhw + m_currentMatrix->m_m[3][3]);
 
 		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
 		vertexMap++;
@@ -3017,21 +3017,21 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
-		vertex->sx = m_unk0xc8518->m_m[0][0] * position->m_x;
-		vertex->sy = m_unk0xc8518->m_m[0][1] * position->m_x;
-		vertex->rhw = m_unk0xc8518->m_m[0][3] * position->m_x;
+		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
+		vertex->sy = m_currentMatrix->m_m[0][1] * position->m_x;
+		vertex->rhw = m_currentMatrix->m_m[0][3] * position->m_x;
 
-		vertex->sx += m_unk0xc8518->m_m[1][0] * position->m_y;
-		vertex->sy += m_unk0xc8518->m_m[1][1] * position->m_y;
-		vertex->rhw += m_unk0xc8518->m_m[1][3] * position->m_y;
+		vertex->sx += m_currentMatrix->m_m[1][0] * position->m_y;
+		vertex->sy += m_currentMatrix->m_m[1][1] * position->m_y;
+		vertex->rhw += m_currentMatrix->m_m[1][3] * position->m_y;
 
-		vertex->sx += m_unk0xc8518->m_m[2][0] * position->m_z;
-		vertex->sy += m_unk0xc8518->m_m[2][1] * position->m_z;
-		vertex->rhw += m_unk0xc8518->m_m[2][3] * position->m_z;
+		vertex->sx += m_currentMatrix->m_m[2][0] * position->m_z;
+		vertex->sy += m_currentMatrix->m_m[2][1] * position->m_z;
+		vertex->rhw += m_currentMatrix->m_m[2][3] * position->m_z;
 
-		vertex->sx += m_unk0xc8518->m_m[3][0];
-		vertex->sy += m_unk0xc8518->m_m[3][1];
-		vertex->rhw = 1.0f / (vertex->rhw + m_unk0xc8518->m_m[3][3]);
+		vertex->sx += m_currentMatrix->m_m[3][0];
+		vertex->sy += m_currentMatrix->m_m[3][1];
+		vertex->rhw = 1.0f / (vertex->rhw + m_currentMatrix->m_m[3][3]);
 
 		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
 		vertexMap++;
@@ -3064,14 +3064,14 @@ void GolD3DRenderDevice::FUN_1000be20(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++, color++, uv++, vertex++) {
-		LegoFloat x = position->m_x * m_unk0xc8518->m_m[0][0] + position->m_y * m_unk0xc8518->m_m[1][0] +
-					  position->m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		LegoFloat y = position->m_x * m_unk0xc8518->m_m[0][1] + position->m_y * m_unk0xc8518->m_m[1][1] +
-					  position->m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		LegoFloat z = position->m_x * m_unk0xc8518->m_m[0][2] + position->m_y * m_unk0xc8518->m_m[1][2] +
-					  position->m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		LegoFloat w = position->m_x * m_unk0xc8518->m_m[0][3] + position->m_y * m_unk0xc8518->m_m[1][3] +
-					  position->m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		LegoFloat x = position->m_x * m_currentMatrix->m_m[0][0] + position->m_y * m_currentMatrix->m_m[1][0] +
+					  position->m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		LegoFloat y = position->m_x * m_currentMatrix->m_m[0][1] + position->m_y * m_currentMatrix->m_m[1][1] +
+					  position->m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		LegoFloat z = position->m_x * m_currentMatrix->m_m[0][2] + position->m_y * m_currentMatrix->m_m[1][2] +
+					  position->m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		LegoFloat w = position->m_x * m_currentMatrix->m_m[0][3] + position->m_y * m_currentMatrix->m_m[1][3] +
+					  position->m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		LegoFloat rhw = 1.0f / w;
 
 		vertex->sx = x * rhw;
@@ -3102,9 +3102,9 @@ void GolD3DRenderDevice::FUN_1000bfb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4* matrix = m_unk0xc8518;
-	LegoFloat textureOffsetX = m_unk0xc83a0;
-	LegoFloat textureOffsetY = m_unk0xc83a4;
+	const GolMatrix4* matrix = m_currentMatrix;
+	LegoFloat textureOffsetX = m_uvOffsetU;
+	LegoFloat textureOffsetY = m_uvOffsetV;
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
 		vertex->sx = matrix->m_m[0][0] * position->m_x;
@@ -3158,14 +3158,14 @@ void GolD3DRenderDevice::FUN_1000c160(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++, color++, vertex++) {
-		LegoFloat x = position->m_x * m_unk0xc8518->m_m[0][0] + position->m_y * m_unk0xc8518->m_m[1][0] +
-					  position->m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		LegoFloat y = position->m_x * m_unk0xc8518->m_m[0][1] + position->m_y * m_unk0xc8518->m_m[1][1] +
-					  position->m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		LegoFloat z = position->m_x * m_unk0xc8518->m_m[0][2] + position->m_y * m_unk0xc8518->m_m[1][2] +
-					  position->m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		LegoFloat w = position->m_x * m_unk0xc8518->m_m[0][3] + position->m_y * m_unk0xc8518->m_m[1][3] +
-					  position->m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		LegoFloat x = position->m_x * m_currentMatrix->m_m[0][0] + position->m_y * m_currentMatrix->m_m[1][0] +
+					  position->m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		LegoFloat y = position->m_x * m_currentMatrix->m_m[0][1] + position->m_y * m_currentMatrix->m_m[1][1] +
+					  position->m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		LegoFloat z = position->m_x * m_currentMatrix->m_m[0][2] + position->m_y * m_currentMatrix->m_m[1][2] +
+					  position->m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		LegoFloat w = position->m_x * m_currentMatrix->m_m[0][3] + position->m_y * m_currentMatrix->m_m[1][3] +
+					  position->m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		LegoFloat rhw = 1.0f / w;
 
 		vertex->sx = x * rhw;
@@ -3197,14 +3197,14 @@ void GolD3DRenderDevice::FUN_1000c2d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++, color++, uv++, vertex++) {
-		LegoFloat x = position->m_x * m_unk0xc8518->m_m[0][0] + position->m_y * m_unk0xc8518->m_m[1][0] +
-					  position->m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		LegoFloat y = position->m_x * m_unk0xc8518->m_m[0][1] + position->m_y * m_unk0xc8518->m_m[1][1] +
-					  position->m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		LegoFloat z = position->m_x * m_unk0xc8518->m_m[0][2] + position->m_y * m_unk0xc8518->m_m[1][2] +
-					  position->m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		LegoFloat w = position->m_x * m_unk0xc8518->m_m[0][3] + position->m_y * m_unk0xc8518->m_m[1][3] +
-					  position->m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		LegoFloat x = position->m_x * m_currentMatrix->m_m[0][0] + position->m_y * m_currentMatrix->m_m[1][0] +
+					  position->m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		LegoFloat y = position->m_x * m_currentMatrix->m_m[0][1] + position->m_y * m_currentMatrix->m_m[1][1] +
+					  position->m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		LegoFloat z = position->m_x * m_currentMatrix->m_m[0][2] + position->m_y * m_currentMatrix->m_m[1][2] +
+					  position->m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		LegoFloat w = position->m_x * m_currentMatrix->m_m[0][3] + position->m_y * m_currentMatrix->m_m[1][3] +
+					  position->m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		LegoFloat rhw = 1.0f / w;
 
 		vertex->sx = x * rhw;
@@ -3236,18 +3236,18 @@ void GolD3DRenderDevice::FUN_1000c470(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	LegoFloat textureOffsetX = m_unk0xc83a0;
-	LegoFloat textureOffsetY = m_unk0xc83a4;
+	LegoFloat textureOffsetX = m_uvOffsetU;
+	LegoFloat textureOffsetY = m_uvOffsetV;
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++, color++, uv++, vertex++) {
-		LegoFloat x = position->m_x * m_unk0xc8518->m_m[0][0] + position->m_y * m_unk0xc8518->m_m[1][0] +
-					  position->m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		LegoFloat y = position->m_x * m_unk0xc8518->m_m[0][1] + position->m_y * m_unk0xc8518->m_m[1][1] +
-					  position->m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		LegoFloat z = position->m_x * m_unk0xc8518->m_m[0][2] + position->m_y * m_unk0xc8518->m_m[1][2] +
-					  position->m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		LegoFloat w = position->m_x * m_unk0xc8518->m_m[0][3] + position->m_y * m_unk0xc8518->m_m[1][3] +
-					  position->m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		LegoFloat x = position->m_x * m_currentMatrix->m_m[0][0] + position->m_y * m_currentMatrix->m_m[1][0] +
+					  position->m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		LegoFloat y = position->m_x * m_currentMatrix->m_m[0][1] + position->m_y * m_currentMatrix->m_m[1][1] +
+					  position->m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		LegoFloat z = position->m_x * m_currentMatrix->m_m[0][2] + position->m_y * m_currentMatrix->m_m[1][2] +
+					  position->m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		LegoFloat w = position->m_x * m_currentMatrix->m_m[0][3] + position->m_y * m_currentMatrix->m_m[1][3] +
+					  position->m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		LegoFloat rhw = 1.0f / w;
 
 		vertex->sx = x * rhw;
@@ -3276,21 +3276,21 @@ void GolD3DRenderDevice::FUN_1000c630(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -3317,21 +3317,21 @@ void GolD3DRenderDevice::FUN_1000c880(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -3340,8 +3340,8 @@ void GolD3DRenderDevice::FUN_1000c880(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
 		vertex.sz = cacheEntry.m_z * vertex.rhw;
 		vertex.color = m_unk0xc4c14[sourceIndex];
-		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
-		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_uvOffsetU;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_uvOffsetV;
 	}
 
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
@@ -3358,21 +3358,21 @@ void GolD3DRenderDevice::FUN_1000caf0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -3399,21 +3399,21 @@ void GolD3DRenderDevice::FUN_1000cd20(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -3441,21 +3441,21 @@ void GolD3DRenderDevice::FUN_1000cf90(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -3464,8 +3464,8 @@ void GolD3DRenderDevice::FUN_1000cf90(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
 		vertex.sz = cacheEntry.m_z * vertex.rhw;
 		vertex.color = (m_unk0xc4c14[sourceIndex] & 0x00ffffff) | alpha;
-		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
-		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_uvOffsetU;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_uvOffsetV;
 	}
 
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
@@ -3481,42 +3481,42 @@ void GolD3DRenderDevice::FUN_1000d210(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
 
 	for (; position < positionEnd; position++, normal++, uv++, vertex++) {
-		vertex->m_x = (m_unk0xc8518->m_m[0][0] * position->m_x) * m_unk0xc852c;
-		vertex->m_y = (m_unk0xc8518->m_m[0][1] * position->m_x) * m_unk0xc852c;
-		vertex->m_z = (m_unk0xc8518->m_m[0][2] * position->m_x) * m_unk0xc852c;
+		vertex->m_x = (m_currentMatrix->m_m[0][0] * position->m_x) * m_currentScale;
+		vertex->m_y = (m_currentMatrix->m_m[0][1] * position->m_x) * m_currentScale;
+		vertex->m_z = (m_currentMatrix->m_m[0][2] * position->m_x) * m_currentScale;
 
-		vertex->m_x += (m_unk0xc8518->m_m[1][0] * position->m_y) * m_unk0xc852c;
-		vertex->m_y += (m_unk0xc8518->m_m[1][1] * position->m_y) * m_unk0xc852c;
-		vertex->m_z += (m_unk0xc8518->m_m[1][2] * position->m_y) * m_unk0xc852c;
+		vertex->m_x += (m_currentMatrix->m_m[1][0] * position->m_y) * m_currentScale;
+		vertex->m_y += (m_currentMatrix->m_m[1][1] * position->m_y) * m_currentScale;
+		vertex->m_z += (m_currentMatrix->m_m[1][2] * position->m_y) * m_currentScale;
 
-		vertex->m_x += (m_unk0xc8518->m_m[2][0] * position->m_z) * m_unk0xc852c;
-		vertex->m_y += (m_unk0xc8518->m_m[2][1] * position->m_z) * m_unk0xc852c;
-		vertex->m_z += (m_unk0xc8518->m_m[2][2] * position->m_z) * m_unk0xc852c;
+		vertex->m_x += (m_currentMatrix->m_m[2][0] * position->m_z) * m_currentScale;
+		vertex->m_y += (m_currentMatrix->m_m[2][1] * position->m_z) * m_currentScale;
+		vertex->m_z += (m_currentMatrix->m_m[2][2] * position->m_z) * m_currentScale;
 
-		vertex->m_x += m_unk0xc8518->m_m[3][0];
-		vertex->m_y += m_unk0xc8518->m_m[3][1];
-		vertex->m_z += m_unk0xc8518->m_m[3][2];
+		vertex->m_x += m_currentMatrix->m_m[3][0];
+		vertex->m_y += m_currentMatrix->m_m[3][1];
+		vertex->m_z += m_currentMatrix->m_m[3][2];
 
-		vertex->m_nx = m_unk0xc8518->m_m[0][0] * normal->m_x;
-		vertex->m_ny = m_unk0xc8518->m_m[0][1] * normal->m_y;
-		vertex->m_nz = m_unk0xc8518->m_m[0][2] * normal->m_z;
+		vertex->m_nx = m_currentMatrix->m_m[0][0] * normal->m_x;
+		vertex->m_ny = m_currentMatrix->m_m[0][1] * normal->m_y;
+		vertex->m_nz = m_currentMatrix->m_m[0][2] * normal->m_z;
 
-		vertex->m_nx += m_unk0xc8518->m_m[1][0] * normal->m_x;
-		vertex->m_ny += m_unk0xc8518->m_m[1][1] * normal->m_y;
-		vertex->m_nz += m_unk0xc8518->m_m[1][2] * normal->m_z;
+		vertex->m_nx += m_currentMatrix->m_m[1][0] * normal->m_x;
+		vertex->m_ny += m_currentMatrix->m_m[1][1] * normal->m_y;
+		vertex->m_nz += m_currentMatrix->m_m[1][2] * normal->m_z;
 
-		vertex->m_nx += m_unk0xc8518->m_m[2][0] * normal->m_x;
-		vertex->m_ny += m_unk0xc8518->m_m[2][1] * normal->m_y;
-		vertex->m_nz += m_unk0xc8518->m_m[2][2] * normal->m_z;
+		vertex->m_nx += m_currentMatrix->m_m[2][0] * normal->m_x;
+		vertex->m_ny += m_currentMatrix->m_m[2][1] * normal->m_y;
+		vertex->m_nz += m_currentMatrix->m_m[2][2] * normal->m_z;
 
 		vertex->m_u = uv->m_x;
 		vertex->m_v = uv->m_y;
 	}
 
-	m_unk0xc8530.m_outputFirst = p_outputFirst;
-	m_unk0xc8530.m_firstVertex = p_firstVertex;
-	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->ProcessVertices(&m_unk0xc8530);
+	m_drawCommand.m_outputFirst = p_outputFirst;
+	m_drawCommand.m_firstVertex = p_firstVertex;
+	m_drawCommand.m_vertexCount = p_vertexCount;
+	m_renderState->ProcessVertices(&m_drawCommand);
 }
 
 // STUB: GOLDP 0x1000d440
@@ -3529,21 +3529,21 @@ void GolD3DRenderDevice::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
 
 	while (position < positionEnd) {
-		vertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
-		vertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
-		vertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+		vertex->m_x = m_currentMatrix->m_m[0][0] * position->m_x;
+		vertex->m_y = m_currentMatrix->m_m[0][1] * position->m_x;
+		vertex->m_z = m_currentMatrix->m_m[0][2] * position->m_x;
 
-		vertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
-		vertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
-		vertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+		vertex->m_x += m_currentMatrix->m_m[1][0] * position->m_y;
+		vertex->m_y += m_currentMatrix->m_m[1][1] * position->m_y;
+		vertex->m_z += m_currentMatrix->m_m[1][2] * position->m_y;
 
-		vertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
-		vertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
-		vertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+		vertex->m_x += m_currentMatrix->m_m[2][0] * position->m_z;
+		vertex->m_y += m_currentMatrix->m_m[2][1] * position->m_z;
+		vertex->m_z += m_currentMatrix->m_m[2][2] * position->m_z;
 
-		vertex->m_x += m_unk0xc8518->m_m[3][0];
-		vertex->m_y += m_unk0xc8518->m_m[3][1];
-		vertex->m_z += m_unk0xc8518->m_m[3][2];
+		vertex->m_x += m_currentMatrix->m_m[3][0];
+		vertex->m_y += m_currentMatrix->m_m[3][1];
+		vertex->m_z += m_currentMatrix->m_m[3][2];
 
 		LegoU32 sourceColor = *color;
 		LegoU8* destColor = reinterpret_cast<LegoU8*>(&vertex->m_color);
@@ -3560,10 +3560,10 @@ void GolD3DRenderDevice::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex++;
 	}
 
-	m_unk0xc8530.m_outputFirst = p_outputFirst;
-	m_unk0xc8530.m_firstVertex = p_firstVertex;
-	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->ProcessVertices(&m_unk0xc8530);
+	m_drawCommand.m_outputFirst = p_outputFirst;
+	m_drawCommand.m_firstVertex = p_firstVertex;
+	m_drawCommand.m_vertexCount = p_vertexCount;
+	m_renderState->ProcessVertices(&m_drawCommand);
 }
 
 // STUB: GOLDP 0x1000d5d0
@@ -3576,21 +3576,21 @@ void GolD3DRenderDevice::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
 
 	while (position < positionEnd) {
-		vertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
-		vertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
-		vertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+		vertex->m_x = m_currentMatrix->m_m[0][0] * position->m_x;
+		vertex->m_y = m_currentMatrix->m_m[0][1] * position->m_x;
+		vertex->m_z = m_currentMatrix->m_m[0][2] * position->m_x;
 
-		vertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
-		vertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
-		vertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+		vertex->m_x += m_currentMatrix->m_m[1][0] * position->m_y;
+		vertex->m_y += m_currentMatrix->m_m[1][1] * position->m_y;
+		vertex->m_z += m_currentMatrix->m_m[1][2] * position->m_y;
 
-		vertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
-		vertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
-		vertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+		vertex->m_x += m_currentMatrix->m_m[2][0] * position->m_z;
+		vertex->m_y += m_currentMatrix->m_m[2][1] * position->m_z;
+		vertex->m_z += m_currentMatrix->m_m[2][2] * position->m_z;
 
-		vertex->m_x += m_unk0xc8518->m_m[3][0];
-		vertex->m_y += m_unk0xc8518->m_m[3][1];
-		vertex->m_z += m_unk0xc8518->m_m[3][2];
+		vertex->m_x += m_currentMatrix->m_m[3][0];
+		vertex->m_y += m_currentMatrix->m_m[3][1];
+		vertex->m_z += m_currentMatrix->m_m[3][2];
 
 		LegoU32 sourceColor = *color;
 		LegoU8* destColor = reinterpret_cast<LegoU8*>(&vertex->m_color);
@@ -3607,10 +3607,10 @@ void GolD3DRenderDevice::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex++;
 	}
 
-	m_unk0xc8530.m_outputFirst = p_outputFirst;
-	m_unk0xc8530.m_firstVertex = p_firstVertex;
-	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->ProcessVertices(&m_unk0xc8530);
+	m_drawCommand.m_outputFirst = p_outputFirst;
+	m_drawCommand.m_firstVertex = p_firstVertex;
+	m_drawCommand.m_vertexCount = p_vertexCount;
+	m_renderState->ProcessVertices(&m_drawCommand);
 }
 
 // STUB: GOLDP 0x1000d760
@@ -3624,21 +3624,21 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		CommandVertex* commandVertex = m_unk0xc428c + p_outputFirst;
 
 		while (position < positionEnd) {
-			commandVertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
-			commandVertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
-			commandVertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+			commandVertex->m_x = m_currentMatrix->m_m[0][0] * position->m_x;
+			commandVertex->m_y = m_currentMatrix->m_m[0][1] * position->m_x;
+			commandVertex->m_z = m_currentMatrix->m_m[0][2] * position->m_x;
 
-			commandVertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
-			commandVertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
-			commandVertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+			commandVertex->m_x += m_currentMatrix->m_m[1][0] * position->m_y;
+			commandVertex->m_y += m_currentMatrix->m_m[1][1] * position->m_y;
+			commandVertex->m_z += m_currentMatrix->m_m[1][2] * position->m_y;
 
-			commandVertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
-			commandVertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
-			commandVertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+			commandVertex->m_x += m_currentMatrix->m_m[2][0] * position->m_z;
+			commandVertex->m_y += m_currentMatrix->m_m[2][1] * position->m_z;
+			commandVertex->m_z += m_currentMatrix->m_m[2][2] * position->m_z;
 
-			commandVertex->m_x += m_unk0xc8518->m_m[3][0];
-			commandVertex->m_y += m_unk0xc8518->m_m[3][1];
-			commandVertex->m_z += m_unk0xc8518->m_m[3][2];
+			commandVertex->m_x += m_currentMatrix->m_m[3][0];
+			commandVertex->m_y += m_currentMatrix->m_m[3][1];
+			commandVertex->m_z += m_currentMatrix->m_m[3][2];
 
 			LegoU32 sourceColor = *color;
 			LegoU8* destColor = reinterpret_cast<LegoU8*>(&commandVertex->m_color);
@@ -3656,10 +3656,10 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		}
 	}
 
-	m_unk0xc8530.m_outputFirst = p_outputFirst;
-	m_unk0xc8530.m_firstVertex = p_firstVertex;
-	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->ProcessVerticesPrelit(&m_unk0xc8530);
+	m_drawCommand.m_outputFirst = p_outputFirst;
+	m_drawCommand.m_firstVertex = p_firstVertex;
+	m_drawCommand.m_vertexCount = p_vertexCount;
+	m_renderState->ProcessVerticesPrelit(&m_drawCommand);
 
 	LegoU32 cacheIndex = m_unk0xc3848;
 	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -3687,8 +3687,8 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex->sz = cache->m_z * vertex->rhw;
 		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
 		vertex->color = (sourceColor[3] << 24) | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
-		vertex->tu = source->m_u + m_unk0xc83a0;
-		vertex->tv = source->m_v + m_unk0xc83a4;
+		vertex->tu = source->m_u + m_uvOffsetU;
+		vertex->tv = source->m_v + m_uvOffsetV;
 	}
 }
 
@@ -3703,21 +3703,21 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		CommandVertex* commandVertex = m_unk0xc428c + p_outputFirst;
 
 		while (position < positionEnd) {
-			commandVertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
-			commandVertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
-			commandVertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+			commandVertex->m_x = m_currentMatrix->m_m[0][0] * position->m_x;
+			commandVertex->m_y = m_currentMatrix->m_m[0][1] * position->m_x;
+			commandVertex->m_z = m_currentMatrix->m_m[0][2] * position->m_x;
 
-			commandVertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
-			commandVertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
-			commandVertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+			commandVertex->m_x += m_currentMatrix->m_m[1][0] * position->m_y;
+			commandVertex->m_y += m_currentMatrix->m_m[1][1] * position->m_y;
+			commandVertex->m_z += m_currentMatrix->m_m[1][2] * position->m_y;
 
-			commandVertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
-			commandVertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
-			commandVertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+			commandVertex->m_x += m_currentMatrix->m_m[2][0] * position->m_z;
+			commandVertex->m_y += m_currentMatrix->m_m[2][1] * position->m_z;
+			commandVertex->m_z += m_currentMatrix->m_m[2][2] * position->m_z;
 
-			commandVertex->m_x += m_unk0xc8518->m_m[3][0];
-			commandVertex->m_y += m_unk0xc8518->m_m[3][1];
-			commandVertex->m_z += m_unk0xc8518->m_m[3][2];
+			commandVertex->m_x += m_currentMatrix->m_m[3][0];
+			commandVertex->m_y += m_currentMatrix->m_m[3][1];
+			commandVertex->m_z += m_currentMatrix->m_m[3][2];
 
 			LegoU32 sourceColor = *color;
 			LegoU8* destColor = reinterpret_cast<LegoU8*>(&commandVertex->m_color);
@@ -3735,10 +3735,10 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		}
 	}
 
-	m_unk0xc8530.m_outputFirst = p_outputFirst;
-	m_unk0xc8530.m_firstVertex = p_firstVertex;
-	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->ProcessVerticesPrelit(&m_unk0xc8530);
+	m_drawCommand.m_outputFirst = p_outputFirst;
+	m_drawCommand.m_firstVertex = p_firstVertex;
+	m_drawCommand.m_vertexCount = p_vertexCount;
+	m_renderState->ProcessVerticesPrelit(&m_drawCommand);
 
 	LegoU32 cacheIndex = m_unk0xc3848;
 	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -3767,8 +3767,8 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex->sz = cache->m_z * vertex->rhw;
 		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
 		vertex->color = alpha | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
-		vertex->tu = source->m_u + m_unk0xc83a0;
-		vertex->tv = source->m_v + m_unk0xc83a4;
+		vertex->tu = source->m_u + m_uvOffsetU;
+		vertex->tv = source->m_v + m_uvOffsetV;
 	}
 }
 
@@ -3784,7 +3784,7 @@ void GolD3DRenderDevice::FUN_1000e010(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4* matrix = m_unk0xc8518;
+	const GolMatrix4* matrix = m_currentMatrix;
 	LegoU32 color = m_unk0xc83fc;
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
@@ -3833,7 +3833,7 @@ void GolD3DRenderDevice::FUN_1000e180(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4* matrix = m_unk0xc8518;
+	const GolMatrix4* matrix = m_currentMatrix;
 	LegoU32 color = m_unk0xc83fc;
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
@@ -3883,21 +3883,21 @@ void GolD3DRenderDevice::FUN_1000e310(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -3922,21 +3922,21 @@ void GolD3DRenderDevice::FUN_1000e540(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -3965,10 +3965,10 @@ void GolD3DRenderDevice::FUN_1000e790(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4* matrix = m_unk0xc8518;
+	const GolMatrix4* matrix = m_currentMatrix;
 	LegoU32 color = m_unk0xc83fc;
-	LegoFloat textureOffsetX = m_unk0xc83a0;
-	LegoFloat textureOffsetY = m_unk0xc83a4;
+	LegoFloat textureOffsetX = m_uvOffsetU;
+	LegoFloat textureOffsetY = m_uvOffsetV;
 	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
 		vertex->sx = matrix->m_m[0][0] * position->m_x;
@@ -4017,21 +4017,21 @@ void GolD3DRenderDevice::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[0].m_unk0x10 = cacheIndex;
 	m_unk0xc3848 += p_vertexCount;
 
-	const GolMatrix4& matrix = *m_unk0xc8518;
+	const GolMatrix4& matrix = *m_currentMatrix;
 	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
 		LegoU32 sourceIndex = p_firstVertex + i;
 		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
 		VertexCacheEntry& cacheEntry = cache[i];
 		D3DTLVERTEX& vertex = vertices[i];
 
-		cacheEntry.m_x = source.m_x * m_unk0xc8518->m_m[0][0] + source.m_y * m_unk0xc8518->m_m[1][0] +
-						 source.m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_unk0xc8518->m_m[0][1] + source.m_y * m_unk0xc8518->m_m[1][1] +
-						 source.m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_unk0xc8518->m_m[0][2] + source.m_y * m_unk0xc8518->m_m[1][2] +
-						 source.m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_unk0xc8518->m_m[0][3] + source.m_y * m_unk0xc8518->m_m[1][3] +
-						 source.m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
+						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
+		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
+						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
+		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
+						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
+		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
+						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
 		cacheEntry.m_unk0x10 = cacheIndex;
 		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
 
@@ -4040,8 +4040,8 @@ void GolD3DRenderDevice::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
 		vertex.sz = cacheEntry.m_z * vertex.rhw;
 		vertex.color = m_unk0xc83fc;
-		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
-		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_uvOffsetU;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_uvOffsetV;
 	}
 
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
@@ -4050,10 +4050,10 @@ void GolD3DRenderDevice::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVert
 // FUNCTION: GOLDP 0x1000eb90
 void GolD3DRenderDevice::FUN_1000eb90(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4)
 {
-	m_unk0xc854c.m_material = m_unk0xc8530.m_material;
-	m_unk0xc854c.m_firstTriangle = p_firstTriangle;
-	m_unk0xc854c.m_triangleCount = p_triangleCount;
-	m_unk0xc8524->ProcessMaterial(&m_unk0xc854c);
+	m_materialCommand.m_material = m_drawCommand.m_material;
+	m_materialCommand.m_firstTriangle = p_firstTriangle;
+	m_materialCommand.m_triangleCount = p_triangleCount;
+	m_renderState->ProcessMaterial(&m_materialCommand);
 }
 
 // FUNCTION: GOLDP 0x1000ebd0
@@ -4150,7 +4150,7 @@ void GolD3DRenderDevice::FUN_1000edf0(undefined4 p_firstTriangle, undefined4 p_t
 	LegoU32 directIndexCount = 0;
 	LegoU32 clippedIndexCount = 0;
 	LegoU32 clippedVertexCount = 0;
-	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & GolMaterial::c_flagRotateVertices) != 0;
+	LegoBool32 flipped = ((m_activeMaterialFlags | m_forcedMaterialFlags) & GolMaterial::c_flagRotateVertices) != 0;
 	static const LegoU32 g_clipPlanes[] = {0x10, 0x20, 0x01, 0x02, 0x04, 0x08};
 
 	for (; triangle < triangleEnd; triangle += 4) {
@@ -4497,7 +4497,7 @@ void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_t
 	LegoU32 emittedCount = 0;
 	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
 	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
-	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & GolMaterial::c_flagRotateVertices) != 0;
+	LegoBool32 flipped = ((m_activeMaterialFlags | m_forcedMaterialFlags) & GolMaterial::c_flagRotateVertices) != 0;
 	static const LegoU32 g_clipPlanes[] = {0x10, 0x20, 0x01, 0x02, 0x04, 0x08};
 
 	for (; triangle < triangleEnd; triangle += 4) {
@@ -5090,8 +5090,8 @@ void GolD3DRenderDevice::FUN_10012bf0(undefined4 p_outputFirst, undefined4 p_fir
 // FUNCTION: GOLDP 0x10012f50
 void GolD3DRenderDevice::FUN_10012f50()
 {
-	if (m_unk0xc8524) {
-		if (m_unk0xc8528) {
+	if (m_renderState) {
+		if (m_stateBeginPending) {
 			m_drawTriangleFn2 = &GolD3DRenderDevice::FUN_1000eb90;
 			if (m_unk0xc8568) {
 				m_drawTriangleFn1 = &GolD3DRenderDevice::FUN_1000d210;
@@ -5125,7 +5125,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 		index <<= 3;
 		index |= m_unk0xc83e8;
 		index <<= 1;
-		index |= m_unk0xc83f4;
+		index |= m_uvOffsetEnabled;
 		index <<= 1;
 		index |= (m_flags >> 9) & 0x10;
 		index |= m_unk0xc83ec;
@@ -5145,7 +5145,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 			index |= 8;
 		}
 		else {
-			LegoU32 flags = m_unk0xc83c8 | m_unk0xc83cc;
+			LegoU32 flags = m_activeMaterialFlags | m_forcedMaterialFlags;
 			if (flags & GolMaterial::c_flagRotateVertices) {
 				if (m_unk0xc83c4) {
 					m_drawTriangleFn2 = &GolD3DRenderDevice::FUN_10010500;
@@ -5188,25 +5188,25 @@ void GolD3DRenderDevice::FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_unk0xc3848 += p_vertexCount;
 
 	for (; source < sourceEnd;) {
-		vertex->sx = m_unk0xc8518->m_m[0][0] * source->m_x;
-		vertex->sy = m_unk0xc8518->m_m[0][1] * source->m_x;
-		vertex->sz = m_unk0xc8518->m_m[0][2] * source->m_x;
-		vertex->rhw = m_unk0xc8518->m_m[0][3] * source->m_x;
+		vertex->sx = m_currentMatrix->m_m[0][0] * source->m_x;
+		vertex->sy = m_currentMatrix->m_m[0][1] * source->m_x;
+		vertex->sz = m_currentMatrix->m_m[0][2] * source->m_x;
+		vertex->rhw = m_currentMatrix->m_m[0][3] * source->m_x;
 
-		vertex->sx += m_unk0xc8518->m_m[1][0] * source->m_y;
-		vertex->sy += m_unk0xc8518->m_m[1][1] * source->m_y;
-		vertex->sz += m_unk0xc8518->m_m[1][2] * source->m_y;
-		vertex->rhw += m_unk0xc8518->m_m[1][3] * source->m_y;
+		vertex->sx += m_currentMatrix->m_m[1][0] * source->m_y;
+		vertex->sy += m_currentMatrix->m_m[1][1] * source->m_y;
+		vertex->sz += m_currentMatrix->m_m[1][2] * source->m_y;
+		vertex->rhw += m_currentMatrix->m_m[1][3] * source->m_y;
 
-		vertex->sx += m_unk0xc8518->m_m[2][0] * source->m_z;
-		vertex->sy += m_unk0xc8518->m_m[2][1] * source->m_z;
-		vertex->sz += m_unk0xc8518->m_m[2][2] * source->m_z;
-		vertex->rhw += m_unk0xc8518->m_m[2][3] * source->m_z;
+		vertex->sx += m_currentMatrix->m_m[2][0] * source->m_z;
+		vertex->sy += m_currentMatrix->m_m[2][1] * source->m_z;
+		vertex->sz += m_currentMatrix->m_m[2][2] * source->m_z;
+		vertex->rhw += m_currentMatrix->m_m[2][3] * source->m_z;
 
-		vertex->sx += m_unk0xc8518->m_m[3][0];
-		vertex->sy += m_unk0xc8518->m_m[3][1];
-		vertex->sz += m_unk0xc8518->m_m[3][2];
-		vertex->rhw = 1.0f / (m_unk0xc8518->m_m[3][3] + vertex->rhw);
+		vertex->sx += m_currentMatrix->m_m[3][0];
+		vertex->sy += m_currentMatrix->m_m[3][1];
+		vertex->sz += m_currentMatrix->m_m[3][2];
+		vertex->rhw = 1.0f / (m_currentMatrix->m_m[3][3] + vertex->rhw);
 		vertexMap[1] = vertexMap[0] + 1;
 		vertex->color = 0;
 		vertex->sx *= vertex->rhw;
@@ -5231,26 +5231,26 @@ void GolD3DRenderDevice::FUN_100132f0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_unk0xc3848 = cacheIndex + p_vertexCount;
 
 	for (; source < sourceEnd; source++, cache++, vertex++, cacheIndex++) {
-		cache->m_x = m_unk0xc8518->m_m[0][0] * source->m_x;
-		cache->m_y = m_unk0xc8518->m_m[0][1] * source->m_x;
-		cache->m_z = m_unk0xc8518->m_m[0][2] * source->m_x;
-		cache->m_w = m_unk0xc8518->m_m[0][3] * source->m_x;
+		cache->m_x = m_currentMatrix->m_m[0][0] * source->m_x;
+		cache->m_y = m_currentMatrix->m_m[0][1] * source->m_x;
+		cache->m_z = m_currentMatrix->m_m[0][2] * source->m_x;
+		cache->m_w = m_currentMatrix->m_m[0][3] * source->m_x;
 
-		cache->m_x += m_unk0xc8518->m_m[1][0] * source->m_y;
-		cache->m_y += m_unk0xc8518->m_m[1][1] * source->m_y;
-		cache->m_z += m_unk0xc8518->m_m[1][2] * source->m_y;
-		cache->m_w += m_unk0xc8518->m_m[1][3] * source->m_y;
+		cache->m_x += m_currentMatrix->m_m[1][0] * source->m_y;
+		cache->m_y += m_currentMatrix->m_m[1][1] * source->m_y;
+		cache->m_z += m_currentMatrix->m_m[1][2] * source->m_y;
+		cache->m_w += m_currentMatrix->m_m[1][3] * source->m_y;
 
-		cache->m_x += m_unk0xc8518->m_m[2][0] * source->m_z;
-		cache->m_y += m_unk0xc8518->m_m[2][1] * source->m_z;
-		cache->m_z += m_unk0xc8518->m_m[2][2] * source->m_z;
-		cache->m_w += m_unk0xc8518->m_m[2][3] * source->m_z;
+		cache->m_x += m_currentMatrix->m_m[2][0] * source->m_z;
+		cache->m_y += m_currentMatrix->m_m[2][1] * source->m_z;
+		cache->m_z += m_currentMatrix->m_m[2][2] * source->m_z;
+		cache->m_w += m_currentMatrix->m_m[2][3] * source->m_z;
 
 		source++;
-		cache->m_x += m_unk0xc8518->m_m[3][0];
-		cache->m_y += m_unk0xc8518->m_m[3][1];
-		cache->m_z += m_unk0xc8518->m_m[3][2];
-		cache->m_w += m_unk0xc8518->m_m[3][3];
+		cache->m_x += m_currentMatrix->m_m[3][0];
+		cache->m_y += m_currentMatrix->m_m[3][1];
+		cache->m_z += m_currentMatrix->m_m[3][2];
+		cache->m_w += m_currentMatrix->m_m[3][3];
 		vertex->rhw = 1.0f / cache->m_w;
 		cache->m_clipFlags = BuildModelClipFlags(*cache);
 		cache->m_unk0x10 = cacheIndex;

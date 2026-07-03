@@ -132,7 +132,7 @@ void GolBillboard::FUN_10014ff0(GolD3DRenderDevice* p_renderer)
 	p_renderer->m_unk0xc4c10 = g_billboardTexCoords;
 	p_renderer->m_unk0xc4c14 = g_billboardColors;
 	p_renderer->m_unk0xc4c18 = g_billboardTriangleIndices;
-	p_renderer->m_unk0xc854c.m_indices = g_billboardTriangleIndices;
+	p_renderer->m_materialCommand.m_indices = g_billboardTriangleIndices;
 
 	g_billboardPositions[0].m_z = m_height;
 	g_billboardPositions[2].m_y = m_width;

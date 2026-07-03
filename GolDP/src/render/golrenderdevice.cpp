@@ -171,7 +171,7 @@ GolRenderDevice::GolRenderDevice()
 	m_unk0x0c = NULL;
 	m_flags = 0;
 	m_unk0x0a = 0;
-	::memset(&m_unk0x4c, 0, sizeof(m_unk0x4c));
+	::memset(&m_viewFrustum, 0, sizeof(m_viewFrustum));
 	m_unk0x11c = 0;
 	m_unk0x120 = 0;
 	::memset(&m_unk0x124, 0, sizeof(m_unk0x124));
@@ -722,7 +722,7 @@ void GolRenderDevice::SelectTextureFormat(
 void GolRenderDevice::DrawModelEntityEnvironmentMapped(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
-	p_model->ComputeVisibility(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_viewFrustum, &result);
 	if (!result.m_visibility) {
 		return;
 	}
@@ -770,7 +770,7 @@ void GolRenderDevice::DrawModelEntityWithUvAxes(
 )
 {
 	GolWorldEntity::ResultStruct result;
-	p_model->ComputeVisibility(m_unk0x4c, &result);
+	p_model->ComputeVisibility(m_viewFrustum, &result);
 	if (!result.m_visibility) {
 		return;
 	}

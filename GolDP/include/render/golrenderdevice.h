@@ -275,7 +275,7 @@ protected:
 	GolImageList* m_imageLists;                  // 0x40
 	GolFontLibrary* m_fontLists;                 // 0x44
 	GolD3DRenderDevice* m_nextDrawStateRenderer; // 0x48
-	GolViewFrustum m_unk0x4c;                    // 0x4c
+	GolViewFrustum m_viewFrustum;                // 0x4c
 	ColorRGBA m_unk0x118;                        // 0x118
 	undefined4 m_unk0x11c;                       // 0x11c
 	const MaterialColor* m_unk0x120;             // 0x120

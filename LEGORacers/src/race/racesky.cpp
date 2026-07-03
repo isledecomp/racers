@@ -261,7 +261,7 @@ void RaceSkyState::Load(
 
 		GolName materialName;
 		::strncpy(materialName, "skymat", sizeof(materialName));
-		m_domeModel->GetMaterialTable()->SetPosition(0, p_renderer->FindMaterialByName(materialName));
+		m_domeModel->GetMaterialTable()->SetEntry(0, p_renderer->FindMaterialByName(materialName));
 	}
 
 	m_skyWorld = m_golExport->VTable0x08();

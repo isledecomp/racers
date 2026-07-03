@@ -200,15 +200,15 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 		LegoS32 materialCount = materialTable->m_count;
 		if (materialCount > 1) {
 			do {
-				GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetPosition(materialIndex));
+				GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetEntry(materialIndex));
 				GolMaterial::NameRecord materialName;
 				materialName = material->GetNameRecord();
 
 				if (material != NULL) {
 					if (::strncmp(materialName.m_name, "face", sizeof(GolName)) == 0) {
-						GolMaterial* firstMaterial = static_cast<GolMaterial*>(materialTable->GetPosition(0));
-						materialTable->SetPosition(0, material);
-						materialTable->SetPosition(materialIndex, firstMaterial);
+						GolMaterial* firstMaterial = static_cast<GolMaterial*>(materialTable->GetEntry(0));
+						materialTable->SetEntry(0, material);
+						materialTable->SetEntry(materialIndex, firstMaterial);
 						ReplaceModelGroupMaterialIndex(resourceModel, materialIndex, 0xffff);
 						ReplaceModelGroupMaterialIndex(resourceModel, 0, materialIndex);
 						ReplaceModelGroupMaterialIndex(resourceModel, 0xffff, 0);

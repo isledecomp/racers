@@ -1491,8 +1491,8 @@ LegoBool32 CarBuildModel::Initialize(
 	m_overlayEntity.SetPrimaryMaterialTable(m_overlayModel->GetMaterialTable());
 
 	GolMaterialLibrary* materialLibrary = m_colorTable->GetWorldDatabase()->GetMaterialLibrary(1);
-	m_overlayModel->GetMaterialTable()->SetPosition(0, materialLibrary->GetItem(0));
-	m_overlayModel->GetMaterialTable()->SetPosition(1, materialLibrary->GetItem(1));
+	m_overlayModel->GetMaterialTable()->SetEntry(0, materialLibrary->GetItem(0));
+	m_overlayModel->GetMaterialTable()->SetEntry(1, materialLibrary->GetItem(1));
 
 	SetDefaultOffset();
 	m_pieceGrid.Initialize(10, 6);
@@ -2928,7 +2928,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 	LegoS32 textureIndex = 0;
 	for (i = 0; i < materialCount; i++) {
 		if (materialUsage[i].m_used) {
-			GolMaterial* sourceMaterial = static_cast<GolMaterial*>(materialTable->GetPosition(i));
+			GolMaterial* sourceMaterial = static_cast<GolMaterial*>(materialTable->GetEntry(i));
 
 			sourceMaterial->CopyParamsTo(&params);
 			params.m_unk0x00 &= ~GolMaterial::c_flagBit0;
@@ -2944,7 +2944,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 			}
 
 			outputMaterial->FUN_100257e0(m_renderer, params);
-			outputModel->GetMaterialTable()->SetPosition(outputMaterialIndex, outputMaterial);
+			outputModel->GetMaterialTable()->SetEntry(outputMaterialIndex, outputMaterial);
 			outputMaterialIndex++;
 		}
 	}

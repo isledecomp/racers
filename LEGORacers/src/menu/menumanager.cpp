@@ -917,7 +917,7 @@ void MenuManager::BuildPlayerDriverModel(
 		params.m_unk0x00 &= ~GolMaterial::c_flagBit0;
 		GolMaterial* material = p_slot->m_altMaterials->GetItem(materialIndex);
 		material->FUN_100257e0(renderer, params);
-		materialTable->SetPosition(materialIndex, material);
+		materialTable->SetEntry(materialIndex, material);
 	}
 
 	entity.SetModel(p_slot->m_altModel, modelBuilder->GetBodySceneNode(&cosmetics), &modelParts, g_menuManagerMaxFloat);

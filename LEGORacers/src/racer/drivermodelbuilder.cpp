@@ -234,7 +234,7 @@ void DriverModelBuilder::MergeHeadMaterials()
 		LegoS32 existingIndex = m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(materialName.m_name);
 		if (existingIndex == -1 || existingIndex >= outputIndex) {
 			LegoS32 setIndex = outputIndex++;
-			m_outputSummary.m_model->GetMaterialTable()->SetPosition(setIndex, material);
+			m_outputSummary.m_model->GetMaterialTable()->SetEntry(setIndex, material);
 		}
 	}
 }
@@ -364,7 +364,7 @@ void DriverModelBuilder::CopyBodyIntoOutput()
 
 	GolModelMaterialTable* outputMaterials = outputModel->GetMaterialTable();
 	for (LegoS32 i = 0; i < bodyMaterialCount; i++) {
-		outputMaterials->SetPosition(i, bodyMaterials->GetMaterial(i));
+		outputMaterials->SetEntry(i, bodyMaterials->GetMaterial(i));
 	}
 }
 
@@ -404,7 +404,7 @@ void DriverModelBuilder::ReplaceMaterialTexture(GolMaterial* p_material, const L
 				params->m_diffuse.m_blu = m_defaultMaterialParams.m_diffuse.m_blu;
 
 				p_material->FUN_100257e0(m_renderer, *params);
-				materialTable->SetPosition(materialIndex, p_material);
+				materialTable->SetEntry(materialIndex, p_material);
 				delete params;
 				return;
 			}

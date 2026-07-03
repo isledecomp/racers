@@ -275,7 +275,7 @@ void AwardCinematicScreen::CreateWidgets()
 				if (!swapMaterials) {
 					swapMaterials = swapEntity->GetModel(0)->GetMaterialTable();
 				}
-				swapMaterials->SetPosition(0, carBodyMaterials->GetPosition(1));
+				swapMaterials->SetEntry(0, carBodyMaterials->GetEntry(1));
 			}
 
 			if (pLegEntity) {
@@ -283,7 +283,7 @@ void AwardCinematicScreen::CreateWidgets()
 				if (!pLegMaterials) {
 					pLegMaterials = pLegEntity->GetModel(0)->GetMaterialTable();
 				}
-				pLegMaterials->SetPosition(0, carBodyMaterials->GetPosition(1));
+				pLegMaterials->SetEntry(0, carBodyMaterials->GetEntry(1));
 			}
 		}
 

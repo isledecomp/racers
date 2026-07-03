@@ -85,7 +85,7 @@ GolMaterial* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x004133a0
-LegoU32 GolBillboard::FUN_10029e90(
+LegoU32 GolBillboard::ConfigureFromMaterialTable(
 	MaterialTable* p_container,
 	LegoS32 p_index,
 	LegoFloat p_width,
@@ -93,11 +93,11 @@ LegoU32 GolBillboard::FUN_10029e90(
 	LegoFloat p_maxDistanceSquared
 )
 {
-	m_positionContainer = p_container;
-	m_positionIndex = static_cast<LegoU16>(p_index);
+	m_materialTable = p_container;
+	m_materialIndex = static_cast<LegoU16>(p_index);
 	LegoU32 result =
 		Configure(static_cast<GolMaterial*>(p_container->m_entries[p_index]), p_width, p_height, p_maxDistanceSquared);
-	m_flags |= c_flagBit2;
+	m_flags |= c_flagMaterialAssignment;
 
 	return result;
 }

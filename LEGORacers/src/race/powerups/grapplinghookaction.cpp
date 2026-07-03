@@ -146,7 +146,7 @@ LegoU32 GrapplingHookAction::Activate(
 	m_billboardAnimation
 		.FUN_004104c0(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
 
-	return m_billboard->FUN_10029e90(
+	return m_billboard->ConfigureFromMaterialTable(
 		m_owner->GetBillboardMaterialTable(),
 		m_billboardMaterialIndex,
 		g_hookBillboardSize,

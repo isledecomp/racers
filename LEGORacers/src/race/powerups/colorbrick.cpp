@@ -157,7 +157,7 @@ void ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
 	if (materialTable == NULL) {
 		materialTable = m_model->GetModel(0)->GetMaterialTable();
 	}
-	materialTable->SetPosition(0, m_brickMaterial);
+	materialTable->SetEntry(0, m_brickMaterial);
 	PickupBrick::Draw(p_renderer);
 }
 
@@ -168,6 +168,6 @@ void ColorBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	if (materialTable == NULL) {
 		materialTable = m_blendModel->GetModel(0)->GetMaterialTable();
 	}
-	materialTable->SetPosition(0, m_trailMaterial);
+	materialTable->SetEntry(0, m_trailMaterial);
 	PickupBrick::DrawTransparent(p_renderer);
 }

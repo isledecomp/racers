@@ -201,7 +201,7 @@ void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_bina
 	m_materialTable.Initialize(m_renderer, materialCount);
 	for (LegoS32 i = materialCount; i != 0;) {
 		i--;
-		m_materialTable.SetPosition(i, m_materials->GetItem(i));
+		m_materialTable.SetEntry(i, m_materials->GetItem(i));
 	}
 
 	m_materialUsage = new MaterialUsage[m_materialCount];

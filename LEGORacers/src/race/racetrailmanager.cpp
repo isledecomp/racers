@@ -100,7 +100,7 @@ void RaceTrailManager::Trail::Initialize(GolD3DRenderDevice* p_renderer, GolExpo
 // FUNCTION: LEGORACERS 0x00492a90
 void RaceTrailManager::Trail::SetMaterial(GolD3DRenderDevice*, GolMaterial* p_material)
 {
-	m_model->GetMaterialTable()->SetPosition(0, p_material);
+	m_model->GetMaterialTable()->SetEntry(0, p_material);
 }
 
 // FUNCTION: LEGORACERS 0x00492ab0

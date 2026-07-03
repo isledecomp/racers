@@ -219,7 +219,7 @@ void GdbPartLibrary::CopyPartGroupStart(
 )
 {
 	GolMaterial* material = p_renderer->FindMaterialByName(p_materialName);
-	g_copyModel->GetMaterialTable()->SetPosition(p_groupIndex, material);
+	g_copyModel->GetMaterialTable()->SetEntry(p_groupIndex, material);
 
 	LegoU32 groupWrite = g_copyGroupWrite++;
 	GolModelBase* model = g_copyModel;

@@ -203,7 +203,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 		if (groupType <= c_groupTypeMaterial) {
 			if (groupType == c_groupTypeMaterial) {
 				GolMaterial* material =
-					static_cast<GolMaterial*>(p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask));
+					static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
 				(p_renderer->*p_renderer->m_unk0xc876c)(material);
 				p_renderer->FUN_1000ac00(material->GetUnk0x04());
 			}
@@ -302,7 +302,7 @@ void GolModel::FUN_10006e00(
 		if (groupType <= c_groupTypeMaterial) {
 			if (groupType == c_groupTypeMaterial) {
 				GolMaterial* material =
-					static_cast<GolMaterial*>(p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask));
+					static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
 				(p_renderer->*p_renderer->m_unk0xc876c)(material);
 				p_renderer->FUN_1000ac00(material->GetUnk0x04());
 			}

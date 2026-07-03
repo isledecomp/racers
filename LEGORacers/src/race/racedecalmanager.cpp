@@ -143,7 +143,7 @@ void RaceDecalManager::Trail::SetMaterialTable(MaterialTable* p_materialTable)
 		m_slots[i].m_entry.m_entity.SetPrimaryMaterialTable(p_materialTable);
 	}
 
-	GolMaterial* material = static_cast<GolMaterial*>(p_materialTable->GetPosition(0));
+	GolMaterial* material = static_cast<GolMaterial*>(p_materialTable->GetEntry(0));
 	if (material->GetUnk0x08() & GolMaterial::c_flag0x08Bit12) {
 		m_alphaScale = static_cast<LegoFloat>(material->GetDestBlend()) * g_inv255;
 	}

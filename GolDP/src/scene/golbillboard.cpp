@@ -15,13 +15,13 @@ float g_pontoonMaxFloat = FLT_MAX;
 // FUNCTION: GOLDP 0x10029df0
 GolBillboard::GolBillboard()
 {
-	m_position = NULL;
-	m_positionContainer = NULL;
-	m_unk0x30.m_x = 0.0f;
-	m_unk0x30.m_y = 0.0f;
-	m_unk0x30.m_z = 1.0f;
+	m_material = NULL;
+	m_materialTable = NULL;
+	m_axis.m_x = 0.0f;
+	m_axis.m_y = 0.0f;
+	m_axis.m_z = 1.0f;
 	m_flags = 0;
-	m_positionIndex = 0;
+	m_materialIndex = 0;
 	m_width = 0.0f;
 	m_height = 0.0f;
 	m_maxDistanceSquared = g_pontoonMaxFloat; // std::numeric_limits<float>::max();
@@ -39,7 +39,7 @@ void GolBillboard::Configure(
 	LegoFloat len = sqrtf(SQR(p_width / 2.0f) + SQR(p_height / 2.0f));
 #undef SQR
 
-	m_position = p_position;
+	m_material = p_position;
 	m_width = p_width;
 	m_height = p_height;
 	m_flags = 1;
@@ -48,7 +48,7 @@ void GolBillboard::Configure(
 }
 
 // FUNCTION: GOLDP 0x10029e90
-void GolBillboard::FUN_10029e90(
+void GolBillboard::ConfigureFromMaterialTable(
 	MaterialTable* p_container,
 	LegoS32 p_index,
 	LegoFloat p_width,
@@ -56,16 +56,16 @@ void GolBillboard::FUN_10029e90(
 	LegoFloat p_maxDistanceSquared
 )
 {
-	m_positionContainer = p_container;
-	m_positionIndex = static_cast<LegoU16>(p_index);
-	Configure(static_cast<GolMaterial*>(p_container->GetPosition(p_index)), p_width, p_height, p_maxDistanceSquared);
-	m_flags |= c_flagBit2;
+	m_materialTable = p_container;
+	m_materialIndex = static_cast<LegoU16>(p_index);
+	Configure(static_cast<GolMaterial*>(p_container->GetEntry(p_index)), p_width, p_height, p_maxDistanceSquared);
+	m_flags |= c_flagMaterialAssignment;
 }
 
 // FUNCTION: GOLDP 0x10029ed0
 void GolBillboard::SetPrimaryModel()
 {
-	m_position = NULL;
+	m_material = NULL;
 	m_flags = 0;
 	m_width = 0;
 	m_height = 0;
@@ -116,13 +116,13 @@ void GolBillboard::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result)
 }
 
 // FUNCTION: GOLDP 0x1002a020
-GolMaterial* GolBillboard::FUN_1002a020()
+GolMaterial* GolBillboard::ResolveMaterial()
 {
-	if (m_flags & c_flagBit2) {
-		m_position = static_cast<GolMaterial*>(m_positionContainer->GetPosition(m_positionIndex));
+	if (m_flags & c_flagMaterialAssignment) {
+		m_material = static_cast<GolMaterial*>(m_materialTable->GetEntry(m_materialIndex));
 	}
 
-	return m_position;
+	return m_material;
 }
 
 // FUNCTION: GOLDP 0x1002a040
@@ -134,9 +134,9 @@ void GolBillboard::Draw(GolRenderDevice& p_renderer)
 // FUNCTION: GOLDP 0x1002a060
 LegoBool32 GolBillboard::GetKind()
 {
-	if (m_flags & c_flagBit2) {
-		m_position = static_cast<GolMaterial*>(m_positionContainer->GetPosition(m_positionIndex));
+	if (m_flags & c_flagMaterialAssignment) {
+		m_material = static_cast<GolMaterial*>(m_materialTable->GetEntry(m_materialIndex));
 	}
 
-	return m_position->GetUnk0x08() & 0x1100;
+	return m_material->GetUnk0x08() & 0x1100;
 }

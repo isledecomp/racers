@@ -438,7 +438,7 @@ void ParticleSystem::BeginMaterialGroup(GolMaterial* p_material)
 		FlushBatch();
 	}
 
-	m_model->GetMaterialTable()->SetPosition(m_materialCount, p_material);
+	m_model->GetMaterialTable()->SetEntry(m_materialCount, p_material);
 	::memcpy(&m_particleColor, &p_material->GetDiffuse(), sizeof(m_particleColor));
 
 	LegoU32 materialCount = m_materialCount;

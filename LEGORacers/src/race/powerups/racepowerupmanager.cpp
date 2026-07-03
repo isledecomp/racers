@@ -241,7 +241,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	m_entity->SetFlags(flags);
 
 	if (p_billboardPosition) {
-		m_materialTable.SetPosition(0, p_billboardPosition);
+		m_materialTable.SetEntry(0, p_billboardPosition);
 		m_entity->SetPrimaryMaterialTable(&m_materialTable);
 	}
 

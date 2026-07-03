@@ -137,7 +137,7 @@ void MabMaterialTrack::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialFrame* p_ite
 		selectedFrame = lastFrame;
 	}
 
-	m_unk0x00->SetPosition(m_unk0x04, p_items[selectedFrame].GetMaterial());
+	m_unk0x00->SetEntry(m_unk0x04, p_items[selectedFrame].GetMaterial());
 }
 
 // FUNCTION: LEGORACERS 0x00410560

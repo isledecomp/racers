@@ -1274,7 +1274,7 @@ void GolWorldDatabase::BindSpriteMaterialAnimation(GolBillboard* p_billboard, Wd
 		return;
 	}
 
-	if (!(p_billboard->GetFlags() & GolBillboard::c_flagBit2)) {
+	if (!(p_billboard->GetFlags() & GolBillboard::c_flagMaterialAssignment)) {
 		GOL_FATALERROR_MESSAGE("Mat animation invalid for sprites without mat assignment");
 	}
 
@@ -1285,7 +1285,7 @@ void GolWorldDatabase::BindSpriteMaterialAnimation(GolBillboard* p_billboard, Wd
 
 	LegoU32 materialIndex = p_sprite->m_materialTrackIndex;
 	MabMaterialTrack* item = GetMaterialAnimation(animationIndex)->GetUnk0x0c();
-	item[materialIndex].FUN_10025da0(p_billboard->GetPositionContainer(), p_sprite->m_materialIndex, TRUE);
+	item[materialIndex].FUN_10025da0(p_billboard->GetMaterialTable(), p_sprite->m_materialIndex, TRUE);
 }
 
 // FUNCTION: GOLDP 0x1002e2c0

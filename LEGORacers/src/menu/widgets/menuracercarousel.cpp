@@ -101,9 +101,9 @@ void MenuRacerCarousel::CopyModelMaterialTable(
 	GolModelMaterialTable* source = p_model->GetMaterialTable();
 	LegoS32 count = source->GetCount();
 	for (LegoS32 i = 0; i < count; i++) {
-		void* material = source->GetPosition(i);
+		void* material = source->GetEntry(i);
 		if (material) {
-			p_materialTable->SetPosition(i, material);
+			p_materialTable->SetEntry(i, material);
 		}
 	}
 }
@@ -235,7 +235,7 @@ void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 	switch (m_partType) {
 	case 0:
 		model = m_headBuilder->LoadHatModel(modelIndex);
-		material = model->GetMaterialTable()->GetPosition(0);
+		material = model->GetMaterialTable()->GetEntry(0);
 		m_headBuilder->MarkHatModelUsed(model);
 		materialName[0] = '\0';
 		break;
@@ -267,7 +267,7 @@ void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 
 	LegoS32 materialIndex = model->GetMaterialTable()->FindEntryIndexByName(materialName);
 	if (materialIndex != -1) {
-		materialTable->SetPosition(materialIndex, material);
+		materialTable->SetEntry(materialIndex, material);
 		entity->SetPrimaryMaterialTable(materialTable);
 	}
 

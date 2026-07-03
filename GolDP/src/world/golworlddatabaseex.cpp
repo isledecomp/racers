@@ -247,7 +247,7 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 				GOL_FATALERROR_MESSAGE("Illegal mat assign reference");
 			}
 
-			billboard->FUN_10029e90(
+			billboard->ConfigureFromMaterialTable(
 				&m_unk0x104[materialTableIndex],
 				sprite->m_materialIndex,
 				sprite->m_width,
@@ -274,8 +274,8 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 
 		billboard->SetPosition(sprite->m_position);
 		if (sprite->m_flags & WdbBillboardSprite::c_flagAxisLocked) {
-			billboard->EnableFlagBit1();
-			billboard->SetUnk0x30(sprite->m_axis);
+			billboard->EnableAxisLock();
+			billboard->SetAxis(sprite->m_axis);
 		}
 
 		BindSpriteMaterialAnimation(billboard, sprite);

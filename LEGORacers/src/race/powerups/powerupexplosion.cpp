@@ -101,8 +101,13 @@ void PowerupExplosion::Initialize(const Params* p_params)
 		m_billboardAnimation.FUN_10025da0(m_manager->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
 		m_billboardAnimation
 			.FUN_004104c0(0, m_manager->GetMaterialAnimationItems(), m_manager->GetMaterialAnimationItemCount());
-		m_billboard
-			->FUN_10029e90(m_manager->GetBillboardMaterialTable(), m_billboardMaterialIndex, 0.1f, 0.2f, 250000.0f);
+		m_billboard->ConfigureFromMaterialTable(
+			m_manager->GetBillboardMaterialTable(),
+			m_billboardMaterialIndex,
+			0.1f,
+			0.2f,
+			250000.0f
+		);
 	}
 	else if (m_billboard != NULL) {
 		m_billboard->Configure(p_params->m_billboardMaterial, 0.1f, 0.2f, 250000.0f);
@@ -303,7 +308,7 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 
 		LegoFloat width = (m_flashWidth - 0.1f) * m_growth + 0.1f;
 		if (m_scarMaterial != NULL && m_leavesScar != zero) {
-			m_materialTable.SetPosition(0, m_scarMaterial);
+			m_materialTable.SetEntry(0, m_scarMaterial);
 			m_scarDecal.m_width = width;
 			m_scarDecal.m_length = width;
 			m_scarDecal.m_depth = 15.0f;

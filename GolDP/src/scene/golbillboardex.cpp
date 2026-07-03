@@ -47,8 +47,8 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 	row0.m_y = -p_arg1->m_y;
 	row0.m_z = -p_arg1->m_z;
 
-	if (m_flags & c_flagBit1) {
-		row2 = &m_unk0x30;
+	if (m_flags & c_flagAxisLocked) {
+		row2 = &m_axis;
 		LegoFloat dot = row2->m_z;
 		dot *= row0.m_z;
 		dot += row0.m_y * row2->m_y;
@@ -124,7 +124,7 @@ void GolBillboardEx::Configure(
 // FUNCTION: GOLDP 0x10014ff0
 void GolBillboard::FUN_10014ff0(GolD3DRenderDevice* p_renderer)
 {
-	GolMaterial* material = FUN_1002a020();
+	GolMaterial* material = ResolveMaterial();
 	(p_renderer->*p_renderer->m_unk0xc876c)(material);
 	p_renderer->FUN_1000ac00(material->GetUnk0x04());
 

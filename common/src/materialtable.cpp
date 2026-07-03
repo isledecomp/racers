@@ -99,7 +99,7 @@ void MaterialTable::AssignEntryByName(LegoS32 p_index, const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00410750
-void MaterialTable::SetPosition(LegoU32 p_index, void* p_position)
+void MaterialTable::SetEntry(LegoU32 p_index, void* p_entry)
 {
-	m_entries[p_index] = p_position;
+	m_entries[p_index] = p_entry;
 }

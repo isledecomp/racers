@@ -133,7 +133,7 @@ void BeamMesh::Initialize(const SetupParams* p_params)
 	m_sceneNode = m_golExport->VTable0x18();
 	m_sceneNode->Allocate(m_sectionCount);
 	m_entity.Initialize(m_model, m_sceneNode, params->m_faceCamera, params->m_modelDistance);
-	m_model->GetMaterialTable()->SetPosition(0, params->m_material);
+	m_model->GetMaterialTable()->SetEntry(0, params->m_material);
 }
 
 // FUNCTION: LEGORACERS 0x00493e60

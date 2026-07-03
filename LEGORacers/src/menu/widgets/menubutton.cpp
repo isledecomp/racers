@@ -88,7 +88,7 @@ MenuWidget* MenuButton::DrawSelf(Rect*, Rect*)
 	rect.m_bottom = m_rect.m_bottom - m_rect.m_top;
 
 	m_unk0x1c0.SetRect(&rect);
-	m_unk0x1c0.SetUnk0x58(m_unk0x1a8[m_visualStateIndex]);
+	m_unk0x1c0.SetImage(m_unk0x1a8[m_visualStateIndex]);
 	m_unk0x1c0.SetColor(&m_stateColors[m_visualStateIndex]);
 
 	return NULL;

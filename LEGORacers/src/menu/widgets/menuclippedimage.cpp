@@ -47,8 +47,8 @@ void MenuClippedImage::ClipToRect(Rect* p_rect)
 // FUNCTION: LEGORACERS 0x0046f330
 MenuWidget* MenuClippedImage::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
-	LegoS32 imageWidth = m_unk0x58->GetWidth();
-	LegoS32 imageHeight = m_unk0x58->GetHeight();
+	LegoS32 imageWidth = m_image->GetWidth();
+	LegoS32 imageHeight = m_image->GetHeight();
 	LegoS32 top = p_rect->m_top;
 
 	if (top < p_rect->m_bottom) {
@@ -67,7 +67,7 @@ MenuWidget* MenuClippedImage::DrawSelf(Rect* p_rect, Rect* p_arg)
 					m_clippedRect.m_bottom = p_arg->m_top + top + imageHeight;
 
 					ClipToRect(p_arg);
-					DrawImage(&m_clippedRect, &m_sourceRect, m_unk0x58);
+					DrawImage(&m_clippedRect, &m_sourceRect, m_image);
 
 					left += imageWidth;
 				} while (left < p_rect->m_right);

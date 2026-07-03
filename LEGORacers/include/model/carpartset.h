@@ -29,7 +29,7 @@ public:
 		void Load(
 			const LegoChar* p_filename,
 			LegoPieceLibrary* p_pieceLibrary,
-			LegoColorTable* p_verdantTide,
+			LegoColorTable* p_colorTable,
 			undefined4 p_binary
 		);
 		void FillChoiceIndices(LegoS32* p_dest, LegoS32 p_startIndex, LegoS32 p_count);
@@ -52,7 +52,7 @@ public:
 	~CarPartSet();
 
 	void Clear();
-	void SetUnk0x00(LegoColorTable* p_verdantTide) { m_verdantTide = p_verdantTide; }
+	void SetColorTable(LegoColorTable* p_colorTable) { m_colorTable = p_colorTable; }
 	void Load(
 		const LegoChar* p_filename,
 		LegoPieceLibrary* p_pieceLibrary,
@@ -66,7 +66,7 @@ public:
 	void SetSelectedEntry(Entry* p_unk0x10) { m_selectedEntry = p_unk0x10; }
 
 private:
-	LegoColorTable* m_verdantTide;    // 0x00
+	LegoColorTable* m_colorTable;     // 0x00
 	LegoPieceLibrary* m_pieceLibrary; // 0x04
 	LegoS32 m_entryCount;             // 0x08
 	Entry* m_entries;                 // 0x0c

@@ -48,7 +48,7 @@ void CarPartSet::Entry::Clear()
 void CarPartSet::Entry::Load(
 	const LegoChar* p_filename,
 	LegoPieceLibrary* p_pieceLibrary,
-	LegoColorTable* p_verdantTide,
+	LegoColorTable* p_colorTable,
 	undefined4 p_binary
 )
 {
@@ -96,7 +96,7 @@ void CarPartSet::Entry::Load(
 					m_choices[i].m_pieceType = 0;
 				}
 				m_choices[i].m_colorRecordIndex =
-					static_cast<LegoU8>(p_verdantTide->FindColorRecordIndexByName(parser->ReadString()));
+					static_cast<LegoU8>(p_colorTable->FindColorRecordIndexByName(parser->ReadString()));
 			}
 			parser->ReadRightCurly();
 			break;
@@ -180,7 +180,7 @@ LegoS32 CarPartSet::Entry::FindChoiceIndex(LegoS32 p_pieceType, LegoS32 p_colorR
 CarPartSet::CarPartSet()
 {
 	m_pieceLibrary = NULL;
-	m_verdantTide = NULL;
+	m_colorTable = NULL;
 	m_entryCount = 0;
 	m_entries = NULL;
 	m_selectedEntry = 0;
@@ -202,7 +202,7 @@ void CarPartSet::Clear()
 
 	m_entryCount = 0;
 	m_pieceLibrary = NULL;
-	m_verdantTide = NULL;
+	m_colorTable = NULL;
 	m_selectedEntry = 0;
 }
 
@@ -210,12 +210,12 @@ void CarPartSet::Clear()
 void CarPartSet::Load(
 	const LegoChar* p_filename,
 	LegoPieceLibrary* p_pieceLibrary,
-	LegoColorTable* p_verdantTide,
+	LegoColorTable* p_colorTable,
 	undefined4 p_binary
 )
 {
 	Clear();
-	m_verdantTide = p_verdantTide;
+	m_colorTable = p_colorTable;
 	m_pieceLibrary = p_pieceLibrary;
 
 	GolFileParser* parser;
@@ -261,7 +261,7 @@ void CarPartSet::Load(
 
 	for (i = 0; i < m_entryCount; i++) {
 		m_entries[i].SetIndex(i);
-		m_entries[i].Load(&entryFiles[i * 16], m_pieceLibrary, m_verdantTide, p_binary);
+		m_entries[i].Load(&entryFiles[i * 16], m_pieceLibrary, m_colorTable, p_binary);
 	}
 
 	delete[] entryFiles;

@@ -111,7 +111,7 @@ void RacerPickScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		if (&m_nameSelectors[i] == p_source) {
-			undefined4 state = m_nameSelectors[i].GetUnk0x5e4();
+			undefined4 state = m_nameSelectors[i].GetStepDirection();
 
 			if (state != -1) {
 				if (state != 1) {

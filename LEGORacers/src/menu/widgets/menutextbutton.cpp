@@ -183,7 +183,7 @@ void MenuTextButton::SetIconEventHandler(MenuScreenInterface* p_eventHandler)
 // FUNCTION: LEGORACERS 0x00482910
 MenuWidget* MenuTextButton::DrawSelf(Rect*, Rect*)
 {
-	m_image.SetUnk0x58(m_stateImages[m_visualStateIndex]);
+	m_image.SetImage(m_stateImages[m_visualStateIndex]);
 	m_image.SetColor(&m_stateImageColors[m_visualStateIndex]);
 	m_label.SetFont(m_stateFonts[m_visualStateIndex]);
 	m_label.SetColor(&m_stateColors[m_visualStateIndex]);

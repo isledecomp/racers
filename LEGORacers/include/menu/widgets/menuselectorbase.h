@@ -42,7 +42,7 @@ public:
 	virtual void StepNext() = 0;                                                                   // vtable+0x7c
 	MenuButton& GetPrevButton() { return m_prevButton; }
 	MenuButton& GetNextButton() { return m_nextButton; }
-	undefined4 GetUnk0x5e4() const { return m_unk0x5e4; }
+	undefined4 GetStepDirection() const { return m_stepDirection; }
 	void OnPreviousPressed(undefined4 p_param);
 	void OnNextPressed(undefined4 p_param);
 
@@ -59,7 +59,7 @@ protected:
 	undefined4 m_unk0x1a8;                           // 0x1a8
 	MenuButton m_prevButton;                         // 0x1ac
 	MenuButton m_nextButton;                         // 0x3c8
-	undefined4 m_unk0x5e4;                           // 0x5e4
+	undefined4 m_stepDirection;                      // 0x5e4
 	MenuStyleTable::SelectorStyleBase* m_styleEntry; // 0x5e8
 };
 

@@ -197,7 +197,7 @@ void MenuManager::InitializeInputDispatcher()
 	initStruct.m_renderer = m_renderer;
 	initStruct.m_cursorImage = m_renderer->FindImageByName(name);
 	initStruct.m_inputManager = m_gameContext.m_context->m_golApp->GetInputManager();
-	initStruct.m_inputEvents = m_gameContext.m_inputBindings.GetUnk0x208();
+	initStruct.m_inputEvents = m_gameContext.m_inputBindings.GetInputEvents();
 
 	m_inputDispatcher.Initialize(&initStruct);
 }
@@ -442,7 +442,7 @@ void MenuManager::OpenScreen(LegoU16 p_menuId)
 	m_screenCreateParams.m_golExport = m_golExport;
 	m_screenCreateParams.m_renderer = m_renderer;
 	m_screenCreateParams.m_inputManager = m_gameContext.m_context->m_golApp->GetInputManager();
-	m_screenCreateParams.m_inputEvents = m_gameContext.m_inputBindings.GetUnk0x208();
+	m_screenCreateParams.m_inputEvents = m_gameContext.m_inputBindings.GetInputEvents();
 	m_screenCreateParams.m_soundGroupBinding = &m_soundGroupBinding;
 	m_screenCreateParams.m_menuStyles = &m_menuStyles;
 	m_screenCreateParams.m_menuId = p_menuId;

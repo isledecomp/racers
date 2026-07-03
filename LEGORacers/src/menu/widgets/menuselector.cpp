@@ -22,7 +22,7 @@ void MenuSelectorBase::Reset()
 	m_prevButton.Destroy();
 	m_nextButton.Destroy();
 	m_unk0x1a8 = 0;
-	m_unk0x5e4 = 0;
+	m_stepDirection = 0;
 	MenuIcon::Reset();
 }
 
@@ -72,7 +72,7 @@ void MenuSelectorBase::OnPreviousPressed(undefined4 p_param)
 		return;
 	}
 
-	m_unk0x5e4 = -1;
+	m_stepDirection = -1;
 
 	if (m_prevButton.GetStateFlags() & c_flagFocused) {
 		StepPrevious();
@@ -94,7 +94,7 @@ void MenuSelectorBase::OnNextPressed(undefined4 p_param)
 		return;
 	}
 
-	m_unk0x5e4 = 1;
+	m_stepDirection = 1;
 
 	if (m_nextButton.GetStateFlags() & c_flagFocused) {
 		StepNext();

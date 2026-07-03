@@ -23,13 +23,13 @@ public:
 	~MenuImage() override;                       // vtable+0x04
 	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
 	LegoBool32 Create(CreateParams* p_createParams);
-	void SetUnk0x58(GolImage* p_unk0x58) { m_unk0x58 = p_unk0x58; }
+	void SetImage(GolImage* p_image) { m_image = p_image; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f0d0
 	// MenuImage::`scalar deleting destructor'
 
 protected:
-	GolImage* m_unk0x58; // 0x58
+	GolImage* m_image; // 0x58
 };
 
 #endif // OBSCUREANCHOR0X5C

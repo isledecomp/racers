@@ -312,11 +312,13 @@ void MenuInputBindingTable::ParseSelectorField(SelectorBinding* p_entry)
 {
 	switch (m_parser->GetCurrentToken()) {
 	case MidTxtParser::e_button:
-		p_entry->m_unk0x84 = ResolveEntryByName(m_parser->ReadString());
-		p_entry->m_unk0x88 = ResolveEntryByName(m_parser->ReadString());
+		p_entry->m_prevButtonParams =
+			static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
+		p_entry->m_nextButtonParams =
+			static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 		return;
 	case GolFileParser::e_unknown0x3a:
-		p_entry->m_unk0x8c = ResolveEntryByName(m_parser->ReadString());
+		p_entry->m_frameParams = static_cast<MenuFrame::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 		return;
 	case MidTxtParser::e_value:
 		p_entry->m_unk0x94 = m_parser->ReadInteger();
@@ -587,8 +589,10 @@ void MenuInputBindingTable::ParseCompositeBinding(CompositeBinding* p_entry)
 			p_entry->m_unk0xb0 = m_parser->ReadInteger();
 			break;
 		case MidTxtParser::e_button:
-			p_entry->m_unk0x84 = static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
-			p_entry->m_unk0x88 = static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
+			p_entry->m_prevButtonParams =
+				static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
+			p_entry->m_nextButtonParams =
+				static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 			break;
 		case MidTxtParser::e_imageRef:
 			p_entry->m_unk0x90 = static_cast<MenuImage::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));

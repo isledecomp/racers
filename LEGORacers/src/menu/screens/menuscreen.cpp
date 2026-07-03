@@ -399,34 +399,34 @@ void MenuScreen::ApplySelectorDefaults(
 )
 {
 	ApplyIconDefaults(p_createParams);
-	ApplyIconDefaults(p_createParams->m_unk0x84);
-	ApplyIconDefaults(p_createParams->m_unk0x88);
-	ApplyWidgetDefaults(p_createParams->m_unk0x8c);
+	ApplyIconDefaults(p_createParams->m_prevButtonParams);
+	ApplyIconDefaults(p_createParams->m_nextButtonParams);
+	ApplyWidgetDefaults(p_createParams->m_frameParams);
 
-	p_createParams->m_unk0x84->m_startEnabled = p_createParams->m_startEnabled;
-	p_createParams->m_unk0x88->m_startEnabled = p_createParams->m_startEnabled;
-	p_createParams->m_unk0x84->m_unk0x80 = NULL;
-	p_createParams->m_unk0x88->m_unk0x80 = NULL;
+	p_createParams->m_prevButtonParams->m_startEnabled = p_createParams->m_startEnabled;
+	p_createParams->m_nextButtonParams->m_startEnabled = p_createParams->m_startEnabled;
+	p_createParams->m_prevButtonParams->m_unk0x80 = NULL;
+	p_createParams->m_nextButtonParams->m_unk0x80 = NULL;
 
 	for (LegoS32 i = 0; i < 6; i++) {
-		if (!p_createParams->m_unk0x84->m_images[i]) {
-			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
+		if (!p_createParams->m_prevButtonParams->m_images[i]) {
+			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
 		}
 
-		if (!p_createParams->m_unk0x88->m_images[i]) {
-			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
+		if (!p_createParams->m_nextButtonParams->m_images[i]) {
+			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
 		}
 	}
 
 	LegoS32 count = 8;
 	do {
-		if (!p_createParams->m_unk0x8c->m_images[6]) {
-			p_createParams->m_unk0x8c->m_images[6] = p_styleEntry->m_frameStyle->m_images[6];
+		if (!p_createParams->m_frameParams->m_images[6]) {
+			p_createParams->m_frameParams->m_images[6] = p_styleEntry->m_frameStyle->m_images[6];
 		}
 	} while (--count);
 
-	if (!(p_createParams->m_unk0x8c->m_flags & 2) && p_styleEntry->m_frameStyle->m_hasColors) {
-		p_createParams->m_unk0x8c->m_fillColor = p_styleEntry->m_frameStyle->m_color1;
+	if (!(p_createParams->m_frameParams->m_flags & 2) && p_styleEntry->m_frameStyle->m_hasColors) {
+		p_createParams->m_frameParams->m_fillColor = p_styleEntry->m_frameStyle->m_color1;
 	}
 }
 
@@ -437,23 +437,23 @@ void MenuScreen::ApplyCompositeDefaults(
 )
 {
 	ApplyIconDefaults(p_createParams);
-	ApplyIconDefaults(p_createParams->m_unk0x84);
-	ApplyIconDefaults(p_createParams->m_unk0x88);
+	ApplyIconDefaults(p_createParams->m_prevButtonParams);
+	ApplyIconDefaults(p_createParams->m_nextButtonParams);
 	ApplyWidgetDefaults(p_createParams->m_unk0x90);
 	ApplyWidgetDefaults(p_createParams->m_unk0x8c);
 
-	p_createParams->m_unk0x84->m_startEnabled = p_createParams->m_startEnabled;
-	p_createParams->m_unk0x84->m_unk0x80 = NULL;
-	p_createParams->m_unk0x88->m_startEnabled = p_createParams->m_startEnabled;
-	p_createParams->m_unk0x88->m_unk0x80 = NULL;
+	p_createParams->m_prevButtonParams->m_startEnabled = p_createParams->m_startEnabled;
+	p_createParams->m_prevButtonParams->m_unk0x80 = NULL;
+	p_createParams->m_nextButtonParams->m_startEnabled = p_createParams->m_startEnabled;
+	p_createParams->m_nextButtonParams->m_unk0x80 = NULL;
 
 	for (LegoS32 i = 0; i < 6; i++) {
-		if (!p_createParams->m_unk0x84->m_images[i]) {
-			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
+		if (!p_createParams->m_prevButtonParams->m_images[i]) {
+			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
 		}
 
-		if (!p_createParams->m_unk0x88->m_images[i]) {
-			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
+		if (!p_createParams->m_nextButtonParams->m_images[i]) {
+			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
 		}
 	}
 
@@ -672,13 +672,13 @@ LegoBool32 MenuScreen::CreateSelector(
 	}
 
 	*bannerParams = *sourceParams;
-	*glyph1Params = *sourceParams->m_unk0x84;
-	*glyph2Params = *sourceParams->m_unk0x88;
-	*tomeParams = *sourceParams->m_unk0x8c;
+	*glyph1Params = *sourceParams->m_prevButtonParams;
+	*glyph2Params = *sourceParams->m_nextButtonParams;
+	*tomeParams = *sourceParams->m_frameParams;
 
-	bannerParams->m_unk0x88 = glyph2Params;
-	bannerParams->m_unk0x84 = glyph1Params;
-	bannerParams->m_unk0x8c = tomeParams;
+	bannerParams->m_nextButtonParams = glyph2Params;
+	bannerParams->m_prevButtonParams = glyph1Params;
+	bannerParams->m_frameParams = tomeParams;
 	bannerParams->m_unk0x90 = p_carousel;
 
 	ApplySelectorDefaults(bannerParams, styleEntry);

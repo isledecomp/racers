@@ -29,14 +29,14 @@ void MenuSelectorBase::Reset()
 // FUNCTION: LEGORACERS 0x004670a0
 LegoBool32 MenuSelectorBase::Create(CreateParams* p_createParams, const MenuStyleTable::SelectorStyleBase* p_styleEntry)
 {
-	static_cast<MenuWidget::CreateParams*>(p_createParams->m_unk0x84)->m_parent = this;
-	static_cast<MenuWidget::CreateParams*>(p_createParams->m_unk0x88)->m_parent = this;
+	static_cast<MenuWidget::CreateParams*>(p_createParams->m_prevButtonParams)->m_parent = this;
+	static_cast<MenuWidget::CreateParams*>(p_createParams->m_nextButtonParams)->m_parent = this;
 
-	if (!m_prevButton.Create(p_createParams->m_unk0x84, p_styleEntry->m_unk0x90)) {
+	if (!m_prevButton.Create(p_createParams->m_prevButtonParams, p_styleEntry->m_unk0x90)) {
 		return FALSE;
 	}
 
-	if (!m_nextButton.Create(p_createParams->m_unk0x88, p_styleEntry->m_unk0x94)) {
+	if (!m_nextButton.Create(p_createParams->m_nextButtonParams, p_styleEntry->m_unk0x94)) {
 		return FALSE;
 	}
 
@@ -337,7 +337,7 @@ void MenuSelector::Reset()
 // FUNCTION: LEGORACERS 0x004677e0
 LegoBool32 MenuSelectorBase::CreateWithFrame(CreateParamsWithCarousel* p_createParams)
 {
-	p_createParams->m_unk0x8c->m_parent = this;
+	p_createParams->m_frameParams->m_parent = this;
 	return TRUE;
 }
 

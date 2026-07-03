@@ -15,14 +15,14 @@ public:
 	// SIZE 0x8c
 	class CreateParams : public MenuIcon::CreateParams {
 	public:
-		MenuButton::CreateParams* m_unk0x84; // 0x84
-		MenuButton::CreateParams* m_unk0x88; // 0x88
+		MenuButton::CreateParams* m_prevButtonParams; // 0x84
+		MenuButton::CreateParams* m_nextButtonParams; // 0x88
 	};
 
 	// SIZE 0x90
 	class CreateParamsWithCarousel : public CreateParams {
 	public:
-		MenuFrame::CreateParams* m_unk0x8c; // 0x8c
+		MenuFrame::CreateParams* m_frameParams; // 0x8c
 	};
 
 	MenuSelectorBase();

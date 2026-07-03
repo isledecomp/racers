@@ -84,11 +84,8 @@ public:
 	};
 
 	// SIZE 0x98
-	class SelectorBinding : public IconBinding {
+	class SelectorBinding : public MenuSelectorBase::CreateParamsWithCarousel {
 	public:
-		void* m_unk0x84;      // 0x84
-		void* m_unk0x88;      // 0x88
-		void* m_unk0x8c;      // 0x8c
 		undefined4 m_unk0x90; // 0x90
 		undefined4 m_unk0x94; // 0x94
 	};

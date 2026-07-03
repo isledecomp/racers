@@ -542,7 +542,7 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 					}
 				}
 
-				MaterialTable0x0c* materialTable;
+				MaterialTable* materialTable;
 				if (entity->GetMaterialTable(0)) {
 					materialTable = entity->GetMaterialTable(0);
 				}

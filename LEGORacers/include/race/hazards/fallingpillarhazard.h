@@ -1,16 +1,16 @@
 #ifndef FALLINGPILLARHAZARD_H
 #define FALLINGPILLARHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
-#include "race/hazards/colliderrecord.h"
 #include "golmodelentity.h"
+#include "race/hazards/colliderrecord.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -22,11 +22,11 @@ class FallingPillarHazard : public Hazard {
 public:
 	FallingPillarHazard();
 	~FallingPillarHazard() override;
-	void OnActivate(void*) override;                        // vtable+0x04
-	void OnDeactivate(void*) override;                      // vtable+0x08
+	void OnActivate(void*) override;                              // vtable+0x04
+	void OnDeactivate(void*) override;                            // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser*) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;           // vtable+0x14
-	void ResetState() override;                             // vtable+0x24
+	void Update(undefined4 p_elapsedMs) override;                 // vtable+0x14
+	void ResetState() override;                                   // vtable+0x24
 
 	LegoS32 Reset();
 
@@ -42,6 +42,5 @@ private:
 	ColliderRecord* m_collider;             // 0x18
 	LegoU32 m_fallen;                       // 0x1c
 };
-
 
 #endif // FALLINGPILLARHAZARD_H

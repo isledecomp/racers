@@ -2,7 +2,7 @@
 #include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmaterial.h"

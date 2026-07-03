@@ -13,7 +13,7 @@ class GolCamera;
 class GolMaterialLibrary;
 class GolBoundingShape;
 class GolBoundingVolume;
-class CmbModelPart0x34;
+class CmbModelPart;
 class GolFileParser;
 class GolWorldEntity;
 class GolModelEntity;
@@ -22,7 +22,7 @@ class GolAnimatedEntity;
 class GolCollidableEntity;
 class GolBillboard;
 class GolModelBase;
-class MabMaterialAnimation0x14;
+class MabMaterialAnimation;
 class GolTextureList;
 class GolModelMaterialTable;
 class GolRenderDevice;
@@ -133,13 +133,13 @@ public:
 	virtual void VTable0x28(GolRenderDevice*) = 0;                                                     // vtable+0x28
 	virtual GolTextureList* VTable0x2c(LegoU32 p_index) const = 0;                                     // vtable+0x2c
 	virtual GolMaterialLibrary* VTable0x30(LegoU32 p_index) const = 0;                                 // vtable+0x30
-	virtual CmbModelPart0x34* VTable0x34(LegoU32 p_index) const = 0;                                   // vtable+0x34
+	virtual CmbModelPart* VTable0x34(LegoU32 p_index) const = 0;                                       // vtable+0x34
 	virtual GolModelBase* VTable0x38(LegoU32 p_index) const = 0;                                       // vtable+0x38
 	virtual GolModelMaterialTable* VTable0x3c(LegoU32 p_index) const = 0;                              // vtable+0x3c
 	virtual GolSceneNode* VTable0x40(LegoU32 p_index) const = 0;                                       // vtable+0x40
 	virtual GolBoundingShape* VTable0x44(LegoU32 p_index) const = 0;                                   // vtable+0x44
 	virtual GolWorldEntity* VTable0x48(LegoU32 p_index) const = 0;                                     // vtable+0x48
-	virtual MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const = 0;                           // vtable+0x4c
+	virtual MabMaterialAnimation* VTable0x4c(LegoU32 p_index) const = 0;                               // vtable+0x4c
 	virtual GolCameraBase* VTable0x50(LegoU32 p_index) const = 0;                                      // vtable+0x50
 	virtual void VTable0x54(undefined4);                                                               // vtable+0x54
 

@@ -2543,7 +2543,7 @@ void CarBuildModel::BuildIntoModel(GolModelBase* p_model, undefined4 p_unk0x08, 
 {
 	GolModelBase* model = m_model;
 	m_model = p_model;
-	MaterialTable0x0c* materialTable = m_modelEntity.GetPrimaryMaterialTable();
+	MaterialTable* materialTable = m_modelEntity.GetPrimaryMaterialTable();
 	m_modelEntity.VTable0x50(p_model, g_carBuildModelMaxFloat);
 	RebuildModel(p_unk0x08, p_unk0x0c);
 	m_model = model;
@@ -2915,7 +2915,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 	LegoS32 materialCount = m_colorTable->GetMaterialCount();
 	const LegoColorTable::MaterialUsage* materialUsage = m_colorTable->GetMaterialUsage();
 	ColorRGBA color;
-	MaterialTable0x0c* materialTable = m_colorTable->GetMaterialTable();
+	MaterialTable* materialTable = m_colorTable->GetMaterialTable();
 	GolModelBase* outputModel = p_model;
 	IGdbModelIndexArray0x8* sourceIndexArray;
 	IGdbModelIndexArray0x8* destIndexArray;

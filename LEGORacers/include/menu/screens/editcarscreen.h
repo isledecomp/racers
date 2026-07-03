@@ -17,7 +17,7 @@
 #include "menu/widgets/menutextbutton.h"
 #include "menu/widgets/menutextlabel.h"
 
-class CmbModelPart0x34;
+class CmbModelPart;
 class GolModelBase;
 class GolSceneNode;
 class ActiveRecordBuffer;
@@ -76,7 +76,7 @@ protected:
 	GolAnimatedEntity m_driverEntity;                  // 0x34b0
 	GolModelBase* m_driverModel;                       // 0x35a4
 	GolSceneNode* m_bodySceneNode;                     // 0x35a8
-	CmbModelPart0x34* m_bodyModelPart;                 // 0x35ac
+	CmbModelPart* m_bodyModelPart;                     // 0x35ac
 	RacerModelSlot m_modelSlot;                        // 0x35b0
 	SaveRecordCursor m_recordCursor;                   // 0x3650
 	ActiveRecordBuffer* m_activeRecord;                // 0x3678

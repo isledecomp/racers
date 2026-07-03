@@ -1,16 +1,16 @@
 #ifndef ROCKETHAZARD_H
 #define ROCKETHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
-#include "race/hazards/colliderrecord.h"
 #include "golmodelentity.h"
+#include "race/hazards/colliderrecord.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -22,11 +22,11 @@ class RocketHazard : public Hazard {
 public:
 	RocketHazard();
 	~RocketHazard() override;
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;  // vtable+0x00
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 
 	LegoS32 ClearFields();
 	LegoS32 Reset();
@@ -52,6 +52,5 @@ private:
 	LegoFloat m_unk0x4c[3];                  // 0x4c
 	LegoU32 m_unk0x58;                       // 0x58
 };
-
 
 #endif // ROCKETHAZARD_H

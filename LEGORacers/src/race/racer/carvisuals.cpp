@@ -1,7 +1,7 @@
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmaterial.h"
@@ -1308,7 +1308,7 @@ void CarVisuals::UpdateShadow(GolCamera* p_camera)
 
 		up.m_x = -up.m_x;
 		up.m_y = -up.m_y;
-		MaterialTable0x0c* materialTable = &m_shadowMaterialTable;
+		MaterialTable* materialTable = &m_shadowMaterialTable;
 		GolVec3* upVector = &up;
 		GolVec3* vector = &m_shadowDirection;
 		m_shadowDecal.GetEntity().SetPrimaryMaterialTable(materialTable);
@@ -1605,7 +1605,7 @@ void CarVisuals::PlayForwardAnimation()
 // FUNCTION: LEGORACERS 0x004401e0
 void CarVisuals::PlayReverseAnimation()
 {
-	CmbModelPart0x34* modelPart = m_carEntity->GetModelPart();
+	CmbModelPart* modelPart = m_carEntity->GetModelPart();
 
 	if (modelPart->GetPartCount() > 1 && m_carEntity->GetActiveState() != 1) {
 		m_carEntity->PlayPart(1);

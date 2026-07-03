@@ -2,8 +2,8 @@
 
 #include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
-#include "cmbmodelpart0x34.h"
-#include "cmbmodelpartdata0x28.h"
+#include "cmbmodelpart.h"
+#include "cmbmodelpartdata.h"
 #include "decomp.h"
 #include "golfileparser.h"
 #include "golmath.h"
@@ -117,7 +117,7 @@ void GhostHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_trigger.FUN_10026fa0(m_ghostEntity->GetModel(0)->GetRadius() + g_ghostTriggerRadiusPadding);
 
 	LegoU32 frameCount = 0;
-	CmbModelPartData0x28* partData = m_ghostEntity->GetModelPart()->GetPartData();
+	CmbModelPartData* partData = m_ghostEntity->GetModelPart()->GetPartData();
 	LegoFloat inverseDuration = 1.0f / partData->GetMsPerFrame();
 	frameCount = partData->GetFrameCount();
 	LegoFloat frameCountFloat = static_cast<LegoFloat>(frameCount);

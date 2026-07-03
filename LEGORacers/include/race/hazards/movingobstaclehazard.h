@@ -3,7 +3,7 @@
 
 #include "golmath.h"
 #include "golmodelentity.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/racedecalmanager.h"
@@ -12,7 +12,7 @@
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -51,7 +51,7 @@ private:
 	LegoEventQueue::Event* m_collisionEvent;      // 0x3c
 	LegoEventQueue* m_eventQueue;                 // 0x40
 	RaceDecalManager::Trail::Decal m_shadowDecal; // 0x44
-	MaterialTable0x0c m_shadowMaterialTable;      // 0x160
+	MaterialTable m_shadowMaterialTable;          // 0x160
 	GolCollidableEntity* m_trackCollidable;       // 0x16c
 	SpatialSoundInstance* m_loopSound;            // 0x170
 	RacerSoundSource* m_soundSource;              // 0x174

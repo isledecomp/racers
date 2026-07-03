@@ -147,7 +147,7 @@ void GolModel::VTable0x14(GolFileParser& p_parser)
 }
 
 // STUB: GOLDP 0x10006c50
-void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p_materialTable)
+void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable)
 {
 	if (p_materialTable == NULL) {
 		p_materialTable = &m_unk0x04;
@@ -243,7 +243,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p
 // STUB: GOLDP 0x10006e00
 void GolModel::FUN_10006e00(
 	GolD3DRenderDevice* p_renderer,
-	MaterialTable0x0c* p_materialTable,
+	MaterialTable* p_materialTable,
 	GolBoundingShape::StructField0x08::Node* p_node
 )
 {

@@ -1,0 +1,50 @@
+#ifndef MABMATERIALTRACK_H
+#define MABMATERIALTRACK_H
+
+#include "decomp.h"
+#include "material/materialtable.h"
+#include "types.h"
+
+class MabMaterialFrame;
+class GolMaterial;
+
+// SIZE 0x18
+class MabMaterialTrack {
+public:
+	enum {
+		c_flagBit0 = 0x1 << 0,
+		c_flagBit1 = 0x1 << 1,
+		c_flagBit2 = 0x1 << 2,
+	};
+
+	MabMaterialTrack();
+
+	void FUN_10025d40(undefined2, undefined2, undefined2, LegoS32);
+	void FUN_10025da0(MaterialTable* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3);
+	void FUN_004103c0(const MabMaterialTrack& p_other);
+	void Reset();
+	void FUN_00410470();
+	void FUN_00410480();
+	void FUN_00410490();
+	void FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialFrame* p_items, LegoU32 p_itemCount);
+	GolMaterial* FUN_00410560(LegoS32 p_elapsedMs, MabMaterialFrame* p_items, LegoU32 p_itemCount);
+	MaterialTable* GetUnk0x00() const { return m_unk0x00; }
+	LegoU16 GetUnk0x04() const { return m_unk0x04; }
+	LegoU16 GetFirstFrame() const { return m_unk0x06; }
+	LegoU16 GetFrameCount() const { return m_unk0x08; }
+	void SetUnk0x0c(LegoFloat p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
+	LegoBool32 IsConfigured() const { return m_flags & c_flagBit0; }
+	LegoBool32 IsAssigned() const { return m_flags & c_flagBit1; }
+
+private:
+	MaterialTable* m_unk0x00; // 0x00
+	LegoU16 m_unk0x04;        // 0x04
+	LegoU16 m_unk0x06;        // 0x06
+	LegoU16 m_unk0x08;        // 0x08
+	LegoU16 m_unk0x0a;        // 0x0a
+	LegoFloat m_unk0x0c;      // 0x0c
+	LegoFloat m_unk0x10;      // 0x10
+	LegoU32 m_flags;          // 0x14
+};
+
+#endif // MABMATERIALTRACK_H

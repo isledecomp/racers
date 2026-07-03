@@ -1,15 +1,15 @@
 #ifndef MULTILAUNCHERHAZARD_H
 #define MULTILAUNCHERHAZARD_H
 
-#include "race/hazards/launcherhazard.h"
 #include "golmath.h"
 #include "golmodelentity.h"
 #include "race/hazards/hazardcontext.h"
+#include "race/hazards/launcherhazard.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -21,10 +21,10 @@ class MultiLauncherHazard : public LauncherHazard {
 public:
 	MultiLauncherHazard();
 	~MultiLauncherHazard() override;
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 
 	void Reset();
 
@@ -44,6 +44,5 @@ private:
 	LegoU32 m_targetPositionCount; // 0x138
 	LegoU32 m_targetIndex;         // 0x13c
 };
-
 
 #endif // MULTILAUNCHERHAZARD_H

@@ -274,7 +274,7 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 		if (m_sceneNodes == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_modelParts = new CmbModelPart0x34[modelCount];
+		m_modelParts = new CmbModelPart[modelCount];
 		if (m_modelParts == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

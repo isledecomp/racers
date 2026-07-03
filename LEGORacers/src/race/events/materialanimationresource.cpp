@@ -1,8 +1,8 @@
 #include "race/events/materialanimationresource.h"
 
 #include "decomp.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
 
 DECOMP_SIZE_ASSERT(MaterialAnimationResource::InitParams, 0x38)
 DECOMP_SIZE_ASSERT(MaterialAnimationResource, 0x34)
@@ -59,7 +59,7 @@ void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
 	}
 
 	m_unk0x24 = &m_unk0x20->GetUnk0x0c()[p_params->m_unk0x20];
-	MabMaterialAnimationItem0x18* item = &m_unk0x20->GetUnk0x0c()[p_params->m_unk0x24];
+	MabMaterialTrack* item = &m_unk0x20->GetUnk0x0c()[p_params->m_unk0x24];
 	m_unk0x28 = item;
 	m_unk0x2c = item->GetUnk0x00();
 	m_unk0x30 = item->GetUnk0x04();

@@ -1,12 +1,12 @@
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "menu/runtime/cutsceneparticle.h"
 #include "race/racesession.h"
 #include "render/golcommondrawstate.h"
@@ -153,7 +153,7 @@ void ColorBrick::SetMaterials(GolMaterial* p_brickMaterial, GolMaterial* p_trail
 // FUNCTION: LEGORACERS 0x00457900
 void ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
 {
-	MaterialTable0x0c* materialTable = m_model->GetPrimaryMaterialTable();
+	MaterialTable* materialTable = m_model->GetPrimaryMaterialTable();
 	if (materialTable == NULL) {
 		materialTable = m_model->GetModel(0)->GetMaterialTable();
 	}
@@ -164,7 +164,7 @@ void ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00457930
 void ColorBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	MaterialTable0x0c* materialTable = m_blendModel->GetPrimaryMaterialTable();
+	MaterialTable* materialTable = m_blendModel->GetPrimaryMaterialTable();
 	if (materialTable == NULL) {
 		materialTable = m_blendModel->GetModel(0)->GetMaterialTable();
 	}

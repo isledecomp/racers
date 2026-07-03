@@ -1,7 +1,7 @@
 #ifndef DRIVERCOSMETICTABLE_H
 #define DRIVERCOSMETICTABLE_H
 
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "compat.h"
 #include "decomp.h"
 #include "golname.h"
@@ -87,7 +87,7 @@ private:
 	GolMaterialLibrary** m_materials;   // 0x34
 	GolAnimatedEntity* m_loadedEntries; // 0x38
 	GolSceneNode* m_rootNode;           // 0x3c
-	CmbModelPart0x34 m_modelParts;      // 0x40
+	CmbModelPart m_modelParts;          // 0x40
 	LegoU32 m_entryCapacity;            // 0x74
 	LegoU32 m_loadedEntryCount;         // 0x78
 	LegoBool32 m_binary;                // 0x7c

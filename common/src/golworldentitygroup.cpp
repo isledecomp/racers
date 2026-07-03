@@ -1,13 +1,13 @@
-#include "golworldentitygroup0x38.h"
+#include "golworldentitygroup.h"
 
 #include "golerror.h"
 
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(GolWorldEntityGroup0x38, 0x38)
+DECOMP_SIZE_ASSERT(GolWorldEntityGroup, 0x38)
 
 // FUNCTION: LEGORACERS 0x00411dd0
-GolWorldEntityGroup0x38::GolWorldEntityGroup0x38()
+GolWorldEntityGroup::GolWorldEntityGroup()
 {
 	m_entities = NULL;
 	m_capacity = 0;
@@ -17,13 +17,13 @@ GolWorldEntityGroup0x38::GolWorldEntityGroup0x38()
 }
 
 // FUNCTION: LEGORACERS 0x00411e20
-GolWorldEntityGroup0x38::~GolWorldEntityGroup0x38()
+GolWorldEntityGroup::~GolWorldEntityGroup()
 {
 	FUN_00411e90();
 }
 
 // FUNCTION: LEGORACERS 0x00411e30
-void GolWorldEntityGroup0x38::FUN_00411e30(LegoU32 p_capacity)
+void GolWorldEntityGroup::FUN_00411e30(LegoU32 p_capacity)
 {
 	if (m_entities) {
 		FUN_00411e90();
@@ -41,7 +41,7 @@ void GolWorldEntityGroup0x38::FUN_00411e30(LegoU32 p_capacity)
 }
 
 // FUNCTION: LEGORACERS 0x00411e90
-void GolWorldEntityGroup0x38::FUN_00411e90()
+void GolWorldEntityGroup::FUN_00411e90()
 {
 	if (m_entities) {
 		delete[] m_entities;
@@ -54,7 +54,7 @@ void GolWorldEntityGroup0x38::FUN_00411e90()
 }
 
 // FUNCTION: LEGORACERS 0x00411ec0
-void GolWorldEntityGroup0x38::FUN_00411ec0(GolWorldEntity* p_entity)
+void GolWorldEntityGroup::FUN_00411ec0(GolWorldEntity* p_entity)
 {
 	m_entities[m_count] = p_entity;
 	m_count++;
@@ -62,7 +62,7 @@ void GolWorldEntityGroup0x38::FUN_00411ec0(GolWorldEntity* p_entity)
 }
 
 // STUB: LEGORACERS 0x00411ef0
-void GolWorldEntityGroup0x38::VTable0x00()
+void GolWorldEntityGroup::VTable0x00()
 {
 	LegoFloat radius;
 	GolVec3 delta;
@@ -106,7 +106,7 @@ void GolWorldEntityGroup0x38::VTable0x00()
 }
 
 // FUNCTION: LEGORACERS 0x004120b0
-void GolWorldEntityGroup0x38::VTable0x1c(GolRenderDevice& p_renderer)
+void GolWorldEntityGroup::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->VTable0x1c(p_renderer);
@@ -114,7 +114,7 @@ void GolWorldEntityGroup0x38::VTable0x1c(GolRenderDevice& p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x004120e0
-void GolWorldEntityGroup0x38::VTable0x10(LegoS32 p_elapsed)
+void GolWorldEntityGroup::VTable0x10(LegoS32 p_elapsed)
 {
 	LegoU32 i = 0;
 	if (static_cast<LegoU32>(m_count) > 0) {
@@ -142,31 +142,31 @@ void GolWorldEntityGroup0x38::VTable0x10(LegoS32 p_elapsed)
 }
 
 // FUNCTION: LEGORACERS 0x004121a0
-void GolWorldEntityGroup0x38::VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const
+void GolWorldEntityGroup::VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const
 {
 	m_entities[0]->VTable0x2c(p_add, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x004121c0
-void GolWorldEntityGroup0x38::VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const
+void GolWorldEntityGroup::VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const
 {
 	m_entities[0]->VTable0x30(p_src, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x004121e0
-void GolWorldEntityGroup0x38::VTable0x34(const GolVec3& p_src, GolVec3* p_dest)
+void GolWorldEntityGroup::VTable0x34(const GolVec3& p_src, GolVec3* p_dest)
 {
 	m_entities[0]->VTable0x34(p_src, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00412200
-void GolWorldEntityGroup0x38::VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const
+void GolWorldEntityGroup::VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const
 {
 	m_entities[0]->VTable0x38(p_src, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00412220
-void GolWorldEntityGroup0x38::VTable0x08(const GolVec3& p_center)
+void GolWorldEntityGroup::VTable0x08(const GolVec3& p_center)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->VTable0x08(p_center);
@@ -176,13 +176,13 @@ void GolWorldEntityGroup0x38::VTable0x08(const GolVec3& p_center)
 }
 
 // FUNCTION: LEGORACERS 0x00412260
-void GolWorldEntityGroup0x38::VTable0x04(GolVec3* p_center) const
+void GolWorldEntityGroup::VTable0x04(GolVec3* p_center) const
 {
 	m_entities[0]->VTable0x04(p_center);
 }
 
 // FUNCTION: LEGORACERS 0x00412280
-void GolWorldEntityGroup0x38::VTable0x40(const GolVec3& p_direction, const GolVec3& p_up)
+void GolWorldEntityGroup::VTable0x40(const GolVec3& p_direction, const GolVec3& p_up)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->VTable0x40(p_direction, p_up);
@@ -190,19 +190,19 @@ void GolWorldEntityGroup0x38::VTable0x40(const GolVec3& p_direction, const GolVe
 }
 
 // FUNCTION: LEGORACERS 0x004122c0
-void GolWorldEntityGroup0x38::VTable0x48(GolVec3* p_right, GolVec3* p_forward) const
+void GolWorldEntityGroup::VTable0x48(GolVec3* p_right, GolVec3* p_forward) const
 {
 	m_entities[0]->VTable0x48(p_right, p_forward);
 }
 
 // FUNCTION: LEGORACERS 0x004122e0
-void GolWorldEntityGroup0x38::VTable0x44(GolMatrix3* p_dest) const
+void GolWorldEntityGroup::VTable0x44(GolMatrix3* p_dest) const
 {
 	m_entities[0]->VTable0x44(p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00412300
-void GolWorldEntityGroup0x38::VTable0x24(ColorTransform0x20* p_transform)
+void GolWorldEntityGroup::VTable0x24(ColorTransform0x20* p_transform)
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->VTable0x24(p_transform);
@@ -210,7 +210,7 @@ void GolWorldEntityGroup0x38::VTable0x24(ColorTransform0x20* p_transform)
 }
 
 // FUNCTION: LEGORACERS 0x00412330
-void GolWorldEntityGroup0x38::VTable0x28()
+void GolWorldEntityGroup::VTable0x28()
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->VTable0x28();

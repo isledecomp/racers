@@ -2,7 +2,7 @@
 #define GOLMODELMATERIALTABLE_H
 
 #include "decomp.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "types.h"
 
 class GolFileParser;
@@ -10,7 +10,7 @@ class GolMaterial;
 class GolRenderDevice;
 
 // SIZE 0x0c
-class GolModelMaterialTable : public MaterialTable0x0c {
+class GolModelMaterialTable : public MaterialTable {
 public:
 	GolModelMaterialTable();
 	~GolModelMaterialTable();

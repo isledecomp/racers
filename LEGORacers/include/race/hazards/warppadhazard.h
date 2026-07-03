@@ -1,15 +1,15 @@
 #ifndef WARPPADHAZARD_H
 #define WARPPADHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
 #include "golmodelentity.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -21,11 +21,11 @@ class WarpPadHazard : public Hazard {
 public:
 	WarpPadHazard();
 	~WarpPadHazard() override;
-	void OnActivate(void* p_racer) override;                // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;            // vtable+0x08
+	void OnActivate(void* p_racer) override;                      // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                  // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser*) override; // vtable+0x10
-	void Update(undefined4 p_unk0x04) override;             // vtable+0x14
-	LegoBool32 CanRetrigger() override;                     // vtable+0x20
+	void Update(undefined4 p_unk0x04) override;                   // vtable+0x14
+	LegoBool32 CanRetrigger() override;                           // vtable+0x20
 
 	LegoS32 Reset();
 
@@ -40,6 +40,5 @@ private:
 	RacePowerupManager* m_powerupManager; // 0x10
 	LegoU32 m_mirror;                     // 0x14
 };
-
 
 #endif // WARPPADHAZARD_H

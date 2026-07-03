@@ -2,7 +2,7 @@
 
 #include "golmaterial.h"
 #include "golmodelbase.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "render/golrenderdevice.h"
 
 #include <float.h>
@@ -360,7 +360,7 @@ void GolModelEntity::FUN_00411730(LegoFloat p_arg)
 // FUNCTION: LEGORACERS 0x00411760
 LegoBool32 GolModelEntity::VTable0x20()
 {
-	MaterialTable0x0c* materialTable = m_materialTables[0];
+	MaterialTable* materialTable = m_materialTables[0];
 	if (materialTable == NULL) {
 		GolModelBase* model = m_models[0];
 		if (model == NULL) {

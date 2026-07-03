@@ -1,7 +1,7 @@
 #include "util/particlesystem.h"
 
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "core/goldpexport.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
@@ -9,8 +9,8 @@
 #include "golmaterial.h"
 #include "golmodelbase.h"
 #include "goltransformbase.h"
-#include "mabmaterialanimationitem0x18.h"
-#include "mabmaterialanimationitem0x8.h"
+#include "mabmaterialframe.h"
+#include "mabmaterialtrack.h"
 #include "menu/widgets/menuselector.h"
 #include "render/gold3drenderdevice.h"
 #include "util/particle.h"
@@ -125,8 +125,8 @@ void ParticleSystem::Destroy()
 
 // FUNCTION: LEGORACERS 0x004125c0
 void ParticleSystem::ConfigureMaterialAnimation(
-	MabMaterialAnimationItem0x18* p_animation,
-	MabMaterialAnimationItem0x8* p_items,
+	MabMaterialTrack* p_animation,
+	MabMaterialFrame* p_items,
 	LegoU32 p_itemCount,
 	LegoFloat p_startSizeUp,
 	LegoFloat p_startSizeForward,

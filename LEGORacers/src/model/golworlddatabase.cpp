@@ -1,6 +1,6 @@
 #include "world/golworlddatabase.h"
 
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "golanimatedentity.h"
 #include "golboundedentity.h"
 #include "golcamerabase.h"
@@ -9,7 +9,7 @@
 #include "golmodelentity.h"
 #include "golscenenode.h"
 #include "golworldentity.h"
-#include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimation.h"
 
 // FUNCTION: LEGORACERS 0x00416040
 void GolWorldDatabase::DrawWorld()

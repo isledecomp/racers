@@ -2,14 +2,14 @@
 
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "golanimatedentity.h"
 #include "golboundingshape.h"
 #include "golcollidableentity.h"
 #include "golerror.h"
 #include "golmodelentity.h"
 #include "golmodelmaterialtable.h"
-#include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimation.h"
 #include "material/amberhaze0x20.h"
 #include "material/purpleribbon0x24.h"
 #include "mesh/golmodel.h"
@@ -61,7 +61,7 @@ GolMaterialLibrary* GolWorldDatabaseEx::VTable0x30(LegoU32 p_index) const
 }
 
 // FUNCTION: GOLDP 0x10017290
-CmbModelPart0x34* GolWorldDatabaseEx::VTable0x34(LegoU32 p_index) const
+CmbModelPart* GolWorldDatabaseEx::VTable0x34(LegoU32 p_index) const
 {
 	return &m_unk0x10c[p_index];
 }
@@ -97,7 +97,7 @@ GolWorldEntity* GolWorldDatabaseEx::VTable0x48(LegoU32 p_index) const
 }
 
 // FUNCTION: GOLDP 0x10017350
-MabMaterialAnimation0x14* GolWorldDatabaseEx::VTable0x4c(LegoU32 p_index) const
+MabMaterialAnimation* GolWorldDatabaseEx::VTable0x4c(LegoU32 p_index) const
 {
 	return &m_unk0x108[p_index];
 }
@@ -126,7 +126,7 @@ void GolWorldDatabaseEx::VTable0x08()
 	}
 
 	if (GetUnk0x1c() != 0) {
-		m_unk0x10c = new CmbModelPart0x34[GetUnk0x1c()];
+		m_unk0x10c = new CmbModelPart[GetUnk0x1c()];
 		if (m_unk0x10c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -168,7 +168,7 @@ void GolWorldDatabaseEx::VTable0x08()
 	}
 
 	if (GetUnk0x74() != 0) {
-		m_unk0x108 = new MabMaterialAnimation0x14[GetUnk0x74()];
+		m_unk0x108 = new MabMaterialAnimation[GetUnk0x74()];
 		if (m_unk0x108 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

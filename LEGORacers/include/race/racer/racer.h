@@ -1,8 +1,8 @@
 #ifndef RACER_H
 #define RACER_H
 
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
 #include "race/raceactionsource.h"
 #include "race/raceeventrecord.h"
 #include "race/racer/carvisuals.h"

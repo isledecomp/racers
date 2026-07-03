@@ -8,9 +8,9 @@
 
 class GolFileParser;
 class GolWorldDatabase;
-class MabMaterialAnimation0x14;
-class MabMaterialAnimationItem0x18;
-struct MaterialTable0x0c;
+class MabMaterialAnimation;
+class MabMaterialTrack;
+struct MaterialTable;
 class CutsceneAnimation;
 struct CutsceneParticleRef;
 class RaceSession;

@@ -1,7 +1,7 @@
 #ifndef RACERMODELSCREENBASE_H
 #define RACERMODELSCREENBASE_H
 
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "compat.h"
 #include "decomp.h"
 #include "golanimatedentity.h"
@@ -22,13 +22,13 @@ class RacerModelScreenBase : public MenuGameScreen {
 public:
 	RacerModelScreenBase();
 
-	void CreateWidgets() override;                                                            // vtable+0x4c
+	void CreateWidgets() override;                                                         // vtable+0x4c
 	void Reset() override;                                                                 // vtable+0x54
 	~RacerModelScreenBase() override;                                                      // vtable+0x68
 	LegoBool32 Destroy() override;                                                         // vtable+0x74
-	LegoBool32 Update(undefined4) override;                                            // vtable+0x78
-	void SetupLighting() override;                                                            // vtable+0x80
-	LegoBool32 CanNavigate() override;                                                      // vtable+0x88
+	LegoBool32 Update(undefined4) override;                                                // vtable+0x78
+	void SetupLighting() override;                                                         // vtable+0x80
+	LegoBool32 CanNavigate() override;                                                     // vtable+0x88
 	virtual void CreateModelSlots();                                                       // vtable+0x98
 	virtual LegoS32 PickRandomAnimation();                                                 // vtable+0x9c
 	virtual LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*, undefined4*); // vtable+0xa0
@@ -52,7 +52,7 @@ protected:
 	void PlayRandomAnimation(LegoS32 p_index);
 	void PlayRandomNamedAnimation(LegoS32 p_index);
 
-	CmbModelPart0x34 m_modelParts;                         // 0x0368
+	CmbModelPart m_modelParts;                             // 0x0368
 	AwardCinematicScreen::SceneEntityGroup m_carGroups[4]; // 0x039c
 	GolSceneNode* m_bodySceneNodes[4];                     // 0x04dc
 	GolModelBase* m_driverModels[4];                       // 0x04ec

@@ -16,7 +16,7 @@ class MusicGroup;
 class DriverPartResources;
 class GolModelBase;
 class GolSceneNode;
-class CmbModelPart0x34;
+class CmbModelPart;
 struct DriverCosmetics;
 
 // SIZE 0x88
@@ -56,7 +56,7 @@ public:
 	void RefreshMenuResources();
 	GolModelBase* BuildDriverModel(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_unk0x0c);
 	GolSceneNode* GetBodySceneNode(DriverCosmetics* p_cosmetics);
-	CmbModelPart0x34* GetBodyModelPart(DriverCosmetics* p_cosmetics);
+	CmbModelPart* GetBodyModelPart(DriverCosmetics* p_cosmetics);
 	void GetMaxMergedCounts(undefined4* p_dest);
 	void ApplyFaceExpression(GolModelBase* p_model, DriverCosmetics* p_cosmetics);
 

@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "golanimatedentity.h"
 #include "golnametable.h"
-#include "golworldentitygroup0x38.h"
+#include "golworldentitygroup.h"
 #include "menu/screens/menuscenescreen.h"
 #include "race/data/circuitdefinitionlist.h"
 #include "save/saverecordlist.h"
@@ -21,7 +21,7 @@ class AwardCinematicScreen : public MenuSceneScreen {
 public:
 	// VTABLE: LEGORACERS 0x004b2f00
 	// SIZE 0x50
-	class SceneEntityGroup : public GolWorldEntityGroup0x38 {
+	class SceneEntityGroup : public GolWorldEntityGroup {
 	public:
 		// SIZE 0x18
 		struct CreateParams {

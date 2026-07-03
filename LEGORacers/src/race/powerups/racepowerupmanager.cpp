@@ -1,7 +1,7 @@
 #include "app/cheatflags.h"
 #include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golbinparser.h"
 #include "golmateriallibrary.h"

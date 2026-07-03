@@ -1,16 +1,16 @@
 #ifndef CODEPUZZLEHAZARD_H
 #define CODEPUZZLEHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
 #include "golmodelentity.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
-class MabMaterialAnimationItem0x8;
+class MabMaterialTrack;
+class MabMaterialFrame;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -22,11 +22,11 @@ class CodePuzzleHazard : public Hazard {
 public:
 	CodePuzzleHazard();
 	~CodePuzzleHazard() override;
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
-	void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;  // vtable+0x28
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
+	void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;        // vtable+0x28
 
 	LegoS32 ClearFields();
 	LegoS32 Reset();
@@ -50,24 +50,23 @@ private:
 		c_delayMs = 2500,
 	};
 
-	GolModelEntity* m_codeModel1;              // 0x10
-	GolModelEntity* m_codeModel2;              // 0x14
-	GolModelEntity* m_codeModel3;              // 0x18
-	MabMaterialAnimationItem0x18* m_codeItem1; // 0x1c
-	MabMaterialAnimationItem0x18* m_codeItem2; // 0x20
-	MabMaterialAnimationItem0x18* m_codeItem3; // 0x24
-	MabMaterialAnimationItem0x8* m_unk0x28;    // 0x28
-	LegoU32 m_unk0x2c;                         // 0x2c
-	LegoU8 m_unk0x30;                          // 0x30
-	LegoU8 m_unk0x31;                          // 0x31
-	LegoU8 m_unk0x32;                          // 0x32
-	LegoU8 m_unk0x33;                          // 0x33
-	LegoU8 m_unk0x34;                          // 0x34
-	LegoU8 m_unk0x35;                          // 0x35
-	LegoU8 m_unk0x36;                          // 0x36
-	undefined m_unk0x37;                       // 0x37
-	LegoU32 m_delayMs;                         // 0x38
+	GolModelEntity* m_codeModel1;  // 0x10
+	GolModelEntity* m_codeModel2;  // 0x14
+	GolModelEntity* m_codeModel3;  // 0x18
+	MabMaterialTrack* m_codeItem1; // 0x1c
+	MabMaterialTrack* m_codeItem2; // 0x20
+	MabMaterialTrack* m_codeItem3; // 0x24
+	MabMaterialFrame* m_unk0x28;   // 0x28
+	LegoU32 m_unk0x2c;             // 0x2c
+	LegoU8 m_unk0x30;              // 0x30
+	LegoU8 m_unk0x31;              // 0x31
+	LegoU8 m_unk0x32;              // 0x32
+	LegoU8 m_unk0x33;              // 0x33
+	LegoU8 m_unk0x34;              // 0x34
+	LegoU8 m_unk0x35;              // 0x35
+	LegoU8 m_unk0x36;              // 0x36
+	undefined m_unk0x37;           // 0x37
+	LegoU32 m_delayMs;             // 0x38
 };
-
 
 #endif // CODEPUZZLEHAZARD_H

@@ -1,13 +1,13 @@
-#include "cmbmodelpartdata0x18.h"
+#include "cmbmodelparttrackdata.h"
 
 #include "golerror.h"
 #include "golfileparser.h"
 
-DECOMP_SIZE_ASSERT(CmbModelPartData0x18, 0x18)
+DECOMP_SIZE_ASSERT(CmbModelPartTrackData, 0x18)
 
 // FUNCTION: GOLDP 0x100241b0
 // FUNCTION: LEGORACERS 0x0040e490
-CmbModelPartData0x18::CmbModelPartData0x18()
+CmbModelPartTrackData::CmbModelPartTrackData()
 {
 	m_vertexCount = 0;
 	m_vertices = NULL;
@@ -19,14 +19,14 @@ CmbModelPartData0x18::CmbModelPartData0x18()
 
 // FUNCTION: GOLDP 0x10024710 FOLDED
 // FUNCTION: LEGORACERS 0x0040e4b0
-CmbModelPartData0x18::~CmbModelPartData0x18()
+CmbModelPartTrackData::~CmbModelPartTrackData()
 {
 	Clear();
 }
 
 // FUNCTION: GOLDP 0x100241d0
 // FUNCTION: LEGORACERS 0x0040e4c0
-void CmbModelPartData0x18::FUN_100241d0(GolFileParser& p_parser)
+void CmbModelPartTrackData::FUN_100241d0(GolFileParser& p_parser)
 {
 	p_parser.ReadLeftCurly();
 	LegoU32 i;
@@ -92,9 +92,9 @@ void CmbModelPartData0x18::FUN_100241d0(GolFileParser& p_parser)
 
 // STUB: GOLDP 0x10024380
 // STUB: LEGORACERS 0x0040e670
-LegoBool32 CmbModelPartData0x18::InterpolatePosition(
+LegoBool32 CmbModelPartTrackData::InterpolatePosition(
 	GolVec3* p_dest,
-	const CmbModelPartTrack0x14& p_track,
+	const CmbModelPartTrack& p_track,
 	LegoFloat p_time,
 	LegoS32 p_frameCount
 ) const
@@ -163,9 +163,9 @@ LegoBool32 CmbModelPartData0x18::InterpolatePosition(
 
 // STUB: GOLDP 0x10024540
 // STUB: LEGORACERS 0x0040e830
-LegoBool32 CmbModelPartData0x18::InterpolateRotation(
+LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	GolQuat* p_dest,
-	const CmbModelPartTrack0x14& p_track,
+	const CmbModelPartTrack& p_track,
 	LegoFloat p_time,
 	LegoS32 p_frameCount
 ) const
@@ -229,7 +229,7 @@ LegoBool32 CmbModelPartData0x18::InterpolateRotation(
 
 // FUNCTION: GOLDP 0x10024710 FOLDED
 // FUNCTION: LEGORACERS 0x0040e9d0
-void CmbModelPartData0x18::Clear()
+void CmbModelPartTrackData::Clear()
 {
 	if (m_vertices != NULL) {
 		delete[] m_vertices;
@@ -252,7 +252,7 @@ void CmbModelPartData0x18::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x0040ea20
-void CmbModelPartData0x18::FUN_0040ea20()
+void CmbModelPartTrackData::FUN_0040ea20()
 {
 	LegoU32 i;
 
@@ -267,7 +267,7 @@ void CmbModelPartData0x18::FUN_0040ea20()
 }
 
 // FUNCTION: LEGORACERS 0x0040ea80
-void CmbModelPartData0x18::FUN_0040ea80(LegoU32 p_index, GolQuat* p_dest) const
+void CmbModelPartTrackData::FUN_0040ea80(LegoU32 p_index, GolQuat* p_dest) const
 {
 	p_dest->m_x = m_frames[p_index].m_x;
 	p_dest->m_y = m_frames[p_index].m_y;

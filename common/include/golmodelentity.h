@@ -7,7 +7,7 @@
 
 class GolModelBase;
 class GolModelMaterialTable;
-struct MaterialTable0x0c;
+struct MaterialTable;
 class GolSceneNode;
 class GolWorldDatabase;
 
@@ -44,7 +44,7 @@ public:
 	void FUN_00411700(LegoFloat p_arg);
 	void FUN_00411730(LegoFloat p_arg);
 	GolModelBase* GetModel(LegoU32 p_index) const { return m_models[p_index]; }
-	MaterialTable0x0c* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
+	MaterialTable* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
 	LegoFloat GetModelDistance(LegoU32 p_index) const { return m_modelDistances[p_index]; }
 	void SetModelDistance(LegoU32 p_index, LegoFloat p_modelDistance) { m_modelDistances[p_index] = p_modelDistance; }
 	void ClearModelDistances()
@@ -107,8 +107,8 @@ public:
 		m_radius = -1.0f;
 		m_unk0x58 = p_unk0x58;
 	}
-	MaterialTable0x0c* GetPrimaryMaterialTable() const { return m_materialTables[0]; }
-	void SetPrimaryMaterialTable(MaterialTable0x0c* p_materialTable) { m_materialTables[0] = p_materialTable; }
+	MaterialTable* GetPrimaryMaterialTable() const { return m_materialTables[0]; }
+	void SetPrimaryMaterialTable(MaterialTable* p_materialTable) { m_materialTables[0] = p_materialTable; }
 	void EnableFlagBit1() { m_flags |= c_flagBit1; }
 
 protected:
@@ -121,15 +121,15 @@ protected:
 		c_flagBit3 = 1 << 3,
 	};
 
-	LegoFloat m_unk0x58;                    // 0x58
-	LegoU32 m_flags;                        // 0x5c
-	LegoU16 m_unk0x60;                      // 0x60
-	LegoU16 m_unk0x62;                      // 0x62
-	LegoS32 m_unk0x64;                      // 0x64
-	LegoS32 m_unk0x68;                      // 0x68
-	MaterialTable0x0c* m_materialTables[3]; // 0x6c
-	GolModelBase* m_models[3];              // 0x78
-	LegoFloat m_modelDistances[3];          // 0x84
+	LegoFloat m_unk0x58;                // 0x58
+	LegoU32 m_flags;                    // 0x5c
+	LegoU16 m_unk0x60;                  // 0x60
+	LegoU16 m_unk0x62;                  // 0x62
+	LegoS32 m_unk0x64;                  // 0x64
+	LegoS32 m_unk0x68;                  // 0x68
+	MaterialTable* m_materialTables[3]; // 0x6c
+	GolModelBase* m_models[3];          // 0x78
+	LegoFloat m_modelDistances[3];      // 0x84
 };
 
 #endif // GOLMODELENTITY_H

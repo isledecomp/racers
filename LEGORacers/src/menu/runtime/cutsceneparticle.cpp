@@ -2,7 +2,7 @@
 
 #include "core/gol.h"
 #include "golconstants.h"
-#include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimation.h"
 
 DECOMP_SIZE_ASSERT(CutsceneParticle, 0x18c)
 

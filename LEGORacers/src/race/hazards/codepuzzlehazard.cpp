@@ -4,8 +4,8 @@
 #include "golfileparser.h"
 #include "golmath.h"
 #include "golmodelentity.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/raceeventtable.h"
 #include "types.h"
@@ -66,7 +66,7 @@ void CodePuzzleHazard::Load(HazardContext* p_context, GolFileParser*)
 	}
 	m_codeModel3 = modelEntity;
 
-	MabMaterialAnimation0x14* animation = p_context->GetTrackDatabase()->VTable0x4c(0);
+	MabMaterialAnimation* animation = p_context->GetTrackDatabase()->VTable0x4c(0);
 	m_codeItem1 = &animation->GetUnk0x0c()[5];
 	m_codeItem2 = &animation->GetUnk0x0c()[4];
 	m_codeItem3 = &animation->GetUnk0x0c()[3];

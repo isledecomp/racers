@@ -49,7 +49,7 @@ void GolBillboard::VTable0x4c(
 
 // FUNCTION: GOLDP 0x10029e90
 void GolBillboard::FUN_10029e90(
-	MaterialTable0x0c* p_container,
+	MaterialTable* p_container,
 	LegoS32 p_index,
 	LegoFloat p_width,
 	LegoFloat p_height,

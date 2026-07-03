@@ -1,15 +1,15 @@
 #ifndef SNOWFALLHAZARD_H
 #define SNOWFALLHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
 #include "golmodelentity.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -21,12 +21,12 @@ class SnowfallHazard : public Hazard {
 public:
 	SnowfallHazard();
 	~SnowfallHazard() override;
-	void OnActivate(void* p_unk0x04) override;                            // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                          // vtable+0x08
-	void Load(HazardContext* p_context, GolFileParser* p_parser) override;      // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                         // vtable+0x14
-	void UpdatePerRacer(GolCamera* p_unk0x04, Racer* p_unk0x08) override; // vtable+0x18
-	void ResetState() override;                                           // vtable+0x24
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
+	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
+	void UpdatePerRacer(GolCamera* p_unk0x04, Racer* p_unk0x08) override;  // vtable+0x18
+	void ResetState() override;                                            // vtable+0x24
 
 	LegoS32 ClearFields();
 	LegoS32 Reset();
@@ -45,6 +45,5 @@ private:
 	LegoU32 m_resetMs;                      // 0x18
 	LegoU32 m_unk0x1c;                      // 0x1c
 };
-
 
 #endif // SNOWFALLHAZARD_H

@@ -1,5 +1,5 @@
-#ifndef MABMATERIALANIMATIONITEM0X8_H
-#define MABMATERIALANIMATIONITEM0X8_H
+#ifndef MABMATERIALFRAME_H
+#define MABMATERIALFRAME_H
 
 #include "decomp.h"
 #include "types.h"
@@ -8,9 +8,9 @@ class GolRenderDevice;
 class GolMaterial;
 
 // SIZE 0x8
-class MabMaterialAnimationItem0x8 {
+class MabMaterialFrame {
 public:
-	MabMaterialAnimationItem0x8();
+	MabMaterialFrame();
 
 	void FUN_10026110(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoU32 p_id);
 	GolMaterial* GetMaterial() const { return m_unk0x00; }
@@ -22,4 +22,4 @@ private:
 	LegoU32 m_unk0x04;      // 0x04
 };
 
-#endif // MABMATERIALANIMATIONITEM0X8_H
+#endif // MABMATERIALFRAME_H

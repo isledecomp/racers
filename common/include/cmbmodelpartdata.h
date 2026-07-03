@@ -1,5 +1,5 @@
-#ifndef CMBMODELPARTDATA0X28_H
-#define CMBMODELPARTDATA0X28_H
+#ifndef CMBMODELPARTDATA_H
+#define CMBMODELPARTDATA_H
 
 #include "decomp.h"
 #include "golmath.h"
@@ -8,11 +8,11 @@
 class GolFileParser;
 
 // SIZE 0x28
-class CmbModelPartData0x28 {
-	friend class CmbModelPart0x34;
+class CmbModelPartData {
+	friend class CmbModelPart;
 
 public:
-	CmbModelPartData0x28();
+	CmbModelPartData();
 	void FUN_10018670(GolFileParser& p_parser);
 
 	LegoFloat GetMsPerFrame() const { return m_unk0x00; }
@@ -32,4 +32,4 @@ private:
 	LegoU16 m_unk0x26;   // 0x26
 };
 
-#endif // CMBMODELPARTDATA0X28_H
+#endif // CMBMODELPARTDATA_H

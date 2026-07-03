@@ -1,5 +1,5 @@
-#ifndef MATERIALTABLE0X0C_H
-#define MATERIALTABLE0X0C_H
+#ifndef MATERIALTABLE_H
+#define MATERIALTABLE_H
 
 #include "decomp.h"
 #include "types.h"
@@ -7,8 +7,8 @@
 class GolRenderDevice;
 
 // SIZE 0x0c
-struct MaterialTable0x0c {
-	MaterialTable0x0c* FUN_004a00b0();
+struct MaterialTable {
+	MaterialTable* FUN_004a00b0();
 	void Destroy();
 	void Initialize(GolRenderDevice* p_renderer, LegoU32 p_count);
 	void Clear();
@@ -22,4 +22,4 @@ struct MaterialTable0x0c {
 	void** m_entries;            // 0x08
 };
 
-#endif // MATERIALTABLE0X0C_H
+#endif // MATERIALTABLE_H

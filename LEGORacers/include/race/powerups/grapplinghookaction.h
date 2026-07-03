@@ -7,7 +7,7 @@
 #include "race/targetpointlist.h"
 
 class CutsceneAnimation;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -52,18 +52,18 @@ public:
 		Racer* p_racer,
 		Racer* p_targetRacer,
 		TargetPointList::Entry* p_targetPoint,
-		MabMaterialAnimationItem0x18* p_billboardAnimation,
+		MabMaterialTrack* p_billboardAnimation,
 		LegoU32 p_delayMs
 	);
 	void ReleaseHook(SoundVector* p_position);
 
 private:
-	TetherProjectile m_projectile;                     // 0x030
-	GolWorldEntity* m_hookEntity;                      // 0x268
-	CutsceneParticleRef* m_smokeParticleRef;           // 0x26c
-	GolBillboard* m_billboard;                         // 0x270
-	MabMaterialAnimationItem0x18 m_billboardAnimation; // 0x274
-	undefined4 m_billboardMaterialIndex;               // 0x28c
+	TetherProjectile m_projectile;           // 0x030
+	GolWorldEntity* m_hookEntity;            // 0x268
+	CutsceneParticleRef* m_smokeParticleRef; // 0x26c
+	GolBillboard* m_billboard;               // 0x270
+	MabMaterialTrack m_billboardAnimation;   // 0x274
+	undefined4 m_billboardMaterialIndex;     // 0x28c
 };
 
 #endif // GRAPPLINGHOOKACTION_H

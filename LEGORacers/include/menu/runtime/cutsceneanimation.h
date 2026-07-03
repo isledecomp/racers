@@ -10,8 +10,8 @@ class CutsceneParticle;
 class GolD3DRenderDevice;
 class GolExport;
 class GolMaterial;
-class MabMaterialAnimation0x14;
-class MabMaterialAnimationItem0x18;
+class MabMaterialAnimation;
+class MabMaterialTrack;
 
 // VTABLE: LEGORACERS 0x004b403c
 // SIZE 0x33c
@@ -38,7 +38,7 @@ public:
 		void Reset();
 
 		void Parse(
-			MabMaterialAnimation0x14* p_materialAnimation,
+			MabMaterialAnimation* p_materialAnimation,
 			GolD3DRenderDevice* p_renderer,
 			GolFileParser* p_parser,
 			CutsceneAnimation* p_param4
@@ -58,29 +58,29 @@ public:
 		LegoFloat GetUnk0x24() const { return m_unk0x24; }
 		LegoFloat GetUnk0x28() const { return m_unk0x28; }
 		LegoFloat GetRadius() const { return m_radius; }
-		MabMaterialAnimationItem0x18* GetMaterialAnimationItem() const { return m_materialAnimationItem; }
-		MabMaterialAnimation0x14* GetMaterialAnimation() const { return m_materialAnimation; }
+		MabMaterialTrack* GetMaterialAnimationItem() const { return m_materialAnimationItem; }
+		MabMaterialAnimation* GetMaterialAnimation() const { return m_materialAnimation; }
 		GolMaterial* GetMaterial() const { return m_material; }
 
 	private:
-		GolVec3* m_points;                                     // 0x00
-		LegoU32 m_pointCount;                                  // 0x04
-		LegoFloat m_originX;                                   // 0x08
-		LegoFloat m_originY;                                   // 0x0c
-		LegoFloat m_originZ;                                   // 0x10
-		LegoS32 m_emitIntervalMs;                              // 0x14
-		LegoU8 m_emitChance;                                   // 0x18
-		LegoU8 m_priority;                                     // 0x19
-		LegoFloat m_unk0x1c;                                   // 0x1c
-		LegoFloat m_unk0x20;                                   // 0x20
-		LegoFloat m_unk0x24;                                   // 0x24
-		LegoFloat m_unk0x28;                                   // 0x28
-		LegoFloat m_radius;                                    // 0x2c
-		LegoS32 m_particleLifeMs;                              // 0x30
-		LegoS32 m_durationMs;                                  // 0x34
-		MabMaterialAnimationItem0x18* m_materialAnimationItem; // 0x38
-		MabMaterialAnimation0x14* m_materialAnimation;         // 0x3c
-		GolMaterial* m_material;                               // 0x40
+		GolVec3* m_points;                         // 0x00
+		LegoU32 m_pointCount;                      // 0x04
+		LegoFloat m_originX;                       // 0x08
+		LegoFloat m_originY;                       // 0x0c
+		LegoFloat m_originZ;                       // 0x10
+		LegoS32 m_emitIntervalMs;                  // 0x14
+		LegoU8 m_emitChance;                       // 0x18
+		LegoU8 m_priority;                         // 0x19
+		LegoFloat m_unk0x1c;                       // 0x1c
+		LegoFloat m_unk0x20;                       // 0x20
+		LegoFloat m_unk0x24;                       // 0x24
+		LegoFloat m_unk0x28;                       // 0x28
+		LegoFloat m_radius;                        // 0x2c
+		LegoS32 m_particleLifeMs;                  // 0x30
+		LegoS32 m_durationMs;                      // 0x34
+		MabMaterialTrack* m_materialAnimationItem; // 0x38
+		MabMaterialAnimation* m_materialAnimation; // 0x3c
+		GolMaterial* m_material;                   // 0x40
 	};
 
 	CutsceneAnimation();
@@ -105,7 +105,7 @@ public:
 		LegoU32 p_unk0x04,
 		GolExport* p_golExport,
 		GolD3DRenderDevice* p_renderer,
-		MabMaterialAnimation0x14* p_materialAnimation,
+		MabMaterialAnimation* p_materialAnimation,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
 	);

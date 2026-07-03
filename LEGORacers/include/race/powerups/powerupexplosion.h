@@ -35,24 +35,24 @@ public:
 
 	// SIZE 0x48
 	struct Params {
-		GolExport* m_golExport;                             // 0x00
-		GolCollidableEntity* m_collidable;                  // 0x04
-		GolModelEntity* m_model;                            // 0x08
-		GolMaterial* m_billboardMaterial;                   // 0x0c
-		GolMaterial* m_flashMaterial;                       // 0x10
-		GolMaterial* m_scarMaterial;                        // 0x14
-		LegoEventQueue* m_eventQueue;                       // 0x18
-		RacePowerupManager* m_manager;                      // 0x1c
-		MabMaterialAnimationItem0x18* m_billboardAnimation; // 0x20
-		LegoU32 m_billboardMaterialIndex;                   // 0x24
-		CutsceneAnimation* m_particleAnimation;             // 0x28
-		LegoU32 m_flashDurationMs;                          // 0x2c
-		LegoU32 m_scarDurationMs;                           // 0x30
-		LegoFloat m_modelScale;                             // 0x34
-		LegoFloat m_flashWidth;                             // 0x38
-		LegoFloat m_flashHeight;                            // 0x3c
-		LegoFloat m_blastRadius;                            // 0x40
-		LegoU32 m_blastMode;                                // 0x44
+		GolExport* m_golExport;                 // 0x00
+		GolCollidableEntity* m_collidable;      // 0x04
+		GolModelEntity* m_model;                // 0x08
+		GolMaterial* m_billboardMaterial;       // 0x0c
+		GolMaterial* m_flashMaterial;           // 0x10
+		GolMaterial* m_scarMaterial;            // 0x14
+		LegoEventQueue* m_eventQueue;           // 0x18
+		RacePowerupManager* m_manager;          // 0x1c
+		MabMaterialTrack* m_billboardAnimation; // 0x20
+		LegoU32 m_billboardMaterialIndex;       // 0x24
+		CutsceneAnimation* m_particleAnimation; // 0x28
+		LegoU32 m_flashDurationMs;              // 0x2c
+		LegoU32 m_scarDurationMs;               // 0x30
+		LegoFloat m_modelScale;                 // 0x34
+		LegoFloat m_flashWidth;                 // 0x38
+		LegoFloat m_flashHeight;                // 0x3c
+		LegoFloat m_blastRadius;                // 0x40
+		LegoU32 m_blastMode;                    // 0x44
 	};
 
 	PowerupExplosion();
@@ -78,40 +78,40 @@ private:
 		c_racerFlags0xd04Bit0 = 1 << 0,
 	};
 
-	LegoS32 m_state;                                   // 0x004
-	GolWorldEntity m_worldEntity;                      // 0x008
-	GolExport* m_golExport;                            // 0x030
-	GolModelEntity m_modelEntity;                      // 0x034
-	GolBillboard* m_billboard;                         // 0x0c4
-	MabMaterialAnimationItem0x18 m_billboardAnimation; // 0x0c8
-	LegoU32 m_billboardMaterialIndex;                  // 0x0e0
-	RaceDecalManager::Trail::Decal m_scarDecal;        // 0x0e4
-	GolCollidableEntity* m_collidable;                 // 0x200
-	MaterialTable0x0c m_materialTable;                 // 0x204
-	GolMaterial* m_flashMaterial;                      // 0x210
-	GolMaterial* m_scarMaterial;                       // 0x214
-	LegoEventQueue* m_eventQueue;                      // 0x218
-	Racer* m_ownerRacer;                               // 0x21c
-	LegoEventQueue::Event* m_collisionEvent;           // 0x220
-	RacePowerupManager* m_manager;                     // 0x224
-	CutsceneAnimation* m_particleAnimation;            // 0x228
-	LegoU32 m_blastMode;                               // 0x22c
-	LegoU32 m_flashDurationMs;                         // 0x230
-	LegoU32 m_scarDurationMs;                          // 0x234
-	LegoU32 m_remainingMs;                             // 0x238
-	LegoFloat m_alpha;                                 // 0x23c
-	LegoFloat m_modelAlpha;                            // 0x240
-	LegoFloat m_alphaRate;                             // 0x244
-	LegoFloat m_growth;                                // 0x248
-	LegoFloat m_growthRate;                            // 0x24c
-	LegoFloat m_initialGrowthRate;                     // 0x250
-	LegoFloat m_growthAcceleration;                    // 0x254
-	LegoFloat m_modelScale;                            // 0x258
-	LegoFloat m_flashWidth;                            // 0x25c
-	LegoFloat m_flashHeight;                           // 0x260
-	LegoFloat m_blastRadius;                           // 0x264
-	LegoS32 m_leavesScar;                              // 0x268
-	PowerupExplosion* m_next;                          // 0x26c
+	LegoS32 m_state;                            // 0x004
+	GolWorldEntity m_worldEntity;               // 0x008
+	GolExport* m_golExport;                     // 0x030
+	GolModelEntity m_modelEntity;               // 0x034
+	GolBillboard* m_billboard;                  // 0x0c4
+	MabMaterialTrack m_billboardAnimation;      // 0x0c8
+	LegoU32 m_billboardMaterialIndex;           // 0x0e0
+	RaceDecalManager::Trail::Decal m_scarDecal; // 0x0e4
+	GolCollidableEntity* m_collidable;          // 0x200
+	MaterialTable m_materialTable;              // 0x204
+	GolMaterial* m_flashMaterial;               // 0x210
+	GolMaterial* m_scarMaterial;                // 0x214
+	LegoEventQueue* m_eventQueue;               // 0x218
+	Racer* m_ownerRacer;                        // 0x21c
+	LegoEventQueue::Event* m_collisionEvent;    // 0x220
+	RacePowerupManager* m_manager;              // 0x224
+	CutsceneAnimation* m_particleAnimation;     // 0x228
+	LegoU32 m_blastMode;                        // 0x22c
+	LegoU32 m_flashDurationMs;                  // 0x230
+	LegoU32 m_scarDurationMs;                   // 0x234
+	LegoU32 m_remainingMs;                      // 0x238
+	LegoFloat m_alpha;                          // 0x23c
+	LegoFloat m_modelAlpha;                     // 0x240
+	LegoFloat m_alphaRate;                      // 0x244
+	LegoFloat m_growth;                         // 0x248
+	LegoFloat m_growthRate;                     // 0x24c
+	LegoFloat m_initialGrowthRate;              // 0x250
+	LegoFloat m_growthAcceleration;             // 0x254
+	LegoFloat m_modelScale;                     // 0x258
+	LegoFloat m_flashWidth;                     // 0x25c
+	LegoFloat m_flashHeight;                    // 0x260
+	LegoFloat m_blastRadius;                    // 0x264
+	LegoS32 m_leavesScar;                       // 0x268
+	PowerupExplosion* m_next;                   // 0x26c
 };
 
 #endif // POWERUPEXPLOSION_H

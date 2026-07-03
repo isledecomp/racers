@@ -191,7 +191,7 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 	LegoS32 modelIndex = 0;
 	do {
 		GolAnimatedEntity* resourceModel = &m_partResource->GetAnimatedEntities()[modelIndex];
-		MaterialTable0x0c* materialTable = resourceModel->GetMaterialTable(0);
+		MaterialTable* materialTable = resourceModel->GetMaterialTable(0);
 		if (materialTable == NULL) {
 			materialTable = resourceModel->GetModel(0)->GetMaterialTable();
 		}
@@ -351,7 +351,7 @@ GolSceneNode* DriverPartResources::GetBodySceneNode(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x004985e0
-CmbModelPart0x34* DriverPartResources::GetBodyModelPart(LegoS32 p_index)
+CmbModelPart* DriverPartResources::GetBodyModelPart(LegoS32 p_index)
 {
 	GolName name;
 	if (m_resourceIndex == 1) {

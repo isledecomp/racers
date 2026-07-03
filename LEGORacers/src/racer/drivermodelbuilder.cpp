@@ -477,7 +477,7 @@ GolSceneNode* DriverModelBuilder::GetBodySceneNode(DriverCosmetics* p_cosmetics)
 }
 
 // FUNCTION: LEGORACERS 0x0049dc50
-CmbModelPart0x34* DriverModelBuilder::GetBodyModelPart(DriverCosmetics* p_cosmetics)
+CmbModelPart* DriverModelBuilder::GetBodyModelPart(DriverCosmetics* p_cosmetics)
 {
 	DriverPartCatalog* partCatalog = m_partResources->GetPartCatalog();
 	LegoS32 torsoLegIndex = 2 * partCatalog->GetLegVariant(p_cosmetics->m_legIndex) +

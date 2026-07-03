@@ -1,7 +1,7 @@
 #include "race/hazards/triggeredanimationhazard.h"
 
-#include "cmbmodelpart0x34.h"
-#include "cmbmodelpartdata0x28.h"
+#include "cmbmodelpart.h"
+#include "cmbmodelpartdata.h"
 #include "decomp.h"
 #include "golanimatedentity.h"
 #include "golfileparser.h"
@@ -188,7 +188,7 @@ void TriggeredAnimationHazard::Draw(GolD3DRenderDevice* p_renderer)
 				(*entity)->SetModelDistance(j, modelDistances[j]);
 			}
 
-			CmbModelPartData0x28* partData = (*entity)->GetModelPart(0)->GetPartData();
+			CmbModelPartData* partData = (*entity)->GetModelPart(0)->GetPartData();
 			LegoU16 frameCount = partData[(*entity)->GetCurrentPartIndex()].GetFrameCount();
 			LegoS32 alpha = static_cast<LegoS32>(
 				(static_cast<LegoFloat>(frameCount) - (*entity)->GetPartTimeMs()) / static_cast<LegoFloat>(frameCount) *

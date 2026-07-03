@@ -6,7 +6,7 @@
 #include "golerror.h"
 #include "golmaterial.h"
 #include "golmodelbase.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 
@@ -135,7 +135,7 @@ void RaceDecalManager::Trail::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00491d20
-void RaceDecalManager::Trail::SetMaterialTable(MaterialTable0x0c* p_materialTable)
+void RaceDecalManager::Trail::SetMaterialTable(MaterialTable* p_materialTable)
 {
 	m_decal.GetEntity().SetPrimaryMaterialTable(p_materialTable);
 

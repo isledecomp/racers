@@ -11,8 +11,8 @@
 #include "golmodelbase.h"
 #include "golmodelentity.h"
 #include "golworldentity.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
 #include "render/gold3drenderdevice.h"
 #include "util/cutsceneeventsink.h"
 #include "world/golworlddatabase.h"
@@ -278,7 +278,7 @@ void CutsceneDefinition::Frame::ModelEvent::Begin(Frame* p_frame, CutsceneEventS
 			Animation* end = animation + m_animationCount;
 
 			for (; animation < end; animation++) {
-				MaterialTable0x0c* materialTarget =
+				MaterialTable* materialTarget =
 					static_cast<GolModelEntity*>(m_entity)->GetMaterialTable(animation->m_materialTableIndex);
 				if (materialTarget == NULL) {
 					materialTarget = static_cast<GolModelEntity*>(m_entity)
@@ -1593,19 +1593,19 @@ GolWorldEntity* CutsceneDefinition::GetIndexedEntity(LegoU32 p_index, LegoU32 p_
 }
 
 // FUNCTION: LEGORACERS 0x00406f40
-MabMaterialAnimation0x14* CutsceneDefinition::GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex)
+MabMaterialAnimation* CutsceneDefinition::GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex)
 {
 	return m_worldDatabases[p_index]->VTable0x4c(p_animationIndex);
 }
 
 // FUNCTION: LEGORACERS 0x00406f60
-MabMaterialAnimationItem0x18* CutsceneDefinition::GetMaterialAnimationItem(
+MabMaterialTrack* CutsceneDefinition::GetMaterialAnimationItem(
 	LegoU32 p_index,
 	LegoU32 p_animationIndex,
 	LegoU32 p_itemIndex
 )
 {
-	MabMaterialAnimation0x14* materialAnimation = m_worldDatabases[p_index]->VTable0x4c(p_animationIndex);
+	MabMaterialAnimation* materialAnimation = m_worldDatabases[p_index]->VTable0x4c(p_animationIndex);
 	return &materialAnimation->GetUnk0x0c()[p_itemIndex];
 }
 

@@ -1,12 +1,12 @@
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialtrack.h"
 
-#include "mabmaterialanimationitem0x8.h"
+#include "mabmaterialframe.h"
 
-DECOMP_SIZE_ASSERT(MabMaterialAnimationItem0x18, 0x18)
+DECOMP_SIZE_ASSERT(MabMaterialTrack, 0x18)
 
 // FUNCTION: GOLDP 0x10025d20
 // FUNCTION: LEGORACERS 0x00410350
-MabMaterialAnimationItem0x18::MabMaterialAnimationItem0x18()
+MabMaterialTrack::MabMaterialTrack()
 {
 	m_unk0x00 = NULL;
 	m_unk0x04 = 0;
@@ -20,7 +20,7 @@ MabMaterialAnimationItem0x18::MabMaterialAnimationItem0x18()
 
 // FUNCTION: GOLDP 0x10025d40
 // FUNCTION: LEGORACERS 0x00410370
-void MabMaterialAnimationItem0x18::FUN_10025d40(undefined2 p_arg1, undefined2 p_arg2, undefined2 p_arg3, LegoS32 p_arg4)
+void MabMaterialTrack::FUN_10025d40(undefined2 p_arg1, undefined2 p_arg2, undefined2 p_arg3, LegoS32 p_arg4)
 {
 	if (m_flags & c_flagBit0) {
 		Reset();
@@ -36,7 +36,7 @@ void MabMaterialAnimationItem0x18::FUN_10025d40(undefined2 p_arg1, undefined2 p_
 }
 
 // FUNCTION: LEGORACERS 0x004103c0
-void MabMaterialAnimationItem0x18::FUN_004103c0(const MabMaterialAnimationItem0x18& p_other)
+void MabMaterialTrack::FUN_004103c0(const MabMaterialTrack& p_other)
 {
 	if (m_flags & c_flagBit0) {
 		Reset();
@@ -51,7 +51,7 @@ void MabMaterialAnimationItem0x18::FUN_004103c0(const MabMaterialAnimationItem0x
 }
 
 // FUNCTION: LEGORACERS 0x00410410
-void MabMaterialAnimationItem0x18::Reset()
+void MabMaterialTrack::Reset()
 {
 	m_unk0x00 = NULL;
 	m_unk0x04 = 0;
@@ -65,7 +65,7 @@ void MabMaterialAnimationItem0x18::Reset()
 
 // FUNCTION: GOLDP 0x10025da0
 // FUNCTION: LEGORACERS 0x00410430
-void MabMaterialAnimationItem0x18::FUN_10025da0(MaterialTable0x0c* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3)
+void MabMaterialTrack::FUN_10025da0(MaterialTable* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3)
 {
 	m_unk0x00 = p_arg1;
 	m_unk0x04 = p_arg2;
@@ -79,19 +79,19 @@ void MabMaterialAnimationItem0x18::FUN_10025da0(MaterialTable0x0c* p_arg1, LegoU
 }
 
 // FUNCTION: LEGORACERS 0x00410470
-void MabMaterialAnimationItem0x18::FUN_00410470()
+void MabMaterialTrack::FUN_00410470()
 {
 	m_flags &= ~(c_flagBit1 | c_flagBit2);
 }
 
 // FUNCTION: LEGORACERS 0x00410480
-void MabMaterialAnimationItem0x18::FUN_00410480()
+void MabMaterialTrack::FUN_00410480()
 {
 	m_unk0x10 = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00410490
-void MabMaterialAnimationItem0x18::FUN_00410490()
+void MabMaterialTrack::FUN_00410490()
 {
 	if (m_unk0x0a > 0) {
 		m_unk0x10 = static_cast<LegoFloat>(m_unk0x0a - 1);
@@ -102,7 +102,7 @@ void MabMaterialAnimationItem0x18::FUN_00410490()
 }
 
 // FUNCTION: LEGORACERS 0x004104c0
-void MabMaterialAnimationItem0x18::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialAnimationItem0x8* p_items, LegoU32)
+void MabMaterialTrack::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialFrame* p_items, LegoU32)
 {
 	if (!(m_flags & c_flagBit1)) {
 		return;
@@ -141,11 +141,7 @@ void MabMaterialAnimationItem0x18::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterial
 }
 
 // FUNCTION: LEGORACERS 0x00410560
-GolMaterial* MabMaterialAnimationItem0x18::FUN_00410560(
-	LegoS32 p_elapsedMs,
-	MabMaterialAnimationItem0x8* p_items,
-	LegoU32
-)
+GolMaterial* MabMaterialTrack::FUN_00410560(LegoS32 p_elapsedMs, MabMaterialFrame* p_items, LegoU32)
 {
 	LegoFloat secondsPerFrame = m_unk0x0c;
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);

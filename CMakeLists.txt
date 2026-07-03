@@ -114,14 +114,14 @@ set(COMMON_SOURCES
   common/src/bronzedunebag0xc.cpp
   common/src/bronzedune0x4c.cpp
   common/src/whitefalcon0x140materialcolor.cpp
-  common/src/cmbmodelpart0x34.cpp
-  common/src/cmbmodelpartdata0x18.cpp
-  common/src/cmbmodelpartdata0x28.cpp
-  common/src/mabmaterialanimation0x14.cpp
-  common/src/materialtable0x0c.cpp
+  common/src/cmbmodelpart.cpp
+  common/src/cmbmodelparttrackdata.cpp
+  common/src/cmbmodelpartdata.cpp
+  common/src/mabmaterialanimation.cpp
+  common/src/materialtable.cpp
   common/src/golbillboardfield0x2c.cpp
   common/src/golworldentity.cpp
-  common/src/golworldentitygroup0x38.cpp
+  common/src/golworldentitygroup.cpp
   common/src/golorientedentity.cpp
   common/src/golviewfrustum.cpp
   common/src/golmodelmaterialtable.cpp
@@ -131,8 +131,8 @@ set(COMMON_SOURCES
   common/src/gdbmodelindexarray0xc.cpp
   common/src/golmodelentity.cpp
   common/src/golanimatedentity.cpp
-  common/src/mabmaterialanimationitem0x8.cpp
-  common/src/mabmaterialanimationitem0x18.cpp
+  common/src/mabmaterialframe.cpp
+  common/src/mabmaterialtrack.cpp
   common/src/golmaterial.cpp
   common/src/amethystbreeze0x104.cpp
   common/src/golmateriallibrary.cpp

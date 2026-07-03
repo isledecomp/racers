@@ -1,5 +1,5 @@
-#ifndef CMBMODELPARTDATA0X18_H
-#define CMBMODELPARTDATA0X18_H
+#ifndef CMBMODELPARTTRACKDATA_H
+#define CMBMODELPARTTRACKDATA_H
 
 #include "decomp.h"
 #include "golmath.h"
@@ -8,7 +8,7 @@
 class GolFileParser;
 
 // SIZE 0x14
-struct CmbModelPartTrack0x14 {
+struct CmbModelPartTrack {
 	LegoU32 m_rotationFrameIndex; // 0x00
 	LegoU32 m_rotationKeyIndex;   // 0x04
 	LegoU32 m_positionFrameIndex; // 0x08
@@ -18,10 +18,10 @@ struct CmbModelPartTrack0x14 {
 };
 
 // SIZE 0x18
-class CmbModelPartData0x18 {
+class CmbModelPartTrackData {
 public:
-	CmbModelPartData0x18();
-	~CmbModelPartData0x18();
+	CmbModelPartTrackData();
+	~CmbModelPartTrackData();
 	void Clear();
 	void FUN_0040ea20();
 	void FUN_0040ea80(LegoU32 p_index, GolQuat* p_dest) const;
@@ -29,13 +29,13 @@ public:
 	void FUN_100241d0(GolFileParser& p_parser);
 	LegoBool32 InterpolatePosition(
 		GolVec3* p_dest,
-		const CmbModelPartTrack0x14& p_track,
+		const CmbModelPartTrack& p_track,
 		LegoFloat p_time,
 		LegoS32 p_frameCount
 	) const;
 	LegoBool32 InterpolateRotation(
 		GolQuat* p_dest,
-		const CmbModelPartTrack0x14& p_track,
+		const CmbModelPartTrack& p_track,
 		LegoFloat p_time,
 		LegoS32 p_frameCount
 	) const;
@@ -49,4 +49,4 @@ private:
 	LegoU16* m_keys;       // 0x14
 };
 
-#endif // CMBMODELPARTDATA0X18_H
+#endif // CMBMODELPARTTRACKDATA_H

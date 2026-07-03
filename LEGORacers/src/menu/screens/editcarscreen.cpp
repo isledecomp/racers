@@ -1,6 +1,6 @@
 #include "menu/screens/editcarscreen.h"
 
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "core/gol.h"
 #include "golerror.h"
 #include "golhashtable.h"

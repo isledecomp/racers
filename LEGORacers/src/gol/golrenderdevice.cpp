@@ -86,7 +86,7 @@ GolMaterial* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
 
 // FUNCTION: LEGORACERS 0x004133a0
 LegoU32 GolBillboard::FUN_10029e90(
-	MaterialTable0x0c* p_container,
+	MaterialTable* p_container,
 	LegoS32 p_index,
 	LegoFloat p_width,
 	LegoFloat p_height,

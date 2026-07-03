@@ -1,12 +1,12 @@
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "menu/runtime/cutsceneparticle.h"
 #include "race/racesession.h"
 #include "render/golcommondrawstate.h"
@@ -128,7 +128,7 @@ LegoU32 GrapplingHookAction::Activate(
 	Racer* p_racer,
 	Racer* p_targetRacer,
 	TargetPointList::Entry* p_targetPoint,
-	MabMaterialAnimationItem0x18* p_billboardAnimation,
+	MabMaterialTrack* p_billboardAnimation,
 	LegoU32 p_delayMs
 )
 {

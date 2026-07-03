@@ -1,17 +1,17 @@
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 
-#include "cmbmodelpartdata0x28.h"
+#include "cmbmodelpartdata.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
 
-DECOMP_SIZE_ASSERT(CmbModelPart0x34, 0x34)
-DECOMP_SIZE_ASSERT(CmbModelPart0x34::AdbTxtParser, 0x1fc)
-DECOMP_SIZE_ASSERT(CmbModelPartTrack0x14, 0x14)
+DECOMP_SIZE_ASSERT(CmbModelPart, 0x34)
+DECOMP_SIZE_ASSERT(CmbModelPart::AdbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(CmbModelPartTrack, 0x14)
 
 // FUNCTION: GOLDP 0x100187e0
 // FUNCTION: LEGORACERS 0x004011a0
-CmbModelPart0x34::CmbModelPart0x34()
+CmbModelPart::CmbModelPart()
 {
 	m_unk0x24 = NULL;
 	m_unk0x28 = 0;
@@ -21,14 +21,14 @@ CmbModelPart0x34::CmbModelPart0x34()
 
 // FUNCTION: GOLDP 0x10018840
 // FUNCTION: LEGORACERS 0x00401200
-CmbModelPart0x34::~CmbModelPart0x34()
+CmbModelPart::~CmbModelPart()
 {
 	Clear();
 }
 
 // FUNCTION: GOLDP 0x100188e0
 // FUNCTION: LEGORACERS 0x00401260
-void CmbModelPart0x34::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
+void CmbModelPart::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 {
 	if (m_unk0x2c) {
 		Clear();
@@ -77,7 +77,7 @@ void CmbModelPart0x34::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 
 // FUNCTION: GOLDP 0x10018a30
 // FUNCTION: LEGORACERS 0x004013b0
-void CmbModelPart0x34::Clear()
+void CmbModelPart::Clear()
 {
 	m_data.Clear();
 
@@ -98,14 +98,14 @@ void CmbModelPart0x34::Clear()
 
 // FUNCTION: GOLDP 0x10018a80
 // FUNCTION: LEGORACERS 0x00401400
-void CmbModelPart0x34::VTable0x0c(GolFileParser& p_parser)
+void CmbModelPart::VTable0x0c(GolFileParser& p_parser)
 {
 	m_unk0x28 = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_unk0x28 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x24 = new CmbModelPartTrack0x14[m_unk0x28];
+	m_unk0x24 = new CmbModelPartTrack[m_unk0x28];
 	if (m_unk0x24 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -125,14 +125,14 @@ void CmbModelPart0x34::VTable0x0c(GolFileParser& p_parser)
 
 // FUNCTION: GOLDP 0x10018b40
 // FUNCTION: LEGORACERS 0x004014c0
-void CmbModelPart0x34::VTable0x10(GolFileParser& p_parser)
+void CmbModelPart::VTable0x10(GolFileParser& p_parser)
 {
 	m_unk0x30 = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_unk0x30 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x2c = new CmbModelPartData0x28[m_unk0x30];
+	m_unk0x2c = new CmbModelPartData[m_unk0x30];
 	if (m_unk0x2c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -155,7 +155,7 @@ void CmbModelPart0x34::VTable0x10(GolFileParser& p_parser)
 }
 
 // STUB: LEGORACERS 0x004015e0
-void CmbModelPart0x34::FUN_004015e0()
+void CmbModelPart::FUN_004015e0()
 {
 	for (LegoU32 i = 0; i < m_unk0x30; i++) {
 		GolVec4 bounds = m_unk0x2c[i].m_unk0x10;

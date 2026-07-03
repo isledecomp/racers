@@ -1,16 +1,16 @@
 #ifndef LAUNCHERHAZARD_H
 #define LAUNCHERHAZARD_H
 
-#include "race/hazards/hazard.h"
 #include "golmath.h"
-#include "race/powerups/powerupprojectile.h"
 #include "golmodelentity.h"
+#include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
+#include "race/powerups/powerupprojectile.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
 class GolCollidableEntity;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;
@@ -22,12 +22,12 @@ class LauncherHazard : public Hazard {
 public:
 	LauncherHazard();
 	~LauncherHazard() override;
-	void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
+	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
+	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
-	void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
-	void Draw(GolD3DRenderDevice* p_renderer) override;              // vtable+0x1c
-	void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;  // vtable+0x28
+	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
+	void Draw(GolD3DRenderDevice* p_renderer) override;                    // vtable+0x1c
+	void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;        // vtable+0x28
 
 	void ClearFields();
 	void Reset();
@@ -50,6 +50,5 @@ protected:
 	void* m_unk0x11c;                     // 0x11c
 	void* m_unk0x120;                     // 0x120
 };
-
 
 #endif // LAUNCHERHAZARD_H

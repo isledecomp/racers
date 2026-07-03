@@ -15,8 +15,8 @@ class GolD3DRenderDevice;
 class GolExport;
 class GolFileParser;
 class GolWorldEntity;
-class MabMaterialAnimation0x14;
-class MabMaterialAnimationItem0x18;
+class MabMaterialAnimation;
+class MabMaterialTrack;
 class GolWorldDatabase;
 
 // VTABLE: LEGORACERS 0x004af38c
@@ -113,13 +113,13 @@ public:
 
 			// SIZE 0x1c
 			struct Animation {
-				MabMaterialAnimation0x14* m_materialAnimation; // 0x00
-				MabMaterialAnimationItem0x18* m_item;          // 0x04
-				LegoU32 m_resourceIndex;                       // 0x08
-				LegoU32 m_animationIndex;                      // 0x0c
-				LegoU32 m_itemIndex;                           // 0x10
-				LegoU32 m_startParam0x14;                      // 0x14
-				LegoU32 m_materialTableIndex;                  // 0x18
+				MabMaterialAnimation* m_materialAnimation; // 0x00
+				MabMaterialTrack* m_item;                  // 0x04
+				LegoU32 m_resourceIndex;                   // 0x08
+				LegoU32 m_animationIndex;                  // 0x0c
+				LegoU32 m_itemIndex;                       // 0x10
+				LegoU32 m_startParam0x14;                  // 0x14
+				LegoU32 m_materialTableIndex;              // 0x18
 			};
 
 			ModelEvent();
@@ -346,12 +346,8 @@ public:
 	GolWorldEntity* FindJointedEntity(const LegoChar* p_name);
 	GolWorldEntity* FindBspEntity(const LegoChar* p_name);
 	GolWorldEntity* GetIndexedEntity(LegoU32 p_index, LegoU32 p_modelIndex);
-	MabMaterialAnimation0x14* GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex);
-	MabMaterialAnimationItem0x18* GetMaterialAnimationItem(
-		LegoU32 p_index,
-		LegoU32 p_animationIndex,
-		LegoU32 p_itemIndex
-	);
+	MabMaterialAnimation* GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex);
+	MabMaterialTrack* GetMaterialAnimationItem(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
 	LegoU32 SetWorldScale(LegoFloat p_scale);
 
 	void SetEventSink(CutsceneEventSink* p_unk0x0c) { m_eventSink = p_unk0x0c; }

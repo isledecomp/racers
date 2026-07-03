@@ -130,7 +130,7 @@ public:
 		};
 
 		void Destroy();
-		void SetMaterialTable(MaterialTable0x0c* p_materialTable);
+		void SetMaterialTable(MaterialTable* p_materialTable);
 		LegoU8 SetColor(const ColorRGBA* p_color);
 		void Start(LegoU32 p_unk0x04);
 		void StartFade(LegoU32 p_unk0x04);

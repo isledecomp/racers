@@ -6,7 +6,7 @@
 #include "golmodelentity.h"
 #include "types.h"
 
-class CmbModelPart0x34;
+class CmbModelPart;
 class GolModelBase;
 class GolSceneNode;
 
@@ -35,20 +35,10 @@ public:
 	GolSceneNode* VTable0x58(LegoU32 p_arg1) override;                              // vtable+0x58
 	void VTable0x5c(LegoU32 p_arg1) override;                                       // vtable+0x5c
 
-	void SetModel(
-		GolModelBase* p_model,
-		GolSceneNode* p_node,
-		CmbModelPart0x34* p_modelParts,
-		LegoFloat p_modelDistance
-	);
-	void SetNode(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance);
-	void AddModel(
-		GolModelBase* p_model,
-		GolSceneNode* p_node,
-		CmbModelPart0x34* p_modelParts,
-		LegoFloat p_modelDistance
-	);
-	void AddNode(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance);
+	void SetModel(GolModelBase* p_model, GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);
+	void SetNode(GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);
+	void AddModel(GolModelBase* p_model, GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);
+	void AddNode(GolSceneNode* p_node, CmbModelPart* p_modelParts, LegoFloat p_modelDistance);
 	void PlayPart(LegoU32 p_partIndex);
 	void PlayPartDirect(LegoU32 p_partIndex);
 	void TransitionToPart(
@@ -75,7 +65,7 @@ public:
 		GolQuat* p_dest
 	);
 	void ResetPartIndices();
-	CmbModelPart0x34* GetModelPart(LegoU32 p_index = 0) const { return m_modelParts[p_index]; }
+	CmbModelPart* GetModelPart(LegoU32 p_index = 0) const { return m_modelParts[p_index]; }
 	LegoU32 GetFlags() const { return m_flags; }
 	void SetFlags(LegoU32 p_flags) { m_flags = p_flags; }
 	void SetActiveValue(LegoFloat p_value) { m_partTimeMs = p_value; }
@@ -107,23 +97,23 @@ public:
 private:
 	void Reset();
 
-	GolSceneNode* m_nodes[3];          // 0x90
-	LegoS32 m_partIndices[3];          // 0x9c
-	CmbModelPart0x34* m_modelParts[3]; // 0xa8
-	LegoFloat m_partTimeMs;            // 0xb4
-	LegoFloat m_msPerFrame;            // 0xb8
-	LegoU16 m_currentPartIndex;        // 0xbc
-	undefined m_unk0xbe[0xc0 - 0xbe];  // 0xbe
-	GolVec3 m_currentPartVelocity;     // 0xc0
-	LegoBool32 m_advanceCurrent;       // 0xcc
-	LegoFloat m_queuedPartTimeMs;      // 0xd0
-	LegoFloat m_queuedMsPerFrame;      // 0xd4
-	LegoU16 m_queuedPartIndex;         // 0xd8
-	undefined m_unk0xda[0xdc - 0xda];  // 0xda
-	GolVec3 m_queuedPartVelocity;      // 0xdc
-	LegoBool32 m_advanceQueued;        // 0xe8
-	LegoFloat m_transitionProgress;    // 0xec
-	LegoFloat m_transitionRate;        // 0xf0
+	GolSceneNode* m_nodes[3];         // 0x90
+	LegoS32 m_partIndices[3];         // 0x9c
+	CmbModelPart* m_modelParts[3];    // 0xa8
+	LegoFloat m_partTimeMs;           // 0xb4
+	LegoFloat m_msPerFrame;           // 0xb8
+	LegoU16 m_currentPartIndex;       // 0xbc
+	undefined m_unk0xbe[0xc0 - 0xbe]; // 0xbe
+	GolVec3 m_currentPartVelocity;    // 0xc0
+	LegoBool32 m_advanceCurrent;      // 0xcc
+	LegoFloat m_queuedPartTimeMs;     // 0xd0
+	LegoFloat m_queuedMsPerFrame;     // 0xd4
+	LegoU16 m_queuedPartIndex;        // 0xd8
+	undefined m_unk0xda[0xdc - 0xda]; // 0xda
+	GolVec3 m_queuedPartVelocity;     // 0xdc
+	LegoBool32 m_advanceQueued;       // 0xe8
+	LegoFloat m_transitionProgress;   // 0xec
+	LegoFloat m_transitionRate;       // 0xf0
 };
 
 #endif // GOLANIMATEDENTITY_H

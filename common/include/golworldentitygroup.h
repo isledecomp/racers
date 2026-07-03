@@ -1,15 +1,15 @@
-#ifndef GOLWORLDENTITYGROUP0X38_H
-#define GOLWORLDENTITYGROUP0X38_H
+#ifndef GOLWORLDENTITYGROUP_H
+#define GOLWORLDENTITYGROUP_H
 
 #include "compat.h"
 #include "golworldentity.h"
 
 // VTABLE: LEGORACERS 0x004af81c
 // SIZE 0x38
-class GolWorldEntityGroup0x38 : public GolWorldEntity {
+class GolWorldEntityGroup : public GolWorldEntity {
 public:
-	GolWorldEntityGroup0x38();
-	virtual ~GolWorldEntityGroup0x38(); // vtable+0x4c
+	GolWorldEntityGroup();
+	virtual ~GolWorldEntityGroup(); // vtable+0x4c
 
 	void VTable0x00() override;                                                // vtable+0x00
 	void VTable0x04(GolVec3* p_center) const override;                         // vtable+0x04
@@ -31,7 +31,7 @@ public:
 	void FUN_00411ec0(GolWorldEntity* p_entity);
 
 	// SYNTHETIC: LEGORACERS 0x00411e00
-	// GolWorldEntityGroup0x38::`scalar deleting destructor'
+	// GolWorldEntityGroup::`scalar deleting destructor'
 
 protected:
 	LegoU32 m_capacity;          // 0x28
@@ -40,4 +40,4 @@ protected:
 	GolWorldEntity** m_entities; // 0x34
 };
 
-#endif // GOLWORLDENTITYGROUP0X38_H
+#endif // GOLWORLDENTITYGROUP_H

@@ -15,7 +15,7 @@ class DriverPartCatalog;
 class GolTextureList;
 class GolSceneNode;
 class GolWorldDatabase;
-class CmbModelPart0x34;
+class CmbModelPart;
 
 // SIZE 0x60
 class DriverPartResources {
@@ -37,7 +37,7 @@ public:
 	GolModelBase* LoadHatModel(LegoS32 p_index);
 	GolModelBase* GetBodyModel(LegoS32 p_index);
 	GolSceneNode* GetBodySceneNode(LegoS32 p_index);
-	CmbModelPart0x34* GetBodyModelPart(LegoS32 p_index);
+	CmbModelPart* GetBodyModelPart(LegoS32 p_index);
 	GolMaterial* FindFaceMaterial(LegoS32 p_index);
 	GolMaterial* FindTorsoMaterial(LegoS32 p_index);
 	GolMaterial* FindLegMaterial(LegoS32 p_index);

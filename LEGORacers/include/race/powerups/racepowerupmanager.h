@@ -10,9 +10,9 @@
 #include "golmodelentity.h"
 #include "goltxtparser.h"
 #include "golworldentity.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
-#include "material/materialtable0x0c.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
+#include "material/materialtable.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/checkpointgraph.h"
@@ -172,9 +172,9 @@ public:
 	LegoU32 GetUsedEffectEntityCount() const { return m_usedEffectEntityCount; }
 	undefined4 GetUnk0x19a0() const { return m_unk0x19a0; }
 	GolBillboard::Field0x2c* GetBillboardMaterialTable() { return &m_billboardMaterialTable; }
-	MabMaterialAnimationItem0x8* GetMaterialAnimationItems() const { return m_materialAnimation.GetUnk0x04(); }
+	MabMaterialFrame* GetMaterialAnimationItems() const { return m_materialAnimation.GetUnk0x04(); }
 	LegoU32 GetMaterialAnimationItemCount() const { return m_materialAnimation.GetUnk0x08(); }
-	MabMaterialAnimationItem0x18* GetMaterialAnimationItems0x18() const { return m_materialAnimation.GetUnk0x0c(); }
+	MabMaterialTrack* GetMaterialAnimationItems0x18() const { return m_materialAnimation.GetUnk0x0c(); }
 	RaceState* GetRaceState() { return m_raceState; }
 	void SetAimTarget(ActionTarget* p_aimTarget) { m_aimTarget = p_aimTarget; }
 
@@ -271,7 +271,7 @@ private:
 	GolExport* m_golExport;                           // 0x000
 	GolD3DRenderDevice* m_renderer;                   // 0x004
 	GolBillboard::Field0x2c m_billboardMaterialTable; // 0x008
-	MabMaterialAnimation0x14 m_materialAnimation;     // 0x014
+	MabMaterialAnimation m_materialAnimation;         // 0x014
 	ColorBrick* m_colorBricks;                        // 0x028
 	WhiteBrick* m_whiteBricks;                        // 0x02c
 	LegoEventQueue::Event** m_brickEvents;            // 0x030

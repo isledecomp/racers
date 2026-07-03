@@ -978,7 +978,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	DrawLoadProgress(0.45f);
 
-	MabMaterialAnimation0x14* materialAnimation = m_materialAnimationDatabase->VTable0x4c(0);
+	MabMaterialAnimation* materialAnimation = m_materialAnimationDatabase->VTable0x4c(0);
 	m_sharedParticleAnimation.Load(
 		4,
 		m_golExport,

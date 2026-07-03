@@ -938,7 +938,7 @@ void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 		FUN_1000add0(p_model, model);
 	}
 
-	MaterialTable0x0c* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
+	MaterialTable* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
 	model->FUN_10006c50(this, materialTable);
 }
@@ -1008,7 +1008,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 		FUN_1000add0(p_model, model);
 	}
 
-	MaterialTable0x0c* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
+	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
 	model->FUN_10006c50(this, materialTable);
 
@@ -1079,7 +1079,7 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 		FUN_1000add0(p_model, model);
 	}
 
-	MaterialTable0x0c* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
+	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
 	model->FUN_10006c50(this, materialTable);
 }
@@ -1128,7 +1128,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, Field0xc8524* p_ren
 		m_unk0xc852c = p_model->GetModel(result.m_lodIndex)->GetScale() * p_model->GetUnk0x58();
 	}
 
-	MaterialTable0x0c* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
+	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	m_unk0xc8520 = p_model->VTable0x58(result.m_lodIndex);
 	if (m_unk0xc8520 != NULL) {
 		p_model->VTable0x5c(result.m_lodIndex);
@@ -1194,7 +1194,7 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 		FUN_1000add0(p_model, model);
 	}
 
-	MaterialTable0x0c* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
+	MaterialTable* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
 	FUN_10012f50();
 	model->FUN_10006c50(this, materialTable);
@@ -1251,7 +1251,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, Field0xc8524* p_ren
 		FUN_1000add0(p_model, model);
 	}
 
-	MaterialTable0x0c* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
+	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	GolBoundingShape::StructField0x08::Node* node;
 	LegoU32 nextOffset;
 	if (m_flags & c_flagBit5) {
@@ -1331,7 +1331,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 		FUN_1000add0(p_model, model);
 	}
 
-	MaterialTable0x0c* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
+	MaterialTable* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
 	GolBoundingShape::StructField0x08::Node* node;
 	LegoU32 nextOffset;
 	if (m_flags & c_flagBit5) {

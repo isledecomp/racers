@@ -1,14 +1,14 @@
-#include "cmbmodelpartdata0x28.h"
+#include "cmbmodelpartdata.h"
 
 #include "golfileparser.h"
 
 #include <float.h>
 
-DECOMP_SIZE_ASSERT(CmbModelPartData0x28, 0x28)
+DECOMP_SIZE_ASSERT(CmbModelPartData, 0x28)
 
 // FUNCTION: GOLDP 0x10018640
 // FUNCTION: LEGORACERS 0x00401000
-CmbModelPartData0x28::CmbModelPartData0x28()
+CmbModelPartData::CmbModelPartData()
 {
 	m_unk0x24 = 0;
 	m_unk0x26 = 0;
@@ -25,7 +25,7 @@ CmbModelPartData0x28::CmbModelPartData0x28()
 
 // FUNCTION: GOLDP 0x10018670
 // FUNCTION: LEGORACERS 0x00401030
-void CmbModelPartData0x28::FUN_10018670(GolFileParser& p_parser)
+void CmbModelPartData::FUN_10018670(GolFileParser& p_parser)
 {
 	p_parser.ReadLeftCurly();
 	GolFileParser::ParserTokenType token;
@@ -70,7 +70,7 @@ void CmbModelPartData0x28::FUN_10018670(GolFileParser& p_parser)
 
 // FUNCTION: GOLDP 0x10018790
 // FUNCTION: LEGORACERS 0x00401150
-LegoFloat CmbModelPartData0x28::WrapTime(LegoFloat p_time) const
+LegoFloat CmbModelPartData::WrapTime(LegoFloat p_time) const
 {
 	LegoFloat frameCount = static_cast<LegoFloat>(m_unk0x26);
 	if (p_time >= frameCount) {

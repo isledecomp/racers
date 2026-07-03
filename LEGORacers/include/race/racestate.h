@@ -24,7 +24,7 @@ class GolWorldDatabase;
 class GolBoundedEntity;
 class GolCollidableEntity;
 class GolAnimatedEntity;
-class MabMaterialAnimationItem0x8;
+class MabMaterialFrame;
 class GolMaterial;
 class CutsceneAnimation;
 class RaceHud;

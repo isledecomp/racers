@@ -7,9 +7,9 @@
 #include "golmaterial.h"
 #include "golmodelbase.h"
 #include "golstring.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
-#include "mabmaterialanimationitem0x8.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialframe.h"
+#include "mabmaterialtrack.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
@@ -265,13 +265,13 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 
 		if (carBodyEntity && (swapEntity || pLegEntity)) {
-			MaterialTable0x0c* carBodyMaterials = carBodyEntity->GetPrimaryMaterialTable();
+			MaterialTable* carBodyMaterials = carBodyEntity->GetPrimaryMaterialTable();
 			if (!carBodyMaterials) {
 				carBodyMaterials = carBodyEntity->GetModel(0)->GetMaterialTable();
 			}
 
 			if (swapEntity) {
-				MaterialTable0x0c* swapMaterials = swapEntity->GetPrimaryMaterialTable();
+				MaterialTable* swapMaterials = swapEntity->GetPrimaryMaterialTable();
 				if (!swapMaterials) {
 					swapMaterials = swapEntity->GetModel(0)->GetMaterialTable();
 				}
@@ -279,7 +279,7 @@ void AwardCinematicScreen::CreateWidgets()
 			}
 
 			if (pLegEntity) {
-				MaterialTable0x0c* pLegMaterials = pLegEntity->GetPrimaryMaterialTable();
+				MaterialTable* pLegMaterials = pLegEntity->GetPrimaryMaterialTable();
 				if (!pLegMaterials) {
 					pLegMaterials = pLegEntity->GetModel(0)->GetMaterialTable();
 				}
@@ -296,8 +296,8 @@ void AwardCinematicScreen::CreateWidgets()
 
 					for (LegoU32 j = 0; j < model->GetAnimationCount(); j++) {
 						CutsceneDefinition::Frame::ModelEvent::Animation* animation = model->GetAnimation(j);
-						MabMaterialAnimationItem0x8* animationItems = animation->m_materialAnimation->GetUnk0x04();
-						MabMaterialAnimationItem0x18* animationItem = animation->m_item;
+						MabMaterialFrame* animationItems = animation->m_materialAnimation->GetUnk0x04();
+						MabMaterialTrack* animationItem = animation->m_item;
 						LegoS32 firstFrame = animationItem->GetFirstFrame();
 						LegoS32 endFrame = firstFrame + animationItem->GetFrameCount();
 

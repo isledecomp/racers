@@ -9,7 +9,7 @@
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 

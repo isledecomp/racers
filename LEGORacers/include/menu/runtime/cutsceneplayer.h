@@ -35,8 +35,8 @@ class GolFont;
 class GolFontTable;
 class GolFileParser;
 class GolWorldEntity;
-class MabMaterialAnimation0x14;
-class MabMaterialAnimationItem0x18;
+class MabMaterialAnimation;
+class MabMaterialTrack;
 class GolAnimatedEntity;
 class CutsceneParticle;
 class GolRenderDevice;
@@ -139,86 +139,86 @@ public:
 	GolNameTable* GetTextVisuals() { return &m_textVisualNames; }
 
 private:
-	GolExport* m_golExport;                         // 0x004
-	GolD3DRenderDevice* m_renderer;                 // 0x008
-	SoundManager* m_soundManager;                   // 0x00c
-	CutsceneDefinition* m_definition;               // 0x010
-	SoundNode m_listener;                           // 0x014
-	MenuAnimationList* m_menuAnimations;            // 0x064
-	LegoU32 m_animationCount;                       // 0x068
-	CutsceneAnimation* m_animations;                // 0x06c
-	MabMaterialAnimation0x14* m_materialAnimations; // 0x070
-	LegoChar* m_animationNames;                     // 0x074
-	LegoU32 m_stringTableCount;                     // 0x078
-	GolStringTable* m_stringTables;                 // 0x07c
-	LegoChar* m_stringTableNames;                   // 0x080
-	LegoU32 m_soundGroupCount;                      // 0x084
-	SoundGroup** m_soundGroups;                     // 0x088
-	LegoChar* m_soundGroupNames;                    // 0x08c
-	LegoU32 m_fontTableCount;                       // 0x090
-	GolFontTable** m_fontTables;                    // 0x094
-	LegoChar* m_fontTableNames;                     // 0x098
-	LegoU32 m_imageListCount;                       // 0x09c
-	GolImageDefinitionList** m_imageLists;          // 0x0a0
-	LegoChar* m_imageListNames;                     // 0x0a4
-	GolNameTable m_moveEventNames;                  // 0x0a8
-	LegoU32 m_moveEventCount;                       // 0x0b4
-	CutsceneColorEvent* m_moveEvents;               // 0x0b8
-	GolNameTable m_soundEventNames;                 // 0x0bc
-	LegoU32 m_soundEventCount;                      // 0x0c8
-	CutsceneSoundEvent* m_soundEvents;              // 0x0cc
-	GolNameTable m_streamEventNames;                // 0x0d0
-	LegoU32 m_streamEventCount;                     // 0x0dc
-	CutsceneStreamingSoundEvent* m_streamEvents;    // 0x0e0
-	GolNameTable m_animEventNames;                  // 0x0e4
-	LegoU32 m_animEventCount;                       // 0x0f0
-	CutsceneAnimationEvent* m_animEvents;           // 0x0f4
-	GolNameTable m_menuAnimEventNames;              // 0x0f8
-	undefined4 m_menuAnimEventCount;                // 0x104
-	CutsceneMenuAnimationEvent* m_menuAnimEvents;   // 0x108
-	GolNameTable m_textVisualNames;                 // 0x10c
-	LegoU32 m_textVisualCount;                      // 0x118
-	CutsceneTextVisual* m_textVisuals;              // 0x11c
-	GolNameTable m_imageVisualNames;                // 0x120
-	LegoU32 m_imageVisualCount;                     // 0x12c
-	CutsceneImageVisual* m_imageVisuals;            // 0x130
-	undefined4 m_eventStartedCount;                 // 0x134
-	CutsceneEventLink* m_eventStartedLinks;         // 0x138
-	GolNameTable m_eventStartedNames;               // 0x13c
-	undefined4 m_eventEndedCount;                   // 0x148
-	CutsceneEventLink* m_eventEndedLinks;           // 0x14c
-	GolNameTable m_eventEndedNames;                 // 0x150
-	undefined4 m_cameraStartedCount;                // 0x15c
-	CutsceneEventLink* m_cameraStartedLinks;        // 0x160
-	GolNameTable m_cameraStartedNames;              // 0x164
-	undefined4 m_cameraEndedCount;                  // 0x170
-	CutsceneEventLink* m_cameraEndedLinks;          // 0x174
-	GolNameTable m_cameraEndedNames;                // 0x178
-	undefined4 m_modelStartedCount;                 // 0x184
-	CutsceneEventLink* m_modelStartedLinks;         // 0x188
-	GolNameTable m_modelStartedNames;               // 0x18c
-	undefined4 m_modelEndedCount;                   // 0x198
-	CutsceneEventLink* m_modelEndedLinks;           // 0x19c
-	GolNameTable m_modelEndedNames;                 // 0x1a0
-	undefined4 m_transformStartedCount;             // 0x1ac
-	CutsceneEventLink* m_transformStartedLinks;     // 0x1b0
-	GolNameTable m_transformStartedNames;           // 0x1b4
-	undefined4 m_transformEndedCount;               // 0x1c0
-	CutsceneEventLink* m_transformEndedLinks;       // 0x1c4
-	GolNameTable m_transformEndedNames;             // 0x1c8
-	undefined4 m_ambientStartedCount;               // 0x1d4
-	CutsceneEventLink* m_ambientStartedLinks;       // 0x1d8
-	GolNameTable m_ambientStartedNames;             // 0x1dc
-	undefined4 m_ambientEndedCount;                 // 0x1e8
-	CutsceneEventLink* m_ambientEndedLinks;         // 0x1ec
-	GolNameTable m_ambientEndedNames;               // 0x1f0
-	undefined4 m_directionalStartedCount;           // 0x1fc
-	CutsceneEventLink* m_directionalStartedLinks;   // 0x200
-	GolNameTable m_directionalStartedNames;         // 0x204
-	undefined4 m_directionalEndedCount;             // 0x210
-	CutsceneEventLink* m_directionalEndedLinks;     // 0x214
-	GolNameTable m_directionalEndedNames;           // 0x218
-	GolStringTable* m_stringTable;                  // 0x224
+	GolExport* m_golExport;                       // 0x004
+	GolD3DRenderDevice* m_renderer;               // 0x008
+	SoundManager* m_soundManager;                 // 0x00c
+	CutsceneDefinition* m_definition;             // 0x010
+	SoundNode m_listener;                         // 0x014
+	MenuAnimationList* m_menuAnimations;          // 0x064
+	LegoU32 m_animationCount;                     // 0x068
+	CutsceneAnimation* m_animations;              // 0x06c
+	MabMaterialAnimation* m_materialAnimations;   // 0x070
+	LegoChar* m_animationNames;                   // 0x074
+	LegoU32 m_stringTableCount;                   // 0x078
+	GolStringTable* m_stringTables;               // 0x07c
+	LegoChar* m_stringTableNames;                 // 0x080
+	LegoU32 m_soundGroupCount;                    // 0x084
+	SoundGroup** m_soundGroups;                   // 0x088
+	LegoChar* m_soundGroupNames;                  // 0x08c
+	LegoU32 m_fontTableCount;                     // 0x090
+	GolFontTable** m_fontTables;                  // 0x094
+	LegoChar* m_fontTableNames;                   // 0x098
+	LegoU32 m_imageListCount;                     // 0x09c
+	GolImageDefinitionList** m_imageLists;        // 0x0a0
+	LegoChar* m_imageListNames;                   // 0x0a4
+	GolNameTable m_moveEventNames;                // 0x0a8
+	LegoU32 m_moveEventCount;                     // 0x0b4
+	CutsceneColorEvent* m_moveEvents;             // 0x0b8
+	GolNameTable m_soundEventNames;               // 0x0bc
+	LegoU32 m_soundEventCount;                    // 0x0c8
+	CutsceneSoundEvent* m_soundEvents;            // 0x0cc
+	GolNameTable m_streamEventNames;              // 0x0d0
+	LegoU32 m_streamEventCount;                   // 0x0dc
+	CutsceneStreamingSoundEvent* m_streamEvents;  // 0x0e0
+	GolNameTable m_animEventNames;                // 0x0e4
+	LegoU32 m_animEventCount;                     // 0x0f0
+	CutsceneAnimationEvent* m_animEvents;         // 0x0f4
+	GolNameTable m_menuAnimEventNames;            // 0x0f8
+	undefined4 m_menuAnimEventCount;              // 0x104
+	CutsceneMenuAnimationEvent* m_menuAnimEvents; // 0x108
+	GolNameTable m_textVisualNames;               // 0x10c
+	LegoU32 m_textVisualCount;                    // 0x118
+	CutsceneTextVisual* m_textVisuals;            // 0x11c
+	GolNameTable m_imageVisualNames;              // 0x120
+	LegoU32 m_imageVisualCount;                   // 0x12c
+	CutsceneImageVisual* m_imageVisuals;          // 0x130
+	undefined4 m_eventStartedCount;               // 0x134
+	CutsceneEventLink* m_eventStartedLinks;       // 0x138
+	GolNameTable m_eventStartedNames;             // 0x13c
+	undefined4 m_eventEndedCount;                 // 0x148
+	CutsceneEventLink* m_eventEndedLinks;         // 0x14c
+	GolNameTable m_eventEndedNames;               // 0x150
+	undefined4 m_cameraStartedCount;              // 0x15c
+	CutsceneEventLink* m_cameraStartedLinks;      // 0x160
+	GolNameTable m_cameraStartedNames;            // 0x164
+	undefined4 m_cameraEndedCount;                // 0x170
+	CutsceneEventLink* m_cameraEndedLinks;        // 0x174
+	GolNameTable m_cameraEndedNames;              // 0x178
+	undefined4 m_modelStartedCount;               // 0x184
+	CutsceneEventLink* m_modelStartedLinks;       // 0x188
+	GolNameTable m_modelStartedNames;             // 0x18c
+	undefined4 m_modelEndedCount;                 // 0x198
+	CutsceneEventLink* m_modelEndedLinks;         // 0x19c
+	GolNameTable m_modelEndedNames;               // 0x1a0
+	undefined4 m_transformStartedCount;           // 0x1ac
+	CutsceneEventLink* m_transformStartedLinks;   // 0x1b0
+	GolNameTable m_transformStartedNames;         // 0x1b4
+	undefined4 m_transformEndedCount;             // 0x1c0
+	CutsceneEventLink* m_transformEndedLinks;     // 0x1c4
+	GolNameTable m_transformEndedNames;           // 0x1c8
+	undefined4 m_ambientStartedCount;             // 0x1d4
+	CutsceneEventLink* m_ambientStartedLinks;     // 0x1d8
+	GolNameTable m_ambientStartedNames;           // 0x1dc
+	undefined4 m_ambientEndedCount;               // 0x1e8
+	CutsceneEventLink* m_ambientEndedLinks;       // 0x1ec
+	GolNameTable m_ambientEndedNames;             // 0x1f0
+	undefined4 m_directionalStartedCount;         // 0x1fc
+	CutsceneEventLink* m_directionalStartedLinks; // 0x200
+	GolNameTable m_directionalStartedNames;       // 0x204
+	undefined4 m_directionalEndedCount;           // 0x210
+	CutsceneEventLink* m_directionalEndedLinks;   // 0x214
+	GolNameTable m_directionalEndedNames;         // 0x218
+	GolStringTable* m_stringTable;                // 0x224
 };
 
 #endif // CUTSCENEPLAYER_H

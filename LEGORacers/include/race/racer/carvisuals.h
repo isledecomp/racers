@@ -4,7 +4,7 @@
 #include "golanimatedentity.h"
 #include "golmath.h"
 #include "golname.h"
-#include "golworldentitygroup0x38.h"
+#include "golworldentitygroup.h"
 #include "race/racedecalmanager.h"
 #include "scene/golbillboard.h"
 #include "types.h"
@@ -131,7 +131,7 @@ public:
 	void SetReactionFlags(LegoU32 p_flags) { m_reactionFlags |= p_flags; }
 
 	LegoU32 m_flags;                               // 0x000
-	GolWorldEntityGroup0x38 m_entityGroup;         // 0x004
+	GolWorldEntityGroup m_entityGroup;             // 0x004
 	GolModelEntity* m_bodyModelEntity;             // 0x03c
 	GolAnimatedEntity* m_secondaryEntity;          // 0x040
 	GolAnimatedEntity* m_carEntity;                // 0x044

@@ -21,8 +21,8 @@
 #include "goltxtparser.h"
 #include "golworldentity.h"
 #include "image/golimage.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
 #include "material/golimagedefinitionlist.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutscenedefinition.h"
@@ -115,7 +115,7 @@ void CutsceneAnimation::Load(
 	LegoU32 p_numParticles,
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
-	MabMaterialAnimation0x14* p_materialAnimation,
+	MabMaterialAnimation* p_materialAnimation,
 	const LegoChar* p_fileName,
 	LegoBool32 p_binary
 )
@@ -386,7 +386,7 @@ void CutsceneAnimation::Emitter::Reset()
 
 // FUNCTION: LEGORACERS 0x0048a130
 void CutsceneAnimation::Emitter::Parse(
-	MabMaterialAnimation0x14* p_materialAnimation,
+	MabMaterialAnimation* p_materialAnimation,
 	GolD3DRenderDevice* p_renderer,
 	GolFileParser* p_parser,
 	CutsceneAnimation* p_param4
@@ -1165,7 +1165,7 @@ void CutscenePlayer::ParseAnimationNames(GolFileParser* p_parser)
 	p_parser->ReadLeftCurly();
 
 	m_animations = new CutsceneAnimation[m_animationCount];
-	m_materialAnimations = new MabMaterialAnimation0x14[m_animationCount];
+	m_materialAnimations = new MabMaterialAnimation[m_animationCount];
 	m_animationNames = new LegoChar[m_animationCount * 9];
 	if (m_animations == NULL || m_materialAnimations == NULL || m_animationNames == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);

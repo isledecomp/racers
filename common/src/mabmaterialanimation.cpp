@@ -1,18 +1,18 @@
-#include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimation.h"
 
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golname.h"
-#include "mabmaterialanimationitem0x18.h"
-#include "mabmaterialanimationitem0x8.h"
+#include "mabmaterialframe.h"
+#include "mabmaterialtrack.h"
 
-DECOMP_SIZE_ASSERT(MabMaterialAnimation0x14, 0x14)
-DECOMP_SIZE_ASSERT(MabMaterialAnimation0x14::MabTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(MabMaterialAnimation, 0x14)
+DECOMP_SIZE_ASSERT(MabMaterialAnimation::MabTxtParser, 0x1fc)
 
 // FUNCTION: GOLDP 0x10025890
 // FUNCTION: LEGORACERS 0x0040fea0
-MabMaterialAnimation0x14::MabMaterialAnimation0x14()
+MabMaterialAnimation::MabMaterialAnimation()
 {
 	m_unk0x04 = NULL;
 	m_unk0x08 = 0;
@@ -22,14 +22,14 @@ MabMaterialAnimation0x14::MabMaterialAnimation0x14()
 
 // FUNCTION: GOLDP 0x100258b0
 // FUNCTION: LEGORACERS 0x0040fec0
-MabMaterialAnimation0x14::~MabMaterialAnimation0x14()
+MabMaterialAnimation::~MabMaterialAnimation()
 {
 	VTable0x08();
 }
 
 // FUNCTION: GOLDP 0x100258f0
 // FUNCTION: LEGORACERS 0x0040fed0
-void MabMaterialAnimation0x14::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
+void MabMaterialAnimation::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
 	if (m_unk0x0c != NULL) {
 		VTable0x08();
@@ -61,7 +61,7 @@ void MabMaterialAnimation0x14::VTable0x04(GolRenderDevice* p_renderer, const Leg
 
 // FUNCTION: GOLDP 0x10025a00
 // FUNCTION: LEGORACERS 0x0040ffe0
-void MabMaterialAnimation0x14::VTable0x08()
+void MabMaterialAnimation::VTable0x08()
 {
 	if (m_unk0x04 != NULL) {
 		delete[] m_unk0x04;
@@ -77,7 +77,7 @@ void MabMaterialAnimation0x14::VTable0x08()
 
 // FUNCTION: GOLDP 0x10025a40
 // FUNCTION: LEGORACERS 0x00410020
-void MabMaterialAnimation0x14::FUN_10025a40(GolRenderDevice* p_renderer, GolFileParser& p_parser)
+void MabMaterialAnimation::FUN_10025a40(GolRenderDevice* p_renderer, GolFileParser& p_parser)
 {
 	LegoU32 i;
 
@@ -90,7 +90,7 @@ void MabMaterialAnimation0x14::FUN_10025a40(GolRenderDevice* p_renderer, GolFile
 		p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 	}
 
-	m_unk0x04 = new MabMaterialAnimationItem0x8[m_unk0x08];
+	m_unk0x04 = new MabMaterialFrame[m_unk0x08];
 	if (m_unk0x04 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -108,7 +108,7 @@ void MabMaterialAnimation0x14::FUN_10025a40(GolRenderDevice* p_renderer, GolFile
 
 // FUNCTION: GOLDP 0x10025b60
 // FUNCTION: LEGORACERS 0x00410140
-void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
+void MabMaterialAnimation::FUN_10025b60(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
@@ -121,7 +121,7 @@ void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 	}
 
-	m_unk0x0c = new MabMaterialAnimationItem0x18[m_unk0x10];
+	m_unk0x0c = new MabMaterialTrack[m_unk0x10];
 	if (m_unk0x0c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -168,7 +168,7 @@ void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00410300
-void MabMaterialAnimation0x14::FUN_00410300(LegoS32 p_elapsedMs)
+void MabMaterialAnimation::FUN_00410300(LegoS32 p_elapsedMs)
 {
 	for (LegoU32 i = 0; i < m_unk0x10; i++) {
 		if (m_unk0x0c[i].IsAssigned()) {

@@ -1,7 +1,7 @@
 #ifndef CHASSISMODELTABLE_H
 #define CHASSISMODELTABLE_H
 
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golmath.h"
 #include "golname.h"
@@ -90,7 +90,7 @@ private:
 	GolTextureList** m_textureLists;       // 0x1c
 	GolMaterialLibrary** m_materialLists;  // 0x20
 	GolSceneNode** m_sceneNodes;           // 0x24
-	CmbModelPart0x34* m_modelParts;        // 0x28
+	CmbModelPart* m_modelParts;            // 0x28
 	GolAnimatedEntity* m_animatedEntities; // 0x2c
 	LegoU32 m_instantiateCount;            // 0x30
 	LegoU32 m_instantiatedCount;           // 0x34

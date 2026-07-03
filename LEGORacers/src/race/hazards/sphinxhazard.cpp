@@ -5,8 +5,8 @@
 #include "golfileparser.h"
 #include "golmath.h"
 #include "golnametable.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/raceeventtable.h"
 #include "types.h"
@@ -69,7 +69,7 @@ LegoS32 SphinxHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048c180
 void SphinxHazard::OnActivate(void*)
 {
-	MabMaterialAnimation0x14* animation = NULL;
+	MabMaterialAnimation* animation = NULL;
 	if (m_entity->GetModelDistance(0) == g_sphinxInactiveModelDistance) {
 		return;
 	}
@@ -89,10 +89,10 @@ void SphinxHazard::OnActivate(void*)
 	}
 
 	if (animation != NULL) {
-		MabMaterialAnimationItem0x18* items = animation->GetUnk0x0c();
-		MabMaterialAnimationItem0x18* item1 = &items[1];
-		MabMaterialAnimationItem0x18* item2 = &items[2];
-		MabMaterialAnimationItem0x18* item3 = &items[3];
+		MabMaterialTrack* items = animation->GetUnk0x0c();
+		MabMaterialTrack* item1 = &items[1];
+		MabMaterialTrack* item2 = &items[2];
+		MabMaterialTrack* item3 = &items[3];
 		items[0].FUN_00410470();
 		item1->FUN_00410470();
 		item2->FUN_10025da0(items[0].GetUnk0x00(), items[0].GetUnk0x04(), FALSE);
@@ -150,7 +150,7 @@ void SphinxHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048c340
 void SphinxHazard::ResetState()
 {
-	MabMaterialAnimation0x14* animation = NULL;
+	MabMaterialAnimation* animation = NULL;
 	if (m_state == 1 && m_entity->GetModelDistance(0) != g_sphinxInactiveModelDistance) {
 		return;
 	}
@@ -178,10 +178,10 @@ void SphinxHazard::ResetState()
 	}
 
 	if (animation != NULL) {
-		MabMaterialAnimationItem0x18* items = animation->GetUnk0x0c();
-		MabMaterialAnimationItem0x18* item2 = &items[2];
-		MabMaterialAnimationItem0x18* item1 = &items[1];
-		MabMaterialAnimationItem0x18* item3 = &items[3];
+		MabMaterialTrack* items = animation->GetUnk0x0c();
+		MabMaterialTrack* item2 = &items[2];
+		MabMaterialTrack* item1 = &items[1];
+		MabMaterialTrack* item3 = &items[3];
 		item2->FUN_00410470();
 		item3->FUN_00410470();
 		items[0].FUN_10025da0(items[0].GetUnk0x00(), items[0].GetUnk0x04(), TRUE);

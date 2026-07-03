@@ -4,7 +4,7 @@
 #include "app/cheatflags.h"
 #include "audio/musicinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
 #include "golbmpwriterfile.h"
@@ -861,7 +861,7 @@ void MenuManager::BuildPlayerDriverModel(
 )
 {
 	GolAnimatedEntity entity;
-	CmbModelPart0x34 modelParts;
+	CmbModelPart modelParts;
 	LegoU32 textureCount;
 	DriverCosmetics cosmetics;
 	GolModelMaterialTable* materialTable;

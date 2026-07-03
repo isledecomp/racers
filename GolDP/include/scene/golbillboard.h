@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "golworldentity.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 
 #include <d3d.h>
 
@@ -30,7 +30,7 @@ public:
 #endif
 
 	// SIZE 0x0c
-	struct Field0x2c : public MaterialTable0x0c {
+	struct Field0x2c : public MaterialTable {
 		Field0x2c();
 		~Field0x2c();
 
@@ -59,7 +59,7 @@ public:
 	void FUN_10014ff0(GolD3DRenderDevice* p_renderer);
 	void FUN_10026fa0(LegoFloat p_arg1);
 	VTable0x4cReturn FUN_10029e90(
-		MaterialTable0x0c* p_container,
+		MaterialTable* p_container,
 		LegoS32 p_index,
 		LegoFloat p_width,
 		LegoFloat p_height,
@@ -67,7 +67,7 @@ public:
 	);
 	void FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result);
 	GolMaterial* FUN_1002a020();
-	MaterialTable0x0c* GetPositionContainer() const { return m_positionContainer; }
+	MaterialTable* GetPositionContainer() const { return m_positionContainer; }
 	LegoU16 GetFlags() const { return m_flags; }
 	void SetWidth(LegoFloat p_width) { m_width = p_width; }
 	void SetHeight(LegoFloat p_height) { m_height = p_height; }
@@ -80,14 +80,14 @@ private:
 	static LegoU32 g_billboardColors[4];
 	static LegoU8 g_billboardTriangleIndices[8];
 
-	GolMaterial* m_position;                // 0x28
-	MaterialTable0x0c* m_positionContainer; // 0x2c
-	GolVec3 m_unk0x30;                      // 0x30
-	LegoFloat m_width;                      // 0x3c
-	LegoFloat m_height;                     // 0x40
-	LegoFloat m_maxDistanceSquared;         // 0x44
-	LegoU16 m_flags;                        // 0x48
-	LegoU16 m_positionIndex;                // 0x4a
+	GolMaterial* m_position;            // 0x28
+	MaterialTable* m_positionContainer; // 0x2c
+	GolVec3 m_unk0x30;                  // 0x30
+	LegoFloat m_width;                  // 0x3c
+	LegoFloat m_height;                 // 0x40
+	LegoFloat m_maxDistanceSquared;     // 0x44
+	LegoU16 m_flags;                    // 0x48
+	LegoU16 m_positionIndex;            // 0x4a
 };
 
 #endif // GOLBILLBOARD_H

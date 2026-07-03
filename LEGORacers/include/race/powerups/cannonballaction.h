@@ -8,7 +8,7 @@
 #include "race/racetrailmanager.h"
 
 class CutsceneAnimation;
-class MabMaterialAnimationItem0x18;
+class MabMaterialTrack;
 class SpatialSoundInstance;
 
 struct CutsceneParticleRef;

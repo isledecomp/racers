@@ -2,12 +2,12 @@
 #include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "menu/runtime/cutsceneparticle.h"
 #include "race/racesession.h"
 #include "render/golcommondrawstate.h"
@@ -122,7 +122,7 @@ void MagnetAction::Activate(
 		GolModelBase* model = p_magnetTemplate->GetModel(i);
 		if (model != NULL) {
 			LegoFloat modelDistance = p_magnetTemplate->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_magnetTemplate->GetModelPart(i);
+			CmbModelPart* modelPart = p_magnetTemplate->GetModelPart(i);
 			m_magnetEntity->AddModel(model, p_magnetTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
@@ -137,7 +137,7 @@ void MagnetAction::Activate(
 		GolModelBase* model = p_ringTemplate->GetModel(i);
 		if (model != NULL) {
 			LegoFloat modelDistance = p_ringTemplate->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_ringTemplate->GetModelPart(i);
+			CmbModelPart* modelPart = p_ringTemplate->GetModelPart(i);
 			m_ringEntity->AddModel(model, p_ringTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
@@ -156,7 +156,7 @@ void MagnetAction::Activate(
 		GolModelBase* model = p_insideTemplate->GetModel(i);
 		if (model != NULL) {
 			LegoFloat modelDistance = p_insideTemplate->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_insideTemplate->GetModelPart(i);
+			CmbModelPart* modelPart = p_insideTemplate->GetModelPart(i);
 			m_insideEntity->AddModel(model, p_insideTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}

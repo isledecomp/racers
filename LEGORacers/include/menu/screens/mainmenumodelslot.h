@@ -1,7 +1,7 @@
 #ifndef MAINMENUMODELSLOT_H
 #define MAINMENUMODELSLOT_H
 
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golanimatedentity.h"
 #include "golmath.h"
@@ -33,7 +33,7 @@ public:
 	LegoBool32 Update(undefined4) override; // vtable+0x10
 
 	GolAnimatedEntity* GetDriverEntity() { return &m_driverEntity; }
-	CmbModelPart0x34* GetBodyModelPart() { return &m_bodyModelPart; }
+	CmbModelPart* GetBodyModelPart() { return &m_bodyModelPart; }
 	LegoBool32 Create(CreateParams* p_createParams);
 	void SetHat(LegoU32 p_unk0x04);
 	void SetFace(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
@@ -50,7 +50,7 @@ private:
 	GolAnimatedEntity m_driverEntity;    // 0x01c
 	GolModelBase* m_driverModel;         // 0x110
 	GolSceneNode* m_bodySceneNode;       // 0x114
-	CmbModelPart0x34 m_bodyModelPart;    // 0x118
+	CmbModelPart m_bodyModelPart;        // 0x118
 	undefined4 m_unk0x14c;               // 0x14c
 	DriverModelBuilder* m_modelBuilder;  // 0x150
 	DriverCosmetics m_cosmetics;         // 0x154

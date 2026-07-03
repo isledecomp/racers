@@ -22,7 +22,7 @@
 class MenuGameContext;
 class MenuScreenCreateParams;
 class SoundGroupBinding;
-class CmbModelPart0x34;
+class CmbModelPart;
 class GolModelBase;
 class GolSceneNode;
 class GolWorldEntity;
@@ -120,7 +120,7 @@ public:
 		AwardCinematicScreen::SceneEntityGroup m_carGroup; // 0x58
 		GolAnimatedEntity m_driverEntity;                  // 0xa8
 		GolSceneNode* m_bodySceneNode;                     // 0x19c
-		CmbModelPart0x34* m_bodyModelPart;                 // 0x1a0
+		CmbModelPart* m_bodyModelPart;                     // 0x1a0
 		GolModelEntity m_pieceEntity;                      // 0x1a4
 		GolModelBase* m_pieceModel;                        // 0x234
 		GolModelBase* m_driverModel;                       // 0x238

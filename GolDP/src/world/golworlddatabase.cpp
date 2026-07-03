@@ -1,7 +1,7 @@
 #include "world/golworlddatabase.h"
 
 #include "camera/goltransform.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "golanimatedentity.h"
 #include "golbinparser.h"
 #include "golboundedentity.h"
@@ -15,8 +15,8 @@
 #include "golmodelentity.h"
 #include "golmodelmaterialtable.h"
 #include "golscenenode.h"
-#include "mabmaterialanimation0x14.h"
-#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimation.h"
+#include "mabmaterialtrack.h"
 #include "render/rectangle.h"
 #include "scene/golbillboard.h"
 
@@ -1288,7 +1288,7 @@ void GolWorldDatabase::FUN_1002e250(GolBillboard* p_billboard, WdbBillboardSprit
 	}
 
 	LegoU32 materialIndex = p_sprite->m_unk0x30;
-	MabMaterialAnimationItem0x18* item = VTable0x4c(animationIndex)->GetUnk0x0c();
+	MabMaterialTrack* item = VTable0x4c(animationIndex)->GetUnk0x0c();
 	item[materialIndex].FUN_10025da0(p_billboard->GetPositionContainer(), p_sprite->m_unk0x36, TRUE);
 }
 
@@ -1414,9 +1414,9 @@ void GolWorldDatabase::FUN_1002e640()
 				continue;
 			}
 
-			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
+			MabMaterialTrack* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			MaterialTable0x0c* target = runtime->m_materialTables[targetIndex];
+			MaterialTable* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
@@ -1466,8 +1466,8 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		GolSceneNode* node = VTable0x40(model->m_unk0x14[0]);
-		CmbModelPart0x34* part = VTable0x34(model->m_unk0x20[0]);
-		CmbModelPart0x34* partForPartName = part;
+		CmbModelPart* part = VTable0x34(model->m_unk0x20[0]);
+		CmbModelPart* partForPartName = part;
 
 		if (model->m_unk0x08[0] < 0) {
 			runtime->SetNode(node, part, maxDistances[0]);
@@ -1531,9 +1531,9 @@ void GolWorldDatabase::FUN_1002e640()
 				continue;
 			}
 
-			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
+			MabMaterialTrack* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			MaterialTable0x0c* target = runtime->m_materialTables[targetIndex];
+			MaterialTable* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
@@ -1608,9 +1608,9 @@ void GolWorldDatabase::FUN_1002e640()
 				continue;
 			}
 
-			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
+			MabMaterialTrack* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			MaterialTable0x0c* target = runtime->m_materialTables[targetIndex];
+			MaterialTable* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}

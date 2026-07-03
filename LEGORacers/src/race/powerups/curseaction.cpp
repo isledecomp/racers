@@ -2,12 +2,12 @@
 #include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart0x34.h"
+#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "material/materialtable0x0c.h"
+#include "material/materialtable.h"
 #include "menu/runtime/cutsceneparticle.h"
 #include "race/racesession.h"
 #include "render/golcommondrawstate.h"
@@ -104,7 +104,7 @@ void CurseAction::Activate(
 		GolModelBase* model = p_curseTemplate->GetModel(i);
 		if (model != NULL) {
 			LegoFloat modelDistance = p_curseTemplate->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_curseTemplate->GetModelPart(i);
+			CmbModelPart* modelPart = p_curseTemplate->GetModelPart(i);
 			m_curseEntity->AddModel(model, p_curseTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
@@ -121,7 +121,7 @@ void CurseAction::Activate(
 		GolModelBase* model = p_auraTemplate->GetModel(i);
 		if (model != NULL) {
 			LegoFloat modelDistance = p_auraTemplate->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_auraTemplate->GetModelPart(i);
+			CmbModelPart* modelPart = p_auraTemplate->GetModelPart(i);
 			m_auraEntity->AddModel(model, p_auraTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
@@ -142,7 +142,7 @@ void CurseAction::Activate(
 		GolModelBase* model = p_innerAuraTemplate->GetModel(i);
 		if (model != NULL) {
 			LegoFloat modelDistance = p_innerAuraTemplate->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_innerAuraTemplate->GetModelPart(i);
+			CmbModelPart* modelPart = p_innerAuraTemplate->GetModelPart(i);
 			m_innerAuraEntity->AddModel(model, p_innerAuraTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}

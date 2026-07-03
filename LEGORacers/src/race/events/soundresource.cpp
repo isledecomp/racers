@@ -179,7 +179,7 @@ void SoundResource::Update(LegoU32 p_elapsedMs)
 void SoundResource::StopSound()
 {
 	GolSceneNode* node = m_unk0x28->GetSceneNode(0);
-	GolTransformBase* transform = node->VTable0x18(m_nodeIndex);
+	GolTransformBase* transform = node->GetTransform(m_nodeIndex);
 
 	GolVec3 position;
 	position.m_x = 0.0f;

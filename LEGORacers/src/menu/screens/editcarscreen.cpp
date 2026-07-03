@@ -296,7 +296,7 @@ void EditCarScreen::CreateDriverModel()
 	m_context->m_modelBuilder.ApplyFaceExpression(m_driverModel, &cosmetics);
 
 	m_bodySceneNode = m_golExport->VTable0x18();
-	m_bodySceneNode->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
+	m_bodySceneNode->CopyFrom(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
 	if (m_bodySceneNode == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}

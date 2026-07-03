@@ -883,14 +883,15 @@ void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodInde
 		canoe->VTable0x5c(p_lodIndex);
 		if (m_unk0xc83e4) {
 			static_cast<GolSceneTransformNode*>(m_unk0xc8520)
-				->FUN_10014a60(m_unk0xc8498[0], m_unk0xc8410, *m_unk0xc8490);
+				->UpdateWorldViewMatrices(m_unk0xc8498[0], m_unk0xc8410, *m_unk0xc8490);
 		}
 		else {
-			static_cast<GolSceneTransformNode*>(m_unk0xc8520)->FUN_10014a60(m_unk0xc84d8, m_unk0xc8410, *m_unk0xc8494);
+			static_cast<GolSceneTransformNode*>(m_unk0xc8520)
+				->UpdateWorldViewMatrices(m_unk0xc84d8, m_unk0xc8410, *m_unk0xc8494);
 		}
 
 		if (m_unk0xc8568) {
-			m_unk0xc8520->VTable0x20(m_unk0xc8450);
+			m_unk0xc8520->UpdateWorldMatrices(m_unk0xc8450);
 		}
 	}
 }
@@ -1133,10 +1134,10 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 	if (m_unk0xc8520 != NULL) {
 		p_model->VTable0x5c(result.m_lodIndex);
 		if (m_unk0xc8568) {
-			m_unk0xc8520->VTable0x20(m_unk0xc8450);
+			m_unk0xc8520->UpdateWorldMatrices(m_unk0xc8450);
 		}
 		else {
-			m_unk0xc8520->VTable0x20(*modelMatrix);
+			m_unk0xc8520->UpdateWorldMatrices(*modelMatrix);
 		}
 	}
 
@@ -2426,18 +2427,18 @@ void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
 void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 {
 	GolD3DRenderState* useMatrix = m_unk0xc8524;
-	GolTransform** orbits = &static_cast<GolSceneTransformNode*>(m_unk0xc8520)->m_unk0x18;
+	GolTransform** orbits = &static_cast<GolSceneTransformNode*>(m_unk0xc8520)->m_transforms;
 	GolMatrix4* matrix;
 	if (useMatrix != NULL) {
-		matrix = &(*orbits)[p_index].m_unk0x90;
+		matrix = &(*orbits)[p_index].m_worldMatrix;
 	}
 	else {
-		matrix = &(*orbits)[p_index].m_unk0x50;
+		matrix = &(*orbits)[p_index].m_worldViewMatrix;
 	}
 	m_unk0xc8518 = matrix;
 
 	if (m_unk0xc8568 != 0) {
-		GolMatrix4* lightMatrix = &(*orbits)[p_index].m_unk0x90;
+		GolMatrix4* lightMatrix = &(*orbits)[p_index].m_worldMatrix;
 		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
 			m_unk0xc8644[i].m_x = m_unk0xc85f0[i].m_x * lightMatrix->m_m[0][0];
 			m_unk0xc8644[i].m_y = m_unk0xc85f0[i].m_x * lightMatrix->m_m[1][0];

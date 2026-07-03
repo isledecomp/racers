@@ -65,7 +65,7 @@ void MainMenuModelSlot::CreateDriverModel()
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_bodySceneNode->VTable0x10(m_modelBuilder->GetBodySceneNode(&m_cosmetics));
+	m_bodySceneNode->CopyFrom(m_modelBuilder->GetBodySceneNode(&m_cosmetics));
 	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, &m_bodyModelPart, g_fltMax0x004b33c4);
 }
 

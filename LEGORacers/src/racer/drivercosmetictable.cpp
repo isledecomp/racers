@@ -298,7 +298,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 		}
 
 		m_rootNode = m_golExport->VTable0x18();
-		m_rootNode->VTable0x14("pelvis", m_binary);
+		m_rootNode->Load("pelvis", m_binary);
 		m_modelParts.VTable0x14("pelvis", m_binary);
 	}
 

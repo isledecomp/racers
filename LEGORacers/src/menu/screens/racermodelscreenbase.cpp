@@ -330,7 +330,7 @@ void RacerModelScreenBase::RefreshSlotModel(LegoS32 p_index)
 	GolModelBase* model = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, m_driverModels[modelIndex], 0);
 	m_context->m_modelBuilder.ApplyFaceExpression(model, &cosmetics);
 
-	m_bodySceneNodes[modelIndex]->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
+	m_bodySceneNodes[modelIndex]->CopyFrom(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
 	m_driverEntities[modelIndex]
 		.SetModel(m_driverModels[modelIndex], m_bodySceneNodes[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 

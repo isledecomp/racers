@@ -13,7 +13,7 @@ DECOMP_SIZE_ASSERT(GolSceneNode::DdfTxtParser, 0x1fc)
 GolSceneNode::GolSceneNode()
 {
 	m_capacity = 0;
-	m_unk0x14 = 0;
+	m_composer = 0;
 	m_updateSerial = 0;
 }
 
@@ -26,7 +26,7 @@ GolSceneNode::~GolSceneNode()
 }
 
 // FUNCTION: GOLDP 0x10029a20
-void GolSceneNode::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
+void GolSceneNode::Load(const LegoChar* p_name, LegoBool32 p_binary)
 {
 	if (m_capacity != 0) {
 		Clear();
@@ -66,7 +66,7 @@ void GolSceneNode::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 }
 
 // FUNCTION: GOLDP 0x10029b50
-void GolSceneNode::VTable0x10(GolSceneNode* p_node)
+void GolSceneNode::CopyFrom(GolSceneNode* p_node)
 {
 	if (m_capacity != 0) {
 		Clear();
@@ -74,15 +74,15 @@ void GolSceneNode::VTable0x10(GolSceneNode* p_node)
 
 	m_capacity = p_node->m_capacity;
 	GolNameTable::Allocate(m_capacity);
-	VTable0x0c();
+	AllocateTransforms();
 
 	for (LegoU32 i = 0; i < m_capacity; i++) {
-		GolTransformBase* sourceOrbit = p_node->VTable0x18(i);
+		GolTransformBase* sourceOrbit = p_node->GetTransform(i);
 
 		GolName name;
 		p_node->GetNameByValue(sourceOrbit, name);
 
-		GolTransformBase* destOrbit = VTable0x18(i);
+		GolTransformBase* destOrbit = GetTransform(i);
 		AddName(name, destOrbit);
 
 		if (sourceOrbit->m_parent != NULL) {
@@ -104,7 +104,7 @@ void GolSceneNode::Allocate(LegoU32 p_capacity)
 
 	m_capacity = p_capacity;
 	GolNameTable::Allocate(m_capacity);
-	VTable0x0c();
+	AllocateTransforms();
 }
 
 // FUNCTION: GOLDP 0x10029c40
@@ -124,10 +124,10 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 	}
 
 	GolNameTable::Allocate(m_capacity);
-	VTable0x0c();
+	AllocateTransforms();
 
 	for (LegoU32 i = 0; i < m_capacity; i++) {
-		GolTransformBase* orbit = VTable0x18(i);
+		GolTransformBase* orbit = GetTransform(i);
 		GolName name;
 
 		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
@@ -175,19 +175,19 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
-LegoU32 GolSceneNode::VTable0x1c(const GolTransformBase&) const
+LegoU32 GolSceneNode::IndexOf(const GolTransformBase&) const
 {
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolSceneNode::VTable0x20(const GolMatrix4&)
+void GolSceneNode::UpdateWorldMatrices(const GolMatrix4&)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolSceneNode::VTable0x24(const GolMatrix34* p_m)
+void GolSceneNode::UpdateWorldMatricesAffine(const GolMatrix34* p_m)
 {
 	// empty
 }
@@ -199,7 +199,7 @@ void GolSceneNode::VTable0x28(undefined4, undefined4)
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolSceneNode::VTable0x2c(LegoU32 p_index, GolMatrix34* p_dest) const
+void GolSceneNode::GetWorldMatrix(LegoU32 p_index, GolMatrix34* p_dest) const
 {
 	// empty
 }
@@ -210,7 +210,7 @@ void GolSceneNode::TransformPointToWorld(undefined4 p_param1, GolVec3* p_param2,
 	*p_param3 = *p_param2;
 
 	GolVec3 vec;
-	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_parent) {
+	for (GolTransformBase* current = GetTransform(p_param1); current != NULL; current = current->m_parent) {
 		vec = *p_param3;
 		current->TransformPoint(&vec, p_param3);
 	}
@@ -222,7 +222,7 @@ void GolSceneNode::TransformVectorToWorld(undefined4 p_param1, GolVec3* p_param2
 	*p_param3 = *p_param2;
 
 	GolVec3 vec;
-	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_parent) {
+	for (GolTransformBase* current = GetTransform(p_param1); current != NULL; current = current->m_parent) {
 		vec = *p_param3;
 		current->TransformVector(&vec, p_param3);
 	}
@@ -232,7 +232,7 @@ void GolSceneNode::TransformVectorToWorld(undefined4 p_param1, GolVec3* p_param2
 void GolSceneNode::MirrorY()
 {
 	for (LegoU32 i = 0; i < m_capacity; i++) {
-		GolTransformBase* transform = VTable0x18(i);
+		GolTransformBase* transform = GetTransform(i);
 
 		GolVec3 position;
 		transform->GetPosition(&position);

@@ -358,7 +358,7 @@ void HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 	}
 	else if (m_state == c_stateFlying) {
 		GolSceneNode* node = m_missileEntity.GetSceneNode(0);
-		GolTransformBase* transform = node->VTable0x18(c_transformNodeIndex1);
+		GolTransformBase* transform = node->GetTransform(c_transformNodeIndex1);
 
 		GolVec3 position;
 		position.m_x = 0.0f;
@@ -392,7 +392,7 @@ void HomingMissileAction::AdvanceState()
 
 		GolAnimatedEntity* animatedEntity = &m_missileEntity;
 		GolSceneNode* node = animatedEntity->GetSceneNode(0);
-		GolTransformBase* transform = node->VTable0x18(c_transformNodeIndex1);
+		GolTransformBase* transform = node->GetTransform(c_transformNodeIndex1);
 
 		GolVec3 position;
 		transform->GetPosition(&position);

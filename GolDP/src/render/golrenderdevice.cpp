@@ -734,7 +734,7 @@ void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 		GolVec3 worldRight;
 		GolVec3 worldForward;
 		static_cast<GolModelEntity*>(p_model)->VTable0x5c(result.m_lodIndex);
-		node->VTable0x18(0)->VTable0x20(&worldRight, &worldForward);
+		node->GetTransform(0)->VTable0x20(&worldRight, &worldForward);
 		p_model->RotateToWorld(worldRight, &localRight);
 		p_model->RotateToWorld(worldForward, &localForward);
 	}

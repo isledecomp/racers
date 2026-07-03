@@ -94,7 +94,7 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 	Hazard::Update(p_elapsedMs);
 
 	GolSceneNode* node = m_entity->GetSceneNode(0);
-	GolTransformBase* transform = node->VTable0x18(0);
+	GolTransformBase* transform = node->GetTransform(0);
 
 	GolVec3 vector;
 	transform->GetPosition(&vector);

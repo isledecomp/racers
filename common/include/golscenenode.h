@@ -27,8 +27,8 @@ public:
 
 	class TransformComposer {
 	public:
-		virtual LegoBool32 VTable0x00(LegoU32 p_index) = 0; // vtable+0x00
-		virtual void VTable0x04(
+		virtual LegoBool32 HasOverride(LegoU32 p_index) = 0; // vtable+0x00
+		virtual void Compose(
 			LegoU32 p_index,
 			const GolQuat& p_rotation,
 			const GolVec3& p_position,
@@ -38,18 +38,18 @@ public:
 	};
 
 	GolSceneNode();
-	~GolSceneNode() override;                                             // vtable+0x00
-	void Allocate(LegoU32 p_capacity) override;                           // vtable+0x04
-	void Clear() override;                                                // vtable+0x08
-	virtual void VTable0x0c() = 0;                                        // vtable+0x0c
-	virtual void VTable0x10(GolSceneNode* p_node);                        // vtable+0x10
-	virtual void VTable0x14(const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x14
-	virtual GolTransformBase* VTable0x18(LegoU32 p_index) const = 0;      // vtable+0x18
-	virtual LegoU32 VTable0x1c(const GolTransformBase&) const;            // vtable+0x1c
-	virtual void VTable0x20(const GolMatrix4& p_m);                       // vtable+0x20
-	virtual void VTable0x24(const GolMatrix34* p_m);                      // vtable+0x24
-	virtual void VTable0x28(undefined4, undefined4);                      // vtable+0x28
-	virtual void VTable0x2c(LegoU32 p_index, GolMatrix34* p_dest) const;  // vtable+0x2c
+	~GolSceneNode() override;                                                // vtable+0x00
+	void Allocate(LegoU32 p_capacity) override;                              // vtable+0x04
+	void Clear() override;                                                   // vtable+0x08
+	virtual void AllocateTransforms() = 0;                                   // vtable+0x0c
+	virtual void CopyFrom(GolSceneNode* p_node);                             // vtable+0x10
+	virtual void Load(const LegoChar* p_name, LegoBool32 p_binary);          // vtable+0x14
+	virtual GolTransformBase* GetTransform(LegoU32 p_index) const = 0;       // vtable+0x18
+	virtual LegoU32 IndexOf(const GolTransformBase&) const;                  // vtable+0x1c
+	virtual void UpdateWorldMatrices(const GolMatrix4& p_m);                 // vtable+0x20
+	virtual void UpdateWorldMatricesAffine(const GolMatrix34* p_m);          // vtable+0x24
+	virtual void VTable0x28(undefined4, undefined4);                         // vtable+0x28
+	virtual void GetWorldMatrix(LegoU32 p_index, GolMatrix34* p_dest) const; // vtable+0x2c
 
 	// SYNTHETIC: GOLDP 0x100299a0
 	// GolSceneNode::`scalar deleting destructor'
@@ -71,9 +71,9 @@ public:
 protected:
 	void Parse(GolFileParser* p_parser);
 
-	undefined4 m_updateSerial;    // 0x0c
-	LegoU32 m_capacity;           // 0x10
-	TransformComposer* m_unk0x14; // 0x14
+	undefined4 m_updateSerial;     // 0x0c
+	LegoU32 m_capacity;            // 0x10
+	TransformComposer* m_composer; // 0x14
 };
 
 #endif // GOLSCENENODE_H

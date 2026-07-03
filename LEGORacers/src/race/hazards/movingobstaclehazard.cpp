@@ -129,7 +129,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	Hazard::Update(p_elapsedMs);
 
 	GolSceneNode* node = m_entity->GetSceneNode(0);
-	GolTransformBase* transform = node->VTable0x18(3);
+	GolTransformBase* transform = node->GetTransform(3);
 
 	GolVec3 offset;
 	offset.m_x = 0.0f;

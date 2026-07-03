@@ -207,7 +207,7 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 // FUNCTION: LEGORACERS 0x00494030
 void BeamMesh::AdvanceSection(const GolVec3* p_position)
 {
-	GolTransformBase* transform = m_sceneNode->VTable0x18(m_sectionIndex);
+	GolTransformBase* transform = m_sceneNode->GetTransform(m_sectionIndex);
 
 	GolVec3 vector;
 	vector.m_x = m_lastPosition.m_x - m_startPosition.m_x;
@@ -645,7 +645,7 @@ void BeamEntity::Draw(GolRenderDevice& p_renderer)
 		RotateToLocal(cameraRight, &localRight);
 
 		for (LegoU32 i = 0; i < m_sceneNode->GetCapacity(); i++) {
-			GolTransformBase* transform = m_sceneNode->VTable0x18(i);
+			GolTransformBase* transform = m_sceneNode->GetTransform(i);
 			GolVec3 right;
 			transform->VTable0x20(&cameraRight, &right);
 

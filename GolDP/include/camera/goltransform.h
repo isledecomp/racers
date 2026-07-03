@@ -40,8 +40,8 @@ public:
 	// LegoFloat m_unk0x3c; // 0x3c
 	// GolVec3 m_position;  // 0x40
 	// LegoFloat m_unk0x4c; // 0x4c
-	GolMatrix4 m_unk0x50; // 0x50
-	GolMatrix4 m_unk0x90; // 0x90
+	GolMatrix4 m_worldViewMatrix; // 0x50
+	GolMatrix4 m_worldMatrix;     // 0x90
 };
 
 #endif // GOLTRANSFORM_H

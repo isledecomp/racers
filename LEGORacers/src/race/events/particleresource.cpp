@@ -182,7 +182,7 @@ void ParticleResource::Update(LegoU32 p_elapsedMs)
 	if (m_trackedEntity && m_particle) {
 		m_trackedEntity->VTable0x5c(0);
 		GolSceneNode* node = m_trackedEntity->GetSceneNode(0);
-		GolTransformBase* transform = node->VTable0x18(m_nodeIndex);
+		GolTransformBase* transform = node->GetTransform(m_nodeIndex);
 		GolVec3 position;
 		position.m_x = 0.0f;
 		position.m_y = 0.0f;

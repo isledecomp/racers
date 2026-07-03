@@ -230,7 +230,7 @@ void GrabberHazard::GetGrabPosition(GolVec3* p_position)
 {
 	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
 	GolSceneNode* node = m_entity->GetSceneNode(0);
-	GolTransformBase* transform = node->VTable0x18(0);
+	GolTransformBase* transform = node->GetTransform(0);
 
 	GolVec3 localPosition;
 	transform->GetPosition(&localPosition);

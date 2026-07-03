@@ -394,7 +394,7 @@ LegoU32 ChassisModelTable::InstantiateModels(
 		m_sceneNodes[m_instantiatedCount] = m_golExport->VTable0x18();
 		::strncpy(name, p_item->m_nodeNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';
-		m_sceneNodes[m_instantiatedCount]->VTable0x14(name, m_binary);
+		m_sceneNodes[m_instantiatedCount]->Load(name, m_binary);
 
 		::strncpy(name, p_item->m_modelPartNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';

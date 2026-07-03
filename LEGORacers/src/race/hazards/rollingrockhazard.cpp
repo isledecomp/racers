@@ -131,7 +131,7 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 		Hazard::Update(p_elapsedMs);
 
 		GolSceneNode* node = m_entity->GetSceneNode(0);
-		GolTransformBase* transform = node->VTable0x18(1);
+		GolTransformBase* transform = node->GetTransform(1);
 
 		GolVec3 localPosition;
 		localPosition.m_x = 0.0f;

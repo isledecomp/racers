@@ -147,7 +147,7 @@ void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 	}
 
 	for (LegoU32 i = 0; i < node->GetCapacity(); i++) {
-		GolTransformBase* orbit = node->VTable0x18(i);
+		GolTransformBase* orbit = node->GetTransform(i);
 
 		GolVec3 activePosition;
 		activePosition.m_x = 0.0f;

@@ -200,7 +200,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 		LegoU32 frame = static_cast<LegoS32>(m_ghostEntity->GetPartTimeMs() / m_ghostEntity->GetMsPerFrame());
 		LegoFloat scale = m_ghostEntity->GetModel(0)->GetScale() * m_ghostEntity->GetUnk0x58();
 		GolSceneNode* node = m_ghostEntity->GetSceneNode(0);
-		GolTransformBase* transform = node->VTable0x18(1);
+		GolTransformBase* transform = node->GetTransform(1);
 
 		Hazard::Update(elapsedMs);
 

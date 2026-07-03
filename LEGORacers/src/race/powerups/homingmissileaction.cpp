@@ -68,13 +68,13 @@ HomingMissileAction::~HomingMissileAction()
 }
 
 // FUNCTION: LEGORACERS 0x00456510
-void HomingMissileAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
+void HomingMissileAction::Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld)
 {
 	if (m_state != 0) {
 		Shutdown();
 	}
 
-	m_golExportPtr = p_golExportPtr;
+	m_owner = p_manager;
 	m_collisionWorld = p_collisionWorld;
 	m_state = 1;
 }

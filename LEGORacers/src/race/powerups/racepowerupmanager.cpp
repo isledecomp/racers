@@ -1051,14 +1051,14 @@ void RacePowerupManager::CreateActionPools()
 	if (m_actionPoolCounts[4] - 1 > 0) {
 		do {
 			m_cannonballActions[i].SetNext(&m_cannonballActions[i + 1]);
-			m_cannonballActions[i].Initialize(&m_golExport, m_collisionWorld);
+			m_cannonballActions[i].Initialize(this, m_collisionWorld);
 			m_cannonballActions[i].SetSoundSource(m_soundSource);
 			i++;
 		} while (i < m_actionPoolCounts[4] - 1);
 	}
 
 	m_cannonballActions[m_actionPoolCounts[4] - 1].SetNext(NULL);
-	m_cannonballActions[m_actionPoolCounts[4] - 1].Initialize(&m_golExport, m_collisionWorld);
+	m_cannonballActions[m_actionPoolCounts[4] - 1].Initialize(this, m_collisionWorld);
 	m_cannonballActions[m_actionPoolCounts[4] - 1].SetSoundSource(m_soundSource);
 	m_freeCannonballActions = m_cannonballActions;
 
@@ -1098,14 +1098,14 @@ void RacePowerupManager::CreateActionPools()
 	if (m_actionPoolCounts[7] - 1 > 0) {
 		do {
 			m_homingMissileActions[i].SetNext(&m_homingMissileActions[i + 1]);
-			m_homingMissileActions[i].Initialize(&m_golExport, m_collisionWorld);
+			m_homingMissileActions[i].Initialize(this, m_collisionWorld);
 			m_homingMissileActions[i].SetSoundSource(m_soundSource);
 			i++;
 		} while (i < m_actionPoolCounts[7] - 1);
 	}
 
 	m_homingMissileActions[m_actionPoolCounts[7] - 1].SetNext(NULL);
-	m_homingMissileActions[m_actionPoolCounts[7] - 1].Initialize(&m_golExport, m_collisionWorld);
+	m_homingMissileActions[m_actionPoolCounts[7] - 1].Initialize(this, m_collisionWorld);
 	m_homingMissileActions[m_actionPoolCounts[7] - 1].SetSoundSource(m_soundSource);
 	m_freeHomingMissileActions = m_homingMissileActions;
 

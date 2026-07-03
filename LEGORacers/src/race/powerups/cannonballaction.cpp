@@ -76,15 +76,15 @@ CannonballAction::~CannonballAction()
 }
 
 // FUNCTION: LEGORACERS 0x004519d0
-void CannonballAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
+void CannonballAction::Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld)
 {
 	if (m_state != 0) {
 		Destroy();
 	}
 
-	m_golExportPtr = p_golExportPtr;
+	m_owner = p_manager;
 	m_collisionWorld = p_collisionWorld;
-	m_billboard = static_cast<GolBillboard*>((*p_golExportPtr)->VTable0x30());
+	m_billboard = static_cast<GolBillboard*>(p_manager->m_golExport->VTable0x30());
 	m_state = 1;
 }
 
@@ -93,10 +93,10 @@ void CannonballAction::Destroy()
 {
 	Deactivate();
 
-	if (m_golExportPtr != NULL && m_billboard != NULL) {
-		(*m_golExportPtr)->VTable0x64(m_billboard);
+	if (m_owner != NULL && m_billboard != NULL) {
+		m_owner->m_golExport->VTable0x64(m_billboard);
 		m_billboard = NULL;
-		m_golExportPtr = NULL;
+		m_owner = NULL;
 	}
 
 	m_state = 0;

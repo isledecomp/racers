@@ -25,7 +25,6 @@ public:
 
 private:
 	LegoBool m_ownsBuffers;      // 0x04
-	undefined m_unk0x05[3];      // 0x05
 	undefined2* m_stringData;    // 0x08
 	undefined2* m_stringOffsets; // 0x0c
 	LegoU16 m_stringCount;       // 0x10

@@ -33,7 +33,7 @@ public:
 	void AdvanceState() override;                        // vtable+0x14
 	void Deactivate() override;                          // vtable+0x1c
 	void OnHitRacer(Racer* p_racer) override;            // vtable+0x20
-	void Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld);
+	void Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld);
 	void Destroy();
 	LegoU32 Activate(ActionSetup* p_setup);
 

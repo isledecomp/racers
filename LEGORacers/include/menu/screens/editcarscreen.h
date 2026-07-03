@@ -71,7 +71,6 @@ protected:
 	MenuSelector m_categorySelector;                   // 0x2418
 	MenuImage m_categoryIcons[12];                     // 0x2e0c
 	LegoU8 m_carBuildSaveBuffer[0x202];                // 0x325c
-	undefined m_padding0x345e[0x3460 - 0x345e];        // 0x345e
 	AwardCinematicScreen::SceneEntityGroup m_carGroup; // 0x3460
 	GolAnimatedEntity m_driverEntity;                  // 0x34b0
 	GolModelBase* m_driverModel;                       // 0x35a4
@@ -83,7 +82,7 @@ protected:
 	GolName m_chassisName;                             // 0x367c
 	LegoU32 m_partCategoryUnlockFlags;                 // 0x3684
 	LegoU32 m_partCategoryAvailable[12];               // 0x3688
-	undefined m_padding0x36b8[0x36c0 - 0x36b8];        // 0x36b8
+	undefined m_unk0x36b8[0x36c0 - 0x36b8];            // 0x36b8
 	LegoBool32 m_savePending;                          // 0x36c0
 };
 

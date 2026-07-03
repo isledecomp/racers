@@ -65,7 +65,6 @@ private:
 	LegoU8 m_resetEvent2;               // 0x34
 	LegoU8 m_resetEvent3;               // 0x35
 	LegoU8 m_codeProgress;              // 0x36
-	undefined m_unk0x37;                // 0x37
 	LegoU32 m_delayMs;                  // 0x38
 };
 

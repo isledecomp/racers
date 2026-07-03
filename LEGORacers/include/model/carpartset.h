@@ -15,7 +15,6 @@ public:
 	struct PartChoice {
 		LegoU16 m_pieceType;       // 0x00
 		LegoU8 m_colorRecordIndex; // 0x02
-		undefined m_padding0x03;   // 0x03
 	};
 
 	// SIZE 0x18

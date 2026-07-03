@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "goltxtparser.h"
+#include "menu/style/imagetriplet.h"
 #include "menu/style/menuresourcetable.h"
 #include "menu/style/scenerefbinding.h"
 #include "menu/widgets/menubutton.h"
@@ -59,7 +60,6 @@ public:
 		GolStringTable* m_stringTable; // 0x38
 		GolFont* m_font;               // 0x3c
 		undefined2 m_unk0x40;          // 0x40
-		undefined m_unk0x42[2];        // 0x42
 		undefined4 m_stringId;         // 0x44
 	};
 
@@ -127,14 +127,6 @@ public:
 	// SIZE 0xec
 	class MultiStateBinding : public IconBinding {
 	public:
-		// SIZE 0x0c
-		class ImageTriplet {
-		public:
-			GolImage* m_unk0x00; // 0x00
-			GolImage* m_unk0x04; // 0x04
-			GolImage* m_unk0x08; // 0x08
-		};
-
 		undefined4 m_unk0x84;  // 0x84
 		GolFont* m_unk0x88[6]; // 0x88
 		union {
@@ -230,7 +222,6 @@ protected:
 	TextFieldBinding* m_textFieldBindings;         // 0x4c
 	SceneRefBinding* m_sceneRefBindings;           // 0x50
 	undefined2 m_nextWidgetId;                     // 0x54
-	undefined m_unk0x56[2];                        // 0x56
 	LegoS32 m_entryCount;                          // 0x58
 };
 

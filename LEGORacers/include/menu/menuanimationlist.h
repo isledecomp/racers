@@ -58,19 +58,12 @@ public:
 		GolMaterial* m_material;           // 0x00
 		const GolCameraBase* m_rectSource; // 0x04
 		union {
-			struct {
-				LegoU8 m_red;        // 0x08
-				LegoU8 m_green;      // 0x09
-				LegoU8 m_blue;       // 0x0a
-				undefined m_unk0x0b; // 0x0b
-			};
 			ColorRGBA m_color;     // 0x08
 			LegoU32 m_colorPacked; // 0x08
 		};
-		LegoU32 m_remainingMs;  // 0x0c
-		LegoU32 m_durationMs;   // 0x10
-		LegoU8 m_flags;         // 0x14
-		undefined m_unk0x15[3]; // 0x15
+		LegoU32 m_remainingMs; // 0x0c
+		LegoU32 m_durationMs;  // 0x10
+		LegoU8 m_flags;        // 0x14
 	};
 
 	MenuAnimationList();

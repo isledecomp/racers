@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "goltxtparser.h"
+#include "menu/style/imagetriplet.h"
 #include "menu/style/menuresourcetable.h"
 #include "menu/widgets/menuicon.h"
 #include "menu/widgets/visualstatecolor.h"
@@ -87,14 +88,6 @@ public:
 	// SIZE 0x100
 	class MultiStateStyle : public IconStyle {
 	public:
-		// SIZE 0x0c
-		class ImageTriplet {
-		public:
-			GolImage* m_unk0x00; // 0x00
-			GolImage* m_unk0x04; // 0x04
-			GolImage* m_unk0x08; // 0x08
-		};
-
 		GolFont* m_stateFonts[6]; // 0x90
 		union {
 			ImageTriplet m_unk0xa8[6];  // 0xa8

@@ -67,7 +67,6 @@ public:
 		LegoChar m_name[9];          // 0x04
 		LegoU8 m_variantIndex;       // 0x0d
 		LegoU8 m_variantCount;       // 0x0e
-		undefined m_padding0x0f;     // 0x0f
 		ShapeCell* m_shapeData;      // 0x10
 		LegoU16 m_pieceType;         // 0x14
 		LegoU16 m_indexCommandCount; // 0x16

@@ -308,7 +308,6 @@ private:
 	LegoU32 m_usedEffectEntityCount;                             // 0x187c
 	PowerupAction* m_activeActions;                              // 0x1880
 	LegoU8 m_actionPoolCounts[11];                               // 0x1884
-	undefined m_unk0x188f;                                       // 0x188f
 	MagnetAction* m_magnetActions;                               // 0x1890
 	OilSlickAction* m_oilSlickActions;                           // 0x1894
 	DynamiteAction* m_dynamiteActions;                           // 0x1898

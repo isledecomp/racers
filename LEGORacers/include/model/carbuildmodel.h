@@ -134,11 +134,10 @@ public:
 				}
 			}
 
-			LegoS32 m_entryIndex;                 // 0x00
-			LegoS32 m_height;                     // 0x04
-			LegoBool m_occupied;                  // 0x08
-			LegoU8 m_unk0x09;                     // 0x09
-			undefined m_padding0x0a[0x0c - 0x0a]; // 0x0a
+			LegoS32 m_entryIndex; // 0x00
+			LegoS32 m_height;     // 0x04
+			LegoBool m_occupied;  // 0x08
+			LegoU8 m_unk0x09;     // 0x09
 		};
 
 		PieceGrid();
@@ -199,17 +198,16 @@ public:
 
 	// SIZE 0x28
 	struct BuildVertex {
-		BuildVertex* m_parent;         // 0x00
-		BuildVertex* m_left;           // 0x04
-		BuildVertex* m_right;          // 0x08
-		LegoU16 m_index;               // 0x0c
-		LegoBool m_treeBlack;          // 0x0e
-		LegoS8 m_normalX;              // 0x0f
-		LegoS8 m_normalY;              // 0x10
-		LegoS8 m_normalZ;              // 0x11
-		undefined m_padding0x12[0x02]; // 0x12
-		GolVec3 m_position;            // 0x14
-		GolVec2 m_textureCoordinate;   // 0x20
+		BuildVertex* m_parent;       // 0x00
+		BuildVertex* m_left;         // 0x04
+		BuildVertex* m_right;        // 0x08
+		LegoU16 m_index;             // 0x0c
+		LegoBool m_treeBlack;        // 0x0e
+		LegoS8 m_normalX;            // 0x0f
+		LegoS8 m_normalY;            // 0x10
+		LegoS8 m_normalZ;            // 0x11
+		GolVec3 m_position;          // 0x14
+		GolVec2 m_textureCoordinate; // 0x20
 	};
 
 	// SIZE 0x10
@@ -236,7 +234,6 @@ public:
 	struct VertexUse {
 		LegoU16 m_referenceCount; // 0x00
 		LegoBool m_inBatch;       // 0x02
-		undefined m_pad0x03;      // 0x03
 	};
 
 	// SIZE 0x01
@@ -420,7 +417,6 @@ private:
 	LegoBool m_unk0xda;                                            // 0x00da
 	LegoBool m_unk0xdb;                                            // 0x00db
 	LegoU8 m_buildStatus;                                          // 0x00dc
-	undefined m_unk0xdd;                                           // 0x00dd
 	LegoU16 m_buildFlags;                                          // 0x00de
 	LegoPieceLibrary::PieceRecord* m_highBasePiece;                // 0x00e0
 	LegoU8 m_batchVertexSlotByBuildVertex[c_buildVertexCapacity];  // 0x00e4

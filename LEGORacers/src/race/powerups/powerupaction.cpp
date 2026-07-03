@@ -133,7 +133,7 @@ LegoS32 HazardActionBase::GetBrickColor()
 WeaponActionBase::WeaponActionBase()
 {
 	m_activeProjectile = 0;
-	m_golExportPtr = NULL;
+	m_owner = NULL;
 	m_collisionWorld = 0;
 	m_ownerRacer = 0;
 	m_targetRacer = 0;

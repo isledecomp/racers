@@ -18,16 +18,14 @@ public:
 	struct ColorRecord {
 		LegoChar* SetName(const LegoChar* p_name);
 
-		LegoChar m_name[10];        // 0x00
-		undefined m_padding0x0a[2]; // 0x0a
-		LegoS32 m_materialIndex;    // 0x0c
+		LegoChar m_name[10];     // 0x00
+		LegoS32 m_materialIndex; // 0x0c
 	};
 
 	// SIZE 0x04
 	struct MaterialUsage {
-		LegoU8 m_used;           // 0x00
-		undefined m_padding0x01; // 0x01
-		LegoU16 m_order;         // 0x02
+		LegoU8 m_used;   // 0x00
+		LegoU16 m_order; // 0x02
 	};
 
 	LegoColorTable();

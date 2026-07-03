@@ -20,7 +20,6 @@ public:
 		GolStringTable* m_stringTable; // 0x38
 		GolFont* m_font;               // 0x3c
 		undefined2 m_stringId;         // 0x40
-		undefined m_unk0x42[2];        // 0x42
 		undefined4 m_unk0x44;          // 0x44
 	};
 

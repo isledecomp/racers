@@ -17,13 +17,12 @@ public:
 	struct Profile {
 		LegoFloat GetUnk0x0c() const { return m_unk0x0c; }
 
-		LegoU8 m_unk0x00;       // 0x00
-		undefined m_unk0x01[3]; // 0x01
-		LegoFloat m_unk0x04;    // 0x04
-		LegoFloat m_unk0x08;    // 0x08
-		LegoFloat m_unk0x0c;    // 0x0c
-		LegoFloat m_unk0x10;    // 0x10
-		LegoFloat m_unk0x14;    // 0x14
+		LegoU8 m_unk0x00;    // 0x00
+		LegoFloat m_unk0x04; // 0x04
+		LegoFloat m_unk0x08; // 0x08
+		LegoFloat m_unk0x0c; // 0x0c
+		LegoFloat m_unk0x10; // 0x10
+		LegoFloat m_unk0x14; // 0x14
 	};
 
 	RaceCameraController();

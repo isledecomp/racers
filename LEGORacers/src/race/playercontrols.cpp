@@ -90,7 +90,7 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 	limitPositive = g_steeringLimit;
 	limitNegative = -g_steeringLimit;
 
-	if (m_racer->m_flags & c_racerFlags0xd04Bit7) {
+	if (m_racer->m_flags & Racer::c_flagDrifting) {
 		if (m_racer->m_driveController.m_slideLeft == 1) {
 			turnRate = g_unk0x004b0750;
 		}
@@ -254,7 +254,7 @@ void PlayerControls::UpdateThrottle()
 			if (m_input.m_steering == 0.0f) {
 				m_racer->EndDrift();
 			}
-			else if (!(m_racer->m_flags & c_racerFlags0xd04Bit7)) {
+			else if (!(m_racer->m_flags & Racer::c_flagDrifting)) {
 				if (reverseValue < 0.0f) {
 					m_racer->StartDrift(TRUE);
 				}
@@ -264,11 +264,11 @@ void PlayerControls::UpdateThrottle()
 			}
 		}
 	}
-	else if (m_racer->m_flags & c_racerFlags0xd04Bit7) {
+	else if (m_racer->m_flags & Racer::c_flagDrifting) {
 		m_racer->EndDrift();
 	}
 
-	if (!(m_racer->m_flags & c_racerFlags0xd04Bit7) && reverseValue < 0.0f && throttleValue > 0.0f) {
+	if (!(m_racer->m_flags & Racer::c_flagDrifting) && reverseValue < 0.0f && throttleValue > 0.0f) {
 		driveValue = 0.5f;
 	}
 

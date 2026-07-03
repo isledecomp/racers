@@ -184,7 +184,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 
 			if (projectileState == PowerupProjectile::c_stateHitRacer) {
 				Racer* target = m_projectile.GetHitRacer();
-				if ((target->m_flags & c_racerFlags0xd04Bit0) && target->m_shieldLevel >= 2) {
+				if ((target->m_flags & Racer::c_flagShielded) && target->m_shieldLevel >= 2) {
 					skipBurst = TRUE;
 				}
 
@@ -211,7 +211,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 
 				m_owner->SpawnExplosion(&position, upwardHit, m_ownerRacer);
 				if (projectileState == PowerupProjectile::c_stateHitRacer &&
-					!(m_projectile.GetHitRacer()->m_flags & c_racerFlags0xd04Bit0)) {
+					!(m_projectile.GetHitRacer()->m_flags & Racer::c_flagShielded)) {
 					m_projectile.GetVelocity(&direction);
 					direction.m_x = -direction.m_x;
 					direction.m_y = -direction.m_y;
@@ -442,7 +442,7 @@ void CannonballAction::AdvanceState()
 void CannonballAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == 3) {
-		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
+		if (p_racer->GetFlags() & Racer::c_flagShielded) {
 			p_racer->PlayReaction(TRUE);
 			p_racer->AbsorbShieldHit();
 			if (p_racer->m_shieldLevel >= 2) {

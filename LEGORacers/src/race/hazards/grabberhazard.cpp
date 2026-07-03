@@ -177,7 +177,7 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 
 	Racer* racer = static_cast<Racer*>(p_data->m_data);
 	RacerPhysics* field0x3e8 = &racer->m_physics;
-	if ((frame <= m_grabFrameLow || frame >= m_grabFrameHigh) && !(racer->m_flags & c_racerFlags0xd04Bit0)) {
+	if ((frame <= m_grabFrameLow || frame >= m_grabFrameHigh) && !(racer->m_flags & Racer::c_flagShielded)) {
 		if (m_racer == NULL || m_racer == racer) {
 			if (m_racer == NULL) {
 				m_grabState = c_stateOne;
@@ -189,7 +189,7 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 		}
 
 		m_racer = racer;
-		racer->m_flags |= c_racerFlags0xd04Bit29;
+		racer->m_flags |= Racer::c_flagGrabbed;
 
 		Racer* currentRacer = m_racer;
 		if (currentRacer->m_physics.m_routeMode) {
@@ -246,7 +246,7 @@ void GrabberHazard::ReleaseRacer()
 {
 	if (m_racer) {
 		m_racer->m_physics.EndExternalForce1();
-		m_racer->m_flags &= ~c_racerFlags0xd04Bit29;
+		m_racer->m_flags &= ~Racer::c_flagGrabbed;
 
 		Racer* racer = m_racer;
 		if (racer->m_physics.m_routeMode) {

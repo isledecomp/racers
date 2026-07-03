@@ -2567,10 +2567,10 @@ void Racer::SetCameraView(LegoU32 p_viewIndex, LegoBool32 p_flag)
 		m_cameraViewIndex = p_viewIndex;
 
 		if (p_flag) {
-			m_flags |= c_flagBit22;
+			m_flags |= c_flagSplitScreen;
 		}
 		else {
-			m_flags &= ~c_flagBit22;
+			m_flags &= ~c_flagSplitScreen;
 		}
 	}
 }
@@ -2579,7 +2579,7 @@ void Racer::SetCameraView(LegoU32 p_viewIndex, LegoBool32 p_flag)
 void Racer::ReapplyCameraView()
 {
 	if (m_cameraController) {
-		m_cameraController->SetView(m_cameraViewIndex, m_flags & 0x00400000);
+		m_cameraController->SetView(m_cameraViewIndex, m_flags & c_flagSplitScreen);
 		m_cameraController->m_dirty = TRUE;
 	}
 }
@@ -2592,7 +2592,7 @@ void Racer::CycleCameraView()
 		RaceCameraController* controller = m_cameraController;
 		if (controller) {
 			LegoU32 index = m_cameraViewIndex;
-			LegoBool32 enabled = flags & c_flagBit22;
+			LegoBool32 enabled = flags & c_flagSplitScreen;
 			index++;
 			index &= 3;
 			m_cameraViewIndex = index;

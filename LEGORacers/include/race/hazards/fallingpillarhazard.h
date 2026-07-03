@@ -34,9 +34,6 @@ public:
 	// FallingPillarHazard::`scalar deleting destructor'
 
 private:
-	enum {
-	};
-
 	GolAnimatedEntity* m_entity;            // 0x10
 	CutsceneAnimation* m_particleAnimation; // 0x14
 	ColliderRecord* m_collider;             // 0x18

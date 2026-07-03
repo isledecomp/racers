@@ -6,10 +6,6 @@
 // SIZE 0x2c
 class HazardActionBase : public PowerupActionBase {
 public:
-	enum {
-		c_racerFlags0xd04Bit0 = 1 << 0,
-	};
-
 	HazardActionBase();
 
 	// SYNTHETIC: LEGORACERS 0x00451960

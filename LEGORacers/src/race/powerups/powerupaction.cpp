@@ -80,7 +80,7 @@ void HazardActionBase::OnEvent(LegoEventQueue::CallbackData* p_param)
 {
 	Racer* racer = static_cast<Racer*>(p_param->m_data);
 	if (racer != m_ownerRacer) {
-		if (racer->GetFlags() & c_racerFlags0xd04Bit0) {
+		if (racer->GetFlags() & Racer::c_flagShielded) {
 			racer->AbsorbShieldHit();
 			if (m_level < 3) {
 				m_state = 6;

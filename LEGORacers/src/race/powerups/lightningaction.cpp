@@ -574,7 +574,7 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 
 	if (state == c_stateSustain) {
 		Racer* racer = p_racer;
-		if (racer->GetFlags() & c_racerFlags0xd04Bit0) {
+		if (racer->GetFlags() & Racer::c_flagShielded) {
 			racer->PlayReaction(TRUE);
 			racer->AbsorbShieldHit();
 			return;

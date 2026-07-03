@@ -74,13 +74,6 @@ public:
 		LegoU32 m_isValid; // 0x08
 	};
 
-	enum {
-		c_flagBit21 = 0x00200000,
-	};
-	enum {
-		c_flags0xd04Bit21 = 0x00200000,
-	};
-
 	void AiUsePowerup();
 	LegoU32 CollectColorBrick(LegoU32 p_brickColor);
 	LegoU32 GetHeldPowerupColor() const { return m_heldPowerupColor; }
@@ -166,13 +159,15 @@ public:
 		c_flagLookTargetRight = 1 << 17,
 		c_flagCrossedBackward = 0x00080000,
 		c_flagMagnetHeld = 0x00100000,
-		c_flagBit22 = 0x00400000,
+		c_flagWarping = 0x00200000,
+		c_flagSplitScreen = 0x00400000,
+		c_flagDemoRacer = 0x00800000,
 		c_flagCheatRedOnly = 0x01000000,
 		c_flagCheatMaxPowerups = 0x02000000,
 		c_flagCheatNslwj = 0x04000000,
 		c_flagCheatFlySkyHigh = 0x08000000,
 		c_flagSpeedRamping = 0x10000000,
-		c_flagBit29 = 0x20000000,
+		c_flagGrabbed = 0x20000000,
 		c_randomTableMask = 0x3ff,
 		c_volumeTableMask = 0x3ff,
 		c_volumeTableBase = 0xffffff00,

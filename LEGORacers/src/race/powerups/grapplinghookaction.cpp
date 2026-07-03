@@ -250,7 +250,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			Racer* targetRacer = m_projectile.GetHitRacer();
 			targetRacer->m_visuals.m_carEntity->GetPosition(&targetPosition);
 
-			if (targetRacer->m_flags & c_racerFlags0xd04Bit0) {
+			if (targetRacer->m_flags & Racer::c_flagShielded) {
 				ReleaseHook(&targetPosition);
 				return;
 			}
@@ -441,7 +441,7 @@ void GrapplingHookAction::AdvanceState()
 void GrapplingHookAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == c_stateFlying) {
-		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
+		if (p_racer->GetFlags() & Racer::c_flagShielded) {
 			p_racer->PlayReaction(TRUE);
 			p_racer->AbsorbShieldHit();
 

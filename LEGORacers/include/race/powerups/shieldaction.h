@@ -29,7 +29,6 @@ public:
 		c_soundLevel0 = 0x4c,
 		c_soundLevel2 = 0x4d,
 		c_soundLevel3 = 0x4e,
-		c_racerFlags0xd04Bit0 = 1 << 0,
 		c_flagCursed = 1 << 11,
 	};
 

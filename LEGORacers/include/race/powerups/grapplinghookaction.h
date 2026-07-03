@@ -33,10 +33,6 @@ public:
 		c_soundRetract = 0x49,
 	};
 
-	enum {
-		c_racerFlags0xd04Bit0 = 1 << 0,
-	};
-
 	GrapplingHookAction();
 	~GrapplingHookAction();
 	PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04

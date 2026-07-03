@@ -25,7 +25,6 @@ public:
 		c_stateAiControl = 1 << 1,
 		c_stateFlagThrottle = 1 << 3,
 		c_stateControlMask = c_statePreStart | c_stateAiControl,
-		c_racerFlags0xd04Bit7 = 1 << 7,
 	};
 
 	// SIZE 0x70

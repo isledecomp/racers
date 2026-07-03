@@ -96,8 +96,8 @@ void RaceReset::ResetRacers()
 		racer->EndDrift();
 		racer->SetStandingsPosition(racerIndex + 1);
 
-		if (racer->m_flags & Racer::c_flagBit21) {
-			racer->m_flags &= ~Racer::c_flagBit21;
+		if (racer->m_flags & Racer::c_flagWarping) {
+			racer->m_flags &= ~Racer::c_flagWarping;
 		}
 
 		CarVisuals* field = &racer->m_visuals;

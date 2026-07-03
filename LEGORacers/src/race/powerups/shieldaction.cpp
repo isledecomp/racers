@@ -108,7 +108,7 @@ void ShieldAction::Activate(
 	}
 
 	m_racer = p_racer;
-	if (m_racer->m_flags & c_racerFlags0xd04Bit0) {
+	if (m_racer->m_flags & Racer::c_flagShielded) {
 		m_manager->CancelShield(m_racer);
 	}
 

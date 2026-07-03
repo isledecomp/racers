@@ -74,10 +74,6 @@ public:
 	void Draw(GolD3DRenderDevice* p_renderer);
 
 private:
-	enum {
-		c_racerFlags0xd04Bit0 = 1 << 0,
-	};
-
 	LegoS32 m_state;                            // 0x004
 	GolWorldEntity m_worldEntity;               // 0x008
 	GolExport* m_golExport;                     // 0x030

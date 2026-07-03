@@ -35,8 +35,6 @@ public:
 
 private:
 	enum {
-		c_racerFlags0xd04Bit0 = 1 << 0,
-		c_racerFlags0xd04Bit29 = 0x20000000,
 		c_stateOne = 1,
 		c_stateTwo = 2,
 		c_timerMs = 1000,

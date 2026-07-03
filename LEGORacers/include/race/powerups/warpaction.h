@@ -51,7 +51,6 @@ private:
 		c_soundFinish = 0x29,
 		c_soundSpatial = 0x41,
 		c_flagGhost = 1 << 4,
-		c_racerFlags0xd04Bit21 = 0x00200000,
 	};
 
 	GolModelEntity m_modelEntity;  // 0x018

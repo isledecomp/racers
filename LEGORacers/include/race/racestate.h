@@ -120,8 +120,6 @@ private:
 
 	enum {
 		c_invalidTime = 0xffffffff,
-		c_racerFlags0xd04Bit10 = 1 << 10,
-		c_racerFlags0xd04Bit12 = 1 << 12,
 		c_racerProgressEntryCount = 6,
 	};
 

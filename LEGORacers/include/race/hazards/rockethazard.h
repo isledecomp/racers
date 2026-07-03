@@ -38,7 +38,6 @@ public:
 
 private:
 	enum {
-		c_field0x0e0Flags0xd04Bit0 = 1 << 0,
 		c_modelDistanceCount = 3,
 		c_eventId = 0x23,
 	};
@@ -49,8 +48,8 @@ private:
 	GolModelEntity* m_offModel;              // 0x40
 	GolModelEntity* m_onModel;               // 0x44
 	ColliderRecord* m_collider;              // 0x48
-	LegoFloat m_unk0x4c[3];                  // 0x4c
-	LegoU32 m_unk0x58;                       // 0x58
+	LegoFloat m_savedModelDistances[3];      // 0x4c
+	LegoU32 m_idle;                          // 0x58
 };
 
 #endif // ROCKETHAZARD_H

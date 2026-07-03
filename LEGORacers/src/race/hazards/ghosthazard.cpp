@@ -306,7 +306,7 @@ void GhostHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 	RacerPhysics* field0x3e8 = &racer->m_physics;
 
 	if ((field0x3e8->m_flags & RacerPhysics::c_flagSpinning) || field0x3e8->m_forwardSpeed == 0.0f ||
-		(racer->m_flags & c_racerFlags0xd04Bit0)) {
+		(racer->m_flags & Racer::c_flagShielded)) {
 		return;
 	}
 

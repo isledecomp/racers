@@ -50,7 +50,6 @@ private:
 		c_millisecondsPerHour = 3600000,
 		c_longTimeThresholdMs = 600000,
 		c_timeDivisor = 10,
-		c_racerFlags0xd04Bit12 = 1 << 12,
 	};
 
 	GolFontBase* m_font;                 // 0x00

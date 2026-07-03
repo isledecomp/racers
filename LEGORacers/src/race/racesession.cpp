@@ -1090,7 +1090,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	if (m_demoMode) {
 		Racer* racer = m_raceState.GetRacers();
 		racer->SwitchToAiControl();
-		racer->m_flags |= c_racerFlags0xd04Bit23;
+		racer->m_flags |= Racer::c_flagDemoRacer;
 	}
 
 	if (!m_splitScreen) {

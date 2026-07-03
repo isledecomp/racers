@@ -16,7 +16,7 @@ private:
 	friend class RaceState;
 
 	enum {
-		c_rubberBandFlags = Racer::c_flagMagnetHeld | Racer::c_flagBit29,
+		c_rubberBandFlags = Racer::c_flagMagnetHeld | Racer::c_flagGrabbed,
 	};
 
 	void Reset();

@@ -7,6 +7,7 @@
 #include "golnametable.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/raceeventtable.h"
+#include "race/racer/racer.h"
 #include "types.h"
 #include "world/golworlddatabase.h"
 
@@ -33,15 +34,15 @@ RocketHazard::~RocketHazard()
 // FUNCTION: LEGORACERS 0x0048e370
 LegoS32 RocketHazard::ClearFields()
 {
-	m_unk0x4c[0] = 0.0f;
-	m_unk0x4c[1] = 0.0f;
-	m_unk0x4c[2] = 0.0f;
+	m_savedModelDistances[0] = 0.0f;
+	m_savedModelDistances[1] = 0.0f;
+	m_savedModelDistances[2] = 0.0f;
 	m_offModel = NULL;
 	m_onModel = NULL;
 	m_collider = NULL;
 	m_eventQueue = NULL;
 	m_collisionEvent = NULL;
-	m_unk0x58 = 1;
+	m_idle = 1;
 
 	return 0;
 }
@@ -81,7 +82,7 @@ void RocketHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_onModel = modelEntity;
 
 	for (LegoS32 i = 0; i < c_modelDistanceCount; i++) {
-		m_unk0x4c[i] = m_offModel->GetModelDistance(i);
+		m_savedModelDistances[i] = m_offModel->GetModelDistance(i);
 	}
 
 	ShowOffModel();
@@ -90,7 +91,7 @@ void RocketHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_offModel->GetPosition(&position);
 	m_trigger.SetBoundsCenter(position);
 	m_trigger.SetBoundsRadius(g_rocketTriggerRadius);
-	m_unk0x58 = 1;
+	m_idle = 1;
 	m_state = 1;
 }
 
@@ -133,18 +134,18 @@ void RocketHazard::Update(undefined4 p_elapsedMs)
 	if (m_state != 1) {
 		Hazard::Update(p_elapsedMs);
 
-		LegoU32 state = m_unk0x58;
+		LegoU32 state = m_idle;
 		if (state == 0) {
 			if (m_onModel->GetModelDistance(0) == g_rocketInactiveModelDistance) {
 				ShowOnModel();
-				m_unk0x58 = 1;
+				m_idle = 1;
 				return;
 			}
 		}
 		else if (state == 1 && m_offModel->GetModelDistance(0) == g_rocketInactiveModelDistance) {
 			ShowOffModel();
 		}
-		m_unk0x58 = 1;
+		m_idle = 1;
 	}
 }
 
@@ -153,7 +154,7 @@ void RocketHazard::ShowOnModel()
 {
 	for (LegoS32 i = 0; i < c_modelDistanceCount; i++) {
 		if (m_onModel) {
-			m_onModel->SetModelDistance(i, m_unk0x4c[i]);
+			m_onModel->SetModelDistance(i, m_savedModelDistances[i]);
 		}
 
 		if (m_offModel) {
@@ -180,7 +181,7 @@ void RocketHazard::ShowOffModel()
 		}
 
 		if (m_offModel) {
-			m_offModel->SetModelDistance(i, m_unk0x4c[i]);
+			m_offModel->SetModelDistance(i, m_savedModelDistances[i]);
 		}
 	}
 
@@ -197,7 +198,7 @@ void RocketHazard::ShowOffModel()
 // FUNCTION: LEGORACERS 0x0048e660
 void RocketHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
-	if (p_data->m_racerView1->GetFlags() & c_field0x0e0Flags0xd04Bit0) {
-		m_unk0x58 = 0;
+	if (p_data->m_racerView1->GetFlags() & Racer::c_flagShielded) {
+		m_idle = 0;
 	}
 }

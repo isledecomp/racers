@@ -121,7 +121,7 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 {
 	LegoU32 flags = p_racer->m_flags;
 	if (!(flags & c_flagGhost)) {
-		if (flags & c_racerFlags0xd04Bit21) {
+		if (flags & Racer::c_flagWarping) {
 			m_state = 6;
 			return flags;
 		}
@@ -129,7 +129,7 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 		m_manager->CancelMagnetHold(p_racer);
 		m_racer = p_racer;
 		m_isDemoRacer = p_racer->m_controlMode == 2;
-		p_racer->m_flags |= c_racerFlags0xd04Bit21;
+		p_racer->m_flags |= Racer::c_flagWarping;
 
 		m_modelEntity.SetPrimaryModel(p_model->GetModel(0), p_model->GetModelDistance(0));
 		for (LegoU32 i = 1; i < 3; i++) {
@@ -356,7 +356,7 @@ void WarpAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateStarting: {
-		m_racer->m_flags &= ~Racer::c_flagBit21;
+		m_racer->m_flags &= ~Racer::c_flagWarping;
 		m_racer->EnterGhostMode();
 		m_racer->m_visuals.SetScale(1.0f);
 		m_racer->m_physics.EndExternalForce0();

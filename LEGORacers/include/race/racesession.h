@@ -129,8 +129,6 @@ private:
 		c_keySourceAbortMask = 0x30000000,
 		c_maxScreenshotIndex = 9999,
 		c_contextFlag0x20Bit8 = 1 << 8,
-		c_racerFlags0xd04Bit4 = 1 << 4,
-		c_racerFlags0xd04Bit23 = 0x00800000,
 		c_updateStepMs = 40,
 		c_overlayStringId = 0x2e,
 		c_overlayDrawDelayMs = 250,

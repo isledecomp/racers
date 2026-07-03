@@ -868,10 +868,10 @@ void GolD3DRenderDevice::VTable0x5c()
 		GOL_FATALERROR_MESSAGE("Unable to set viewport");
 	}
 
-	m_unk0xc8490 = &lens->m_unk0x120.m_unk0x190;
-	m_unk0xc8494 = &lens->m_unk0x120.m_unk0x1d0;
+	m_unk0xc8490 = &lens->m_cameraMatrices.m_viewProjection;
+	m_unk0xc8494 = &lens->m_cameraMatrices.m_viewScreenProjection;
 	::memcpy(&m_unk0x4c, &lens->m_viewFrustum, sizeof(m_unk0x4c));
-	::memcpy(m_unk0xc8400, &lens->m_unk0x120.m_unk0x210, sizeof(m_unk0xc8400));
+	::memcpy(m_unk0xc8400, &lens->m_cameraMatrices.m_viewportWidth, sizeof(m_unk0xc8400));
 }
 
 // FUNCTION: GOLDP 0x10008880
@@ -917,13 +917,13 @@ void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 		m_unk0xc83e4 = TRUE;
 		m_unk0xc8518 = m_unk0xc8498;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
 		m_unk0xc8518 = &m_unk0xc84d8;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
 
 	GolModel* model = static_cast<GolModel*>(canoe->GetModel(result.m_lodIndex));
@@ -987,13 +987,13 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 		m_unk0xc83e4 = TRUE;
 		m_unk0xc8518 = m_unk0xc8498;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
 		m_unk0xc8518 = &m_unk0xc84d8;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
 
 	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
@@ -1058,13 +1058,13 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 		m_unk0xc83e4 = TRUE;
 		m_unk0xc8518 = m_unk0xc8498;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
 		m_unk0xc8518 = &m_unk0xc84d8;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
 
 	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
@@ -1177,13 +1177,13 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 		m_unk0xc83e4 = TRUE;
 		m_unk0xc8518 = m_unk0xc8498;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
 	}
 	else {
 		m_unk0xc83e4 = FALSE;
 		m_unk0xc8518 = &m_unk0xc84d8;
 		FUN_10012f50();
-		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
+		GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
 
 	GolModel* model = static_cast<GolModel*>(modelEntity->GetModel(result.m_lodIndex));
@@ -1316,8 +1316,8 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 	modelMatrix->m_m[3][1] = position.m_y;
 	modelMatrix->m_m[3][2] = position.m_z;
 
-	GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
-	GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
+	GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+	GolMath::MultiplyMatrix4(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 
 	GolModel* model = static_cast<GolModel*>(modelEntity->GetModel(result.m_lodIndex));
 	GdbVertexArray* vertexArray = model->GetVertexArray();
@@ -1661,7 +1661,7 @@ void GolD3DRenderDevice::VTable0xb4(GolBillboard& p_param)
 
 		LegoBool32 builtMatrix = p_param.FUN_10014e50(&right, &forward, &m_unk0xc8410);
 		if (builtMatrix) {
-			GolMath::FUN_1002f3a0(m_unk0xc8410, *m_unk0xc8490, m_unk0xc8498);
+			GolMath::MultiplyMatrix4(m_unk0xc8410, *m_unk0xc8490, m_unk0xc8498);
 			m_unk0xc8568 = 0;
 			m_unk0xc83e4 = 1;
 			m_unk0xc8518 = m_unk0xc8498;

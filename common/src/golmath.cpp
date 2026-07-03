@@ -8,7 +8,7 @@ DECOMP_SIZE_ASSERT(GolMatrix4, 0x40)
 DECOMP_SIZE_ASSERT(GolQuat, 0x10)
 
 // FUNCTION: GOLDP 0x1002f3a0
-void GolMath::FUN_1002f3a0(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest)
+void GolMath::MultiplyMatrix4(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest)
 {
 	LegoU32 i;
 	const LegoFloat(*leftRow)[4] = &p_left.m_m[0];
@@ -38,7 +38,7 @@ void GolMath::FUN_1002f3a0(const GolMatrix4& p_left, const GolMatrix4& p_right, 
 }
 
 // FUNCTION: GOLDP 0x1002f450
-void GolMath::FUN_1002f450(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest)
+void GolMath::MultiplyMatrix4Affine(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest)
 {
 	LegoU32 i;
 	for (i = 0; i < 3; i++) {

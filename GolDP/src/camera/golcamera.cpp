@@ -9,7 +9,7 @@ DECOMP_SIZE_ASSERT(GolCamera, 0x344)
 // FUNCTION: GOLDP 0x10001ea0
 GolCamera::GolCamera()
 {
-	m_transform = &m_unk0x120.m_unk0x00;
+	m_transform = &m_cameraMatrices.m_transform;
 	m_renderer = NULL;
 }
 
@@ -40,10 +40,10 @@ void GolCamera::FUN_10001f60(GolD3DRenderDevice* p_renderer)
 			m_aspectRatio = width / height;
 		}
 
-		m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
-		m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
-		m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewport.m_left);
-		m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewport.m_top);
+		m_cameraMatrices.m_viewportWidth = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+		m_cameraMatrices.m_viewportHeight = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
+		m_cameraMatrices.m_viewportLeft = static_cast<LegoFloat>(m_viewport.m_left);
+		m_cameraMatrices.m_viewportTop = static_cast<LegoFloat>(m_viewport.m_top);
 		m_flags |= c_flagBit0 | c_flagBit1;
 	}
 }
@@ -59,10 +59,10 @@ void GolCamera::VTable0x28()
 				m_aspectRatio = width / height;
 			}
 
-			m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
-			m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
-			m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewport.m_left);
-			m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewport.m_top);
+			m_cameraMatrices.m_viewportWidth = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+			m_cameraMatrices.m_viewportHeight = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
+			m_cameraMatrices.m_viewportLeft = static_cast<LegoFloat>(m_viewport.m_left);
+			m_cameraMatrices.m_viewportTop = static_cast<LegoFloat>(m_viewport.m_top);
 		}
 
 		if (m_flags & c_flagBit0) {
@@ -73,8 +73,16 @@ void GolCamera::VTable0x28()
 			VTable0x04();
 		}
 
-		GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x110, &m_unk0x120.m_unk0x190);
-		GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x150, &m_unk0x120.m_unk0x1d0);
+		GolMath::MultiplyMatrix4(
+			m_cameraMatrices.m_view,
+			m_cameraMatrices.m_projection,
+			&m_cameraMatrices.m_viewProjection
+		);
+		GolMath::MultiplyMatrix4(
+			m_cameraMatrices.m_view,
+			m_cameraMatrices.m_screenProjection,
+			&m_cameraMatrices.m_viewScreenProjection
+		);
 	}
 }
 
@@ -85,10 +93,10 @@ void GolCamera::VTable0x00()
 	GolVec3 up;
 	GolVec3 forward;
 	GolVec3 right;
-	m_unk0x120.m_unk0x00.GetBasis(&right, &forward, &up);
-	m_unk0x120.m_unk0x00.GetPosition(&position);
+	m_cameraMatrices.m_transform.GetBasis(&right, &forward, &up);
+	m_cameraMatrices.m_transform.GetPosition(&position);
 
-	GolMatrix4& viewMatrix = m_unk0x120.m_unk0xd0;
+	GolMatrix4& viewMatrix = m_cameraMatrices.m_view;
 	viewMatrix.m_m[0][0] = up.m_x;
 	viewMatrix.m_m[0][1] = forward.m_x;
 	viewMatrix.m_m[0][2] = right.m_x;
@@ -116,7 +124,7 @@ void GolCamera::VTable0x00()
 }
 
 // FUNCTION: GOLDP 0x100022b0
-void GolCamera::FUN_100022b0(
+void GolCamera::BuildProjection(
 	GolMatrix4* p_matrix,
 	LegoFloat p_unk0x08,
 	LegoFloat p_unk0x0c,
@@ -161,16 +169,16 @@ void GolCamera::VTable0x04()
 		m_viewBounds.m_u = m_nearHalfHeight;
 	}
 
-	FUN_100022b0(&m_unk0x120.m_unk0x110, 0.5f, 0.5f, 0.5f, 0.5f);
+	BuildProjection(&m_cameraMatrices.m_projection, 0.5f, 0.5f, 0.5f, 0.5f);
 
-	LegoFloat halfWidth = m_unk0x120.m_unk0x210 * 0.5f;
-	LegoFloat halfHeight = m_unk0x120.m_unk0x214 * 0.5f;
-	FUN_100022b0(
-		&m_unk0x120.m_unk0x150,
+	LegoFloat halfWidth = m_cameraMatrices.m_viewportWidth * 0.5f;
+	LegoFloat halfHeight = m_cameraMatrices.m_viewportHeight * 0.5f;
+	BuildProjection(
+		&m_cameraMatrices.m_screenProjection,
 		halfWidth,
 		halfHeight,
-		halfWidth + m_unk0x120.m_unk0x218,
-		halfHeight + m_unk0x120.m_unk0x21c
+		halfWidth + m_cameraMatrices.m_viewportLeft,
+		halfHeight + m_cameraMatrices.m_viewportTop
 	);
 
 	m_flags &= ~c_flagBit1;
@@ -179,43 +187,43 @@ void GolCamera::VTable0x04()
 // FUNCTION: GOLDP 0x10002430
 void GolCamera::VTable0x14(GolMatrix4* p_dest)
 {
-	p_dest->m_m[0][0] = m_unk0x120.m_unk0xd0.m_m[0][0];
-	p_dest->m_m[0][1] = m_unk0x120.m_unk0xd0.m_m[0][1];
-	p_dest->m_m[0][2] = m_unk0x120.m_unk0xd0.m_m[0][2];
-	p_dest->m_m[0][3] = m_unk0x120.m_unk0xd0.m_m[0][3];
-	p_dest->m_m[1][0] = m_unk0x120.m_unk0xd0.m_m[1][0];
-	p_dest->m_m[1][1] = m_unk0x120.m_unk0xd0.m_m[1][1];
-	p_dest->m_m[1][2] = m_unk0x120.m_unk0xd0.m_m[1][2];
-	p_dest->m_m[1][3] = m_unk0x120.m_unk0xd0.m_m[1][3];
-	p_dest->m_m[2][0] = m_unk0x120.m_unk0xd0.m_m[2][0];
-	p_dest->m_m[2][1] = m_unk0x120.m_unk0xd0.m_m[2][1];
-	p_dest->m_m[2][2] = m_unk0x120.m_unk0xd0.m_m[2][2];
-	p_dest->m_m[2][3] = m_unk0x120.m_unk0xd0.m_m[2][3];
-	p_dest->m_m[3][0] = m_unk0x120.m_unk0xd0.m_m[3][0];
-	p_dest->m_m[3][1] = m_unk0x120.m_unk0xd0.m_m[3][1];
-	p_dest->m_m[3][2] = m_unk0x120.m_unk0xd0.m_m[3][2];
-	p_dest->m_m[3][3] = m_unk0x120.m_unk0xd0.m_m[3][3];
+	p_dest->m_m[0][0] = m_cameraMatrices.m_view.m_m[0][0];
+	p_dest->m_m[0][1] = m_cameraMatrices.m_view.m_m[0][1];
+	p_dest->m_m[0][2] = m_cameraMatrices.m_view.m_m[0][2];
+	p_dest->m_m[0][3] = m_cameraMatrices.m_view.m_m[0][3];
+	p_dest->m_m[1][0] = m_cameraMatrices.m_view.m_m[1][0];
+	p_dest->m_m[1][1] = m_cameraMatrices.m_view.m_m[1][1];
+	p_dest->m_m[1][2] = m_cameraMatrices.m_view.m_m[1][2];
+	p_dest->m_m[1][3] = m_cameraMatrices.m_view.m_m[1][3];
+	p_dest->m_m[2][0] = m_cameraMatrices.m_view.m_m[2][0];
+	p_dest->m_m[2][1] = m_cameraMatrices.m_view.m_m[2][1];
+	p_dest->m_m[2][2] = m_cameraMatrices.m_view.m_m[2][2];
+	p_dest->m_m[2][3] = m_cameraMatrices.m_view.m_m[2][3];
+	p_dest->m_m[3][0] = m_cameraMatrices.m_view.m_m[3][0];
+	p_dest->m_m[3][1] = m_cameraMatrices.m_view.m_m[3][1];
+	p_dest->m_m[3][2] = m_cameraMatrices.m_view.m_m[3][2];
+	p_dest->m_m[3][3] = m_cameraMatrices.m_view.m_m[3][3];
 }
 
 // FUNCTION: GOLDP 0x100024d0
 void GolCamera::VTable0x18(GolMatrix4* p_dest)
 {
-	p_dest->m_m[0][0] = m_unk0x120.m_unk0x1d0.m_m[0][0];
-	p_dest->m_m[0][1] = m_unk0x120.m_unk0x1d0.m_m[0][1];
-	p_dest->m_m[0][2] = m_unk0x120.m_unk0x1d0.m_m[0][2];
-	p_dest->m_m[0][3] = m_unk0x120.m_unk0x1d0.m_m[0][3];
-	p_dest->m_m[1][0] = m_unk0x120.m_unk0x1d0.m_m[1][0];
-	p_dest->m_m[1][1] = m_unk0x120.m_unk0x1d0.m_m[1][1];
-	p_dest->m_m[1][2] = m_unk0x120.m_unk0x1d0.m_m[1][2];
-	p_dest->m_m[1][3] = m_unk0x120.m_unk0x1d0.m_m[1][3];
-	p_dest->m_m[2][0] = m_unk0x120.m_unk0x1d0.m_m[2][0];
-	p_dest->m_m[2][1] = m_unk0x120.m_unk0x1d0.m_m[2][1];
-	p_dest->m_m[2][2] = m_unk0x120.m_unk0x1d0.m_m[2][2];
-	p_dest->m_m[2][3] = m_unk0x120.m_unk0x1d0.m_m[2][3];
-	p_dest->m_m[3][0] = m_unk0x120.m_unk0x1d0.m_m[3][0];
-	p_dest->m_m[3][1] = m_unk0x120.m_unk0x1d0.m_m[3][1];
-	p_dest->m_m[3][2] = m_unk0x120.m_unk0x1d0.m_m[3][2];
-	p_dest->m_m[3][3] = m_unk0x120.m_unk0x1d0.m_m[3][3];
+	p_dest->m_m[0][0] = m_cameraMatrices.m_viewScreenProjection.m_m[0][0];
+	p_dest->m_m[0][1] = m_cameraMatrices.m_viewScreenProjection.m_m[0][1];
+	p_dest->m_m[0][2] = m_cameraMatrices.m_viewScreenProjection.m_m[0][2];
+	p_dest->m_m[0][3] = m_cameraMatrices.m_viewScreenProjection.m_m[0][3];
+	p_dest->m_m[1][0] = m_cameraMatrices.m_viewScreenProjection.m_m[1][0];
+	p_dest->m_m[1][1] = m_cameraMatrices.m_viewScreenProjection.m_m[1][1];
+	p_dest->m_m[1][2] = m_cameraMatrices.m_viewScreenProjection.m_m[1][2];
+	p_dest->m_m[1][3] = m_cameraMatrices.m_viewScreenProjection.m_m[1][3];
+	p_dest->m_m[2][0] = m_cameraMatrices.m_viewScreenProjection.m_m[2][0];
+	p_dest->m_m[2][1] = m_cameraMatrices.m_viewScreenProjection.m_m[2][1];
+	p_dest->m_m[2][2] = m_cameraMatrices.m_viewScreenProjection.m_m[2][2];
+	p_dest->m_m[2][3] = m_cameraMatrices.m_viewScreenProjection.m_m[2][3];
+	p_dest->m_m[3][0] = m_cameraMatrices.m_viewScreenProjection.m_m[3][0];
+	p_dest->m_m[3][1] = m_cameraMatrices.m_viewScreenProjection.m_m[3][1];
+	p_dest->m_m[3][2] = m_cameraMatrices.m_viewScreenProjection.m_m[3][2];
+	p_dest->m_m[3][3] = m_cameraMatrices.m_viewScreenProjection.m_m[3][3];
 }
 
 // FUNCTION: GOLDP 0x10002570
@@ -225,22 +233,22 @@ void GolCamera::VTable0x1c(const GolVec3* p_src, GolVec3* p_dest)
 		VTable0x00();
 	}
 
-	LegoFloat x = m_unk0x120.m_unk0xd0.m_m[0][0];
+	LegoFloat x = m_cameraMatrices.m_view.m_m[0][0];
 	p_dest->m_x = x * p_src->m_x;
-	p_dest->m_y = m_unk0x120.m_unk0xd0.m_m[0][1] * p_src->m_x;
-	p_dest->m_z = m_unk0x120.m_unk0xd0.m_m[0][2] * p_src->m_x;
+	p_dest->m_y = m_cameraMatrices.m_view.m_m[0][1] * p_src->m_x;
+	p_dest->m_z = m_cameraMatrices.m_view.m_m[0][2] * p_src->m_x;
 
-	p_dest->m_x += m_unk0x120.m_unk0xd0.m_m[1][0] * p_src->m_y;
-	p_dest->m_y += m_unk0x120.m_unk0xd0.m_m[1][1] * p_src->m_y;
-	p_dest->m_z += m_unk0x120.m_unk0xd0.m_m[1][2] * p_src->m_y;
+	p_dest->m_x += m_cameraMatrices.m_view.m_m[1][0] * p_src->m_y;
+	p_dest->m_y += m_cameraMatrices.m_view.m_m[1][1] * p_src->m_y;
+	p_dest->m_z += m_cameraMatrices.m_view.m_m[1][2] * p_src->m_y;
 
-	p_dest->m_x += m_unk0x120.m_unk0xd0.m_m[2][0] * p_src->m_z;
-	p_dest->m_y += m_unk0x120.m_unk0xd0.m_m[2][1] * p_src->m_z;
-	p_dest->m_z += m_unk0x120.m_unk0xd0.m_m[2][2] * p_src->m_z;
+	p_dest->m_x += m_cameraMatrices.m_view.m_m[2][0] * p_src->m_z;
+	p_dest->m_y += m_cameraMatrices.m_view.m_m[2][1] * p_src->m_z;
+	p_dest->m_z += m_cameraMatrices.m_view.m_m[2][2] * p_src->m_z;
 
-	p_dest->m_x += m_unk0x120.m_unk0xd0.m_m[3][0];
-	p_dest->m_y += m_unk0x120.m_unk0xd0.m_m[3][1];
-	p_dest->m_z += m_unk0x120.m_unk0xd0.m_m[3][2];
+	p_dest->m_x += m_cameraMatrices.m_view.m_m[3][0];
+	p_dest->m_y += m_cameraMatrices.m_view.m_m[3][1];
+	p_dest->m_z += m_cameraMatrices.m_view.m_m[3][2];
 }
 
 // FUNCTION: GOLDP 0x10002630
@@ -264,10 +272,10 @@ void GolCamera::VTable0x0c(Rect* p_rect)
 		m_aspectRatio = width / height;
 	}
 
-	m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
-	m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
-	m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewport.m_left);
-	m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewport.m_top);
+	m_cameraMatrices.m_viewportWidth = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+	m_cameraMatrices.m_viewportHeight = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
+	m_cameraMatrices.m_viewportLeft = static_cast<LegoFloat>(m_viewport.m_left);
+	m_cameraMatrices.m_viewportTop = static_cast<LegoFloat>(m_viewport.m_top);
 
 	if (m_flags & c_flagBit2) {
 		FUN_1001c450(&m_viewFrustum);
@@ -277,8 +285,16 @@ void GolCamera::VTable0x0c(Rect* p_rect)
 	}
 
 	VTable0x04();
-	GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x110, &m_unk0x120.m_unk0x190);
-	GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x150, &m_unk0x120.m_unk0x1d0);
+	GolMath::MultiplyMatrix4(
+		m_cameraMatrices.m_view,
+		m_cameraMatrices.m_projection,
+		&m_cameraMatrices.m_viewProjection
+	);
+	GolMath::MultiplyMatrix4(
+		m_cameraMatrices.m_view,
+		m_cameraMatrices.m_screenProjection,
+		&m_cameraMatrices.m_viewScreenProjection
+	);
 }
 
 // FUNCTION: GOLDP 0x10002770
@@ -286,26 +302,26 @@ void GolCamera::VTable0x20(const GolVec3* p_src, GolVec3* p_dest)
 {
 	VTable0x28();
 
-	LegoFloat x = m_unk0x120.m_unk0x1d0.m_m[0][0];
+	LegoFloat x = m_cameraMatrices.m_viewScreenProjection.m_m[0][0];
 	p_dest->m_x = x * p_src->m_x;
-	p_dest->m_y = m_unk0x120.m_unk0x1d0.m_m[0][1] * p_src->m_x;
-	p_dest->m_z = m_unk0x120.m_unk0x1d0.m_m[0][2] * p_src->m_x;
-	LegoFloat w = m_unk0x120.m_unk0x1d0.m_m[0][3] * p_src->m_x;
+	p_dest->m_y = m_cameraMatrices.m_viewScreenProjection.m_m[0][1] * p_src->m_x;
+	p_dest->m_z = m_cameraMatrices.m_viewScreenProjection.m_m[0][2] * p_src->m_x;
+	LegoFloat w = m_cameraMatrices.m_viewScreenProjection.m_m[0][3] * p_src->m_x;
 
-	p_dest->m_x += m_unk0x120.m_unk0x1d0.m_m[1][0] * p_src->m_y;
-	p_dest->m_y += m_unk0x120.m_unk0x1d0.m_m[1][1] * p_src->m_y;
-	p_dest->m_z += m_unk0x120.m_unk0x1d0.m_m[1][2] * p_src->m_y;
-	w += m_unk0x120.m_unk0x1d0.m_m[1][3] * p_src->m_y;
+	p_dest->m_x += m_cameraMatrices.m_viewScreenProjection.m_m[1][0] * p_src->m_y;
+	p_dest->m_y += m_cameraMatrices.m_viewScreenProjection.m_m[1][1] * p_src->m_y;
+	p_dest->m_z += m_cameraMatrices.m_viewScreenProjection.m_m[1][2] * p_src->m_y;
+	w += m_cameraMatrices.m_viewScreenProjection.m_m[1][3] * p_src->m_y;
 
-	p_dest->m_x += m_unk0x120.m_unk0x1d0.m_m[2][0] * p_src->m_z;
-	p_dest->m_y += m_unk0x120.m_unk0x1d0.m_m[2][1] * p_src->m_z;
-	p_dest->m_z += m_unk0x120.m_unk0x1d0.m_m[2][2] * p_src->m_z;
-	w += m_unk0x120.m_unk0x1d0.m_m[2][3] * p_src->m_z;
+	p_dest->m_x += m_cameraMatrices.m_viewScreenProjection.m_m[2][0] * p_src->m_z;
+	p_dest->m_y += m_cameraMatrices.m_viewScreenProjection.m_m[2][1] * p_src->m_z;
+	p_dest->m_z += m_cameraMatrices.m_viewScreenProjection.m_m[2][2] * p_src->m_z;
+	w += m_cameraMatrices.m_viewScreenProjection.m_m[2][3] * p_src->m_z;
 
-	p_dest->m_x += m_unk0x120.m_unk0x1d0.m_m[3][0];
-	p_dest->m_y += m_unk0x120.m_unk0x1d0.m_m[3][1];
-	p_dest->m_z += m_unk0x120.m_unk0x1d0.m_m[3][2];
-	w += m_unk0x120.m_unk0x1d0.m_m[3][3];
+	p_dest->m_x += m_cameraMatrices.m_viewScreenProjection.m_m[3][0];
+	p_dest->m_y += m_cameraMatrices.m_viewScreenProjection.m_m[3][1];
+	p_dest->m_z += m_cameraMatrices.m_viewScreenProjection.m_m[3][2];
+	w += m_cameraMatrices.m_viewScreenProjection.m_m[3][3];
 
 	LegoFloat inverseW = 1.0f / w;
 	p_dest->m_x *= inverseW;

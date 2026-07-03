@@ -51,7 +51,7 @@ void GolSceneTransformNode::FUN_10014a60(const GolMatrix4& p_m1, const GolMatrix
 		obj = m_unk0x18;
 		end = &m_unk0x18[m_capacity];
 		for (; obj < end; obj++) {
-			GolMath::FUN_1002f3a0(obj->m_unk0x90, p_m3, &obj->m_unk0x50);
+			GolMath::MultiplyMatrix4(obj->m_unk0x90, p_m3, &obj->m_unk0x50);
 		}
 	}
 	else {
@@ -60,10 +60,10 @@ void GolSceneTransformNode::FUN_10014a60(const GolMatrix4& p_m1, const GolMatrix
 		for (; obj < end; obj++) {
 			GolTransform* parent = static_cast<GolTransform*>(obj->m_unk0x04);
 			if (parent == NULL) {
-				GolMath::FUN_1002f3a0(obj->m_unk0x10, p_m1, &obj->m_unk0x50);
+				GolMath::MultiplyMatrix4(obj->m_unk0x10, p_m1, &obj->m_unk0x50);
 			}
 			else {
-				GolMath::FUN_1002f3a0(obj->m_unk0x10, parent->m_unk0x50, &obj->m_unk0x50);
+				GolMath::MultiplyMatrix4(obj->m_unk0x10, parent->m_unk0x50, &obj->m_unk0x50);
 			}
 		}
 	}
@@ -122,10 +122,10 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 		for (; obj < end; obj++) {
 			GolTransform* parent = static_cast<GolTransform*>(obj->m_unk0x04);
 			if (parent == NULL) {
-				GolMath::FUN_1002f450(obj->m_unk0x10, p_m, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, p_m, &obj->m_unk0x90);
 			}
 			else {
-				GolMath::FUN_1002f450(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
 			}
 		}
 		return;
@@ -153,10 +153,10 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 		}
 		else {
 			if (parent != NULL) {
-				GolMath::FUN_1002f450(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
 			}
 			else {
-				GolMath::FUN_1002f450(obj->m_unk0x10, p_m, &obj->m_unk0x90);
+				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, p_m, &obj->m_unk0x90);
 			}
 		}
 	}

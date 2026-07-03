@@ -143,8 +143,8 @@ public:
 			   p_left.m_w * p_right.m_w;
 	}
 
-	static void FUN_1002f3a0(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
-	static void FUN_1002f450(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
+	static void MultiplyMatrix4(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
+	static void MultiplyMatrix4Affine(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
 	static void SinCos(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos);
 	static void FUN_00449190(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
 	static void __fastcall NormalizeVector2(const GolVec2& p_src, GolVec2* p_dest);

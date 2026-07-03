@@ -45,7 +45,7 @@ protected:
 	friend class GolD3DRenderDevice;
 
 	void FUN_10001f60(GolD3DRenderDevice*);
-	void FUN_100022b0(
+	void BuildProjection(
 		GolMatrix4* p_matrix,
 		LegoFloat p_unk0x08,
 		LegoFloat p_unk0x0c,
@@ -54,8 +54,8 @@ protected:
 	);
 	void FUN_10002860(D3DVIEWPORT2* p_viewport);
 
-	GolCameraMatrices m_unk0x120;   // 0x120
-	GolD3DRenderDevice* m_renderer; // 0x340
+	GolCameraMatrices m_cameraMatrices; // 0x120
+	GolD3DRenderDevice* m_renderer;     // 0x340
 };
 
 #endif // GOLCAMERA_H

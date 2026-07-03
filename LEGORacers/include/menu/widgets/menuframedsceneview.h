@@ -1,5 +1,5 @@
-#ifndef OBSCURERUNE0X4D8
-#define OBSCURERUNE0X4D8
+#ifndef MENUFRAMEDSCENEVIEW_H
+#define MENUFRAMEDSCENEVIEW_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -30,4 +30,4 @@ protected:
 	MenuFrame m_unk0xdc; // 0x0dc
 };
 
-#endif // OBSCURERUNE0X4D8
+#endif // MENUFRAMEDSCENEVIEW_H

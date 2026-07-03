@@ -15,7 +15,7 @@ public:
 	// SIZE 0xa0
 	class CreateParams : public MenuButton::CreateParams {
 	public:
-		GolImage* m_unk0x9c; // 0x9c
+		GolImage* m_highlightImage; // 0x9c
 	};
 
 	MenuHotspotButton();
@@ -47,9 +47,9 @@ protected:
 	void SelectHotspotByCode(LegoU32 p_code);
 	MenuWidget* HitTestHotspots(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y);
 
-	MenuStyleTable::HotspotStyle* m_unk0x21c; // 0x21c
-	GolImage* m_unk0x220;                     // 0x220
-	undefined4 m_hotspotIndex;                // 0x224
+	MenuStyleTable::HotspotStyle* m_hotspotStyle; // 0x21c
+	GolImage* m_highlightImage;                   // 0x220
+	undefined4 m_hotspotIndex;                    // 0x224
 };
 
 #endif // MENUHOTSPOTBUTTON_H

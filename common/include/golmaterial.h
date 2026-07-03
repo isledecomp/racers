@@ -1,5 +1,5 @@
-#ifndef DUSKWINDBANANARELIC0x24_H
-#define DUSKWINDBANANARELIC0x24_H
+#ifndef GOLMATERIAL_H
+#define GOLMATERIAL_H
 
 #include "decomp.h"
 #include "golname.h"
@@ -135,4 +135,4 @@ inline GolMaterialParams::GolMaterialParams(LegoU8 p_fullIntensity)
 	m_destBlend = 0;
 }
 
-#endif // DUSKWINDBANANARELIC0x24_H
+#endif // GOLMATERIAL_H

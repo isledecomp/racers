@@ -1,5 +1,5 @@
-#ifndef PURPLERIBBON0x25_H
-#define PURPLERIBBON0x25_H
+#ifndef GOLD3DTEXTURELIST_H
+#define GOLD3DTEXTURELIST_H
 
 #include "decomp.h"
 #include "material/goltexturelist.h"
@@ -31,4 +31,4 @@ private:
 	GolD3DTexture* m_items; // 0x20
 };
 
-#endif // PURPLERIBBON0x25_H
+#endif // GOLD3DTEXTURELIST_H

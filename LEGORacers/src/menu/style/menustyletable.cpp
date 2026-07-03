@@ -228,7 +228,7 @@ void MenuStyleTable::ParseTextStyle(TextStyle* p_entry)
 			p_entry->m_hasColor = TRUE;
 			break;
 		case GolFileParser::e_unknown0x2e:
-			p_entry->m_unk0x08 = m_parser->ReadInteger();
+			p_entry->m_wrapWidth = m_parser->ReadInteger();
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
@@ -347,7 +347,7 @@ void MenuStyleTable::ParseMultiStateStyle(MultiStateStyle* p_entry)
 		return;
 	}
 
-	GolImage** image = p_entry->m_imagesFlat;
+	GolImage** image = &p_entry->m_stateImages[0][0];
 	do {
 		LegoS32 i;
 
@@ -546,8 +546,8 @@ void MenuStyleTable::ParseCompositeStyle(CompositeStyle* p_entry)
 				}
 				break;
 			case c_styleSounds:
-				p_entry->m_soundIds.m_first = m_parser->ReadInteger();
-				p_entry->m_soundIds.m_second = m_parser->ReadInteger();
+				p_entry->m_stepSoundIds.m_first = m_parser->ReadInteger();
+				p_entry->m_stepSoundIds.m_second = m_parser->ReadInteger();
 				break;
 			default:
 				m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);

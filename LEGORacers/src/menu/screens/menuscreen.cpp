@@ -409,12 +409,12 @@ void MenuScreen::ApplySelectorDefaults(
 	p_createParams->m_nextButtonParams->m_iconEventHandler = NULL;
 
 	for (LegoS32 i = 0; i < 6; i++) {
-		if (!p_createParams->m_prevButtonParams->m_images[i]) {
-			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetPrevButtonStyle()->m_stateImages[i];
+		if (!p_createParams->m_prevButtonParams->m_stateImages[i]) {
+			p_createParams->m_prevButtonParams->m_stateImages[i] = p_styleEntry->GetPrevButtonStyle()->m_stateImages[i];
 		}
 
-		if (!p_createParams->m_nextButtonParams->m_images[i]) {
-			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetNextButtonStyle()->m_stateImages[i];
+		if (!p_createParams->m_nextButtonParams->m_stateImages[i]) {
+			p_createParams->m_nextButtonParams->m_stateImages[i] = p_styleEntry->GetNextButtonStyle()->m_stateImages[i];
 		}
 	}
 
@@ -448,12 +448,12 @@ void MenuScreen::ApplyCompositeDefaults(
 	p_createParams->m_nextButtonParams->m_iconEventHandler = NULL;
 
 	for (LegoS32 i = 0; i < 6; i++) {
-		if (!p_createParams->m_prevButtonParams->m_images[i]) {
-			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetPrevButtonStyle()->m_stateImages[i];
+		if (!p_createParams->m_prevButtonParams->m_stateImages[i]) {
+			p_createParams->m_prevButtonParams->m_stateImages[i] = p_styleEntry->GetPrevButtonStyle()->m_stateImages[i];
 		}
 
-		if (!p_createParams->m_nextButtonParams->m_images[i]) {
-			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetNextButtonStyle()->m_stateImages[i];
+		if (!p_createParams->m_nextButtonParams->m_stateImages[i]) {
+			p_createParams->m_nextButtonParams->m_stateImages[i] = p_styleEntry->GetNextButtonStyle()->m_stateImages[i];
 		}
 	}
 
@@ -548,8 +548,8 @@ LegoBool32 MenuScreen::CreateTextLabel(
 		createParams.m_stringTable = m_menuTextStrings;
 	}
 
-	if (!createParams.m_unk0x44 && styleEntry->m_unk0x08) {
-		createParams.m_unk0x44 = styleEntry->m_unk0x08;
+	if (!createParams.m_wrapWidth && styleEntry->m_wrapWidth) {
+		createParams.m_wrapWidth = styleEntry->m_wrapWidth;
 	}
 
 	if (!createParams.m_font) {
@@ -606,8 +606,8 @@ LegoBool32 MenuScreen::CreateButton(MenuButton* p_source, undefined2 p_event, un
 	ApplyIconDefaults(&createParams);
 
 	for (LegoS32 i = 0; i < 6; i++) {
-		if (!createParams.m_images[i]) {
-			createParams.m_images[i] = styleEntry->m_stateImages[i];
+		if (!createParams.m_stateImages[i]) {
+			createParams.m_stateImages[i] = styleEntry->m_stateImages[i];
 		}
 	}
 
@@ -627,8 +627,8 @@ LegoBool32 MenuScreen::CreateHotspotButton(MenuHotspotButton* p_source, undefine
 	MenuHotspotButton::CreateParams createParams = *sourceParams;
 	ApplyIconDefaults(&createParams);
 
-	if (!createParams.m_unk0x9c) {
-		createParams.m_unk0x9c = styleEntry->m_image;
+	if (!createParams.m_highlightImage) {
+		createParams.m_highlightImage = styleEntry->m_image;
 	}
 
 	return p_source->Create(&createParams, styleEntry);
@@ -719,7 +719,7 @@ LegoBool32 MenuScreen::CreateSceneView(MenuSceneView* p_source, undefined4 p_eve
 
 	MenuSceneView::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
-	createParams.m_unk0x7c = p_event;
+	createParams.m_eventCode = p_event;
 	createParams.m_worldScale = 1.0f;
 	createParams.m_aspectScale = GetAspectScale();
 	return p_source->Create(&createParams, m_useBinaryFiles);
@@ -741,7 +741,7 @@ LegoBool32 MenuScreen::CreateFramedSceneView(MenuFramedSceneView* p_source, unde
 		ApplyWidgetDefaults(createParams.m_unk0x84);
 	}
 
-	createParams.m_unk0x7c = p_event;
+	createParams.m_eventCode = p_event;
 	createParams.m_worldScale = 1.0f;
 	createParams.m_aspectScale = GetAspectScale();
 	return p_source->Create(&createParams, m_useBinaryFiles);

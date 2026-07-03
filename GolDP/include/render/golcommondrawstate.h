@@ -1,5 +1,5 @@
-#ifndef GOLDP_GOLCOMMONSTATE_H
-#define GOLDP_GOLCOMMONSTATE_H
+#ifndef GOLDP_GOLCOMMONDRAWSTATE_H
+#define GOLDP_GOLCOMMONDRAWSTATE_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -57,4 +57,4 @@ public:
 	GolD3DRenderDevice* m_currentRenderer; // 0x1c
 };
 
-#endif // GOLDP_GOLCOMMONSTATE_H
+#endif // GOLDP_GOLCOMMONDRAWSTATE_H

@@ -55,7 +55,7 @@ LegoBool32 MenuModelCarousel::Create(CreateParams* p_createParams, MenuStyleTabl
 		return FALSE;
 	}
 
-	m_scrollStep = p_createParams->m_unk0x40;
+	m_scrollStep = p_createParams->m_scrollStep;
 	m_viewportIndex = p_createParams->m_viewportIndex;
 	SetupCamera(p_createParams);
 
@@ -103,11 +103,11 @@ LegoBool32 MenuModelCarousel::Destroy()
 // STUB: LEGORACERS 0x0046cc10
 void MenuModelCarousel::SetupCamera(CreateParams* p_createParams)
 {
-	m_cameraDistance = p_createParams->m_cameraSettings[7];
+	m_cameraDistance = p_createParams->m_cameraVectors[7];
 	GolCamera* camera = m_golExport->CreateCamera();
 	m_camera = camera;
 
-	LegoFloat fov = p_createParams->m_cameraSettings[6];
+	LegoFloat fov = p_createParams->m_cameraVectors[6];
 	LegoU32 flags = camera->m_flags | GolCamera::c_flagProjectionDirty;
 	camera->m_fov = fov;
 	camera->m_flags = flags;
@@ -119,7 +119,7 @@ void MenuModelCarousel::SetupCamera(CreateParams* p_createParams)
 	camera->m_flags = nearFlags;
 
 	camera = m_camera;
-	LegoFloat farClip = p_createParams->m_cameraSettings[8];
+	LegoFloat farClip = p_createParams->m_cameraVectors[8];
 	LegoU32 farFlags = camera->m_flags | GolCamera::c_flagProjectionDirty;
 	camera->m_farClip = farClip;
 	camera->m_flags = farFlags;
@@ -215,7 +215,7 @@ void MenuModelCarousel::CreateItems(CreateParams* p_createParams)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		item->m_rect = p_createParams->m_unk0x3c[i];
+		item->m_rect = p_createParams->m_slotRects[i];
 		item++;
 	}
 

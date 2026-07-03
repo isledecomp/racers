@@ -20,7 +20,7 @@ MenuHotspotButton::~MenuHotspotButton()
 // FUNCTION: LEGORACERS 0x004665d0
 void MenuHotspotButton::Reset()
 {
-	m_unk0x220 = NULL;
+	m_highlightImage = NULL;
 	m_hotspotIndex = 0;
 	MenuButton::Reset();
 }
@@ -30,8 +30,8 @@ LegoBool32 MenuHotspotButton::Create(CreateParams* p_createParams, MenuStyleTabl
 {
 	Destroy();
 
-	m_unk0x220 = p_createParams->m_unk0x9c;
-	m_unk0x21c = p_styleEntry;
+	m_highlightImage = p_createParams->m_highlightImage;
+	m_hotspotStyle = p_styleEntry;
 
 	return MenuButton::Create(p_createParams, p_styleEntry);
 }
@@ -66,8 +66,8 @@ void MenuHotspotButton::SelectHotspotByCode(LegoU32 p_code)
 	LegoU32 id = p_code & InputDevice::c_keyCodeMask;
 
 	if (source == c_sourceRegion) {
-		for (LegoS32 i = 0; i < m_unk0x21c->m_hotspotCount; i++) {
-			if (!id || id == m_unk0x21c->m_hotspotIds[i]) {
+		for (LegoS32 i = 0; i < m_hotspotStyle->m_hotspotCount; i++) {
+			if (!id || id == m_hotspotStyle->m_hotspotIds[i]) {
 				m_hotspotIndex = id;
 
 				if (m_eventHandler) {
@@ -82,15 +82,15 @@ void MenuHotspotButton::SelectHotspotByCode(LegoU32 p_code)
 MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 {
 	MenuButton::DrawSelf(p_arg1, p_arg2);
-	m_unk0x1c0.DrawSelf(p_arg1, p_arg2);
+	m_imageWidget.DrawSelf(p_arg1, p_arg2);
 
 	if (m_hotspotIndex) {
 		LegoS32 index = 0;
-		while (m_unk0x21c->m_hotspotIds[index] != m_hotspotIndex) {
+		while (m_hotspotStyle->m_hotspotIds[index] != m_hotspotIndex) {
 			index++;
 		}
 
-		Rect rect = m_unk0x21c->m_hotspotRects[index];
+		Rect rect = m_hotspotStyle->m_hotspotRects[index];
 
 		Rect sourceRect;
 		IntersectRects(&rect, p_arg1, &sourceRect);
@@ -104,7 +104,7 @@ MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 		Rect destRect;
 		IntersectRects(&rect, p_arg2, &destRect);
 
-		DrawImage(&destRect, &sourceRect, m_unk0x220);
+		DrawImage(&destRect, &sourceRect, m_highlightImage);
 	}
 
 	return this;
@@ -113,9 +113,9 @@ MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 // FUNCTION: LEGORACERS 0x00466800
 MenuWidget* MenuHotspotButton::HitTestHotspots(InputEventQueue::Event*, undefined4 p_x, undefined4 p_y)
 {
-	for (LegoS32 i = 0; i < m_unk0x21c->m_hotspotCount; i++) {
-		if (PointInRect(&m_unk0x21c->m_hotspotRects[i], p_x, p_y)) {
-			SelectHotspotByCode(m_unk0x21c->m_hotspotIds[i] | c_sourceRegion);
+	for (LegoS32 i = 0; i < m_hotspotStyle->m_hotspotCount; i++) {
+		if (PointInRect(&m_hotspotStyle->m_hotspotRects[i], p_x, p_y)) {
+			SelectHotspotByCode(m_hotspotStyle->m_hotspotIds[i] | c_sourceRegion);
 			return this;
 		}
 	}

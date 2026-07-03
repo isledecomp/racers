@@ -1,5 +1,5 @@
-#ifndef OBSCUREZEBRA0XA4
-#define OBSCUREZEBRA0XA4
+#ifndef MENUTRIANGLE_H
+#define MENUTRIANGLE_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -27,4 +27,4 @@ protected:
 	LegoU32 m_alphaOverride;                       // 0xa0
 };
 
-#endif // OBSCUREZEBRA0XA4
+#endif // MENUTRIANGLE_H

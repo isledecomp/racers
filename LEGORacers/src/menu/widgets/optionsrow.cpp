@@ -46,12 +46,12 @@ LegoBool32 OptionsRowBase::Create(
 	Destroy();
 
 	m_styleEntry = p_styleEntry;
-	m_value = p_createParams->m_unk0xb0;
-	m_stepCount = p_createParams->m_unk0xb4;
+	m_value = p_createParams->m_initialValue;
+	m_stepCount = p_createParams->m_stepCount;
 
-	MenuIcon::SoundIdPair* soundIds = &p_createParams->m_unk0xac;
+	MenuIcon::SoundIdPair* soundIds = &p_createParams->m_stepSoundIds;
 	if (!p_createParams->m_hasSoundIds) {
-		soundIds = &p_styleEntry->m_soundIds;
+		soundIds = &p_styleEntry->m_stepSoundIds;
 	}
 
 	m_soundIds = *soundIds;

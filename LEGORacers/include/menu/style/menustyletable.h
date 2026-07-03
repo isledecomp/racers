@@ -4,7 +4,6 @@
 #include "compat.h"
 #include "decomp.h"
 #include "goltxtparser.h"
-#include "menu/style/imagetriplet.h"
 #include "menu/style/menuresourcetable.h"
 #include "menu/widgets/menuicon.h"
 #include "menu/widgets/visualstatecolor.h"
@@ -33,7 +32,7 @@ public:
 	public:
 		GolFont* m_font;          // 0x00
 		VisualStateColor m_color; // 0x04
-		LegoS32 m_unk0x08;        // 0x08
+		LegoS32 m_wrapWidth;      // 0x08
 		LegoBool32 m_hasColor;    // 0x0c
 		LegoS32 m_unk0x10;        // 0x10
 	};
@@ -88,12 +87,9 @@ public:
 	// SIZE 0x100
 	class MultiStateStyle : public IconStyle {
 	public:
-		GolFont* m_stateFonts[6]; // 0x90
-		union {
-			ImageTriplet m_unk0xa8[6];  // 0xa8
-			GolImage* m_imagesFlat[18]; // 0xa8
-		};
-		Rect m_rect; // 0xf0
+		GolFont* m_stateFonts[6];      // 0x90
+		GolImage* m_stateImages[6][3]; // 0xa8
+		Rect m_rect;                   // 0xf0
 	};
 
 	// SIZE 0x150
@@ -120,10 +116,10 @@ public:
 	// SIZE 0xbc
 	class CompositeStyle : public SelectorStyleBase {
 	public:
-		ImageStyle* m_thumbStyle;         // 0x98
-		ImageStyle* m_trackStyle;         // 0x9c
-		GolImage* m_stateImages[6];       // 0xa0
-		MenuIcon::SoundIdPair m_soundIds; // 0xb8
+		ImageStyle* m_thumbStyle;             // 0x98
+		ImageStyle* m_trackStyle;             // 0x9c
+		GolImage* m_stateImages[6];           // 0xa0
+		MenuIcon::SoundIdPair m_stepSoundIds; // 0xb8
 
 		ButtonStyle* GetPrevButtonStyle() const { return static_cast<ButtonStyle*>(m_prevButtonStyle); }
 		ButtonStyle* GetNextButtonStyle() const { return static_cast<ButtonStyle*>(m_nextButtonStyle); }

@@ -29,7 +29,7 @@ void MenuTextField::Reset()
 	m_text.Reset();
 	m_charset.Reset();
 	memset(m_buffer, 0, sizeof(m_buffer));
-	memset(&m_soundIds, 0, sizeof(m_soundIds));
+	memset(&m_editSoundIds, 0, sizeof(m_editSoundIds));
 	m_font = NULL;
 	m_inputMode = 3;
 	m_maxLength = 0x1f;
@@ -43,8 +43,8 @@ LegoBool32 MenuTextField::CreateField(CreateParams* p_createParams, const MenuIc
 {
 	Destroy();
 
-	m_soundIds.m_idPairs[0] = p_createParams->m_soundIds.m_idPairs[0];
-	m_soundIds.m_idPairs[1] = p_createParams->m_soundIds.m_idPairs[1];
+	m_editSoundIds.m_idPairs[0] = p_createParams->m_editSoundIds.m_idPairs[0];
+	m_editSoundIds.m_idPairs[1] = p_createParams->m_editSoundIds.m_idPairs[1];
 	m_font = p_createParams->m_font;
 	m_stringTable = p_createParams->m_stringTable;
 	m_maxLength = p_createParams->m_maxLength;
@@ -192,7 +192,7 @@ MenuWidget* MenuTextField::HandleCharacterInput(InputEventQueue::Event* p_event)
 				*m_text.FromCursor(m_length) = 0;
 				m_text.FirstLine();
 				m_eventHandler->OnWidgetValueChanged(this);
-				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[2]);
+				m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[2]);
 				return this;
 			}
 		}
@@ -206,7 +206,7 @@ MenuWidget* MenuTextField::HandleCharacterInput(InputEventQueue::Event* p_event)
 			}
 
 			if (i >= charsetLength) {
-				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
+				m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
 				return NULL;
 			}
 
@@ -215,12 +215,12 @@ MenuWidget* MenuTextField::HandleCharacterInput(InputEventQueue::Event* p_event)
 				m_length++;
 				m_text.FirstLine();
 				m_eventHandler->OnWidgetValueChanged(this);
-				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
+				m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[0]);
 				return this;
 			}
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
 		return this;
 	}
 
@@ -243,11 +243,11 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 				*m_text.FromCursor(m_length) = 0;
 			}
 
-			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[1]);
+			m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[1]);
 			break;
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
 		break;
 
 	case InputDevice::c_sourceJoystickButton | 0x5:
@@ -260,11 +260,11 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 				}
 			}
 
-			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[2]);
+			m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[2]);
 			break;
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
 		return NULL;
 
 	case InputDevice::c_sourceJoystickButton | 0x7:
@@ -272,11 +272,11 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 		if (m_length != m_maxLength) {
 			m_charsetIndex = (m_charsetIndex + 1) % m_charset.SelectionLength();
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_charsetIndex);
-			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
+			m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[0]);
 			break;
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
 		break;
 
 	case InputDevice::c_sourceJoystickButton | 0x9:
@@ -290,11 +290,11 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 			index--;
 			m_charsetIndex = index;
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_charsetIndex);
-			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
+			m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[0]);
 			break;
 		}
 
-		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
 		break;
 
 	default:

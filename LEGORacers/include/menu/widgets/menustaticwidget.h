@@ -1,5 +1,5 @@
-#ifndef OBSCUREANTHEM0X58
-#define OBSCUREANTHEM0X58
+#ifndef MENUSTATICWIDGET_H
+#define MENUSTATICWIDGET_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -19,4 +19,4 @@ public:
 	// MenuStaticWidget::`scalar deleting destructor'
 };
 
-#endif // OBSCUREANTHEM0X58
+#endif // MENUSTATICWIDGET_H

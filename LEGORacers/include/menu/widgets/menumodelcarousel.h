@@ -17,13 +17,13 @@ public:
 	// SIZE 0x74
 	class CreateParams : public MenuCarousel::CreateParams {
 	public:
-		LegoS32 m_slotCount;           // 0x38
-		Rect* m_unk0x3c;               // 0x3c
-		LegoFloat m_unk0x40;           // 0x40
-		LegoS32 m_focusedSlot;         // 0x44
-		LegoFloat m_cameraSettings[9]; // 0x48
-		LegoU32 m_viewportIndex;       // 0x6c
-		LegoFloat m_aspectScale;       // 0x70
+		LegoS32 m_slotCount;          // 0x38
+		Rect* m_slotRects;            // 0x3c
+		LegoFloat m_scrollStep;       // 0x40
+		LegoS32 m_focusedSlot;        // 0x44
+		LegoFloat m_cameraVectors[9]; // 0x48
+		LegoU32 m_viewportIndex;      // 0x6c
+		LegoFloat m_aspectScale;      // 0x70
 	};
 
 	// SIZE 0xd0

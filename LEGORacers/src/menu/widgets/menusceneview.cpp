@@ -55,7 +55,7 @@ void MenuSceneView::Reset()
 LegoBool32 MenuSceneView::Create(CreateParams* p_createParams, undefined4 p_binary)
 {
 	Destroy();
-	m_viewportClearMode = p_createParams->m_unk0x78;
+	m_viewportClearMode = p_createParams->m_viewportClearMode;
 
 	if (p_createParams->m_parent) {
 		if (!p_createParams->m_rect.m_right) {

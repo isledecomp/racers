@@ -13,7 +13,7 @@ public:
 	// SIZE 0x9c
 	class CreateParams : public MenuIcon::CreateParams {
 	public:
-		GolImage* m_images[6]; // 0x84
+		GolImage* m_stateImages[6]; // 0x84
 	};
 
 	MenuButton();
@@ -30,8 +30,8 @@ public:
 protected:
 	LegoBool32 CreateImage(MenuImage* p_image, CreateParams* p_createParams);
 
-	GolImage* m_unk0x1a8[6]; // 0x1a8
-	MenuImage m_unk0x1c0;    // 0x1c0
+	GolImage* m_stateImages[6]; // 0x1a8
+	MenuImage m_imageWidget;    // 0x1c0
 };
 
 #endif // MENUBUTTON_H

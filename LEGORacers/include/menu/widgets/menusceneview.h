@@ -1,5 +1,5 @@
-#ifndef OBSCURESIGIL0XDC
-#define OBSCURESIGIL0XDC
+#ifndef MENUSCENEVIEW_H
+#define MENUSCENEVIEW_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -13,7 +13,7 @@ class GolWorldEntity;
 class GolWorldDatabase;
 
 // VTABLE: LEGORACERS 0x004b1dfc
-// SIZE: 0xdc
+// SIZE 0xdc
 class MenuSceneView : public MenuWidget {
 public:
 	// SIZE 0x84
@@ -26,8 +26,8 @@ public:
 		LegoChar m_worldName[0x70 - 0x60]; // 0x60
 		undefined4 m_drawWorld;            // 0x70
 		LegoBool32 m_hasBlendedWorld;      // 0x74
-		undefined4 m_unk0x78;              // 0x78
-		undefined4 m_unk0x7c;              // 0x7c
+		undefined4 m_viewportClearMode;    // 0x78
+		undefined4 m_eventCode;            // 0x7c
 		LegoFloat m_aspectScale;           // 0x80
 	};
 
@@ -86,4 +86,4 @@ protected:
 	LegoFloat m_targetZoomRate;       // 0xd8
 };
 
-#endif // OBSCURESIGIL0XDC
+#endif // MENUSCENEVIEW_H

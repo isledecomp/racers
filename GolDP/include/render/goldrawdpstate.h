@@ -1,5 +1,5 @@
-#ifndef GOLDP_GOLDPSTATE_H
-#define GOLDP_GOLDPSTATE_H
+#ifndef GOLDP_GOLDRAWDPSTATE_H
+#define GOLDP_GOLDRAWDPSTATE_H
 
 #include "device/goldevicelist.h"
 #include "render/golcommondrawstate.h"
@@ -86,4 +86,4 @@ private:
 	GolD3DRenderDevice m_renderer;             // 0x354
 };
 
-#endif // GOLDP_GOLDPSTATE_H
+#endif // GOLDP_GOLDRAWDPSTATE_H

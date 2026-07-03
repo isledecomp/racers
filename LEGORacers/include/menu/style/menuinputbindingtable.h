@@ -4,7 +4,6 @@
 #include "compat.h"
 #include "decomp.h"
 #include "goltxtparser.h"
-#include "menu/style/imagetriplet.h"
 #include "menu/style/menuresourcetable.h"
 #include "menu/style/scenerefbinding.h"
 #include "menu/widgets/menubutton.h"
@@ -12,11 +11,13 @@
 #include "menu/widgets/menuicon.h"
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menuselector.h"
+#include "menu/widgets/menutextfield.h"
 #include "menu/widgets/visualstatecolor.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
 class GolFont;
+class GolString;
 class GolStringTable;
 class GolImage;
 
@@ -59,8 +60,8 @@ public:
 	public:
 		GolStringTable* m_stringTable; // 0x38
 		GolFont* m_font;               // 0x3c
-		undefined2 m_unk0x40;          // 0x40
-		undefined4 m_stringId;         // 0x44
+		undefined2 m_stringId;         // 0x40
+		undefined4 m_wrapWidth;        // 0x44
 	};
 
 	// SIZE 0x60
@@ -72,15 +73,15 @@ public:
 	// SIZE 0x88
 	class SceneBinding : public MenuWidget::CreateParams {
 	public:
-		LegoFloat m_cameraVectors[9];    // 0x38
-		LegoFloat m_unk0x5c;             // 0x5c
-		LegoChar m_unk0x60[0x70 - 0x60]; // 0x60
-		undefined4 m_unk0x70;            // 0x70
-		LegoBool32 m_unk0x74;            // 0x74
-		undefined4 m_unk0x78;            // 0x78
-		undefined4 m_unk0x7c;            // 0x7c
-		LegoFloat m_unk0x80;             // 0x80
-		void* m_unk0x84;                 // 0x84
+		LegoFloat m_cameraVectors[9];      // 0x38
+		LegoFloat m_worldScale;            // 0x5c
+		LegoChar m_worldName[0x70 - 0x60]; // 0x60
+		undefined4 m_drawWorld;            // 0x70
+		LegoBool32 m_hasBlendedWorld;      // 0x74
+		undefined4 m_viewportClearMode;    // 0x78
+		undefined4 m_eventCode;            // 0x7c
+		LegoFloat m_aspectScale;           // 0x80
+		void* m_linkedBinding;             // 0x84
 	};
 
 	// SIZE 0x98
@@ -93,24 +94,25 @@ public:
 	// SIZE 0x9c
 	class ButtonBinding : public IconBinding {
 	public:
-		GolImage* m_unk0x84[6]; // 0x84
+		GolImage* m_stateImages[6]; // 0x84
 	};
 
 	// SIZE 0xa0
 	class HotspotBinding : public ButtonBinding {
 	public:
-		GolImage* m_unk0x9c; // 0x9c
+		GolImage* m_highlightImage; // 0x9c
 	};
 
 	// SIZE 0xa0
 	class TextFieldBinding : public IconBinding {
 	public:
-		undefined m_unk0x84[0x8c - 0x84]; // 0x84
-		GolFont* m_font;                  // 0x8c
-		undefined m_unk0x90[0x94 - 0x90]; // 0x90
-		undefined2 m_maxLength;           // 0x94
-		undefined2 m_unk0x96[4];          // 0x96
-		undefined m_unk0x9e[0xa0 - 0x9e]; // 0x9e
+		GolStringTable* m_stringTable;            // 0x84
+		undefined2 m_charsetStringId;             // 0x88
+		undefined m_unk0x8a[0x8c - 0x8a];         // 0x8a
+		GolFont* m_font;                          // 0x8c
+		GolString* m_initialText;                 // 0x90
+		undefined2 m_maxLength;                   // 0x94
+		MenuTextField::SoundIdSet m_editSoundIds; // 0x96
 	};
 
 	// SIZE 0xb8
@@ -118,33 +120,31 @@ public:
 	public:
 		MenuImage::CreateParams* m_thumbParams; // 0x8c
 		MenuImage::CreateParams* m_trackParams; // 0x90
-		GolImage* m_unk0x94[6];                 // 0x94
-		MenuIcon::SoundIdPair m_unk0xac;        // 0xac
-		LegoS32 m_unk0xb0;                      // 0xb0
-		LegoS32 m_unk0xb4;                      // 0xb4
+		GolImage* m_stateImages[6];             // 0x94
+		MenuIcon::SoundIdPair m_stepSoundIds;   // 0xac
+		LegoS32 m_initialValue;                 // 0xb0
+		LegoS32 m_stepCount;                    // 0xb4
 	};
 
 	// SIZE 0xec
 	class MultiStateBinding : public IconBinding {
 	public:
-		undefined4 m_unk0x84;  // 0x84
-		GolFont* m_unk0x88[6]; // 0x88
-		union {
-			ImageTriplet m_unk0xa0[6];  // 0xa0
-			GolImage* m_imagesFlat[18]; // 0xa0
-		};
-		undefined4 m_unk0xe8; // 0xe8
+		undefined4 m_unk0x84;          // 0x84
+		GolFont* m_stateFonts[6];      // 0x88
+		GolImage* m_stateImages[6][3]; // 0xa0
+		undefined4 m_unk0xe8;          // 0xe8
 	};
 
 	// SIZE 0x74
 	class ModelCarouselBinding : public MenuWidget::CreateParams {
 	public:
-		LegoS32 m_unk0x38;                // 0x38
-		Rect* m_unk0x3c;                  // 0x3c
-		LegoFloat m_unk0x40;              // 0x40
-		undefined4 m_unk0x44;             // 0x44
-		LegoFloat m_cameraVectors[9];     // 0x48
-		undefined m_unk0x6c[0x74 - 0x6c]; // 0x6c
+		LegoS32 m_slotCount;          // 0x38
+		Rect* m_slotRects;            // 0x3c
+		LegoFloat m_scrollStep;       // 0x40
+		LegoS32 m_focusedSlot;        // 0x44
+		LegoFloat m_cameraVectors[9]; // 0x48
+		LegoU32 m_viewportIndex;      // 0x6c
+		LegoFloat m_aspectScale;      // 0x70
 	};
 
 	// SIZE 0x0c

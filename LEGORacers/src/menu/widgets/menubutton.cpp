@@ -22,9 +22,9 @@ MenuButton::~MenuButton()
 // FUNCTION: LEGORACERS 0x00466340
 void MenuButton::Reset()
 {
-	::memset(m_unk0x1a8, 0, sizeof(m_unk0x1a8));
+	::memset(m_stateImages, 0, sizeof(m_stateImages));
 
-	m_unk0x1c0.Destroy();
+	m_imageWidget.Destroy();
 	MenuIcon::Reset();
 }
 
@@ -34,7 +34,7 @@ LegoBool32 MenuButton::CreateImage(MenuImage* p_image, CreateParams* p_createPar
 	MenuImage::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
 
-	GolImage* image = p_createParams->m_images[0];
+	GolImage* image = p_createParams->m_stateImages[0];
 	::memcpy(&createParams, p_createParams, sizeof(MenuWidget::CreateParams));
 	createParams.m_id = m_id;
 	createParams.m_color = m_stateColors[0];
@@ -49,18 +49,18 @@ LegoBool32 MenuButton::Create(CreateParams* p_createParams, const MenuIcon::Crea
 {
 	Destroy();
 
-	::memcpy(m_unk0x1a8, p_createParams->m_images, sizeof(m_unk0x1a8));
+	::memcpy(m_stateImages, p_createParams->m_stateImages, sizeof(m_stateImages));
 
 	if (!p_createParams->m_rect.m_right) {
-		p_createParams->m_rect.m_right = p_createParams->m_rect.m_left + m_unk0x1a8[0]->GetWidth();
+		p_createParams->m_rect.m_right = p_createParams->m_rect.m_left + m_stateImages[0]->GetWidth();
 	}
 
 	if (!p_createParams->m_rect.m_bottom) {
-		p_createParams->m_rect.m_bottom = p_createParams->m_rect.m_top + m_unk0x1a8[0]->GetHeight();
+		p_createParams->m_rect.m_bottom = p_createParams->m_rect.m_top + m_stateImages[0]->GetHeight();
 	}
 
 	if (MenuIcon::Create(p_createParams, p_createState)) {
-		return CreateImage(&m_unk0x1c0, p_createParams);
+		return CreateImage(&m_imageWidget, p_createParams);
 	}
 
 	return FALSE;
@@ -87,9 +87,9 @@ MenuWidget* MenuButton::DrawSelf(Rect*, Rect*)
 	rect.m_right = m_rect.m_right - m_rect.m_left;
 	rect.m_bottom = m_rect.m_bottom - m_rect.m_top;
 
-	m_unk0x1c0.SetRect(&rect);
-	m_unk0x1c0.SetImage(m_unk0x1a8[m_visualStateIndex]);
-	m_unk0x1c0.SetColor(&m_stateColors[m_visualStateIndex]);
+	m_imageWidget.SetRect(&rect);
+	m_imageWidget.SetImage(m_stateImages[m_visualStateIndex]);
+	m_imageWidget.SetColor(&m_stateColors[m_visualStateIndex]);
 
 	return NULL;
 }

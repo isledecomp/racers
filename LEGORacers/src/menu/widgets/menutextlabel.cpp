@@ -38,7 +38,7 @@ LegoBool32 MenuTextLabel::Create(CreateParams* p_createParams, MenuStyleTable::T
 	m_font = p_createParams->m_font;
 	m_stringTable = p_createParams->m_stringTable;
 	m_style = p_style;
-	LegoS32 unk0x44 = p_createParams->m_unk0x44;
+	LegoS32 unk0x44 = p_createParams->m_wrapWidth;
 	m_wrapWidth = unk0x44;
 	if (unk0x44) {
 		m_wrapped = TRUE;

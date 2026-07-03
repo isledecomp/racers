@@ -1,5 +1,5 @@
-#ifndef IMAGINARYSHAPE0X2B20
-#define IMAGINARYSHAPE0X2B20
+#ifndef CARMODELSCREENBASE_H
+#define CARMODELSCREENBASE_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -216,4 +216,4 @@ protected:
 	undefined4 m_unk0x2b1c;                   // 0x2b1c
 };
 
-#endif // IMAGINARYSHAPE0X2B20
+#endif // CARMODELSCREENBASE_H

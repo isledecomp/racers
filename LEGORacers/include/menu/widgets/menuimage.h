@@ -1,5 +1,5 @@
-#ifndef OBSCUREANCHOR0X5C
-#define OBSCUREANCHOR0X5C
+#ifndef MENUIMAGE_H
+#define MENUIMAGE_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -32,4 +32,4 @@ protected:
 	GolImage* m_image; // 0x58
 };
 
-#endif // OBSCUREANCHOR0X5C
+#endif // MENUIMAGE_H

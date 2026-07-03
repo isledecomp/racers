@@ -36,8 +36,7 @@ public:
 		GolFontBase* m_font;              // 0x8c
 		GolString* m_initialText;         // 0x90
 		undefined2 m_maxLength;           // 0x94
-		SoundIdSet m_soundIds;            // 0x96
-		undefined m_unk0x9e[0xa0 - 0x9e]; // 0x9e
+		SoundIdSet m_editSoundIds;        // 0x96
 	};
 
 	MenuTextField();
@@ -63,7 +62,7 @@ private:
 	MenuWidget* HandleJoystickInput(InputEventQueue::Event* p_event);
 
 protected:
-	SoundIdSet m_soundIds;                    // 0x1a8
+	SoundIdSet m_editSoundIds;                // 0x1a8
 	GolStringTable* m_stringTable;            // 0x1b0
 	undefined2 m_buffer[(0x1f4 - 0x1b4) / 2]; // 0x1b4
 	undefined2 m_charsetIndex;                // 0x1f4

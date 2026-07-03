@@ -1,5 +1,5 @@
-#ifndef GOLDP_GOLSTATE_H
-#define GOLDP_GOLSTATE_H
+#ifndef GOLDP_GOLDRAWSTATE_H
+#define GOLDP_GOLDRAWSTATE_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -70,4 +70,4 @@ public:
 	GolDisplaySurface* m_displaySurface; // 0x14
 };
 
-#endif // GOLDP_GOLSTATE_H
+#endif // GOLDP_GOLDRAWSTATE_H

@@ -2,7 +2,7 @@
 #define SHIELDACTION_H
 
 #include "golmodelentity.h"
-#include "race/powerups/powerupactionbase.h"
+#include "race/powerups/powerupaction.h"
 
 class CutsceneAnimation;
 class MabMaterialTrack;
@@ -13,7 +13,7 @@ struct SoundVector;
 
 // VTABLE: LEGORACERS 0x004b1938
 // SIZE 0x2c
-class ShieldAction : public PowerupActionBase {
+class ShieldAction : public PowerupAction {
 public:
 	enum {
 		c_stateUnloaded = 0,
@@ -35,8 +35,10 @@ public:
 	};
 
 	ShieldAction();
-	~ShieldAction();
-	PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+	~ShieldAction() override; // vtable+0x04
+
+	// SYNTHETIC: LEGORACERS 0x00458690 FOLDED
+	// ShieldAction::`vector deleting destructor'
 	void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
 	void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 	void AdvanceState() override;                                  // vtable+0x14

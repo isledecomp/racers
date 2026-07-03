@@ -2,7 +2,7 @@
 #define TURBOACTION_H
 
 #include "golmodelentity.h"
-#include "race/powerups/powerupactionbase.h"
+#include "race/powerups/powerupaction.h"
 
 class CutsceneAnimation;
 class MabMaterialTrack;
@@ -13,7 +13,7 @@ struct SoundVector;
 
 // VTABLE: LEGORACERS 0x004b1a30
 // SIZE 0x34
-class TurboAction : public PowerupActionBase {
+class TurboAction : public PowerupAction {
 public:
 	enum {
 		c_stateUnloaded = 0,
@@ -39,8 +39,10 @@ public:
 	};
 
 	TurboAction();
-	~TurboAction();
-	PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+	~TurboAction() override; // vtable+0x04
+
+	// SYNTHETIC: LEGORACERS 0x004586f0
+	// TurboAction::`vector deleting destructor'
 	void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
 	void Draw(GolD3DRenderDevice* p_renderer) override;            // vtable+0x0c
 	void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10

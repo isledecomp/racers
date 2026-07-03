@@ -498,23 +498,3 @@ void HomingMissileAction::OnHitRacer(Racer* p_racer)
 		}
 	}
 }
-
-// FUNCTION: LEGORACERS 0x00458630
-PowerupAction* HomingMissileAction::Destroy(undefined4 p_flags)
-{
-	HomingMissileAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~HomingMissileAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}

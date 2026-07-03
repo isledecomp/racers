@@ -223,7 +223,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		Deploy();
 	}
 
-	PowerupActionBase::Update(p_elapsedMs);
+	PowerupAction::Update(p_elapsedMs);
 
 	if (m_heldRacer == NULL && m_pulledRacer == NULL) {
 		GolVec3 up;
@@ -483,24 +483,4 @@ void MagnetAction::Deploy()
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &m_worldEntity;
 	m_collisionEvent = m_raceState->GetEventQueue()->AllocateEvent(this, &descriptor);
-}
-
-// FUNCTION: LEGORACERS 0x00458390
-PowerupAction* MagnetAction::Destroy(undefined4 p_flags)
-{
-	MagnetAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~MagnetAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
 }

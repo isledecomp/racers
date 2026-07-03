@@ -31,26 +31,6 @@ extern const LegoFloat g_homingProjectileCollisionStartOffset;
 
 extern const LegoFloat g_violetShoalTwo;
 
-// FUNCTION: LEGORACERS 0x00458690 FOLDED
-PowerupAction* ShieldAction::Destroy(undefined4 p_flags)
-{
-	ShieldAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~ShieldAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}
-
 // FUNCTION: LEGORACERS 0x0045bc50
 ShieldAction::ShieldAction()
 {
@@ -233,7 +213,7 @@ void ShieldAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	PowerupActionBase::Update(p_elapsedMs);
+	PowerupAction::Update(p_elapsedMs);
 
 	GolVec3 position;
 	CarVisuals* racerEntities = &m_racer->m_visuals;

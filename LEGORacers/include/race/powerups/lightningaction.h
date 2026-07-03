@@ -41,8 +41,10 @@ public:
 	};
 
 	LightningAction();
-	~LightningAction();
-	PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+	~LightningAction() override; // vtable+0x04
+
+	// SYNTHETIC: LEGORACERS 0x004585d0
+	// LightningAction::`vector deleting destructor'
 	void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
 	void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 	void AdvanceState() override;                                  // vtable+0x14

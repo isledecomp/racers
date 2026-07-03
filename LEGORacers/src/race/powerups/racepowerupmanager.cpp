@@ -25,7 +25,7 @@ DECOMP_SIZE_ASSERT(MagnetAction, 0x84)
 DECOMP_SIZE_ASSERT(OilSlickAction, 0x190)
 DECOMP_SIZE_ASSERT(DynamiteAction, 0x17c)
 DECOMP_SIZE_ASSERT(CurseAction, 0x68)
-DECOMP_SIZE_ASSERT(PowerupActionBase, 0x18)
+DECOMP_SIZE_ASSERT(PowerupAction, 0x18)
 DECOMP_SIZE_ASSERT(HazardActionBase, 0x2c)
 DECOMP_SIZE_ASSERT(WeaponActionBase, 0x30)
 DECOMP_SIZE_ASSERT(CannonballAction, 0xe8)
@@ -35,7 +35,6 @@ DECOMP_SIZE_ASSERT(HomingMissileAction, 0x224)
 DECOMP_SIZE_ASSERT(ShieldAction, 0x2c)
 DECOMP_SIZE_ASSERT(TurboAction, 0x34)
 DECOMP_SIZE_ASSERT(WarpAction, 0xe4)
-DECOMP_SIZE_ASSERT(PowerupAction, 0x18)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
@@ -69,7 +68,7 @@ extern const LegoFloat g_brickSpinWrap = 6.2831855f;
 LegoFloat g_projectileSoundRangeSquared = g_flightSoundMaxDistanceSquared * g_flightSoundMaxDistanceSquared;
 
 // FUNCTION: LEGORACERS 0x00451350
-PowerupActionBase::PowerupActionBase()
+PowerupAction::PowerupAction()
 {
 	m_state = 0;
 	m_stateTimerMs = 0;
@@ -78,25 +77,13 @@ PowerupActionBase::PowerupActionBase()
 	m_level = 0;
 }
 
-// FUNCTION: LEGORACERS 0x00451370
-PowerupAction* PowerupActionBase::Destroy(undefined4 p_flags)
-{
-	PowerupActionBase* result = this;
-	this->~PowerupActionBase();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}
-
 // FUNCTION: LEGORACERS 0x00451390
-PowerupActionBase::~PowerupActionBase()
+PowerupAction::~PowerupAction()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513a0 FOLDED
-void PowerupActionBase::Update(LegoU32 p_elapsedMs)
+void PowerupAction::Update(LegoU32 p_elapsedMs)
 {
 	if (p_elapsedMs >= m_stateTimerMs) {
 		m_stateTimerMs = 0;
@@ -108,33 +95,29 @@ void PowerupActionBase::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupActionBase::OnEvent(LegoEventQueue::CallbackData*)
+void PowerupAction::OnEvent(LegoEventQueue::CallbackData*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupActionBase::Draw(GolD3DRenderDevice*)
+void PowerupAction::Draw(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupActionBase::DrawTransparent(GolD3DRenderDevice*)
+void PowerupAction::DrawTransparent(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupActionBase::AdvanceState()
+void PowerupAction::AdvanceState()
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoS32 PowerupActionBase::GetBrickColor()
+LegoS32 PowerupAction::GetBrickColor()
 {
 	return 0;
-}
-
-void HazardActionBase::AdvanceState()
-{
 }
 
 void WeaponActionBase::AdvanceState()
@@ -154,13 +137,9 @@ LegoS32 WarpAction::GetBrickColor()
 }
 
 // FUNCTION: LEGORACERS 0x004513e0 FOLDED
-void PowerupActionBase::Deactivate()
+void PowerupAction::Deactivate()
 {
 	m_state = 1;
-}
-
-void HazardActionBase::OnHitRacer(Racer*)
-{
 }
 
 void WeaponActionBase::OnHitRacer(Racer*)
@@ -1227,6 +1206,8 @@ void RacePowerupManager::CreateExplosionPools()
 // FUNCTION: LEGORACERS 0x00459e20
 void RacePowerupManager::Destroy()
 {
+	LegoU32 i;
+
 	if (m_grappleAttachedSound != NULL) {
 		m_soundSource->ReleaseSound(m_grappleAttachedSound);
 		m_grappleAttachedSound = NULL;
@@ -1250,171 +1231,119 @@ void RacePowerupManager::Destroy()
 	m_billboardMaterialTable.Clear();
 
 	if (m_spikeExplosionPool != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_spikeExplosionPoolCount; i++) {
 			m_spikeExplosionPool[i].Destroy();
 		}
 
-		if (m_spikeExplosionPool != NULL) {
-			m_spikeExplosionPool->Destroy(3);
-		}
+		delete[] m_spikeExplosionPool;
 		m_spikeExplosionPool = NULL;
 	}
 
 	if (m_explosionPool != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_explosionPoolCount; i++) {
 			m_explosionPool[i].Destroy();
 		}
 
-		if (m_explosionPool != NULL) {
-			m_explosionPool->Destroy(3);
-		}
+		delete[] m_explosionPool;
 		m_explosionPool = NULL;
 	}
 
 	if (m_warpActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[10]; i++) {
 			m_warpActions[i].Destroy();
 		}
 
-		if (m_warpActions != NULL) {
-			m_warpActions->Destroy(3);
-		}
+		delete[] m_warpActions;
 		m_warpActions = NULL;
 	}
 
 	if (m_turboActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[9]; i++) {
 			m_turboActions[i].Destroy();
 		}
 
-		if (m_turboActions != NULL) {
-			m_turboActions->Destroy(3);
-		}
+		delete[] m_turboActions;
 		m_turboActions = NULL;
 	}
 
 	if (m_shieldActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[8]; i++) {
 			m_shieldActions[i].Destroy();
 		}
 
-		if (m_shieldActions != NULL) {
-			m_shieldActions->Destroy(3);
-		}
+		delete[] m_shieldActions;
 		m_shieldActions = NULL;
 	}
 
 	if (m_homingMissileActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[7]; i++) {
 			m_homingMissileActions[i].Shutdown();
 		}
 
-		if (m_homingMissileActions != NULL) {
-			m_homingMissileActions->Destroy(3);
-		}
+		delete[] m_homingMissileActions;
 		m_homingMissileActions = NULL;
 	}
 
 	if (m_lightningActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[6]; i++) {
 			m_lightningActions[i].Destroy();
 		}
 
-		if (m_lightningActions != NULL) {
-			m_lightningActions->Destroy(3);
-		}
+		delete[] m_lightningActions;
 		m_lightningActions = NULL;
 	}
 
 	if (m_grapplingHookActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[5]; i++) {
 			m_grapplingHookActions[i].Shutdown();
 		}
 
-		if (m_grapplingHookActions != NULL) {
-			m_grapplingHookActions->Destroy(3);
-		}
+		delete[] m_grapplingHookActions;
 		m_grapplingHookActions = NULL;
 	}
 
 	if (m_cannonballActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[4]; i++) {
 			m_cannonballActions[i].Destroy();
 		}
 
-		if (m_cannonballActions != NULL) {
-			m_cannonballActions->Destroy(3);
-		}
+		delete[] m_cannonballActions;
 		m_cannonballActions = NULL;
 	}
 
 	if (m_curseActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[3]; i++) {
 			m_curseActions[i].Destroy();
 		}
 
-		if (m_curseActions != NULL) {
-			m_curseActions->Destroy(3);
-		}
+		delete[] m_curseActions;
 		m_curseActions = NULL;
 	}
 
 	if (m_dynamiteActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[2]; i++) {
 			m_dynamiteActions[i].Destroy();
 		}
 
-		if (m_dynamiteActions != NULL) {
-			m_dynamiteActions->Destroy(3);
-		}
+		delete[] m_dynamiteActions;
 		m_dynamiteActions = NULL;
 	}
 
 	if (m_oilSlickActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[1]; i++) {
 			m_oilSlickActions[i].Destroy();
 		}
 
-		if (m_oilSlickActions != NULL) {
-			m_oilSlickActions->Destroy(3);
-		}
+		delete[] m_oilSlickActions;
 		m_oilSlickActions = NULL;
 	}
 
 	if (m_magnetActions != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_actionPoolCounts[0]; i++) {
 			m_magnetActions[i].Destroy();
 		}
 
-		if (m_magnetActions != NULL) {
-			m_magnetActions->Destroy(3);
-		}
+		delete[] m_magnetActions;
 		m_magnetActions = NULL;
 	}
 
@@ -1432,8 +1361,6 @@ void RacePowerupManager::Destroy()
 	}
 
 	if (m_brickEvents != NULL) {
-		LegoU32 i;
-
 		for (i = 0; i < m_colorBrickCount + m_whiteBrickCount; i++) {
 			if (m_brickEvents[i] != NULL) {
 				m_brickEvents[i]->m_active = 0;
@@ -1454,9 +1381,8 @@ void RacePowerupManager::Destroy()
 		m_colorBricks = NULL;
 	}
 
-	LegoS32 i;
-	for (i = 25; i != 0; i--) {
-		m_effectEntities[25 - i].ResetModelState();
+	for (LegoS32 j = 25; j != 0; j--) {
+		m_effectEntities[25 - j].ResetModelState();
 	}
 
 	Reset();

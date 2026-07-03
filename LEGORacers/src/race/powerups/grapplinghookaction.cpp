@@ -513,23 +513,3 @@ void GrapplingHookAction::ReleaseHook(SoundVector* p_position)
 	m_projectile.Release(p_position);
 	m_projectile.CancelCollisionEvent();
 }
-
-// FUNCTION: LEGORACERS 0x00458570
-PowerupAction* GrapplingHookAction::Destroy(undefined4 p_flags)
-{
-	GrapplingHookAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~GrapplingHookAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}

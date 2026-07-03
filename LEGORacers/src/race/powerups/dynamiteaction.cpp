@@ -41,6 +41,11 @@ extern LegoU16 g_randomTable[1024];
 
 extern LegoU32 g_randomTableIndex;
 
+// FUNCTION: LEGORACERS 0x004513d0 FOLDED
+void DynamiteAction::OnHitRacer(Racer*)
+{
+}
+
 // FUNCTION: LEGORACERS 0x00452dd0
 DynamiteAction::DynamiteAction()
 {
@@ -202,7 +207,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 		m_sound->SetPosition(&position);
 	}
 
-	PowerupActionBase::Update(p_elapsedMs);
+	PowerupAction::Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00453210
@@ -308,24 +313,4 @@ void DynamiteAction::AdvanceState()
 		m_stateTimerMs = 0;
 		break;
 	}
-}
-
-// FUNCTION: LEGORACERS 0x00458450
-PowerupAction* DynamiteAction::Destroy(undefined4 p_flags)
-{
-	DynamiteAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~DynamiteAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
 }

@@ -57,9 +57,11 @@ public:
 
 	PowerupExplosion();
 	void OnEvent(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-	virtual PowerupExplosion* Destroy(undefined4 p_flags);       // vtable+0x04
+	virtual ~PowerupExplosion();                                 // vtable+0x04
 
-	~PowerupExplosion();
+	// SYNTHETIC: LEGORACERS 0x004587b0
+	// PowerupExplosion::`vector deleting destructor'
+
 	PowerupExplosion* GetNext() { return m_next; }
 	LegoS32 GetState() const { return m_state; }
 	LegoU32 GetRemainingMs() const { return m_remainingMs; }

@@ -36,12 +36,15 @@ public:
 	};
 
 	DynamiteAction();
-	~DynamiteAction();
-	PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04
-	void Update(LegoU32 p_elapsedMs) override;           // vtable+0x08
-	void Draw(GolD3DRenderDevice* p_renderer) override;  // vtable+0x0c
-	void AdvanceState() override;                        // vtable+0x14
-	void Deactivate() override;                          // vtable+0x1c
+	~DynamiteAction() override; // vtable+0x04
+
+	// SYNTHETIC: LEGORACERS 0x00458450
+	// DynamiteAction::`vector deleting destructor'
+	void Update(LegoU32 p_elapsedMs) override;          // vtable+0x08
+	void Draw(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
+	void AdvanceState() override;
+	void OnHitRacer(Racer*) override; // vtable+0x20                        // vtable+0x14
+	void Deactivate() override;       // vtable+0x1c
 	void Initialize(
 		RaceState* p_raceState,
 		TriggerWorld* p_collisionWorld,

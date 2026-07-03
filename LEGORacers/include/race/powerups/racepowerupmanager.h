@@ -33,7 +33,6 @@
 #include "race/powerups/oilslickaction.h"
 #include "race/powerups/pickupbrick.h"
 #include "race/powerups/powerupaction.h"
-#include "race/powerups/powerupactionbase.h"
 #include "race/powerups/powerupexplosion.h"
 #include "race/powerups/powerupprojectile.h"
 #include "race/powerups/shieldaction.h"

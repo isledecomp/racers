@@ -581,13 +581,6 @@ void BeamMesh::SetSegmentOffsets(const GolVec3* p_offsets)
 	m_flags |= c_flagUseSegmentOffsets;
 }
 
-// FUNCTION: LEGORACERS 0x00494c00
-BeamEntity::BeamEntity()
-{
-	m_sceneNode = 0;
-	m_faceCamera = 0;
-}
-
 // FUNCTION: LEGORACERS 0x00494c20
 BeamEntity* BeamEntity::Destroy(undefined4 p_flags)
 {
@@ -598,6 +591,13 @@ BeamEntity* BeamEntity::Destroy(undefined4 p_flags)
 	}
 
 	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00494c00
+BeamEntity::BeamEntity()
+{
+	m_sceneNode = 0;
+	m_faceCamera = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c40

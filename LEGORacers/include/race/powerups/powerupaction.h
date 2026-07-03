@@ -17,17 +17,23 @@ class RacerSoundSource;
 class RaceState;
 class TriggerWorld;
 
+// VTABLE: LEGORACERS 0x004b132c
 // SIZE 0x18
 class PowerupAction : public LegoEventQueue::Callback {
 public:
-	void OnEvent(LegoEventQueue::CallbackData* p_param) override = 0; // vtable+0x00
-	virtual PowerupAction* Destroy(undefined4 p_flags) = 0;           // vtable+0x04
-	virtual void Update(LegoU32 p_elapsedMs) = 0;                     // vtable+0x08
-	virtual void Draw(GolD3DRenderDevice*) = 0;                       // vtable+0x0c
-	virtual void DrawTransparent(GolD3DRenderDevice*) = 0;            // vtable+0x10
-	virtual void AdvanceState() = 0;                                  // vtable+0x14
-	virtual LegoS32 GetBrickColor() = 0;                              // vtable+0x18
-	virtual void Deactivate() = 0;                                    // vtable+0x1c
+	PowerupAction();
+	void OnEvent(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
+	virtual ~PowerupAction();                                     // vtable+0x04
+
+	// SYNTHETIC: LEGORACERS 0x00451370
+	// PowerupAction::`scalar deleting destructor'
+
+	virtual void Update(LegoU32 p_elapsedMs);          // vtable+0x08
+	virtual void Draw(GolD3DRenderDevice*);            // vtable+0x0c
+	virtual void DrawTransparent(GolD3DRenderDevice*); // vtable+0x10
+	virtual void AdvanceState() = 0;                   // vtable+0x14
+	virtual LegoS32 GetBrickColor() = 0;               // vtable+0x18
+	virtual void Deactivate();                         // vtable+0x1c
 
 	PowerupAction* GetNext() { return m_next; }
 	LegoS32 GetState() const { return m_state; }

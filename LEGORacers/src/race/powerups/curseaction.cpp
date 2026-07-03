@@ -231,7 +231,7 @@ void CurseAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	PowerupActionBase::Update(p_elapsedMs);
+	PowerupAction::Update(p_elapsedMs);
 	m_curseEntity->Update(p_elapsedMs);
 	m_auraEntity->Update(p_elapsedMs);
 	m_innerAuraEntity->Update(p_elapsedMs);
@@ -354,24 +354,4 @@ void CurseAction::OnHitRacer(Racer* p_racer)
 	if (m_state != c_stateExpiring && !(p_racer->GetFlags() & c_flagCursed)) {
 		p_racer->AttachCurse(m_curseEntity, c_curseDurationMs);
 	}
-}
-
-// FUNCTION: LEGORACERS 0x004584b0
-PowerupAction* CurseAction::Destroy(undefined4 p_flags)
-{
-	CurseAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~CurseAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
 }

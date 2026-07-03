@@ -50,26 +50,6 @@ const LegoFloat g_warpLaunchSpeed = 700.0f;
 // GLOBAL: LEGORACERS 0x004b1aa8
 const LegoFloat g_warpLerpScale = 0.00066666666f;
 
-// FUNCTION: LEGORACERS 0x00458750
-PowerupAction* WarpAction::Destroy(undefined4 p_flags)
-{
-	WarpAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~WarpAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}
-
 // FUNCTION: LEGORACERS 0x0045d400
 WarpAction::WarpAction()
 {
@@ -229,7 +209,7 @@ void WarpAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	m_modelEntity.Update(p_elapsedMs);
-	PowerupActionBase::Update(p_elapsedMs);
+	PowerupAction::Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x0045d940

@@ -463,23 +463,3 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 void PowerupExplosion::Draw(GolD3DRenderDevice*)
 {
 }
-
-// FUNCTION: LEGORACERS 0x004587b0
-PowerupExplosion* PowerupExplosion::Destroy(undefined4 p_flags)
-{
-	PowerupExplosion* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~PowerupExplosion();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}

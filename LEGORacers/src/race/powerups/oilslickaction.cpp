@@ -128,7 +128,7 @@ void OilSlickAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	PowerupActionBase::Update(p_elapsedMs);
+	PowerupAction::Update(p_elapsedMs);
 
 	if (m_bubbleParticle != NULL) {
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
@@ -253,24 +253,4 @@ void OilSlickAction::OnHitRacer(Racer* p_racer)
 		1.0f,
 		1.0f
 	);
-}
-
-// FUNCTION: LEGORACERS 0x004583f0
-PowerupAction* OilSlickAction::Destroy(undefined4 p_flags)
-{
-	OilSlickAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~OilSlickAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
 }

@@ -556,9 +556,7 @@ void RaceTrailManager::Destroy()
 		}
 
 		Trail* trails = m_trails;
-		if (trails) {
-			trails->VTable0x00(3);
-		}
+		delete[] trails;
 
 		m_trails = NULL;
 	}
@@ -586,25 +584,6 @@ void RaceTrailManager::Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_g
 		m_trails[i].Initialize(p_renderer, p_golExport);
 		m_trails[i].SetMaterial(p_renderer, material);
 	}
-}
-
-// FUNCTION: LEGORACERS 0x00493950
-RaceTrailManager::Trail* RaceTrailManager::Trail::VTable0x00(undefined4 p_flags)
-{
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return this;
-	}
-
-	this->~Trail();
-	if (p_flags & 1) {
-		::operator delete(this);
-	}
-
-	return this;
 }
 
 // FUNCTION: LEGORACERS 0x004939b0

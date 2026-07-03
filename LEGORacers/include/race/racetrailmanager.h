@@ -58,11 +58,10 @@ public:
 		};
 
 		Trail();
-		~Trail();
-		// Hand-rolled vector-deleting-destructor shape (flags bit0 = free, bit1 =
-		// array). Not a true virtual dtor: the original's `new Trail[n]` lacks the
-		// count prefix a compiler-emitted vector dtor would require.
-		virtual Trail* VTable0x00(undefined4 p_flags); // vtable+0x00
+		virtual ~Trail(); // vtable+0x00
+
+		// SYNTHETIC: LEGORACERS 0x00493950
+		// RaceTrailManager::Trail::`vector deleting destructor'
 
 		void Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
 		void SetMaterial(GolD3DRenderDevice* p_renderer, GolMaterial* p_material);

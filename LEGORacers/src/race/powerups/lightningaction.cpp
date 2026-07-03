@@ -686,23 +686,3 @@ void LightningAction::UpdateHitParticle()
 		m_hitParticle->m_particle->SetOrientation(&direction, &up);
 	}
 }
-
-// FUNCTION: LEGORACERS 0x004585d0
-PowerupAction* LightningAction::Destroy(undefined4 p_flags)
-{
-	LightningAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~LightningAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}

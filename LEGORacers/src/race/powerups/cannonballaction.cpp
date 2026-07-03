@@ -471,23 +471,3 @@ void CannonballAction::OnHitRacer(Racer* p_racer)
 		}
 	}
 }
-
-// FUNCTION: LEGORACERS 0x00458510
-PowerupAction* CannonballAction::Destroy(undefined4 p_flags)
-{
-	CannonballAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~CannonballAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}

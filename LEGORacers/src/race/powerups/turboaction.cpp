@@ -41,26 +41,6 @@ const LegoFloat g_turboFadeAlphaScale = 0.0028571428f;
 // GLOBAL: LEGORACERS 0x004b1a58
 const LegoFloat g_turboEndVolumeBase = 0.6f;
 
-// FUNCTION: LEGORACERS 0x004586f0
-PowerupAction* TurboAction::Destroy(undefined4 p_flags)
-{
-	TurboAction* result = this;
-	if (p_flags & 2) {
-		if (p_flags & 1) {
-			delete[] this;
-		}
-
-		return result;
-	}
-
-	this->~TurboAction();
-	if (p_flags & 1) {
-		::operator delete(result);
-	}
-
-	return result;
-}
-
 // FUNCTION: LEGORACERS 0x0045c7e0
 TurboAction::TurboAction()
 {
@@ -275,7 +255,7 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	PowerupActionBase::Update(p_elapsedMs);
+	PowerupAction::Update(p_elapsedMs);
 	m_turboEntity->Update(p_elapsedMs);
 	m_flameEntity->Update(p_elapsedMs);
 	m_flame2Entity->Update(p_elapsedMs);

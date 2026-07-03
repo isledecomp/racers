@@ -1,10 +1,10 @@
 #ifndef WEAPONACTIONBASE_H
 #define WEAPONACTIONBASE_H
 
-#include "race/powerups/powerupactionbase.h"
+#include "race/powerups/powerupaction.h"
 
 // SIZE 0x30
-class WeaponActionBase : public PowerupActionBase {
+class WeaponActionBase : public PowerupAction {
 public:
 	WeaponActionBase();
 	void AdvanceState() override;                            // vtable+0x14

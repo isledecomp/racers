@@ -3,12 +3,16 @@
 
 #include "decomp.h"
 #include "golmath.h"
+#include "golmodelentity.h"
 #include "golname.h"
 #include "golnametable.h"
+#include "goltxtparser.h"
+#include "surface/color.h"
 #include "types.h"
 
 class GolWorldDatabase;
-class GolModelEntity;
+class GolModelBase;
+class GdbModelIndexArray0xc;
 class GolTextureList;
 class GolCamera;
 class GolD3DRenderDevice;

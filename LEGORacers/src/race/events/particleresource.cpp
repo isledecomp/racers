@@ -1,0 +1,208 @@
+#include "race/events/particleresource.h"
+
+#include "decomp.h"
+#include "golmodelbase.h"
+#include "golmodelentity.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "menu/runtime/cutsceneanimation.h"
+#include "menu/runtime/cutsceneparticle.h"
+
+#include <string.h>
+
+DECOMP_SIZE_ASSERT(ParticleResource::InitParams, 0x5c)
+DECOMP_SIZE_ASSERT(ParticleResource, 0x64)
+
+// FUNCTION: LEGORACERS 0x0044f580 FOLDED
+LegoU32 ParticleResource::GetKind()
+{
+	return 3;
+}
+
+// FUNCTION: LEGORACERS 0x004513d0 FOLDED
+void ParticleResource::FUN_004513d0(undefined4)
+{
+}
+
+// FUNCTION: LEGORACERS 0x0045e920
+ParticleResource::ParticleResource()
+{
+	ClearFields();
+	m_flags0x1c = 0;
+}
+
+// FUNCTION: LEGORACERS 0x0045e970
+ParticleResource::~ParticleResource()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x0045e9c0
+void ParticleResource::ClearFields()
+{
+	m_particleAnimation = NULL;
+	m_sharedParticleAnimation = NULL;
+	m_particle = NULL;
+	m_trackedEntity = NULL;
+	m_particleName[0] = '\0';
+	m_unk0x3c.m_x = 0.0f;
+	m_unk0x3c.m_y = 0.0f;
+	m_unk0x3c.m_z = 0.0f;
+	m_unk0x48.m_x = 0.0f;
+	m_unk0x48.m_y = 0.0f;
+	m_unk0x48.m_z = 0.0f;
+	m_unk0x48.m_x = 1.0f;
+	m_unk0x54.m_x = 0.0f;
+	m_unk0x54.m_y = 0.0f;
+	m_unk0x54.m_z = 0.0f;
+	m_unk0x54.m_z = 1.0f;
+	m_partAnimations = 0;
+	m_nodeIndex = 0;
+}
+
+// FUNCTION: LEGORACERS 0x0045ea00
+void ParticleResource::Initialize(InitParams* p_params)
+{
+	if (m_state0x18) {
+		Destroy();
+	}
+
+	m_eventId = p_params->m_unk0x00;
+	LegoS32* eventId = p_params->m_stateEventIds;
+	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
+		m_stateEventIds[i] = *eventId++;
+	}
+
+	m_eventTable = p_params->m_eventTable;
+	m_particleAnimation = p_params->m_unk0x14;
+	m_sharedParticleAnimation = p_params->m_particleAnimation;
+	m_trackedEntity = p_params->m_unk0x1c;
+	m_nodeIndex = p_params->m_unk0x20;
+	::strncpy(m_particleName, p_params->m_unk0x24, sizeof(m_particleName));
+	m_unk0x3c.m_x = p_params->m_unk0x2c.m_x;
+	m_unk0x3c.m_y = p_params->m_unk0x2c.m_y;
+	m_unk0x3c.m_z = p_params->m_unk0x2c.m_z;
+	m_unk0x48.m_x = p_params->m_unk0x38.m_x;
+	m_unk0x48.m_y = p_params->m_unk0x38.m_y;
+	m_unk0x48.m_z = p_params->m_unk0x38.m_z;
+	m_unk0x54.m_x = p_params->m_unk0x44.m_x;
+	m_unk0x54.m_y = p_params->m_unk0x44.m_y;
+	m_unk0x54.m_z = p_params->m_unk0x44.m_z;
+
+	if (p_params->m_unk0x50) {
+		m_flags0x1c |= c_flags0x1cBit1;
+	}
+
+	if (p_params->m_unk0x54) {
+		m_flags0x1c |= c_flags0x1cBit2;
+	}
+
+	if (p_params->m_unk0x58) {
+		m_flags0x1c |= c_flags0x1cBit3;
+	}
+
+	m_state0x18 = c_state0x18One;
+	m_flags0x1c &= ~c_flags0x1cBit5;
+}
+
+// FUNCTION: LEGORACERS 0x0045ead0
+void ParticleResource::Destroy()
+{
+	OnEnd();
+	ClearFields();
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0045eaf0
+void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
+{
+	if (p_unk0x04 && (m_flags0x1c & c_flags0x1cBit3)) {
+		m_unk0x3c = *p_unk0x04;
+	}
+
+	if (m_particleAnimation->HasEmitter(m_particleName)) {
+		m_partAnimations = 1;
+		m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+	}
+	else if (m_sharedParticleAnimation->HasEmitter(m_particleName)) {
+		m_partAnimations = 0;
+		m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+	}
+
+	if (m_particle) {
+		m_flags0x1c |= c_flags0x1cBit5;
+	}
+
+	NotifyStateChange(m_state0x18, 1);
+	m_state0x18 = c_state0x18Three;
+}
+
+// FUNCTION: LEGORACERS 0x0045eb90
+void ParticleResource::OnEnd()
+{
+	if (m_particle) {
+		if (m_partAnimations) {
+			m_particleAnimation->FinishRef(m_particle);
+		}
+		else {
+			m_sharedParticleAnimation->FinishRef(m_particle);
+		}
+
+		m_particle = NULL;
+	}
+
+	NotifyStateChange(m_state0x18, 3);
+	m_state0x18 = c_state0x18One;
+	m_flags0x1c &= ~c_flags0x1cBit5;
+}
+
+// FUNCTION: LEGORACERS 0x0045ebe0
+void ParticleResource::Update(LegoU32 p_elapsedMs)
+{
+	RaceEventResource::Update(p_elapsedMs);
+	if (m_state0x18 == c_state0x18One) {
+		return;
+	}
+
+	if (!(m_flags0x1c & c_flags0x1cBit5)) {
+		if (m_particleAnimation->HasEmitter(m_particleName)) {
+			m_partAnimations = 1;
+			m_particle = m_particleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+		}
+		else if (m_sharedParticleAnimation->HasEmitter(m_particleName)) {
+			m_partAnimations = 0;
+			m_particle = m_sharedParticleAnimation->SpawnParticle(m_particleName, &m_unk0x3c, &m_unk0x48, &m_unk0x54);
+		}
+
+		if (m_particle) {
+			m_flags0x1c |= c_flags0x1cBit5;
+		}
+	}
+
+	if (m_trackedEntity && m_particle) {
+		m_trackedEntity->VTable0x5c(0);
+		GolSceneNode* node = m_trackedEntity->VTable0x58(0);
+		GolTransformBase* transform = node->VTable0x18(m_nodeIndex);
+		GolVec3 position;
+		position.m_x = 0.0f;
+		position.m_y = 0.0f;
+		position.m_z = 0.0f;
+		GolVec3 transformedPosition;
+
+		do {
+			transformedPosition = position;
+			transform->VTable0x04(&transformedPosition, &position);
+			transform = transform->m_unk0x04;
+		} while (transform);
+
+		LegoFloat scale = m_trackedEntity->GetModel(0)->GetScale() * m_trackedEntity->GetUnk0x58();
+		position.m_x *= scale;
+		position.m_y *= scale;
+		position.m_z *= scale;
+
+		m_trackedEntity->VTable0x2c(position, &transformedPosition);
+		if (m_particle->m_particle) {
+			m_particle->m_particle->SetPosition(&transformedPosition);
+		}
+	}
+}

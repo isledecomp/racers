@@ -1,6 +1,10 @@
 #include "race/events/lapzoneresource.h"
 
+#include "decomp.h"
 #include "race/racesession.h"
+
+DECOMP_SIZE_ASSERT(LapZoneResource, 0x24)
+DECOMP_SIZE_ASSERT(LapZoneResource::InitParams, 0x18)
 
 // FUNCTION: LEGORACERS 0x00464570
 LapZoneResource::LapZoneResource()

@@ -3,6 +3,7 @@
 #include "decomp.h"
 #include "race/racesession.h"
 
+DECOMP_SIZE_ASSERT(ColorTransformResource, 0x48)
 DECOMP_SIZE_ASSERT(ColorTransformResource::InitParams, 0x3c)
 
 // FUNCTION: LEGORACERS 0x004654c0

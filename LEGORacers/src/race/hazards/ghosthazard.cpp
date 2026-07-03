@@ -155,7 +155,7 @@ void GhostHazard::OnActivate(void*)
 	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_unk0x5c = 0;
 	m_soundJitterMs = 0x1f4;
-	m_loopSound = m_soundSource->AcquireSoundById(0xbc4);
+	m_loopSound = m_soundSource->AcquireSoundById(c_soundLoop);
 
 	if (m_loopSound != NULL) {
 		m_loopSound->Play(TRUE);

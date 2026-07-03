@@ -233,6 +233,11 @@ public:
 	enum {
 		c_collisionWorldCount = 5,
 		c_collisionCacheRecordCount = 8,
+		c_soundSkid = 0x3a,
+		c_soundSpin = 0x3c,
+	};
+
+	enum {
 		c_flagSteering = 1 << 0,
 		c_flagSpinning = 1 << 1,
 		c_flagSpinFresh = 1 << 2,

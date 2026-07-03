@@ -14,6 +14,10 @@ class GolWorldDatabase;
 // SIZE 0x194
 class RaceRoster : public CollisionEventQueue {
 public:
+	enum {
+		c_soundProximity = 0x4f,
+	};
+
 	RaceRoster();
 	LegoS32 AddEvent(LegoEventQueue::Event* p_event) override;               // vtable+0x00
 	void Destroy() override;                                                 // vtable+0x0c

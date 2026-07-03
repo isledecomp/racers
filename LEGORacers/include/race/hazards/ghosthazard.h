@@ -37,6 +37,7 @@ public:
 private:
 	enum {
 		c_randomTableMask = 0x3ff,
+		c_soundLoop = 0xbc4,
 		c_soundNear = 0xbc5,
 		c_soundHit = 0xbc7,
 		c_racerSearchIntervalMs = 4000,

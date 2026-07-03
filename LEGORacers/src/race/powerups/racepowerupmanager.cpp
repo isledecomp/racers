@@ -748,7 +748,7 @@ void RacePowerupManager::CreatePools()
 		);
 	}
 
-	m_missileFlightSound = m_soundSource->AcquireSoundById(0x34);
+	m_missileFlightSound = m_soundSource->AcquireSoundById(c_soundMissileFlight);
 	if (m_missileFlightSound != NULL) {
 		m_missileFlightSound->SetDistanceRangeWithMinSquared(
 			g_flightSoundMinDistance * g_flightSoundMinDistance,
@@ -756,7 +756,7 @@ void RacePowerupManager::CreatePools()
 		);
 	}
 
-	m_grappleFlightSound = m_soundSource->AcquireSoundById(0x17);
+	m_grappleFlightSound = m_soundSource->AcquireSoundById(c_soundGrappleFlight);
 	if (m_grappleFlightSound != NULL) {
 		m_grappleFlightSound->SetDistanceRangeWithMinSquared(
 			g_flightSoundMinDistance * g_flightSoundMinDistance,
@@ -764,7 +764,7 @@ void RacePowerupManager::CreatePools()
 		);
 	}
 
-	m_grappleAttachedSound = m_soundSource->AcquireSoundById(0x13);
+	m_grappleAttachedSound = m_soundSource->AcquireSoundById(c_soundGrappleAttached);
 	if (m_grappleAttachedSound != NULL) {
 		m_grappleAttachedSound->SetDistanceRangeWithMinSquared(
 			g_flightSoundMinDistance * g_flightSoundMinDistance,

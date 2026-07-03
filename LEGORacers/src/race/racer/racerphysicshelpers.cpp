@@ -3852,7 +3852,7 @@ void RacerCarBody::StartSpin(LegoFloat p_turns, LegoFloat p_rate, LegoFloat p_al
 
 	if (!m_spinSound) {
 		if (m_soundsEnabled) {
-			m_spinSound = m_soundSource->AcquireSoundById(0x3c);
+			m_spinSound = m_soundSource->AcquireSoundById(c_soundSpin);
 		}
 
 		if (m_spinSound) {

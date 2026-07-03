@@ -22,6 +22,10 @@ class GolImage;
 class RaceHud {
 public:
 	enum {
+		c_soundCountdown = 0x0f,
+	};
+
+	enum {
 		c_layoutNone = 0,
 		c_layoutFull = 1,
 		c_layoutSplitTop = 2,

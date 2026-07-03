@@ -947,7 +947,7 @@ void RaceState::StartRace()
 		m_roster.m_racers[i].OnRaceStart();
 	}
 
-	SpatialSoundInstance* sound = m_roster.m_soundSource->AcquireSoundById(0x4f);
+	SpatialSoundInstance* sound = m_roster.m_soundSource->AcquireSoundById(RaceRoster::c_soundProximity);
 	m_roster.m_proximitySound = sound;
 	if (sound) {
 		LegoFloat maxDistance = g_proximitySoundMaxDistance;

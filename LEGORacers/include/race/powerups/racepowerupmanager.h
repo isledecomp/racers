@@ -73,6 +73,13 @@ struct CutsceneParticleRef;
 // SIZE 0x19a4
 class RacePowerupManager {
 public:
+	// Sound bank ids for shared projectile sounds
+	enum {
+		c_soundGrappleAttached = 0x13,
+		c_soundGrappleFlight = 0x17,
+		c_soundMissileFlight = 0x34,
+	};
+
 	// VTABLE: LEGORACERS 0x004b1884
 	// SIZE 0x1fc
 	class PwbTxtParser : public GolTxtParser {

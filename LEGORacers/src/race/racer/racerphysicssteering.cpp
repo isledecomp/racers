@@ -242,7 +242,7 @@ void RacerCarBody::StartSteering(LegoFloat p_gain, LegoFloat p_slipRatio, LegoFl
 	}
 
 	if (m_soundsEnabled) {
-		m_skidSound = m_soundSource->AcquireSoundById(0x3a);
+		m_skidSound = m_soundSource->AcquireSoundById(c_soundSkid);
 	}
 
 	if (m_skidSound != NULL) {

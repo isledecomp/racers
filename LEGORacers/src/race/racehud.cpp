@@ -1354,7 +1354,7 @@ void RaceHud::Draw()
 			m_numberFont->SetColor(0xff, 0xff, 0xff, 0xff);
 
 			if (m_soundSource && countdownState == 3 && previousState / 1000 != 3) {
-				m_soundSource->PlaySoundById(0x0f);
+				m_soundSource->PlaySoundById(c_soundCountdown);
 			}
 		}
 		else {

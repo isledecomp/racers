@@ -141,6 +141,18 @@ private:
 	);
 
 public:
+	// Sound bank ids consumed by InitializeSounds/StartEngine
+	enum {
+		c_soundEngineDrive = 0x0a,
+		c_soundEngineIdle = 0x20,
+		c_soundTurboL0 = 0x2a,
+		c_soundTurboL1 = 0x2b,
+		c_soundTurboL2 = 0x2c,
+		c_soundGhost = 0x2d,
+		c_soundEngineFast = 0x3d,
+		c_soundEngineStart = 0x3e,
+	};
+
 	enum {
 		c_controlNone = 0,
 		c_controlPlayer = 1,

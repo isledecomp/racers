@@ -27,7 +27,7 @@ public:
 	LegoFloat GetAxisValueByIndex(undefined4) override;                                    // vtable+0x2c
 	LegoFloat GetAxisValue(undefined4) override;                                           // vtable+0x30
 	undefined4 GetButtonState(undefined4) override;                                        // vtable+0x34
-	LegoBool32 CreateDevice(CreateDirectInputDeviceParams* p_params) override;             // vtable+0x64
+	LegoBool32 CreateDevice(DirectInputDevice::CreateParams* p_params) override;           // vtable+0x64
 	void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) override;                     // vtable+0x68
 
 	// SYNTHETIC: LEGORACERS 0x0044ea70

@@ -1,6 +1,8 @@
 #include "menu/widgets/menucarousel.h"
 
 #include "audio/soundgroupbinding.h"
+#include "menu/widgets/menucarouselnavigator.h"
+#include "menu/widgets/menuscrollcarousel.h"
 
 DECOMP_SIZE_ASSERT(MenuCarousel, 0x78)
 DECOMP_SIZE_ASSERT(MenuCarousel::CreateParams, 0x38)

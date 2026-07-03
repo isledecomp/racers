@@ -1,12 +1,10 @@
 #ifndef SOUNDNODE_H
 #define SOUNDNODE_H
 
+#include "audio/soundvector.h"
 #include "decomp.h"
 #include "golmath.h"
 #include "types.h"
-
-// SIZE 0x0c
-struct SoundVector : public GolVec3 {};
 
 // SIZE 0x50
 struct SoundNode {

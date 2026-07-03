@@ -1,33 +1,35 @@
+#include "util/collisioneventqueue.h"
 #include "util/legoeventqueue.h"
+#include "util/proximityeventqueue.h"
 
-DECOMP_SIZE_ASSERT(LegoEventQueue::CollisionQueue, 0x48)
+DECOMP_SIZE_ASSERT(CollisionEventQueue, 0x48)
 
 // FUNCTION: LEGORACERS 0x0043a9e0
-LegoEventQueue::CollisionQueue::CollisionQueue()
+CollisionEventQueue::CollisionEventQueue()
 {
 	m_bodyList = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0043aa00
-void LegoEventQueue::CollisionQueue::Destroy()
+void CollisionEventQueue::Destroy()
 {
 	m_bodyList = NULL;
-	ProximityQueue::Destroy();
+	ProximityEventQueue::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0043aa10
-void LegoEventQueue::CollisionQueue::Update(LegoU32 p_elapsedMs)
+void CollisionEventQueue::Update(LegoU32 p_elapsedMs)
 {
-	ProximityQueue::Update(p_elapsedMs);
+	ProximityEventQueue::Update(p_elapsedMs);
 	SortBodyList();
 	TestBodyPairs();
 	PruneBodyList();
 }
 
 // FUNCTION: LEGORACERS 0x0043aa40
-LegoS32 LegoEventQueue::CollisionQueue::AddEvent(Event* p_event)
+LegoS32 CollisionEventQueue::AddEvent(Event* p_event)
 {
-	if (ProximityQueue::AddEvent(p_event)) {
+	if (ProximityEventQueue::AddEvent(p_event)) {
 		return 1;
 	}
 
@@ -47,7 +49,7 @@ LegoS32 LegoEventQueue::CollisionQueue::AddEvent(Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0043aa90
-void LegoEventQueue::CollisionQueue::PruneBodyList()
+void CollisionEventQueue::PruneBodyList()
 {
 	Event* previous = NULL;
 	Event* event = m_bodyList;
@@ -84,13 +86,13 @@ void LegoEventQueue::CollisionQueue::PruneBodyList()
 }
 
 // FUNCTION: LEGORACERS 0x0043aaf0
-GolWorldEntity* LegoEventQueue::CollisionQueue::GetEventEntity(Event* p_event)
+GolWorldEntity* CollisionEventQueue::GetEventEntity(Event* p_event)
 {
 	return &p_event->m_descriptor.m_target->m_ownerData->m_entityGroup;
 }
 
 // FUNCTION: LEGORACERS 0x0043ab10
-void LegoEventQueue::CollisionQueue::DispatchContact(Event* p_event, LegoEventQueue*, CallbackData* p_data)
+void CollisionEventQueue::DispatchContact(Event* p_event, LegoEventQueue*, CallbackData* p_data)
 {
 	Descriptor::RigidBody* target0 = p_data->m_target0;
 	Descriptor::RigidBody* target1 = p_data->m_target1;
@@ -114,7 +116,7 @@ void LegoEventQueue::CollisionQueue::DispatchContact(Event* p_event, LegoEventQu
 }
 
 // FUNCTION: LEGORACERS 0x0043ab90
-void LegoEventQueue::CollisionQueue::TestBodyPairs()
+void CollisionEventQueue::TestBodyPairs()
 {
 	Event* event = m_bodyList;
 	Event* other;
@@ -172,7 +174,7 @@ void LegoEventQueue::CollisionQueue::TestBodyPairs()
 }
 
 // FUNCTION: LEGORACERS 0x0043aca0
-void LegoEventQueue::CollisionQueue::SortBodyList()
+void CollisionEventQueue::SortBodyList()
 {
 	Event* previous = m_bodyList;
 	LegoFloat eventMinX;
@@ -255,7 +257,7 @@ void LegoEventQueue::CollisionQueue::SortBodyList()
 }
 
 // FUNCTION: LEGORACERS 0x0043d260 FOLDED
-GolWorldEntity* LegoEventQueue::ProximityQueue::GetEventEntity(Event* p_event)
+GolWorldEntity* ProximityEventQueue::GetEventEntity(Event* p_event)
 {
 	return p_event->m_descriptor.m_worldEntity;
 }

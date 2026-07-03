@@ -82,7 +82,7 @@ void DirectInputDevice::AllocateControlNameBuffers()
 }
 
 // FUNCTION: LEGORACERS 0x0044fc30
-LegoBool32 DirectInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_params)
+LegoBool32 DirectInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
 {
 	Destroy();
 	m_hWnd = p_params->m_hWnd;

@@ -12,14 +12,14 @@ void RaceRoster::Destroy()
 {
 	m_bodyEvents = NULL;
 	m_raceState = NULL;
-	LegoEventQueue::CollisionQueue::Destroy();
+	CollisionEventQueue::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0043d180
 void RaceRoster::Update(LegoU32 p_elapsedMs)
 {
 	PruneBodyEvents();
-	LegoEventQueue::CollisionQueue::Update(p_elapsedMs);
+	CollisionEventQueue::Update(p_elapsedMs);
 	SortBodyEvents();
 	TestRacerCollisions();
 	PruneBodyEvents();
@@ -28,7 +28,7 @@ void RaceRoster::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0043d1b0
 LegoS32 RaceRoster::AddEvent(LegoEventQueue::Event* p_event)
 {
-	if (LegoEventQueue::CollisionQueue::AddEvent(p_event)) {
+	if (CollisionEventQueue::AddEvent(p_event)) {
 		return 1;
 	}
 
@@ -108,7 +108,7 @@ void RaceRoster::TestRacerCollisions()
 			target = event->m_descriptor.m_target->m_ownerData;
 
 			if (target) {
-				model = LegoEventQueue::CollisionQueue::GetEventEntity(event);
+				model = CollisionEventQueue::GetEventEntity(event);
 				other = m_bodyEvents;
 
 				while (other) {

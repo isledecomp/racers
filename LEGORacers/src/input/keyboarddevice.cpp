@@ -55,7 +55,7 @@ void KeyboardInputDevice::Initialize()
 }
 
 // FUNCTION: LEGORACERS 0x0044f390
-undefined4 KeyboardInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_params)
+undefined4 KeyboardInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
 {
 	Destroy();
 	p_params->m_dataFormat = &c_dfDIKeyboard;

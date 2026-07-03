@@ -9,6 +9,7 @@
 #include "menu/screens/awardcinematicscreen.h"
 #include "menu/screens/carbuildscreenbase.h"
 #include "menu/widgets/menucarousel.h"
+#include "menu/widgets/menucarouselnavigator.h"
 #include "menu/widgets/menuframedsceneview.h"
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menusceneelement.h"
@@ -159,12 +160,12 @@ public:
 	void OnCarouselSettled(MenuWidget*) override;    // vtable+0x10
 	void OnIconUnfocused(MenuWidget*) override;      // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override; // vtable+0x44
-	void CreateWidgets() override;                      // vtable+0x4c
+	void CreateWidgets() override;                   // vtable+0x4c
 	void Reset() override;                           // vtable+0x54
 	~CarModelScreenBase() override;                  // vtable+0x68
-	LegoBool32 Update(undefined4) override;      // vtable+0x78
-	void SetupLighting() override;                      // vtable+0x80
-	void Navigate() override;                      // vtable+0x84
+	LegoBool32 Update(undefined4) override;          // vtable+0x78
+	void SetupLighting() override;                   // vtable+0x80
+	void Navigate() override;                        // vtable+0x84
 	LegoBool32 Initialize(MenuGameContext*,
 						  MenuScreenCreateParams*) override;                    // vtable+0x8c
 	GolString* GetHelpString(undefined4) override = 0;                          // vtable+0x98

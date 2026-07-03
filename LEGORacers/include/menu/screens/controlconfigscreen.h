@@ -6,6 +6,7 @@
 #include "golstring.h"
 #include "menu/screens/menugamescreen.h"
 #include "menu/widgets/menucarousel.h"
+#include "menu/widgets/menucarouselnavigator.h"
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menuselector.h"
 #include "menu/widgets/menutextbutton.h"

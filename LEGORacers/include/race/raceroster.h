@@ -2,6 +2,7 @@
 #define RACEROSTER_H
 
 #include "golmath.h"
+#include "util/collisioneventqueue.h"
 #include "util/legoeventqueue.h"
 
 class Racer;
@@ -11,7 +12,7 @@ class GolWorldDatabase;
 // services wired through the event queue callback interface.
 // VTABLE: LEGORACERS 0x004b0aa8
 // SIZE 0x194
-class RaceRoster : public LegoEventQueue::CollisionQueue {
+class RaceRoster : public CollisionEventQueue {
 public:
 	RaceRoster();
 	LegoS32 AddEvent(LegoEventQueue::Event* p_event) override;               // vtable+0x00

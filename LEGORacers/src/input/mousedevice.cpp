@@ -43,7 +43,7 @@ void MouseInputDevice::Initialize()
 }
 
 // FUNCTION: LEGORACERS 0x0044f640
-LegoBool32 MouseInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_params)
+LegoBool32 MouseInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
 {
 	Destroy();
 	p_params->m_dataFormat = &c_dfDIMouse;

@@ -1,11 +1,13 @@
 #include "util/legoeventqueue.h"
 
 #include "golerror.h"
+#include "util/collisioneventqueue.h"
+#include "util/proximityeventqueue.h"
 
 DECOMP_SIZE_ASSERT(LegoEventQueue, 0x28)
 DECOMP_SIZE_ASSERT(LegoEventQueue::Descriptor, 0x18)
 DECOMP_SIZE_ASSERT(LegoEventQueue::CallbackData, 0x18)
-DECOMP_SIZE_ASSERT(LegoEventQueue::ProximityQueue, 0x2c)
+DECOMP_SIZE_ASSERT(ProximityEventQueue, 0x2c)
 
 // FUNCTION: LEGORACERS 0x0042f9f0
 LegoEventQueue::LegoEventQueue()
@@ -149,20 +151,20 @@ LegoEventQueue::Event* LegoEventQueue::FreeEvent(Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0042fc80
-LegoEventQueue::ProximityQueue::ProximityQueue()
+ProximityEventQueue::ProximityEventQueue()
 {
 	m_sortedList = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0042fcd0
-void LegoEventQueue::ProximityQueue::Destroy()
+void ProximityEventQueue::Destroy()
 {
 	m_sortedList = NULL;
 	LegoEventQueue::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0042fce0
-void LegoEventQueue::ProximityQueue::Update(LegoU32 p_elapsedMs)
+void ProximityEventQueue::Update(LegoU32 p_elapsedMs)
 {
 	LegoEventQueue::Update(p_elapsedMs);
 	SortList();
@@ -171,7 +173,7 @@ void LegoEventQueue::ProximityQueue::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0042fd10
-void LegoEventQueue::ProximityQueue::TestPairs()
+void ProximityEventQueue::TestPairs()
 {
 	Event* event = m_sortedList;
 	Event* other;
@@ -229,7 +231,7 @@ void LegoEventQueue::ProximityQueue::TestPairs()
 }
 
 // FUNCTION: LEGORACERS 0x0042fe10
-void LegoEventQueue::ProximityQueue::SortList()
+void ProximityEventQueue::SortList()
 {
 	LegoFloat eventMinX;
 
@@ -312,7 +314,7 @@ void LegoEventQueue::ProximityQueue::SortList()
 }
 
 // FUNCTION: LEGORACERS 0x0042ff70
-LegoS32 LegoEventQueue::ProximityQueue::AddEvent(Event* p_event)
+LegoS32 ProximityEventQueue::AddEvent(Event* p_event)
 {
 	if (LegoEventQueue::AddEvent(p_event)) {
 		return 1;
@@ -334,7 +336,7 @@ LegoS32 LegoEventQueue::ProximityQueue::AddEvent(Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0042ffc0
-void LegoEventQueue::ProximityQueue::PruneSortedList()
+void ProximityEventQueue::PruneSortedList()
 {
 	Event* previous = NULL;
 	Event* event = m_sortedList;

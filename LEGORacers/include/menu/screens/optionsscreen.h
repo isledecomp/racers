@@ -6,6 +6,7 @@
 #include "menu/menudialog.h"
 #include "menu/screens/optionsscreenbase.h"
 #include "menu/widgets/menucarousel.h"
+#include "menu/widgets/menucarouselnavigator.h"
 #include "menu/widgets/menuselector.h"
 #include "menu/widgets/menutextbutton.h"
 #include "menu/widgets/menutextlabel.h"

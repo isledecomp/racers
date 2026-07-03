@@ -116,7 +116,7 @@ LegoBool32 DirectInputManager::AddJoystickDevice(LPCDIDEVICEINSTANCE p_deviceIns
 	m_joysticks[m_joystickCount] = joystick;
 	m_joystickPresent[m_joystickCount] = TRUE;
 
-	CreateDirectInputDeviceParams params;
+	DirectInputDevice::CreateParams params;
 	params.m_dinput = m_directInput;
 	params.m_hWnd = m_hWnd;
 	params.m_guid = &p_deviceInstance->guidInstance;
@@ -155,7 +155,7 @@ LegoBool32 DirectInputManager::DetectKeyboard()
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	CreateDirectInputDeviceParams params;
+	DirectInputDevice::CreateParams params;
 	::memset(&params, 0, sizeof(params));
 	params.m_dinput = m_directInput;
 	params.m_hWnd = m_hWnd;
@@ -182,7 +182,7 @@ LegoBool32 DirectInputManager::DetectMouse()
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	CreateDirectInputDeviceParams params;
+	DirectInputDevice::CreateParams params;
 	::memset(&params, 0, sizeof(params));
 	params.m_dinput = m_directInput;
 	params.m_hWnd = m_hWnd;

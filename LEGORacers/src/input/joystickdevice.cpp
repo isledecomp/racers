@@ -24,7 +24,7 @@ void JoystickInputDevice::Initialize()
 }
 
 // FUNCTION: LEGORACERS 0x0044eb20
-LegoBool32 JoystickInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_params)
+LegoBool32 JoystickInputDevice::CreateDevice(DirectInputDevice::CreateParams* p_params)
 {
 	Destroy();
 	p_params->m_dataFormat = &c_dfDIJoystick2;

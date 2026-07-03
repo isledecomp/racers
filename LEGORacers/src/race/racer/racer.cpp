@@ -1339,8 +1339,8 @@ void Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		return;
 	}
 
-	LegoEventQueue::CollisionQueue::CollisionCallbackData* collision =
-		static_cast<LegoEventQueue::CollisionQueue::CollisionCallbackData*>(p_data->m_data);
+	CollisionEventQueue::CollisionCallbackData* collision =
+		static_cast<CollisionEventQueue::CollisionCallbackData*>(p_data->m_data);
 	LegoEventQueue::Descriptor::RigidBody* firstTarget = p_data->m_target0;
 	LegoEventQueue::Descriptor::RigidBody* secondTarget = collision->m_secondTarget;
 	Racer* firstRacer = static_cast<Racer*>(firstTarget->m_owner);

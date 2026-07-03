@@ -10,6 +10,7 @@
 #include "menu/screens/racermodelslot.h"
 #include "menu/screens/saverecordcursor.h"
 #include "menu/widgets/menucarousel.h"
+#include "menu/widgets/menucarouselnavigator.h"
 #include "menu/widgets/menuframedsceneview.h"
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menuselector.h"
@@ -29,12 +30,12 @@ public:
 
 	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
-	void CreateWidgets() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                             // vtable+0x4c
 	void Reset() override;                                                     // vtable+0x54
 	~EditCarScreen() override;                                                 // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74
-	void SetupLighting() override;                                                // vtable+0x80
-	void Navigate() override;                                                // vtable+0x84
+	void SetupLighting() override;                                             // vtable+0x80
+	void Navigate() override;                                                  // vtable+0x84
 	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x0047bde0

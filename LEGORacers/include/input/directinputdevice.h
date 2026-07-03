@@ -7,19 +7,20 @@
 
 #include <dinput.h>
 
-struct CreateDirectInputDeviceParams {
-	LPDIRECTINPUT m_dinput;       // 0x00
-	LPCDIDATAFORMAT m_dataFormat; // 0x04
-	HWND m_hWnd;                  // 0x08
-	const GUID* m_guid;           // 0x0c
-	undefined4 m_deviceId;        // 0x10
-	InputManager* m_inputManager; // 0x14
-};
-
 // VTABLE: LEGORACERS 0x004b11b8
 // SIZE 0xcc
 class DirectInputDevice : public InputDevice {
 public:
+	// SIZE 0x18
+	struct CreateParams {
+		LPDIRECTINPUT m_dinput;       // 0x00
+		LPCDIDATAFORMAT m_dataFormat; // 0x04
+		HWND m_hWnd;                  // 0x08
+		const GUID* m_guid;           // 0x0c
+		undefined4 m_deviceId;        // 0x10
+		InputManager* m_inputManager; // 0x14
+	};
+
 	enum {
 		c_axisX = 0x01,
 		c_axisY = 0x02,
@@ -57,13 +58,13 @@ public:
 		return m_cooperativeLevel & DISCL_EXCLUSIVE;
 	}
 
-	undefined4 Acquire() override;                                            // vtable+0x50
-	undefined4 Unacquire() override;                                          // vtable+0x54
-	LegoBool32 CreateForceFeedbackEffect() override;                          // vtable+0x58
-	LegoS32 StartForceFeedbackEffect() override;                              // vtable+0x5c
-	LegoBool32 StopForceFeedbackEffect() override;                            // vtable+0x60
-	virtual LegoBool32 CreateDevice(CreateDirectInputDeviceParams* p_params); // vtable+0x64
-	virtual void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) = 0;     // vtable+0x68
+	undefined4 Acquire() override;                                              // vtable+0x50
+	undefined4 Unacquire() override;                                            // vtable+0x54
+	LegoBool32 CreateForceFeedbackEffect() override;                            // vtable+0x58
+	LegoS32 StartForceFeedbackEffect() override;                                // vtable+0x5c
+	LegoBool32 StopForceFeedbackEffect() override;                              // vtable+0x60
+	virtual LegoBool32 CreateDevice(DirectInputDevice::CreateParams* p_params); // vtable+0x64
+	virtual void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) = 0;       // vtable+0x68
 
 	// SYNTHETIC: LEGORACERS 0x0044f9e0
 	// DirectInputDevice::`scalar deleting destructor'

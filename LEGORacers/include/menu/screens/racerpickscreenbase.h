@@ -6,6 +6,7 @@
 #include "golstring.h"
 #include "menu/screens/racermodelscreenbase.h"
 #include "menu/widgets/menucarousel.h"
+#include "menu/widgets/menucarouselnavigator.h"
 #include "menu/widgets/menuselector.h"
 #include "menu/widgets/menutextlabel.h"
 
@@ -17,7 +18,7 @@ public:
 
 	void OnCarouselSettled(MenuWidget*) override;                                           // vtable+0x10
 	void OnWidgetValueChanged(MenuWidget*) override;                                        // vtable+0x44
-	void CreateWidgets() override;                                                             // vtable+0x4c
+	void CreateWidgets() override;                                                          // vtable+0x4c
 	void Reset() override;                                                                  // vtable+0x54
 	~RacerPickScreenBase() override;                                                        // vtable+0x68
 	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*, undefined4*) override; // vtable+0xa0

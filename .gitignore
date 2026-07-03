@@ -30,3 +30,5 @@ GolDP.dll
 
 .DS_Store
 *.log
+
+.cache/

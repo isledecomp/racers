@@ -68,6 +68,11 @@ public:
 	public:
 		// SIZE 0x38
 		struct Params {
+			enum {
+				c_vertexColored = 1,
+				c_vertexLit = 2,
+			};
+
 			GolD3DRenderDevice* m_renderer;           // 0x00
 			GolModelBase* m_model;                    // 0x04
 			GolVec3 m_origin;                         // 0x08

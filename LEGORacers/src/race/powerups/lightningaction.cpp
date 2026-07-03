@@ -117,7 +117,7 @@ LightningAction::~LightningAction()
 // FUNCTION: LEGORACERS 0x004548f0
 void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_manager)
 {
-	if (m_state != 0) {
+	if (m_state != c_stateUnloaded) {
 		Destroy();
 	}
 
@@ -158,7 +158,7 @@ void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_mana
 	GolMaterial* material = renderer->FindMaterialByName("ltflash");
 	m_flashBillboard->Configure(material, g_lightningFlashWidth, g_lightningFlashHeight, g_lightningFlashDrawDistance);
 
-	m_state = 1;
+	m_state = c_stateReady;
 	FillJitterTable();
 }
 
@@ -191,7 +191,7 @@ void LightningAction::Destroy()
 	}
 
 	m_beam.Destroy();
-	m_state = 0;
+	m_state = c_stateUnloaded;
 	m_hitParticle = 0;
 	m_source = 0;
 }
@@ -263,7 +263,7 @@ void LightningAction::RebuildBolt()
 // FUNCTION: LEGORACERS 0x00454cb0
 void LightningAction::Activate(Racer* p_racer, ActionTarget* p_target)
 {
-	m_state = 2;
+	m_state = c_stateRampIn;
 	m_stateTimerMs = 500;
 	m_ownerRacer = p_racer;
 	m_targetRacer = NULL;
@@ -298,7 +298,7 @@ void LightningAction::Deactivate()
 	m_source = NULL;
 	m_ownerRacer = NULL;
 	m_targetRacer = NULL;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00454d70

@@ -17,6 +17,8 @@ struct SoundVector;
 class LightningAction : public WeaponActionBase {
 public:
 	enum {
+		c_stateUnloaded = 0,
+		c_stateReady = 1,
 		c_stateRampIn = 2,
 		c_stateSustain = 3,
 		c_stateFade = 4,

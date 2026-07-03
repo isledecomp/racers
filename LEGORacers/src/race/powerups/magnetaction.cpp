@@ -77,7 +77,7 @@ void MagnetAction::Initialize(
 	m_manager = p_manager;
 	m_raceState = p_raceState;
 	m_collisionWorld = p_collisionWorld;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00455830
@@ -90,24 +90,24 @@ void MagnetAction::Activate(
 {
 	m_magnetEntity = m_manager->AllocateEffectEntity();
 	if (m_magnetEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
 	m_ringEntity = m_manager->AllocateEffectEntity();
 	if (m_ringEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
 	m_insideEntity = m_manager->AllocateEffectEntity();
 	if (m_insideEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
 	m_ownerRacer = p_racer;
-	m_state = 2;
+	m_state = c_stateArmed;
 	m_stateTimerMs = c_armedDurationMs;
 
 	m_magnetEntity->SetModel(
@@ -209,17 +209,17 @@ void MagnetAction::Deactivate()
 	m_direction.m_x = 0.0f;
 	m_direction.m_y = 0.0f;
 	m_direction.m_z = 0.0f;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00455b40
 void MagnetAction::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state == 6) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
-	if (m_state == 2 && m_stateTimerMs == c_armedDurationMs) {
+	if (m_state == c_stateArmed && m_stateTimerMs == c_armedDurationMs) {
 		Deploy();
 	}
 
@@ -301,7 +301,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 				}
 			}
 
-			if (m_heldRacer->m_driveController.m_flags & c_racerDriveControllerFlags0x014Bit0) {
+			if (m_heldRacer->m_driveController.m_flags & DriveController::c_flagTurbo) {
 				m_manager->CancelTurbo(m_heldRacer);
 				m_heldRacer->ClearActiveAction();
 			}
@@ -318,7 +318,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (m_state == 4) {
+	if (m_state == c_stateFade) {
 		m_magnetEntity->SetScaleAndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
 	}
 
@@ -332,7 +332,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00455ed0
 void MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state != 6) {
+	if (m_state != c_stateDone) {
 		p_renderer->DrawModelEntity(m_magnetEntity);
 	}
 }
@@ -340,11 +340,11 @@ void MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00455ef0
 void MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == 6) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
-	if (m_state == 4) {
+	if (m_state == c_stateFade) {
 		LegoFloat alphaScale = static_cast<LegoS32>(m_stateTimerMs) * 0.001f;
 		LegoS32 alpha = static_cast<LegoS32>(alphaScale * g_magnetFadeAlpha);
 		p_renderer->SetAlphaOverride(alpha, TRUE);
@@ -353,7 +353,7 @@ void MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	m_insideEntity->Draw(*p_renderer);
 	m_ringEntity->Draw(*p_renderer);
 
-	if (m_state == 4) {
+	if (m_state == c_stateFade) {
 		p_renderer->ClearAlphaOverride();
 	}
 }
@@ -361,12 +361,12 @@ void MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00455f50
 void MagnetAction::AdvanceState()
 {
-	if (m_state == 4) {
-		m_state = 6;
+	if (m_state == c_stateFade) {
+		m_state = c_stateDone;
 		return;
 	}
 
-	m_state = 4;
+	m_state = c_stateFade;
 	m_stateTimerMs = c_fadeDurationMs;
 
 	SoundVector position;
@@ -384,16 +384,16 @@ void MagnetAction::AdvanceState()
 // FUNCTION: LEGORACERS 0x00455fb0
 void MagnetAction::OnHitRacer(Racer* p_racer)
 {
-	if (m_state == 4) {
+	if (m_state == c_stateFade) {
 		return;
 	}
 
-	if (m_state == 2) {
-		m_state = 3;
+	if (m_state == c_stateArmed) {
+		m_state = c_stateHolding;
 		m_stateTimerMs = c_holdDurationMs;
 	}
 
-	if (m_state == 3) {
+	if (m_state == c_stateHolding) {
 		SoundVector modelPosition;
 		GolVec3 racerPosition;
 		m_magnetEntity->GetPosition(&modelPosition);
@@ -473,7 +473,7 @@ void MagnetAction::Deploy()
 	m_sound->SetPosition(position);
 	m_sound->ClearVelocity();
 
-	m_state = 2;
+	m_state = c_stateArmed;
 	m_stateTimerMs = c_armedDurationMs;
 
 	LegoEventQueue::Descriptor descriptor;

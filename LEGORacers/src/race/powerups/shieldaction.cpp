@@ -70,11 +70,11 @@ ShieldAction::~ShieldAction()
 // FUNCTION: LEGORACERS 0x0045bcd0 FOLDED
 void ShieldAction::Initialize(RacePowerupManager* p_manager)
 {
-	if (m_state != 0) {
+	if (m_state != c_stateUnloaded) {
 		Destroy();
 	}
 
-	m_state = 1;
+	m_state = c_stateReady;
 	m_manager = p_manager;
 }
 
@@ -82,7 +82,7 @@ void ShieldAction::Initialize(RacePowerupManager* p_manager)
 void ShieldAction::Destroy()
 {
 	Deactivate();
-	m_state = 0;
+	m_state = c_stateUnloaded;
 }
 
 // FUNCTION: LEGORACERS 0x0045bd30
@@ -223,13 +223,13 @@ void ShieldAction::Deactivate()
 		m_sound = NULL;
 	}
 
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x0045c0c0 FOLDED
 void ShieldAction::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state == 6) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
@@ -252,7 +252,7 @@ void ShieldAction::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0045c160 FOLDED
 void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == 6) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
@@ -273,7 +273,7 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 
 	m_shieldEntity->CopyOrientationAndPositionTo(m_innerShieldEntity);
 
-	if (m_state == 4) {
+	if (m_state == c_stateFade) {
 		LegoFloat alphaValue = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
 		alphaValue *= 0.001f;
 		alphaValue *= g_fadeAlphaScale;
@@ -284,7 +284,7 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	m_innerShieldEntity->Draw(*p_renderer);
 	m_shieldEntity->Draw(*p_renderer);
 
-	if (m_state == 4) {
+	if (m_state == c_stateFade) {
 		p_renderer->ClearAlphaOverride();
 	}
 }
@@ -295,10 +295,10 @@ void ShieldAction::AdvanceState()
 	switch (m_state) {
 	case 3:
 		m_stateTimerMs = 1000;
-		m_state = 4;
+		m_state = c_stateFade;
 		break;
 	case 4: {
-		m_state = 6;
+		m_state = c_stateDone;
 
 		SoundVector position;
 		CarVisuals* racerEntities = &m_racer->m_visuals;

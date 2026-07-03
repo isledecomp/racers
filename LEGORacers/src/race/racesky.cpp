@@ -553,10 +553,10 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		position.m_z = p_params->m_origin.m_z + p_params->m_radius;
 		vertices->SetPosition(vertexIndex, position);
 		vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
-		if (p_params->m_vertexType == 1) {
+		if (p_params->m_vertexType == ModelBuilder::Params::c_vertexColored) {
 			vertices->SetColor(vertexIndex, color);
 		}
-		else if (p_params->m_vertexType == 2) {
+		else if (p_params->m_vertexType == ModelBuilder::Params::c_vertexLit) {
 			GolVec3 normal;
 			normal.m_x = 0.0f;
 			normal.m_y = 0.0f;
@@ -586,10 +586,10 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 
 			vertices->SetPosition(vertexIndex, position);
 			vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
-			if (p_params->m_vertexType == 1) {
+			if (p_params->m_vertexType == ModelBuilder::Params::c_vertexColored) {
 				vertices->SetColor(vertexIndex, color);
 			}
-			else if (p_params->m_vertexType == 2) {
+			else if (p_params->m_vertexType == ModelBuilder::Params::c_vertexLit) {
 				GolVec3 delta;
 				delta.m_x = position.m_x - p_params->m_origin.m_x;
 				delta.m_y = position.m_y - p_params->m_origin.m_y;
@@ -619,10 +619,10 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		}
 		vertices->SetPosition(vertexIndex, position);
 		vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
-		if (p_params->m_vertexType == 1) {
+		if (p_params->m_vertexType == ModelBuilder::Params::c_vertexColored) {
 			vertices->SetColor(vertexIndex, color);
 		}
-		else if (p_params->m_vertexType == 2) {
+		else if (p_params->m_vertexType == ModelBuilder::Params::c_vertexLit) {
 			GolVec3 normal;
 			normal.m_x = 0.0f;
 			normal.m_y = 0.0f;
@@ -891,10 +891,10 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 		LegoFloat segmentAngle = 0.0f;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
 			vertices->SetPosition(vertexIndex, position);
-			if (p_params->m_vertexType == 1) {
+			if (p_params->m_vertexType == ModelBuilder::Params::c_vertexColored) {
 				vertices->SetColor(vertexIndex, color);
 			}
-			else if (p_params->m_vertexType == 2) {
+			else if (p_params->m_vertexType == ModelBuilder::Params::c_vertexLit) {
 				vertices->SetNormal(vertexIndex, normal);
 			}
 
@@ -936,10 +936,10 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 				normal.m_z = position.m_z - p_params->m_origin.m_z;
 				GolMath::NormalizeVector3(normal, &normal);
 
-				if (p_params->m_vertexType == 1) {
+				if (p_params->m_vertexType == ModelBuilder::Params::c_vertexColored) {
 					vertices->SetColor(vertexIndex, color);
 				}
-				else if (p_params->m_vertexType == 2) {
+				else if (p_params->m_vertexType == ModelBuilder::Params::c_vertexLit) {
 					vertices->SetNormal(vertexIndex, normal);
 				}
 
@@ -960,7 +960,7 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 			textureCoordinate.m_x = 1.0f;
 
 			vertices->SetPosition(vertexIndex, position);
-			if (p_params->m_vertexType == 1) {
+			if (p_params->m_vertexType == ModelBuilder::Params::c_vertexColored) {
 				vertices->SetColor(vertexIndex, color);
 			}
 			else {
@@ -994,10 +994,10 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 		LegoFloat segmentAngle = 0.0f;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
 			vertices->SetPosition(vertexIndex, position);
-			if (p_params->m_vertexType == 1) {
+			if (p_params->m_vertexType == ModelBuilder::Params::c_vertexColored) {
 				vertices->SetColor(vertexIndex, color);
 			}
-			else if (p_params->m_vertexType == 2) {
+			else if (p_params->m_vertexType == ModelBuilder::Params::c_vertexLit) {
 				vertices->SetNormal(vertexIndex, normal);
 			}
 

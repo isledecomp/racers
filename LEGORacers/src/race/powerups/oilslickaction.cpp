@@ -83,7 +83,7 @@ void OilSlickAction::Initialize(
 	m_collisionWorld = p_collisionWorld;
 	m_collidable = p_collidable;
 	m_particleAnimation = p_particleAnimation;
-	m_state = 1;
+	m_state = c_stateReady;
 
 	m_materialTable.Initialize(p_renderer, 1);
 	m_materialTable.AssignEntryByName(0, "oilslck");
@@ -94,7 +94,7 @@ void OilSlickAction::Initialize(
 // FUNCTION: LEGORACERS 0x00457230
 void OilSlickAction::Activate(Racer* p_racer)
 {
-	m_state = 2;
+	m_state = c_stateArmed;
 	m_ownerRacer = p_racer;
 	m_stateTimerMs = 0;
 }
@@ -118,7 +118,7 @@ void OilSlickAction::Deactivate()
 	}
 
 	m_ownerRacer = NULL;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x004572a0

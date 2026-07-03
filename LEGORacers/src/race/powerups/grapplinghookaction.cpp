@@ -82,7 +82,7 @@ void GrapplingHookAction::Initialize(
 	undefined4 p_billboardMaterialIndex
 )
 {
-	if (m_state != 0) {
+	if (m_state != c_stateUnloaded) {
 		Shutdown();
 	}
 
@@ -103,7 +103,7 @@ void GrapplingHookAction::Initialize(
 	params.m_material = p_manager->m_renderer->FindMaterialByName("tether");
 	m_projectile.Initialize(&params);
 
-	m_state = 1;
+	m_state = c_stateReady;
 	m_billboard = static_cast<GolBillboard*>(params.m_golExport->CreateBillboard());
 }
 
@@ -119,7 +119,7 @@ void GrapplingHookAction::Shutdown()
 	}
 
 	m_projectile.Deactivate();
-	m_state = 0;
+	m_state = c_stateUnloaded;
 }
 
 // FUNCTION: LEGORACERS 0x00453de0
@@ -173,7 +173,7 @@ void GrapplingHookAction::Deactivate()
 	m_ownerRacer = NULL;
 	m_targetRacer = 0;
 	m_targetPoint = 0;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00453ef0

@@ -19,9 +19,16 @@ struct SoundVector;
 class CannonballAction : public WeaponActionBase {
 public:
 	enum {
+		c_stateUnloaded = 0,
+		c_stateReady = 1,
+		c_stateArmed = 2,
+		c_stateFlying = 3,
+		c_stateDone = 6,
+	};
+
+	enum {
 		c_soundHit = 5,
 		c_soundFire = 6,
-		c_racerCarVisualsFlags0x384Bit1 = 1 << 1,
 	};
 
 	CannonballAction();

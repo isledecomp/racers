@@ -17,6 +17,8 @@ struct SoundVector;
 class CurseAction : public HazardActionBase {
 public:
 	enum {
+		c_stateUnloaded = 0,
+		c_stateReady = 1,
 		c_stateArmed = 2,
 		c_stateActive = 3,
 		c_stateFade = 4,

@@ -21,6 +21,13 @@ class GolImage;
 // SIZE 0x140
 class RaceHud {
 public:
+	enum {
+		c_layoutNone = 0,
+		c_layoutFull = 1,
+		c_layoutSplitTop = 2,
+		c_layoutSplitBottom = 3,
+	};
+
 	// SIZE 0x09
 	struct TimeText {
 		LegoChar m_text[9]; // 0x00

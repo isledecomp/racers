@@ -60,7 +60,7 @@ void CurseAction::Initialize(RaceState* p_raceState, TriggerWorld* p_collisionWo
 	m_raceState = p_raceState;
 	m_collisionWorld = p_collisionWorld;
 	m_manager = p_manager;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00452550
@@ -74,19 +74,19 @@ void CurseAction::Activate(
 {
 	m_curseEntity = m_manager->AllocateEffectEntity();
 	if (m_curseEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
 	m_auraEntity = m_manager->AllocateEffectEntity();
 	if (m_auraEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
 	m_innerAuraEntity = m_manager->AllocateEffectEntity();
 	if (m_innerAuraEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
@@ -185,7 +185,7 @@ void CurseAction::Activate(
 		m_innerAuraEntity->CopyOrientationFrom(*m_curseEntity);
 	}
 
-	m_state = 2;
+	m_state = c_stateArmed;
 	m_stateTimerMs = 0;
 }
 
@@ -221,7 +221,7 @@ void CurseAction::Deactivate()
 	}
 
 	m_ownerRacer = NULL;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00452a00

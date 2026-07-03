@@ -1201,16 +1201,16 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	if (m_splitScreen) {
 		m_huds[0].SetRacer(m_raceState.m_playerRacers[0]);
 		m_huds[0].ResetDisplay(-1);
-		m_huds[0].SetLayout(2);
+		m_huds[0].SetLayout(RaceHud::c_layoutSplitTop);
 
 		m_huds[1].SetRacer(m_raceState.m_playerRacers[1]);
 		m_huds[1].ResetDisplay(-1);
-		m_huds[1].SetLayout(3);
+		m_huds[1].SetLayout(RaceHud::c_layoutSplitBottom);
 	}
 	else {
 		m_huds[0].SetRacer(m_context->m_playerCount == 1 ? m_raceState.m_playerRacers[0] : m_raceState.GetRacers());
 		m_huds[0].ResetDisplay(-1);
-		m_huds[0].SetLayout(1);
+		m_huds[0].SetLayout(RaceHud::c_layoutFull);
 	}
 
 	DrawLoadProgress(0.9f);

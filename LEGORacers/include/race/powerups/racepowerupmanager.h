@@ -104,6 +104,12 @@ public:
 		// SIZE 0x14
 		class Entry {
 		public:
+			enum {
+				c_stateFree = 1,
+				c_statePlaying = 2,
+				c_stateFinished = 3,
+			};
+
 			Entry();
 			~Entry();
 			void Reset();

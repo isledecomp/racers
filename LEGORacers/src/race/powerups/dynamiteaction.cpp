@@ -92,7 +92,7 @@ void DynamiteAction::Initialize(
 		}
 	}
 
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00452f60
@@ -101,7 +101,7 @@ LegoU32 DynamiteAction::Activate(Racer* p_racer, Racer* p_targetRacer)
 	m_ownerRacer = p_racer;
 	LegoU32 result = 0;
 	m_targetRacer = p_targetRacer;
-	m_state = 2;
+	m_state = c_stateArmed;
 	m_stateTimerMs = result;
 	m_tumbleAngle = 0.0f;
 	return result;
@@ -123,7 +123,7 @@ void DynamiteAction::Deactivate()
 	}
 
 	m_targetRacer = NULL;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00452ff0

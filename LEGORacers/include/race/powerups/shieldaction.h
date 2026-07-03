@@ -16,6 +16,8 @@ struct SoundVector;
 class ShieldAction : public PowerupActionBase {
 public:
 	enum {
+		c_stateUnloaded = 0,
+		c_stateReady = 1,
 		c_stateActive = 3,
 		c_stateFade = 4,
 		c_stateDone = 6,

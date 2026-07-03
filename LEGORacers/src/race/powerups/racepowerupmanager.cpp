@@ -251,17 +251,17 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	up.m_z = 1.0f;
 	m_entity->SetPosition(*p_position);
 	m_entity->SetDirectionUp(*p_direction, up);
-	m_state = 2;
+	m_state = c_statePlaying;
 }
 
 // FUNCTION: LEGORACERS 0x004515d0
 void RacePowerupManager::BrickDebris::Entry::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state == 2) {
+	if (m_state == c_statePlaying) {
 		m_entity->Update(p_elapsedMs);
 		if (m_entity->IsPartAnimationDone()) {
 			m_entity->ResetModelState();
-			m_state = 3;
+			m_state = c_stateFinished;
 		}
 	}
 }
@@ -269,7 +269,7 @@ void RacePowerupManager::BrickDebris::Entry::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00451610
 void RacePowerupManager::BrickDebris::Entry::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == 2) {
+	if (m_state == c_statePlaying) {
 		p_renderer->DrawModelEntity(m_entity);
 	}
 }
@@ -278,7 +278,7 @@ void RacePowerupManager::BrickDebris::Entry::Draw(GolD3DRenderDevice* p_renderer
 void RacePowerupManager::BrickDebris::Entry::Release()
 {
 	m_entity = NULL;
-	m_state = 1;
+	m_state = c_stateFree;
 }
 
 // FUNCTION: LEGORACERS 0x00451640
@@ -364,7 +364,7 @@ void RacePowerupManager::BrickDebris::Spawn(const GolVec3* p_position, const Gol
 
 	entryIndex = 0;
 	while (TRUE) {
-		if (m_entries[entryIndex].m_state != 2) {
+		if (m_entries[entryIndex].m_state != Entry::c_statePlaying) {
 			break;
 		}
 
@@ -2448,7 +2448,7 @@ void RacePowerupManager::CancelMagnetHold(Racer* p_racer)
 	for (LegoU32 i = 0; i < m_actionPoolCounts[0]; i++) {
 		MagnetAction* action = &m_magnetActions[i];
 		if (action->GetState() > 1 && action->m_heldRacer == p_racer) {
-			action->SetState(6);
+			action->SetState(MagnetAction::c_stateDone);
 		}
 	}
 }
@@ -2459,10 +2459,10 @@ void RacePowerupManager::CancelWarp(Racer* p_racer)
 	for (LegoU32 i = 0; i < m_actionPoolCounts[10]; i++) {
 		WarpAction* item = &m_warpActions[i];
 		if (item->m_racer == p_racer) {
-			if (item->m_state == 2) {
-				item->m_state = 6;
+			if (item->m_state == WarpAction::c_stateStarting) {
+				item->m_state = WarpAction::c_stateDone;
 			}
-			else if (item->m_state == 3) {
+			else if (item->m_state == WarpAction::c_stateActive) {
 				item->m_stateTimerMs = 0;
 			}
 		}

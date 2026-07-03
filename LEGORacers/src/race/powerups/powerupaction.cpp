@@ -83,7 +83,7 @@ void HazardActionBase::OnEvent(LegoEventQueue::CallbackData* p_param)
 		if (racer->GetFlags() & Racer::c_flagShielded) {
 			racer->AbsorbShieldHit();
 			if (m_level < 3) {
-				m_state = 6;
+				m_state = c_stateDone;
 			}
 		}
 		else {

@@ -16,6 +16,7 @@ struct SoundVector;
 class TurboAction : public PowerupActionBase {
 public:
 	enum {
+		c_stateUnloaded = 0,
 		c_stateReady = 1,
 		c_stateIgnite = 2,
 		c_stateBoosting = 3,

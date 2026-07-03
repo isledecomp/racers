@@ -70,20 +70,20 @@ HomingMissileAction::~HomingMissileAction()
 // FUNCTION: LEGORACERS 0x00456510
 void HomingMissileAction::Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld)
 {
-	if (m_state != 0) {
+	if (m_state != c_stateUnloaded) {
 		Shutdown();
 	}
 
 	m_owner = p_manager;
 	m_collisionWorld = p_collisionWorld;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00456540
 void HomingMissileAction::Shutdown()
 {
 	Deactivate();
-	m_state = 0;
+	m_state = c_stateUnloaded;
 	m_trail = 0;
 }
 
@@ -221,7 +221,7 @@ void HomingMissileAction::Deactivate()
 {
 	m_projectile.Deactivate();
 	m_missileEntity.ResetModelState();
-	m_state = 1;
+	m_state = c_stateReady;
 	m_stateTimerMs = 0;
 
 	if (m_owner != NULL && m_trail != NULL) {

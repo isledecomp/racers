@@ -76,13 +76,13 @@ TurboAction::~TurboAction()
 // FUNCTION: LEGORACERS 0x0045c880
 void TurboAction::Initialize(RacePowerupManager* p_manager, CutsceneAnimation* p_particleAnimation)
 {
-	if (m_state != 0) {
+	if (m_state != c_stateUnloaded) {
 		Destroy();
 	}
 
 	m_manager = p_manager;
 	m_particleAnimation = p_particleAnimation;
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x0045c8b0
@@ -90,7 +90,7 @@ void TurboAction::Destroy()
 {
 	Deactivate();
 	Reset();
-	m_state = 0;
+	m_state = c_stateUnloaded;
 }
 
 // FUNCTION: LEGORACERS 0x0045c8d0
@@ -114,19 +114,19 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 
 	m_turboEntity = m_manager->AllocateEffectEntity();
 	if (m_turboEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
 	m_flameEntity = m_manager->AllocateEffectEntity();
 	if (m_flameEntity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
 	m_flame2Entity = m_manager->AllocateEffectEntity();
 	if (m_flame2Entity == NULL) {
-		m_state = 6;
+		m_state = c_stateDone;
 		return;
 	}
 
@@ -232,7 +232,7 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 	m_flame2Entity->SetFlags(m_flame2Entity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_flame2Entity->PlayPart(0);
 	StartBoost();
-	m_state = 2;
+	m_state = c_stateIgnite;
 }
 
 // FUNCTION: LEGORACERS 0x0045cd70

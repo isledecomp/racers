@@ -18,6 +18,8 @@ struct SoundVector;
 class DynamiteAction : public HazardActionBase {
 public:
 	enum {
+		c_stateUnloaded = 0,
+		c_stateReady = 1,
 		c_stateArmed = 2,
 		c_stateThrown = 3,
 		c_stateSecondBlast = 4,

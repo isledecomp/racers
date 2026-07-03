@@ -40,6 +40,7 @@ private:
 	friend class RacePowerupManager;
 
 	enum {
+		c_stateUnloaded = 0,
 		c_stateInitialized = 1,
 		c_stateStarting = 2,
 		c_stateActive = 3,

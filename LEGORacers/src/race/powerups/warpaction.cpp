@@ -85,7 +85,7 @@ WarpAction::~WarpAction()
 // FUNCTION: LEGORACERS 0x0045d4b0
 void WarpAction::Reset()
 {
-	m_state = 0;
+	m_state = c_stateUnloaded;
 	m_isDemoRacer = 0;
 	m_racer = 0;
 	m_manager = 0;
@@ -100,13 +100,13 @@ void WarpAction::Reset()
 // FUNCTION: LEGORACERS 0x0045d510
 void WarpAction::Initialize(const SetupParams* p_params)
 {
-	if (m_state != 0) {
+	if (m_state != c_stateUnloaded) {
 		Destroy();
 	}
 
 	m_manager = p_params->m_manager;
 	m_cameraFov = p_params->m_cameraFov;
-	m_state = 1;
+	m_state = c_stateInitialized;
 }
 
 // FUNCTION: LEGORACERS 0x0045d540
@@ -122,7 +122,7 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 	LegoU32 flags = p_racer->m_flags;
 	if (!(flags & c_flagGhost)) {
 		if (flags & Racer::c_flagWarping) {
-			m_state = 6;
+			m_state = c_stateDone;
 			return flags;
 		}
 
@@ -168,11 +168,11 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 			m_hasTarget = FALSE;
 		}
 
-		m_state = 2;
+		m_state = c_stateStarting;
 		return 0;
 	}
 
-	m_state = 6;
+	m_state = c_stateDone;
 	return flags;
 }
 

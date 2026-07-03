@@ -552,7 +552,7 @@ void RaceHud::DrawFixedMap()
 			else {
 				sourceRect.m_left = 0;
 			}
-			if (m_layout == 2 || m_layout == 3) {
+			if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 				sourceRect.m_top = 0x10;
 			}
 			else {
@@ -577,7 +577,7 @@ void RaceHud::DrawFixedMap()
 
 		Rect sourceRect;
 		sourceRect.m_left = 0x10;
-		if (m_layout == 2 || m_layout == 3) {
+		if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 			sourceRect.m_top = 0x10;
 		}
 		else {
@@ -601,7 +601,7 @@ void RaceHud::DrawFixedMap()
 
 		Rect sourceRect;
 		sourceRect.m_left = 0;
-		if (m_layout == 2 || m_layout == 3) {
+		if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 			sourceRect.m_top = 0x10;
 		}
 		else {
@@ -757,7 +757,7 @@ void RaceHud::DrawRotatingMap()
 			else {
 				sourceRect.m_left = 0;
 			}
-			if (m_layout == 2 || m_layout == 3) {
+			if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 				sourceRect.m_top = 0x10;
 			}
 			else {
@@ -783,7 +783,7 @@ void RaceHud::DrawRotatingMap()
 		destRect.m_bottom = destRect.m_top + markerHeight;
 
 		sourceRect.m_left = 0x10;
-		if (m_layout == 2 || m_layout == 3) {
+		if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 			sourceRect.m_top = 0x10;
 		}
 		else {
@@ -808,7 +808,7 @@ void RaceHud::DrawRotatingMap()
 		destRect.m_bottom = destRect.m_top + markerHeight;
 
 		sourceRect.m_left = 0;
-		if (m_layout == 2 || m_layout == 3) {
+		if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 			sourceRect.m_top = 0x10;
 		}
 		else {
@@ -1001,7 +1001,7 @@ void RaceHud::Reset()
 	m_numberFont = NULL;
 	m_raceState = 0;
 	m_elapsedMs = 0;
-	m_layout = 0;
+	m_layout = c_layoutNone;
 	m_hideRaceInfo = 0;
 	m_isTimeRace = 0;
 	m_mirror = 0;

@@ -6,6 +6,11 @@
 // SIZE 0x2c
 class HazardActionBase : public PowerupActionBase {
 public:
+	// Shared lifecycle terminal state (each action defines its full state set)
+	enum {
+		c_stateDone = 6,
+	};
+
 	HazardActionBase();
 
 	// SYNTHETIC: LEGORACERS 0x00451960

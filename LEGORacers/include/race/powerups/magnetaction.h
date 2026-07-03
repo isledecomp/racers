@@ -16,6 +16,14 @@ struct SoundVector;
 class MagnetAction : public HazardActionBase {
 public:
 	enum {
+		c_stateReady = 1,
+		c_stateArmed = 2,
+		c_stateHolding = 3,
+		c_stateFade = 4,
+		c_stateDone = 6,
+	};
+
+	enum {
 		c_fadeDurationMs = 0x03e8,
 		c_holdDurationMs = 0x0fa0,
 		c_armedDurationMs = 0x4e20,
@@ -26,7 +34,6 @@ public:
 		c_flagVictimStopped = 1 << 0,
 		c_flagVictimLifted = 1 << 1,
 		c_flagHalted = 1 << 3,
-		c_racerDriveControllerFlags0x014Bit0 = 1 << 0,
 	};
 
 	MagnetAction();

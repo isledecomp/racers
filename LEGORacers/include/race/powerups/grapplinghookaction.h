@@ -18,6 +18,8 @@ struct SoundVector;
 class GrapplingHookAction : public WeaponActionBase {
 public:
 	enum {
+		c_stateUnloaded = 0,
+		c_stateReady = 1,
 		c_stateArmed = 2,
 		c_stateFlying = 3,
 		c_statePulling = 4,

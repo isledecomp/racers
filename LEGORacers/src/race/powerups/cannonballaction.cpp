@@ -78,14 +78,14 @@ CannonballAction::~CannonballAction()
 // FUNCTION: LEGORACERS 0x004519d0
 void CannonballAction::Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld)
 {
-	if (m_state != 0) {
+	if (m_state != c_stateUnloaded) {
 		Destroy();
 	}
 
 	m_owner = p_manager;
 	m_collisionWorld = p_collisionWorld;
 	m_billboard = static_cast<GolBillboard*>(p_manager->m_golExport->CreateBillboard());
-	m_state = 1;
+	m_state = c_stateReady;
 }
 
 // FUNCTION: LEGORACERS 0x00451a10
@@ -99,13 +99,13 @@ void CannonballAction::Destroy()
 		m_owner = NULL;
 	}
 
-	m_state = 0;
+	m_state = c_stateUnloaded;
 }
 
 // FUNCTION: LEGORACERS 0x00451a50
 LegoU32 CannonballAction::Activate(ActionSetup* p_setup)
 {
-	m_state = 2;
+	m_state = c_stateArmed;
 	m_ownerRacer = p_setup->m_racer;
 	m_targetRacer = p_setup->m_targetRacer;
 	m_targetPoint = p_setup->m_targetPoint;
@@ -147,7 +147,7 @@ void CannonballAction::Deactivate()
 	m_targetRacer = 0;
 	m_targetPoint = 0;
 	m_emplacement = 0;
-	m_state = 1;
+	m_state = c_stateReady;
 
 	if (m_owner != NULL && m_trail != NULL) {
 		m_owner->m_trailManager->ReleaseTrail(m_trail);
@@ -174,7 +174,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 		m_stateTimerMs -= p_elapsedMs;
 	}
 
-	if (m_state == 3) {
+	if (m_state == c_stateFlying) {
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
 		if (projectileState != PowerupProjectile::c_stateFlying) {
 			SoundVector position;
@@ -251,7 +251,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (m_state == 3) {
+	if (m_state == c_stateFlying) {
 		GolVec3 position;
 		m_projectile.GetWorldEntity()->GetBoundsCenter(&position);
 
@@ -287,7 +287,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00451f30
 void CannonballAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == 3) {
+	if (m_state == c_stateFlying) {
 		p_renderer->DrawBillboard(*m_billboard);
 	}
 }
@@ -299,7 +299,7 @@ void CannonballAction::AdvanceState()
 	case 2:
 		break;
 	case 3:
-		m_state = 6;
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		m_projectile.CancelCollisionEvent();
 		if (m_trail != NULL) {
@@ -309,12 +309,12 @@ void CannonballAction::AdvanceState()
 
 		return;
 	default:
-		m_state = 6;
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		return;
 	}
 
-	m_state = 3;
+	m_state = c_stateFlying;
 	LegoU32 durationMs = 3000;
 	SoundVector position;
 	GolVec3 direction;
@@ -441,7 +441,7 @@ void CannonballAction::AdvanceState()
 // FUNCTION: LEGORACERS 0x00452370
 void CannonballAction::OnHitRacer(Racer* p_racer)
 {
-	if (m_state == 3) {
+	if (m_state == c_stateFlying) {
 		if (p_racer->GetFlags() & Racer::c_flagShielded) {
 			p_racer->PlayReaction(TRUE);
 			p_racer->AbsorbShieldHit();
@@ -458,7 +458,7 @@ void CannonballAction::OnHitRacer(Racer* p_racer)
 			p_racer->PlayReaction(FALSE);
 			p_racer->DropWhiteBrick();
 			SoundVector position;
-			p_racer->m_visuals.SetReactionFlags(c_racerCarVisualsFlags0x384Bit1);
+			p_racer->m_visuals.SetReactionFlags(CarVisuals::c_reactionHit);
 			p_racer->m_visuals.GetCarEntity()->GetPosition(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundHit,

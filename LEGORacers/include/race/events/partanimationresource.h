@@ -23,7 +23,7 @@ public:
 		LegoBool32 m_noEnd;                  // 0x2c
 		LegoBool32 m_triggerOnEnd;           // 0x30
 		LegoBool32 m_atEventPosition;        // 0x34
-		LegoBool32 m_unk0x38;                // 0x38
+		LegoBool32 m_useSharedDatabase;      // 0x38
 	};
 
 	PartAnimationResource();

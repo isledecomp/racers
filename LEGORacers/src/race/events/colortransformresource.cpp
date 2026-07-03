@@ -68,7 +68,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 {
 	LegoU8 flags = static_cast<LegoU8>(m_transformFlags);
 	GolWorldEntity* entity = m_worldEntity;
-	if (flags & c_transformFlagBit1) {
+	if (flags & c_clearTransform) {
 		if (entity) {
 			entity->ClearColorTransform();
 		}
@@ -93,7 +93,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 // FUNCTION: LEGORACERS 0x00465690
 void ColorTransformResource::OnEndForRacer(Racer* p_racer)
 {
-	if (!(static_cast<LegoU8>(m_transformFlags) & c_transformFlagBit1)) {
+	if (!(static_cast<LegoU8>(m_transformFlags) & c_clearTransform)) {
 		GolWorldEntity* entity = m_worldEntity;
 		if (entity) {
 			entity->ClearColorTransform();

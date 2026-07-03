@@ -328,7 +328,7 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 		params.m_noEnd = FALSE;
 		params.m_looping = FALSE;
 		params.m_atEventPosition = FALSE;
-		params.m_unk0x38 = FALSE;
+		params.m_useSharedDatabase = FALSE;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
@@ -337,7 +337,7 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 				LegoChar destination[sizeof(GolName)];
 				::strncpy(destination, name, sizeof(destination));
 
-				if (params.m_unk0x38) {
+				if (params.m_useSharedDatabase) {
 					GolWorldDatabase* worldDatabase = field->m_sharedDatabase;
 					if (worldDatabase->GetAnimatedEntityEntries()) {
 						params.m_animatedEntity = worldDatabase->GetAnimatedEntityByName(destination);
@@ -357,8 +357,8 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 				}
 				break;
 			}
-			case GolFileParser::e_unknown0x41:
-				params.m_unk0x38 = TRUE;
+			case EvbTxtParser::e_sharedDatabase:
+				params.m_useSharedDatabase = TRUE;
 				break;
 			case EvbTxtParser::e_active:
 				params.m_activePart = p_parser->ReadInteger();
@@ -620,7 +620,7 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 		params.m_up.m_z = 1.0f;
 		params.m_trackedEntity = NULL;
 		params.m_nodeIndex = 0;
-		LegoBool32 token0x3f = FALSE;
+		LegoBool32 useSharedDatabase = FALSE;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
@@ -657,15 +657,15 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 			case EvbTxtParser::e_atEventPosition:
 				params.m_atEventPosition = eventIndex;
 				break;
-			case GolFileParser::e_unknown0x41:
-				token0x3f = eventIndex;
+			case EvbTxtParser::e_sharedDatabase:
+				useSharedDatabase = eventIndex;
 				break;
 			case EvbTxtParser::e_entityName: {
 				const LegoChar* name = p_parser->ReadStringWithMaxLength(sizeof(GolName));
 				LegoChar destination[sizeof(GolName)];
 				::strncpy(destination, name, sizeof(destination));
 
-				if (token0x3f) {
+				if (useSharedDatabase) {
 					GolWorldDatabase* worldDatabase = field->m_sharedDatabase;
 					if (worldDatabase->GetAnimatedEntityEntries() == NULL) {
 						GolModelEntity* entity = NULL;
@@ -754,7 +754,7 @@ void RaceEventTable::ParseEventLinks(GolFileParser* p_parser)
 			p_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 		}
 
-		if (p_parser->GetNextToken() != GolFileParser::e_unknown0x39) {
+		if (p_parser->GetNextToken() != EvbTxtParser::e_eventLinks) {
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 		}
 
@@ -817,17 +817,17 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 			case EvbTxtParser::e_duration:
 				params.m_durationMs = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x45:
-				params.m_skyFlags |= 2;
+			case SkyStateResource::e_hideDome:
+				params.m_skyFlags |= SkyStateResource::c_hideDome;
 				break;
-			case GolFileParser::e_unknown0x46:
-				params.m_skyFlags |= 1;
+			case SkyStateResource::e_showDome:
+				params.m_skyFlags |= SkyStateResource::c_showDome;
 				break;
-			case GolFileParser::e_unknown0x47:
-				params.m_skyFlags |= 8;
+			case SkyStateResource::e_hideSkyWorld:
+				params.m_skyFlags |= SkyStateResource::c_hideSkyWorld;
 				break;
-			case GolFileParser::e_unknown0x48:
-				params.m_skyFlags |= 4;
+			case SkyStateResource::e_showSkyWorld:
+				params.m_skyFlags |= SkyStateResource::c_showSkyWorld;
 				break;
 			case EvbTxtParser::e_event: {
 				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
@@ -946,8 +946,8 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 				params.m_colorTransform.m_bluOffset = p_parser->ReadInteger();
 				params.m_colorTransform.m_alpOffset = p_parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x50:
-				params.m_flags |= 2;
+			case ColorTransformResource::e_clearTransform:
+				params.m_flags |= ColorTransformResource::c_clearTransform;
 				break;
 			case EvbTxtParser::e_noEnd:
 				params.m_flags |= 4;
@@ -1104,7 +1104,7 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 		GolName name;
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
-			case GolFileParser::e_unknown0x4a:
+			case NodeTransformResource::e_triggerEntity:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
 				params.m_boundedEntity = field->m_triggerDatabase->FindBoundedEntity(name);
@@ -1186,8 +1186,8 @@ void RaceEventTable::ParseModelDistances(GolFileParser* p_parser)
 		params.m_eventTable = field;
 		params.m_modelEntity = NULL;
 		params.m_noEnd = FALSE;
-		params.m_unk0x20 = FALSE;
-		LegoBool32 useAlternateDatabase = FALSE;
+		params.m_hideWhenActive = FALSE;
+		LegoBool32 useSharedDatabase = FALSE;
 		LegoS32 eventIndex = 1;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
@@ -1196,7 +1196,7 @@ void RaceEventTable::ParseModelDistances(GolFileParser* p_parser)
 				GolName name;
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-				if (!useAlternateDatabase) {
+				if (!useSharedDatabase) {
 					params.m_modelEntity = field->m_trackDatabase->FindModelEntity(name);
 					if (params.m_modelEntity == NULL) {
 						params.m_modelEntity = field->m_trackDatabase->FindAnimatedEntity(name);
@@ -1219,11 +1219,11 @@ void RaceEventTable::ParseModelDistances(GolFileParser* p_parser)
 			case EvbTxtParser::e_noEnd:
 				params.m_noEnd = eventIndex;
 				break;
-			case GolFileParser::e_unknown0x41:
-				useAlternateDatabase = eventIndex;
+			case EvbTxtParser::e_sharedDatabase:
+				useSharedDatabase = eventIndex;
 				break;
-			case GolFileParser::e_unknown0x46:
-				params.m_unk0x20 = eventIndex;
+			case ModelDistanceResource::e_hideWhenActive:
+				params.m_hideWhenActive = eventIndex;
 				break;
 			case EvbTxtParser::e_event: {
 				LegoS32 tokenIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;

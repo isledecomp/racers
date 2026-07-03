@@ -72,19 +72,19 @@ void SkyStateResource::OnStartAt(GolVec3*)
 		m_skyState->StartTransition(m_skyName, m_durationMs);
 	}
 
-	if (m_skyFlags & c_flags0x30Bit0) {
+	if (m_skyFlags & c_showDome) {
 		m_skyState->m_hideFlags &= ~RaceSkyState::c_hideDome;
 	}
 
-	if (m_skyFlags & c_flags0x30Bit1) {
+	if (m_skyFlags & c_hideDome) {
 		m_skyState->m_hideFlags |= RaceSkyState::c_hideDome;
 	}
 
-	if (m_skyFlags & c_flags0x30Bit2) {
+	if (m_skyFlags & c_showSkyWorld) {
 		m_skyState->m_hideFlags &= ~RaceSkyState::c_hideSkyWorld;
 	}
 
-	if (m_skyFlags & c_flags0x30Bit3) {
+	if (m_skyFlags & c_hideSkyWorld) {
 		m_skyState->m_hideFlags |= RaceSkyState::c_hideSkyWorld;
 	}
 

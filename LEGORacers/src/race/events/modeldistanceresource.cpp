@@ -25,7 +25,7 @@ void ModelDistanceResource::ClearFields()
 	m_modelDistances[0] = 0.0f;
 	m_modelDistances[1] = 0.0f;
 	m_modelDistances[2] = 0.0f;
-	m_unk0x30 = FALSE;
+	m_hideWhenActive = FALSE;
 	m_modelEntity = NULL;
 }
 
@@ -45,7 +45,7 @@ void ModelDistanceResource::Initialize(InitParams* p_params)
 
 	m_eventTable = p_params->m_eventTable;
 	m_modelEntity = p_params->m_modelEntity;
-	m_unk0x30 = p_params->m_unk0x20;
+	m_hideWhenActive = p_params->m_hideWhenActive;
 	if (p_params->m_noEnd) {
 		m_flags |= c_flagNoEnd;
 	}
@@ -55,7 +55,7 @@ void ModelDistanceResource::Initialize(InitParams* p_params)
 
 	for (i = 0; i < sizeOfArray(m_modelDistances); i++) {
 		m_modelDistances[i] = m_modelEntity->GetModelDistance(i);
-		if (!m_unk0x30) {
+		if (!m_hideWhenActive) {
 			LegoFloat modelDistance = -1.0f;
 			m_modelEntity->SetModelDistance(i, modelDistance);
 		}
@@ -76,7 +76,7 @@ void ModelDistanceResource::OnStartAt(GolVec3*)
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_modelDistances); i++) {
 		LegoFloat modelDistance;
-		if (m_unk0x30) {
+		if (m_hideWhenActive) {
 			modelDistance = -1.0f;
 		}
 		else {
@@ -93,7 +93,7 @@ void ModelDistanceResource::OnEnd()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_modelDistances); i++) {
 		LegoFloat modelDistance;
-		if (m_unk0x30) {
+		if (m_hideWhenActive) {
 			modelDistance = m_modelDistances[i];
 		}
 		else {

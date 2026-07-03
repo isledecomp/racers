@@ -10,6 +10,13 @@ class RaceSkyState;
 // SIZE 0x34
 class SkyStateResource : public RaceEventResource {
 public:
+	// .evb field tokens scoped to the skyStates section
+	enum {
+		e_hideDome = 0x45,
+		e_showDome = 0x46,
+		e_hideSkyWorld = 0x47,
+		e_showSkyWorld = 0x48,
+	};
 	// SIZE 0x2c
 	struct InitParams {
 		undefined4 m_eventId;             // 0x00
@@ -41,14 +48,15 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004606c0
 	// SkyStateResource::`vector deleting destructor'
 
-private:
+public:
 	enum {
-		c_flags0x30Bit0 = 1 << 0,
-		c_flags0x30Bit1 = 1 << 1,
-		c_flags0x30Bit2 = 1 << 2,
-		c_flags0x30Bit3 = 1 << 3
+		c_showDome = 1 << 0,
+		c_hideDome = 1 << 1,
+		c_showSkyWorld = 1 << 2,
+		c_hideSkyWorld = 1 << 3
 	};
 
+private:
 	RaceSkyState* m_skyState; // 0x20
 	GolName m_skyName;        // 0x24
 	LegoU32 m_durationMs;     // 0x2c

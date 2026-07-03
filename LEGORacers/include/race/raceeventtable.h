@@ -76,6 +76,7 @@ public:
 			e_triggerOnEnd = 0x3c,
 			e_particles = 0x3d,
 			e_atEventPosition = 0x3f,
+			e_sharedDatabase = 0x41,
 			e_skyStates = 0x42,
 			e_timers = 0x4b,
 			e_colorTransforms = 0x4d,

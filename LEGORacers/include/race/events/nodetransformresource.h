@@ -10,6 +10,11 @@ class GolModelEntity;
 // SIZE 0x2c
 class NodeTransformResource : public RaceEventResource {
 public:
+	// .evb field token scoped to the nodeTransforms section
+	enum {
+		e_triggerEntity = 0x4a,
+	};
+
 	// SIZE 0x24
 	struct InitParams {
 		undefined4 m_eventId;              // 0x00

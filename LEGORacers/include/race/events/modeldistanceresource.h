@@ -9,6 +9,11 @@ class GolModelEntity;
 // SIZE 0x34
 class ModelDistanceResource : public RaceEventResource {
 public:
+	// .evb field token scoped to the modelDistances section
+	enum {
+		e_hideWhenActive = 0x46,
+	};
+
 	// SIZE 0x24
 	struct InitParams {
 		undefined4 m_eventId;          // 0x00
@@ -17,7 +22,7 @@ public:
 		GolModelEntity* m_modelEntity; // 0x14
 		LegoBool32 m_noEnd;            // 0x18
 		LegoBool32 m_triggerOnEnd;     // 0x1c
-		LegoBool32 m_unk0x20;          // 0x20
+		LegoBool32 m_hideWhenActive;   // 0x20
 	};
 
 	ModelDistanceResource();
@@ -36,7 +41,7 @@ public:
 private:
 	GolModelEntity* m_modelEntity; // 0x20
 	LegoFloat m_modelDistances[3]; // 0x24
-	LegoBool32 m_unk0x30;          // 0x30
+	LegoBool32 m_hideWhenActive;   // 0x30
 };
 
 #endif // MODELDISTANCERESOURCE_H

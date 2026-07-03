@@ -24,6 +24,7 @@ public:
 	enum {
 		e_shifts = 0x4e,
 		e_offsets = 0x4f,
+		e_clearTransform = 0x50,
 	};
 
 	ColorTransformResource();
@@ -40,10 +41,13 @@ public:
 	// ColorTransformResource::`vector deleting destructor'
 
 private:
+
+public:
 	enum {
-		c_transformFlagBit1 = 1 << 1,
+		c_clearTransform = 1 << 1, // OnStart clears the active transform instead of applying one
 	};
 
+private:
 	LegoU32 m_transformFlags;        // 0x20
 	ColorTransform m_colorTransform; // 0x24
 	GolWorldEntity* m_worldEntity;   // 0x44

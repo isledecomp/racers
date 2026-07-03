@@ -55,7 +55,7 @@ void PartAnimationResource::Initialize(InitParams* p_params)
 		m_flags |= c_flagAtEventPosition;
 	}
 
-	if (p_params->m_unk0x38) {
+	if (p_params->m_useSharedDatabase) {
 		m_flags |= c_flags0x1cBit4;
 	}
 

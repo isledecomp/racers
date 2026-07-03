@@ -354,7 +354,7 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 void HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateArmed) {
-		p_renderer->VTable0x94(&m_missileEntity);
+		p_renderer->DrawModelEntity(&m_missileEntity);
 	}
 	else if (m_state == c_stateFlying) {
 		GolSceneNode* node = m_missileEntity.GetSceneNode(0);
@@ -377,7 +377,7 @@ void HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 		up.m_z = 1.0f;
 		transform->VTable0x28(&direction, &up);
 
-		p_renderer->VTable0x94(&m_missileEntity);
+		p_renderer->DrawModelEntity(&m_missileEntity);
 	}
 }
 

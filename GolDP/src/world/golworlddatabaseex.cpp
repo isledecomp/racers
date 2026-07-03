@@ -336,7 +336,7 @@ void GolWorldDatabaseEx::DrawCollidableEntities(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_collidableEntityCount; i++) {
-		p_renderer->VTable0x90(&m_collidableEntities[i]);
+		p_renderer->DrawCollidableEntity(&m_collidableEntities[i]);
 	}
 }
 
@@ -363,6 +363,6 @@ void GolWorldDatabaseEx::DrawSprites(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_spriteCount; i++) {
-		p_renderer->VTable0xb4(m_billboards[i]);
+		p_renderer->DrawBillboard(m_billboards[i]);
 	}
 }

@@ -113,7 +113,7 @@ void DecalGeometry::Destroy()
 void DecalGeometry::Draw(GolRenderDevice* p_renderer)
 {
 	if (m_flags & c_hasGeometry) {
-		p_renderer->VTable0x94(&m_entity);
+		p_renderer->DrawModelEntity(&m_entity);
 	}
 }
 

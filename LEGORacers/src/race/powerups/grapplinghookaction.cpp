@@ -333,17 +333,17 @@ void GrapplingHookAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	switch (m_state) {
 	case c_stateFlying:
-		p_renderer->VTable0x94(m_hookEntity);
+		p_renderer->DrawModelEntity(m_hookEntity);
 		m_projectile.Draw(p_renderer);
 		break;
 	case c_statePulling:
-		p_renderer->VTable0x94(m_hookEntity);
+		p_renderer->DrawModelEntity(m_hookEntity);
 		m_projectile.Draw(p_renderer);
 		break;
 	case c_stateRetracting:
 		m_projectile.Draw(p_renderer);
 		if (m_billboardAnimation.IsAssigned()) {
-			p_renderer->VTable0xb4(*m_billboard);
+			p_renderer->DrawBillboard(*m_billboard);
 		}
 		break;
 	}

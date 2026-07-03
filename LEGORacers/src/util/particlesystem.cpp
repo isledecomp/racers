@@ -424,7 +424,7 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 					m_model->SetDirty(TRUE);
 					m_model->AddFlags(0);
 					m_model->AddFlagsWithBounds(0, FALSE);
-					p_renderer->VTable0x94(&m_modelEntity);
+					p_renderer->DrawModelEntity(&m_modelEntity);
 				}
 			}
 		}

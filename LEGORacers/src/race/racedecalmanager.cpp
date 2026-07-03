@@ -338,7 +338,7 @@ void RaceDecalManager::Trail::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		if (count) {
 			ModelSlot* slot = m_slots;
 			do {
-				p_renderer->VTable0x94(&slot->m_entry.m_entity);
+				p_renderer->DrawModelEntity(&slot->m_entry.m_entity);
 				slot++;
 				count--;
 			} while (count);

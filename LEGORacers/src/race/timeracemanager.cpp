@@ -383,12 +383,12 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			attachedEntity->SetOrientationFromQuaternion(interpolatedRotation);
 		}
 
-		p_renderer->VTable0x94(animatedEntity);
-		p_renderer->VTable0x94(modelEntity);
+		p_renderer->DrawModelEntity(animatedEntity);
+		p_renderer->DrawModelEntity(modelEntity);
 		if (optionalEntity) {
-			p_renderer->VTable0x94(optionalEntity);
+			p_renderer->DrawModelEntity(optionalEntity);
 		}
-		p_renderer->VTable0x94(attachedEntity);
+		p_renderer->DrawModelEntity(attachedEntity);
 	}
 
 	p_renderer->ClearAlphaOverride();

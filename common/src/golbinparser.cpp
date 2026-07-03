@@ -605,7 +605,7 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 
 // FUNCTION: GOLDP 0x10031100
 // FUNCTION: LEGORACERS 0x0044b4a0
-void GolBinParser::VTable0x54(undefined4 p_param)
+void GolBinParser::WriteByte(undefined4 p_param)
 {
 	*m_readBuffer = p_param;
 
@@ -647,7 +647,7 @@ void GolBinParser::WriteFloat(LegoFloat p_param)
 
 // FUNCTION: GOLDP 0x1002fd50 FOLDED
 // FUNCTION: LEGORACERS 0x0044b570 FOLDED
-void GolBinParser::VTable0x5c(LegoFloat p_param)
+void GolBinParser::WriteFloat2(LegoFloat p_param)
 {
 	WriteFloat(p_param);
 }

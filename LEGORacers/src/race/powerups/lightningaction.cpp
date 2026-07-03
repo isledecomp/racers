@@ -407,7 +407,7 @@ void LightningAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_targetRacer != NULL) {
 		m_flashBillboard->SetPosition(m_boltPoints[3]);
-		p_renderer->VTable0xb4(*m_flashBillboard);
+		p_renderer->DrawBillboard(*m_flashBillboard);
 	}
 
 	m_beam.Draw(p_renderer);

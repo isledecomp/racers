@@ -457,7 +457,7 @@ void RaceSkyState::Draw(GolD3DRenderDevice* p_renderer)
 	flags = ~flags;
 	if (flags & c_hideDome) {
 		p_renderer->VTable0xe8(TRUE);
-		p_renderer->VTable0x94(&m_domeEntity);
+		p_renderer->DrawModelEntity(&m_domeEntity);
 
 		flags = m_hideFlags;
 		flags = ~flags;

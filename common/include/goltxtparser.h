@@ -18,9 +18,9 @@ public:
 	undefined4 VTable0x48(undefined4, undefined4) override; // vtable+0x48
 	void OpenFileForWrite(LegoChar* p_fileName) override;   // vtable+0x4c
 	void WriteToken(ParserTokenType) override;              // vtable+0x50
-	void VTable0x54(undefined4) override;                   // vtable+0x54
+	void WriteByte(undefined4) override;                    // vtable+0x54
 	void WriteFloat(LegoFloat) override;                    // vtable+0x58
-	void VTable0x5c(LegoFloat) override;                    // vtable+0x5c
+	void WriteFloat2(LegoFloat) override;                   // vtable+0x5c
 	void WriteInt4(undefined4) override;                    // vtable+0x60
 	void WriteString(LegoChar*) override;                   // vtable+0x64
 	void FlushLine() override;                              // vtable+0x68

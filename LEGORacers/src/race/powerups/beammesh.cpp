@@ -657,5 +657,5 @@ void BeamEntity::Draw(GolRenderDevice& p_renderer)
 		}
 	}
 
-	p_renderer.VTable0x94(this);
+	p_renderer.DrawModelEntity(this);
 }

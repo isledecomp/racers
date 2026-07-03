@@ -146,7 +146,7 @@ LegoBool32 MainMenuModelSlot::Draw()
 	GolVec3 position;
 	m_driverEntity.GetPosition(&position);
 	m_driverEntity.SetPosition(position);
-	m_renderer->VTable0x94(&m_driverEntity);
+	m_renderer->DrawModelEntity(&m_driverEntity);
 
 	return TRUE;
 }

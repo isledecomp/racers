@@ -270,7 +270,7 @@ void RacePowerupManager::BrickDebris::Entry::Update(LegoU32 p_elapsedMs)
 void RacePowerupManager::BrickDebris::Entry::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 2) {
-		p_renderer->VTable0x94(m_entity);
+		p_renderer->DrawModelEntity(m_entity);
 	}
 }
 

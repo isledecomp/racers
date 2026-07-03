@@ -350,7 +350,7 @@ void GhostHazard::Draw(GolD3DRenderDevice* p_renderer)
 
 		do {
 			p_renderer->SetAlphaOverride(alpha, TRUE);
-			p_renderer->VTable0x94(modelEntity);
+			p_renderer->DrawModelEntity(modelEntity);
 			alpha += 0x2a;
 			modelEntity--;
 		} while (--i);

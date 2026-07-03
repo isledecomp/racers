@@ -209,7 +209,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 void DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateDone && m_state != c_stateSecondBlast && m_state != c_stateThirdBlast) {
-		p_renderer->VTable0x94(&m_modelEntity);
+		p_renderer->DrawModelEntity(&m_modelEntity);
 	}
 }
 

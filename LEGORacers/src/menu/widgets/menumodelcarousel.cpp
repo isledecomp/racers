@@ -517,7 +517,7 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 			m_renderer->GetCurrentMaterialColor()->SetColor(item->m_primaryColor.m_color);
 			m_renderer->GetCurrentLight(0)->SetColor(item->m_secondaryColor.m_color);
 			m_renderer->VTable0x60();
-			m_renderer->VTable0x94(&item->m_entity);
+			m_renderer->DrawModelEntity(&item->m_entity);
 		}
 	}
 

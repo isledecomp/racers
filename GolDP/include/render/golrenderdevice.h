@@ -182,20 +182,28 @@ public:
 		const TexturedVertex* p_vertex2,
 		GolMaterial* p_material,
 		undefined4 p_flags
-	) = 0;                                                                                    // vtable+0x84
-	virtual void VTable0x88(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x88
-	virtual void VTable0x8c(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x8c
-	virtual void VTable0x90(GolWorldEntity*) = 0;                                             // vtable+0x90
-	virtual void VTable0x94(GolWorldEntity*) = 0;                                             // vtable+0x94
-	virtual void VTable0x98(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x98
-	virtual void VTable0x9c(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x9c
-	virtual void VTable0xa0(GolWorldEntity*, const GolVec3*, const GolVec3*, const GolVec3*); // vtable+0xa0
-	virtual void VTable0xa4(GolWorldEntity*);                                                 // vtable+0xa4
-	virtual void VTable0xa8(GolWorldEntity* p_param1, LegoFloat p_param2,
-							LegoFloat p_param3);                           // vtable+0xa8
-	virtual void VTable0xac(GolModelEntity*, undefined4);                  // vtable+0xac
-	virtual void VTable0xb0(GolModelEntity*, undefined4);                  // vtable+0xb0
-	virtual void VTable0xb4(GolBillboard&) = 0;                            // vtable+0xb4
+	) = 0;                                                                                             // vtable+0x84
+	virtual void DrawCollidableEntityWithState(GolModelEntity*, GolD3DRenderState*, undefined4);       // vtable+0x88
+	virtual void DrawModelEntityWithState(GolModelEntity*, GolD3DRenderState*, undefined4);            // vtable+0x8c
+	virtual void DrawCollidableEntity(GolWorldEntity*) = 0;                                            // vtable+0x90
+	virtual void DrawModelEntity(GolWorldEntity*) = 0;                                                 // vtable+0x94
+	virtual void DrawCollidableEntityWithScopedState(GolModelEntity*, GolD3DRenderState*, undefined4); // vtable+0x98
+	virtual void DrawModelEntityWithScopedState(GolModelEntity*, GolD3DRenderState*, undefined4);      // vtable+0x9c
+	virtual void DrawModelEntityWithUvAxes(
+		GolWorldEntity*,
+		const GolVec3*,
+		const GolVec3*,
+		const GolVec3*
+	);                                                              // vtable+0xa0
+	virtual void DrawModelEntityEnvironmentMapped(GolWorldEntity*); // vtable+0xa4
+	virtual void DrawModelEntityWithUvOffset(
+		GolWorldEntity* p_param1,
+		LegoFloat p_param2,
+		LegoFloat p_param3
+	);                                                                     // vtable+0xa8
+	virtual void DrawModelEntityLodMirrored(GolModelEntity*, undefined4);  // vtable+0xac
+	virtual void DrawModelEntityLod(GolModelEntity*, undefined4);          // vtable+0xb0
+	virtual void DrawBillboard(GolBillboard&) = 0;                         // vtable+0xb4
 	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags); // vtable+0xb8
 	virtual void ClearAlphaOverride();                                     // vtable+0xbc
 	virtual void VTable0xc0(const ColorRGBA& p_param);                     // vtable+0xc0

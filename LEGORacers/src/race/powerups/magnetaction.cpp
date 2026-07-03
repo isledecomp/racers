@@ -333,7 +333,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 void MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != 6) {
-		p_renderer->VTable0x94(m_magnetEntity);
+		p_renderer->DrawModelEntity(m_magnetEntity);
 	}
 }
 

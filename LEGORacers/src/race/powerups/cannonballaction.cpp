@@ -288,7 +288,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 void CannonballAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 3) {
-		p_renderer->VTable0xb4(*m_billboard);
+		p_renderer->DrawBillboard(*m_billboard);
 	}
 }
 

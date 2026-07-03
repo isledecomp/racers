@@ -368,7 +368,7 @@ void PowerupExplosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		p_renderer->SetAlphaOverride(static_cast<LegoS32>(m_alpha), 1);
 
 		if (m_billboard != NULL) {
-			p_renderer->VTable0xb4(*m_billboard);
+			p_renderer->DrawBillboard(*m_billboard);
 		}
 
 		if (m_modelEntity.HasModel()) {

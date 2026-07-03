@@ -2613,7 +2613,7 @@ void CarBuildModel::DrawOverlay(GolD3DRenderDevice* p_renderer, LegoFloat p_unk0
 	m_overlayEntity.SetOrientationMatrix(matrix);
 
 	if (m_overlayVisible) {
-		p_renderer->VTable0x94(&m_overlayEntity);
+		p_renderer->DrawModelEntity(&m_overlayEntity);
 	}
 }
 

@@ -898,7 +898,7 @@ void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodInde
 }
 
 // FUNCTION: GOLDP 0x10008910
-void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
+void GolD3DRenderDevice::DrawModelEntity(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
 	p_model->ComputeVisibility(m_unk0x4c, &result);
@@ -946,7 +946,7 @@ void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 }
 
 // FUNCTION: GOLDP 0x10008a50
-void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodIndex)
+void GolD3DRenderDevice::DrawModelEntityLodMirrored(GolModelEntity* p_model, undefined4 p_lodIndex)
 {
 	GolWorldEntity::ResultStruct result;
 	GolMatrix4* modelMatrix;
@@ -1019,7 +1019,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 }
 
 // FUNCTION: GOLDP 0x10008c30
-void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodIndex)
+void GolD3DRenderDevice::DrawModelEntityLod(GolModelEntity* p_model, undefined4 p_lodIndex)
 {
 	GolWorldEntity::ResultStruct result;
 	GolMatrix4* modelMatrix;
@@ -1087,7 +1087,11 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 }
 
 // FUNCTION: GOLDP 0x10008dd0
-void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* p_renderState, undefined4 p_lodIndex)
+void GolD3DRenderDevice::DrawModelEntityWithState(
+	GolModelEntity* p_model,
+	GolD3DRenderState* p_renderState,
+	undefined4 p_lodIndex
+)
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
@@ -1155,7 +1159,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 }
 
 // FUNCTION: GOLDP 0x10008f70
-void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+void GolD3DRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_model, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
 	GolWorldEntity::ResultStruct result;
 	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
@@ -1206,7 +1210,11 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 }
 
 // FUNCTION: GOLDP 0x100090b0
-void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* p_renderState, undefined4 p_lodIndex)
+void GolD3DRenderDevice::DrawCollidableEntityWithState(
+	GolModelEntity* p_model,
+	GolD3DRenderState* p_renderState,
+	undefined4 p_lodIndex
+)
 {
 	GolWorldEntity::ResultStruct result;
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
@@ -1281,21 +1289,29 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 }
 
 // FUNCTION: GOLDP 0x10009240
-void GolD3DRenderDevice::VTable0x9c(GolModelEntity* p_arg1, GolD3DRenderState* p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::DrawModelEntityWithScopedState(
+	GolModelEntity* p_arg1,
+	GolD3DRenderState* p_arg2,
+	undefined4 p_arg3
+)
 {
 	m_unk0xc8528 = TRUE;
-	VTable0x8c(p_arg1, p_arg2, p_arg3);
+	DrawModelEntityWithState(p_arg1, p_arg2, p_arg3);
 }
 
 // FUNCTION: GOLDP 0x10009270
-void GolD3DRenderDevice::VTable0x98(GolModelEntity* p_arg1, GolD3DRenderState* p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::DrawCollidableEntityWithScopedState(
+	GolModelEntity* p_arg1,
+	GolD3DRenderState* p_arg2,
+	undefined4 p_arg3
+)
 {
 	m_unk0xc8528 = TRUE;
-	VTable0x88(p_arg1, p_arg2, p_arg3);
+	DrawCollidableEntityWithState(p_arg1, p_arg2, p_arg3);
 }
 
 // FUNCTION: GOLDP 0x100092a0
-void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
+void GolD3DRenderDevice::DrawCollidableEntity(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
 	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
@@ -1647,7 +1663,7 @@ void GolD3DRenderDevice::VTable0x70(
 }
 
 // FUNCTION: GOLDP 0x10009a70
-void GolD3DRenderDevice::VTable0xb4(GolBillboard& p_param)
+void GolD3DRenderDevice::DrawBillboard(GolBillboard& p_param)
 {
 	LegoBool32 visibility[2];
 	p_param.FUN_10029fa0(m_unk0x4c.m_position, visibility);

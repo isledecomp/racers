@@ -274,6 +274,6 @@ void LauncherHazard::Draw(GolD3DRenderDevice* p_renderer)
 		GolVec3 position;
 		m_trigger.GetBoundsCenter(&position);
 		m_billboard->SetPosition(position);
-		p_renderer->VTable0xb4(*m_billboard);
+		p_renderer->DrawBillboard(*m_billboard);
 	}
 }

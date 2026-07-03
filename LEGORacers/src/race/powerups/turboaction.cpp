@@ -351,7 +351,7 @@ void TurboAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateDone) {
 		AnchorToRacer();
-		p_renderer->VTable0x94(m_turboEntity);
+		p_renderer->DrawModelEntity(m_turboEntity);
 	}
 }
 

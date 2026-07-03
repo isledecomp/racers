@@ -969,7 +969,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 		if (!(m_animFlags & (c_flagCommittingPart | c_flagResettingView))) {
 			if ((m_pieceAnimPhase & c_placementFeedbackMask) && m_pitchTarget != 2) {
 				m_renderer->SetAlphaOverride(0x40, 0);
-				m_renderer->VTable0x94(entity);
+				m_renderer->DrawModelEntity(entity);
 				m_renderer->ClearAlphaOverride();
 			}
 		}
@@ -1007,7 +1007,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 
 		if (!(m_animFlags & (c_flagCommittingPart | c_flagResettingView)) && alpha > 0) {
 			m_renderer->SetAlphaOverride(alpha, 0);
-			m_renderer->VTable0x94(entity);
+			m_renderer->DrawModelEntity(entity);
 			m_renderer->ClearAlphaOverride();
 		}
 
@@ -1021,7 +1021,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 		entity->SetPosition(position);
 
 		if (m_pitchTarget != 2 || (m_animFlags & (c_flagCommittingPart | c_flagResettingView))) {
-			m_renderer->VTable0x94(entity);
+			m_renderer->DrawModelEntity(entity);
 		}
 
 		entity->SetPosition(m_piecePosition);

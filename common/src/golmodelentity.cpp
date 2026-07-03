@@ -250,23 +250,23 @@ void GolModelEntity::Draw(GolRenderDevice& p_renderer)
 	if (m_flags & (c_flagBit3 | c_flagBit2)) {
 		if (m_textureScrollU == 0 && m_textureScrollV == 0) {
 			if (m_flags & c_flagBit2) {
-				p_renderer.VTable0xa4(this);
+				p_renderer.DrawModelEntityEnvironmentMapped(this);
 				return;
 			}
 			else {
-				p_renderer.VTable0x94(this);
+				p_renderer.DrawModelEntity(this);
 				return;
 			}
 		}
 		else {
 			LegoFloat value0x60 = GetTextureScrollU();
 			LegoFloat value0x62 = GetTextureScrollV();
-			p_renderer.VTable0xa8(this, value0x60, value0x62);
+			p_renderer.DrawModelEntityWithUvOffset(this, value0x60, value0x62);
 			return;
 		}
 	}
 
-	p_renderer.VTable0x94(this);
+	p_renderer.DrawModelEntity(this);
 }
 
 // FUNCTION: GOLDP 0x100280c0

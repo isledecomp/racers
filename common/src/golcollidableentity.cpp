@@ -56,7 +56,7 @@ void GolCollidableEntity::AddModel(GolModelBase* p_model, GolBoundingShape* p_sh
 // FUNCTION: GOLDP 0x1001ad70
 void GolCollidableEntity::Draw(GolRenderDevice& p_renderer)
 {
-	p_renderer.VTable0x90(this);
+	p_renderer.DrawCollidableEntity(this);
 }
 
 // FUNCTION: LEGORACERS 0x00403c60

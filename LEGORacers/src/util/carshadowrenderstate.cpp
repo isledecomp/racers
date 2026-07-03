@@ -170,7 +170,7 @@ void CarShadowRenderState::RenderEntity(GolModelEntity* p_model, LegoU32 p_lodIn
 		p_model->SetOrientationMatrix(g_identityMatrix);
 	}
 
-	m_renderer->VTable0x9c(p_model, this, p_lodIndex);
+	m_renderer->DrawModelEntityWithScopedState(p_model, this, p_lodIndex);
 
 	if (g_silhouetteFlattenMask & m_flags) {
 		p_model->SetOrientationMatrix(orientation);

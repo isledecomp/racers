@@ -719,7 +719,7 @@ void GolRenderDevice::SelectTextureFormat(
 }
 
 // STUB: GOLDP 0x10029500
-void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
+void GolRenderDevice::DrawModelEntityEnvironmentMapped(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;
 	p_model->ComputeVisibility(m_unk0x4c, &result);
@@ -743,7 +743,7 @@ void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 	}
 
 	if (localRight.m_x == 0.0f && localRight.m_y == 0.0f) {
-		VTable0xa8(p_model, 0.0f, 0.5f);
+		DrawModelEntityWithUvOffset(p_model, 0.0f, 0.5f);
 	}
 	else {
 		GolVec2 uv;
@@ -757,12 +757,12 @@ void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 		}
 
 		LegoFloat v = g_arccosTable[static_cast<LegoS32>((localForward.m_z + 1.0f) * 511.5f)] * 0.31830987f;
-		VTable0xa8(p_model, u, v);
+		DrawModelEntityWithUvOffset(p_model, u, v);
 	}
 }
 
 // FUNCTION: GOLDP 0x10029680
-void GolRenderDevice::VTable0xa0(
+void GolRenderDevice::DrawModelEntityWithUvAxes(
 	GolWorldEntity* p_model,
 	const GolVec3* p_uAxis,
 	const GolVec3* p_vAxis,
@@ -818,13 +818,13 @@ void GolRenderDevice::VTable0xa0(
 		v = g_arccosTable[static_cast<LegoS32>((normalDotForward + 1.0f) * 511.5f)] * 0.31830987f;
 	}
 
-	VTable0xa8(p_model, u, v);
+	DrawModelEntityWithUvOffset(p_model, u, v);
 }
 
 // FUNCTION: GOLDP 0x10029840
-void GolRenderDevice::VTable0xa8(GolWorldEntity* p_param1, LegoFloat p_param2, LegoFloat p_param3)
+void GolRenderDevice::DrawModelEntityWithUvOffset(GolWorldEntity* p_param1, LegoFloat p_param2, LegoFloat p_param3)
 {
-	VTable0x94(p_param1);
+	DrawModelEntity(p_param1);
 }
 
 // FUNCTION: GOLDP 0x10029850
@@ -935,25 +935,25 @@ void GolRenderDevice::VTable0x60()
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x88(GolModelEntity*, GolD3DRenderState*, undefined4)
+void GolRenderDevice::DrawCollidableEntityWithState(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x8c(GolModelEntity*, GolD3DRenderState*, undefined4)
+void GolRenderDevice::DrawModelEntityWithState(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x98(GolModelEntity*, GolD3DRenderState*, undefined4)
+void GolRenderDevice::DrawCollidableEntityWithScopedState(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x9c(GolModelEntity*, GolD3DRenderState*, undefined4)
+void GolRenderDevice::DrawModelEntityWithScopedState(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }
@@ -991,13 +991,13 @@ void GolRenderDevice::VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08)
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolRenderDevice::VTable0xac(GolModelEntity*, undefined4)
+void GolRenderDevice::DrawModelEntityLodMirrored(GolModelEntity*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolRenderDevice::VTable0xb0(GolModelEntity*, undefined4)
+void GolRenderDevice::DrawModelEntityLod(GolModelEntity*, undefined4)
 {
 	// empty
 }

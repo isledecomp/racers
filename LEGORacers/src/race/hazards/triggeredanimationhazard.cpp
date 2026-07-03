@@ -196,7 +196,7 @@ void TriggeredAnimationHazard::Draw(GolD3DRenderDevice* p_renderer)
 			);
 
 			p_renderer->SetAlphaOverride(alpha, TRUE);
-			p_renderer->VTable0x94(*entity);
+			p_renderer->DrawModelEntity(*entity);
 			p_renderer->ClearAlphaOverride();
 
 			for (j = 0; j < c_modelDistanceCount; j++) {

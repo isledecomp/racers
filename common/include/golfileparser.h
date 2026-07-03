@@ -113,9 +113,9 @@ public:
 	virtual undefined4 VTable0x48(undefined4, undefined4);   // vtable+0x48
 	virtual void OpenFileForWrite(LegoChar* p_fileName) = 0; // vtable+0x4c
 	virtual void WriteToken(ParserTokenType) = 0;            // vtable+0x50
-	virtual void VTable0x54(undefined4) = 0;                 // vtable+0x54
+	virtual void WriteByte(undefined4) = 0;                  // vtable+0x54
 	virtual void WriteFloat(LegoFloat) = 0;                  // vtable+0x58
-	virtual void VTable0x5c(LegoFloat) = 0;                  // vtable+0x5c
+	virtual void WriteFloat2(LegoFloat) = 0;                 // vtable+0x5c
 	virtual void WriteInt4(undefined4) = 0;                  // vtable+0x60
 	virtual void WriteString(LegoChar*) = 0;                 // vtable+0x64
 	virtual void FlushLine() = 0;                            // vtable+0x68

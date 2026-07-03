@@ -248,7 +248,7 @@ void CurseAction::Draw(GolD3DRenderDevice* p_renderer)
 		m_curseEntity->SetScaleAndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
 	}
 
-	p_renderer->VTable0x94(m_curseEntity);
+	p_renderer->DrawModelEntity(m_curseEntity);
 }
 
 // FUNCTION: LEGORACERS 0x00452a80

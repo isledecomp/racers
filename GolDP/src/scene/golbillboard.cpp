@@ -128,7 +128,7 @@ GolMaterial* GolBillboard::ResolveMaterial()
 // FUNCTION: GOLDP 0x1002a040
 void GolBillboard::Draw(GolRenderDevice& p_renderer)
 {
-	p_renderer.VTable0xb4(*this);
+	p_renderer.DrawBillboard(*this);
 }
 
 // FUNCTION: GOLDP 0x1002a060

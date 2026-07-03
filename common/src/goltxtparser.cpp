@@ -87,14 +87,14 @@ void GolTxtParser::WriteToken(ParserTokenType p_token)
 		m_readBuffer[m_bufferLength++] = ';';
 		break;
 	default:
-		VTable0x54(p_token);
+		WriteByte(p_token);
 		break;
 	}
 }
 
 // FUNCTION: GOLDP 0x1002fcb0
 // FUNCTION: LEGORACERS 0x0044a450
-void GolTxtParser::VTable0x54(undefined4 p_param)
+void GolTxtParser::WriteByte(undefined4 p_param)
 {
 	if (p_param) {
 		GOL_FATALERROR_MESSAGE("Cannot write invalid token");
@@ -222,7 +222,7 @@ undefined4 GolTxtParser::VTable0x48(undefined4, undefined4)
 
 // FUNCTION: GOLDP 0x1002fd50 FOLDED
 // FUNCTION: LEGORACERS 0x0044b570 FOLDED
-void GolTxtParser::VTable0x5c(LegoFloat p_param)
+void GolTxtParser::WriteFloat2(LegoFloat p_param)
 {
 	WriteFloat(p_param);
 }

@@ -1322,19 +1322,19 @@ void CarVisuals::UpdateShadow(GolCamera* p_camera)
 void CarVisuals::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (!(m_flags & c_flagVisible0)) {
-		p_renderer->VTable0x94(m_carEntity);
+		p_renderer->DrawModelEntity(m_carEntity);
 	}
 
 	if (!(m_flags & c_flagVisible1)) {
-		p_renderer->VTable0x94(m_bodyModelEntity);
+		p_renderer->DrawModelEntity(m_bodyModelEntity);
 
 		if (m_secondaryEntity) {
-			p_renderer->VTable0x94(m_secondaryEntity);
+			p_renderer->DrawModelEntity(m_secondaryEntity);
 		}
 	}
 
 	if (!(m_flags & c_flagVisible2)) {
-		p_renderer->VTable0x94(m_driverEntity);
+		p_renderer->DrawModelEntity(m_driverEntity);
 	}
 }
 
@@ -1380,7 +1380,7 @@ void CarVisuals::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	}
 
 	if (m_racer->m_flags & Racer::c_flagCursed) {
-		p_renderer->VTable0x94(&m_curseEntity);
+		p_renderer->DrawModelEntity(&m_curseEntity);
 	}
 }
 

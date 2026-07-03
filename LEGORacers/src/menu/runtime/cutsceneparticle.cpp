@@ -217,10 +217,10 @@ void CutsceneParticle::ActivateEmitter(CutsceneAnimation::Emitter* p_runtime)
 			m_emitter->GetMaterialAnimationItem(),
 			m_emitter->GetMaterialAnimation()->GetUnk0x04(),
 			m_emitter->GetMaterialAnimation()->GetUnk0x08(),
-			m_emitter->GetUnk0x1c(),
-			m_emitter->GetUnk0x20(),
-			m_emitter->GetUnk0x24(),
-			m_emitter->GetUnk0x28(),
+			m_emitter->GetStartSizeUp(),
+			m_emitter->GetStartSizeForward(),
+			m_emitter->GetSizeGrowthUp(),
+			m_emitter->GetSizeGrowthForward(),
 			m_emitter->GetRadius(),
 			&origin
 		);
@@ -228,10 +228,10 @@ void CutsceneParticle::ActivateEmitter(CutsceneAnimation::Emitter* p_runtime)
 	else {
 		m_particleSystem.ConfigureMaterial(
 			m_emitter->GetMaterial(),
-			m_emitter->GetUnk0x1c(),
-			m_emitter->GetUnk0x20(),
-			m_emitter->GetUnk0x24(),
-			m_emitter->GetUnk0x28(),
+			m_emitter->GetStartSizeUp(),
+			m_emitter->GetStartSizeForward(),
+			m_emitter->GetSizeGrowthUp(),
+			m_emitter->GetSizeGrowthForward(),
 			m_emitter->GetRadius(),
 			&origin
 		);

@@ -371,10 +371,10 @@ void CutsceneAnimation::Emitter::Reset()
 	m_material = NULL;
 	m_emitIntervalMs = 0;
 	m_emitChance = 0;
-	m_unk0x1c = 1.0f;
-	m_unk0x20 = 1.0f;
-	m_unk0x24 = 0.0f;
-	m_unk0x28 = 0.0f;
+	m_startSizeUp = 1.0f;
+	m_startSizeForward = 1.0f;
+	m_sizeGrowthUp = 0.0f;
+	m_sizeGrowthForward = 0.0f;
 	m_originX = 0.0f;
 	m_originY = 0.0f;
 	m_originZ = 0.0f;
@@ -414,52 +414,52 @@ void CutsceneAnimation::Emitter::Parse(
 
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x28:
+		case CutsceneAnimation::EmbTxtParser::e_emitInterval:
 			m_emitIntervalMs = static_cast<LegoS32>(g_floatConst1000 / p_parser->ReadFloat());
 			break;
-		case GolFileParser::e_unknown0x29:
+		case CutsceneAnimation::EmbTxtParser::e_emitChance:
 			m_emitChance = static_cast<LegoS32>(p_parser->ReadFloat() * g_floatConst256);
 			break;
-		case GolFileParser::e_unknown0x35:
+		case CutsceneAnimation::EmbTxtParser::e_priority:
 			m_priority = static_cast<LegoU8>(p_parser->ReadInteger());
 			break;
-		case GolFileParser::e_unknown0x2c:
-			m_unk0x1c = p_parser->ReadFloat();
+		case CutsceneAnimation::EmbTxtParser::e_startSizeUp:
+			m_startSizeUp = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x2d:
-			m_unk0x20 = p_parser->ReadFloat();
+		case CutsceneAnimation::EmbTxtParser::e_startSizeForward:
+			m_startSizeForward = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x31:
-			m_unk0x24 = p_parser->ReadFloat();
+		case CutsceneAnimation::EmbTxtParser::e_sizeGrowthUp:
+			m_sizeGrowthUp = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x32:
-			m_unk0x28 = p_parser->ReadFloat();
+		case CutsceneAnimation::EmbTxtParser::e_sizeGrowthForward:
+			m_sizeGrowthForward = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x33:
+		case CutsceneAnimation::EmbTxtParser::e_radius:
 			m_radius = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case CutsceneAnimation::EmbTxtParser::e_particleLifeMs:
 			m_particleLifeMs = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x30:
+		case CutsceneAnimation::EmbTxtParser::e_durationMs:
 			m_durationMs = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case CutsceneAnimation::EmbTxtParser::e_origin:
 			m_originX = p_parser->ReadFloat();
 			m_originY = p_parser->ReadFloat();
 			m_originZ = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case CutsceneAnimation::EmbTxtParser::e_materialAnimationItem:
 			i = p_parser->ReadInteger();
 			m_materialAnimationItem = &p_materialAnimation->GetUnk0x0c()[i];
 			break;
-		case GolFileParser::e_unknown0x34: {
+		case CutsceneAnimation::EmbTxtParser::e_material: {
 			LegoChar materialName[8];
 			strncpy(materialName, p_parser->ReadStringWithMaxLength(8), 8);
 			m_material = p_renderer->FindMaterialByName(materialName);
 			break;
 		}
-		case GolFileParser::e_unknown0x2b:
+		case CutsceneAnimation::EmbTxtParser::e_points:
 			p_parser->ReadLeftBracket();
 			m_pointCount = p_parser->ReadInteger();
 			p_parser->ReadRightBracket();

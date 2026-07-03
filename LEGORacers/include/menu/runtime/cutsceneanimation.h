@@ -24,6 +24,20 @@ public:
 		// .emb token meanings
 		enum {
 			e_emitters = 0x27,
+			e_emitInterval = 0x28,
+			e_emitChance = 0x29,
+			e_origin = 0x2a,
+			e_points = 0x2b,
+			e_startSizeUp = 0x2c,
+			e_startSizeForward = 0x2d,
+			e_materialAnimationItem = 0x2e,
+			e_particleLifeMs = 0x2f,
+			e_durationMs = 0x30,
+			e_sizeGrowthUp = 0x31,
+			e_sizeGrowthForward = 0x32,
+			e_radius = 0x33,
+			e_material = 0x34,
+			e_priority = 0x35,
 		};
 	};
 
@@ -59,10 +73,10 @@ public:
 		LegoS32 GetDurationMs() { return m_durationMs; }
 		LegoU8 GetPriority() const { return m_priority; }
 		LegoBool32 IsPersistent() const { return m_durationMs == -1; }
-		LegoFloat GetUnk0x1c() const { return m_unk0x1c; }
-		LegoFloat GetUnk0x20() const { return m_unk0x20; }
-		LegoFloat GetUnk0x24() const { return m_unk0x24; }
-		LegoFloat GetUnk0x28() const { return m_unk0x28; }
+		LegoFloat GetStartSizeUp() const { return m_startSizeUp; }
+		LegoFloat GetStartSizeForward() const { return m_startSizeForward; }
+		LegoFloat GetSizeGrowthUp() const { return m_sizeGrowthUp; }
+		LegoFloat GetSizeGrowthForward() const { return m_sizeGrowthForward; }
 		LegoFloat GetRadius() const { return m_radius; }
 		MabMaterialTrack* GetMaterialAnimationItem() const { return m_materialAnimationItem; }
 		MabMaterialAnimation* GetMaterialAnimation() const { return m_materialAnimation; }
@@ -77,10 +91,10 @@ public:
 		LegoS32 m_emitIntervalMs;                  // 0x14
 		LegoU8 m_emitChance;                       // 0x18
 		LegoU8 m_priority;                         // 0x19
-		LegoFloat m_unk0x1c;                       // 0x1c
-		LegoFloat m_unk0x20;                       // 0x20
-		LegoFloat m_unk0x24;                       // 0x24
-		LegoFloat m_unk0x28;                       // 0x28
+		LegoFloat m_startSizeUp;                   // 0x1c
+		LegoFloat m_startSizeForward;              // 0x20
+		LegoFloat m_sizeGrowthUp;                  // 0x24
+		LegoFloat m_sizeGrowthForward;             // 0x28
 		LegoFloat m_radius;                        // 0x2c
 		LegoS32 m_particleLifeMs;                  // 0x30
 		LegoS32 m_durationMs;                      // 0x34

@@ -122,7 +122,7 @@ public:
 	void Draw(GolD3DRenderDevice* p_renderer);
 	void DrawTransparent(GolD3DRenderDevice* p_renderer);
 	void Load(
-		LegoU32 p_unk0x04,
+		LegoU32 p_numParticles,
 		GolExport* p_golExport,
 		GolD3DRenderDevice* p_renderer,
 		MabMaterialAnimation* p_materialAnimation,

@@ -350,7 +350,7 @@ public:
 	MabMaterialTrack* GetMaterialAnimationItem(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
 	LegoU32 SetCameraAspectRatios(LegoFloat p_scale);
 
-	void SetEventSink(CutsceneEventSink* p_unk0x0c) { m_eventSink = p_unk0x0c; }
+	void SetEventSink(CutsceneEventSink* p_eventSink) { m_eventSink = p_eventSink; }
 	CutsceneEventSink* GetEventSink() const { return m_eventSink; }
 	LegoU32 GetWorldDatabaseCount() const { return m_worldDatabaseCount; }
 	GolWorldDatabase* GetWorldDatabase(LegoU32 p_index) const { return m_worldDatabases[p_index]; }

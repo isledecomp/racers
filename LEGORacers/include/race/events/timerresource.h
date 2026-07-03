@@ -30,7 +30,7 @@ public:
 	void Update(LegoU32 p_elapsedMs) override;
 	virtual LegoU32 GetKind(); // vtable+0x18
 
-	void FUN_004513d0(undefined4 p_unk0x04);
+	void FUN_004513d0(undefined4);
 	void ClearFields();
 	void Initialize(InitParams* p_params);
 	void Destroy();

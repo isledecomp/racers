@@ -26,7 +26,7 @@ public:
 	void OnEndForRacer(Racer* p_racer) override;
 	virtual LegoU32 GetKind(); // vtable+0x18
 
-	void FUN_004513d0(undefined4 p_unk0x04);
+	void FUN_004513d0(undefined4);
 	void Initialize(InitParams* p_params);
 	void Destroy();
 

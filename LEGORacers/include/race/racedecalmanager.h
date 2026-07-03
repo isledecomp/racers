@@ -144,7 +144,7 @@ public:
 		LegoU32 GetDurationMs() const { return m_durationMs; }
 		LegoU8 GetFlags() const { return m_flags; }
 		LegoBool32 IsActive() const { return m_flags & c_active; }
-		void SetWidth(LegoFloat p_unk0x324) { m_width = p_unk0x324; }
+		void SetWidth(LegoFloat p_width) { m_width = p_width; }
 
 	private:
 		friend class RaceDecalManager;

@@ -43,7 +43,7 @@ public:
 
 protected:
 	void CopyModelMaterialTable(GolModelBase* p_model, GolBillboard::ManagedMaterialTable* p_materialTable);
-	void CreateMaterialTables(LegoS32 p_unk0x04);
+	void CreateMaterialTables(LegoS32);
 	void CollectHats(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
 	void CollectFaces(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
 	void CollectTorsos(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);

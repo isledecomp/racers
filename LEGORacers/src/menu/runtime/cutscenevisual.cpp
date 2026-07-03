@@ -47,41 +47,41 @@ void CutsceneVisual::ParseVisualToken(
 )
 {
 	switch (p_token) {
-	case GolFileParser::e_unknown0x43:
+	case CutscenePlayer::CebTxtParser::e_startX:
 		m_startX = p_parser->ReadFloat();
 		m_flags = (m_flags & ~1) | 4;
 		break;
-	case GolFileParser::e_unknown0x44:
+	case CutscenePlayer::CebTxtParser::e_startY:
 		m_startY = p_parser->ReadFloat();
 		m_flags = (m_flags & ~2) | 8;
 		break;
-	case GolFileParser::e_unknown0x45:
+	case CutscenePlayer::CebTxtParser::e_centerX:
 		m_flags = (m_flags & ~4) | 1;
 		break;
-	case GolFileParser::e_unknown0x46:
+	case CutscenePlayer::CebTxtParser::e_centerY:
 		m_flags = (m_flags & ~8) | 2;
 		break;
-	case GolFileParser::e_unknown0x47:
+	case CutscenePlayer::CebTxtParser::e_startWidth:
 		m_startWidth = p_parser->ReadFloat();
 		m_flags |= 0x10;
 		break;
-	case GolFileParser::e_unknown0x48:
+	case CutscenePlayer::CebTxtParser::e_startHeight:
 		m_startHeight = p_parser->ReadFloat();
 		m_flags |= 0x20;
 		break;
-	case GolFileParser::e_unknown0x49:
+	case CutscenePlayer::CebTxtParser::e_rateX:
 		m_rateX = p_parser->ReadFloat();
 		break;
-	case GolFileParser::e_unknown0x4a:
+	case CutscenePlayer::CebTxtParser::e_rateY:
 		m_rateY = p_parser->ReadFloat();
 		break;
-	case GolFileParser::e_unknown0x4b:
+	case CutscenePlayer::CebTxtParser::e_rateWidth:
 		m_rateWidth = p_parser->ReadFloat();
 		break;
-	case GolFileParser::e_unknown0x4c:
+	case CutscenePlayer::CebTxtParser::e_rateHeight:
 		m_rateHeight = p_parser->ReadFloat();
 		break;
-	case GolFileParser::e_unknown0x66:
+	case CutscenePlayer::CebTxtParser::e_visualColor:
 		m_color.m_red = p_parser->ReadInteger();
 		m_color.m_grn = p_parser->ReadInteger();
 		m_color.m_blu = p_parser->ReadInteger();

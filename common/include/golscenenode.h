@@ -18,6 +18,15 @@ public:
 	// VTABLE: GOLDP 0x10057484
 	// SIZE 0x1fc
 	class DdfTxtParser : public GolTxtParser {
+	public:
+		// .sdf tokens
+		enum {
+			e_node = 0x27,
+			e_position = 0x28,
+			e_rotation = 0x29,
+			e_parent = 0x2a,
+		};
+
 		// SYNTHETIC: GOLDP 0x10030050 FOLDED
 		// GolSceneNode::DdfTxtParser::`scalar deleting destructor'
 

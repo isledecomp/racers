@@ -90,6 +90,19 @@ public:
 			e_modelEntityName = 0x5e,
 			e_bspEntityName = 0x5f,
 			e_menuAnimationEvents = 0x60,
+			e_startX = 0x43,
+			e_startY = 0x44,
+			e_centerX = 0x45,
+			e_centerY = 0x46,
+			e_startWidth = 0x47,
+			e_startHeight = 0x48,
+			e_rateX = 0x49,
+			e_rateY = 0x4a,
+			e_rateWidth = 0x4b,
+			e_rateHeight = 0x4c,
+			e_imageAttached = 0x4e,
+			e_imageDetached = 0x4f,
+			e_visualColor = 0x66,
 		};
 	};
 

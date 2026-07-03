@@ -76,13 +76,13 @@ void GolBoundingVolume::Load(GolRenderDevice* p_renderer, const LegoChar* p_name
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27:
+		case c_bvbMaterials:
 			if (m_materialTable.GetRenderer() != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
 			m_materialTable.Parse(p_renderer, *parser);
 			break;
-		case GolFileParser::e_unknown0x34:
+		case c_bvbVertices:
 			if (m_vertices != 0) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
@@ -92,13 +92,13 @@ void GolBoundingVolume::Load(GolRenderDevice* p_renderer, const LegoChar* p_name
 			}
 			m_vertices->VTable0x08(*parser);
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case c_bvbTriangles:
 			ParseTriangles(*parser);
 			break;
-		case GolFileParser::e_unknown0x8b:
+		case c_bvbNodes:
 			ParseNodes(*parser);
 			break;
-		case GolFileParser::e_unknown0x8e:
+		case c_bvbNodesFixedPoint:
 			ParseNodesFixedPoint(*parser);
 			break;
 		default:
@@ -187,10 +187,10 @@ void GolBoundingVolume::ParseNodes(GolFileParser& p_parser)
 		LegoU32 j;
 		for (j = 0; j < 2; j++) {
 			switch (p_parser.GetNextToken()) {
-			case GolFileParser::e_unknown0x8d:
+			case c_bvbChildLeaf:
 				m_nodes[i].GetChildIndexSlot(j) = -2;
 				break;
-			case GolFileParser::e_unknown0x8c:
+			case c_bvbChildNone:
 				m_nodes[i].GetChildIndexSlot(j) = -1;
 				break;
 			case GolFileParser::e_int:

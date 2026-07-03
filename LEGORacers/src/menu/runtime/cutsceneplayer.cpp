@@ -402,7 +402,9 @@ void CutsceneAnimation::Emitter::Parse(
 	m_material = 0;
 	m_materialAnimation = p_materialAnimation;
 
-	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	p_parser->AssertNextTokenIs(
+		static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_animations)
+	);
 
 	LegoChar name[8];
 	strncpy(name, p_parser->ReadStringWithMaxLength(8), 8);
@@ -1505,7 +1507,9 @@ void CutscenePlayer::ParseMoveEvents(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_moveEventCount; i++) {
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x2b);
+		p_parser->AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_moveEvents)
+		);
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 		m_moveEventNames.AddName(name, &m_moveEvents[i]);
 		m_moveEvents[i].Parse(p_parser, this);
@@ -1539,7 +1543,9 @@ void CutscenePlayer::ParseSoundEvents(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_soundEventCount; i++) {
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x2f);
+		p_parser->AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_soundEvents)
+		);
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 		m_soundEventNames.AddName(name, &m_soundEvents[i]);
 		m_soundEvents[i].Parse(p_parser, this);
@@ -1573,7 +1579,9 @@ void CutscenePlayer::ParseStreamEvents(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_streamEventCount; i++) {
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x36);
+		p_parser->AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_streamEvents)
+		);
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 		m_streamEventNames.AddName(name, &m_streamEvents[i]);
 		m_streamEvents[i].Parse(p_parser, this);
@@ -1607,7 +1615,9 @@ void CutscenePlayer::ParseAnimationEvents(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_animEventCount; i++) {
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x3c);
+		p_parser->AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_animationEvents)
+		);
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 		m_animEventNames.AddName(name, &m_animEvents[i]);
 		m_animEvents[i].Parse(p_parser, this);
@@ -1647,7 +1657,9 @@ void CutscenePlayer::ParseMenuAnimationEvents(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_menuAnimEventCount; i++) {
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x60);
+		p_parser->AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_menuAnimationEvents)
+		);
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 		m_menuAnimEventNames.AddName(name, &m_menuAnimEvents[i]);
 		m_menuAnimEvents[i].Parse(p_parser, this, m_menuAnimations, m_renderer);
@@ -1681,7 +1693,9 @@ void CutscenePlayer::ParseTextVisuals(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_textVisualCount; i++) {
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x3f);
+		p_parser->AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_textVisuals)
+		);
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 		m_textVisualNames.AddName(name, &m_textVisuals[i]);
 		m_textVisuals[i].Parse(p_parser, this, m_renderer);
@@ -1723,7 +1737,9 @@ void CutscenePlayer::ParseImageVisuals(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_imageVisualCount; i++) {
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x4d);
+		p_parser->AssertNextTokenIs(
+			static_cast<GolFileParser::ParserTokenType>(CutscenePlayer::CebTxtParser::e_imageVisuals)
+		);
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 		m_imageVisualNames.AddName(name, &m_imageVisuals[i]);
 		m_imageVisuals[i].Parse(p_parser, this, m_renderer);
@@ -1795,10 +1811,10 @@ void CutscenePlayer::ParseTriggerChannel(
 
 		GolFileParser::ParserTokenType targetToken = p_parser->GetNextToken();
 		GolFileParser::ParserTokenType modeToken = p_parser->GetNextToken();
-		if (modeToken == GolFileParser::e_unknown0x4e) {
+		if (modeToken == CutscenePlayer::CebTxtParser::e_imageAttached) {
 			mode = 1;
 		}
-		else if (modeToken == GolFileParser::e_unknown0x4f) {
+		else if (modeToken == CutscenePlayer::CebTxtParser::e_imageDetached) {
 			mode = 0;
 		}
 		else {
@@ -2260,7 +2276,7 @@ void CutsceneImageVisual::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	if (token != GolFileParser::e_rightCurly) {
 		do {
-			if (token != GolFileParser::e_unknown0x4d) {
+			if (token != CutscenePlayer::CebTxtParser::e_imageVisuals) {
 				ParseVisualToken(p_parser, token, p_owner, p_renderer);
 			}
 			else {

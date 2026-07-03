@@ -52,7 +52,7 @@ void GolSceneNode::Load(const LegoChar* p_name, LegoBool32 p_binary)
 
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
-		if (token != GolFileParser::e_unknown0x27) {
+		if (token != DdfTxtParser::e_node) {
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 		}
 
@@ -130,7 +130,7 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 		GolTransformBase* orbit = GetTransform(i);
 		GolName name;
 
-		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+		p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(DdfTxtParser::e_node));
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeOfArray(name)), sizeOfArray(name));
 		GolNameTable::AddName(name, orbit);
 		p_parser->ReadLeftCurly();
@@ -138,7 +138,7 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 		GolFileParser::ParserTokenType token;
 		while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
-			case GolFileParser::e_unknown0x2a: {
+			case DdfTxtParser::e_parent: {
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeOfArray(name)), sizeOfArray(name));
 
 				GolTransformBase* parent = static_cast<GolTransformBase*>(GetName(name));
@@ -149,7 +149,7 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 				parent->AttachChild(orbit);
 				break;
 			}
-			case GolFileParser::e_unknown0x29: {
+			case DdfTxtParser::e_rotation: {
 				LegoFloat values[4];
 				values[0] = p_parser->ReadFloat();
 				values[1] = p_parser->ReadFloat();
@@ -158,7 +158,7 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 				orbit->SetRotation(values);
 				break;
 			}
-			case GolFileParser::e_unknown0x28: {
+			case DdfTxtParser::e_position: {
 				GolVec3 position;
 				position.m_x = p_parser->ReadFloat();
 				position.m_y = p_parser->ReadFloat();

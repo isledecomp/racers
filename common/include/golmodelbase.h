@@ -20,7 +20,25 @@ class GolModelBase {
 public:
 	// VTABLE: GOLDP 0x100570bc
 	// SIZE 0x1fc
-	class GdbTxtParser : public GolTxtParser {};
+	class GdbTxtParser : public GolTxtParser {
+	public:
+		// .gdb tokens; group-stream keywords map to GolModel::GdbModelGroupType
+		enum {
+			e_material = 0x27,
+			e_uncoloredVertices = 0x28,
+			e_normalVertices = 0x29,
+			e_coloredVertices = 0x2a,
+			e_indices = 0x2d,
+			e_triangleBatch = 0x2d,
+			e_groups = 0x2e,
+			e_pushMatrix = 0x2f,
+			e_popMatrix = 0x30,
+			e_triangles = 0x31,
+			e_setMatrix = 0x32,
+			e_scale = 0x33,
+			e_vertices = 0x34,
+		};
+	};
 
 	GolModelBase();
 

@@ -26,7 +26,17 @@ public:
 
 	// VTABLE: GOLDP 0x10056b74
 	// SIZE 0x1fc
-	class BdbTxtParser : public GolTxtParser {};
+	class BdbTxtParser : public GolTxtParser {
+	public:
+		// .bdf tokens
+		enum {
+			e_nodes = 0x27,
+			e_plane = 0x28,
+			e_leaf = 0x29,
+			e_bounds = 0x2a,
+			e_pvsIndices = 0x2b,
+		};
+	};
 
 	// SIZE 0x20
 	struct TreeNode {

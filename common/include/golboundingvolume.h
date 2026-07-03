@@ -34,6 +34,8 @@ public:
 		c_bvbVertices = 0x34,
 		c_bvbNodes = 0x8b,
 		c_bvbNodesFixedPoint = 0x8e,
+		c_bvbChildNone = 0x8c,
+		c_bvbChildLeaf = 0x8d,
 	};
 
 	// VTABLE: GOLDP 0x10056c48

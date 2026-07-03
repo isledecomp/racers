@@ -81,7 +81,7 @@ void MabMaterialAnimation::ParseFrames(GolRenderDevice* p_renderer, GolFileParse
 {
 	LegoU32 i;
 
-	if (p_parser.GetNextToken() != GolFileParser::e_unknown0x27) {
+	if (p_parser.GetNextToken() != MabTxtParser::e_frames) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 
@@ -112,7 +112,7 @@ void MabMaterialAnimation::ParseTracks(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
-	if (p_parser.GetNextToken() != GolFileParser::e_unknown0x28) {
+	if (p_parser.GetNextToken() != MabTxtParser::e_track) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 
@@ -132,7 +132,7 @@ void MabMaterialAnimation::ParseTracks(GolFileParser& p_parser)
 		undefined4 param3 = 1;
 		undefined4 param4 = 30;
 
-		if (p_parser.GetNextToken() != GolFileParser::e_unknown0x28) {
+		if (p_parser.GetNextToken() != MabTxtParser::e_track) {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_leftCurly);
 		}
 
@@ -143,14 +143,14 @@ void MabMaterialAnimation::ParseTracks(GolFileParser& p_parser)
 		GolFileParser::ParserTokenType token;
 		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
-			case GolFileParser::e_unknown0x27:
+			case MabTxtParser::e_frameRange:
 				param1 = p_parser.ReadInteger();
 				param2 = p_parser.ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x29:
+			case MabTxtParser::e_duration:
 				param3 = p_parser.ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x2a:
+			case MabTxtParser::e_frameRate:
 				param4 = p_parser.ReadInteger();
 				break;
 			default:

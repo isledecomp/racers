@@ -17,7 +17,18 @@ public:
 	// VTABLE: GOLDP 0x10057040
 	// VTABLE: LEGORACERS 0x004af684
 	// SIZE 0x1fc
-	class MabTxtParser : public GolTxtParser {};
+	class MabTxtParser : public GolTxtParser {
+	public:
+		// .maf tokens; section ids double as record/field keywords
+		enum {
+			e_frames = 0x27,
+			e_frameRange = 0x27,
+			e_tracks = 0x28,
+			e_track = 0x28,
+			e_duration = 0x29,
+			e_frameRate = 0x2a,
+		};
+	};
 
 	MabMaterialAnimation();
 	virtual ~MabMaterialAnimation(); // vtable+0x00

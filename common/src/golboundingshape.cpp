@@ -86,13 +86,13 @@ void GolBoundingShape::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 
 	while ((token = parser->GetNextToken()) != 0) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27:
+		case BdbTxtParser::e_nodes:
 			ParseNodes(*parser);
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case BdbTxtParser::e_bounds:
 			ParseBounds(*parser);
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case BdbTxtParser::e_pvsIndices:
 			m_pvsIndexCount = parser->ReadBracketedCountAndLeftCurly();
 			if (m_pvsIndexCount == 0) {
 				parser->HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
@@ -138,7 +138,7 @@ void GolBoundingShape::ParseNodes(GolFileParser& p_parser)
 		GolFileParser::ParserTokenType type = p_parser.GetNextToken();
 		TreeNode* obj = &m_nodes[i];
 
-		if (type == GolFileParser::e_unknown0x28) {
+		if (type == BdbTxtParser::e_plane) {
 			obj->m_type = TreeNode::e_plane;
 			obj->m_data.m_plane.m_frontStamp = 0;
 			obj->m_data.m_plane.m_backStamp = 0;
@@ -173,7 +173,7 @@ void GolBoundingShape::ParseNodes(GolFileParser& p_parser)
 			obj->m_data.m_plane.m_normalZ = p_parser.ReadFloat();
 			obj->m_data.m_plane.m_distance = p_parser.ReadFloat();
 		}
-		else if (type == GolFileParser::e_unknown0x29) {
+		else if (type == BdbTxtParser::e_leaf) {
 			obj->m_type = TreeNode::e_leaf;
 
 			if (p_parser.ReadInteger() < 0) {

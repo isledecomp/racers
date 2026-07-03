@@ -63,34 +63,34 @@ void GolModelBase::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, Leg
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27:
+		case GdbTxtParser::e_material:
 			if (m_materialTable.GetRenderer() != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
 			m_materialTable.Parse(p_renderer, *parser);
 			break;
-		case GolFileParser::e_unknown0x28:
+		case GdbTxtParser::e_uncoloredVertices:
 			ParseUncoloredVertices(*parser);
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case GdbTxtParser::e_coloredVertices:
 			ParseColoredVertices(*parser);
 			break;
-		case GolFileParser::e_unknown0x29:
+		case GdbTxtParser::e_normalVertices:
 			ParseNormalVertices(*parser);
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case GdbTxtParser::e_indices:
 			ParseIndices(*parser);
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case GdbTxtParser::e_groups:
 			if (m_groups != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
 			ParseGroups(*parser);
 			break;
-		case GolFileParser::e_unknown0x33:
+		case GdbTxtParser::e_scale:
 			m_scale = parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x34:
+		case GdbTxtParser::e_vertices:
 			ParseVertices(*parser);
 			break;
 		default:
@@ -187,7 +187,7 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 
 		for (; i < m_countGroups; i++) {
 			switch (p_parser.GetNextToken()) {
-			case GolFileParser::e_unknown0x31:
+			case GdbTxtParser::e_triangles:
 				if (seen) {
 					count += 1;
 					seen = FALSE;
@@ -207,7 +207,7 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 				m_groups[count++] |= (field0 & 0xffff);
 				break;
 
-			case GolFileParser::e_unknown0x2d:
+			case GdbTxtParser::e_triangleBatch:
 				if (seen) {
 					count += 1;
 					seen = FALSE;
@@ -222,7 +222,7 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 				m_groups[count++] |= (field0 & 0xffff);
 				break;
 
-			case GolFileParser::e_unknown0x2f:
+			case GdbTxtParser::e_pushMatrix:
 				field1 = p_parser.ReadInteger();
 				if (stackSize >= sizeOfArray(colorStack)) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -234,7 +234,7 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 				m_groups[count] |= field1 & 0xffffff;
 				break;
 
-			case GolFileParser::e_unknown0x30:
+			case GdbTxtParser::e_popMatrix:
 				if (stackSize < 1) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 				}
@@ -245,14 +245,14 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 				m_groups[count] |= colorStackPointer[-1] & 0xffffff;
 				break;
 
-			case GolFileParser::e_unknown0x32:
+			case GdbTxtParser::e_setMatrix:
 				field1 = p_parser.ReadInteger();
 				seen = TRUE;
 				m_groups[count] = 0x5 << 29;
 				m_groups[count] |= field1 & 0xffffff;
 				break;
 
-			case GolFileParser::e_unknown0x27:
+			case GdbTxtParser::e_material:
 				if (seen) {
 					count += 1;
 					seen = FALSE;

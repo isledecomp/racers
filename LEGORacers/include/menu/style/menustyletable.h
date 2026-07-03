@@ -62,8 +62,8 @@ public:
 	// SIZE 0x98
 	class SelectorStyleBase : public IconStyle {
 	public:
-		IconStyle* m_unk0x90; // 0x90
-		IconStyle* m_unk0x94; // 0x94
+		IconStyle* m_prevButtonStyle; // 0x90
+		IconStyle* m_nextButtonStyle; // 0x94
 	};
 
 	// SIZE 0xa8
@@ -113,20 +113,20 @@ public:
 		VisualStateColor m_unk0x9c[4]; // 0x9c
 		VisualStateColor m_unk0xac[4]; // 0xac
 
-		ButtonStyle* GetUnk0x90() const { return static_cast<ButtonStyle*>(m_unk0x90); }
-		ButtonStyle* GetUnk0x94() const { return static_cast<ButtonStyle*>(m_unk0x94); }
+		ButtonStyle* GetPrevButtonStyle() const { return static_cast<ButtonStyle*>(m_prevButtonStyle); }
+		ButtonStyle* GetNextButtonStyle() const { return static_cast<ButtonStyle*>(m_nextButtonStyle); }
 	};
 
 	// SIZE 0xbc
 	class CompositeStyle : public SelectorStyleBase {
 	public:
-		ImageStyle* m_unk0x98;            // 0x98
-		ImageStyle* m_unk0x9c;            // 0x9c
+		ImageStyle* m_thumbStyle;         // 0x98
+		ImageStyle* m_trackStyle;         // 0x9c
 		GolImage* m_stateImages[6];       // 0xa0
 		MenuIcon::SoundIdPair m_soundIds; // 0xb8
 
-		ButtonStyle* GetUnk0x90() const { return static_cast<ButtonStyle*>(m_unk0x90); }
-		ButtonStyle* GetUnk0x94() const { return static_cast<ButtonStyle*>(m_unk0x94); }
+		ButtonStyle* GetPrevButtonStyle() const { return static_cast<ButtonStyle*>(m_prevButtonStyle); }
+		ButtonStyle* GetNextButtonStyle() const { return static_cast<ButtonStyle*>(m_nextButtonStyle); }
 	};
 
 	// SIZE 0x10

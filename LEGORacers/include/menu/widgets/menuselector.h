@@ -16,7 +16,7 @@ public:
 	// SIZE 0x98
 	class CreateParams : public MenuSelectorBase::CreateParamsWithCarousel {
 	public:
-		MenuCarousel* m_unk0x90;           // 0x90
+		MenuCarousel* m_carouselWidget;    // 0x90
 		undefined4 m_acceptUnfocusedInput; // 0x94
 	};
 

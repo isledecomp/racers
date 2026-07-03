@@ -32,11 +32,11 @@ LegoBool32 MenuSelectorBase::Create(CreateParams* p_createParams, const MenuStyl
 	static_cast<MenuWidget::CreateParams*>(p_createParams->m_prevButtonParams)->m_parent = this;
 	static_cast<MenuWidget::CreateParams*>(p_createParams->m_nextButtonParams)->m_parent = this;
 
-	if (!m_prevButton.Create(p_createParams->m_prevButtonParams, p_styleEntry->m_unk0x90)) {
+	if (!m_prevButton.Create(p_createParams->m_prevButtonParams, p_styleEntry->m_prevButtonStyle)) {
 		return FALSE;
 	}
 
-	if (!m_nextButton.Create(p_createParams->m_nextButtonParams, p_styleEntry->m_unk0x94)) {
+	if (!m_nextButton.Create(p_createParams->m_nextButtonParams, p_styleEntry->m_nextButtonStyle)) {
 		return FALSE;
 	}
 
@@ -348,7 +348,7 @@ LegoBool32 MenuSelector::Create(CreateParams* p_createParams, MenuStyleTable::Se
 
 	if (CreateDefault(p_createParams, p_styleEntry) && CreateWithFrame(p_createParams)) {
 		m_styleEntry = p_styleEntry;
-		m_carousel = p_createParams->m_unk0x90;
+		m_carousel = p_createParams->m_carouselWidget;
 		m_carousel->SetColor(&m_stateColors[m_visualStateIndex]);
 		m_acceptUnfocusedInput = p_createParams->m_acceptUnfocusedInput;
 		m_carousel->SetParent(this);

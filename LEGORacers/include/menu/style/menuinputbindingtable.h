@@ -86,8 +86,8 @@ public:
 	// SIZE 0x98
 	class SelectorBinding : public MenuSelectorBase::CreateParamsWithCarousel {
 	public:
-		undefined4 m_unk0x90; // 0x90
-		undefined4 m_unk0x94; // 0x94
+		undefined4 m_carouselWidget;       // 0x90 (filled at runtime; see MenuSelector::CreateParams)
+		undefined4 m_acceptUnfocusedInput; // 0x94
 	};
 
 	// SIZE 0x9c
@@ -116,12 +116,12 @@ public:
 	// SIZE 0xb8
 	class CompositeBinding : public MenuSelectorBase::CreateParams {
 	public:
-		MenuImage::CreateParams* m_unk0x8c; // 0x8c
-		MenuImage::CreateParams* m_unk0x90; // 0x90
-		GolImage* m_unk0x94[6];             // 0x94
-		MenuIcon::SoundIdPair m_unk0xac;    // 0xac
-		LegoS32 m_unk0xb0;                  // 0xb0
-		LegoS32 m_unk0xb4;                  // 0xb4
+		MenuImage::CreateParams* m_thumbParams; // 0x8c
+		MenuImage::CreateParams* m_trackParams; // 0x90
+		GolImage* m_unk0x94[6];                 // 0x94
+		MenuIcon::SoundIdPair m_unk0xac;        // 0xac
+		LegoS32 m_unk0xb0;                      // 0xb0
+		LegoS32 m_unk0xb4;                      // 0xb4
 	};
 
 	// SIZE 0xec

@@ -475,8 +475,8 @@ void MenuStyleTable::ParseSelectorStyle(SelectorStyle* p_entry)
 				readBase++;
 				break;
 			case GolFileParser::e_unknown0x35:
-				p_entry->m_unk0x90 = static_cast<ButtonStyle*>(FindStyle(m_parser->ReadString()));
-				p_entry->m_unk0x94 = static_cast<ButtonStyle*>(FindStyle(m_parser->ReadString()));
+				p_entry->m_prevButtonStyle = static_cast<ButtonStyle*>(FindStyle(m_parser->ReadString()));
+				p_entry->m_nextButtonStyle = static_cast<ButtonStyle*>(FindStyle(m_parser->ReadString()));
 				readPair++;
 				break;
 			case GolFileParser::e_unknown0x34:
@@ -531,13 +531,13 @@ void MenuStyleTable::ParseCompositeStyle(CompositeStyle* p_entry)
 				readBase++;
 				break;
 			case GolFileParser::e_unknown0x35:
-				p_entry->m_unk0x90 = static_cast<IconStyle*>(FindStyle(m_parser->ReadString()));
-				p_entry->m_unk0x94 = static_cast<IconStyle*>(FindStyle(m_parser->ReadString()));
+				p_entry->m_prevButtonStyle = static_cast<IconStyle*>(FindStyle(m_parser->ReadString()));
+				p_entry->m_nextButtonStyle = static_cast<IconStyle*>(FindStyle(m_parser->ReadString()));
 				readPrimaryPair++;
 				break;
 			case GolFileParser::e_unknown0x32:
-				p_entry->m_unk0x9c = static_cast<ImageStyle*>(FindStyle(m_parser->ReadString()));
-				p_entry->m_unk0x98 = static_cast<ImageStyle*>(FindStyle(m_parser->ReadString()));
+				p_entry->m_trackStyle = static_cast<ImageStyle*>(FindStyle(m_parser->ReadString()));
+				p_entry->m_thumbStyle = static_cast<ImageStyle*>(FindStyle(m_parser->ReadString()));
 				readSecondaryPair++;
 				break;
 			case c_styleImage:

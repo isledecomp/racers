@@ -321,7 +321,7 @@ void MenuInputBindingTable::ParseSelectorField(SelectorBinding* p_entry)
 		p_entry->m_frameParams = static_cast<MenuFrame::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 		return;
 	case MidTxtParser::e_value:
-		p_entry->m_unk0x94 = m_parser->ReadInteger();
+		p_entry->m_acceptUnfocusedInput = m_parser->ReadInteger();
 		return;
 	default:
 		ParseIconField(p_entry);
@@ -595,8 +595,8 @@ void MenuInputBindingTable::ParseCompositeBinding(CompositeBinding* p_entry)
 				static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 			break;
 		case MidTxtParser::e_imageRef:
-			p_entry->m_unk0x90 = static_cast<MenuImage::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
-			p_entry->m_unk0x8c = static_cast<MenuImage::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
+			p_entry->m_trackParams = static_cast<MenuImage::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
+			p_entry->m_thumbParams = static_cast<MenuImage::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 			break;
 		case MidTxtParser::e_image: {
 			for (LegoS32 i = 0; i < 6; i++) {

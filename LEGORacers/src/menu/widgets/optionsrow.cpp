@@ -57,10 +57,10 @@ LegoBool32 OptionsRowBase::Create(
 	m_soundIds = *soundIds;
 
 	if (CreateDefault(p_createParams, p_styleEntry)) {
-		p_createParams->m_unk0x90->m_parent = this;
-		p_createParams->m_unk0x8c->m_parent = this;
+		p_createParams->m_trackParams->m_parent = this;
+		p_createParams->m_thumbParams->m_parent = this;
 
-		if (m_track.Create(p_createParams->m_unk0x90) && m_thumb.Create(p_createParams->m_unk0x8c)) {
+		if (m_track.Create(p_createParams->m_trackParams) && m_thumb.Create(p_createParams->m_thumbParams)) {
 			LayoutButtons();
 			LayoutTrack();
 			LayoutThumb();

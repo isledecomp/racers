@@ -410,11 +410,11 @@ void MenuScreen::ApplySelectorDefaults(
 
 	for (LegoS32 i = 0; i < 6; i++) {
 		if (!p_createParams->m_prevButtonParams->m_images[i]) {
-			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
+			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetPrevButtonStyle()->m_stateImages[i];
 		}
 
 		if (!p_createParams->m_nextButtonParams->m_images[i]) {
-			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
+			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetNextButtonStyle()->m_stateImages[i];
 		}
 	}
 
@@ -439,8 +439,8 @@ void MenuScreen::ApplyCompositeDefaults(
 	ApplyIconDefaults(p_createParams);
 	ApplyIconDefaults(p_createParams->m_prevButtonParams);
 	ApplyIconDefaults(p_createParams->m_nextButtonParams);
-	ApplyWidgetDefaults(p_createParams->m_unk0x90);
-	ApplyWidgetDefaults(p_createParams->m_unk0x8c);
+	ApplyWidgetDefaults(p_createParams->m_trackParams);
+	ApplyWidgetDefaults(p_createParams->m_thumbParams);
 
 	p_createParams->m_prevButtonParams->m_startEnabled = p_createParams->m_startEnabled;
 	p_createParams->m_prevButtonParams->m_iconEventHandler = NULL;
@@ -449,20 +449,20 @@ void MenuScreen::ApplyCompositeDefaults(
 
 	for (LegoS32 i = 0; i < 6; i++) {
 		if (!p_createParams->m_prevButtonParams->m_images[i]) {
-			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
+			p_createParams->m_prevButtonParams->m_images[i] = p_styleEntry->GetPrevButtonStyle()->m_stateImages[i];
 		}
 
 		if (!p_createParams->m_nextButtonParams->m_images[i]) {
-			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
+			p_createParams->m_nextButtonParams->m_images[i] = p_styleEntry->GetNextButtonStyle()->m_stateImages[i];
 		}
 	}
 
-	if (!p_createParams->m_unk0x90->m_image) {
-		p_createParams->m_unk0x90->m_image = p_styleEntry->m_unk0x9c->m_image;
+	if (!p_createParams->m_trackParams->m_image) {
+		p_createParams->m_trackParams->m_image = p_styleEntry->m_trackStyle->m_image;
 	}
 
-	if (!p_createParams->m_unk0x8c->m_image) {
-		p_createParams->m_unk0x8c->m_image = p_styleEntry->m_unk0x98->m_image;
+	if (!p_createParams->m_thumbParams->m_image) {
+		p_createParams->m_thumbParams->m_image = p_styleEntry->m_thumbStyle->m_image;
 	}
 }
 
@@ -679,7 +679,7 @@ LegoBool32 MenuScreen::CreateSelector(
 	bannerParams->m_nextButtonParams = glyph2Params;
 	bannerParams->m_prevButtonParams = glyph1Params;
 	bannerParams->m_frameParams = tomeParams;
-	bannerParams->m_unk0x90 = p_carousel;
+	bannerParams->m_carouselWidget = p_carousel;
 
 	ApplySelectorDefaults(bannerParams, styleEntry);
 

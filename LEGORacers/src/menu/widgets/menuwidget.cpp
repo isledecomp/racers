@@ -530,16 +530,16 @@ void MenuWidget::ScreenToLocal(undefined4& p_x, undefined4& p_y)
 }
 
 // FUNCTION: LEGORACERS 0x004731d0
-LegoBool32 MenuWidget::BroadcastEvent(undefined4 p_unk0x04)
+LegoBool32 MenuWidget::BroadcastEvent(undefined4 p_elapsedMs)
 {
 	MenuWidget* child = m_firstChild;
 
-	if (OnEvent(p_unk0x04)) {
+	if (OnEvent(p_elapsedMs)) {
 		return TRUE;
 	}
 
 	while (child) {
-		if (child->BroadcastEvent(p_unk0x04)) {
+		if (child->BroadcastEvent(p_elapsedMs)) {
 			return TRUE;
 		}
 

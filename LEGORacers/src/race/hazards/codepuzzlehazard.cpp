@@ -123,20 +123,20 @@ void CodePuzzleHazard::OnDeactivate(void*)
 }
 
 // FUNCTION: LEGORACERS 0x0048d480
-void CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
+void CodePuzzleHazard::OnEventStart(LegoS32 p_eventId, void* p_context)
 {
-	if (p_unk0x04 == m_resetEvent1 || p_unk0x04 == m_resetEvent2 || p_unk0x04 == m_resetEvent3) {
+	if (p_eventId == m_resetEvent1 || p_eventId == m_resetEvent2 || p_eventId == m_resetEvent3) {
 		m_codeProgress = 0;
 	}
-	else if (p_unk0x04 == m_codeEvent1) {
+	else if (p_eventId == m_codeEvent1) {
 		m_codeProgress = 1;
 	}
-	else if (p_unk0x04 == m_codeEvent2) {
+	else if (p_eventId == m_codeEvent2) {
 		if (m_codeProgress == 1) {
 			m_codeProgress = 3;
 		}
 	}
-	else if (p_unk0x04 == m_codeEvent3 && m_codeProgress == 3) {
+	else if (p_eventId == m_codeEvent3 && m_codeProgress == 3) {
 		m_eventTable->FireEventsAt(c_successFirstEvent, c_successFirstEvent, NULL);
 		m_codeProgress = 0;
 		m_codeItem1->Assign(m_codeItem1->GetMaterialTable(), m_codeItem1->GetMaterialIndex(), TRUE);
@@ -147,39 +147,39 @@ void CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 		m_eventTable->StartEventsAt(c_successSecondEvent, NULL);
 	}
 
-	switch (p_unk0x04) {
+	switch (p_eventId) {
 	case 200:
 	case 202:
 	case 204:
-		m_eventTable->FireEventsAt(c_goodInputEvent, c_goodInputEvent, static_cast<GolVec3*>(p_unk0x08));
+		m_eventTable->FireEventsAt(c_goodInputEvent, c_goodInputEvent, static_cast<GolVec3*>(p_context));
 		return;
 	case 201:
 	case 203:
 	case 205:
-		m_eventTable->FireEventsAt(c_badInputEvent, c_badInputEvent, static_cast<GolVec3*>(p_unk0x08));
+		m_eventTable->FireEventsAt(c_badInputEvent, c_badInputEvent, static_cast<GolVec3*>(p_context));
 		return;
 	case 207:
 		if (m_codeEvent1 == c_firstCodeEvent) {
-			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_context));
 		}
 		else {
-			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_context));
 		}
 		break;
 	case 208:
 		if (m_codeEvent2 == c_secondCodeEvent) {
-			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_context));
 		}
 		else {
-			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_context));
 		}
 		break;
 	case 209:
 		if (m_codeEvent3 == c_thirdCodeEvent) {
-			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_context));
 		}
 		else {
-			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_context));
 		}
 		break;
 	default:

@@ -544,14 +544,14 @@ void CarModelScreenBase::CarPartPlacement::CreateCarGroup()
 }
 
 // FUNCTION: LEGORACERS 0x00477e40
-void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_unk0x04)
+void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_pieceType)
 {
 	CarPartSet::Entry* entry = m_context->m_partSet.GetSelectedEntry();
 	LegoS32 colorRecordIndex;
-	m_unk0x25c = p_unk0x04;
-	entry->GetChoice(p_unk0x04, &p_unk0x04, &colorRecordIndex);
+	m_unk0x25c = p_pieceType;
+	entry->GetChoice(p_pieceType, &p_pieceType, &colorRecordIndex);
 
-	LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecord(p_unk0x04, TRUE);
+	LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecord(p_pieceType, TRUE);
 	m_placement.SetPiece(pieceRecord, colorRecordIndex, entry->GetPieceType());
 
 	LegoS32 x;
@@ -566,15 +566,15 @@ void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00477f00
-void CarModelScreenBase::CarPartPlacement::SetViewSlot(LegoS32 p_unk0x04)
+void CarModelScreenBase::CarPartPlacement::SetViewSlot(LegoS32 p_slot)
 {
-	m_viewSlot = static_cast<LegoS8>(p_unk0x04);
-	m_viewAngleF = static_cast<LegoFloat>(p_unk0x04);
+	m_viewSlot = static_cast<LegoS8>(p_slot);
+	m_viewAngleF = static_cast<LegoFloat>(p_slot);
 	ApplyViewAngle(m_viewAngles[m_viewSlot]);
 }
 
 // FUNCTION: LEGORACERS 0x00477f30
-void CarModelScreenBase::CarPartPlacement::ApplyViewAngle(LegoFloat p_unk0x04)
+void CarModelScreenBase::CarPartPlacement::ApplyViewAngle(LegoFloat p_angle)
 {
 	GolVec3 direction;
 	GolVec3 up;
@@ -586,7 +586,7 @@ void CarModelScreenBase::CarPartPlacement::ApplyViewAngle(LegoFloat p_unk0x04)
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
 
-	GolMath::RotateAboutAxis(&direction, &direction, &up, p_unk0x04);
+	GolMath::RotateAboutAxis(&direction, &direction, &up, p_angle);
 	m_carGroup.SetDirectionUp(direction, up);
 	m_pieceEntity.SetDirectionUp(direction, up);
 }

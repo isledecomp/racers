@@ -28,7 +28,7 @@ public:
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
 	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 	void Draw(GolD3DRenderDevice* p_renderer) override;                    // vtable+0x1c
-	void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;        // vtable+0x28
+	void OnEventStart(LegoS32 p_eventId, void* p_context) override;        // vtable+0x28
 
 	void ClearFields();
 	void Reset();

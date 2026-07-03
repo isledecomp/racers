@@ -41,9 +41,9 @@ public:
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
 	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
-	LegoBool32 Create(CreateParams* p_createParams, undefined4 p_unk0x08);
-	MenuSceneElement* AddElement(MenuSceneElement* p_unk0x04);
-	void SetCameraLookAt(GolVec3* p_unk0x04, GolVec3* p_unk0x08);
+	LegoBool32 Create(CreateParams* p_createParams, undefined4 p_binary);
+	MenuSceneElement* AddElement(MenuSceneElement* p_element);
+	void SetCameraLookAt(GolVec3* p_eye, GolVec3* p_target);
 	void GetEntityScreenRect(GolWorldEntity* p_entity, Rect* p_rect);
 	GolWorldDatabase* GetWorld() const { return m_world; }
 	GolWorldDatabase** GetWorldAddress() { return &m_world; }
@@ -55,7 +55,7 @@ public:
 	// MenuSceneView::`scalar deleting destructor'
 
 protected:
-	void LoadWorlds(CreateParams* p_createParams, undefined4 p_unk0x08);
+	void LoadWorlds(CreateParams* p_createParams, undefined4 p_binary);
 	void SetupCamera(CreateParams* p_createParams);
 	void UpdateFreeCamera(undefined4 p_elapsedMs);
 	void ClampToScreen(Rect* p_rect);

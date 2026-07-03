@@ -72,7 +72,7 @@ public:
 		LegoBool32 Draw() override;             // vtable+0x0c
 		LegoBool32 Update(undefined4) override; // vtable+0x10
 		LegoBool32 Create(CreateParams* p_createParams);
-		void SelectPieceChoice(LegoS32 p_unk0x04);
+		void SelectPieceChoice(LegoS32 p_pieceType);
 		LegoBool32 RotateViewAnalog(LegoFloat p_delta);
 		LegoBool32 RotateViewStep(LegoS32 p_delta, LegoBool32 p_unk0x08);
 		void SnapViewRotation();
@@ -102,8 +102,8 @@ public:
 		void CreatePieceModel();
 		void CreateDriverModel(undefined4 p_unk0x04);
 		void CreateCarGroup();
-		void SetViewSlot(LegoS32 p_unk0x04);
-		void ApplyViewAngle(LegoFloat p_unk0x04);
+		void SetViewSlot(LegoS32 p_slot);
+		void ApplyViewAngle(LegoFloat p_angle);
 		void UpdatePieceBob(LegoS32 p_elapsed);
 		void StartPieceRaise(LegoS32 p_elapsed);
 		void StartPieceLower(LegoS32 p_elapsed);

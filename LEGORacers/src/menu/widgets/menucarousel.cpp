@@ -134,10 +134,10 @@ void MenuScrollCarousel::SelectChild(MenuWidget* p_child)
 }
 
 // FUNCTION: LEGORACERS 0x0046d960
-void MenuScrollCarousel::SetSelection(undefined4 p_unk0x04)
+void MenuScrollCarousel::SetSelection(undefined4 p_index)
 {
-	m_selectedChild = GetChildByIndex(p_unk0x04);
-	m_selectedIndex = p_unk0x04;
+	m_selectedChild = GetChildByIndex(p_index);
+	m_selectedIndex = p_index;
 	if (!m_scrolling) {
 		SnapToSelection();
 	}
@@ -155,12 +155,12 @@ void MenuScrollCarousel::SnapToSelection()
 }
 
 // FUNCTION: LEGORACERS 0x0046d9c0
-void MenuScrollCarousel::AddItem(MenuWidget* p_unk0x04)
+void MenuScrollCarousel::AddItem(MenuWidget* p_item)
 {
-	p_unk0x04->SetParent(this);
-	p_unk0x04->SetColor(&m_visualState);
+	p_item->SetParent(this);
+	p_item->SetColor(&m_visualState);
 	m_itemCount++;
-	LayoutItem(p_unk0x04);
+	LayoutItem(p_item);
 
 	if (m_itemCount == 1) {
 		SetSelection(m_selectedIndex);
@@ -244,7 +244,7 @@ void MenuCarouselNavigator::LayoutItem(MenuWidget* p_child)
 }
 
 // FUNCTION: LEGORACERS 0x0046db40
-void MenuCarouselNavigator::StartScroll(undefined4 p_unk0x04)
+void MenuCarouselNavigator::StartScroll(undefined4 p_distance)
 {
 	LegoS32 count = m_style->m_scrollDurationMs;
 
@@ -252,7 +252,7 @@ void MenuCarouselNavigator::StartScroll(undefined4 p_unk0x04)
 	m_animFlags |= 1;
 	m_scrolling = 1;
 	LegoFloat divisor = (LegoFloat) count;
-	m_scrollSpeed = (LegoFloat) (LegoS32) p_unk0x04 / divisor;
+	m_scrollSpeed = (LegoFloat) (LegoS32) p_distance / divisor;
 	m_scrollPosition = (LegoFloat) m_offsetX;
 }
 
@@ -348,7 +348,7 @@ MenuWidget* MenuCarouselNavigator::DrawSelf(Rect* p_param1, Rect* p_param2)
 }
 
 // FUNCTION: LEGORACERS 0x0046dd80
-undefined4 MenuCarouselNavigator::OnEvent(undefined4 p_unk0x04)
+undefined4 MenuCarouselNavigator::OnEvent(undefined4 p_elapsedMs)
 {
 	if (m_scrolling) {
 		LegoS32 remaining = m_scrollDurationMs;
@@ -365,15 +365,15 @@ undefined4 MenuCarouselNavigator::OnEvent(undefined4 p_unk0x04)
 			return 0;
 		}
 
-		if (p_unk0x04 > (undefined4) remaining) {
-			p_unk0x04 = remaining;
+		if (p_elapsedMs > (undefined4) remaining) {
+			p_elapsedMs = remaining;
 		}
 
 		LegoFloat step = m_scrollSpeed;
-		LegoFloat scaled = (LegoFloat) (LegoS32) p_unk0x04;
+		LegoFloat scaled = (LegoFloat) (LegoS32) p_elapsedMs;
 		LegoFloat delta = step * scaled;
 
-		m_scrollDurationMs = remaining - p_unk0x04;
+		m_scrollDurationMs = remaining - p_elapsedMs;
 		m_scrollPosition = m_scrollPosition + delta;
 
 		if (m_scrollPosition < 0.0f) {

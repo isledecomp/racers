@@ -15,7 +15,7 @@ public:
 	virtual void LayoutItem(MenuWidget*) = 0; // vtable+0x5c
 
 	void SelectChild(MenuWidget* p_child);
-	void AddItem(MenuWidget* p_unk0x04);
+	void AddItem(MenuWidget* p_item);
 	void RemoveItem(MenuWidget* p_child);
 	MenuWidget* RemoveItemByIndex(LegoS32 p_index);
 	void RemoveAllItems();

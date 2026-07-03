@@ -52,7 +52,7 @@ void MenuSceneView::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00465820
-LegoBool32 MenuSceneView::Create(CreateParams* p_createParams, undefined4 p_unk0x08)
+LegoBool32 MenuSceneView::Create(CreateParams* p_createParams, undefined4 p_binary)
 {
 	Destroy();
 	m_viewportClearMode = p_createParams->m_unk0x78;
@@ -70,7 +70,7 @@ LegoBool32 MenuSceneView::Create(CreateParams* p_createParams, undefined4 p_unk0
 	}
 
 	if (CreateWidget(p_createParams)) {
-		LoadWorlds(p_createParams, p_unk0x08);
+		LoadWorlds(p_createParams, p_binary);
 		SetupCamera(p_createParams);
 	}
 
@@ -175,28 +175,28 @@ void MenuSceneView::SetupCamera(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x00465ab0
-void MenuSceneView::SetCameraLookAt(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
+void MenuSceneView::SetCameraLookAt(GolVec3* p_eye, GolVec3* p_target)
 {
 	GolVec3 up;
 	up.m_y = 0.0f;
 	up.m_x = 0.0f;
 	up.m_z = 1.0f;
 
-	if (p_unk0x04) {
+	if (p_eye) {
 		LegoFloat scale = m_worldScale;
-		m_cameraEye.m_x = scale * p_unk0x04->m_x;
-		LegoFloat y = p_unk0x04->m_y;
+		m_cameraEye.m_x = scale * p_eye->m_x;
+		LegoFloat y = p_eye->m_y;
 		m_cameraEye.m_y = y * scale;
-		LegoFloat z = p_unk0x04->m_z;
+		LegoFloat z = p_eye->m_z;
 		m_cameraEye.m_z = z * scale;
 	}
 
-	if (p_unk0x08) {
+	if (p_target) {
 		LegoFloat scale = m_worldScale;
-		m_cameraTarget.m_x = scale * p_unk0x08->m_x;
-		LegoFloat y = p_unk0x08->m_y;
+		m_cameraTarget.m_x = scale * p_target->m_x;
+		LegoFloat y = p_target->m_y;
 		m_cameraTarget.m_y = y * scale;
-		LegoFloat z = p_unk0x08->m_z;
+		LegoFloat z = p_target->m_z;
 		m_cameraTarget.m_z = z * scale;
 	}
 
@@ -204,14 +204,14 @@ void MenuSceneView::SetCameraLookAt(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x00465b40
-MenuSceneElement* MenuSceneView::AddElement(MenuSceneElement* p_unk0x04)
+MenuSceneElement* MenuSceneView::AddElement(MenuSceneElement* p_element)
 {
 	if (!m_elements) {
-		m_elements = p_unk0x04;
-		return p_unk0x04;
+		m_elements = p_element;
+		return p_element;
 	}
 
-	return p_unk0x04->Append(m_elements);
+	return p_element->Append(m_elements);
 }
 
 // FUNCTION: LEGORACERS 0x00465b60

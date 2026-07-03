@@ -125,13 +125,13 @@ void LauncherHazard::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0048fa30
-void LauncherHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
+void LauncherHazard::OnEventStart(LegoS32 p_eventId, void* p_context)
 {
-	if (m_triggerEventId == -1 || p_unk0x04 != m_triggerEventId || m_state != 1) {
+	if (m_triggerEventId == -1 || p_eventId != m_triggerEventId || m_state != 1) {
 		return;
 	}
 
-	GolVec3* position = static_cast<GolVec3*>(p_unk0x08);
+	GolVec3* position = static_cast<GolVec3*>(p_context);
 	if (position != NULL) {
 		LegoFloat dx = m_triggerPosition.m_x - position->m_x;
 		LegoFloat dy = m_triggerPosition.m_y - position->m_y;

@@ -329,8 +329,8 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 
 	m_setup.m_textureList = m_roster.m_golExport->CreateTextureList();
 	m_setup.m_materialLibrary = m_roster.m_golExport->CreateMaterialList();
-	m_setup.m_textureList->VTable0x1c(p_context->m_renderer, m_roster.m_racerCount);
-	m_setup.m_materialLibrary->VTable0x1c(p_context->m_renderer, m_roster.m_racerCount);
+	m_setup.m_textureList->Initialize(p_context->m_renderer, m_roster.m_racerCount);
+	m_setup.m_materialLibrary->Initialize(p_context->m_renderer, m_roster.m_racerCount);
 
 	DriverCosmeticTable::LoadParams driverParams;
 	driverParams.m_golExport = p_context->m_golExport;
@@ -536,7 +536,7 @@ void RaceState::CreateRacer(
 	GolD3DTexture* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
 	GolMaterial* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
 	shadowTexture->SetNameFromBuffer(chassisItem->m_shadowName);
-	shadowTexture->SetTextureFlags(GolTexture::c_textureFlagBit2 | GolTexture::c_textureFlagBit3);
+	shadowTexture->SetTextureFlags(GolTexture::c_textureFlagFlipVertically | GolTexture::c_textureFlagBmpSource);
 	shadowMaterial->SetName(chassisItem->m_shadowName);
 
 	GolMaterialParams shadowMaterialParams;

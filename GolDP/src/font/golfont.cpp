@@ -22,11 +22,11 @@ static GolImgFile g_unk0x10062568;
 
 extern GolSurface* g_fontSourceImage;
 
-extern GolTgaFile g_unk0x10063ca0;
+extern GolTgaFile g_textureTgaFile;
 
-extern GolBmpFile g_unk0x10064280;
+extern GolBmpFile g_textureBmpFile;
 
-extern const ColorRGBA g_unk0x10057668;
+extern const ColorRGBA g_transparentBlack;
 
 // FUNCTION: GOLDP 0x100043d0
 GolFont::GolFont()
@@ -45,7 +45,7 @@ GolFont::~GolFont()
 // FUNCTION: GOLDP 0x10004520
 void GolFont::Clear()
 {
-	m_sourceImage.VTable0x38();
+	m_sourceImage.Destroy();
 	ReleaseSurfaces();
 	GolFontBase::Clear();
 }
@@ -55,9 +55,9 @@ void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 {
 	GolSurfaceFormat sourceFormat;
 
-	GolImgFile* imageFile = &g_unk0x10063ca0;
+	GolImgFile* imageFile = &g_textureTgaFile;
 	if (!(m_flags & c_flagBit4)) {
-		imageFile = &g_unk0x10064280;
+		imageFile = &g_textureBmpFile;
 	}
 
 	imageFile->Open(p_name);
@@ -73,7 +73,7 @@ void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 
 	LegoU32 sourceWidth = imageFile->GetWidth();
 	g_fontSourceImage = &m_sourceImage;
-	m_sourceImage.VTable0x34(*p_renderer, sourceFormat, sourceWidth, m_fontHeight);
+	m_sourceImage.Allocate(*p_renderer, sourceFormat, sourceWidth, m_fontHeight);
 	imageFile->LoadSurface(&m_sourceImage, m_flags & c_flagBit2, NULL);
 	imageFile->Destroy();
 
@@ -140,7 +140,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 			texture->SetColorKey(m_colorKey);
 		}
 
-		texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_maxTextureWidth, m_maxTextureHeight);
+		texture->AllocateDeviceOnly(*p_renderer, *p_textureFormat, m_maxTextureWidth, m_maxTextureHeight);
 
 		GolMaterialParams params;
 		params.m_flags = c_fontMaterialFlags;
@@ -159,7 +159,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 		params.m_destBlend = 0;
 
 		material->SetParams(p_renderer, params);
-		material->FUN_10006320(*p_renderer);
+		material->Create(*p_renderer);
 
 		texture++;
 		material++;
@@ -173,7 +173,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 		texture->SetColorKey(m_colorKey);
 	}
 
-	texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_textureWidth, m_textureHeight);
+	texture->AllocateDeviceOnly(*p_renderer, *p_textureFormat, m_textureWidth, m_textureHeight);
 	texture->SetName(m_name);
 
 	GolMaterialParams params;
@@ -193,7 +193,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 	params.m_destBlend = 0;
 
 	material->SetParams(p_renderer, params);
-	material->FUN_10006320(*p_renderer);
+	material->Create(*p_renderer);
 }
 
 // FUNCTION: GOLDP 0x10004b60
@@ -295,8 +295,8 @@ void GolFont::CopyGlyphsToTextures(
 
 	ColorRGBA* colorKey;
 	if (font->m_flags & c_flagBit5) {
-		if (p_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
-			g_unk0x10062568.SetColorKeyReplacement(g_unk0x10057668);
+		if (p_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey) {
+			g_unk0x10062568.SetColorKeyReplacement(g_transparentBlack);
 		}
 		else {
 			g_unk0x10062568.SetColorKeyReplacement(font->m_colorKey);

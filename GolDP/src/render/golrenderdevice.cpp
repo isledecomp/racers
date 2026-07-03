@@ -911,7 +911,7 @@ void GolRenderDevice::VTable0x38()
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolRenderDevice::VTable0x40()
+void GolRenderDevice::DisableMipmaps()
 {
 	// empty
 }
@@ -1003,7 +1003,7 @@ void GolRenderDevice::DrawModelEntityLod(GolModelEntity*, undefined4)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolRenderDevice::VTable0x3c(LegoU32)
+void GolRenderDevice::EnableMipmaps(LegoU32)
 {
 	// empty
 }

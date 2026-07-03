@@ -18,13 +18,13 @@ class GolTextureList;
 // SIZE 0x18
 struct MipmapLevel {
 	enum {
-		c_unk0x13unknown0 = 0,
-		c_unk0x13unknown3 = 3,
-		c_unk0x13unknown4 = 4,
-		c_unk0x13unknown5 = 5,
-		c_unk0x13unknown6 = 6,
-		c_unk0x13unknown7 = 7,
-		c_unk0x13unknown8 = 8
+		c_sizeGeneric = 0,
+		c_size8 = 3,
+		c_size16 = 4,
+		c_size32 = 5,
+		c_size64 = 6,
+		c_size128 = 7,
+		c_size256 = 8
 	};
 
 	LegoU8* m_pixels;       // 0x00
@@ -34,7 +34,7 @@ struct MipmapLevel {
 	LegoU8 m_bitsPerPixel;  // 0x10
 	LegoU8 m_unk0x11;       // 0x11
 	LegoU8 m_bytesPerPixel; // 0x12
-	LegoS8 m_unk0x13;       // 0x13
+	LegoS8 m_sizeLog2;      // 0x13
 	LegoU16* m_paletteData; // 0x14
 };
 
@@ -45,32 +45,32 @@ public:
 	GolD3DTexture();
 	~GolD3DTexture() override; // vtable+0x00
 
-	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x04
-	void UnlockPixels() override;                                                   // vtable+0x08
-	GolPaletteBase* GetPalette() override;                                          // vtable+0x1c
-	void VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source) override;    // vtable+0x30
-	void VTable0x34(
+	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override;   // vtable+0x04
+	void UnlockPixels() override;                                                     // vtable+0x08
+	GolPaletteBase* GetPalette() override;                                            // vtable+0x1c
+	void LoadFromImgFile(GolRenderDevice& p_renderer, GolImgFile* p_source) override; // vtable+0x30
+	void Allocate(
 		GolRenderDevice& p_renderer,
 		const GolSurfaceFormat& p_textureFormat,
 		LegoU32 p_width,
 		LegoU32 p_height
-	) override;                 // vtable+0x34
-	void VTable0x38() override; // vtable+0x38
+	) override;              // vtable+0x34
+	void Destroy() override; // vtable+0x38
 
-	void FUN_10015fb0();
-	void FUN_10015d00(
+	void ApplyColorKey();
+	void AllocateDeviceOnly(
 		GolD3DRenderDevice& p_renderer,
 		const GolSurfaceFormat& p_textureFormat,
 		LegoU32 p_width,
 		LegoU32 p_height
 	);
-	void FUN_10016100();
-	void FUN_10016260();
-	void FUN_10016380();
-	void FUN_10016440(GolD3DRenderDevice& p_renderer);
-	void FUN_10016460(GolD3DRenderDevice& p_renderer);
-	void FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDevice& p_renderer);
-	void FUN_100168c0(GolD3DRenderDevice& p_renderer);
+	void UploadPixels();
+	void GenerateMipmaps();
+	void ReleaseDeviceObjects();
+	void RestoreDeviceObjects(GolD3DRenderDevice& p_renderer);
+	void CreateDeviceObjects(GolD3DRenderDevice& p_renderer);
+	void CreateDirectDrawSurface(GolCommonDrawState* p_drawState, GolD3DRenderDevice& p_renderer);
+	void CreateMipmapBuffers(GolD3DRenderDevice& p_renderer);
 
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }
 	MipmapLevel* GetMipmapLevel(LegoU32 p_index) { return m_mipmaps == NULL ? NULL : &m_mipmaps[p_index]; }
@@ -84,7 +84,7 @@ public:
 		m_textureFlags = p_texture->m_textureFlags;
 		m_mipmapCount = p_texture->m_mipmapCount;
 		ColorRGBA colorKey = p_texture->m_colorKey;
-		m_textureFlags |= GolTexture::c_textureFlagBit11;
+		m_textureFlags |= GolTexture::c_textureFlagColorKeyDirty;
 		m_colorKey = colorKey;
 		m_colorKey.m_alp = 0;
 	}
@@ -102,15 +102,15 @@ public:
 private:
 	friend class GolTextureList;
 
-	GolName m_name;                    // 0x38
-	GolPaletteBase* m_palette;         // 0x40
-	MipmapLevel* m_mipmaps;            // 0x44
-	LPDIRECTDRAWSURFACE4 m_surface;    // 0x48
-	LPDIRECT3DTEXTURE2 m_d3dTexture;   // 0x4c
-	GolTexturePalette m_unk0x50;       // 0x50
-	GolSurfaceFormat m_textureFormat2; // 0x5c
-	undefined4 m_unk0x74;              // 0x74
-	undefined4 m_unk0x78;              // 0x78
+	GolName m_name;                         // 0x38
+	GolPaletteBase* m_palette;              // 0x40
+	MipmapLevel* m_mipmaps;                 // 0x44
+	LPDIRECTDRAWSURFACE4 m_surface;         // 0x48
+	LPDIRECT3DTEXTURE2 m_d3dTexture;        // 0x4c
+	GolTexturePalette m_sourcePalette;      // 0x50
+	GolSurfaceFormat m_deviceTextureFormat; // 0x5c
+	undefined4 m_deviceWidth;               // 0x74
+	undefined4 m_deviceHeight;              // 0x78
 };
 
 #endif // GOLD3DTEXTURE_H

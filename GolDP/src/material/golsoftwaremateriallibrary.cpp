@@ -58,7 +58,7 @@ GolMaterial* GolSoftwareMaterialLibrary::GetItem(LegoU32 p_index) const
 }
 
 // FUNCTION: GOLDP 0x10006820
-void GolSoftwareMaterialLibrary::VTable0x18(LegoU32 p_index)
+void GolSoftwareMaterialLibrary::CreateMaterial(LegoU32 p_index)
 {
-	m_items[p_index].FUN_10006320(*m_renderer);
+	m_items[p_index].Create(*m_renderer);
 }

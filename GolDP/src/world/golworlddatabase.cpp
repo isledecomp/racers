@@ -37,12 +37,12 @@ static const LegoFloat g_floatyBoatMaxFloat = FLT_MAX;
 LegoFloat g_fltMax0x100576e8 = FLT_MAX;
 
 // GLOBAL: GOLDP 0x1005cf0c
-undefined4 g_unk0x1005cf0c = 1;
+undefined4 g_loadTexturesImmediately = 1;
 
 // FUNCTION: GOLDP 0x1002baf0
-void FUN_1002baf0(undefined4 p_arg)
+void SetLoadTexturesImmediately(undefined4 p_arg)
 {
-	g_unk0x1005cf0c = p_arg;
+	g_loadTexturesImmediately = p_arg;
 }
 
 // FUNCTION: GOLDP 0x1002c030
@@ -1725,5 +1725,5 @@ void GolWorldDatabase::SetupCamera(LegoU32 p_cameraIndex, GolCameraBase* p_lens)
 // FUNCTION: GOLDP 0x1002f350
 void GolWorldDatabase::VTable0x54(undefined4 p_arg)
 {
-	FUN_1002baf0(p_arg);
+	SetLoadTexturesImmediately(p_arg);
 }

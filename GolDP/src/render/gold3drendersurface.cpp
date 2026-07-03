@@ -77,7 +77,8 @@ void GolD3DRenderSurface::FUN_100136a0(GolD3DRenderDevice* p_renderer)
 	surfaceDesc.dwHeight = m_height;
 	surfaceDesc.ddpfPixelFormat.dwSize = sizeof(surfaceDesc.ddpfPixelFormat);
 
-	if ((m_drawState->m_flags & GolDrawState::c_flagBit19) || (p_renderer->m_flags & GolRenderDevice::c_flagBit16)) {
+	if ((m_drawState->m_flags & GolDrawState::c_flagBit19) ||
+		(p_renderer->m_flags & GolRenderDevice::c_flagSoftwareRenderer)) {
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY | DDSCAPS_OFFSCREENPLAIN | DDSCAPS_3DDEVICE;
 		m_unk0x34 &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
 	}

@@ -468,7 +468,7 @@ void GolD3DRenderDevice::Reset()
 		m_unk0xc53a0[i].specular = 0xffffffff;
 	}
 
-	m_unk0xc8704 = 0;
+	m_defaultMipmapCount = 0;
 }
 
 // FUNCTION: GOLDP 0x10007d80
@@ -575,19 +575,19 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 			}
 
 			if ((m_flags & c_flagBit20) && (m_d3dDeviceDesc.dpcTriCaps.dwAlphaCmpCaps & D3DPCMPCAPS_GREATER)) {
-				m_flags &= ~c_flagBit7;
-				m_flags |= c_flagBit8;
+				m_flags &= ~c_flagColorKeyAlphaBlend;
+				m_flags |= c_flagColorKeyAlphaTest;
 			}
 			else if (m_d3dDeviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_TRANSPARENCY) {
-				m_flags &= ~(c_flagBit7 | c_flagBit8);
+				m_flags &= ~(c_flagColorKeyAlphaBlend | c_flagColorKeyAlphaTest);
 			}
 			else if (m_d3dDeviceDesc.dpcTriCaps.dwAlphaCmpCaps & D3DPCMPCAPS_GREATER) {
-				m_flags &= ~c_flagBit7;
-				m_flags |= c_flagBit8;
+				m_flags &= ~c_flagColorKeyAlphaBlend;
+				m_flags |= c_flagColorKeyAlphaTest;
 			}
 			else {
-				m_flags &= ~c_flagBit8;
-				m_flags |= c_flagBit7;
+				m_flags &= ~c_flagColorKeyAlphaTest;
+				m_flags |= c_flagColorKeyAlphaBlend;
 			}
 
 			if (m_d3dDeviceDesc.dpcTriCaps.dwShadeCaps & D3DPSHADECAPS_ALPHAFLATBLEND) {
@@ -628,7 +628,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 
 			m_unk0x2c = 0;
 			m_d3dDevice->EnumTextureFormats(EnumerateTextureFormatsCallback, this);
-			m_unk0xc8700 = 2;
+			m_paletteMode = 2;
 			goto rendererCreated;
 		}
 
@@ -637,7 +637,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	}
 
 	m_flags &= ~c_flagBit1;
-	m_flags |= c_flagBit9 | c_flagBit16;
+	m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
 	m_unk0xc876c = &GolD3DRenderDevice::FUN_1000a950;
@@ -647,16 +647,16 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	if (swTextureFormat.m_bitsPerPixel == 8) {
 		swPixelFormat = GolSoftwareRenderer::PixelFormat::e_formatIndex8;
 		if (m_drawState->m_flags & GolDrawState::c_flagBit18) {
-			m_unk0xc8700 = 1;
+			m_paletteMode = 1;
 		}
 		else {
-			m_unk0xc8700 = 0;
+			m_paletteMode = 0;
 		}
 	}
 	else {
 		swPixelFormat = swTextureFormat.GetGreenBitCount() == 6 ? GolSoftwareRenderer::PixelFormat::e_format565
 																: GolSoftwareRenderer::PixelFormat::e_format555;
-		m_unk0xc8700 = 2;
+		m_paletteMode = 2;
 	}
 
 	GolD3DTexturePalette::SetTextureFormat(swTextureFormat);
@@ -675,7 +675,7 @@ rendererCreated:
 		SetCamera(m_unk0x0c);
 	}
 
-	m_unk0x2d4.FUN_10006320(*this);
+	m_unk0x2d4.Create(*this);
 	for (GolD3DRenderSurface* surface = m_unk0x30c; surface != NULL; surface = surface->m_next) {
 		surface->FUN_100136a0(this);
 	}
@@ -707,7 +707,7 @@ void GolD3DRenderDevice::FUN_100082e0()
 							GolMaterial::c_flagWrap | GolMaterial::c_flagBit20 | GolMaterial::c_flagBit22;
 	FUN_10012f50();
 
-	if (m_flags & c_flagBit16) {
+	if (m_flags & c_flagSoftwareRenderer) {
 		return;
 	}
 
@@ -792,7 +792,7 @@ void GolD3DRenderDevice::ReleaseResources()
 
 	m_unk0x2d4.Destroy();
 
-	if (m_flags & c_flagBit16) {
+	if (m_flags & c_flagSoftwareRenderer) {
 		m_softwareRenderer.~GolSoftwareRenderer();
 	}
 
@@ -865,7 +865,7 @@ void GolD3DRenderDevice::VTable0x5c()
 	lens->VTable0x28();
 	lens->FUN_10002860(&m_viewportParams);
 
-	if (!(m_flags & c_flagBit16) && m_d3dViewport->SetViewport2(&m_viewportParams) != D3D_OK) {
+	if (!(m_flags & c_flagSoftwareRenderer) && m_d3dViewport->SetViewport2(&m_viewportParams) != D3D_OK) {
 		GOL_FATALERROR_MESSAGE("Unable to set viewport");
 	}
 
@@ -1473,7 +1473,7 @@ void GolD3DRenderDevice::SetClearColor(const ColorRGBA& p_color)
 	GolSurfaceFormat textureFormat;
 
 	m_clearColor = p_color;
-	if (m_flags & c_flagBit16) {
+	if (m_flags & c_flagSoftwareRenderer) {
 		textureFormat = m_renderTargetInfo->m_textureFormat;
 		if (textureFormat.m_paletteMask != 0) {
 			m_clearPixelValue = m_renderTargetInfo->GetPalette()->FindEntry(m_clearColor);
@@ -1866,7 +1866,7 @@ void GolD3DRenderDevice::DrawTriangle(
 	vertices[2].tv = v2->m_v;
 	vertices[2].specular = 0;
 
-	switch (m_unk0xc8700) {
+	switch (m_paletteMode) {
 	case 1: {
 		LegoU32 color = v0->m_color.m_grn;
 		color &= 0xe0;
@@ -1992,7 +1992,8 @@ void GolD3DRenderDevice::SelectTextureFormat(
 )
 {
 	GolSurfaceFormat reqTextureFormat;
-	if (p_arg3 && (m_flags & (c_flagBit7 | c_flagBit8)) && p_requestedTextureFormat.GetAlphaBitCount() == 0) {
+	if (p_arg3 && (m_flags & (c_flagColorKeyAlphaBlend | c_flagColorKeyAlphaTest)) &&
+		p_requestedTextureFormat.GetAlphaBitCount() == 0) {
 		reqTextureFormat.m_redBitMask = 0xf800;
 		reqTextureFormat.m_grnBitMask = 0x07c0;
 		reqTextureFormat.m_bluBitMask = 0x003e;
@@ -2328,7 +2329,7 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 
 	if (textureCount > 0) {
 		for (LegoU32 i = 0; i < textureCount; i++) {
-			m_unk0xc83b4.m_unk0x00[i] = static_cast<GolSoftwareMaterial*>(p_material)->GetUnk0x2c() + i;
+			m_unk0xc83b4.m_unk0x00[i] = static_cast<GolSoftwareMaterial*>(p_material)->GetPipelines() + i;
 		}
 	}
 
@@ -2425,7 +2426,7 @@ void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
 	}
 
 	if (p_texture != NULL) {
-		if (p_texture->GetTextureFlags() & GolTexture::c_textureFlagBit5) {
+		if (p_texture->GetTextureFlags() & GolTexture::c_textureFlagColorKeyed) {
 			if (m_unk0xc83f0 == 0) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, TRUE);
 				m_unk0xc83f0 = TRUE;
@@ -2637,19 +2638,19 @@ void GolD3DRenderDevice::VTable0xcc()
 }
 
 // FUNCTION: GOLDP 0x1000b280
-void GolD3DRenderDevice::VTable0x3c(LegoU32 p_arg)
+void GolD3DRenderDevice::EnableMipmaps(LegoU32 p_arg)
 {
-	m_flags |= c_flagBit17;
-	m_unk0xc8704 = p_arg;
-	if (m_unk0xc8704 > 4) {
-		m_unk0xc8704 = 4;
+	m_flags |= c_flagMipmapsEnabled;
+	m_defaultMipmapCount = p_arg;
+	if (m_defaultMipmapCount > 4) {
+		m_defaultMipmapCount = 4;
 	}
 }
 
 // FUNCTION: GOLDP 0x1000b2b0
-void GolD3DRenderDevice::VTable0x40()
+void GolD3DRenderDevice::DisableMipmaps()
 {
-	m_flags &= ~c_flagBit17;
+	m_flags &= ~c_flagMipmapsEnabled;
 }
 
 // FUNCTION: GOLDP 0x1000b2c0
@@ -2747,7 +2748,7 @@ LegoBool32 GolD3DRenderDevice::VTable0x110() const
 // FUNCTION: GOLDP 0x1000b4a0
 void GolD3DRenderDevice::FUN_1000b4a0()
 {
-	switch (m_unk0xc8700) {
+	switch (m_paletteMode) {
 	case 0: {
 		m_countTextureFormats = 1;
 
@@ -5133,7 +5134,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 		if (m_unk0xc83e4) {
 			if (m_unk0xc83c4) {
 				m_drawTriangleFn2 = &GolD3DRenderDevice::FUN_100106d0;
-				if (!m_unk0xc83e8 && m_unk0xc8700 == 0) {
+				if (!m_unk0xc83e8 && m_paletteMode == 0) {
 					m_drawTriangleFn1 = &GolD3DRenderDevice::FUN_100132f0;
 					return;
 				}
@@ -5156,7 +5157,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 			}
 			else if (m_unk0xc83c4) {
 				m_drawTriangleFn2 = &GolD3DRenderDevice::FUN_10010330;
-				if (!m_unk0xc83e8 && m_unk0xc8700 == 0) {
+				if (!m_unk0xc83e8 && m_paletteMode == 0) {
 					m_drawTriangleFn1 = &GolD3DRenderDevice::FUN_10013110;
 					return;
 				}

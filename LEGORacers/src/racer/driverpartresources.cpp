@@ -148,9 +148,9 @@ void DriverPartResources::LoadMaterialAndTextureLists(LegoBool32 p_binary)
 	}
 
 	SetResourceBinaryMode(m_textureBinaryMode);
-	m_textureList->VTable0x24(m_renderer, "bodypart.tdf", p_binary);
+	m_textureList->Load(m_renderer, "bodypart.tdf", p_binary);
 	SetResourceBinaryMode(TRUE);
-	m_materialList->VTable0x24(m_renderer, "bodypart.mdf", p_binary);
+	m_materialList->Load(m_renderer, "bodypart.mdf", p_binary);
 }
 
 // FUNCTION: LEGORACERS 0x004981a0

@@ -326,12 +326,12 @@ GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry* p_entry)
 	m_textures[m_loadedEntryCount] = m_golExport->CreateTextureList();
 	::strncpy(name, p_entry->m_textureName, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
-	m_textures[m_loadedEntryCount]->VTable0x24(m_renderer, name, m_binary);
+	m_textures[m_loadedEntryCount]->Load(m_renderer, name, m_binary);
 
 	m_materials[m_loadedEntryCount] = m_golExport->CreateMaterialList();
 	::strncpy(name, p_entry->m_materialName, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
-	m_materials[m_loadedEntryCount]->VTable0x24(m_renderer, name, m_binary);
+	m_materials[m_loadedEntryCount]->Load(m_renderer, name, m_binary);
 
 	m_models[m_loadedEntryCount] = m_golExport->VTable0x14();
 	::strncpy(name, p_entry->m_modelName, sizeof(GolName));

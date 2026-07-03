@@ -10,7 +10,7 @@ class RaceState;
 
 class GolMaterialSource {
 public:
-	virtual void VTable0x00(LegoU32 p_index, GolMaterialParams* p_params) = 0;
+	virtual void GetMaterialParams(LegoU32 p_index, GolMaterialParams* p_params) = 0; // vtable+0x00
 };
 
 // VTABLE: GOLDP 0x10057134
@@ -78,18 +78,15 @@ public:
 	virtual void VTable0x0c();                                                // vtable+0x0c
 	virtual void VTable0x10();                                                // vtable+0x10
 	virtual void AllocateItems() = 0;                                         // vtable+0x14
-	virtual void VTable0x18(LegoU32 p_index) = 0;                             // vtable+0x18
-	virtual void VTable0x1c(GolRenderDevice* p_renderer, LegoU32 p_capacity); // vtable+0x1c
-	virtual void VTable0x20(
+	virtual void CreateMaterial(LegoU32 p_index) = 0;                         // vtable+0x18
+	virtual void Initialize(GolRenderDevice* p_renderer, LegoU32 p_capacity); // vtable+0x1c
+	virtual void InitializeFromSource(
 		GolRenderDevice* p_renderer,
 		GolMaterialSource* p_source,
 		LegoU32 p_capacity
 	); // vtable+0x20
-	virtual void VTable0x24(
-		GolRenderDevice* p_renderer,
-		const LegoChar* p_fileName,
-		LegoBool32 p_binary
-	);                                                       // vtable+0x24
+	virtual void Load(GolRenderDevice* p_renderer, const LegoChar* p_fileName,
+					  LegoBool32 p_binary);                  // vtable+0x24
 	virtual GolMaterial* GetItem(LegoU32 p_index) const = 0; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x100261d0

@@ -2931,7 +2931,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 			GolMaterial* sourceMaterial = static_cast<GolMaterial*>(materialTable->GetEntry(i));
 
 			sourceMaterial->CopyParamsTo(&params);
-			params.m_flags &= ~GolMaterial::c_flagBit0;
+			params.m_flags &= ~GolMaterial::c_flagCreated;
 
 			GolMaterial* outputMaterial = p_materials->GetItem(outputMaterialIndex);
 			if (sourceMaterial->GetFlags() & GolMaterial::c_flagTextured) {

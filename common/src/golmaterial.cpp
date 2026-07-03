@@ -40,15 +40,17 @@ void GolMaterial::SetParams(GolRenderDevice* p_renderer, const GolMaterialParams
 
 	if (m_flags & c_flagTextured) {
 		m_texture = p_params.m_texture;
-		if (m_texture->GetTextureFlags() & GolTexture::c_textureFlagBit5) {
-			if (p_renderer->GetFlags() & (GolRenderDevice::c_flagBit7 | GolRenderDevice::c_flagBit8)) {
-				if ((p_renderer->GetFlags() & GolRenderDevice::c_flagBit7) && !(m_flags & c_flagTransparent)) {
+		if (m_texture->GetTextureFlags() & GolTexture::c_textureFlagColorKeyed) {
+			if (p_renderer->GetFlags() &
+				(GolRenderDevice::c_flagColorKeyAlphaBlend | GolRenderDevice::c_flagColorKeyAlphaTest)) {
+				if ((p_renderer->GetFlags() & GolRenderDevice::c_flagColorKeyAlphaBlend) &&
+					!(m_flags & c_flagTransparent)) {
 					m_srcBlend = 6;
 					m_destBlend = 8;
 					m_flags &= ~(c_flagNoAlphaBlend | c_flagModulate | c_flagGouraudShading);
 					m_flags |= c_flagAlphaBlend | c_flagDecal | c_flagFlatShading;
 				}
-				if (p_renderer->GetFlags() & GolRenderDevice::c_flagBit8) {
+				if (p_renderer->GetFlags() & GolRenderDevice::c_flagColorKeyAlphaTest) {
 					m_alphaFunc = 2;
 					m_alphaRef = 0;
 					m_flags &= ~c_flagNoAlphaTest;

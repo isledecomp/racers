@@ -51,7 +51,7 @@ public:
 	};
 
 	enum {
-		c_flagBit0 = 1 << 0,
+		c_flagCreated = 1 << 0,
 		c_flagFlatShading = 1 << 1,
 		c_flagGouraudShading = 1 << 2,
 		c_flagTextured = 1 << 3,

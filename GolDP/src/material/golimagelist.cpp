@@ -140,7 +140,7 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 			flags = flags | GolImage::c_flagBit6;
 		}
 
-		if ((flags & GolImage::c_flagBit5) && (p_renderer->GetFlags() & GolD3DRenderDevice::c_flagBit9)) {
+		if ((flags & GolImage::c_flagBit5) && (p_renderer->GetFlags() & GolD3DRenderDevice::c_flagBlackColorKey)) {
 			flags = flags | GolImage::c_flagBit7;
 		}
 

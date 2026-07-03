@@ -191,13 +191,13 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 	for (i = 0; i < m_textureListCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_textureListNames[i], ".tdf");
-		GetTextureList(i)->VTable0x24(textureRenderer, fileName, m_binary);
+		GetTextureList(i)->Load(textureRenderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_materialLibraryCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_materialLibraryNames[i], ".mdf");
-		GetMaterialLibrary(i)->VTable0x24(m_renderer, fileName, m_binary);
+		GetMaterialLibrary(i)->Load(m_renderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_modelPartCount; i++) {

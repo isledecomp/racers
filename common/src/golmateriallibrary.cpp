@@ -34,7 +34,7 @@ GolMaterialLibrary::~GolMaterialLibrary()
 }
 
 // FUNCTION: GOLDP 0x10026270
-void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
+void GolMaterialLibrary::Load(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
 	if (m_renderer != NULL) {
 		Clear();
@@ -286,26 +286,30 @@ void GolMaterialLibrary::CreateMaterials()
 	if (m_materialSource != NULL) {
 		for (i = 0; i < m_numItems; i++) {
 			GolMaterial* item = GetItem(i);
-			if (!(item->GetFlags() & GolMaterial::c_flagBit0)) {
+			if (!(item->GetFlags() & GolMaterial::c_flagCreated)) {
 				GolMaterialParams params;
-				m_materialSource->VTable0x00(i, &params);
+				m_materialSource->GetMaterialParams(i, &params);
 				item->SetParams(m_renderer, params);
-				VTable0x18(i);
+				CreateMaterial(i);
 			}
 		}
 	}
 	else {
 		for (i = 0; i < m_numItems; i++) {
 			GolMaterial* item = GetItem(i);
-			if (!(item->GetFlags() & GolMaterial::c_flagBit0)) {
-				VTable0x18(i);
+			if (!(item->GetFlags() & GolMaterial::c_flagCreated)) {
+				CreateMaterial(i);
 			}
 		}
 	}
 }
 
 // FUNCTION: GOLDP 0x10026a00
-void GolMaterialLibrary::VTable0x20(GolRenderDevice* p_renderer, GolMaterialSource* p_arg2, LegoU32 p_capacity)
+void GolMaterialLibrary::InitializeFromSource(
+	GolRenderDevice* p_renderer,
+	GolMaterialSource* p_arg2,
+	LegoU32 p_capacity
+)
 {
 	if (m_renderer != NULL) {
 		Clear();
@@ -336,7 +340,7 @@ void GolMaterialLibrary::Clear()
 }
 
 // FUNCTION: GOLDP 0x10026a80
-void GolMaterialLibrary::VTable0x1c(GolRenderDevice* p_renderer, LegoU32 p_capacity)
+void GolMaterialLibrary::Initialize(GolRenderDevice* p_renderer, LegoU32 p_capacity)
 {
 	if (m_renderer != NULL) {
 		Clear();

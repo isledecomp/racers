@@ -384,12 +384,12 @@ LegoU32 ChassisModelTable::InstantiateModels(
 		m_textureLists[m_instantiatedCount] = m_golExport->CreateTextureList();
 		::strncpy(name, p_item->m_textureNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';
-		m_textureLists[m_instantiatedCount]->VTable0x24(m_renderer, name, m_binary);
+		m_textureLists[m_instantiatedCount]->Load(m_renderer, name, m_binary);
 
 		m_materialLists[m_instantiatedCount] = m_golExport->CreateMaterialList();
 		::strncpy(name, p_item->m_materialNames[i], sizeof(GolName));
 		name[sizeof(GolName)] = '\0';
-		m_materialLists[m_instantiatedCount]->VTable0x24(m_renderer, name, m_binary);
+		m_materialLists[m_instantiatedCount]->Load(m_renderer, name, m_binary);
 
 		m_sceneNodes[m_instantiatedCount] = m_golExport->VTable0x18();
 		::strncpy(name, p_item->m_nodeNames[i], sizeof(GolName));

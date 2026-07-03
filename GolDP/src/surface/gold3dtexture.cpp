@@ -13,22 +13,22 @@
 
 DECOMP_SIZE_ASSERT(GolD3DTexture, 0x7c)
 
-extern const ColorRGBA g_unk0x10057668;
+extern const ColorRGBA g_transparentBlack;
 
 // GLOBAL: GOLDP 0x100635c0
-static GolImgFile g_unk0x100635c0;
+static GolImgFile g_uploadImgFile;
 
 // FUNCTION: GOLDP 0x10015b70
 GolD3DTexture::GolD3DTexture()
-	: m_palette(NULL), m_mipmaps(NULL), m_surface(NULL), m_d3dTexture(NULL), m_unk0x74(0), m_unk0x78(0)
+	: m_palette(NULL), m_mipmaps(NULL), m_surface(NULL), m_d3dTexture(NULL), m_deviceWidth(0), m_deviceHeight(0)
 {
 }
 
 // FUNCTION: GOLDP 0x10015bf0
 GolD3DTexture::~GolD3DTexture()
 {
-	FUN_10016380();
-	m_unk0x50.Shutdown();
+	ReleaseDeviceObjects();
+	m_sourcePalette.Shutdown();
 
 	if (m_pixels != NULL) {
 		delete[] m_pixels;
@@ -39,23 +39,23 @@ GolD3DTexture::~GolD3DTexture()
 }
 
 // FUNCTION: GOLDP 0x10015c80
-void GolD3DTexture::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
+void GolD3DTexture::LoadFromImgFile(GolRenderDevice& p_renderer, GolImgFile* p_source)
 {
 	GolSurfaceFormat textureFormat = p_source->GetTextureFormat();
 
-	if (p_renderer.GetFlags() & GolRenderDevice::c_flagBit17) {
-		m_mipmapCount = static_cast<LegoU16>(static_cast<GolD3DRenderDevice&>(p_renderer).GetUnk0xc8704());
+	if (p_renderer.GetFlags() & GolRenderDevice::c_flagMipmapsEnabled) {
+		m_mipmapCount = static_cast<LegoU16>(static_cast<GolD3DRenderDevice&>(p_renderer).GetDefaultMipmapCount());
 	}
 
-	VTable0x34(p_renderer, textureFormat, p_source->GetWidth(), p_source->GetHeight());
+	Allocate(p_renderer, textureFormat, p_source->GetWidth(), p_source->GetHeight());
 	p_source->SetKeepNibbleOrder(TRUE);
 	p_source->SetRemapPureBlack(FALSE);
-	p_source->LoadSurface(this, m_textureFlags & c_textureFlagBit2, NULL);
+	p_source->LoadSurface(this, m_textureFlags & c_textureFlagFlipVertically, NULL);
 	p_source->SetKeepNibbleOrder(FALSE);
 }
 
 // FUNCTION: GOLDP 0x10015d00
-void GolD3DTexture::FUN_10015d00(
+void GolD3DTexture::AllocateDeviceOnly(
 	GolD3DRenderDevice& p_renderer,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
@@ -63,7 +63,7 @@ void GolD3DTexture::FUN_10015d00(
 )
 {
 	if (m_pixelFlags & c_lockRequestRead) {
-		VTable0x38();
+		Destroy();
 	}
 
 	m_pixelFlags |= c_lockRequestRead;
@@ -71,11 +71,11 @@ void GolD3DTexture::FUN_10015d00(
 	m_width = static_cast<LegoU16>(p_width);
 	m_textureFormat = p_textureFormat;
 	m_pitch = (static_cast<LegoU32>(m_textureFormat.m_bitsPerPixel) * static_cast<LegoU16>(p_width) + 7) / 8;
-	FUN_10016460(p_renderer);
+	CreateDeviceObjects(p_renderer);
 }
 
 // FUNCTION: GOLDP 0x10015d60
-void GolD3DTexture::VTable0x34(
+void GolD3DTexture::Allocate(
 	GolRenderDevice& p_renderer,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
@@ -83,7 +83,7 @@ void GolD3DTexture::VTable0x34(
 )
 {
 	if (m_pixelFlags & c_lockRequestRead) {
-		VTable0x38();
+		Destroy();
 	}
 
 	m_pixelFlags |= c_lockRequestRead;
@@ -97,17 +97,17 @@ void GolD3DTexture::VTable0x34(
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	if (p_textureFormat.m_paletteMask != 0) {
-		m_unk0x50.Initialize(p_textureFormat);
+		m_sourcePalette.Initialize(p_textureFormat);
 	}
 
-	FUN_10016460(static_cast<GolD3DRenderDevice&>(p_renderer));
+	CreateDeviceObjects(static_cast<GolD3DRenderDevice&>(p_renderer));
 }
 
 // FUNCTION: GOLDP 0x10015e00
-void GolD3DTexture::VTable0x38()
+void GolD3DTexture::Destroy()
 {
-	FUN_10016380();
-	m_unk0x50.Shutdown();
+	ReleaseDeviceObjects();
+	m_sourcePalette.Shutdown();
 
 	if (m_pixels != NULL) {
 		delete[] m_pixels;
@@ -181,7 +181,7 @@ void GolD3DTexture::UnlockPixels()
 	if (m_pixelFlags & c_lockRequestWrite) {
 		if (m_pixels == NULL && m_mipmaps == NULL) {
 			m_surface->Unlock(NULL);
-			FUN_10015fb0();
+			ApplyColorKey();
 		}
 		if (!(m_pixelFlags & c_lockFlagWrite) && (m_pixelFlags & c_lockFlagRead)) {
 			m_pixelFlags &= ~(c_lockFlagWrite | c_lockFlagRead | c_lockFlagLocked);
@@ -189,33 +189,33 @@ void GolD3DTexture::UnlockPixels()
 		else {
 			m_pixelFlags &= ~(c_lockFlagWrite | c_lockFlagRead | c_lockFlagLocked);
 			if (m_pixels != NULL) {
-				FUN_10016100();
+				UploadPixels();
 			}
 		}
 	}
 }
 
 // FUNCTION: GOLDP 0x10015fb0
-void GolD3DTexture::FUN_10015fb0()
+void GolD3DTexture::ApplyColorKey()
 {
 	DDCOLORKEY colorkey;
 	ColorRGBA rgba;
 
-	if (m_mipmaps == NULL && (m_textureFlags & c_textureFlagBit5) && !(m_textureFlags & c_textureFlagBit10) &&
-		(m_textureFlags & c_textureFlagBit11)) {
-		if (m_textureFormat2.m_paletteMask == 0) {
+	if (m_mipmaps == NULL && (m_textureFlags & c_textureFlagColorKeyed) &&
+		!(m_textureFlags & c_textureFlagColorKeyInAlpha) && (m_textureFlags & c_textureFlagColorKeyDirty)) {
+		if (m_deviceTextureFormat.m_paletteMask == 0) {
 			LegoU32 color;
 
-			if (m_textureFlags & c_textureFlagBit7) {
+			if (m_textureFlags & c_textureFlagBlackColorKey) {
 				color = 0;
 			}
 			else {
-				LegoU32 redRightShift = 8 - m_textureFormat2.GetRedBitCount();
-				LegoU32 grnRightShift = 8 - m_textureFormat2.GetGreenBitCount();
-				LegoU32 bluRightShift = 8 - m_textureFormat2.GetBlueBitCount();
-				LegoU32 red = (m_colorKey.m_red >> redRightShift) << m_textureFormat2.GetRedBitShift();
-				LegoU32 grn = (m_colorKey.m_grn >> grnRightShift) << m_textureFormat2.GetGreenBitShift();
-				LegoU32 blu = (m_colorKey.m_blu >> bluRightShift) << m_textureFormat2.GetBlueBitShift();
+				LegoU32 redRightShift = 8 - m_deviceTextureFormat.GetRedBitCount();
+				LegoU32 grnRightShift = 8 - m_deviceTextureFormat.GetGreenBitCount();
+				LegoU32 bluRightShift = 8 - m_deviceTextureFormat.GetBlueBitCount();
+				LegoU32 red = (m_colorKey.m_red >> redRightShift) << m_deviceTextureFormat.GetRedBitShift();
+				LegoU32 grn = (m_colorKey.m_grn >> grnRightShift) << m_deviceTextureFormat.GetGreenBitShift();
+				LegoU32 blu = (m_colorKey.m_blu >> bluRightShift) << m_deviceTextureFormat.GetBlueBitShift();
 				color = blu | grn | red;
 			}
 			colorkey.dwColorSpaceHighValue = color;
@@ -224,7 +224,7 @@ void GolD3DTexture::FUN_10015fb0()
 		else {
 			LegoS32 color;
 
-			if (m_textureFlags & c_textureFlagBit7) {
+			if (m_textureFlags & c_textureFlagBlackColorKey) {
 				rgba.m_red = 0;
 				rgba.m_grn = 0;
 				rgba.m_blu = 0;
@@ -242,7 +242,7 @@ void GolD3DTexture::FUN_10015fb0()
 			}
 		}
 		m_surface->SetColorKey(DDCKEY_SRCBLT, &colorkey);
-		m_textureFlags &= ~c_textureFlagBit11;
+		m_textureFlags &= ~c_textureFlagColorKeyDirty;
 	}
 }
 
@@ -258,15 +258,15 @@ GolPaletteBase* GolD3DTexture::GetPalette()
 		}
 	}
 
-	if (m_unk0x50.HasEntries()) {
-		return &m_unk0x50;
+	if (m_sourcePalette.HasEntries()) {
+		return &m_sourcePalette;
 	}
 
 	return NULL;
 }
 
 // FUNCTION: GOLDP 0x10016100
-void GolD3DTexture::FUN_10016100()
+void GolD3DTexture::UploadPixels()
 {
 	ColorRGBA* colorKey;
 	LegoU8* dstPixels;
@@ -275,22 +275,22 @@ void GolD3DTexture::FUN_10016100()
 	ColorRGBA* paletteEntries;
 
 	if (m_textureFormat.m_paletteMask != 0) {
-		paletteEntries = m_unk0x50.GetEntries();
-		paletteSize = m_unk0x50.GetPaletteSize();
+		paletteEntries = m_sourcePalette.GetEntries();
+		paletteSize = m_sourcePalette.GetPaletteSize();
 	}
 	else {
 		paletteEntries = NULL;
 		paletteSize = 0;
 	}
 
-	g_unk0x100635c0.SetImageInfo(m_textureFormat, m_width, m_height, m_pitch, paletteEntries, paletteSize);
+	g_uploadImgFile.SetImageInfo(m_textureFormat, m_width, m_height, m_pitch, paletteEntries, paletteSize);
 
-	if (m_textureFlags & c_textureFlagBit5) {
-		if (m_textureFlags & c_textureFlagBit7) {
-			g_unk0x100635c0.SetColorKeyReplacement(g_unk0x10057668);
+	if (m_textureFlags & c_textureFlagColorKeyed) {
+		if (m_textureFlags & c_textureFlagBlackColorKey) {
+			g_uploadImgFile.SetColorKeyReplacement(g_transparentBlack);
 		}
 		else {
-			g_unk0x100635c0.SetColorKeyReplacement(m_colorKey);
+			g_uploadImgFile.SetColorKeyReplacement(m_colorKey);
 		}
 
 		colorKey = &m_colorKey;
@@ -300,7 +300,7 @@ void GolD3DTexture::FUN_10016100()
 	}
 
 	if (m_mipmaps != NULL) {
-		g_unk0x100635c0.SetRemapPureBlack(TRUE);
+		g_uploadImgFile.SetRemapPureBlack(TRUE);
 		dstPixels = m_mipmaps->m_pixels;
 		dstPitch = m_mipmaps->m_pitch;
 	}
@@ -329,32 +329,41 @@ void GolD3DTexture::FUN_10016100()
 		} while (hresult != DD_OK);
 	}
 
-	g_unk0x100635c0
-		.ConvertImage(m_pixels, dstPixels, m_unk0x74, m_unk0x78, dstPitch, m_textureFormat2, m_palette, 0, colorKey);
-	g_unk0x100635c0.Destroy();
+	g_uploadImgFile.ConvertImage(
+		m_pixels,
+		dstPixels,
+		m_deviceWidth,
+		m_deviceHeight,
+		dstPitch,
+		m_deviceTextureFormat,
+		m_palette,
+		0,
+		colorKey
+	);
+	g_uploadImgFile.Destroy();
 
 	if (m_mipmaps == NULL) {
 		m_surface->Unlock(NULL);
-		FUN_10015fb0();
+		ApplyColorKey();
 	}
 	else {
-		FUN_10016260();
+		GenerateMipmaps();
 	}
 }
 
 // FUNCTION: GOLDP 0x10016260
-void GolD3DTexture::FUN_10016260()
+void GolD3DTexture::GenerateMipmaps()
 {
 	if (m_mipmaps != NULL) {
 		if (m_mipmapCount > 1) {
 			if (m_width == m_height) {
 				ColorRGBA* colorKey;
-				if (m_textureFlags & c_textureFlagBit5) {
-					if (m_textureFlags & c_textureFlagBit7) {
-						g_unk0x100635c0.SetColorKeyReplacement(g_unk0x10057668);
+				if (m_textureFlags & c_textureFlagColorKeyed) {
+					if (m_textureFlags & c_textureFlagBlackColorKey) {
+						g_uploadImgFile.SetColorKeyReplacement(g_transparentBlack);
 					}
 					else {
-						g_unk0x100635c0.SetColorKeyReplacement(m_colorKey);
+						g_uploadImgFile.SetColorKeyReplacement(m_colorKey);
 					}
 
 					colorKey = &m_colorKey;
@@ -365,28 +374,28 @@ void GolD3DTexture::FUN_10016260()
 
 				LegoU8* srcPixels = m_mipmaps[0].m_pixels;
 				LegoU32 srcPitch = m_mipmaps[0].m_pitch;
-				LegoU32 width = m_unk0x74;
-				LegoU32 height = m_unk0x78;
+				LegoU32 width = m_deviceWidth;
+				LegoU32 height = m_deviceHeight;
 
 				for (LegoU32 i = 1; i < m_mipmapCount; i++) {
-					g_unk0x100635c0.SetImageInfo(m_textureFormat2, width, height, srcPitch, NULL, 0);
+					g_uploadImgFile.SetImageInfo(m_deviceTextureFormat, width, height, srcPitch, NULL, 0);
 
 					width >>= 1;
 					height >>= 1;
 					srcPitch = m_mipmaps[i].m_pitch;
-					g_unk0x100635c0.ConvertImageHalfSize(
+					g_uploadImgFile.ConvertImageHalfSize(
 						srcPixels,
 						m_mipmaps[i].m_pixels,
 						width,
 						height,
 						srcPitch,
-						m_textureFormat2,
+						m_deviceTextureFormat,
 						0,
 						colorKey
 					);
 
 					srcPixels = m_mipmaps[i].m_pixels;
-					g_unk0x100635c0.Destroy();
+					g_uploadImgFile.Destroy();
 				}
 			}
 		}
@@ -394,7 +403,7 @@ void GolD3DTexture::FUN_10016260()
 }
 
 // FUNCTION: GOLDP 0x10016380
-void GolD3DTexture::FUN_10016380()
+void GolD3DTexture::ReleaseDeviceObjects()
 {
 	LegoU32 i;
 	MipmapLevel* mipmaps = m_mipmaps;
@@ -445,16 +454,16 @@ void GolD3DTexture::FUN_10016380()
 }
 
 // FUNCTION: GOLDP 0x10016440
-void GolD3DTexture::FUN_10016440(GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::RestoreDeviceObjects(GolD3DRenderDevice& p_renderer)
 {
 	if (m_pixelFlags & c_lockRequestRead) {
-		FUN_10016460(p_renderer);
-		FUN_10016100();
+		CreateDeviceObjects(p_renderer);
+		UploadPixels();
 	}
 }
 
 // FUNCTION: GOLDP 0x10016460
-void GolD3DTexture::FUN_10016460(GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::CreateDeviceObjects(GolD3DRenderDevice& p_renderer)
 {
 	GolSurfaceFormat textureFormat;
 
@@ -472,25 +481,28 @@ void GolD3DTexture::FUN_10016460(GolD3DRenderDevice& p_renderer)
 		textureFormat = m_textureFormat;
 	}
 
-	p_renderer
-		.SelectTextureFormat(textureFormat, &m_textureFormat2, static_cast<LegoU8>(m_textureFlags) & c_textureFlagBit5);
-	m_unk0x74 = m_width;
-	m_unk0x78 = m_height;
+	p_renderer.SelectTextureFormat(
+		textureFormat,
+		&m_deviceTextureFormat,
+		static_cast<LegoU8>(m_textureFlags) & c_textureFlagColorKeyed
+	);
+	m_deviceWidth = m_width;
+	m_deviceHeight = m_height;
 
 	if (!p_renderer.TexturesMustBeSquare()) {
 		if (m_width > m_height) {
-			m_unk0x78 = m_width;
+			m_deviceHeight = m_width;
 		}
 		else {
-			m_unk0x74 = m_height;
+			m_deviceWidth = m_height;
 		}
 	}
 
-	if ((m_textureFlags & c_textureFlagBit5) && (p_renderer.GetFlags() & GolRenderDevice::c_flagBit9)) {
-		m_textureFlags |= c_textureFlagBit7;
+	if ((m_textureFlags & c_textureFlagColorKeyed) && (p_renderer.GetFlags() & GolRenderDevice::c_flagBlackColorKey)) {
+		m_textureFlags |= c_textureFlagBlackColorKey;
 	}
 	else {
-		m_textureFlags &= ~c_textureFlagBit7;
+		m_textureFlags &= ~c_textureFlagBlackColorKey;
 	}
 
 	if (p_renderer.VTable0x110()) {
@@ -500,24 +512,25 @@ void GolD3DTexture::FUN_10016460(GolD3DRenderDevice& p_renderer)
 		m_textureFlags &= ~c_textureFlagBit6;
 	}
 
-	if (p_renderer.GetFlags() & (GolRenderDevice::c_flagBit7 | GolRenderDevice::c_flagBit8)) {
-		m_textureFlags |= c_textureFlagBit10;
+	if (p_renderer.GetFlags() &
+		(GolRenderDevice::c_flagColorKeyAlphaBlend | GolRenderDevice::c_flagColorKeyAlphaTest)) {
+		m_textureFlags |= c_textureFlagColorKeyInAlpha;
 	}
 	else {
-		m_textureFlags &= ~c_textureFlagBit10;
+		m_textureFlags &= ~c_textureFlagColorKeyInAlpha;
 	}
 
-	m_textureFlags |= c_textureFlagBit11;
-	if (p_renderer.GetFlags() & GolRenderDevice::c_flagBit16) {
-		FUN_100168c0(p_renderer);
+	m_textureFlags |= c_textureFlagColorKeyDirty;
+	if (p_renderer.GetFlags() & GolRenderDevice::c_flagSoftwareRenderer) {
+		CreateMipmapBuffers(p_renderer);
 	}
 	else {
-		FUN_100165c0(drawState, p_renderer);
+		CreateDirectDrawSurface(drawState, p_renderer);
 	}
 }
 
 // FUNCTION: GOLDP 0x100165c0
-void GolD3DTexture::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::CreateDirectDrawSurface(GolCommonDrawState* p_drawState, GolD3DRenderDevice& p_renderer)
 {
 	LPDIRECTDRAW4 ddraw = p_renderer.GetDirectDraw4();
 
@@ -525,14 +538,14 @@ void GolD3DTexture::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDe
 	::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 	surfaceDesc.dwSize = sizeof(surfaceDesc);
 	surfaceDesc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT;
-	surfaceDesc.dwHeight = m_unk0x78;
-	surfaceDesc.dwWidth = m_unk0x74;
+	surfaceDesc.dwHeight = m_deviceHeight;
+	surfaceDesc.dwWidth = m_deviceWidth;
 	surfaceDesc.ddsCaps.dwCaps = DDSCAPS_TEXTURE;
 	surfaceDesc.ddpfPixelFormat.dwSize = sizeof(DDPIXELFORMAT);
 	surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB;
 
-	if (m_textureFormat2.m_paletteMask != 0) {
-		surfaceDesc.ddpfPixelFormat.dwRGBBitCount = m_textureFormat2.m_bitsPerPixel;
+	if (m_deviceTextureFormat.m_paletteMask != 0) {
+		surfaceDesc.ddpfPixelFormat.dwRGBBitCount = m_deviceTextureFormat.m_bitsPerPixel;
 		switch (surfaceDesc.ddpfPixelFormat.dwRGBBitCount) {
 		case 1:
 			surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_PALETTEINDEXED1;
@@ -552,23 +565,23 @@ void GolD3DTexture::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDe
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		static_cast<GolDirectDrawPalette*>(m_palette)->CreateDirectDrawPalette(&p_renderer, &m_textureFormat2);
+		static_cast<GolDirectDrawPalette*>(m_palette)->CreateDirectDrawPalette(&p_renderer, &m_deviceTextureFormat);
 	}
 	else {
-		surfaceDesc.ddpfPixelFormat.dwRGBBitCount = m_textureFormat2.m_bitsPerPixel;
-		surfaceDesc.ddpfPixelFormat.dwRBitMask = m_textureFormat2.m_redBitMask;
-		surfaceDesc.ddpfPixelFormat.dwGBitMask = m_textureFormat2.m_grnBitMask;
-		surfaceDesc.ddpfPixelFormat.dwBBitMask = m_textureFormat2.m_bluBitMask;
-		if (m_textureFormat2.m_alpBitMask != 0) {
+		surfaceDesc.ddpfPixelFormat.dwRGBBitCount = m_deviceTextureFormat.m_bitsPerPixel;
+		surfaceDesc.ddpfPixelFormat.dwRBitMask = m_deviceTextureFormat.m_redBitMask;
+		surfaceDesc.ddpfPixelFormat.dwGBitMask = m_deviceTextureFormat.m_grnBitMask;
+		surfaceDesc.ddpfPixelFormat.dwBBitMask = m_deviceTextureFormat.m_bluBitMask;
+		if (m_deviceTextureFormat.m_alpBitMask != 0) {
 			surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_ALPHAPIXELS;
-			surfaceDesc.ddpfPixelFormat.dwRGBAlphaBitMask = m_textureFormat2.m_alpBitMask;
+			surfaceDesc.ddpfPixelFormat.dwRGBAlphaBitMask = m_deviceTextureFormat.m_alpBitMask;
 		}
 	}
 
 	if (m_textureFlags & c_textureFlagBit1) {
 		surfaceDesc.ddsCaps.dwCaps |= DDSCAPS_3DDEVICE;
 	}
-	if (m_textureFlags & c_textureFlagBit0) {
+	if (m_textureFlags & c_textureFlagMipmapped) {
 		if (p_drawState->IsHwAccelerated() && p_drawState->SupportsMipmap()) {
 			DWORD flags = surfaceDesc.dwFlags;
 			DWORD caps = surfaceDesc.ddsCaps.dwCaps;
@@ -579,7 +592,7 @@ void GolD3DTexture::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDe
 			surfaceDesc.dwMipMapCount = m_mipmapCount;
 		}
 		else {
-			m_textureFlags &= ~c_textureFlagBit0;
+			m_textureFlags &= ~c_textureFlagMipmapped;
 		}
 	}
 
@@ -603,17 +616,17 @@ void GolD3DTexture::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDe
 		GOL_FATALERROR_MESSAGE(errorMessage);
 	}
 
-	if (m_textureFormat2.m_paletteMask == 0) {
+	if (m_deviceTextureFormat.m_paletteMask == 0) {
 		result = m_surface->GetSurfaceDesc(&surfaceDesc);
 		if (!result) {
 			LegoU32 redBitMask = surfaceDesc.ddpfPixelFormat.dwRBitMask;
 			LegoU32 grnBitMask = surfaceDesc.ddpfPixelFormat.dwGBitMask;
 			LegoU32 bluBitMask = surfaceDesc.ddpfPixelFormat.dwBBitMask;
 			LegoU32 alpBitMask = surfaceDesc.ddpfPixelFormat.dwRGBAlphaBitMask;
-			m_textureFormat2.m_redBitMask = redBitMask;
-			m_textureFormat2.m_grnBitMask = grnBitMask;
-			m_textureFormat2.m_bluBitMask = bluBitMask;
-			m_textureFormat2.m_alpBitMask = alpBitMask;
+			m_deviceTextureFormat.m_redBitMask = redBitMask;
+			m_deviceTextureFormat.m_grnBitMask = grnBitMask;
+			m_deviceTextureFormat.m_bluBitMask = bluBitMask;
+			m_deviceTextureFormat.m_alpBitMask = alpBitMask;
 		}
 	}
 	else {
@@ -627,7 +640,7 @@ void GolD3DTexture::FUN_100165c0(GolCommonDrawState* p_drawState, GolD3DRenderDe
 }
 
 // FUNCTION: GOLDP 0x100168c0
-void GolD3DTexture::FUN_100168c0(GolD3DRenderDevice& p_renderer)
+void GolD3DTexture::CreateMipmapBuffers(GolD3DRenderDevice& p_renderer)
 {
 	LegoU32 width;
 	LegoU32 height;
@@ -635,11 +648,11 @@ void GolD3DTexture::FUN_100168c0(GolD3DRenderDevice& p_renderer)
 	LegoU32 minHeight;
 	LegoU32 i;
 
-	if (m_mipmapCount < 1 || p_renderer.GetUnk0xc8700() == 1) {
+	if (m_mipmapCount < 1 || p_renderer.GetPaletteMode() == 1) {
 		m_mipmapCount = 1;
 	}
 
-	if (m_textureFormat2.m_bitsPerPixel != 8 && m_textureFormat2.m_bitsPerPixel != 16) {
+	if (m_deviceTextureFormat.m_bitsPerPixel != 8 && m_deviceTextureFormat.m_bitsPerPixel != 16) {
 		m_mipmapCount = 1;
 	}
 
@@ -647,10 +660,10 @@ void GolD3DTexture::FUN_100168c0(GolD3DRenderDevice& p_renderer)
 		m_mipmapCount = 4;
 	}
 
-	height = m_unk0x78;
-	width = m_unk0x74;
-	minWidth = p_renderer.GetMinimumTextureWidth(m_textureFormat2.m_bitsPerPixel);
-	minHeight = p_renderer.GetMinimumTextureHeight(m_textureFormat2.m_bitsPerPixel);
+	height = m_deviceHeight;
+	width = m_deviceWidth;
+	minWidth = p_renderer.GetMinimumTextureWidth(m_deviceTextureFormat.m_bitsPerPixel);
+	minHeight = p_renderer.GetMinimumTextureHeight(m_deviceTextureFormat.m_bitsPerPixel);
 
 	m_mipmaps = new MipmapLevel[m_mipmapCount];
 	if (m_mipmaps == NULL) {
@@ -666,21 +679,22 @@ void GolD3DTexture::FUN_100168c0(GolD3DRenderDevice& p_renderer)
 
 		mipmap->m_width = width;
 		mipmap->m_height = height;
-		mipmap->m_pitch = (m_textureFormat2.m_bitsPerPixel * width + 7) >> 3;
-		mipmap->m_bitsPerPixel = static_cast<LegoU8>(m_textureFormat2.m_bitsPerPixel);
+		mipmap->m_pitch = (m_deviceTextureFormat.m_bitsPerPixel * width + 7) >> 3;
+		mipmap->m_bitsPerPixel = static_cast<LegoU8>(m_deviceTextureFormat.m_bitsPerPixel);
 		mipmap->m_unk0x11 = 0xff;
-		mipmap->m_bytesPerPixel = static_cast<LegoU8>((static_cast<LegoU32>(m_textureFormat2.m_bitsPerPixel) + 7) >> 3);
-		mipmap->m_unk0x13 = 0xff;
+		mipmap->m_bytesPerPixel =
+			static_cast<LegoU8>((static_cast<LegoU32>(m_deviceTextureFormat.m_bitsPerPixel) + 7) >> 3);
+		mipmap->m_sizeLog2 = 0xff;
 		mipmap->m_pixels = NULL;
 
-		if (m_textureFormat2.m_paletteMask != 0 && p_renderer.GetUnk0xc8700() != 0) {
+		if (m_deviceTextureFormat.m_paletteMask != 0 && p_renderer.GetPaletteMode() != 0) {
 			m_palette = new GolD3DTexturePalette;
 			if (m_palette == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			static_cast<GolD3DTexturePalette*>(m_palette)->Initialize(m_textureFormat2);
-			mipmap->m_paletteData = static_cast<GolD3DTexturePalette*>(m_palette)->m_unk0x0c;
+			static_cast<GolD3DTexturePalette*>(m_palette)->Initialize(m_deviceTextureFormat);
+			mipmap->m_paletteData = static_cast<GolD3DTexturePalette*>(m_palette)->m_mappedEntries;
 		}
 		else {
 			mipmap->m_paletteData = NULL;

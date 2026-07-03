@@ -13,9 +13,9 @@ DECOMP_SIZE_ASSERT(GolSoftwareMaterial, 0x30)
 // FUNCTION: GOLDP 0x10006280
 GolSoftwareMaterial::GolSoftwareMaterial()
 {
-	m_unk0x24 = NULL;
-	m_unk0x28 = 0;
-	m_unk0x2c = NULL;
+	m_d3dMaterial = NULL;
+	m_materialHandle = 0;
+	m_pipelines = NULL;
 }
 
 // FUNCTION: GOLDP 0x100062a0
@@ -25,16 +25,16 @@ GolSoftwareMaterial::~GolSoftwareMaterial()
 }
 
 // FUNCTION: GOLDP 0x10006320
-void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
+void GolSoftwareMaterial::Create(GolRenderDevice& p_renderer)
 {
-	if (m_flags & c_flagBit0) {
+	if (m_flags & c_flagCreated) {
 		Destroy();
 	}
 
-	m_flags |= c_flagBit0;
+	m_flags |= c_flagCreated;
 	GolD3DRenderDevice* renderer = static_cast<GolD3DRenderDevice*>(p_renderer.GetDrawState()->m_currentRenderer);
 
-	if (renderer->GetFlags() & GolRenderDevice::c_flagBit16) {
+	if (renderer->GetFlags() & GolRenderDevice::c_flagSoftwareRenderer) {
 		LegoU32 textureCount;
 		if (m_texture != NULL) {
 			textureCount = m_texture->GetMipmapCount();
@@ -43,24 +43,24 @@ void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
 			textureCount = 1;
 		}
 
-		m_unk0x2c = new GolSoftwareRenderer::RasterizerPipeline[textureCount];
-		if (m_unk0x2c == NULL) {
+		m_pipelines = new GolSoftwareRenderer::RasterizerPipeline[textureCount];
+		if (m_pipelines == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		::memset(m_unk0x2c, 0, textureCount * sizeof(*m_unk0x2c));
+		::memset(m_pipelines, 0, textureCount * sizeof(*m_pipelines));
 		if (m_texture == NULL) {
-			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c, this, 0);
-			FUN_100064d0(renderer);
+			renderer->GetSoftwareRenderer().SetupPipeline(m_pipelines, this, 0);
+			UpdateD3DMaterial(renderer);
 			return;
 		}
 
 		for (LegoU32 i = 0; i < m_texture->GetMipmapCount(); i++) {
-			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c + i, this, i);
+			renderer->GetSoftwareRenderer().SetupPipeline(m_pipelines + i, this, i);
 		}
 	}
 	else {
-		HRESULT result = renderer->GetDirect3D3()->CreateMaterial(&m_unk0x24, NULL);
+		HRESULT result = renderer->GetDirect3D3()->CreateMaterial(&m_d3dMaterial, NULL);
 		if (result != D3D_OK) {
 			LegoChar errorMessage[64];
 			::sprintf(errorMessage, "Unable to create material\nerrcode = %x", result);
@@ -68,26 +68,26 @@ void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
 		}
 	}
 
-	FUN_100064d0(renderer);
+	UpdateD3DMaterial(renderer);
 }
 
 // FUNCTION: GOLDP 0x10006490
 void GolSoftwareMaterial::Destroy()
 {
-	if (m_unk0x2c != NULL) {
-		delete[] m_unk0x2c;
-		m_unk0x2c = NULL;
+	if (m_pipelines != NULL) {
+		delete[] m_pipelines;
+		m_pipelines = NULL;
 	}
-	if (m_unk0x24 != NULL) {
-		m_unk0x24->Release();
-		m_unk0x24 = NULL;
+	if (m_d3dMaterial != NULL) {
+		m_d3dMaterial->Release();
+		m_d3dMaterial = NULL;
 	}
-	m_unk0x28 = 0;
-	m_flags &= ~c_flagBit0;
+	m_materialHandle = 0;
+	m_flags &= ~c_flagCreated;
 }
 
 // FUNCTION: GOLDP 0x100064d0
-void GolSoftwareMaterial::FUN_100064d0(GolD3DRenderDevice* p_renderer)
+void GolSoftwareMaterial::UpdateD3DMaterial(GolD3DRenderDevice* p_renderer)
 {
 	D3DMATERIAL material;
 	LegoChar errorMessage[64];
@@ -113,14 +113,14 @@ void GolSoftwareMaterial::FUN_100064d0(GolD3DRenderDevice* p_renderer)
 	material.hTexture = 0;
 	material.dwRampSize = 16;
 
-	if (m_unk0x24 != NULL) {
-		HRESULT result = m_unk0x24->SetMaterial(&material);
+	if (m_d3dMaterial != NULL) {
+		HRESULT result = m_d3dMaterial->SetMaterial(&material);
 		if (result != D3D_OK) {
 			::sprintf(errorMessage, "Unable to set material\nerrcode = %x", result);
 			GOL_FATALERROR_MESSAGE(errorMessage);
 		}
 
-		result = m_unk0x24->GetHandle(p_renderer->GetDirect3DDevice(), &m_unk0x28);
+		result = m_d3dMaterial->GetHandle(p_renderer->GetDirect3DDevice(), &m_materialHandle);
 		if (result != D3D_OK) {
 			::sprintf(errorMessage, "Unable to get material handle\nerror %x", result);
 			GOL_FATALERROR_MESSAGE(errorMessage);

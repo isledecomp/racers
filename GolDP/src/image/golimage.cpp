@@ -15,7 +15,7 @@
 DECOMP_SIZE_ASSERT(GolImage, 0xa4)
 DECOMP_SIZE_ASSERT(GolImage::UtopianPanImageName, 0x09)
 
-extern const ColorRGBA g_unk0x10057668;
+extern const ColorRGBA g_transparentBlack;
 
 // GLOBAL: GOLDP 0x10062b18
 static GolImgFile g_unk0x10062b18;
@@ -24,10 +24,10 @@ static GolImgFile g_unk0x10062b18;
 static D3DTLVERTEX g_unk0x100630c8[4];
 
 // GLOBAL: GOLDP 0x10063ca0
-GolTgaFile g_unk0x10063ca0;
+GolTgaFile g_textureTgaFile;
 
 // GLOBAL: GOLDP 0x10064280
-GolBmpFile g_unk0x10064280;
+GolBmpFile g_textureBmpFile;
 
 // FUNCTION: GOLDP 0x10004fd0
 GolImage::GolImage()
@@ -41,7 +41,7 @@ GolImage::GolImage()
 GolImage::~GolImage()
 {
 	FUN_100051c0();
-	m_surface.VTable0x38();
+	m_surface.Destroy();
 	GolTiledTexture::Reset();
 }
 
@@ -54,9 +54,9 @@ void GolImage::VTable0x10()
 	imageName.m_name[1] = m_name[1];
 	imageName.m_chars[8] = 0;
 
-	GolImgFile* imageFile = &g_unk0x10063ca0;
+	GolImgFile* imageFile = &g_textureTgaFile;
 	if (!(m_flags & c_flagBit4)) {
-		imageFile = &g_unk0x10064280;
+		imageFile = &g_textureBmpFile;
 	}
 
 	m_textureFlags = (m_textureFlags & ~(c_flagBit1 | c_flagBit2)) | c_flagBit3;
@@ -69,7 +69,7 @@ void GolImage::VTable0x10()
 	m_width = imageFile->GetWidth();
 	m_height = imageFile->GetHeight();
 
-	m_surface.VTable0x34(*m_renderer, imageFormat, m_width, m_height);
+	m_surface.Allocate(*m_renderer, imageFormat, m_width, m_height);
 	imageFile->SetKeepNibbleOrder(TRUE);
 	imageFile->SetRemapPureBlack(FALSE);
 	imageFile->LoadSurface(&m_surface, m_flags & c_flagBit2, NULL);
@@ -117,7 +117,7 @@ void GolImage::FUN_10005210()
 void GolImage::Reset()
 {
 	FUN_100051c0();
-	m_surface.VTable0x38();
+	m_surface.Destroy();
 	GolTiledTexture::Reset();
 }
 
@@ -160,7 +160,7 @@ void GolImage::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_t
 {
 	LegoU32 index = p_row * m_tileRowCount + p_column;
 
-	m_texture[index].FUN_10015d00(
+	m_texture[index].AllocateDeviceOnly(
 		static_cast<GolD3DRenderDevice&>(*m_renderer),
 		*p_textureFormat,
 		m_tileWidths[p_row],
@@ -197,7 +197,7 @@ void GolImage::FUN_10005440(GolRenderDevice* p_renderer, GolSoftwareMaterial* p_
 	params.m_srcBlend = 1;
 
 	p_material->SetParams(p_renderer, params);
-	p_material->FUN_10006320(*p_renderer);
+	p_material->Create(*p_renderer);
 }
 
 // FUNCTION: GOLDP 0x100054d0
@@ -427,8 +427,8 @@ void GolImage::FUN_10005b00()
 	ColorRGBA* colorKey;
 	if (m_flags & c_flagBit5) {
 		colorKey = &m_colorKey;
-		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
-			g_unk0x10062b18.SetColorKeyReplacement(g_unk0x10057668);
+		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey) {
+			g_unk0x10062b18.SetColorKeyReplacement(g_transparentBlack);
 		}
 		else {
 			g_unk0x10062b18.SetColorKeyReplacement(*colorKey);

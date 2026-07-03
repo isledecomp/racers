@@ -20,14 +20,14 @@ public:
 	void Initialize(const GolSurfaceFormat& p_textureFormat);
 	void Destroy();
 
-	LegoU16* GetMappedEntries() const { return m_unk0x0c; }
+	LegoU16* GetMappedEntries() const { return m_mappedEntries; }
 
 	static void SetTextureFormat(const GolSurfaceFormat& p_format);
 	// SYNTHETIC: GOLDP 0x100146e0
 	// GolD3DTexturePalette::`scalar deleting destructor'
 
 private:
-	LegoU16* m_unk0x0c; // 0x0c
+	LegoU16* m_mappedEntries; // 0x0c
 
 	static GolSurfaceFormat g_textureFormat;
 

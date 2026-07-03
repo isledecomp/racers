@@ -363,7 +363,7 @@ void RaceSession::Initialize(
 	DrawLoadProgress(1.0f);
 	InitializeInput();
 	StartIntroCamera();
-	m_renderer->VTable0x40();
+	m_renderer->DisableMipmaps();
 }
 
 // FUNCTION: LEGORACERS 0x00432520

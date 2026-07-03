@@ -16,7 +16,7 @@ public:
 	void VTable0x0c() override;                           // vtable+0x0c
 	void VTable0x10() override;                           // vtable+0x10
 	void AllocateItems() override;                        // vtable+0x14
-	void VTable0x18(LegoU32 p_index) override;            // vtable+0x18
+	void CreateMaterial(LegoU32 p_index) override;        // vtable+0x18
 	GolMaterial* GetItem(LegoU32 p_index) const override; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x10017820

@@ -779,14 +779,14 @@ void MenuManager::BuildPlayerCarModel(
 		p_slot->m_materials = NULL;
 	}
 	p_slot->m_materials = golExport->CreateMaterialList();
-	p_slot->m_materials->VTable0x1c(renderer, materialCount);
+	p_slot->m_materials->Initialize(renderer, materialCount);
 
 	if (p_slot->m_textures) {
 		golExport->DestroyTextureList(p_slot->m_textures);
 		p_slot->m_textures = NULL;
 	}
 	p_slot->m_textures = golExport->CreateTextureList();
-	p_slot->m_textures->VTable0x1c(renderer, textureCount);
+	p_slot->m_textures->Initialize(renderer, textureCount);
 
 	if (p_slot->m_model) {
 		golExport->VTable0x48(p_slot->m_model);
@@ -891,9 +891,9 @@ void MenuManager::BuildPlayerDriverModel(
 	GolD3DRenderDevice* renderer = golExport->GetDrawState()->m_currentRenderer;
 
 	p_slot->m_altMaterials = golExport->CreateMaterialList();
-	p_slot->m_altMaterials->VTable0x1c(renderer, materialCount);
+	p_slot->m_altMaterials->Initialize(renderer, materialCount);
 	p_slot->m_altTextures = golExport->CreateTextureList();
-	p_slot->m_altTextures->VTable0x1c(renderer, textureCount);
+	p_slot->m_altTextures->Initialize(renderer, textureCount);
 
 	textureCount = 0;
 	for (LegoU32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
@@ -914,7 +914,7 @@ void MenuManager::BuildPlayerDriverModel(
 			params.m_texture = NULL;
 		}
 
-		params.m_flags &= ~GolMaterial::c_flagBit0;
+		params.m_flags &= ~GolMaterial::c_flagCreated;
 		GolMaterial* material = p_slot->m_altMaterials->GetItem(materialIndex);
 		material->SetParams(renderer, params);
 		materialTable->SetEntry(materialIndex, material);

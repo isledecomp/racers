@@ -11,9 +11,9 @@ DECOMP_SIZE_ASSERT(FourBytes, 0x04)
 DECOMP_SIZE_ASSERT(GolTiledTexture, 0x50)
 DECOMP_SIZE_ASSERT(GolTiledTexture::TileImageName, 0x09)
 
-extern const ColorRGBA g_unk0x10057668;
-extern GolTgaFile g_unk0x10063ca0;
-extern GolBmpFile g_unk0x10064280;
+extern const ColorRGBA g_transparentBlack;
+extern GolTgaFile g_textureTgaFile;
+extern GolBmpFile g_textureBmpFile;
 
 // FUNCTION: GOLDP 0x1001f1e0
 GolTiledTexture::GolTiledTexture()
@@ -58,9 +58,9 @@ void GolTiledTexture::VTable0x10()
 	imageName.m_name[1] = m_name[1];
 	imageName.m_chars[8] = 0;
 
-	GolImgFile* imageFile = &g_unk0x10063ca0;
+	GolImgFile* imageFile = &g_textureTgaFile;
 	if (!(m_flags & c_flagBit4)) {
-		imageFile = &g_unk0x10064280;
+		imageFile = &g_textureBmpFile;
 	}
 
 	imageFile->Open(imageName.m_chars);
@@ -72,8 +72,8 @@ void GolTiledTexture::VTable0x10()
 	FUN_1001f430();
 
 	if (m_flags & c_flagBit5) {
-		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
-			imageFile->SetColorKeyReplacement(g_unk0x10057668);
+		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey) {
+			imageFile->SetColorKeyReplacement(g_transparentBlack);
 		}
 		else {
 			imageFile->SetColorKeyReplacement(m_colorKey);
@@ -388,14 +388,14 @@ void GolTiledTexture::FUN_1001fde0()
 			if (m_renderer->VTable0x110()) {
 				flags |= GolTexture::c_textureFlagBit6;
 			}
-			if ((flags & c_flagBit5) && (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9)) {
-				flags |= GolTexture::c_textureFlagBit7;
+			if ((flags & c_flagBit5) && (m_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey)) {
+				flags |= GolTexture::c_textureFlagBlackColorKey;
 			}
 
 			texture->m_textureFlags = flags;
 			texture->m_mipmapCount = 0;
 			texture->m_colorKey = m_colorKey;
-			flags |= GolTexture::c_textureFlagBit11;
+			flags |= GolTexture::c_textureFlagColorKeyDirty;
 			texture->m_colorKey.m_alp = 0;
 			texture->m_textureFlags = flags;
 			VTable0x0c(row, column, &m_format);

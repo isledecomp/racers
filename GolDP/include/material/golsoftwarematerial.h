@@ -1,5 +1,5 @@
-#ifndef DUSKWINDBANANARELIC0x30_H
-#define DUSKWINDBANANARELIC0x30_H
+#ifndef GOLSOFTWAREMATERIAL_H
+#define GOLSOFTWAREMATERIAL_H
 
 #include "compat.h"
 #include "golmaterial.h"
@@ -17,8 +17,8 @@ public:
 	GolSoftwareMaterial();
 	~GolSoftwareMaterial() override; // vtable+0x00
 
-	void FUN_10006320(GolRenderDevice& p_renderer);
-	GolSoftwareRenderer::RasterizerPipeline* GetUnk0x2c() const { return m_unk0x2c; }
+	void Create(GolRenderDevice& p_renderer);
+	GolSoftwareRenderer::RasterizerPipeline* GetPipelines() const { return m_pipelines; }
 
 	// SYNTHETIC: GOLDP 0x10004b00
 	// GolSoftwareMaterial::`vector deleting destructor'
@@ -26,11 +26,11 @@ public:
 	void Destroy();
 
 private:
-	void FUN_100064d0(GolD3DRenderDevice* p_renderer);
+	void UpdateD3DMaterial(GolD3DRenderDevice* p_renderer);
 
-	LPDIRECT3DMATERIAL3 m_unk0x24;                      // 0x24
-	D3DMATERIALHANDLE m_unk0x28;                        // 0x28
-	GolSoftwareRenderer::RasterizerPipeline* m_unk0x2c; // 0x2c
+	LPDIRECT3DMATERIAL3 m_d3dMaterial;                    // 0x24
+	D3DMATERIALHANDLE m_materialHandle;                   // 0x28
+	GolSoftwareRenderer::RasterizerPipeline* m_pipelines; // 0x2c
 };
 
-#endif // DUSKWINDBANANARELIC0x30_H
+#endif // GOLSOFTWAREMATERIAL_H

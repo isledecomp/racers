@@ -68,16 +68,16 @@ public:
 		c_flagBit0 = 1 << 0,
 		c_flagBit1 = 1 << 1,
 		c_flagBit5 = 1 << 5,
-		c_flagBit7 = 1 << 7,
-		c_flagBit8 = 1 << 8,
-		c_flagBit9 = 1 << 9,
+		c_flagColorKeyAlphaBlend = 1 << 7,
+		c_flagColorKeyAlphaTest = 1 << 8,
+		c_flagBlackColorKey = 1 << 9,
 		c_flagBit11 = 1 << 11,
 		c_flagBit12 = 1 << 12,
 		c_flagBit13 = 1 << 13,
 		c_flagBit14 = 1 << 14,
 		c_flagBit15 = 1 << 15,
-		c_flagBit16 = 1 << 16,
-		c_flagBit17 = 1 << 17,
+		c_flagSoftwareRenderer = 1 << 16,
+		c_flagMipmapsEnabled = 1 << 17,
 		c_flagBit18 = 1 << 18,
 		c_flagBit19 = 1 << 19,
 		c_flagBit20 = 1 << 20,
@@ -105,8 +105,8 @@ public:
 	virtual void AddLight(const Light* p_param);                             // vtable+0x30
 	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08);  // vtable+0x34
 	virtual void VTable0x38();                                               // vtable+0x38
-	virtual void VTable0x3c(LegoU32);                                        // vtable+0x3c
-	virtual void VTable0x40();                                               // vtable+0x40
+	virtual void EnableMipmaps(LegoU32);                                     // vtable+0x3c
+	virtual void DisableMipmaps();                                           // vtable+0x40
 	virtual void VTable0x44();                                               // vtable+0x44
 	virtual void VTable0x48();                                               // vtable+0x48
 	virtual GolRenderTarget* CreateRenderTarget(undefined2, undefined2);     // vtable+0x4c

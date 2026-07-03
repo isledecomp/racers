@@ -187,7 +187,7 @@ static void SortCommandListBySortKey(GolSoftwareRenderer::TriangleCommand** p_he
 }
 
 // FUNCTION: GOLDP 0x100411b0
-void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial* p_material, LegoU32 p_index)
+void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMaterial* p_material, LegoU32 p_index)
 {
 	LegoU32 flags = p_material->GetFlags();
 	LegoU32 rasterizerMode;
@@ -203,7 +203,7 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 			rasterizerMode = c_flag0x2cBit8 | c_flag0x2cBit9;
 		}
 
-		if (texture->GetTextureFlags() & GolTexture::c_textureFlagBit5) {
+		if (texture->GetTextureFlags() & GolTexture::c_textureFlagColorKeyed) {
 			rasterizerMode |= c_flag0x2cBit1;
 		}
 
@@ -243,23 +243,23 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 	if (m_pixelFormat == e_formatIndex8) {
 		p_buffer->m_spanRasterizer = NULL;
 		if (m_unk0x34) {
-			switch (m_unk0x34->m_unk0x13) {
-			case MipmapLevel::c_unk0x13unknown3:
+			switch (m_unk0x34->m_sizeLog2) {
+			case MipmapLevel::c_size8:
 				p_buffer->m_triangleRasterizer = FUN_10045520;
 				break;
-			case MipmapLevel::c_unk0x13unknown4:
+			case MipmapLevel::c_size16:
 				p_buffer->m_triangleRasterizer = FUN_10044ce0;
 				break;
-			case MipmapLevel::c_unk0x13unknown5:
+			case MipmapLevel::c_size32:
 				p_buffer->m_triangleRasterizer = FUN_100444a0;
 				break;
-			case MipmapLevel::c_unk0x13unknown6:
+			case MipmapLevel::c_size64:
 				p_buffer->m_triangleRasterizer = FUN_10043c60;
 				break;
-			case MipmapLevel::c_unk0x13unknown7:
+			case MipmapLevel::c_size128:
 				p_buffer->m_triangleRasterizer = FUN_10043420;
 				break;
-			case MipmapLevel::c_unk0x13unknown8:
+			case MipmapLevel::c_size256:
 				p_buffer->m_triangleRasterizer = FUN_10042bd0;
 				break;
 			default:

@@ -68,8 +68,8 @@ public:
 	void AddLight(const Light*) override;                                    // vtable+0x30
 	void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08) override; // vtable+0x34
 	void VTable0x38() override;                                              // vtable+0x38
-	void VTable0x3c(LegoU32) override;                                       // vtable+0x3c
-	void VTable0x40() override;                                              // vtable+0x40
+	void EnableMipmaps(LegoU32) override;                                    // vtable+0x3c
+	void DisableMipmaps() override;                                          // vtable+0x40
 	GolRenderTarget* CreateRenderTarget(undefined2, undefined2) override;    // vtable+0x4c
 	void DestroyRenderTarget(GolRenderTarget*) override;                     // vtable+0x50
 	void VTable0x54(undefined4) override;                                    // vtable+0x54
@@ -185,8 +185,8 @@ public:
 	LPDIRECTDRAW4 GetDirectDraw4() const;
 	LPDIRECT3DDEVICE3 GetDirect3DDevice() const { return m_d3dDevice; }
 	GolSoftwareRenderer& GetSoftwareRenderer() { return m_softwareRenderer; }
-	undefined4 GetUnk0xc8700() const { return m_unk0xc8700; }
-	undefined4 GetUnk0xc8704() const { return m_unk0xc8704; }
+	undefined4 GetPaletteMode() const { return m_paletteMode; }
+	undefined4 GetDefaultMipmapCount() const { return m_defaultMipmapCount; }
 
 	// SYNTHETIC: GOLDP 0x10007960
 	// GolD3DRenderDevice::`scalar deleting destructor'
@@ -343,8 +343,8 @@ private:
 	LegoS32 m_unk0xc86f4;                                                          // 0xc86f4
 	LegoS32 m_unk0xc86f8;                                                          // 0xc86f8
 	LegoFloat m_unk0xc86fc;                                                        // 0xc86fc
-	undefined4 m_unk0xc8700;                                                       // 0xc8700
-	undefined4 m_unk0xc8704;                                                       // 0xc8704
+	undefined4 m_paletteMode;                                                      // 0xc8700
+	undefined4 m_defaultMipmapCount;                                               // 0xc8704
 	D3DBLEND m_srcBlendOps[11];                                                    // 0xc8708
 	D3DBLEND m_destBlendOps[11];                                                   // 0xc8734
 	BronzeFalconDrawFunction m_drawTriangleFn0;                                    // 0xc8760

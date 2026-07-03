@@ -258,12 +258,12 @@ GolModelEntity* ChampionDefinitionList::CreateChampionModel(ChampionDefinition* 
 	m_textureLists[m_entryCount] = m_golExport->CreateTextureList();
 	::strncpy(name, p_definition->m_unk0x08, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
-	m_textureLists[m_entryCount]->VTable0x24(m_renderer, p_definition->m_unk0x08, m_binary);
+	m_textureLists[m_entryCount]->Load(m_renderer, p_definition->m_unk0x08, m_binary);
 
 	m_materialLists[m_entryCount] = m_golExport->CreateMaterialList();
 	::strncpy(name, p_definition->m_unk0x00, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
-	m_materialLists[m_entryCount]->VTable0x24(m_renderer, name, m_binary);
+	m_materialLists[m_entryCount]->Load(m_renderer, name, m_binary);
 
 	m_models[m_entryCount] = m_golExport->VTable0x14();
 	::strncpy(name, p_definition->m_unk0x10, sizeof(GolName));

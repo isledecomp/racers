@@ -10,21 +10,21 @@ GolPalettedTexture g_bronzeDune0x4c;
 
 // FUNCTION: GOLDP 0x10004f80
 // FUNCTION: LEGORACERS 0x00408b90
-void GolPalettedTexture::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
+void GolPalettedTexture::LoadFromImgFile(GolRenderDevice& p_renderer, GolImgFile* p_source)
 {
-	GolTexture::VTable0x30(p_renderer, p_source);
+	GolTexture::LoadFromImgFile(p_renderer, p_source);
 }
 
 // FUNCTION: GOLDP 0x1002a360
 // FUNCTION: LEGORACERS 0x00413660
 GolPalettedTexture::~GolPalettedTexture()
 {
-	VTable0x38();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x1002a3e0
 // FUNCTION: LEGORACERS 0x004136c0
-void GolPalettedTexture::VTable0x34(
+void GolPalettedTexture::Allocate(
 	GolRenderDevice& p_renderer,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
@@ -32,7 +32,7 @@ void GolPalettedTexture::VTable0x34(
 )
 {
 	if (m_pixelFlags & c_lockRequestRead) {
-		VTable0x38();
+		Destroy();
 	}
 
 	m_pixelFlags |= c_lockRequestRead;
@@ -54,7 +54,7 @@ void GolPalettedTexture::VTable0x34(
 
 // FUNCTION: GOLDP 0x1002a470
 // FUNCTION: LEGORACERS 0x00413750
-void GolPalettedTexture::VTable0x38()
+void GolPalettedTexture::Destroy()
 {
 	m_unk0x40.Shutdown();
 	if (m_pixels != NULL) {

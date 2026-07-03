@@ -36,7 +36,7 @@ void GolD3DTextureList::VTable0x0c()
 	if (m_renderer != NULL) {
 		for (i = 0; i < GetItemCount(); i++) {
 			if (m_items[i].GetPixelFlags() & GolSurface::c_lockRequestRead) {
-				m_items[i].FUN_10016380();
+				m_items[i].ReleaseDeviceObjects();
 			}
 		}
 	}
@@ -49,7 +49,7 @@ void GolD3DTextureList::VTable0x10()
 	if (m_renderer != NULL) {
 		for (i = 0; i < GetItemCount(); i++) {
 			if (m_items[i].GetPixelFlags() & GolSurface::c_lockRequestRead) {
-				m_items[i].FUN_10016440(*m_renderer);
+				m_items[i].RestoreDeviceObjects(*m_renderer);
 			}
 		}
 	}
@@ -72,12 +72,12 @@ GolD3DTexture* GolD3DTextureList::GetItem(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10015b10
-void GolD3DTextureList::VTable0x18(
+void GolD3DTextureList::AllocateTexture(
 	LegoU32 p_index,
 	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
 	LegoU32 p_height
 )
 {
-	m_items[p_index].VTable0x34(*m_renderer, p_textureFormat, p_width, p_height);
+	m_items[p_index].Allocate(*m_renderer, p_textureFormat, p_width, p_height);
 }

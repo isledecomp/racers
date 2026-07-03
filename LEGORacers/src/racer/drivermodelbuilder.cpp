@@ -64,8 +64,8 @@ void DriverModelBuilder::CreateMenuResources()
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_textureList->VTable0x1c(m_renderer, m_menuId);
-	m_materialList->VTable0x1c(m_renderer, m_menuId);
+	m_textureList->Initialize(m_renderer, m_menuId);
+	m_materialList->Initialize(m_renderer, m_menuId);
 }
 
 // FUNCTION: LEGORACERS 0x0049d1d0
@@ -108,8 +108,8 @@ void DriverModelBuilder::RefreshMenuResources()
 	m_materialCount = 0;
 	m_textureList->Clear();
 	m_materialList->Clear();
-	m_textureList->VTable0x1c(m_renderer, m_menuId);
-	m_materialList->VTable0x1c(m_renderer, m_menuId);
+	m_textureList->Initialize(m_renderer, m_menuId);
+	m_materialList->Initialize(m_renderer, m_menuId);
 }
 
 // FUNCTION: LEGORACERS 0x0049d2a0
@@ -139,8 +139,8 @@ void DriverModelBuilder::LoadFaceTexture(const LegoChar* p_name, GolBmpFile* p_i
 	p_imageFile->Open(fileName);
 
 	texture->SetNameFromBuffer(p_name);
-	texture->SetTextureFlags(GolTexture::c_textureFlagBit2);
-	texture->VTable0x30(*m_renderer, p_imageFile);
+	texture->SetTextureFlags(GolTexture::c_textureFlagFlipVertically);
+	texture->LoadFromImgFile(*m_renderer, p_imageFile);
 	m_textureList->AddName(p_name, texture);
 	p_imageFile->Destroy();
 }

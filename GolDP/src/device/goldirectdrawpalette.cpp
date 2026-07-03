@@ -72,7 +72,7 @@ void GolDirectDrawPalette::CreateDirectDrawPalette(GolD3DRenderDevice* p_rendere
 	m_firstEntry = 0;
 	m_entryCount = (LegoU16) entryCount;
 
-	if (p_renderer->m_unk0xc8700 == 0) {
+	if (p_renderer->m_paletteMode == 0) {
 		for (LegoU32 systemEntry = 0; systemEntry < c_systemPaletteReservedEntries; systemEntry++) {
 			g_paletteEntries[systemEntry].peRed = (BYTE) systemEntry;
 			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peRed =

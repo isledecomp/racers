@@ -303,7 +303,7 @@ void GolRenderTarget::SetDisplayPalette(GolD3DRenderDevice* p_renderer)
 			m_palette.CreateDirectDrawPalette(p_renderer, &m_textureFormat);
 		}
 
-		if (p_renderer->m_unk0xc8700 == 1) {
+		if (p_renderer->m_paletteMode == 1) {
 			m_palette.Set332PaletteEntries();
 		}
 

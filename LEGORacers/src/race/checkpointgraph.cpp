@@ -17,7 +17,7 @@ CheckpointGraph::Entry::Entry()
 // FUNCTION: LEGORACERS 0x0041e5f0
 CheckpointGraph::Entry::~Entry()
 {
-	FUN_0041e630();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0041e600
@@ -35,7 +35,7 @@ void CheckpointGraph::Entry::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0041e630
-void CheckpointGraph::Entry::FUN_0041e630()
+void CheckpointGraph::Entry::Destroy()
 {
 	Reset();
 }
@@ -145,7 +145,7 @@ void CheckpointGraph::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool
 		delete parser;
 	}
 
-	FUN_0041e950();
+	ComputeLapFractions();
 }
 
 // FUNCTION: LEGORACERS 0x0041e940 FOLDED
@@ -155,9 +155,9 @@ CheckpointGraph::Entry* CheckpointGraph::GetCheckpoint(LegoU32 p_unk0x04)
 }
 
 // STUB: LEGORACERS 0x0041e950
-void CheckpointGraph::FUN_0041e950()
+void CheckpointGraph::ComputeLapFractions()
 {
-	LegoS32 pathCount = static_cast<LegoS32>(FUN_0041ea60());
+	LegoS32 pathCount = static_cast<LegoS32>(CountLapCheckpoints());
 	Entry* entry = m_entries;
 	LegoFloat step = 1.0f / pathCount;
 	LegoFloat progress = 0.0f;
@@ -175,7 +175,7 @@ void CheckpointGraph::FUN_0041e950()
 			LegoU8 next = entry->m_next.m_items[i];
 			if (next != 0xff) {
 				LegoU32 distance;
-				LegoU32 targetIndex = FUN_0041ea90(next, &distance);
+				LegoU32 targetIndex = FindNextFractionedCheckpoint(next, &distance);
 				Entry* target = &m_entries[targetIndex];
 				LegoFloat step = (target->m_lapFraction - entry->m_lapFraction) / (distance + 1);
 				Entry* cursor = &m_entries[entry->m_next.m_items[i]];
@@ -194,7 +194,7 @@ void CheckpointGraph::FUN_0041e950()
 }
 
 // FUNCTION: LEGORACERS 0x0041ea60
-LegoU32 CheckpointGraph::FUN_0041ea60()
+LegoU32 CheckpointGraph::CountLapCheckpoints()
 {
 	LegoU32 result = 0;
 	Entry* first = m_entries;
@@ -209,7 +209,7 @@ LegoU32 CheckpointGraph::FUN_0041ea60()
 }
 
 // FUNCTION: LEGORACERS 0x0041ea90
-LegoU32 CheckpointGraph::FUN_0041ea90(LegoU32 p_unk0x04, LegoU32* p_unk0x08)
+LegoU32 CheckpointGraph::FindNextFractionedCheckpoint(LegoU32 p_unk0x04, LegoU32* p_unk0x08)
 {
 	*p_unk0x08 = 0;
 

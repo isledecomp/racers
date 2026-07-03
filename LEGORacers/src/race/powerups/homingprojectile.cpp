@@ -151,7 +151,7 @@ void HomingProjectile::UpdateTargeting(
 			end.m_z -= g_homingProjectileCollisionProbeDepth;
 
 			GolBoundingVolume::HitTriangle record;
-			if (m_collisionWorld->FUN_0041f730(&start, &end, &record, &hit)) {
+			if (m_collisionWorld->IntersectSegmentAndFireEvents(&start, &end, &record, &hit)) {
 				m_hasWaypoint = 1;
 				m_waypointPosition.m_x = hit.m_x;
 				m_waypointPosition.m_y = hit.m_y;
@@ -299,7 +299,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 		start.m_z += g_homingProjectileGroundProbeStartOffset;
 		end.m_z -= g_homingProjectileCollisionHitLift;
 
-		if (m_collisionWorld->FUN_0041f730(&start, &end, &record, &m_hitPosition)) {
+		if (m_collisionWorld->IntersectSegmentAndFireEvents(&start, &end, &record, &m_hitPosition)) {
 			nextPosition.m_z = m_hitPosition.m_z + g_homingProjectileCollisionHitLift;
 			if (m_position.m_z > nextPosition.m_z) {
 				LegoFloat descentLimit = m_position.m_z - g_homingProjectileDescentRate * elapsedSeconds;
@@ -315,7 +315,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 
 	m_worldEntity->VTable0x04(&previousPosition);
 
-	if (m_collisionWorld->FUN_0041f730(&previousPosition, &nextPosition, &record, &m_hitPosition)) {
+	if (m_collisionWorld->IntersectSegmentAndFireEvents(&previousPosition, &nextPosition, &record, &m_hitPosition)) {
 		m_hitNormal.m_x = record.m_normal.m_x;
 		m_hitNormal.m_y = record.m_normal.m_y;
 		m_hitNormal.m_z = record.m_normal.m_z;

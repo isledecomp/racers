@@ -272,7 +272,7 @@ void MenuGameScreen::LoadChampionResources(LegoS32 p_entryCapacity)
 	championParams.m_entryCapacity = p_entryCapacity;
 	championParams.m_fileName = "champs.ccf";
 	championParams.m_binary = m_context->m_context->m_useBinaryFiles;
-	m_context->m_championDefinitions.FUN_0041d370(&championParams);
+	m_context->m_championDefinitions.Load(&championParams);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");

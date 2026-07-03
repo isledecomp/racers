@@ -500,7 +500,7 @@ void LightningAction::UpdateBoltPath()
 		m_boltLength = distance * g_carBuildModelTextureCoordinateScale;
 	}
 	else {
-		if (m_collisionWorld->FUN_0041f730(&position, &end, &record, &hit)) {
+		if (m_collisionWorld->IntersectSegmentAndFireEvents(&position, &end, &record, &hit)) {
 			LegoFloat distance = static_cast<LegoFloat>(::sqrt(
 				(position.m_z - hit.m_z) * (position.m_z - hit.m_z) +
 				(position.m_y - hit.m_y) * (position.m_y - hit.m_y) +

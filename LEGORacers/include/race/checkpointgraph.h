@@ -39,7 +39,7 @@ public:
 		friend class CheckpointGraph;
 
 		void Reset();
-		void FUN_0041e630();
+		void Destroy();
 		void Load(GolFileParser* p_parser, LegoBool32 p_mirror);
 
 	public:
@@ -56,9 +56,9 @@ public:
 	void Reset();
 	void Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
 	Entry* GetCheckpoint(LegoU32 p_index);
-	void FUN_0041e950();
-	LegoU32 FUN_0041ea60();
-	LegoU32 FUN_0041ea90(LegoU32 p_unk0x04, LegoU32* p_unk0x08);
+	void ComputeLapFractions();
+	LegoU32 CountLapCheckpoints();
+	LegoU32 FindNextFractionedCheckpoint(LegoU32 p_unk0x04, LegoU32* p_unk0x08);
 	void AdvanceAlongGraph(GolVec3* p_position, LegoFloat p_distance, Entry* p_entry);
 
 private:

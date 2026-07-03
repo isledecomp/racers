@@ -100,7 +100,7 @@ void ChampionDefinitionList::ClearDefinitions()
 }
 
 // FUNCTION: LEGORACERS 0x0041d370
-void ChampionDefinitionList::FUN_0041d370(const LoadParams* p_params)
+void ChampionDefinitionList::Load(const LoadParams* p_params)
 {
 	if (m_definitions != NULL) {
 		Clear();
@@ -244,14 +244,14 @@ void ChampionDefinitionList::FUN_0041d370(const LoadParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x0041d780
-GolModelEntity* ChampionDefinitionList::FUN_0041d780(const LegoChar* p_name)
+GolModelEntity* ChampionDefinitionList::CreateChampionModel(const LegoChar* p_name)
 {
 	ChampionDefinition* definition = static_cast<ChampionDefinition*>(GetName(p_name));
-	return FUN_0041d7a0(definition);
+	return CreateChampionModel(definition);
 }
 
 // FUNCTION: LEGORACERS 0x0041d7a0
-GolModelEntity* ChampionDefinitionList::FUN_0041d7a0(ChampionDefinition* p_definition)
+GolModelEntity* ChampionDefinitionList::CreateChampionModel(ChampionDefinition* p_definition)
 {
 	LegoChar name[sizeof(GolName) + 1];
 

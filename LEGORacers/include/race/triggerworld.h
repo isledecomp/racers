@@ -28,7 +28,7 @@ public:
 		GolVec3* p_unk0x10,
 		RaceEventRecord::Target** p_unk0x14
 	);
-	LegoBool32 FUN_0041f730(
+	LegoBool32 IntersectSegmentAndFireEvents(
 		GolVec3* p_unk0x04,
 		GolVec3* p_unk0x08,
 		GolBoundingVolume::HitTriangle* p_unk0x0c,

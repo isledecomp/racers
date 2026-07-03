@@ -346,7 +346,7 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 	championParams.m_entryCapacity = m_roster.m_racerCount;
 	championParams.m_fileName = g_racerDatabaseNames[1];
 	championParams.m_binary = p_binary;
-	m_championList.FUN_0041d370(&championParams);
+	m_championList.Load(&championParams);
 
 	ChassisModelTable::Params chassisParams;
 	chassisParams.m_golExport = p_context->m_golExport;
@@ -392,7 +392,7 @@ void RaceState::CreateRacer(
 		championDefinition = static_cast<ChampionDefinitionList::ChampionDefinition*>(
 			m_championList.GetName(driverEntry->m_championName)
 		);
-		initParams.m_bodyModel = m_championList.FUN_0041d780(driverEntry->m_championName);
+		initParams.m_bodyModel = m_championList.CreateChampionModel(driverEntry->m_championName);
 		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(championDefinition->m_chassisName));
 		m_chassisTable.InstantiateModels(chassisItem, &initParams.m_carEntity, &initParams.m_secondaryModel);
 

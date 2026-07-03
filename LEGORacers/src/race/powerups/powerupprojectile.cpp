@@ -407,7 +407,7 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 	m_worldEntity->VTable0x04(&vectors[1]);
 
 	GolBoundingVolume::HitTriangle record;
-	if (m_collisionWorld->FUN_0041f730(&vectors[1], &vectors[0], &record, &m_hitPosition)) {
+	if (m_collisionWorld->IntersectSegmentAndFireEvents(&vectors[1], &vectors[0], &record, &m_hitPosition)) {
 		m_hitNormal.m_x = record.m_normal.m_x;
 		m_hitNormal.m_y = record.m_normal.m_y;
 		m_hitNormal.m_z = record.m_normal.m_z;

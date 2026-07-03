@@ -49,7 +49,7 @@ public:
 
 	void Clear() override; // vtable+0x08
 	void ClearDefinitions();
-	void FUN_0041d370(const LoadParams* p_params);
+	void Load(const LoadParams* p_params);
 	LegoBool32 HasDefinitions() const { return m_definitions != NULL; }
 
 	// SYNTHETIC: LEGORACERS 0x0041d1f0
@@ -59,8 +59,8 @@ private:
 	friend class RaceState;
 
 	void Reset();
-	GolModelEntity* FUN_0041d780(const LegoChar* p_name);
-	GolModelEntity* FUN_0041d7a0(ChampionDefinition* p_definition);
+	GolModelEntity* CreateChampionModel(const LegoChar* p_name);
+	GolModelEntity* CreateChampionModel(ChampionDefinition* p_definition);
 
 	GolExport* m_golExport;               // 0x0c
 	GolD3DRenderDevice* m_renderer;       // 0x10

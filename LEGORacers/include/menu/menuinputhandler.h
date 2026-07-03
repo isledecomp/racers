@@ -23,7 +23,7 @@ public:
 	LegoBool32 HasKeyboard() const;
 
 private:
-	void FUN_0041fac0();
+	void MapAllJoystickButtons();
 
 	InputManager* m_inputManager;               // 0x000
 	undefined2 m_unk0x004[256];                 // 0x004

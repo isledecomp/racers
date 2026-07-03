@@ -260,7 +260,7 @@ LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 	if (m_tension >= 1.0f) {
 		GolBoundingVolume::HitTriangle record;
 		m_tension = 1.0f;
-		if (m_collisionWorld->FUN_0041f730(&origin, &currentPosition, &record, &m_hitPosition)) {
+		if (m_collisionWorld->IntersectSegmentAndFireEvents(&origin, &currentPosition, &record, &m_hitPosition)) {
 			m_hitNormal = record.m_normal;
 			return c_stateHitWorld;
 		}

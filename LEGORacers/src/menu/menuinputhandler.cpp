@@ -66,7 +66,7 @@ void MenuInputHandler::Initialize(InputManager* p_inputManager)
 		}
 	}
 
-	FUN_0041fac0();
+	MapAllJoystickButtons();
 }
 
 // FUNCTION: LEGORACERS 0x0041f9c0
@@ -117,7 +117,7 @@ LegoBool32 MenuInputHandler::HasKeyboard() const
 }
 
 // FUNCTION: LEGORACERS 0x0041fac0
-void MenuInputHandler::FUN_0041fac0()
+void MenuInputHandler::MapAllJoystickButtons()
 {
 	for (LegoS32 i = 0; i < m_inputManager->GetJoystickCount(); i++) {
 		JoystickInputDevice* joystick = m_inputManager->GetJoystick(i);

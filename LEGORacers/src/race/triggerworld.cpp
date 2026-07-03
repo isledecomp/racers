@@ -152,7 +152,7 @@ fail:
 }
 
 // FUNCTION: LEGORACERS 0x0041f730
-LegoBool32 TriggerWorld::FUN_0041f730(
+LegoBool32 TriggerWorld::IntersectSegmentAndFireEvents(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
 	GolBoundingVolume::HitTriangle* p_unk0x0c,

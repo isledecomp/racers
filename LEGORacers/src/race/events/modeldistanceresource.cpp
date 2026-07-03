@@ -10,17 +10,17 @@ DECOMP_SIZE_ASSERT(ModelDistanceResource, 0x34)
 ModelDistanceResource::ModelDistanceResource()
 {
 	m_flags0x1c = 0;
-	FUN_004636e0();
+	ClearFields();
 }
 
 // FUNCTION: LEGORACERS 0x00463690
 ModelDistanceResource::~ModelDistanceResource()
 {
-	FUN_004637a0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004636e0
-void ModelDistanceResource::FUN_004636e0()
+void ModelDistanceResource::ClearFields()
 {
 	m_modelDistances[0] = 0.0f;
 	m_modelDistances[1] = 0.0f;
@@ -30,10 +30,10 @@ void ModelDistanceResource::FUN_004636e0()
 }
 
 // FUNCTION: LEGORACERS 0x00463700
-void ModelDistanceResource::FUN_00463700(InitParams* p_params)
+void ModelDistanceResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
-		FUN_004637a0();
+		Destroy();
 	}
 
 	m_eventId = p_params->m_eventId;
@@ -65,9 +65,9 @@ void ModelDistanceResource::FUN_00463700(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004637a0
-void ModelDistanceResource::FUN_004637a0()
+void ModelDistanceResource::Destroy()
 {
-	FUN_004636e0();
+	ClearFields();
 	Reset();
 }
 

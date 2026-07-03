@@ -27,14 +27,14 @@ MaterialAnimationResource::MaterialAnimationResource()
 // FUNCTION: LEGORACERS 0x004630d0
 MaterialAnimationResource::~MaterialAnimationResource()
 {
-	FUN_004631e0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00463120
-void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
+void MaterialAnimationResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
-		FUN_004631e0();
+		Destroy();
 	}
 
 	m_eventId = p_params->m_eventId;
@@ -72,7 +72,7 @@ void MaterialAnimationResource::FUN_00463120(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004631e0
-void MaterialAnimationResource::FUN_004631e0()
+void MaterialAnimationResource::Destroy()
 {
 	OnEnd();
 	m_materialAnimation = NULL;

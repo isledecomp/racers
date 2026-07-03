@@ -28,9 +28,9 @@ public:
 	void Update(LegoU32 p_elapsedMs) override;
 	virtual LegoU32 GetKind(); // vtable+0x18
 
-	void FUN_004638f0();
-	void FUN_00463900(InitParams* p_params);
-	void FUN_00463970();
+	void ClearFields();
+	void Initialize(InitParams* p_params);
+	void Destroy();
 
 	// SYNTHETIC: LEGORACERS 0x00461010
 	// NodeTransformResource::`vector deleting destructor'

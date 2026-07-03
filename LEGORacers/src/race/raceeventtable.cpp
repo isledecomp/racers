@@ -409,7 +409,7 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 			}
 		}
 
-		field->m_partAnimations[i].FUN_00463330(&params);
+		field->m_partAnimations[i].Initialize(&params);
 	}
 
 	if (p_parser->GetNextToken() != GolFileParser::e_rightCurly) {
@@ -559,7 +559,7 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 			}
 		}
 
-		field->m_materialAnimations[i].FUN_00463120(&params);
+		field->m_materialAnimations[i].Initialize(&params);
 	}
 
 	if (p_parser->GetNextToken() != GolFileParser::e_rightCurly) {
@@ -981,7 +981,7 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 			}
 		}
 
-		field->m_colorTransforms[i].FUN_00465570(&params);
+		field->m_colorTransforms[i].Initialize(&params);
 	}
 
 	p_parser->ReadRightCurly();
@@ -1146,7 +1146,7 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 			}
 		}
 
-		field->m_nodeTransforms[i].FUN_00463900(&params);
+		field->m_nodeTransforms[i].Initialize(&params);
 	}
 
 	p_parser->ReadRightCurly();
@@ -1252,7 +1252,7 @@ void RaceEventTable::ParseModelDistances(GolFileParser* p_parser)
 			}
 		}
 
-		field->m_modelDistances[i].FUN_00463700(&params);
+		field->m_modelDistances[i].Initialize(&params);
 	}
 
 	p_parser->ReadRightCurly();

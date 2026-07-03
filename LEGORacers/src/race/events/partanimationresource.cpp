@@ -16,14 +16,14 @@ PartAnimationResource::PartAnimationResource()
 // FUNCTION: LEGORACERS 0x004632e0
 PartAnimationResource::~PartAnimationResource()
 {
-	FUN_004633e0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00463330
-void PartAnimationResource::FUN_00463330(InitParams* p_params)
+void PartAnimationResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
-		FUN_004633e0();
+		Destroy();
 	}
 
 	m_eventId = p_params->m_eventId;
@@ -64,7 +64,7 @@ void PartAnimationResource::FUN_00463330(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004633e0
-void PartAnimationResource::FUN_004633e0()
+void PartAnimationResource::Destroy()
 {
 	m_animatedEntity = NULL;
 	Reset();

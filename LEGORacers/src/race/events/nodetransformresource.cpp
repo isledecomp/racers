@@ -13,18 +13,18 @@ DECOMP_SIZE_ASSERT(NodeTransformResource, 0x2c)
 // FUNCTION: LEGORACERS 0x00463850
 NodeTransformResource::NodeTransformResource()
 {
-	FUN_004638f0();
+	ClearFields();
 	m_flags0x1c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004638a0
 NodeTransformResource::~NodeTransformResource()
 {
-	FUN_00463970();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004638f0
-void NodeTransformResource::FUN_004638f0()
+void NodeTransformResource::ClearFields()
 {
 	m_boundedEntity = NULL;
 	m_modelEntity = NULL;
@@ -32,10 +32,10 @@ void NodeTransformResource::FUN_004638f0()
 }
 
 // FUNCTION: LEGORACERS 0x00463900
-void NodeTransformResource::FUN_00463900(InitParams* p_params)
+void NodeTransformResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
-		FUN_00463970();
+		Destroy();
 	}
 
 	m_eventId = p_params->m_eventId;
@@ -56,10 +56,10 @@ void NodeTransformResource::FUN_00463900(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x00463970
-void NodeTransformResource::FUN_00463970()
+void NodeTransformResource::Destroy()
 {
 	OnEnd();
-	FUN_004638f0();
+	ClearFields();
 	Reset();
 }
 

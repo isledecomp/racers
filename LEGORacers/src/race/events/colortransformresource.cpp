@@ -9,17 +9,17 @@ DECOMP_SIZE_ASSERT(ColorTransformResource::InitParams, 0x3c)
 // FUNCTION: LEGORACERS 0x004654c0
 ColorTransformResource::ColorTransformResource()
 {
-	FUN_00465560();
+	ClearFields();
 }
 
 // FUNCTION: LEGORACERS 0x00465510
 ColorTransformResource::~ColorTransformResource()
 {
-	FUN_004655e0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00465560
-void ColorTransformResource::FUN_00465560()
+void ColorTransformResource::ClearFields()
 {
 	m_eventTable = NULL;
 	m_flags0x20 = 0;
@@ -28,10 +28,10 @@ void ColorTransformResource::FUN_00465560()
 }
 
 // FUNCTION: LEGORACERS 0x00465570
-void ColorTransformResource::FUN_00465570(InitParams* p_params)
+void ColorTransformResource::Initialize(InitParams* p_params)
 {
 	if (m_state0x18) {
-		FUN_004655e0();
+		Destroy();
 	}
 
 	m_eventId = p_params->m_eventId;
@@ -56,10 +56,10 @@ void ColorTransformResource::FUN_00465570(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004655e0
-void ColorTransformResource::FUN_004655e0()
+void ColorTransformResource::Destroy()
 {
 	OnEndForRacer(NULL);
-	FUN_00465560();
+	ClearFields();
 	Reset();
 }
 

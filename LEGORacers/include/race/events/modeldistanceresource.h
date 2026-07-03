@@ -26,9 +26,9 @@ public:
 	void OnEnd() override;
 	virtual LegoU32 GetKind(); // vtable+0x18
 
-	void FUN_004636e0();
-	void FUN_00463700(InitParams* p_params);
-	void FUN_004637a0();
+	void ClearFields();
+	void Initialize(InitParams* p_params);
+	void Destroy();
 
 	// SYNTHETIC: LEGORACERS 0x004613d0
 	// ModelDistanceResource::`vector deleting destructor'

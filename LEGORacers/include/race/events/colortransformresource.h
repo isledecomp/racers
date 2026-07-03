@@ -32,9 +32,9 @@ public:
 	void OnEndForRacer(Racer* p_racer) override;
 	virtual LegoU32 GetKind(); // vtable+0x18
 
-	void FUN_00465560();
-	void FUN_00465570(InitParams* p_params);
-	void FUN_004655e0();
+	void ClearFields();
+	void Initialize(InitParams* p_params);
+	void Destroy();
 
 	// SYNTHETIC: LEGORACERS 0x00460a70
 	// ColorTransformResource::`vector deleting destructor'

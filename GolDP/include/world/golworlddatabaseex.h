@@ -47,18 +47,16 @@ public:
 	// GolWorldDatabaseEx::`scalar deleting destructor'
 
 private:
-	void FUN_10017390();
-
-	GolD3DTextureList* m_unk0xf0;          // 0xf0
-	GolSoftwareMaterialLibrary* m_unk0xf4; // 0xf4
-	GolModel* m_unk0xf8;                   // 0xf8
-	GolSceneTransformNode* m_unk0xfc;      // 0xfc
-	GolBillboardEx* m_unk0x100;            // 0x100
-	GolModelMaterialTable* m_unk0x104;     // 0x104
-	MabMaterialAnimation* m_unk0x108;      // 0x108
-	CmbModelPart* m_unk0x10c;              // 0x10c
-	GolBoundingShape* m_unk0x110;          // 0x110
-	GolCamera* m_unk0x114;                 // 0x114
+	GolD3DTextureList* m_textureLists;               // 0xf0
+	GolSoftwareMaterialLibrary* m_materialLibraries; // 0xf4
+	GolModel* m_models;                              // 0xf8
+	GolSceneTransformNode* m_sceneNodes;             // 0xfc
+	GolBillboardEx* m_billboards;                    // 0x100
+	GolModelMaterialTable* m_materialTables;         // 0x104
+	MabMaterialAnimation* m_materialAnimations;      // 0x108
+	CmbModelPart* m_modelParts;                      // 0x10c
+	GolBoundingShape* m_boundingShapes;              // 0x110
+	GolCamera* m_cameras;                            // 0x114
 };
 
 #endif // GOLWORLDDATABASEEX_H

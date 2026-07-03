@@ -30,16 +30,16 @@ inline static void BuildResourceFileName(LegoChar* p_dest, const LegoChar* p_nam
 // FUNCTION: GOLDP 0x10017190
 GolWorldDatabaseEx::GolWorldDatabaseEx()
 {
-	m_unk0xf0 = NULL;
-	m_unk0xf4 = NULL;
-	m_unk0x10c = NULL;
-	m_unk0xf8 = NULL;
-	m_unk0x104 = NULL;
-	m_unk0xfc = NULL;
-	m_unk0x110 = NULL;
-	m_unk0x100 = NULL;
-	m_unk0x108 = NULL;
-	m_unk0x114 = NULL;
+	m_textureLists = NULL;
+	m_materialLibraries = NULL;
+	m_modelParts = NULL;
+	m_models = NULL;
+	m_materialTables = NULL;
+	m_sceneNodes = NULL;
+	m_boundingShapes = NULL;
+	m_billboards = NULL;
+	m_materialAnimations = NULL;
+	m_cameras = NULL;
 }
 
 // FUNCTION: GOLDP 0x10017200
@@ -51,132 +51,132 @@ GolWorldDatabaseEx::~GolWorldDatabaseEx()
 // FUNCTION: GOLDP 0x10017250
 GolTextureList* GolWorldDatabaseEx::GetTextureList(LegoU32 p_index) const
 {
-	return &m_unk0xf0[p_index];
+	return &m_textureLists[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017270
 GolMaterialLibrary* GolWorldDatabaseEx::GetMaterialLibrary(LegoU32 p_index) const
 {
-	return &m_unk0xf4[p_index];
+	return &m_materialLibraries[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017290
 CmbModelPart* GolWorldDatabaseEx::GetModelPart(LegoU32 p_index) const
 {
-	return &m_unk0x10c[p_index];
+	return &m_modelParts[p_index];
 }
 
 // FUNCTION: GOLDP 0x100172b0
 GolModelBase* GolWorldDatabaseEx::GetModel(LegoU32 p_index) const
 {
-	return &m_unk0xf8[p_index];
+	return &m_models[p_index];
 }
 
 // FUNCTION: GOLDP 0x100172d0
 GolModelMaterialTable* GolWorldDatabaseEx::GetMaterialTable(LegoU32 p_index) const
 {
-	return &m_unk0x104[p_index];
+	return &m_materialTables[p_index];
 }
 
 // FUNCTION: GOLDP 0x100172f0
 GolSceneNode* GolWorldDatabaseEx::GetSceneNode(LegoU32 p_index) const
 {
-	return &m_unk0xfc[p_index];
+	return &m_sceneNodes[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017310
 GolBoundingShape* GolWorldDatabaseEx::GetBoundingShape(LegoU32 p_index) const
 {
-	return &m_unk0x110[p_index];
+	return &m_boundingShapes[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017330
 GolWorldEntity* GolWorldDatabaseEx::GetWorldEntity(LegoU32 p_index) const
 {
-	return &m_unk0x100[p_index];
+	return &m_billboards[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017350
 MabMaterialAnimation* GolWorldDatabaseEx::GetMaterialAnimation(LegoU32 p_index) const
 {
-	return &m_unk0x108[p_index];
+	return &m_materialAnimations[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017370
 GolCameraBase* GolWorldDatabaseEx::GetCamera(LegoU32 p_index) const
 {
-	return &m_unk0x114[p_index];
+	return &m_cameras[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017390
 void GolWorldDatabaseEx::AllocateResources()
 {
 	if (GetTextureListCount() != 0) {
-		m_unk0xf0 = new GolD3DTextureList[GetTextureListCount()];
-		if (m_unk0xf0 == NULL) {
+		m_textureLists = new GolD3DTextureList[GetTextureListCount()];
+		if (m_textureLists == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetMaterialLibraryCount() != 0) {
-		m_unk0xf4 = new GolSoftwareMaterialLibrary[GetMaterialLibraryCount()];
-		if (m_unk0xf4 == NULL) {
+		m_materialLibraries = new GolSoftwareMaterialLibrary[GetMaterialLibraryCount()];
+		if (m_materialLibraries == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetModelPartCount() != 0) {
-		m_unk0x10c = new CmbModelPart[GetModelPartCount()];
-		if (m_unk0x10c == NULL) {
+		m_modelParts = new CmbModelPart[GetModelPartCount()];
+		if (m_modelParts == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetModelCount() != 0) {
-		m_unk0xf8 = new GolModel[GetModelCount()];
-		if (m_unk0xf8 == NULL) {
+		m_models = new GolModel[GetModelCount()];
+		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetMaterialTableCount() != 0) {
-		m_unk0x104 = new GolModelMaterialTable[GetMaterialTableCount()];
-		if (m_unk0x104 == NULL) {
+		m_materialTables = new GolModelMaterialTable[GetMaterialTableCount()];
+		if (m_materialTables == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetSceneNodeCount() != 0) {
-		m_unk0xfc = new GolSceneTransformNode[GetSceneNodeCount()];
-		if (m_unk0xfc == NULL) {
+		m_sceneNodes = new GolSceneTransformNode[GetSceneNodeCount()];
+		if (m_sceneNodes == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetBoundingShapeCount() != 0) {
-		m_unk0x110 = new GolBoundingShape[GetBoundingShapeCount()];
-		if (m_unk0x110 == NULL) {
+		m_boundingShapes = new GolBoundingShape[GetBoundingShapeCount()];
+		if (m_boundingShapes == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetSpriteCount() != 0) {
-		m_unk0x100 = new GolBillboardEx[GetSpriteCount()];
-		if (m_unk0x100 == NULL) {
+		m_billboards = new GolBillboardEx[GetSpriteCount()];
+		if (m_billboards == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetMaterialAnimationCount() != 0) {
-		m_unk0x108 = new MabMaterialAnimation[GetMaterialAnimationCount()];
-		if (m_unk0x108 == NULL) {
+		m_materialAnimations = new MabMaterialAnimation[GetMaterialAnimationCount()];
+		if (m_materialAnimations == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetCameraCount()) {
-		m_unk0x114 = new GolCamera[GetCameraCount()];
-		if (m_unk0x114 == NULL) {
+		m_cameras = new GolCamera[GetCameraCount()];
+		if (m_cameras == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
@@ -238,7 +238,7 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 
 	for (i = 0; i < m_spriteCount; i++) {
 		WdbBillboardSprite* sprite = &m_spriteRecords[i];
-		GolBillboardEx* billboard = &m_unk0x100[i];
+		GolBillboardEx* billboard = &m_billboards[i];
 		LegoFloat maxDistanceSquared = sprite->m_maxDistance * sprite->m_maxDistance;
 
 		if (sprite->m_flags & WdbBillboardSprite::c_flagMaterialAssignment) {
@@ -248,7 +248,7 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 			}
 
 			billboard->ConfigureFromMaterialTable(
-				&m_unk0x104[materialTableIndex],
+				&m_materialTables[materialTableIndex],
 				sprite->m_materialIndex,
 				sprite->m_width,
 				sprite->m_height,
@@ -287,45 +287,45 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 // FUNCTION: GOLDP 0x100180a0
 void GolWorldDatabaseEx::Destroy()
 {
-	if (m_unk0x114) {
-		delete[] m_unk0x114;
-		m_unk0x114 = NULL;
+	if (m_cameras) {
+		delete[] m_cameras;
+		m_cameras = NULL;
 	}
-	if (m_unk0x100) {
-		delete[] m_unk0x100;
-		m_unk0x100 = NULL;
+	if (m_billboards) {
+		delete[] m_billboards;
+		m_billboards = NULL;
 	}
-	if (m_unk0x110) {
-		delete[] m_unk0x110;
-		m_unk0x110 = NULL;
+	if (m_boundingShapes) {
+		delete[] m_boundingShapes;
+		m_boundingShapes = NULL;
 	}
-	if (m_unk0xfc) {
-		delete[] m_unk0xfc;
-		m_unk0xfc = NULL;
+	if (m_sceneNodes) {
+		delete[] m_sceneNodes;
+		m_sceneNodes = NULL;
 	}
-	if (m_unk0x104) {
-		delete[] m_unk0x104;
-		m_unk0x104 = NULL;
+	if (m_materialTables) {
+		delete[] m_materialTables;
+		m_materialTables = NULL;
 	}
-	if (m_unk0xf8) {
-		delete[] m_unk0xf8;
-		m_unk0xf8 = NULL;
+	if (m_models) {
+		delete[] m_models;
+		m_models = NULL;
 	}
-	if (m_unk0x10c) {
-		delete[] m_unk0x10c;
-		m_unk0x10c = NULL;
+	if (m_modelParts) {
+		delete[] m_modelParts;
+		m_modelParts = NULL;
 	}
-	if (m_unk0xf4) {
-		delete[] m_unk0xf4;
-		m_unk0xf4 = NULL;
+	if (m_materialLibraries) {
+		delete[] m_materialLibraries;
+		m_materialLibraries = NULL;
 	}
-	if (m_unk0xf0) {
-		delete[] m_unk0xf0;
-		m_unk0xf0 = NULL;
+	if (m_textureLists) {
+		delete[] m_textureLists;
+		m_textureLists = NULL;
 	}
-	if (m_unk0x108) {
-		delete[] m_unk0x108;
-		m_unk0x108 = NULL;
+	if (m_materialAnimations) {
+		delete[] m_materialAnimations;
+		m_materialAnimations = NULL;
 	}
 
 	GolWorldDatabase::Destroy();
@@ -363,6 +363,6 @@ void GolWorldDatabaseEx::DrawSprites(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_spriteCount; i++) {
-		p_renderer->VTable0xb4(m_unk0x100[i]);
+		p_renderer->VTable0xb4(m_billboards[i]);
 	}
 }

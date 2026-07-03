@@ -50,7 +50,7 @@ protected:
 	undefined m_unk0x22d4[0x22dc - 0x22d4]; // 0x22d4
 	MainMenuModelSlot m_modelSlot;          // 0x22dc
 	GolAnimatedEntity* m_driverEntity;      // 0x2438
-	undefined4 m_animSoundPlayed;           // 0x243c
+	LegoBool32 m_animSoundPlayed;           // 0x243c
 	undefined4 m_unk0x2440;                 // 0x2440
 	LegoU32 m_idleTimeoutMs;                // 0x2444
 	LegoU32 m_idleAnimTimerMs;              // 0x2448

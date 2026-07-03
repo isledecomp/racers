@@ -104,7 +104,7 @@ public:
 		Rect m_unk0xdc;                    // 0xdc
 		Rect m_unk0xec;                    // 0xec
 		undefined4 m_maxTextWidth;         // 0xfc
-		undefined4 m_hasMaxTextWidth;      // 0x100
+		LegoBool32 m_hasMaxTextWidth;      // 0x100
 	};
 
 	// SIZE 0x100
@@ -163,7 +163,7 @@ public:
 		GolD3DRenderDevice* m_renderer;   // 0x00
 		SharedMenuStyleTable* m_fallback; // 0x04
 		const LegoChar* m_fileName;       // 0x08
-		undefined4 m_binary;              // 0x0c
+		LegoBool32 m_binary;              // 0x0c
 	};
 
 	MenuStyleTable();

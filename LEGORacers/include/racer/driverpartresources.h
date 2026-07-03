@@ -26,8 +26,8 @@ public:
 		GolExport* m_golExport;           // 0x04
 		GolD3DRenderDevice* m_renderer;   // 0x08
 		DriverPartCatalog* m_partCatalog; // 0x0c
-		undefined4 m_binary;              // 0x10
-		undefined4 m_textureBinaryMode;   // 0x14
+		LegoBool32 m_binary;              // 0x10
+		LegoBool32 m_textureBinaryMode;   // 0x14
 	};
 
 	DriverPartResources();

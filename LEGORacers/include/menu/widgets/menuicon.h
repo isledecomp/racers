@@ -49,9 +49,9 @@ public:
 		undefined m_unk0x4b[0x52 - 0x4b];        // 0x4b
 		VisualStateColor m_iconStateColors[6];   // 0x52
 		undefined2 m_soundIds[5];                // 0x6a
-		undefined4 m_attachToParent;             // 0x74
-		undefined4 m_hasStateColors;             // 0x78
-		undefined4 m_hasSoundIds;                // 0x7c
+		LegoBool32 m_attachToParent;             // 0x74
+		LegoBool32 m_hasStateColors;             // 0x78
+		LegoBool32 m_hasSoundIds;                // 0x7c
 		MenuScreenInterface* m_iconEventHandler; // 0x80
 	};
 
@@ -63,8 +63,8 @@ public:
 		undefined2 m_unk0x22;                  // 0x22
 		Rect m_stateRects[6];                  // 0x24
 		undefined4 m_transitionDurationMs;     // 0x84
-		undefined4 m_hasStateColors;           // 0x88
-		undefined4 m_hasSoundIds;              // 0x8c
+		LegoBool32 m_hasStateColors;           // 0x88
+		LegoBool32 m_hasSoundIds;              // 0x8c
 	};
 
 	enum {

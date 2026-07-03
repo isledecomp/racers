@@ -57,7 +57,7 @@ public:
 		GolD3DRenderDevice* m_renderer; // 0x04
 		undefined4 m_entryCapacity;     // 0x08
 		const LegoChar* m_filename;     // 0x0c
-		undefined4 m_binary;            // 0x10
+		LegoBool32 m_binary;            // 0x10
 	};
 
 	// SIZE 0x30

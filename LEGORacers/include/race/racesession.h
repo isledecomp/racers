@@ -331,7 +331,7 @@ private:
 	undefined4 m_state;                                    // 0x3328
 	LegoU32 m_elapsedMs;                                   // 0x332c
 	undefined4 m_finishedCount;                            // 0x3330
-	undefined4 m_running;                                  // 0x3334
+	LegoBool32 m_running;                                  // 0x3334
 	LegoBool m_abortKeyMask;                               // 0x3338
 	undefined m_unk0x3339[0x333c - 0x3339];                // 0x3339
 	LegoU32 m_frameCount;                                  // 0x333c

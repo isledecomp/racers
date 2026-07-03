@@ -68,7 +68,7 @@ protected:
 	GolStringTable m_languageStrings; // 0x638
 	GolD3DRenderDevice* m_renderer;   // 0x64c
 	GolCamera* m_savedCamera;         // 0x650
-	undefined4 m_firstUpdate;         // 0x654
+	LegoBool32 m_firstUpdate;         // 0x654
 };
 
 #endif // MENUSCENESCREEN_H

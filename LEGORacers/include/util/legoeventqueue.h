@@ -135,7 +135,7 @@ public:
 		Descriptor m_descriptor; // 0x04
 		undefined4 m_fireCount;  // 0x1c
 		undefined4 m_hitCount;   // 0x20
-		undefined4 m_active;     // 0x24
+		LegoBool32 m_active;     // 0x24
 		Event* m_next;           // 0x28
 	};
 

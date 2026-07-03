@@ -156,7 +156,7 @@ public:
 	struct ResourceLoadParams {
 		GolD3DRenderDevice* m_renderer; // 0x00
 		const LegoChar* m_fileName;     // 0x04
-		undefined4 m_binary;            // 0x08
+		LegoBool32 m_binary;            // 0x08
 	};
 
 	MenuInputBindingTable();

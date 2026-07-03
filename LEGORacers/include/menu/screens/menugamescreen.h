@@ -44,7 +44,7 @@ public:
 			VisualStateColor m_unk0xd0;        // 0xd0
 			undefined m_unk0xd4[0xd8 - 0xd4];  // 0xd4
 			undefined4 m_maxTextWidth;         // 0xd8
-			undefined4 m_hasMaxTextWidth;      // 0xdc
+			LegoBool32 m_hasMaxTextWidth;      // 0xdc
 		};
 
 		// SYNTHETIC: LEGORACERS 0x0047f0f0

@@ -22,7 +22,7 @@ class LegoRacers : public GolAppEventHandler {
 public:
 	// SIZE 0x18
 	struct RaceSlot {
-		undefined4 m_enabled; // 0x00
+		LegoBool32 m_enabled; // 0x00
 		undefined4 m_mirror;  // 0x04
 		GolName m_raceName;   // 0x08
 		GolName m_folderName; // 0x10

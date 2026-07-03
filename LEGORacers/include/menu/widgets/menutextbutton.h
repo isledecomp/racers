@@ -27,7 +27,7 @@ public:
 		undefined2 m_stringId;             // 0xd4
 		undefined2 m_unk0xd6;              // 0xd6
 		undefined4 m_maxTextWidth;         // 0xd8
-		undefined4 m_hasMaxTextWidth;      // 0xdc
+		LegoBool32 m_hasMaxTextWidth;      // 0xdc
 	};
 
 	MenuTextButton();

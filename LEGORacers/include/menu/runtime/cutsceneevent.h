@@ -35,7 +35,7 @@ protected:
 	GolWorldEntity* m_parsedEntity;      // 0x04
 	GolWorldEntity* m_entity;            // 0x08
 	GolAnimatedEntity* m_animatedEntity; // 0x0c
-	undefined4 m_disabled;               // 0x10
+	LegoBool32 m_disabled;               // 0x10
 };
 
 #endif // CUTSCENEEVENT_H

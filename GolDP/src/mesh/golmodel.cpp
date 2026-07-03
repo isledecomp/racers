@@ -6,10 +6,10 @@
 #include "golfileparser.h"
 #include "golmaterial.h"
 #include "mesh/gdbcoloredvertexarray.h"
+#include "mesh/gdbcoloredvertexarraybase.h"
+#include "mesh/gdbnormalvertexarray.h"
+#include "mesh/gdbprelitvertexarray.h"
 #include "mesh/gdbuncoloredvertexarray.h"
-#include "mesh/gdbvertexarraytypeone0x1c.h"
-#include "mesh/gdbvertexarraytypethree0x20.h"
-#include "mesh/gdbvertexarraytypetwo0x20.h"
 #include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(GolModel, 0x48)
@@ -62,13 +62,13 @@ void GolModel::VTable0x18(
 
 	switch (p_vertexType) {
 	case e_vertexType1:
-		m_unk0x40 = new GdbVertexArrayTypeOne0x1c;
+		m_unk0x40 = new GdbColoredVertexArray;
 		break;
 	case e_vertexType2:
-		m_unk0x40 = new GdbVertexArrayTypeTwo0x20;
+		m_unk0x40 = new GdbNormalVertexArray;
 		break;
 	case e_vertexType3:
-		m_unk0x40 = new GdbVertexArrayTypeThree0x20;
+		m_unk0x40 = new GdbPrelitVertexArray;
 		break;
 	default:
 		GOL_FATALERROR_MESSAGE("Unsupported vertex type");
@@ -121,7 +121,7 @@ void GolModel::VTable0x10(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x40 = new GdbVertexArrayTypeOne0x1c;
+	m_unk0x40 = new GdbColoredVertexArray;
 	m_unk0x10 = m_unk0x40;
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -137,7 +137,7 @@ void GolModel::VTable0x14(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x40 = new GdbVertexArrayTypeTwo0x20;
+	m_unk0x40 = new GdbNormalVertexArray;
 	m_unk0x10 = m_unk0x40;
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -180,7 +180,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 		m_unk0x3c = FALSE;
 	}
 
-	GdbColoredVertexArray* vertexArray = static_cast<GdbColoredVertexArray*>(m_unk0x40);
+	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_unk0x40);
 	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
 	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {
@@ -279,7 +279,7 @@ void GolModel::FUN_10006e00(
 		m_unk0x3c = FALSE;
 	}
 
-	GdbColoredVertexArray* vertexArray = static_cast<GdbColoredVertexArray*>(m_unk0x40);
+	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_unk0x40);
 	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
 	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
 	if (vertexArray->HasTransformedColors()) {

@@ -1,20 +1,21 @@
-#include "mesh/gdbvertexarraytypeone0x1c.h"
+#include "mesh/gdbnormalvertexarray.h"
 
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golmath.h"
 #include "surface/color.h"
 
-DECOMP_SIZE_ASSERT(GdbVertexArrayTypeOne0x1c, 0x1c)
+DECOMP_SIZE_ASSERT(GdbNormalVertexArray, 0x20)
 
-// FUNCTION: GOLDP 0x10005f90
-GdbVertexArrayTypeOne0x1c::GdbVertexArrayTypeOne0x1c()
+// FUNCTION: GOLDP 0x10016b80
+GdbNormalVertexArray::GdbNormalVertexArray()
 {
-	m_vertexType = 1;
+	m_unk0x1c = 0;
+	m_vertexType = 2;
 }
 
-// FUNCTION: GOLDP 0x10005fc0
-void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
+// FUNCTION: GOLDP 0x10016ba0
+void GdbNormalVertexArray::VTable0x08(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
@@ -42,6 +43,10 @@ void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+	m_unk0x1c = new GolVec3[m_count];
+	if (m_unk0x1c == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
 
 	for (i = 0; i < m_count; i++) {
 		m_positions[i].m_x = p_parser.ReadFloat();
@@ -49,18 +54,17 @@ void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
 		m_positions[i].m_z = p_parser.ReadFloat();
 		m_unk0x0c[i].m_x = p_parser.ReadFloat();
 		m_unk0x0c[i].m_y = p_parser.ReadFloat();
-		LegoU32 red = p_parser.ReadInteger() & 0xff;
-		LegoU32 grn = p_parser.ReadInteger() & 0xff;
-		LegoU32 blu = p_parser.ReadInteger() & 0xff;
-		LegoU32 alp = p_parser.ReadInteger() & 0xff;
-		m_unk0x10[i] = (alp << 24) | (red << 16) | (grn << 8) | (blu << 0);
+		m_unk0x1c[i].m_x = p_parser.ReadFloat();
+		m_unk0x1c[i].m_y = p_parser.ReadFloat();
+		m_unk0x1c[i].m_z = p_parser.ReadFloat();
+		m_unk0x10[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);
 	}
 
 	p_parser.ReadRightCurly();
 }
 
-// FUNCTION: GOLDP 0x10006150 FOLDED
-void GdbVertexArrayTypeOne0x1c::VTable0x04(LegoU16 p_count)
+// FUNCTION: GOLDP 0x10016d30
+void GdbNormalVertexArray::VTable0x04(LegoU16 p_count)
 {
 	LegoU32 i;
 
@@ -78,27 +82,53 @@ void GdbVertexArrayTypeOne0x1c::VTable0x04(LegoU16 p_count)
 	if (m_unk0x0c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+	m_unk0x1c = new GolVec3[m_count];
+	if (m_unk0x1c == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
 	m_unk0x10 = new LegoU32[m_count];
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	for (i = 0; i < m_count; i++) {
+		m_unk0x1c[i].m_x = 0.0f;
+		m_unk0x1c[i].m_y = 0.0f;
+		m_unk0x1c[i].m_z = 1.0f;
 		m_unk0x0c[i].m_x = 0.0f;
 		m_unk0x0c[i].m_y = 0.0f;
 		m_unk0x10[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);
 	}
 }
 
+// FUNCTION: GOLDP 0x10016e40
+void GdbNormalVertexArray::VTable0x0c()
+{
+	if (m_unk0x1c != NULL) {
+		delete[] m_unk0x1c;
+		m_unk0x1c = NULL;
+	}
+
+	GdbColoredVertexArrayBase::VTable0x0c();
+}
+
 // FUNCTION: GOLDP 0x10006210 FOLDED
-void GdbVertexArrayTypeOne0x1c::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
+void GdbNormalVertexArray::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
 {
 	p_dest->m_x = m_unk0x0c[p_index].m_x;
 	p_dest->m_y = m_unk0x0c[p_index].m_y;
 }
 
+// FUNCTION: GOLDP 0x10016e70 FOLDED
+void GdbNormalVertexArray::VTable0x1c(LegoU32 p_index, GolVec3* p_dest) const
+{
+	p_dest->m_x = m_unk0x1c[p_index].m_x;
+	p_dest->m_y = m_unk0x1c[p_index].m_y;
+	p_dest->m_z = m_unk0x1c[p_index].m_z;
+}
+
 // FUNCTION: GOLDP 0x10016ea0 FOLDED
-void GdbVertexArrayTypeOne0x1c::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
+void GdbNormalVertexArray::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = m_unk0x10[p_index] >> 16;
 	p_dest->m_grn = m_unk0x10[p_index] >> 8;
@@ -106,15 +136,23 @@ void GdbVertexArrayTypeOne0x1c::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) c
 	p_dest->m_alp = m_unk0x10[p_index] >> 24;
 }
 
+// FUNCTION: GOLDP 0x10016ee0
+void GdbNormalVertexArray::VTable0x2c(LegoU32 p_index, const GolVec3& p_arg2)
+{
+	m_unk0x1c[p_index].m_x = p_arg2.m_x;
+	m_unk0x1c[p_index].m_y = p_arg2.m_y;
+	m_unk0x1c[p_index].m_z = p_arg2.m_z;
+}
+
 // FUNCTION: GOLDP 0x100158f0 FOLDED
-void GdbVertexArrayTypeOne0x1c::VTable0x28(LegoU32 p_index, const GolVec2& p_arg2)
+void GdbNormalVertexArray::VTable0x28(LegoU32 p_index, const GolVec2& p_arg2)
 {
 	m_unk0x0c[p_index].m_x = p_arg2.m_x;
 	m_unk0x0c[p_index].m_y = p_arg2.m_y;
 }
 
 // FUNCTION: GOLDP 0x10006250 FOLDED
-void GdbVertexArrayTypeOne0x1c::VTable0x30(LegoU32 p_index, const ColorRGBA& p_arg2)
+void GdbNormalVertexArray::VTable0x30(LegoU32 p_index, const ColorRGBA& p_arg2)
 {
 	m_unk0x10[p_index] = ARGBU32(p_arg2.m_alp, p_arg2.m_red, p_arg2.m_grn, p_arg2.m_blu);
 }

@@ -109,10 +109,10 @@ set(COMMON_SOURCES
   common/src/goltransformbase.cpp
   common/src/golscenenode.cpp
   common/src/whitefalcon0x140light.cpp
-  common/src/silverdune0x30.cpp
-  common/src/golddune0x38.cpp
-  common/src/bronzedunebag0xc.cpp
-  common/src/bronzedune0x4c.cpp
+  common/src/golsurface.cpp
+  common/src/goltexture.cpp
+  common/src/goltexturepalette.cpp
+  common/src/golpalettedtexture.cpp
   common/src/whitefalcon0x140materialcolor.cpp
   common/src/cmbmodelpart.cpp
   common/src/cmbmodelparttrackdata.cpp
@@ -126,15 +126,15 @@ set(COMMON_SOURCES
   common/src/golviewfrustum.cpp
   common/src/golmodelmaterialtable.cpp
   common/src/golmodelbase.cpp
-  common/src/gdbvertexarray0xc.cpp
-  common/src/igdbmodelindexarray0x8.cpp
-  common/src/gdbmodelindexarray0xc.cpp
+  common/src/gdbvertexarray.cpp
+  common/src/gdbmodelindexarraybase.cpp
+  common/src/gdbmodelindexarray.cpp
   common/src/golmodelentity.cpp
   common/src/golanimatedentity.cpp
   common/src/mabmaterialframe.cpp
   common/src/mabmaterialtrack.cpp
   common/src/golmaterial.cpp
-  common/src/amethystbreeze0x104.cpp
+  common/src/golmodelrenderstate.cpp
   common/src/golmateriallibrary.cpp
 )
 
@@ -142,21 +142,21 @@ set(COMMON_SOURCES
 #This might represent another original static library or project grouping; keep the list
 #narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
-  GolDP/src/material/duskwindbananarelic0x30.cpp
+  GolDP/src/material/golsoftwarematerial.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/render/golrasterizers1.cpp
   GolDP/src/render/golrasterizers2.cpp
   GolDP/src/image/golimage.cpp
-  GolDP/src/image/whitebaffoon0x50.cpp
+  GolDP/src/image/goltiledtexture.cpp
   GolDP/src/render/golrenderdevice.cpp
   GolDP/src/render/gold3drendersurface.cpp
-  GolDP/src/surface/falcondunebag0x10.cpp
+  GolDP/src/surface/gold3dtexturepalette.cpp
   GolDP/src/surface/goldepthbuffer.cpp
   GolDP/src/font/golfont.cpp
-  GolDP/src/surface/purpledune0x7c.cpp
-  GolDP/src/material/purpleribbon0x24.cpp
-  GolDP/src/material/amberhaze0x20.cpp
-  GolDP/src/mesh/gdbcommonvertexarray0x1c.cpp
+  GolDP/src/surface/gold3dtexture.cpp
+  GolDP/src/material/gold3dtexturelist.cpp
+  GolDP/src/material/golsoftwaremateriallibrary.cpp
+  GolDP/src/mesh/gdbcoloredvertexarraybase.cpp
   GolDP/src/mesh/golmodel.cpp
   GolDP/src/camera/golscenetransformnode.cpp
 )
@@ -195,16 +195,16 @@ add_library(goldp SHARED
   GolDP/src/world/golworlddatabase.cpp
   GolDP/src/scene/golbillboard.cpp
   GolDP/src/scene/golbillboardex.cpp
-  GolDP/src/surface/slatepeak0x58.cpp
-  GolDP/src/surface/azureridge0x38.cpp
+  GolDP/src/surface/golrendertarget.cpp
+  GolDP/src/surface/goldisplaysurface.cpp
   GolDP/src/camera/golcamera.cpp
   GolDP/src/camera/goltransform.cpp
   GolDP/src/device/ddrawutil.cpp
-  GolDP/src/material/amberhaze0x20.cpp
+  GolDP/src/material/golsoftwaremateriallibrary.cpp
   GolDP/src/font/golfontlibrary.cpp
   GolDP/src/material/goltexturelist.cpp
-  GolDP/src/material/purpleribbon0x24.cpp
-  GolDP/src/surface/purpledune0x7c.cpp
+  GolDP/src/material/gold3dtexturelist.cpp
+  GolDP/src/surface/gold3dtexture.cpp
   GolDP/src/render/golrenderdevice.cpp
   GolDP/src/render/gold3drenderdevice.cpp
   GolDP/src/render/gold3drendersurface.cpp
@@ -212,18 +212,18 @@ add_library(goldp SHARED
   GolDP/src/material/golimagelist.cpp
   GolDP/src/font/golfonttable.cpp
   GolDP/src/font/golfont.cpp
-  GolDP/src/surface/moltenquillphantom0x34.cpp
-  GolDP/src/image/whitebaffoon0x50.cpp
+  GolDP/src/surface/golattachedsurface.cpp
+  GolDP/src/image/goltiledtexture.cpp
   GolDP/src/image/golimage.cpp
-  GolDP/src/material/duskwindbananarelic0x30.cpp
+  GolDP/src/material/golsoftwarematerial.cpp
   GolDP/src/surface/goldepthbuffer.cpp
   GolDP/src/render/golsoftwarerenderer.cpp
-  GolDP/src/surface/falcondunebag0x10.cpp
-  GolDP/src/mesh/gdbcommonvertexarray0x1c.cpp
-  GolDP/src/mesh/gdbvertexarraytypetwo0x20.cpp
-  GolDP/src/mesh/gdbvertexarraytypeone0x1c.cpp
-  GolDP/src/mesh/gdbvertexarraytypethree0x20.cpp
-  GolDP/src/mesh/gdbvertexarraymistery0x1c.cpp
+  GolDP/src/surface/gold3dtexturepalette.cpp
+  GolDP/src/mesh/gdbcoloredvertexarraybase.cpp
+  GolDP/src/mesh/gdbcoloredvertexarray.cpp
+  GolDP/src/mesh/gdbnormalvertexarray.cpp
+  GolDP/src/mesh/gdbprelitvertexarray.cpp
+  GolDP/src/mesh/gdbuncoloredvertexarray.cpp
   GolDP/src/mesh/golmodel.cpp
   GolDP/src/camera/golscenetransformnode.cpp
   util/decomp.cpp

@@ -15,7 +15,7 @@
 #include "golsurfaceformat.h"
 #include "goltexture.h"
 #include "image/golimage.h"
-#include "mesh/gdbvertexarraytypetwo0x20.h"
+#include "mesh/gdbnormalvertexarray.h"
 #include "mesh/golmodel.h"
 #include "render/gold3drendersurface.h"
 #include "render/goldrawdpstate.h"
@@ -2466,8 +2466,7 @@ void GolD3DRenderDevice::FUN_1000add0(GolWorldEntity* p_model, GolModel* p_model
 	m_unk0xc8450.m_m[3][1] = position.m_y;
 	m_unk0xc8450.m_m[3][2] = position.m_z;
 
-	GdbVertexArrayTypeTwo0x20* vertexArray =
-		static_cast<GdbVertexArrayTypeTwo0x20*>(p_modelData->GetModelVertexArray());
+	GdbNormalVertexArray* vertexArray = static_cast<GdbNormalVertexArray*>(p_modelData->GetModelVertexArray());
 	m_unk0xc4c1c = vertexArray->GetNormals();
 
 	for (LegoU32 i = 0; i < m_unk0x11c; i++) {

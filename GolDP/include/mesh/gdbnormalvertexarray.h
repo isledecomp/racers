@@ -1,14 +1,14 @@
-#ifndef GDBVERTEXARRAYTYPETWO0x20_H
-#define GDBVERTEXARRAYTYPETWO0x20_H
+#ifndef GDBNORMALVERTEXARRAY_H
+#define GDBNORMALVERTEXARRAY_H
 
 #include "compat.h"
-#include "mesh/gdbcoloredvertexarray.h"
+#include "mesh/gdbcoloredvertexarraybase.h"
 
 // VTABLE: GOLDP 0x10056894
 // SIZE 0x20
-class GdbVertexArrayTypeTwo0x20 : public GdbColoredVertexArray {
+class GdbNormalVertexArray : public GdbColoredVertexArrayBase {
 public:
-	GdbVertexArrayTypeTwo0x20();
+	GdbNormalVertexArray();
 
 	void VTable0x04(LegoU16 p_count) override;                          // vtable+0x04
 	void VTable0x08(GolFileParser& p_parser) override;                  // vtable+0x08
@@ -20,16 +20,10 @@ public:
 	void VTable0x2c(LegoU32 p_index, const GolVec3&) override;          // vtable+0x2c
 	void VTable0x30(LegoU32 p_index, const ColorRGBA&) override;        // vtable+0x30
 
-	// SYNTHETIC: GOLDP 0x10005fb0 FOLDED
-	// GdbVertexArrayTypeTwo0x20::~GdbVertexArrayTypeTwo0x20
-
-	// SYNTHETIC: GOLDP 0x10016af0 FOLDED
-	// GdbVertexArrayTypeTwo0x20::`scalar deleting destructor'
-
 	GolVec3* GetNormals() const { return m_unk0x1c; }
 
 protected:
 	GolVec3* m_unk0x1c; // 0x1c
 };
 
-#endif // GDBVERTEXARRAYTYPETWO0x20_H
+#endif // GDBNORMALVERTEXARRAY_H

@@ -2,31 +2,29 @@
 #define GDBCOLOREDVERTEXARRAY_H
 
 #include "compat.h"
-#include "gdbvertexarray.h"
+#include "mesh/gdbcoloredvertexarraybase.h"
 
-// VTABLE: GOLDP 0x100568d0
+struct GolVec2;
+struct ColorRGBA;
+
+// VTABLE: GOLDP 0x10056388
 // SIZE 0x1c
-class GdbColoredVertexArray : public GdbVertexArray {
+class GdbColoredVertexArray : public GdbColoredVertexArrayBase {
 public:
 	GdbColoredVertexArray();
-	~GdbColoredVertexArray() override; // vtable+0x00
-	void VTable0x0c() override;
-	void VTable0x34(const ColorTransform& p_details) override;
-	void VTable0x38() override;
 
-	// SYNTHETIC: GOLDP 0x10016f40
+	void VTable0x04(LegoU16 p_count) override;                          // vtable+0x04
+	void VTable0x08(GolFileParser& p_parser) override;                  // vtable+0x08
+	void VTable0x18(LegoU32 p_index, GolVec2* p_dest) const override;   // vtable+0x18
+	void VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const override; // vtable+0x20
+	void VTable0x28(LegoU32 p_index, const GolVec2& p_arg2) override;   // vtable+0x28
+	void VTable0x30(LegoU32 p_index, const ColorRGBA&) override;        // vtable+0x30
+
+	// SYNTHETIC: GOLDP 0x10005fb0 FOLDED
+	// GdbColoredVertexArray::~GdbColoredVertexArray
+
+	// SYNTHETIC: GOLDP 0x10016af0 FOLDED
 	// GdbColoredVertexArray::`scalar deleting destructor'
-
-	GolVec2* GetTextureCoordinates() const { return m_unk0x0c; }
-	LegoU32* GetColors() const { return m_unk0x10; }
-	LegoBool32 HasTransformedColors() const { return m_unk0x14; }
-	LegoU32* GetTransformedColors() const { return m_unk0x18; }
-
-protected:
-	GolVec2* m_unk0x0c;   // 0x0c
-	LegoU32* m_unk0x10;   // 0x10
-	undefined4 m_unk0x14; // 0x14
-	LegoU32* m_unk0x18;   // 0x18
 };
 
 #endif // GDBCOLOREDVERTEXARRAY_H

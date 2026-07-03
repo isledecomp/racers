@@ -14,9 +14,9 @@ public:
 	GolDrawDPState();
 	~GolDrawDPState() override; // vtable+0x04
 
-	LegoS32 VTable0x00() override;                                                               // vtable+0x00
+	LegoS32 CreateDevice() override;                                                               // vtable+0x00
 	void SetWindowHandle(HWND p_hWnd) override;                                                  // vtable+0x08
-	void VTable0x0c(const char* p_driverName, const char* p_deviceName) override;                // vtable+0x0c
+	void SelectDevice(const char* p_driverName, const char* p_deviceName) override;                // vtable+0x0c
 	LegoU32 GetDriverCount() override;                                                           // vtable+0x10
 	const LegoChar* GetDriverDescription(LegoU32 p_index) override;                              // vtable+0x14
 	const LegoChar* GetDriverName(LegoU32 p_index) override;                                     // vtable+0x18
@@ -24,14 +24,14 @@ public:
 	const LegoChar* GetDeviceName(LegoU32 p_driverIndex, LegoU32 p_deviceIndex) override;        // vtable+0x20
 	const LegoChar* GetDeviceDescription(LegoU32 p_driverIndex, LegoU32 p_deviceIndex) override; // vtable+0x24
 	LegoBool32 IsDeviceHwAccelerated(LegoU32 p_driverIndex, LegoU32 p_deviceIndex) override;     // vtable+0x28
-	void VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex) override;   // vtable+0x2c
+	void FindDevice(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex) override;   // vtable+0x2c
 	void GetDriverGuid(LegoU32 p_driverIndex, GUID* p_guid) override;                            // vtable+0x30
 	void GetDeviceGuid(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid) override;     // vtable+0x34
 	GUID* GetCurrentDriverGuid() const override;                                                 // vtable+0x38
 
-	void VTable0x48() override;                                // vtable+0x48
-	void VTable0x50() override;                                // vtable+0x50
-	undefined4 VTable0x58() override;                          // vtable+0x58
+	void DestroyDisplay() override;                                // vtable+0x48
+	void ReleaseDisplay() override;                                // vtable+0x50
+	undefined4 CreateDirect3D() override;                          // vtable+0x58
 	LegoU32 GetZBufferBitDepth() const override;               // vtable+0x5c
 	LegoBool32 IsHwAccelerated() override;                     // vtable+0x60
 	LegoBool32 SupportsCulling() const override;               // vtable+0x64
@@ -82,8 +82,8 @@ private:
 	GolDeviceList m_deviceList;                // 0x2e4
 	LegoChar* m_driverName;                    // 0x2f4
 	LegoChar* m_deviceName;                    // 0x2f8
-	GolRenderTarget m_unk0x2fc;                // 0x2fc
-	GolD3DRenderDevice m_unk0x354;             // 0x354
+	GolRenderTarget m_renderTarget;                // 0x2fc
+	GolD3DRenderDevice m_renderer;             // 0x354
 };
 
 #endif // GOLDP_GOLDPSTATE_H

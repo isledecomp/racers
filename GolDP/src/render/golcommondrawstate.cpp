@@ -10,18 +10,18 @@ GolCommonDrawState::GolCommonDrawState()
 }
 
 // FUNCTION: GOLDP 0x100184e0
-LegoS32 GolCommonDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
+LegoS32 GolCommonDrawState::RecreateDisplay(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
 {
-	LegoS32 result = GolDrawState::VTable0x44(p_width, p_height, p_bpp, p_flags);
+	LegoS32 result = GolDrawState::RecreateDisplay(p_width, p_height, p_bpp, p_flags);
 	if (!result) {
-		result = VTable0x58();
+		result = CreateDirect3D();
 	}
 
 	return result;
 }
 
 // FUNCTION: GOLDP 0x10018510
-void GolCommonDrawState::VTable0x48()
+void GolCommonDrawState::DestroyDisplay()
 {
 	GolD3DRenderDevice* next;
 	for (GolD3DRenderDevice* renderer = m_rendererList; renderer; renderer = next) {
@@ -29,24 +29,24 @@ void GolCommonDrawState::VTable0x48()
 		renderer->VTable0x18();
 	}
 
-	GolDrawState::VTable0x48();
+	GolDrawState::DestroyDisplay();
 }
 
 // FUNCTION: GOLDP 0x10018540
-void GolCommonDrawState::VTable0x50()
+void GolCommonDrawState::ReleaseDisplay()
 {
 	for (GolD3DRenderDevice* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
 		renderer->ReleaseResources();
 	}
 
-	GolDrawState::VTable0x50();
+	GolDrawState::ReleaseDisplay();
 }
 
 // FUNCTION: GOLDP 0x10018570
-LegoS32 GolCommonDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p_bp, LegoU32 p_flags)
+LegoS32 GolCommonDrawState::CreateDisplay(LegoS32 p_width, LegoS32 p_height, undefined4 p_bp, LegoU32 p_flags)
 {
-	GolDrawState::VTable0x54(p_width, p_height, p_bp, p_flags);
-	LegoS32 result = VTable0x58();
+	GolDrawState::CreateDisplay(p_width, p_height, p_bp, p_flags);
+	LegoS32 result = CreateDirect3D();
 	if (!result) {
 		for (GolD3DRenderDevice* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
 			if (renderer != m_currentRenderer) {

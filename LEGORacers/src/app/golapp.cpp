@@ -39,7 +39,7 @@ GolApp::~GolApp()
 // FUNCTION: LEGORACERS 0x00416450
 void GolApp::PresentFrame()
 {
-	m_golDrawState->VTable0x4c();
+	m_golDrawState->Present();
 }
 
 // FUNCTION: LEGORACERS 0x00416460

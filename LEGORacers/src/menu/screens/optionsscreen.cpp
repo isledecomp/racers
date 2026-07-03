@@ -183,7 +183,7 @@ void OptionsScreen::ApplyVideoDriver()
 	flags = 0;
 	if (deviceIndex < drawState->GetDeviceCount(driverIndex)) {
 		const LegoChar* deviceName = drawState->GetDeviceName(driverIndex, deviceIndex);
-		drawState->VTable0x0c(driverName, deviceName);
+		drawState->SelectDevice(driverName, deviceName);
 		flags = GolDrawState::c_flagBit14;
 	}
 
@@ -199,10 +199,10 @@ void OptionsScreen::ApplyVideoDriver()
 		drawStateFlags |= GolApp::c_flagBit8;
 	}
 
-	drawState->VTable0x50();
+	drawState->ReleaseDisplay();
 	undefined4 bpp = drawState->m_bpp;
 	LegoS32 height = drawState->m_height;
 	LegoS32 width = drawState->m_width;
 	drawState
-		->VTable0x54(width, height, bpp, m_context->m_context->m_golApp->BuildDrawStateFlags(drawStateFlags) | flags);
+		->CreateDisplay(width, height, bpp, m_context->m_context->m_golApp->BuildDrawStateFlags(drawStateFlags) | flags);
 }

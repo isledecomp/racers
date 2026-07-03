@@ -46,7 +46,7 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 	::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 	surfaceDesc.dwSize = sizeof(surfaceDesc);
 
-	if (!(p_drawState->m_flags & GolDrawState::c_flagBit9)) {
+	if (!(p_drawState->m_flags & GolDrawState::c_flagHardwareDevice)) {
 		m_surfaceFlags |= c_surfaceFlagWindowed;
 
 		DWORD memoryCaps;

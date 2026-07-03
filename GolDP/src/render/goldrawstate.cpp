@@ -11,7 +11,7 @@ GolDrawState::GolDrawState()
 	m_height = 0;
 	m_bpp = 0;
 	m_flags = 0;
-	m_unk0x14 = NULL;
+	m_displaySurface = NULL;
 }
 
 // FUNCTION: GOLDP 0x1001d5b0
@@ -20,13 +20,13 @@ GolDrawState::~GolDrawState()
 }
 
 // FUNCTION: GOLDP 0x1001d5c0
-LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
+LegoS32 GolDrawState::RecreateDisplay(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
 {
-	if (m_flags & c_flagBit0) {
-		VTable0x48();
+	if (m_flags & c_flagCreated) {
+		DestroyDisplay();
 	}
 
-	LegoU32 flags = m_flags | c_flagBit1;
+	LegoU32 flags = m_flags | c_flagRecreating;
 	LegoU32 bpp = p_bpp;
 	LegoU32 height = p_height;
 	m_flags = flags;
@@ -50,21 +50,21 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 	m_flags = p_flags;
 	m_width = width;
 
-	LegoS32 result = VTable0x00();
+	LegoS32 result = CreateDevice();
 	if (result) {
 		return result;
 	}
 
-	m_unk0x14->Create(this, m_width, m_height, m_bpp);
+	m_displaySurface->Create(this, m_width, m_height, m_bpp);
 
-	m_flags &= ~c_flagBit1;
-	m_flags |= c_flagBit0;
+	m_flags &= ~c_flagRecreating;
+	m_flags |= c_flagCreated;
 
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolDrawState::VTable0x0c(const char* p_driverName, const char* p_deviceName)
+void GolDrawState::SelectDevice(const char* p_driverName, const char* p_deviceName)
 {
 	// empty
 }
@@ -76,16 +76,16 @@ LegoU32 GolDrawState::GetDriverCount()
 }
 
 // FUNCTION: GOLDP 0x1001d640
-void GolDrawState::VTable0x50()
+void GolDrawState::ReleaseDisplay()
 {
-	m_flags |= c_flagBit1;
-	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
-		m_unk0x14->Destroy();
+	m_flags |= c_flagRecreating;
+	if (m_displaySurface != NULL && (m_displaySurface->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
+		m_displaySurface->Destroy();
 	}
 }
 
 // FUNCTION: GOLDP 0x1001d660
-LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p_bpp, LegoU32 p_flags)
+LegoS32 GolDrawState::CreateDisplay(LegoS32 p_width, LegoS32 p_height, undefined4 p_bpp, LegoU32 p_flags)
 {
 	if (p_width == 0) {
 		p_width = 640;
@@ -104,30 +104,30 @@ LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p
 	m_height = p_height;
 	m_flags = p_flags;
 
-	LegoS32 result = VTable0x00();
+	LegoS32 result = CreateDevice();
 	if (result != 0) {
 		return result;
 	}
 
-	m_unk0x14->Create(this, m_width, m_height, m_bpp);
-	m_flags &= ~c_flagBit1;
-	m_flags |= c_flagBit0;
+	m_displaySurface->Create(this, m_width, m_height, m_bpp);
+	m_flags &= ~c_flagRecreating;
+	m_flags |= c_flagCreated;
 
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1001d6d0
-void GolDrawState::VTable0x4c()
+void GolDrawState::Present()
 {
-	m_unk0x14->Present(NULL);
+	m_displaySurface->Present(NULL);
 }
 
 // FUNCTION: GOLDP 0x1001d6e0
-void GolDrawState::VTable0x48()
+void GolDrawState::DestroyDisplay()
 {
-	m_flags &= ~c_flagBit0;
-	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
-		m_unk0x14->Destroy();
+	m_flags &= ~c_flagCreated;
+	if (m_displaySurface != NULL && (m_displaySurface->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
+		m_displaySurface->Destroy();
 	}
 }
 
@@ -150,7 +150,7 @@ LegoU32 GolDrawState::GetDeviceCount(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x1001d710
-void GolDrawState::VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex)
+void GolDrawState::FindDevice(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex)
 {
 	*p_driverIndex = 0;
 	*p_deviceIndex = 0;

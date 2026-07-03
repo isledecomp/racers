@@ -382,7 +382,7 @@ LegoS32 MenuInputDispatcher::Update(undefined4 p_elapsedMs)
 			DispatchMouseMove(mouse);
 		}
 
-		if (m_drawState->m_flags & GolDrawState::c_flagBit9) {
+		if (m_drawState->m_flags & GolDrawState::c_flagHardwareDevice) {
 			m_cursor.UpdatePosition(p_elapsedMs);
 		}
 	}

@@ -19,13 +19,13 @@ public:
 	// SYNTHETIC: GOLDP 0x10001100
 	// GolCommonDrawState::~GolCommonDrawState
 
-	LegoS32 VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
+	LegoS32 RecreateDisplay(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
 					   LegoU32 p_flags) override; // vtable+0x44
-	void VTable0x48() override;                   // vtable+0x48
-	void VTable0x50() override;                   // vtable+0x50
-	LegoS32 VTable0x54(LegoS32, LegoS32, undefined4,
+	void DestroyDisplay() override;                   // vtable+0x48
+	void ReleaseDisplay() override;                   // vtable+0x50
+	LegoS32 CreateDisplay(LegoS32, LegoS32, undefined4,
 					   LegoU32) override;                     // vtable+0x54
-	virtual undefined4 VTable0x58() = 0;                      // vtable+0x58
+	virtual undefined4 CreateDirect3D() = 0;                      // vtable+0x58
 	virtual LegoU32 GetZBufferBitDepth() const;               // vtable+0x5c
 	virtual LegoBool32 IsHwAccelerated();                     // vtable+0x60
 	virtual LegoBool32 SupportsCulling() const;               // vtable+0x64

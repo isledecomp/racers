@@ -513,14 +513,14 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	D3DDEVICEDESC helCaps;
 
 	m_flags = c_flagBit0 | c_flagBit5;
-	if (p_flags & GolDrawState::c_flagBit21) {
+	if (p_flags & GolDrawState::c_flagPreferAlphaTest) {
 		m_flags |= c_flagBit20;
 	}
 	if (p_flags & GolDrawState::c_flagBit12) {
 		m_flags |= c_flagBit1;
 	}
 
-	forceSoftware = p_flags & GolDrawState::c_flagBit16;
+	forceSoftware = p_flags & GolDrawState::c_flagForceSoftware;
 	if (!forceSoftware) {
 		m_unk0xc384c = 0;
 		m_unk0xc83c4 = 0;
@@ -646,7 +646,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	GolSoftwareRenderer::PixelFormat swPixelFormat;
 	if (swTextureFormat.m_bitsPerPixel == 8) {
 		swPixelFormat = GolSoftwareRenderer::PixelFormat::e_formatIndex8;
-		if (m_drawState->m_flags & GolDrawState::c_flagBit18) {
+		if (m_drawState->m_flags & GolDrawState::c_flagTexturePalettes) {
 			m_paletteMode = 1;
 		}
 		else {
@@ -728,7 +728,7 @@ void GolD3DRenderDevice::FUN_100082e0()
 	);
 
 	m_d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESS, D3DTADDRESS_WRAP);
-	if ((m_drawState->m_flags & GolDrawState::c_flagBit3) && m_drawState->IsHwAccelerated()) {
+	if ((m_drawState->m_flags & GolDrawState::c_flagAntialias) && m_drawState->IsHwAccelerated()) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ANTIALIAS, D3DANTIALIAS_SORTINDEPENDENT);
 	}
 	else {

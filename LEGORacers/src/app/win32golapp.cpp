@@ -118,8 +118,8 @@ void Win32GolApp::ShutdownDisplay()
 	m_unk0x808 = 0;
 	m_renderer = NULL;
 
-	if (m_golDrawState && (m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
-		m_golDrawState->VTable0x48();
+	if (m_golDrawState && (m_golDrawState->GetFlags() & GolDrawState::c_flagCreated)) {
+		m_golDrawState->DestroyDisplay();
 	}
 
 	m_flags &= ~c_flagDisplayActive;
@@ -268,7 +268,7 @@ void Win32GolApp::InitializeDisplayWithDevice(
 	const LegoChar* p_deviceName
 )
 {
-	m_golDrawState->VTable0x0c(p_driverName, p_deviceName);
+	m_golDrawState->SelectDevice(p_driverName, p_deviceName);
 	InitializeDisplay(p_width, p_height, p_bpp, p_flags | c_flagBit2);
 }
 
@@ -286,16 +286,16 @@ LegoS32 Win32GolApp::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, LegoU3
 	m_windowStateChanging = TRUE;
 
 	LegoU32 drawFlags = BuildDrawStateFlags(p_flags);
-	LegoS32 result = m_golDrawState->VTable0x44(p_width, p_height, p_bpp, drawFlags);
+	LegoS32 result = m_golDrawState->RecreateDisplay(p_width, p_height, p_bpp, drawFlags);
 	if (result) {
 		return result;
 	}
 
 	GolCommonDrawState* commonState = static_cast<GolCommonDrawState*>(m_golDrawState);
 	Win32GolApp::m_renderer = commonState->m_currentRenderer;
-	m_unk0x808 = (undefined4) m_golDrawState->m_unk0x14;
+	m_unk0x808 = (undefined4) m_golDrawState->m_displaySurface;
 
-	if (m_golDrawState->m_flags & GolDrawState::c_flagBit9) {
+	if (m_golDrawState->m_flags & GolDrawState::c_flagHardwareDevice) {
 		m_flags |= c_flagFullscreen;
 	}
 
@@ -355,7 +355,7 @@ LegoS32 Win32GolApp::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, LegoU3
 // FUNCTION: LEGORACERS 0x00416cd0
 void Win32GolApp::ToggleFullscreen()
 {
-	if (m_golDrawState->GetFlags() & GolDrawState::c_flagBit0) {
+	if (m_golDrawState->GetFlags() & GolDrawState::c_flagCreated) {
 		OutputDebugString("Toggling full-screen mode\n");
 
 		if (m_flags & c_flagFullscreen) {
@@ -471,7 +471,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 	if (!m_golDrawState) {
 		return;
 	}
-	if (!(m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
+	if (!(m_golDrawState->GetFlags() & GolDrawState::c_flagCreated)) {
 		return;
 	}
 	if (p_mode == m_windowMode) {
@@ -484,7 +484,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 		m_eventHandler->OnWindowModeChanging();
 	}
 
-	m_golDrawState->VTable0x50();
+	m_golDrawState->ReleaseDisplay();
 
 	LegoU32 drawFlags = BuildDrawStateFlags(m_flags) & ~GolDrawState::c_flagBit15;
 
@@ -493,9 +493,9 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 	if (p_mode == c_windowModeWindowed) {
 		OutputDebugString("--to windowed\n");
 		m_golDrawState
-			->VTable0x54(m_width, m_height, m_bpp, drawFlags & ~(GolDrawState::c_flagBit9 | GolDrawState::c_flagBit10));
+			->CreateDisplay(m_width, m_height, m_bpp, drawFlags & ~(GolDrawState::c_flagHardwareDevice | GolDrawState::c_flagBit10));
 
-		if (m_golDrawState->m_flags & GolDrawState::c_flagBit9) {
+		if (m_golDrawState->m_flags & GolDrawState::c_flagHardwareDevice) {
 			OutputDebugString("--from full screen\n");
 			m_flags |= c_flagFullscreen;
 			m_windowMode = c_windowModeFullscreen;
@@ -557,7 +557,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 	else if (p_mode == c_windowModeFullscreen) {
 		OutputDebugString("--to full screen\n");
 		m_flags |= c_flagFullscreen;
-		LegoU32 fullscreenFlags = drawFlags | (GolDrawState::c_flagBit9 | GolDrawState::c_flagBit10);
+		LegoU32 fullscreenFlags = drawFlags | (GolDrawState::c_flagHardwareDevice | GolDrawState::c_flagBit10);
 		m_windowMode = c_windowModeFullscreen;
 		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_fullscreenStyle);
 		if (m_flags & c_flagBit8) {
@@ -576,7 +576,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 			);
 		}
 
-		m_golDrawState->VTable0x54(m_width, m_height, m_bpp, fullscreenFlags);
+		m_golDrawState->CreateDisplay(m_width, m_height, m_bpp, fullscreenFlags);
 
 		if (m_eventHandler) {
 			m_eventHandler->OnWindowModeChanged();
@@ -707,7 +707,7 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 
 		if (GetUpdateRect(p_hWnd, &rect, FALSE)) {
 			HDC hdc = BeginPaint(p_hWnd, &paint);
-			if (!(self->m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
+			if (!(self->m_golDrawState->GetFlags() & GolDrawState::c_flagCreated)) {
 				FillRect(hdc, &rect, (HBRUSH) GetStockObject(BLACK_BRUSH));
 			}
 
@@ -781,7 +781,7 @@ LegoU32 Win32GolApp::BuildDrawStateFlags(LegoU32 p_flags)
 {
 	LegoU32 result = 0;
 	if (p_flags & c_flagFullscreen) {
-		result |= GolDrawState::c_flagBit9 | GolDrawState::c_flagBit10;
+		result |= GolDrawState::c_flagHardwareDevice | GolDrawState::c_flagBit10;
 	}
 	if (p_flags & c_flagBit5) {
 		result |= GolDrawState::c_flagBit11;
@@ -790,7 +790,7 @@ LegoU32 Win32GolApp::BuildDrawStateFlags(LegoU32 p_flags)
 		result |= GolDrawState::c_flagBit12;
 	}
 	if (p_flags & c_flagBit6) {
-		result |= GolDrawState::c_flagBit3;
+		result |= GolDrawState::c_flagAntialias;
 	}
 	if (p_flags & c_flagPrimaryDriver) {
 		result |= GolDrawState::c_flagBit13;
@@ -799,7 +799,7 @@ LegoU32 Win32GolApp::BuildDrawStateFlags(LegoU32 p_flags)
 		result |= GolDrawState::c_flagBit15;
 	}
 	if (p_flags & c_flagBit10) {
-		result |= GolDrawState::c_flagBit16;
+		result |= GolDrawState::c_flagForceSoftware;
 	}
 	if (p_flags & c_flagBit17) {
 		result |= GolDrawState::c_flagBit17;
@@ -808,13 +808,13 @@ LegoU32 Win32GolApp::BuildDrawStateFlags(LegoU32 p_flags)
 		result |= GolDrawState::c_flagBit14;
 	}
 	if (p_flags & c_flagBit12) {
-		result |= GolDrawState::c_flagBit18;
+		result |= GolDrawState::c_flagTexturePalettes;
 	}
 	if (p_flags & c_flagBit13) {
 		result |= GolDrawState::c_flagBit19;
 	}
 	if (p_flags & c_flagAlphaTransparency) {
-		result |= GolDrawState::c_flagBit21;
+		result |= GolDrawState::c_flagPreferAlphaTest;
 	}
 
 	return result;

@@ -22,8 +22,8 @@ GolDrawDPState::GolDrawDPState()
 	m_device = NULL;
 	::memset(&m_deviceGuid, 0, sizeof(m_deviceGuid));
 	m_hwAccelerated = FALSE;
-	m_currentRenderer = &m_unk0x354;
-	m_unk0x14 = &m_unk0x2fc;
+	m_currentRenderer = &m_renderer;
+	m_displaySurface = &m_renderTarget;
 }
 
 // FUNCTION: GOLDP 0x10001110
@@ -39,7 +39,7 @@ GolDrawDPState::~GolDrawDPState()
 		m_deviceName = NULL;
 	}
 
-	GolCommonDrawState::VTable0x48();
+	GolCommonDrawState::DestroyDisplay();
 	ReleaseDDraw();
 }
 
@@ -50,9 +50,9 @@ void GolDrawDPState::SetWindowHandle(HWND p_hWnd)
 }
 
 // FUNCTION: GOLDP 0x100011f0
-void GolDrawDPState::VTable0x48()
+void GolDrawDPState::DestroyDisplay()
 {
-	GolCommonDrawState::VTable0x48();
+	GolCommonDrawState::DestroyDisplay();
 	ReleaseDDraw();
 }
 
@@ -86,33 +86,33 @@ void GolDrawDPState::ReleaseDDraw()
 }
 
 // FUNCTION: GOLDP 0x100012b0
-void GolDrawDPState::VTable0x50()
+void GolDrawDPState::ReleaseDisplay()
 {
-	m_flags &= ~(c_flagBit12 | c_flagBit11 | c_flagBit10 | c_flagBit9);
-	GolCommonDrawState::VTable0x50();
+	m_flags &= ~(c_flagBit12 | c_flagBit11 | c_flagBit10 | c_flagHardwareDevice);
+	GolCommonDrawState::ReleaseDisplay();
 	ReleaseDDraw();
 }
 
 // FUNCTION: GOLDP 0x100012d0
-LegoS32 GolDrawDPState::VTable0x00()
+LegoS32 GolDrawDPState::CreateDevice()
 {
 	DDCAPS helCaps;
 	char buffer[100];
 	DDSURFACEDESC displayMode;
 	m_ddraw = NULL;
 
-	if (m_flags & (c_flagBit16 | c_flagBit17)) {
+	if (m_flags & (c_flagForceSoftware | c_flagBit17)) {
 		m_flags |= c_flagBit11 | c_flagBit13;
 	}
 	else {
 		m_flags &= ~c_flagBit19;
 	}
 
-	if ((m_flags & c_flagBit16) && (m_flags & c_flagBit18)) {
+	if ((m_flags & c_flagForceSoftware) && (m_flags & c_flagTexturePalettes)) {
 		m_bpp = 8;
 	}
 
-	if (!(m_flags & c_flagBit9)) {
+	if (!(m_flags & c_flagHardwareDevice)) {
 		if (DirectDrawCreate(NULL, &m_ddraw, NULL) != DD_OK) {
 			GOL_FATALERROR_MESSAGE("Unable to create DirectDraw object");
 		}
@@ -125,7 +125,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 		}
 
 		if (displayMode.ddpfPixelFormat.dwRGBBitCount != m_bpp) {
-			m_flags |= c_flagBit9;
+			m_flags |= c_flagHardwareDevice;
 		}
 
 		m_ddraw->Release();
@@ -146,7 +146,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 	HRESULT hResult = m_ddraw->QueryInterface(IID_IDirectDraw4, (LPVOID*) &m_ddraw4);
 	if (hResult != DD_OK) {
 		::sprintf(buffer, "DirectDraw QueryInterface() error\nerror code = 0x%x", hResult);
-		VTable0x48();
+		DestroyDisplay();
 		GOL_FATALERROR_MESSAGE(buffer);
 	}
 
@@ -164,10 +164,10 @@ LegoS32 GolDrawDPState::VTable0x00()
 		m_flags |= c_flagBit13;
 	}
 	else {
-		m_flags = (m_flags & ~c_flagBit13) | c_flagBit9;
+		m_flags = (m_flags & ~c_flagBit13) | c_flagHardwareDevice;
 	}
 
-	if (!(m_flags & (c_flagBit11 | c_flagBit16 | c_flagBit17)) && (m_ddrawCaps.dwCaps & DDCAPS_3D) &&
+	if (!(m_flags & (c_flagBit11 | c_flagForceSoftware | c_flagBit17)) && (m_ddrawCaps.dwCaps & DDCAPS_3D) &&
 		device->m_hwAccelerated) {
 		m_flags &= ~c_flagBit11;
 		m_hwAccelerated = TRUE;
@@ -176,11 +176,11 @@ LegoS32 GolDrawDPState::VTable0x00()
 		m_hwAccelerated = FALSE;
 		m_flags |= c_flagBit11;
 		if (!(m_flags & c_flagBit17)) {
-			m_flags |= c_flagBit16;
+			m_flags |= c_flagForceSoftware;
 		}
 	}
 
-	if (m_flags & c_flagBit9) {
+	if (m_flags & c_flagHardwareDevice) {
 		m_flags |= c_flagBit10;
 		hResult = m_ddraw4->SetCooperativeLevel(m_hWnd, DDSCL_FPUSETUP | DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
 	}
@@ -195,7 +195,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 		return -1;
 	}
 
-	if (m_flags & c_flagBit9) {
+	if (m_flags & c_flagHardwareDevice) {
 		hResult = m_ddraw4->SetDisplayMode(m_width, m_height, m_bpp, 0, 0);
 		if (hResult != DD_OK) {
 			ReleaseDDraw();
@@ -365,16 +365,16 @@ LegoBool32 GolDrawDPState::SupportsRenderingInWindow() const
 }
 
 // FUNCTION: GOLDP 0x10001750
-undefined4 GolDrawDPState::VTable0x58()
+undefined4 GolDrawDPState::CreateDirect3D()
 {
 	HRESULT hResult;
 	LegoChar buffer[100];
 
-	if (!(m_flags & c_flagBit16)) {
+	if (!(m_flags & c_flagForceSoftware)) {
 		hResult = m_ddraw->QueryInterface(IID_IDirect3D3, reinterpret_cast<LPVOID*>(&m_d3d3));
 		if (hResult != DD_OK) {
 			::sprintf(buffer, "DirectDraw QueryInterface(IID_IDirect3D3) error\nerror code = 0x%x", hResult);
-			VTable0x48();
+			DestroyDisplay();
 			GOL_FATALERROR_MESSAGE(buffer);
 		}
 
@@ -382,13 +382,13 @@ undefined4 GolDrawDPState::VTable0x58()
 		if ((m_bpp == 4 && !(renderBitDepth & DDBD_4)) || (m_bpp == 8 && !(renderBitDepth & DDBD_8)) ||
 			(m_bpp == 16 && !(renderBitDepth & DDBD_16)) || (m_bpp == 24 && !(renderBitDepth & DDBD_24)) ||
 			(m_bpp == 32 && !(renderBitDepth & DDBD_32))) {
-			VTable0x48();
+			DestroyDisplay();
 			GOL_FATALERROR_MESSAGE("Direct3D error\ncurrent bit depth not supported for 3D rendering");
 		}
 
-		if ((m_flags & c_flagBit3) &&
+		if ((m_flags & c_flagAntialias) &&
 			!(m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_ANTIALIASSORTINDEPENDENT)) {
-			m_flags &= ~c_flagBit3;
+			m_flags &= ~c_flagAntialias;
 		}
 
 		if (!(m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_ZBUFFERLESSHSR)) {
@@ -416,21 +416,21 @@ undefined4 GolDrawDPState::VTable0x58()
 		}
 	}
 
-	if (!(m_unk0x354.GetFlags() & GolD3DRenderDevice::c_flagBit0)) {
-		undefined4 result = m_unk0x354.FUN_10007d90(this, &m_unk0x2fc, m_flags);
+	if (!(m_renderer.GetFlags() & GolD3DRenderDevice::c_flagBit0)) {
+		undefined4 result = m_renderer.FUN_10007d90(this, &m_renderTarget, m_flags);
 		if (result != 0) {
 			return result;
 		}
 	}
 	else {
-		m_unk0x354.FUN_10007e20(m_flags);
+		m_renderer.FUN_10007e20(m_flags);
 	}
 
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x10001900
-void GolDrawDPState::VTable0x0c(const char* p_driverName, const char* p_deviceName)
+void GolDrawDPState::SelectDevice(const char* p_driverName, const char* p_deviceName)
 {
 	if (m_driverName != NULL) {
 		delete[] m_driverName;
@@ -630,7 +630,7 @@ LegoBool32 GolDrawDPState::IsDeviceHwAccelerated(LegoU32 p_driverIndex, LegoU32 
 }
 
 // FUNCTION: GOLDP 0x10001d20
-void GolDrawDPState::VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex)
+void GolDrawDPState::FindDevice(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -647,14 +647,14 @@ LPDIRECTDRAWSURFACE GolDrawDPState::GetDisplaySurface()
 	LPDIRECTDRAWSURFACE surface;
 	LegoChar message[100];
 	HRESULT hresult =
-		m_unk0x2fc.GetDisplaySurface()->QueryInterface(IID_IDirectDrawSurface, reinterpret_cast<void**>(&surface));
+		m_renderTarget.GetDisplaySurface()->QueryInterface(IID_IDirectDrawSurface, reinterpret_cast<void**>(&surface));
 	if (hresult != DD_OK) {
 		::sprintf(
 			message,
 			"DirectDrawSurface QueryInterface(IID_IDirectDrawSurface) error\nerror code = 0x%x",
 			hresult
 		);
-		VTable0x48();
+		DestroyDisplay();
 		GOL_FATALERROR_MESSAGE(message);
 	}
 
@@ -667,14 +667,14 @@ LPDIRECTDRAWSURFACE GolDrawDPState::GetRenderSurface()
 	LPDIRECTDRAWSURFACE surface;
 	LegoChar message[100];
 	HRESULT hresult =
-		m_unk0x2fc.GetRenderSurface()->QueryInterface(IID_IDirectDrawSurface, reinterpret_cast<void**>(&surface));
+		m_renderTarget.GetRenderSurface()->QueryInterface(IID_IDirectDrawSurface, reinterpret_cast<void**>(&surface));
 	if (hresult != DD_OK) {
 		::sprintf(
 			message,
 			"DirectDrawSurface QueryInterface(IID_IDirectDrawSurface) error\nerror code = 0x%x",
 			hresult
 		);
-		VTable0x48();
+		DestroyDisplay();
 		GOL_FATALERROR_MESSAGE(message);
 	}
 

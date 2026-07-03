@@ -16,6 +16,15 @@ public:
 		c_flagWasPlaying = 1 << 3,
 	};
 
+	// .ceb streaming-sound field tokens
+	enum {
+		e_minDistance = 0x37,
+		e_maxDistance = 0x38,
+		e_position = 0x39,
+		e_positional = 0x3a,
+		e_joint = 0x3b,
+	};
+
 	CutsceneStreamingSoundEvent();
 
 	void StartOnJointed(GolWorldEntity* p_arg) override;                               // vtable+0x04

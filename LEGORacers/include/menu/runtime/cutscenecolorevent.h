@@ -7,6 +7,13 @@
 // SIZE 0x48
 class CutsceneColorEvent : public CutsceneEvent {
 public:
+	// .ceb color-event field tokens
+	enum {
+		e_shifts = 0x2c,
+		e_offsets = 0x2d,
+		e_offsetRates = 0x2e,
+	};
+
 	CutsceneColorEvent();
 
 	void Start() override;                             // vtable+0x14

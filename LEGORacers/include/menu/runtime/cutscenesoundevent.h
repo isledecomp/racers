@@ -10,6 +10,16 @@ class SoundInstance;
 // SIZE 0x30
 class CutsceneSoundEvent : public CutsceneEvent {
 public:
+	// .ceb sound-event field tokens
+	enum {
+		e_soundIndex = 0x30,
+		e_priority = 0x31,
+		e_volume = 0x32,
+		e_frequencyScale = 0x33,
+		e_pan = 0x34,
+		e_looping = 0x35,
+	};
+
 	CutsceneSoundEvent();
 
 	void Start() override; // vtable+0x14

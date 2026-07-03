@@ -2372,7 +2372,7 @@ void CutsceneAnimationEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_ow
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x3d: {
+		case e_animationIndex: {
 			LegoU32 index = p_parser->ReadInteger();
 			if (index >= p_owner->GetAnimationCount()) {
 				p_parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
@@ -2382,13 +2382,13 @@ void CutsceneAnimationEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_ow
 			::strncpy(m_emitterName, p_parser->ReadString(), sizeof(GolName));
 			break;
 		}
-		case GolFileParser::e_unknown0x39:
+		case e_position:
 			m_position.m_x = p_parser->ReadFloat();
 			m_position.m_y = p_parser->ReadFloat();
 			m_position.m_z = p_parser->ReadFloat();
 			m_flags |= 1;
 			break;
-		case GolFileParser::e_unknown0x3e:
+		case e_direction:
 			m_direction.m_x = p_parser->ReadFloat();
 			m_direction.m_y = p_parser->ReadFloat();
 			m_direction.m_z = p_parser->ReadFloat();
@@ -2397,10 +2397,10 @@ void CutsceneAnimationEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_ow
 			m_up.m_z = p_parser->ReadFloat();
 			m_flags |= 2;
 			break;
-		case GolFileParser::e_unknown0x3a:
+		case e_attached:
 			m_flags |= 4;
 			break;
-		case GolFileParser::e_unknown0x3b:
+		case e_joint:
 			m_jointIndex = p_parser->ReadInteger();
 			m_flags |= 8;
 			break;
@@ -2572,7 +2572,7 @@ LegoBool32 CutsceneSoundEvent::ParseToken(
 )
 {
 	switch (p_token) {
-	case GolFileParser::e_unknown0x30: {
+	case e_soundIndex: {
 		LegoU32 index = p_parser->ReadInteger();
 		if (index >= p_owner->GetSoundGroupCount()) {
 			p_parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
@@ -2582,19 +2582,19 @@ LegoBool32 CutsceneSoundEvent::ParseToken(
 		m_soundIndex = static_cast<LegoU16>(p_parser->ReadInteger());
 		return TRUE;
 	}
-	case GolFileParser::e_unknown0x31:
+	case e_priority:
 		m_priority = p_parser->ReadInteger();
 		return TRUE;
-	case GolFileParser::e_unknown0x32:
+	case e_volume:
 		m_volume = p_parser->ReadFloat();
 		return TRUE;
-	case GolFileParser::e_unknown0x33:
+	case e_frequencyScale:
 		m_frequencyScale = p_parser->ReadFloat();
 		return TRUE;
-	case GolFileParser::e_unknown0x34:
+	case e_pan:
 		m_pan = p_parser->ReadFloat();
 		return TRUE;
-	case GolFileParser::e_unknown0x35:
+	case e_looping:
 		m_looping = 1;
 		return TRUE;
 	default:
@@ -2674,22 +2674,22 @@ void CutsceneStreamingSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer*
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x37:
+		case e_minDistance:
 			m_minDistance = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x38:
+		case e_maxDistance:
 			m_maxDistance = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x39:
+		case e_position:
 			m_position.m_x = p_parser->ReadFloat();
 			m_position.m_y = p_parser->ReadFloat();
 			m_position.m_z = p_parser->ReadFloat();
 			m_flags |= 1;
 			break;
-		case GolFileParser::e_unknown0x3a:
+		case e_positional:
 			m_flags = (m_flags & ~4) | 2;
 			break;
-		case GolFileParser::e_unknown0x3b:
+		case e_joint:
 			m_jointIndex = p_parser->ReadInteger();
 			m_flags = (m_flags & ~2) | 4;
 			break;
@@ -2890,16 +2890,16 @@ void CutsceneMenuAnimationEvent::Parse(
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x61:
+		case e_durationMs:
 			m_durationMs = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x62: {
+		case e_mode: {
 			GolFileParser::ParserTokenType mode = p_parser->GetNextToken();
 			switch (mode) {
-			case GolFileParser::e_unknown0x63:
+			case e_modeOn:
 				m_mode |= 1;
 				break;
-			case GolFileParser::e_unknown0x64:
+			case e_modeOff:
 				m_mode |= 2;
 				break;
 			default:
@@ -2908,10 +2908,10 @@ void CutsceneMenuAnimationEvent::Parse(
 			}
 			break;
 		}
-		case GolFileParser::e_unknown0x65:
+		case e_material:
 			::strncpy(materialName, p_parser->ReadString(), sizeof(GolName));
 			break;
-		case GolFileParser::e_unknown0x66:
+		case e_color:
 			m_color.m_red = static_cast<LegoU8>(p_parser->ReadInteger());
 			m_color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
 			m_color.m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
@@ -2986,17 +2986,17 @@ void CutsceneColorEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2c:
+		case e_shifts:
 			m_shiftRed = p_parser->ReadInteger();
 			m_shiftGrn = p_parser->ReadInteger();
 			m_shiftBlu = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case e_offsets:
 			m_offsetStartRed = p_parser->ReadInteger();
 			m_offsetStartGrn = p_parser->ReadInteger();
 			m_offsetStartBlu = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case e_offsetRates:
 			m_offsetRateRed = p_parser->ReadFloat();
 			m_offsetRateGrn = p_parser->ReadFloat();
 			m_offsetRateBlu = p_parser->ReadFloat();

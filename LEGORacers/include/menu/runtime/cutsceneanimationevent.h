@@ -11,6 +11,15 @@ class CutsceneAnimation;
 // SIZE 0x50
 class CutsceneAnimationEvent : public CutsceneEvent {
 public:
+	// .ceb animation-event field tokens
+	enum {
+		e_position = 0x39,
+		e_attached = 0x3a,
+		e_joint = 0x3b,
+		e_animationIndex = 0x3d,
+		e_direction = 0x3e,
+	};
+
 	CutsceneAnimationEvent();
 
 	void StartOnJointed(GolWorldEntity* p_arg) override;                               // vtable+0x04

@@ -12,6 +12,16 @@ class GolMaterial;
 // SIZE 0x2c
 class CutsceneMenuAnimationEvent : public CutsceneEvent {
 public:
+	// .ceb menu-animation field tokens
+	enum {
+		e_durationMs = 0x61,
+		e_mode = 0x62,
+		e_modeOn = 0x63,
+		e_modeOff = 0x64,
+		e_material = 0x65,
+		e_color = 0x66,
+	};
+
 	CutsceneMenuAnimationEvent();
 
 	void Start() override; // vtable+0x14

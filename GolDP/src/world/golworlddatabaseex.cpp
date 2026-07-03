@@ -203,7 +203,7 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 	for (i = 0; i < m_modelPartCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_modelPartNames[i], ".adf");
-		GetModelPart(i)->VTable0x14(fileName, m_binary);
+		GetModelPart(i)->Load(fileName, m_binary);
 	}
 
 	for (i = 0; i < m_modelCount; i++) {

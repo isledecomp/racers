@@ -119,7 +119,7 @@ void GolModelBase::AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroup
 	if (m_indexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	static_cast<GdbModelIndexArray*>(m_indexArray)->VTable0x0c(p_countVertices);
+	static_cast<GdbModelIndexArray*>(m_indexArray)->Allocate(p_countVertices);
 	if (m_groups == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -141,7 +141,7 @@ void GolModelBase::Destroy()
 		m_unk0x1c = NULL;
 	}
 	if (m_indexArray != NULL) {
-		m_indexArray->VTable0x08();
+		m_indexArray->Destroy();
 		delete m_indexArray;
 		m_indexArray = NULL;
 	}
@@ -288,7 +288,7 @@ void GolModelBase::ParseIndices(GolFileParser& p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_indexArray->VTable0x04(p_parser);
+	m_indexArray->Parse(p_parser);
 }
 
 // FUNCTION: GOLDP 0x100277d0

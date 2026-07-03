@@ -14,7 +14,7 @@ DECOMP_SIZE_ASSERT(CmbModelPartTrack, 0x14)
 CmbModelPart::CmbModelPart()
 {
 	m_tracks = NULL;
-	m_unk0x28 = 0;
+	m_trackCount = 0;
 	m_partData = NULL;
 	m_partCount = 0;
 }
@@ -28,7 +28,7 @@ CmbModelPart::~CmbModelPart()
 
 // FUNCTION: GOLDP 0x100188e0
 // FUNCTION: LEGORACERS 0x00401260
-void CmbModelPart::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
+void CmbModelPart::Load(const LegoChar* p_name, LegoBool32 p_binary)
 {
 	if (m_partData) {
 		Clear();
@@ -58,10 +58,10 @@ void CmbModelPart::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 			m_data.Parse(*parser);
 			break;
 		case GolFileParser::e_unknown0x2b:
-			VTable0x0c(*parser);
+			ParseTracks(*parser);
 			break;
 		case GolFileParser::e_unknown0x2c:
-			VTable0x10(*parser);
+			ParseParts(*parser);
 			break;
 		default:
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -92,26 +92,26 @@ void CmbModelPart::Clear()
 	}
 
 	GolNameTable::Clear();
-	m_unk0x28 = 0;
+	m_trackCount = 0;
 	m_partCount = 0;
 }
 
 // FUNCTION: GOLDP 0x10018a80
 // FUNCTION: LEGORACERS 0x00401400
-void CmbModelPart::VTable0x0c(GolFileParser& p_parser)
+void CmbModelPart::ParseTracks(GolFileParser& p_parser)
 {
-	m_unk0x28 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x28 == 0) {
+	m_trackCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_trackCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_tracks = new CmbModelPartTrack[m_unk0x28];
+	m_tracks = new CmbModelPartTrack[m_trackCount];
 	if (m_tracks == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	LegoU32 i;
-	for (i = 0; i < m_unk0x28; i++) {
+	for (i = 0; i < m_trackCount; i++) {
 		m_tracks[i].m_rotationFrameIndex = p_parser.ReadInteger();
 		m_tracks[i].m_rotationKeyIndex = p_parser.ReadInteger();
 		m_tracks[i].m_rotationKeyCount = p_parser.ReadInteger();
@@ -125,7 +125,7 @@ void CmbModelPart::VTable0x0c(GolFileParser& p_parser)
 
 // FUNCTION: GOLDP 0x10018b40
 // FUNCTION: LEGORACERS 0x004014c0
-void CmbModelPart::VTable0x10(GolFileParser& p_parser)
+void CmbModelPart::ParseParts(GolFileParser& p_parser)
 {
 	m_partCount = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_partCount == 0) {

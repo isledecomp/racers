@@ -87,7 +87,7 @@ void RacerModelScreenBase::CreateCarModels()
 		m_carModelEntities[i].SetPrimaryMaterialTable(m_context->m_colorTable.GetMaterialTable());
 	}
 
-	m_modelParts.VTable0x14("rsanim", m_context->m_context->m_useBinaryFiles);
+	m_modelParts.Load("rsanim", m_context->m_context->m_useBinaryFiles);
 }
 
 // STUB: LEGORACERS 0x00485c80

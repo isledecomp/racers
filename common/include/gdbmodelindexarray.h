@@ -12,9 +12,9 @@ public:
 	GdbModelIndexArray();
 	~GdbModelIndexArray() override; // vtable+0x00
 
-	void VTable0x04(GolFileParser& p_parser) override; // vtable+0x04
-	void VTable0x08() override;                        // vtable+0x08
-	virtual void VTable0x0c(LegoU32 p_count);          // vtable+0x0c
+	void Parse(GolFileParser& p_parser) override; // vtable+0x04
+	void Destroy() override;                      // vtable+0x08
+	virtual void Allocate(LegoU32 p_count);       // vtable+0x0c
 
 	// SYNTHETIC: GOLDP 0x1002b330
 	// GdbModelIndexArray::`scalar deleting destructor'

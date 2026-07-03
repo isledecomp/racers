@@ -111,7 +111,7 @@ LegoBool32 MainMenuScreen::Initialize(MenuGameContext* p_context, MenuScreenCrea
 	DriverCosmetics cosmetics;
 	p_context->m_cosmeticTable.CopyCosmetics(g_menuDriverCosmeticIds[index], &cosmetics);
 	m_modelSlot.SetCosmetics(&cosmetics);
-	m_modelSlot.GetBodyModelPart()->VTable0x14("legoman", p_context->m_context->m_useBinaryFiles);
+	m_modelSlot.GetBodyModelPart()->Load("legoman", p_context->m_context->m_useBinaryFiles);
 	m_driverEntity->PlayPart(0);
 	m_driverEntity->SetFlags(m_driverEntity->GetFlags() | 0x10000);
 	m_driverEntity->SetFlags(m_driverEntity->GetFlags() & ~0x40000);

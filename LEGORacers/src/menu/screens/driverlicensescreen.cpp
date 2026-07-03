@@ -159,7 +159,7 @@ LegoBool32 DriverLicenseScreen::Initialize(MenuGameContext* p_context, MenuScree
 	SetLighting(&materialColor, &lightColor);
 
 	LoadLicenseData();
-	m_modelSlot.GetBodyModelPart()->VTable0x14("cmaman", context->m_context->m_useBinaryFiles);
+	m_modelSlot.GetBodyModelPart()->Load("cmaman", context->m_context->m_useBinaryFiles);
 	entity = m_modelSlot.GetDriverEntity();
 	entity->PlayPart(0);
 	entity->SetFlags(entity->GetFlags() | 0x10000);

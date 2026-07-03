@@ -170,7 +170,7 @@ LegoBool32 EditDriverScreen::Initialize(MenuGameContext* p_context, MenuScreenCr
 	materialColor.m_alp = 0xff;
 	SetLighting(&materialColor, &lightColor);
 
-	m_modelSlot.GetBodyModelPart()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
+	m_modelSlot.GetBodyModelPart()->Load("cbanim", p_context->m_context->m_useBinaryFiles);
 	p_context->m_carBuildModel.ReleaseBuffers();
 	LoadHeadBuilder(p_context, p_createParams);
 	LoadCosmetics();

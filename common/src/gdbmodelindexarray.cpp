@@ -15,16 +15,16 @@ GdbModelIndexArray::GdbModelIndexArray()
 // FUNCTION: GOLDP 0x1002b350
 GdbModelIndexArray::~GdbModelIndexArray()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x1002b3c0
-void GdbModelIndexArray::VTable0x04(GolFileParser& p_parser)
+void GdbModelIndexArray::Parse(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
 	if (m_count != 0) {
-		VTable0x08();
+		Destroy();
 	}
 
 	m_count = p_parser.ReadBracketedCountAndLeftCurly();
@@ -53,7 +53,7 @@ void GdbModelIndexArray::VTable0x04(GolFileParser& p_parser)
 
 // FUNCTION: GOLDP 0x1002bfb0 FOLDED
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED
-void GdbModelIndexArray::VTable0x08()
+void GdbModelIndexArray::Destroy()
 {
 	if (m_indices != NULL) {
 		delete[] m_indices;
@@ -62,10 +62,10 @@ void GdbModelIndexArray::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x1002b490
-void GdbModelIndexArray::VTable0x0c(LegoU32 p_count)
+void GdbModelIndexArray::Allocate(LegoU32 p_count)
 {
 	if (m_count != 0) {
-		VTable0x08();
+		Destroy();
 	}
 
 	m_count = p_count;

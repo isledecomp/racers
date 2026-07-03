@@ -29,11 +29,11 @@ public:
 	};
 
 	CmbModelPart();
-	~CmbModelPart() override;                                             // vtable+0x00
-	void Clear() override;                                                // vtable+0x08
-	virtual void VTable0x0c(GolFileParser& p_parser);                     // vtable+0x0c
-	virtual void VTable0x10(GolFileParser& p_parser);                     // vtable+0x10
-	virtual void VTable0x14(const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x14
+	~CmbModelPart() override;                                       // vtable+0x00
+	void Clear() override;                                          // vtable+0x08
+	virtual void ParseTracks(GolFileParser& p_parser);              // vtable+0x0c
+	virtual void ParseParts(GolFileParser& p_parser);               // vtable+0x10
+	virtual void Load(const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x14
 
 	CmbModelPartData* GetPartData() const { return m_partData; }
 	LegoU32 GetPartCount() const { return m_partCount; }
@@ -54,7 +54,7 @@ public:
 private:
 	CmbModelPartTrackData m_data; // 0x0c
 	CmbModelPartTrack* m_tracks;  // 0x24
-	LegoU32 m_unk0x28;            // 0x28
+	LegoU32 m_trackCount;         // 0x28
 	CmbModelPartData* m_partData; // 0x2c
 	LegoU32 m_partCount;          // 0x30
 };

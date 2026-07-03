@@ -634,7 +634,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 	p_params->m_model->AddFlagsWithBounds(1, FALSE);
 
 	if (p_params->m_absoluteIndexArray != NULL) {
-		p_params->m_absoluteIndexArray->VTable0x0c(triangleBudget);
+		p_params->m_absoluteIndexArray->Allocate(triangleBudget);
 	}
 
 	GdbModelIndexArrayBase* indexArrayBase = NULL;
@@ -1014,7 +1014,7 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 	p_params->m_model->AddFlagsWithBounds(1, FALSE);
 
 	if (p_params->m_absoluteIndexArray != NULL) {
-		p_params->m_absoluteIndexArray->VTable0x0c(triangleCount);
+		p_params->m_absoluteIndexArray->Allocate(triangleCount);
 	}
 
 	GdbModelIndexArrayBase* indexArrayBase;

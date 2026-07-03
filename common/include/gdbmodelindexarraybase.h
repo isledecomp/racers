@@ -12,9 +12,9 @@ class GdbModelIndexArrayBase {
 public:
 	GdbModelIndexArrayBase();
 
-	virtual ~GdbModelIndexArrayBase();                    // vtable+0x00
-	virtual void VTable0x04(GolFileParser& p_parser) = 0; // vtable+0x04
-	virtual void VTable0x08();                            // vtable+0x08
+	virtual ~GdbModelIndexArrayBase();               // vtable+0x00
+	virtual void Parse(GolFileParser& p_parser) = 0; // vtable+0x04
+	virtual void Destroy();                          // vtable+0x08
 
 	// SYNTHETIC: GOLDP 0x1001d7e0
 	// GdbModelIndexArrayBase::`scalar deleting destructor'

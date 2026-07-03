@@ -11,11 +11,11 @@ GdbModelIndexArrayBase::GdbModelIndexArrayBase()
 // FUNCTION: GOLDP 0x1001d810
 GdbModelIndexArrayBase::~GdbModelIndexArrayBase()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x1001d820
-void GdbModelIndexArrayBase::VTable0x08()
+void GdbModelIndexArrayBase::Destroy()
 {
 	m_count = 0;
 }

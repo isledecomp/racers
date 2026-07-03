@@ -2806,10 +2806,10 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 					LegoPieceLibrary::ShapeCell* cell = pieceRecord->GetCell(i, j, static_cast<LegoU8>(rotation));
 					if ((cell->m_first | cell->m_second) & 0x3f) {
 						m_overlayCells[x + i + 1][y + j + 1].m_flags |= c_overlayCellFlagOccupied;
-						m_overlayCells[x + i + 1][y + j + 2].m_flags |= c_overlayCellFlag0x01;
-						m_overlayCells[x + i + 2][y + j + 1].m_flags |= c_overlayCellFlag0x02;
-						m_overlayCells[x + i + 1][y + j].m_flags |= c_overlayCellFlag0x04;
-						m_overlayCells[x + i][y + j + 1].m_flags |= c_overlayCellFlag0x08;
+						m_overlayCells[x + i + 1][y + j + 2].m_flags |= c_overlayCellNeighborPosY;
+						m_overlayCells[x + i + 2][y + j + 1].m_flags |= c_overlayCellNeighborPosX;
+						m_overlayCells[x + i + 1][y + j].m_flags |= c_overlayCellNeighborNegY;
+						m_overlayCells[x + i][y + j + 1].m_flags |= c_overlayCellNeighborNegX;
 
 						LegoS32 gridHeight = m_pieceGrid.m_entries[y + j + ((x + i) * m_pieceGrid.m_height)].m_height;
 						if (m_overlayHeight < gridHeight) {

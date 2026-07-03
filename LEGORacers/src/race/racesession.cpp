@@ -2041,7 +2041,7 @@ void RaceSession::UpdateHuds()
 void RaceSession::Update()
 {
 	LegoU32 elapsedMs = m_golApp->GetFrameDeltaMs();
-	if (m_context->m_cheatFlags & c_contextFlag0x20Bit8) {
+	if (m_context->m_cheatFlags & c_cheatFastForward) {
 		elapsedMs =
 			static_cast<LegoU32>(static_cast<LegoFloat>(static_cast<LegoS32>(m_golApp->GetFrameDeltaMs())) * 1.75f);
 	}
@@ -2454,14 +2454,14 @@ void RaceSession::OnKeyDown(LegoU32 p_keyCode)
 	}
 
 	switch (p_keyCode) {
-	case c_keyboardKey0x01:
-	case c_keyboardKey0xc5:
+	case c_keyEscape:
+	case c_keyPause:
 		if (!m_pauseState) {
 			m_pauseState = 1;
 			OpenPauseDialog();
 		}
 		break;
-	case c_keyboardKey0xb7:
+	case c_keyPrintScreen:
 		TakeScreenshot();
 		break;
 	}
@@ -2484,13 +2484,13 @@ void RaceSession::OnKeyDown(LegoU32 p_keyCode)
 void RaceSession::OnKeyUp(LegoU32 p_keyCode)
 {
 	switch (p_keyCode) {
-	case c_keyboardKey0x10:
+	case c_keyQ:
 		m_abortKeyMask &= ~c_abortKeyQ;
 		break;
-	case c_keyboardKey0x1d:
+	case c_keyLeftControl:
 		m_abortKeyMask &= ~c_abortKeyControl;
 		break;
-	case c_keyboardKey0x2a:
+	case c_keyLeftShift:
 		m_abortKeyMask &= ~c_abortKeyShift;
 		break;
 	}

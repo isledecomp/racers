@@ -6,7 +6,7 @@ DECOMP_SIZE_ASSERT(GolPalettedTexture, 0x4c)
 
 // GLOBAL: GOLDP 0x10063c50
 // GLOBAL: LEGORACERS 0x004c28e0
-GolPalettedTexture g_bronzeDune0x4c;
+GolPalettedTexture g_palettedTexture;
 
 // FUNCTION: GOLDP 0x10004f80
 // FUNCTION: LEGORACERS 0x00408b90

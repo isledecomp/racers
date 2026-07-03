@@ -120,15 +120,15 @@ public:
 
 private:
 	enum {
-		c_keyboardKey0x10 = 0x10000010,
-		c_keyboardKey0x1d = 0x1000001d,
-		c_keyboardKey0x2a = 0x1000002a,
-		c_keyboardKey0x01 = 0x10000001,
-		c_keyboardKey0xb7 = 0x100000b7,
-		c_keyboardKey0xc5 = 0x100000c5,
+		c_keyQ = 0x10000010,
+		c_keyLeftControl = 0x1000001d,
+		c_keyLeftShift = 0x1000002a,
+		c_keyEscape = 0x10000001,
+		c_keyPrintScreen = 0x100000b7,
+		c_keyPause = 0x100000c5,
 		c_keySourceAbortMask = 0x30000000,
 		c_maxScreenshotIndex = 9999,
-		c_contextFlag0x20Bit8 = 1 << 8,
+		c_cheatFastForward = 1 << 8,
 		c_updateStepMs = 40,
 		c_overlayStringId = 0x2e,
 		c_overlayDrawDelayMs = 250,

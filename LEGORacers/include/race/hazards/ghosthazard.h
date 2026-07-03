@@ -37,8 +37,8 @@ public:
 private:
 	enum {
 		c_randomTableMask = 0x3ff,
-		c_soundId0xbc5 = 0xbc5,
-		c_soundId0xbc7 = 0xbc7,
+		c_soundNear = 0xbc5,
+		c_soundHit = 0xbc7,
 		c_racerSearchIntervalMs = 4000,
 		c_soundFrequencyUpdateMs = 500,
 		c_randomFrequencyVariantCount = 100,

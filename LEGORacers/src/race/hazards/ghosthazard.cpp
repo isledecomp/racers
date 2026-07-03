@@ -230,7 +230,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 			m_racerSearchMs = 0;
 			if (m_raceState->FindNearestRacerInRange(&position, 0.0f, g_ghostRacerSearchDistanceSquared) != NULL) {
 				m_soundSource->PlaySpatialSoundById(
-					c_soundId0xbc5,
+					c_soundNear,
 					&position,
 					g_ghostOneShotSoundMinDistance,
 					g_ghostSoundMaxDistance,
@@ -331,7 +331,7 @@ void GhostHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 	SoundVector position;
 	racer->m_visuals.m_carEntity->GetPosition(&position);
 	m_soundSource->PlaySpatialSoundById(
-		c_soundId0xbc7,
+		c_soundHit,
 		&position,
 		g_ghostOneShotSoundMinDistance,
 		g_ghostSoundMaxDistance,

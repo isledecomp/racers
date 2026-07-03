@@ -1480,9 +1480,9 @@ void RacePowerupManager::CreateBrickEvents()
 		m_brickEvents[i] = eventQueue->AllocateEvent(entry, &descriptor);
 	}
 
-	WhiteBrick* entries0x02c = m_whiteBricks;
+	WhiteBrick* whiteBricks = m_whiteBricks;
 	for (i = 0; i < m_whiteBrickCount; i++) {
-		WhiteBrick* entry = &entries0x02c[i];
+		WhiteBrick* entry = &whiteBricks[i];
 		descriptor.m_data = entry->GetWorldEntity();
 		m_brickEvents[m_colorBrickCount + i] = eventQueue->AllocateEvent(entry, &descriptor);
 	}

@@ -55,10 +55,10 @@ DECOMP_SIZE_ASSERT(CutsceneAnimation, 0x33c)
 const LegoFloat g_cutsceneSoundDefaultVolume = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b4ab4
-const LegoFloat g_crimsonPebbleEvent0x30DefaultPan = 0.0f;
+const LegoFloat g_cutsceneSoundDefaultPan = 0.0f;
 
 // GLOBAL: LEGORACERS 0x004b4ab8
-const LegoFloat g_crimsonPebbleEvent0x30DefaultFrequencyScale = 1.0f;
+const LegoFloat g_cutsceneSoundDefaultFrequencyScale = 1.0f;
 
 // FUNCTION: LEGORACERS 0x00489970
 CutsceneAnimation::Entry::Entry()
@@ -2551,8 +2551,8 @@ void CutsceneSoundEvent::Reset()
 	m_instance = NULL;
 	m_volume = g_cutsceneSoundDefaultVolume;
 	m_priority = 0;
-	m_frequencyScale = g_crimsonPebbleEvent0x30DefaultFrequencyScale;
-	m_pan = g_crimsonPebbleEvent0x30DefaultPan;
+	m_frequencyScale = g_cutsceneSoundDefaultFrequencyScale;
+	m_pan = g_cutsceneSoundDefaultPan;
 	m_looping = 0;
 	m_soundIndex = 0;
 }

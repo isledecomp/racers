@@ -122,11 +122,11 @@ LegoBool32 MenuTextButton::Create(CreateParams* p_createParams, MenuStyleTable::
 // FUNCTION: LEGORACERS 0x00482760
 LegoBool32 MenuTextButton::Destroy()
 {
-	MenuWidget* fieldAt0x264 = &m_label;
-	fieldAt0x264->Destroy();
+	MenuWidget* labelWidget = &m_label;
+	labelWidget->Destroy();
 
-	MenuWidget* fieldAt0x208 = &m_image;
-	fieldAt0x208->Destroy();
+	MenuWidget* imageWidget = &m_image;
+	imageWidget->Destroy();
 
 	return MenuIcon::Destroy();
 }

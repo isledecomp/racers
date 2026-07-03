@@ -2331,15 +2331,15 @@ void RacerCarBody::AccumulateForces()
 		}
 	}
 	else {
-		LegoFloat average0x054 = GetAverageSupportThreshold();
-		LegoFloat average0x058 = GetAverageFriction();
+		LegoFloat averageSupportThreshold = GetAverageSupportThreshold();
+		LegoFloat averageFriction = GetAverageFriction();
 		LegoFloat forceMagnitude = static_cast<LegoFloat>(sqrt(
 			m_supportForce.m_z * m_supportForce.m_z + m_supportForce.m_y * m_supportForce.m_y +
 			m_supportForce.m_x * m_supportForce.m_x
 		));
 		LegoFloat forceThreshold = m_gravity;
 		forceThreshold *= m_massScale;
-		forceThreshold *= average0x054;
+		forceThreshold *= averageSupportThreshold;
 		if (forceMagnitude > forceThreshold) {
 			AddForce(&m_supportForce);
 		}
@@ -2382,7 +2382,7 @@ void RacerCarBody::AccumulateForces()
 		else {
 			LegoFloat scale = m_gravity;
 			scale *= m_massScale;
-			scale *= average0x058;
+			scale *= averageFriction;
 			scale *= m_slipRatio;
 			scale = -scale;
 			force.m_x = m_velocityDirection.m_x * scale;

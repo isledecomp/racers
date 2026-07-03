@@ -134,7 +134,7 @@ private:
 	void Reset();
 	void Initialize(
 		RacerContext* p_context,
-		CarVisuals::InitParams* p_visualParams,
+		CarVisuals::InitParams* p_visualsParams,
 		SetupParams* p_params,
 		RaceState* p_raceState,
 		LegoU32 p_racerIndex

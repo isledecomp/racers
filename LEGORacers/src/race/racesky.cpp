@@ -354,14 +354,19 @@ void RaceSkyState::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0041ce60
-void RaceSkyState::EvaluateColors(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10)
+void RaceSkyState::EvaluateColors(
+	Entry* p_entry,
+	ColorRGBA* p_topColor,
+	ColorRGBA* p_middleColor,
+	ColorRGBA* p_bottomColor
+)
 {
 	LegoU32 keyframeCount = p_entry->m_keyframeCount;
 
 	if (keyframeCount == 1) {
-		*p_unk0x08 = p_entry->m_keyframes[0].m_topColor;
-		*p_unk0x0c = p_entry->m_keyframes[0].m_middleColor;
-		*p_unk0x10 = p_entry->m_keyframes[0].m_bottomColor;
+		*p_topColor = p_entry->m_keyframes[0].m_topColor;
+		*p_middleColor = p_entry->m_keyframes[0].m_middleColor;
+		*p_bottomColor = p_entry->m_keyframes[0].m_bottomColor;
 	}
 	else {
 		LegoU32 keyframeIndex = p_entry->m_keyframeIndex;
@@ -374,19 +379,19 @@ void RaceSkyState::EvaluateColors(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGB
 		LerpColor(
 			&p_entry->m_keyframes[p_entry->m_keyframeIndex].m_topColor,
 			&p_entry->m_keyframes[nextIndex].m_topColor,
-			p_unk0x08,
+			p_topColor,
 			amount
 		);
 		LerpColor(
 			&p_entry->m_keyframes[p_entry->m_keyframeIndex].m_middleColor,
 			&p_entry->m_keyframes[nextIndex].m_middleColor,
-			p_unk0x0c,
+			p_middleColor,
 			amount
 		);
 		LerpColor(
 			&p_entry->m_keyframes[p_entry->m_keyframeIndex].m_bottomColor,
 			&p_entry->m_keyframes[nextIndex].m_bottomColor,
-			p_unk0x10,
+			p_bottomColor,
 			amount
 		);
 	}
@@ -403,7 +408,11 @@ void RaceSkyState::LerpColor(const ColorRGBA* p_from, const ColorRGBA* p_to, Col
 }
 
 // FUNCTION: LEGORACERS 0x0041cfc0
-void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c)
+void RaceSkyState::ApplyColors(
+	const ColorRGBA* p_topColor,
+	const ColorRGBA* p_middleColor,
+	const ColorRGBA* p_bottomColor
+)
 {
 	GdbVertexArray* vertices;
 	const ColorRGBA* color = NULL;
@@ -414,13 +423,13 @@ void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_un
 	for (i = 0; i < 3; i++) {
 		switch (i) {
 		case 0:
-			color = p_unk0x0c;
+			color = p_bottomColor;
 			break;
 		case 1:
-			color = p_unk0x08;
+			color = p_middleColor;
 			break;
 		case 2:
-			color = p_unk0x04;
+			color = p_topColor;
 			break;
 		}
 

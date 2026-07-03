@@ -277,7 +277,7 @@ public:
 	void CenterOnPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation);
 	void UpdateOffset(LegoBool32 p_restoreCachedOffset);
 	void RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags);
-	void BuildIntoModel(GolModelBase* p_model, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	void BuildIntoModel(GolModelBase* p_model, undefined4 p_variant, undefined4 p_buildFlags);
 	void GetPieceInfo(
 		LegoS32 p_index,
 		LegoPieceLibrary::PieceRecord** p_pieceRecord,
@@ -291,10 +291,10 @@ public:
 	LegoS32 GetPiecePartType(LegoS32 p_index) const;
 	LegoPieceLibrary::PieceRecord* RemovePiece(LegoS32 p_index);
 	void RemoveLastPiece();
-	void DrawOverlay(GolD3DRenderDevice* p_renderer, LegoFloat p_unk0x08);
+	void DrawOverlay(GolD3DRenderDevice* p_renderer, LegoFloat p_zOffset);
 	void MarkOverlayCell(LegoS32 p_x, LegoS32 p_y);
 	void RefreshOverlay(Placement* p_placement, GolModelEntity* p_entity);
-	LegoS32 ComputeHighPieceCentroid(LegoFloat* p_unk0x04, LegoFloat* p_unk0x08, LegoFloat* p_unk0x0c);
+	LegoS32 ComputeHighPieceCentroid(LegoFloat* p_centroidX, LegoFloat* p_centroidY, LegoFloat* p_centroidZ);
 	LegoBool32 Deserialize(LegoU8* p_source);
 	void Serialize(LegoU8* p_dest);
 	void ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_materials, GolTextureList* p_textures);
@@ -400,7 +400,7 @@ private:
 	void SetOffset(LegoFloat p_offsetX, LegoFloat p_offsetY, LegoFloat p_offsetZ);
 	void SetDefaultOffset();
 	LegoS32 GetCellEntryIndex(LegoS32 p_x, LegoS32 p_y) const;
-	void BuildOverlay(LegoBool32 p_unk0x04, LegoS32 p_height);
+	void BuildOverlay(LegoBool32 p_visible, LegoS32 p_height);
 
 	GolExport* m_golExport;                                        // 0x0000
 	GolD3DRenderDevice* m_renderer;                                // 0x0004

@@ -123,8 +123,8 @@ void CircuitSelectScreen::Navigate()
 }
 
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED
-LegoBool32 CircuitSelectScreen::Update(undefined4 p_unk0x04)
+LegoBool32 CircuitSelectScreen::Update(undefined4 p_elapsedMs)
 {
 	m_sceneWidget.m_skippable = TRUE;
-	return MenuSceneScreen::Update(p_unk0x04);
+	return MenuSceneScreen::Update(p_elapsedMs);
 }

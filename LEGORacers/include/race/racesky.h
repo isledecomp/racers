@@ -115,9 +115,9 @@ public:
 	};
 
 	void Reset();
-	void EvaluateColors(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10);
+	void EvaluateColors(Entry* p_entry, ColorRGBA* p_topColor, ColorRGBA* p_middleColor, ColorRGBA* p_bottomColor);
 	void LerpColor(const ColorRGBA* p_from, const ColorRGBA* p_to, ColorRGBA* p_result, LegoFloat p_amount);
-	void ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c);
+	void ApplyColors(const ColorRGBA* p_topColor, const ColorRGBA* p_middleColor, const ColorRGBA* p_bottomColor);
 
 	GolModelEntity m_domeEntity;      // 0x0c
 	GolWorldDatabase* m_skyWorld;     // 0x9c

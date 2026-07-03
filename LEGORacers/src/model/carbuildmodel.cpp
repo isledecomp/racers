@@ -2539,13 +2539,13 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 }
 
 // FUNCTION: LEGORACERS 0x0049bc60
-void CarBuildModel::BuildIntoModel(GolModelBase* p_model, undefined4 p_unk0x08, undefined4 p_unk0x0c)
+void CarBuildModel::BuildIntoModel(GolModelBase* p_model, undefined4 p_variant, undefined4 p_buildFlags)
 {
 	GolModelBase* model = m_model;
 	m_model = p_model;
 	MaterialTable* materialTable = m_modelEntity.GetPrimaryMaterialTable();
 	m_modelEntity.SetPrimaryModel(p_model, g_carBuildModelMaxFloat);
-	RebuildModel(p_unk0x08, p_unk0x0c);
+	RebuildModel(p_variant, p_buildFlags);
 	m_model = model;
 	m_modelEntity.SetPrimaryModel(model, g_carBuildModelMaxFloat);
 	m_modelEntity.SetPrimaryMaterialTable(materialTable);
@@ -2601,11 +2601,11 @@ void CarBuildModel::RemoveLastPiece()
 }
 
 // FUNCTION: LEGORACERS 0x0049bdd0
-void CarBuildModel::DrawOverlay(GolD3DRenderDevice* p_renderer, LegoFloat p_unk0x08)
+void CarBuildModel::DrawOverlay(GolD3DRenderDevice* p_renderer, LegoFloat p_zOffset)
 {
 	GolVec3 position;
 	m_modelEntity.GetPosition(&position);
-	position.m_z += p_unk0x08;
+	position.m_z += p_zOffset;
 	m_overlayEntity.SetPosition(position);
 
 	GolMatrix3 matrix;
@@ -2626,7 +2626,7 @@ void CarBuildModel::MarkOverlayCell(LegoS32 p_x, LegoS32 p_y)
 }
 
 // FUNCTION: LEGORACERS 0x0049be70
-void CarBuildModel::BuildOverlay(LegoBool32 p_unk0x04, LegoS32 p_height)
+void CarBuildModel::BuildOverlay(LegoBool32 p_visible, LegoS32 p_height)
 {
 	LegoS32 disabled = FALSE;
 	LegoS32 enabled = TRUE;
@@ -2637,7 +2637,7 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_unk0x04, LegoS32 p_height)
 	color.m_blu = 0xff;
 	color.m_alp = 0xff;
 
-	p_unk0x04 &= enabled;
+	p_visible &= enabled;
 	if (p_height < 0) {
 		p_height = m_overlayHeight;
 	}
@@ -2671,7 +2671,7 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_unk0x04, LegoS32 p_height)
 				position.m_y = static_cast<LegoFloat>(y - 1) + m_offsetY;
 				texCoord.m_x = 0.5f;
 				texCoord.m_y = 0.5f;
-				if (!p_unk0x04) {
+				if (!p_visible) {
 					texCoord.m_y = 0.0f;
 				}
 
@@ -2841,7 +2841,7 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 }
 
 // STUB: LEGORACERS 0x0049c6a0
-LegoS32 CarBuildModel::ComputeHighPieceCentroid(LegoFloat* p_unk0x04, LegoFloat* p_unk0x08, LegoFloat* p_unk0x0c)
+LegoS32 CarBuildModel::ComputeHighPieceCentroid(LegoFloat* p_centroidX, LegoFloat* p_centroidY, LegoFloat* p_centroidZ)
 {
 	LegoS32 zTotal = 0;
 	LegoS32 yTotal = 0;
@@ -2878,14 +2878,14 @@ LegoS32 CarBuildModel::ComputeHighPieceCentroid(LegoFloat* p_unk0x04, LegoFloat*
 
 	if (result) {
 		LegoFloat count = static_cast<LegoFloat>(result);
-		*p_unk0x04 = static_cast<LegoFloat>(xTotal) / count - g_carBuildModelCenterXOffset;
-		*p_unk0x08 = static_cast<LegoFloat>(yTotal) / count - g_carBuildModelCenterYOffset;
-		*p_unk0x0c = static_cast<LegoFloat>(zTotal) / count;
+		*p_centroidX = static_cast<LegoFloat>(xTotal) / count - g_carBuildModelCenterXOffset;
+		*p_centroidY = static_cast<LegoFloat>(yTotal) / count - g_carBuildModelCenterYOffset;
+		*p_centroidZ = static_cast<LegoFloat>(zTotal) / count;
 	}
 	else {
-		*p_unk0x0c = 0.0f;
-		*p_unk0x08 = 0.0f;
-		*p_unk0x04 = 0.0f;
+		*p_centroidZ = 0.0f;
+		*p_centroidY = 0.0f;
+		*p_centroidX = 0.0f;
 	}
 
 	return result;

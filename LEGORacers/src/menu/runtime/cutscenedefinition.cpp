@@ -1145,10 +1145,10 @@ void CutsceneDefinition::Frame::Draw(GolD3DRenderDevice* p_renderer, LegoU32 p_l
 }
 
 // FUNCTION: LEGORACERS 0x004065a0
-void CutsceneDefinition::Frame::UpdateActiveEvents(undefined4 p_unk0x04)
+void CutsceneDefinition::Frame::UpdateActiveEvents(undefined4 p_elapsedMs)
 {
 	for (Event* event = m_activeEvents; event; event = event->m_next) {
-		event->Update(p_unk0x04);
+		event->Update(p_elapsedMs);
 	}
 }
 

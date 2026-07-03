@@ -530,12 +530,12 @@ LegoBool32 MenuScreen::CreateImage(MenuImage* p_source, undefined2 p_event, unde
 LegoBool32 MenuScreen::CreateTextLabel(
 	MenuTextLabel* p_source,
 	undefined2 p_event,
-	undefined2 p_unk0x0c,
+	undefined2 p_styleId,
 	undefined2 p_stringId
 )
 {
 	MenuTextLabel::CreateParams* sourceParams = static_cast<MenuTextLabel::CreateParams*>(GetBindingEntry(p_event));
-	MenuStyleTable::TextStyle* styleEntry = static_cast<MenuStyleTable::TextStyle*>(GetStyleEntry(p_unk0x0c));
+	MenuStyleTable::TextStyle* styleEntry = static_cast<MenuStyleTable::TextStyle*>(GetStyleEntry(p_styleId));
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
 	}

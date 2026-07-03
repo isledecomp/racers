@@ -152,8 +152,8 @@ LegoBool32 MainMenuModelSlot::Draw()
 }
 
 // FUNCTION: LEGORACERS 0x0047e290
-LegoBool32 MainMenuModelSlot::Update(undefined4 p_unk0x04)
+LegoBool32 MainMenuModelSlot::Update(undefined4 p_elapsedMs)
 {
-	m_driverEntity.Update(p_unk0x04);
+	m_driverEntity.Update(p_elapsedMs);
 	return TRUE;
 }

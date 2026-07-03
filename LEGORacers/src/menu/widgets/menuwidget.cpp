@@ -377,11 +377,11 @@ Rect* MenuWidget::GetGlobalRect()
 }
 
 // FUNCTION: LEGORACERS 0x00472ef0
-MenuWidget* MenuWidget::GetChildByIndex(LegoS32 p_unk0x04)
+MenuWidget* MenuWidget::GetChildByIndex(LegoS32 p_index)
 {
 	MenuWidget* child = m_firstChild;
 
-	while (p_unk0x04-- && child) {
+	while (p_index-- && child) {
 		child = child->m_nextSibling;
 	}
 
@@ -389,16 +389,16 @@ MenuWidget* MenuWidget::GetChildByIndex(LegoS32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00472f10
-MenuWidget* MenuWidget::FindChildById(undefined2 p_unk0x04)
+MenuWidget* MenuWidget::FindChildById(undefined2 p_id)
 {
 	MenuWidget* child = m_firstChild;
 
-	if (m_id == p_unk0x04) {
+	if (m_id == p_id) {
 		return this;
 	}
 
 	while (child) {
-		MenuWidget* result = child->FindChildById(p_unk0x04);
+		MenuWidget* result = child->FindChildById(p_id);
 		if (result) {
 			return result;
 		}

@@ -185,20 +185,20 @@ void MenuDialog::DialogScreen::Open()
 }
 
 // FUNCTION: LEGORACERS 0x00468670
-void MenuDialog::DialogScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
+void MenuDialog::DialogScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_unk0x04 == m_popupIcon) {
+	if (p_source == m_popupIcon) {
 		m_result = 2;
 	}
-	else if (p_unk0x04 == m_yesIcon) {
+	else if (p_source == m_yesIcon) {
 		m_result = 3;
 	}
-	else if (p_unk0x04 == m_noIcon) {
+	else if (p_source == m_noIcon) {
 		m_result = 4;
 	}
 
 	if (m_eventHandler) {
-		m_eventHandler->OnIconUnfocused(p_unk0x04);
+		m_eventHandler->OnIconUnfocused(p_source);
 	}
 	else {
 		BeginClose();

@@ -79,7 +79,7 @@ public:
 	virtual void OnChar(undefined4);                        // vtable+0x90
 	virtual void VTable0x94(undefined4);                    // vtable+0x94
 
-	void StartMenuMusic(MenuGameContext* p_context, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	void StartMenuMusic(MenuGameContext* p_context, undefined4 p_unk0x08, undefined4 p_looping);
 
 	// SYNTHETIC: LEGORACERS 0x0047fb60
 	// MenuGameScreen::`scalar deleting destructor'
@@ -98,11 +98,11 @@ protected:
 		return static_cast<ButtonBindingTable::ButtonBinding*>(GetBindingEntry(p_id));
 	}
 
-	undefined4 CreatePartCarousel(CarPartCarousel* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
+	undefined4 CreatePartCarousel(CarPartCarousel* p_unk0x04, undefined2 p_unk0x08, undefined2 p_styleId);
 	undefined4 CreateTextButton(
 		MenuTextButton* p_unk0x04,
 		undefined2 p_unk0x08,
-		undefined2 p_unk0x0c,
+		undefined2 p_styleId,
 		undefined2 p_unk0x10
 	);
 	void SetLighting(const ColorRGBA* p_materialColor, const ColorRGBA* p_lightColor);

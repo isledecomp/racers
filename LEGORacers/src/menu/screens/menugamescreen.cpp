@@ -104,10 +104,10 @@ LegoBool32 MenuGameScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0047fcf0
-undefined4 MenuGameScreen::CreatePartCarousel(CarPartCarousel* p_source, undefined2 p_event, undefined2 p_unk0x0c)
+undefined4 MenuGameScreen::CreatePartCarousel(CarPartCarousel* p_source, undefined2 p_event, undefined2 p_styleId)
 {
 	MenuInputBindingTable::IconBinding* inputBindingEntry = GetIconBinding(p_event);
-	MenuStyleTable::CarouselStyle* styleEntry = static_cast<MenuStyleTable::CarouselStyle*>(GetStyleEntry(p_unk0x0c));
+	MenuStyleTable::CarouselStyle* styleEntry = static_cast<MenuStyleTable::CarouselStyle*>(GetStyleEntry(p_styleId));
 	if (!inputBindingEntry || !styleEntry) {
 		return 0;
 	}
@@ -131,12 +131,12 @@ undefined4 MenuGameScreen::CreatePartCarousel(CarPartCarousel* p_source, undefin
 undefined4 MenuGameScreen::CreateTextButton(
 	MenuTextButton* p_source,
 	undefined2 p_event,
-	undefined2 p_unk0x0c,
+	undefined2 p_styleId,
 	undefined2 p_stringId
 )
 {
 	ButtonBindingTable::ButtonBinding* sourceParams = GetButtonBinding(p_event);
-	MenuStyleTable::TextButtonStyle* styleEntry = GetTextButtonStyle(p_unk0x0c);
+	MenuStyleTable::TextButtonStyle* styleEntry = GetTextButtonStyle(p_styleId);
 	if (!sourceParams || !styleEntry) {
 		return 0;
 	}
@@ -398,18 +398,18 @@ LegoBool32 MenuGameScreen::IsMenuMusicPlaying(MenuGameContext* p_context)
 }
 
 // FUNCTION: LEGORACERS 0x00480470
-void MenuGameScreen::StartMenuMusic(MenuGameContext* p_context, undefined4 p_event, undefined4 p_unk0x0c)
+void MenuGameScreen::StartMenuMusic(MenuGameContext* p_context, undefined4 p_musicId, undefined4 p_looping)
 {
 	StopMenuMusic(p_context);
 
-	MusicInstance* musicInstance = p_context->m_modelBuilder.GetMusicGroup()->CreateMusicInstance(p_event);
+	MusicInstance* musicInstance = p_context->m_modelBuilder.GetMusicGroup()->CreateMusicInstance(p_musicId);
 	p_context->m_modelBuilder.SetMusicInstance(musicInstance);
 
 	if (!musicInstance) {
 		GOL_FATALERROR(c_golErrorGeneral);
 	}
 
-	p_context->m_modelBuilder.GetMusicInstance()->Play(p_unk0x0c);
+	p_context->m_modelBuilder.GetMusicInstance()->Play(p_looping);
 }
 
 // FUNCTION: LEGORACERS 0x004804c0

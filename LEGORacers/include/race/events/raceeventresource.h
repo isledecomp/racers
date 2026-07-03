@@ -39,7 +39,7 @@ public:
 	void ForceEventStart(Racer* p_racer);
 	void ForceEventEnd(Racer* p_racer);
 	void Reset();
-	void NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
+	void NotifyStateChange(LegoU32 p_fromState, LegoU32 p_toState);
 	void OnEventStart(GolVec3* p_position);
 	void OnEventEnd(GolVec3* p_position);
 	void SetState(LegoU32 p_state) { m_state = p_state; }

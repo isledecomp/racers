@@ -64,7 +64,7 @@ public:
 	MenuWidget* FindRoot();
 	MenuWidget* FindFocusedLeaf();
 	void SetFocus();
-	MenuWidget* GetChildByIndex(LegoS32 p_unk0x04);
+	MenuWidget* GetChildByIndex(LegoS32 p_index);
 	MenuWidget* FindChildById(undefined2);
 	MenuWidget* GetParent() { return m_parent; }
 	MenuWidget* GetFirstChild() { return m_firstChild; }

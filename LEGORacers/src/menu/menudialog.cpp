@@ -163,7 +163,7 @@ MenuDialog::TextLine::~TextLine()
 }
 
 // FUNCTION: LEGORACERS 0x0046f8d0
-void MenuDialog::TextLine::SetString(GolString* p_string, LegoS32 p_unk0x08)
+void MenuDialog::TextLine::SetString(GolString* p_string, LegoS32 p_remeasure)
 {
 	GolString* originalString = p_string;
 	LegoS32 width;
@@ -176,7 +176,7 @@ void MenuDialog::TextLine::SetString(GolString* p_string, LegoS32 p_unk0x08)
 
 		if (width < m_rect.m_right - m_rect.m_left) {
 			m_wrapped = FALSE;
-			MenuTextLabel::SetString(originalString, p_unk0x08);
+			MenuTextLabel::SetString(originalString, p_remeasure);
 			return;
 		}
 	}
@@ -184,7 +184,7 @@ void MenuDialog::TextLine::SetString(GolString* p_string, LegoS32 p_unk0x08)
 	m_wrapped = TRUE;
 	m_font->MeasureString(&m_string, m_wrapWidth, 0, m_scaleX, m_scaleY, &width, &height);
 
-	if (m_rect.m_right && m_rect.m_bottom && !p_unk0x08) {
+	if (m_rect.m_right && m_rect.m_bottom && !p_remeasure) {
 		LegoS32 bottom = m_rect.m_bottom - m_rect.m_top;
 		if (static_cast<LegoU32>(height) > static_cast<LegoU32>(bottom)) {
 			heightFloat = static_cast<LegoFloat>(height);

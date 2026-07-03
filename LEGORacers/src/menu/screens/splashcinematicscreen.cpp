@@ -141,11 +141,11 @@ void SplashCinematicScreen::Navigate()
 }
 
 // FUNCTION: LEGORACERS 0x00488720
-LegoBool32 SplashCinematicScreen::Update(undefined4 p_unk0x04)
+LegoBool32 SplashCinematicScreen::Update(undefined4 p_elapsedMs)
 {
 	if (m_menuId != c_menuLegoIntro) {
 		m_sceneWidget.m_skippable = 1;
 	}
 
-	return MenuSceneScreen::Update(p_unk0x04);
+	return MenuSceneScreen::Update(p_elapsedMs);
 }

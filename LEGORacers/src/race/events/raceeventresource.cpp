@@ -64,32 +64,32 @@ void RaceEventResource::Update(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x0045edd0
-void RaceEventResource::NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
+void RaceEventResource::NotifyStateChange(LegoU32 p_fromState, LegoU32 p_toState)
 {
 	LegoS32 current = -1;
 	LegoS32 next = -1;
 
-	switch (p_unk0x04) {
+	switch (p_fromState) {
 	case 2:
-		p_unk0x04 = 0;
+		p_fromState = 0;
 		break;
 	case 3:
-		p_unk0x04 = 1;
+		p_fromState = 1;
 		break;
 	case 4:
-		p_unk0x04 = 2;
+		p_fromState = 2;
 		break;
 	default:
-		p_unk0x04 = 3;
+		p_fromState = 3;
 		break;
 	}
 
-	if (p_unk0x04 != 3) {
-		current = m_stateEventIds[p_unk0x04];
+	if (p_fromState != 3) {
+		current = m_stateEventIds[p_fromState];
 	}
 
-	if (p_unk0x08 != 3) {
-		next = m_stateEventIds[p_unk0x08];
+	if (p_toState != 3) {
+		next = m_stateEventIds[p_toState];
 	}
 
 	if (current != -1) {

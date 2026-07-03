@@ -37,7 +37,7 @@ void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
 	if (renderer->GetFlags() & GolRenderDevice::c_flagBit16) {
 		LegoU32 textureCount;
 		if (m_texture != NULL) {
-			textureCount = m_texture->GetUnk0x34();
+			textureCount = m_texture->GetMipmapCount();
 		}
 		else {
 			textureCount = 1;
@@ -55,7 +55,7 @@ void GolSoftwareMaterial::FUN_10006320(GolRenderDevice& p_renderer)
 			return;
 		}
 
-		for (LegoU32 i = 0; i < m_texture->GetUnk0x34(); i++) {
+		for (LegoU32 i = 0; i < m_texture->GetMipmapCount(); i++) {
 			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c + i, this, i);
 		}
 	}

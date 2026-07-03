@@ -32,25 +32,25 @@ void GolTextureList::LoadTextures()
 
 			LegoU16 flags = sourceItem.m_flags;
 			if (m_renderer->VTable0x110()) {
-				flags |= GolTexture::c_unk0x36Bit6;
+				flags |= GolTexture::c_textureFlagBit6;
 			}
-			if ((flags & GolTexture::c_unk0x36Bit5) && (m_renderer->GetFlags() & GolD3DRenderDevice::c_flagBit9)) {
-				flags |= GolTexture::c_unk0x36Bit7;
+			if ((flags & GolTexture::c_textureFlagBit5) && (m_renderer->GetFlags() & GolD3DRenderDevice::c_flagBit9)) {
+				flags |= GolTexture::c_textureFlagBit7;
 			}
 
 			LegoU16 textureFlags = flags;
-			texture->m_unk0x36 = flags;
+			texture->m_textureFlags = flags;
 			LegoU16 mipmapCount = sourceItem.m_mipmapCount;
-			texture->m_unk0x34 = mipmapCount;
-			textureFlags |= GolTexture::c_unk0x36Bit11;
-			texture->m_unk0x36 = textureFlags;
+			texture->m_mipmapCount = mipmapCount;
+			textureFlags |= GolTexture::c_textureFlagBit11;
+			texture->m_textureFlags = textureFlags;
 			texture->m_colorKey = sourceItem.m_colorKey;
 			texture->m_colorKey.m_alp = 0;
 
 			m_renderer->SelectTextureFormat(
 				sourceItem.m_textureFormat,
 				&textureFormat,
-				textureFlags & GolTexture::c_unk0x36Bit5
+				textureFlags & GolTexture::c_textureFlagBit5
 			);
 			VTable0x18(i, textureFormat, sourceItem.m_width, sourceItem.m_height);
 			m_unk0x14->VTable0x04(i, 0, texture);
@@ -75,9 +75,9 @@ void GolTextureList::LoadTextures()
 		}
 		textureName[sizeof(GolName)] = '\0';
 
-		LegoU8 textureFlags = static_cast<LegoU8>(texture->m_unk0x36);
+		LegoU8 textureFlags = static_cast<LegoU8>(texture->m_textureFlags);
 		GolImgFile* imageFile = &g_textureBmpFile;
-		if (!(textureFlags & GolTexture::c_unk0x36Bit3)) {
+		if (!(textureFlags & GolTexture::c_textureFlagBit3)) {
 			imageFile = &g_textureTgaFile;
 		}
 

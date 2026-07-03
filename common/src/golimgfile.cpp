@@ -66,7 +66,7 @@ void GolImgFile::Open(const LegoChar* p_fileName)
 	m_format.m_grnBitMask = 0;
 	m_format.m_bluBitMask = 0;
 	m_format.m_alpBitMask = 0;
-	m_format.m_unk0x10 = 0;
+	m_format.m_intensityMask = 0;
 	m_format.m_paletteMask = 0;
 	m_keepNibbleOrder = 0;
 	m_remapPureBlack = 0;
@@ -398,7 +398,7 @@ void GolImgFile::ConvertRow(const void* p_src, void* p_dst, const GolSurfaceForm
 		}
 	}
 	else {
-		if (m_format.m_unk0x10 > 0) {
+		if (m_format.m_intensityMask > 0) {
 			GOL_FATALERROR_MESSAGE("Intensity formats not supported");
 			return;
 		}

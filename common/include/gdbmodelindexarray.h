@@ -26,27 +26,27 @@ public:
 		LegoU8 m_x; // 0x3
 	};
 
-	const Indices* GetIndices() const { return m_unk0x08; }
-	Indices* GetMutableIndices() { return m_unk0x08; }
-	const Indices* GetIndex(LegoU32 p_index) const { return m_unk0x08 + p_index; }
-	Indices* GetMutableIndex(LegoU32 p_index) { return m_unk0x08 + p_index; }
-	LegoU8* GetIndexBytes() const { return &m_unk0x08->m_a; }
+	const Indices* GetIndices() const { return m_indices; }
+	Indices* GetMutableIndices() { return m_indices; }
+	const Indices* GetIndex(LegoU32 p_index) const { return m_indices + p_index; }
+	Indices* GetMutableIndex(LegoU32 p_index) { return m_indices + p_index; }
+	LegoU8* GetIndexBytes() const { return &m_indices->m_a; }
 	void SetIndices(LegoU32 p_index, LegoU8 p_a, LegoU8 p_b, LegoU8 p_c)
 	{
-		m_unk0x08[p_index].m_a = p_a;
-		m_unk0x08[p_index].m_b = p_b;
-		m_unk0x08[p_index].m_c = p_c;
-		m_unk0x08[p_index].m_x = 0;
+		m_indices[p_index].m_a = p_a;
+		m_indices[p_index].m_b = p_b;
+		m_indices[p_index].m_c = p_c;
+		m_indices[p_index].m_x = 0;
 	}
 	void SetTriangleIndices(LegoU32 p_index, LegoU8 p_a, LegoU8 p_b, LegoU8 p_c)
 	{
-		m_unk0x08[p_index].m_a = p_a;
-		m_unk0x08[p_index].m_b = p_b;
-		m_unk0x08[p_index].m_c = p_c;
+		m_indices[p_index].m_a = p_a;
+		m_indices[p_index].m_b = p_b;
+		m_indices[p_index].m_c = p_c;
 	}
 
 protected:
-	Indices* m_unk0x08;
+	Indices* m_indices;
 };
 
 #endif // GDBMODELINDEXARRAY_H

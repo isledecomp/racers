@@ -14,7 +14,7 @@ public:
 		m_grnBitMask = 0;
 		m_bluBitMask = 0;
 		m_alpBitMask = 0;
-		m_unk0x10 = 0;
+		m_intensityMask = 0;
 		m_paletteMask = 0;
 		m_bitsPerPixel = 0;
 	}
@@ -31,13 +31,13 @@ public:
 	LegoU32 GetAlphaBitShift() const;
 	LegoU32 MapRGBA(const ColorRGBA& p_rgba) const;
 
-	LegoU32 m_redBitMask;   // 0x00
-	LegoU32 m_grnBitMask;   // 0x04
-	LegoU32 m_bluBitMask;   // 0x08
-	LegoU32 m_alpBitMask;   // 0x0c
-	undefined4 m_unk0x10;   // 0x10
-	LegoU16 m_paletteMask;  // 0x14
-	LegoU16 m_bitsPerPixel; // 0x16
+	LegoU32 m_redBitMask;       // 0x00
+	LegoU32 m_grnBitMask;       // 0x04
+	LegoU32 m_bluBitMask;       // 0x08
+	LegoU32 m_alpBitMask;       // 0x0c
+	undefined4 m_intensityMask; // 0x10
+	LegoU16 m_paletteMask;      // 0x14
+	LegoU16 m_bitsPerPixel;     // 0x16
 };
 
 #endif // GOLSURFACEFORMAT

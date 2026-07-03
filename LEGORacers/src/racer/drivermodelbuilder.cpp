@@ -139,7 +139,7 @@ void DriverModelBuilder::LoadFaceTexture(const LegoChar* p_name, GolBmpFile* p_i
 	p_imageFile->Open(fileName);
 
 	texture->SetNameFromBuffer(p_name);
-	texture->SetTextureFlags(GolTexture::c_unk0x36Bit2);
+	texture->SetTextureFlags(GolTexture::c_textureFlagBit2);
 	texture->VTable0x30(*m_renderer, p_imageFile);
 	m_textureList->AddName(p_name, texture);
 	p_imageFile->Destroy();

@@ -81,10 +81,10 @@ public:
 	void CopySourceTextureDefinitionFrom(const GolD3DTexture* p_texture)
 	{
 		::memcpy(m_name, p_texture->m_name, sizeof(m_name));
-		m_unk0x36 = p_texture->m_unk0x36;
-		m_unk0x34 = p_texture->m_unk0x34;
+		m_textureFlags = p_texture->m_textureFlags;
+		m_mipmapCount = p_texture->m_mipmapCount;
 		ColorRGBA colorKey = p_texture->m_colorKey;
-		m_unk0x36 |= GolTexture::c_unk0x36Bit11;
+		m_textureFlags |= GolTexture::c_textureFlagBit11;
 		m_colorKey = colorKey;
 		m_colorKey.m_alp = 0;
 	}

@@ -91,7 +91,7 @@ LegoU32 GolSurfaceFormat::GetAlphaBitCount() const
 // FUNCTION: GOLDP 0x1001cc10
 LegoU32 GolSurfaceFormat::GetIntensityBitShift() const
 {
-	LegoU32 mask = m_unk0x10;
+	LegoU32 mask = m_intensityMask;
 	if (mask == 0) {
 		return 0;
 	}

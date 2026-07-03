@@ -14,7 +14,7 @@ GolMaterialLibrary::GolMaterialLibrary()
 {
 	m_renderer = NULL;
 	m_next = NULL;
-	m_unk0x14 = NULL;
+	m_materialSource = NULL;
 	m_numItems = 0;
 }
 
@@ -42,7 +42,7 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 
 	m_renderer = p_renderer;
 	p_renderer->AddMaterialList(this);
-	m_unk0x14 = NULL;
+	m_materialSource = NULL;
 	GolFileParser* parser;
 
 	if (p_binary) {
@@ -282,12 +282,12 @@ void GolMaterialLibrary::CreateMaterials()
 {
 	LegoU32 i;
 
-	if (m_unk0x14 != NULL) {
+	if (m_materialSource != NULL) {
 		for (i = 0; i < m_numItems; i++) {
 			GolMaterial* item = GetItem(i);
 			if (!(item->GetFlags() & GolMaterial::c_flagBit0)) {
 				GolMaterialParams params;
-				m_unk0x14->VTable0x00(i, &params);
+				m_materialSource->VTable0x00(i, &params);
 				item->SetParams(m_renderer, params);
 				VTable0x18(i);
 			}
@@ -312,7 +312,7 @@ void GolMaterialLibrary::VTable0x20(GolRenderDevice* p_renderer, GolMaterialSour
 
 	m_renderer = p_renderer;
 	p_renderer->AddMaterialList(this);
-	m_unk0x14 = p_arg2;
+	m_materialSource = p_arg2;
 	m_numItems = p_capacity;
 	GolNameTable::Allocate(p_capacity);
 	AllocateItems();

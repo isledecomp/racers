@@ -386,18 +386,18 @@ void GolTiledTexture::FUN_1001fde0()
 
 			LegoU16 flags = m_flags;
 			if (m_renderer->VTable0x110()) {
-				flags |= GolTexture::c_unk0x36Bit6;
+				flags |= GolTexture::c_textureFlagBit6;
 			}
 			if ((flags & c_flagBit5) && (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9)) {
-				flags |= GolTexture::c_unk0x36Bit7;
+				flags |= GolTexture::c_textureFlagBit7;
 			}
 
-			texture->m_unk0x36 = flags;
-			texture->m_unk0x34 = 0;
+			texture->m_textureFlags = flags;
+			texture->m_mipmapCount = 0;
 			texture->m_colorKey = m_colorKey;
-			flags |= GolTexture::c_unk0x36Bit11;
+			flags |= GolTexture::c_textureFlagBit11;
 			texture->m_colorKey.m_alp = 0;
-			texture->m_unk0x36 = flags;
+			texture->m_textureFlags = flags;
 			VTable0x0c(row, column, &m_unk0x0c);
 		}
 	}

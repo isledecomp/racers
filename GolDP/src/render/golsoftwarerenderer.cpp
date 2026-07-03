@@ -203,7 +203,7 @@ void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial
 			rasterizerMode = c_flag0x2cBit8 | c_flag0x2cBit9;
 		}
 
-		if (texture->GetUnk0x36() & GolTexture::c_unk0x36Bit5) {
+		if (texture->GetTextureFlags() & GolTexture::c_textureFlagBit5) {
 			rasterizerMode |= c_flag0x2cBit1;
 		}
 

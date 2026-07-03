@@ -13,14 +13,14 @@ CmbModelPartData::CmbModelPartData()
 	m_unk0x24 = 0;
 	m_unk0x26 = 0;
 	m_unk0x20 = 0;
-	m_unk0x00 = 0.0f;
-	m_unk0x04.m_x = 0.0f;
-	m_unk0x04.m_y = 0.0f;
-	m_unk0x04.m_z = 0.0f;
-	m_unk0x10.m_x = 0.0f;
-	m_unk0x10.m_y = 0.0f;
-	m_unk0x10.m_z = 0.0f;
-	m_unk0x10.m_u = FLT_MAX / 2.0f;
+	m_msPerFrame = 0.0f;
+	m_velocity.m_x = 0.0f;
+	m_velocity.m_y = 0.0f;
+	m_velocity.m_z = 0.0f;
+	m_bounds.m_x = 0.0f;
+	m_bounds.m_y = 0.0f;
+	m_bounds.m_z = 0.0f;
+	m_bounds.m_u = FLT_MAX / 2.0f;
 }
 
 // FUNCTION: GOLDP 0x10018670
@@ -48,18 +48,18 @@ void CmbModelPartData::Parse(GolFileParser& p_parser)
 			m_unk0x26 = p_parser.GetLastInt();
 			break;
 		case GolFileParser::e_unknown0x2f:
-			m_unk0x00 = static_cast<LegoFloat>(p_parser.ReadInteger()) / 1000.0f;
+			m_msPerFrame = static_cast<LegoFloat>(p_parser.ReadInteger()) / 1000.0f;
 			break;
 		case GolFileParser::e_unknown0x30:
-			m_unk0x04.m_x = p_parser.ReadFloat();
-			m_unk0x04.m_y = p_parser.ReadFloat();
-			m_unk0x04.m_z = p_parser.ReadFloat();
+			m_velocity.m_x = p_parser.ReadFloat();
+			m_velocity.m_y = p_parser.ReadFloat();
+			m_velocity.m_z = p_parser.ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x31:
-			m_unk0x10.m_x = p_parser.ReadFloat();
-			m_unk0x10.m_y = p_parser.ReadFloat();
-			m_unk0x10.m_z = p_parser.ReadFloat();
-			m_unk0x10.m_u = p_parser.ReadFloat();
+			m_bounds.m_x = p_parser.ReadFloat();
+			m_bounds.m_y = p_parser.ReadFloat();
+			m_bounds.m_z = p_parser.ReadFloat();
+			m_bounds.m_u = p_parser.ReadFloat();
 			break;
 		default:
 			p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);

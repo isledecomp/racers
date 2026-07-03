@@ -14,7 +14,7 @@ GolSceneNode::GolSceneNode()
 {
 	m_capacity = 0;
 	m_unk0x14 = 0;
-	m_unk0x0c = 0;
+	m_updateSerial = 0;
 }
 
 // FUNCTION: GOLDP 0x100299c0
@@ -22,7 +22,7 @@ GolSceneNode::~GolSceneNode()
 {
 	GolNameTable::Clear();
 	m_capacity = 0;
-	m_unk0x0c = 0;
+	m_updateSerial = 0;
 }
 
 // FUNCTION: GOLDP 0x10029a20
@@ -112,7 +112,7 @@ void GolSceneNode::Clear()
 {
 	GolNameTable::Clear();
 	m_capacity = 0;
-	m_unk0x0c = 0;
+	m_updateSerial = 0;
 }
 
 // FUNCTION: GOLDP 0x10029c60

@@ -8,7 +8,7 @@ class GolRenderDevice;
 
 // SIZE 0x0c
 struct MaterialTable {
-	MaterialTable* FUN_004a00b0();
+	MaterialTable* Reset();
 	void Destroy();
 	void Initialize(GolRenderDevice* p_renderer, LegoU32 p_count);
 	void Clear();

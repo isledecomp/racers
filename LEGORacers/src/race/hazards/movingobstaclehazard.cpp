@@ -22,7 +22,7 @@ DECOMP_SIZE_ASSERT(MovingObstacleHazard, 0x17c)
 // FUNCTION: LEGORACERS 0x0048fe30
 MovingObstacleHazard::MovingObstacleHazard()
 {
-	m_shadowMaterialTable.FUN_004a00b0();
+	m_shadowMaterialTable.Reset();
 	m_entity = NULL;
 	m_collisionEvent = NULL;
 	m_eventQueue = NULL;

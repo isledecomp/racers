@@ -21,7 +21,7 @@ extern const LegoFloat g_homingProjectileCollisionStartOffset;
 // FUNCTION: LEGORACERS 0x004210b0
 PowerupExplosion::PowerupExplosion()
 {
-	m_materialTable.FUN_004a00b0();
+	m_materialTable.Reset();
 	m_state = c_stateUninitialized;
 	m_golExport = NULL;
 	m_billboard = NULL;

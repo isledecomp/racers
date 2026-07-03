@@ -51,35 +51,35 @@ public:
 
 	void AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroups);
 	void MirrorY();
-	GolModelMaterialTable* GetMaterialTable() { return &m_unk0x04; }
-	GdbVertexArray* GetVertexArray() const { return m_unk0x10; }
-	GdbModelIndexArrayBase* GetIndexArray() const { return m_unk0x18; }
-	const GolVec3& GetCenter() const { return m_unk0x28; }
-	const GolVec3& GetBoundingCenter() const { return m_unk0x28; }
-	LegoFloat GetRadius() const { return m_unk0x34; }
-	LegoFloat GetBoundingRadius() const { return m_unk0x34; }
-	LegoFloat GetScale() const { return m_unk0x38; }
-	void SetScale(LegoFloat p_scale) { m_unk0x38 = p_scale; }
-	void SetDirty(LegoBool32 p_dirty) { m_unk0x3c = p_dirty; }
+	GolModelMaterialTable* GetMaterialTable() { return &m_materialTable; }
+	GdbVertexArray* GetVertexArray() const { return m_vertexArray; }
+	GdbModelIndexArrayBase* GetIndexArray() const { return m_indexArray; }
+	const GolVec3& GetCenter() const { return m_center; }
+	const GolVec3& GetBoundingCenter() const { return m_center; }
+	LegoFloat GetRadius() const { return m_radius; }
+	LegoFloat GetBoundingRadius() const { return m_radius; }
+	LegoFloat GetScale() const { return m_scale; }
+	void SetScale(LegoFloat p_scale) { m_scale = p_scale; }
+	void SetDirty(LegoBool32 p_dirty) { m_dirty = p_dirty; }
 	LegoU32 GetGroupCount() const { return m_countGroups; }
-	const LegoU32* GetGroups() const { return m_unk0x24; }
-	LegoU32* GetMutableGroups() { return m_unk0x24; }
+	const LegoU32* GetGroups() const { return m_groups; }
+	LegoU32* GetMutableGroups() { return m_groups; }
 
 	// SYNTHETIC: GOLDP 0x10027070
 	// GolModelBase::`scalar deleting destructor'
 
 protected:
-	GolModelMaterialTable m_unk0x04;
-	GdbVertexArray* m_unk0x10;
+	GolModelMaterialTable m_materialTable;
+	GdbVertexArray* m_vertexArray;
 	GdbVertexArray* m_unk0x14;
-	GdbModelIndexArrayBase* m_unk0x18;
+	GdbModelIndexArrayBase* m_indexArray;
 	undefined4* m_unk0x1c;
 	LegoU32 m_countGroups;
-	LegoU32* m_unk0x24;
-	GolVec3 m_unk0x28;
-	LegoFloat m_unk0x34;
-	LegoFloat m_unk0x38;
-	LegoBool32 m_unk0x3c;
+	LegoU32* m_groups;
+	GolVec3 m_center;
+	LegoFloat m_radius;
+	LegoFloat m_scale;
+	LegoBool32 m_dirty;
 };
 
 #endif // GOLMODELBASE_H

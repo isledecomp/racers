@@ -13,10 +13,10 @@ DECOMP_SIZE_ASSERT(CmbModelPartTrack, 0x14)
 // FUNCTION: LEGORACERS 0x004011a0
 CmbModelPart::CmbModelPart()
 {
-	m_unk0x24 = NULL;
+	m_tracks = NULL;
 	m_unk0x28 = 0;
-	m_unk0x2c = NULL;
-	m_unk0x30 = 0;
+	m_partData = NULL;
+	m_partCount = 0;
 }
 
 // FUNCTION: GOLDP 0x10018840
@@ -30,7 +30,7 @@ CmbModelPart::~CmbModelPart()
 // FUNCTION: LEGORACERS 0x00401260
 void CmbModelPart::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 {
-	if (m_unk0x2c) {
+	if (m_partData) {
 		Clear();
 	}
 
@@ -81,19 +81,19 @@ void CmbModelPart::Clear()
 {
 	m_data.Clear();
 
-	if (m_unk0x24 != NULL) {
-		delete[] m_unk0x24;
-		m_unk0x24 = NULL;
+	if (m_tracks != NULL) {
+		delete[] m_tracks;
+		m_tracks = NULL;
 	}
 
-	if (m_unk0x2c != NULL) {
-		delete[] m_unk0x2c;
-		m_unk0x2c = NULL;
+	if (m_partData != NULL) {
+		delete[] m_partData;
+		m_partData = NULL;
 	}
 
 	GolNameTable::Clear();
 	m_unk0x28 = 0;
-	m_unk0x30 = 0;
+	m_partCount = 0;
 }
 
 // FUNCTION: GOLDP 0x10018a80
@@ -105,19 +105,19 @@ void CmbModelPart::VTable0x0c(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x24 = new CmbModelPartTrack[m_unk0x28];
-	if (m_unk0x24 == NULL) {
+	m_tracks = new CmbModelPartTrack[m_unk0x28];
+	if (m_tracks == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	LegoU32 i;
 	for (i = 0; i < m_unk0x28; i++) {
-		m_unk0x24[i].m_rotationFrameIndex = p_parser.ReadInteger();
-		m_unk0x24[i].m_rotationKeyIndex = p_parser.ReadInteger();
-		m_unk0x24[i].m_rotationKeyCount = p_parser.ReadInteger();
-		m_unk0x24[i].m_positionFrameIndex = p_parser.ReadInteger();
-		m_unk0x24[i].m_positionKeyIndex = p_parser.ReadInteger();
-		m_unk0x24[i].m_positionKeyCount = p_parser.ReadInteger();
+		m_tracks[i].m_rotationFrameIndex = p_parser.ReadInteger();
+		m_tracks[i].m_rotationKeyIndex = p_parser.ReadInteger();
+		m_tracks[i].m_rotationKeyCount = p_parser.ReadInteger();
+		m_tracks[i].m_positionFrameIndex = p_parser.ReadInteger();
+		m_tracks[i].m_positionKeyIndex = p_parser.ReadInteger();
+		m_tracks[i].m_positionKeyCount = p_parser.ReadInteger();
 	}
 
 	p_parser.ReadRightCurly();
@@ -127,28 +127,28 @@ void CmbModelPart::VTable0x0c(GolFileParser& p_parser)
 // FUNCTION: LEGORACERS 0x004014c0
 void CmbModelPart::VTable0x10(GolFileParser& p_parser)
 {
-	m_unk0x30 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x30 == 0) {
+	m_partCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_partCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x2c = new CmbModelPartData[m_unk0x30];
-	if (m_unk0x2c == NULL) {
+	m_partData = new CmbModelPartData[m_partCount];
+	if (m_partData == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	GolNameTable::Allocate(m_unk0x30);
+	GolNameTable::Allocate(m_partCount);
 
 	LegoU32 i;
-	for (i = 0; i < m_unk0x30; i++) {
+	for (i = 0; i < m_partCount; i++) {
 		if (p_parser.GetNextToken() != GolFileParser::e_unknown0x2c) {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
 		GolName name;
 		::strncpy(name, p_parser.ReadString(), sizeOfArray(name));
-		AddName(name, &m_unk0x2c[i]);
-		m_unk0x2c[i].Parse(p_parser);
+		AddName(name, &m_partData[i]);
+		m_partData[i].Parse(p_parser);
 	}
 
 	p_parser.ReadRightCurly();
@@ -157,14 +157,14 @@ void CmbModelPart::VTable0x10(GolFileParser& p_parser)
 // STUB: LEGORACERS 0x004015e0
 void CmbModelPart::MirrorY()
 {
-	for (LegoU32 i = 0; i < m_unk0x30; i++) {
-		GolVec4 bounds = m_unk0x2c[i].m_unk0x10;
+	for (LegoU32 i = 0; i < m_partCount; i++) {
+		GolVec4 bounds = m_partData[i].m_bounds;
 		bounds.m_y = -bounds.m_y;
-		m_unk0x2c[i].m_unk0x10 = bounds;
+		m_partData[i].m_bounds = bounds;
 
-		GolVec3 position = m_unk0x2c[i].m_unk0x04;
+		GolVec3 position = m_partData[i].m_velocity;
 		position.m_y = -position.m_y;
-		m_unk0x2c[i].m_unk0x04 = position;
+		m_partData[i].m_velocity = position;
 	}
 
 	m_data.MirrorY();

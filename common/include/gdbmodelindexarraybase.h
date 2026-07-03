@@ -19,10 +19,10 @@ public:
 	// SYNTHETIC: GOLDP 0x1001d7e0
 	// GdbModelIndexArrayBase::`scalar deleting destructor'
 
-	LegoU32 GetCount() const { return m_unk0x04; }
+	LegoU32 GetCount() const { return m_count; }
 
 protected:
-	undefined4 m_unk0x04; // 0x04
+	undefined4 m_count; // 0x04
 };
 
 #endif // GDBMODELINDEXARRAYBASE_H

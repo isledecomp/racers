@@ -40,7 +40,7 @@ void GolMaterial::SetParams(GolRenderDevice* p_renderer, const GolMaterialParams
 
 	if (m_flags & c_flagBit3) {
 		m_texture = p_params.m_texture;
-		if (m_texture->GetUnk0x36() & GolTexture::c_unk0x36Bit5) {
+		if (m_texture->GetTextureFlags() & GolTexture::c_textureFlagBit5) {
 			if (p_renderer->GetFlags() & (GolRenderDevice::c_flagBit7 | GolRenderDevice::c_flagBit8)) {
 				if ((p_renderer->GetFlags() & GolRenderDevice::c_flagBit7) && !(m_flags & c_flagBit12)) {
 					m_srcBlend = 6;

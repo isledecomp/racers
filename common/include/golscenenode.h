@@ -57,21 +57,21 @@ public:
 	void TransformPointToWorld(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
 	void TransformVectorToWorld(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
 	void MirrorY();
-	LegoU32 GetUpdateSerial() const { return m_unk0x0c; }
+	LegoU32 GetUpdateSerial() const { return m_updateSerial; }
 	LegoU32 GetCapacity() const { return m_capacity; }
 	LegoU32 AdvanceUpdateSerial()
 	{
-		m_unk0x0c++;
-		if (m_unk0x0c == static_cast<LegoU32>(-1)) {
-			m_unk0x0c = 0;
+		m_updateSerial++;
+		if (m_updateSerial == static_cast<LegoU32>(-1)) {
+			m_updateSerial = 0;
 		}
-		return m_unk0x0c;
+		return m_updateSerial;
 	}
 
 protected:
 	void Parse(GolFileParser* p_parser);
 
-	undefined4 m_unk0x0c;         // 0x0c
+	undefined4 m_updateSerial;    // 0x0c
 	LegoU32 m_capacity;           // 0x10
 	TransformComposer* m_unk0x14; // 0x14
 };

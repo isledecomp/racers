@@ -12,7 +12,7 @@ DECOMP_SIZE_ASSERT(MaterialTable, 0x0c)
 
 // FUNCTION: GOLDP 0x10025de0 FOLDED
 // FUNCTION: LEGORACERS 0x004a00b0 FOLDED
-MaterialTable* MaterialTable::FUN_004a00b0()
+MaterialTable* MaterialTable::Reset()
 {
 	m_renderer = NULL;
 	m_count = 0;

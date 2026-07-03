@@ -61,10 +61,10 @@ protected:
 
 	void CreateMaterials();
 
-	GolRenderDevice* m_renderer;  // 0x0c
-	GolMaterialLibrary* m_next;   // 0x10
-	GolMaterialSource* m_unk0x14; // 0x14
-	LegoU32 m_numItems;           // 0x18
+	GolRenderDevice* m_renderer;         // 0x0c
+	GolMaterialLibrary* m_next;          // 0x10
+	GolMaterialSource* m_materialSource; // 0x14
+	LegoU32 m_numItems;                  // 0x18
 };
 
 #endif // GOLMATERIALLIBRARY_H

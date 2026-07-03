@@ -904,8 +904,8 @@ void MenuManager::BuildPlayerDriverModel(
 			GolD3DTexture* texture = p_slot->m_altTextures->GetItem(textureCount++);
 			texture->SetName(static_cast<GolD3DTexture*>(params.m_texture)->GetName());
 			texture->SetSourceTextureDefinition(
-				params.m_texture->GetUnk0x34(),
-				params.m_texture->GetUnk0x36(),
+				params.m_texture->GetMipmapCount(),
+				params.m_texture->GetTextureFlags(),
 				params.m_texture->GetColorKey()
 			);
 			params.m_texture = texture;

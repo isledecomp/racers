@@ -1979,7 +1979,7 @@ void GolD3DRenderDevice::SelectTextureFormat(
 		reqTextureFormat.m_grnBitMask = 0x07c0;
 		reqTextureFormat.m_bluBitMask = 0x003e;
 		reqTextureFormat.m_alpBitMask = 0x0001;
-		reqTextureFormat.m_unk0x10 = 0;
+		reqTextureFormat.m_intensityMask = 0;
 		reqTextureFormat.m_paletteMask = 0;
 		reqTextureFormat.m_bitsPerPixel = 16;
 		GolRenderDevice::SelectTextureFormat(reqTextureFormat, p_actualTextureFormat, TRUE);
@@ -2302,7 +2302,7 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 		textureCount = 1;
 	}
 	else {
-		textureCount = p_material->GetTexture()->GetUnk0x34();
+		textureCount = p_material->GetTexture()->GetMipmapCount();
 	}
 	m_unk0xc83ac = textureCount - 1;
 
@@ -2403,7 +2403,7 @@ void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
 	}
 
 	if (p_texture != NULL) {
-		if (p_texture->GetUnk0x36() & GolTexture::c_unk0x36Bit5) {
+		if (p_texture->GetTextureFlags() & GolTexture::c_textureFlagBit5) {
 			if (m_unk0xc83f0 == 0) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, TRUE);
 				m_unk0xc83f0 = TRUE;
@@ -2740,7 +2740,7 @@ void GolD3DRenderDevice::FUN_1000b4a0()
 		m_textureFormats[0].m_bluBitMask = 0;
 		m_textureFormats[0].m_alpBitMask = 0;
 		m_textureFormats[0].m_paletteMask = 0xff;
-		m_textureFormats[0].m_unk0x10 = 0;
+		m_textureFormats[0].m_intensityMask = 0;
 		m_textureFormats[0].m_bitsPerPixel = 8;
 		break;
 	}
@@ -2758,7 +2758,7 @@ void GolD3DRenderDevice::FUN_1000b4a0()
 		m_textureFormats[0].m_bluBitMask = 0x03;
 		m_textureFormats[0].m_alpBitMask = 0;
 		m_textureFormats[0].m_paletteMask = 0;
-		m_textureFormats[0].m_unk0x10 = 0;
+		m_textureFormats[0].m_intensityMask = 0;
 		m_textureFormats[0].m_bitsPerPixel = 8;
 		break;
 	}
@@ -2776,7 +2776,7 @@ void GolD3DRenderDevice::FUN_1000b4a0()
 		m_textureFormats[1].m_bluBitMask = 0;
 		m_textureFormats[1].m_alpBitMask = 0;
 		m_textureFormats[1].m_paletteMask = 0xff;
-		m_textureFormats[1].m_unk0x10 = 0;
+		m_textureFormats[1].m_intensityMask = 0;
 		m_textureFormats[1].m_bitsPerPixel = 8;
 
 		GolSurfaceFormat& textureFormat = m_renderTargetInfo->GetTextureFormat();
@@ -2786,14 +2786,14 @@ void GolD3DRenderDevice::FUN_1000b4a0()
 			m_textureFormats[0].m_bluBitMask = 0x001f;
 			m_textureFormats[0].m_alpBitMask = 0;
 			m_textureFormats[0].m_paletteMask = 0;
-			m_textureFormats[0].m_unk0x10 = 0;
+			m_textureFormats[0].m_intensityMask = 0;
 			m_textureFormats[0].m_bitsPerPixel = 16;
 			m_textureFormats[2].m_redBitMask = 0xf8000000;
 			m_textureFormats[2].m_grnBitMask = 0x07e00000;
 			m_textureFormats[2].m_bluBitMask = 0x001f0000;
 			m_textureFormats[2].m_alpBitMask = 0x000003ff;
 			m_textureFormats[2].m_paletteMask = 0;
-			m_textureFormats[2].m_unk0x10 = 0;
+			m_textureFormats[2].m_intensityMask = 0;
 			m_textureFormats[2].m_bitsPerPixel = 32;
 		}
 		else {
@@ -2802,14 +2802,14 @@ void GolD3DRenderDevice::FUN_1000b4a0()
 			m_textureFormats[0].m_bluBitMask = 0x001f;
 			m_textureFormats[0].m_alpBitMask = 0;
 			m_textureFormats[0].m_paletteMask = 0;
-			m_textureFormats[0].m_unk0x10 = 0;
+			m_textureFormats[0].m_intensityMask = 0;
 			m_textureFormats[0].m_bitsPerPixel = 16;
 			m_textureFormats[2].m_redBitMask = 0x7c000000;
 			m_textureFormats[2].m_grnBitMask = 0x03e00000;
 			m_textureFormats[2].m_bluBitMask = 0x001f0000;
 			m_textureFormats[2].m_alpBitMask = 0x000003ff;
 			m_textureFormats[2].m_paletteMask = 0;
-			m_textureFormats[2].m_unk0x10 = 0;
+			m_textureFormats[2].m_intensityMask = 0;
 			m_textureFormats[2].m_bitsPerPixel = 32;
 		}
 		break;
@@ -2842,7 +2842,7 @@ HRESULT GolD3DRenderDevice::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_for
 		format->m_redBitMask = 0;
 		format->m_grnBitMask = 0;
 		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
+		format->m_intensityMask = 0;
 		format->m_bitsPerPixel = 8;
 	}
 	else if (p_format->dwFlags & DDPF_PALETTEINDEXED4) {
@@ -2850,7 +2850,7 @@ HRESULT GolD3DRenderDevice::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_for
 		format->m_redBitMask = 0;
 		format->m_grnBitMask = 0;
 		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
+		format->m_intensityMask = 0;
 		format->m_bitsPerPixel = 4;
 	}
 	else if (p_format->dwFlags & DDPF_PALETTEINDEXED2) {
@@ -2858,7 +2858,7 @@ HRESULT GolD3DRenderDevice::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_for
 		format->m_redBitMask = 0;
 		format->m_grnBitMask = 0;
 		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
+		format->m_intensityMask = 0;
 		format->m_bitsPerPixel = 2;
 	}
 	else if (p_format->dwFlags & DDPF_PALETTEINDEXED1) {
@@ -2866,7 +2866,7 @@ HRESULT GolD3DRenderDevice::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_for
 		format->m_redBitMask = 0;
 		format->m_grnBitMask = 0;
 		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
+		format->m_intensityMask = 0;
 		format->m_bitsPerPixel = 1;
 	}
 	else {
@@ -2874,7 +2874,7 @@ HRESULT GolD3DRenderDevice::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_for
 		format->m_grnBitMask = p_format->dwGBitMask;
 		format->m_bluBitMask = p_format->dwBBitMask;
 		format->m_paletteMask = 0;
-		format->m_unk0x10 = 0;
+		format->m_intensityMask = 0;
 		LegoU32 bitCount = p_format->dwRGBBitCount;
 		format->m_bitsPerPixel = bitCount;
 	}

@@ -29,17 +29,17 @@ GolModel::~GolModel()
 // FUNCTION: GOLDP 0x100068e0
 void GolModel::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
 {
-	if (m_unk0x24) {
+	if (m_groups) {
 		Destroy();
 	}
 
 	GolModelBase::Load(p_renderer, p_name, p_binary);
 
 	if (m_unk0x40 != NULL) {
-		ComputeBounds(&m_unk0x28, &m_unk0x34, m_unk0x38);
+		ComputeBounds(&m_center, &m_radius, m_scale);
 	}
 
-	m_unk0x3c = TRUE;
+	m_dirty = TRUE;
 }
 
 // FUNCTION: GOLDP 0x10006930
@@ -52,12 +52,12 @@ void GolModel::Allocate(
 	undefined4 p_arg6
 )
 {
-	if (m_unk0x24) {
+	if (m_groups) {
 		Destroy();
 	}
 
 	if (p_arg6 > 0) {
-		m_unk0x04.Initialize(p_renderer, p_arg6);
+		m_materialTable.Initialize(p_renderer, p_arg6);
 	}
 
 	switch (p_vertexType) {
@@ -75,14 +75,14 @@ void GolModel::Allocate(
 		break;
 	}
 
-	m_unk0x10 = m_unk0x40;
-	if (m_unk0x10 == NULL) {
+	m_vertexArray = m_unk0x40;
+	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	AllocateIndices(p_arg4, p_arg5);
 	m_unk0x40->VTable0x04(p_arg3);
-	m_unk0x3c = 1;
+	m_dirty = 1;
 }
 
 // FUNCTION: GOLDP 0x10006a60
@@ -92,7 +92,7 @@ void GolModel::Destroy()
 		m_unk0x40->VTable0x0c();
 		delete m_unk0x40;
 		m_unk0x40 = NULL;
-		m_unk0x10 = 0;
+		m_vertexArray = 0;
 	}
 
 	GolModelBase::Destroy();
@@ -106,8 +106,8 @@ void GolModel::ParseUncoloredVertices(GolFileParser& p_parser)
 	}
 
 	m_unk0x40 = new GdbUncoloredVertexArray;
-	m_unk0x10 = m_unk0x40;
-	if (m_unk0x10 == NULL) {
+	m_vertexArray = m_unk0x40;
+	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
@@ -122,8 +122,8 @@ void GolModel::ParseColoredVertices(GolFileParser& p_parser)
 	}
 
 	m_unk0x40 = new GdbColoredVertexArray;
-	m_unk0x10 = m_unk0x40;
-	if (m_unk0x10 == NULL) {
+	m_vertexArray = m_unk0x40;
+	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
@@ -138,8 +138,8 @@ void GolModel::ParseNormalVertices(GolFileParser& p_parser)
 	}
 
 	m_unk0x40 = new GdbNormalVertexArray;
-	m_unk0x10 = m_unk0x40;
-	if (m_unk0x10 == NULL) {
+	m_vertexArray = m_unk0x40;
+	if (m_vertexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
@@ -150,12 +150,12 @@ void GolModel::ParseNormalVertices(GolFileParser& p_parser)
 void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable)
 {
 	if (p_materialTable == NULL) {
-		p_materialTable = &m_unk0x04;
+		p_materialTable = &m_materialTable;
 	}
 
-	if (m_unk0x3c) {
-		LegoU32* group = m_unk0x24;
-		LegoU32* end = m_unk0x24 + m_countGroups;
+	if (m_dirty) {
+		LegoU32* group = m_groups;
+		LegoU32* end = m_groups + m_countGroups;
 
 		for (; group < end; group++) {
 			LegoU32 groupData = *group;
@@ -177,7 +177,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 			}
 		}
 
-		m_unk0x3c = FALSE;
+		m_dirty = FALSE;
 	}
 
 	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_unk0x40);
@@ -190,12 +190,12 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 		p_renderer->m_unk0xc4c14 = vertexArray->GetColors();
 	}
 
-	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_unk0x18);
+	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_indexArray);
 	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
 	p_renderer->m_unk0xc854c.m_indices = p_renderer->m_unk0xc4c18;
 
-	LegoU32* group = m_unk0x24;
-	LegoU32* end = m_unk0x24 + m_countGroups;
+	LegoU32* group = m_groups;
+	LegoU32* end = m_groups + m_countGroups;
 
 	for (; group < end; group++) {
 		LegoU32 groupData = *group;
@@ -248,12 +248,12 @@ void GolModel::FUN_10006e00(
 )
 {
 	if (p_materialTable == NULL) {
-		p_materialTable = &m_unk0x04;
+		p_materialTable = &m_materialTable;
 	}
 
-	if (m_unk0x3c) {
-		LegoU32* group = m_unk0x24;
-		LegoU32* end = m_unk0x24 + m_countGroups;
+	if (m_dirty) {
+		LegoU32* group = m_groups;
+		LegoU32* end = m_groups + m_countGroups;
 
 		for (; group < end; group++) {
 			LegoU32 groupData = *group;
@@ -276,7 +276,7 @@ void GolModel::FUN_10006e00(
 			}
 		}
 
-		m_unk0x3c = FALSE;
+		m_dirty = FALSE;
 	}
 
 	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_unk0x40);
@@ -289,12 +289,12 @@ void GolModel::FUN_10006e00(
 		p_renderer->m_unk0xc4c14 = vertexArray->GetColors();
 	}
 
-	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_unk0x18);
+	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_indexArray);
 	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
 	p_renderer->m_unk0xc854c.m_indices = p_renderer->m_unk0xc4c18;
 
-	LegoU32* group = m_unk0x24 + p_node->m_firstGroup;
-	LegoU32* end = m_unk0x24 + (p_node->m_firstGroup + p_node->m_groupCount);
+	LegoU32* group = m_groups + p_node->m_firstGroup;
+	LegoU32* end = m_groups + (p_node->m_firstGroup + p_node->m_groupCount);
 	for (; group < end; group++) {
 		LegoU32 groupData = *group;
 		LegoU32 groupType = groupData & c_groupTypeMask;
@@ -339,7 +339,7 @@ void GolModel::FUN_10006e00(
 // FUNCTION: GOLDP 0x10006fa0
 LegoU32 GolModel::FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const
 {
-	GdbModelIndexArray::Indices* indices = static_cast<GdbModelIndexArray*>(m_unk0x18)->GetMutableIndices();
+	GdbModelIndexArray::Indices* indices = static_cast<GdbModelIndexArray*>(m_indexArray)->GetMutableIndices();
 	GdbModelIndexArray::Indices* triangle = indices + p_firstTriangle;
 	GdbModelIndexArray::Indices* end = indices + (p_firstTriangle + p_triangleCount);
 	LegoU16 result = 0;

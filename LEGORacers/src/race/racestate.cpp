@@ -536,7 +536,7 @@ void RaceState::CreateRacer(
 	GolD3DTexture* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
 	GolMaterial* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
 	shadowTexture->SetNameFromBuffer(chassisItem->m_shadowName);
-	shadowTexture->SetTextureFlags(GolTexture::c_unk0x36Bit2 | GolTexture::c_unk0x36Bit3);
+	shadowTexture->SetTextureFlags(GolTexture::c_textureFlagBit2 | GolTexture::c_textureFlagBit3);
 	shadowMaterial->SetName(chassisItem->m_shadowName);
 
 	GolMaterialParams shadowMaterialParams;

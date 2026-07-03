@@ -35,16 +35,16 @@ public:
 	virtual void VTable0x10(GolFileParser& p_parser);                     // vtable+0x10
 	virtual void VTable0x14(const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x14
 
-	CmbModelPartData* GetPartData() const { return m_unk0x2c; }
-	LegoU32 GetPartCount() const { return m_unk0x30; }
+	CmbModelPartData* GetPartData() const { return m_partData; }
+	LegoU32 GetPartCount() const { return m_partCount; }
 	void MirrorY();
 	CmbModelPartTrackData& GetAnimationData() { return m_data; }
-	const CmbModelPartTrack& GetTrack(LegoU32 p_index) const { return m_unk0x24[p_index]; }
+	const CmbModelPartTrack& GetTrack(LegoU32 p_index) const { return m_tracks[p_index]; }
 	CmbModelPartData* FindPart(const LegoChar* p_name) const { return static_cast<CmbModelPartData*>(GetName(p_name)); }
 	LegoS32 GetPartIndex(const LegoChar* p_name) const
 	{
 		CmbModelPartData* part = FindPart(p_name);
-		return part == NULL ? -1 : part - m_unk0x2c;
+		return part == NULL ? -1 : part - m_partData;
 	}
 
 	// SYNTHETIC: GOLDP 0x10017880
@@ -53,10 +53,10 @@ public:
 
 private:
 	CmbModelPartTrackData m_data; // 0x0c
-	CmbModelPartTrack* m_unk0x24; // 0x24
+	CmbModelPartTrack* m_tracks;  // 0x24
 	LegoU32 m_unk0x28;            // 0x28
-	CmbModelPartData* m_unk0x2c;  // 0x2c
-	LegoU32 m_unk0x30;            // 0x30
+	CmbModelPartData* m_partData; // 0x2c
+	LegoU32 m_partCount;          // 0x30
 };
 
 #endif // CMBMODELPART_H

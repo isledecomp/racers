@@ -1,8 +1,9 @@
-#ifndef WHITEBAFFOON0X58_H
-#define WHITEBAFFOON0X58_H
+#ifndef GOLTILEDTEXTURE_H
+#define GOLTILEDTEXTURE_H
 
 #include "decomp.h"
 #include "golsurfaceformat.h"
+#include "goltexture.h"
 #include "surface/color.h"
 #include "types.h"
 
@@ -27,22 +28,23 @@ struct FourBytes {
 // SIZE 0x50
 class GolTiledTexture {
 public:
-	enum Flags {
-		c_flagBit1 = 0x0002,
-		c_flagBit2 = 0x0004,
-		c_flagBit3 = 0x0008,
-		c_flagBit4 = 0x0010,
-		c_flagBit5 = 0x0020,
-		c_flagBit6 = 0x0040,
-		c_flagBit7 = 0x0080,
-		c_flagBit11 = 0x0800,
-		c_allFlags = 0xffff,
-		c_flagsWithoutBit3 = c_allFlags & ~c_flagBit3,
-		c_flagsWithoutBit4 = c_allFlags & ~c_flagBit4
+	// m_flags uses the GolTexture::c_textureFlag* vocabulary (copied verbatim
+	// into each tile's GolTexture::m_textureFlags by CreateTiles).
+	enum {
+		c_allSourceFlags = 0xffff,
+		c_sourceFlagsWithoutBmp = c_allSourceFlags & ~GolTexture::c_textureFlagBmpSource,
+		c_sourceFlagsWithoutTga = c_allSourceFlags & ~GolTexture::c_textureFlagTgaSource
 	};
 
 	enum StateFlags {
-		c_stateFlagBit0 = 0x01
+		c_stateCreated = 0x01,
+		c_stateFlatShaded = 0x02,
+		c_stateFlagBit2 = 0x04,
+		c_stateHasContent = 0x08,
+		c_stateDecal = 0x10,
+		c_stateModulate = 0x20,
+		c_stateFlagBit7 = 0x80,
+		c_stateFlagBit9 = 0x200
 	};
 
 	// SIZE 0x09
@@ -55,22 +57,22 @@ public:
 
 	GolTiledTexture();
 
-	virtual void VTable0x00() = 0;                                    // vtable+0x00
-	virtual void VTable0x04() = 0;                                    // vtable+0x04
-	virtual void VTable0x08() = 0;                                    // vtable+0x08
-	virtual void VTable0x0c(LegoU32, LegoU32, GolSurfaceFormat*) = 0; // vtable+0x0c
-	virtual void VTable0x10();                                        // vtable+0x10
+	virtual void AllocateTileWidths() = 0;                            // vtable+0x00
+	virtual void AllocateTileHeights() = 0;                           // vtable+0x04
+	virtual void AllocateTileArrays() = 0;                            // vtable+0x08
+	virtual void CreateTile(LegoU32, LegoU32, GolSurfaceFormat*) = 0; // vtable+0x0c
+	virtual void Load();                                              // vtable+0x10
 	virtual ~GolTiledTexture();                                       // vtable+0x14
 	virtual void Reset();                                             // vtable+0x18
-	virtual GolD3DTexture* VTable0x1c(LegoU32, LegoU32) = 0;          // vtable+0x1c
+	virtual GolD3DTexture* GetTile(LegoU32, LegoU32) = 0;             // vtable+0x1c
 
-	void FUN_1001f430();
-	void FUN_1001f790();
-	void FUN_1001fde0();
+	void ComputeTileLayout();
+	void ComputeSquareTileLayout();
+	void CreateTiles();
 
 	LegoU32 GetWidth() const { return m_width; }
 	LegoU32 GetHeight() const { return m_height; }
-	LegoU32 GetTextureFlags() const { return m_textureFlags; }
+	LegoU32 GetStateFlags() const { return m_stateFlags; }
 	LegoU32 GetTileColumnCount() const { return m_tileColumnCount; }
 	LegoU32 GetTileRowCount() const { return m_tileRowCount; }
 	LegoS32 GetTileWidth(LegoU32 p_column) const { return m_tileWidths[p_column]; }
@@ -92,11 +94,11 @@ public:
 	LegoU32 m_tileRowCount;           // 0x30
 	LegoU32 m_width;                  // 0x34
 	LegoU32 m_height;                 // 0x38
-	LegoU32 m_textureFlags;           // 0x3c
+	LegoU32 m_stateFlags;             // 0x3c
 	LegoU16 m_flags;                  // 0x40
 	FourBytes m_name[2];              // 0x42
-	FourBytes m_unk0x4a;              // 0x4a
+	FourBytes m_tintColor;            // 0x4a
 	undefined m_unk0x4e[0x50 - 0x4e]; // 0x4e
 };
 
-#endif // WHITEBAFFOON0X58_H
+#endif // GOLTILEDTEXTURE_H

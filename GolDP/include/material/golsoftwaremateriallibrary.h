@@ -13,8 +13,8 @@ public:
 	~GolSoftwareMaterialLibrary() override; // vtable+0x00
 
 	void Clear() override;                                // vtable+0x08
-	void VTable0x0c() override;                           // vtable+0x0c
-	void VTable0x10() override;                           // vtable+0x10
+	void ReleaseMaterials() override;                     // vtable+0x0c
+	void RestoreMaterials() override;                     // vtable+0x10
 	void AllocateItems() override;                        // vtable+0x14
 	void CreateMaterial(LegoU32 p_index) override;        // vtable+0x18
 	GolMaterial* GetItem(LegoU32 p_index) const override; // vtable+0x28

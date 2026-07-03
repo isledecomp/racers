@@ -2337,7 +2337,7 @@ void CutsceneImageVisual::VTable0x20(
 	destRect.m_bottom = p_y + p_height;
 
 	if (m_flags & 0x100) {
-		m_image->m_unk0x4a.m_u32 = m_colorPacked;
+		m_image->m_tintColor.m_u32 = m_colorPacked;
 	}
 
 	p_renderer->DrawImageRect(m_image, 0, &destRect, NULL);
@@ -2352,7 +2352,7 @@ void CutsceneImageVisual::VTable0x20(
 		color.m_color.m_grn = 0xff;
 		color.m_color.m_blu = 0xff;
 		color.m_color.m_alp = 0xff;
-		m_image->m_unk0x4a.m_u32 = color.m_colorPacked;
+		m_image->m_tintColor.m_u32 = color.m_colorPacked;
 	}
 }
 

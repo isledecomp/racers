@@ -30,7 +30,7 @@ void GolD3DTextureList::AllocateItems()
 }
 
 // FUNCTION: GOLDP 0x10015a50
-void GolD3DTextureList::VTable0x0c()
+void GolD3DTextureList::ReleaseTextures()
 {
 	LegoU32 i;
 	if (m_renderer != NULL) {
@@ -43,7 +43,7 @@ void GolD3DTextureList::VTable0x0c()
 }
 
 // FUNCTION: GOLDP 0x10015a90
-void GolD3DTextureList::VTable0x10()
+void GolD3DTextureList::RestoreTextures()
 {
 	LegoU32 i;
 	if (m_renderer != NULL) {

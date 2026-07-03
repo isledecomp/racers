@@ -206,10 +206,10 @@ private:
 	}
 
 	void FUN_100082e0();
-	void FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count);
-	void FUN_1000a2c0(GolMaterial*);
-	void FUN_1000a950(GolMaterial*);
-	void FUN_1000ac00(GolTexture*);
+	void DrawTriangleStrip(D3DTLVERTEX* p_vertices, LegoU32 p_count);
+	void ApplyMaterialHw(GolMaterial*);
+	void ApplyMaterialSw(GolMaterial*);
+	void SetCurrentTexture(GolTexture*);
 	void FUN_1000acf0(LegoU32 p_index);
 	void FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData);
 	void FUN_1000b0f0(LegoU32 p_index, const Light* p_param);
@@ -309,7 +309,7 @@ private:
 	LegoBool32 m_unk0xc83e4;                                                       // 0xc83e4
 	LegoBool32 m_unk0xc83e8;                                                       // 0xc83e8
 	undefined4 m_unk0xc83ec;                                                       // 0xc83ec
-	undefined4 m_unk0xc83f0;                                                       // 0xc83f0
+	undefined4 m_colorKeyEnabled;                                                  // 0xc83f0
 	undefined4 m_uvOffsetEnabled;                                                  // 0xc83f4
 	LegoBool32 m_unk0xc83f8;                                                       // 0xc83f8
 	LegoU32 m_unk0xc83fc;                                                          // 0xc83fc
@@ -350,7 +350,7 @@ private:
 	BronzeFalconDrawFunction m_drawTriangleFn0;                                    // 0xc8760
 	BronzeFalconDrawFunction m_drawTriangleFn1;                                    // 0xc8764
 	BronzeFalconDrawFunction m_drawTriangleFn2;                                    // 0xc8768
-	void (GolD3DRenderDevice::*m_unk0xc876c)(GolMaterial*);                        // 0xc876c
+	void (GolD3DRenderDevice::*m_applyMaterialFn)(GolMaterial*);                   // 0xc876c
 };
 
 #endif // GOLD3DRENDERDEVICE_H

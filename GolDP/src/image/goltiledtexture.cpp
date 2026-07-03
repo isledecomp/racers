@@ -35,22 +35,22 @@ void GolTiledTexture::Reset()
 	m_tileRowCount = 0;
 	m_width = 0;
 	m_height = 0;
-	m_textureFlags = c_flagBit5 | c_flagBit1;
+	m_stateFlags = c_stateModulate | c_stateFlatShaded;
 	m_flags = 0;
 	m_colorKey.m_red = 0;
 	m_colorKey.m_grn = 0;
 	m_colorKey.m_blu = 0;
 	m_colorKey.m_alp = 0xff;
-	m_unk0x4a.m_uBytes[0] = 0xff;
-	m_unk0x4a.m_uBytes[1] = 0xff;
-	m_unk0x4a.m_uBytes[2] = 0xff;
-	m_unk0x4a.m_uBytes[3] = 0xff;
+	m_tintColor.m_uBytes[0] = 0xff;
+	m_tintColor.m_uBytes[1] = 0xff;
+	m_tintColor.m_uBytes[2] = 0xff;
+	m_tintColor.m_uBytes[3] = 0xff;
 	m_tileWidths = 0;
 	m_tileHeights = 0;
 }
 
 // FUNCTION: GOLDP 0x1001f330
-void GolTiledTexture::VTable0x10()
+void GolTiledTexture::Load()
 {
 	GolSurfaceFormat imageFormat;
 	GolTiledTexture::TileImageName imageName;
@@ -59,19 +59,19 @@ void GolTiledTexture::VTable0x10()
 	imageName.m_chars[8] = 0;
 
 	GolImgFile* imageFile = &g_textureTgaFile;
-	if (!(m_flags & c_flagBit4)) {
+	if (!(m_flags & GolTexture::c_textureFlagTgaSource)) {
 		imageFile = &g_textureBmpFile;
 	}
 
 	imageFile->Open(imageName.m_chars);
 
 	imageFormat = imageFile->GetTextureFormat();
-	m_renderer->SelectTextureFormat(imageFormat, &m_format, m_flags & c_flagBit5);
+	m_renderer->SelectTextureFormat(imageFormat, &m_format, m_flags & GolTexture::c_textureFlagColorKeyed);
 	m_width = imageFile->GetWidth();
 	m_height = imageFile->GetHeight();
-	FUN_1001f430();
+	ComputeTileLayout();
 
-	if (m_flags & c_flagBit5) {
+	if (m_flags & GolTexture::c_textureFlagColorKeyed) {
 		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey) {
 			imageFile->SetColorKeyReplacement(g_transparentBlack);
 		}
@@ -79,23 +79,23 @@ void GolTiledTexture::VTable0x10()
 			imageFile->SetColorKeyReplacement(m_colorKey);
 		}
 
-		imageFile->LoadTiledTexture(this, m_flags & c_flagBit2, &m_colorKey);
+		imageFile->LoadTiledTexture(this, m_flags & GolTexture::c_textureFlagFlipVertically, &m_colorKey);
 	}
 	else {
-		imageFile->LoadTiledTexture(this, m_flags & c_flagBit2, NULL);
+		imageFile->LoadTiledTexture(this, m_flags & GolTexture::c_textureFlagFlipVertically, NULL);
 	}
 
 	imageFile->Destroy();
 }
 
 // STUB: GOLDP 0x1001f430
-void GolTiledTexture::FUN_1001f430()
+void GolTiledTexture::ComputeTileLayout()
 {
 	// The legacy vtable name is inverted; renderer texture setup uses FALSE as square-only.
 	LegoBool32 supportsNonSquareTextures = m_renderer->TexturesMustBeSquare();
 	LegoBool32 mustBePowerOfTwo = m_renderer->TextureSizesMustBePowersOfTwo();
 	if (mustBePowerOfTwo && !supportsNonSquareTextures) {
-		FUN_1001f790();
+		ComputeSquareTileLayout();
 		return;
 	}
 
@@ -124,9 +124,9 @@ void GolTiledTexture::FUN_1001f430()
 		m_tileColumnCount = (m_width + tileWidth - 1) / tileWidth;
 		m_tileRowCount = (m_height + tileHeight - 1) / tileHeight;
 
-		VTable0x00();
-		VTable0x04();
-		VTable0x08();
+		AllocateTileWidths();
+		AllocateTileHeights();
+		AllocateTileArrays();
 
 		for (i = 0; i < m_tileColumnCount; i++) {
 			LegoU32 size = tileWidth;
@@ -238,9 +238,9 @@ void GolTiledTexture::FUN_1001f430()
 			m_tileRowCount++;
 		}
 
-		VTable0x00();
-		VTable0x04();
-		VTable0x08();
+		AllocateTileWidths();
+		AllocateTileHeights();
+		AllocateTileArrays();
 
 		position = 0;
 		for (i = 0; i < m_tileColumnCount; i++) {
@@ -305,12 +305,12 @@ void GolTiledTexture::FUN_1001f430()
 		}
 	}
 
-	FUN_1001fde0();
-	m_textureFlags |= 0x281;
+	CreateTiles();
+	m_stateFlags |= c_stateCreated | c_stateFlagBit7 | c_stateFlagBit9;
 }
 
 // STUB: GOLDP 0x1001f790
-void GolTiledTexture::FUN_1001f790()
+void GolTiledTexture::ComputeSquareTileLayout()
 {
 	LegoU32 bitsPerPixel = m_format.m_bitsPerPixel;
 	LegoU32 minWidth = m_renderer->GetMinimumTextureWidth(bitsPerPixel);
@@ -359,9 +359,9 @@ void GolTiledTexture::FUN_1001f790()
 	m_tileColumnCount = (m_width + tileSize - 1) / tileSize;
 	m_tileRowCount = (m_height + tileSize - 1) / tileSize;
 
-	VTable0x00();
-	VTable0x04();
-	VTable0x08();
+	AllocateTileWidths();
+	AllocateTileHeights();
+	AllocateTileArrays();
 
 	for (row = 0; row < m_tileColumnCount; row++) {
 		m_tileWidths[row] = tileSize;
@@ -370,16 +370,16 @@ void GolTiledTexture::FUN_1001f790()
 		m_tileHeights[column] = tileSize;
 	}
 
-	FUN_1001fde0();
-	m_textureFlags |= 0x281;
+	CreateTiles();
+	m_stateFlags |= c_stateCreated | c_stateFlagBit7 | c_stateFlagBit9;
 }
 
 // FUNCTION: GOLDP 0x1001fde0
-void GolTiledTexture::FUN_1001fde0()
+void GolTiledTexture::CreateTiles()
 {
 	for (LegoU32 row = 0; row < m_tileColumnCount; row++) {
 		for (LegoU32 column = 0; column < m_tileRowCount; column++) {
-			GolD3DTexture* texture = VTable0x1c(row, column);
+			GolD3DTexture* texture = GetTile(row, column);
 			if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				continue;
 			}
@@ -388,7 +388,8 @@ void GolTiledTexture::FUN_1001fde0()
 			if (m_renderer->VTable0x110()) {
 				flags |= GolTexture::c_textureFlagBit6;
 			}
-			if ((flags & c_flagBit5) && (m_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey)) {
+			if ((flags & GolTexture::c_textureFlagColorKeyed) &&
+				(m_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey)) {
 				flags |= GolTexture::c_textureFlagBlackColorKey;
 			}
 
@@ -398,7 +399,7 @@ void GolTiledTexture::FUN_1001fde0()
 			flags |= GolTexture::c_textureFlagColorKeyDirty;
 			texture->m_colorKey.m_alp = 0;
 			texture->m_textureFlags = flags;
-			VTable0x0c(row, column, &m_format);
+			CreateTile(row, column, &m_format);
 		}
 	}
 }

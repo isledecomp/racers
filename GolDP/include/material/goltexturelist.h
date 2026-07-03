@@ -60,8 +60,8 @@ public:
 	~GolTextureList() override; // vtable+0x00
 	void Clear() override;      // vtable+0x08
 
-	virtual void VTable0x0c();        // vtable+0x0c
-	virtual void VTable0x10();        // vtable+0x10
+	virtual void ReleaseTextures();   // vtable+0x0c
+	virtual void RestoreTextures();   // vtable+0x10
 	virtual void AllocateItems() = 0; // vtable+0x14
 	virtual void AllocateTexture(
 		LegoU32 p_index,

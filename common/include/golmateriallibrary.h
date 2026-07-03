@@ -75,8 +75,8 @@ public:
 	~GolMaterialLibrary() override; // vtable+0x00
 	void Clear() override;          // vtable+0x08
 
-	virtual void VTable0x0c();                                                // vtable+0x0c
-	virtual void VTable0x10();                                                // vtable+0x10
+	virtual void ReleaseMaterials();                                          // vtable+0x0c
+	virtual void RestoreMaterials();                                          // vtable+0x10
 	virtual void AllocateItems() = 0;                                         // vtable+0x14
 	virtual void CreateMaterial(LegoU32 p_index) = 0;                         // vtable+0x18
 	virtual void Initialize(GolRenderDevice* p_renderer, LegoU32 p_capacity); // vtable+0x1c

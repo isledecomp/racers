@@ -241,19 +241,19 @@ void GolRenderDevice::ReleaseResources()
 	GolMaterialLibrary* materialList = m_materialLists;
 	m_countTextureFormats = 0;
 	while (materialList != NULL) {
-		materialList->VTable0x0c();
+		materialList->ReleaseMaterials();
 		materialList = materialList->GetNext();
 	}
 
 	GolTextureList* textureList = m_textureLists;
 	while (textureList != NULL) {
-		textureList->VTable0x0c();
+		textureList->ReleaseTextures();
 		textureList = textureList->GetNext();
 	}
 
 	GolImageList* imageList = m_imageLists;
 	while (imageList != NULL) {
-		imageList->VTable0x10();
+		imageList->ReleaseImages();
 		imageList = imageList->GetNext();
 	}
 
@@ -277,19 +277,19 @@ LegoS32 GolRenderDevice::RestoreResources()
 {
 	GolImageList* imageList = m_imageLists;
 	while (imageList != NULL) {
-		imageList->VTable0x14();
+		imageList->RestoreImages();
 		imageList = imageList->GetNext();
 	}
 
 	GolTextureList* textureList = m_textureLists;
 	while (textureList != NULL) {
-		textureList->VTable0x10();
+		textureList->RestoreTextures();
 		textureList = textureList->GetNext();
 	}
 
 	GolMaterialLibrary* materialList = m_materialLists;
 	while (materialList != NULL) {
-		materialList->VTable0x10();
+		materialList->RestoreMaterials();
 		materialList = materialList->GetNext();
 	}
 

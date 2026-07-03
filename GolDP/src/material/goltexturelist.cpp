@@ -282,13 +282,13 @@ void GolTextureList::Clear()
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolTextureList::VTable0x0c()
+void GolTextureList::ReleaseTextures()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolTextureList::VTable0x10()
+void GolTextureList::RestoreTextures()
 {
 	// empty
 }

@@ -125,8 +125,8 @@ void GolBillboardEx::Configure(
 void GolBillboard::FUN_10014ff0(GolD3DRenderDevice* p_renderer)
 {
 	GolMaterial* material = ResolveMaterial();
-	(p_renderer->*p_renderer->m_unk0xc876c)(material);
-	p_renderer->FUN_1000ac00(material->GetTexture());
+	(p_renderer->*p_renderer->m_applyMaterialFn)(material);
+	p_renderer->SetCurrentTexture(material->GetTexture());
 
 	p_renderer->m_unk0xc4c0c = g_billboardPositions;
 	p_renderer->m_unk0xc4c10 = g_billboardTexCoords;

@@ -213,10 +213,10 @@ void GolFont::SelectSurface(LegoU32 p_index)
 {
 	LegoU32 index = p_index;
 	GolSoftwareMaterial* material = &m_materials[index];
-	(m_renderer->*m_renderer->m_unk0xc876c)(material);
+	(m_renderer->*m_renderer->m_applyMaterialFn)(material);
 
 	GolTexture* texture = &m_textures[index];
-	m_renderer->FUN_1000ac00(texture);
+	m_renderer->SetCurrentTexture(texture);
 	m_inverseTextureWidth = 1.0f / static_cast<LegoFloat>(m_textures[index].GetWidth());
 	m_inverseTextureHeight = 1.0f / static_cast<LegoFloat>(m_textures[index].GetHeight());
 }
@@ -268,7 +268,7 @@ void GolFont::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 	vertices[2].specular = 0xffffffff;
 	vertices[3].specular = 0xffffffff;
 
-	m_renderer->FUN_10009fd0(vertices, sizeOfArray(vertices));
+	m_renderer->DrawTriangleStrip(vertices, sizeOfArray(vertices));
 }
 
 // FUNCTION: GOLDP 0x10004d70

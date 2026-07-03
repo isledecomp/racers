@@ -395,9 +395,9 @@ void GolD3DRenderDevice::Reset()
 	m_unk0xc4c18 = 0;
 	m_unk0xc83e4 = 0;
 	m_unk0xc83e8 = 0;
-	m_unk0xc83f0 = 0;
+	m_colorKeyEnabled = 0;
 	m_unk0xc83ec = 0;
-	m_unk0xc876c = &GolD3DRenderDevice::FUN_1000a2c0;
+	m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialHw;
 	m_uvOffsetEnabled = 0;
 	m_uvOffsetU = 0;
 	m_uvOffsetV = 0;
@@ -524,7 +524,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	if (!forceSoftware) {
 		m_unk0xc384c = 0;
 		m_unk0xc83c4 = 0;
-		m_unk0xc876c = &GolD3DRenderDevice::FUN_1000a2c0;
+		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialHw;
 
 		if (m_flags & c_flagBit1 && !m_drawState->SupportsZBufferlessHsr()) {
 			LegoS32 r = m_depthBuffer.Create(m_drawState, m_unk0x304);
@@ -640,7 +640,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
-	m_unk0xc876c = &GolD3DRenderDevice::FUN_1000a950;
+	m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
 	::memcpy(&swTextureFormat, &m_unk0x304->m_textureFormat, sizeof(swTextureFormat));
 
 	GolSoftwareRenderer::PixelFormat swPixelFormat;
@@ -687,7 +687,7 @@ rendererCreated:
 // FUNCTION: GOLDP 0x100082e0
 void GolD3DRenderDevice::FUN_100082e0()
 {
-	m_unk0xc83f0 = FALSE;
+	m_colorKeyEnabled = FALSE;
 	m_unk0xc83ec = 0;
 	m_unk0xc83e8 = FALSE;
 	if (m_flags & c_flagBit19) {
@@ -1605,13 +1605,13 @@ void GolD3DRenderDevice::DrawImageClipped(
 	Rect* p_clipRect
 )
 {
-	p_image->FUN_10005510(this, p_unk0x08, p_destRect, p_sourceRect, p_clipRect);
+	p_image->DrawStretched(this, p_unk0x08, p_destRect, p_sourceRect, p_clipRect);
 }
 
 // FUNCTION: GOLDP 0x10009990
 void GolD3DRenderDevice::DrawImageRect(GolImage* p_image, undefined4 p_unk0x08, Rect* p_destRect, Rect* p_clipRect)
 {
-	p_image->FUN_100054d0(this, p_unk0x08, p_destRect, p_clipRect);
+	p_image->Draw(this, p_unk0x08, p_destRect, p_clipRect);
 }
 
 // FUNCTION: GOLDP 0x100099b0
@@ -1640,7 +1640,7 @@ void GolD3DRenderDevice::DrawImageStretched(
 	sourceRect.m_right = p_sourceLeft + p_sourceWidth;
 	sourceRect.m_bottom = p_sourceTop + p_sourceHeight;
 
-	p_image->FUN_10005510(this, p_unk0x08, &destRect, &sourceRect, 0);
+	p_image->DrawStretched(this, p_unk0x08, &destRect, &sourceRect, 0);
 }
 
 // FUNCTION: GOLDP 0x10009a20
@@ -1659,7 +1659,7 @@ void GolD3DRenderDevice::DrawImage(
 	destRect.m_right = p_destLeft + p_destWidth;
 	destRect.m_bottom = p_destTop + p_destHeight;
 
-	p_image->FUN_100054d0(this, p_unk0x08, &destRect, 0);
+	p_image->Draw(this, p_unk0x08, &destRect, 0);
 }
 
 // FUNCTION: GOLDP 0x10009a70
@@ -1801,8 +1801,8 @@ void GolD3DRenderDevice::DrawTriangle(
 		p_material = &m_unk0x2d4;
 	}
 
-	(this->*m_unk0xc876c)(p_material);
-	FUN_1000ac00(p_material->GetTexture());
+	(this->*m_applyMaterialFn)(p_material);
+	SetCurrentTexture(p_material->GetTexture());
 
 	const TexturedVertex* v0;
 	const TexturedVertex* v1;
@@ -1930,7 +1930,7 @@ void GolD3DRenderDevice::DrawTriangle(
 }
 
 // FUNCTION: GOLDP 0x10009fd0
-void GolD3DRenderDevice::FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count)
+void GolD3DRenderDevice::DrawTriangleStrip(D3DTLVERTEX* p_vertices, LegoU32 p_count)
 {
 	if (m_unk0xc83c4) {
 		D3DTLVERTEX* vertices = &m_unk0x348[m_unk0xc3848];
@@ -2084,7 +2084,7 @@ LegoBool32 GolD3DRenderDevice::TextureSizesMustBePowersOfTwo() const
 }
 
 // FUNCTION: GOLDP 0x1000a2c0
-void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
+void GolD3DRenderDevice::ApplyMaterialHw(GolMaterial* p_material)
 {
 	LegoU32 newFlags = p_material->GetFlags();
 
@@ -2313,7 +2313,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(GolMaterial* p_material)
 }
 
 // FUNCTION: GOLDP 0x1000a950
-void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
+void GolD3DRenderDevice::ApplyMaterialSw(GolMaterial* p_material)
 {
 	LegoU32 newFlags = p_material->GetFlags();
 	m_drawCommand.m_material = p_material;
@@ -2411,7 +2411,7 @@ void GolD3DRenderDevice::FUN_1000a950(GolMaterial* p_material)
 }
 
 // FUNCTION: GOLDP 0x1000ac00
-void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
+void GolD3DRenderDevice::SetCurrentTexture(GolTexture* p_texture)
 {
 	if (m_currentTexture == p_texture) {
 		return;
@@ -2427,21 +2427,21 @@ void GolD3DRenderDevice::FUN_1000ac00(GolTexture* p_texture)
 
 	if (p_texture != NULL) {
 		if (p_texture->GetTextureFlags() & GolTexture::c_textureFlagColorKeyed) {
-			if (m_unk0xc83f0 == 0) {
+			if (m_colorKeyEnabled == 0) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, TRUE);
-				m_unk0xc83f0 = TRUE;
+				m_colorKeyEnabled = TRUE;
 			}
 		}
-		else if (m_unk0xc83f0 != 0) {
+		else if (m_colorKeyEnabled != 0) {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, FALSE);
-			m_unk0xc83f0 = FALSE;
+			m_colorKeyEnabled = FALSE;
 		}
 
 		m_d3dDevice->SetTexture(0, static_cast<GolD3DTexture*>(m_currentTexture)->GetDirect3DTexture());
 	}
-	else if (m_unk0xc83f0 != 0) {
+	else if (m_colorKeyEnabled != 0) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, FALSE);
-		m_unk0xc83f0 = FALSE;
+		m_colorKeyEnabled = FALSE;
 	}
 }
 

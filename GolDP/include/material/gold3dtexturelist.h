@@ -11,11 +11,11 @@ class GolD3DTexture;
 class GolD3DTextureList : public GolTextureList {
 public:
 	GolD3DTextureList();
-	~GolD3DTextureList() override; // vtable+0x00
-	void Clear() override;         // vtable+0x08
-	void VTable0x0c() override;    // vtable+0x0c
-	void VTable0x10() override;    // vtable+0x10
-	void AllocateItems() override; // vtable+0x14
+	~GolD3DTextureList() override;   // vtable+0x00
+	void Clear() override;           // vtable+0x08
+	void ReleaseTextures() override; // vtable+0x0c
+	void RestoreTextures() override; // vtable+0x10
+	void AllocateItems() override;   // vtable+0x14
 	void AllocateTexture(
 		LegoU32 p_index,
 		const GolSurfaceFormat& p_textureFormat,

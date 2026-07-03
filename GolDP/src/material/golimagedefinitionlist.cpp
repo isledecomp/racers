@@ -49,28 +49,28 @@ GolImage* GolImageDefinitionList::GetItem(undefined4 p_index)
 }
 
 // FUNCTION: GOLDP 0x10005f10
-void GolImageDefinitionList::VTable0x10()
+void GolImageDefinitionList::ReleaseImages()
 {
 	LegoU32 i;
 
 	if (m_numItems > 0) {
 		for (i = 0; i < m_numItems; i++) {
-			if (m_items[i].m_textureFlags & 1) {
-				m_items[i].FUN_100051c0();
+			if (m_items[i].m_stateFlags & GolImage::c_stateCreated) {
+				m_items[i].DestroyTiles();
 			}
 		}
 	}
 }
 
 // FUNCTION: GOLDP 0x10005f50
-void GolImageDefinitionList::VTable0x14()
+void GolImageDefinitionList::RestoreImages()
 {
 	LegoU32 i;
 
 	if (m_numItems > 0) {
 		for (i = 0; i < m_numItems; i++) {
-			if (m_items[i].m_textureFlags & 1) {
-				m_items[i].FUN_10005210();
+			if (m_items[i].m_stateFlags & GolImage::c_stateCreated) {
+				m_items[i].RebuildTiles();
 			}
 		}
 	}

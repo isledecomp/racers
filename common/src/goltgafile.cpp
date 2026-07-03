@@ -337,12 +337,12 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
 	}
 
-	format = p_image->VTable0x1c(0, 0)->GetTextureFormat();
+	format = p_image->GetTile(0, 0)->GetTextureFormat();
 	SetupPixelConversion(format, p_colorKey);
 	if (format.m_paletteMask != 0 && m_paletteSize != 0) {
 		for (column = 0; column < p_image->GetTileColumnCount(); column++) {
 			for (row = 0; row < p_image->GetTileRowCount(); row++) {
-				BuildPaletteRemap(p_image->VTable0x1c(column, row)->GetPalette(), p_colorKey);
+				BuildPaletteRemap(p_image->GetTile(column, row)->GetPalette(), p_colorKey);
 			}
 		}
 	}
@@ -360,7 +360,7 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 	for (column = 0; column < p_image->GetTileColumnCount(); column++) {
 		for (row = 0; row < p_image->GetTileRowCount(); row++) {
 			LegoU32 index = row + column * p_image->GetTileRowCount();
-			p_image->VTable0x1c(column, row)
+			p_image->GetTile(column, row)
 				->LockPixels(
 					&tilePixels[index],
 					&tilePitches[index],
@@ -412,7 +412,7 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		if (result != GolStream::e_ioSuccess) {
 			for (column = 0; column < p_image->GetTileColumnCount(); column++) {
 				for (row = 0; row < p_image->GetTileRowCount(); row++) {
-					p_image->VTable0x1c(column, row)->UnlockPixels();
+					p_image->GetTile(column, row)->UnlockPixels();
 				}
 			}
 			GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
@@ -463,14 +463,14 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 
 	for (column = 0; column < p_image->GetTileColumnCount(); column++) {
 		for (row = 0; row < p_image->GetTileRowCount(); row++) {
-			p_image->VTable0x1c(column, row)->UnlockPixels();
+			p_image->GetTile(column, row)->UnlockPixels();
 		}
 	}
 
-	LegoU32 flags = p_image->GetTextureFlags();
-	flags = (flags & 0xfffffff1) | GolTiledTexture::c_flagBit3;
-	p_image->m_textureFlags = flags;
-	if ((flags & (GolTiledTexture::c_flagBit4 | GolTiledTexture::c_flagBit5)) == 0) {
-		p_image->m_textureFlags = flags | GolTiledTexture::c_flagBit4;
+	LegoU32 flags = p_image->GetStateFlags();
+	flags = (flags & 0xfffffff1) | GolTiledTexture::c_stateHasContent;
+	p_image->m_stateFlags = flags;
+	if ((flags & (GolTiledTexture::c_stateDecal | GolTiledTexture::c_stateModulate)) == 0) {
+		p_image->m_stateFlags = flags | GolTiledTexture::c_stateDecal;
 	}
 }

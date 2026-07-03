@@ -1705,7 +1705,7 @@ void RaceHud::Draw()
 		m_renderer->DrawImage(background, 0, m_powerupX, m_powerupY, width, height);
 
 		GolImage* colorResource = m_images->GetItem(12);
-		colorResource->m_unk0x4a = itemColor;
+		colorResource->m_tintColor = itemColor;
 		m_renderer->DrawImage(colorResource, 0, m_powerupX, m_powerupY, width, height);
 
 		if (itemResource) {

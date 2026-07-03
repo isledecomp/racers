@@ -354,13 +354,13 @@ void GolMaterialLibrary::Initialize(GolRenderDevice* p_renderer, LegoU32 p_capac
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolMaterialLibrary::VTable0x0c()
+void GolMaterialLibrary::ReleaseMaterials()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolMaterialLibrary::VTable0x10()
+void GolMaterialLibrary::RestoreMaterials()
 {
 	// empty
 }

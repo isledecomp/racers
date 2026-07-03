@@ -278,7 +278,7 @@ void MenuWidget::MeasureText(
 // FUNCTION: LEGORACERS 0x00472d70
 void MenuWidget::DrawImage(Rect* p_destRect, Rect* p_sourceRect, GolImage* p_image)
 {
-	p_image->m_unk0x4a.m_u32 = m_colorPacked;
+	p_image->m_tintColor.m_u32 = m_colorPacked;
 	m_renderer->DrawImageClipped(p_image, 0, p_destRect, p_sourceRect, NULL);
 }
 

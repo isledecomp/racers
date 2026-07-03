@@ -25,7 +25,7 @@ void GolSoftwareMaterialLibrary::AllocateItems()
 }
 
 // FUNCTION: GOLDP 0x100067a0
-void GolSoftwareMaterialLibrary::VTable0x0c()
+void GolSoftwareMaterialLibrary::ReleaseMaterials()
 {
 	LegoU32 i;
 
@@ -35,7 +35,7 @@ void GolSoftwareMaterialLibrary::VTable0x0c()
 }
 
 // FUNCTION: GOLDP 0x100067d0
-void GolSoftwareMaterialLibrary::VTable0x10()
+void GolSoftwareMaterialLibrary::RestoreMaterials()
 {
 	CreateMaterials();
 }

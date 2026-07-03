@@ -32,14 +32,14 @@ GdbPartVertexPool::GdbPartVertexPool()
 // FUNCTION: LEGORACERS 0x00408020
 GdbPartVertexPool::~GdbPartVertexPool()
 {
-	VTable0x0c();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00408070
 void GdbPartVertexPool::Read(GolFileParser& p_parser, LegoU16 p_vertexType)
 {
 	if (m_count != 0) {
-		VTable0x0c();
+		Destroy();
 	}
 
 	m_vertexType = p_vertexType;
@@ -56,7 +56,7 @@ void GdbPartVertexPool::Read(GolFileParser& p_parser, LegoU16 p_vertexType)
 
 	Vertex* vertex = m_vertices;
 	Vertex* end = m_vertices + m_count;
-	if (m_vertexType == 1) {
+	if (m_vertexType == c_vertexTypeColored) {
 		while (vertex < end) {
 			vertex->m_x = static_cast<LegoS16>(p_parser.ReadInteger());
 			vertex->m_y = static_cast<LegoS16>(p_parser.ReadInteger());
@@ -88,7 +88,7 @@ void GdbPartVertexPool::Read(GolFileParser& p_parser, LegoU16 p_vertexType)
 }
 
 // FUNCTION: LEGORACERS 0x00408200
-void GdbPartVertexPool::VTable0x0c()
+void GdbPartVertexPool::Destroy()
 {
 	if (m_vertices != NULL) {
 		delete[] m_vertices;
@@ -98,7 +98,7 @@ void GdbPartVertexPool::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x00408230
-void GdbPartVertexPool::VTable0x14(LegoU32 p_index, GolVec3* p_dest) const
+void GdbPartVertexPool::GetPosition(LegoU32 p_index, GolVec3* p_dest) const
 {
 	const Vertex& vertex = m_vertices[p_index];
 	p_dest->m_x = static_cast<LegoFloat>(vertex.m_x);
@@ -107,7 +107,7 @@ void GdbPartVertexPool::VTable0x14(LegoU32 p_index, GolVec3* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x00408280
-void GdbPartVertexPool::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
+void GdbPartVertexPool::GetTextureCoordinate(LegoU32 p_index, GolVec2* p_dest) const
 {
 	const Vertex& vertex = m_vertices[p_index];
 	p_dest->m_x = static_cast<LegoFloat>(vertex.m_u) * g_gdbPartTexCoordScale;
@@ -115,7 +115,7 @@ void GdbPartVertexPool::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x004082d0
-void GdbPartVertexPool::VTable0x1c(LegoU32 p_index, GolVec3* p_dest) const
+void GdbPartVertexPool::GetNormal(LegoU32 p_index, GolVec3* p_dest) const
 {
 	const Vertex& vertex = m_vertices[p_index];
 	p_dest->m_x = static_cast<LegoFloat>(vertex.m_tail.m_normal.m_nx) * g_gdbPartNormalScale;
@@ -124,13 +124,13 @@ void GdbPartVertexPool::VTable0x1c(LegoU32 p_index, GolVec3* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x00408330
-void GdbPartVertexPool::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
+void GdbPartVertexPool::GetColor(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	*p_dest = m_vertices[p_index].m_tail.m_color;
 }
 
 // FUNCTION: LEGORACERS 0x00408350
-void GdbPartVertexPool::VTable0x24(LegoU32 p_index, const GolVec3& p_src)
+void GdbPartVertexPool::SetPosition(LegoU32 p_index, const GolVec3& p_src)
 {
 	Vertex* vertex = &m_vertices[p_index];
 	vertex->m_x = static_cast<LegoS16>(p_src.m_x);
@@ -139,7 +139,7 @@ void GdbPartVertexPool::VTable0x24(LegoU32 p_index, const GolVec3& p_src)
 }
 
 // FUNCTION: LEGORACERS 0x00408390
-void GdbPartVertexPool::VTable0x28(LegoU32 p_index, const GolVec2& p_src)
+void GdbPartVertexPool::SetTextureCoordinate(LegoU32 p_index, const GolVec2& p_src)
 {
 	Vertex* vertex = &m_vertices[p_index];
 	vertex->m_u = static_cast<LegoS16>(g_gdbPartTexCoordDivisor * p_src.m_x);
@@ -147,7 +147,7 @@ void GdbPartVertexPool::VTable0x28(LegoU32 p_index, const GolVec2& p_src)
 }
 
 // FUNCTION: LEGORACERS 0x004083e0
-void GdbPartVertexPool::VTable0x2c(LegoU32 p_index, const GolVec3& p_src)
+void GdbPartVertexPool::SetNormal(LegoU32 p_index, const GolVec3& p_src)
 {
 	Vertex* vertex = &m_vertices[p_index];
 	vertex->m_tail.m_normal.m_nx = static_cast<LegoS8>(g_gdbPartNormalDivisor * p_src.m_x);
@@ -157,7 +157,7 @@ void GdbPartVertexPool::VTable0x2c(LegoU32 p_index, const GolVec3& p_src)
 }
 
 // FUNCTION: LEGORACERS 0x00408440
-void GdbPartVertexPool::VTable0x30(LegoU32 p_index, const ColorRGBA& p_src)
+void GdbPartVertexPool::SetColor(LegoU32 p_index, const ColorRGBA& p_src)
 {
 	m_vertices[p_index].m_tail.m_color = p_src;
 }

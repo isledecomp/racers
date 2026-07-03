@@ -812,7 +812,7 @@ void MenuManager::BuildPlayerCarModel(
 
 	GdbVertexArray* vertexArray;
 	p_slot->m_model->GetVertexArray(&vertexArray);
-	vertexArray->VTable0x10();
+	vertexArray->DiscardNormals();
 	p_slot->m_model->AddFlagsWithBounds(1, FALSE);
 }
 
@@ -926,7 +926,7 @@ void MenuManager::BuildPlayerDriverModel(
 
 	GdbVertexArray* vertexArray;
 	p_slot->m_altModel->GetVertexArray(&vertexArray);
-	vertexArray->VTable0x10();
+	vertexArray->DiscardNormals();
 	p_slot->m_altModel->AddFlagsWithBounds(1, FALSE);
 }
 

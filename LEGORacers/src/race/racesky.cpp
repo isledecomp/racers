@@ -425,7 +425,7 @@ void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_un
 		}
 
 		for (LegoU32 j = 0; j < 11; j++) {
-			vertices->VTable0x30(i * 11 + j, *color);
+			vertices->SetColor(i * 11 + j, *color);
 		}
 	}
 
@@ -542,17 +542,17 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		position.m_x = p_params->m_origin.m_x;
 		position.m_y = p_params->m_origin.m_y;
 		position.m_z = p_params->m_origin.m_z + p_params->m_radius;
-		vertices->VTable0x24(vertexIndex, position);
-		vertices->VTable0x28(vertexIndex, textureCoordinate);
+		vertices->SetPosition(vertexIndex, position);
+		vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
 		if (p_params->m_vertexType == 1) {
-			vertices->VTable0x30(vertexIndex, color);
+			vertices->SetColor(vertexIndex, color);
 		}
 		else if (p_params->m_vertexType == 2) {
 			GolVec3 normal;
 			normal.m_x = 0.0f;
 			normal.m_y = 0.0f;
 			normal.m_z = 1.0f;
-			vertices->VTable0x2c(vertexIndex, normal);
+			vertices->SetNormal(vertexIndex, normal);
 		}
 		vertexIndex++;
 	}
@@ -575,10 +575,10 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 			position.m_y = static_cast<LegoFloat>(::sin(segmentAngle)) * radius + p_params->m_origin.m_y;
 			position.m_z = z;
 
-			vertices->VTable0x24(vertexIndex, position);
-			vertices->VTable0x28(vertexIndex, textureCoordinate);
+			vertices->SetPosition(vertexIndex, position);
+			vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
 			if (p_params->m_vertexType == 1) {
-				vertices->VTable0x30(vertexIndex, color);
+				vertices->SetColor(vertexIndex, color);
 			}
 			else if (p_params->m_vertexType == 2) {
 				GolVec3 delta;
@@ -588,7 +588,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 
 				GolVec3 normal;
 				GolMath::NormalizeVector3(delta, &normal);
-				vertices->VTable0x2c(vertexIndex, normal);
+				vertices->SetNormal(vertexIndex, normal);
 			}
 
 			vertexIndex++;
@@ -608,17 +608,17 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		else {
 			position.m_z = p_params->m_origin.m_z - p_params->m_radius;
 		}
-		vertices->VTable0x24(vertexIndex, position);
-		vertices->VTable0x28(vertexIndex, textureCoordinate);
+		vertices->SetPosition(vertexIndex, position);
+		vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
 		if (p_params->m_vertexType == 1) {
-			vertices->VTable0x30(vertexIndex, color);
+			vertices->SetColor(vertexIndex, color);
 		}
 		else if (p_params->m_vertexType == 2) {
 			GolVec3 normal;
 			normal.m_x = 0.0f;
 			normal.m_y = 0.0f;
 			normal.m_z = -1.0f;
-			vertices->VTable0x2c(vertexIndex, normal);
+			vertices->SetNormal(vertexIndex, normal);
 		}
 	}
 
@@ -881,18 +881,18 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 
 		LegoFloat segmentAngle = 0.0f;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
-			vertices->VTable0x24(vertexIndex, position);
+			vertices->SetPosition(vertexIndex, position);
 			if (p_params->m_vertexType == 1) {
-				vertices->VTable0x30(vertexIndex, color);
+				vertices->SetColor(vertexIndex, color);
 			}
 			else if (p_params->m_vertexType == 2) {
-				vertices->VTable0x2c(vertexIndex, normal);
+				vertices->SetNormal(vertexIndex, normal);
 			}
 
 			GolVec2 textureCoordinate;
 			textureCoordinate.m_x = segmentAngle * g_raceSkyInverseTwoPi + textureHalfStep;
 			textureCoordinate.m_y = 0.0f;
-			vertices->VTable0x28(vertexIndex, textureCoordinate);
+			vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
 
 			vertexIndex++;
 			segmentAngle += angleStep;
@@ -920,7 +920,7 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 				position.m_y = static_cast<LegoFloat>(::sin(segmentAngle)) * radius + p_params->m_origin.m_y;
 				position.m_z = z;
 
-				vertices->VTable0x24(vertexIndex, position);
+				vertices->SetPosition(vertexIndex, position);
 
 				normal.m_x = position.m_x - p_params->m_origin.m_x;
 				normal.m_y = position.m_y - p_params->m_origin.m_y;
@@ -928,15 +928,15 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 				GolMath::NormalizeVector3(normal, &normal);
 
 				if (p_params->m_vertexType == 1) {
-					vertices->VTable0x30(vertexIndex, color);
+					vertices->SetColor(vertexIndex, color);
 				}
 				else if (p_params->m_vertexType == 2) {
-					vertices->VTable0x2c(vertexIndex, normal);
+					vertices->SetNormal(vertexIndex, normal);
 				}
 
 				textureCoordinate.m_x = segmentAngle * g_raceSkyInverseTwoPi;
 				textureCoordinate.m_y = ringAngle * g_raceSkyInversePi;
-				vertices->VTable0x28(vertexIndex, textureCoordinate);
+				vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
 
 				vertexIndex++;
 				segmentAngle += angleStep;
@@ -944,20 +944,20 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 			}
 
 			LegoU32 sourceIndex = vertexIndex - p_params->m_segmentCount;
-			vertices->VTable0x14(sourceIndex, &position);
-			vertices->VTable0x20(sourceIndex, &color);
-			vertices->VTable0x1c(sourceIndex, &normal);
-			vertices->VTable0x18(sourceIndex, &textureCoordinate);
+			vertices->GetPosition(sourceIndex, &position);
+			vertices->GetColor(sourceIndex, &color);
+			vertices->GetNormal(sourceIndex, &normal);
+			vertices->GetTextureCoordinate(sourceIndex, &textureCoordinate);
 			textureCoordinate.m_x = 1.0f;
 
-			vertices->VTable0x24(vertexIndex, position);
+			vertices->SetPosition(vertexIndex, position);
 			if (p_params->m_vertexType == 1) {
-				vertices->VTable0x30(vertexIndex, color);
+				vertices->SetColor(vertexIndex, color);
 			}
 			else {
-				vertices->VTable0x2c(vertexIndex, normal);
+				vertices->SetNormal(vertexIndex, normal);
 			}
-			vertices->VTable0x28(vertexIndex, textureCoordinate);
+			vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
 
 			vertexIndex++;
 			segmentAngle += angleStep;
@@ -984,18 +984,18 @@ void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 
 		LegoFloat segmentAngle = 0.0f;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
-			vertices->VTable0x24(vertexIndex, position);
+			vertices->SetPosition(vertexIndex, position);
 			if (p_params->m_vertexType == 1) {
-				vertices->VTable0x30(vertexIndex, color);
+				vertices->SetColor(vertexIndex, color);
 			}
 			else if (p_params->m_vertexType == 2) {
-				vertices->VTable0x2c(vertexIndex, normal);
+				vertices->SetNormal(vertexIndex, normal);
 			}
 
 			GolVec2 textureCoordinate;
 			textureCoordinate.m_x = segmentAngle * g_raceSkyInverseTwoPi + textureHalfStep;
 			textureCoordinate.m_y = 1.0f;
-			vertices->VTable0x28(vertexIndex, textureCoordinate);
+			vertices->SetTextureCoordinate(vertexIndex, textureCoordinate);
 
 			vertexIndex++;
 			segmentAngle += angleStep;

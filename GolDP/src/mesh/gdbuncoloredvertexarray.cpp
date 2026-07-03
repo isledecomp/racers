@@ -10,16 +10,16 @@ DECOMP_SIZE_ASSERT(GdbUncoloredVertexArray, 0x1c)
 // FUNCTION: GOLDP 0x100156d0
 GdbUncoloredVertexArray::GdbUncoloredVertexArray()
 {
-	m_vertexType = 1;
+	m_vertexType = c_vertexTypeColored;
 }
 
 // FUNCTION: GOLDP 0x10006150 FOLDED
-void GdbUncoloredVertexArray::VTable0x04(LegoU16 p_count)
+void GdbUncoloredVertexArray::Allocate(LegoU16 p_count)
 {
 	LegoU32 i;
 
 	if (m_count != 0) {
-		VTable0x0c();
+		Destroy();
 	}
 
 	m_count = p_count;
@@ -28,29 +28,29 @@ void GdbUncoloredVertexArray::VTable0x04(LegoU16 p_count)
 	if (m_positions == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x0c = new GolVec2[m_count];
-	if (m_unk0x0c == NULL) {
+	m_textureCoordinates = new GolVec2[m_count];
+	if (m_textureCoordinates == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x10 = new LegoU32[m_count];
-	if (m_unk0x10 == NULL) {
+	m_colors = new LegoU32[m_count];
+	if (m_colors == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	for (i = 0; i < m_count; i++) {
-		m_unk0x0c[i].m_x = 0.0f;
-		m_unk0x0c[i].m_y = 0.0f;
-		m_unk0x10[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);
+		m_textureCoordinates[i].m_x = 0.0f;
+		m_textureCoordinates[i].m_y = 0.0f;
+		m_colors[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);
 	}
 }
 
 // FUNCTION: GOLDP 0x100156f0
-void GdbUncoloredVertexArray::VTable0x08(GolFileParser& p_parser)
+void GdbUncoloredVertexArray::Parse(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
 	if (m_count != 0) {
-		VTable0x0c();
+		Destroy();
 	}
 
 	p_parser.ReadLeftBracket();
@@ -65,39 +65,39 @@ void GdbUncoloredVertexArray::VTable0x08(GolFileParser& p_parser)
 	if (m_positions == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x0c = new GolVec2[m_count];
-	if (m_unk0x0c == NULL) {
+	m_textureCoordinates = new GolVec2[m_count];
+	if (m_textureCoordinates == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x10 = new LegoU32[m_count];
-	if (m_unk0x10 == NULL) {
+	m_colors = new LegoU32[m_count];
+	if (m_colors == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	::memset(m_positions, 0, sizeof(GolVec3) * m_count);
-	::memset(m_unk0x0c, 0, sizeof(GolVec2) * m_count);
+	::memset(m_textureCoordinates, 0, sizeof(GolVec2) * m_count);
 
 	for (i = 0; i < m_count; i++) {
 		m_positions[i].m_x = p_parser.ReadFloat();
 		m_positions[i].m_y = p_parser.ReadFloat();
 		m_positions[i].m_z = p_parser.ReadFloat();
-		m_unk0x0c[i].m_x = p_parser.ReadFloat();
-		m_unk0x0c[i].m_y = p_parser.ReadFloat();
-		m_unk0x10[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);
+		m_textureCoordinates[i].m_x = p_parser.ReadFloat();
+		m_textureCoordinates[i].m_y = p_parser.ReadFloat();
+		m_colors[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);
 	}
 
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: GOLDP 0x10006210 FOLDED
-void GdbUncoloredVertexArray::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
+void GdbUncoloredVertexArray::GetTextureCoordinate(LegoU32 p_index, GolVec2* p_dest) const
 {
-	p_dest->m_x = m_unk0x0c[p_index].m_x;
-	p_dest->m_y = m_unk0x0c[p_index].m_y;
+	p_dest->m_x = m_textureCoordinates[p_index].m_x;
+	p_dest->m_y = m_textureCoordinates[p_index].m_y;
 }
 
 // FUNCTION: GOLDP 0x10015890
-void GdbUncoloredVertexArray::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
+void GdbUncoloredVertexArray::GetColor(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = 0xff;
 	p_dest->m_grn = 0xff;
@@ -106,8 +106,8 @@ void GdbUncoloredVertexArray::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) con
 }
 
 // FUNCTION: GOLDP 0x100158f0 FOLDED
-void GdbUncoloredVertexArray::VTable0x28(LegoU32 p_index, const GolVec2& p_arg2)
+void GdbUncoloredVertexArray::SetTextureCoordinate(LegoU32 p_index, const GolVec2& p_arg2)
 {
-	m_unk0x0c[p_index].m_x = p_arg2.m_x;
-	m_unk0x0c[p_index].m_y = p_arg2.m_y;
+	m_textureCoordinates[p_index].m_x = p_arg2.m_x;
+	m_textureCoordinates[p_index].m_y = p_arg2.m_y;
 }

@@ -210,9 +210,9 @@ void GolWorldEntityGroup::ApplyColorTransform(ColorTransform* p_transform)
 }
 
 // FUNCTION: LEGORACERS 0x00412330
-void GolWorldEntityGroup::VTable0x28()
+void GolWorldEntityGroup::ClearColorTransform()
 {
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
-		m_entities[i]->VTable0x28();
+		m_entities[i]->ClearColorTransform();
 	}
 }

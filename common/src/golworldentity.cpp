@@ -234,7 +234,7 @@ void GolWorldEntity::CopyOrientation(GolMatrix3* p_dest) const
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolWorldEntity::VTable0x28()
+void GolWorldEntity::ClearColorTransform()
 {
 	// empty
 }

@@ -310,17 +310,17 @@ void DriverModelBuilder::CopyModelVertices(
 	for (LegoS32 i = 0; i < vertexCount; i++) {
 		LegoU32 destIndex = i + p_vertexOffset;
 
-		sourceVertices->VTable0x14(i, &position);
-		destVertices->VTable0x24(destIndex, position);
+		sourceVertices->GetPosition(i, &position);
+		destVertices->SetPosition(destIndex, position);
 
-		sourceVertices->VTable0x18(i, &texCoord);
-		destVertices->VTable0x28(destIndex, texCoord);
+		sourceVertices->GetTextureCoordinate(i, &texCoord);
+		destVertices->SetTextureCoordinate(destIndex, texCoord);
 
-		sourceVertices->VTable0x1c(i, &normal);
-		destVertices->VTable0x2c(destIndex, normal);
+		sourceVertices->GetNormal(i, &normal);
+		destVertices->SetNormal(destIndex, normal);
 
-		sourceVertices->VTable0x20(i, &color);
-		destVertices->VTable0x30(destIndex, color);
+		sourceVertices->GetColor(i, &color);
+		destVertices->SetColor(destIndex, color);
 	}
 
 	p_sourceModel->AddFlagsWithBounds(0, FALSE);

@@ -423,7 +423,7 @@ LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(LegoU32 p_unk0x04, Leg
 	ProjectedVertex* projected = &g_decalProjectedVertices[p_unk0x04];
 	LegoU32 end = p_unk0x08 + p_unk0x0c;
 	while (vertexIndex < end) {
-		m_sourceVertices->VTable0x14(vertexIndex, &projected->m_position);
+		m_sourceVertices->GetPosition(vertexIndex, &projected->m_position);
 
 		projected->m_projected.m_x.m_float = g_decalUAxisX * projected->m_position.m_x;
 		projected->m_projected.m_y.m_float = g_decalVAxisX * projected->m_position.m_x;
@@ -749,23 +749,23 @@ void RaceDecalManager::Trail::Decal::EmitTriangle(
 			m_batchFirstTriangle = polygonIndex;
 		}
 
-		m_vertices->VTable0x24(m_vertexCount, p_unk0x04->m_position);
-		m_vertices->VTable0x30(m_vertexCount, m_color);
+		m_vertices->SetPosition(m_vertexCount, p_unk0x04->m_position);
+		m_vertices->SetColor(m_vertexCount, m_color);
 		LegoU32 vertexIndex = m_vertexCount;
 		m_vertexCount = vertexIndex + 1;
-		m_vertices->VTable0x28(vertexIndex, p_unk0x04->m_projected.m_vec);
+		m_vertices->SetTextureCoordinate(vertexIndex, p_unk0x04->m_projected.m_vec);
 
-		m_vertices->VTable0x24(m_vertexCount, p_unk0x08->m_position);
-		m_vertices->VTable0x30(m_vertexCount, m_color);
+		m_vertices->SetPosition(m_vertexCount, p_unk0x08->m_position);
+		m_vertices->SetColor(m_vertexCount, m_color);
 		vertexIndex = m_vertexCount;
 		m_vertexCount = vertexIndex + 1;
-		m_vertices->VTable0x28(vertexIndex, p_unk0x08->m_projected.m_vec);
+		m_vertices->SetTextureCoordinate(vertexIndex, p_unk0x08->m_projected.m_vec);
 
-		m_vertices->VTable0x24(m_vertexCount, p_unk0x0c->m_position);
-		m_vertices->VTable0x30(m_vertexCount, m_color);
+		m_vertices->SetPosition(m_vertexCount, p_unk0x0c->m_position);
+		m_vertices->SetColor(m_vertexCount, m_color);
 		vertexIndex = m_vertexCount;
 		m_vertexCount = vertexIndex + 1;
-		m_vertices->VTable0x28(vertexIndex, p_unk0x0c->m_projected.m_vec);
+		m_vertices->SetTextureCoordinate(vertexIndex, p_unk0x0c->m_projected.m_vec);
 
 		LegoU32 polygonIndex = m_triangleCount;
 		LegoU32 polygonCount = m_batchTriangleCount;

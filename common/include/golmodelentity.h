@@ -24,7 +24,7 @@ public:
 	void Draw(GolRenderDevice& p_renderer) override;                                       // vtable+0x1c
 	LegoBool32 GetKind() override;                                                         // vtable+0x20
 	void ApplyColorTransform(ColorTransform* p_transform) override;                        // vtable+0x24
-	void VTable0x28() override;                                                            // vtable+0x28
+	void ClearColorTransform() override;                                                   // vtable+0x28
 	virtual void ComputeBoundsFromModel(LegoU32 p_index);                                  // vtable+0x4c
 	virtual void SetPrimaryModel(GolModelBase* p_model, LegoFloat p_modelDistance);        // vtable+0x50
 	virtual void ResetModelState();                                                        // vtable+0x54

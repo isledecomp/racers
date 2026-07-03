@@ -3056,7 +3056,7 @@ void CutsceneColorEvent::Stop()
 	if (m_active) {
 		m_active = FALSE;
 		if (m_entity != NULL) {
-			m_entity->VTable0x28();
+			m_entity->ClearColorTransform();
 		}
 	}
 }

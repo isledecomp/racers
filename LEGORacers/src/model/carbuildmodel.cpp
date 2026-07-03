@@ -2104,15 +2104,15 @@ void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitiv
 				m_batchVertexCount++;
 
 				BuildVertex* buildVertex = &m_buildVertices[buildVertexIndex];
-				m_modelVertices->VTable0x24(m_modelVertexCount, buildVertex->m_position);
+				m_modelVertices->SetPosition(m_modelVertexCount, buildVertex->m_position);
 
 				GolVec3 normal;
 				normal.m_x = static_cast<LegoFloat>(buildVertex->m_normalX) * g_carBuildModelNormalScale;
 				normal.m_y = static_cast<LegoFloat>(buildVertex->m_normalY) * g_carBuildModelNormalScale;
 				normal.m_z = static_cast<LegoFloat>(buildVertex->m_normalZ) * g_carBuildModelNormalScale;
-				m_modelVertices->VTable0x2c(m_modelVertexCount, normal);
-				m_modelVertices->VTable0x28(m_modelVertexCount, buildVertex->m_textureCoordinate);
-				m_modelVertices->VTable0x30(m_modelVertexCount, color);
+				m_modelVertices->SetNormal(m_modelVertexCount, normal);
+				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, buildVertex->m_textureCoordinate);
+				m_modelVertices->SetColor(m_modelVertexCount, color);
 				m_modelVertexCount++;
 			}
 		}
@@ -2675,30 +2675,30 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_unk0x04, LegoS32 p_height)
 					texCoord.m_y = 0.0f;
 				}
 
-				m_modelVertices->VTable0x24(m_modelVertexCount, position);
-				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
-				m_modelVertices->VTable0x30(m_modelVertexCount, color);
+				m_modelVertices->SetPosition(m_modelVertexCount, position);
+				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
+				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				position.m_x += 1.0f;
 				texCoord.m_x += 0.49f;
-				m_modelVertices->VTable0x24(m_modelVertexCount, position);
-				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
-				m_modelVertices->VTable0x30(m_modelVertexCount, color);
+				m_modelVertices->SetPosition(m_modelVertexCount, position);
+				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
+				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				position.m_y += 1.0f;
 				texCoord.m_y += 0.49f;
-				m_modelVertices->VTable0x24(m_modelVertexCount, position);
-				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
-				m_modelVertices->VTable0x30(m_modelVertexCount, color);
+				m_modelVertices->SetPosition(m_modelVertexCount, position);
+				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
+				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				position.m_x -= 1.0f;
 				texCoord.m_x -= 0.49f;
-				m_modelVertices->VTable0x24(m_modelVertexCount, position);
-				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
-				m_modelVertices->VTable0x30(m_modelVertexCount, color);
+				m_modelVertices->SetPosition(m_modelVertexCount, position);
+				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
+				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				GdbModelIndexArray::Indices* triangles = &m_modelTriangles[m_modelTriangleCount];
@@ -2972,14 +2972,14 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 	::memcpy(destIndices, sourceIndices, sizeof(*destIndices) * m_finalTriangleCount);
 
 	for (i = 0; i < static_cast<LegoS32>(m_finalVertexCount); i++) {
-		sourceVertices->VTable0x14(i, &position);
-		destVertices->VTable0x24(i, position);
-		sourceVertices->VTable0x18(i, &texCoord);
-		destVertices->VTable0x28(i, texCoord);
-		sourceVertices->VTable0x1c(i, &normal);
-		destVertices->VTable0x2c(i, normal);
-		sourceVertices->VTable0x20(i, &color);
-		destVertices->VTable0x30(i, color);
+		sourceVertices->GetPosition(i, &position);
+		destVertices->SetPosition(i, position);
+		sourceVertices->GetTextureCoordinate(i, &texCoord);
+		destVertices->SetTextureCoordinate(i, texCoord);
+		sourceVertices->GetNormal(i, &normal);
+		destVertices->SetNormal(i, normal);
+		sourceVertices->GetColor(i, &color);
+		destVertices->SetColor(i, color);
 	}
 
 	m_model->AddFlags(FALSE);

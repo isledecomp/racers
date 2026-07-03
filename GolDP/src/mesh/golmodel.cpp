@@ -81,7 +81,7 @@ void GolModel::Allocate(
 	}
 
 	AllocateIndices(p_arg4, p_arg5);
-	m_modelVertexArray->VTable0x04(p_arg3);
+	m_modelVertexArray->Allocate(p_arg3);
 	m_dirty = 1;
 }
 
@@ -89,7 +89,7 @@ void GolModel::Allocate(
 void GolModel::Destroy()
 {
 	if (m_modelVertexArray != NULL) {
-		m_modelVertexArray->VTable0x0c();
+		m_modelVertexArray->Destroy();
 		delete m_modelVertexArray;
 		m_modelVertexArray = NULL;
 		m_vertexArray = 0;
@@ -111,7 +111,7 @@ void GolModel::ParseUncoloredVertices(GolFileParser& p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_modelVertexArray->VTable0x08(p_parser);
+	m_modelVertexArray->Parse(p_parser);
 }
 
 // FUNCTION: GOLDP 0x10006b30
@@ -127,7 +127,7 @@ void GolModel::ParseColoredVertices(GolFileParser& p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_modelVertexArray->VTable0x08(p_parser);
+	m_modelVertexArray->Parse(p_parser);
 }
 
 // FUNCTION: GOLDP 0x10006bc0
@@ -143,7 +143,7 @@ void GolModel::ParseNormalVertices(GolFileParser& p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_modelVertexArray->VTable0x08(p_parser);
+	m_modelVertexArray->Parse(p_parser);
 }
 
 // STUB: GOLDP 0x10006c50

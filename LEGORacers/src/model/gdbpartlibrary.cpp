@@ -297,22 +297,22 @@ LegoS32 GdbPartLibrary::CopyBatchVertex(LegoU32 p_sourceVertex)
 	LegoU32 targetVertex = g_copyBatchVertexStart + g_copyBatchVertexCount;
 
 	GolVec3 position;
-	m_vertexPool->VTable0x14(p_sourceVertex, &position);
-	g_copyVertexArray->VTable0x24(targetVertex, position);
+	m_vertexPool->GetPosition(p_sourceVertex, &position);
+	g_copyVertexArray->SetPosition(targetVertex, position);
 
 	GolVec2 texCoord;
-	m_vertexPool->VTable0x18(p_sourceVertex, &texCoord);
-	g_copyVertexArray->VTable0x28(targetVertex, texCoord);
+	m_vertexPool->GetTextureCoordinate(p_sourceVertex, &texCoord);
+	g_copyVertexArray->SetTextureCoordinate(targetVertex, texCoord);
 
 	if (m_vertexPool->GetVertexType() == 1) {
 		ColorRGBA color;
-		m_vertexPool->VTable0x20(p_sourceVertex, &color);
-		g_copyVertexArray->VTable0x30(targetVertex, color);
+		m_vertexPool->GetColor(p_sourceVertex, &color);
+		g_copyVertexArray->SetColor(targetVertex, color);
 	}
 	else {
 		GolVec3 normal;
-		m_vertexPool->VTable0x1c(p_sourceVertex, &normal);
-		g_copyVertexArray->VTable0x2c(targetVertex, normal);
+		m_vertexPool->GetNormal(p_sourceVertex, &normal);
+		g_copyVertexArray->SetNormal(targetVertex, normal);
 	}
 
 	return g_copyBatchVertexCount++;

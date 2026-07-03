@@ -65,7 +65,7 @@ public:
 	virtual void AddFlags(LegoU32);                                                              // vtable+0x34
 	virtual void ComputeBounds(GolVec3*, LegoFloat*, LegoFloat) const;                           // vtable+0x38
 	virtual void ApplyColorTransform(const ColorTransform&);                                     // vtable+0x3c
-	virtual void CommitColorTransform();                                                         // vtable+0x40
+	virtual void ClearColorTransform();                                                          // vtable+0x40
 
 	void AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroups);
 	void MirrorY();

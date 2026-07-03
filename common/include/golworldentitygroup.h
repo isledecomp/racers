@@ -17,7 +17,7 @@ public:
 	void Update(LegoS32 p_elapsed) override;                                       // vtable+0x10
 	void Draw(GolRenderDevice& p_renderer) override;                               // vtable+0x1c
 	void ApplyColorTransform(ColorTransform* p_transform) override;                // vtable+0x24
-	void VTable0x28() override;                                                    // vtable+0x28
+	void ClearColorTransform() override;                                           // vtable+0x28
 	void LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const override;       // vtable+0x2c
 	void WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) const override;       // vtable+0x30
 	void RotateToWorld(const GolVec3& p_src, GolVec3* p_dest) override;            // vtable+0x34

@@ -34,7 +34,7 @@ public:
 	virtual void Draw(GolRenderDevice& p_renderer);                                     // vtable+0x1c
 	virtual undefined4 GetKind();                                                       // vtable+0x20
 	virtual void ApplyColorTransform(ColorTransform* p_transform);                      // vtable+0x24
-	virtual void VTable0x28();                                                          // vtable+0x28
+	virtual void ClearColorTransform();                                                 // vtable+0x28
 	virtual void LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const;             // vtable+0x2c
 	virtual void WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) const;             // vtable+0x30
 	virtual void RotateToWorld(const GolVec3& p_src, GolVec3* p_dest);                  // vtable+0x34

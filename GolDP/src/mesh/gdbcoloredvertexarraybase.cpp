@@ -6,52 +6,52 @@
 // FUNCTION: GOLDP 0x10016f20
 GdbColoredVertexArrayBase::GdbColoredVertexArrayBase()
 {
-	m_unk0x0c = NULL;
-	m_unk0x10 = NULL;
-	m_unk0x14 = FALSE;
-	m_unk0x18 = NULL;
+	m_textureCoordinates = NULL;
+	m_colors = NULL;
+	m_hasTransformedColors = FALSE;
+	m_transformedColors = NULL;
 }
 
 // FUNCTION: GOLDP 0x10016f60 FOLDED
 GdbColoredVertexArrayBase::~GdbColoredVertexArrayBase()
 {
-	VTable0x0c();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x10016ff0
-void GdbColoredVertexArrayBase::VTable0x0c()
+void GdbColoredVertexArrayBase::Destroy()
 {
-	if (m_unk0x0c != NULL) {
-		delete[] m_unk0x0c;
-		m_unk0x0c = NULL;
+	if (m_textureCoordinates != NULL) {
+		delete[] m_textureCoordinates;
+		m_textureCoordinates = NULL;
 	}
-	if (m_unk0x10 != NULL) {
-		delete[] m_unk0x10;
-		m_unk0x10 = NULL;
+	if (m_colors != NULL) {
+		delete[] m_colors;
+		m_colors = NULL;
 	}
-	if (m_unk0x18 != NULL) {
-		delete[] m_unk0x18;
-		m_unk0x18 = NULL;
+	if (m_transformedColors != NULL) {
+		delete[] m_transformedColors;
+		m_transformedColors = NULL;
 	}
-	GdbVertexArray::VTable0x0c();
+	GdbVertexArray::Destroy();
 }
 
 // FUNCTION: GOLDP 0x10017050
-void GdbColoredVertexArrayBase::VTable0x34(const ColorTransform& p_details)
+void GdbColoredVertexArrayBase::ApplyColorTransform(const ColorTransform& p_details)
 {
 	LegoU32* ptrIn;
 	LegoU32* ptrOut;
 	LegoU32* ptrInEnd;
 
-	if (m_unk0x18 == NULL) {
-		m_unk0x18 = new LegoU32[m_count];
-		if (m_unk0x18 == NULL) {
+	if (m_transformedColors == NULL) {
+		m_transformedColors = new LegoU32[m_count];
+		if (m_transformedColors == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	ptrOut = m_unk0x18;
-	ptrIn = m_unk0x10;
+	ptrOut = m_transformedColors;
+	ptrIn = m_colors;
 	ptrInEnd = ptrIn + m_count;
 
 	for (; ptrIn < ptrInEnd; ptrIn++, ptrOut++) {
@@ -79,11 +79,11 @@ void GdbColoredVertexArrayBase::VTable0x34(const ColorTransform& p_details)
 		*ptrOut = (a << 24) | (r << 16) | (g << 8) | (b << 0);
 	}
 
-	m_unk0x14 = TRUE;
+	m_hasTransformedColors = TRUE;
 }
 
 // FUNCTION: GOLDP 0x10017180
-void GdbColoredVertexArrayBase::VTable0x38()
+void GdbColoredVertexArrayBase::ClearColorTransform()
 {
-	m_unk0x14 = FALSE;
+	m_hasTransformedColors = FALSE;
 }

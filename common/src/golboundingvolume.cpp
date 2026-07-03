@@ -90,7 +90,7 @@ void GolBoundingVolume::Load(GolRenderDevice* p_renderer, const LegoChar* p_name
 			if (m_vertices == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
-			m_vertices->VTable0x08(*parser);
+			m_vertices->Parse(*parser);
 			break;
 		case c_bvbTriangles:
 			ParseTriangles(*parser);
@@ -123,7 +123,7 @@ void GolBoundingVolume::Destroy()
 {
 	if (m_nodes != NULL) {
 		if (m_vertices != NULL) {
-			m_vertices->VTable0x0c();
+			m_vertices->Destroy();
 			if (m_vertices != NULL) {
 				delete m_vertices;
 			}

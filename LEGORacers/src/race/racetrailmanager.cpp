@@ -423,9 +423,9 @@ void RaceTrailManager::Trail::RebuildGeometry()
 				position.m_x -= center.m_x;
 				position.m_y -= center.m_y;
 				position.m_z -= center.m_z;
-				vertexArray->VTable0x24(vertexIndex, position);
-				vertexArray->VTable0x30(vertexIndex, color);
-				vertexArray->VTable0x28(vertexIndex, texCoord);
+				vertexArray->SetPosition(vertexIndex, position);
+				vertexArray->SetColor(vertexIndex, color);
+				vertexArray->SetTextureCoordinate(vertexIndex, texCoord);
 				vertexIndex++;
 			}
 

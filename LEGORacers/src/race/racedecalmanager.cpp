@@ -374,15 +374,15 @@ void RaceDecalManager::Trail::BakeSegment()
 	GolVec3 normal;
 	GolVec3 position;
 	for (i = 0; i < m_slots[m_slotIndex].m_entry.m_vertexCount; i++) {
-		sourceVertices->VTable0x14(i, &position);
-		sourceVertices->VTable0x18(i, &texCoord);
-		sourceVertices->VTable0x1c(i, &normal);
-		sourceVertices->VTable0x20(i, &color);
+		sourceVertices->GetPosition(i, &position);
+		sourceVertices->GetTextureCoordinate(i, &texCoord);
+		sourceVertices->GetNormal(i, &normal);
+		sourceVertices->GetColor(i, &color);
 
-		destVertices->VTable0x24(i, position);
-		destVertices->VTable0x28(i, texCoord);
-		destVertices->VTable0x2c(i, normal);
-		destVertices->VTable0x30(i, color);
+		destVertices->SetPosition(i, position);
+		destVertices->SetTextureCoordinate(i, texCoord);
+		destVertices->SetNormal(i, normal);
+		destVertices->SetColor(i, color);
 	}
 
 	sourceModel->AddFlagsWithBounds(0, FALSE);
@@ -443,18 +443,18 @@ void RaceDecalManager::Trail::WeldVertices()
 
 	for (LegoU32 previousIndex = 0; previousIndex < m_slots[currentIndex].m_entry.m_vertexCount; previousIndex++) {
 		GolVec3 previousPosition;
-		previousVertices->VTable0x14(previousIndex, &previousPosition);
+		previousVertices->GetPosition(previousIndex, &previousPosition);
 
 		for (LegoU32 sourceIndex = 0; sourceIndex < m_decal.GetVertexCount(); sourceIndex++) {
 			GolVec3 sourcePosition;
-			sourceVertices->VTable0x14(sourceIndex, &sourcePosition);
+			sourceVertices->GetPosition(sourceIndex, &sourcePosition);
 
 			LegoFloat dx = sourcePosition.m_x - previousPosition.m_x;
 			LegoFloat dy = sourcePosition.m_y - previousPosition.m_y;
 			LegoFloat dz = sourcePosition.m_z - previousPosition.m_z;
 			LegoFloat distanceSquared = dx * dx + dy * dy + dz * dz;
 			if (distanceSquared < distanceThreshold) {
-				sourceVertices->VTable0x24(sourceIndex, previousPosition);
+				sourceVertices->SetPosition(sourceIndex, previousPosition);
 				updatedCount++;
 			}
 		}

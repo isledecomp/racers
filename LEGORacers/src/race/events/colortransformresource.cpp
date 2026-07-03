@@ -70,7 +70,7 @@ void ColorTransformResource::OnStartForRacer(Racer* p_racer)
 	GolWorldEntity* entity = m_worldEntity;
 	if (flags & c_transformFlagBit1) {
 		if (entity) {
-			entity->VTable0x28();
+			entity->ClearColorTransform();
 		}
 		else if (p_racer) {
 			p_racer->m_visuals.ClearColorTransform();
@@ -96,7 +96,7 @@ void ColorTransformResource::OnEndForRacer(Racer* p_racer)
 	if (!(static_cast<LegoU8>(m_transformFlags) & c_transformFlagBit1)) {
 		GolWorldEntity* entity = m_worldEntity;
 		if (entity) {
-			entity->VTable0x28();
+			entity->ClearColorTransform();
 		}
 		else if (p_racer) {
 			p_racer->m_visuals.ClearColorTransform();

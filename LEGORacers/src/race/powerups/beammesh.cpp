@@ -311,11 +311,11 @@ void BeamMesh::EmitRing(
 			vertex.m_y = p_position->m_y + m_ringVertices[i].m_y + m_segmentOffsets[p_offsetIndex].m_y;
 			vertex.m_z = p_position->m_z + m_ringVertices[i].m_z + m_segmentOffsets[p_offsetIndex].m_z;
 
-			m_vertices->VTable0x24(m_vertexCursor, vertex);
-			m_vertices->VTable0x30(m_vertexCursor, *p_color);
+			m_vertices->SetPosition(m_vertexCursor, vertex);
+			m_vertices->SetColor(m_vertexCursor, *p_color);
 
 			texture.m_x = m_ringTextureXs[i];
-			m_vertices->VTable0x28(m_vertexCursor++, texture);
+			m_vertices->SetTextureCoordinate(m_vertexCursor++, texture);
 		}
 	}
 	else {
@@ -325,11 +325,11 @@ void BeamMesh::EmitRing(
 			vertex.m_y = p_position->m_y + m_ringVertices[i].m_y;
 			vertex.m_z = p_position->m_z + m_ringVertices[i].m_z;
 
-			m_vertices->VTable0x24(m_vertexCursor, vertex);
-			m_vertices->VTable0x30(m_vertexCursor, *p_color);
+			m_vertices->SetPosition(m_vertexCursor, vertex);
+			m_vertices->SetColor(m_vertexCursor, *p_color);
 
 			texture.m_x = m_ringTextureXs[i];
-			m_vertices->VTable0x28(m_vertexCursor++, texture);
+			m_vertices->SetTextureCoordinate(m_vertexCursor++, texture);
 		}
 	}
 }

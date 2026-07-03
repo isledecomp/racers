@@ -284,13 +284,13 @@ void GolModelEntity::ApplyColorTransform(ColorTransform* p_transform)
 
 // FUNCTION: GOLDP 0x100280f0
 // FUNCTION: LEGORACERS 0x00411620
-void GolModelEntity::VTable0x28()
+void GolModelEntity::ClearColorTransform()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
 		if (m_models[i] == NULL) {
 			break;
 		}
-		m_models[i]->CommitColorTransform();
+		m_models[i]->ClearColorTransform();
 	}
 }
 

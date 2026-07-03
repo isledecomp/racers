@@ -9,7 +9,7 @@ DECOMP_SIZE_ASSERT(ColorTransform, 0x20)
 DECOMP_SIZE_ASSERT(GdbVertexArray, 0xc)
 
 // FUNCTION: GOLDP 0x10006230
-void GdbVertexArray::VTable0x1c(LegoU32 p_index, GolVec3* p_arg2) const
+void GdbVertexArray::GetNormal(LegoU32 p_index, GolVec3* p_arg2) const
 {
 	p_arg2->m_x = 0.0f;
 	p_arg2->m_y = 0.0f;
@@ -17,7 +17,7 @@ void GdbVertexArray::VTable0x1c(LegoU32 p_index, GolVec3* p_arg2) const
 }
 
 // FUNCTION: GOLDP 0x10015860
-void GdbVertexArray::VTable0x14(LegoU32 p_index, GolVec3* p_arg2) const
+void GdbVertexArray::GetPosition(LegoU32 p_index, GolVec3* p_arg2) const
 {
 	p_arg2->m_x = m_positions[p_index].m_x;
 	p_arg2->m_y = m_positions[p_index].m_y;
@@ -25,7 +25,7 @@ void GdbVertexArray::VTable0x14(LegoU32 p_index, GolVec3* p_arg2) const
 }
 
 // FUNCTION: GOLDP 0x100158b0
-void GdbVertexArray::VTable0x24(LegoU32 p_index, const GolVec3& p_arg2)
+void GdbVertexArray::SetPosition(LegoU32 p_index, const GolVec3& p_arg2)
 {
 	m_positions[p_index].m_x = p_arg2.m_x;
 	m_positions[p_index].m_y = p_arg2.m_y;
@@ -34,7 +34,7 @@ void GdbVertexArray::VTable0x24(LegoU32 p_index, const GolVec3& p_arg2)
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GdbVertexArray::VTable0x38()
+void GdbVertexArray::ClearColorTransform()
 {
 	// empty
 }
@@ -44,7 +44,7 @@ void GdbVertexArray::VTable0x38()
 GdbVertexArray::GdbVertexArray()
 {
 	m_count = 0;
-	m_vertexType = 5;
+	m_vertexType = c_vertexTypePosition;
 	m_positions = NULL;
 }
 
@@ -52,15 +52,15 @@ GdbVertexArray::GdbVertexArray()
 // FUNCTION: LEGORACERS 0x00415e10
 GdbVertexArray::~GdbVertexArray()
 {
-	VTable0x0c();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x1002be90
 // FUNCTION: LEGORACERS 0x00415e20
-void GdbVertexArray::VTable0x08(GolFileParser& p_parser)
+void GdbVertexArray::Parse(GolFileParser& p_parser)
 {
 	if (m_count != 0) {
-		VTable0x0c();
+		Destroy();
 	}
 
 	m_count = p_parser.ReadBracketedCountAndLeftCurly();
@@ -87,10 +87,10 @@ void GdbVertexArray::VTable0x08(GolFileParser& p_parser)
 
 // FUNCTION: GOLDP 0x1002bf60
 // FUNCTION: LEGORACERS 0x00415ef0
-void GdbVertexArray::VTable0x04(LegoU16 p_count)
+void GdbVertexArray::Allocate(LegoU16 p_count)
 {
 	if (m_count != 0) {
-		VTable0x0c();
+		Destroy();
 	}
 
 	m_count = p_count;
@@ -102,7 +102,7 @@ void GdbVertexArray::VTable0x04(LegoU16 p_count)
 
 // FUNCTION: GOLDP 0x1002bfb0 FOLDED
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED
-void GdbVertexArray::VTable0x0c()
+void GdbVertexArray::Destroy()
 {
 	if (m_positions != NULL) {
 		delete[] m_positions;
@@ -112,14 +112,14 @@ void GdbVertexArray::VTable0x0c()
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GdbVertexArray::VTable0x10()
+void GdbVertexArray::DiscardNormals()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002bfd0
 // FUNCTION: LEGORACERS 0x00415f90
-void GdbVertexArray::VTable0x18(undefined4, GolVec2* p_dest) const
+void GdbVertexArray::GetTextureCoordinate(undefined4, GolVec2* p_dest) const
 {
 	p_dest->m_x = 0.0f;
 	p_dest->m_y = 0.0f;
@@ -127,7 +127,7 @@ void GdbVertexArray::VTable0x18(undefined4, GolVec2* p_dest) const
 
 // FUNCTION: GOLDP 0x1002bff0
 // FUNCTION: LEGORACERS 0x00415fd0
-void GdbVertexArray::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
+void GdbVertexArray::GetColor(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = 0;
 	p_dest->m_grn = 0;
@@ -137,28 +137,28 @@ void GdbVertexArray::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GdbVertexArray::VTable0x28(LegoU32 p_index, const GolVec2&)
+void GdbVertexArray::SetTextureCoordinate(LegoU32 p_index, const GolVec2&)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GdbVertexArray::VTable0x2c(LegoU32 p_index, const GolVec3&)
+void GdbVertexArray::SetNormal(LegoU32 p_index, const GolVec3&)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GdbVertexArray::VTable0x30(LegoU32 p_index, const ColorRGBA&)
+void GdbVertexArray::SetColor(LegoU32 p_index, const ColorRGBA&)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GdbVertexArray::VTable0x34(const ColorTransform& p_details)
+void GdbVertexArray::ApplyColorTransform(const ColorTransform& p_details)
 {
 	// empty
 }

@@ -38,16 +38,16 @@ public:
 	GdbPartVertexPool();
 	~GdbPartVertexPool() override;
 
-	void VTable0x0c() override;
+	void Destroy() override;
 	void Read(GolFileParser& p_parser, LegoU16 p_vertexType);
-	void VTable0x14(LegoU32 p_index, GolVec3* p_dest) const override;
-	void VTable0x18(LegoU32 p_index, GolVec2* p_dest) const override;
-	void VTable0x1c(LegoU32 p_index, GolVec3* p_dest) const override;
-	void VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const override;
-	void VTable0x24(LegoU32 p_index, const GolVec3& p_src) override;
-	void VTable0x28(LegoU32 p_index, const GolVec2& p_src) override;
-	void VTable0x2c(LegoU32 p_index, const GolVec3& p_src) override;
-	void VTable0x30(LegoU32 p_index, const ColorRGBA& p_src) override;
+	void GetPosition(LegoU32 p_index, GolVec3* p_dest) const override;
+	void GetTextureCoordinate(LegoU32 p_index, GolVec2* p_dest) const override;
+	void GetNormal(LegoU32 p_index, GolVec3* p_dest) const override;
+	void GetColor(LegoU32 p_index, ColorRGBA* p_dest) const override;
+	void SetPosition(LegoU32 p_index, const GolVec3& p_src) override;
+	void SetTextureCoordinate(LegoU32 p_index, const GolVec2& p_src) override;
+	void SetNormal(LegoU32 p_index, const GolVec3& p_src) override;
+	void SetColor(LegoU32 p_index, const ColorRGBA& p_src) override;
 
 	// SYNTHETIC: LEGORACERS 0x00408000
 	// GdbPartVertexPool::`scalar deleting destructor'

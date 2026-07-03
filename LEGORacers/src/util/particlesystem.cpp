@@ -490,33 +490,33 @@ void ParticleSystem::EmitQuad(Particle* p_particle)
 	GolVec2 texCoord;
 	texCoord.m_x = 0.01f;
 	texCoord.m_y = 0.01f;
-	m_vertices->VTable0x24(m_vertexCount, position);
-	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
-	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+	m_vertices->SetPosition(m_vertexCount, position);
+	m_vertices->SetColor(m_vertexCount, m_particleColor);
+	m_vertices->SetTextureCoordinate(m_vertexCount++, texCoord);
 
 	position.m_x += m_scaledCameraUp.m_x;
 	position.m_y += m_scaledCameraUp.m_y;
 	position.m_z += m_scaledCameraUp.m_z;
 	texCoord.m_x = 0.98f;
-	m_vertices->VTable0x24(m_vertexCount, position);
-	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
-	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+	m_vertices->SetPosition(m_vertexCount, position);
+	m_vertices->SetColor(m_vertexCount, m_particleColor);
+	m_vertices->SetTextureCoordinate(m_vertexCount++, texCoord);
 
 	position.m_x += m_scaledCameraForward.m_x;
 	position.m_y += m_scaledCameraForward.m_y;
 	position.m_z += m_scaledCameraForward.m_z;
 	texCoord.m_y = 0.98f;
-	m_vertices->VTable0x24(m_vertexCount, position);
-	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
-	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+	m_vertices->SetPosition(m_vertexCount, position);
+	m_vertices->SetColor(m_vertexCount, m_particleColor);
+	m_vertices->SetTextureCoordinate(m_vertexCount++, texCoord);
 
 	position.m_x -= m_scaledCameraUp.m_x;
 	position.m_y -= m_scaledCameraUp.m_y;
 	position.m_z -= m_scaledCameraUp.m_z;
 	texCoord.m_x = 0.01f;
-	m_vertices->VTable0x24(m_vertexCount, position);
-	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
-	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+	m_vertices->SetPosition(m_vertexCount, position);
+	m_vertices->SetColor(m_vertexCount, m_particleColor);
+	m_vertices->SetTextureCoordinate(m_vertexCount++, texCoord);
 
 	GdbModelIndexArray::Indices* indices = &m_indices[m_triangleCount++];
 	indices->m_c = m_batchVertexCount;

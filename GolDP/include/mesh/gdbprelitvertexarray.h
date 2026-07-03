@@ -10,9 +10,9 @@ class GdbPrelitVertexArray : public GdbNormalVertexArray {
 public:
 	GdbPrelitVertexArray();
 
-	void VTable0x04(LegoU16 p_count) override;         // vtable+0x04
-	void VTable0x08(GolFileParser& p_parser) override; // vtable+0x08
-	void VTable0x10() override;                        // vtable+0x10
+	void Allocate(LegoU16 p_count) override;      // vtable+0x04
+	void Parse(GolFileParser& p_parser) override; // vtable+0x08
+	void DiscardNormals() override;               // vtable+0x10
 };
 
 #endif // GDBPRELITVERTEXARRAY_H

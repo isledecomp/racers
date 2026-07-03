@@ -180,7 +180,7 @@ undefined4 GolModelRenderState::ProcessVerticesPrelit(DrawCommand*)
 void GolModelRenderState::LightVertices0(const CommandVertex*, LegoU32, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	for (LegoU32 i = p_firstVertex; i < p_firstVertex + p_vertexCount; i++) {
-		m_vertexArray->VTable0x30(i, m_activeMaterialColor);
+		m_vertexArray->SetColor(i, m_activeMaterialColor);
 	}
 }
 
@@ -240,7 +240,7 @@ void GolModelRenderState::LightVertices1(
 				}
 			}
 
-			m_vertexArray->VTable0x30(p_firstVertex++, color);
+			m_vertexArray->SetColor(p_firstVertex++, color);
 			vertex++;
 		} while (vertex < end);
 	}
@@ -308,7 +308,7 @@ void GolModelRenderState::LightVertices2(
 				}
 			}
 
-			m_vertexArray->VTable0x30(p_firstVertex++, color);
+			m_vertexArray->SetColor(p_firstVertex++, color);
 			vertex++;
 		} while (vertex < end);
 	}
@@ -382,7 +382,7 @@ void GolModelRenderState::LightVertices3(
 				}
 			}
 
-			m_vertexArray->VTable0x30(p_firstVertex++, color);
+			m_vertexArray->SetColor(p_firstVertex++, color);
 			vertex++;
 		} while (vertex < end);
 	}
@@ -462,7 +462,7 @@ void GolModelRenderState::LightVertices4(
 				}
 			}
 
-			m_vertexArray->VTable0x30(p_firstVertex++, color);
+			m_vertexArray->SetColor(p_firstVertex++, color);
 			vertex++;
 		} while (vertex < end);
 	}
@@ -548,7 +548,7 @@ void GolModelRenderState::LightVertices5(
 				}
 			}
 
-			m_vertexArray->VTable0x30(p_firstVertex++, color);
+			m_vertexArray->SetColor(p_firstVertex++, color);
 			vertex++;
 		} while (vertex < end);
 	}
@@ -640,7 +640,7 @@ void GolModelRenderState::LightVertices6(
 				}
 			}
 
-			m_vertexArray->VTable0x30(p_firstVertex++, color);
+			m_vertexArray->SetColor(p_firstVertex++, color);
 			vertex++;
 		} while (vertex < end);
 	}
@@ -738,7 +738,7 @@ void GolModelRenderState::LightVertices7(
 				}
 			}
 
-			m_vertexArray->VTable0x30(p_firstVertex++, color);
+			m_vertexArray->SetColor(p_firstVertex++, color);
 			vertex++;
 		} while (vertex < end);
 	}

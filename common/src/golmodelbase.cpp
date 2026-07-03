@@ -131,7 +131,7 @@ void GolModelBase::AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroup
 void GolModelBase::Destroy()
 {
 	if (m_unk0x14 != NULL) {
-		m_unk0x14->VTable0x0c();
+		m_unk0x14->Destroy();
 		delete m_unk0x14;
 		m_unk0x14 = NULL;
 		m_vertexArray = NULL;
@@ -331,7 +331,7 @@ void GolModelBase::ParseVertices(GolFileParser& p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x14->VTable0x08(p_parser);
+	m_unk0x14->Parse(p_parser);
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
@@ -366,7 +366,7 @@ void GolModelBase::ComputeBounds(GolVec3* p_center, LegoFloat* p_radius, LegoFlo
 			LegoU32 vertexIndex = mask & 0xffff;
 			LegoU32 endVertexIndex = vertexIndex + 1 + ((mask >> 16) & 0x3f);
 			for (; vertexIndex < endVertexIndex; vertexIndex++) {
-				m_vertexArray->VTable0x14(vertexIndex, &vertex);
+				m_vertexArray->GetPosition(vertexIndex, &vertex);
 				if (vertex.m_x < min.m_x) {
 					min.m_x = vertex.m_x;
 				}
@@ -409,7 +409,7 @@ void GolModelBase::ComputeBounds(GolVec3* p_center, LegoFloat* p_radius, LegoFlo
 				LegoU32 vertexIndex = mask & 0xffff;
 				LegoU32 endVertexIndex = vertexIndex + 1 + ((mask >> 16) & 0x3f);
 				for (; vertexIndex < endVertexIndex; vertexIndex++) {
-					m_vertexArray->VTable0x14(vertexIndex, &vertex);
+					m_vertexArray->GetPosition(vertexIndex, &vertex);
 					LegoFloat distSquared = center->DistanceSquaredTo(vertex);
 					if (distSquared > radiusSquared) {
 						radiusSquared = distSquared;
@@ -433,13 +433,13 @@ void GolModelBase::ComputeBounds(GolVec3* p_center, LegoFloat* p_radius, LegoFlo
 // FUNCTION: GOLDP 0x10027b30
 void GolModelBase::ApplyColorTransform(const ColorTransform& p_details)
 {
-	m_vertexArray->VTable0x34(p_details);
+	m_vertexArray->ApplyColorTransform(p_details);
 }
 
 // FUNCTION: GOLDP 0x10027b40
-void GolModelBase::CommitColorTransform()
+void GolModelBase::ClearColorTransform()
 {
-	m_vertexArray->VTable0x38();
+	m_vertexArray->ClearColorTransform();
 }
 
 // FUNCTION: LEGORACERS 0x00411090
@@ -453,9 +453,9 @@ void GolModelBase::MirrorY()
 	LegoU32 i;
 	for (i = 0; i < vertexCount; i++) {
 		GolVec3 vertex;
-		vertexArray->VTable0x14(i, &vertex);
+		vertexArray->GetPosition(i, &vertex);
 		vertex.m_y = -vertex.m_y;
-		vertexArray->VTable0x24(i, vertex);
+		vertexArray->SetPosition(i, vertex);
 	}
 
 	AddFlagsWithBounds(1, TRUE);

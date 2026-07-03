@@ -1548,7 +1548,7 @@ void CarVisuals::ClearColorTransform()
 	m_hasColorTransform = 0;
 
 	if (!unk0x3c4) {
-		m_entityGroup.VTable0x28();
+		m_entityGroup.ClearColorTransform();
 	}
 }
 
@@ -1571,7 +1571,7 @@ void CarVisuals::EndFlash()
 		m_entityGroup.ApplyColorTransform(&m_baseColorTransform);
 	}
 	else {
-		m_entityGroup.VTable0x28();
+		m_entityGroup.ClearColorTransform();
 	}
 }
 

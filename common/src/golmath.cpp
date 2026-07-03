@@ -495,7 +495,7 @@ LegoBool32 GolMath::FUN_00449a90(
 }
 
 // FUNCTION: LEGORACERS 0x00449b90
-void GolMath::FUN_00449b90(LegoFloat p_x, LegoFloat p_y, LegoFloat p_z, const LegoFloat* p_matrix, GolVec3* p_dest)
+void GolMath::TransformVector(LegoFloat p_x, LegoFloat p_y, LegoFloat p_z, const LegoFloat* p_matrix, GolVec3* p_dest)
 {
 	LegoFloat x = p_matrix[2] * p_z;
 	x += p_matrix[1] * p_y;
@@ -514,7 +514,7 @@ void GolMath::FUN_00449b90(LegoFloat p_x, LegoFloat p_y, LegoFloat p_z, const Le
 }
 
 // FUNCTION: LEGORACERS 0x00449bf0
-void GolMath::FUN_00449bf0(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest)
+void GolMath::MultiplyMatrixByTranspose(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest)
 {
 	LegoFloat value = p_left[1] * p_right[1];
 	value += p_left[2] * p_right[2];

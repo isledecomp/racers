@@ -162,8 +162,14 @@ public:
 		LegoFloat p_speed,
 		LegoFloat p_dt
 	);
-	static void FUN_00449b90(LegoFloat p_x, LegoFloat p_y, LegoFloat p_z, const LegoFloat* p_matrix, GolVec3* p_dest);
-	static void FUN_00449bf0(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
+	static void TransformVector(
+		LegoFloat p_x,
+		LegoFloat p_y,
+		LegoFloat p_z,
+		const LegoFloat* p_matrix,
+		GolVec3* p_dest
+	);
+	static void MultiplyMatrixByTranspose(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
 };
 
 #endif // GOLMATH_H

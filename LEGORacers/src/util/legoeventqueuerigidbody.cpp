@@ -216,7 +216,7 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 	m_entity->CopyOrientation(&scratch.m_orientation0);
 	p_other->m_entity->CopyOrientation(&scratch.m_absOrientation);
 
-	GolMath::FUN_00449b90(
+	GolMath::TransformVector(
 		p_other->m_position.m_x - m_position.m_x,
 		p_other->m_position.m_y - m_position.m_y,
 		p_other->m_position.m_z - m_position.m_z,
@@ -224,7 +224,7 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 		&scratch.m_delta
 	);
 
-	GolMath::FUN_00449bf0(
+	GolMath::MultiplyMatrixByTranspose(
 		&scratch.m_absOrientation.m_m[0][0],
 		&scratch.m_orientation0.m_m[0][0],
 		&scratch.m_relativeOrientation.m_m[0][0]

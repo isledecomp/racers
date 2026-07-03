@@ -43,9 +43,9 @@ protected:
 		c_sourceRegion = 0x50000000,
 	};
 
-	Rect* FUN_00466640(Rect* p_rect1, Rect* p_rect2, Rect* p_out);
-	void FUN_00466690(LegoU32 p_code);
-	MenuWidget* FUN_00466800(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y);
+	Rect* IntersectRects(Rect* p_rect1, Rect* p_rect2, Rect* p_out);
+	void SelectHotspotByCode(LegoU32 p_code);
+	MenuWidget* HitTestHotspots(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y);
 
 	MenuStyleTable::HotspotStyle* m_unk0x21c; // 0x21c
 	GolImage* m_unk0x220;                     // 0x220

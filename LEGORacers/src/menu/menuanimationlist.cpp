@@ -276,7 +276,7 @@ void MenuAnimationList::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00494fe0
-void MenuAnimationList::FUN_00494fe0()
+void MenuAnimationList::DeactivateAll()
 {
 	LegoU32 result = m_count;
 

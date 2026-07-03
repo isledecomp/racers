@@ -664,7 +664,7 @@ void MenuManager::PrepareRaceContext()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
 	}
 
-	m_gameContext.m_pieceLibrary.FUN_0049ee30("LPieceLo.leg", context->m_useBinaryFiles);
+	m_gameContext.m_pieceLibrary.Load("LPieceLo.leg", context->m_useBinaryFiles);
 	m_gameContext.m_colorTable.Initialize(m_golExport, m_renderer);
 	m_gameContext.m_colorTable.LoadMaterials("LPieceLo.WDF", context->m_useBinaryFiles, FALSE);
 	m_gameContext.m_colorTable.LoadColors("L_Colors.LEG", context->m_useBinaryFiles);

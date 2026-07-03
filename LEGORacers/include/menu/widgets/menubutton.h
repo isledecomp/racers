@@ -28,7 +28,7 @@ public:
 	// MenuButton::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_00466370(MenuImage* p_unk0x04, CreateParams* p_createParams);
+	LegoBool32 CreateImage(MenuImage* p_unk0x04, CreateParams* p_createParams);
 
 	GolImage* m_unk0x1a8[6]; // 0x1a8
 	MenuImage m_unk0x1c0;    // 0x1c0

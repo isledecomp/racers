@@ -18,7 +18,7 @@ MenuFramedSceneView::~MenuFramedSceneView()
 }
 
 // FUNCTION: LEGORACERS 0x00466180
-LegoBool32 MenuFramedSceneView::FUN_00466180(CreateParams* p_createParams)
+LegoBool32 MenuFramedSceneView::CreateFrame(CreateParams* p_createParams)
 {
 	MenuFrame::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
@@ -35,7 +35,7 @@ LegoBool32 MenuFramedSceneView::Create(CreateParams* p_createParams, undefined4 
 {
 	Destroy();
 
-	if (FUN_00466180(p_createParams)) {
+	if (CreateFrame(p_createParams)) {
 		p_createParams->m_rect.m_left = 0;
 		p_createParams->m_rect.m_top = 0;
 		p_createParams->m_rect.m_right =

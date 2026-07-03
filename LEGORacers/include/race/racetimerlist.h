@@ -15,7 +15,7 @@ public:
 	// SIZE 0x1fc
 	class TibTxtParser : public GolTxtParser {};
 
-	static LegoU32 FUN_00464700();
+	static LegoU32 GetCapacity();
 
 	// VTABLE: LEGORACERS 0x004b1cc0
 	// SIZE 0x24

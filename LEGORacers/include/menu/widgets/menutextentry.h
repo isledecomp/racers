@@ -27,7 +27,7 @@ public:
 protected:
 	void Create(CreateParams* p_createParams);
 	void UpdateCaret();
-	LegoBool32 FUN_00471aa0(CreateParams* p_createParams);
+	LegoBool32 CreateColorBox(CreateParams* p_createParams);
 
 	MenuColorBox m_caret;                // 0x23c
 	undefined m_unk0x2fc[0x300 - 0x2fc]; // 0x2fc

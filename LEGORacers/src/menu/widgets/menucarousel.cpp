@@ -234,7 +234,7 @@ void MenuCarouselNavigator::LayoutItem(MenuWidget* p_child)
 	slot.m_right = slot.m_left + width;
 
 	if (style->m_pageMode) {
-		FUN_00472c80(&slot, &rect);
+		CenterRectIn(&slot, &rect);
 	}
 	else {
 		rect = slot;

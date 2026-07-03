@@ -49,7 +49,7 @@ LegoBool32 MenuHotspotButton::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00466640
-Rect* MenuHotspotButton::FUN_00466640(Rect* p_rect1, Rect* p_rect2, Rect* p_out)
+Rect* MenuHotspotButton::IntersectRects(Rect* p_rect1, Rect* p_rect2, Rect* p_out)
 {
 	p_out->m_top = p_rect1->m_top < p_rect2->m_top ? p_rect2->m_top : p_rect1->m_top;
 	p_out->m_left = p_rect1->m_left < p_rect2->m_left ? p_rect2->m_left : p_rect1->m_left;
@@ -60,7 +60,7 @@ Rect* MenuHotspotButton::FUN_00466640(Rect* p_rect1, Rect* p_rect2, Rect* p_out)
 }
 
 // FUNCTION: LEGORACERS 0x00466690
-void MenuHotspotButton::FUN_00466690(LegoU32 p_code)
+void MenuHotspotButton::SelectHotspotByCode(LegoU32 p_code)
 {
 	LegoU32 source = p_code & InputDevice::c_sourceMask;
 	LegoU32 id = p_code & InputDevice::c_keyCodeMask;
@@ -93,7 +93,7 @@ MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 		Rect rect = m_unk0x21c->m_hotspotRects[index];
 
 		Rect sourceRect;
-		FUN_00466640(&rect, p_arg1, &sourceRect);
+		IntersectRects(&rect, p_arg1, &sourceRect);
 
 		LegoS32 yOffset = p_arg2->m_top;
 		rect.m_top += yOffset;
@@ -102,7 +102,7 @@ MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 		rect.m_bottom += yOffset;
 
 		Rect destRect;
-		FUN_00466640(&rect, p_arg2, &destRect);
+		IntersectRects(&rect, p_arg2, &destRect);
 
 		DrawImage(&destRect, &sourceRect, m_unk0x220);
 	}
@@ -111,11 +111,11 @@ MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 }
 
 // FUNCTION: LEGORACERS 0x00466800
-MenuWidget* MenuHotspotButton::FUN_00466800(InputEventQueue::Event*, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuHotspotButton::HitTestHotspots(InputEventQueue::Event*, undefined4 p_x, undefined4 p_y)
 {
 	for (LegoS32 i = 0; i < m_unk0x21c->m_hotspotCount; i++) {
 		if (PointInRect(&m_unk0x21c->m_hotspotRects[i], p_x, p_y)) {
-			FUN_00466690(m_unk0x21c->m_hotspotIds[i] | c_sourceRegion);
+			SelectHotspotByCode(m_unk0x21c->m_hotspotIds[i] | c_sourceRegion);
 			return this;
 		}
 	}
@@ -140,7 +140,7 @@ MenuWidget* MenuHotspotButton::OnKeyDown(InputEventQueue::Event* p_item, undefin
 		}
 
 		if (source == InputDevice::c_sourceMouse && HitTest(p_x, p_y)) {
-			return FUN_00466800(p_item, p_x, p_y);
+			return HitTestHotspots(p_item, p_x, p_y);
 		}
 
 		if (p_item->m_isRepeat) {
@@ -168,7 +168,7 @@ MenuWidget* MenuHotspotButton::OnKeyDown(InputEventQueue::Event* p_item, undefin
 		}
 	}
 	else if (source == c_sourceRegion) {
-		FUN_00466690(keyCode);
+		SelectHotspotByCode(keyCode);
 	}
 
 	return this;
@@ -191,7 +191,7 @@ MenuWidget* MenuHotspotButton::OnKeyUp(InputEventQueue::Event* p_item, undefined
 		}
 
 		if (m_hotspotIndex) {
-			FUN_00466690(c_sourceRegion);
+			SelectHotspotByCode(c_sourceRegion);
 			return this;
 		}
 	}
@@ -203,7 +203,7 @@ MenuWidget* MenuHotspotButton::OnKeyUp(InputEventQueue::Event* p_item, undefined
 void MenuHotspotButton::Unfocus(undefined4 p_flags)
 {
 	if (m_hotspotIndex) {
-		FUN_00466690(c_sourceRegion);
+		SelectHotspotByCode(c_sourceRegion);
 	}
 
 	MenuIcon::Unfocus(p_flags);

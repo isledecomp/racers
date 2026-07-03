@@ -29,7 +29,7 @@ void MenuButton::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00466370
-LegoBool32 MenuButton::FUN_00466370(MenuImage* p_unk0x04, CreateParams* p_createParams)
+LegoBool32 MenuButton::CreateImage(MenuImage* p_unk0x04, CreateParams* p_createParams)
 {
 	MenuImage::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
@@ -60,7 +60,7 @@ LegoBool32 MenuButton::Create(CreateParams* p_createParams, const MenuIcon::Crea
 	}
 
 	if (MenuIcon::Create(p_createParams, p_createState)) {
-		return FUN_00466370(&m_unk0x1c0, p_createParams);
+		return CreateImage(&m_unk0x1c0, p_createParams);
 	}
 
 	return FALSE;

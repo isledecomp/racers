@@ -88,7 +88,7 @@ public:
 	static LegoS32 ReadBracketedCountAndLeftCurly(GolFileParser* p_parser);
 
 	void Destroy();
-	LegoS32 FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary);
+	LegoS32 Load(const LegoChar* p_filename, undefined4 p_binary);
 	LegoBool32 IsColorBlack(LegoS32 p_index) const;
 	void GetColor(LegoS32 p_index, LegoFloat* p_red, LegoFloat* p_green, LegoFloat* p_blue) const;
 	void GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, LegoFloat* p_v) const;

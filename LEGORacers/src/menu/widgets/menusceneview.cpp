@@ -347,7 +347,7 @@ void MenuSceneView::ClampToScreen(Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x00465ea0
-void MenuSceneView::FUN_00465ea0()
+void MenuSceneView::ApplySceneMaterials()
 {
 	if (m_world->GetUnk0x84() || m_world->GetUnk0x8c()) {
 		m_renderer->VTable0x28();
@@ -372,7 +372,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	m_renderer->VTable0x20(m_camera);
 	m_renderer->VTable0x5c();
 	m_renderer->VTable0xec(m_viewportClearMode);
-	FUN_00465ea0();
+	ApplySceneMaterials();
 
 	if (m_drawWorld || !m_elements) {
 		m_world->DrawWorld();

@@ -73,7 +73,7 @@ public:
 	Rect* GetGlobalRect();
 	Rect* GetRect() { return &m_rect; }
 	LegoBool32 ClipRect(Rect*, Rect*);
-	void FUN_00472c80(const Rect*, Rect*) const;
+	void CenterRectIn(const Rect*, Rect*) const;
 	void MeasureText(GolFontBase*, GolString*, Rect*, Rect*, LegoS32);
 	void DrawImage(Rect*, Rect*, GolImage*);
 	void DrawString(Rect*, Rect*, GolFontBase*, GolString*, LegoS32, LegoS32);

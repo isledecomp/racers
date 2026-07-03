@@ -59,7 +59,7 @@ protected:
 	void SetupCamera(CreateParams* p_createParams);
 	void UpdateFreeCamera(undefined4 p_elapsedMs);
 	void ClampToScreen(Rect* p_rect);
-	void FUN_00465ea0();
+	void ApplySceneMaterials();
 
 	MenuSceneElement* m_elements;     // 0x58
 	GolWorldDatabase* m_world;        // 0x5c

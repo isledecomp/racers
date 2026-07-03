@@ -210,7 +210,7 @@ undefined4 MenuWidget::HitTest(LegoS32 p_x, LegoS32 p_y)
 }
 
 // STUB: LEGORACERS 0x00472c80
-void MenuWidget::FUN_00472c80(const Rect* p_source, Rect* p_dest) const
+void MenuWidget::CenterRectIn(const Rect* p_source, Rect* p_dest) const
 {
 	const Rect* source = p_source;
 	LegoU32 sourceTop = source->m_top;
@@ -272,7 +272,7 @@ void MenuWidget::MeasureText(
 	p_dest->m_top = 0;
 	p_dest->m_right = width;
 	p_dest->m_bottom = height;
-	FUN_00472c80(p_source, p_dest);
+	CenterRectIn(p_source, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00472d70

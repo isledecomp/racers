@@ -288,7 +288,7 @@ void LegoPieceLibrary::GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, Leg
 }
 
 // FUNCTION: LEGORACERS 0x0049ee30
-LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary)
+LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 {
 	GolFileParser* parser;
 	if (p_binary) {

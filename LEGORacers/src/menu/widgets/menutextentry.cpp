@@ -60,7 +60,7 @@ void MenuTextEntry::UpdateCaret()
 }
 
 // FUNCTION: LEGORACERS 0x00471aa0
-LegoBool32 MenuTextEntry::FUN_00471aa0(CreateParams* p_createParams)
+LegoBool32 MenuTextEntry::CreateColorBox(CreateParams* p_createParams)
 {
 	MenuColorBox::CreateParams createParams;
 	memset(&createParams, 0, sizeof(createParams));
@@ -83,7 +83,7 @@ LegoBool32 MenuTextEntry::VTable0x70(CreateParams* p_createParams, const MenuIco
 	Destroy();
 
 	if (MenuTextField::VTable0x70(p_createParams, p_createState)) {
-		if (FUN_00471aa0(p_createParams)) {
+		if (CreateColorBox(p_createParams)) {
 			Create(p_createParams);
 		}
 		else {

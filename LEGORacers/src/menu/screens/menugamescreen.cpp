@@ -199,13 +199,13 @@ void MenuGameScreen::LoadPieceResources(MenuGameContext* p_context, undefined4 p
 	LegoColorTable* pieceResource;
 
 	if (p_binary) {
-		pieceLibrary->FUN_0049ee30("LPieceHi.leg", p_context->m_context->m_useBinaryFiles);
+		pieceLibrary->Load("LPieceHi.leg", p_context->m_context->m_useBinaryFiles);
 		pieceResource = &p_context->m_colorTable;
 		pieceResource->Initialize(golExport, renderer);
 		pieceResource->LoadMaterials("LPieceHi.WDF", p_context->m_context->m_useBinaryFiles, TRUE);
 	}
 	else {
-		pieceLibrary->FUN_0049ee30("LPieceLo.leg", p_context->m_context->m_useBinaryFiles);
+		pieceLibrary->Load("LPieceLo.leg", p_context->m_context->m_useBinaryFiles);
 		pieceResource = &p_context->m_colorTable;
 		pieceResource->Initialize(golExport, renderer);
 		pieceResource->LoadMaterials("LPieceLo.WDF", p_context->m_context->m_useBinaryFiles, TRUE);

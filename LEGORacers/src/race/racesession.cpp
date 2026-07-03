@@ -2803,7 +2803,7 @@ void RaceSession::RestartRace()
 			MenuAnimationList* animationList = &m_animationList;
 			cameraController->m_dirty = TRUE;
 
-			animationList->FUN_00494fe0();
+			animationList->DeactivateAll();
 
 			playerIndex++;
 		} while (playerIndex < m_context->m_playerCount);

@@ -25,7 +25,7 @@ public:
 	// MenuFramedSceneView::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_00466180(CreateParams* p_createParams);
+	LegoBool32 CreateFrame(CreateParams* p_createParams);
 
 	MenuFrame m_unk0xdc; // 0x0dc
 };

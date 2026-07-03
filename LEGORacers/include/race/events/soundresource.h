@@ -25,8 +25,8 @@ public:
 	};
 
 	enum {
-		c_flagBit0 = 1 << 0,
-		c_flagBit3 = 1 << 3,
+		c_flagLooping = 1 << 0,
+		c_flagAtEventPosition = 1 << 3,
 		c_randomTableMask = 0x3ff,
 		c_randomDelayBaseMs = 500,
 		c_randomDelayRangeMs = 1000,
@@ -46,9 +46,9 @@ public:
 		LegoFloat m_minDistance;         // 0x28
 		LegoFloat m_maxDistance;         // 0x2c
 		LegoFloat m_probability;         // 0x30
-		LegoBool32 m_unk0x34;            // 0x34
-		LegoBool32 m_unk0x38;            // 0x38
-		LegoBool32 m_unk0x3c;            // 0x3c
+		LegoBool32 m_looping;            // 0x34
+		LegoBool32 m_noEnd;              // 0x38
+		LegoBool32 m_triggerOnEnd;       // 0x3c
 		LegoBool32 m_positional;         // 0x40
 		GolModelEntity* m_entity;        // 0x44
 		LegoU32 m_unk0x48;               // 0x48

@@ -15,8 +15,8 @@ public:
 		LegoS32 m_stateEventIds[3];    // 0x04
 		RaceEventTable* m_eventTable;  // 0x10
 		GolModelEntity* m_modelEntity; // 0x14
-		LegoBool32 m_unk0x18;          // 0x18
-		LegoBool32 m_unk0x1c;          // 0x1c
+		LegoBool32 m_noEnd;            // 0x18
+		LegoBool32 m_triggerOnEnd;     // 0x1c
 		LegoBool32 m_unk0x20;          // 0x20
 	};
 

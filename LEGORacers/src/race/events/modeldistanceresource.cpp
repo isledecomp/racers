@@ -46,10 +46,10 @@ void ModelDistanceResource::Initialize(InitParams* p_params)
 	m_eventTable = p_params->m_eventTable;
 	m_modelEntity = p_params->m_modelEntity;
 	m_unk0x30 = p_params->m_unk0x20;
-	if (p_params->m_unk0x18) {
+	if (p_params->m_noEnd) {
 		m_flags |= c_flagNoEnd;
 	}
-	if (p_params->m_unk0x1c) {
+	if (p_params->m_triggerOnEnd) {
 		m_flags |= c_flagTriggerOnEnd;
 	}
 

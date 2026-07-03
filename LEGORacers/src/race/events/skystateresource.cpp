@@ -49,7 +49,7 @@ void SkyStateResource::Initialize(InitParams* p_params)
 	m_unk0x2c = p_params->m_unk0x20;
 	m_skyFlags = p_params->m_skyFlags;
 	::strncpy(m_skyName, p_params->m_skyName, sizeof(m_skyName));
-	if (p_params->m_unk0x24) {
+	if (p_params->m_triggerOnEnd) {
 		m_flags |= c_flagTriggerOnEnd;
 	}
 

@@ -57,17 +57,17 @@ void SoundResource::Initialize(InitParams* p_params)
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 	m_unk0x58 = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
 
-	if (p_params->m_unk0x34) {
-		m_flags |= c_flagBit0;
+	if (p_params->m_looping) {
+		m_flags |= c_flagLooping;
 	}
-	if (p_params->m_unk0x38) {
+	if (p_params->m_noEnd) {
 		m_flags |= c_flagNoEnd;
 	}
-	if (p_params->m_unk0x3c) {
+	if (p_params->m_triggerOnEnd) {
 		m_flags |= c_flagTriggerOnEnd;
 	}
 	if (p_params->m_positional) {
-		m_flags |= c_flagBit3;
+		m_flags |= c_flagAtEventPosition;
 	}
 
 	m_state = c_stateIdle;
@@ -91,7 +91,7 @@ void SoundResource::Destroy()
 // FUNCTION: LEGORACERS 0x004642c0
 void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 {
-	if (p_unk0x04 && (m_flags & c_flagBit3)) {
+	if (p_unk0x04 && (m_flags & c_flagAtEventPosition)) {
 		m_position.m_x = p_unk0x04->m_x;
 		m_position.m_y = p_unk0x04->m_y;
 		m_position.m_z = p_unk0x04->m_z;
@@ -106,7 +106,7 @@ void SoundResource::OnStartAt(GolVec3* p_unk0x04)
 		StopSound();
 	}
 
-	if (!(m_flags & c_flagBit0)) {
+	if (!(m_flags & c_flagLooping)) {
 		m_soundSource
 			->PlaySpatialSoundById(m_soundId, &m_position, m_minDistance, m_maxDistance, m_volume, m_frequencyScale);
 		return;

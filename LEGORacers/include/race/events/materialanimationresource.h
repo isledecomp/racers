@@ -22,10 +22,10 @@ public:
 		undefined m_unk0x1e[0x20 - 0x1e];          // 0x1e
 		LegoU32 m_activeTrackIndex;                // 0x20
 		LegoU32 m_idleTrackIndex;                  // 0x24
-		LegoBool32 m_unk0x28;                      // 0x28
-		LegoBool32 m_unk0x2c;                      // 0x2c
-		LegoBool32 m_unk0x30;                      // 0x30
-		LegoBool32 m_unk0x34;                      // 0x34
+		LegoBool32 m_looping;                      // 0x28
+		LegoBool32 m_noEnd;                        // 0x2c
+		LegoBool32 m_triggerOnEnd;                 // 0x30
+		LegoBool32 m_atEventPosition;              // 0x34
 	};
 
 	MaterialAnimationResource();
@@ -43,7 +43,7 @@ public:
 
 private:
 	enum {
-		c_flagBit0 = 1 << 0
+		c_flagLooping = 1 << 0
 	};
 
 	MabMaterialAnimation* m_materialAnimation; // 0x20

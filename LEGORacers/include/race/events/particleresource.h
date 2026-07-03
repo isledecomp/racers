@@ -25,9 +25,9 @@ public:
 		GolVec3 m_position;                           // 0x2c
 		GolVec3 m_direction;                          // 0x38
 		GolVec3 m_up;                                 // 0x44
-		undefined4 m_unk0x50;                         // 0x50
-		undefined4 m_unk0x54;                         // 0x54
-		undefined4 m_unk0x58;                         // 0x58
+		undefined4 m_noEnd;                           // 0x50
+		undefined4 m_triggerOnEnd;                    // 0x54
+		undefined4 m_atEventPosition;                 // 0x58
 	};
 
 	ParticleResource();

@@ -45,17 +45,17 @@ void MaterialAnimationResource::Initialize(InitParams* p_params)
 
 	m_eventTable = p_params->m_eventTable;
 	m_materialAnimation = p_params->m_materialAnimation;
-	if (p_params->m_unk0x28) {
-		m_flags |= c_flagBit0;
+	if (p_params->m_looping) {
+		m_flags |= c_flagLooping;
 	}
-	if (p_params->m_unk0x2c) {
+	if (p_params->m_noEnd) {
 		m_flags |= c_flagNoEnd;
 	}
-	if (p_params->m_unk0x30) {
+	if (p_params->m_triggerOnEnd) {
 		m_flags |= c_flagTriggerOnEnd;
 	}
-	if (p_params->m_unk0x34) {
-		m_flags |= c_flagBit3;
+	if (p_params->m_atEventPosition) {
+		m_flags |= c_flagAtEventPosition;
 	}
 
 	m_activeTrack = &m_materialAnimation->GetUnk0x0c()[p_params->m_activeTrackIndex];
@@ -83,7 +83,7 @@ void MaterialAnimationResource::Destroy()
 void MaterialAnimationResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);
-	if (m_state == c_stateActive && !(m_flags & c_flagBit0) && !m_activeTrack->IsAssigned()) {
+	if (m_state == c_stateActive && !(m_flags & c_flagLooping) && !m_activeTrack->IsAssigned()) {
 		OnEnd();
 	}
 }
@@ -92,7 +92,7 @@ void MaterialAnimationResource::Update(LegoU32 p_elapsedMs)
 void MaterialAnimationResource::OnStartAt(GolVec3*)
 {
 	m_idleTrack->FUN_00410470();
-	m_activeTrack->FUN_10025da0(m_materialTable, m_materialIndex, m_flags & c_flagBit0);
+	m_activeTrack->FUN_10025da0(m_materialTable, m_materialIndex, m_flags & c_flagLooping);
 	m_activeTrack->FUN_00410480();
 	NotifyStateChange(m_state, c_stateIdle);
 	m_state = c_stateActive;

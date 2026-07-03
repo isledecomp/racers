@@ -22,8 +22,8 @@ public:
 		GolVec3 m_force;              // 0x14
 		LegoU32 m_channel;            // 0x20
 		LegoS32 m_armEventId;         // 0x24
-		LegoBool32 m_unk0x28;         // 0x28
-		LegoBool32 m_unk0x2c;         // 0x2c
+		LegoBool32 m_noEnd;           // 0x28
+		LegoBool32 m_triggerOnEnd;    // 0x2c
 	};
 
 	ExternalForceResource();

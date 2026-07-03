@@ -49,10 +49,10 @@ void ExternalForceResource::Initialize(InitParams* p_params)
 	m_force = p_params->m_force;
 	m_channel = p_params->m_channel;
 	m_armEventId = p_params->m_armEventId;
-	if (p_params->m_unk0x28) {
+	if (p_params->m_noEnd) {
 		m_flags |= c_flagNoEnd;
 	}
-	if (p_params->m_unk0x2c) {
+	if (p_params->m_triggerOnEnd) {
 		m_flags |= c_flagTriggerOnEnd;
 	}
 

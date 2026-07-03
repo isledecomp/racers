@@ -19,10 +19,10 @@ public:
 		LegoS32 m_idlePart;                  // 0x1c
 		LegoS32 m_startPart;                 // 0x20
 		LegoS32 m_endPart;                   // 0x24
-		LegoBool32 m_unk0x28;                // 0x28
-		LegoBool32 m_unk0x2c;                // 0x2c
-		LegoBool32 m_unk0x30;                // 0x30
-		LegoBool32 m_unk0x34;                // 0x34
+		LegoBool32 m_looping;                // 0x28
+		LegoBool32 m_noEnd;                  // 0x2c
+		LegoBool32 m_triggerOnEnd;           // 0x30
+		LegoBool32 m_atEventPosition;        // 0x34
 		LegoBool32 m_unk0x38;                // 0x38
 	};
 
@@ -41,7 +41,7 @@ public:
 
 private:
 	enum {
-		c_flagBit0 = 1 << 0,
+		c_flagLooping = 1 << 0,
 		c_flags0x1cBit4 = 1 << 4,
 		c_entityFlag0x200000 = 1 << 21,
 		c_entityFlags0x4e0000 = 0x4e0000,

@@ -18,7 +18,7 @@ public:
 		GolBoundedEntity* m_boundedEntity; // 0x14
 		GolModelEntity* m_modelEntity;     // 0x18
 		LegoU32 m_unk0x1c;                 // 0x1c
-		LegoBool32 m_unk0x20;              // 0x20
+		LegoBool32 m_triggerOnEnd;         // 0x20
 	};
 
 	NodeTransformResource();

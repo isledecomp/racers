@@ -89,16 +89,16 @@ void ParticleResource::Initialize(InitParams* p_params)
 	m_up.m_y = p_params->m_up.m_y;
 	m_up.m_z = p_params->m_up.m_z;
 
-	if (p_params->m_unk0x50) {
+	if (p_params->m_noEnd) {
 		m_flags |= c_flagNoEnd;
 	}
 
-	if (p_params->m_unk0x54) {
+	if (p_params->m_triggerOnEnd) {
 		m_flags |= c_flagTriggerOnEnd;
 	}
 
-	if (p_params->m_unk0x58) {
-		m_flags |= c_flagBit3;
+	if (p_params->m_atEventPosition) {
+		m_flags |= c_flagAtEventPosition;
 	}
 
 	m_state = c_stateIdle;
@@ -116,7 +116,7 @@ void ParticleResource::Destroy()
 // FUNCTION: LEGORACERS 0x0045eaf0
 void ParticleResource::OnStartAt(GolVec3* p_unk0x04)
 {
-	if (p_unk0x04 && (m_flags & c_flagBit3)) {
+	if (p_unk0x04 && (m_flags & c_flagAtEventPosition)) {
 		m_position = *p_unk0x04;
 	}
 

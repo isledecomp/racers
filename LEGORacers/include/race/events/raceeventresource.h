@@ -24,7 +24,7 @@ public:
 		c_stateEndPending = 5,
 		c_flagNoEnd = 1 << 1,
 		c_flagTriggerOnEnd = 1 << 2,
-		c_flagBit3 = 1 << 3,
+		c_flagAtEventPosition = 1 << 3,
 		c_flagBit5 = 1 << 5
 	};
 

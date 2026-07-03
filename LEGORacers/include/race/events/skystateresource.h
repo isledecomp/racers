@@ -18,7 +18,7 @@ public:
 		RaceSkyState* m_skyState;         // 0x14
 		GolName m_skyName;                // 0x18
 		LegoU32 m_unk0x20;                // 0x20
-		LegoBool32 m_unk0x24;             // 0x24
+		LegoBool32 m_triggerOnEnd;        // 0x24
 		LegoU8 m_skyFlags;                // 0x28
 		undefined m_unk0x29[0x2c - 0x29]; // 0x29
 	};

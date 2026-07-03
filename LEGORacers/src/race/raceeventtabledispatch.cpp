@@ -25,8 +25,8 @@ LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_unk0x04)
 		Entry* entry = m_entries;
 		while (i < static_cast<LegoU32>(m_count)) {
 			if (entry->m_index == p_unk0x04) {
-				if (entry->m_flags0x10 & TargetPointList::Entry::c_flagEnabled) {
-					entry->m_flags0x10 &= ~TargetPointList::Entry::c_flagEnabled;
+				if (entry->m_flags & TargetPointList::Entry::c_flagEnabled) {
+					entry->m_flags &= ~TargetPointList::Entry::c_flagEnabled;
 				}
 			}
 

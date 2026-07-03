@@ -326,10 +326,10 @@ void RaceDecalManager::Trail::Decal::EndGeometry(GolModelBase* p_unk0x04)
 	p_unk0x04->VTable0x2c(FALSE, FALSE);
 
 	if (m_triangleCount) {
-		m_flags0x100 |= c_hasGeometry;
+		m_flags |= c_hasGeometry;
 	}
 	else {
-		m_flags0x100 &= ~c_hasGeometry;
+		m_flags &= ~c_hasGeometry;
 	}
 }
 

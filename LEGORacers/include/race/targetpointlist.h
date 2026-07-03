@@ -22,7 +22,7 @@ public:
 
 		GolVec3 m_position;               // 0x00
 		LegoS32 m_index;                  // 0x0c
-		LegoU8 m_flags0x10;               // 0x10
+		LegoU8 m_flags;                   // 0x10
 		undefined m_unk0x11[0x14 - 0x11]; // 0x11
 	};
 

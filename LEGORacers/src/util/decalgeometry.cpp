@@ -62,7 +62,7 @@ DecalGeometry::DecalGeometry()
 	g_decalWAxisY = 0.0f;
 	g_decalWAxisZ = 0.0f;
 	g_decalWOffset = 1.0f;
-	m_flags0x100 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00414940
@@ -74,7 +74,7 @@ DecalGeometry::~DecalGeometry()
 // FUNCTION: LEGORACERS 0x00414950
 void DecalGeometry::Initialize(GolExport* p_golExport, GolRenderDevice* p_renderer, LegoU32 p_count)
 {
-	if (m_flags0x100 & c_initialized) {
+	if (m_flags & c_initialized) {
 		Destroy();
 	}
 
@@ -88,7 +88,7 @@ void DecalGeometry::Initialize(GolExport* p_golExport, GolRenderDevice* p_render
 	m_position.m_y = 0.0f;
 	m_position.m_z = g_decalGeometryDefaultLift;
 	m_entity.VTable0x08(m_position);
-	m_flags0x100 = c_initialized;
+	m_flags = c_initialized;
 }
 
 // FUNCTION: LEGORACERS 0x004149f0
@@ -106,13 +106,13 @@ void DecalGeometry::Destroy()
 	m_model = 0;
 	m_vertices = 0;
 	m_indexBytes = 0;
-	m_flags0x100 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00415a40
 void DecalGeometry::Draw(GolRenderDevice* p_renderer)
 {
-	if (m_flags0x100 & c_hasGeometry) {
+	if (m_flags & c_hasGeometry) {
 		p_renderer->VTable0x94(&m_entity);
 	}
 }

@@ -14,7 +14,7 @@ TargetPointList::Entry::Entry()
 	m_position.m_y = 0.0f;
 	m_position.m_z = 0.0f;
 	m_index = -1;
-	m_flags0x10 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c360
@@ -24,7 +24,7 @@ TargetPointList::Entry::~Entry()
 	m_position.m_x = 0.0f;
 	m_position.m_y = 0.0f;
 	m_position.m_z = 0.0f;
-	m_flags0x10 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c380
@@ -34,7 +34,7 @@ void TargetPointList::Entry::Set(GolVec3* p_position, LegoS32 p_index)
 	m_position.m_y = p_position->m_y;
 	m_position.m_z = p_position->m_z;
 	m_index = p_index;
-	m_flags0x10 |= 3;
+	m_flags |= 3;
 }
 
 // FUNCTION: LEGORACERS 0x0045c3b0 FOLDED
@@ -154,7 +154,7 @@ TargetPointList::Entry* TargetPointList::FindTargetInCone(
 	for (LegoS32 i = 0; i < m_count; i++) {
 		Entry& entry = m_entries[i];
 
-		if (entry.m_flags0x10 & Entry::c_flagEnabled) {
+		if (entry.m_flags & Entry::c_flagEnabled) {
 			GolVec3 position = entry.m_position;
 			LegoFloat deltaX = position.m_x - p_position->m_x;
 			GolVec2 deltaYZ;

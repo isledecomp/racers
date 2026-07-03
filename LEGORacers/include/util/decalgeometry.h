@@ -50,7 +50,7 @@ public:
 	GolVec3 m_normal;             // 0x0dc
 	GolVec3 m_center;             // 0x0e8
 	GolVec3 m_position;           // 0x0f4
-	LegoU32 m_flags0x100;         // 0x100
+	LegoU32 m_flags;              // 0x100
 	LegoFloat m_width;            // 0x104
 	LegoFloat m_length;           // 0x108
 	LegoFloat m_depth;            // 0x10c

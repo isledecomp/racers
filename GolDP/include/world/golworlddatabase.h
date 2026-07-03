@@ -37,23 +37,23 @@ struct WdbModel {
 		e_flagBit3 = 0x1 << 3,
 	};
 
-	GolName m_unk0x00;      // 0x00
-	LegoS32 m_unk0x08[3];   // 0x08
-	LegoS32 m_unk0x14[3];   // 0x14
-	LegoS32 m_unk0x20[3];   // 0x14
-	LegoS32 m_unk0x2c[3];   // 0x2c
-	LegoFloat m_unk0x38[3]; // 0x38
-	LegoS32 m_unk0x44;      // 0x44
-	GolName m_unk0x48;      // 0x48
-	GolVec3 m_unk0x50;      // 0x50
-	GolVec3 m_unk0x5c;      // 0x5c
-	GolVec3 m_unk0x68;      // 0x68
-	LegoFloat m_unk0x74;    // 0x74
-	Rect* m_unk0x78;        // 0x78
-	LegoU32 m_unk0x7c;      // 0x7c
-	LegoFloat m_unk0x80;    // 0x80
-	LegoFloat m_unk0x84;    // 0x84
-	LegoU32 m_flags;        // 0x88
+	GolName m_name;                  // 0x00
+	LegoS32 m_modelIndices[3];       // 0x08
+	LegoS32 m_unk0x14[3];            // 0x14
+	LegoS32 m_unk0x20[3];            // 0x14
+	LegoS32 m_unk0x2c[3];            // 0x2c
+	LegoFloat m_modelDistances[3];   // 0x38
+	LegoS32 m_nodeIndex;             // 0x44
+	GolName m_nodeName;              // 0x48
+	GolVec3 m_position;              // 0x50
+	GolVec3 m_direction;             // 0x5c
+	GolVec3 m_up;                    // 0x68
+	LegoFloat m_scale;               // 0x74
+	Rect* m_rects;                   // 0x78
+	LegoU32 m_rectCount;             // 0x7c
+	LegoFloat m_textureScrollSpeedU; // 0x80
+	LegoFloat m_textureScrollSpeedV; // 0x84
+	LegoU32 m_flags;                 // 0x88
 };
 
 // SIZE 0x38

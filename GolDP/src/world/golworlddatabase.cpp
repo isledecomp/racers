@@ -237,8 +237,8 @@ void GolWorldDatabase::VTable0x00()
 
 	if (m_unk0x60 != NULL) {
 		for (LegoU32 i = 0; i < m_collidableEntityCount; i++) {
-			if (m_unk0x60[i].m_unk0x78 != NULL) {
-				delete[] m_unk0x60[i].m_unk0x78;
+			if (m_unk0x60[i].m_rects != NULL) {
+				delete[] m_unk0x60[i].m_rects;
 			}
 		}
 
@@ -248,8 +248,8 @@ void GolWorldDatabase::VTable0x00()
 
 	if (m_unk0x58 != NULL) {
 		for (LegoU32 i = 0; i < m_animatedEntityCount; i++) {
-			if (m_unk0x58[i].m_unk0x78 != NULL) {
-				delete[] m_unk0x58[i].m_unk0x78;
+			if (m_unk0x58[i].m_rects != NULL) {
+				delete[] m_unk0x58[i].m_rects;
 			}
 		}
 
@@ -259,8 +259,8 @@ void GolWorldDatabase::VTable0x00()
 
 	if (m_unk0x50 != NULL) {
 		for (LegoU32 i = 0; i < m_modelEntityCount; i++) {
-			if (m_unk0x50[i].m_unk0x78 != NULL) {
-				delete[] m_unk0x50[i].m_unk0x78;
+			if (m_unk0x50[i].m_rects != NULL) {
+				delete[] m_unk0x50[i].m_rects;
 			}
 		}
 
@@ -556,20 +556,20 @@ void GolWorldDatabase::FUN_1002cc30(GolFileParser& p_parser)
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2e);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
 			p_parser.SetUnk0x30(1);
-			item->m_unk0x00[0] = '\0';
+			item->m_name[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_name, p_parser.GetLastString(), sizeof(item->m_name));
 		}
 		p_parser.ReadLeftCurly();
 		LegoU32 j;
 		for (j = 0; j < 3; j++) {
-			item->m_unk0x08[j] = -1;
+			item->m_modelIndices[j] = -1;
 			item->m_unk0x2c[j] = -1;
 		}
-		item->m_unk0x5c.m_x = 1.0f;
-		item->m_unk0x68.m_z = 1.0f;
-		item->m_unk0x74 = 1.0f;
+		item->m_direction.m_x = 1.0f;
+		item->m_up.m_z = 1.0f;
+		item->m_scale = 1.0f;
 		GolFileParser::ParserTokenType token;
 		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
@@ -580,30 +580,30 @@ void GolWorldDatabase::FUN_1002cc30(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.GetLastInt()) >= m_unk0x24 && m_unk0x24 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x08[cnt] = p_parser.GetLastInt();
+				item->m_modelIndices[cnt] = p_parser.GetLastInt();
 				if (p_parser.GetNextToken() != GolFileParser::e_float) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_float);
 				}
 				if (p_parser.GetLastFloat() < 0.0f) {
-					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
+					item->m_modelDistances[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
+					item->m_modelDistances[cnt] = p_parser.GetLastFloat();
 				}
 				cnt++;
 				break;
 			case GolFileParser::e_unknown0x31:
-				item->m_unk0x50.m_x = p_parser.ReadFloat();
-				item->m_unk0x50.m_y = p_parser.ReadFloat();
-				item->m_unk0x50.m_z = p_parser.ReadFloat();
+				item->m_position.m_x = p_parser.ReadFloat();
+				item->m_position.m_y = p_parser.ReadFloat();
+				item->m_position.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x32:
-				item->m_unk0x5c.m_x = p_parser.ReadFloat();
-				item->m_unk0x5c.m_y = p_parser.ReadFloat();
-				item->m_unk0x5c.m_z = p_parser.ReadFloat();
-				item->m_unk0x68.m_x = p_parser.ReadFloat();
-				item->m_unk0x68.m_y = p_parser.ReadFloat();
-				item->m_unk0x68.m_z = p_parser.ReadFloat();
+				item->m_direction.m_x = p_parser.ReadFloat();
+				item->m_direction.m_y = p_parser.ReadFloat();
+				item->m_direction.m_z = p_parser.ReadFloat();
+				item->m_up.m_x = p_parser.ReadFloat();
+				item->m_up.m_y = p_parser.ReadFloat();
+				item->m_up.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2b:
 				if (p_parser.GetNextToken() != GolFileParser::e_int) {
@@ -622,15 +622,15 @@ void GolWorldDatabase::FUN_1002cc30(GolFileParser& p_parser)
 				item->m_unk0x2c[p_parser.GetLastInt()] = v;
 				break;
 			case GolFileParser::e_unknown0x36:
-				item->m_unk0x74 = p_parser.ReadFloat();
+				item->m_scale = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x3e:
-				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
+				FUN_1002dbe0(p_parser, &item->m_rects, &item->m_rectCount);
 				break;
 			case GolFileParser::e_unknown0x3f:
 				item->m_flags |= WdbModel::e_flagBit3;
-				item->m_unk0x80 = p_parser.ReadFloat();
-				item->m_unk0x84 = p_parser.ReadFloat();
+				item->m_textureScrollSpeedU = p_parser.ReadFloat();
+				item->m_textureScrollSpeedV = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x42:
 				item->m_flags |= WdbModel::e_flagBit1;
@@ -670,24 +670,24 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2f);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
 			p_parser.SetUnk0x30(1);
-			item->m_unk0x00[0] = '\0';
+			item->m_name[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_name, p_parser.GetLastString(), sizeof(item->m_name));
 		}
 		p_parser.ReadLeftCurly();
 		LegoU32 cnt = 0;
 		for (cnt = 0; cnt < 3; cnt++) {
-			item->m_unk0x08[cnt] = -1;
+			item->m_modelIndices[cnt] = -1;
 			item->m_unk0x14[cnt] = -1;
 			item->m_unk0x2c[cnt] = -1;
 		}
 		cnt = 0;
-		item->m_unk0x44 = -1;
-		item->m_unk0x5c.m_x = 1.0f;
-		item->m_unk0x68.m_z = 1.0f;
-		item->m_unk0x74 = 1.0f;
-		item->m_unk0x48[0] = '\0';
+		item->m_nodeIndex = -1;
+		item->m_direction.m_x = 1.0f;
+		item->m_up.m_z = 1.0f;
+		item->m_scale = 1.0f;
+		item->m_nodeName[0] = '\0';
 		GolFileParser::ParserTokenType token;
 		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
@@ -695,7 +695,7 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x24 && m_unk0x24 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x08[cnt] = p_parser.GetLastInt();
+				item->m_modelIndices[cnt] = p_parser.GetLastInt();
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x34 && m_unk0x34 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
@@ -705,10 +705,10 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 				}
 				item->m_unk0x20[cnt] = p_parser.GetLastInt();
 				if (p_parser.ReadFloat() < 0.0f) {
-					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
+					item->m_modelDistances[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
+					item->m_modelDistances[cnt] = p_parser.GetLastFloat();
 				}
 				cnt += 1;
 				break;
@@ -722,25 +722,25 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 				}
 				item->m_unk0x20[cnt] = p_parser.GetLastInt();
 				if (p_parser.ReadFloat() < 0.0f) {
-					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
+					item->m_modelDistances[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
+					item->m_modelDistances[cnt] = p_parser.GetLastFloat();
 				}
 				cnt += 1;
 				break;
 			case GolFileParser::e_unknown0x31:
-				item->m_unk0x50.m_x = p_parser.ReadFloat();
-				item->m_unk0x50.m_y = p_parser.ReadFloat();
-				item->m_unk0x50.m_z = p_parser.ReadFloat();
+				item->m_position.m_x = p_parser.ReadFloat();
+				item->m_position.m_y = p_parser.ReadFloat();
+				item->m_position.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x32:
-				item->m_unk0x5c.m_x = p_parser.ReadFloat();
-				item->m_unk0x5c.m_y = p_parser.ReadFloat();
-				item->m_unk0x5c.m_z = p_parser.ReadFloat();
-				item->m_unk0x68.m_x = p_parser.ReadFloat();
-				item->m_unk0x68.m_y = p_parser.ReadFloat();
-				item->m_unk0x68.m_z = p_parser.ReadFloat();
+				item->m_direction.m_x = p_parser.ReadFloat();
+				item->m_direction.m_y = p_parser.ReadFloat();
+				item->m_direction.m_z = p_parser.ReadFloat();
+				item->m_up.m_x = p_parser.ReadFloat();
+				item->m_up.m_y = p_parser.ReadFloat();
+				item->m_up.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2b:
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x2c && m_unk0x2c != 0) {
@@ -755,27 +755,27 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 			case GolFileParser::e_unknown0x35:
 				token = p_parser.GetNextToken();
 				if (token == GolFileParser::e_string) {
-					item->m_unk0x44 = -1;
-					::strncpy(item->m_unk0x48, p_parser.GetLastString(), sizeof(item->m_unk0x48));
+					item->m_nodeIndex = -1;
+					::strncpy(item->m_nodeName, p_parser.GetLastString(), sizeof(item->m_nodeName));
 				}
 				else {
 					if (token != GolFileParser::e_int) {
 						p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 					}
-					item->m_unk0x44 = p_parser.GetLastInt();
-					item->m_unk0x48[0] = '\0';
+					item->m_nodeIndex = p_parser.GetLastInt();
+					item->m_nodeName[0] = '\0';
 				}
 				break;
 			case GolFileParser::e_unknown0x36:
-				item->m_unk0x74 = p_parser.ReadFloat();
+				item->m_scale = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x3e:
-				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
+				FUN_1002dbe0(p_parser, &item->m_rects, &item->m_rectCount);
 				break;
 			case GolFileParser::e_unknown0x3f:
 				item->m_flags |= WdbModel::e_flagBit3;
-				item->m_unk0x80 = p_parser.ReadFloat();
-				item->m_unk0x84 = p_parser.ReadFloat();
+				item->m_textureScrollSpeedU = p_parser.ReadFloat();
+				item->m_textureScrollSpeedV = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x42:
 				item->m_flags |= WdbModel::e_flagBit1;
@@ -815,21 +815,21 @@ void GolWorldDatabase::FUN_1002d400(GolFileParser& p_parser)
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x30);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
 			p_parser.SetUnk0x30(1);
-			item->m_unk0x00[0] = '\0';
+			item->m_name[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_name, p_parser.GetLastString(), sizeof(item->m_name));
 		}
 		p_parser.ReadLeftCurly();
 		LegoU32 cnt = 0;
 		for (cnt = 0; cnt < 3; cnt++) {
-			item->m_unk0x08[cnt] = -1;
+			item->m_modelIndices[cnt] = -1;
 			item->m_unk0x2c[cnt] = -1;
 		}
 		cnt = 0;
-		item->m_unk0x5c.m_x = 1.0f;
-		item->m_unk0x68.m_z = 1.0f;
-		item->m_unk0x74 = 1.0f;
+		item->m_direction.m_x = 1.0f;
+		item->m_up.m_z = 1.0f;
+		item->m_scale = 1.0f;
 		GolFileParser::ParserTokenType token;
 		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
@@ -837,31 +837,31 @@ void GolWorldDatabase::FUN_1002d400(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x24 && m_unk0x24 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x08[cnt] = p_parser.GetLastInt();
+				item->m_modelIndices[cnt] = p_parser.GetLastInt();
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x3c && m_unk0x3c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
 				item->m_unk0x14[cnt] = p_parser.GetLastInt();
 				if (p_parser.ReadFloat() < 0.0f) {
-					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
+					item->m_modelDistances[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
+					item->m_modelDistances[cnt] = p_parser.GetLastFloat();
 				}
 				cnt += 1;
 				break;
 			case GolFileParser::e_unknown0x31:
-				item->m_unk0x50.m_x = p_parser.ReadFloat();
-				item->m_unk0x50.m_y = p_parser.ReadFloat();
-				item->m_unk0x50.m_z = p_parser.ReadFloat();
+				item->m_position.m_x = p_parser.ReadFloat();
+				item->m_position.m_y = p_parser.ReadFloat();
+				item->m_position.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x32:
-				item->m_unk0x5c.m_x = p_parser.ReadFloat();
-				item->m_unk0x5c.m_y = p_parser.ReadFloat();
-				item->m_unk0x5c.m_z = p_parser.ReadFloat();
-				item->m_unk0x68.m_x = p_parser.ReadFloat();
-				item->m_unk0x68.m_y = p_parser.ReadFloat();
-				item->m_unk0x68.m_z = p_parser.ReadFloat();
+				item->m_direction.m_x = p_parser.ReadFloat();
+				item->m_direction.m_y = p_parser.ReadFloat();
+				item->m_direction.m_z = p_parser.ReadFloat();
+				item->m_up.m_x = p_parser.ReadFloat();
+				item->m_up.m_y = p_parser.ReadFloat();
+				item->m_up.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2b:
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x2c && m_unk0x2c != 0) {
@@ -874,12 +874,12 @@ void GolWorldDatabase::FUN_1002d400(GolFileParser& p_parser)
 				item->m_unk0x2c[p_parser.GetLastInt()] = v;
 				break;
 			case GolFileParser::e_unknown0x3e:
-				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
+				FUN_1002dbe0(p_parser, &item->m_rects, &item->m_rectCount);
 				break;
 			case GolFileParser::e_unknown0x3f:
 				item->m_flags |= WdbModel::e_flagBit3;
-				item->m_unk0x80 = p_parser.ReadFloat();
-				item->m_unk0x84 = p_parser.ReadFloat();
+				item->m_textureScrollSpeedU = p_parser.ReadFloat();
+				item->m_textureScrollSpeedV = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x42:
 				item->m_flags |= WdbModel::e_flagBit1;
@@ -916,15 +916,15 @@ void GolWorldDatabase::FUN_1002d720(GolFileParser& p_parser)
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x41);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
 			p_parser.SetUnk0x30(1);
-			item->m_unk0x00[0] = '\0';
+			item->m_name[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_name, p_parser.GetLastString(), sizeof(item->m_name));
 		}
 		p_parser.ReadLeftCurly();
 		item->m_unk0x2c[0] = -1;
-		item->m_unk0x5c.m_x = 1.0f;
-		item->m_unk0x68.m_z = 1.0f;
+		item->m_direction.m_x = 1.0f;
+		item->m_up.m_z = 1.0f;
 		GolFileParser::ParserTokenType token;
 		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
@@ -935,17 +935,17 @@ void GolWorldDatabase::FUN_1002d720(GolFileParser& p_parser)
 				}
 				break;
 			case GolFileParser::e_unknown0x31:
-				item->m_unk0x50.m_x = p_parser.ReadFloat();
-				item->m_unk0x50.m_y = p_parser.ReadFloat();
-				item->m_unk0x50.m_z = p_parser.ReadFloat();
+				item->m_position.m_x = p_parser.ReadFloat();
+				item->m_position.m_y = p_parser.ReadFloat();
+				item->m_position.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x32:
-				item->m_unk0x5c.m_x = p_parser.ReadFloat();
-				item->m_unk0x5c.m_y = p_parser.ReadFloat();
-				item->m_unk0x5c.m_z = p_parser.ReadFloat();
-				item->m_unk0x68.m_x = p_parser.ReadFloat();
-				item->m_unk0x68.m_y = p_parser.ReadFloat();
-				item->m_unk0x68.m_z = p_parser.ReadFloat();
+				item->m_direction.m_x = p_parser.ReadFloat();
+				item->m_direction.m_y = p_parser.ReadFloat();
+				item->m_direction.m_z = p_parser.ReadFloat();
+				item->m_up.m_x = p_parser.ReadFloat();
+				item->m_up.m_y = p_parser.ReadFloat();
+				item->m_up.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2b:
 				v = p_parser.ReadInteger();
@@ -1357,20 +1357,20 @@ void GolWorldDatabase::FUN_1002e640()
 		WdbModel* model = &m_unk0x50[i];
 		GolModelEntity* runtime = &m_modelEntities[i];
 
-		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
+		if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_unk0x24) {
 			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
 		}
 
 		for (lod = 0; lod < 3; lod++) {
-			if (model->m_unk0x08[lod] < 0) {
+			if (model->m_modelIndices[lod] < 0) {
 				break;
 			}
 
-			if (!(model->m_unk0x38[lod] < g_floatyBoatMaxFloat)) {
+			if (!(model->m_modelDistances[lod] < g_floatyBoatMaxFloat)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {
-				maxDistances[lod] = model->m_unk0x38[lod] * model->m_unk0x38[lod];
+				maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
 			}
 
 			if (model->m_unk0x2c[lod] >= 0) {
@@ -1384,22 +1384,22 @@ void GolWorldDatabase::FUN_1002e640()
 			}
 		}
 
-		runtime->SetPrimaryModel(VTable0x38(model->m_unk0x08[0]), maxDistances[0]);
+		runtime->SetPrimaryModel(VTable0x38(model->m_modelIndices[0]), maxDistances[0]);
 		for (lod = 1; lod < 3; lod++) {
-			if (model->m_unk0x08[lod] < 0) {
+			if (model->m_modelIndices[lod] < 0) {
 				break;
 			}
-			runtime->FUN_10027c50(VTable0x38(model->m_unk0x08[lod]), maxDistances[lod]);
+			runtime->FUN_10027c50(VTable0x38(model->m_modelIndices[lod]), maxDistances[lod]);
 		}
 
-		runtime->SetPosition(model->m_unk0x50);
-		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_position);
+		runtime->SetDirectionUp(model->m_direction, model->m_up);
 		runtime->m_radius = -1.0f;
-		runtime->m_unk0x58 = model->m_unk0x74;
+		runtime->m_unk0x58 = model->m_scale;
 
 		if (model->m_flags & WdbModel::e_flagBit3) {
-			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
-			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
+			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
+			runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
 		}
 		if (model->m_flags & WdbModel::e_flagBit1) {
 			runtime->m_flags |= GolModelEntity::c_flagBit1;
@@ -1408,8 +1408,8 @@ void GolWorldDatabase::FUN_1002e640()
 			runtime->m_flags |= GolModelEntity::c_flagBit2;
 		}
 
-		for (j = 0; j < model->m_unk0x7c; j++) {
-			Rect* assignment = &model->m_unk0x78[j];
+		for (j = 0; j < model->m_rectCount; j++) {
+			Rect* assignment = &model->m_rects[j];
 			if (static_cast<LegoU32>(assignment->m_left) >= m_unk0x74) {
 				continue;
 			}
@@ -1423,11 +1423,11 @@ void GolWorldDatabase::FUN_1002e640()
 			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
 		}
 
-		if (model->m_unk0x00[0] != '\0') {
+		if (model->m_name[0] != '\0') {
 			if (m_modelEntityNames.GetNameEntries() == NULL) {
 				m_modelEntityNames.Allocate(m_modelEntityCount);
 			}
-			m_modelEntityNames.AddName(model->m_unk0x00, runtime);
+			m_modelEntityNames.AddName(model->m_name, runtime);
 		}
 	}
 
@@ -1435,7 +1435,7 @@ void GolWorldDatabase::FUN_1002e640()
 		WdbModel* model = &m_unk0x58[i];
 		GolAnimatedEntity* runtime = &m_animatedEntities[i];
 
-		if (model->m_unk0x08[0] >= 0 && static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
+		if (model->m_modelIndices[0] >= 0 && static_cast<LegoU32>(model->m_modelIndices[0]) >= m_unk0x24) {
 			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
 		}
 		if (static_cast<LegoU32>(model->m_unk0x14[0]) >= m_unk0x34) {
@@ -1447,11 +1447,11 @@ void GolWorldDatabase::FUN_1002e640()
 				break;
 			}
 
-			if (!(model->m_unk0x38[lod] < g_floatyBoatMaxFloat)) {
+			if (!(model->m_modelDistances[lod] < g_floatyBoatMaxFloat)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {
-				maxDistances[lod] = model->m_unk0x38[lod] * model->m_unk0x38[lod];
+				maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
 			}
 
 			if (model->m_unk0x2c[lod] >= 0) {
@@ -1469,7 +1469,7 @@ void GolWorldDatabase::FUN_1002e640()
 		CmbModelPart* part = VTable0x34(model->m_unk0x20[0]);
 		CmbModelPart* partForPartName = part;
 
-		if (model->m_unk0x08[0] < 0) {
+		if (model->m_modelIndices[0] < 0) {
 			runtime->SetNode(node, part, maxDistances[0]);
 			for (lod = 1; lod < 3; lod++) {
 				if (model->m_unk0x14[lod] < 0) {
@@ -1483,35 +1483,35 @@ void GolWorldDatabase::FUN_1002e640()
 			}
 		}
 		else {
-			runtime->SetModel(VTable0x38(model->m_unk0x08[0]), node, part, maxDistances[0]);
+			runtime->SetModel(VTable0x38(model->m_modelIndices[0]), node, part, maxDistances[0]);
 			for (lod = 1; lod < 3; lod++) {
-				if (model->m_unk0x08[lod] < 0) {
+				if (model->m_modelIndices[lod] < 0) {
 					break;
 				}
 
 				node = VTable0x40(model->m_unk0x14[lod]);
 				part = VTable0x34(model->m_unk0x20[lod]);
 				partForPartName = part;
-				runtime->AddModel(VTable0x38(model->m_unk0x08[lod]), node, part, maxDistances[lod]);
+				runtime->AddModel(VTable0x38(model->m_modelIndices[lod]), node, part, maxDistances[lod]);
 			}
 		}
 
-		runtime->SetPosition(model->m_unk0x50);
-		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_position);
+		runtime->SetDirectionUp(model->m_direction, model->m_up);
 		runtime->m_radius = -1.0f;
-		runtime->m_unk0x58 = model->m_unk0x74;
+		runtime->m_unk0x58 = model->m_scale;
 
 		if (model->m_flags & WdbModel::e_flagBit3) {
-			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
-			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
+			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
+			runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
 		}
 
-		if (model->m_unk0x48[0] != '\0') {
-			model->m_unk0x44 = partForPartName->GetPartIndex(model->m_unk0x48);
+		if (model->m_nodeName[0] != '\0') {
+			model->m_nodeIndex = partForPartName->GetPartIndex(model->m_nodeName);
 		}
 
-		if (model->m_unk0x44 >= 0) {
-			runtime->PlayPartDirect(model->m_unk0x44);
+		if (model->m_nodeIndex >= 0) {
+			runtime->PlayPartDirect(model->m_nodeIndex);
 			runtime->SetPartAnimationEnabled(TRUE);
 		}
 		else {
@@ -1525,8 +1525,8 @@ void GolWorldDatabase::FUN_1002e640()
 			runtime->m_flags |= GolModelEntity::c_flagBit2;
 		}
 
-		for (j = 0; j < model->m_unk0x7c; j++) {
-			Rect* assignment = &model->m_unk0x78[j];
+		for (j = 0; j < model->m_rectCount; j++) {
+			Rect* assignment = &model->m_rects[j];
 			if (static_cast<LegoU32>(assignment->m_left) >= m_unk0x74) {
 				continue;
 			}
@@ -1540,11 +1540,11 @@ void GolWorldDatabase::FUN_1002e640()
 			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
 		}
 
-		if (model->m_unk0x00[0] != '\0') {
+		if (model->m_name[0] != '\0') {
 			if (m_animatedEntityNames.GetNameEntries() == NULL) {
 				m_animatedEntityNames.Allocate(m_animatedEntityCount);
 			}
-			m_animatedEntityNames.AddName(model->m_unk0x00, runtime);
+			m_animatedEntityNames.AddName(model->m_name, runtime);
 		}
 	}
 
@@ -1552,7 +1552,7 @@ void GolWorldDatabase::FUN_1002e640()
 		WdbModel* model = &m_unk0x60[i];
 		GolCollidableEntity* runtime = &m_collidableEntities[i];
 
-		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
+		if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_unk0x24) {
 			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
 		}
 		if (static_cast<LegoU32>(model->m_unk0x14[0]) >= m_unk0x3c) {
@@ -1560,15 +1560,15 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		for (lod = 0; lod < 3; lod++) {
-			if (model->m_unk0x08[lod] < 0) {
+			if (model->m_modelIndices[lod] < 0) {
 				break;
 			}
 
-			if (!(model->m_unk0x38[lod] < g_floatyBoatMaxFloat)) {
+			if (!(model->m_modelDistances[lod] < g_floatyBoatMaxFloat)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {
-				maxDistances[lod] = model->m_unk0x38[lod] * model->m_unk0x38[lod];
+				maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
 			}
 
 			if (model->m_unk0x2c[lod] >= 0) {
@@ -1582,28 +1582,31 @@ void GolWorldDatabase::FUN_1002e640()
 			}
 		}
 
-		runtime->VTable0x60(VTable0x38(model->m_unk0x08[0]), VTable0x44(model->m_unk0x14[0]), maxDistances[0]);
+		runtime->VTable0x60(VTable0x38(model->m_modelIndices[0]), VTable0x44(model->m_unk0x14[0]), maxDistances[0]);
 		for (lod = 1; lod < 3; lod++) {
-			if (model->m_unk0x08[lod] < 0) {
+			if (model->m_modelIndices[lod] < 0) {
 				break;
 			}
-			runtime
-				->FUN_1001acf0(VTable0x38(model->m_unk0x08[lod]), VTable0x44(model->m_unk0x14[lod]), maxDistances[lod]);
+			runtime->FUN_1001acf0(
+				VTable0x38(model->m_modelIndices[lod]),
+				VTable0x44(model->m_unk0x14[lod]),
+				maxDistances[lod]
+			);
 		}
 
-		runtime->SetPosition(model->m_unk0x50);
-		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_position);
+		runtime->SetDirectionUp(model->m_direction, model->m_up);
 
 		if (model->m_flags & WdbModel::e_flagBit3) {
-			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
-			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
+			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
+			runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
 		}
 		if (model->m_flags & WdbModel::e_flagBit1) {
 			runtime->m_flags |= GolModelEntity::c_flagBit1;
 		}
 
-		for (j = 0; j < model->m_unk0x7c; j++) {
-			Rect* assignment = &model->m_unk0x78[j];
+		for (j = 0; j < model->m_rectCount; j++) {
+			Rect* assignment = &model->m_rects[j];
 			if (static_cast<LegoU32>(assignment->m_left) >= m_unk0x74) {
 				continue;
 			}
@@ -1617,11 +1620,11 @@ void GolWorldDatabase::FUN_1002e640()
 			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
 		}
 
-		if (model->m_unk0x00[0] != '\0') {
+		if (model->m_name[0] != '\0') {
 			if (m_collidableEntityNames.GetNameEntries() == NULL) {
 				m_collidableEntityNames.Allocate(m_collidableEntityCount);
 			}
-			m_collidableEntityNames.AddName(model->m_unk0x00, runtime);
+			m_collidableEntityNames.AddName(model->m_name, runtime);
 		}
 	}
 
@@ -1651,14 +1654,14 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		runtime->FUN_1001b760(&m_unk0x98[model->m_unk0x14[0]]);
-		runtime->SetPosition(model->m_unk0x50);
-		runtime->SetDirectionUp(model->m_unk0x5c, model->m_unk0x68);
+		runtime->SetPosition(model->m_position);
+		runtime->SetDirectionUp(model->m_direction, model->m_up);
 
-		if (model->m_unk0x00[0] != '\0') {
+		if (model->m_name[0] != '\0') {
 			if (m_boundedEntityNames.GetNameEntries() == NULL) {
 				m_boundedEntityNames.Allocate(m_boundedEntityCount);
 			}
-			m_boundedEntityNames.AddName(model->m_unk0x00, runtime);
+			m_boundedEntityNames.AddName(model->m_name, runtime);
 		}
 	}
 

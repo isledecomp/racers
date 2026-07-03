@@ -33,7 +33,7 @@ private:
 	void ReadLegs(GolFileParser& p_parser);
 	void ReadHeadHats(GolFileParser& p_parser);
 	void ReadBodyModelNames(GolFileParser& p_parser);
-	void FUN_00498e40(GolFileParser& p_parser);
+	void ReadPartSlotNames(GolFileParser& p_parser);
 	void ReadFile(GolFileParser& p_parser);
 
 public:
@@ -91,7 +91,7 @@ private:
 	LegoChar m_headModelFileName[13];     // 0x6da
 	LegoChar m_bodyModelFileNames[2][13]; // 0x6e7
 	LegoChar m_modelDirectories[2][32];   // 0x701
-	GolName m_unk0x741[4];                // 0x741
+	GolName m_partSlotNames[4];           // 0x741
 	undefined m_unk0x761[0x763 - 0x761];  // 0x761
 };
 

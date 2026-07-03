@@ -248,7 +248,7 @@ void DriverPartCatalog::ReadBodyModelNames(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00498e40
-void DriverPartCatalog::FUN_00498e40(GolFileParser& p_parser)
+void DriverPartCatalog::ReadPartSlotNames(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
@@ -256,8 +256,8 @@ void DriverPartCatalog::FUN_00498e40(GolFileParser& p_parser)
 	p_parser.ReadLeftCurly();
 
 	for (LegoS32 i = 0; i < count; i++) {
-		str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x741[i]));
-		::strncpy(m_unk0x741[i], str, sizeof(m_unk0x741[i]));
+		str = p_parser.ReadStringWithMaxLength(sizeof(m_partSlotNames[i]));
+		::strncpy(m_partSlotNames[i], str, sizeof(m_partSlotNames[i]));
 	}
 
 	p_parser.ReadRightCurly();
@@ -295,7 +295,7 @@ void DriverPartCatalog::ReadFile(GolFileParser& p_parser)
 			ReadBodyModelNames(p_parser);
 			break;
 		case GolFileParser::e_unknown0x2f:
-			FUN_00498e40(p_parser);
+			ReadPartSlotNames(p_parser);
 			break;
 		default:
 			p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);

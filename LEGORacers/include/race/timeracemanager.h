@@ -105,30 +105,30 @@ public:
 	LegoBool32 HasRecordGhostMarker() const { return (m_flags0x3b4 & c_flag0x3b4Bit3) && !m_recordRun->m_finished; }
 	LegoBool32 HasBestRunLapTimes() const { return m_flags0x3b4 & c_flag0x3b4Bit0; }
 	LegoBool32 HasRecordRunLapTimes() const { return m_flags0x3b4 & c_flag0x3b4Bit3; }
-	GolAnimatedEntity* GetBestGhostMarkerEntity() { return &m_unk0x1c; }
-	GolAnimatedEntity* GetRecordGhostMarkerEntity() { return m_unk0x110; }
+	GolAnimatedEntity* GetBestGhostMarkerEntity() { return &m_bestGhostMarker; }
+	GolAnimatedEntity* GetRecordGhostMarkerEntity() { return m_recordGhostMarker; }
 
 private:
 	void FUN_00423160(GhostRunData* p_ghostRun, const LegoChar* p_name);
 
-	GolWorldDatabase* m_worldDatabase; // 0x04
-	GolExport* m_golExport;            // 0x08
-	GhostRunData* m_recordRun;         // 0x0c
-	GhostRunData* m_bestRun;           // 0x10
-	GhostRunData* m_scratchRun;        // 0x14
-	Racer* m_racer;                    // 0x18
-	GolAnimatedEntity m_unk0x1c;       // 0x1c
-	GolAnimatedEntity* m_unk0x110;     // 0x110
-	GolAnimatedEntity m_unk0x114;      // 0x114
-	GolAnimatedEntity* m_unk0x208;     // 0x208
-	GolAnimatedEntity m_unk0x20c;      // 0x20c
-	GolModelEntity m_unk0x300;         // 0x300
-	GolModelEntity* m_unk0x390;        // 0x390
-	GolVec3 m_unk0x394;                // 0x394
-	GolVec3 m_unk0x3a0;                // 0x3a0
-	LegoU32 m_unk0x3ac;                // 0x3ac
-	LegoU32 m_unk0x3b0;                // 0x3b0
-	LegoU8 m_flags0x3b4;               // 0x3b4
+	GolWorldDatabase* m_worldDatabase;      // 0x04
+	GolExport* m_golExport;                 // 0x08
+	GhostRunData* m_recordRun;              // 0x0c
+	GhostRunData* m_bestRun;                // 0x10
+	GhostRunData* m_scratchRun;             // 0x14
+	Racer* m_racer;                         // 0x18
+	GolAnimatedEntity m_bestGhostMarker;    // 0x1c
+	GolAnimatedEntity* m_recordGhostMarker; // 0x110
+	GolAnimatedEntity m_unk0x114;           // 0x114
+	GolAnimatedEntity* m_unk0x208;          // 0x208
+	GolAnimatedEntity m_unk0x20c;           // 0x20c
+	GolModelEntity m_unk0x300;              // 0x300
+	GolModelEntity* m_unk0x390;             // 0x390
+	GolVec3 m_unk0x394;                     // 0x394
+	GolVec3 m_unk0x3a0;                     // 0x3a0
+	LegoU32 m_unk0x3ac;                     // 0x3ac
+	LegoU32 m_elapsedTotalMs;               // 0x3b0
+	LegoU8 m_flags0x3b4;                    // 0x3b4
 };
 
 #endif // TIMERACEMANAGER_H

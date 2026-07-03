@@ -61,22 +61,22 @@ public:
 	GolCommonDrawState* GetDrawState() override;                             // vtable+0x10
 	GolRenderTarget* GetRenderTargetInfo() override;                         // vtable+0x14
 	void VTable0x18() override;                                              // vtable+0x18
-	void VTable0x1c(const ColorRGBA&) override;                              // vtable+0x1c
-	void VTable0x20(GolCamera*) override;                                    // vtable+0x20
-	void VTable0x28() override;                                              // vtable+0x28
-	void VTable0x2c(const MaterialColor*) override;                          // vtable+0x2c
-	void VTable0x30(const Light*) override;                                  // vtable+0x30
+	void SetClearColor(const ColorRGBA&) override;                           // vtable+0x1c
+	void SetCamera(GolCamera*) override;                                     // vtable+0x20
+	void ClearLights() override;                                             // vtable+0x28
+	void SetAmbient(const MaterialColor*) override;                          // vtable+0x2c
+	void AddLight(const Light*) override;                                    // vtable+0x30
 	void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08) override; // vtable+0x34
 	void VTable0x38() override;                                              // vtable+0x38
 	void VTable0x3c(LegoU32) override;                                       // vtable+0x3c
 	void VTable0x40() override;                                              // vtable+0x40
-	GolRenderTarget* VTable0x4c(undefined2, undefined2) override;            // vtable+0x4c
-	void VTable0x50(GolRenderTarget*) override;                              // vtable+0x50
+	GolRenderTarget* CreateRenderTarget(undefined2, undefined2) override;    // vtable+0x4c
+	void DestroyRenderTarget(GolRenderTarget*) override;                     // vtable+0x50
 	void VTable0x54(undefined4) override;                                    // vtable+0x54
 	void VTable0x58(GolRenderTarget*, undefined4) override;                  // vtable+0x58
 	void VTable0x5c() override;                                              // vtable+0x5c
 	void VTable0x60() override;                                              // vtable+0x60
-	void VTable0x64(
+	void DrawString(
 		GolString*,
 		GolFontBase*,
 		LegoS32,
@@ -86,7 +86,7 @@ public:
 		Rect*,
 		undefined4
 	) override; // vtable+0x64
-	void VTable0x68(
+	void DrawCString(
 		const LegoChar*,
 		GolFontBase*,
 		LegoS32,
@@ -96,7 +96,7 @@ public:
 		Rect*,
 		undefined4
 	) override; // vtable+0x68
-	void VTable0x6c(
+	void DrawStringFitted(
 		GolString*,
 		GolFontBase*,
 		LegoS32,
@@ -106,9 +106,9 @@ public:
 		Rect*,
 		undefined4
 	) override; // vtable+0x6c
-	void VTable0x70(GolImage*, undefined4, LegoS32, LegoS32, LegoS32,
-					LegoS32) override; // vtable+0x70
-	void VTable0x74(
+	void DrawImage(GolImage*, undefined4, LegoS32, LegoS32, LegoS32,
+				   LegoS32) override; // vtable+0x70
+	void DrawImageStretched(
 		GolImage*,
 		undefined4,
 		LegoS32,
@@ -119,9 +119,9 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) override;                                                    // vtable+0x74
-	void VTable0x78(GolImage*, undefined4, Rect*, Rect*) override; // vtable+0x78
-	void VTable0x7c(
+	) override;                                                       // vtable+0x74
+	void DrawImageRect(GolImage*, undefined4, Rect*, Rect*) override; // vtable+0x78
+	void DrawImageClipped(
 		GolImage* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,

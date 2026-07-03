@@ -181,7 +181,7 @@ void LoadingScreen::SetProgress(LegoFloat p_progress)
 // FUNCTION: LEGORACERS 0x0042f7a0
 void LoadingScreen::Draw()
 {
-	m_renderer->VTable0x64(&m_text, m_font, m_textX, 25, 1.0f, 1.0f, NULL, 0);
+	m_renderer->DrawString(&m_text, m_font, m_textX, 25, 1.0f, 1.0f, NULL, 0);
 
 	LegoU32 count = static_cast<LegoU32>(static_cast<LegoFloat>(m_dotCount) * m_progress);
 	for (LegoU32 i = 0; i < count; i++) {
@@ -191,6 +191,6 @@ void LoadingScreen::Draw()
 		destRect.m_left = m_dotPositions[i * 2] - 8;
 		destRect.m_right = m_dotPositions[i * 2] + 8;
 
-		m_renderer->VTable0x78(m_tickImage, 0, &destRect, NULL);
+		m_renderer->DrawImageRect(m_tickImage, 0, &destRect, NULL);
 	}
 }

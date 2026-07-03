@@ -126,7 +126,7 @@ void MenuSceneView::LoadWorlds(CreateParams* p_createParams, undefined4 p_binary
 	}
 
 	ColorRGBA color = {0, 0, 0, 0};
-	m_renderer->VTable0x1c(color);
+	m_renderer->SetClearColor(color);
 }
 
 // FUNCTION: LEGORACERS 0x004659b0
@@ -350,14 +350,14 @@ void MenuSceneView::ClampToScreen(Rect* p_rect)
 void MenuSceneView::ApplySceneMaterials()
 {
 	if (m_world->GetAmbientLightCount() || m_world->GetLightCount()) {
-		m_renderer->VTable0x28();
+		m_renderer->ClearLights();
 
 		if (m_world->GetAmbientLightCount()) {
-			m_renderer->VTable0x2c(m_world->GetAmbientMaterial());
+			m_renderer->SetAmbient(m_world->GetAmbientMaterial());
 		}
 
 		for (LegoU32 i = 0; i < m_world->GetLightCount(); i++) {
-			m_renderer->VTable0x30(&m_world->GetLight()[i]);
+			m_renderer->AddLight(&m_world->GetLight()[i]);
 		}
 
 		m_renderer->VTable0x60();
@@ -369,7 +369,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 {
 	m_renderer->VTable0xe4();
 	m_savedCamera = m_renderer->GetUnk0x0c();
-	m_renderer->VTable0x20(m_camera);
+	m_renderer->SetCamera(m_camera);
 	m_renderer->VTable0x5c();
 	m_renderer->VTable0xec(m_viewportClearMode);
 	ApplySceneMaterials();
@@ -386,7 +386,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 		m_blendedWorld->DrawWorld();
 	}
 
-	m_renderer->VTable0x20(m_savedCamera);
+	m_renderer->SetCamera(m_savedCamera);
 	m_renderer->VTable0x5c();
 	m_renderer->VTable0xec(6);
 	m_renderer->VTable0xe8(FALSE);

@@ -932,7 +932,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 
 	if (material == NULL) {
 		m_pieceMaterial.SetColor(originalColor);
-		m_renderer->VTable0x2c(&m_pieceMaterial);
+		m_renderer->SetAmbient(&m_pieceMaterial);
 		material = &m_pieceMaterial;
 	}
 

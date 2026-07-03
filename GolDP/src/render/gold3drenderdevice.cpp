@@ -500,7 +500,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007d90(GolDrawDPState* p_drawState, GolRenderT
 		return result;
 	}
 
-	VTable0x28();
+	ClearLights();
 	return 0;
 }
 
@@ -669,10 +669,10 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 
 rendererCreated:
-	VTable0x1c(m_clearColor);
+	SetClearColor(m_clearColor);
 	FUN_100082e0();
 	if (m_unk0x0c != NULL) {
-		VTable0x20(m_unk0x0c);
+		SetCamera(m_unk0x0c);
 	}
 
 	m_unk0x2d4.FUN_10006320(*this);
@@ -848,7 +848,7 @@ void GolD3DRenderDevice::VTable0x18()
 }
 
 // FUNCTION: GOLDP 0x100087b0
-void GolD3DRenderDevice::VTable0x20(GolCamera* p_lens)
+void GolD3DRenderDevice::SetCamera(GolCamera* p_lens)
 {
 	if (m_unk0x0c != NULL) {
 		m_unk0x0c->FUN_10001f60(NULL);
@@ -1460,7 +1460,7 @@ void GolD3DRenderDevice::VTable0xf0()
 		rect.m_right = renderTargetInfo->m_width;
 		rect.m_bottom = renderTargetInfo->m_height;
 
-		VTable0x20(m_unk0x0c);
+		SetCamera(m_unk0x0c);
 		m_unk0x0c->VTable0x0c(&rect);
 	}
 
@@ -1468,7 +1468,7 @@ void GolD3DRenderDevice::VTable0xf0()
 }
 
 // FUNCTION: GOLDP 0x10009640
-void GolD3DRenderDevice::VTable0x1c(const ColorRGBA& p_color)
+void GolD3DRenderDevice::SetClearColor(const ColorRGBA& p_color)
 {
 	GolSurfaceFormat textureFormat;
 
@@ -1597,7 +1597,7 @@ GolRenderTarget* GolD3DRenderDevice::GetRenderTargetInfo()
 }
 
 // FUNCTION: GOLDP 0x10009960
-void GolD3DRenderDevice::VTable0x7c(
+void GolD3DRenderDevice::DrawImageClipped(
 	GolImage* p_image,
 	undefined4 p_unk0x08,
 	Rect* p_destRect,
@@ -1609,13 +1609,13 @@ void GolD3DRenderDevice::VTable0x7c(
 }
 
 // FUNCTION: GOLDP 0x10009990
-void GolD3DRenderDevice::VTable0x78(GolImage* p_image, undefined4 p_unk0x08, Rect* p_destRect, Rect* p_clipRect)
+void GolD3DRenderDevice::DrawImageRect(GolImage* p_image, undefined4 p_unk0x08, Rect* p_destRect, Rect* p_clipRect)
 {
 	p_image->FUN_100054d0(this, p_unk0x08, p_destRect, p_clipRect);
 }
 
 // FUNCTION: GOLDP 0x100099b0
-void GolD3DRenderDevice::VTable0x74(
+void GolD3DRenderDevice::DrawImageStretched(
 	GolImage* p_image,
 	undefined4 p_unk0x08,
 	LegoS32 p_destLeft,
@@ -1644,7 +1644,7 @@ void GolD3DRenderDevice::VTable0x74(
 }
 
 // FUNCTION: GOLDP 0x10009a20
-void GolD3DRenderDevice::VTable0x70(
+void GolD3DRenderDevice::DrawImage(
 	GolImage* p_image,
 	undefined4 p_unk0x08,
 	LegoS32 p_destLeft,
@@ -1690,7 +1690,7 @@ void GolD3DRenderDevice::DrawBillboard(GolBillboard& p_param)
 }
 
 // FUNCTION: GOLDP 0x10009b40
-void GolD3DRenderDevice::VTable0x68(
+void GolD3DRenderDevice::DrawCString(
 	const LegoChar* p_unk0x04,
 	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
@@ -1705,7 +1705,7 @@ void GolD3DRenderDevice::VTable0x68(
 }
 
 // FUNCTION: GOLDP 0x10009b70
-void GolD3DRenderDevice::VTable0x64(
+void GolD3DRenderDevice::DrawString(
 	GolString* p_unk0x04,
 	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
@@ -1720,7 +1720,7 @@ void GolD3DRenderDevice::VTable0x64(
 }
 
 // FUNCTION: GOLDP 0x10009ba0
-void GolD3DRenderDevice::VTable0x6c(
+void GolD3DRenderDevice::DrawStringFitted(
 	GolString* p_unk0x04,
 	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
@@ -2537,9 +2537,9 @@ void GolD3DRenderDevice::VTable0xc4()
 }
 
 // FUNCTION: GOLDP 0x1000af90
-void GolD3DRenderDevice::VTable0x28()
+void GolD3DRenderDevice::ClearLights()
 {
-	GolRenderDevice::VTable0x28();
+	GolRenderDevice::ClearLights();
 	m_unk0xc856c.m_red = 0xff;
 	m_unk0xc856c.m_grn = 0xff;
 	m_unk0xc856c.m_blu = 0xff;
@@ -2555,9 +2555,9 @@ void GolD3DRenderDevice::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x1000b000
-void GolD3DRenderDevice::VTable0x2c(const MaterialColor* p_param)
+void GolD3DRenderDevice::SetAmbient(const MaterialColor* p_param)
 {
-	GolRenderDevice::VTable0x2c(p_param);
+	GolRenderDevice::SetAmbient(p_param);
 	m_unk0xc856c = p_param->m_color;
 
 	if (m_drawCommand.m_material != NULL) {
@@ -2576,12 +2576,12 @@ void GolD3DRenderDevice::VTable0x2c(const MaterialColor* p_param)
 }
 
 // FUNCTION: GOLDP 0x1000b0c0
-void GolD3DRenderDevice::VTable0x30(const Light* p_param)
+void GolD3DRenderDevice::AddLight(const Light* p_param)
 {
 	LegoU32 index = m_unk0x11c;
 	if (index < 7) {
 		FUN_1000b0f0(index, p_param);
-		GolRenderDevice::VTable0x30(p_param);
+		GolRenderDevice::AddLight(p_param);
 	}
 }
 
@@ -2611,7 +2611,7 @@ void GolD3DRenderDevice::VTable0x60()
 {
 	if (m_flags & c_flagBit15) {
 		if (m_unk0x120 != NULL) {
-			VTable0x2c(m_unk0x120);
+			SetAmbient(m_unk0x120);
 		}
 
 		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
@@ -2653,7 +2653,7 @@ void GolD3DRenderDevice::VTable0x40()
 }
 
 // FUNCTION: GOLDP 0x1000b2c0
-GolRenderTarget* GolD3DRenderDevice::VTable0x4c(undefined2 p_arg1, undefined2 p_arg2)
+GolRenderTarget* GolD3DRenderDevice::CreateRenderTarget(undefined2 p_arg1, undefined2 p_arg2)
 {
 	GolD3DRenderSurface* surface = new GolD3DRenderSurface;
 	if (surface == NULL) {
@@ -2667,7 +2667,7 @@ GolRenderTarget* GolD3DRenderDevice::VTable0x4c(undefined2 p_arg1, undefined2 p_
 }
 
 // FUNCTION: GOLDP 0x1000b350
-void GolD3DRenderDevice::VTable0x50(GolRenderTarget* p_surface)
+void GolD3DRenderDevice::DestroyRenderTarget(GolRenderTarget* p_surface)
 {
 	GolD3DRenderSurface* surface = m_unk0x30c;
 	if (surface == NULL) {
@@ -2722,7 +2722,7 @@ void GolD3DRenderDevice::VTable0x58(GolRenderTarget* p_surface, undefined4 p_fla
 				rect.m_right = m_renderTargetInfo->m_width;
 				rect.m_bottom = m_renderTargetInfo->m_height;
 
-				VTable0x20(m_unk0x0c);
+				SetCamera(m_unk0x0c);
 				m_unk0x0c->VTable0x0c(&rect);
 				VTable0x54(p_flags);
 				return;

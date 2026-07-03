@@ -125,7 +125,7 @@ LegoS32 MenuInputDispatcher::Cursor::Draw()
 		destRect.m_top = m_cursorY;
 		destRect.m_bottom = m_cursorY + m_sourceRect.m_right;
 
-		m_renderer->VTable0x7c(m_cursorImage, 0, &destRect, &m_sourceRect, 0);
+		m_renderer->DrawImageClipped(m_cursorImage, 0, &destRect, &m_sourceRect, 0);
 		return TRUE;
 	}
 

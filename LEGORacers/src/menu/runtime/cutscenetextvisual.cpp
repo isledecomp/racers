@@ -128,10 +128,10 @@ void CutsceneTextVisual::VTable0x20(
 	}
 
 	if (m_rawString != NULL) {
-		p_renderer->VTable0x68(m_rawString, m_font, p_x, p_y, p_scaleX, p_scaleY, NULL, 0);
+		p_renderer->DrawCString(m_rawString, m_font, p_x, p_y, p_scaleX, p_scaleY, NULL, 0);
 	}
 	else {
-		p_renderer->VTable0x64(&m_string, m_font, p_x, p_y, p_scaleX, p_scaleY, NULL, 0);
+		p_renderer->DrawString(&m_string, m_font, p_x, p_y, p_scaleX, p_scaleY, NULL, 0);
 	}
 
 	if (m_flags & 0x100) {

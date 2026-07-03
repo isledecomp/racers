@@ -184,7 +184,7 @@ void MenuModelCarousel::UpdateViewport()
 void MenuModelCarousel::PushCamera()
 {
 	m_savedCamera = m_renderer->GetUnk0x0c();
-	m_renderer->VTable0x20(m_camera);
+	m_renderer->SetCamera(m_camera);
 	m_renderer->VTable0x5c();
 }
 
@@ -192,7 +192,7 @@ void MenuModelCarousel::PushCamera()
 void MenuModelCarousel::PopCamera()
 {
 	if (m_savedCamera) {
-		m_renderer->VTable0x20(m_savedCamera);
+		m_renderer->SetCamera(m_savedCamera);
 		m_renderer->VTable0x5c();
 	}
 }
@@ -507,9 +507,9 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 	GolVec3 direction = m_renderer->GetCurrentLight(0)->m_direction;
 	m_light.SetDirection(direction);
 
-	m_renderer->VTable0x28();
-	m_renderer->VTable0x2c(&m_materialColor);
-	m_renderer->VTable0x30(&m_light);
+	m_renderer->ClearLights();
+	m_renderer->SetAmbient(&m_materialColor);
+	m_renderer->AddLight(&m_light);
 
 	LegoU8 hasModelFlag = 1;
 	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {

@@ -163,7 +163,7 @@ void RaceDialog::Draw()
 	LegoS32 textWidth;
 	LegoS32 textHeight;
 	m_font->MeasureString(&m_prompt, &textWidth, &textHeight);
-	m_renderer->VTable0x64(
+	m_renderer->DrawString(
 		&m_prompt,
 		m_font,
 		(renderTargetInfo->GetWidth() >> 1) - (static_cast<LegoU32>(textWidth) >> 1),
@@ -177,7 +177,7 @@ void RaceDialog::Draw()
 	y += m_lineHeight;
 	if (m_extra.HasChars()) {
 		m_font->MeasureString(&m_extra, &textWidth, &textHeight);
-		m_renderer->VTable0x64(
+		m_renderer->DrawString(
 			&m_extra,
 			m_font,
 			(renderTargetInfo->GetWidth() >> 1) - (static_cast<LegoU32>(textWidth) >> 1),
@@ -200,14 +200,14 @@ void RaceDialog::Draw()
 			m_renderer->SetAlphaOverride(selectedAlpha, c_selectedAlphaFlag);
 
 			if (m_blinkMs < c_selectedBlinkThresholdMs) {
-				m_renderer->VTable0x64(option, m_font, x, y, 1.0f, 1.0f, NULL, 0);
+				m_renderer->DrawString(option, m_font, x, y, 1.0f, 1.0f, NULL, 0);
 			}
 
 			m_renderer->ClearAlphaOverride();
 		}
 		else {
 			m_font->SetColor(c_optionColor);
-			m_renderer->VTable0x64(option, m_font, x, y, 1.0f, 1.0f, NULL, 0);
+			m_renderer->DrawString(option, m_font, x, y, 1.0f, 1.0f, NULL, 0);
 		}
 
 		y += m_lineHeight;

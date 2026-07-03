@@ -561,7 +561,7 @@ void RaceHud::DrawFixedMap()
 			sourceRect.m_right = sourceRect.m_left + 0x10;
 			sourceRect.m_bottom = sourceRect.m_top + 0x10;
 
-			m_renderer->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_viewport);
+			m_renderer->DrawImageClipped(markerResource, 0, &destRect, &sourceRect, &m_viewport);
 		}
 	}
 
@@ -586,7 +586,7 @@ void RaceHud::DrawFixedMap()
 		sourceRect.m_right = sourceRect.m_left + 0x10;
 		sourceRect.m_bottom = sourceRect.m_top + 0x10;
 
-		m_renderer->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_viewport);
+		m_renderer->DrawImageClipped(markerResource, 0, &destRect, &sourceRect, &m_viewport);
 	}
 
 	if (m_timeRaceManager && m_timeRaceManager->HasBestGhostMarker()) {
@@ -610,7 +610,7 @@ void RaceHud::DrawFixedMap()
 		sourceRect.m_right = sourceRect.m_left + 0x10;
 		sourceRect.m_bottom = sourceRect.m_top + 0x10;
 
-		m_renderer->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_viewport);
+		m_renderer->DrawImageClipped(markerResource, 0, &destRect, &sourceRect, &m_viewport);
 	}
 
 	GolVec3 currentPosition;
@@ -766,7 +766,7 @@ void RaceHud::DrawRotatingMap()
 			sourceRect.m_right = sourceRect.m_left + 0x10;
 			sourceRect.m_bottom = sourceRect.m_top + 0x10;
 
-			m_renderer->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_viewport);
+			m_renderer->DrawImageClipped(markerResource, 0, &destRect, &sourceRect, &m_viewport);
 		}
 	}
 
@@ -792,7 +792,7 @@ void RaceHud::DrawRotatingMap()
 		sourceRect.m_right = sourceRect.m_left + 0x10;
 		sourceRect.m_bottom = sourceRect.m_top + 0x10;
 
-		m_renderer->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_viewport);
+		m_renderer->DrawImageClipped(markerResource, 0, &destRect, &sourceRect, &m_viewport);
 	}
 
 	if (m_timeRaceManager && m_timeRaceManager->HasBestGhostMarker()) {
@@ -817,7 +817,7 @@ void RaceHud::DrawRotatingMap()
 		sourceRect.m_right = sourceRect.m_left + 0x10;
 		sourceRect.m_bottom = sourceRect.m_top + 0x10;
 
-		m_renderer->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_viewport);
+		m_renderer->DrawImageClipped(markerResource, 0, &destRect, &sourceRect, &m_viewport);
 	}
 
 	DrawMapArrow(mapCenterX, mapCenterY, 0.0f, -1.0f);
@@ -865,7 +865,7 @@ void RaceHud::DrawSpeedometer()
 	double scaledHeight0 = static_cast<double>(resource0Height) * static_cast<double>(m_mapScale);
 	LegoS32 height0 = static_cast<LegoS32>(scaledHeight0 * static_cast<double>(m_scaleY));
 	m_renderer
-		->VTable0x70(resource0, 0, m_viewport.m_right - width0 - 2, m_viewport.m_bottom - height0 - 2, width0, height0);
+		->DrawImage(resource0, 0, m_viewport.m_right - width0 - 2, m_viewport.m_bottom - height0 - 2, width0, height0);
 
 	LegoFloat centerX = static_cast<LegoFloat>(m_viewport.m_right - ((52 * width0) >> 7) - 2);
 	LegoFloat centerY = static_cast<LegoFloat>(m_viewport.m_bottom - ((52 * height0) >> 7) - 2);
@@ -940,7 +940,7 @@ void RaceHud::DrawSpeedometer()
 	LegoS32 resource1Height = resource1->GetHeight();
 	double scaledHeight1 = static_cast<double>(resource1Height) * static_cast<double>(m_mapScale);
 	LegoS32 height1 = static_cast<LegoS32>(scaledHeight1 * static_cast<double>(m_scaleY));
-	m_renderer->VTable0x70(
+	m_renderer->DrawImage(
 		resource1,
 		0,
 		static_cast<LegoS32>(centerX) - (width1 >> 1),
@@ -966,7 +966,7 @@ LegoS32 RaceHud::DrawTime(const LegoChar* p_text, LegoS32 p_x, LegoS32 p_y)
 
 	LegoFloat scaleY = m_scaleY * m_textScale;
 	LegoFloat scaleX = m_textScaleX * m_textScale;
-	m_renderer->VTable0x64(m_scratchString, m_font, drawX, p_y, scaleX, scaleY, NULL, 0);
+	m_renderer->DrawString(m_scratchString, m_font, drawX, p_y, scaleX, scaleY, NULL, 0);
 
 	return drawX;
 }
@@ -1304,7 +1304,7 @@ void RaceHud::Draw()
 
 			m_numberFont->SetColor(0xff, 0xff, 0, 0xff);
 			if (m_visible) {
-				m_renderer->VTable0x64(
+				m_renderer->DrawString(
 					m_scratchString,
 					m_numberFont,
 					m_centerX - (static_cast<LegoU32>(textWidth) >> 1),
@@ -1340,7 +1340,7 @@ void RaceHud::Draw()
 
 			m_numberFont->SetColor(0xff, 0xff, 0, 0xff);
 			if (m_visible) {
-				m_renderer->VTable0x64(
+				m_renderer->DrawString(
 					&m_labelString,
 					m_numberFont,
 					m_centerX - (static_cast<LegoU32>(textWidth) >> 1),
@@ -1374,7 +1374,7 @@ void RaceHud::Draw()
 		textHeight = static_cast<LegoS32>(static_cast<double>(textHeight) * scaleY);
 
 		if (m_visible) {
-			m_renderer->VTable0x64(
+			m_renderer->DrawString(
 				&m_labelString,
 				m_numberFont,
 				m_centerX - (static_cast<LegoU32>(textWidth) >> 1),
@@ -1495,7 +1495,7 @@ void RaceHud::Draw()
 		LegoS32 labelOffset =
 			static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_textScaleX);
 		LegoS32 lapLabelX = m_lapTimeX - labelOffset;
-		m_renderer->VTable0x64(
+		m_renderer->DrawString(
 			m_scratchString,
 			m_font,
 			lapLabelX,
@@ -1512,7 +1512,7 @@ void RaceHud::Draw()
 		labelPadding = static_cast<LegoS32>(m_textScale * -6.0f);
 		labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_textScaleX);
 		lapLabelX -= labelOffset;
-		m_renderer->VTable0x64(
+		m_renderer->DrawString(
 			&m_labelString,
 			m_font,
 			lapLabelX,
@@ -1533,7 +1533,7 @@ void RaceHud::Draw()
 			scaledLabelWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_textScale);
 			labelPadding = static_cast<LegoS32>(static_cast<double>(m_textScale) * -14.0);
 			labelOffset = static_cast<LegoS32>(static_cast<double>(scaledLabelWidth - labelPadding) * m_textScaleX);
-			m_renderer->VTable0x64(
+			m_renderer->DrawString(
 				&m_labelString,
 				m_font,
 				m_bestLapX - labelOffset,
@@ -1550,7 +1550,7 @@ void RaceHud::Draw()
 			m_stringTable->CopyStringByIndex(&m_labelString, 0x26);
 			m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
 			labelOffset = static_cast<LegoS32>(static_cast<double>(textWidth + 14) * m_textScaleX);
-			m_renderer->VTable0x64(
+			m_renderer->DrawString(
 				&m_labelString,
 				m_font,
 				m_totalTimeX - labelOffset,
@@ -1564,7 +1564,7 @@ void RaceHud::Draw()
 		}
 		else if (positionIndex != 8) {
 			m_stringTable->CopyStringByIndex(&m_labelString, g_positionStringIds[positionIndex]);
-			m_renderer->VTable0x64(
+			m_renderer->DrawString(
 				&m_labelString,
 				m_font,
 				m_positionX + static_cast<LegoS32>(m_textScaleX * 5.0f),
@@ -1600,7 +1600,7 @@ void RaceHud::Draw()
 				}
 				positionScale *= m_textScale;
 
-				m_renderer->VTable0x64(
+				m_renderer->DrawString(
 					m_scratchString,
 					m_numberFont,
 					m_positionX - numberOffset,
@@ -1612,7 +1612,7 @@ void RaceHud::Draw()
 				);
 			}
 			else {
-				m_renderer->VTable0x64(
+				m_renderer->DrawString(
 					m_scratchString,
 					m_numberFont,
 					m_positionX - numberOffset,
@@ -1633,7 +1633,7 @@ void RaceHud::Draw()
 			m_stringTable->CopyStringByIndex(&m_labelString, 0x21);
 			m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
 			if (m_visible) {
-				m_renderer->VTable0x64(
+				m_renderer->DrawString(
 					&m_labelString,
 					m_font,
 					medalX - static_cast<LegoS32>(static_cast<double>(textWidth + 4) * m_textScaleX),
@@ -1650,7 +1650,7 @@ void RaceHud::Draw()
 			m_stringTable->CopyStringByIndex(&m_labelString, 0x24);
 			if (m_visible) {
 				m_renderer
-					->VTable0x64(&m_labelString, m_font, m_wrongWayX, m_wrongWayY, m_textScaleX, m_scaleY, NULL, 0);
+					->DrawString(&m_labelString, m_font, m_wrongWayX, m_wrongWayY, m_textScaleX, m_scaleY, NULL, 0);
 			}
 		}
 	}
@@ -1702,11 +1702,11 @@ void RaceHud::Draw()
 		LegoS32 height = static_cast<LegoS32>(
 			static_cast<double>(static_cast<LegoS32>(background->GetHeight())) * m_imageScale * m_scaleY
 		);
-		m_renderer->VTable0x70(background, 0, m_powerupX, m_powerupY, width, height);
+		m_renderer->DrawImage(background, 0, m_powerupX, m_powerupY, width, height);
 
 		GolImage* colorResource = m_images->GetItem(12);
 		colorResource->m_unk0x4a = itemColor;
-		m_renderer->VTable0x70(colorResource, 0, m_powerupX, m_powerupY, width, height);
+		m_renderer->DrawImage(colorResource, 0, m_powerupX, m_powerupY, width, height);
 
 		if (itemResource) {
 			LegoS32 itemWidth = static_cast<LegoS32>(
@@ -1715,7 +1715,7 @@ void RaceHud::Draw()
 			LegoS32 itemHeight = static_cast<LegoS32>(
 				static_cast<double>(static_cast<LegoS32>(itemResource->GetHeight())) * m_imageScale * m_scaleY
 			);
-			m_renderer->VTable0x70(
+			m_renderer->DrawImage(
 				itemResource,
 				0,
 				m_powerupX + (static_cast<LegoU32>(31 * width) >> 6) - (static_cast<LegoU32>(itemWidth) >> 1),
@@ -1733,7 +1733,7 @@ void RaceHud::Draw()
 			LegoS32 levelHeight = static_cast<LegoS32>(
 				static_cast<double>(static_cast<LegoS32>(levelResource->GetHeight())) * m_imageScale * m_scaleY
 			);
-			m_renderer->VTable0x70(
+			m_renderer->DrawImage(
 				levelResource,
 				0,
 				m_powerupX + (static_cast<LegoU32>(24 * width) >> 6),

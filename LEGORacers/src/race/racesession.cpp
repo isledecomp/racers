@@ -1421,7 +1421,7 @@ void RaceSession::CreateCameras()
 		} while (i < m_context->m_playerCount);
 	}
 
-	m_renderer->VTable0x20(m_cameras[0]);
+	m_renderer->SetCamera(m_cameras[0]);
 }
 
 // FUNCTION: LEGORACERS 0x00434300
@@ -2127,7 +2127,7 @@ void RaceSession::Draw()
 	}
 
 	GolAppEventHandler::OnCloseRequested();
-	m_renderer->VTable0x20(m_cameras[0]);
+	m_renderer->SetCamera(m_cameras[0]);
 	ClearViewport();
 
 	if (m_splitScreen) {
@@ -2178,7 +2178,7 @@ void RaceSession::Draw()
 	}
 
 	while (viewportIndex < m_context->m_playerCount) {
-		m_renderer->VTable0x20(m_cameras[viewportIndex]);
+		m_renderer->SetCamera(m_cameras[viewportIndex]);
 		m_renderer->VTable0x5c();
 		m_renderer->VTable0xec(viewportIndex + 1);
 
@@ -2414,7 +2414,7 @@ void RaceSession::DrawDemoText()
 		LegoS32 textHeight;
 		m_loadingFont->MeasureString(&string, &textWidth, &textHeight);
 
-		m_renderer->VTable0x64(
+		m_renderer->DrawString(
 			&string,
 			m_loadingFont,
 			(renderTargetInfo->GetWidthU32() >> 1) - (static_cast<LegoU32>(textWidth) >> 1),

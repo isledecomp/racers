@@ -1119,19 +1119,19 @@ void CutsceneDefinition::Frame::Draw(GolD3DRenderDevice* p_renderer, LegoU32 p_l
 			m_cameraStack[lensIndex]->VTable0x0c(&m_viewportRect);
 		}
 
-		p_renderer->VTable0x20(m_cameraStack[lensIndex]);
+		p_renderer->SetCamera(m_cameraStack[lensIndex]);
 		p_renderer->VTable0x5c();
 		p_renderer->VTable0xec(4);
 	}
 
-	p_renderer->VTable0x28();
+	p_renderer->ClearLights();
 	if (m_ambientMaterial || m_lightCount) {
 		if (m_ambientMaterial) {
-			p_renderer->VTable0x2c(m_ambientMaterial);
+			p_renderer->SetAmbient(m_ambientMaterial);
 		}
 
 		for (LegoU32 i = 0; i < m_lightCount; i++) {
-			p_renderer->VTable0x30(m_lights[i]);
+			p_renderer->AddLight(m_lights[i]);
 		}
 	}
 

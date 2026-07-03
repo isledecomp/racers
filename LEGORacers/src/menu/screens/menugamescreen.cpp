@@ -98,7 +98,7 @@ LegoBool32 MenuGameScreen::Destroy()
 		m_context->m_modelBuilder.RefreshMenuResources();
 	}
 
-	m_renderer->VTable0x28();
+	m_renderer->ClearLights();
 	m_renderer->VTable0x60();
 	return MenuScreen::Destroy();
 }
@@ -176,9 +176,9 @@ void MenuGameScreen::SetLighting(const ColorRGBA* p_materialColor, const ColorRG
 	m_light.SetColor(*p_lightColor);
 	m_light.SetDirection(lightDirection);
 
-	m_renderer->VTable0x28();
-	m_renderer->VTable0x2c(&m_materialColor);
-	m_renderer->VTable0x30(&m_light);
+	m_renderer->ClearLights();
+	m_renderer->SetAmbient(&m_materialColor);
+	m_renderer->AddLight(&m_light);
 	m_renderer->VTable0x60();
 }
 

@@ -97,25 +97,25 @@ public:
 	virtual GolCommonDrawState* GetDrawState() = 0;                          // vtable+0x10
 	virtual GolRenderTarget* GetRenderTargetInfo() = 0;                      // vtable+0x14
 	virtual void VTable0x18() = 0;                                           // vtable+0x18
-	virtual void VTable0x1c(const ColorRGBA&) = 0;                           // vtable+0x1c
-	virtual void VTable0x20(GolCamera*) = 0;                                 // vtable+0x20
+	virtual void SetClearColor(const ColorRGBA&) = 0;                        // vtable+0x1c
+	virtual void SetCamera(GolCamera*) = 0;                                  // vtable+0x20
 	virtual void VTable0x24();                                               // vtable+0x24
-	virtual void VTable0x28();                                               // vtable+0x28
-	virtual void VTable0x2c(const MaterialColor* p_param);                   // vtable+0x2c
-	virtual void VTable0x30(const Light* p_param);                           // vtable+0x30
+	virtual void ClearLights();                                              // vtable+0x28
+	virtual void SetAmbient(const MaterialColor* p_param);                   // vtable+0x2c
+	virtual void AddLight(const Light* p_param);                             // vtable+0x30
 	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08);  // vtable+0x34
 	virtual void VTable0x38();                                               // vtable+0x38
 	virtual void VTable0x3c(LegoU32);                                        // vtable+0x3c
 	virtual void VTable0x40();                                               // vtable+0x40
 	virtual void VTable0x44();                                               // vtable+0x44
 	virtual void VTable0x48();                                               // vtable+0x48
-	virtual GolRenderTarget* VTable0x4c(undefined2, undefined2);             // vtable+0x4c
-	virtual void VTable0x50(GolRenderTarget*);                               // vtable+0x50
+	virtual GolRenderTarget* CreateRenderTarget(undefined2, undefined2);     // vtable+0x4c
+	virtual void DestroyRenderTarget(GolRenderTarget*);                      // vtable+0x50
 	virtual void VTable0x54(undefined4) = 0;                                 // vtable+0x54
 	virtual void VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2); // vtable+0x58
 	virtual void VTable0x5c() = 0;                                           // vtable+0x5c
 	virtual void VTable0x60();                                               // vtable+0x60
-	virtual void VTable0x64(
+	virtual void DrawString(
 		GolString*,
 		GolFontBase*,
 		LegoS32,
@@ -125,7 +125,7 @@ public:
 		Rect*,
 		undefined4
 	) = 0; // vtable+0x64
-	virtual void VTable0x68(
+	virtual void DrawCString(
 		const LegoChar*,
 		GolFontBase*,
 		LegoS32,
@@ -135,7 +135,7 @@ public:
 		Rect*,
 		undefined4
 	) = 0; // vtable+0x68
-	virtual void VTable0x6c(
+	virtual void DrawStringFitted(
 		GolString*,
 		GolFontBase*,
 		LegoS32,
@@ -145,9 +145,9 @@ public:
 		Rect*,
 		undefined4
 	) = 0; // vtable+0x6c
-	virtual void VTable0x70(GolImage*, undefined4, LegoS32, LegoS32, LegoS32,
-							LegoS32) = 0; // vtable+0x70
-	virtual void VTable0x74(
+	virtual void DrawImage(GolImage*, undefined4, LegoS32, LegoS32, LegoS32,
+						   LegoS32) = 0; // vtable+0x70
+	virtual void DrawImageStretched(
 		GolImage*,
 		undefined4,
 		LegoS32,
@@ -158,9 +158,9 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) = 0;                                                            // vtable+0x74
-	virtual void VTable0x78(GolImage*, undefined4, Rect*, Rect*) = 0; // vtable+0x78
-	virtual void VTable0x7c(
+	) = 0;                                                               // vtable+0x74
+	virtual void DrawImageRect(GolImage*, undefined4, Rect*, Rect*) = 0; // vtable+0x78
+	virtual void DrawImageClipped(
 		GolImage* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,

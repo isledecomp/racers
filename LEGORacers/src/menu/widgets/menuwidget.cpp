@@ -279,7 +279,7 @@ void MenuWidget::MeasureText(
 void MenuWidget::DrawImage(Rect* p_destRect, Rect* p_sourceRect, GolImage* p_image)
 {
 	p_image->m_unk0x4a.m_u32 = m_colorPacked;
-	m_renderer->VTable0x7c(p_image, 0, p_destRect, p_sourceRect, NULL);
+	m_renderer->DrawImageClipped(p_image, 0, p_destRect, p_sourceRect, NULL);
 }
 
 // FUNCTION: LEGORACERS 0x00472da0
@@ -313,7 +313,7 @@ void MenuWidget::DrawString(
 	else {
 		LegoS32 y = p_source->m_top;
 		LegoS32 x = p_source->m_left;
-		m_renderer->VTable0x6c(
+		m_renderer->DrawStringFitted(
 			p_string,
 			p_font,
 			x,

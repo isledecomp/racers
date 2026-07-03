@@ -231,7 +231,7 @@ void MenuManager::SetupCamera()
 	lens->m_flags |= GolCamera::c_flagBit0;
 	lens->GetTransform()->VTable0x24(&right, &forward);
 	lens->m_flags |= GolCamera::c_flagBit0;
-	m_renderer->VTable0x20(lens);
+	m_renderer->SetCamera(lens);
 }
 
 // FUNCTION: LEGORACERS 0x0042ceb0
@@ -480,7 +480,7 @@ void MenuManager::Run()
 	rendererState.m_grn = 0;
 	rendererState.m_blu = 0;
 	rendererState.m_alp = 0;
-	m_renderer->VTable0x1c(rendererState);
+	m_renderer->SetClearColor(rendererState);
 	m_running = TRUE;
 
 	while (m_running) {

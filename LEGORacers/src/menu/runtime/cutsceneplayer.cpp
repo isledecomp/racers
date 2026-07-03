@@ -2340,7 +2340,7 @@ void CutsceneImageVisual::VTable0x20(
 		m_image->m_unk0x4a.m_u32 = m_colorPacked;
 	}
 
-	p_renderer->VTable0x78(m_image, 0, &destRect, NULL);
+	p_renderer->DrawImageRect(m_image, 0, &destRect, NULL);
 
 	if (m_flags & 0x100) {
 		union {

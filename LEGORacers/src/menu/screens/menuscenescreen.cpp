@@ -111,7 +111,7 @@ LegoBool32 MenuSceneScreen::Destroy()
 	m_sceneWidget.Destroy();
 
 	if (m_renderer && m_savedCamera) {
-		m_renderer->VTable0x20(m_savedCamera);
+		m_renderer->SetCamera(m_savedCamera);
 	}
 
 	m_renderer = NULL;

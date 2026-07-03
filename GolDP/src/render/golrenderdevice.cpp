@@ -855,7 +855,7 @@ void GolRenderDevice::VTable0xc4()
 }
 
 // FUNCTION: GOLDP 0x100298b0
-void GolRenderDevice::VTable0x28()
+void GolRenderDevice::ClearLights()
 {
 	m_flags &= ~c_flagBit15;
 	m_unk0x11c = 0;
@@ -864,14 +864,14 @@ void GolRenderDevice::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x100298d0
-void GolRenderDevice::VTable0x2c(const MaterialColor* p_param)
+void GolRenderDevice::SetAmbient(const MaterialColor* p_param)
 {
 	m_flags |= c_flagBit15;
 	m_unk0x120 = p_param;
 }
 
 // FUNCTION: GOLDP 0x100298f0
-void GolRenderDevice::VTable0x30(const Light* p_param)
+void GolRenderDevice::AddLight(const Light* p_param)
 {
 	if (m_unk0x11c < 7) {
 		m_flags |= c_flagBit15;
@@ -917,13 +917,13 @@ void GolRenderDevice::VTable0x40()
 }
 
 // FUNCTION: GOLDP 0x10029950 FOLDED
-GolRenderTarget* GolRenderDevice::VTable0x4c(undefined2, undefined2)
+GolRenderTarget* GolRenderDevice::CreateRenderTarget(undefined2, undefined2)
 {
 	return NULL;
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolRenderDevice::VTable0x50(GolRenderTarget*)
+void GolRenderDevice::DestroyRenderTarget(GolRenderTarget*)
 {
 	// empty
 }

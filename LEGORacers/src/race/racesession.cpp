@@ -88,38 +88,38 @@ void RaceSession::Reset()
 	m_renderer = NULL;
 	m_inputManager = NULL;
 	m_standings = NULL;
-	m_displayName = 0;
-	m_trackModelName = 0;
-	m_worldName = 0;
-	m_sharedModelName = 0;
-	m_effectsModelName = 0;
-	m_materialAnimationModelName = 0;
-	m_triggerModelName = 0;
-	m_collisionWorldName = 0;
-	m_triggerWorldName = 0;
-	m_powerupFileName = 0;
-	m_turboDatabaseName = 0;
-	m_powerupDatabaseName = 0;
-	m_unk0xeb = 0;
-	m_racerTriggerFileName = 0;
-	m_eventFileName = 0;
-	m_triggerFileName = 0;
-	m_timerFileName = 0;
-	m_particleAnimationName = 0;
-	m_soundFileName = 0;
-	m_voiceFileName = 0;
-	m_soundBankName = 0;
-	m_musicFileName = 0;
-	m_fontFileName = 0;
-	m_imageFileName = 0;
-	m_startPositionsFileName = 0;
-	m_skyName = 0;
-	m_surfaceFileName = 0;
-	m_hazardFileName = 0;
-	m_checkpointFileName = 0;
-	m_extraTriggerWorldName = 0;
-	m_cameraName = 0;
-	m_targetFileName = 0;
+	m_displayName[0] = '\0';
+	m_trackModelName[0] = '\0';
+	m_worldName[0] = '\0';
+	m_sharedModelName[0] = '\0';
+	m_effectsModelName[0] = '\0';
+	m_materialAnimationModelName[0] = '\0';
+	m_triggerModelName[0] = '\0';
+	m_collisionWorldName[0] = '\0';
+	m_triggerWorldName[0] = '\0';
+	m_powerupFileName[0] = '\0';
+	m_turboDatabaseName[0] = '\0';
+	m_powerupDatabaseName[0] = '\0';
+	m_unk0xeb[0] = '\0';
+	m_racerTriggerFileName[0] = '\0';
+	m_eventFileName[0] = '\0';
+	m_triggerFileName[0] = '\0';
+	m_timerFileName[0] = '\0';
+	m_particleAnimationName[0] = '\0';
+	m_soundFileName[0] = '\0';
+	m_voiceFileName[0] = '\0';
+	m_soundBankName[0] = '\0';
+	m_musicFileName[0] = '\0';
+	m_fontFileName[0] = '\0';
+	m_imageFileName[0] = '\0';
+	m_startPositionsFileName[0] = '\0';
+	m_skyName[0] = '\0';
+	m_surfaceFileName[0] = '\0';
+	m_hazardFileName[0] = '\0';
+	m_checkpointFileName[0] = '\0';
+	m_extraTriggerWorldName[0] = '\0';
+	m_cameraName[0] = '\0';
+	m_targetFileName[0] = '\0';
 	m_trackCamera = NULL;
 	m_cameraStartPosition.m_x = 0.0f;
 	m_cameraStartPosition.m_y = 0.0f;
@@ -201,20 +201,20 @@ void RaceSession::Initialize(
 
 	parser->OpenFileForRead(p_raceName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_rabToken0x35));
-	strcpy(&m_displayName, parser->ReadStringWithMaxLength(0x3f));
+	strcpy(m_displayName, parser->ReadStringWithMaxLength(0x3f));
 	parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case c_rabToken0x27:
-			strcpy(&m_worldName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_worldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x42:
-			strcpy(&m_skyName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_skyName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3b:
-			strcpy(&m_sharedModelName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_sharedModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x28:
 			m_cameraStartDirection.m_x = parser->ReadFloat();
@@ -230,80 +230,80 @@ void RaceSession::Initialize(
 			m_cameraStartPosition.m_z = parser->ReadFloat();
 			break;
 		case c_rabToken0x49:
-			strncpy(&m_cameraName, parser->ReadStringWithMaxLength(8), 8);
+			strncpy(m_cameraName, parser->ReadStringWithMaxLength(8), 8);
 			break;
 		case c_rabToken0x40:
-			strcpy(&m_effectsModelName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_effectsModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2b:
-			strcpy(&m_triggerModelName, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_collisionWorldName, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_triggerWorldName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_triggerModelName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_collisionWorldName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_triggerWorldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2c:
-			strcpy(&m_eventFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_eventFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2d:
-			strcpy(&m_fontFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_fontFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2e:
-			strcpy(&m_trackModelName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_trackModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2f:
-			strcpy(&m_imageFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_imageFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x30:
-			strcpy(&m_musicFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_musicFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x31:
 		case c_rabToken0x32:
 			parser->ReadStringWithMaxLength(0x0c);
 			break;
 		case c_rabToken0x33:
-			strcpy(&m_powerupFileName, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_turboDatabaseName, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_powerupDatabaseName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_powerupFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_turboDatabaseName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_powerupDatabaseName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x34:
-			strcpy(&m_unk0xeb, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_unk0xeb, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x41:
-			strcpy(&m_startPositionsFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_startPositionsFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3c:
-			strcpy(&m_soundFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_soundFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3d:
-			strcpy(&m_voiceFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_voiceFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3f:
-			strcpy(&m_soundBankName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_soundBankName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x37:
-			strcpy(&m_triggerFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_triggerFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x38:
-			strcpy(&m_timerFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_timerFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x45:
-			strcpy(&m_materialAnimationModelName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_materialAnimationModelName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3a:
-			strcpy(&m_particleAnimationName, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_sharedParticleAnimationName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_particleAnimationName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_sharedParticleAnimationName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x39:
-			strcpy(&m_racerTriggerFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_racerTriggerFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x43:
-			strcpy(&m_surfaceFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_surfaceFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x44:
-			strcpy(&m_hazardFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_hazardFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x48:
-			strcpy(&m_checkpointFileName, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_extraTriggerWorldName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_checkpointFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_extraTriggerWorldName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x46:
 			m_mapMinX = parser->ReadFloat();
@@ -312,7 +312,7 @@ void RaceSession::Initialize(
 			m_mapMinY = parser->ReadFloat();
 			break;
 		case c_rabToken0x4a:
-			strcpy(&m_targetFileName, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(m_targetFileName, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		default:
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -557,10 +557,10 @@ void RaceSession::InitializeSound()
 	secondVoice[0] = '\0';
 
 	m_musicGroup = m_soundManager->CreateMusicGroup();
-	m_musicGroup->Load(&m_musicFileName);
+	m_musicGroup->Load(m_musicFileName);
 
 	m_soundSource.Initialize(m_soundManager);
-	m_soundSource.LoadAmbientBank(&m_soundBankName);
+	m_soundSource.LoadAmbientBank(m_soundBankName);
 
 	LegoU32 index = GetPlayerVoiceName(0, firstVoice);
 	if (m_timeRaceManager) {
@@ -570,7 +570,7 @@ void RaceSession::InitializeSound()
 		GetPlayerVoiceName(index + 1, secondVoice);
 	}
 	else {
-		strcpy(secondVoice, &m_voiceFileName);
+		strcpy(secondVoice, m_voiceFileName);
 	}
 
 	GolHashTable* hashTable = g_hashTable;
@@ -586,7 +586,7 @@ void RaceSession::InitializeSound()
 		hashTable->SetCurrentEntry(hashTable->AddString(commonDataDirectory));
 	}
 
-	m_soundSource.LoadSfxBank(&m_soundFileName);
+	m_soundSource.LoadSfxBank(m_soundFileName);
 
 	for (LegoU32 i = 0; i < m_context->m_playerCount; i++) {
 		m_listenerNodes[i] = m_soundManager->CreateSoundNode();
@@ -706,7 +706,7 @@ void RaceSession::LoadStringsAndFonts()
 	m_hudScratchString.CopyFromBufSelection(m_hudScratchBuffer, 0x100);
 
 	m_fontTable = m_golExport->CreateFontTable();
-	m_fontTable->LoadFontDefinitions(m_renderer, &m_fontFileName, m_context->m_useBinaryFiles);
+	m_fontTable->LoadFontDefinitions(m_renderer, m_fontFileName, m_context->m_useBinaryFiles);
 	m_hudFont = m_fontTable->GetItem(0);
 	m_loadingFont = m_fontTable->GetItem(0);
 }
@@ -729,7 +729,7 @@ void RaceSession::DestroyStringsAndFonts()
 void RaceSession::LoadHudImages()
 {
 	m_hudImages = m_golExport->VTable0x34();
-	m_hudImages->LoadImageDefinitions(m_renderer, &m_imageFileName, m_context->m_useBinaryFiles);
+	m_hudImages->LoadImageDefinitions(m_renderer, m_imageFileName, m_context->m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x00432df0
@@ -747,7 +747,7 @@ void RaceSession::DestroyHudImages()
 void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 {
 	m_effectsDatabase = m_golExport->VTable0x08();
-	m_effectsDatabase->VTable0x14(m_renderer, &m_effectsModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_effectsDatabase->VTable0x14(m_renderer, m_effectsModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_effectsDatabase->ResetEntities();
 	}
@@ -760,20 +760,20 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	}
 
 	m_trackDatabase = m_golExport->VTable0x08();
-	m_trackDatabase->VTable0x14(m_renderer, &m_trackModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_trackDatabase->VTable0x14(m_renderer, m_trackModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_trackDatabase->ResetEntities();
 	}
 	DrawLoadProgress(0.24f);
 
 	m_trackCollidable = m_trackDatabase->GetCollidableEntities();
-	if (m_cameraName) {
-		m_trackCamera = m_trackDatabase->FindCamera(&m_cameraName);
+	if (m_cameraName[0]) {
+		m_trackCamera = m_trackDatabase->FindCamera(m_cameraName);
 	}
 	DrawLoadProgress(0.26f);
 
 	m_triggerDatabase = m_golExport->VTable0x08();
-	m_triggerDatabase->VTable0x14(m_renderer, &m_triggerModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_triggerDatabase->VTable0x14(m_renderer, m_triggerModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_triggerDatabase->ResetEntities();
 	}
@@ -781,21 +781,21 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	DrawLoadProgress(0.34f);
 
 	LegoChar name[sizeof(GolName)];
-	::strncpy(name, &m_collisionWorldName, sizeof(name));
+	::strncpy(name, m_collisionWorldName, sizeof(name));
 	m_collisionWorld = m_triggerDatabase->FindBoundedEntity(name);
 	DrawLoadProgress(0.36f);
 
-	::strncpy(name, &m_triggerWorldName, sizeof(name));
+	::strncpy(name, m_triggerWorldName, sizeof(name));
 	m_triggerWorldEntity = m_triggerDatabase->FindBoundedEntity(name);
 
-	if (m_extraTriggerWorldName) {
-		::strncpy(name, &m_extraTriggerWorldName, sizeof(name));
+	if (m_extraTriggerWorldName[0]) {
+		::strncpy(name, m_extraTriggerWorldName, sizeof(name));
 		m_extraTriggerWorldEntity = m_triggerDatabase->FindBoundedEntity(name);
 	}
 	DrawLoadProgress(0.38f);
 
 	m_sharedDatabase = m_golExport->VTable0x08();
-	m_sharedDatabase->VTable0x14(m_renderer, &m_sharedModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_sharedDatabase->VTable0x14(m_renderer, m_sharedModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_sharedDatabase->ResetEntities();
 	}
@@ -803,7 +803,7 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 
 	m_materialAnimationDatabase = m_golExport->VTable0x08();
 	m_materialAnimationDatabase
-		->VTable0x14(m_renderer, &m_materialAnimationModelName, m_context->m_useBinaryFiles, 1.0f);
+		->VTable0x14(m_renderer, m_materialAnimationModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_materialAnimationDatabase->ResetEntities();
 	}
@@ -964,8 +964,8 @@ void RaceSession::DestroyRouteRecords()
 // STUB: LEGORACERS 0x00433480
 void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 {
-	if (m_checkpointFileName) {
-		m_checkpointGraph.Load(&m_checkpointFileName, m_context->m_useBinaryFiles, p_mirror);
+	if (m_checkpointFileName[0]) {
+		m_checkpointGraph.Load(m_checkpointFileName, m_context->m_useBinaryFiles, p_mirror);
 		BindCheckpointMaterials();
 	}
 
@@ -984,7 +984,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 		m_golExport,
 		m_renderer,
 		materialAnimation,
-		&m_sharedParticleAnimationName,
+		m_sharedParticleAnimationName,
 		m_context->m_useBinaryFiles
 	);
 
@@ -1002,7 +1002,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	DrawLoadProgress(0.54f);
 
-	m_raceState.LoadStartPositions(&m_startPositionsFileName, m_context->m_useBinaryFiles, p_mirror);
+	m_raceState.LoadStartPositions(m_startPositionsFileName, m_context->m_useBinaryFiles, p_mirror);
 
 	DrawLoadProgress(0.56f);
 
@@ -1105,12 +1105,12 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	DrawLoadProgress(0.7f);
 
-	m_skyState.Load(m_renderer, m_golExport, &m_skyName, &m_worldName, m_context->m_useBinaryFiles);
+	m_skyState.Load(m_renderer, m_golExport, m_skyName, m_worldName, m_context->m_useBinaryFiles);
 
 	DrawLoadProgress(0.75f);
 
-	if (m_targetFileName) {
-		m_targetPoints.Load(&m_targetFileName, m_context->m_useBinaryFiles, p_mirror);
+	if (m_targetFileName[0]) {
+		m_targetPoints.Load(m_targetFileName, m_context->m_useBinaryFiles, p_mirror);
 	}
 
 	params.m_trackDatabase = m_trackDatabase;
@@ -1123,7 +1123,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	params.m_sharedParticleAnimation = &m_sharedParticleAnimation;
 	params.m_skyState = &m_skyState;
 	params.m_targetPoints = &m_targetPoints;
-	params.m_name = &m_eventFileName;
+	params.m_name = m_eventFileName;
 	params.m_binary = m_context->m_useBinaryFiles;
 	params.m_mirror = p_mirror;
 	m_eventTable.Load(&params);
@@ -1147,19 +1147,19 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	dispatcherContext.m_powerupManager = &m_powerupManager;
 	dispatcherContext.m_trailManager = &m_trailManager;
 	dispatcherContext.m_mirror = p_mirror;
-	m_hazardManager.LoadHazards(&dispatcherContext, &m_hazardFileName, m_context->m_useBinaryFiles);
+	m_hazardManager.LoadHazards(&dispatcherContext, m_hazardFileName, m_context->m_useBinaryFiles);
 
 	DrawLoadProgress(0.8f);
 
 	m_racerCollisionWorlds.Initialize(m_triggerDatabase, &m_raceState);
-	m_triggerWorld.Initialize(m_triggerDatabase, &m_collisionWorldName, &m_eventTable, &m_surfaceTable);
+	m_triggerWorld.Initialize(m_triggerDatabase, m_collisionWorldName, &m_eventTable, &m_surfaceTable);
 	m_racerTriggers.Load(
 		&m_raceState,
 		&m_eventTable,
 		&m_powerupManager,
 		m_triggerDatabase,
 		&m_racerCollisionWorlds,
-		&m_racerTriggerFileName,
+		m_racerTriggerFileName,
 		m_context->m_useBinaryFiles,
 		p_mirror
 	);
@@ -1167,11 +1167,11 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	DrawLoadProgress(0.84f);
 
 	m_triggers
-		.Load(m_raceState.GetEventQueue(), &m_eventTable, &m_triggerFileName, m_context->m_useBinaryFiles, p_mirror);
+		.Load(m_raceState.GetEventQueue(), &m_eventTable, m_triggerFileName, m_context->m_useBinaryFiles, p_mirror);
 
 	DrawLoadProgress(0.86f);
 
-	m_timers.Load(m_raceState.GetEventQueue(), &m_eventTable, &m_timerFileName, m_context->m_useBinaryFiles);
+	m_timers.Load(m_raceState.GetEventQueue(), &m_eventTable, m_timerFileName, m_context->m_useBinaryFiles);
 
 	DrawLoadProgress(0.88f);
 
@@ -1243,7 +1243,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 		m_golExport,
 		m_renderer,
 		m_effectsDatabase->VTable0x4c(0),
-		&m_particleAnimationName,
+		m_particleAnimationName,
 		m_context->m_useBinaryFiles
 	);
 
@@ -1266,7 +1266,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	powerupParams.m_cheatFlags = m_context->m_cheatFlags;
 	m_powerupManager.Initialize(&powerupParams);
 
-	m_powerupManager.LoadDatabases(&m_powerupDatabaseName, &m_turboDatabaseName, m_context->m_useBinaryFiles);
+	m_powerupManager.LoadDatabases(m_powerupDatabaseName, m_turboDatabaseName, m_context->m_useBinaryFiles);
 
 	DrawLoadProgress(0.97f);
 
@@ -1276,16 +1276,16 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	}
 
 	if (m_timeRaceManager) {
-		LegoU32 nameLength = ::strlen(&m_powerupFileName);
-		(&m_powerupFileName)[nameLength - 4] = '2';
-		(&m_powerupFileName)[nameLength - 3] = '.';
-		(&m_powerupFileName)[nameLength - 2] = 'P';
-		(&m_powerupFileName)[nameLength - 1] = 'W';
-		(&m_powerupFileName)[nameLength] = 'F';
-		(&m_powerupFileName)[nameLength + 1] = 0;
+		LegoU32 nameLength = ::strlen(m_powerupFileName);
+		(m_powerupFileName)[nameLength - 4] = '2';
+		(m_powerupFileName)[nameLength - 3] = '.';
+		(m_powerupFileName)[nameLength - 2] = 'P';
+		(m_powerupFileName)[nameLength - 1] = 'W';
+		(m_powerupFileName)[nameLength] = 'F';
+		(m_powerupFileName)[nameLength + 1] = 0;
 	}
 
-	m_powerupManager.LoadPowerupFile(&m_powerupFileName, m_context->m_useBinaryFiles, p_mirror);
+	m_powerupManager.LoadPowerupFile(m_powerupFileName, m_context->m_useBinaryFiles, p_mirror);
 	m_powerupManager.PreparePools(!m_splitScreen);
 	m_powerupManager.CreatePools();
 	m_powerupManager.ClearBricksAudible();
@@ -2506,7 +2506,7 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 {
 	RaceSession* raceSession = this;
 
-	if (!raceSession->m_surfaceFileName) {
+	if (!raceSession->m_surfaceFileName[0]) {
 		LegoU32 zero = 0;
 		for (LegoU32 i = zero; i < raceSession->m_triggerDatabase->GetBoundedEntityCount(); i++) {
 			GolModelMaterialTable* materials =
@@ -2522,7 +2522,7 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 	}
 
 	SurfaceTable* surfaceTable = &raceSession->m_surfaceTable;
-	surfaceTable->Load(&raceSession->m_surfaceFileName, raceSession->m_context->m_useBinaryFiles, p_mirror);
+	surfaceTable->Load(raceSession->m_surfaceFileName, raceSession->m_context->m_useBinaryFiles, p_mirror);
 
 	for (LegoU32 i = 0; i < raceSession->m_triggerDatabase->GetBoundedEntityCount(); i++) {
 		GolModelMaterialTable* materials = raceSession->m_triggerDatabase->GetBoundedEntities()[i].GetMaterialTable();

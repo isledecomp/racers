@@ -6,6 +6,7 @@
 #include "race/hazards/hazard.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/powerups/powerupprojectile.h"
+#include "race/racetrailmanager.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
@@ -40,15 +41,15 @@ protected:
 	PowerupProjectile m_projectile;       // 0x38
 	GolVec3 m_launchPosition;             // 0xe0
 	GolVec3 m_targetPosition;             // 0xec
-	GolVec3 m_unk0xf8;                    // 0xf8
-	LegoFloat m_unk0x104;                 // 0x104
-	LegoS32 m_unk0x108;                   // 0x108
+	GolVec3 m_triggerPosition;            // 0xf8
+	LegoFloat m_triggerRadiusSquared;     // 0x104
+	LegoS32 m_triggerEventId;             // 0x108
 	TriggerWorld* m_triggerWorld;         // 0x10c
 	RacePowerupManager* m_powerupManager; // 0x110
 	GolBillboard* m_billboard;            // 0x114
 	GolExport* m_golExport;               // 0x118
-	void* m_unk0x11c;                     // 0x11c
-	void* m_unk0x120;                     // 0x120
+	RaceTrailManager* m_trailManager;     // 0x11c
+	RaceTrailManager::Trail* m_trail;     // 0x120
 };
 
 #endif // LAUNCHERHAZARD_H

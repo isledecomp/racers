@@ -3,6 +3,7 @@
 
 #include "types.h"
 
+class RaceTrailManager;
 class CutsceneAnimation;
 class GolCollidableEntity;
 class GolD3DRenderDevice;
@@ -38,7 +39,7 @@ public:
 	RaceState* GetRaceState() const { return m_raceState; }
 	TriggerWorld* GetTriggerWorld() const { return m_triggerWorld; }
 	RacePowerupManager* GetPowerupManager() const { return m_powerupManager; }
-	void* GetTrailManager() const { return m_trailManager; }
+	RaceTrailManager* GetTrailManager() const { return m_trailManager; }
 	LegoU32 GetMirror() const { return m_mirror; }
 	PositionProvider* GetPositionProvider() const { return m_positionProvider; }
 
@@ -61,11 +62,10 @@ private:
 	RaceState* m_raceState;                 // 0x30
 	TriggerWorld* m_triggerWorld;           // 0x34
 	RacePowerupManager* m_powerupManager;   // 0x38
-	void* m_trailManager;                   // 0x3c
+	RaceTrailManager* m_trailManager;       // 0x3c
 	LegoU32 m_mirror;                       // 0x40
 	undefined m_unk0x44[0x5c - 0x44];       // 0x44
 	PositionProvider* m_positionProvider;   // 0x5c
 };
-
 
 #endif // HAZARDCONTEXT_H

@@ -5,8 +5,8 @@
 #include "golmath.h"
 #include "race/hazards/hazardcontext.h"
 #include "race/powerups/powerupprojectile.h"
-#include "race/raceeventtable.h"
 #include "race/powerups/racepowerupmanager.h"
+#include "race/raceeventtable.h"
 #include "render/gold3drenderdevice.h"
 #include "types.h"
 
@@ -35,17 +35,17 @@ LauncherHazard::~LauncherHazard()
 // FUNCTION: LEGORACERS 0x0048f7c0
 void LauncherHazard::ClearFields()
 {
-	m_unk0x108 = -1;
+	m_triggerEventId = -1;
 	m_triggerWorld = 0;
 	m_golExport = 0;
 	m_billboard = 0;
 	m_powerupManager = 0;
-	m_unk0x11c = 0;
-	m_unk0x120 = 0;
+	m_trailManager = 0;
+	m_trail = 0;
 	m_launchPosition.Clear();
 	m_targetPosition.Clear();
-	m_unk0xf8.Clear();
-	m_unk0x104 = 0.0f;
+	m_triggerPosition.Clear();
+	m_triggerRadiusSquared = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x0048f830
@@ -60,7 +60,7 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	m_triggerWorld = p_context->GetTriggerWorld();
 	m_golExport = p_context->GetGolExport();
 	m_powerupManager = p_context->GetPowerupManager();
-	m_unk0x11c = p_context->GetTrailManager();
+	m_trailManager = p_context->GetTrailManager();
 
 	m_billboard = static_cast<GolBillboard*>(m_golExport->VTable0x30());
 	GolMaterial* material = p_context->GetRenderer()->FindMaterialByName("cannonb");
@@ -82,17 +82,17 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 			m_targetPosition.m_z = p_parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x39:
-			m_unk0xf8.m_x = p_parser->ReadFloat();
-			m_unk0xf8.m_y = p_parser->ReadFloat();
-			m_unk0xf8.m_z = p_parser->ReadFloat();
+			m_triggerPosition.m_x = p_parser->ReadFloat();
+			m_triggerPosition.m_y = p_parser->ReadFloat();
+			m_triggerPosition.m_z = p_parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x3a: {
 			LegoFloat radius = p_parser->ReadFloat();
-			m_unk0x104 = radius * radius;
+			m_triggerRadiusSquared = radius * radius;
 			break;
 		}
 		case GolFileParser::e_unknown0x3b:
-			m_unk0x108 = p_parser->ReadInteger();
+			m_triggerEventId = p_parser->ReadInteger();
 			break;
 		default:
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -105,7 +105,7 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	if (p_context->GetMirror()) {
 		m_launchPosition.m_y = -m_launchPosition.m_y;
 		m_targetPosition.m_y = -m_targetPosition.m_y;
-		m_unk0xf8.m_y = -m_unk0xf8.m_y;
+		m_triggerPosition.m_y = -m_triggerPosition.m_y;
 	}
 
 	m_state = 1;
@@ -127,16 +127,16 @@ void LauncherHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048fa30
 void LauncherHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 {
-	if (m_unk0x108 == -1 || p_unk0x04 != m_unk0x108 || m_state != 1) {
+	if (m_triggerEventId == -1 || p_unk0x04 != m_triggerEventId || m_state != 1) {
 		return;
 	}
 
 	GolVec3* position = static_cast<GolVec3*>(p_unk0x08);
 	if (position != NULL) {
-		LegoFloat dx = m_unk0xf8.m_x - position->m_x;
-		LegoFloat dy = m_unk0xf8.m_y - position->m_y;
-		LegoFloat dz = m_unk0xf8.m_z - position->m_z;
-		if (dx * dx + dy * dy + dz * dz >= m_unk0x104) {
+		LegoFloat dx = m_triggerPosition.m_x - position->m_x;
+		LegoFloat dy = m_triggerPosition.m_y - position->m_y;
+		LegoFloat dz = m_triggerPosition.m_z - position->m_z;
+		if (dx * dx + dy * dy + dz * dz >= m_triggerRadiusSquared) {
 			return;
 		}
 	}
@@ -174,9 +174,9 @@ void LauncherHazard::OnActivate(void*)
 	trailParams.m_pointCount = 4;
 
 	RaceTrailManager::Trail::Params* trailParamsPtr = &trailParams;
-	m_unk0x120 = static_cast<RaceTrailManager*>(m_unk0x11c)->AcquireTrail(trailParamsPtr);
-	if (m_unk0x120 != NULL) {
-		RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
+	m_trail = m_trailManager->AcquireTrail(trailParamsPtr);
+	if (m_trail != NULL) {
+		RaceTrailManager::Trail* item = m_trail;
 		item->SetColor(&g_launcherTrailColor);
 	}
 
@@ -188,11 +188,11 @@ void LauncherHazard::OnDeactivate(void*)
 {
 	m_projectile.Deactivate();
 
-	if (m_unk0x120 != NULL) {
-		RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
-		RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
+	if (m_trail != NULL) {
+		RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_trailManager);
+		RaceTrailManager::Trail* item = m_trail;
 		manager->ReleaseTrail(item);
-		m_unk0x120 = NULL;
+		m_trail = NULL;
 	}
 
 	m_state = 1;
@@ -215,11 +215,11 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 			projectile->Deactivate();
 			m_eventTable->FireEventsAt(7, 7, &position);
 
-			if (m_unk0x120 != NULL) {
-				RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
-				RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
+			if (m_trail != NULL) {
+				RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_trailManager);
+				RaceTrailManager::Trail* item = m_trail;
 				manager->ReleaseTrail(item);
-				m_unk0x120 = NULL;
+				m_trail = NULL;
 			}
 		}
 	}
@@ -228,7 +228,7 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 		OnDeactivate(NULL);
 	}
 
-	if (m_unk0x120 == NULL) {
+	if (m_trail == NULL) {
 		return;
 	}
 
@@ -263,7 +263,7 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 	positions[3].m_y = positions[2].m_y;
 	positions[3].m_z = positions[1].m_z + 3.0f;
 
-	RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
+	RaceTrailManager::Trail* item = m_trail;
 	item->AddSampleWithCenter(p_elapsedMs, positions, center);
 }
 

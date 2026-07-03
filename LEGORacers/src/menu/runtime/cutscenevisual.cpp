@@ -164,11 +164,11 @@ void CutsceneVisual::Draw(GolD3DRenderDevice* p_renderer)
 			if (drawWidth) {
 				if (drawHeight && drawWidth + x <= static_cast<LegoU32>(renderTargetWidth) &&
 					y + drawHeight <= static_cast<LegoU32>(renderTargetHeight)) {
-					VTable0x1c(&sourceWidth, &sourceHeight);
+					GetContentSize(&sourceWidth, &sourceHeight);
 
 					LegoFloat scaleY = static_cast<LegoFloat>(drawHeight) / static_cast<LegoFloat>(sourceHeight);
 					LegoFloat scaleX = static_cast<LegoFloat>(drawWidth) / static_cast<LegoFloat>(sourceWidth);
-					VTable0x20(p_renderer, x, y, drawWidth, drawHeight, scaleX, scaleY);
+					DrawContent(p_renderer, x, y, drawWidth, drawHeight, scaleX, scaleY);
 				}
 			}
 		}
@@ -186,7 +186,7 @@ void CutsceneVisual::ComputeLayout(GolD3DRenderDevice* p_renderer, LegoFloat p_w
 
 	LegoS32 imageWidth;
 	LegoS32 imageHeight;
-	VTable0x1c(&imageWidth, &imageHeight);
+	GetContentSize(&imageWidth, &imageHeight);
 
 	LegoU32 flags = m_flags;
 	LegoBool32 hasHeight;

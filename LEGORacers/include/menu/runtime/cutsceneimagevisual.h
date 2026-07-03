@@ -12,8 +12,8 @@ public:
 	CutsceneImageVisual();
 	~CutsceneImageVisual() override; // vtable+0x00
 
-	void VTable0x1c(LegoS32* p_width, LegoS32* p_height) override; // vtable+0x1c
-	void VTable0x20(
+	void GetContentSize(LegoS32* p_width, LegoS32* p_height) override; // vtable+0x1c
+	void DrawContent(
 		GolRenderDevice* p_renderer,
 		LegoS32 p_x,
 		LegoS32 p_y,

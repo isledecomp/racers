@@ -15,10 +15,10 @@ public:
 	CutsceneVisual();
 	~CutsceneVisual() override; // vtable+0x00
 
-	void Start() override;                                            // vtable+0x14
-	void Stop() override;                                             // vtable+0x18
-	virtual void VTable0x1c(LegoS32* p_width, LegoS32* p_height) = 0; // vtable+0x1c
-	virtual void VTable0x20(
+	void Start() override;                                                // vtable+0x14
+	void Stop() override;                                                 // vtable+0x18
+	virtual void GetContentSize(LegoS32* p_width, LegoS32* p_height) = 0; // vtable+0x1c
+	virtual void DrawContent(
 		GolRenderDevice* p_renderer,
 		LegoS32 p_x,
 		LegoS32 p_y,

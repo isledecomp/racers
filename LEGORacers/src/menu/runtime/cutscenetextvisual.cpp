@@ -102,7 +102,7 @@ void CutsceneTextVisual::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x004a4890
-void CutsceneTextVisual::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
+void CutsceneTextVisual::GetContentSize(LegoS32* p_width, LegoS32* p_height)
 {
 	if (m_rawString != NULL) {
 		m_font->MeasureString(m_rawString, p_width, p_height);
@@ -113,7 +113,7 @@ void CutsceneTextVisual::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
 }
 
 // FUNCTION: LEGORACERS 0x004a48d0
-void CutsceneTextVisual::VTable0x20(
+void CutsceneTextVisual::DrawContent(
 	GolRenderDevice* p_renderer,
 	LegoS32 p_x,
 	LegoS32 p_y,

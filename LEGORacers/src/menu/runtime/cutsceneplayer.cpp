@@ -2313,14 +2313,14 @@ void CutsceneImageVisual::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x004a39b0
-void CutsceneImageVisual::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
+void CutsceneImageVisual::GetContentSize(LegoS32* p_width, LegoS32* p_height)
 {
 	*p_width = m_image->GetWidth();
 	*p_height = m_image->GetHeight();
 }
 
 // FUNCTION: LEGORACERS 0x004a39d0
-void CutsceneImageVisual::VTable0x20(
+void CutsceneImageVisual::DrawContent(
 	GolRenderDevice* p_renderer,
 	LegoS32 p_x,
 	LegoS32 p_y,

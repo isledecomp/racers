@@ -683,7 +683,7 @@ void MenuManager::PrepareRaceContext()
 	for (LegoU32 selectedIndex = 0; selectedIndex < selectedRecords.GetSelectedRecordCount(); selectedIndex++) {
 		SaveRecordList::Record* record = selectedRecords.GetSelectedRecord(selectedIndex);
 
-		rendererState.FUN_0040eb60();
+		rendererState.ResetLighting();
 
 		ColorRGBA color;
 		color.m_alp = 0xff;
@@ -691,7 +691,7 @@ void MenuManager::PrepareRaceContext()
 		color.m_grn = 0x80;
 		color.m_blu = 0x80;
 		materialColor.SetColor(color);
-		rendererState.FUN_0040eb70(&materialColor);
+		rendererState.SetAmbientColor(&materialColor);
 
 		color.m_red = 0xff;
 		color.m_grn = 0xff;
@@ -703,7 +703,7 @@ void MenuManager::PrepareRaceContext()
 		direction.m_y = 0.0f;
 		direction.m_z = -1.0f;
 		light.SetDirection(direction);
-		rendererState.FUN_0040eba0(&light);
+		rendererState.AddLight(&light);
 
 		record->GetName(&string);
 		string.CopyToString(slot->m_playerName);

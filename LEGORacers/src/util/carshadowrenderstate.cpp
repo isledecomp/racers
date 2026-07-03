@@ -35,19 +35,19 @@ LegoU32 g_silhouetteFlattenFlag = 2;
 CarShadowRenderState g_carShadowRenderState;
 
 // FUNCTION: LEGORACERS 0x00416030 FOLDED
-void CarShadowRenderState::VTable0x00(GolD3DRenderDevice*, GolModelEntity*, LegoU32)
+void CarShadowRenderState::Begin(GolD3DRenderDevice*, GolModelEntity*, LegoU32)
 {
 	// empty
 }
 
 // FUNCTION: LEGORACERS 0x00416030 FOLDED
-void CarShadowRenderState::VTable0x04(GolD3DRenderDevice*, GolModelEntity*, LegoU32)
+void CarShadowRenderState::End(GolD3DRenderDevice*, GolModelEntity*, LegoU32)
 {
 	// empty
 }
 
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
-undefined4 CarShadowRenderState::VTable0x10(DrawCommand*)
+undefined4 CarShadowRenderState::ProcessVerticesPrelit(DrawCommand*)
 {
 	return 0;
 }
@@ -186,7 +186,7 @@ void CarShadowRenderState::EndCapture()
 }
 
 // FUNCTION: LEGORACERS 0x004099f0
-void CarShadowRenderState::VTable0x08(DrawCommand* p_command)
+void CarShadowRenderState::ProcessVertices(DrawCommand* p_command)
 {
 	LegoU32 outputFirst = p_command->m_outputFirst;
 	const CommandVertex* vertices = p_command->m_vertices;
@@ -214,7 +214,7 @@ void CarShadowRenderState::VTable0x08(DrawCommand* p_command)
 }
 
 // FUNCTION: LEGORACERS 0x00409a90
-void CarShadowRenderState::VTable0x0c(MaterialCommand* p_command)
+void CarShadowRenderState::ProcessMaterial(MaterialCommand* p_command)
 {
 	LegoU8* triangle = p_command->m_indices + p_command->m_firstTriangle * 4;
 	LegoU8* end = triangle + p_command->m_triangleCount * 4;

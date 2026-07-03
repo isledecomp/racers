@@ -28,70 +28,64 @@ public:
 
 	GolModelRenderState();
 
-	void VTable0x00(
-		GolD3DRenderDevice* p_renderer,
-		GolModelEntity* p_model,
-		LegoU32 p_lodIndex
-	) override; // vtable+0x00
-	void VTable0x04(
-		GolD3DRenderDevice* p_renderer,
-		GolModelEntity* p_model,
-		LegoU32 p_lodIndex
-	) override;                                             // vtable+0x04
-	void VTable0x08(DrawCommand* p_command) override;       // vtable+0x08
-	void VTable0x0c(MaterialCommand* p_command) override;   // vtable+0x0c
-	undefined4 VTable0x10(DrawCommand* p_command) override; // vtable+0x10
+	void Begin(GolD3DRenderDevice* p_renderer, GolModelEntity* p_model,
+			   LegoU32 p_lodIndex) override; // vtable+0x00
+	void End(GolD3DRenderDevice* p_renderer, GolModelEntity* p_model,
+			 LegoU32 p_lodIndex) override;                             // vtable+0x04
+	void ProcessVertices(DrawCommand* p_command) override;             // vtable+0x08
+	void ProcessMaterial(MaterialCommand* p_command) override;         // vtable+0x0c
+	undefined4 ProcessVerticesPrelit(DrawCommand* p_command) override; // vtable+0x10
 
 	void Reset();
-	void FUN_0040eb60();
-	void FUN_0040eb70(const GolRenderDevice::MaterialColor* p_material);
-	void FUN_0040eba0(const GolRenderDevice::Light* p_light);
+	void ResetLighting();
+	void SetAmbientColor(const GolRenderDevice::MaterialColor* p_material);
+	void AddLight(const GolRenderDevice::Light* p_light);
 
 private:
 	void UpdateMaterialCaches();
-	void FUN_0040edb0(
+	void LightVertices0(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
-	void FUN_0040ede0(
+	void LightVertices1(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
-	void FUN_0040ef10(
+	void LightVertices2(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
-	void FUN_0040f0a0(
+	void LightVertices3(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
-	void FUN_0040f280(
+	void LightVertices4(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
-	void FUN_0040f4c0(
+	void LightVertices5(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
-	void FUN_0040f760(
+	void LightVertices6(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,
 		LegoU32 p_vertexCount
 	);
-	void FUN_0040fa50(
+	void LightVertices7(
 		const CommandVertex* p_vertices,
 		LegoU32 p_outputFirst,
 		LegoU32 p_firstVertex,

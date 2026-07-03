@@ -1115,7 +1115,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 		FUN_10012f50();
 	}
 	else {
-		p_renderState->VTable0x00(this, p_model, result.m_lodIndex);
+		p_renderState->Begin(this, p_model, result.m_lodIndex);
 	}
 
 	m_unk0xc8518 = modelMatrix;
@@ -1148,7 +1148,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 	FUN_10012f50();
 
 	if (m_unk0xc8528) {
-		p_renderState->VTable0x04(this, p_model, result.m_lodIndex);
+		p_renderState->End(this, p_model, result.m_lodIndex);
 	}
 }
 
@@ -1239,7 +1239,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 		FUN_10012f50();
 	}
 	else {
-		p_renderState->VTable0x00(this, p_model, result.m_lodIndex);
+		p_renderState->Begin(this, p_model, result.m_lodIndex);
 	}
 
 	m_unk0xc8518 = modelMatrix;
@@ -1274,7 +1274,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 	FUN_10012f50();
 
 	if (m_unk0xc8528) {
-		p_renderState->VTable0x04(this, p_model, result.m_lodIndex);
+		p_renderState->End(this, p_model, result.m_lodIndex);
 	}
 }
 
@@ -3495,7 +3495,7 @@ void GolD3DRenderDevice::FUN_1000d210(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_unk0xc8530.m_outputFirst = p_outputFirst;
 	m_unk0xc8530.m_firstVertex = p_firstVertex;
 	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
+	m_unk0xc8524->ProcessVertices(&m_unk0xc8530);
 }
 
 // STUB: GOLDP 0x1000d440
@@ -3542,7 +3542,7 @@ void GolD3DRenderDevice::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_unk0xc8530.m_outputFirst = p_outputFirst;
 	m_unk0xc8530.m_firstVertex = p_firstVertex;
 	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
+	m_unk0xc8524->ProcessVertices(&m_unk0xc8530);
 }
 
 // STUB: GOLDP 0x1000d5d0
@@ -3589,7 +3589,7 @@ void GolD3DRenderDevice::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_unk0xc8530.m_outputFirst = p_outputFirst;
 	m_unk0xc8530.m_firstVertex = p_firstVertex;
 	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
+	m_unk0xc8524->ProcessVertices(&m_unk0xc8530);
 }
 
 // STUB: GOLDP 0x1000d760
@@ -3638,7 +3638,7 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_unk0xc8530.m_outputFirst = p_outputFirst;
 	m_unk0xc8530.m_firstVertex = p_firstVertex;
 	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->VTable0x10(&m_unk0xc8530);
+	m_unk0xc8524->ProcessVerticesPrelit(&m_unk0xc8530);
 
 	LegoU32 cacheIndex = m_unk0xc3848;
 	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -3717,7 +3717,7 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_unk0xc8530.m_outputFirst = p_outputFirst;
 	m_unk0xc8530.m_firstVertex = p_firstVertex;
 	m_unk0xc8530.m_vertexCount = p_vertexCount;
-	m_unk0xc8524->VTable0x10(&m_unk0xc8530);
+	m_unk0xc8524->ProcessVerticesPrelit(&m_unk0xc8530);
 
 	LegoU32 cacheIndex = m_unk0xc3848;
 	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -4032,7 +4032,7 @@ void GolD3DRenderDevice::FUN_1000eb90(undefined4 p_firstTriangle, undefined4 p_t
 	m_unk0xc854c.m_material = m_unk0xc8530.m_material;
 	m_unk0xc854c.m_firstTriangle = p_firstTriangle;
 	m_unk0xc854c.m_triangleCount = p_triangleCount;
-	m_unk0xc8524->VTable0x0c(&m_unk0xc854c);
+	m_unk0xc8524->ProcessMaterial(&m_unk0xc854c);
 }
 
 // FUNCTION: GOLDP 0x1000ebd0

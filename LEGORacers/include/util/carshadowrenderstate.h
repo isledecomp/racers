@@ -21,19 +21,13 @@ public:
 	CarShadowRenderState();
 	virtual ~CarShadowRenderState(); // vtable+0x14
 
-	void VTable0x00(
-		GolD3DRenderDevice* p_renderer,
-		GolModelEntity* p_model,
-		LegoU32 p_lodIndex
-	) override; // vtable+0x00
-	void VTable0x04(
-		GolD3DRenderDevice* p_renderer,
-		GolModelEntity* p_model,
-		LegoU32 p_lodIndex
-	) override;                                             // vtable+0x04
-	void VTable0x08(DrawCommand* p_command) override;       // vtable+0x08
-	void VTable0x0c(MaterialCommand* p_command) override;   // vtable+0x0c
-	undefined4 VTable0x10(DrawCommand* p_command) override; // vtable+0x10
+	void Begin(GolD3DRenderDevice* p_renderer, GolModelEntity* p_model,
+			   LegoU32 p_lodIndex) override; // vtable+0x00
+	void End(GolD3DRenderDevice* p_renderer, GolModelEntity* p_model,
+			 LegoU32 p_lodIndex) override;                             // vtable+0x04
+	void ProcessVertices(DrawCommand* p_command) override;             // vtable+0x08
+	void ProcessMaterial(MaterialCommand* p_command) override;         // vtable+0x0c
+	undefined4 ProcessVerticesPrelit(DrawCommand* p_command) override; // vtable+0x10
 
 	// SYNTHETIC: LEGORACERS 0x00409790
 	// CarShadowRenderState::`scalar deleting destructor'

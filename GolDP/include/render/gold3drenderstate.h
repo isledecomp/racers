@@ -53,19 +53,13 @@ public:
 		LegoU32 m_vertexCount;           // 0x18
 	};
 
-	virtual void VTable0x00(
-		GolD3DRenderDevice* p_renderer,
-		GolModelEntity* p_model,
-		LegoU32 p_lodIndex
-	) = 0; // vtable+0x00
-	virtual void VTable0x04(
-		GolD3DRenderDevice* p_renderer,
-		GolModelEntity* p_model,
-		LegoU32 p_lodIndex
-	) = 0;                                                     // vtable+0x04
-	virtual void VTable0x08(DrawCommand* p_command) = 0;       // vtable+0x08
-	virtual void VTable0x0c(MaterialCommand* p_command) = 0;   // vtable+0x0c
-	virtual undefined4 VTable0x10(DrawCommand* p_command) = 0; // vtable+0x10
+	virtual void Begin(GolD3DRenderDevice* p_renderer, GolModelEntity* p_model,
+					   LegoU32 p_lodIndex) = 0; // vtable+0x00
+	virtual void End(GolD3DRenderDevice* p_renderer, GolModelEntity* p_model,
+					 LegoU32 p_lodIndex) = 0;                             // vtable+0x04
+	virtual void ProcessVertices(DrawCommand* p_command) = 0;             // vtable+0x08
+	virtual void ProcessMaterial(MaterialCommand* p_command) = 0;         // vtable+0x0c
+	virtual undefined4 ProcessVerticesPrelit(DrawCommand* p_command) = 0; // vtable+0x10
 };
 
 #endif // GOLD3DRENDERSTATE_H

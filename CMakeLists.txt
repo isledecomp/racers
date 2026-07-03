@@ -283,7 +283,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/audio/soundmanager.cpp
   LEGORacers/src/audio/soundnode.cpp
   LEGORacers/src/audio/streamingsoundinstance.cpp
-  LEGORacers/src/input/inputmanager.cpp
   LEGORacers/src/input/directinputmanager.cpp
   LEGORacers/src/input/joystickdevice.cpp
   LEGORacers/src/input/keyboarddevice.cpp
@@ -291,14 +290,12 @@ add_executable(legoracers WIN32
   LEGORacers/src/input/directinputdevice.cpp
   LEGORacers/src/input/inputdevice.cpp
   LEGORacers/src/menu/menumanager.cpp
-  LEGORacers/src/race/racemoderunner.cpp
   LEGORacers/src/race/timeracemanager.cpp
   LEGORacers/src/util/stackoflegou16.cpp
   LEGORacers/src/util/legoeventqueue.cpp
   LEGORacers/src/util/legoeventqueuerigidbody.cpp
   LEGORacers/src/util/legoeventqueuecollision.cpp
   LEGORacers/src/util/legoeventqueueevent.cpp
-  LEGORacers/src/util/decalgeometry.cpp
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
   LEGORacers/src/race/racesession.cpp
@@ -358,7 +355,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racereset.cpp
   LEGORacers/src/race/racer/racerouterecord.cpp
   LEGORacers/src/race/triggerworld.cpp
-  LEGORacers/src/race/raceeventtabledispatch.cpp
   LEGORacers/src/race/racercollisionworlds.cpp
   LEGORacers/src/race/playercontrols.cpp
   LEGORacers/src/race/racesoundsource.cpp
@@ -390,7 +386,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racer/carvisuals.cpp
   LEGORacers/src/race/racer/racer.cpp
   LEGORacers/src/race/racestate.cpp
-  LEGORacers/src/race/racestatequeries.cpp
   LEGORacers/src/race/racer/racersoundsource.cpp
   LEGORacers/src/race/racer/racerphysics.cpp
   LEGORacers/src/race/raceroster.cpp

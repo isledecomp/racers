@@ -24,12 +24,12 @@ public:
 	void GetAxes(GolVec3* p_dest1, GolVec3* p_dest2) const override;          // vtable+0x48
 
 	void Reset();
-	void FUN_00410a00(const GolVec3& p_v1, const GolVec3& p_v2);
-	void FUN_00410b00(const GolVec3& p_v1, const GolVec3& p_v2);
-	void FUN_10026c50(GolMatrix4* p_dest);
-	void FUN_10026f70(const GolVec3& p_v);
-	void FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const;
-	void FUN_00410f30(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const;
+	void SetDirectionSide(const GolVec3& p_direction, const GolVec3& p_side);
+	void SetUpDirection(const GolVec3& p_up, const GolVec3& p_direction);
+	void CopyOrientationToMatrix4(GolMatrix4* p_dest);
+	void SetBoundsCenterAndSpan(const GolVec3& p_center);
+	void CopyScaledOrientationTo(GolMatrix4* p_dest, LegoFloat p_scale) const;
+	void TransformMatrixToLocal(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const;
 	void MirrorY();
 	GolMatrix3& GetOrientation() { return m_orientation; }
 	const GolMatrix3& GetOrientation() const { return m_orientation; }

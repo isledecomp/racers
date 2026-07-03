@@ -298,7 +298,7 @@ void RacerPhysics::Initialize(
 		p_sizeZ
 	);
 	p_carEntity->GetPosition(&m_resetPosition);
-	GolMath::FUN_1002f5a0(p_carEntity->GetOrientation(), &m_resetRotation);
+	GolMath::Matrix3ToQuat(p_carEntity->GetOrientation(), &m_resetRotation);
 	m_surfaceSoundMs = 0;
 }
 
@@ -387,7 +387,7 @@ void RacerPhysics::Update(LegoS32 p_elapsedMs)
 			if (!(racerFlags & Racer::c_flagEngineSounds) || !(racerFlags & Racer::c_flagPreStart)) {
 				GolOrientedEntity* entity0 = &m_physicsEntity;
 				entity0->GetPosition(&m_resetPosition);
-				GolMath::FUN_1002f5a0(m_physicsEntity.GetOrientation(), &m_resetRotation);
+				GolMath::Matrix3ToQuat(m_physicsEntity.GetOrientation(), &m_resetRotation);
 			}
 		}
 
@@ -1470,7 +1470,7 @@ void RacerRigidBody::Destroy()
 // FUNCTION: LEGORACERS 0x00440a60 FOLDED
 void RacerRigidBody::UpdateWorldInverseInertia()
 {
-	m_body->FUN_00410f30(m_inverseInertiaTensor, &m_worldInverseInertia);
+	m_body->TransformMatrixToLocal(m_inverseInertiaTensor, &m_worldInverseInertia);
 }
 
 // FUNCTION: LEGORACERS 0x00440a80 FOLDED
@@ -2593,7 +2593,7 @@ void RacerCarBody::LimitUprightTilt()
 		forward.m_x = -(sine * axis.m_y);
 		forward.m_y = sine * axis.m_x;
 		forward.m_z = cosine;
-		m_physicsEntity.FUN_00410b00(forward, right);
+		m_physicsEntity.SetUpDirection(forward, right);
 	}
 }
 
@@ -3991,7 +3991,7 @@ void RacerCarBody::SnapToContacts(WheelProbe* p_probe)
 			direction1.m_z = m_physicsEntity.GetOrientation().m_m[1][2];
 		}
 
-		m_physicsEntity.FUN_00410a00(direction0, direction1);
+		m_physicsEntity.SetDirectionSide(direction0, direction1);
 	}
 	else {
 		selectedEntry = p_probe;

@@ -275,7 +275,7 @@ void MenuModelCarousel::DestroyItems()
 void MenuModelCarousel::InitializeItem(Item* p_item)
 {
 	GolVec3 center;
-	p_item->m_entity.FUN_10027fe0(0, &center, &p_item->m_modelRadius);
+	p_item->m_entity.GetModelBounds(0, &center, &p_item->m_modelRadius);
 	p_item->m_modelRadius += p_item->m_modelRadius;
 }
 
@@ -313,7 +313,7 @@ void MenuModelCarousel::GetItemPosition(Item* p_item, GolVec3* p_position)
 	p_position->m_z = scale * itemPosition.m_z;
 	entity->SetPosition(*p_position);
 
-	entity->FUN_10027fe0(0, &center, &radius);
+	entity->GetModelBounds(0, &center, &radius);
 
 	p_position->m_x -= center.m_x - p_position->m_x;
 	p_position->m_y -= center.m_y - p_position->m_y;

@@ -49,8 +49,8 @@ public:
 	virtual void ApplyColorTransform(const ColorTransform&);                                     // vtable+0x3c
 	virtual void CommitColorTransform();                                                         // vtable+0x40
 
-	void FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups);
-	void FUN_00411090();
+	void AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroups);
+	void MirrorY();
 	GolModelMaterialTable* GetMaterialTable() { return &m_unk0x04; }
 	GdbVertexArray* GetVertexArray() const { return m_unk0x10; }
 	GdbModelIndexArrayBase* GetIndexArray() const { return m_unk0x18; }

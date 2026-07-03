@@ -152,7 +152,7 @@ GolCameraBase::~GolCameraBase()
 }
 
 // STUB: GOLDP 0x1001bfc0
-void GolCameraBase::FUN_1001bfc0(GolViewFrustum* p_view)
+void GolCameraBase::ComputeFrustum(GolViewFrustum* p_view)
 {
 	m_transform->GetPosition(&p_view->m_position);
 
@@ -256,7 +256,7 @@ void GolCameraBase::FUN_1001bfc0(GolViewFrustum* p_view)
 }
 
 // STUB: GOLDP 0x1001c450
-void GolCameraBase::FUN_1001c450(GolViewFrustum* p_view)
+void GolCameraBase::ComputeFrustumFromBounds(GolViewFrustum* p_view)
 {
 	m_transform->GetPosition(&p_view->m_position);
 

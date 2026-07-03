@@ -25,7 +25,7 @@ CmbModelPartData::CmbModelPartData()
 
 // FUNCTION: GOLDP 0x10018670
 // FUNCTION: LEGORACERS 0x00401030
-void CmbModelPartData::FUN_10018670(GolFileParser& p_parser)
+void CmbModelPartData::Parse(GolFileParser& p_parser)
 {
 	p_parser.ReadLeftCurly();
 	GolFileParser::ParserTokenType token;

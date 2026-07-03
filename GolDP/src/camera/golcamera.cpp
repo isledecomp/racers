@@ -116,10 +116,10 @@ void GolCamera::VTable0x00()
 	m_flags &= ~c_flagBit0;
 	viewMatrix.m_m[3][2] = -(position.m_x * right.m_x + position.m_y * right.m_y + position.m_z * right.m_z);
 	if (m_flags & c_flagBit2) {
-		FUN_1001c450(&m_viewFrustum);
+		ComputeFrustumFromBounds(&m_viewFrustum);
 	}
 	else {
-		FUN_1001bfc0(&m_viewFrustum);
+		ComputeFrustum(&m_viewFrustum);
 	}
 }
 
@@ -278,10 +278,10 @@ void GolCamera::VTable0x0c(Rect* p_rect)
 	m_cameraMatrices.m_viewportTop = static_cast<LegoFloat>(m_viewport.m_top);
 
 	if (m_flags & c_flagBit2) {
-		FUN_1001c450(&m_viewFrustum);
+		ComputeFrustumFromBounds(&m_viewFrustum);
 	}
 	else {
-		FUN_1001bfc0(&m_viewFrustum);
+		ComputeFrustum(&m_viewFrustum);
 	}
 
 	VTable0x04();

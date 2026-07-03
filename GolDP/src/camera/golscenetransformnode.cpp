@@ -137,7 +137,7 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 
 		if (m_unk0x14->VTable0x00(i)) {
 			GolQuat rotation;
-			GolMath::FUN_1002f720(obj->m_unk0x10, &rotation);
+			GolMath::Matrix4ToQuat(obj->m_unk0x10, &rotation);
 
 			GolVec3 position;
 			position.m_x = obj->m_unk0x10.m_m[3][0];

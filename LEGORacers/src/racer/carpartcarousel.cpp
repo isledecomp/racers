@@ -153,7 +153,7 @@ void CarPartCarousel::LayoutItem(undefined4, GolModelEntity* p_entity)
 	GolVec3 vector = {vectorX, 0.0f, vectorZ};
 
 	GolMath::RotateAboutAxis(&axis, &axis, &vector, m_rotationAngle);
-	p_entity->FUN_00410b00(vector, axis);
+	p_entity->SetUpDirection(vector, axis);
 }
 
 // FUNCTION: LEGORACERS 0x004855c0

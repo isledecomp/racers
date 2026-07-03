@@ -75,7 +75,7 @@ void GolWorldDatabase::ResetEntities()
 	}
 
 	for (i = 0; i < m_modelCount; i++) {
-		GetModel(i)->FUN_00411090();
+		GetModel(i)->MirrorY();
 	}
 
 	for (i = 0; i < m_spriteCount; i++) {
@@ -91,7 +91,7 @@ void GolWorldDatabase::ResetEntities()
 	}
 
 	for (i = 0; i < m_sceneNodeCount; i++) {
-		GetSceneNode(i)->FUN_00413310();
+		GetSceneNode(i)->MirrorY();
 	}
 }
 

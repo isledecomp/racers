@@ -77,7 +77,7 @@ void GolOrientedEntity::SetDirectionUp(const GolVec3& p_v1, const GolVec3& p_v2)
 }
 
 // FUNCTION: LEGORACERS 0x00410a00
-void GolOrientedEntity::FUN_00410a00(const GolVec3& p_v1, const GolVec3& p_v2)
+void GolOrientedEntity::SetDirectionSide(const GolVec3& p_v1, const GolVec3& p_v2)
 {
 	GolVec3 unit;
 	GolMath::NormalizeVector3(p_v1, &unit);
@@ -112,7 +112,7 @@ void GolOrientedEntity::FUN_00410a00(const GolVec3& p_v1, const GolVec3& p_v2)
 }
 
 // FUNCTION: LEGORACERS 0x00410b00
-void GolOrientedEntity::FUN_00410b00(const GolVec3& p_v1, const GolVec3& p_v2)
+void GolOrientedEntity::SetUpDirection(const GolVec3& p_v1, const GolVec3& p_v2)
 {
 	GolVec3 unit;
 	GolMath::NormalizeVector3(p_v1, &unit);
@@ -147,7 +147,7 @@ void GolOrientedEntity::FUN_00410b00(const GolVec3& p_v1, const GolVec3& p_v2)
 }
 
 // FUNCTION: GOLDP 0x10026c50
-void GolOrientedEntity::FUN_10026c50(GolMatrix4* p_dest)
+void GolOrientedEntity::CopyOrientationToMatrix4(GolMatrix4* p_dest)
 {
 	p_dest->m_m[0][0] = m_orientation.m_m[0][0];
 	p_dest->m_m[0][1] = m_orientation.m_m[0][1];
@@ -307,7 +307,7 @@ void GolOrientedEntity::SetPosition(const GolVec3& p_pos)
 
 // FUNCTION: GOLDP 0x10026f70
 // FUNCTION: LEGORACERS 0x00410ee0
-void GolOrientedEntity::FUN_10026f70(const GolVec3& p_v)
+void GolOrientedEntity::SetBoundsCenterAndSpan(const GolVec3& p_v)
 {
 	m_center = p_v;
 	m_minX = m_center.m_x - m_radius;
@@ -317,7 +317,7 @@ void GolOrientedEntity::FUN_10026f70(const GolVec3& p_v)
 }
 
 // FUNCTION: LEGORACERS 0x00410f30
-void GolOrientedEntity::FUN_00410f30(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const
+void GolOrientedEntity::TransformMatrixToLocal(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const
 {
 	GolMatrix3 localMatrix;
 	LegoFloat value;
@@ -385,7 +385,7 @@ void GolOrientedEntity::MirrorY()
 }
 
 // FUNCTION: GOLDP 0x10026fc0
-void GolOrientedEntity::FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const
+void GolOrientedEntity::CopyScaledOrientationTo(GolMatrix4* p_dest, LegoFloat p_scale) const
 {
 	LegoFloat value = m_orientation.m_m[0][0];
 	p_dest->m_m[0][0] = value * p_scale;

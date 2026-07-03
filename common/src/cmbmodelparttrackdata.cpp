@@ -26,7 +26,7 @@ CmbModelPartTrackData::~CmbModelPartTrackData()
 
 // FUNCTION: GOLDP 0x100241d0
 // FUNCTION: LEGORACERS 0x0040e4c0
-void CmbModelPartTrackData::FUN_100241d0(GolFileParser& p_parser)
+void CmbModelPartTrackData::Parse(GolFileParser& p_parser)
 {
 	p_parser.ReadLeftCurly();
 	LegoU32 i;

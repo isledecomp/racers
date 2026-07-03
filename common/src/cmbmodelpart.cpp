@@ -55,7 +55,7 @@ void CmbModelPart::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
 		case GolFileParser::e_unknown0x27:
-			m_data.FUN_100241d0(*parser);
+			m_data.Parse(*parser);
 			break;
 		case GolFileParser::e_unknown0x2b:
 			VTable0x0c(*parser);
@@ -148,7 +148,7 @@ void CmbModelPart::VTable0x10(GolFileParser& p_parser)
 		GolName name;
 		::strncpy(name, p_parser.ReadString(), sizeOfArray(name));
 		AddName(name, &m_unk0x2c[i]);
-		m_unk0x2c[i].FUN_10018670(p_parser);
+		m_unk0x2c[i].Parse(p_parser);
 	}
 
 	p_parser.ReadRightCurly();

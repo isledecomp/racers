@@ -810,7 +810,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	}
 
 	m_bodyModelEntity->SetPosition(position);
-	m_bodyModelEntity->FUN_00410a00(row0, row1);
+	m_bodyModelEntity->SetDirectionSide(row0, row1);
 
 	if (m_secondaryEntity != NULL) {
 		m_bodyModelEntity->CopyOrientationAndPositionTo(m_secondaryEntity);
@@ -1237,8 +1237,8 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		GolQuat desiredRotation;
 		GolQuat currentRotation;
 		GolQuat blendedRotation;
-		GolMath::FUN_1002f5a0(desiredOrientation, &desiredRotation);
-		GolMath::FUN_1002f5a0(currentOrientation, &currentRotation);
+		GolMath::Matrix3ToQuat(desiredOrientation, &desiredRotation);
+		GolMath::Matrix3ToQuat(currentOrientation, &currentRotation);
 		GolMath::LerpQuat(desiredRotation, currentRotation, amount, &blendedRotation);
 
 		GolMatrix3 orientation;
@@ -1427,7 +1427,7 @@ LegoBool32 CarVisuals::IntersectSegment(const GolVec3* p_start, const GolVec3* p
 {
 	GolVec3 center;
 	LegoFloat radius;
-	m_bodyModelEntity->FUN_10027fe0(0, &center, &radius);
+	m_bodyModelEntity->GetModelBounds(0, &center, &radius);
 	LegoFloat radiusSquared = radius * radius;
 
 	GolVec3 direction;

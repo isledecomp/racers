@@ -135,7 +135,7 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 		for (LegoU32 i = 1; i < 3; i++) {
 			GolModelBase* model = p_model->GetModel(i);
 			if (model != NULL) {
-				m_modelEntity.FUN_10027c50(model, p_model->GetModelDistance(i));
+				m_modelEntity.AddModel(model, p_model->GetModelDistance(i));
 			}
 		}
 

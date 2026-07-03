@@ -85,7 +85,7 @@ void GolModelEntity::ResetModelState()
 
 // FUNCTION: GOLDP 0x10027c50
 // FUNCTION: LEGORACERS 0x00411250
-void GolModelEntity::FUN_10027c50(GolModelBase* p_model, LegoFloat p_modelDistance)
+void GolModelEntity::AddModel(GolModelBase* p_model, LegoFloat p_modelDistance)
 {
 	LegoU32 i;
 	LegoU32 j;
@@ -109,7 +109,7 @@ void GolModelEntity::FUN_10027c50(GolModelBase* p_model, LegoFloat p_modelDistan
 }
 
 // FUNCTION: GOLDP 0x10027cc0
-void GolModelEntity::FUN_10027cc0(const GolVec3& p_vector, GolModelEntity::ResultStruct* p_result)
+void GolModelEntity::SelectLod(const GolVec3& p_vector, GolModelEntity::ResultStruct* p_result)
 {
 	LegoU32 i;
 	LegoFloat* threshold;
@@ -175,10 +175,10 @@ void GolModelEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultStruc
 }
 
 // FUNCTION: GOLDP 0x10027e70
-void GolModelEntity::FUN_10027e70(GolMatrix4* p_dest, LegoU32 p_index)
+void GolModelEntity::BuildModelMatrix(GolMatrix4* p_dest, LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];
-	FUN_10026fc0(p_dest, model->GetScale() * m_unk0x58);
+	CopyScaledOrientationTo(p_dest, model->GetScale() * m_unk0x58);
 }
 
 // FUNCTION: GOLDP 0x10027e90
@@ -206,7 +206,7 @@ void GolModelEntity::ComputeBoundsFromModel(LegoU32 p_index)
 	center.m_z *= scale;
 	GolVec3 position;
 	LocalToWorld(center, &position);
-	FUN_10026f70(position);
+	SetBoundsCenterAndSpan(position);
 	SetBoundsRadius(m_unk0x58 * radius);
 }
 
@@ -228,7 +228,7 @@ void GolModelEntity::Update(LegoS32 p_elapsed)
 
 // FUNCTION: GOLDP 0x10027fe0
 // FUNCTION: LEGORACERS 0x00411510
-void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat* p_destScalar)
+void GolModelEntity::GetModelBounds(LegoU32 p_index, GolVec3* p_destVec, LegoFloat* p_destScalar)
 {
 	if (!p_index) {
 		GetBoundsCenter(p_destVec);

@@ -187,7 +187,7 @@ void GolMath::QuatToMatrix3(const GolQuat* p_quat, LegoFloat* p_dest)
 
 // FUNCTION: GOLDP 0x1002f5a0
 // FUNCTION: LEGORACERS 0x00449460
-void GolMath::FUN_1002f5a0(const GolMatrix3& p_matrix, GolQuat* p_dest)
+void GolMath::Matrix3ToQuat(const GolMatrix3& p_matrix, GolQuat* p_dest)
 {
 	LegoFloat v = p_matrix.m_m[0][0] + p_matrix.m_m[1][1] + p_matrix.m_m[2][2];
 	if (v > 0.0f) {
@@ -237,7 +237,7 @@ void GolMath::FUN_1002f5a0(const GolMatrix3& p_matrix, GolQuat* p_dest)
 }
 
 // FUNCTION: GOLDP 0x1002f720
-void GolMath::FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest)
+void GolMath::Matrix4ToQuat(const GolMatrix4& p_matrix, GolQuat* p_dest)
 {
 	LegoFloat v;
 	LegoFloat diag = p_matrix.m_m[0][0] + p_matrix.m_m[1][1] + p_matrix.m_m[2][2];

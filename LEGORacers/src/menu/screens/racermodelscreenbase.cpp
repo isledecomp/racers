@@ -442,11 +442,11 @@ void RacerModelScreenBase::AlignCarSlots()
 
 			GolVec3 localVector;
 			GolVec3 direction;
-			node->FUN_004132a0(0, &m_carDirAxis, &localVector);
+			node->TransformVectorToWorld(0, &m_carDirAxis, &localVector);
 			source->RotateToWorld(localVector, &direction);
 
 			GolVec3 up;
-			node->FUN_004132a0(0, &m_carUpAxis, &localVector);
+			node->TransformVectorToWorld(0, &m_carUpAxis, &localVector);
 			source->RotateToWorld(localVector, &up);
 
 			target->SetDirectionUp(direction, up);

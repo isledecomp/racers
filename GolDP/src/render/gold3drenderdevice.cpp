@@ -906,7 +906,7 @@ void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 
 	GolMatrix4* modelMatrix = &m_unk0xc8410;
 	GolModelEntity* canoe = static_cast<GolModelEntity*>(p_model);
-	canoe->FUN_10027e70(modelMatrix, result.m_lodIndex);
+	canoe->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = canoe->GetPosition();
 	modelMatrix->m_m[3][0] = position.m_x;
@@ -950,7 +950,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 	GolMatrix4* modelMatrix;
 
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->FUN_10027cc0(m_unk0x4c.m_position, &result);
+		p_model->SelectLod(m_unk0x4c.m_position, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -961,7 +961,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 
 	GolVec3 center;
 	LegoFloat radius;
-	p_model->FUN_10027fe0(result.m_lodIndex, &center, &radius);
+	p_model->GetModelBounds(result.m_lodIndex, &center, &radius);
 	center.m_z = -center.m_z;
 	result.m_visibility = m_unk0x4c.ClassifySphere(center, radius);
 	if (!result.m_visibility) {
@@ -969,7 +969,7 @@ void GolD3DRenderDevice::VTable0xac(GolModelEntity* p_model, undefined4 p_lodInd
 	}
 
 	modelMatrix = &m_unk0xc8410;
-	p_model->FUN_10027e70(modelMatrix, result.m_lodIndex);
+	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
 	modelMatrix->m_m[3][0] = position.m_x;
@@ -1023,7 +1023,7 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 	GolMatrix4* modelMatrix;
 
 	if (p_lodIndex == static_cast<undefined4>(-1)) {
-		p_model->FUN_10027cc0(m_unk0x4c.m_position, &result);
+		p_model->SelectLod(m_unk0x4c.m_position, &result);
 		if (!result.m_visibility) {
 			return;
 		}
@@ -1034,7 +1034,7 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 
 	GolVec3 center;
 	LegoFloat radius;
-	p_model->FUN_10027fe0(result.m_lodIndex, &center, &radius);
+	p_model->GetModelBounds(result.m_lodIndex, &center, &radius);
 	center.m_z = 0.0f;
 	result.m_visibility = m_unk0x4c.ClassifySphere(center, radius);
 	if (!result.m_visibility) {
@@ -1042,7 +1042,7 @@ void GolD3DRenderDevice::VTable0xb0(GolModelEntity* p_model, undefined4 p_lodInd
 	}
 
 	modelMatrix = &m_unk0xc8410;
-	p_model->FUN_10027e70(modelMatrix, result.m_lodIndex);
+	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
 	modelMatrix->m_m[3][0] = position.m_x;
@@ -1102,7 +1102,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 	m_unk0xc8524 = p_renderState;
 	m_unk0xc8530.m_model = p_model;
 	m_unk0xc854c.m_model = p_model;
-	p_model->FUN_10027e70(modelMatrix, result.m_lodIndex);
+	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
 	modelMatrix->m_m[3][0] = position.m_x;
@@ -1166,7 +1166,7 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08
 	m_unk0xc83a0 = p_unk0x08;
 	m_unk0xc83f4 = 1;
 	m_unk0xc83a4 = p_unk0x0c;
-	modelEntity->FUN_10027e70(modelMatrix, result.m_lodIndex);
+	modelEntity->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = modelEntity->GetPosition();
 	modelMatrix->m_m[3][0] = position.m_x;
@@ -1226,7 +1226,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 		->CollectVisibleLeaves(&m_unk0x4c, &firstNode, &lastNode);
 
 	GolMatrix4* modelMatrix = &m_unk0xc8410;
-	p_model->FUN_10027e70(modelMatrix, result.m_lodIndex);
+	p_model->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = p_model->GetPosition();
 	modelMatrix->m_m[3][0] = position.m_x;
@@ -1309,7 +1309,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 		->CollectVisibleLeaves(&m_unk0x4c, &firstNode, &lastNode);
 
 	GolMatrix4* modelMatrix = &m_unk0xc8410;
-	modelEntity->FUN_10027e70(modelMatrix, result.m_lodIndex);
+	modelEntity->BuildModelMatrix(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = modelEntity->GetPosition();
 	modelMatrix->m_m[3][0] = position.m_x;
@@ -2459,7 +2459,7 @@ void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 void GolD3DRenderDevice::FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData)
 {
 	GolOrientedEntity* model = static_cast<GolOrientedEntity*>(p_model);
-	model->FUN_10026c50(&m_unk0xc8450);
+	model->CopyOrientationToMatrix4(&m_unk0xc8450);
 
 	const GolVec3& position = model->GetPosition();
 	m_unk0xc8450.m_m[3][0] = position.m_x;

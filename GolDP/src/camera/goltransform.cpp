@@ -383,7 +383,7 @@ void GolTransform::VTable0x14(GolQuat* p_rotation)
 	basis.m_m[2][1] = m_unk0x10.m_m[2][1];
 	basis.m_m[2][2] = m_unk0x10.m_m[2][2];
 
-	GolMath::FUN_1002f5a0(basis.m_orientation, p_rotation);
+	GolMath::Matrix3ToQuat(basis.m_orientation, p_rotation);
 }
 
 // FUNCTION: GOLDP 0x10003080

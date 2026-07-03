@@ -237,7 +237,7 @@ void RaceCameraController::UpdateShake()
 // FUNCTION: LEGORACERS 0x004280a0
 void RaceCameraController::ApplySmoothing()
 {
-	GolMath::FUN_1002f5a0(m_rawTransform.m_orientation, &m_rawRotation);
+	GolMath::Matrix3ToQuat(m_rawTransform.m_orientation, &m_rawRotation);
 
 	if (m_unk0x001 & 1) {
 		m_smoothedTransform = m_rawTransform;
@@ -462,8 +462,8 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 		m_racer->m_visuals.m_carEntity->GetPosition(&m_lastRacerPosition);
 
 		if (m_transitionMs == 0.0f) {
-			GolMath::FUN_1002f5a0(m_previousTransform.m_orientation, &m_previousRotation);
-			GolMath::FUN_1002f5a0(m_rawTransform.m_orientation, &m_rawRotation);
+			GolMath::Matrix3ToQuat(m_previousTransform.m_orientation, &m_previousRotation);
+			GolMath::Matrix3ToQuat(m_rawTransform.m_orientation, &m_rawRotation);
 		}
 
 		m_transitionMs += m_elapsed;

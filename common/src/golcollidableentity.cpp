@@ -30,7 +30,7 @@ void GolCollidableEntity::ResetModelState()
 }
 
 // FUNCTION: GOLDP 0x1001acf0
-void GolCollidableEntity::FUN_1001acf0(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance)
+void GolCollidableEntity::AddModel(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance)
 {
 	LegoU32 i;
 

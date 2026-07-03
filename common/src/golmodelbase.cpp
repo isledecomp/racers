@@ -110,7 +110,7 @@ void GolModelBase::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, Leg
 }
 
 // FUNCTION: GOLDP 0x100272e0
-void GolModelBase::FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups)
+void GolModelBase::AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroups)
 {
 	m_countGroups = p_countGroups;
 
@@ -443,7 +443,7 @@ void GolModelBase::CommitColorTransform()
 }
 
 // FUNCTION: LEGORACERS 0x00411090
-void GolModelBase::FUN_00411090()
+void GolModelBase::MirrorY()
 {
 	GdbModelIndexArrayBase* indexArray = NULL;
 	GdbVertexArray* vertexArray = NULL;

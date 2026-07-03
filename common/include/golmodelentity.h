@@ -31,10 +31,10 @@ public:
 	virtual GolSceneNode* GetSceneNode(undefined4);                                        // vtable+0x58
 	virtual void VTable0x5c(undefined4);                                                   // vtable+0x5c
 
-	void FUN_10027c50(GolModelBase* p_model, LegoFloat p_modelDistance);
-	void FUN_10027cc0(const GolVec3& p_vector, ResultStruct* p_result);
-	void FUN_10027e70(GolMatrix4* p_dest, LegoU32 p_index);
-	void FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat* p_destScalar);
+	void AddModel(GolModelBase* p_model, LegoFloat p_modelDistance);
+	void SelectLod(const GolVec3& p_vector, ResultStruct* p_result);
+	void BuildModelMatrix(GolMatrix4* p_dest, LegoU32 p_index);
+	void GetModelBounds(LegoU32 p_index, GolVec3* p_destVec, LegoFloat* p_destScalar);
 	LegoFloat GetTextureScrollU() const;
 	LegoFloat GetTextureScrollV() const;
 	void SetTextureScrollU(LegoFloat p_arg);

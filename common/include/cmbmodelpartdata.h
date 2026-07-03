@@ -13,7 +13,7 @@ class CmbModelPartData {
 
 public:
 	CmbModelPartData();
-	void FUN_10018670(GolFileParser& p_parser);
+	void Parse(GolFileParser& p_parser);
 
 	LegoFloat GetMsPerFrame() const { return m_unk0x00; }
 	const GolVec3& GetVelocity() const { return m_unk0x04; }

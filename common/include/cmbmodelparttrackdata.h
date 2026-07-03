@@ -26,7 +26,7 @@ public:
 	void MirrorY();
 	void GetRotationFrame(LegoU32 p_index, GolQuat* p_dest) const;
 
-	void FUN_100241d0(GolFileParser& p_parser);
+	void Parse(GolFileParser& p_parser);
 	LegoBool32 InterpolatePosition(
 		GolVec3* p_dest,
 		const CmbModelPartTrack& p_track,

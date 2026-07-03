@@ -459,7 +459,7 @@ void GolRenderDevice::SelectTextureFormat(
 	grnBitCount = p_requestedTextureFormat.GetGreenBitCount();
 	bluBitCount = p_requestedTextureFormat.GetBlueBitCount();
 	alpBitCount = p_requestedTextureFormat.GetAlphaBitCount();
-	LegoU32 textureFormatField0x10BitCount = p_requestedTextureFormat.FUN_1001cc10();
+	LegoU32 textureFormatField0x10BitCount = p_requestedTextureFormat.GetIntensityBitShift();
 	LegoU32 paletteBitCount = p_requestedTextureFormat.GetPaletteBitCount();
 	LegoU32 bpp = p_requestedTextureFormat.m_bitsPerPixel;
 
@@ -492,7 +492,7 @@ void GolRenderDevice::SelectTextureFormat(
 		else if (textureFormatField0x10BitCount != 0) {
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
-					m_textureFormats[i].FUN_1001cc10() == textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetIntensityBitShift() == textureFormatField0x10BitCount &&
 					m_textureFormats[i].GetAlphaBitCount() == alpBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
@@ -537,7 +537,7 @@ void GolRenderDevice::SelectTextureFormat(
 		else if (textureFormatField0x10BitCount != 0) {
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
-					m_textureFormats[i].FUN_1001cc10() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetIntensityBitShift() >= textureFormatField0x10BitCount &&
 					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
@@ -622,7 +622,7 @@ void GolRenderDevice::SelectTextureFormat(
 		else if (textureFormatField0x10BitCount != 0) {
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
-					m_textureFormats[i].FUN_1001cc10() == textureFormatField0x10BitCount) {
+					m_textureFormats[i].GetIntensityBitShift() == textureFormatField0x10BitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
 					return;
@@ -631,7 +631,7 @@ void GolRenderDevice::SelectTextureFormat(
 
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
-					m_textureFormats[i].FUN_1001cc10() >= textureFormatField0x10BitCount) {
+					m_textureFormats[i].GetIntensityBitShift() >= textureFormatField0x10BitCount) {
 					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
 					return;

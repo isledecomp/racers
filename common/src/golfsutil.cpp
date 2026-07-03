@@ -38,9 +38,9 @@ void SetGolImport(GolImport* p_import)
 	LegoU32 fileSourceCount = p_import->m_fileSourceCount;
 	g_fileSources = p_import->m_fileSources;
 	g_fileSourceCount = fileSourceCount;
-	GolStream::FUN_100320d0();
+	GolStream::ClearSearchPaths();
 	for (LegoU32 i = 0; i < p_import->m_searchPathCount; i++) {
-		GolStream::FUN_10032110(p_import->m_searchPaths[i]);
+		GolStream::AddSearchPath(p_import->m_searchPaths[i]);
 	}
 	g_hashTable = p_import->m_hashTable;
 	g_hMutex = p_import->m_mutex;

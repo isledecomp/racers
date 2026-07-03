@@ -56,7 +56,7 @@ void GolSceneNode::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 		}
 
-		FUN_10029c60(parser);
+		Parse(parser);
 	}
 
 	parser->Dispose();
@@ -116,7 +116,7 @@ void GolSceneNode::Clear()
 }
 
 // FUNCTION: GOLDP 0x10029c60
-void GolSceneNode::FUN_10029c60(GolFileParser* p_parser)
+void GolSceneNode::Parse(GolFileParser* p_parser)
 {
 	m_capacity = p_parser->ReadBracketedCountAndLeftCurly();
 	if (m_capacity == 0) {
@@ -205,7 +205,7 @@ void GolSceneNode::VTable0x2c(LegoU32 p_index, GolMatrix34* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x00413230
-void GolSceneNode::FUN_00413230(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
+void GolSceneNode::TransformPointToWorld(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
 {
 	*p_param3 = *p_param2;
 
@@ -217,7 +217,7 @@ void GolSceneNode::FUN_00413230(undefined4 p_param1, GolVec3* p_param2, GolVec3*
 }
 
 // FUNCTION: LEGORACERS 0x004132a0
-void GolSceneNode::FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
+void GolSceneNode::TransformVectorToWorld(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
 {
 	*p_param3 = *p_param2;
 
@@ -229,7 +229,7 @@ void GolSceneNode::FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3*
 }
 
 // FUNCTION: LEGORACERS 0x00413310
-void GolSceneNode::FUN_00413310()
+void GolSceneNode::MirrorY()
 {
 	for (LegoU32 i = 0; i < m_capacity; i++) {
 		GolTransformBase* transform = VTable0x18(i);

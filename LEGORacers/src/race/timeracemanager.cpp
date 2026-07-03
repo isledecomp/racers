@@ -216,7 +216,7 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 				static_cast<LegoS16>(32.0f * position.m_z);
 
 			GolQuat rotation;
-			GolMath::FUN_1002f5a0(m_racer->m_visuals.m_carEntity->GetOrientation(), &rotation);
+			GolMath::Matrix3ToQuat(m_racer->m_visuals.m_carEntity->GetOrientation(), &rotation);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationX =
 				static_cast<LegoS8>(127.0f * rotation.m_x);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationY =
@@ -439,7 +439,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 		LegoU32 i;
 		for (i = 1; i < 3; i++) {
 			if (sourceModel->GetModel(i)) {
-				m_bestGhostCarModel.FUN_10027c50(sourceModel->GetModel(i), sourceModel->GetModelDistance(i));
+				m_bestGhostCarModel.AddModel(sourceModel->GetModel(i), sourceModel->GetModelDistance(i));
 			}
 		}
 

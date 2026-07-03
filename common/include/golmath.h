@@ -150,8 +150,8 @@ public:
 	static void __fastcall NormalizeVector2(const GolVec2& p_src, GolVec2* p_dest);
 	static void __fastcall NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest);
 	static void QuatToMatrix3(const GolQuat* p_quat, LegoFloat* p_dest);
-	static void FUN_1002f5a0(const GolMatrix3& p_matrix, GolQuat* p_dest);
-	static void FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest);
+	static void Matrix3ToQuat(const GolMatrix3& p_matrix, GolQuat* p_dest);
+	static void Matrix4ToQuat(const GolMatrix4& p_matrix, GolQuat* p_dest);
 	static void LerpQuat(const GolQuat& p_from, const GolQuat& p_to, LegoFloat p_amount, GolQuat* p_dest);
 	static void RotateAboutAxis(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle);
 	static LegoBool32 PointInTriangle(const GolVec3* p_point, const LegoFloat* p_triangle);

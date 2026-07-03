@@ -263,7 +263,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		up.m_x = side.m_y * direction.m_z - side.m_z * direction.m_y;
 		up.m_y = side.m_z * direction.m_x - side.m_x * direction.m_z;
 		up.m_z = side.m_x * direction.m_y - side.m_y * direction.m_x;
-		m_magnetEntity->FUN_00410b00(direction, up);
+		m_magnetEntity->SetUpDirection(direction, up);
 
 		if (m_heldRacer != NULL) {
 			if (m_heldRacer->m_physics.m_speed <= 0.002f) {

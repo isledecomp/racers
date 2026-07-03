@@ -17,7 +17,7 @@ public:
 
 	void Destroy();
 
-	void FUN_10025df0(GolRenderDevice* p_renderer, undefined4);
+	void Initialize(GolRenderDevice* p_renderer, undefined4 p_count);
 	void Load(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary);
 	void Parse(GolRenderDevice* p_renderer, GolFileParser& p_parser);
 

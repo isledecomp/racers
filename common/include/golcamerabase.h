@@ -32,8 +32,8 @@ public:
 	// SYNTHETIC: GOLDP 0x1001bf90
 	// GolCameraBase::`scalar deleting destructor'
 
-	void FUN_1001bfc0(GolViewFrustum* p_view);
-	void FUN_1001c450(GolViewFrustum* p_view);
+	void ComputeFrustum(GolViewFrustum* p_view);
+	void ComputeFrustumFromBounds(GolViewFrustum* p_view);
 	static LegoFloat Dot2(GolVec3* p_left, GolVec3* p_right);
 	static GolVec3* Cross(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest);
 	static GolVec3* Add(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest);

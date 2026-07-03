@@ -688,7 +688,7 @@ LegoS32 GolStream::IsAbsolutePath(const LegoChar* p_path)
 #ifdef BUILDING_GOL
 
 // FUNCTION: GOLDP 0x100320d0
-void GolStream::FUN_100320d0()
+void GolStream::ClearSearchPaths()
 {
 	for (LegoU32 i = 0; i < g_searchPathCount; i++) {
 		if (g_searchPaths[i] != NULL) {
@@ -699,7 +699,7 @@ void GolStream::FUN_100320d0()
 }
 
 // FUNCTION: GOLDP 0x10032110
-void GolStream::FUN_10032110(const LegoChar* p_arg1)
+void GolStream::AddSearchPath(const LegoChar* p_arg1)
 {
 	if (g_searchPathCount < sizeOfArray(g_searchPaths)) {
 		g_searchPaths[g_searchPathCount] = new LegoChar[::strlen(p_arg1) + 1];

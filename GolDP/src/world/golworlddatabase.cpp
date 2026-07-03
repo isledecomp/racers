@@ -1385,7 +1385,7 @@ void GolWorldDatabase::InitializeEntities()
 			if (model->m_modelIndices[lod] < 0) {
 				break;
 			}
-			runtime->FUN_10027c50(GetModel(model->m_modelIndices[lod]), maxDistances[lod]);
+			runtime->AddModel(GetModel(model->m_modelIndices[lod]), maxDistances[lod]);
 		}
 
 		runtime->SetPosition(model->m_position);
@@ -1587,7 +1587,7 @@ void GolWorldDatabase::InitializeEntities()
 			if (model->m_modelIndices[lod] < 0) {
 				break;
 			}
-			runtime->FUN_1001acf0(
+			runtime->AddModel(
 				GetModel(model->m_modelIndices[lod]),
 				GetBoundingShape(model->m_sceneNodeIndices[lod]),
 				maxDistances[lod]

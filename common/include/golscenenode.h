@@ -54,9 +54,9 @@ public:
 	// SYNTHETIC: GOLDP 0x100299a0
 	// GolSceneNode::`scalar deleting destructor'
 
-	void FUN_00413230(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
-	void FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
-	void FUN_00413310();
+	void TransformPointToWorld(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
+	void TransformVectorToWorld(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
+	void MirrorY();
 	LegoU32 GetUpdateSerial() const { return m_unk0x0c; }
 	LegoU32 GetCapacity() const { return m_capacity; }
 	LegoU32 AdvanceUpdateSerial()
@@ -69,7 +69,7 @@ public:
 	}
 
 protected:
-	void FUN_10029c60(GolFileParser* p_parser);
+	void Parse(GolFileParser* p_parser);
 
 	undefined4 m_unk0x0c;         // 0x0c
 	LegoU32 m_capacity;           // 0x10

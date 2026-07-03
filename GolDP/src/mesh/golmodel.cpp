@@ -57,7 +57,7 @@ void GolModel::Allocate(
 	}
 
 	if (p_arg6 > 0) {
-		m_unk0x04.FUN_10025df0(p_renderer, p_arg6);
+		m_unk0x04.Initialize(p_renderer, p_arg6);
 	}
 
 	switch (p_vertexType) {
@@ -80,7 +80,7 @@ void GolModel::Allocate(
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	FUN_100272e0(p_arg4, p_arg5);
+	AllocateIndices(p_arg4, p_arg5);
 	m_unk0x40->VTable0x04(p_arg3);
 	m_unk0x3c = 1;
 }

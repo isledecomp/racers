@@ -595,7 +595,7 @@ void GolAnimatedEntity::ComputeBoundsFromModel(LegoU32 p_index)
 
 	GolVec3 position;
 	LocalToWorld(center, &position);
-	FUN_10026f70(position);
+	SetBoundsCenterAndSpan(position);
 	SetBoundsRadius(radius * scale);
 }
 

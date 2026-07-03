@@ -567,7 +567,7 @@ void CutsceneEvent::GetJointPosition(undefined4 p_param1, GolVec3* p_param2)
 	vec1.m_y = 0.0f;
 	vec1.m_z = 0.0f;
 
-	falconNode->FUN_00413230(p_param1, &vec1, &vec2);
+	falconNode->TransformPointToWorld(p_param1, &vec1, &vec2);
 
 	LegoFloat scale = m_animatedEntity->GetModel(0)->GetScale() * m_animatedEntity->GetUnk0x58();
 	vec2.m_x *= scale;
@@ -588,13 +588,13 @@ void CutsceneEvent::GetJointAxes(undefined4 p_param1, GolVec3* p_param2, GolVec3
 	vec1.m_y = 0.0f;
 	vec1.m_z = 0.0f;
 
-	falconNode->FUN_004132a0(p_param1, &vec1, &vec2);
+	falconNode->TransformVectorToWorld(p_param1, &vec1, &vec2);
 	m_animatedEntity->RotateToWorld(vec2, p_param2);
 
 	vec1.m_x = 0.0f;
 	vec1.m_y = 0.0f;
 	vec1.m_z = 1.0f;
-	falconNode->FUN_004132a0(p_param1, &vec1, &vec2);
+	falconNode->TransformVectorToWorld(p_param1, &vec1, &vec2);
 	m_animatedEntity->RotateToWorld(vec2, p_param3);
 }
 

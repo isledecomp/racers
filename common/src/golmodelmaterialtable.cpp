@@ -23,7 +23,7 @@ GolModelMaterialTable::GolModelMaterialTable()
 
 // FUNCTION: GOLDP 0x10025df0 FOLDED
 // FUNCTION: LEGORACERS 0x004105d0 FOLDED
-void GolModelMaterialTable::FUN_10025df0(GolRenderDevice* p_renderer, undefined4 p_arg2)
+void GolModelMaterialTable::Initialize(GolRenderDevice* p_renderer, undefined4 p_arg2)
 {
 	if (m_renderer != NULL) {
 		Destroy();

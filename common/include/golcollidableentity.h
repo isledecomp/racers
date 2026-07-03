@@ -20,7 +20,7 @@ public:
 	virtual void VTable0x60(GolModelBase* p_model, GolBoundingShape* p_shape,
 							LegoFloat p_modelDistance); // vtable+0x60
 
-	void FUN_1001acf0(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance);
+	void AddModel(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance);
 	void MirrorY();
 	GolBoundingShape* GetBoundingShape(LegoU32 p_index) const { return m_boundingShapes[p_index]; }
 

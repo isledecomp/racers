@@ -100,13 +100,13 @@ public:
 	void Resume();
 	void EnterGhostMode();
 	void LeaveGhostMode();
-	void StartTurbo(LegoU32 p_unk0x04);
+	void StartTurbo(LegoU32 p_level);
 	void ClearActiveAction();
 	void EndShield();
 	void StartSpinOut();
 	void EndSpinOut();
 	void StartDrift(LegoBool32 p_left);
-	void PlayReaction(LegoBool32 p_unk0x04);
+	void PlayReaction(LegoBool32 p_positive);
 	DroppableBrick* DropWhiteBrick();
 	LegoFloat GetRaceProgress();
 	void CycleHudGadget();
@@ -119,9 +119,9 @@ public:
 	void ReapplyCameraView();
 	void CycleCameraView();
 	void InitializeSounds(RaceCameraController* p_cameraController, LegoBool32 p_controlMode);
-	LegoU32 StartShield(LegoU32 p_unk0x04);
+	LegoU32 StartShield(LegoU32 p_level);
 	void EndDrift();
-	void AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs);
+	void AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs);
 	void RemoveCurse();
 	void EnterOpenTrack();
 	LegoU32 CrossFinishLine();

@@ -22,8 +22,8 @@ class SphinxHazard : public Hazard {
 public:
 	SphinxHazard();
 	~SphinxHazard() override;
-	void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-	void OnDeactivate(void* p_unk0x04) override;                           // vtable+0x08
+	void OnActivate(void* p_racer) override;                               // vtable+0x04
+	void OnDeactivate(void* p_context) override;                           // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
 	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 	void ResetState() override;                                            // vtable+0x24

@@ -279,7 +279,7 @@ public:
 		void SetViewportRect(Rect* p_rect);
 		void Draw(GolD3DRenderDevice* p_renderer, LegoU32 p_lensIndex);
 		void UpdateActiveEvents(undefined4 p_elapsedMs);
-		LegoU32 ProcessEvents(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
+		LegoU32 ProcessEvents(LegoU32 p_startFrame, LegoU32 p_endFrame);
 		void AddActiveEvent(Event* p_event);
 		void RemoveActiveEvent(Event* p_event);
 		LegoU32 PushCamera(GolCamera* p_lens);

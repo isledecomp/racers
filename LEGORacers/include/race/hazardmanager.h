@@ -62,7 +62,7 @@ private:
 	friend class RaceSession;
 
 	void Destroy();
-	void LoadHazards(void* p_unk0x04, const LegoChar* p_name, LegoBool32 p_binary);
+	void LoadHazards(void* p_context, const LegoChar* p_name, LegoBool32 p_binary);
 
 	LegoU32 m_count;    // 0x00
 	Hazard** m_entries; // 0x04

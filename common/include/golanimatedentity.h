@@ -44,22 +44,22 @@ public:
 	void TransitionToPart(
 		LegoU32 p_partIndex,
 		LegoS32 p_transitionTime,
-		LegoFloat p_unk0x0c,
-		LegoBool32 p_unk0x10,
-		LegoBool32 p_unk0x14,
+		LegoFloat p_time,
+		LegoBool32 p_updateCurrent,
+		LegoBool32 p_updateQueued,
 		LegoBool32 p_loop
 	);
 	LegoBool32 IsPartAnimationDone();
 	void SamplePartPosition(
 		LegoU32 p_modelIndex,
-		LegoU32 p_unk0x08,
+		LegoU32 p_trackOffset,
 		LegoU32 p_partDataIndex,
 		LegoS32 p_frame,
 		GolVec3* p_dest
 	);
 	void SamplePartRotation(
 		LegoU32 p_modelIndex,
-		LegoU32 p_unk0x08,
+		LegoU32 p_trackOffset,
 		LegoU32 p_partDataIndex,
 		LegoS32 p_frame,
 		GolQuat* p_dest

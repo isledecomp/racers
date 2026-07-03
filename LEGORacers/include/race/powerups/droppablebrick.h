@@ -9,9 +9,9 @@ class Racer;
 // SIZE 0x68
 class DroppableBrick : public PickupBrick {
 public:
-	LegoU8 DropAt(GolVec3 p_unk0x04);
+	LegoU8 DropAt(GolVec3 p_position);
 	void ReturnHome();
-	LegoS32 SnapToGround(GolVec3* p_unk0x04);
+	LegoS32 SnapToGround(GolVec3* p_position);
 
 protected:
 	GolVec3 m_homePosition;           // 0x54

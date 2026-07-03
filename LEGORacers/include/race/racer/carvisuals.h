@@ -97,8 +97,8 @@ public:
 	void HideModels();
 	void StartSkidEffects();
 	void StopSkidEffects();
-	void SetWheelParticle(LegoU32 p_unk0x04, const LegoChar* p_unk0x08);
-	void ClearWheelParticle(LegoU32 p_unk0x04);
+	void SetWheelParticle(LegoU32 p_wheelIndex, const LegoChar* p_name);
+	void ClearWheelParticle(LegoU32 p_wheelIndex);
 	void StartDust();
 	void StartCarSmoke();
 	void Update(LegoU32 p_elapsedMs);
@@ -117,11 +117,11 @@ public:
 	LegoBool32 IntersectSegment(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit);
 	void RenderShadowSilhouette(GolD3DRenderDevice* p_renderer);
 	void RebuildEntityGroup();
-	void SetColorTransform(ColorTransform* p_unk0x04);
+	void SetColorTransform(ColorTransform* p_transform);
 	void ClearColorTransform();
-	void FlashColor(ColorTransform* p_unk0x04, undefined4 p_unk0x08);
+	void FlashColor(ColorTransform* p_transform, undefined4 p_durationMs);
 	void EndFlash();
-	void SetScale(LegoFloat p_unk0x04);
+	void SetScale(LegoFloat p_scale);
 	void ResetDriverAnimation();
 	void PlayForwardAnimation();
 	void PlayReverseAnimation();

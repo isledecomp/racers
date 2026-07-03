@@ -94,7 +94,7 @@ public:
 	LegoBool32 CreateImage(MenuImage*, undefined2, undefined2);
 	LegoBool32 CreateTextLabel(MenuTextLabel*, undefined2, undefined2, undefined2);
 	LegoBool32 CreateFrame(MenuFrame*, undefined2, undefined2);
-	LegoBool32 CreateButton(MenuButton* p_unk0x04, undefined2 p_unk0x08, undefined2 p_styleId);
+	LegoBool32 CreateButton(MenuButton* p_source, undefined2 p_event, undefined2 p_styleId);
 	LegoBool32 CreateHotspotButton(MenuHotspotButton*, undefined2, undefined2);
 	LegoBool32 CreateCarousel(MenuCarousel*, undefined2, undefined2);
 	LegoBool32 CreateSelector(
@@ -104,8 +104,8 @@ public:
 		undefined2 p_styleId
 	);
 	LegoBool32 CreateOptionsRow(OptionsRowBase*, undefined2, undefined2);
-	LegoBool32 CreateSceneView(MenuSceneView* p_unk0x04, undefined4 p_unk0x08, undefined2 p_styleId);
-	LegoBool32 CreateFramedSceneView(MenuFramedSceneView* p_unk0x04, undefined4 p_unk0x08, undefined2 p_styleId);
+	LegoBool32 CreateSceneView(MenuSceneView* p_source, undefined4 p_event, undefined2 p_styleId);
+	LegoBool32 CreateFramedSceneView(MenuFramedSceneView* p_source, undefined4 p_event, undefined2 p_styleId);
 	undefined4 CreateRegion(MenuWidget*, undefined2);
 	LegoBool32 CreateTextField(MenuTextField*, undefined2, undefined2, undefined2, GolString*);
 	undefined4 ShowConfirmDialog(MenuIcon*, MenuIcon*, undefined2);

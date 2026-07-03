@@ -134,7 +134,7 @@ public:
 	);
 	void ParseAnimationNames(GolFileParser* p_parser);
 	void LoadAnimations(undefined4 p_binary);
-	void ParseStringTableNames(GolFileParser* p_unk0x04);
+	void ParseStringTableNames(GolFileParser* p_parser);
 	void LoadStringTables();
 	void ParseSoundGroupNames(GolFileParser* p_parser);
 	void LoadSoundGroups();

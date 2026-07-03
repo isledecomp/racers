@@ -95,7 +95,7 @@ private:
 	void CopyBodyIntoOutput();
 	void MergeHeadModel();
 	void ReplaceMaterialTexture(GolMaterial* p_material, const LegoChar* p_name);
-	GolModelBase* MergeModels(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_unk0x0c);
+	GolModelBase* MergeModels(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_vertexType);
 	void CopyGroupsUntilFace();
 
 	undefined4 m_menuId;                       // 0x00

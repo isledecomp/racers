@@ -74,12 +74,12 @@ public:
 		LegoBool32 Create(CreateParams* p_createParams);
 		void SelectPieceChoice(LegoS32 p_pieceType);
 		LegoBool32 RotateViewAnalog(LegoFloat p_delta);
-		LegoBool32 RotateViewStep(LegoS32 p_delta, LegoBool32 p_unk0x08);
+		LegoBool32 RotateViewStep(LegoS32 p_delta, LegoBool32 p_setCurrentAngle);
 		void SnapViewRotation();
 		LegoBool32 PitchViewAnalog(LegoFloat p_delta);
-		LegoBool32 PitchViewStep(LegoS32 p_delta, LegoBool32 p_unk0x08);
+		LegoBool32 PitchViewStep(LegoS32 p_delta, LegoBool32 p_setCurrentPosition);
 		void SnapViewPitch();
-		LegoBool32 BeginViewReset(LegoBool32 p_unk0x04);
+		LegoBool32 BeginViewReset(LegoBool32 p_rotateFirst);
 		void RotatePiece();
 		LegoBool32 MovePieceX(LegoS32 p_delta);
 		LegoBool32 MovePieceY(LegoS32 p_delta);

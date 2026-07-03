@@ -28,7 +28,7 @@ public:
 	// SaveLoadScreen::`scalar deleting destructor'
 
 protected:
-	void ExecuteOperation(SaveSystem* p_unk0x04);
+	void ExecuteOperation(SaveSystem* p_source);
 
 	LegoS32 m_status;                   // 0x0368
 	LegoU32 m_requestMenuId;            // 0x036c

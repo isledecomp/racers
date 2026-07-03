@@ -30,7 +30,7 @@ public:
 
 	SkyStateResource();
 	~SkyStateResource() override;
-	void OnStartAt(GolVec3* p_unk0x04) override;
+	void OnStartAt(GolVec3* p_position) override;
 	void OnEnd() override;
 	virtual LegoU32 GetKind(); // vtable+0x18
 

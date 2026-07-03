@@ -393,7 +393,7 @@ private:
 		LegoU16 p_partIndex
 	);
 	LegoS16 EmitCellGeometry(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x14);
-	void FinalizeBuild(LegoU8 p_unk0x04);
+	void FinalizeBuild(LegoU8 p_buildFlags);
 	void EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitive* p_primitive);
 	void EmitPrimitives(GolModelEntity* p_entity);
 	void ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation);

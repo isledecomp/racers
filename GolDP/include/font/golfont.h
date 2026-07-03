@@ -17,7 +17,7 @@ public:
 	void Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer) override;                      // vtable+0x00
 	void CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat) override; // vtable+0x04
 	GolD3DTexture* GetTexture(LegoU32 p_index) override;                                             // vtable+0x08
-	void BeginDrawing(GolRenderDevice* p_unk0x04, LegoU32 p_count) override;                         // vtable+0x0c
+	void BeginDrawing(GolRenderDevice* p_renderer, LegoU32 p_count) override;                        // vtable+0x0c
 	void SelectSurface(LegoU32 p_index) override;                                                    // vtable+0x10
 	void DrawGlyph(Rect* p_sourceRect, Rect* p_destRect) override;                                   // vtable+0x14
 	void EndDrawing() override;                                                                      // vtable+0x18

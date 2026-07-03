@@ -19,9 +19,9 @@ public:
 	virtual void GetBasis(GolVec3* p_right, GolVec3* p_forward,
 						  GolVec3* p_up) = 0;                            // vtable+0x18
 	virtual void VTable0x1c(GolVec3* p_unk0x04, GolVec3* p_unk0x08) = 0; // vtable+0x1c
-	virtual void VTable0x20(GolVec3* p_unk0x04, GolVec3* p_unk0x08) = 0; // vtable+0x20
-	virtual void VTable0x24(GolVec3* p_unk0x04, GolVec3* p_unk0x08) = 0; // vtable+0x24
-	virtual void VTable0x28(GolVec3* p_unk0x04, GolVec3* p_unk0x08) = 0; // vtable+0x28
+	virtual void VTable0x20(GolVec3* p_up, GolVec3* p_right) = 0;        // vtable+0x20
+	virtual void VTable0x24(GolVec3* p_right, GolVec3* p_forward) = 0;   // vtable+0x24
+	virtual void VTable0x28(GolVec3* p_up, GolVec3* p_right) = 0;        // vtable+0x28
 	virtual void SetRotation(LegoFloat* p_quat) = 0;                     // vtable+0x2c
 	virtual void GetUp(GolVec3* p_up) = 0;                               // vtable+0x30
 	virtual void GetForward(GolVec3* p_forward) = 0;                     // vtable+0x34

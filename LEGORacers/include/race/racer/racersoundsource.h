@@ -24,7 +24,7 @@ public:
 	SpatialSoundInstance* AcquireSoundById(LegoU32 p_soundId);
 
 private:
-	LegoU32 ResolveSoundId(LegoU32 p_unk0x04, SoundGroup** p_soundGroup);
+	LegoU32 ResolveSoundId(LegoU32 p_soundId, SoundGroup** p_soundGroup);
 
 protected:
 	SoundGroup* m_groups[4]; // 0x04

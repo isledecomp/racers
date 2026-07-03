@@ -79,17 +79,17 @@ public:
 	virtual void OnChar(undefined4);                        // vtable+0x90
 	virtual void VTable0x94(undefined4);                    // vtable+0x94
 
-	void StartMenuMusic(MenuGameContext* p_context, undefined4 p_unk0x08, undefined4 p_looping);
+	void StartMenuMusic(MenuGameContext* p_context, undefined4 p_musicId, undefined4 p_looping);
 
 	// SYNTHETIC: LEGORACERS 0x0047fb60
 	// MenuGameScreen::`scalar deleting destructor'
 
 protected:
-	void LoadPieceResources(MenuGameContext* p_context, undefined4 p_unk0x08);
+	void LoadPieceResources(MenuGameContext* p_context, undefined4 p_binary);
 	void DestroyPieceResources(MenuGameContext* p_context);
 	void LoadChampionResources(LegoS32 p_entryCapacity);
 	void DestroyChampionResources();
-	void LoadPartResources(MenuGameContext* p_context, undefined4 p_unk0x08);
+	void LoadPartResources(MenuGameContext* p_context, undefined4 p_event);
 	void LoadCosmeticTable();
 	void ClearCosmeticTable();
 
@@ -98,12 +98,12 @@ protected:
 		return static_cast<ButtonBindingTable::ButtonBinding*>(GetBindingEntry(p_id));
 	}
 
-	undefined4 CreatePartCarousel(CarPartCarousel* p_unk0x04, undefined2 p_unk0x08, undefined2 p_styleId);
+	undefined4 CreatePartCarousel(CarPartCarousel* p_source, undefined2 p_event, undefined2 p_styleId);
 	undefined4 CreateTextButton(
-		MenuTextButton* p_unk0x04,
-		undefined2 p_unk0x08,
+		MenuTextButton* p_source,
+		undefined2 p_event,
 		undefined2 p_styleId,
-		undefined2 p_unk0x10
+		undefined2 p_stringId
 	);
 	void SetLighting(const ColorRGBA* p_materialColor, const ColorRGBA* p_lightColor);
 	void ReinitializeInputBindings();

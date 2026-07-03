@@ -72,7 +72,7 @@ void GolFontLibrary::LoadFontDefinitions(
 	}
 
 	parser->OpenFileForRead(p_fileName);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(FdbTxtParser::e_font));
 
 	m_numItems = parser->ReadBracketedCountAndLeftCurly();
 
@@ -87,7 +87,7 @@ void GolFontLibrary::LoadFontDefinitions(
 	AllocateItems();
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
-		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(FdbTxtParser::e_font));
 
 		GolFontBase* font = GetItem(i);
 
@@ -112,22 +112,22 @@ void GolFontLibrary::LoadFontDefinitions(
 		GolFileParser::ParserTokenType token = parser->GetNextToken();
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
-			case GolFileParser::e_unknown0x28:
+			case FdbTxtParser::e_bmp:
 				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutTga) | GolFontBase::c_flagBmpSource;
 				break;
-			case GolFileParser::e_unknown0x29:
+			case FdbTxtParser::e_tga:
 				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutBmp) | GolFontBase::c_flagTgaSource;
 				break;
-			case GolFileParser::e_unknown0x2a:
+			case FdbTxtParser::e_colorKey:
 				style.m_flags |= GolFontBase::c_flagColorKeyed;
 				style.m_colorKey.m_red = parser->ReadInteger();
 				style.m_colorKey.m_grn = parser->ReadInteger();
 				style.m_colorKey.m_blu = parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x2c:
+			case FdbTxtParser::e_charSpacing:
 				font->m_charSpacing = parser->ReadInteger();
 				break;
-			case GolFileParser::e_unknown0x2b: {
+			case FdbTxtParser::e_characters: {
 				LegoU16 count;
 				undefined2 chars[100];
 				ReadFontCharList(parser, chars, &count);
@@ -141,7 +141,7 @@ void GolFontLibrary::LoadFontDefinitions(
 				}
 				break;
 			}
-			case GolFileParser::e_unknown0x2d:
+			case FdbTxtParser::e_textColor:
 				style.m_textColor.m_red = parser->ReadInteger();
 				style.m_textColor.m_grn = parser->ReadInteger();
 				style.m_textColor.m_blu = parser->ReadInteger();

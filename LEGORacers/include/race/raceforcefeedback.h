@@ -15,8 +15,8 @@ public:
 	~RaceForceFeedback();
 
 	void Initialize(DirectInputDevice* p_device);
-	void SetSurfaceIntensity(LegoFloat p_unk0x04);
-	void PlayTurboRumble(LegoU32 p_unk0x04);
+	void SetSurfaceIntensity(LegoFloat p_intensity);
+	void PlayTurboRumble(LegoU32 p_level);
 	void PlayReactionRumble();
 	void PlayLightRumble();
 	void PlayScrapeRumble();
@@ -27,13 +27,13 @@ public:
 
 private:
 	void Destroy();
-	void Update(LegoU32 p_elapsedMs, LegoFloat p_unk0x08);
+	void Update(LegoU32 p_elapsedMs, LegoFloat p_forwardSpeed);
 	void Stop();
 	void StartPulses();
 	LegoS32 StartSurfaceRumble();
-	LegoS32 UpdateSurfacePulse(LegoFloat p_unk0x04);
+	LegoS32 UpdateSurfacePulse(LegoFloat p_forwardSpeed);
 	void CreateEngineEffect();
-	undefined4 UpdateEngineEffect(LegoFloat p_unk0x04);
+	undefined4 UpdateEngineEffect(LegoFloat p_forwardSpeed);
 
 	DirectInputDevice* m_device;        // 0x00
 	LegoU32 m_totalMs;                  // 0x04

@@ -2074,8 +2074,8 @@ void RaceSession::Update()
 		LegoU32 i;
 		if (!m_demoMode) {
 			for (i = 0; i < m_context->m_playerCount; i++) {
-				LegoFloat unk0xa00 = m_raceState.m_playerRacers[i]->m_physics.m_forwardSpeed;
-				m_forceFeedback[i].Update(elapsedMs, unk0xa00);
+				LegoFloat forwardSpeed = m_raceState.m_playerRacers[i]->m_physics.m_forwardSpeed;
+				m_forceFeedback[i].Update(elapsedMs, forwardSpeed);
 				m_playerControls[i].Update(elapsedMs);
 			}
 		}

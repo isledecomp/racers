@@ -1,6 +1,7 @@
+#include "race/raceforcefeedback.h"
+
 #include "decomp.h"
 #include "input/directinputdevice.h"
-#include "race/raceforcefeedback.h"
 
 DECOMP_SIZE_ASSERT(RaceForceFeedback, 0x28)
 
@@ -56,12 +57,12 @@ void RaceForceFeedback::Initialize(DirectInputDevice* p_device)
 }
 
 // FUNCTION: LEGORACERS 0x00421e30
-void RaceForceFeedback::Update(LegoU32 p_elapsedMs, LegoFloat p_unk0x08)
+void RaceForceFeedback::Update(LegoU32 p_elapsedMs, LegoFloat p_forwardSpeed)
 {
-	UpdateEngineEffect(p_unk0x08);
+	UpdateEngineEffect(p_forwardSpeed);
 	if (m_device && m_state) {
 		if (m_surfaceMode) {
-			UpdateSurfacePulse(p_unk0x08);
+			UpdateSurfacePulse(p_forwardSpeed);
 		}
 
 		if (p_elapsedMs >= m_totalMs) {
@@ -135,17 +136,17 @@ LegoS32 RaceForceFeedback::StartSurfaceRumble()
 }
 
 // FUNCTION: LEGORACERS 0x00421f80
-LegoS32 RaceForceFeedback::UpdateSurfacePulse(LegoFloat p_unk0x04)
+LegoS32 RaceForceFeedback::UpdateSurfacePulse(LegoFloat p_forwardSpeed)
 {
-	if (p_unk0x04 < 0.0f) {
-		p_unk0x04 = -p_unk0x04;
+	if (p_forwardSpeed < 0.0f) {
+		p_forwardSpeed = -p_forwardSpeed;
 	}
 
-	if (p_unk0x04 > 0.2f) {
-		p_unk0x04 = 0.2f;
+	if (p_forwardSpeed > 0.2f) {
+		p_forwardSpeed = 0.2f;
 	}
 
-	LegoFloat value = (p_unk0x04 / 0.2f) * (p_unk0x04 / 0.2f);
+	LegoFloat value = (p_forwardSpeed / 0.2f) * (p_forwardSpeed / 0.2f);
 	if (value < 0.02f) {
 		value = 0.0f;
 	}
@@ -157,11 +158,11 @@ LegoS32 RaceForceFeedback::UpdateSurfacePulse(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00421fe0
-void RaceForceFeedback::SetSurfaceIntensity(LegoFloat p_unk0x04)
+void RaceForceFeedback::SetSurfaceIntensity(LegoFloat p_intensity)
 {
-	m_surfaceIntensity = p_unk0x04;
+	m_surfaceIntensity = p_intensity;
 
-	if (p_unk0x04 == 0.0f) {
+	if (p_intensity == 0.0f) {
 		if (m_surfaceMode) {
 			m_surfaceMode = 0;
 			Stop();
@@ -176,12 +177,12 @@ void RaceForceFeedback::SetSurfaceIntensity(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00422030
-void RaceForceFeedback::PlayTurboRumble(LegoU32 p_unk0x04)
+void RaceForceFeedback::PlayTurboRumble(LegoU32 p_level)
 {
 	LegoU32 zero = 0;
 
 	if (m_device) {
-		switch (p_unk0x04) {
+		switch (p_level) {
 		case 0:
 			m_totalMs = 1000;
 			m_onMs = 500;
@@ -350,7 +351,7 @@ void RaceForceFeedback::CreateEngineEffect()
 }
 
 // FUNCTION: LEGORACERS 0x004222b0
-undefined4 RaceForceFeedback::UpdateEngineEffect(LegoFloat p_unk0x04)
+undefined4 RaceForceFeedback::UpdateEngineEffect(LegoFloat p_forwardSpeed)
 {
 	undefined4 result = (undefined4) m_device;
 	if (!m_device) {
@@ -366,19 +367,19 @@ undefined4 RaceForceFeedback::UpdateEngineEffect(LegoFloat p_unk0x04)
 		return result;
 	}
 
-	if (p_unk0x04 < 0.0f) {
-		p_unk0x04 = -p_unk0x04;
+	if (p_forwardSpeed < 0.0f) {
+		p_forwardSpeed = -p_forwardSpeed;
 	}
 
-	if (p_unk0x04 > 0.2f) {
-		p_unk0x04 = 0.2f;
+	if (p_forwardSpeed > 0.2f) {
+		p_forwardSpeed = 0.2f;
 	}
 
 	DIPERIODIC periodicParams;
 	periodicParams.dwMagnitude = 2000;
 	periodicParams.lOffset = 0;
 	periodicParams.dwPhase = 0;
-	periodicParams.dwPeriod = static_cast<LegoS32>((0.2f - p_unk0x04) * 1000000.0f);
+	periodicParams.dwPeriod = static_cast<LegoS32>((0.2f - p_forwardSpeed) * 1000000.0f);
 
 	DIEFFECT effectParams;
 	effectParams.dwSize = sizeof(effectParams);

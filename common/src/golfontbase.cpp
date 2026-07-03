@@ -545,7 +545,7 @@ void GolFontBase::MeasureString(const LegoChar* p_string, LegoS32* p_width, Lego
 void GolFontBase::MeasureString(
 	GolString* p_string,
 	LegoS32 p_wrapWidth,
-	LegoS32 p_unk0x10,
+	LegoS32 p_lineSpacing,
 	LegoFloat p_scaleX,
 	LegoFloat p_scaleY,
 	LegoS32* p_width,
@@ -566,14 +566,14 @@ void GolFontBase::MeasureString(
 		return;
 	}
 
-	if (p_unk0x10 < 0) {
-		*p_height = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(-p_unk0x10) * p_scaleY));
+	if (p_lineSpacing < 0) {
+		*p_height = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(-p_lineSpacing) * p_scaleY));
 	}
 
 	p_wrapWidth = static_cast<LegoS32>(::floor(static_cast<LegoFloat>(p_wrapWidth) / p_scaleX));
-	p_unk0x10 += m_fontHeight;
-	p_unk0x10 = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(p_unk0x10) * p_scaleY));
-	*p_height += p_unk0x10;
+	p_lineSpacing += m_fontHeight;
+	p_lineSpacing = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(p_lineSpacing) * p_scaleY));
+	*p_height += p_lineSpacing;
 
 	LegoU32 i = 0;
 	while (i < length) {
@@ -665,7 +665,7 @@ void GolFontBase::MeasureString(
 		}
 
 		if (i < length) {
-			*p_height += p_unk0x10;
+			*p_height += p_lineSpacing;
 		}
 	}
 
@@ -683,12 +683,12 @@ void GolFontBase::DrawString(
 	LegoS32 p_x,
 	LegoS32 p_y,
 	LegoS32 p_wrapWidth,
-	LegoS32 p_unk0x18,
+	LegoS32 p_lineSpacing,
 	LegoFloat p_scaleX,
 	LegoFloat p_scaleY,
 	Rect* p_rect,
 	ColorRGBA* p_color,
-	LegoS32 p_unk0x2c
+	LegoS32 p_centered
 )
 {
 	GolFontBase* font = this;
@@ -696,8 +696,8 @@ void GolFontBase::DrawString(
 
 	if (p_string->SelectionLength()) {
 		p_wrapWidth = static_cast<LegoS32>(::floor(static_cast<LegoFloat>(p_wrapWidth) / p_scaleX));
-		p_unk0x18 += font->m_fontHeight;
-		p_unk0x18 = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(p_unk0x18) * p_scaleY));
+		p_lineSpacing += font->m_fontHeight;
+		p_lineSpacing = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(p_lineSpacing) * p_scaleY));
 		LegoU32 length = p_string->SelectionLength();
 
 		if (length) {
@@ -777,7 +777,7 @@ void GolFontBase::DrawString(
 				}
 
 				LegoS32 drawX = p_x;
-				if (p_unk0x2c == 1 && static_cast<LegoU32>(p_wrapWidth) > lineWidth) {
+				if (p_centered == 1 && static_cast<LegoU32>(p_wrapWidth) > lineWidth) {
 					drawX += (p_wrapWidth - lineWidth) >> 1;
 				}
 
@@ -805,7 +805,7 @@ void GolFontBase::DrawString(
 					);
 				}
 
-				p_y += p_unk0x18;
+				p_y += p_lineSpacing;
 
 				if (*p_string->FromCursor(i) == '\r') {
 					i++;

@@ -62,7 +62,7 @@ public:
 	void MeasureString(
 		GolString* p_string,
 		LegoS32 p_wrapWidth,
-		LegoS32 p_unk0x10,
+		LegoS32 p_lineSpacing,
 		LegoFloat p_scaleX,
 		LegoFloat p_scaleY,
 		LegoS32* p_width,
@@ -74,12 +74,12 @@ public:
 		LegoS32 p_x,
 		LegoS32 p_y,
 		LegoS32 p_wrapWidth,
-		LegoS32 p_unk0x18,
+		LegoS32 p_lineSpacing,
 		LegoFloat p_scaleX,
 		LegoFloat p_scaleY,
 		Rect* p_rect,
 		ColorRGBA* p_color,
-		LegoS32 p_unk0x2c
+		LegoS32 p_centered
 	);
 	LegoU32 FindGlyphIndex(LegoU16 p_char) const;
 

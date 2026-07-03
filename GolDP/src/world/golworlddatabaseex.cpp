@@ -237,11 +237,11 @@ undefined4* GolWorldDatabaseEx::VTable0x0c()
 	}
 
 	for (i = 0; i < m_unk0x6c; i++) {
-		WdbBillboardSprite0x38* sprite = &m_unk0x70[i];
+		WdbBillboardSprite* sprite = &m_unk0x70[i];
 		GolBillboardEx* billboard = &m_unk0x100[i];
 		LegoFloat maxDistanceSquared = sprite->m_unk0x28 * sprite->m_unk0x28;
 
-		if (sprite->m_flags & WdbBillboardSprite0x38::c_flagBit2) {
+		if (sprite->m_flags & WdbBillboardSprite::c_flagBit2) {
 			LegoU32 materialTableIndex = sprite->m_unk0x34;
 			if (materialTableIndex >= m_unk0x2c) {
 				GOL_FATALERROR_MESSAGE("Illegal mat assign reference");
@@ -273,7 +273,7 @@ undefined4* GolWorldDatabaseEx::VTable0x0c()
 		}
 
 		billboard->VTable0x08(sprite->m_unk0x08);
-		if (sprite->m_flags & WdbBillboardSprite0x38::c_flagBit1) {
+		if (sprite->m_flags & WdbBillboardSprite::c_flagBit1) {
 			billboard->EnableFlagBit1();
 			billboard->SetUnk0x30(sprite->m_unk0x14);
 		}

@@ -1219,8 +1219,8 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 
 	m_unk0xc8524 = p_renderState;
 
-	GolBoundingShape::StructField0x08::Node* firstNode;
-	GolBoundingShape::StructField0x08::Node* lastNode;
+	GolBoundingShape::TreeNode::Node* firstNode;
+	GolBoundingShape::TreeNode::Node* lastNode;
 	static_cast<GolCollidableEntity*>(p_model)
 		->GetBoundingShape(result.m_lodIndex)
 		->FUN_1001b2c0(&m_unk0x4c, &firstNode, &lastNode);
@@ -1252,7 +1252,7 @@ void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, GolD3DRenderState* 
 	}
 
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
-	GolBoundingShape::StructField0x08::Node* node;
+	GolBoundingShape::TreeNode::Node* node;
 	LegoU32 nextOffset;
 	if (m_flags & c_flagBit5) {
 		node = firstNode;
@@ -1302,8 +1302,8 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 		return;
 	}
 
-	GolBoundingShape::StructField0x08::Node* firstNode;
-	GolBoundingShape::StructField0x08::Node* lastNode;
+	GolBoundingShape::TreeNode::Node* firstNode;
+	GolBoundingShape::TreeNode::Node* lastNode;
 	static_cast<GolCollidableEntity*>(p_model)
 		->GetBoundingShape(result.m_lodIndex)
 		->FUN_1001b2c0(&m_unk0x4c, &firstNode, &lastNode);
@@ -1332,7 +1332,7 @@ void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 	}
 
 	MaterialTable* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
-	GolBoundingShape::StructField0x08::Node* node;
+	GolBoundingShape::TreeNode::Node* node;
 	LegoU32 nextOffset;
 	if (m_flags & c_flagBit5) {
 		node = firstNode;

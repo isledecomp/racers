@@ -15,7 +15,7 @@ public:
 	// SIZE 0x0e
 	struct Vertex {
 		// SIZE 0x04
-		union Tail0x04 {
+		union Tail {
 			// SIZE 0x04
 			struct Normal {
 				LegoS8 m_nx;   // 0x00
@@ -27,12 +27,12 @@ public:
 			ColorRGBA m_color; // 0x00
 		};
 
-		LegoS16 m_x;     // 0x00
-		LegoS16 m_y;     // 0x02
-		LegoS16 m_z;     // 0x04
-		LegoS16 m_u;     // 0x06
-		LegoS16 m_v;     // 0x08
-		Tail0x04 m_tail; // 0x0a
+		LegoS16 m_x; // 0x00
+		LegoS16 m_y; // 0x02
+		LegoS16 m_z; // 0x04
+		LegoS16 m_u; // 0x06
+		LegoS16 m_v; // 0x08
+		Tail m_tail; // 0x0a
 	};
 
 	GdbPartVertexPool();

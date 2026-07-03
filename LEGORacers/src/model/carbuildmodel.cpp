@@ -22,7 +22,7 @@
 DECOMP_SIZE_ASSERT(CarBuildModel, 0x2030)
 DECOMP_SIZE_ASSERT(CarBuildModel::Placement, 0x30)
 DECOMP_SIZE_ASSERT(CarBuildModel::PieceGrid, 0x14)
-DECOMP_SIZE_ASSERT(CarBuildModel::PieceGrid::Entry0x0c, 0x0c)
+DECOMP_SIZE_ASSERT(CarBuildModel::PieceGrid::Cell, 0x0c)
 DECOMP_SIZE_ASSERT(CarBuildModel::BuildVertex, 0x28)
 DECOMP_SIZE_ASSERT(CarBuildModel::BuildPrimitive, 0x10)
 DECOMP_SIZE_ASSERT(CarBuildModel::BuildPrimitiveBounds, 0x18)
@@ -2989,7 +2989,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 }
 
 // FUNCTION: LEGORACERS 0x0049df20
-void CarBuildModel::PieceGrid::Entry0x0c::Reset()
+void CarBuildModel::PieceGrid::Cell::Reset()
 {
 	m_entryIndex = -1;
 	m_height = 0;
@@ -3099,7 +3099,7 @@ LegoBool32 CarBuildModel::PieceGrid::Initialize(LegoS32 p_width, LegoS32 p_heigh
 	Clear();
 	m_width = p_width;
 	m_height = p_height;
-	m_entries = new Entry0x0c[p_width * p_height];
+	m_entries = new Cell[p_width * p_height];
 	if (m_entries) {
 		ResetEntries();
 		return TRUE;
@@ -3154,7 +3154,7 @@ LegoS32 CarBuildModel::PieceGrid::FindPlacementHeight(
 
 	for (LegoS32 x = 0; x < width; x++) {
 		for (LegoS32 y = 0; y < height; y++) {
-			Entry0x0c& gridEntry = m_entries[m_height * (p_x + x) + y + p_y];
+			Cell& gridEntry = m_entries[m_height * (p_x + x) + y + p_y];
 			if (gridEntry.m_occupied) {
 				LegoS32 candidate = gridEntry.m_height;
 				LegoPieceLibrary::ShapeCell* cell = p_pieceRecord->GetCell(x, y, static_cast<LegoU8>(p_rotation));

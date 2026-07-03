@@ -244,7 +244,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable* p_mat
 void GolModel::FUN_10006e00(
 	GolD3DRenderDevice* p_renderer,
 	MaterialTable* p_materialTable,
-	GolBoundingShape::StructField0x08::Node* p_node
+	GolBoundingShape::TreeNode::Node* p_node
 )
 {
 	if (p_materialTable == NULL) {

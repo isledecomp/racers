@@ -24,9 +24,9 @@
 
 DECOMP_SIZE_ASSERT(GolWorldDatabase, 0xf0)
 DECOMP_SIZE_ASSERT(GolWorldDatabase::WdbTxtParser, 0x1fc)
-DECOMP_SIZE_ASSERT(WdbModel0x8c, 0x8c)
-DECOMP_SIZE_ASSERT(WdbCamera0x4c, 0x4c)
-DECOMP_SIZE_ASSERT(WdbLight0x10, 0x10)
+DECOMP_SIZE_ASSERT(WdbModel, 0x8c)
+DECOMP_SIZE_ASSERT(WdbCamera, 0x4c)
+DECOMP_SIZE_ASSERT(WdbLight, 0x10)
 
 // GLOBAL: GOLDP 0x100576e4
 LegoFloat g_fltMax0x100576e4 = FLT_MAX;
@@ -545,12 +545,12 @@ void GolWorldDatabase::FUN_1002cc30(GolFileParser& p_parser)
 	if (m_modelEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x50 = new WdbModel0x8c[m_modelEntityCount];
+	m_unk0x50 = new WdbModel[m_modelEntityCount];
 	if (m_unk0x50 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	::memset(m_unk0x50, 0, sizeof(*m_unk0x50) * m_modelEntityCount);
-	WdbModel0x8c* item = m_unk0x50;
+	WdbModel* item = m_unk0x50;
 	for (i = 0; i < m_modelEntityCount; item++, i++) {
 		LegoU32 cnt = 0;
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2e);
@@ -628,15 +628,15 @@ void GolWorldDatabase::FUN_1002cc30(GolFileParser& p_parser)
 				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
 				break;
 			case GolFileParser::e_unknown0x3f:
-				item->m_flags |= WdbModel0x8c::e_flagBit3;
+				item->m_flags |= WdbModel::e_flagBit3;
 				item->m_unk0x80 = p_parser.ReadFloat();
 				item->m_unk0x84 = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x42:
-				item->m_flags |= WdbModel0x8c::e_flagBit1;
+				item->m_flags |= WdbModel::e_flagBit1;
 				break;
 			case GolFileParser::e_unknown0x4c:
-				item->m_flags |= WdbModel0x8c::e_flagBit2;
+				item->m_flags |= WdbModel::e_flagBit2;
 				break;
 			default:
 				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -660,12 +660,12 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 	if (m_animatedEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x58 = new WdbModel0x8c[m_animatedEntityCount];
+	m_unk0x58 = new WdbModel[m_animatedEntityCount];
 	if (m_unk0x58 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	::memset(m_unk0x58, 0, sizeof(*m_unk0x58) * m_animatedEntityCount);
-	WdbModel0x8c* item = m_unk0x58;
+	WdbModel* item = m_unk0x58;
 	for (i = 0; i < m_animatedEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2f);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
@@ -773,15 +773,15 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
 				break;
 			case GolFileParser::e_unknown0x3f:
-				item->m_flags |= WdbModel0x8c::e_flagBit3;
+				item->m_flags |= WdbModel::e_flagBit3;
 				item->m_unk0x80 = p_parser.ReadFloat();
 				item->m_unk0x84 = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x42:
-				item->m_flags |= WdbModel0x8c::e_flagBit1;
+				item->m_flags |= WdbModel::e_flagBit1;
 				break;
 			case GolFileParser::e_unknown0x4c:
-				item->m_flags |= WdbModel0x8c::e_flagBit2;
+				item->m_flags |= WdbModel::e_flagBit2;
 				break;
 			default:
 				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -805,12 +805,12 @@ void GolWorldDatabase::FUN_1002d400(GolFileParser& p_parser)
 	if (m_collidableEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x60 = new WdbModel0x8c[m_collidableEntityCount];
+	m_unk0x60 = new WdbModel[m_collidableEntityCount];
 	if (m_unk0x60 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	::memset(m_unk0x60, 0, sizeof(*m_unk0x60) * m_collidableEntityCount);
-	WdbModel0x8c* item = m_unk0x60;
+	WdbModel* item = m_unk0x60;
 	for (i = 0; i < m_collidableEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x30);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
@@ -877,12 +877,12 @@ void GolWorldDatabase::FUN_1002d400(GolFileParser& p_parser)
 				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
 				break;
 			case GolFileParser::e_unknown0x3f:
-				item->m_flags |= WdbModel0x8c::e_flagBit3;
+				item->m_flags |= WdbModel::e_flagBit3;
 				item->m_unk0x80 = p_parser.ReadFloat();
 				item->m_unk0x84 = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x42:
-				item->m_flags |= WdbModel0x8c::e_flagBit1;
+				item->m_flags |= WdbModel::e_flagBit1;
 				break;
 			default:
 				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -906,12 +906,12 @@ void GolWorldDatabase::FUN_1002d720(GolFileParser& p_parser)
 	if (m_boundedEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x68 = new WdbModel0x8c[m_boundedEntityCount];
+	m_unk0x68 = new WdbModel[m_boundedEntityCount];
 	if (m_unk0x68 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	::memset(m_unk0x68, 0, sizeof(*m_unk0x68) * m_boundedEntityCount);
-	WdbModel0x8c* item = m_unk0x68;
+	WdbModel* item = m_unk0x68;
 	for (i = 0; i < m_boundedEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x41);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
@@ -975,12 +975,12 @@ void GolWorldDatabase::FUN_1002d950(GolFileParser& p_parser)
 	if (m_unk0x6c == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x70 = new WdbBillboardSprite0x38[m_unk0x6c];
+	m_unk0x70 = new WdbBillboardSprite[m_unk0x6c];
 	if (m_unk0x70 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	::memset(m_unk0x70, 0, sizeof(*m_unk0x70) * m_unk0x6c);
-	WdbBillboardSprite0x38* item = m_unk0x70;
+	WdbBillboardSprite* item = m_unk0x70;
 	for (i = 0; i < m_unk0x6c; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x37);
 		p_parser.ReadLeftCurly();
@@ -989,7 +989,7 @@ void GolWorldDatabase::FUN_1002d950(GolFileParser& p_parser)
 		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x2b:
-				item->m_flags |= WdbBillboardSprite0x38::c_flagBit2;
+				item->m_flags |= WdbBillboardSprite::c_flagBit2;
 				item->m_unk0x34 = p_parser.ReadInteger();
 				item->m_unk0x36 = p_parser.ReadInteger();
 				break;
@@ -999,7 +999,7 @@ void GolWorldDatabase::FUN_1002d950(GolFileParser& p_parser)
 				item->m_unk0x08.m_z = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x38:
-				item->m_flags |= WdbBillboardSprite0x38::c_flagBit1;
+				item->m_flags |= WdbBillboardSprite::c_flagBit1;
 				item->m_unk0x14.m_x = p_parser.ReadFloat();
 				item->m_unk0x14.m_y = p_parser.ReadFloat();
 				item->m_unk0x14.m_z = p_parser.ReadFloat();
@@ -1092,7 +1092,7 @@ void GolWorldDatabase::FUN_1002dc80(GolFileParser& p_parser)
 	if (m_unk0x7c == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x80 = new WdbCamera0x4c[m_unk0x7c];
+	m_unk0x80 = new WdbCamera[m_unk0x7c];
 	if (m_unk0x80 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -1101,7 +1101,7 @@ void GolWorldDatabase::FUN_1002dc80(GolFileParser& p_parser)
 	pos.m_y = 0.0f;
 	pos.m_z = 0.0f;
 	::memset(m_unk0x80, 0, sizeof(*m_unk0x80) * m_unk0x7c);
-	WdbCamera0x4c* item = m_unk0x80;
+	WdbCamera* item = m_unk0x80;
 	for (i = 0; i < m_unk0x7c; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x43);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
@@ -1197,7 +1197,7 @@ void GolWorldDatabase::FUN_1002df90(GolFileParser& p_parser)
 	if (m_unk0x84 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x88 = new WdbLight0x10[m_unk0x84];
+	m_unk0x88 = new WdbLight[m_unk0x84];
 	if (m_unk0x88 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -1237,7 +1237,7 @@ void GolWorldDatabase::FUN_1002e0d0(GolFileParser& p_parser)
 	if (m_unk0x8c == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x90 = new WdbLight0x10[m_unk0x8c];
+	m_unk0x90 = new WdbLight[m_unk0x8c];
 	if (m_unk0x90 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -1272,7 +1272,7 @@ void GolWorldDatabase::FUN_1002e0d0(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x1002e250
-void GolWorldDatabase::FUN_1002e250(GolBillboard* p_billboard, WdbBillboardSprite0x38* p_sprite)
+void GolWorldDatabase::FUN_1002e250(GolBillboard* p_billboard, WdbBillboardSprite* p_sprite)
 {
 	if (p_sprite->m_unk0x32 == 0) {
 		return;
@@ -1354,7 +1354,7 @@ void GolWorldDatabase::FUN_1002e640()
 	LegoFloat maxDistances[3];
 
 	for (i = 0; i < m_modelEntityCount; i++) {
-		WdbModel0x8c* model = &m_unk0x50[i];
+		WdbModel* model = &m_unk0x50[i];
 		GolModelEntity* runtime = &m_modelEntities[i];
 
 		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
@@ -1397,14 +1397,14 @@ void GolWorldDatabase::FUN_1002e640()
 		runtime->m_radius = -1.0f;
 		runtime->m_unk0x58 = model->m_unk0x74;
 
-		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
+		if (model->m_flags & WdbModel::e_flagBit3) {
 			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
 			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
 		}
-		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
+		if (model->m_flags & WdbModel::e_flagBit1) {
 			runtime->m_flags |= GolModelEntity::c_flagBit1;
 		}
-		if (model->m_flags & WdbModel0x8c::e_flagBit2) {
+		if (model->m_flags & WdbModel::e_flagBit2) {
 			runtime->m_flags |= GolModelEntity::c_flagBit2;
 		}
 
@@ -1432,7 +1432,7 @@ void GolWorldDatabase::FUN_1002e640()
 	}
 
 	for (i = 0; i < m_animatedEntityCount; i++) {
-		WdbModel0x8c* model = &m_unk0x58[i];
+		WdbModel* model = &m_unk0x58[i];
 		GolAnimatedEntity* runtime = &m_animatedEntities[i];
 
 		if (model->m_unk0x08[0] >= 0 && static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
@@ -1501,7 +1501,7 @@ void GolWorldDatabase::FUN_1002e640()
 		runtime->m_radius = -1.0f;
 		runtime->m_unk0x58 = model->m_unk0x74;
 
-		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
+		if (model->m_flags & WdbModel::e_flagBit3) {
 			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
 			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
 		}
@@ -1518,10 +1518,10 @@ void GolWorldDatabase::FUN_1002e640()
 			runtime->SetPartAnimationEnabled(FALSE);
 		}
 
-		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
+		if (model->m_flags & WdbModel::e_flagBit1) {
 			runtime->m_flags |= GolModelEntity::c_flagBit1;
 		}
-		if (model->m_flags & WdbModel0x8c::e_flagBit2) {
+		if (model->m_flags & WdbModel::e_flagBit2) {
 			runtime->m_flags |= GolModelEntity::c_flagBit2;
 		}
 
@@ -1549,7 +1549,7 @@ void GolWorldDatabase::FUN_1002e640()
 	}
 
 	for (i = 0; i < m_collidableEntityCount; i++) {
-		WdbModel0x8c* model = &m_unk0x60[i];
+		WdbModel* model = &m_unk0x60[i];
 		GolCollidableEntity* runtime = &m_collidableEntities[i];
 
 		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
@@ -1594,11 +1594,11 @@ void GolWorldDatabase::FUN_1002e640()
 		runtime->VTable0x08(model->m_unk0x50);
 		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
 
-		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
+		if (model->m_flags & WdbModel::e_flagBit3) {
 			runtime->SetTextureScrollSpeedU(model->m_unk0x80);
 			runtime->SetTextureScrollSpeedV(model->m_unk0x84);
 		}
-		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
+		if (model->m_flags & WdbModel::e_flagBit1) {
 			runtime->m_flags |= GolModelEntity::c_flagBit1;
 		}
 
@@ -1633,7 +1633,7 @@ void GolWorldDatabase::FUN_1002e640()
 	}
 
 	for (i = 0; i < m_boundedEntityCount; i++) {
-		WdbModel0x8c* model = &m_unk0x68[i];
+		WdbModel* model = &m_unk0x68[i];
 		GolBoundedEntity* runtime = &m_boundedEntities[i];
 
 		if (static_cast<LegoU32>(model->m_unk0x14[0]) >= m_unk0x44) {
@@ -1679,7 +1679,7 @@ void GolWorldDatabase::FUN_1002e640()
 // FUNCTION: GOLDP 0x1002f210
 void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens)
 {
-	WdbCamera0x4c* camera = &m_unk0x80[p_cameraIndex];
+	WdbCamera* camera = &m_unk0x80[p_cameraIndex];
 
 	p_lens->m_nearClip = camera->GetUnk0x40();
 	p_lens->m_flags |= 2;

@@ -72,7 +72,7 @@ public:
 	};
 
 	// SIZE 0x08
-	struct PolygonId0x08 {
+	struct PolygonId {
 		LegoU16 m_unk0x00; // 0x00
 		LegoU16 m_unk0x02; // 0x02
 		LegoU16 m_unk0x04; // 0x04
@@ -80,7 +80,7 @@ public:
 	};
 
 	// SIZE 0x14
-	struct PolygonRange0x14 {
+	struct PolygonRange {
 		GolVec3* FUN_00404660(GolVec3* p_dest) const;
 		LegoU16& GetChildIndexSlot(LegoU32 p_index) { return m_unk0x10[p_index]; }
 
@@ -105,10 +105,10 @@ private:
 	undefined4 FUN_1001be50();
 
 	undefined4 m_unk0x04;             // 0x04
-	PolygonRange0x14* m_unk0x08;      // 0x08
+	PolygonRange* m_unk0x08;          // 0x08
 	GdbVertexArray* m_unk0x0c;        // 0x0c
 	undefined4 m_unk0x10;             // 0x10
-	PolygonId0x08* m_unk0x14;         // 0x14
+	PolygonId* m_unk0x14;             // 0x14
 	GolModelMaterialTable m_unk0x18;  // 0x18
 	GolModelMaterialTable* m_unk0x24; // 0x24
 	undefined4 m_unk0x28;             // 0x28
@@ -117,7 +117,7 @@ private:
 	GolVec3 m_unk0x3c;                // 0x3c
 	LegoFloat m_unk0x48;              // 0x48
 	LegoFloat m_unk0x4c;              // 0x4c
-	PolygonRange0x14* m_unk0x50;      // 0x50
+	PolygonRange* m_unk0x50;          // 0x50
 	HitTriangle* m_unk0x54;           // 0x54
 	GolVec3* m_unk0x58;               // 0x58
 	RaceEventRecord** m_unk0x5c;      // 0x5c

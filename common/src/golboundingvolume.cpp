@@ -7,8 +7,8 @@
 #include "golmath.h"
 
 DECOMP_SIZE_ASSERT(GolBoundingVolume::HitTriangle, 0x34)
-DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonId0x08, 0x08)
-DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonRange0x14, 0x14)
+DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonId, 0x08)
+DECOMP_SIZE_ASSERT(GolBoundingVolume::PolygonRange, 0x14)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::TraversalEntry, 0x0c)
 DECOMP_SIZE_ASSERT(GolBoundingVolume, 0x64)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::BvbTxtParser, 0x1fc)
@@ -157,7 +157,7 @@ void GolBoundingVolume::FUN_1001bb10(GolFileParser& p_parser)
 	if (m_unk0x10 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x14 = new PolygonId0x08[m_unk0x10];
+	m_unk0x14 = new PolygonId[m_unk0x10];
 	if (m_unk0x14 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -179,7 +179,7 @@ void GolBoundingVolume::FUN_1001bbb0(GolFileParser& p_parser)
 	if (m_unk0x04 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x08 = new PolygonRange0x14[m_unk0x04];
+	m_unk0x08 = new PolygonRange[m_unk0x04];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -225,7 +225,7 @@ void GolBoundingVolume::FUN_1001bd00(GolFileParser& p_parser)
 	if (m_unk0x04 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x08 = new PolygonRange0x14[m_unk0x04];
+	m_unk0x08 = new PolygonRange[m_unk0x04];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -278,7 +278,7 @@ undefined4 GolBoundingVolume::FUN_1001be50()
 	LegoU16* stackHead = stack;
 
 	for (;;) {
-		PolygonRange0x14* obj = &m_unk0x08[index];
+		PolygonRange* obj = &m_unk0x08[index];
 		if (stackSize > maxStackSize) {
 			maxStackSize = stackSize;
 		}
@@ -342,13 +342,13 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 	stack->m_unk0x0a = 0;
 	stack->m_unk0x08 = 0;
 
-	PolygonRange0x14* node = m_unk0x08;
+	PolygonRange* node = m_unk0x08;
 	GolVec3* vertices = m_unk0x0c->GetPositions();
 
 	for (;;) {
 		LegoU32 stage = stack->m_unk0x0a;
 		if (stage == 0) {
-			PolygonId0x08* firstTriangle = &m_unk0x14[node->m_unk0x0c];
+			PolygonId* firstTriangle = &m_unk0x14[node->m_unk0x0c];
 			GolVec3* planePoint = &vertices[firstTriangle->m_unk0x00];
 			stack->m_unk0x00 = planePoint;
 
@@ -416,9 +416,9 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 			vertices = m_unk0x0c->GetPositions();
 			node = m_unk0x50;
 
-			PolygonId0x08* triangle = &m_unk0x14[node->m_unk0x0c];
-			PolygonId0x08* end = triangle + node->m_unk0x0e;
-			PolygonId0x08* candidate = NULL;
+			PolygonId* triangle = &m_unk0x14[node->m_unk0x0c];
+			PolygonId* end = triangle + node->m_unk0x0e;
+			PolygonId* candidate = NULL;
 
 			node->FUN_00404660(&g_unk0x004c2718);
 			m_unk0x54->m_normal.m_x = g_unk0x004c2718.m_x;
@@ -531,7 +531,7 @@ void GolBoundingVolume::FUN_004045e0()
 }
 
 // FUNCTION: LEGORACERS 0x00404660
-GolVec3* GolBoundingVolume::PolygonRange0x14::FUN_00404660(GolVec3* p_dest) const
+GolVec3* GolBoundingVolume::PolygonRange::FUN_00404660(GolVec3* p_dest) const
 {
 	p_dest->m_x = m_unk0x00.m_x;
 	p_dest->m_y = m_unk0x00.m_y;

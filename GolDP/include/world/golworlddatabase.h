@@ -30,7 +30,7 @@ class GolSceneNode;
 struct Rect;
 
 // SIZE 0x8c
-struct WdbModel0x8c {
+struct WdbModel {
 	enum {
 		e_flagBit1 = 0x1 << 1,
 		e_flagBit2 = 0x1 << 2,
@@ -57,7 +57,7 @@ struct WdbModel0x8c {
 };
 
 // SIZE 0x38
-struct WdbBillboardSprite0x38 {
+struct WdbBillboardSprite {
 	enum {
 		c_flagBit1 = 0x1 << 1,
 		c_flagBit2 = 0x1 << 2,
@@ -79,7 +79,7 @@ struct WdbBillboardSprite0x38 {
 };
 
 // SIZE 0x4c
-struct WdbCamera0x4c {
+struct WdbCamera {
 	LegoFloat GetUnk0x40() const { return m_unk0x40; }
 	LegoFloat GetUnk0x44() const { return m_unk0x44; }
 	LegoFloat GetUnk0x48() const { return m_unk0x48; }
@@ -98,7 +98,7 @@ struct WdbCamera0x4c {
 };
 
 // SIZE 0x10
-struct WdbLight0x10 {
+struct WdbLight {
 	ColorRGBA m_color; // 0x00
 	GolVec3 m_unk0x04; // 0x04
 };
@@ -248,7 +248,7 @@ protected:
 	void FUN_1002dc80(GolFileParser&);
 	void FUN_1002df90(GolFileParser&);
 	void FUN_1002e0d0(GolFileParser&);
-	void FUN_1002e250(GolBillboard* p_billboard, WdbBillboardSprite0x38* p_sprite);
+	void FUN_1002e250(GolBillboard* p_billboard, WdbBillboardSprite* p_sprite);
 	void FUN_1002e640();
 	void FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens);
 
@@ -271,23 +271,23 @@ protected:
 	LegoU32 m_unk0x44;                                 // 0x44
 	GolName* m_unk0x48;                                // 0x48
 	LegoU32 m_modelEntityCount;                        // 0x4c
-	WdbModel0x8c* m_unk0x50;                           // 0x50
+	WdbModel* m_unk0x50;                               // 0x50
 	LegoU32 m_animatedEntityCount;                     // 0x54
-	WdbModel0x8c* m_unk0x58;                           // 0x58
+	WdbModel* m_unk0x58;                               // 0x58
 	LegoU32 m_collidableEntityCount;                   // 0x5c
-	WdbModel0x8c* m_unk0x60;                           // 0x60
+	WdbModel* m_unk0x60;                               // 0x60
 	LegoU32 m_boundedEntityCount;                      // 0x64
-	WdbModel0x8c* m_unk0x68;                           // 0x68
+	WdbModel* m_unk0x68;                               // 0x68
 	LegoU32 m_unk0x6c;                                 // 0x6c
-	WdbBillboardSprite0x38* m_unk0x70;                 // 0x70
+	WdbBillboardSprite* m_unk0x70;                     // 0x70
 	LegoU32 m_unk0x74;                                 // 0x74
 	GolName* m_unk0x78;                                // 0x78
 	LegoU32 m_unk0x7c;                                 // 0x7c
-	WdbCamera0x4c* m_unk0x80;                          // 0x80
+	WdbCamera* m_unk0x80;                              // 0x80
 	LegoU32 m_unk0x84;                                 // 0x84
-	WdbLight0x10* m_unk0x88;                           // 0x88
+	WdbLight* m_unk0x88;                               // 0x88
 	LegoU32 m_unk0x8c;                                 // 0x8c
-	WdbLight0x10* m_unk0x90;                           // 0x90
+	WdbLight* m_unk0x90;                               // 0x90
 	LegoFloat m_unk0x94;                               // 0x94
 	GolBoundingVolume* m_unk0x98;                      // 0x98
 	GolModelEntity* m_modelEntities;                   // 0x9c

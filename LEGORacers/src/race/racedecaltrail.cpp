@@ -59,9 +59,9 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 {
 	LegoFloat planeOffset;
 	m_unk0x10++;
-	StructField0x08* node = m_unk0x0c;
+	TreeNode* node = m_unk0x0c;
 
-	while (node->m_type == StructField0x08::e_type0) {
+	while (node->m_type == TreeNode::e_type0) {
 		LegoFloat dot = node->m_unk0x04.m_t0.m_unk0x08;
 		dot *= p_unk0x04->m_z;
 		dot += node->m_unk0x04.m_t0.m_unk0x04 * p_unk0x04->m_y;
@@ -71,11 +71,11 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 		dot += node->m_unk0x04.m_t0.m_unk0x0c;
 
 		LegoU32 nodeIndex;
-		if (dot < 0.0f && node->m_unk0x04.m_t0.m_unk0x1a != StructField0x08::c_invalidIndex) {
+		if (dot < 0.0f && node->m_unk0x04.m_t0.m_unk0x1a != TreeNode::c_invalidIndex) {
 			node->m_unk0x04.m_t0.m_unk0x14 = m_unk0x10;
 			nodeIndex = node->m_unk0x04.m_t0.m_unk0x1a;
 		}
-		else if (node->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
+		else if (node->m_unk0x04.m_t0.m_unk0x18 == TreeNode::c_invalidIndex) {
 			node->m_unk0x04.m_t0.m_unk0x14 = m_unk0x10;
 			nodeIndex = node->m_unk0x04.m_t0.m_unk0x1a;
 		}
@@ -89,16 +89,16 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 
 	node->m_unk0x04.m_node.m_previous = NULL;
 	node->m_unk0x04.m_node.m_next = NULL;
-	if (node->m_unk0x02 == StructField0x08::c_invalidIndex) {
-		StructField0x08::Node* entry = &node->m_unk0x04.m_node;
+	if (node->m_unk0x02 == TreeNode::c_invalidIndex) {
+		TreeNode::Node* entry = &node->m_unk0x04.m_node;
 		m_unk0x28 = entry;
 		m_unk0x24 = entry;
 		return;
 	}
 
 	LegoU32 count = p_unk0x08;
-	StructField0x08* firstNode = node;
-	StructField0x08* previousNode = node;
+	TreeNode* firstNode = node;
+	TreeNode* previousNode = node;
 	node = &m_unk0x08[node->m_unk0x02];
 	LegoU32 stamp;
 
@@ -114,7 +114,7 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 
 				if (dot < -node->m_unk0x04.m_t0.m_unk0x0c) {
 					node->m_unk0x04.m_t0.m_unk0x14 = stamp;
-					if (node->m_unk0x04.m_t0.m_unk0x1a == StructField0x08::c_invalidIndex) {
+					if (node->m_unk0x04.m_t0.m_unk0x1a == TreeNode::c_invalidIndex) {
 						continue;
 					}
 
@@ -122,7 +122,7 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 				}
 				else {
 					node->m_unk0x04.m_t0.m_unk0x10 = stamp;
-					if (node->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
+					if (node->m_unk0x04.m_t0.m_unk0x18 == TreeNode::c_invalidIndex) {
 						continue;
 					}
 
@@ -131,7 +131,7 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 			}
 			else {
 				node->m_unk0x04.m_t0.m_unk0x10 = stamp;
-				if (node->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
+				if (node->m_unk0x04.m_t0.m_unk0x18 == TreeNode::c_invalidIndex) {
 					continue;
 				}
 				LegoU32 i = 1;
@@ -163,7 +163,7 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 		else {
 			if (node->m_unk0x04.m_t0.m_unk0x14 != stamp) {
 				node->m_unk0x04.m_t0.m_unk0x14 = stamp;
-				if (node->m_unk0x04.m_t0.m_unk0x1a == StructField0x08::c_invalidIndex) {
+				if (node->m_unk0x04.m_t0.m_unk0x1a == TreeNode::c_invalidIndex) {
 					continue;
 				}
 				LegoU32 i = 1;
@@ -192,7 +192,7 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 				node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x1a];
 			}
 			else {
-				if (node->m_unk0x02 == StructField0x08::c_invalidIndex) {
+				if (node->m_unk0x02 == TreeNode::c_invalidIndex) {
 					break;
 				}
 
@@ -201,7 +201,7 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 			}
 		}
 
-		if (node->m_type != StructField0x08::e_type0) {
+		if (node->m_type != TreeNode::e_type0) {
 			previousNode->m_unk0x04.m_node.m_next = &node->m_unk0x04.m_node;
 			node->m_unk0x04.m_node.m_previous = &previousNode->m_unk0x04.m_node;
 			node->m_unk0x04.m_node.m_next = NULL;
@@ -224,7 +224,7 @@ void RaceDecalManager::Trail::Decal::Project(GolCollidableEntity* p_unk0x04)
 	boundingShape->FUN_00403cc0(g_decalQueryPoints, sizeOfArray(g_decalQueryPoints));
 	BeginGeometry(model);
 
-	GolBoundingShape::StructField0x08::Node* entry = boundingShape->GetUnk0x24();
+	GolBoundingShape::TreeNode::Node* entry = boundingShape->GetUnk0x24();
 	while (entry != NULL) {
 		ProcessGroups(model, entry->m_firstGroup, entry->m_groupCount);
 		entry = entry->m_next;

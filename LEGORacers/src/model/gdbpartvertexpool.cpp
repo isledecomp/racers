@@ -7,8 +7,8 @@
 
 DECOMP_SIZE_ASSERT(GdbPartVertexPool, 0x14)
 DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex, 0x0e)
-DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail0x04, 0x04)
-DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail0x04::Normal, 0x04)
+DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail, 0x04)
+DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail::Normal, 0x04)
 
 // GLOBAL: LEGORACERS 0x004af4ac
 static const LegoFloat g_gdbPartTexCoordDivisor = 4096.0f;

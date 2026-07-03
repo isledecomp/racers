@@ -59,7 +59,7 @@ public:
 	void FUN_10006e00(
 		GolD3DRenderDevice* p_renderer,
 		MaterialTable* p_materialTable,
-		GolBoundingShape::StructField0x08::Node* p_node
+		GolBoundingShape::TreeNode::Node* p_node
 	);
 	LegoU32 FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const;
 	GdbVertexArray* GetModelVertexArray() const { return m_unk0x40; }

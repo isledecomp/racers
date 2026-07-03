@@ -122,7 +122,7 @@ public:
 		);
 
 		// SIZE 0x0c
-		struct Entry0x0c {
+		struct Cell {
 			void Reset();
 			void SetOccupied(LegoU8 p_cellFlags)
 			{
@@ -192,7 +192,7 @@ public:
 
 		LegoS32 m_width;             // 0x00
 		LegoS32 m_height;            // 0x04
-		Entry0x0c* m_entries;        // 0x08
+		Cell* m_entries;             // 0x08
 		PieceList* m_pieceList;      // 0x0c
 		CellCallback m_cellCallback; // 0x10
 	};

@@ -22,10 +22,10 @@ public:
 	void OnIconFocused(MenuIcon*) override;                                                          // vtable+0x34
 	void OnIconUnfocused(MenuWidget*) override;                                                      // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override;                                                 // vtable+0x44
-	void CreateWidgets() override;                                                                      // vtable+0x4c
+	void CreateWidgets() override;                                                                   // vtable+0x4c
 	void Reset() override;                                                                           // vtable+0x54
 	~CarBuildScreen() override;                                                                      // vtable+0x68
-	LegoBool32 Update(undefined4) override;                                                      // vtable+0x78
+	LegoBool32 Update(undefined4) override;                                                          // vtable+0x78
 	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override;                       // vtable+0x8c
 	GolString* GetHelpString(undefined4) override;                                                   // vtable+0x98
 	GolFont* GetHelpFont(undefined4) override;                                                       // vtable+0x9c
@@ -71,27 +71,27 @@ protected:
 		c_carBuildMouseButton1 = InputDevice::c_sourceMouse | 1
 	};
 
-	LegoBool32 HandleSceneClick(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	LegoBool32 HandleSceneClick(InputEventQueue::Event* p_event, undefined4 p_cursorX, undefined4 p_cursorY);
 	LegoBool32 PointInRect(Rect* p_rect, LegoS32 p_x, LegoS32 p_y);
 	void HandleCursorDrag(LegoS32 p_deltaX, LegoS32 p_deltaY);
 	LegoBool32 HandleBuildKey(
 		MenuWidget* p_source,
 		InputEventQueue::Event* p_event,
-		undefined4 p_unk0x0c,
-		undefined4 p_unk0x10
+		undefined4 p_cursorX,
+		undefined4 p_cursorY
 	);
 	LegoBool32 HandleViewModeKey(
 		MenuWidget* p_source,
 		InputEventQueue::Event* p_event,
-		undefined4 p_unk0x0c,
-		undefined4 p_unk0x10
+		undefined4 p_cursorX,
+		undefined4 p_cursorY
 	);
-	LegoBool32 HandleMouseButton(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	LegoBool32 HandleMouseButton(InputEventQueue::Event* p_event, undefined4 p_cursorX, undefined4 p_cursorY);
 	LegoBool32 RouteWidgetKeyUp(
 		MenuWidget* p_source,
 		InputEventQueue::Event* p_event,
-		undefined4 p_unk0x0c,
-		undefined4 p_unk0x10
+		undefined4 p_cursorX,
+		undefined4 p_cursorY
 	);
 	void UpdateHoverRegions();
 	void HandleViewDrag(LegoS32 p_deltaX, LegoS32 p_deltaY);
@@ -105,9 +105,9 @@ protected:
 	MenuButton m_pieceViewRegion; // 0x35c4
 	MenuButton m_carViewRegion;   // 0x37e0
 	MenuButton m_doneButton;      // 0x39fc
-	LegoU32 m_unk0x3c18;          // 0x3c18
-	LegoU32 m_unk0x3c1c;          // 0x3c1c
-	GolStringTable m_unk0x3c20;   // 0x3c20
+	LegoU32 m_doubleClickMs;      // 0x3c18
+	LegoU32 m_dragDelayMs;        // 0x3c1c
+	GolStringTable m_helpStrings; // 0x3c20
 };
 
 #endif // CARBUILDSCREEN_H

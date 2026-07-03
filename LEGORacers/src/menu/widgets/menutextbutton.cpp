@@ -192,7 +192,7 @@ MenuWidget* MenuTextButton::DrawSelf(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x00482980
-MenuWidget* MenuTextButton::OnKeyUp(InputEventQueue::Event* p_item, undefined4 p_unk0x08, undefined4 p_unk0x0c)
+MenuWidget* MenuTextButton::OnKeyUp(InputEventQueue::Event* p_item, undefined4 p_cursorX, undefined4 p_cursorY)
 {
-	return MenuIcon::OnKeyUp(p_item, p_unk0x08, p_unk0x0c);
+	return MenuIcon::OnKeyUp(p_item, p_cursorX, p_cursorY);
 }

@@ -26,9 +26,9 @@ public:
 	void CopyOrientation(GolMatrix3* p_dest) const override;                       // vtable+0x44
 	void GetAxes(GolVec3* p_right, GolVec3* p_forward) const override;             // vtable+0x48
 
-	void FUN_00411e30(LegoU32 p_capacity);
-	void FUN_00411e90();
-	void FUN_00411ec0(GolWorldEntity* p_entity);
+	void Allocate(LegoU32 p_capacity);
+	void Destroy();
+	void AddEntity(GolWorldEntity* p_entity);
 
 	// SYNTHETIC: LEGORACERS 0x00411e00
 	// GolWorldEntityGroup::`scalar deleting destructor'

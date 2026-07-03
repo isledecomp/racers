@@ -218,9 +218,9 @@ MenuSceneElement* MenuSceneView::AddElement(MenuSceneElement* p_unk0x04)
 void MenuSceneView::GetEntityScreenRect(GolWorldEntity* p_entity, Rect* p_rect)
 {
 	GolVec3 center;
-	p_entity->FUN_100286d0(&center);
+	p_entity->GetBoundsCenter(&center);
 
-	LegoFloat radius = p_entity->FUN_10028710();
+	LegoFloat radius = p_entity->GetBoundsRadius();
 	GolVec4 bounds;
 	if (m_camera->VTable0x24(&center, radius, &bounds)) {
 		p_rect->m_top = static_cast<LegoS32>(bounds.m_y);

@@ -106,7 +106,7 @@ public:
 	// GolMaterial::`scalar deleting destructor'
 
 	void CopyParamsTo(GolMaterialParams* p_params) const;
-	void FUN_100257e0(GolRenderDevice*, const GolMaterialParams&);
+	void SetParams(GolRenderDevice*, const GolMaterialParams&);
 
 	friend class GolMaterialLibrary;
 	friend class GolSoftwareRenderer;

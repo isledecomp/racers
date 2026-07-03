@@ -85,9 +85,9 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	while (TRUE) {
 		entity = &root->GetBoundedEntities()[count];
 		if (entity->GetUnk0x60() & 1) {
-			entity->FUN_100286d0(&center);
+			entity->GetBoundsCenter(&center);
 
-			LegoFloat radius = entity->FUN_10028710();
+			LegoFloat radius = entity->GetBoundsRadius();
 			LegoFloat x = center.m_x - p_unk0x04->m_x;
 			LegoFloat y = center.m_y - p_unk0x04->m_y;
 			LegoFloat z = center.m_z - p_unk0x04->m_z;

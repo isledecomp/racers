@@ -59,7 +59,7 @@ public:
 protected:
 	friend class RaceState;
 
-	void FUN_10026970();
+	void CreateMaterials();
 
 	GolRenderDevice* m_renderer;  // 0x0c
 	GolMaterialLibrary* m_next;   // 0x10

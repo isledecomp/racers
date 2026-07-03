@@ -15,7 +15,7 @@ public:
 	};
 
 	LegoS32 ClassifySphere(const GolVec3& p_center, LegoFloat p_radius) const;
-	static LegoS32 __fastcall FUN_1002bc90(
+	static LegoS32 __fastcall ClassifyBox(
 		const GolViewFrustum* p_frustum,
 		undefined4 p_unk0x04,
 		const LegoFloat* p_bounds

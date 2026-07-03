@@ -1345,7 +1345,7 @@ void CarModelScreenBase::CarPartPlacement::ClearFocusPane()
 // FUNCTION: LEGORACERS 0x00479330
 void CarModelScreenBase::CarPartPlacement::GetViewPosition(GolVec3* p_dest, LegoS32 p_index)
 {
-	m_carSizeBlend = (m_carGroup.FUN_10028710() - 5.9f) / (8.5f - 5.9f);
+	m_carSizeBlend = (m_carGroup.GetBoundsRadius() - 5.9f) / (8.5f - 5.9f);
 	if (m_carSizeBlend > 1.0f) {
 		m_carSizeBlend = 1.0f;
 	}

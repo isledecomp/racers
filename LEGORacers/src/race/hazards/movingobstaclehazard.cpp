@@ -58,7 +58,7 @@ void MovingObstacleHazard::Load(HazardContext* p_context, GolFileParser*)
 	position.m_y = 0.0f;
 	position.m_z = 0.0f;
 	m_trigger.ClearVelocity();
-	m_trigger.SetCenter(position);
+	m_trigger.SetBoundsCenter(position);
 	m_trigger.SetBoundsRadius(3.0f);
 
 	m_shadowMaterialTable.Initialize(p_context->GetRenderer(), 1);
@@ -139,7 +139,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	do {
 		position = offset;
 		transform->VTable0x04(&position, &offset);
-		transform = transform->m_unk0x04;
+		transform = transform->m_parent;
 	} while (transform != NULL);
 
 	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
@@ -148,7 +148,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	offset.m_z *= scale;
 
 	m_entity->LocalToWorld(offset, &position);
-	m_trigger.SetCenter(position);
+	m_trigger.SetBoundsCenter(position);
 
 	LegoFloat frame = m_entity->GetPartTimeMs();
 	if ((m_flags & c_flags0x178Bit1) != 0) {
@@ -172,7 +172,7 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 	}
 
 	GolVec3 position;
-	m_trigger.FUN_100286d0(&position);
+	m_trigger.GetBoundsCenter(&position);
 
 	GolVec3 cameraPosition;
 	p_camera->GetTransform()->GetPosition(&cameraPosition);

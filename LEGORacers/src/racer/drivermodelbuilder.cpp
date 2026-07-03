@@ -155,7 +155,7 @@ void DriverModelBuilder::CreateFaceMaterial(const LegoChar* p_name)
 	GolMaterial* material = m_materialList->GetItem(m_materialCount++);
 	params.m_unk0x04 = m_renderer->FindTextureByName(p_name);
 	material->SetName(p_name);
-	material->FUN_100257e0(m_renderer, params);
+	material->SetParams(m_renderer, params);
 	m_materialList->AddName(p_name, material);
 }
 
@@ -403,7 +403,7 @@ void DriverModelBuilder::ReplaceMaterialTexture(GolMaterial* p_material, const L
 				params->m_diffuse.m_grn = m_defaultMaterialParams.m_diffuse.m_grn;
 				params->m_diffuse.m_blu = m_defaultMaterialParams.m_diffuse.m_blu;
 
-				p_material->FUN_100257e0(m_renderer, *params);
+				p_material->SetParams(m_renderer, *params);
 				materialTable->SetEntry(materialIndex, p_material);
 				delete params;
 				return;

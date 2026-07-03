@@ -26,7 +26,7 @@ GolMaterial::~GolMaterial()
 
 // FUNCTION: GOLDP 0x100257e0
 // FUNCTION: LEGORACERS 0x0040fda0
-void GolMaterial::FUN_100257e0(GolRenderDevice* p_renderer, const GolMaterialParams& p_params)
+void GolMaterial::SetParams(GolRenderDevice* p_renderer, const GolMaterialParams& p_params)
 {
 	m_ambient = p_params.m_ambient;
 	m_diffuse = p_params.m_diffuse;

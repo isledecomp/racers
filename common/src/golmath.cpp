@@ -289,7 +289,7 @@ void GolMath::FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest)
 
 // FUNCTION: GOLDP 0x1002f890
 // FUNCTION: LEGORACERS 0x004495e0
-void GolMath::FUN_1002f890(const GolQuat& p_from, const GolQuat& p_to, LegoFloat p_amount, GolQuat* p_dest)
+void GolMath::LerpQuat(const GolQuat& p_from, const GolQuat& p_to, LegoFloat p_amount, GolQuat* p_dest)
 {
 	if (QuatDot(p_from, p_to) > 0.0f) {
 		p_dest->m_x = p_from.m_x + (p_to.m_x - p_from.m_x) * p_amount;

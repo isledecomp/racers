@@ -289,7 +289,7 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 		m_position.m_y = scaledY + m_startPosition.m_y;
 		m_position.m_z = scaledZ + m_startPosition.m_z;
 
-		GolMath::FUN_1002f890(m_startRotation, m_endRotation, amount, &m_rotation);
+		GolMath::LerpQuat(m_startRotation, m_endRotation, amount, &m_rotation);
 	}
 }
 

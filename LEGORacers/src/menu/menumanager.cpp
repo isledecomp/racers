@@ -916,7 +916,7 @@ void MenuManager::BuildPlayerDriverModel(
 
 		params.m_unk0x00 &= ~GolMaterial::c_flagBit0;
 		GolMaterial* material = p_slot->m_altMaterials->GetItem(materialIndex);
-		material->FUN_100257e0(renderer, params);
+		material->SetParams(renderer, params);
 		materialTable->SetEntry(materialIndex, material);
 	}
 

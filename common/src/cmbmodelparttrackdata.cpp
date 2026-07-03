@@ -176,7 +176,7 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	}
 
 	if (keyCount == 1) {
-		FUN_0040ea80(p_track.m_rotationFrameIndex, p_dest);
+		GetRotationFrame(p_track.m_rotationFrameIndex, p_dest);
 		return TRUE;
 	}
 
@@ -201,8 +201,8 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 		LegoS32 lastKey = allKeys[keyBase + keyCount - 1];
 		duration = p_frameCount + firstKey - lastKey;
 		elapsed = static_cast<LegoFloat>(duration - firstKey) + p_time;
-		FUN_0040ea80(p_track.m_rotationFrameIndex + keyCount - 1, &from);
-		FUN_0040ea80(p_track.m_rotationFrameIndex, &to);
+		GetRotationFrame(p_track.m_rotationFrameIndex + keyCount - 1, &from);
+		GetRotationFrame(p_track.m_rotationFrameIndex, &to);
 	}
 	else if (keyIndex == keyCount) {
 		LegoU32 keyBase = p_track.m_rotationKeyIndex;
@@ -210,20 +210,20 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 		LegoS32 lastKey = allKeys[keyBase + keyCount - 1];
 		duration = p_frameCount + firstKey - lastKey;
 		elapsed = p_time - static_cast<LegoFloat>(lastKey);
-		FUN_0040ea80(p_track.m_rotationFrameIndex + keyCount - 1, &from);
-		FUN_0040ea80(p_track.m_rotationFrameIndex, &to);
+		GetRotationFrame(p_track.m_rotationFrameIndex + keyCount - 1, &from);
+		GetRotationFrame(p_track.m_rotationFrameIndex, &to);
 	}
 	else {
 		LegoU32 keyBase = p_track.m_rotationKeyIndex + keyIndex;
 		LegoS32 previousKey = allKeys[keyBase - 1];
 		duration = allKeys[keyBase] - previousKey;
 		elapsed = p_time - static_cast<LegoFloat>(previousKey);
-		FUN_0040ea80(p_track.m_rotationFrameIndex + keyIndex - 1, &from);
-		FUN_0040ea80(p_track.m_rotationFrameIndex + keyIndex, &to);
+		GetRotationFrame(p_track.m_rotationFrameIndex + keyIndex - 1, &from);
+		GetRotationFrame(p_track.m_rotationFrameIndex + keyIndex, &to);
 	}
 
 	LegoFloat amount = duration == 0 ? 0.0f : elapsed / static_cast<LegoFloat>(duration);
-	GolMath::FUN_1002f890(from, to, amount, p_dest);
+	GolMath::LerpQuat(from, to, amount, p_dest);
 	return TRUE;
 }
 
@@ -267,7 +267,7 @@ void CmbModelPartTrackData::FUN_0040ea20()
 }
 
 // FUNCTION: LEGORACERS 0x0040ea80
-void CmbModelPartTrackData::FUN_0040ea80(LegoU32 p_index, GolQuat* p_dest) const
+void CmbModelPartTrackData::GetRotationFrame(LegoU32 p_index, GolQuat* p_dest) const
 {
 	p_dest->m_x = m_frames[p_index].m_x;
 	p_dest->m_y = m_frames[p_index].m_y;

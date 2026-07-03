@@ -2943,7 +2943,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 				textureIndex++;
 			}
 
-			outputMaterial->FUN_100257e0(m_renderer, params);
+			outputMaterial->SetParams(m_renderer, params);
 			outputModel->GetMaterialTable()->SetEntry(outputMaterialIndex, outputMaterial);
 			outputMaterialIndex++;
 		}

@@ -379,7 +379,7 @@ void GolBoundingShape::FUN_1001b2c0(const GolViewFrustum* p_frustum, TreeNode::N
 				LegoBool32 append = TRUE;
 
 				if (current->m_data.m_node.m_unk0x18 != TreeNode::c_invalidIndex) {
-					LegoS32 classification = GolViewFrustum::FUN_1002bc90(
+					LegoS32 classification = GolViewFrustum::ClassifyBox(
 						p_frustum,
 						3 * current->m_data.m_node.m_unk0x18,
 						&m_unk0x18[current->m_data.m_node.m_unk0x18].m_unk0x00
@@ -449,7 +449,7 @@ void GolBoundingShape::FUN_1001b640(
 		}
 		else {
 			LegoS32 classification =
-				GolViewFrustum::FUN_1002bc90(p_frustum, 0, &m_unk0x18[child->m_data.m_node.m_unk0x18].m_unk0x00);
+				GolViewFrustum::ClassifyBox(p_frustum, 0, &m_unk0x18[child->m_data.m_node.m_unk0x18].m_unk0x00);
 			if (classification != 0) {
 				if (classification == 2) {
 					child->m_data.m_node.m_linked = 0;

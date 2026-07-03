@@ -492,7 +492,7 @@ void LightningAction::UpdateBoltPath()
 			(position.m_z - end.m_z) * (position.m_z - end.m_z) + (position.m_y - end.m_y) * (position.m_y - end.m_y) +
 			(position.m_x - end.m_x) * (position.m_x - end.m_x)
 		));
-		LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.FUN_10028710();
+		LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.GetBoundsRadius();
 		if (distance > radius) {
 			distance -= radius;
 		}

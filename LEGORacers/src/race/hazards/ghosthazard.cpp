@@ -212,7 +212,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 
 		GolVec3 worldPosition;
 		m_ghostEntity->LocalToWorld(position, &worldPosition);
-		m_trigger.SetCenter(worldPosition);
+		m_trigger.SetBoundsCenter(worldPosition);
 
 		if (m_trailParticle == NULL) {
 			m_trailParticle = m_particleAnimation->SpawnParticle("ghsttrl", NULL, NULL, NULL);

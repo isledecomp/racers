@@ -218,7 +218,7 @@ Particle* ParticleSystem::SpawnParticle(GolVec3* p_position, GolVec3* p_velocity
 		center.m_z = p_position->m_z - position.m_z;
 	}
 
-	particle->SetCenter(center);
+	particle->SetBoundsCenter(center);
 	particle->SetVelocity(*p_velocity);
 
 	particle->m_ageMs = 0;
@@ -481,7 +481,7 @@ void ParticleSystem::EmitQuad(Particle* p_particle)
 	}
 
 	GolVec3 position;
-	p_particle->FUN_100286d0(&position);
+	p_particle->GetBoundsCenter(&position);
 
 	position.m_x -= m_scaledCameraUp.m_x * 0.5f + m_scaledCameraForward.m_x * 0.5f;
 	position.m_y -= m_scaledCameraUp.m_y * 0.5f + m_scaledCameraForward.m_y * 0.5f;

@@ -215,7 +215,7 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 	for (i = 0; i < m_materialTableCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_materialTableNames[i], ".gdf");
-		GetMaterialTable(i)->FUN_10025e60(m_renderer, fileName, m_binary);
+		GetMaterialTable(i)->Load(m_renderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_sceneNodeCount; i++) {

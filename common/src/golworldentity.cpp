@@ -125,12 +125,12 @@ void GolWorldEntity::GetPosition(GolVec3* p_center) const
 // FUNCTION: LEGORACERS 0x00411c50
 void GolWorldEntity::SetPosition(const GolVec3& p_center)
 {
-	SetCenter(p_center);
+	SetBoundsCenter(p_center);
 }
 
 // FUNCTION: GOLDP 0x100286d0
 // FUNCTION: LEGORACERS 0x00411c60
-void GolWorldEntity::FUN_100286d0(GolVec3* p_center)
+void GolWorldEntity::GetBoundsCenter(GolVec3* p_center)
 {
 	if (m_radius < 0.0f) {
 		UpdateBounds();
@@ -153,7 +153,7 @@ void GolWorldEntity::UpdateBounds()
 
 // FUNCTION: GOLDP 0x10028710
 // FUNCTION: LEGORACERS 0x00411ca0
-LegoFloat GolWorldEntity::FUN_10028710()
+LegoFloat GolWorldEntity::GetBoundsRadius()
 {
 	if (m_radius < 0.0f) {
 		UpdateBounds();
@@ -164,7 +164,7 @@ LegoFloat GolWorldEntity::FUN_10028710()
 
 // FUNCTION: GOLDP 0x10028730 FOLDED
 // FUNCTION: LEGORACERS 0x00411cc0
-void GolWorldEntity::SetCenter(const GolVec3& p_center)
+void GolWorldEntity::SetBoundsCenter(const GolVec3& p_center)
 {
 	m_center.m_x = p_center.m_x;
 	m_center.m_y = p_center.m_y;

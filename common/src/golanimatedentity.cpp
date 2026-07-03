@@ -219,7 +219,7 @@ void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 		if (hasActiveRotation) {
 			if (hasQueuedRotation) {
 				GolQuat blendedRotation;
-				GolMath::FUN_1002f890(activeRotation, queuedRotation, m_transitionProgress, &blendedRotation);
+				GolMath::LerpQuat(activeRotation, queuedRotation, m_transitionProgress, &blendedRotation);
 				orbit->VTable0x2c(&blendedRotation.m_x);
 			}
 			else {
@@ -604,7 +604,7 @@ void GolAnimatedEntity::ComputeBoundsFromModel(LegoU32 p_index)
 void GolAnimatedEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
 	GolVec3 position;
-	FUN_100286d0(&position);
+	GetBoundsCenter(&position);
 
 	LegoU32 i = 0;
 	LegoFloat* threshold = m_modelDistances;
@@ -628,9 +628,9 @@ void GolAnimatedEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultSt
 
 	if (i != 0) {
 		ComputeBoundsFromModel(i);
-		FUN_100286d0(&position);
+		GetBoundsCenter(&position);
 	}
-	p_result->m_visibility = p_view.ClassifySphere(position, FUN_10028710());
+	p_result->m_visibility = p_view.ClassifySphere(position, GetBoundsRadius());
 }
 
 // FUNCTION: LEGORACERS 0x0040e360

@@ -148,7 +148,7 @@ void LauncherHazard::OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08)
 void LauncherHazard::OnActivate(void*)
 {
 	m_state = 2;
-	m_trigger.SetCenter(m_launchPosition);
+	m_trigger.SetBoundsCenter(m_launchPosition);
 
 	PowerupProjectile::Params projectileParams;
 	projectileParams.m_collisionWorld = m_triggerWorld;
@@ -233,7 +233,7 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 	}
 
 	GolVec3 center;
-	projectile->GetWorldEntity()->FUN_100286d0(&center);
+	projectile->GetWorldEntity()->GetBoundsCenter(&center);
 
 	GolVec3 velocity;
 	projectile->GetVelocity(&velocity);
@@ -272,7 +272,7 @@ void LauncherHazard::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != 1 && m_projectile.GetState() == PowerupProjectile::c_stateFlying) {
 		GolVec3 position;
-		m_trigger.FUN_100286d0(&position);
+		m_trigger.GetBoundsCenter(&position);
 		m_billboard->SetPosition(position);
 		p_renderer->VTable0xb4(*m_billboard);
 	}

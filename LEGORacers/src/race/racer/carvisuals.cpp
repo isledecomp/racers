@@ -1239,7 +1239,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		GolQuat blendedRotation;
 		GolMath::FUN_1002f5a0(desiredOrientation, &desiredRotation);
 		GolMath::FUN_1002f5a0(currentOrientation, &currentRotation);
-		GolMath::FUN_1002f890(desiredRotation, currentRotation, amount, &blendedRotation);
+		GolMath::LerpQuat(desiredRotation, currentRotation, amount, &blendedRotation);
 
 		GolMatrix3 orientation;
 		GolMath::FUN_00449340(&blendedRotation, &orientation.m_m[0][0]);
@@ -1286,7 +1286,7 @@ void CarVisuals::UpdateShadow(GolCamera* p_camera)
 		m_carEntity->GetUnk0x34(&up);
 
 		GolVec3 center;
-		m_carEntity->FUN_100286d0(&center);
+		m_carEntity->GetBoundsCenter(&center);
 
 		LegoFloat scale = m_carEntity->GetUnk0x58();
 		if (scale != 1.0f) {
@@ -1509,22 +1509,22 @@ void CarVisuals::RenderShadowSilhouette(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00440030
 void CarVisuals::RebuildEntityGroup()
 {
-	m_entityGroup.FUN_00411e30(4);
+	m_entityGroup.Allocate(4);
 
 	if (m_bodyModelEntity && !(m_flags & c_flagVisible1)) {
-		m_entityGroup.FUN_00411ec0(m_bodyModelEntity);
+		m_entityGroup.AddEntity(m_bodyModelEntity);
 	}
 
 	if (m_secondaryEntity && !(m_flags & c_flagVisible1)) {
-		m_entityGroup.FUN_00411ec0(m_secondaryEntity);
+		m_entityGroup.AddEntity(m_secondaryEntity);
 	}
 
 	if (m_carEntity && !(m_flags & c_flagVisible0)) {
-		m_entityGroup.FUN_00411ec0(m_carEntity);
+		m_entityGroup.AddEntity(m_carEntity);
 	}
 
 	if (m_driverEntity && !(m_flags & c_flagVisible2)) {
-		m_entityGroup.FUN_00411ec0(m_driverEntity);
+		m_entityGroup.AddEntity(m_driverEntity);
 	}
 }
 

@@ -41,7 +41,7 @@ void GolModelMaterialTable::FUN_10025df0(GolRenderDevice* p_renderer, undefined4
 }
 
 // FUNCTION: GOLDP 0x10025e60
-void GolModelMaterialTable::FUN_10025e60(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
+void GolModelMaterialTable::Load(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
 	if (m_renderer != NULL) {
 		Destroy();
@@ -64,14 +64,14 @@ void GolModelMaterialTable::FUN_10025e60(GolRenderDevice* p_renderer, const Lego
 
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-	FUN_10025f90(p_renderer, *parser);
+	Parse(p_renderer, *parser);
 
 	parser->Dispose();
 	delete parser;
 }
 
 // FUNCTION: GOLDP 0x10025f90
-void GolModelMaterialTable::FUN_10025f90(GolRenderDevice* p_renderer, GolFileParser& p_parser)
+void GolModelMaterialTable::Parse(GolRenderDevice* p_renderer, GolFileParser& p_parser)
 {
 	LegoU32 i;
 

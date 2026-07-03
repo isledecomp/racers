@@ -267,18 +267,18 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 			token = parser->GetNextToken();
 		}
 		material->m_unk0x18 = name;
-		material->FUN_100257e0(m_renderer, params);
+		material->SetParams(m_renderer, params);
 	}
 
 	parser->ReadRightCurly();
 	parser->Dispose();
-	FUN_10026970();
+	CreateMaterials();
 	delete parser;
 }
 
 // FUNCTION: GOLDP 0x10026970
 // FUNCTION: LEGORACERS 0x00410810
-void GolMaterialLibrary::FUN_10026970()
+void GolMaterialLibrary::CreateMaterials()
 {
 	LegoU32 i;
 
@@ -288,7 +288,7 @@ void GolMaterialLibrary::FUN_10026970()
 			if (!(item->GetUnk0x08() & GolMaterial::c_flagBit0)) {
 				GolMaterialParams params;
 				m_unk0x14->VTable0x00(i, &params);
-				item->FUN_100257e0(m_renderer, params);
+				item->SetParams(m_renderer, params);
 				VTable0x18(i);
 			}
 		}
@@ -316,7 +316,7 @@ void GolMaterialLibrary::VTable0x20(GolRenderDevice* p_renderer, GolMaterialSour
 	m_numItems = p_capacity;
 	GolNameTable::Allocate(p_capacity);
 	AllocateItems();
-	FUN_10026970();
+	CreateMaterials();
 }
 
 // FUNCTION: GOLDP 0x10026a50

@@ -18,8 +18,8 @@ public:
 	void Destroy();
 
 	void FUN_10025df0(GolRenderDevice* p_renderer, undefined4);
-	void FUN_10025e60(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary);
-	void FUN_10025f90(GolRenderDevice* p_renderer, GolFileParser& p_parser);
+	void Load(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary);
+	void Parse(GolRenderDevice* p_renderer, GolFileParser& p_parser);
 
 	GolRenderDevice* GetRenderer() const { return m_renderer; }
 	LegoU32 GetCount() const { return m_count; }

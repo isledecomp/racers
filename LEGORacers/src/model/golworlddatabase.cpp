@@ -81,7 +81,7 @@ void GolWorldDatabase::ResetEntities()
 	for (i = 0; i < m_spriteCount; i++) {
 		GolWorldEntity* entity = GetWorldEntity(i);
 		GolVec3 center;
-		entity->FUN_100286d0(&center);
+		entity->GetBoundsCenter(&center);
 		center.m_y = -center.m_y;
 		entity->SetPosition(center);
 	}

@@ -2624,7 +2624,7 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 		verticalOffset = 0.0f;
 	}
 
-	LegoFloat sweepHeight = m_carEntity->FUN_10028710() + verticalOffset;
+	LegoFloat sweepHeight = m_carEntity->GetBoundsRadius() + verticalOffset;
 	LegoFloat sweepDistance;
 	LegoBool32 resetFromAir;
 	if (m_contactCount != 0 && !(m_flags & c_flagSpinOut)) {
@@ -2933,7 +2933,7 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 		verticalOffset = 0.0f;
 	}
 
-	LegoFloat sweepHeight = m_carEntity->FUN_10028710() + verticalOffset;
+	LegoFloat sweepHeight = m_carEntity->GetBoundsRadius() + verticalOffset;
 	LegoBool32 resetFromAir;
 	LegoFloat sweepDistance;
 	if (m_contactCount != 0) {

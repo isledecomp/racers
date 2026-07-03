@@ -23,8 +23,8 @@ void AwardCinematicScreen::SceneEntityGroup::AddAnimatedEntity(GolAnimatedEntity
 {
 	p_entity->SetFlags(p_entity->GetFlags() | 0x10000);
 	p_entity->PlayPart(0);
-	p_entity->FUN_10028710();
-	FUN_00411ec0(p_entity);
+	p_entity->GetBoundsRadius();
+	AddEntity(p_entity);
 }
 
 // FUNCTION: LEGORACERS 0x00479510
@@ -33,12 +33,12 @@ LegoBool32 AwardCinematicScreen::SceneEntityGroup::Create(CreateParams* p_create
 	Destroy();
 
 	::memcpy(&m_chassisModels, p_createParams, sizeof(*p_createParams));
-	FUN_00411e30(4);
+	Allocate(4);
 
 	if (m_carEntity == NULL) {
 		m_carEntity = p_createParams->m_buildModel->GetModelEntity();
 	}
-	FUN_00411ec0(m_carEntity);
+	AddEntity(m_carEntity);
 
 	AddAnimatedEntity(m_chassisModels->GetPrimaryModel(m_chassisName));
 	if (m_driverEntity) {
@@ -52,7 +52,7 @@ LegoBool32 AwardCinematicScreen::SceneEntityGroup::Create(CreateParams* p_create
 LegoBool32 AwardCinematicScreen::SceneEntityGroup::Destroy()
 {
 	if (m_entities) {
-		FUN_00411e90();
+		GolWorldEntityGroup::Destroy();
 	}
 
 	return m_entities == NULL;

@@ -151,7 +151,7 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 				GolVec3 transformedForward = forward;
 				transform->VTable0x0c(&transformedRight, &right);
 				transform->VTable0x0c(&transformedForward, &forward);
-				transform = transform->m_unk0x04;
+				transform = transform->m_parent;
 			} while (transform != NULL);
 		}
 
@@ -171,6 +171,6 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 			m_bodyEntity.SetDirectionUp(worldRight, worldForward);
 		}
 
-		m_bodyEntity.SetCenter(worldPosition);
+		m_bodyEntity.SetBoundsCenter(worldPosition);
 	}
 }

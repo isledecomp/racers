@@ -365,7 +365,7 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 	m_championList.ClearDefinitions();
 	m_driverTable.ClearEntries();
 	m_setup.m_textureList->LoadTextures();
-	m_setup.m_materialLibrary->FUN_10026970();
+	m_setup.m_materialLibrary->CreateMaterials();
 	m_setup.Initialize(m_roster.m_racers, m_roster.m_racerCount);
 }
 
@@ -435,7 +435,7 @@ void RaceState::CreateRacer(
 		}
 
 		p_slot->m_textures->LoadTextures();
-		p_slot->m_materials->FUN_10026970();
+		p_slot->m_materials->CreateMaterials();
 		initParams.m_bodyModel = m_roster.m_customCarModels[customIndex];
 		initParams.m_bodyModel->SetPrimaryModel(p_slot->m_model, g_carModelScale);
 
@@ -449,7 +449,7 @@ void RaceState::CreateRacer(
 		}
 		else {
 			p_slot->m_altTextures->LoadTextures();
-			p_slot->m_altMaterials->FUN_10026970();
+			p_slot->m_altMaterials->CreateMaterials();
 			initParams.m_driverEntity = m_roster.m_customCarEntities[customIndex];
 			initParams.m_driverEntity
 				->SetModel(p_slot->m_altModel, m_driverTable.m_rootNode, &m_driverTable.m_modelParts, g_carModelScale);
@@ -547,7 +547,7 @@ void RaceState::CreateRacer(
 									 GolMaterial::c_flag0x08Bit13 | GolMaterial::c_flag0x08Bit15 |
 									 GolMaterial::c_flag0x08Bit20 | GolMaterial::c_flag0x08Bit22;
 	shadowMaterialParams.m_unk0x04 = shadowTexture;
-	shadowMaterial->FUN_100257e0(p_context->m_renderer, shadowMaterialParams);
+	shadowMaterial->SetParams(p_context->m_renderer, shadowMaterialParams);
 
 	Racer* racer = &m_roster.m_racers[p_racerIndex];
 	racer->m_driveController.m_previewCursor = &m_sharedRouteCursor;

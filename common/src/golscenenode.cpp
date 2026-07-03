@@ -85,10 +85,10 @@ void GolSceneNode::VTable0x10(GolSceneNode* p_node)
 		GolTransformBase* destOrbit = VTable0x18(i);
 		AddName(name, destOrbit);
 
-		if (sourceOrbit->m_unk0x04 != NULL) {
+		if (sourceOrbit->m_parent != NULL) {
 			GolName parentName;
-			p_node->GetNameByValue(sourceOrbit->m_unk0x04, parentName);
-			static_cast<GolTransformBase*>(GetName(parentName))->FUN_1001ceb0(destOrbit);
+			p_node->GetNameByValue(sourceOrbit->m_parent, parentName);
+			static_cast<GolTransformBase*>(GetName(parentName))->AttachChild(destOrbit);
 		}
 
 		destOrbit->VTable0x48(sourceOrbit);
@@ -146,7 +146,7 @@ void GolSceneNode::FUN_10029c60(GolFileParser* p_parser)
 					p_parser->HandleUnexpectedToken(GolFileParser::e_invalidString);
 				}
 
-				parent->FUN_1001ceb0(orbit);
+				parent->AttachChild(orbit);
 				break;
 			}
 			case GolFileParser::e_unknown0x29: {
@@ -210,7 +210,7 @@ void GolSceneNode::FUN_00413230(undefined4 p_param1, GolVec3* p_param2, GolVec3*
 	*p_param3 = *p_param2;
 
 	GolVec3 vec;
-	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_unk0x04) {
+	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_parent) {
 		vec = *p_param3;
 		current->VTable0x04(&vec, p_param3);
 	}
@@ -222,7 +222,7 @@ void GolSceneNode::FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3*
 	*p_param3 = *p_param2;
 
 	GolVec3 vec;
-	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_unk0x04) {
+	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_parent) {
 		vec = *p_param3;
 		current->VTable0x0c(&vec, p_param3);
 	}

@@ -31,7 +31,7 @@ TriggerList::Entry::~Entry()
 void TriggerList::Entry::Initialize(const EntryParams* p_params)
 {
 	m_eventTable = p_params->m_eventTable;
-	m_body.SetCenter(p_params->m_position);
+	m_body.SetBoundsCenter(p_params->m_position);
 	m_body.SetBoundsRadius(p_params->m_radius);
 	m_eventId = p_params->m_eventId;
 

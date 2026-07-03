@@ -360,7 +360,7 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			nextRotation.m_w = static_cast<LegoFloat>(nextSample->m_rotationW) / 127.0f;
 
 			GolQuat interpolatedRotation;
-			GolMath::FUN_1002f890(rotation, nextRotation, amount, &interpolatedRotation);
+			GolMath::LerpQuat(rotation, nextRotation, amount, &interpolatedRotation);
 
 			LegoFloat distanceSquared = delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x;
 			LegoFloat speed = static_cast<LegoFloat>(sqrt(distanceSquared));

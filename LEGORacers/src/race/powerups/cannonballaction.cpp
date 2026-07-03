@@ -253,7 +253,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_state == 3) {
 		GolVec3 position;
-		m_projectile.GetWorldEntity()->FUN_100286d0(&position);
+		m_projectile.GetWorldEntity()->GetBoundsCenter(&position);
 
 		if (m_trail != NULL) {
 			m_projectile.GetVelocity(&trailVelocity);

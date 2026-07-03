@@ -44,10 +44,10 @@ public:
 	virtual void CopyOrientation(GolMatrix3* p_dest) const;                             // vtable+0x44
 	virtual void GetAxes(GolVec3* p_right, GolVec3* p_forward) const;                   // vtable+0x48
 
-	void FUN_100286d0(GolVec3* p_center);
-	LegoFloat FUN_10028710();
+	void GetBoundsCenter(GolVec3* p_center);
+	LegoFloat GetBoundsRadius();
 	void SetBoundsRadius(LegoFloat p_scalar);
-	void SetCenter(const GolVec3& p_center);
+	void SetBoundsCenter(const GolVec3& p_center);
 	LegoFloat GetRadius() const { return m_radius; }
 	LegoFloat GetMinX() const { return m_minX; }
 	LegoFloat GetMaxX() const { return m_maxX; }

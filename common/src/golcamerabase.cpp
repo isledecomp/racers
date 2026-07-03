@@ -477,7 +477,7 @@ void GolCameraBase::UpdateFromTrackedEntity()
 	orbit->GetPosition(&position);
 	orbit->VTable0x20(&right, &forward);
 
-	for (GolTransformBase* parent = orbit->m_unk0x04; parent != NULL; parent = parent->m_unk0x04) {
+	for (GolTransformBase* parent = orbit->m_parent; parent != NULL; parent = parent->m_parent) {
 		parent->VTable0x04(&position, &transformedPosition);
 		parent->VTable0x0c(&right, &transformedRight);
 		parent->VTable0x0c(&forward, &transformedForward);

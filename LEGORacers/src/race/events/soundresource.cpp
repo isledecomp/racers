@@ -190,7 +190,7 @@ void SoundResource::StopSound()
 	do {
 		transformedPosition = position;
 		transform->VTable0x04(&transformedPosition, &position);
-		transform = transform->m_unk0x04;
+		transform = transform->m_parent;
 	} while (transform);
 
 	LegoFloat scale = m_unk0x28->GetModel(0)->GetScale() * m_unk0x28->GetUnk0x58();

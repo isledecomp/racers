@@ -80,7 +80,7 @@ void GolBoundingVolume::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* 
 			if (m_unk0x18.GetRenderer() != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			m_unk0x18.FUN_10025f90(p_renderer, *parser);
+			m_unk0x18.Parse(p_renderer, *parser);
 			break;
 		case GolFileParser::e_unknown0x34:
 			if (m_unk0x0c != 0) {

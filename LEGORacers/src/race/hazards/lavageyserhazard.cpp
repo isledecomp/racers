@@ -148,7 +148,7 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 
 		GolVec3 position;
 		m_entity->LocalToWorld(localPosition, &position);
-		m_trigger.SetCenter(position);
+		m_trigger.SetBoundsCenter(position);
 
 		if (m_loopSound) {
 			m_loopSound->SetPosition(&position);

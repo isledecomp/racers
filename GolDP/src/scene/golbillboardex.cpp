@@ -41,7 +41,7 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 	GolVec3 position;
 	const GolVec3* row2;
 
-	FUN_100286d0(&position);
+	GetBoundsCenter(&position);
 
 	row0.m_x = -p_arg1->m_x;
 	row0.m_y = -p_arg1->m_y;

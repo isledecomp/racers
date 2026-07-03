@@ -67,7 +67,7 @@ void GolModelBase::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, Leg
 			if (m_unk0x04.GetRenderer() != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			m_unk0x04.FUN_10025f90(p_renderer, *parser);
+			m_unk0x04.Parse(p_renderer, *parser);
 			break;
 		case GolFileParser::e_unknown0x28:
 			ParseUncoloredVertices(*parser);

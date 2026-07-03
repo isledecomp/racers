@@ -130,7 +130,7 @@ void GrabberHazard::Update(undefined4 p_elapsedMs)
 
 	GolVec3 position;
 	GetGrabPosition(&position);
-	m_trigger.SetCenter(position);
+	m_trigger.SetBoundsCenter(position);
 
 	if (m_stateMs) {
 		if (elapsedMs >= m_stateMs) {

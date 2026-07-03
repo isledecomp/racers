@@ -19,14 +19,14 @@ GolWorldEntityGroup::GolWorldEntityGroup()
 // FUNCTION: LEGORACERS 0x00411e20
 GolWorldEntityGroup::~GolWorldEntityGroup()
 {
-	FUN_00411e90();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00411e30
-void GolWorldEntityGroup::FUN_00411e30(LegoU32 p_capacity)
+void GolWorldEntityGroup::Allocate(LegoU32 p_capacity)
 {
 	if (m_entities) {
-		FUN_00411e90();
+		Destroy();
 	}
 
 	m_entities = new GolWorldEntity*[p_capacity];
@@ -41,7 +41,7 @@ void GolWorldEntityGroup::FUN_00411e30(LegoU32 p_capacity)
 }
 
 // FUNCTION: LEGORACERS 0x00411e90
-void GolWorldEntityGroup::FUN_00411e90()
+void GolWorldEntityGroup::Destroy()
 {
 	if (m_entities) {
 		delete[] m_entities;
@@ -54,7 +54,7 @@ void GolWorldEntityGroup::FUN_00411e90()
 }
 
 // FUNCTION: LEGORACERS 0x00411ec0
-void GolWorldEntityGroup::FUN_00411ec0(GolWorldEntity* p_entity)
+void GolWorldEntityGroup::AddEntity(GolWorldEntity* p_entity)
 {
 	m_entities[m_count] = p_entity;
 	m_count++;
@@ -74,11 +74,11 @@ void GolWorldEntityGroup::UpdateBounds()
 	offset.m_y = 0.0f;
 	offset.m_x = 0.0f;
 
-	m_entities[0]->FUN_100286d0(&firstCenter);
+	m_entities[0]->GetBoundsCenter(&firstCenter);
 
 	LegoU32 i;
 	for (i = 0; i < static_cast<LegoU32>(m_count); i++) {
-		m_entities[i]->FUN_100286d0(&center);
+		m_entities[i]->GetBoundsCenter(&center);
 		center -= firstCenter;
 		offset += center;
 	}
@@ -87,11 +87,11 @@ void GolWorldEntityGroup::UpdateBounds()
 
 	radius = 0.0f;
 	for (i = 0; i < static_cast<LegoU32>(m_count); i++) {
-		m_entities[i]->FUN_100286d0(&center);
+		m_entities[i]->GetBoundsCenter(&center);
 		center -= firstCenter;
 		delta = center - offset;
 
-		LegoFloat childRadius = m_entities[i]->FUN_10028710();
+		LegoFloat childRadius = m_entities[i]->GetBoundsRadius();
 		LegoFloat distance =
 			childRadius +
 			static_cast<LegoFloat>(::sqrt(delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x));
@@ -101,7 +101,7 @@ void GolWorldEntityGroup::UpdateBounds()
 	}
 
 	offset += firstCenter;
-	SetCenter(offset);
+	SetBoundsCenter(offset);
 	SetBoundsRadius(radius);
 }
 

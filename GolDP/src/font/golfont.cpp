@@ -158,7 +158,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 		params.m_unk0x12 = 1;
 		params.m_unk0x13 = 0;
 
-		material->FUN_100257e0(p_renderer, params);
+		material->SetParams(p_renderer, params);
 		material->FUN_10006320(*p_renderer);
 
 		texture++;
@@ -192,7 +192,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 	params.m_unk0x12 = 1;
 	params.m_unk0x13 = 0;
 
-	material->FUN_100257e0(p_renderer, params);
+	material->SetParams(p_renderer, params);
 	material->FUN_10006320(*p_renderer);
 }
 

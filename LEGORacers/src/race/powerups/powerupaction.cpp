@@ -143,7 +143,7 @@ WeaponActionBase::WeaponActionBase()
 // FUNCTION: LEGORACERS 0x0045bc10 FOLDED
 void WeaponActionBase::GetProjectilePosition(GolVec3* p_position)
 {
-	m_activeProjectile->GetWorldEntity()->FUN_100286d0(p_position);
+	m_activeProjectile->GetWorldEntity()->GetBoundsCenter(p_position);
 }
 
 // FUNCTION: LEGORACERS 0x0045bc30 FOLDED

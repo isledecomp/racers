@@ -259,7 +259,7 @@ void RaceCameraController::ApplySmoothing()
 		m_smoothedTransform.m_position.m_z = scaledPositionDelta.m_z + m_rawTransform.m_position.m_z;
 
 		LegoFloat rotationAmount = 1.0f / (m_rotationLag * m_elapsed + 1.0f);
-		GolMath::FUN_1002f890(m_rawRotation, m_previousRotation, rotationAmount, &m_smoothedRotation);
+		GolMath::LerpQuat(m_rawRotation, m_previousRotation, rotationAmount, &m_smoothedRotation);
 		GolMath::FUN_00449340(&m_smoothedRotation, &m_smoothedTransform.m_m[0][0]);
 	}
 
@@ -485,7 +485,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 		m_smoothedTransform.m_position.m_z =
 			(m_rawTransform.m_position.m_z - m_previousTransform.m_position.m_z) * amount +
 			m_previousTransform.m_position.m_z;
-		GolMath::FUN_1002f890(m_previousRotation, m_rawRotation, amount, &m_smoothedRotation);
+		GolMath::LerpQuat(m_previousRotation, m_rawRotation, amount, &m_smoothedRotation);
 		GolMath::FUN_00449340(&m_smoothedRotation, &m_smoothedTransform.m_m[0][0]);
 		UpdateFollow();
 		UpdateListener();

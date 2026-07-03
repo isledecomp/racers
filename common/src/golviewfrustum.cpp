@@ -1,7 +1,7 @@
 #include "golviewfrustum.h"
 
 // FUNCTION: GOLDP 0x1002bc90
-LegoS32 __fastcall GolViewFrustum::FUN_1002bc90(const GolViewFrustum* p_frustum, undefined4, const LegoFloat* p_bounds)
+LegoS32 __fastcall GolViewFrustum::ClassifyBox(const GolViewFrustum* p_frustum, undefined4, const LegoFloat* p_bounds)
 {
 	LegoS32 outsideMask = 0;
 	const GolViewFrustum::Plane* plane = p_frustum->m_planes;

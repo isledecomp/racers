@@ -196,7 +196,7 @@ void GolImage::FUN_10005440(GolRenderDevice* p_renderer, GolSoftwareMaterial* p_
 	params.m_unk0x10 = 2;
 	params.m_unk0x12 = 1;
 
-	p_material->FUN_100257e0(p_renderer, params);
+	p_material->SetParams(p_renderer, params);
 	p_material->FUN_10006320(*p_renderer);
 }
 

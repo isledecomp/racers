@@ -75,7 +75,7 @@ void GolBillboard::SetPrimaryModel()
 void GolBillboard::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
 	GolVec3 position;
-	FUN_100286d0(&position);
+	GetBoundsCenter(&position);
 	p_result->m_lodIndex = 0;
 
 	if (m_maxDistanceSquared != g_pontoonMaxFloat) {
@@ -86,7 +86,7 @@ void GolBillboard::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct*
 		}
 	}
 
-	p_result->m_visibility = p_view.ClassifySphere(position, FUN_10028710());
+	p_result->m_visibility = p_view.ClassifySphere(position, GetBoundsRadius());
 }
 
 // FUNCTION: GOLDP 0x10026fa0 FOLDED
@@ -103,7 +103,7 @@ void GolBillboard::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result)
 	GolVec3 position;
 
 	p_result[1] = FALSE;
-	FUN_100286d0(&position);
+	GetBoundsCenter(&position);
 
 	LegoFloat distanceSquared = position.DistanceSquaredTo(p_arg1);
 

@@ -192,7 +192,7 @@ void ParticleResource::Update(LegoU32 p_elapsedMs)
 		do {
 			transformedPosition = position;
 			transform->VTable0x04(&transformedPosition, &position);
-			transform = transform->m_unk0x04;
+			transform = transform->m_parent;
 		} while (transform);
 
 		LegoFloat scale = m_trackedEntity->GetModel(0)->GetScale() * m_trackedEntity->GetUnk0x58();

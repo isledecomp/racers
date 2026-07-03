@@ -170,8 +170,8 @@ void GolModelEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultStruc
 		return;
 	}
 
-	FUN_100286d0(&position);
-	p_result->m_visibility = p_view.ClassifySphere(position, FUN_10028710());
+	GetBoundsCenter(&position);
+	p_result->m_visibility = p_view.ClassifySphere(position, GetBoundsRadius());
 }
 
 // FUNCTION: GOLDP 0x10027e70
@@ -231,8 +231,8 @@ void GolModelEntity::Update(LegoS32 p_elapsed)
 void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat* p_destScalar)
 {
 	if (!p_index) {
-		FUN_100286d0(p_destVec);
-		*p_destScalar = FUN_10028710();
+		GetBoundsCenter(p_destVec);
+		*p_destScalar = GetBoundsRadius();
 	}
 	else {
 		ComputeBoundsFromModel(p_index);

@@ -58,7 +58,7 @@ void GolSceneTransformNode::FUN_10014a60(const GolMatrix4& p_m1, const GolMatrix
 		obj = m_unk0x18;
 		end = &m_unk0x18[m_capacity];
 		for (; obj < end; obj++) {
-			GolTransform* parent = static_cast<GolTransform*>(obj->m_unk0x04);
+			GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
 			if (parent == NULL) {
 				GolMath::MultiplyMatrix4(obj->m_unk0x10, p_m1, &obj->m_unk0x50);
 			}
@@ -120,7 +120,7 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 		GolTransform* end = &m_unk0x18[m_capacity];
 
 		for (; obj < end; obj++) {
-			GolTransform* parent = static_cast<GolTransform*>(obj->m_unk0x04);
+			GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
 			if (parent == NULL) {
 				GolMath::MultiplyMatrix4Affine(obj->m_unk0x10, p_m, &obj->m_unk0x90);
 			}
@@ -133,7 +133,7 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 
 	for (; i < m_capacity; i++) {
 		GolTransform* obj = &m_unk0x18[i];
-		GolTransform* parent = static_cast<GolTransform*>(obj->m_unk0x04);
+		GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
 
 		if (m_unk0x14->VTable0x00(i)) {
 			GolQuat rotation;

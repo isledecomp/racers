@@ -474,7 +474,7 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
-			case GolFileParser::e_unknown0x38:
+			case EvbTxtParser::e_materialAnimation:
 				params.m_materialAnimation =
 					field->m_materialAnimationDatabase->GetMaterialAnimation(p_parser->ReadInteger());
 				break;
@@ -624,7 +624,7 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
-			case GolFileParser::e_unknown0x3d:
+			case EvbTxtParser::e_particle:
 				::strncpy(
 					params.m_particleName,
 					p_parser->ReadStringWithMaxLength(sizeof(params.m_particleName)),
@@ -634,7 +634,7 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 			case EvbTxtParser::e_noEnd:
 				params.m_noEnd = eventIndex;
 				break;
-			case GolFileParser::e_unknown0x3b:
+			case EvbTxtParser::e_position:
 				params.m_position.m_x = p_parser->ReadFloat();
 				params.m_position.m_y = p_parser->ReadFloat();
 				params.m_position.m_z = p_parser->ReadFloat();
@@ -642,7 +642,7 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 					params.m_position.m_y = -params.m_position.m_y;
 				}
 				break;
-			case GolFileParser::e_unknown0x3e:
+			case EvbTxtParser::e_direction:
 				params.m_direction.m_x = p_parser->ReadFloat();
 				params.m_direction.m_y = p_parser->ReadFloat();
 				params.m_direction.m_z = p_parser->ReadFloat();
@@ -814,7 +814,7 @@ void RaceEventTable::ParseSkyStates(GolFileParser* p_parser)
 					sizeof(params.m_skyName)
 				);
 				break;
-			case GolFileParser::e_unknown0x44:
+			case EvbTxtParser::e_duration:
 				params.m_durationMs = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x45:

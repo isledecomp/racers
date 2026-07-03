@@ -32,7 +32,20 @@ class RaceSkyState : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004afd64
 	// SIZE 0x1fc
-	class SkbTxtParser : public GolTxtParser {};
+	class SkbTxtParser : public GolTxtParser {
+	public:
+		// .skb tokens
+		enum {
+			e_state = 0x27,
+			e_duration = 0x28,
+			e_topColor = 0x29,
+			e_middleColor = 0x2a,
+			e_bottomColor = 0x2b,
+			e_states = 0x2c,
+			e_initialState = 0x2d,
+			e_heightOffset = 0x2e,
+		};
+	};
 
 	// SIZE 0x10
 	struct Entry {

@@ -47,6 +47,14 @@ public:
 	// VTABLE: GOLDP 0x100575d8
 	// SIZE 0x1fc
 	class TdbTxtParser : public GolTxtParser {
+	public:
+		// .tdb tokens with proven payloads; flag-only keywords stay generic
+		enum {
+			e_texture = 0x27,
+			e_mipmaps = 0x29,
+			e_colorKey = 0x2c,
+		};
+
 		// SYNTHETIC: GOLDP 0x10030050 FOLDED
 		// GolTextureList::TdbTxtParser::`scalar deleting destructor'
 

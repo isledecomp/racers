@@ -74,7 +74,7 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 	}
 
 	parser->OpenFileForRead(p_fileName);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TdbTxtParser::e_texture));
 	m_numItems = parser->ReadBracketedCountAndLeftCurly();
 
 	if (m_numItems == 0) {
@@ -93,7 +93,7 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		LegoU16 mipmapCount;
 		LegoU16 flags;
 
-		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TdbTxtParser::e_texture));
 		GolD3DTexture* texture = GetItem(i);
 		::strncpy(textureName, parser->ReadStringWithMaxLength(sizeof(textureName)), sizeof(textureName));
 
@@ -117,7 +117,7 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 			case GolFileParser::e_unknown0x28:
 				flags |= GolTexture::c_textureFlagBit2;
 				break;
-			case GolFileParser::e_unknown0x29:
+			case TdbTxtParser::e_mipmaps:
 				mipmapCount = static_cast<LegoU16>(parser->ReadInteger());
 				flags |= GolTexture::c_textureFlagBit0;
 				break;
@@ -129,7 +129,7 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 				flags &= ~GolTexture::c_textureFlagBit3;
 				flags |= GolTexture::c_textureFlagBit4;
 				break;
-			case GolFileParser::e_unknown0x2c:
+			case TdbTxtParser::e_colorKey:
 				flags |= GolTexture::c_textureFlagBit5;
 				colorKey.m_red = static_cast<LegoU8>(parser->ReadInteger());
 				colorKey.m_grn = static_cast<LegoU8>(parser->ReadInteger());

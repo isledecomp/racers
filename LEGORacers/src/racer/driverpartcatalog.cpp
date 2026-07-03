@@ -270,31 +270,31 @@ void DriverPartCatalog::ReadFile(GolFileParser& p_parser)
 
 	while ((token = p_parser.GetNextToken()) != 0) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27:
+		case PcbTxtParser::e_modelFiles:
 			ReadModelFileNames(p_parser);
 			break;
-		case GolFileParser::e_unknown0x28:
+		case PcbTxtParser::e_modelDirectories:
 			ReadModelDirectories(p_parser);
 			break;
-		case GolFileParser::e_unknown0x29:
+		case PcbTxtParser::e_hats:
 			ReadHats(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case PcbTxtParser::e_faces:
 			ReadFaces(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case PcbTxtParser::e_torsos:
 			ReadTorsos(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case PcbTxtParser::e_legs:
 			ReadLegs(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case PcbTxtParser::e_headHats:
 			ReadHeadHats(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case PcbTxtParser::e_bodyModels:
 			ReadBodyModelNames(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2f:
+		case PcbTxtParser::e_partSlots:
 			ReadPartSlotNames(p_parser);
 			break;
 		default:

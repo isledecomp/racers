@@ -13,7 +13,21 @@ class DriverPartCatalog {
 public:
 	// VTABLE: LEGORACERS 0x004b48b8
 	// SIZE 0x1fc
-	class PcbTxtParser : public GolTxtParser {};
+	class PcbTxtParser : public GolTxtParser {
+	public:
+		// .pcb tokens: one section per Read* handler
+		enum {
+			e_modelFiles = 0x27,
+			e_modelDirectories = 0x28,
+			e_hats = 0x29,
+			e_faces = 0x2a,
+			e_torsos = 0x2b,
+			e_legs = 0x2c,
+			e_headHats = 0x2d,
+			e_bodyModels = 0x2e,
+			e_partSlots = 0x2f,
+		};
+	};
 
 	DriverPartCatalog();
 	~DriverPartCatalog();

@@ -57,6 +57,11 @@ public:
 		// section-scoped and live in each resource class)
 		enum {
 			e_event = 0x27,
+			e_materialAnimation = 0x38,
+			e_position = 0x3b,
+			e_particle = 0x3d,
+			e_direction = 0x3e,
+			e_duration = 0x44,
 			e_partAnimations = 0x28,
 			e_materialAnimations = 0x29,
 			e_sounds = 0x2a,

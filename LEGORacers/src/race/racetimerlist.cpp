@@ -235,7 +235,7 @@ void RaceTimerList::Load(
 	}
 
 	parser->OpenFileForRead(p_name);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TibTxtParser::e_timer));
 	parser->AssertNextTokenIs(GolFileParser::e_leftBracket);
 	m_count = parser->ReadInteger();
 
@@ -249,7 +249,7 @@ void RaceTimerList::Load(
 		}
 
 		for (LegoU32 i = 0; i < m_count; i++) {
-			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TibTxtParser::e_timer));
 			parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
 
 			LegoU32 onDuration = 0;
@@ -261,8 +261,8 @@ void RaceTimerList::Load(
 			GolFileParser::ParserTokenType token = parser->GetNextToken();
 			while (token != GolFileParser::e_rightCurly) {
 				switch (token) {
-				case GolFileParser::e_unknown0x28:
-					if (parser->GetNextToken() == GolFileParser::e_unknown0x2b) {
+				case TibTxtParser::e_onPhase:
+					if (parser->GetNextToken() == TibTxtParser::e_duration) {
 						flags |= Resource::c_randomizeOnDuration;
 						onDuration = parser->ReadInteger();
 					}
@@ -270,8 +270,8 @@ void RaceTimerList::Load(
 						onDuration = parser->GetLastInt();
 					}
 					break;
-				case GolFileParser::e_unknown0x29:
-					if (parser->GetNextToken() == GolFileParser::e_unknown0x2b) {
+				case TibTxtParser::e_offPhase:
+					if (parser->GetNextToken() == TibTxtParser::e_duration) {
 						flags |= Resource::c_randomizeOffDuration;
 						offDuration = parser->ReadInteger();
 					}
@@ -279,10 +279,10 @@ void RaceTimerList::Load(
 						offDuration = parser->GetLastInt();
 					}
 					break;
-				case GolFileParser::e_unknown0x2a:
+				case TibTxtParser::e_event:
 					eventIndex = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x2d:
+				case TibTxtParser::e_initialDelay:
 					initialDelay = parser->ReadInteger();
 					break;
 				default:

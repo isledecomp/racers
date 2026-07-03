@@ -13,7 +13,18 @@ class RaceTimerList {
 public:
 	// VTABLE: LEGORACERS 0x004b1cc8
 	// SIZE 0x1fc
-	class TibTxtParser : public GolTxtParser {};
+	class TibTxtParser : public GolTxtParser {
+	public:
+		// .tib tokens
+		enum {
+			e_timer = 0x27,
+			e_onPhase = 0x28,
+			e_offPhase = 0x29,
+			e_event = 0x2a,
+			e_duration = 0x2b,
+			e_initialDelay = 0x2d,
+		};
+	};
 
 	static LegoU32 GetCapacity();
 

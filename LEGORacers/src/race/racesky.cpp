@@ -98,7 +98,7 @@ void RaceSkyState::Load(
 	}
 
 	parser->OpenFileForRead(p_skyName);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x2c);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(SkbTxtParser::e_states));
 	parser->ReadLeftBracket();
 	m_count = parser->ReadInteger();
 	parser->ReadRightBracket();
@@ -119,7 +119,7 @@ void RaceSkyState::Load(
 		entry->m_keyframes = NULL;
 		entry->m_keyframeCount = 0;
 
-		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(SkbTxtParser::e_state));
 		parser->ReadLeftBracket();
 		entry->m_keyframeCount = parser->ReadInteger();
 		parser->ReadRightBracket();
@@ -151,28 +151,28 @@ void RaceSkyState::Load(
 			keyframe->m_bottomColor.m_blu = 0xff;
 			keyframe->m_bottomColor.m_alp = 0xff;
 
-			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(SkbTxtParser::e_state));
 			parser->ReadLeftCurly();
 
 			GolFileParser::ParserTokenType token = parser->GetNextToken();
 			while (token != GolFileParser::e_rightCurly) {
 				switch (token) {
-				case GolFileParser::e_unknown0x28:
+				case SkbTxtParser::e_duration:
 					keyframe->m_durationMs = parser->ReadInteger();
 					break;
-				case GolFileParser::e_unknown0x29:
+				case SkbTxtParser::e_topColor:
 					keyframe->m_topColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_topColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_topColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_topColor.m_alp = 0xff;
 					break;
-				case GolFileParser::e_unknown0x2a:
+				case SkbTxtParser::e_middleColor:
 					keyframe->m_middleColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_middleColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_middleColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_middleColor.m_alp = 0xff;
 					break;
-				case GolFileParser::e_unknown0x2b:
+				case SkbTxtParser::e_bottomColor:
 					keyframe->m_bottomColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_bottomColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
 					keyframe->m_bottomColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
@@ -193,7 +193,7 @@ void RaceSkyState::Load(
 	parser->ReadRightCurly();
 
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
-	if (token == GolFileParser::e_unknown0x2d) {
+	if (token == SkbTxtParser::e_initialState) {
 		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 
@@ -208,7 +208,7 @@ void RaceSkyState::Load(
 		token = parser->GetNextToken();
 	}
 
-	if (token == GolFileParser::e_unknown0x2e) {
+	if (token == SkbTxtParser::e_heightOffset) {
 		m_heightOffset = parser->ReadFloat();
 	}
 

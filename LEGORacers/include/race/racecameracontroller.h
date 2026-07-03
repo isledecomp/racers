@@ -15,43 +15,43 @@ class RaceCameraController {
 public:
 	// SIZE 0x18
 	struct Profile {
-		LegoFloat GetUnk0x0c() const { return m_unk0x0c; }
+		LegoFloat GetFollowDistance() const { return m_followDistance; }
 
-		LegoU8 m_unk0x00;    // 0x00
-		LegoFloat m_unk0x04; // 0x04
-		LegoFloat m_unk0x08; // 0x08
-		LegoFloat m_unk0x0c; // 0x0c
-		LegoFloat m_unk0x10; // 0x10
-		LegoFloat m_unk0x14; // 0x14
+		LegoU8 m_mode;              // 0x00
+		LegoFloat m_pitchAngle;     // 0x04
+		LegoFloat m_heightAngle;    // 0x08
+		LegoFloat m_followDistance; // 0x0c
+		LegoFloat m_positionLag;    // 0x10
+		LegoFloat m_rotationLag;    // 0x14
 	};
 
 	RaceCameraController();
 	void Reset();
 	void Initialize(GolCamera* p_camera, GolD3DRenderDevice* p_renderer);
-	void SetRacer(Racer* p_unk0x04);
+	void SetRacer(Racer* p_racer);
 
-	void SetPositionLag(LegoFloat p_unk0x04);
-	void SetRotationLag(LegoFloat p_unk0x04);
-	void SetPitchAngle(LegoFloat p_unk0x04);
-	void SetHeightAngle(LegoFloat p_unk0x04);
-	void SetOrientation(GolVec3* p_unk0x04, GolVec3* p_unk0x08);
-	static void BuildOrientation(GolVec3* p_unk0x04, GolVec3* p_unk0x08, GolMatrix3* p_unk0x0c);
-	void SnapPosition(GolVec3* p_unk0x04);
-	void SetMode(LegoU8 p_unk0x04);
-	void SetView(LegoS32 p_unk0x04, LegoBool32 p_unk0x08);
-	GolVec3* GetViewDirection(GolVec3* p_unk0x04);
-	void Update(LegoFloat p_unk0x04);
+	void SetPositionLag(LegoFloat p_amount);
+	void SetRotationLag(LegoFloat p_amount);
+	void SetPitchAngle(LegoFloat p_degrees);
+	void SetHeightAngle(LegoFloat p_degrees);
+	void SetOrientation(GolVec3* p_direction, GolVec3* p_up);
+	static void BuildOrientation(GolVec3* p_direction, GolVec3* p_up, GolMatrix3* p_dest);
+	void SnapPosition(GolVec3* p_position);
+	void SetMode(LegoU8 p_mode);
+	void SetView(LegoS32 p_viewIndex, LegoBool32 p_alternate);
+	GolVec3* GetViewDirection(GolVec3* p_dest);
+	void Update(LegoFloat p_elapsedMs);
 
 private:
 	void UpdateListener();
 	void UpdateFollow();
 	void UpdateShake();
 	void ApplySmoothing();
-	static LegoFloat LerpAngle(LegoFloat p_unk0x04, LegoFloat p_unk0x08);
+	static LegoFloat VectorToAngle(LegoFloat p_x, LegoFloat p_y);
 
 public:
 	LegoU8 m_dirty;                      // 0x000
-	LegoU8 m_unk0x001;                   // 0x001
+	LegoU8 m_frameDirty;                 // 0x001
 	LegoU8 m_mode;                       // 0x002
 	undefined m_unk0x003;                // 0x003
 	LegoU8 m_lookBack;                   // 0x004
@@ -70,12 +70,12 @@ public:
 	GolVec3 m_viewDirection;             // 0x0d8
 	GolVec3 m_lastRacerPosition;         // 0x0e4
 	LegoFloat m_unk0x0f0;                // 0x0f0
-	LegoFloat m_unk0x0f4;                // 0x0f4
+	LegoFloat m_turnLeadAngle;           // 0x0f4
 	LegoFloat m_positionLag;             // 0x0f8
 	LegoFloat m_rotationLag;             // 0x0fc
-	LegoFloat m_unk0x100;                // 0x100
-	LegoFloat m_unk0x104;                // 0x104
-	LegoFloat m_unk0x108;                // 0x108
+	LegoFloat m_targetPositionRate;      // 0x100
+	LegoFloat m_turnLeadRate;            // 0x104
+	LegoFloat m_viewAngleRate;           // 0x108
 	LegoFloat m_heightSine;              // 0x10c
 	LegoFloat m_pitchSine;               // 0x110
 	LegoFloat m_pitchCosine;             // 0x114

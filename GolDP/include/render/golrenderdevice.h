@@ -65,9 +65,9 @@ public:
 	};
 
 	enum Flags {
-		c_flagBit0 = 1 << 0,
-		c_flagBit1 = 1 << 1,
-		c_flagBit5 = 1 << 5,
+		c_flagCreated = 1 << 0,
+		c_flagZBuffer = 1 << 1,
+		c_flagZBufferActive = 1 << 5,
 		c_flagColorKeyAlphaBlend = 1 << 7,
 		c_flagColorKeyAlphaTest = 1 << 8,
 		c_flagBlackColorKey = 1 << 9,
@@ -93,28 +93,28 @@ public:
 		const GolSurfaceFormat& p_requestedTextureFormat,
 		GolSurfaceFormat* p_actualTextureFormat,
 		LegoBool32
-	);                                                                           // vtable+0x0c
-	virtual GolCommonDrawState* GetDrawState() = 0;                              // vtable+0x10
-	virtual GolRenderTarget* GetRenderTargetInfo() = 0;                          // vtable+0x14
-	virtual void VTable0x18() = 0;                                               // vtable+0x18
-	virtual void SetClearColor(const ColorRGBA&) = 0;                            // vtable+0x1c
-	virtual void SetCamera(GolCamera*) = 0;                                      // vtable+0x20
-	virtual void DetachCamera();                                                 // vtable+0x24
-	virtual void ClearLights();                                                  // vtable+0x28
-	virtual void SetAmbient(const MaterialColor* p_param);                       // vtable+0x2c
-	virtual void AddLight(const Light* p_param);                                 // vtable+0x30
-	virtual void SetViewportRect(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
-	virtual void VTable0x38();                                                   // vtable+0x38
-	virtual void EnableMipmaps(LegoU32);                                         // vtable+0x3c
-	virtual void DisableMipmaps();                                               // vtable+0x40
-	virtual void VTable0x44();                                                   // vtable+0x44
-	virtual void VTable0x48();                                                   // vtable+0x48
-	virtual GolRenderTarget* CreateRenderTarget(undefined2, undefined2);         // vtable+0x4c
-	virtual void DestroyRenderTarget(GolRenderTarget*);                          // vtable+0x50
-	virtual void BeginFrame(undefined4) = 0;                                     // vtable+0x54
-	virtual void VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2);     // vtable+0x58
-	virtual void ApplyCamera() = 0;                                              // vtable+0x5c
-	virtual void ApplyLights();                                                  // vtable+0x60
+	);                                                                            // vtable+0x0c
+	virtual GolCommonDrawState* GetDrawState() = 0;                               // vtable+0x10
+	virtual GolRenderTarget* GetRenderTargetInfo() = 0;                           // vtable+0x14
+	virtual void Shutdown() = 0;                                                  // vtable+0x18
+	virtual void SetClearColor(const ColorRGBA&) = 0;                             // vtable+0x1c
+	virtual void SetCamera(GolCamera*) = 0;                                       // vtable+0x20
+	virtual void DetachCamera();                                                  // vtable+0x24
+	virtual void ClearLights();                                                   // vtable+0x28
+	virtual void SetAmbient(const MaterialColor* p_param);                        // vtable+0x2c
+	virtual void AddLight(const Light* p_param);                                  // vtable+0x30
+	virtual void SetViewportRect(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08);  // vtable+0x34
+	virtual void VTable0x38();                                                    // vtable+0x38
+	virtual void EnableMipmaps(LegoU32);                                          // vtable+0x3c
+	virtual void DisableMipmaps();                                                // vtable+0x40
+	virtual void VTable0x44();                                                    // vtable+0x44
+	virtual void VTable0x48();                                                    // vtable+0x48
+	virtual GolRenderTarget* CreateRenderTarget(undefined2, undefined2);          // vtable+0x4c
+	virtual void DestroyRenderTarget(GolRenderTarget*);                           // vtable+0x50
+	virtual void BeginFrame(undefined4) = 0;                                      // vtable+0x54
+	virtual void SetRenderTarget(GolRenderTarget* p_param1, undefined4 p_param2); // vtable+0x58
+	virtual void ApplyCamera() = 0;                                               // vtable+0x5c
+	virtual void ApplyLights();                                                   // vtable+0x60
 	virtual void DrawString(
 		GolString*,
 		GolFontBase*,
@@ -211,12 +211,12 @@ public:
 	virtual void EnableWireframe();                                        // vtable+0xc8
 	virtual void DisableWireframe();                                       // vtable+0xcc
 	virtual void VTable0xd0() = 0;                                         // vtable+0xd0
-	virtual void VTable0xd4() = 0;                                         // vtable+0xd4
-	virtual void VTable0xd8() = 0;                                         // vtable+0xd8
-	virtual void VTable0xdc() = 0;                                         // vtable+0xdc
-	virtual void VTable0xe0() = 0;                                         // vtable+0xe0
-	virtual void VTable0xe4() = 0;                                         // vtable+0xe4
-	virtual void VTable0xe8(LegoBool32 p_arg) = 0;                         // vtable+0xe8
+	virtual void DisablePerspectiveCorrection() = 0;                       // vtable+0xd4
+	virtual void EnablePerspectiveCorrection() = 0;                        // vtable+0xd8
+	virtual void EnableDither() = 0;                                       // vtable+0xdc
+	virtual void DisableDither() = 0;                                      // vtable+0xe0
+	virtual void EnableZBuffer() = 0;                                      // vtable+0xe4
+	virtual void DisableZBuffer(LegoBool32 p_arg) = 0;                     // vtable+0xe8
 	virtual void SelectViewport(undefined4);                               // vtable+0xec
 	virtual void EndFrame() = 0;                                           // vtable+0xf0
 	virtual void VTable0xf4();                                             // vtable+0xf4

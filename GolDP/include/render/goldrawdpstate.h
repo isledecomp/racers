@@ -14,9 +14,9 @@ public:
 	GolDrawDPState();
 	~GolDrawDPState() override; // vtable+0x04
 
-	LegoS32 CreateDevice() override;                                                               // vtable+0x00
+	LegoS32 CreateDevice() override;                                                             // vtable+0x00
 	void SetWindowHandle(HWND p_hWnd) override;                                                  // vtable+0x08
-	void SelectDevice(const char* p_driverName, const char* p_deviceName) override;                // vtable+0x0c
+	void SelectDevice(const char* p_driverName, const char* p_deviceName) override;              // vtable+0x0c
 	LegoU32 GetDriverCount() override;                                                           // vtable+0x10
 	const LegoChar* GetDriverDescription(LegoU32 p_index) override;                              // vtable+0x14
 	const LegoChar* GetDriverName(LegoU32 p_index) override;                                     // vtable+0x18
@@ -29,9 +29,9 @@ public:
 	void GetDeviceGuid(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid) override;     // vtable+0x34
 	GUID* GetCurrentDriverGuid() const override;                                                 // vtable+0x38
 
-	void DestroyDisplay() override;                                // vtable+0x48
-	void ReleaseDisplay() override;                                // vtable+0x50
-	undefined4 CreateDirect3D() override;                          // vtable+0x58
+	void DestroyDisplay() override;                            // vtable+0x48
+	void ReleaseDisplay() override;                            // vtable+0x50
+	undefined4 CreateDirect3D() override;                      // vtable+0x58
 	LegoU32 GetZBufferBitDepth() const override;               // vtable+0x5c
 	LegoBool32 IsHwAccelerated() override;                     // vtable+0x60
 	LegoBool32 SupportsCulling() const override;               // vtable+0x64
@@ -46,7 +46,7 @@ public:
 	LegoBool32 SupportsFogTable() const override;              // vtable+0x88
 	LegoBool32 SupportsTextureAlpha() const override;          // vtable+0x8c
 	LegoBool32 SupportsAdditiveBlend() const override;         // vtable+0x90
-	undefined4 VTable0x94() override;                          // vtable+0x94
+	undefined4 SupportsWBuffer() override;                     // vtable+0x94
 	LegoBool32 SupportsZBufferlessHsr() const override;        // vtable+0x98
 	LegoBool32 SupportsPaletteAlpha() const override;          // vtable+0x9c
 	LegoBool32 SupportsTextureSystemMemory() const override;   // vtable+0xa0
@@ -82,7 +82,7 @@ private:
 	GolDeviceList m_deviceList;                // 0x2e4
 	LegoChar* m_driverName;                    // 0x2f4
 	LegoChar* m_deviceName;                    // 0x2f8
-	GolRenderTarget m_renderTarget;                // 0x2fc
+	GolRenderTarget m_renderTarget;            // 0x2fc
 	GolD3DRenderDevice m_renderer;             // 0x354
 };
 

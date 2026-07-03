@@ -465,7 +465,7 @@ void RaceSkyState::Draw(GolD3DRenderDevice* p_renderer)
 	LegoU8 flags = m_hideFlags;
 	flags = ~flags;
 	if (flags & c_hideDome) {
-		p_renderer->VTable0xe8(TRUE);
+		p_renderer->DisableZBuffer(TRUE);
 		p_renderer->DrawModelEntity(&m_domeEntity);
 
 		flags = m_hideFlags;
@@ -474,7 +474,7 @@ void RaceSkyState::Draw(GolD3DRenderDevice* p_renderer)
 			m_skyWorld->DrawWorld();
 		}
 
-		p_renderer->VTable0xe4();
+		p_renderer->EnableZBuffer();
 	}
 }
 

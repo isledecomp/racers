@@ -22,7 +22,7 @@ public:
 		c_flagHardwareDevice = 1 << 9,
 		c_flagBit10 = 1 << 10,
 		c_flagBit11 = 1 << 11,
-		c_flagBit12 = 1 << 12,
+		c_flagZBuffer = 1 << 12,
 		c_flagBit13 = 1 << 13,
 		c_flagBit14 = 1 << 14,
 		c_flagBit15 = 1 << 15,
@@ -33,10 +33,10 @@ public:
 		c_flagPreferAlphaTest = 1 << 21,
 	};
 
-	virtual LegoS32 CreateDevice() = 0;                                                           // vtable+0x00
+	virtual LegoS32 CreateDevice() = 0;                                                         // vtable+0x00
 	virtual ~GolDrawState();                                                                    // vtable+04
 	virtual void SetWindowHandle(HWND p_hWnd) = 0;                                              // vtable+08
-	virtual void SelectDevice(const char* p_driverName, const char* p_deviceName);                // vtable+0c
+	virtual void SelectDevice(const char* p_driverName, const char* p_deviceName);              // vtable+0c
 	virtual LegoU32 GetDriverCount();                                                           // vtable+10
 	virtual const LegoChar* GetDriverDescription(LegoU32 p_index);                              // vtable+14
 	virtual const LegoChar* GetDriverName(LegoU32 p_index);                                     // vtable+18
@@ -51,22 +51,22 @@ public:
 	virtual void VTable0x3c();                                                                  // vtable+3c
 	virtual void VTable0x40();                                                                  // vtable+40
 	virtual LegoS32 RecreateDisplay(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
-							   LegoU32 p_flags); // vtable+44
-	virtual void DestroyDisplay();                   // vtable+48
-	virtual void Present();                   // vtable+4c
-	virtual void ReleaseDisplay();                   // vtable+50
+									LegoU32 p_flags); // vtable+44
+	virtual void DestroyDisplay();                    // vtable+48
+	virtual void Present();                           // vtable+4c
+	virtual void ReleaseDisplay();                    // vtable+50
 	virtual LegoS32 CreateDisplay(LegoS32, LegoS32, undefined4,
-							   LegoU32); // vtable+54
+								  LegoU32); // vtable+54
 
 	// SYNTHETIC: GOLDP 0x1001d590
 	// GolDrawState::`scalar deleting destructor'
 
 	LegoU32 GetFlags() const { return m_flags; }
 
-	LegoS32 m_width;              // 0x04
-	LegoS32 m_height;             // 0x08
-	undefined4 m_bpp;             // 0x0c
-	LegoU32 m_flags;              // 0x10
+	LegoS32 m_width;                     // 0x04
+	LegoS32 m_height;                    // 0x08
+	undefined4 m_bpp;                    // 0x0c
+	LegoU32 m_flags;                     // 0x10
 	GolDisplaySurface* m_displaySurface; // 0x14
 };
 

@@ -172,13 +172,13 @@ MenuWidget* MenuSceneScreen::SceneWidget::DrawSelf(Rect*, Rect*)
 		return NULL;
 	}
 
-	m_renderer->VTable0xe4();
+	m_renderer->EnableZBuffer();
 	m_frame->Draw(m_renderer, 0);
 	m_player.Draw(m_renderer);
 	m_player.DrawTransparent(m_renderer);
 	m_player.DrawOverlay(m_renderer);
 	m_renderer->SelectViewport(0);
-	m_renderer->VTable0xe8(0);
+	m_renderer->DisableZBuffer(0);
 
 	return NULL;
 }

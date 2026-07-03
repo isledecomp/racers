@@ -88,7 +88,7 @@ void GolDrawDPState::ReleaseDDraw()
 // FUNCTION: GOLDP 0x100012b0
 void GolDrawDPState::ReleaseDisplay()
 {
-	m_flags &= ~(c_flagBit12 | c_flagBit11 | c_flagBit10 | c_flagHardwareDevice);
+	m_flags &= ~(c_flagZBuffer | c_flagBit11 | c_flagBit10 | c_flagHardwareDevice);
 	GolCommonDrawState::ReleaseDisplay();
 	ReleaseDDraw();
 }
@@ -324,7 +324,7 @@ LegoBool32 GolDrawDPState::SupportsAdditiveBlend() const
 }
 
 // FUNCTION: GOLDP 0x100016f0 FOLDED
-undefined4 GolDrawDPState::VTable0x94()
+undefined4 GolDrawDPState::SupportsWBuffer()
 {
 	return FALSE;
 }
@@ -410,20 +410,20 @@ undefined4 GolDrawDPState::CreateDirect3D()
 				}
 			}
 
-			if ((m_flags & c_flagBit12) && (hResult != DD_OK || m_depthBufferPixelformat.dwSize == 0)) {
+			if ((m_flags & c_flagZBuffer) && (hResult != DD_OK || m_depthBufferPixelformat.dwSize == 0)) {
 				GOL_FATALERROR_MESSAGE("Unable to find z-buffer format");
 			}
 		}
 	}
 
-	if (!(m_renderer.GetFlags() & GolD3DRenderDevice::c_flagBit0)) {
-		undefined4 result = m_renderer.FUN_10007d90(this, &m_renderTarget, m_flags);
+	if (!(m_renderer.GetFlags() & GolD3DRenderDevice::c_flagCreated)) {
+		undefined4 result = m_renderer.Initialize(this, &m_renderTarget, m_flags);
 		if (result != 0) {
 			return result;
 		}
 	}
 	else {
-		m_renderer.FUN_10007e20(m_flags);
+		m_renderer.CreateRenderer(m_flags);
 	}
 
 	return 0;

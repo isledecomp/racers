@@ -26,7 +26,7 @@ void GolCommonDrawState::DestroyDisplay()
 	GolD3DRenderDevice* next;
 	for (GolD3DRenderDevice* renderer = m_rendererList; renderer; renderer = next) {
 		next = renderer->m_nextDrawStateRenderer;
-		renderer->VTable0x18();
+		renderer->Shutdown();
 	}
 
 	GolDrawState::DestroyDisplay();
@@ -182,7 +182,7 @@ LegoBool32 GolCommonDrawState::SupportsAdditiveBlend() const
 }
 
 // FUNCTION: GOLDP 0x100016f0 FOLDED
-undefined4 GolCommonDrawState::VTable0x94()
+undefined4 GolCommonDrawState::SupportsWBuffer()
 {
 	return 0;
 }

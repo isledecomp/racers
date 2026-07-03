@@ -500,7 +500,7 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 {
 	Item* item = m_items;
 
-	m_renderer->VTable0xe4();
+	m_renderer->EnableZBuffer();
 	PushCamera();
 	m_renderer->SelectViewport(m_viewportIndex);
 
@@ -523,7 +523,7 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 
 	PopCamera();
 	m_renderer->SelectViewport(6);
-	m_renderer->VTable0xe8(FALSE);
+	m_renderer->DisableZBuffer(FALSE);
 
 	return NULL;
 }

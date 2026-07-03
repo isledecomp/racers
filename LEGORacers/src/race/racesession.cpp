@@ -2220,7 +2220,7 @@ void RaceSession::Draw()
 		m_renderer->SelectViewport(FALSE);
 	}
 
-	m_renderer->VTable0xe8(FALSE);
+	m_renderer->DisableZBuffer(FALSE);
 
 	switch (m_state) {
 	case 1:
@@ -2240,7 +2240,7 @@ void RaceSession::Draw()
 		break;
 	}
 
-	m_renderer->VTable0xe4();
+	m_renderer->EnableZBuffer();
 	FlushOverlays();
 }
 

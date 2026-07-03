@@ -334,7 +334,7 @@ GolD3DRenderDevice::GolD3DRenderDevice()
 // FUNCTION: GOLDP 0x10007980
 GolD3DRenderDevice::~GolD3DRenderDevice()
 {
-	VTable0x18();
+	Shutdown();
 }
 
 // FUNCTION: GOLDP 0x10007a00
@@ -373,7 +373,7 @@ void GolD3DRenderDevice::Reset()
 	m_clearPixelValue = 0;
 	m_primaryRenderTarget = NULL;
 	m_renderTargetInfo = NULL;
-	m_unk0x30c = NULL;
+	m_renderSurfaces = NULL;
 
 	::memset(m_unk0x348, 0, 0xcc8 - 0x348);
 	::memset(m_unk0xc38ec, 0, sizeof(m_unk0xc38ec));
@@ -386,7 +386,7 @@ void GolD3DRenderDevice::Reset()
 	m_currentScale = 1.0f;
 	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 	m_unk0xc83c4 = 0;
-	m_unk0xc86fc = 0.0f;
+	m_flatDepth = 0.0f;
 	m_unk0xc3848 = 0;
 	m_unk0xc384c = 0;
 	m_unk0xc4c0c = 0;
@@ -478,10 +478,10 @@ GolCommonDrawState* GolD3DRenderDevice::GetDrawState()
 }
 
 // FUNCTION: GOLDP 0x10007d90
-LegoS32 GolD3DRenderDevice::FUN_10007d90(GolDrawDPState* p_drawState, GolRenderTarget* p_parg2, LegoU32 p_flags)
+LegoS32 GolD3DRenderDevice::Initialize(GolDrawDPState* p_drawState, GolRenderTarget* p_parg2, LegoU32 p_flags)
 {
-	if (m_flags & c_flagBit0) {
-		VTable0x18();
+	if (m_flags & c_flagCreated) {
+		Shutdown();
 	}
 
 	m_drawState = p_drawState;
@@ -489,13 +489,13 @@ LegoS32 GolD3DRenderDevice::FUN_10007d90(GolDrawDPState* p_drawState, GolRenderT
 	m_renderTargetInfo = p_parg2;
 	m_currentCamera = NULL;
 	p_drawState->AddRenderer(this);
-	m_flags |= c_flagBit0 | c_flagBit5;
+	m_flags |= c_flagCreated | c_flagZBufferActive;
 	m_viewportParams.dwX = 0;
 	m_viewportParams.dwY = 0;
 	m_viewportParams.dwWidth = m_renderTargetInfo->m_width;
 	m_viewportParams.dwHeight = m_renderTargetInfo->m_height;
 
-	LegoS32 result = FUN_10007e20(p_flags);
+	LegoS32 result = CreateRenderer(p_flags);
 	if (result != 0) {
 		return result;
 	}
@@ -505,19 +505,19 @@ LegoS32 GolD3DRenderDevice::FUN_10007d90(GolDrawDPState* p_drawState, GolRenderT
 }
 
 // FUNCTION: GOLDP 0x10007e20
-LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
+LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 {
 	GolSurfaceFormat swTextureFormat;
 	LegoU32 forceSoftware;
 	LegoChar errorMessage[64];
 	D3DDEVICEDESC helCaps;
 
-	m_flags = c_flagBit0 | c_flagBit5;
+	m_flags = c_flagCreated | c_flagZBufferActive;
 	if (p_flags & GolDrawState::c_flagPreferAlphaTest) {
 		m_flags |= c_flagBit20;
 	}
-	if (p_flags & GolDrawState::c_flagBit12) {
-		m_flags |= c_flagBit1;
+	if (p_flags & GolDrawState::c_flagZBuffer) {
+		m_flags |= c_flagZBuffer;
 	}
 
 	forceSoftware = p_flags & GolDrawState::c_flagForceSoftware;
@@ -526,7 +526,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 		m_unk0xc83c4 = 0;
 		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialHw;
 
-		if (m_flags & c_flagBit1 && !m_drawState->SupportsZBufferlessHsr()) {
+		if (m_flags & c_flagZBuffer && !m_drawState->SupportsZBufferlessHsr()) {
 			LegoS32 r = m_depthBuffer.Create(m_drawState, m_primaryRenderTarget);
 			if (r != 0) {
 				return r;
@@ -636,7 +636,7 @@ LegoS32 GolD3DRenderDevice::FUN_10007e20(LegoU32 p_flags)
 		m_d3dDevice = NULL;
 	}
 
-	m_flags &= ~c_flagBit1;
+	m_flags &= ~c_flagZBuffer;
 	m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
@@ -676,7 +676,7 @@ rendererCreated:
 	}
 
 	m_unk0x2d4.Create(*this);
-	for (GolD3DRenderSurface* surface = m_unk0x30c; surface != NULL; surface = surface->m_next) {
+	for (GolD3DRenderSurface* surface = m_renderSurfaces; surface != NULL; surface = surface->m_next) {
 		surface->FUN_100136a0(this);
 	}
 
@@ -744,8 +744,8 @@ void GolD3DRenderDevice::FUN_100082e0()
 		m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_POINT);
 	}
 
-	if (m_flags & c_flagBit1) {
-		if (m_drawState->VTable0x94()) {
+	if (m_flags & c_flagZBuffer) {
+		if (m_drawState->SupportsWBuffer()) {
 			m_flags |= c_flagBit13;
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_USEW);
 		}
@@ -756,7 +756,7 @@ void GolD3DRenderDevice::FUN_100082e0()
 
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, TRUE);
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZFUNC, D3DCMP_LESSEQUAL);
-		m_flags |= c_flagBit5;
+		m_flags |= c_flagZBufferActive;
 	}
 	else {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_FALSE);
@@ -786,7 +786,7 @@ void GolD3DRenderDevice::ReleaseResources()
 {
 	GolRenderDevice::ReleaseResources();
 
-	for (GolD3DRenderSurface* surface = m_unk0x30c; surface != NULL; surface = surface->m_next) {
+	for (GolD3DRenderSurface* surface = m_renderSurfaces; surface != NULL; surface = surface->m_next) {
 		surface->ReleaseResources();
 	}
 
@@ -821,7 +821,7 @@ void GolD3DRenderDevice::ReleaseResources()
 }
 
 // FUNCTION: GOLDP 0x10008740
-void GolD3DRenderDevice::VTable0x18()
+void GolD3DRenderDevice::Shutdown()
 {
 	if (m_currentCamera != NULL) {
 		m_currentCamera->AttachToRenderer(NULL);
@@ -831,7 +831,7 @@ void GolD3DRenderDevice::VTable0x18()
 	GolRenderDevice::Destroy();
 	ReleaseResources();
 
-	GolD3DRenderSurface* surface = m_unk0x30c;
+	GolD3DRenderSurface* surface = m_renderSurfaces;
 	while (surface != NULL) {
 		GolD3DRenderSurface* next = surface->m_next;
 		surface->Destroy();
@@ -1268,7 +1268,7 @@ void GolD3DRenderDevice::DrawCollidableEntityWithState(
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
 	GolBoundingShape::TreeNode::Node* node;
 	LegoU32 nextOffset;
-	if (m_flags & c_flagBit5) {
+	if (m_flags & c_flagZBufferActive) {
 		node = firstNode;
 		nextOffset = 0;
 	}
@@ -1356,7 +1356,7 @@ void GolD3DRenderDevice::DrawCollidableEntity(GolWorldEntity* p_model)
 	MaterialTable* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
 	GolBoundingShape::TreeNode::Node* node;
 	LegoU32 nextOffset;
-	if (m_flags & c_flagBit5) {
+	if (m_flags & c_flagZBufferActive) {
 		node = firstNode;
 		nextOffset = 0;
 	}
@@ -1403,7 +1403,7 @@ void GolD3DRenderDevice::BeginFrame(undefined4 p_flags)
 			rect.y2 = m_renderTargetInfo->m_height;
 
 			LegoU32 clearFlags = ((~p_flags & 0xff) >> 2) & 1;
-			if (m_flags & c_flagBit1) {
+			if (m_flags & c_flagZBuffer) {
 				clearFlags |= 2;
 			}
 
@@ -1503,7 +1503,7 @@ void GolD3DRenderDevice::SetClearColor(const ColorRGBA& p_color)
 }
 
 // FUNCTION: GOLDP 0x10009780
-void GolD3DRenderDevice::VTable0xd8()
+void GolD3DRenderDevice::EnablePerspectiveCorrection()
 {
 	if (!m_unk0xc83c4) {
 		if (!m_drawState->IsHwAccelerated()) {
@@ -1516,7 +1516,7 @@ void GolD3DRenderDevice::VTable0xd8()
 }
 
 // FUNCTION: GOLDP 0x100097c0
-void GolD3DRenderDevice::VTable0xd4()
+void GolD3DRenderDevice::DisablePerspectiveCorrection()
 {
 	if (!m_unk0xc83c4) {
 		if (!m_drawState->IsHwAccelerated()) {
@@ -1526,7 +1526,7 @@ void GolD3DRenderDevice::VTable0xd4()
 }
 
 // FUNCTION: GOLDP 0x100097f0
-void GolD3DRenderDevice::VTable0xdc()
+void GolD3DRenderDevice::EnableDither()
 {
 	if (!m_unk0xc83c4) {
 		m_d3dDevice->SetRenderState(
@@ -1538,7 +1538,7 @@ void GolD3DRenderDevice::VTable0xdc()
 }
 
 // FUNCTION: GOLDP 0x10009840
-void GolD3DRenderDevice::VTable0xe0()
+void GolD3DRenderDevice::DisableDither()
 {
 	if (!m_unk0xc83c4) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_DITHERENABLE, FALSE);
@@ -1546,10 +1546,10 @@ void GolD3DRenderDevice::VTable0xe0()
 }
 
 // FUNCTION: GOLDP 0x10009860
-void GolD3DRenderDevice::VTable0xe4()
+void GolD3DRenderDevice::EnableZBuffer()
 {
-	if (!m_unk0xc83c4 && (m_flags & c_flagBit1)) {
-		if (m_drawState->VTable0x94()) {
+	if (!m_unk0xc83c4 && (m_flags & c_flagZBuffer)) {
+		if (m_drawState->SupportsWBuffer()) {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_USEW);
 		}
 		else {
@@ -1560,13 +1560,13 @@ void GolD3DRenderDevice::VTable0xe4()
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZFUNC, D3DCMP_LESSEQUAL);
 	}
 
-	m_flags |= c_flagBit5;
+	m_flags |= c_flagZBufferActive;
 }
 
 // FUNCTION: GOLDP 0x100098d0
-void GolD3DRenderDevice::VTable0xe8(LegoBool32 p_arg)
+void GolD3DRenderDevice::DisableZBuffer(LegoBool32 p_arg)
 {
-	m_flags &= ~c_flagBit5;
+	m_flags &= ~c_flagZBufferActive;
 
 	if (!m_unk0xc83c4) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_FALSE);
@@ -1574,10 +1574,10 @@ void GolD3DRenderDevice::VTable0xe8(LegoBool32 p_arg)
 	}
 	else {
 		if (p_arg == 0) {
-			m_unk0xc86fc = 0.0f;
+			m_flatDepth = 0.0f;
 		}
 		else {
-			m_unk0xc86fc = 1.0f;
+			m_flatDepth = 1.0f;
 		}
 	}
 }
@@ -1914,11 +1914,11 @@ void GolD3DRenderDevice::DrawTriangle(
 			cmd->m_vertexIndex1 = m_unk0xc3848++;
 			cmd->m_vertexIndex2 = m_unk0xc3848++;
 			cmd->m_rasterizer = m_unk0xc83b4.m_unk0x00[0];
-			if (m_flags & c_flagBit5) {
+			if (m_flags & c_flagZBufferActive) {
 				m_softwareRenderer.FUN_100417c0(cmd, 1);
 			}
 			else {
-				m_softwareRenderer.FUN_100417a0(cmd, 1, m_unk0xc86fc);
+				m_softwareRenderer.FUN_100417a0(cmd, 1, m_flatDepth);
 			}
 		}
 	}
@@ -1968,11 +1968,11 @@ void GolD3DRenderDevice::DrawTriangleStrip(D3DTLVERTEX* p_vertices, LegoU32 p_co
 				}
 
 				m_unk0xc3848 += p_count;
-				if (m_flags & c_flagBit5) {
+				if (m_flags & c_flagZBufferActive) {
 					m_softwareRenderer.FUN_100417c0(cmd, triangleCount);
 				}
 				else {
-					m_softwareRenderer.FUN_100417a0(cmd, triangleCount, m_unk0xc86fc);
+					m_softwareRenderer.FUN_100417a0(cmd, triangleCount, m_flatDepth);
 				}
 			}
 		}
@@ -2667,22 +2667,22 @@ GolRenderTarget* GolD3DRenderDevice::CreateRenderTarget(undefined2 p_arg1, undef
 	}
 
 	surface->FUN_10013600(this, p_arg1, p_arg2);
-	surface->m_next = m_unk0x30c;
-	m_unk0x30c = surface;
+	surface->m_next = m_renderSurfaces;
+	m_renderSurfaces = surface;
 	return surface;
 }
 
 // FUNCTION: GOLDP 0x1000b350
 void GolD3DRenderDevice::DestroyRenderTarget(GolRenderTarget* p_surface)
 {
-	GolD3DRenderSurface* surface = m_unk0x30c;
+	GolD3DRenderSurface* surface = m_renderSurfaces;
 	if (surface == NULL) {
 		return;
 	}
 
 	GolD3DRenderSurface* target = static_cast<GolD3DRenderSurface*>(p_surface);
 	if (target == surface) {
-		m_unk0x30c = surface->m_next;
+		m_renderSurfaces = surface->m_next;
 		target->Destroy();
 		delete target;
 		return;
@@ -2709,10 +2709,10 @@ void GolD3DRenderDevice::DestroyRenderTarget(GolRenderTarget* p_surface)
 }
 
 // FUNCTION: GOLDP 0x1000b3d0
-void GolD3DRenderDevice::VTable0x58(GolRenderTarget* p_surface, undefined4 p_flags)
+void GolD3DRenderDevice::SetRenderTarget(GolRenderTarget* p_surface, undefined4 p_flags)
 {
 	m_renderTargetInfo = m_primaryRenderTarget;
-	GolD3DRenderSurface* surface = m_unk0x30c;
+	GolD3DRenderSurface* surface = m_renderSurfaces;
 	if (surface != NULL) {
 		GolD3DRenderSurface* target = static_cast<GolD3DRenderSurface*>(p_surface);
 		while (surface != NULL) {
@@ -4421,7 +4421,7 @@ void GolD3DRenderDevice::FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_softwareRenderer.FUN_100417c0(commandStart, p_triangleCount);
 	}
 	else {
-		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_unk0xc86fc);
+		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_flatDepth);
 	}
 
 	m_unk0xc86f4 += p_triangleCount;
@@ -4482,7 +4482,7 @@ void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_softwareRenderer.FUN_100417c0(commandStart, p_triangleCount);
 	}
 	else {
-		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_unk0xc86fc);
+		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_flatDepth);
 	}
 
 	m_unk0xc86f4 += p_triangleCount;
@@ -4666,7 +4666,7 @@ void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_t
 		m_softwareRenderer.FUN_100417c0(commandStart, emittedCount);
 	}
 	else {
-		m_softwareRenderer.FUN_100417a0(commandStart, emittedCount, m_unk0xc86fc);
+		m_softwareRenderer.FUN_100417a0(commandStart, emittedCount, m_flatDepth);
 	}
 
 	m_unk0xc86f4 += emittedCount;

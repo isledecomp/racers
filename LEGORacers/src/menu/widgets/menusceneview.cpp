@@ -367,7 +367,7 @@ void MenuSceneView::ApplySceneMaterials()
 // FUNCTION: LEGORACERS 0x00465f20
 MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 {
-	m_renderer->VTable0xe4();
+	m_renderer->EnableZBuffer();
 	m_savedCamera = m_renderer->GetCurrentCamera();
 	m_renderer->SetCamera(m_camera);
 	m_renderer->ApplyCamera();
@@ -389,7 +389,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	m_renderer->SetCamera(m_savedCamera);
 	m_renderer->ApplyCamera();
 	m_renderer->SelectViewport(6);
-	m_renderer->VTable0xe8(FALSE);
+	m_renderer->DisableZBuffer(FALSE);
 
 	return NULL;
 }

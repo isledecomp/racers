@@ -492,8 +492,12 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 
 	if (p_mode == c_windowModeWindowed) {
 		OutputDebugString("--to windowed\n");
-		m_golDrawState
-			->CreateDisplay(m_width, m_height, m_bpp, drawFlags & ~(GolDrawState::c_flagHardwareDevice | GolDrawState::c_flagBit10));
+		m_golDrawState->CreateDisplay(
+			m_width,
+			m_height,
+			m_bpp,
+			drawFlags & ~(GolDrawState::c_flagHardwareDevice | GolDrawState::c_flagBit10)
+		);
 
 		if (m_golDrawState->m_flags & GolDrawState::c_flagHardwareDevice) {
 			OutputDebugString("--from full screen\n");
@@ -787,7 +791,7 @@ LegoU32 Win32GolApp::BuildDrawStateFlags(LegoU32 p_flags)
 		result |= GolDrawState::c_flagBit11;
 	}
 	if (p_flags & c_flagBit4) {
-		result |= GolDrawState::c_flagBit12;
+		result |= GolDrawState::c_flagZBuffer;
 	}
 	if (p_flags & c_flagBit6) {
 		result |= GolDrawState::c_flagAntialias;

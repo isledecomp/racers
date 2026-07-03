@@ -893,7 +893,7 @@ void GolRenderDevice::VTable0x48()
 }
 
 // FUNCTION: GOLDP 0x10029960
-void GolRenderDevice::VTable0x58(GolRenderTarget* p_param1, undefined4 p_param2)
+void GolRenderDevice::SetRenderTarget(GolRenderTarget* p_param1, undefined4 p_param2)
 {
 	BeginFrame(p_param2);
 }

@@ -517,7 +517,7 @@ void MenuManager::Run()
 			menuAnimations->Update(frameDeltaMs);
 			m_renderer->BeginFrame(TRUE);
 			m_renderer->SelectViewport(6);
-			m_renderer->VTable0xe8(TRUE);
+			m_renderer->DisableZBuffer(TRUE);
 
 			if (m_dialog.GetOpenCount() > 0) {
 				m_dialog.DrawCursors();
@@ -527,7 +527,7 @@ void MenuManager::Run()
 			}
 
 			menuAnimations->Draw(m_renderer);
-			m_renderer->VTable0xe4();
+			m_renderer->EnableZBuffer();
 			m_renderer->EndFrame();
 
 			if (golApp->GetInputManager()->GetKeyboard()->GetButtonState(

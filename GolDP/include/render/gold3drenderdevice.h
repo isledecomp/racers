@@ -60,7 +60,7 @@ public:
 	) override;                                                                   // vtable+0x0c
 	GolCommonDrawState* GetDrawState() override;                                  // vtable+0x10
 	GolRenderTarget* GetRenderTargetInfo() override;                              // vtable+0x14
-	void VTable0x18() override;                                                   // vtable+0x18
+	void Shutdown() override;                                                     // vtable+0x18
 	void SetClearColor(const ColorRGBA&) override;                                // vtable+0x1c
 	void SetCamera(GolCamera*) override;                                          // vtable+0x20
 	void ClearLights() override;                                                  // vtable+0x28
@@ -73,7 +73,7 @@ public:
 	GolRenderTarget* CreateRenderTarget(undefined2, undefined2) override;         // vtable+0x4c
 	void DestroyRenderTarget(GolRenderTarget*) override;                          // vtable+0x50
 	void BeginFrame(undefined4) override;                                         // vtable+0x54
-	void VTable0x58(GolRenderTarget*, undefined4) override;                       // vtable+0x58
+	void SetRenderTarget(GolRenderTarget*, undefined4) override;                  // vtable+0x58
 	void ApplyCamera() override;                                                  // vtable+0x5c
 	void ApplyLights() override;                                                  // vtable+0x60
 	void DrawString(
@@ -161,12 +161,12 @@ public:
 	void EnableWireframe() override;                                                                    // vtable+0xc8
 	void DisableWireframe() override;                                                                   // vtable+0xcc
 	void VTable0xd0() override;                                                                         // vtable+0xd0
-	void VTable0xd4() override;                                                                         // vtable+0xd4
-	void VTable0xd8() override;                                                                         // vtable+0xd8
-	void VTable0xdc() override;                                                                         // vtable+0xdc
-	void VTable0xe0() override;                                                                         // vtable+0xe0
-	void VTable0xe4() override;                                                                         // vtable+0xe4
-	void VTable0xe8(LegoBool32 p_arg) override;                                                         // vtable+0xe8
+	void DisablePerspectiveCorrection() override;                                                       // vtable+0xd4
+	void EnablePerspectiveCorrection() override;                                                        // vtable+0xd8
+	void EnableDither() override;                                                                       // vtable+0xdc
+	void DisableDither() override;                                                                      // vtable+0xe0
+	void EnableZBuffer() override;                                                                      // vtable+0xe4
+	void DisableZBuffer(LegoBool32 p_arg) override;                                                     // vtable+0xe8
 	void SelectViewport(undefined4) override;                                                           // vtable+0xec
 	void EndFrame() override;                                                                           // vtable+0xf0
 	void VTable0xf4() override;                                                                         // vtable+0xf4
@@ -178,8 +178,8 @@ public:
 	LegoBool32 TextureSizesMustBePowersOfTwo() const override;                                          // vtable+0x10c
 	LegoBool32 VTable0x110() const override;                                                            // vtable+0x110
 
-	LegoS32 FUN_10007d90(GolDrawDPState*, GolRenderTarget*, LegoU32 p_flags);
-	LegoS32 FUN_10007e20(LegoU32 p_flags);
+	LegoS32 Initialize(GolDrawDPState*, GolRenderTarget*, LegoU32 p_flags);
+	LegoS32 CreateRenderer(LegoU32 p_flags);
 
 	LPDIRECT3D3 GetDirect3D3() const;
 	LPDIRECTDRAW4 GetDirectDraw4() const;
@@ -276,7 +276,7 @@ private:
 	GolSoftwareMaterial m_unk0x2d4;                                                // 0x2d4
 	GolRenderTarget* m_primaryRenderTarget;                                        // 0x304
 	GolRenderTarget* m_renderTargetInfo;                                           // 0x308
-	GolD3DRenderSurface* m_unk0x30c;                                               // 0x30c
+	GolD3DRenderSurface* m_renderSurfaces;                                         // 0x30c
 	GolDepthBuffer m_depthBuffer;                                                  // 0x310
 	D3DTLVERTEX m_unk0x348[25000];                                                 // 0x348
 	LegoU32 m_unk0xc3848;                                                          // 0xc3848
@@ -342,7 +342,7 @@ private:
 	GolSoftwareRenderer::TriangleCommand* m_unk0xc86f0;                            // 0xc86f0
 	LegoS32 m_unk0xc86f4;                                                          // 0xc86f4
 	LegoS32 m_unk0xc86f8;                                                          // 0xc86f8
-	LegoFloat m_unk0xc86fc;                                                        // 0xc86fc
+	LegoFloat m_flatDepth;                                                         // 0xc86fc
 	undefined4 m_paletteMode;                                                      // 0xc8700
 	undefined4 m_defaultMipmapCount;                                               // 0xc8704
 	D3DBLEND m_srcBlendOps[11];                                                    // 0xc8708

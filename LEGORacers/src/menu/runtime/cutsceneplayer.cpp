@@ -2174,7 +2174,7 @@ void CutscenePlayer::DrawTransparent(GolD3DRenderDevice* p_renderer)
 void CutscenePlayer::DrawOverlay(GolD3DRenderDevice* p_renderer)
 {
 	if (m_golExport != NULL) {
-		p_renderer->VTable0xe8(FALSE);
+		p_renderer->DisableZBuffer(FALSE);
 
 		LegoU32 i;
 		for (i = 0; i < m_imageVisualCount; i++) {
@@ -2189,7 +2189,7 @@ void CutscenePlayer::DrawOverlay(GolD3DRenderDevice* p_renderer)
 			m_menuAnimations->Draw(p_renderer);
 		}
 
-		p_renderer->VTable0xe4();
+		p_renderer->EnableZBuffer();
 	}
 }
 

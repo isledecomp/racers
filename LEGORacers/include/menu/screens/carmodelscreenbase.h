@@ -124,9 +124,9 @@ public:
 		GolModelEntity m_pieceEntity;                      // 0x1a4
 		GolModelBase* m_pieceModel;                        // 0x234
 		GolModelBase* m_driverModel;                       // 0x238
-		GolRenderDevice::MaterialColor m_unk0x23c;         // 0x23c
+		GolRenderDevice::MaterialColor m_pieceMaterial;    // 0x23c
 		undefined4 m_previewDirty;                         // 0x240
-		undefined4 m_unk0x244;                             // 0x244
+		undefined4 m_overlayVisible;                       // 0x244
 		LegoU32 m_animFlags;                               // 0x248
 		LegoU32 m_feedbackMs;                              // 0x24c
 		GolVec3 m_piecePosition;                           // 0x250
@@ -134,9 +134,9 @@ public:
 		undefined4 m_unk0x260;                             // 0x260
 		LegoU32 m_pieceAnimMs;                             // 0x264
 		LegoU32 m_bobMs;                                   // 0x268
-		LegoFloat m_unk0x26c;                              // 0x26c
-		LegoFloat m_unk0x270;                              // 0x270
-		LegoFloat m_unk0x274;                              // 0x274
+		LegoFloat m_pieceHeight;                           // 0x26c
+		LegoFloat m_pieceRestHeight;                       // 0x270
+		LegoFloat m_commitHeight;                          // 0x274
 		LegoU8 m_pieceAnimPhase;                           // 0x278
 		undefined m_unk0x279[0x27c - 0x279];               // 0x279
 		GolVec3 m_cameraEye;                               // 0x27c
@@ -152,7 +152,7 @@ public:
 		LegoS32 m_viewAnimRemainingMs;                     // 0x2a4
 		LegoFloat m_viewAngles[8];                         // 0x2a8
 		LegoFloat m_viewAngleF;                            // 0x2c8
-		LegoFloat m_unk0x2cc;                              // 0x2cc
+		LegoFloat m_carSizeBlend;                          // 0x2cc
 	};
 
 	CarModelScreenBase();

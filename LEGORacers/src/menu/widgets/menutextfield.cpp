@@ -181,7 +181,7 @@ MenuWidget* MenuTextField::DrawSelf(Rect* p_rect, Rect* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004713f0
-MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
+MenuWidget* MenuTextField::HandleCharacterInput(InputEventQueue::Event* p_event)
 {
 	if ((p_event->m_keyCode & InputDevice::c_sourceMask) == InputDevice::c_sourceCharacter) {
 		LegoU16 character = (LegoU16) p_event->m_keyCode;
@@ -228,7 +228,7 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x00471560
-MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
+MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 {
 	switch (p_event->m_keyCode) {
 	case InputDevice::c_sourceJoystickButton | 0x4:
@@ -313,9 +313,9 @@ MenuWidget* MenuTextField::OnKeyDown(InputEventQueue::Event* p_event, undefined4
 		if (mode == p_event->m_device->GetDeviceType()) {
 			switch (mode) {
 			case 3:
-				return FUN_004713f0(p_event);
+				return HandleCharacterInput(p_event);
 			case 4:
-				return FUN_00471560(p_event);
+				return HandleJoystickInput(p_event);
 			}
 		}
 	}

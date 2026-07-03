@@ -59,8 +59,8 @@ public:
 	// MenuTextField::`scalar deleting destructor'
 
 private:
-	MenuWidget* FUN_004713f0(InputEventQueue::Event* p_event);
-	MenuWidget* FUN_00471560(InputEventQueue::Event* p_event);
+	MenuWidget* HandleCharacterInput(InputEventQueue::Event* p_event);
+	MenuWidget* HandleJoystickInput(InputEventQueue::Event* p_event);
 
 protected:
 	SoundIdSet m_soundIds;                    // 0x1a8

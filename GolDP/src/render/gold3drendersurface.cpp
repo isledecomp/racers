@@ -27,11 +27,11 @@ GolD3DRenderSurface::~GolD3DRenderSurface()
 void GolD3DRenderSurface::FUN_10013600(GolD3DRenderDevice* p_renderer, undefined2 p_width, undefined2 p_height)
 {
 	if (m_pixelFlags & c_lockRequestRead) {
-		VTable0x34();
+		Destroy();
 	}
 
 	GolCommonDrawState* drawState = p_renderer->GetDrawState();
-	m_unk0x30 = drawState;
+	m_displayDrawState = drawState;
 	m_drawState = drawState;
 	m_width = p_width;
 	m_height = p_height;
@@ -41,13 +41,13 @@ void GolD3DRenderSurface::FUN_10013600(GolD3DRenderDevice* p_renderer, undefined
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolD3DRenderSurface::VTable0x14(undefined4)
+void GolD3DRenderSurface::Present(undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10013660
-void GolD3DRenderSurface::VTable0x34()
+void GolD3DRenderSurface::Destroy()
 {
 	ReleaseResources();
 	m_next = NULL;
@@ -80,12 +80,12 @@ void GolD3DRenderSurface::FUN_100136a0(GolD3DRenderDevice* p_renderer)
 	if ((m_drawState->m_flags & GolDrawState::c_flagBit19) ||
 		(p_renderer->m_flags & GolRenderDevice::c_flagSoftwareRenderer)) {
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY | DDSCAPS_OFFSCREENPLAIN | DDSCAPS_3DDEVICE;
-		m_unk0x34 &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
+		m_surfaceFlags &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
 	}
 	else {
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_VIDEOMEMORY | DDSCAPS_OFFSCREENPLAIN | DDSCAPS_3DDEVICE;
-		m_unk0x34 &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
-		m_unk0x34 |= c_surfaceFlagFlip;
+		m_surfaceFlags &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
+		m_surfaceFlags |= c_surfaceFlagFlip;
 	}
 
 	result = ddraw->CreateSurface(&surfaceDesc, &m_displaySurface, NULL);
@@ -113,5 +113,5 @@ void GolD3DRenderSurface::ReleaseResources()
 	}
 
 	m_renderSurface = NULL;
-	GolDisplaySurface::VTable0x34();
+	GolDisplaySurface::Destroy();
 }

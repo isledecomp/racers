@@ -834,7 +834,7 @@ void GolD3DRenderDevice::VTable0x18()
 	GolD3DRenderSurface* surface = m_unk0x30c;
 	while (surface != NULL) {
 		GolD3DRenderSurface* next = surface->m_next;
-		surface->VTable0x34();
+		surface->Destroy();
 		delete surface;
 		surface = next;
 	}
@@ -1385,8 +1385,8 @@ void GolD3DRenderDevice::VTable0x54(undefined4 p_flags)
 
 	m_unk0xc3848 = 0;
 
-	if (m_renderTargetInfo->m_pixelFlags & GolSurface::c_lockFlagUnknown0x04) {
-		m_renderTargetInfo->VTable0x18();
+	if (m_renderTargetInfo->m_pixelFlags & GolSurface::c_lockFlagFlipPending) {
+		m_renderTargetInfo->FinishPendingFlip();
 	}
 
 	if (p_flags & 0x05) {
@@ -2678,7 +2678,7 @@ void GolD3DRenderDevice::DestroyRenderTarget(GolRenderTarget* p_surface)
 	GolD3DRenderSurface* target = static_cast<GolD3DRenderSurface*>(p_surface);
 	if (target == surface) {
 		m_unk0x30c = surface->m_next;
-		target->VTable0x34();
+		target->Destroy();
 		delete target;
 		return;
 	}
@@ -2693,7 +2693,7 @@ void GolD3DRenderDevice::DestroyRenderTarget(GolRenderTarget* p_surface)
 		if (surface == target) {
 			previous->m_next = surface->m_next;
 			surface->m_next = NULL;
-			target->VTable0x34();
+			target->Destroy();
 			delete target;
 			return;
 		}

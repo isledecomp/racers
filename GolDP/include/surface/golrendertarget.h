@@ -1,5 +1,5 @@
-#ifndef GOLDP_GOLRENDERTARGET_H
-#define GOLDP_GOLRENDERTARGET_H
+#ifndef GOLRENDERTARGET_H
+#define GOLRENDERTARGET_H
 
 #include "compat.h"
 #include "device/goldirectdrawpalette.h"
@@ -18,20 +18,20 @@ public:
 	void UnlockPixels() override;                                                      // vtable+0x08
 	void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x0c
 	void UnlockAuxPixels() override;                                                   // vtable+0x10
-	void VTable0x14(undefined4) override;                                              // vtable+0x14
-	void VTable0x18() override;                                                        // vtable+0x18
+	void Present(undefined4) override;                                                 // vtable+0x14
+	void FinishPendingFlip() override;                                                 // vtable+0x18
 	GolPaletteBase* GetPalette() override;                                             // vtable+0x1c
 	void Fill(LegoU32 p_color) override;                                               // vtable+0x20
-	void VTable0x28(Rect* p_destRect, GolSurface* p_source,
-					Rect* p_sourceRect) override; // vtable+0x28
-	void VTable0x2c() override;                   // vtable+0x2c
-	void VTable0x30(
+	void BlitStretched(Rect* p_destRect, GolSurface* p_source,
+					   Rect* p_sourceRect) override; // vtable+0x28
+	void CopyFromDisplay() override;                 // vtable+0x2c
+	void Create(
 		GolDrawState* p_drawState,
 		undefined4 p_width,
 		undefined4 p_height,
 		undefined4 p_bpp
-	) override;                 // vtable+0x30
-	void VTable0x34() override; // vtable+0x34
+	) override;              // vtable+0x30
+	void Destroy() override; // vtable+0x34
 
 	// SYNTHETIC: GOLDP 0x10003170
 	// GolRenderTarget::`scalar deleting destructor'
@@ -55,4 +55,4 @@ protected:
 	GolDepthBuffer* m_depthBuffer;         // 0x54
 };
 
-#endif // GOLDP_GOLRENDERTARGET_H
+#endif // GOLRENDERTARGET_H

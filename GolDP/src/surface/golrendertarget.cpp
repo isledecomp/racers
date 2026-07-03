@@ -23,20 +23,20 @@ GolRenderTarget::GolRenderTarget()
 // FUNCTION: GOLDP 0x10003190
 GolRenderTarget::~GolRenderTarget()
 {
-	GolRenderTarget::VTable0x34();
+	GolRenderTarget::Destroy();
 }
 
 // FUNCTION: GOLDP 0x100031f0
-void GolRenderTarget::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, undefined4 p_height, undefined4)
+void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, undefined4 p_height, undefined4)
 {
 	DDSURFACEDESC2 surfaceDesc;
 	LegoChar errorMessage[100];
 
 	if (m_pixelFlags & c_lockRequestRead) {
-		VTable0x34();
+		Destroy();
 	}
 
-	m_unk0x30 = p_drawState;
+	m_displayDrawState = p_drawState;
 	m_drawState = p_drawState;
 
 	LPDIRECTDRAW4 ddraw = static_cast<GolDrawDPState*>(p_drawState)->m_ddraw4;
@@ -47,15 +47,15 @@ void GolRenderTarget::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, 
 	surfaceDesc.dwSize = sizeof(surfaceDesc);
 
 	if (!(p_drawState->m_flags & GolDrawState::c_flagBit9)) {
-		m_unk0x34 |= c_surfaceFlagWindowed;
+		m_surfaceFlags |= c_surfaceFlagWindowed;
 
 		DWORD memoryCaps;
 		if (static_cast<GolDrawDPState*>(p_drawState)->IsHwAccelerated()) {
-			m_unk0x34 |= c_surfaceFlagFlip;
+			m_surfaceFlags |= c_surfaceFlagFlip;
 			memoryCaps = DDSCAPS_VIDEOMEMORY;
 		}
 		else {
-			m_unk0x34 &= ~c_surfaceFlagFlip;
+			m_surfaceFlags &= ~c_surfaceFlagFlip;
 			memoryCaps = DDSCAPS_SYSTEMMEMORY;
 		}
 
@@ -104,7 +104,7 @@ void GolRenderTarget::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, 
 		}
 	}
 	else if (p_drawState->m_flags & GolDrawState::c_flagBit19) {
-		m_unk0x34 &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
+		m_surfaceFlags &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
 		surfaceDesc.dwFlags = DDSD_CAPS;
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 		LPDIRECTDRAWSURFACE4* displaySurface = &m_displaySurface;
@@ -132,7 +132,7 @@ void GolRenderTarget::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, 
 		}
 	}
 	else {
-		m_unk0x34 &= ~c_surfaceFlagWindowed;
+		m_surfaceFlags &= ~c_surfaceFlagWindowed;
 		surfaceDesc.dwFlags = DDSD_CAPS | DDSD_BACKBUFFERCOUNT;
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX | DDSCAPS_3DDEVICE;
 		surfaceDesc.dwBackBufferCount = 1;
@@ -163,7 +163,7 @@ void GolRenderTarget::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, 
 				}
 			}
 			else {
-				m_unk0x34 |= c_surfaceFlagFlip;
+				m_surfaceFlags |= c_surfaceFlagFlip;
 				break;
 			}
 		}
@@ -185,7 +185,7 @@ void GolRenderTarget::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, 
 }
 
 // FUNCTION: GOLDP 0x10003680
-void GolRenderTarget::VTable0x34()
+void GolRenderTarget::Destroy()
 {
 	m_palette.Release();
 
@@ -210,7 +210,7 @@ void GolRenderTarget::VTable0x34()
 	}
 
 	m_drawState = NULL;
-	GolDisplaySurface::VTable0x34();
+	GolDisplaySurface::Destroy();
 }
 
 // FUNCTION: GOLDP 0x100036e0
@@ -393,11 +393,11 @@ void GolRenderTarget::UnlockAuxPixels()
 }
 
 // FUNCTION: GOLDP 0x10003a80
-void GolRenderTarget::VTable0x14(undefined4 p_wait)
+void GolRenderTarget::Present(undefined4 p_wait)
 {
 	RECT destRect;
 
-	if (m_unk0x34 & 1) {
+	if (m_surfaceFlags & 1) {
 		HWND hWnd = static_cast<GolDrawDPState*>(m_drawState)->m_hWnd;
 		::GetClientRect(hWnd, &destRect);
 
@@ -420,7 +420,7 @@ void GolRenderTarget::VTable0x14(undefined4 p_wait)
 		destRect.bottom = m_height;
 	}
 
-	if ((m_unk0x34 & 2) && !(m_unk0x34 & 1)) {
+	if ((m_surfaceFlags & 2) && !(m_surfaceFlags & 1)) {
 		if (p_wait) {
 			LPDIRECTDRAWSURFACE4 displaySurface = m_displaySurface;
 			HRESULT result;
@@ -428,15 +428,15 @@ void GolRenderTarget::VTable0x14(undefined4 p_wait)
 				::Sleep(1);
 			}
 
-			m_pixelFlags &= ~c_lockFlagUnknown0x04;
+			m_pixelFlags &= ~c_lockFlagFlipPending;
 		}
 		else {
 			HRESULT result = m_displaySurface->Flip(NULL, 0);
 			if (result == DDERR_WASSTILLDRAWING) {
-				m_pixelFlags |= c_lockFlagUnknown0x04;
+				m_pixelFlags |= c_lockFlagFlipPending;
 			}
 			else {
-				m_pixelFlags &= ~c_lockFlagUnknown0x04;
+				m_pixelFlags &= ~c_lockFlagFlipPending;
 			}
 		}
 
@@ -467,12 +467,12 @@ void GolRenderTarget::VTable0x14(undefined4 p_wait)
 }
 
 // FUNCTION: GOLDP 0x10003bf0
-void GolRenderTarget::VTable0x18()
+void GolRenderTarget::FinishPendingFlip()
 {
-	if (m_pixelFlags & c_lockFlagUnknown0x04) {
+	if (m_pixelFlags & c_lockFlagFlipPending) {
 		LegoChar errorMessage[100];
 
-		m_pixelFlags &= ~c_lockFlagUnknown0x04;
+		m_pixelFlags &= ~c_lockFlagFlipPending;
 
 		for (;;) {
 			LPDIRECTDRAWSURFACE4 displaySurface = m_displaySurface;
@@ -550,7 +550,7 @@ void GolRenderTarget::Fill(LegoU32 p_color)
 }
 
 // FUNCTION: GOLDP 0x10003d80
-void GolRenderTarget::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p_sourceRect)
+void GolRenderTarget::BlitStretched(Rect* p_destRect, GolSurface* p_source, Rect* p_sourceRect)
 {
 	RECT destRect;
 	RECT sourceRect;
@@ -570,13 +570,13 @@ void GolRenderTarget::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p
 	::memset(&bltFx, 0, sizeof(bltFx));
 	bltFx.dwSize = sizeof(bltFx);
 
-	if (m_pixelFlags & c_lockFlagUnknown0x04) {
-		VTable0x18();
+	if (m_pixelFlags & c_lockFlagFlipPending) {
+		FinishPendingFlip();
 	}
 
 	GolRenderTarget* source = static_cast<GolRenderTarget*>(p_source);
-	if (source->m_pixelFlags & c_lockFlagUnknown0x04) {
-		source->VTable0x18();
+	if (source->m_pixelFlags & c_lockFlagFlipPending) {
+		source->FinishPendingFlip();
 	}
 
 	for (;;) {
@@ -599,7 +599,7 @@ void GolRenderTarget::VTable0x28(Rect* p_destRect, GolSurface* p_source, Rect* p
 }
 
 // FUNCTION: GOLDP 0x10003e90
-void GolRenderTarget::VTable0x2c()
+void GolRenderTarget::CopyFromDisplay()
 {
 	DDBLTFX bltFx;
 	RECT sourceRect;
@@ -608,7 +608,7 @@ void GolRenderTarget::VTable0x2c()
 	::memset(&bltFx, 0, sizeof(bltFx));
 	bltFx.dwSize = sizeof(bltFx);
 
-	if (m_unk0x34 & c_surfaceFlagWindowed) {
+	if (m_surfaceFlags & c_surfaceFlagWindowed) {
 		HWND hWnd = static_cast<GolDrawDPState*>(m_drawState)->m_hWnd;
 		::GetClientRect(hWnd, &sourceRect);
 
@@ -631,8 +631,8 @@ void GolRenderTarget::VTable0x2c()
 		sourceRect.bottom = m_height;
 	}
 
-	if (m_pixelFlags & c_lockFlagUnknown0x04) {
-		VTable0x18();
+	if (m_pixelFlags & c_lockFlagFlipPending) {
+		FinishPendingFlip();
 	}
 
 	for (;;) {

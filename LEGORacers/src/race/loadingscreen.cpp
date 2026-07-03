@@ -150,8 +150,8 @@ void LoadingScreen::Initialize(
 
 	bmpFile.Open(imageName);
 	bmpFile.LoadSurface(renderTargetInfo, 0, NULL);
-	renderTargetInfo->VTable0x14(TRUE);
-	renderTargetInfo->VTable0x2c();
+	renderTargetInfo->Present(TRUE);
+	renderTargetInfo->CopyFromDisplay();
 
 	m_text.CopyFromBufSelection(p_stringTable->GetStringBuffer(static_cast<LegoU16>(stringIndex)), 0);
 	m_font = p_font;

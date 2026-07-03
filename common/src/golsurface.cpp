@@ -77,14 +77,14 @@ void GolSurface::UnlockAuxPixels()
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolSurface::VTable0x14(undefined4)
+void GolSurface::Present(undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolSurface::VTable0x18()
+void GolSurface::FinishPendingFlip()
 {
 	// empty
 }
@@ -342,14 +342,14 @@ void GolSurface::Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_so
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
 // FUNCTION: LEGORACERS 0x00416030 FOLDED
-void GolSurface::VTable0x28(Rect*, GolSurface*, Rect*)
+void GolSurface::BlitStretched(Rect*, GolSurface*, Rect*)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolSurface::VTable0x2c()
+void GolSurface::CopyFromDisplay()
 {
 	// empty
 }

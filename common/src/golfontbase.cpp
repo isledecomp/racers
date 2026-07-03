@@ -126,7 +126,7 @@ void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	GolSurfaceFormat textureFormat;
 	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, m_flags & c_flagBit5);
 	PackGlyphTextures(p_renderer, &textureFormat);
-	VTable0x04(p_renderer, &textureFormat);
+	CreateSurfaces(p_renderer, &textureFormat);
 	CopyGlyphsToTextures();
 
 	::qsort(m_glyphs, m_glyphCount, sizeof(Glyph), CompareGlyphChars);
@@ -1050,7 +1050,7 @@ LegoS32 GolFontBase::DrawGlyphRun(
 	LegoFloat inverseScaleX = 1.0f / p_scaleX;
 	LegoFloat inverseScaleY = 1.0f / p_scaleY;
 
-	font->VTable0x0c(p_renderer, p_count);
+	font->BeginDrawing(p_renderer, p_count);
 
 	for (LegoU32 surface = 0; surface < font->m_surfaceCount; surface++) {
 		LegoFloat currentFloatX = static_cast<LegoFloat>(p_x);
@@ -1093,12 +1093,12 @@ LegoS32 GolFontBase::DrawGlyphRun(
 					selectedSurface = TRUE;
 				}
 
-				font->VTable0x14(&sourceRect, &destRect);
+				font->DrawGlyph(&sourceRect, &destRect);
 			}
 		}
 	}
 
-	font->VTable0x18();
+	font->EndDrawing();
 	return result;
 }
 

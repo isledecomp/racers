@@ -14,15 +14,15 @@ class GolFont : public GolFontBase {
 public:
 	GolFont();
 
-	void Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer) override;                  // vtable+0x00
-	void VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat) override; // vtable+0x04
-	GolD3DTexture* GetTexture(LegoU32 p_index) override;                                         // vtable+0x08
-	void VTable0x0c(GolRenderDevice* p_unk0x04, LegoU32 p_count) override;                       // vtable+0x0c
-	void SelectSurface(LegoU32 p_index) override;                                                // vtable+0x10
-	void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) override;                              // vtable+0x14
-	void VTable0x18() override;                                                                  // vtable+0x18
-	~GolFont() override;                                                                         // vtable+0x1c
-	void Clear() override;                                                                       // vtable+0x20
+	void Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer) override;                      // vtable+0x00
+	void CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat) override; // vtable+0x04
+	GolD3DTexture* GetTexture(LegoU32 p_index) override;                                             // vtable+0x08
+	void BeginDrawing(GolRenderDevice* p_unk0x04, LegoU32 p_count) override;                         // vtable+0x0c
+	void SelectSurface(LegoU32 p_index) override;                                                    // vtable+0x10
+	void DrawGlyph(Rect* p_sourceRect, Rect* p_destRect) override;                                   // vtable+0x14
+	void EndDrawing() override;                                                                      // vtable+0x18
+	~GolFont() override;                                                                             // vtable+0x1c
+	void Clear() override;                                                                           // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x10004190
 	// GolFont::`vector deleting destructor'

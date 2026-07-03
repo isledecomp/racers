@@ -108,12 +108,12 @@ set(COMMON_SOURCES
   common/src/golfontbase.cpp
   common/src/goltransformbase.cpp
   common/src/golscenenode.cpp
-  common/src/whitefalcon0x140light.cpp
+  common/src/golrenderdevicelight.cpp
   common/src/golsurface.cpp
   common/src/goltexture.cpp
   common/src/goltexturepalette.cpp
   common/src/golpalettedtexture.cpp
-  common/src/whitefalcon0x140materialcolor.cpp
+  common/src/golrenderdevicematerialcolor.cpp
   common/src/cmbmodelpart.cpp
   common/src/cmbmodelparttrackdata.cpp
   common/src/cmbmodelpartdata.cpp

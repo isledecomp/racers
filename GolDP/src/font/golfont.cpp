@@ -18,7 +18,7 @@
 DECOMP_SIZE_ASSERT(GolFont, 0xa0)
 
 // GLOBAL: GOLDP 0x10062568
-static GolImgFile g_unk0x10062568;
+static GolImgFile g_fontImgFile;
 
 extern GolSurface* g_fontSourceImage;
 
@@ -85,7 +85,7 @@ void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	LegoU32 selectFlags = m_flags & c_flagBit5;
 	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, selectFlags);
 	PackGlyphTextures(p_renderer, &textureFormat);
-	VTable0x04(p_renderer, &textureFormat);
+	CreateSurfaces(p_renderer, &textureFormat);
 	CopyGlyphsToTextures(p_renderer, &surfaceFormat, &textureFormat);
 
 	::qsort(m_glyphs, m_glyphCount, sizeof(Glyph), GolFontBase::CompareGlyphChars);
@@ -114,12 +114,12 @@ void GolFont::RefreshSurfaces(GolD3DRenderDevice* p_renderer)
 	GolSurfaceFormat sourceFormat = m_sourceImage.GetTextureFormat();
 	p_renderer->SelectTextureFormat(sourceFormat, &textureFormat, m_flags & c_flagBit5);
 	PackGlyphTextures(p_renderer, &textureFormat);
-	VTable0x04(p_renderer, &textureFormat);
+	CreateSurfaces(p_renderer, &textureFormat);
 	CopyGlyphsToTextures(p_renderer, &sourceFormat, &textureFormat);
 }
 
 // STUB: GOLDP 0x100047b0
-void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat)
+void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
 	m_textures = new GolD3DTexture[m_surfaceCount];
 	if (m_textures == NULL) {
@@ -203,7 +203,7 @@ GolD3DTexture* GolFont::GetTexture(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10004b80
-void GolFont::VTable0x0c(GolRenderDevice* p_renderer, LegoU32)
+void GolFont::BeginDrawing(GolRenderDevice* p_renderer, LegoU32)
 {
 	m_renderer = static_cast<GolD3DRenderDevice*>(p_renderer);
 }
@@ -222,7 +222,7 @@ void GolFont::SelectSurface(LegoU32 p_index)
 }
 
 // STUB: GOLDP 0x10004c20
-void GolFont::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
+void GolFont::DrawGlyph(Rect* p_sourceRect, Rect* p_destRect)
 {
 	LegoS32 sourceBottom = p_sourceRect->m_bottom - 1;
 	D3DTLVERTEX vertices[4];
@@ -296,10 +296,10 @@ void GolFont::CopyGlyphsToTextures(
 	ColorRGBA* colorKey;
 	if (font->m_flags & c_flagBit5) {
 		if (p_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey) {
-			g_unk0x10062568.SetColorKeyReplacement(g_transparentBlack);
+			g_fontImgFile.SetColorKeyReplacement(g_transparentBlack);
 		}
 		else {
-			g_unk0x10062568.SetColorKeyReplacement(font->m_colorKey);
+			g_fontImgFile.SetColorKeyReplacement(font->m_colorKey);
 		}
 		colorKey = &font->m_colorKey;
 	}
@@ -323,7 +323,7 @@ void GolFont::CopyGlyphsToTextures(
 			texture->LockPixels(&destPixels, &destPitch, GolSurface::c_lockRequestWrite);
 		}
 
-		g_unk0x10062568.SetImageInfo(
+		g_fontImgFile.SetImageInfo(
 			*p_sourceFormat,
 			font->m_glyphs[i].m_width,
 			font->m_fontHeight,
@@ -340,7 +340,7 @@ void GolFont::CopyGlyphsToTextures(
 			((static_cast<LegoU32>(p_textureFormat->m_bitsPerPixel) * font->m_glyphs[i].m_textureX + 7) >> 3);
 
 		GolPaletteBase* palette = p_textureFormat->m_paletteMask ? texture->GetPalette() : NULL;
-		g_unk0x10062568.ConvertImage(
+		g_fontImgFile.ConvertImage(
 			source,
 			dest,
 			font->m_glyphs[i].m_width,
@@ -358,7 +358,7 @@ void GolFont::CopyGlyphsToTextures(
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolFont::VTable0x18()
+void GolFont::EndDrawing()
 {
 	// empty
 }

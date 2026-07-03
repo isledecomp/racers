@@ -1,5 +1,5 @@
-#ifndef GOLDP_GOLDISPLAYSURFACE_H
-#define GOLDP_GOLDISPLAYSURFACE_H
+#ifndef GOLDISPLAYSURFACE_H
+#define GOLDISPLAYSURFACE_H
 
 #include "compat.h"
 #include "golsurface.h"
@@ -18,20 +18,20 @@ public:
 	GolDisplaySurface();
 	~GolDisplaySurface() override; // vtable+0x00
 
-	virtual void VTable0x30(
+	virtual void Create(
 		GolDrawState* p_drawState,
 		undefined4 p_width,
 		undefined4 p_height,
 		undefined4 p_bpp
-	);                         // vtable+0x30
-	virtual void VTable0x34(); // vtable+0x34
+	);                      // vtable+0x30
+	virtual void Destroy(); // vtable+0x34
 
 	// SYNTHETIC: GOLDP 0x1001d750
 	// GolDisplaySurface::`scalar deleting destructor'
 
 protected:
-	GolDrawState* m_unk0x30; // 0x30
-	undefined4 m_unk0x34;    // 0x34
+	GolDrawState* m_displayDrawState; // 0x30
+	LegoU32 m_surfaceFlags;           // 0x34
 };
 
-#endif // GOLDP_GOLDISPLAYSURFACE_H
+#endif // GOLDISPLAYSURFACE_H

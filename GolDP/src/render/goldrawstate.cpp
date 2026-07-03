@@ -55,7 +55,7 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 		return result;
 	}
 
-	m_unk0x14->VTable0x30(this, m_width, m_height, m_bpp);
+	m_unk0x14->Create(this, m_width, m_height, m_bpp);
 
 	m_flags &= ~c_flagBit1;
 	m_flags |= c_flagBit0;
@@ -80,7 +80,7 @@ void GolDrawState::VTable0x50()
 {
 	m_flags |= c_flagBit1;
 	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
-		m_unk0x14->VTable0x34();
+		m_unk0x14->Destroy();
 	}
 }
 
@@ -109,7 +109,7 @@ LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p
 		return result;
 	}
 
-	m_unk0x14->VTable0x30(this, m_width, m_height, m_bpp);
+	m_unk0x14->Create(this, m_width, m_height, m_bpp);
 	m_flags &= ~c_flagBit1;
 	m_flags |= c_flagBit0;
 
@@ -119,7 +119,7 @@ LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p
 // FUNCTION: GOLDP 0x1001d6d0
 void GolDrawState::VTable0x4c()
 {
-	m_unk0x14->VTable0x14(NULL);
+	m_unk0x14->Present(NULL);
 }
 
 // FUNCTION: GOLDP 0x1001d6e0
@@ -127,7 +127,7 @@ void GolDrawState::VTable0x48()
 {
 	m_flags &= ~c_flagBit0;
 	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & GolSurface::c_lockRequestRead)) {
-		m_unk0x14->VTable0x34();
+		m_unk0x14->Destroy();
 	}
 }
 

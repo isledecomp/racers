@@ -380,14 +380,14 @@ void MenuInputBindingTable::ParseTextLabelBinding(TextLabelBinding* p_entry)
 			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x29:
-			p_entry->m_unk0x3c = m_renderer->FindFontByName(m_parser->ReadString());
+			p_entry->m_font = m_renderer->FindFontByName(m_parser->ReadString());
 			// Fall through.
 		case GolFileParser::e_unknown0x2a:
 			ReadVisualState(p_entry->m_color.m_bytes);
 			p_entry->m_flags |= 2;
 			break;
 		case GolFileParser::e_unknown0x33:
-			p_entry->m_unk0x44 = m_parser->ReadInteger();
+			p_entry->m_stringId = m_parser->ReadInteger();
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_invalidKeyword);

@@ -38,11 +38,11 @@ public:
 	// SIZE 0x48
 	class TextLabelBinding : public MenuWidget::CreateParams {
 	public:
-		GolStringTable* m_unk0x38; // 0x38
-		GolFont* m_unk0x3c;        // 0x3c
-		undefined2 m_unk0x40;      // 0x40
-		undefined m_unk0x42[2];    // 0x42
-		undefined4 m_unk0x44;      // 0x44
+		GolStringTable* m_stringTable; // 0x38
+		GolFont* m_font;               // 0x3c
+		undefined2 m_unk0x40;          // 0x40
+		undefined m_unk0x42[2];        // 0x42
+		undefined4 m_stringId;         // 0x44
 	};
 
 	// SIZE 0x60

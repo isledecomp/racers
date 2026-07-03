@@ -171,7 +171,7 @@ void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 	}
 
 	if (m_driverEntity.HasModel()) {
-		for (LegoU32 i = 0; i < frame->GetModelCount(); i++) {
+		for (LegoU32 i = 0; i < frame->GetModelEventCount(); i++) {
 			CutsceneDefinition::Frame::ModelEvent* model = frame->GetModel(i);
 			if (model->GetEntity() == modelEntity) {
 				model->SetEntity(&m_driverEntity);

@@ -20,14 +20,14 @@ DECOMP_SIZE_ASSERT(GolFontLibrary, 0x28)
 GolFontLibrary::GolFontLibrary()
 {
 	m_renderer = NULL;
-	m_numItems = 0;
+	m_itemCount = 0;
 	m_hashTableCheckpoint = 0;
 }
 
 // FUNCTION: GOLDP 0x1001d870
 GolFontLibrary::~GolFontLibrary()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer != NULL) {
 		m_renderer->RemoveFontList(this);
@@ -46,7 +46,7 @@ void GolFontLibrary::LoadFontDefinitions(
 	LegoBool32 p_binary
 )
 {
-	if (m_numItems > 0) {
+	if (m_itemCount > 0) {
 		Clear();
 	}
 
@@ -74,19 +74,19 @@ void GolFontLibrary::LoadFontDefinitions(
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(FdbTxtParser::e_font));
 
-	m_numItems = parser->ReadBracketedCountAndLeftCurly();
+	m_itemCount = parser->ReadBracketedCountAndLeftCurly();
 
-	if (!m_numItems) {
+	if (!m_itemCount) {
 		parser->Dispose();
 		delete parser;
 		return;
 	}
 
-	GolNameTable::Allocate(m_numItems);
+	GolNameTable::Allocate(m_itemCount);
 	m_hashTableCheckpoint = g_hashTable ? (undefined4) g_hashTable->GetCurrentEntry() : 0;
 	AllocateItems();
 
-	for (LegoU32 i = 0; i < m_numItems; i++) {
+	for (LegoU32 i = 0; i < m_itemCount; i++) {
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(FdbTxtParser::e_font));
 
 		GolFontBase* font = GetItem(i);
@@ -174,7 +174,7 @@ void GolFontLibrary::LoadFontDefinitions(
 		g_hashTable->SetCurrentEntry((GolHashTable::Entry*) m_hashTableCheckpoint);
 	}
 
-	for (LegoU32 j = 0; j < m_numItems; j++) {
+	for (LegoU32 j = 0; j < m_itemCount; j++) {
 		GolFontBase* font = GetItem(j);
 		font->CreateGlyphs(m_renderer, &m_charStrings[j], m_charCounts[j]);
 	}
@@ -221,7 +221,7 @@ void GolFontLibrary::ReadFontCharList(GolFileParser* p_parser, undefined2* p_cha
 // FUNCTION: GOLDP 0x1001ddf0
 void GolFontLibrary::Clear()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer != NULL) {
 		m_renderer->RemoveFontList(this);

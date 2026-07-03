@@ -83,7 +83,7 @@ public:
 
 	GolTextureList* GetNext() const { return m_next; }
 	void SetNext(GolTextureList* p_next) { m_next = p_next; }
-	LegoU32 GetItemCount() const { return m_numItems; }
+	LegoU32 GetItemCount() const { return m_itemCount; }
 
 	void LoadTextures();
 
@@ -92,7 +92,7 @@ protected:
 	GolTextureList* m_next;                // 0x10
 	GolTextureSource* m_textureSource;     // 0x14
 	GolHashTable::Entry* m_nameTableEntry; // 0x18
-	LegoU32 m_numItems;                    // 0x1c
+	LegoU32 m_itemCount;                   // 0x1c
 };
 
 #endif // GOLTEXTURELIST_H

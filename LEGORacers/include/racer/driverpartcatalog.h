@@ -58,16 +58,16 @@ public:
 	void CopyBodyModelName(LegoS32 p_index, LegoChar* p_buffer) const;
 	void CopyHeadHatName(LegoS32 p_index, LegoChar* p_buffer) const;
 	void BuildFaceExpressionName(LegoS32 p_faceIndex, LegoS32 p_expressionIndex, LegoChar* p_buffer) const;
-	LegoS32 GetFaceCount() const { return m_countFaces; }
-	LegoS32 GetTorsoCount() const { return m_countTorsos; }
-	LegoS32 GetLegCount() const { return m_countLegs; }
+	LegoS32 GetFaceCount() const { return m_faceCount; }
+	LegoS32 GetTorsoCount() const { return m_torsoCount; }
+	LegoS32 GetLegCount() const { return m_legCount; }
 	LegoS32 GetTorsoVariant(LegoS32 p_index) const { return m_torsoVariants[p_index]; }
 	LegoS32 GetLegVariant(LegoS32 p_index) const { return m_legVariants[p_index]; }
 	LegoS32 GetTorsoLegIndex(LegoS32 p_torsoIndex, LegoS32 p_legIndex) const
 	{
 		return GetTorsoVariant(p_torsoIndex) + 2 * GetLegVariant(p_legIndex);
 	}
-	LegoS32 GetHatCount() const { return m_countHats; }
+	LegoS32 GetHatCount() const { return m_hatCount; }
 	LegoU8 GetHatUnlockFlag(LegoS32 p_index) const { return m_hatUnlockFlags[p_index]; }
 	LegoU8 GetFaceUnlockFlag(LegoS32 p_index) const { return m_faceUnlockFlags[p_index]; }
 	LegoU8 GetTorsoUnlockFlag(LegoS32 p_index) const { return m_torsoUnlockFlags[p_index]; }
@@ -79,10 +79,10 @@ public:
 
 private:
 	LegoBool32 m_loaded;                  // 0x000
-	LegoS32 m_countHats;                  // 0x004
-	LegoS32 m_countFaces;                 // 0x008
-	LegoS32 m_countTorsos;                // 0x00c
-	LegoS32 m_countLegs;                  // 0x010
+	LegoS32 m_hatCount;                   // 0x004
+	LegoS32 m_faceCount;                  // 0x008
+	LegoS32 m_torsoCount;                 // 0x00c
+	LegoS32 m_legCount;                   // 0x010
 	LegoS32 m_bodyModelNameCount;         // 0x014
 	GolName m_hatNames[40];               // 0x018
 	undefined m_hatUnlockFlags[40];       // 0x158

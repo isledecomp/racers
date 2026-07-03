@@ -95,7 +95,7 @@ public:
 	GolMaterialLibrary* GetNext() const { return m_next; }
 	void SetNext(GolMaterialLibrary* p_next) { m_next = p_next; }
 
-	LegoU32 GetItemCount() const { return m_numItems; }
+	LegoU32 GetItemCount() const { return m_itemCount; }
 
 protected:
 	friend class RaceState;
@@ -105,7 +105,7 @@ protected:
 	GolRenderDevice* m_renderer;         // 0x0c
 	GolMaterialLibrary* m_next;          // 0x10
 	GolMaterialSource* m_materialSource; // 0x14
-	LegoU32 m_numItems;                  // 0x18
+	LegoU32 m_itemCount;                 // 0x18
 };
 
 #endif // GOLMATERIALLIBRARY_H

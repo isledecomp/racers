@@ -31,7 +31,7 @@ public:
 
 	PowerupAction* GetNext() { return m_next; }
 	LegoS32 GetState() const { return m_state; }
-	LegoU32 GetStateTimer() const { return m_stateTimerMs; }
+	LegoU32 GetStateTimerMs() const { return m_stateTimerMs; }
 	LegoU32 GetLevel() const { return m_level; }
 	void SetState(LegoS32 p_state) { m_state = p_state; }
 	void SetSoundSource(RacerSoundSource* p_soundSource) { m_soundSource = p_soundSource; }

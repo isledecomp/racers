@@ -294,7 +294,7 @@ public:
 		LegoU32 GetFlags() const { return m_flags; }
 		LegoU32 GetCurrentFrame() const { return m_currentFrame; }
 		LegoU32 GetPlaybackRate() const { return m_playbackRate; }
-		LegoU32 GetModelCount() const { return m_modelEventCount; }
+		LegoU32 GetModelEventCount() const { return m_modelEventCount; }
 		ModelEvent* GetModel(LegoU32 p_index) const { return &m_modelEvents[p_index]; }
 		ModelEvent* GetModels() const { return m_modelEvents; }
 		void SetFlags(LegoU32 p_flags) { m_flags |= p_flags; }

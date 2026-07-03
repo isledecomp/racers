@@ -47,7 +47,7 @@ public:
 protected:
 	GolD3DRenderDevice* m_renderer;          // 0x0c
 	GolImageList* m_next;                    // 0x10
-	LegoU32 m_numItems;                      // 0x14
+	LegoU32 m_itemCount;                     // 0x14
 	GolHashTable::Entry* m_currentHashEntry; // 0x18
 };
 

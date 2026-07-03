@@ -71,7 +71,7 @@ protected:
 
 	GolD3DRenderDevice* m_renderer;   // 0x0c
 	GolFontLibrary* m_next;           // 0x10
-	LegoU32 m_numItems;               // 0x14
+	LegoU32 m_itemCount;              // 0x14
 	GolString* m_charStrings;         // 0x18
 	undefined2** m_charCodes;         // 0x1c
 	LegoU16* m_charCounts;            // 0x20

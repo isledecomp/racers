@@ -288,7 +288,7 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 
 		if (frame) {
-			for (LegoU32 i = 0; i < frame->GetModelCount(); i++) {
+			for (LegoU32 i = 0; i < frame->GetModelEventCount(); i++) {
 				CutsceneDefinition::Frame::ModelEvent* model = frame->GetModel(i);
 				GolWorldEntity* entity = model->GetEntity();
 				if (entity == sourceDriverEntity) {

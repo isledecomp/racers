@@ -27,14 +27,14 @@ GolTextureList::GolTextureList()
 	m_renderer = NULL;
 	m_next = NULL;
 	m_textureSource = 0;
-	m_numItems = 0;
+	m_itemCount = 0;
 	m_nameTableEntry = 0;
 }
 
 // FUNCTION: GOLDP 0x1002b520
 GolTextureList::~GolTextureList()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer != NULL) {
 		m_renderer->RemoveTextureList(this);
@@ -75,19 +75,19 @@ void GolTextureList::Load(GolD3DRenderDevice* p_renderer, const LegoChar* p_file
 
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TdbTxtParser::e_texture));
-	m_numItems = parser->ReadBracketedCountAndLeftCurly();
+	m_itemCount = parser->ReadBracketedCountAndLeftCurly();
 
-	if (m_numItems == 0) {
+	if (m_itemCount == 0) {
 		parser->Dispose();
 		delete parser;
 		return;
 	}
 
-	GolNameTable::Allocate(m_numItems);
+	GolNameTable::Allocate(m_itemCount);
 	m_nameTableEntry = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
 	AllocateItems();
 
-	for (LegoU32 i = 0; i < m_numItems; i++) {
+	for (LegoU32 i = 0; i < m_itemCount; i++) {
 		GolName textureName;
 		ColorRGBA colorKey;
 		LegoU16 mipmapCount;
@@ -169,7 +169,7 @@ void GolTextureList::LoadTextures()
 	LegoChar textureName[sizeof(GolName) + 1];
 
 	if (m_textureSource != NULL) {
-		for (LegoU32 i = 0; i < m_numItems; i++) {
+		for (LegoU32 i = 0; i < m_itemCount; i++) {
 			GolTexture* texture = GetItem(i);
 			if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				continue;
@@ -204,7 +204,7 @@ void GolTextureList::LoadTextures()
 		g_hashTable->SetCurrentEntry(m_nameTableEntry);
 	}
 
-	for (LegoU32 i = 0; i < m_numItems; i++) {
+	for (LegoU32 i = 0; i < m_itemCount; i++) {
 		GolD3DTexture* texture = GetItem(i);
 		if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 			continue;
@@ -244,7 +244,7 @@ void GolTextureList::InitializeFromSource(
 	m_renderer = p_renderer;
 	p_renderer->AddTextureList(this);
 	m_textureSource = p_source;
-	m_numItems = p_capacity;
+	m_itemCount = p_capacity;
 	AllocateItems();
 
 	if (g_loadTexturesImmediately != 0) {
@@ -261,7 +261,7 @@ void GolTextureList::Initialize(GolD3DRenderDevice* p_renderer, LegoU32 p_capaci
 
 	m_renderer = p_renderer;
 	p_renderer->AddTextureList(this);
-	m_numItems = p_capacity;
+	m_itemCount = p_capacity;
 	GolNameTable::Allocate(p_capacity);
 	AllocateItems();
 }
@@ -269,7 +269,7 @@ void GolTextureList::Initialize(GolD3DRenderDevice* p_renderer, LegoU32 p_capaci
 // FUNCTION: GOLDP 0x1002bac0
 void GolTextureList::Clear()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer != NULL) {
 		m_renderer->RemoveTextureList(this);

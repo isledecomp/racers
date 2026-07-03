@@ -22,7 +22,7 @@ void GolTextureList::LoadTextures()
 	LegoChar textureName[sizeof(GolName) + 1];
 
 	if (m_textureSource != NULL) {
-		for (LegoU32 i = 0; i < m_numItems; i++) {
+		for (LegoU32 i = 0; i < m_itemCount; i++) {
 			GolTexture* texture = GetItem(i);
 			if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 				continue;
@@ -63,7 +63,7 @@ void GolTextureList::LoadTextures()
 		g_hashTable->SetCurrentEntry(m_nameTableEntry);
 	}
 
-	for (LegoU32 i = 0; i < m_numItems; i++) {
+	for (LegoU32 i = 0; i < m_itemCount; i++) {
 		GolD3DTexture* texture = GetItem(i);
 		if (texture->GetPixelFlags() & GolSurface::c_lockRequestRead) {
 			continue;

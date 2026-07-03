@@ -18,7 +18,7 @@ GolSoftwareMaterialLibrary::~GolSoftwareMaterialLibrary()
 // FUNCTION: GOLDP 0x10006710
 void GolSoftwareMaterialLibrary::AllocateItems()
 {
-	m_items = new GolSoftwareMaterial[m_numItems];
+	m_items = new GolSoftwareMaterial[m_itemCount];
 	if (m_items == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -29,7 +29,7 @@ void GolSoftwareMaterialLibrary::ReleaseMaterials()
 {
 	LegoU32 i;
 
-	for (i = 0; i < m_numItems; i++) {
+	for (i = 0; i < m_itemCount; i++) {
 		m_items[i].Destroy();
 	}
 }

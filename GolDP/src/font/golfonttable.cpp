@@ -31,22 +31,22 @@ GolFontTable::~GolFontTable()
 // FUNCTION: GOLDP 0x10004060
 void GolFontTable::AllocateItems()
 {
-	m_fonts = new GolFont[m_numItems];
+	m_fonts = new GolFont[m_itemCount];
 	if (m_fonts == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_charStrings = new GolString[m_numItems];
+	m_charStrings = new GolString[m_itemCount];
 	if (m_charStrings == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_charCodes = new undefined2*[m_numItems];
+	m_charCodes = new undefined2*[m_itemCount];
 	if (m_charCodes == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_charCounts = new LegoU16[m_numItems];
+	m_charCounts = new LegoU16[m_itemCount];
 	if (m_charCounts == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -82,7 +82,7 @@ void GolFontTable::ReleaseDefinitionBuffers()
 	}
 
 	if (m_charCodes != NULL) {
-		for (LegoU32 i = 0; i < m_numItems; i++) {
+		for (LegoU32 i = 0; i < m_itemCount; i++) {
 			delete[] m_charCodes[i];
 			m_charCodes[i] = NULL;
 		}
@@ -106,8 +106,8 @@ GolFontBase* GolFontTable::GetItem(LegoU32 p_index)
 // FUNCTION: GOLDP 0x10004320
 void GolFontTable::ReleaseFontSurfaces()
 {
-	if (m_numItems > 0) {
-		for (LegoU32 i = 0; i < m_numItems; i++) {
+	if (m_itemCount > 0) {
+		for (LegoU32 i = 0; i < m_itemCount; i++) {
 			if (m_fonts[i].HasLoadedData()) {
 				m_fonts[i].ReleaseSurfaces();
 			}
@@ -118,8 +118,8 @@ void GolFontTable::ReleaseFontSurfaces()
 // FUNCTION: GOLDP 0x10004360
 void GolFontTable::RefreshFontSurfaces()
 {
-	if (m_numItems > 0) {
-		for (LegoU32 i = 0; i < m_numItems; i++) {
+	if (m_itemCount > 0) {
+		for (LegoU32 i = 0; i < m_itemCount; i++) {
 			if (m_fonts[i].HasLoadedData()) {
 				m_fonts[i].RefreshSurfaces(m_renderer);
 			}

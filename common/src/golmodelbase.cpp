@@ -20,7 +20,7 @@ GolModelBase::GolModelBase()
 	m_ownedVertexArray = NULL;
 	m_indexArray = NULL;
 	m_unk0x1c = NULL;
-	m_countGroups = 0;
+	m_groupCount = 0;
 	m_groups = NULL;
 	m_center.m_x = 0.0f;
 	m_center.m_y = 0.0f;
@@ -112,10 +112,10 @@ void GolModelBase::Load(GolRenderDevice* p_renderer, const LegoChar* p_name, Leg
 // FUNCTION: GOLDP 0x100272e0
 void GolModelBase::AllocateIndices(LegoU32 p_countVertices, LegoU32 p_countGroups)
 {
-	m_countGroups = p_countGroups;
+	m_groupCount = p_countGroups;
 
 	m_indexArray = new GdbModelIndexArray;
-	m_groups = new LegoU32[m_countGroups];
+	m_groups = new LegoU32[m_groupCount];
 	if (m_indexArray == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -151,20 +151,20 @@ void GolModelBase::Destroy()
 	}
 
 	m_materialTable.Destroy();
-	m_countGroups = 0;
+	m_groupCount = 0;
 }
 
 // FUNCTION: GOLDP 0x10027430
 void GolModelBase::ParseGroups(GolFileParser& p_parser)
 {
-	m_countGroups = p_parser.ReadBracketedCountAndLeftCurly();
+	m_groupCount = p_parser.ReadBracketedCountAndLeftCurly();
 
 	LegoU32 count = 0;
-	if (m_countGroups == 0) {
+	if (m_groupCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_groups = new LegoU32[m_countGroups];
+	m_groups = new LegoU32[m_groupCount];
 	if (m_groups == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -182,10 +182,10 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 	i = 0;
 	seen = FALSE;
 
-	if (i < m_countGroups) {
+	if (i < m_groupCount) {
 		colorStackPointer = colorStack;
 
-		for (; i < m_countGroups; i++) {
+		for (; i < m_groupCount; i++) {
 			switch (p_parser.GetNextToken()) {
 			case GdbTxtParser::e_triangles:
 				if (seen) {
@@ -273,7 +273,7 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_rightCurly);
 	}
 
-	m_countGroups = count;
+	m_groupCount = count;
 }
 
 // FUNCTION: GOLDP 0x10027740
@@ -358,7 +358,7 @@ void GolModelBase::ComputeBounds(GolVec3* p_center, LegoFloat* p_radius, LegoFlo
 	max.m_z = -FLT_MAX;
 	countGroups = 0;
 	maskPtr = m_groups;
-	endMaskPtr = m_groups + m_countGroups;
+	endMaskPtr = m_groups + m_groupCount;
 
 	for (; maskPtr < endMaskPtr; maskPtr++) {
 		LegoU32 mask = *maskPtr;
@@ -401,7 +401,7 @@ void GolModelBase::ComputeBounds(GolVec3* p_center, LegoFloat* p_radius, LegoFlo
 
 		LegoFloat radiusSquared = -FLT_MAX;
 		maskPtr = m_groups;
-		endMaskPtr = m_groups + m_countGroups;
+		endMaskPtr = m_groups + m_groupCount;
 
 		for (; maskPtr < endMaskPtr; maskPtr++) {
 			LegoU32 mask = *maskPtr;

@@ -132,7 +132,7 @@ public:
 	LegoU32 GetTextureListCount() const { return m_textureListCount; }
 	LegoU32 GetMaterialLibraryCount() const { return m_materialLibraryCount; }
 	LegoU32 GetModelPartCount() const { return m_modelPartCount; }
-	LegoU32 GetModelCount() const { return m_modelCount; }
+	LegoU32 GetModelEventCount() const { return m_modelCount; }
 	LegoU32 GetMaterialTableCount() const { return m_materialTableCount; }
 	LegoU32 GetSceneNodeCount() const { return m_sceneNodeCount; }
 	LegoU32 GetBoundingShapeCount() const { return m_boundingShapeCount; }

@@ -79,7 +79,7 @@ public:
 	LegoFloat GetScale() const { return m_scale; }
 	void SetScale(LegoFloat p_scale) { m_scale = p_scale; }
 	void SetDirty(LegoBool32 p_dirty) { m_dirty = p_dirty; }
-	LegoU32 GetGroupCount() const { return m_countGroups; }
+	LegoU32 GetGroupCount() const { return m_groupCount; }
 	const LegoU32* GetGroups() const { return m_groups; }
 	LegoU32* GetMutableGroups() { return m_groups; }
 
@@ -92,7 +92,7 @@ protected:
 	GdbVertexArray* m_ownedVertexArray;
 	GdbModelIndexArrayBase* m_indexArray;
 	undefined4* m_unk0x1c;
-	LegoU32 m_countGroups;
+	LegoU32 m_groupCount;
 	LegoU32* m_groups;
 	GolVec3 m_center;
 	LegoFloat m_radius;

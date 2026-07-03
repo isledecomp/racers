@@ -155,7 +155,7 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 
 	if (m_dirty) {
 		LegoU32* group = m_groups;
-		LegoU32* end = m_groups + m_countGroups;
+		LegoU32* end = m_groups + m_groupCount;
 
 		for (; group < end; group++) {
 			LegoU32 groupData = *group;
@@ -195,7 +195,7 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 	p_renderer->m_materialCommand.m_indices = p_renderer->m_sourceIndices;
 
 	LegoU32* group = m_groups;
-	LegoU32* end = m_groups + m_countGroups;
+	LegoU32* end = m_groups + m_groupCount;
 
 	for (; group < end; group++) {
 		LegoU32 groupData = *group;
@@ -253,7 +253,7 @@ void GolModel::DrawNode(
 
 	if (m_dirty) {
 		LegoU32* group = m_groups;
-		LegoU32* end = m_groups + m_countGroups;
+		LegoU32* end = m_groups + m_groupCount;
 
 		for (; group < end; group++) {
 			LegoU32 groupData = *group;

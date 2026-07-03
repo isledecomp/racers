@@ -13,14 +13,14 @@ GolImageList::GolImageList()
 {
 	m_renderer = NULL;
 	m_next = NULL;
-	m_numItems = 0;
+	m_itemCount = 0;
 	m_currentHashEntry = NULL;
 }
 
 // FUNCTION: GOLDP 0x10022fe0
 GolImageList::~GolImageList()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer) {
 		m_renderer->RemoveImageList(this);
@@ -35,7 +35,7 @@ GolImageList::~GolImageList()
 // FUNCTION: GOLDP 0x10023060
 void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
-	if (m_numItems > 0) {
+	if (m_itemCount > 0) {
 		Clear();
 	}
 
@@ -64,19 +64,19 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(e_image));
 
-	m_numItems = parser->ReadBracketedCountAndLeftCurly();
+	m_itemCount = parser->ReadBracketedCountAndLeftCurly();
 
-	if (!m_numItems) {
+	if (!m_itemCount) {
 		parser->Dispose();
 		delete parser;
 		return;
 	}
 
-	GolNameTable::Allocate(m_numItems);
+	GolNameTable::Allocate(m_itemCount);
 	m_currentHashEntry = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
 	AllocateItems();
 
-	for (LegoU32 i = 0; i < m_numItems; i++) {
+	for (LegoU32 i = 0; i < m_itemCount; i++) {
 		ColorRGBA colorKey;
 		FourBytes local34;
 		colorKey.m_alp = 0xff;
@@ -164,7 +164,7 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 		g_hashTable->SetCurrentEntry(m_currentHashEntry);
 	}
 
-	for (LegoU32 j = 0; j < m_numItems; j++) {
+	for (LegoU32 j = 0; j < m_itemCount; j++) {
 		GolImage* entry = GetItem(j);
 		if (!(entry->m_stateFlags & GolImage::c_stateCreated)) {
 			entry->Load();
@@ -175,13 +175,13 @@ void GolImageList::LoadImageDefinitions(GolD3DRenderDevice* p_renderer, const Le
 // FUNCTION: GOLDP 0x100233a0
 void GolImageList::Initialize(GolD3DRenderDevice* p_renderer, LegoU32 p_numItems)
 {
-	if (m_numItems > 0) {
+	if (m_itemCount > 0) {
 		Clear();
 	}
 
 	m_renderer = p_renderer;
 	m_renderer->AddImageList(this);
-	m_numItems = p_numItems;
+	m_itemCount = p_numItems;
 
 	AllocateItems();
 
@@ -193,7 +193,7 @@ void GolImageList::Initialize(GolD3DRenderDevice* p_renderer, LegoU32 p_numItems
 // FUNCTION: GOLDP 0x100233f0
 void GolImageList::Clear()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer) {
 		m_renderer->RemoveImageList(this);

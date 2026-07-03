@@ -132,8 +132,8 @@ void GolWorldDatabaseEx::AllocateResources()
 		}
 	}
 
-	if (GetModelCount() != 0) {
-		m_models = new GolModel[GetModelCount()];
+	if (GetModelEventCount() != 0) {
+		m_models = new GolModel[GetModelEventCount()];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

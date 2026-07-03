@@ -2265,13 +2265,13 @@ PowerupAction* RacePowerupManager::ReclaimAction(
 				subtype == static_cast<LegoU32>(p_level3) || subtype == static_cast<LegoU32>(p_level4)) {
 				LegoS32 score = action->GetState();
 				if (score > bestScore) {
-					bestPriority = action->GetStateTimer();
+					bestPriority = action->GetStateTimerMs();
 					bestScore = action->GetState();
 					best = action;
 					bestPrevious = previous;
 				}
 				else if (score == bestScore) {
-					LegoU32 priority = action->GetStateTimer();
+					LegoU32 priority = action->GetStateTimerMs();
 					if (priority < bestPriority) {
 						bestScore = action->GetState();
 						bestPriority = priority;

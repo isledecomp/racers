@@ -15,13 +15,13 @@ GolMaterialLibrary::GolMaterialLibrary()
 	m_renderer = NULL;
 	m_next = NULL;
 	m_materialSource = NULL;
-	m_numItems = 0;
+	m_itemCount = 0;
 }
 
 // FUNCTION: GOLDP 0x100261f0
 GolMaterialLibrary::~GolMaterialLibrary()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer != NULL) {
 		m_renderer->RemoveMaterialList(this);
@@ -61,13 +61,13 @@ void GolMaterialLibrary::Load(GolRenderDevice* p_renderer, const LegoChar* p_fil
 
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(MdbTxtParser::e_material));
-	m_numItems = parser->ReadBracketedCountAndLeftCurly();
+	m_itemCount = parser->ReadBracketedCountAndLeftCurly();
 
-	if (m_numItems == 0) {
+	if (m_itemCount == 0) {
 		parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	GolNameTable::Allocate(m_numItems);
+	GolNameTable::Allocate(m_itemCount);
 	AllocateItems();
 
 	LegoU32 i;
@@ -75,7 +75,7 @@ void GolMaterialLibrary::Load(GolRenderDevice* p_renderer, const LegoChar* p_fil
 	GolName textureName;
 	LegoU8 fullIntensity = 0xff;
 
-	for (i = 0; i < m_numItems; i++) {
+	for (i = 0; i < m_itemCount; i++) {
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(MdbTxtParser::e_material));
 		GolMaterial::NameRecord name;
 		::strncpy(name.m_name, parser->ReadStringWithMaxLength(sizeOfArray(name.m_name)), sizeOfArray(name.m_name));
@@ -284,7 +284,7 @@ void GolMaterialLibrary::CreateMaterials()
 	LegoU32 i;
 
 	if (m_materialSource != NULL) {
-		for (i = 0; i < m_numItems; i++) {
+		for (i = 0; i < m_itemCount; i++) {
 			GolMaterial* item = GetItem(i);
 			if (!(item->GetFlags() & GolMaterial::c_flagCreated)) {
 				GolMaterialParams params;
@@ -295,7 +295,7 @@ void GolMaterialLibrary::CreateMaterials()
 		}
 	}
 	else {
-		for (i = 0; i < m_numItems; i++) {
+		for (i = 0; i < m_itemCount; i++) {
 			GolMaterial* item = GetItem(i);
 			if (!(item->GetFlags() & GolMaterial::c_flagCreated)) {
 				CreateMaterial(i);
@@ -318,7 +318,7 @@ void GolMaterialLibrary::InitializeFromSource(
 	m_renderer = p_renderer;
 	p_renderer->AddMaterialList(this);
 	m_materialSource = p_arg2;
-	m_numItems = p_capacity;
+	m_itemCount = p_capacity;
 	GolNameTable::Allocate(p_capacity);
 	AllocateItems();
 	CreateMaterials();
@@ -327,7 +327,7 @@ void GolMaterialLibrary::InitializeFromSource(
 // FUNCTION: GOLDP 0x10026a50
 void GolMaterialLibrary::Clear()
 {
-	m_numItems = 0;
+	m_itemCount = 0;
 
 	if (m_renderer != NULL) {
 		m_renderer->RemoveMaterialList(this);
@@ -348,7 +348,7 @@ void GolMaterialLibrary::Initialize(GolRenderDevice* p_renderer, LegoU32 p_capac
 
 	m_renderer = p_renderer;
 	p_renderer->AddMaterialList(this);
-	m_numItems = p_capacity;
+	m_itemCount = p_capacity;
 	GolNameTable::Allocate(p_capacity);
 	AllocateItems();
 }

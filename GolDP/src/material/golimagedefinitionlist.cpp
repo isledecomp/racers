@@ -25,7 +25,7 @@ GolImageDefinitionList::~GolImageDefinitionList()
 // FUNCTION: GOLDP 0x10005dc0
 void GolImageDefinitionList::AllocateItems()
 {
-	m_items = new GolImage[m_numItems];
+	m_items = new GolImage[m_itemCount];
 	if (m_items == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -53,8 +53,8 @@ void GolImageDefinitionList::ReleaseImages()
 {
 	LegoU32 i;
 
-	if (m_numItems > 0) {
-		for (i = 0; i < m_numItems; i++) {
+	if (m_itemCount > 0) {
+		for (i = 0; i < m_itemCount; i++) {
 			if (m_items[i].m_stateFlags & GolImage::c_stateCreated) {
 				m_items[i].DestroyTiles();
 			}
@@ -67,8 +67,8 @@ void GolImageDefinitionList::RestoreImages()
 {
 	LegoU32 i;
 
-	if (m_numItems > 0) {
-		for (i = 0; i < m_numItems; i++) {
+	if (m_itemCount > 0) {
+		for (i = 0; i < m_itemCount; i++) {
 			if (m_items[i].m_stateFlags & GolImage::c_stateCreated) {
 				m_items[i].RebuildTiles();
 			}

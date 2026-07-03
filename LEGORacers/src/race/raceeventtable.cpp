@@ -1,3 +1,5 @@
+#include "race/raceeventtable.h"
+
 #include "audio/spatialsoundinstance.h"
 #include "decomp.h"
 #include "golbinparser.h"
@@ -22,7 +24,6 @@
 #include "race/events/soundresource.h"
 #include "race/events/timerresource.h"
 #include "race/hazardmanager.h"
-#include "race/raceeventtable.h"
 #include "race/racesession.h"
 #include "race/targetpointlist.h"
 #include "world/golworlddatabase.h"

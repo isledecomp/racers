@@ -203,6 +203,10 @@ void OptionsScreen::ApplyVideoDriver()
 	undefined4 bpp = drawState->m_bpp;
 	LegoS32 height = drawState->m_height;
 	LegoS32 width = drawState->m_width;
-	drawState
-		->CreateDisplay(width, height, bpp, m_context->m_context->m_golApp->BuildDrawStateFlags(drawStateFlags) | flags);
+	drawState->CreateDisplay(
+		width,
+		height,
+		bpp,
+		m_context->m_context->m_golApp->BuildDrawStateFlags(drawStateFlags) | flags
+	);
 }

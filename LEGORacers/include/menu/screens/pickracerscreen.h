@@ -15,9 +15,9 @@ public:
 
 	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
-	void CreateWidgets() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                             // vtable+0x4c
 	~PickRacerScreen() override;                                               // vtable+0x68
-	void Navigate() override;                                                // vtable+0x84
+	void Navigate() override;                                                  // vtable+0x84
 	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00484cc0

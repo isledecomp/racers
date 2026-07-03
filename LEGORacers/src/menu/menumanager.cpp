@@ -1,3 +1,5 @@
+#include "menu/menumanager.h"
+
 #include "app/cheatflags.h"
 #include "app/win32golapp.h"
 #include "audio/musicinstance.h"
@@ -20,7 +22,6 @@
 #include "input/keyboarddevice.h"
 #include "material/golimagedefinitionlist.h"
 #include "material/goltexturelist.h"
-#include "menu/menumanager.h"
 #include "menu/menuscreenid.h"
 #include "menu/screens/menugamescreen.h"
 #include "race/racemoderunner.h"

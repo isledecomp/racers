@@ -1,5 +1,3 @@
-#include "menu/runtime/cutsceneplayer.h"
-
 #include "audio/soundgroup.h"
 #include "audio/soundinstance.h"
 #include "audio/soundmanager.h"
@@ -27,6 +25,7 @@
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutscenedefinition.h"
 #include "menu/runtime/cutsceneparticle.h"
+#include "menu/runtime/cutsceneplayer.h"
 #include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"

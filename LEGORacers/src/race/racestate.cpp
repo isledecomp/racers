@@ -1,3 +1,5 @@
+#include "race/racestate.h"
+
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
@@ -16,7 +18,6 @@
 #include "race/racehud.h"
 #include "race/racer/racerouterecord.h"
 #include "race/racesession.h"
-#include "race/racestate.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/gold3dtexture.h"

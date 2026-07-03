@@ -1,5 +1,6 @@
-#include "golerror.h"
 #include "input/inputdevice.h"
+
+#include "golerror.h"
 #include "input/inputmanager.h"
 #include "input/joystickdevice.h"
 #include "input/keyboarddevice.h"

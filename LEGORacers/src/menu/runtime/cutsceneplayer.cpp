@@ -1783,4 +1783,3 @@ GolStringTable* CutscenePlayer::GetStringTableByIndex(LegoU32 p_index)
 
 	return &m_stringTables[p_index];
 }
-

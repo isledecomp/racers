@@ -260,7 +260,7 @@ void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 		break;
 	}
 
-	entity->VTable0x50(model, g_maroonAtollMaxFloat);
+	entity->SetPrimaryModel(model, g_maroonAtollMaxFloat);
 
 	GolBillboard::ManagedMaterialTable* materialTable = &m_materialTables[WrapIndex(m_ringBaseIndex + p_index)];
 	CopyModelMaterialTable(model, materialTable);

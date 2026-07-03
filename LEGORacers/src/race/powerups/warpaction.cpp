@@ -131,7 +131,7 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 		m_isDemoRacer = p_racer->m_controlMode == 2;
 		p_racer->m_flags |= c_racerFlags0xd04Bit21;
 
-		m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
+		m_modelEntity.SetPrimaryModel(p_model->GetModel(0), p_model->GetModelDistance(0));
 		for (LegoU32 i = 1; i < 3; i++) {
 			GolModelBase* model = p_model->GetModel(i);
 			if (model != NULL) {
@@ -471,7 +471,7 @@ void WarpAction::AdvanceState()
 void WarpAction::Deactivate()
 {
 	m_state = c_stateInitialized;
-	m_modelEntity.VTable0x54();
+	m_modelEntity.ResetModelState();
 	if (m_racer != NULL) {
 		RaceCameraController* cameraController = m_racer->m_cameraController;
 		if (cameraController != NULL) {

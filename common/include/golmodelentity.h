@@ -25,10 +25,10 @@ public:
 	LegoBool32 GetKind() override;                                                         // vtable+0x20
 	void ApplyColorTransform(ColorTransform* p_transform) override;                        // vtable+0x24
 	void VTable0x28() override;                                                            // vtable+0x28
-	virtual void VTable0x4c(LegoU32 p_index);                                              // vtable+0x4c
-	virtual void VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance);             // vtable+0x50
-	virtual void VTable0x54();                                                             // vtable+0x54
-	virtual GolSceneNode* VTable0x58(undefined4);                                          // vtable+0x58
+	virtual void ComputeBoundsFromModel(LegoU32 p_index);                                  // vtable+0x4c
+	virtual void SetPrimaryModel(GolModelBase* p_model, LegoFloat p_modelDistance);        // vtable+0x50
+	virtual void ResetModelState();                                                        // vtable+0x54
+	virtual GolSceneNode* GetSceneNode(undefined4);                                        // vtable+0x58
 	virtual void VTable0x5c(undefined4);                                                   // vtable+0x5c
 
 	void FUN_10027c50(GolModelBase* p_model, LegoFloat p_modelDistance);

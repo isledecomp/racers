@@ -178,18 +178,19 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 	}
 
 	m_turboEntity
-		->SetModel(model->GetModel(0), model->VTable0x58(0), model->GetModelPart(0), model->GetModelDistance(0));
+		->SetModel(model->GetModel(0), model->GetSceneNode(0), model->GetModelPart(0), model->GetModelDistance(0));
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
 		GolModelBase* lodModel = model->GetModel(i);
 		if (lodModel != NULL) {
-			m_turboEntity->AddModel(lodModel, model->VTable0x58(i), model->GetModelPart(i), model->GetModelDistance(i));
+			m_turboEntity
+				->AddModel(lodModel, model->GetSceneNode(i), model->GetModelPart(i), model->GetModelDistance(i));
 		}
 	}
 
 	m_flameEntity->SetModel(
 		effect0->GetModel(0),
-		effect0->VTable0x58(0),
+		effect0->GetSceneNode(0),
 		effect0->GetModelPart(0),
 		effect0->GetModelDistance(0)
 	);
@@ -197,7 +198,7 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 		GolModelBase* lodModel = effect0->GetModel(i);
 		if (lodModel != NULL) {
 			m_flameEntity
-				->AddModel(lodModel, effect0->VTable0x58(i), effect0->GetModelPart(i), effect0->GetModelDistance(i));
+				->AddModel(lodModel, effect0->GetSceneNode(i), effect0->GetModelPart(i), effect0->GetModelDistance(i));
 		}
 	}
 	m_flameEntity->SetTextureScrollU(effect0->GetTextureScrollU());
@@ -207,7 +208,7 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 
 	m_flame2Entity->SetModel(
 		effect1->GetModel(0),
-		effect1->VTable0x58(0),
+		effect1->GetSceneNode(0),
 		effect1->GetModelPart(0),
 		effect1->GetModelDistance(0)
 	);
@@ -215,7 +216,7 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 		GolModelBase* lodModel = effect1->GetModel(i);
 		if (lodModel != NULL) {
 			m_flame2Entity
-				->AddModel(lodModel, effect1->VTable0x58(i), effect1->GetModelPart(i), effect1->GetModelDistance(i));
+				->AddModel(lodModel, effect1->GetSceneNode(i), effect1->GetModelPart(i), effect1->GetModelDistance(i));
 		}
 	}
 	m_flame2Entity->SetTextureScrollU(effect1->GetTextureScrollU());
@@ -480,19 +481,19 @@ void TurboAction::Deactivate()
 	}
 
 	if (m_flame2Entity != NULL) {
-		m_flame2Entity->VTable0x54();
+		m_flame2Entity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_flame2Entity);
 		m_flame2Entity = NULL;
 	}
 
 	if (m_flameEntity != NULL) {
-		m_flameEntity->VTable0x54();
+		m_flameEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_flameEntity);
 		m_flameEntity = NULL;
 	}
 
 	if (m_turboEntity != NULL) {
-		m_turboEntity->VTable0x54();
+		m_turboEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_turboEntity);
 		m_turboEntity = NULL;
 	}

@@ -146,7 +146,7 @@ void ShieldAction::Activate(
 
 	m_shieldEntity->SetModel(
 		p_shieldTemplate->GetModel(0),
-		p_shieldTemplate->VTable0x58(0),
+		p_shieldTemplate->GetSceneNode(0),
 		p_shieldTemplate->GetModelPart(0),
 		p_shieldTemplate->GetModelDistance(0)
 	);
@@ -157,7 +157,7 @@ void ShieldAction::Activate(
 		if (model != NULL) {
 			m_shieldEntity->AddModel(
 				model,
-				p_shieldTemplate->VTable0x58(i),
+				p_shieldTemplate->GetSceneNode(i),
 				p_shieldTemplate->GetModelPart(i),
 				p_shieldTemplate->GetModelDistance(i)
 			);
@@ -175,7 +175,7 @@ void ShieldAction::Activate(
 
 	m_innerShieldEntity->SetModel(
 		p_innerShieldTemplate->GetModel(0),
-		p_innerShieldTemplate->VTable0x58(0),
+		p_innerShieldTemplate->GetSceneNode(0),
 		p_innerShieldTemplate->GetModelPart(0),
 		p_innerShieldTemplate->GetModelDistance(0)
 	);
@@ -185,7 +185,7 @@ void ShieldAction::Activate(
 		if (model != NULL) {
 			m_innerShieldEntity->AddModel(
 				model,
-				p_innerShieldTemplate->VTable0x58(i),
+				p_innerShieldTemplate->GetSceneNode(i),
 				p_innerShieldTemplate->GetModelPart(i),
 				p_innerShieldTemplate->GetModelDistance(i)
 			);
@@ -206,13 +206,13 @@ void ShieldAction::Activate(
 void ShieldAction::Deactivate()
 {
 	if (m_innerShieldEntity) {
-		m_innerShieldEntity->VTable0x54();
+		m_innerShieldEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_innerShieldEntity);
 		m_innerShieldEntity = NULL;
 	}
 
 	if (m_shieldEntity) {
-		m_shieldEntity->VTable0x54();
+		m_shieldEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_shieldEntity);
 		m_shieldEntity = NULL;
 	}

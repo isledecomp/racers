@@ -113,9 +113,9 @@ public:
 			void SetPosition(const GolVec3& p_position) { m_entity.SetPosition(p_position); }
 			void VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance)
 			{
-				m_entity.VTable0x50(p_model, p_modelDistance);
+				m_entity.SetPrimaryModel(p_model, p_modelDistance);
 			}
-			void VTable0x54() { m_entity.VTable0x54(); }
+			void ResetModelState() { m_entity.ResetModelState(); }
 			void EnableFlagBit1() { m_entity.EnableFlagBit1(); }
 
 			GolModelEntity m_entity; // 0x00

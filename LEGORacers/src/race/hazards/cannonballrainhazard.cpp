@@ -122,7 +122,7 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 	}
 
 	m_emitterEntity->VTable0x5c(0);
-	GolSceneNode* node = m_emitterEntity->VTable0x58(0);
+	GolSceneNode* node = m_emitterEntity->GetSceneNode(0);
 	GolTransformBase* transform = node->VTable0x18(1);
 
 	GolVec3 position;

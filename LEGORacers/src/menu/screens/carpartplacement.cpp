@@ -463,7 +463,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Destroy()
 		m_golExport->VTable0x48(m_pieceModel);
 	}
 
-	m_driverEntity.VTable0x54();
+	m_driverEntity.ResetModelState();
 
 	if (m_bodySceneNode) {
 		m_golExport->VTable0x4c(m_bodySceneNode);
@@ -500,7 +500,7 @@ void CarModelScreenBase::CarPartPlacement::CreatePieceModel()
 
 	LegoS32 maxHighPieceOffset = m_context->m_pieceLibrary.GetMaxHighPieceOffset();
 	m_pieceModel->VTable0x18(m_renderer, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
-	m_pieceEntity.VTable0x50(m_pieceModel, g_unk0x4b2e68);
+	m_pieceEntity.SetPrimaryModel(m_pieceModel, g_unk0x4b2e68);
 }
 
 // FUNCTION: LEGORACERS 0x00477cc0
@@ -1259,7 +1259,7 @@ void CarModelScreenBase::CarPartPlacement::UpdateCommitFeedback(LegoS32 p_elapse
 
 		m_animFlags &= ~c_flagCommittingPart;
 		m_feedbackMs = 0;
-		m_carGroup.FUN_10026fa0(-1.0f);
+		m_carGroup.SetBoundsRadius(-1.0f);
 		m_carGroup.UpdateBounds();
 
 		m_context->m_carBuildModel.PlacePiece(

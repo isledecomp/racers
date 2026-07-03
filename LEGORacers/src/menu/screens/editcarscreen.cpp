@@ -171,7 +171,7 @@ LegoBool32 EditCarScreen::Destroy()
 		return TRUE;
 	}
 
-	m_driverEntity.VTable0x54();
+	m_driverEntity.ResetModelState();
 
 	if (m_bodySceneNode) {
 		m_golExport->VTable0x4c(m_bodySceneNode);

@@ -105,11 +105,11 @@ void PowerupExplosion::Initialize(const Params* p_params)
 			->FUN_10029e90(m_manager->GetBillboardMaterialTable(), m_billboardMaterialIndex, 0.1f, 0.2f, 250000.0f);
 	}
 	else if (m_billboard != NULL) {
-		m_billboard->VTable0x4c(p_params->m_billboardMaterial, 0.1f, 0.2f, 250000.0f);
+		m_billboard->Configure(p_params->m_billboardMaterial, 0.1f, 0.2f, 250000.0f);
 	}
 
 	if (p_params->m_model != NULL) {
-		m_modelEntity.VTable0x50(p_params->m_model->GetModel(0), 250000.0f);
+		m_modelEntity.SetPrimaryModel(p_params->m_model->GetModel(0), 250000.0f);
 		m_modelEntity.SetTextureScrollU(p_params->m_model->GetTextureScrollU());
 		m_modelEntity.SetTextureScrollV(p_params->m_model->GetTextureScrollV());
 		m_modelEntity.SetTextureScrollSpeedU(p_params->m_model->GetTextureScrollSpeedU());
@@ -129,10 +129,10 @@ void PowerupExplosion::Destroy()
 	Deactivate();
 	m_scarDecal.Destroy();
 	m_materialTable.Clear();
-	m_modelEntity.VTable0x54();
+	m_modelEntity.ResetModelState();
 
 	if (m_golExport != NULL && m_billboard != NULL) {
-		m_billboard->VTable0x50();
+		m_billboard->SetPrimaryModel();
 		m_golExport->VTable0x64(m_billboard);
 		m_billboard = NULL;
 	}
@@ -161,7 +161,7 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 	m_growthRate = m_initialGrowthRate;
 
 	m_worldEntity.SetPosition(*p_position);
-	m_worldEntity.FUN_10026fa0(0.1f);
+	m_worldEntity.SetBoundsRadius(0.1f);
 
 	if (m_billboard != NULL) {
 		m_billboard->SetWidth(0.1f);
@@ -299,7 +299,7 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 		m_growth = elapsedSeconds * m_growthRate + m_growth;
 
 		LegoFloat radius = (m_blastRadius - 0.1f) * m_growth + 0.1f;
-		m_worldEntity.FUN_10026fa0(radius);
+		m_worldEntity.SetBoundsRadius(radius);
 
 		LegoFloat width = (m_flashWidth - 0.1f) * m_growth + 0.1f;
 		if (m_scarMaterial != NULL && m_leavesScar != zero) {

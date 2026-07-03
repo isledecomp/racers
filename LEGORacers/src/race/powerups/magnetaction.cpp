@@ -112,7 +112,7 @@ void MagnetAction::Activate(
 
 	m_magnetEntity->SetModel(
 		p_magnetTemplate->GetModel(0),
-		p_magnetTemplate->VTable0x58(0),
+		p_magnetTemplate->GetSceneNode(0),
 		p_magnetTemplate->GetModelPart(0),
 		p_magnetTemplate->GetModelDistance(0)
 	);
@@ -123,13 +123,13 @@ void MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_magnetTemplate->GetModelDistance(i);
 			CmbModelPart* modelPart = p_magnetTemplate->GetModelPart(i);
-			m_magnetEntity->AddModel(model, p_magnetTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_magnetEntity->AddModel(model, p_magnetTemplate->GetSceneNode(i), modelPart, modelDistance);
 		}
 	}
 
 	m_ringEntity->SetModel(
 		p_ringTemplate->GetModel(0),
-		p_ringTemplate->VTable0x58(0),
+		p_ringTemplate->GetSceneNode(0),
 		p_ringTemplate->GetModelPart(0),
 		p_ringTemplate->GetModelDistance(0)
 	);
@@ -138,7 +138,7 @@ void MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_ringTemplate->GetModelDistance(i);
 			CmbModelPart* modelPart = p_ringTemplate->GetModelPart(i);
-			m_ringEntity->AddModel(model, p_ringTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_ringEntity->AddModel(model, p_ringTemplate->GetSceneNode(i), modelPart, modelDistance);
 		}
 	}
 	m_ringEntity->SetTextureScrollU(p_ringTemplate->GetTextureScrollU());
@@ -148,7 +148,7 @@ void MagnetAction::Activate(
 
 	m_insideEntity->SetModel(
 		p_insideTemplate->GetModel(0),
-		p_insideTemplate->VTable0x58(0),
+		p_insideTemplate->GetSceneNode(0),
 		p_insideTemplate->GetModelPart(0),
 		p_insideTemplate->GetModelDistance(0)
 	);
@@ -157,7 +157,7 @@ void MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_insideTemplate->GetModelDistance(i);
 			CmbModelPart* modelPart = p_insideTemplate->GetModelPart(i);
-			m_insideEntity->AddModel(model, p_insideTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_insideEntity->AddModel(model, p_insideTemplate->GetSceneNode(i), modelPart, modelDistance);
 		}
 	}
 	m_insideEntity->SetTextureScrollU(p_insideTemplate->GetTextureScrollU());
@@ -175,19 +175,19 @@ void MagnetAction::Deactivate()
 	}
 
 	if (m_insideEntity != NULL) {
-		m_insideEntity->VTable0x54();
+		m_insideEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_insideEntity);
 		m_insideEntity = NULL;
 	}
 
 	if (m_ringEntity != NULL) {
-		m_ringEntity->VTable0x54();
+		m_ringEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_ringEntity);
 		m_ringEntity = NULL;
 	}
 
 	if (m_magnetEntity != NULL) {
-		m_magnetEntity->VTable0x54();
+		m_magnetEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_magnetEntity);
 		m_magnetEntity = NULL;
 	}
@@ -463,7 +463,7 @@ void MagnetAction::Deploy()
 	m_magnetEntity->SetDirectionUp(m_direction, up);
 
 	m_worldEntity.SetPosition(position);
-	m_worldEntity.FUN_10026fa0(10.0f);
+	m_worldEntity.SetBoundsRadius(10.0f);
 	m_ownerRacer->m_physics.ApplyPitchImpulse(0.0015f, 150);
 	m_soundSource->PlaySpatialSoundById(c_soundDeploy, &position, 30.0f, 300.0f, 1.0f, 1.0f);
 

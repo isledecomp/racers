@@ -94,7 +94,7 @@ void CurseAction::Activate(
 
 	m_curseEntity->SetModel(
 		p_curseTemplate->GetModel(0),
-		p_curseTemplate->VTable0x58(0),
+		p_curseTemplate->GetSceneNode(0),
 		p_curseTemplate->GetModelPart(0),
 		p_curseTemplate->GetModelDistance(0)
 	);
@@ -105,7 +105,7 @@ void CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_curseTemplate->GetModelDistance(i);
 			CmbModelPart* modelPart = p_curseTemplate->GetModelPart(i);
-			m_curseEntity->AddModel(model, p_curseTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_curseEntity->AddModel(model, p_curseTemplate->GetSceneNode(i), modelPart, modelDistance);
 		}
 	}
 	m_curseEntity->SetFlags(m_curseEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
@@ -113,7 +113,7 @@ void CurseAction::Activate(
 
 	m_auraEntity->SetModel(
 		p_auraTemplate->GetModel(0),
-		p_auraTemplate->VTable0x58(0),
+		p_auraTemplate->GetSceneNode(0),
 		p_auraTemplate->GetModelPart(0),
 		p_auraTemplate->GetModelDistance(0)
 	);
@@ -122,7 +122,7 @@ void CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_auraTemplate->GetModelDistance(i);
 			CmbModelPart* modelPart = p_auraTemplate->GetModelPart(i);
-			m_auraEntity->AddModel(model, p_auraTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_auraEntity->AddModel(model, p_auraTemplate->GetSceneNode(i), modelPart, modelDistance);
 		}
 	}
 	m_auraEntity->SetFlags(m_auraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
@@ -134,7 +134,7 @@ void CurseAction::Activate(
 
 	m_innerAuraEntity->SetModel(
 		p_innerAuraTemplate->GetModel(0),
-		p_innerAuraTemplate->VTable0x58(0),
+		p_innerAuraTemplate->GetSceneNode(0),
 		p_innerAuraTemplate->GetModelPart(0),
 		p_innerAuraTemplate->GetModelDistance(0)
 	);
@@ -143,7 +143,7 @@ void CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_innerAuraTemplate->GetModelDistance(i);
 			CmbModelPart* modelPart = p_innerAuraTemplate->GetModelPart(i);
-			m_innerAuraEntity->AddModel(model, p_innerAuraTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_innerAuraEntity->AddModel(model, p_innerAuraTemplate->GetSceneNode(i), modelPart, modelDistance);
 		}
 	}
 	m_innerAuraEntity->SetFlags(m_innerAuraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
@@ -159,7 +159,7 @@ void CurseAction::Activate(
 
 		GolWorldEntity* target = &m_worldEntity;
 		target->SetPosition(position);
-		m_worldEntity.FUN_10026fa0(10.0f);
+		m_worldEntity.SetBoundsRadius(10.0f);
 		m_auraEntity->SetPosition(position);
 		m_innerAuraEntity->SetPosition(position);
 
@@ -193,19 +193,19 @@ void CurseAction::Activate(
 void CurseAction::Deactivate()
 {
 	if (m_innerAuraEntity != NULL) {
-		m_innerAuraEntity->VTable0x54();
+		m_innerAuraEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_innerAuraEntity);
 		m_innerAuraEntity = NULL;
 	}
 
 	if (m_auraEntity != NULL) {
-		m_auraEntity->VTable0x54();
+		m_auraEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_auraEntity);
 		m_auraEntity = NULL;
 	}
 
 	if (m_curseEntity != NULL) {
-		m_curseEntity->VTable0x54();
+		m_curseEntity->ResetModelState();
 		m_manager->ReleaseEffectEntity(m_curseEntity);
 		m_curseEntity = NULL;
 	}
@@ -302,7 +302,7 @@ void CurseAction::AdvanceState()
 		}
 
 		m_worldEntity.SetPosition(position);
-		m_worldEntity.FUN_10026fa0(g_curseTriggerRadius);
+		m_worldEntity.SetBoundsRadius(g_curseTriggerRadius);
 		m_auraEntity->SetPosition(position);
 		m_innerAuraEntity->SetPosition(position);
 

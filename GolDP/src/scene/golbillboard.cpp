@@ -28,7 +28,7 @@ GolBillboard::GolBillboard()
 }
 
 // FUNCTION: GOLDP 0x10029e30
-void GolBillboard::VTable0x4c(
+void GolBillboard::Configure(
 	GolMaterial* p_position,
 	LegoFloat p_width,
 	LegoFloat p_height,
@@ -44,7 +44,7 @@ void GolBillboard::VTable0x4c(
 	m_height = p_height;
 	m_flags = 1;
 	m_maxDistanceSquared = p_maxDistanceSquared;
-	FUN_10026fa0(len);
+	SetBoundsRadius(len);
 }
 
 // FUNCTION: GOLDP 0x10029e90
@@ -58,12 +58,12 @@ void GolBillboard::FUN_10029e90(
 {
 	m_positionContainer = p_container;
 	m_positionIndex = static_cast<LegoU16>(p_index);
-	VTable0x4c(static_cast<GolMaterial*>(p_container->GetPosition(p_index)), p_width, p_height, p_maxDistanceSquared);
+	Configure(static_cast<GolMaterial*>(p_container->GetPosition(p_index)), p_width, p_height, p_maxDistanceSquared);
 	m_flags |= c_flagBit2;
 }
 
 // FUNCTION: GOLDP 0x10029ed0
-void GolBillboard::VTable0x50()
+void GolBillboard::SetPrimaryModel()
 {
 	m_position = NULL;
 	m_flags = 0;
@@ -90,7 +90,7 @@ void GolBillboard::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct*
 }
 
 // FUNCTION: GOLDP 0x10026fa0 FOLDED
-void GolBillboard::FUN_10026fa0(LegoFloat p_scalar)
+void GolBillboard::SetBoundsRadius(LegoFloat p_scalar)
 {
 	m_radius = p_scalar;
 	m_minX = m_center.m_x - p_scalar;

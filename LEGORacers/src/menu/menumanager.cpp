@@ -806,9 +806,9 @@ void MenuManager::BuildPlayerCarModel(
 	p_slot->m_highPieceCount =
 		carBuildModel.ComputeHighPieceCentroid(&p_slot->m_centroidX, &p_slot->m_centroidY, &p_slot->m_centroidZ);
 
-	entity.VTable0x50(p_slot->m_model, g_menuManagerMaxFloat);
+	entity.SetPrimaryModel(p_slot->m_model, g_menuManagerMaxFloat);
 	renderer->VTable0x9c(&entity, p_rendererState, 0);
-	entity.VTable0x54();
+	entity.ResetModelState();
 
 	GdbVertexArray* vertexArray;
 	p_slot->m_model->VTable0x28(&vertexArray);
@@ -922,7 +922,7 @@ void MenuManager::BuildPlayerDriverModel(
 
 	entity.SetModel(p_slot->m_altModel, modelBuilder->GetBodySceneNode(&cosmetics), &modelParts, g_menuManagerMaxFloat);
 	renderer->VTable0x9c(&entity, p_rendererState, 0);
-	entity.VTable0x54();
+	entity.ResetModelState();
 
 	GdbVertexArray* vertexArray;
 	p_slot->m_altModel->VTable0x28(&vertexArray);

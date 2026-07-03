@@ -83,7 +83,7 @@ void DecalGeometry::Initialize(GolExport* p_golExport, GolRenderDevice* p_render
 	m_triangleCapacity = p_count;
 	m_vertexCapacity = p_count * 3;
 	m_model->VTable0x18(p_renderer, 1, m_vertexCapacity, p_count, p_count * 2 + 2, 1);
-	m_entity.VTable0x50(m_model, g_decalGeometryMaxFloat);
+	m_entity.SetPrimaryModel(m_model, g_decalGeometryMaxFloat);
 	m_position.m_x = 0.0f;
 	m_position.m_y = 0.0f;
 	m_position.m_z = g_decalGeometryDefaultLift;
@@ -94,7 +94,7 @@ void DecalGeometry::Initialize(GolExport* p_golExport, GolRenderDevice* p_render
 // FUNCTION: LEGORACERS 0x004149f0
 void DecalGeometry::Destroy()
 {
-	m_entity.VTable0x54();
+	m_entity.ResetModelState();
 
 	if (m_golExport != NULL) {
 		if (m_model != 0) {

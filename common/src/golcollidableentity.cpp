@@ -16,17 +16,17 @@ GolCollidableEntity::GolCollidableEntity()
 // FUNCTION: GOLDP 0x1001aca0
 void GolCollidableEntity::VTable0x60(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance)
 {
-	GolModelEntity::VTable0x50(p_model, p_modelDistance);
+	GolModelEntity::SetPrimaryModel(p_model, p_modelDistance);
 	m_boundingShapes[0] = p_shape;
 }
 
 // FUNCTION: GOLDP 0x1001acd0
-void GolCollidableEntity::VTable0x54()
+void GolCollidableEntity::ResetModelState()
 {
 	m_boundingShapes[0] = NULL;
 	m_boundingShapes[1] = NULL;
 	m_boundingShapes[2] = NULL;
-	GolModelEntity::VTable0x54();
+	GolModelEntity::ResetModelState();
 }
 
 // FUNCTION: GOLDP 0x1001acf0

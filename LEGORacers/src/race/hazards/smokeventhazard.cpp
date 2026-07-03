@@ -93,7 +93,7 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 	LegoFloat inverseScale = 1.0f / scale;
 	Hazard::Update(p_elapsedMs);
 
-	GolSceneNode* node = m_entity->VTable0x58(0);
+	GolSceneNode* node = m_entity->GetSceneNode(0);
 	GolTransformBase* transform = node->VTable0x18(0);
 
 	GolVec3 vector;

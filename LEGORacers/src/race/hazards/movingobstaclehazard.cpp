@@ -59,7 +59,7 @@ void MovingObstacleHazard::Load(HazardContext* p_context, GolFileParser*)
 	position.m_z = 0.0f;
 	m_trigger.ClearVelocity();
 	m_trigger.SetCenter(position);
-	m_trigger.FUN_10026fa0(3.0f);
+	m_trigger.SetBoundsRadius(3.0f);
 
 	m_shadowMaterialTable.Initialize(p_context->GetRenderer(), 1);
 	m_shadowMaterialTable.AssignEntryByName(0, "crneshd");
@@ -128,7 +128,7 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 
 	Hazard::Update(p_elapsedMs);
 
-	GolSceneNode* node = m_entity->VTable0x58(0);
+	GolSceneNode* node = m_entity->GetSceneNode(0);
 	GolTransformBase* transform = node->VTable0x18(3);
 
 	GolVec3 offset;

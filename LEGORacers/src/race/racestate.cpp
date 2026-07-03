@@ -437,7 +437,7 @@ void RaceState::CreateRacer(
 		p_slot->m_textures->LoadTextures();
 		p_slot->m_materials->FUN_10026970();
 		initParams.m_bodyModel = m_roster.m_customCarModels[customIndex];
-		initParams.m_bodyModel->VTable0x50(p_slot->m_model, g_carModelScale);
+		initParams.m_bodyModel->SetPrimaryModel(p_slot->m_model, g_carModelScale);
 
 		if (p_slot->m_altModel == NULL) {
 			LegoChar fallbackName[3];

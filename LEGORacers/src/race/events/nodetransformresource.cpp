@@ -85,7 +85,7 @@ void NodeTransformResource::Update(LegoU32 p_elapsedMs)
 
 		if (m_boundedEntity) {
 			m_modelEntity->VTable0x5c(0);
-			GolSceneNode* node = m_modelEntity->VTable0x58(0);
+			GolSceneNode* node = m_modelEntity->GetSceneNode(0);
 			GolTransformBase* transform = node->VTable0x18(m_nodeIndex);
 
 			GolVec3 position;

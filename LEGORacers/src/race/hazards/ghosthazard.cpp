@@ -104,7 +104,7 @@ void GhostHazard::Load(HazardContext* p_context, GolFileParser*)
 		GolModelEntity* modelEntity = m_trailModels;
 		LegoS32 i = sizeOfArray(m_trailModels);
 		do {
-			modelEntity->VTable0x50(m_trailModel->GetModel(0), m_trailModel->GetModelDistance(0));
+			modelEntity->SetPrimaryModel(m_trailModel->GetModel(0), m_trailModel->GetModelDistance(0));
 			modelEntity++;
 		} while (--i);
 	}
@@ -114,7 +114,7 @@ void GhostHazard::Load(HazardContext* p_context, GolFileParser*)
 		m_trailModel->SetModelDistance(i, 0.0f);
 	}
 
-	m_trigger.FUN_10026fa0(m_ghostEntity->GetModel(0)->GetRadius() + g_ghostTriggerRadiusPadding);
+	m_trigger.SetBoundsRadius(m_ghostEntity->GetModel(0)->GetRadius() + g_ghostTriggerRadiusPadding);
 
 	LegoU32 frameCount = 0;
 	CmbModelPartData* partData = m_ghostEntity->GetModelPart()->GetPartData();
@@ -134,7 +134,7 @@ LegoS32 GhostHazard::Reset()
 	GolModelEntity* modelEntity = m_trailModels;
 	LegoS32 i = sizeOfArray(m_trailModels);
 	do {
-		modelEntity->VTable0x54();
+		modelEntity->ResetModelState();
 		modelEntity++;
 	} while (--i);
 
@@ -199,7 +199,7 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 		LegoU32 frameOffset;
 		LegoU32 frame = static_cast<LegoS32>(m_ghostEntity->GetPartTimeMs() / m_ghostEntity->GetMsPerFrame());
 		LegoFloat scale = m_ghostEntity->GetModel(0)->GetScale() * m_ghostEntity->GetUnk0x58();
-		GolSceneNode* node = m_ghostEntity->VTable0x58(0);
+		GolSceneNode* node = m_ghostEntity->GetSceneNode(0);
 		GolTransformBase* transform = node->VTable0x18(1);
 
 		Hazard::Update(elapsedMs);

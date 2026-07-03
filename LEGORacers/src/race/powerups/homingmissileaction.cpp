@@ -104,7 +104,7 @@ void HomingMissileAction::Activate(
 	GolAnimatedEntity* projectile = &m_missileEntity;
 	projectile->SetModel(
 		p_missileTemplate->GetModel(0),
-		p_missileTemplate->VTable0x58(0),
+		p_missileTemplate->GetSceneNode(0),
 		p_missileTemplate->GetModelPart(0),
 		p_missileTemplate->GetModelDistance(0)
 	);
@@ -220,7 +220,7 @@ void HomingMissileAction::LaunchProjectile()
 void HomingMissileAction::Deactivate()
 {
 	m_projectile.Deactivate();
-	m_missileEntity.VTable0x54();
+	m_missileEntity.ResetModelState();
 	m_state = 1;
 	m_stateTimerMs = 0;
 
@@ -357,7 +357,7 @@ void HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 		p_renderer->VTable0x94(&m_missileEntity);
 	}
 	else if (m_state == c_stateFlying) {
-		GolSceneNode* node = m_missileEntity.VTable0x58(0);
+		GolSceneNode* node = m_missileEntity.GetSceneNode(0);
 		GolTransformBase* transform = node->VTable0x18(c_transformNodeIndex1);
 
 		GolVec3 position;
@@ -391,7 +391,7 @@ void HomingMissileAction::AdvanceState()
 		m_missileEntity.VTable0x5c(0);
 
 		GolAnimatedEntity* animatedEntity = &m_missileEntity;
-		GolSceneNode* node = animatedEntity->VTable0x58(0);
+		GolSceneNode* node = animatedEntity->GetSceneNode(0);
 		GolTransformBase* transform = node->VTable0x18(c_transformNodeIndex1);
 
 		GolVec3 position;
@@ -417,7 +417,7 @@ void HomingMissileAction::AdvanceState()
 
 		animatedEntity->SetPosition(worldPosition);
 		animatedEntity->SetDirectionUp(worldBasis[1], worldBasis[0]);
-		animatedEntity->VTable0x4c(0);
+		animatedEntity->ComputeBoundsFromModel(0);
 
 		LegoU32 flags = animatedEntity->GetFlags();
 		flags &= ~GolAnimatedEntity::c_flagPartAnimation;

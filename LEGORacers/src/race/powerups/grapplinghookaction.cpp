@@ -168,7 +168,7 @@ void GrapplingHookAction::Deactivate()
 	m_billboardAnimation.Reset();
 
 	if (m_billboard != NULL) {
-		m_billboard->VTable0x50();
+		m_billboard->SetPrimaryModel();
 	}
 
 	m_ownerRacer = NULL;

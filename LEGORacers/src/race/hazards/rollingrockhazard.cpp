@@ -66,7 +66,7 @@ void RollingRockHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 	GolAnimatedEntity* entity = m_entity;
 	entity->ResetPartIndices();
 	entity->SetActiveValue(activeValue);
-	m_bodyEntity.SetNode(m_entity->VTable0x58(0), m_entity->GetModelPart(), g_rollingRockModelDistance);
+	m_bodyEntity.SetNode(m_entity->GetSceneNode(0), m_entity->GetModelPart(), g_rollingRockModelDistance);
 
 	LegoFloat radius = m_sizeX * 0.5f;
 	LegoFloat halfDimension = m_sizeY * 0.5f;
@@ -79,7 +79,7 @@ void RollingRockHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 		radius = halfDimension;
 	}
 
-	m_bodyEntity.FUN_10026fa0(radius);
+	m_bodyEntity.SetBoundsRadius(radius);
 	m_body.Initialize(&m_bodyEntity, g_unk0x004b42ec, m_sizeX, m_sizeY, m_sizeZ);
 	m_state = state;
 }
@@ -95,7 +95,7 @@ void RollingRockHazard::Reset()
 	m_entity = NULL;
 	m_eventQueue = NULL;
 	m_collisionEvent = NULL;
-	m_bodyEntity.VTable0x54();
+	m_bodyEntity.ResetModelState();
 	m_body.Destroy();
 	Hazard::Reset();
 }
@@ -130,7 +130,7 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 	if (m_state != 1) {
 		Hazard::Update(p_elapsedMs);
 
-		GolSceneNode* node = m_entity->VTable0x58(0);
+		GolSceneNode* node = m_entity->GetSceneNode(0);
 		GolTransformBase* transform = node->VTable0x18(1);
 
 		GolVec3 localPosition;

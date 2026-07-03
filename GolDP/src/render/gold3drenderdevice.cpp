@@ -878,7 +878,7 @@ void GolD3DRenderDevice::VTable0x5c()
 void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodIndex)
 {
 	GolModelEntity* canoe = static_cast<GolModelEntity*>(p_model);
-	m_unk0xc8520 = canoe->VTable0x58(p_lodIndex);
+	m_unk0xc8520 = canoe->GetSceneNode(p_lodIndex);
 	if (m_unk0xc8520 != NULL) {
 		canoe->VTable0x5c(p_lodIndex);
 		if (m_unk0xc83e4) {
@@ -1129,7 +1129,7 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, GolD3DRenderState* 
 	}
 
 	MaterialTable* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
-	m_unk0xc8520 = p_model->VTable0x58(result.m_lodIndex);
+	m_unk0xc8520 = p_model->GetSceneNode(result.m_lodIndex);
 	if (m_unk0xc8520 != NULL) {
 		p_model->VTable0x5c(result.m_lodIndex);
 		if (m_unk0xc8568) {

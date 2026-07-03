@@ -136,7 +136,7 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 	m_currentEntry->GetChoice(choiceIndex, &pieceType, &colorRecordIndex);
 
 	LegoFloat maxDistance = g_maxFloat;
-	entity->VTable0x50(model, maxDistance);
+	entity->SetPrimaryModel(model, maxDistance);
 
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceLibrary->FindPieceRecord(pieceType, 1);
 	m_buildModel->CenterOnPiece(pieceRecord, 0);
@@ -171,7 +171,7 @@ void CarPartCarousel::SetSelection(undefined4 p_index)
 			}
 			else {
 				for (LegoS32 i = 0; i < m_slotCount; i++) {
-					GetItemEntity(i)->VTable0x54();
+					GetItemEntity(i)->ResetModelState();
 				}
 
 				VTable0x60(m_focusedSlot);

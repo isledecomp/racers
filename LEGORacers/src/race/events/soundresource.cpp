@@ -178,7 +178,7 @@ void SoundResource::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x004644b0
 void SoundResource::StopSound()
 {
-	GolSceneNode* node = m_unk0x28->VTable0x58(0);
+	GolSceneNode* node = m_unk0x28->GetSceneNode(0);
 	GolTransformBase* transform = node->VTable0x18(m_nodeIndex);
 
 	GolVec3 position;

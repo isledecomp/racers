@@ -64,7 +64,7 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 
 	m_billboard = static_cast<GolBillboard*>(m_golExport->VTable0x30());
 	GolMaterial* material = p_context->GetRenderer()->FindMaterialByName("cannonb");
-	m_billboard->VTable0x4c(material, 5.0f, 5.0f, g_launcherMaxDistanceSquared);
+	m_billboard->Configure(material, 5.0f, 5.0f, g_launcherMaxDistanceSquared);
 
 	p_parser->ReadLeftCurly();
 

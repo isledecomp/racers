@@ -239,7 +239,7 @@ void RaceSkyState::Load(
 		params.m_absoluteIndexArray = NULL;
 		m_modelBuilder.Build(&params);
 
-		m_domeEntity.VTable0x50(m_domeModel, g_raceSkyMaxFloat);
+		m_domeEntity.SetPrimaryModel(m_domeModel, g_raceSkyMaxFloat);
 		m_domeEntity.EnableFlagBit1();
 
 		GolVec3 center;
@@ -282,7 +282,7 @@ void RaceSkyState::Clear()
 	}
 
 	m_golExport = NULL;
-	m_domeEntity.VTable0x54();
+	m_domeEntity.ResetModelState();
 
 	if (m_nameEntries != NULL) {
 		GolNameTable::Clear();

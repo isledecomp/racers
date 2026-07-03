@@ -1384,7 +1384,7 @@ void GolWorldDatabase::FUN_1002e640()
 			}
 		}
 
-		runtime->VTable0x50(VTable0x38(model->m_unk0x08[0]), maxDistances[0]);
+		runtime->SetPrimaryModel(VTable0x38(model->m_unk0x08[0]), maxDistances[0]);
 		for (lod = 1; lod < 3; lod++) {
 			if (model->m_unk0x08[lod] < 0) {
 				break;

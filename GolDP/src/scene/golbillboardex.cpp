@@ -111,14 +111,14 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 }
 
 // FUNCTION: GOLDP 0x10014fd0
-void GolBillboardEx::VTable0x4c(
+void GolBillboardEx::Configure(
 	GolMaterial* p_position,
 	LegoFloat p_width,
 	LegoFloat p_height,
 	LegoFloat p_maxDistanceSquared
 )
 {
-	GolBillboard::VTable0x4c(p_position, p_width, p_height, p_maxDistanceSquared);
+	GolBillboard::Configure(p_position, p_width, p_height, p_maxDistanceSquared);
 }
 
 // FUNCTION: GOLDP 0x10014ff0

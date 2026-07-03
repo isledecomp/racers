@@ -17,8 +17,8 @@ public:
 		undefined4 p_faceCamera,
 		LegoFloat p_modelDistance
 	);
-	void VTable0x54() override;
-	GolSceneNode* VTable0x58(undefined4) override; // vtable+0x58
+	void ResetModelState() override;
+	GolSceneNode* GetSceneNode(undefined4) override; // vtable+0x58
 
 private:
 	GolSceneNode* m_sceneNode; // 0x90

@@ -126,7 +126,7 @@ LegoU32 CannonballAction::Activate(ActionSetup* p_setup)
 		material = renderDevice->FindMaterialByName("cannon");
 	}
 
-	return m_billboard->VTable0x4c(material, 5.0f, 5.0f, g_unlimitedDrawDistance);
+	return m_billboard->Configure(material, 5.0f, 5.0f, g_unlimitedDrawDistance);
 }
 
 // FUNCTION: LEGORACERS 0x00451ad0
@@ -140,7 +140,7 @@ void CannonballAction::Deactivate()
 	}
 
 	if (m_billboard != NULL) {
-		m_billboard->VTable0x50();
+		m_billboard->SetPrimaryModel();
 	}
 
 	m_ownerRacer = NULL;

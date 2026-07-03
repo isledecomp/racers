@@ -156,7 +156,7 @@ void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_mana
 
 	m_flashBillboard = static_cast<GolBillboard*>(p_export->VTable0x30());
 	GolMaterial* material = renderer->FindMaterialByName("ltflash");
-	m_flashBillboard->VTable0x4c(material, g_lightningFlashWidth, g_lightningFlashHeight, g_lightningFlashDrawDistance);
+	m_flashBillboard->Configure(material, g_lightningFlashWidth, g_lightningFlashHeight, g_lightningFlashDrawDistance);
 
 	m_state = 1;
 	FillJitterTable();
@@ -185,7 +185,7 @@ void LightningAction::Destroy()
 	Deactivate();
 
 	if (m_flashBillboard != NULL) {
-		m_flashBillboard->VTable0x50();
+		m_flashBillboard->SetPrimaryModel();
 		m_owner->m_golExport->VTable0x64(m_flashBillboard);
 		m_flashBillboard = NULL;
 	}

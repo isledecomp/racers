@@ -81,7 +81,7 @@ void LavaGeyserHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_soundSource = p_context->GetSoundSource();
 	m_unk0x58 = p_context->GetMirror();
 	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("mmlavbl");
-	m_trigger.FUN_10026fa0(m_entity->GetModel(0)->GetRadius());
+	m_trigger.SetBoundsRadius(m_entity->GetModel(0)->GetRadius());
 	m_state = 1;
 }
 
@@ -134,7 +134,7 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 
 	LegoFloat frame = m_entity->GetPartTimeMs();
 	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
-	GolSceneNode* node = m_entity->VTable0x58(0);
+	GolSceneNode* node = m_entity->GetSceneNode(0);
 	GolTransformBase* transform = node->VTable0x18(0);
 	LegoU32 elapsedMs = p_elapsedMs;
 	Hazard::Update(p_elapsedMs);

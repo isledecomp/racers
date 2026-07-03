@@ -8,7 +8,7 @@ DECOMP_SIZE_ASSERT(GolWorldEntity::ViewResult, 0x08)
 // TODO: Might need to be on GolOrientedEntity?
 // FUNCTION: GOLDP 0x10026fa0 FOLDED
 // FUNCTION: LEGORACERS 0x00410f10
-void GolWorldEntity::FUN_10026fa0(LegoFloat p_scalar)
+void GolWorldEntity::SetBoundsRadius(LegoFloat p_scalar)
 {
 	m_radius = p_scalar;
 	m_minX = m_center.m_x - p_scalar;

@@ -413,7 +413,7 @@ LegoS32 MenuModelCarousel::ScrollNext()
 
 		item->m_model = item[1].m_model;
 		if (item[1].m_entity.HasModel()) {
-			entity->VTable0x50(item->m_model, g_violetShoalMaxFloat);
+			entity->SetPrimaryModel(item->m_model, g_violetShoalMaxFloat);
 			entity->CopyOrientationAndPositionFrom(item[1].m_entity);
 			entity->InvalidateRadius();
 			entity->SetPrimaryMaterialTable(item[1].m_entity.GetPrimaryMaterialTable());
@@ -421,11 +421,11 @@ LegoS32 MenuModelCarousel::ScrollNext()
 			InitializeItem(item);
 		}
 		else {
-			entity->VTable0x54();
+			entity->ResetModelState();
 		}
 	}
 
-	item->m_entity.VTable0x54();
+	item->m_entity.ResetModelState();
 	item->m_model = model;
 	StartScroll(0);
 	return m_selectedIndex;
@@ -443,7 +443,7 @@ LegoS32 MenuModelCarousel::ScrollPrevious()
 
 		item->m_model = shiftedModel;
 		if (item[-1].m_entity.HasModel()) {
-			entity->VTable0x50(shiftedModel, g_violetShoalMaxFloat);
+			entity->SetPrimaryModel(shiftedModel, g_violetShoalMaxFloat);
 			entity->CopyOrientationAndPositionFrom(item[-1].m_entity);
 			entity->InvalidateRadius();
 			entity->SetPrimaryMaterialTable(item[-1].m_entity.GetPrimaryMaterialTable());
@@ -451,11 +451,11 @@ LegoS32 MenuModelCarousel::ScrollPrevious()
 			InitializeItem(item);
 		}
 		else {
-			entity->VTable0x54();
+			entity->ResetModelState();
 		}
 	}
 
-	item->m_entity.VTable0x54();
+	item->m_entity.ResetModelState();
 	item->m_model = model;
 	StartScroll(0);
 	return m_selectedIndex;

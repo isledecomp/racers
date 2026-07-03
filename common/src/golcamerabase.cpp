@@ -465,7 +465,7 @@ void GolCameraBase::UpdateFromTrackedEntity()
 	}
 
 	m_trackedEntity->VTable0x5c(0);
-	GolSceneNode* frameSet = m_trackedEntity->VTable0x58(0);
+	GolSceneNode* frameSet = m_trackedEntity->GetSceneNode(0);
 	GolTransformBase* orbit = frameSet->VTable0x18(m_trackedNodeIndex);
 
 	GolVec3 position;

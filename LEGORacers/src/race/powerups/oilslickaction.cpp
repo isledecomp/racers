@@ -175,7 +175,7 @@ void OilSlickAction::AdvanceState()
 	SoundVector position;
 	ComputeDropPosition(m_ownerRacer, &position, NULL);
 	m_worldEntity.SetPosition(position);
-	m_worldEntity.FUN_10026fa0(3.0f);
+	m_worldEntity.SetBoundsRadius(3.0f);
 	m_ownerRacer->m_physics.ApplyPitchImpulse(0.0015f, 150);
 	m_soundSource
 		->PlaySpatialSoundById(c_soundDrop, &position, g_oilSoundMinDistance, g_oilSoundMaxDistance, 1.0f, 1.0f);

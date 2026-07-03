@@ -212,7 +212,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	m_entity = p_entity;
 	m_entity->SetModel(
 		p_sourceEntity->GetModel(0),
-		p_sourceEntity->VTable0x58(0),
+		p_sourceEntity->GetSceneNode(0),
 		p_sourceEntity->GetModelPart(0),
 		p_sourceEntity->GetModelDistance(0)
 	);
@@ -222,7 +222,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 		if (p_sourceEntity->GetModel(i)) {
 			m_entity->AddModel(
 				p_sourceEntity->GetModel(i),
-				p_sourceEntity->VTable0x58(i),
+				p_sourceEntity->GetSceneNode(i),
 				p_sourceEntity->GetModelPart(i),
 				p_sourceEntity->GetModelDistance(i)
 			);
@@ -260,7 +260,7 @@ void RacePowerupManager::BrickDebris::Entry::Update(LegoU32 p_elapsedMs)
 	if (m_state == 2) {
 		m_entity->Update(p_elapsedMs);
 		if (m_entity->IsPartAnimationDone()) {
-			m_entity->VTable0x54();
+			m_entity->ResetModelState();
 			m_state = 3;
 		}
 	}
@@ -1456,7 +1456,7 @@ void RacePowerupManager::Destroy()
 
 	LegoS32 i;
 	for (i = 25; i != 0; i--) {
-		m_effectEntities[25 - i].VTable0x54();
+		m_effectEntities[25 - i].ResetModelState();
 	}
 
 	Reset();

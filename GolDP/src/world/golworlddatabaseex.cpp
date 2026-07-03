@@ -269,7 +269,7 @@ undefined4* GolWorldDatabaseEx::VTable0x0c()
 				GOL_FATALERROR_MESSAGE(message);
 			}
 
-			billboard->VTable0x4c(material, sprite->m_unk0x20, sprite->m_unk0x24, maxDistanceSquared);
+			billboard->Configure(material, sprite->m_unk0x20, sprite->m_unk0x24, maxDistanceSquared);
 		}
 
 		billboard->SetPosition(sprite->m_unk0x08);

@@ -91,7 +91,7 @@ void ParticleSystem::Initialize(
 
 	m_model->VTable0x18(p_renderer, 1, 3 * triangleCapacity, triangleCapacity, groupCapacity, materialCapacity);
 	// LINE: LEGORACERS 0x004124b5
-	m_modelEntity.VTable0x50(m_model, g_maxFloat);
+	m_modelEntity.SetPrimaryModel(m_model, g_maxFloat);
 	// LINE: LEGORACERS 0x004124c8
 	Particle* particles = new Particle[m_particleCapacity];
 	m_particles = particles;
@@ -112,7 +112,7 @@ void ParticleSystem::Destroy()
 		delete[] m_particles;
 		m_particles = NULL;
 	}
-	m_modelEntity.VTable0x54();
+	m_modelEntity.ResetModelState();
 	if (m_golExport) {
 		if (m_model) {
 			m_golExport->VTable0x48(m_model);

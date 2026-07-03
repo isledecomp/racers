@@ -559,7 +559,7 @@ void CutsceneEvent::StartOnJointed(GolWorldEntity* p_arg)
 void CutsceneEvent::GetJointPosition(undefined4 p_param1, GolVec3* p_param2)
 {
 	m_animatedEntity->VTable0x5c(0);
-	GolSceneNode* falconNode = m_animatedEntity->VTable0x58(0);
+	GolSceneNode* falconNode = m_animatedEntity->GetSceneNode(0);
 
 	GolVec3 vec1;
 	GolVec3 vec2;
@@ -580,7 +580,7 @@ void CutsceneEvent::GetJointPosition(undefined4 p_param1, GolVec3* p_param2)
 void CutsceneEvent::GetJointAxes(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
 {
 	m_animatedEntity->VTable0x5c(0);
-	GolSceneNode* falconNode = m_animatedEntity->VTable0x58(0);
+	GolSceneNode* falconNode = m_animatedEntity->GetSceneNode(0);
 
 	GolVec3 vec1;
 	GolVec3 vec2;

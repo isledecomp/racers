@@ -45,10 +45,10 @@ GolModelEntity::GolModelEntity()
 
 // FUNCTION: GOLDP 0x10027bb0
 // FUNCTION: LEGORACERS 0x004111b0
-void GolModelEntity::VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance)
+void GolModelEntity::SetPrimaryModel(GolModelBase* p_model, LegoFloat p_modelDistance)
 {
 	if (m_flags & c_flagBit0) {
-		VTable0x54();
+		ResetModelState();
 	}
 
 	m_models[0] = p_model;
@@ -64,7 +64,7 @@ void GolModelEntity::VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance
 
 // FUNCTION: GOLDP 0x10027c00
 // FUNCTION: LEGORACERS 0x00411200
-void GolModelEntity::VTable0x54()
+void GolModelEntity::ResetModelState()
 {
 	LegoU32 i;
 
@@ -185,16 +185,16 @@ void GolModelEntity::FUN_10027e70(GolMatrix4* p_dest, LegoU32 p_index)
 // FUNCTION: LEGORACERS 0x004113c0
 void GolModelEntity::UpdateBounds()
 {
-	VTable0x4c(0);
+	ComputeBoundsFromModel(0);
 }
 
 // FUNCTION: GOLDP 0x10027ea0
 // FUNCTION: LEGORACERS 0x004113d0
-void GolModelEntity::VTable0x4c(LegoU32 p_index)
+void GolModelEntity::ComputeBoundsFromModel(LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];
 	if (model == NULL) {
-		FUN_10026fa0(0.0f);
+		SetBoundsRadius(0.0f);
 		return;
 	}
 
@@ -207,7 +207,7 @@ void GolModelEntity::VTable0x4c(LegoU32 p_index)
 	GolVec3 position;
 	LocalToWorld(center, &position);
 	FUN_10026f70(position);
-	FUN_10026fa0(m_unk0x58 * radius);
+	SetBoundsRadius(m_unk0x58 * radius);
 }
 
 // FUNCTION: GOLDP 0x10027f40
@@ -235,7 +235,7 @@ void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat
 		*p_destScalar = FUN_10028710();
 	}
 	else {
-		VTable0x4c(p_index);
+		ComputeBoundsFromModel(p_index);
 		p_destVec->m_x = m_center.m_x;
 		p_destVec->m_y = m_center.m_y;
 		p_destVec->m_z = m_center.m_z;
@@ -382,7 +382,7 @@ LegoBool32 GolModelEntity::GetKind()
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
-GolSceneNode* GolModelEntity::VTable0x58(undefined4)
+GolSceneNode* GolModelEntity::GetSceneNode(undefined4)
 {
 	return NULL;
 }

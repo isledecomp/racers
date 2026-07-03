@@ -31,7 +31,7 @@ void GolAnimatedEntity::SetModel(
 	LegoFloat p_modelDistance
 )
 {
-	GolModelEntity::VTable0x50(p_model, p_modelDistance);
+	GolModelEntity::SetPrimaryModel(p_model, p_modelDistance);
 	m_nodes[0] = p_node;
 	m_modelParts[0] = p_modelParts;
 }
@@ -54,9 +54,9 @@ void GolAnimatedEntity::SetNode(GolSceneNode* p_node, CmbModelPart* p_modelParts
 
 // FUNCTION: GOLDP 0x10023510
 // FUNCTION: LEGORACERS 0x0040d5d0
-void GolAnimatedEntity::VTable0x54()
+void GolAnimatedEntity::ResetModelState()
 {
-	GolModelEntity::VTable0x54();
+	GolModelEntity::ResetModelState();
 	Reset();
 }
 
@@ -544,11 +544,11 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 
 // STUB: GOLDP 0x10023ef0
 // STUB: LEGORACERS 0x0040e0b0
-void GolAnimatedEntity::VTable0x4c(LegoU32 p_index)
+void GolAnimatedEntity::ComputeBoundsFromModel(LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];
 	if (model == NULL) {
-		FUN_10026fa0(0.0f);
+		SetBoundsRadius(0.0f);
 		return;
 	}
 
@@ -596,7 +596,7 @@ void GolAnimatedEntity::VTable0x4c(LegoU32 p_index)
 	GolVec3 position;
 	LocalToWorld(center, &position);
 	FUN_10026f70(position);
-	FUN_10026fa0(radius * scale);
+	SetBoundsRadius(radius * scale);
 }
 
 // FUNCTION: GOLDP 0x100240b0
@@ -627,7 +627,7 @@ void GolAnimatedEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultSt
 	}
 
 	if (i != 0) {
-		VTable0x4c(i);
+		ComputeBoundsFromModel(i);
 		FUN_100286d0(&position);
 	}
 	p_result->m_visibility = p_view.ClassifySphere(position, FUN_10028710());
@@ -691,7 +691,7 @@ void GolAnimatedEntity::SamplePartRotation(
 
 // FUNCTION: GOLDP 0x100241a0
 // FUNCTION: LEGORACERS 0x0040e480
-GolSceneNode* GolAnimatedEntity::VTable0x58(LegoU32 p_arg1)
+GolSceneNode* GolAnimatedEntity::GetSceneNode(LegoU32 p_arg1)
 {
 	return m_nodes[p_arg1];
 }

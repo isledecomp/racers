@@ -218,7 +218,7 @@ void CarVisuals::UseNormalSkidMaterial()
 // FUNCTION: LEGORACERS 0x0043da50
 void CarVisuals::Destroy()
 {
-	m_curseEntity.VTable0x54();
+	m_curseEntity.ResetModelState();
 	m_shadowDecal.Destroy();
 	m_skidMaterialTable.Clear();
 	m_shadowMaterialTable.Clear();

@@ -101,7 +101,7 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	DestroyChampionResources();
 	DestroyPieceResources(m_context);
 	m_carGroup.Destroy();
-	m_driverEntity.VTable0x54();
+	m_driverEntity.ResetModelState();
 
 	if (m_driverModel) {
 		m_golExport->VTable0x48(m_driverModel);
@@ -236,7 +236,7 @@ void AwardCinematicScreen::CreateWidgets()
 		m_driverModel = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
 		m_driverEntity.SetModel(
 			m_driverModel,
-			sourceDriverEntity->VTable0x58(0),
+			sourceDriverEntity->GetSceneNode(0),
 			sourceDriverEntity->GetModelPart(0),
 			sourceDriverEntity->GetModelDistance(0)
 		);

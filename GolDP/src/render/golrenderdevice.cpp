@@ -729,7 +729,7 @@ void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 
 	GolVec3 localRight;
 	GolVec3 localForward;
-	GolSceneNode* node = static_cast<GolModelEntity*>(p_model)->VTable0x58(result.m_lodIndex);
+	GolSceneNode* node = static_cast<GolModelEntity*>(p_model)->GetSceneNode(result.m_lodIndex);
 	if (node != NULL) {
 		GolVec3 worldRight;
 		GolVec3 worldForward;

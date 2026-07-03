@@ -83,7 +83,7 @@ void RacerModelScreenBase::CreateCarModels()
 			m_context->m_carBuildModel.InitializeModel(m_carModels[i]);
 		}
 
-		m_carModelEntities[i].VTable0x50(m_carModels[i], g_racerPickMaxFloat);
+		m_carModelEntities[i].SetPrimaryModel(m_carModels[i], g_racerPickMaxFloat);
 		m_carModelEntities[i].SetPrimaryMaterialTable(m_context->m_colorTable.GetMaterialTable());
 	}
 
@@ -272,8 +272,8 @@ LegoBool32 RacerModelScreenBase::Destroy()
 	}
 
 	for (LegoS32 i = 0; i < m_slotCount; i++) {
-		m_driverEntities[i].VTable0x54();
-		m_carModelEntities[i].VTable0x54();
+		m_driverEntities[i].ResetModelState();
+		m_carModelEntities[i].ResetModelState();
 		m_golExport->VTable0x48(m_driverModels[i]);
 		m_golExport->VTable0x4c(m_bodySceneNodes[i]);
 
@@ -438,7 +438,7 @@ void RacerModelScreenBase::AlignCarSlots()
 			}
 
 			source->VTable0x5c(0);
-			GolSceneNode* node = source->VTable0x58(0);
+			GolSceneNode* node = source->GetSceneNode(0);
 
 			GolVec3 localVector;
 			GolVec3 direction;

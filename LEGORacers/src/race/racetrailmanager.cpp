@@ -43,7 +43,7 @@ void RaceTrailManager::Trail::Destroy()
 		m_model = NULL;
 	}
 
-	m_entity.VTable0x54();
+	m_entity.ResetModelState();
 	Reset();
 }
 
@@ -94,7 +94,7 @@ void RaceTrailManager::Trail::Initialize(GolD3DRenderDevice* p_renderer, GolExpo
 	m_golExport = p_golExport;
 	m_model = p_golExport->VTable0x14();
 	m_model->VTable0x18(p_renderer, 1, 0x6a, 0x35, 4, 1);
-	m_entity.VTable0x50(m_model, g_raceTrailManagerMaxFloat);
+	m_entity.SetPrimaryModel(m_model, g_raceTrailManagerMaxFloat);
 }
 
 // FUNCTION: LEGORACERS 0x00492a90

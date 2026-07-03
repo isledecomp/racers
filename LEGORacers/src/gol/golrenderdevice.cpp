@@ -96,7 +96,7 @@ LegoU32 GolBillboard::FUN_10029e90(
 	m_positionContainer = p_container;
 	m_positionIndex = static_cast<LegoU16>(p_index);
 	LegoU32 result =
-		VTable0x4c(static_cast<GolMaterial*>(p_container->m_entries[p_index]), p_width, p_height, p_maxDistanceSquared);
+		Configure(static_cast<GolMaterial*>(p_container->m_entries[p_index]), p_width, p_height, p_maxDistanceSquared);
 	m_flags |= c_flagBit2;
 
 	return result;

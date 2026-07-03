@@ -62,7 +62,7 @@ DynamiteAction::~DynamiteAction()
 void DynamiteAction::Destroy()
 {
 	Deactivate();
-	m_modelEntity.VTable0x54();
+	m_modelEntity.ResetModelState();
 	m_manager = 0;
 	m_cutsceneAnimation = 0;
 	m_sparkParticle = 0;
@@ -83,7 +83,7 @@ void DynamiteAction::Initialize(
 	m_manager = p_manager;
 	m_cutsceneAnimation = p_cutsceneAnimation;
 
-	m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
+	m_modelEntity.SetPrimaryModel(p_model->GetModel(0), p_model->GetModelDistance(0));
 
 	for (LegoU32 i = 1; i < 3; i++) {
 		GolModelBase* model = p_model->GetModel(i);

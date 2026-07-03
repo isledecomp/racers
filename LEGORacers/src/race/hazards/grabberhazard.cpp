@@ -76,7 +76,7 @@ void GrabberHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 
 	m_eventQueue = p_context->GetEventQueue();
 	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(entityName);
-	m_trigger.FUN_10026fa0(g_grabberTriggerRadius);
+	m_trigger.SetBoundsRadius(g_grabberTriggerRadius);
 	m_state = 1;
 }
 
@@ -229,7 +229,7 @@ void GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 void GrabberHazard::GetGrabPosition(GolVec3* p_position)
 {
 	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
-	GolSceneNode* node = m_entity->VTable0x58(0);
+	GolSceneNode* node = m_entity->GetSceneNode(0);
 	GolTransformBase* transform = node->VTable0x18(0);
 
 	GolVec3 localPosition;

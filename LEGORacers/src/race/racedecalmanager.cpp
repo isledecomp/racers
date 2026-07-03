@@ -68,7 +68,7 @@ void RaceDecalManager::Trail::Destroy()
 	m_decal.Destroy();
 
 	for (i = 0; i < sizeOfArray(m_slots); i++) {
-		m_slots[i].m_entry.m_entity.VTable0x54();
+		m_slots[i].m_entry.m_entity.ResetModelState();
 	}
 
 	Reset();
@@ -127,7 +127,7 @@ void RaceDecalManager::Trail::Initialize(
 			m_decal.m_triangleCapacity * 2 + 2,
 			1
 		);
-		slot->m_entry.m_entity.VTable0x50(slot->m_model, g_raceDecalMaxFloat);
+		slot->m_entry.m_entity.SetPrimaryModel(slot->m_model, g_raceDecalMaxFloat);
 		slot->m_entry.EnableFlagBit1();
 		slot++;
 		count--;

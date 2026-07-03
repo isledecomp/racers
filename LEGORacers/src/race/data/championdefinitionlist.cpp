@@ -270,7 +270,7 @@ GolModelEntity* ChampionDefinitionList::CreateChampionModel(ChampionDefinition* 
 	name[sizeof(GolName)] = '\0';
 	m_models[m_entryCount]->VTable0x1c(m_renderer, name, m_binary);
 
-	m_modelEntities[m_entryCount].VTable0x50(m_models[m_entryCount], g_unk0x004afde4);
+	m_modelEntities[m_entryCount].SetPrimaryModel(m_models[m_entryCount], g_unk0x004afde4);
 	m_entryCount++;
 
 	return &m_modelEntities[m_entryCount - 1];

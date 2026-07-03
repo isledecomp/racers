@@ -151,10 +151,10 @@ void TimeRaceManager::Initialize(
 // FUNCTION: LEGORACERS 0x00422670
 void TimeRaceManager::Shutdown()
 {
-	m_bestGhostSecondary.VTable0x54();
-	m_bestGhostDriver.VTable0x54();
-	m_bestGhostMarker.VTable0x54();
-	m_bestGhostCarModel.VTable0x54();
+	m_bestGhostSecondary.ResetModelState();
+	m_bestGhostDriver.ResetModelState();
+	m_bestGhostMarker.ResetModelState();
+	m_bestGhostCarModel.ResetModelState();
 
 	if (m_worldDatabase) {
 		m_golExport->VTable0x3c(m_worldDatabase);
@@ -435,7 +435,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 
 	if (m_flags & c_flagBestRunValid) {
 		GolModelEntity* sourceModel = p_racer->m_visuals.m_bodyModelEntity;
-		m_bestGhostCarModel.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
+		m_bestGhostCarModel.SetPrimaryModel(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
 		LegoU32 i;
 		for (i = 1; i < 3; i++) {
 			if (sourceModel->GetModel(i)) {
@@ -446,7 +446,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 		GolAnimatedEntity* sourceAnimated = p_racer->m_visuals.m_carEntity;
 		m_bestGhostMarker.SetModel(
 			sourceAnimated->GetModel(0),
-			sourceAnimated->VTable0x58(0),
+			sourceAnimated->GetSceneNode(0),
 			sourceAnimated->GetModelPart(0),
 			sourceAnimated->GetModelDistance(0)
 		);
@@ -454,7 +454,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 			if (sourceAnimated->GetModel(i)) {
 				m_bestGhostMarker.AddModel(
 					sourceAnimated->GetModel(i),
-					sourceAnimated->VTable0x58(i),
+					sourceAnimated->GetSceneNode(i),
 					sourceAnimated->GetModelPart(i),
 					sourceAnimated->GetModelDistance(i)
 				);
@@ -464,7 +464,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 		sourceAnimated = p_racer->m_visuals.m_driverEntity;
 		m_bestGhostDriver.SetModel(
 			sourceAnimated->GetModel(0),
-			sourceAnimated->VTable0x58(0),
+			sourceAnimated->GetSceneNode(0),
 			sourceAnimated->GetModelPart(0),
 			sourceAnimated->GetModelDistance(0)
 		);
@@ -472,7 +472,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 			if (sourceAnimated->GetModel(i)) {
 				m_bestGhostDriver.AddModel(
 					sourceAnimated->GetModel(i),
-					sourceAnimated->VTable0x58(i),
+					sourceAnimated->GetSceneNode(i),
 					sourceAnimated->GetModelPart(i),
 					sourceAnimated->GetModelDistance(i)
 				);
@@ -483,7 +483,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 		if (sourceAnimated) {
 			m_bestGhostSecondary.SetModel(
 				sourceAnimated->GetModel(0),
-				sourceAnimated->VTable0x58(0),
+				sourceAnimated->GetSceneNode(0),
 				sourceAnimated->GetModelPart(0),
 				sourceAnimated->GetModelDistance(0)
 			);
@@ -491,7 +491,7 @@ void TimeRaceManager::AttachRacer(Racer* p_racer)
 				if (sourceAnimated->GetModel(i)) {
 					m_bestGhostSecondary.AddModel(
 						sourceAnimated->GetModel(i),
-						sourceAnimated->VTable0x58(i),
+						sourceAnimated->GetSceneNode(i),
 						sourceAnimated->GetModelPart(i),
 						sourceAnimated->GetModelDistance(i)
 					);

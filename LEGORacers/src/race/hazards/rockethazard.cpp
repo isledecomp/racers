@@ -89,7 +89,7 @@ void RocketHazard::Load(HazardContext* p_context, GolFileParser*)
 	GolVec3 position;
 	m_offModel->GetPosition(&position);
 	m_trigger.SetCenter(position);
-	m_trigger.FUN_10026fa0(g_rocketTriggerRadius);
+	m_trigger.SetBoundsRadius(g_rocketTriggerRadius);
 	m_unk0x58 = 1;
 	m_state = 1;
 }

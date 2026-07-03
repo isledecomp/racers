@@ -47,7 +47,7 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 		return TRUE;
 	}
 
-	m_driverEntity.VTable0x54();
+	m_driverEntity.ResetModelState();
 	if (m_driverModel) {
 		m_golExport->VTable0x48(m_driverModel);
 		m_driverModel = NULL;
@@ -150,7 +150,7 @@ void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 		::strncpy(name, p_name, sizeof(m_driverName));
 
 		if (m_driverEntity.HasModel()) {
-			m_driverEntity.VTable0x54();
+			m_driverEntity.ResetModelState();
 			m_context->m_modelBuilder.RefreshMenuResources();
 		}
 
@@ -164,7 +164,7 @@ void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 		m_driverModel = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
 		m_driverEntity.SetModel(
 			m_driverModel,
-			modelEntity->VTable0x58(0),
+			modelEntity->GetSceneNode(0),
 			modelEntity->GetModelPart(),
 			modelEntity->GetModelDistance(0)
 		);

@@ -139,7 +139,7 @@ void BeamMesh::Initialize(const SetupParams* p_params)
 // FUNCTION: LEGORACERS 0x00493e60
 void BeamMesh::Destroy()
 {
-	m_entity.VTable0x54();
+	m_entity.ResetModelState();
 
 	if (m_golExport != NULL) {
 		if (m_sceneNode != NULL) {
@@ -603,7 +603,7 @@ BeamEntity* BeamEntity::Destroy(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00494c40
 BeamEntity::~BeamEntity()
 {
-	VTable0x54();
+	ResetModelState();
 }
 
 // FUNCTION: LEGORACERS 0x00494c50
@@ -614,19 +614,19 @@ void BeamEntity::Initialize(
 	LegoFloat p_modelDistance
 )
 {
-	GolModelEntity::VTable0x50(p_model, p_modelDistance);
+	GolModelEntity::SetPrimaryModel(p_model, p_modelDistance);
 	m_sceneNode = p_sceneNode;
 	m_faceCamera = p_faceCamera;
 }
 
 // FUNCTION: LEGORACERS 0x00494c80
-void BeamEntity::VTable0x54()
+void BeamEntity::ResetModelState()
 {
 	m_sceneNode = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c90
-GolSceneNode* BeamEntity::VTable0x58(undefined4)
+GolSceneNode* BeamEntity::GetSceneNode(undefined4)
 {
 	return m_sceneNode;
 }

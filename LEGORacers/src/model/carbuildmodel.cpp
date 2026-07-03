@@ -1483,11 +1483,11 @@ LegoBool32 CarBuildModel::Initialize(
 	m_model = m_golExport->VTable0x14();
 	m_renderer = renderer;
 	AcquireBuffers();
-	m_modelEntity.VTable0x50(m_model, g_carBuildModelMaxFloat);
+	m_modelEntity.SetPrimaryModel(m_model, g_carBuildModelMaxFloat);
 
 	m_overlayModel = m_golExport->VTable0x14();
 	m_overlayModel->VTable0x18(renderer, 1, 384, 192, 112, 2);
-	m_overlayEntity.VTable0x50(m_overlayModel, g_carBuildModelMaxFloat);
+	m_overlayEntity.SetPrimaryModel(m_overlayModel, g_carBuildModelMaxFloat);
 	m_overlayEntity.SetPrimaryMaterialTable(m_overlayModel->GetMaterialTable());
 
 	GolMaterialLibrary* materialLibrary = m_colorTable->GetWorldDatabase()->VTable0x30(1);
@@ -1511,8 +1511,8 @@ void CarBuildModel::Destroy()
 {
 	m_pieceGrid.Clear();
 	m_pieceList.Clear();
-	GetModelEntity()->VTable0x54();
-	GetOverlayEntity()->VTable0x54();
+	GetModelEntity()->ResetModelState();
+	GetOverlayEntity()->ResetModelState();
 
 	if (m_golExport != NULL) {
 		if (m_model != NULL) {
@@ -2544,10 +2544,10 @@ void CarBuildModel::BuildIntoModel(GolModelBase* p_model, undefined4 p_unk0x08, 
 	GolModelBase* model = m_model;
 	m_model = p_model;
 	MaterialTable* materialTable = m_modelEntity.GetPrimaryMaterialTable();
-	m_modelEntity.VTable0x50(p_model, g_carBuildModelMaxFloat);
+	m_modelEntity.SetPrimaryModel(p_model, g_carBuildModelMaxFloat);
 	RebuildModel(p_unk0x08, p_unk0x0c);
 	m_model = model;
-	m_modelEntity.VTable0x50(model, g_carBuildModelMaxFloat);
+	m_modelEntity.SetPrimaryModel(model, g_carBuildModelMaxFloat);
 	m_modelEntity.SetPrimaryMaterialTable(materialTable);
 }
 

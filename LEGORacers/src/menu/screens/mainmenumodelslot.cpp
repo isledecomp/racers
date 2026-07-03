@@ -90,7 +90,7 @@ LegoBool32 MainMenuModelSlot::Destroy()
 		return TRUE;
 	}
 
-	m_driverEntity.VTable0x54();
+	m_driverEntity.ResetModelState();
 
 	if (m_driverModel) {
 		m_golExport->VTable0x48(m_driverModel);

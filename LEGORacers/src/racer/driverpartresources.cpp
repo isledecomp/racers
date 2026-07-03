@@ -347,7 +347,7 @@ GolSceneNode* DriverPartResources::GetBodySceneNode(LegoS32 p_index)
 	}
 
 	GolAnimatedEntity* model = m_partResource->FindAnimatedEntity(name);
-	return model->VTable0x58(0);
+	return model->GetSceneNode(0);
 }
 
 // FUNCTION: LEGORACERS 0x004985e0

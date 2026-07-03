@@ -102,7 +102,7 @@ void GolWorldEntityGroup::UpdateBounds()
 
 	offset += firstCenter;
 	SetCenter(offset);
-	FUN_10026fa0(radius);
+	SetBoundsRadius(radius);
 }
 
 // FUNCTION: LEGORACERS 0x004120b0

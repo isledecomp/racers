@@ -2114,7 +2114,7 @@ void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 
 	entity->SetModel(
 		p_curseEntity->GetModel(0),
-		p_curseEntity->VTable0x58(0),
+		p_curseEntity->GetSceneNode(0),
 		p_curseEntity->GetModelPart(0),
 		p_curseEntity->GetModelDistance(0)
 	);
@@ -2123,7 +2123,7 @@ void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 		if (p_curseEntity->GetModel(i)) {
 			entity->AddModel(
 				p_curseEntity->GetModel(i),
-				p_curseEntity->VTable0x58(i),
+				p_curseEntity->GetSceneNode(i),
 				p_curseEntity->GetModelPart(i),
 				p_curseEntity->GetModelDistance(i)
 			);
@@ -2175,7 +2175,7 @@ void Racer::RemoveCurse()
 	m_flags = flags0xd04;
 
 	m_driveController.m_flags &= ~DriveController::c_flagCursed;
-	m_visuals.m_curseEntity.VTable0x54();
+	m_visuals.m_curseEntity.ResetModelState();
 	m_visuals.EndFlash();
 	m_physics.EndCurseSlow();
 }

@@ -4,6 +4,7 @@
 #include "golerror.h"
 #include "golname.h"
 #include "goltxtparser.h"
+#include "menu/style/menubindingtoken.h"
 #include "menu/style/sharedmenustyletable.h"
 #include "render/gold3drenderdevice.h"
 
@@ -191,10 +192,10 @@ void MenuStyleTable::ParseImageStyle(ImageStyle* p_entry)
 
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x28:
+		case c_styleImage:
 			p_entry->m_image = m_renderer->FindImageByName(m_parser->ReadString());
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case c_styleColors:
 			ReadVisualState(p_entry->m_color.m_bytes);
 			p_entry->m_hasColor = TRUE;
 			break;
@@ -216,13 +217,13 @@ void MenuStyleTable::ParseTextStyle(TextStyle* p_entry)
 
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x29:
+		case c_styleFont:
 			p_entry->m_font = m_renderer->FindFontByName(m_parser->ReadString());
 			break;
 		case GolFileParser::e_unknown0x2f:
 			p_entry->m_unk0x10 = m_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case c_styleColors:
 			ReadVisualState(p_entry->m_color.m_bytes);
 			p_entry->m_hasColor = TRUE;
 			break;
@@ -249,12 +250,12 @@ void MenuStyleTable::ParseFrameStyle(FrameStyle* p_entry)
 		LegoS32 i;
 
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x28:
+		case c_styleImage:
 			for (i = 0; i < 8; i++) {
 				p_entry->m_images[i] = m_renderer->FindImageByName(m_parser->ReadString());
 			}
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case c_styleColors:
 			ReadVisualState(p_entry->m_color0.m_bytes);
 			ReadVisualState(p_entry->m_color1.m_bytes);
 			p_entry->m_hasColors = TRUE;
@@ -282,7 +283,7 @@ void MenuStyleTable::ParseIconStyle(IconStyle* p_entry)
 		case GolFileParser::e_unknown0x2d:
 			p_entry->m_unk0x84 = m_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case c_styleSounds:
 			for (i = 0; i < 5; i++) {
 				p_entry->m_unk0x18[i] = m_parser->ReadInteger();
 			}
@@ -293,7 +294,7 @@ void MenuStyleTable::ParseIconStyle(IconStyle* p_entry)
 				ReadRect(&p_entry->m_unk0x24[i].m_left);
 			}
 			break;
-		case GolFileParser::e_unknown0x2a:
+		case c_styleColors:
 			for (i = 0; i < 6; i++) {
 				ReadVisualState(p_entry->m_unk0x00[i].m_bytes);
 			}
@@ -317,12 +318,12 @@ void MenuStyleTable::ParseButtonStyle(ButtonStyle* p_entry)
 		LegoS32 i;
 
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x28:
+		case c_styleImage:
 			for (i = 0; i < 6; i++) {
 				p_entry->m_stateImages[i] = m_renderer->FindImageByName(m_parser->ReadString());
 			}
 			break;
-		case GolFileParser::e_unknown0x3a:
+		case c_styleIcon:
 			ParseIconStyle(p_entry);
 			break;
 		default:
@@ -351,18 +352,18 @@ void MenuStyleTable::ParseMultiStateStyle(MultiStateStyle* p_entry)
 		LegoS32 i;
 
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x3a:
+		case c_styleIcon:
 			ParseIconStyle(p_entry);
 			break;
 		case GolFileParser::e_unknown0x2c:
 			ReadRect(&p_entry->m_rect.m_left);
 			break;
-		case GolFileParser::e_unknown0x29:
+		case c_styleFont:
 			for (i = 0; i < 6; i++) {
 				p_entry->m_stateFonts[i] = m_renderer->FindFontByName(m_parser->ReadString());
 			}
 			break;
-		case GolFileParser::e_unknown0x28: {
+		case c_styleImage: {
 			GolImage** imageCursor = image;
 			for (i = 0; i < 6; i++) {
 				*imageCursor = m_renderer->FindImageByName(m_parser->ReadString());
@@ -394,7 +395,7 @@ void MenuStyleTable::ParseHotspotStyle(HotspotStyle* p_entry)
 		LegoS32 i;
 
 		switch (m_parser->GetCurrentToken()) {
-		case GolFileParser::e_unknown0x3a:
+		case c_styleIcon:
 			ParseIconStyle(p_entry);
 			break;
 		case GolFileParser::e_unknown0x2f:
@@ -410,7 +411,7 @@ void MenuStyleTable::ParseHotspotStyle(HotspotStyle* p_entry)
 				ReadRect(&p_entry->m_hotspotRects[i].m_left);
 			}
 			break;
-		case GolFileParser::e_unknown0x28:
+		case c_styleImage:
 			p_entry->m_image = m_renderer->FindImageByName(m_parser->ReadString());
 			break;
 		default:
@@ -469,7 +470,7 @@ void MenuStyleTable::ParseSelectorStyle(SelectorStyle* p_entry)
 	if (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		do {
 			switch (m_parser->GetCurrentToken()) {
-			case GolFileParser::e_unknown0x3a:
+			case c_styleIcon:
 				ParseIconStyle(p_entry);
 				readBase++;
 				break;
@@ -482,7 +483,7 @@ void MenuStyleTable::ParseSelectorStyle(SelectorStyle* p_entry)
 				p_entry->m_frameStyle = static_cast<FrameStyle*>(FindStyle(m_parser->ReadString()));
 				readSingle++;
 				break;
-			case GolFileParser::e_unknown0x2a:
+			case c_styleColors:
 				visualState = p_entry->m_unk0x9c;
 				i = 4;
 				do {
@@ -525,7 +526,7 @@ void MenuStyleTable::ParseCompositeStyle(CompositeStyle* p_entry)
 			LegoS32 i;
 
 			switch (m_parser->GetCurrentToken()) {
-			case GolFileParser::e_unknown0x3a:
+			case c_styleIcon:
 				ParseIconStyle(p_entry);
 				readBase++;
 				break;
@@ -539,12 +540,12 @@ void MenuStyleTable::ParseCompositeStyle(CompositeStyle* p_entry)
 				p_entry->m_unk0x98 = static_cast<ImageStyle*>(FindStyle(m_parser->ReadString()));
 				readSecondaryPair++;
 				break;
-			case GolFileParser::e_unknown0x28:
+			case c_styleImage:
 				for (i = 0; i < 6; i++) {
 					p_entry->m_stateImages[i] = m_renderer->FindImageByName(m_parser->ReadString());
 				}
 				break;
-			case GolFileParser::e_unknown0x2b:
+			case c_styleSounds:
 				p_entry->m_soundIds.m_unk0x00 = m_parser->ReadInteger();
 				p_entry->m_soundIds.m_unk0x02 = m_parser->ReadInteger();
 				break;

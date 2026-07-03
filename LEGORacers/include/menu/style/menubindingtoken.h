@@ -21,4 +21,14 @@ enum MenuBindingToken {
 	c_blockSceneRef = 0x45,      // simple scene reference
 };
 
+// Shared field tokens inside .MSB style bodies (several ids are
+// style-scoped; those stay with their style structs).
+enum MenuStyleFieldToken {
+	c_styleImage = 0x28,
+	c_styleFont = 0x29,
+	c_styleColors = 0x2a,
+	c_styleSounds = 0x2b,
+	c_styleIcon = 0x3a,
+};
+
 #endif // MENUBINDINGTOKEN_H

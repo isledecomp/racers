@@ -348,7 +348,7 @@ public:
 	GolWorldEntity* GetIndexedEntity(LegoU32 p_index, LegoU32 p_modelIndex);
 	MabMaterialAnimation* GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex);
 	MabMaterialTrack* GetMaterialAnimationItem(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
-	LegoU32 SetWorldScale(LegoFloat p_scale);
+	LegoU32 SetCameraAspectRatios(LegoFloat p_scale);
 
 	void SetEventSink(CutsceneEventSink* p_unk0x0c) { m_eventSink = p_unk0x0c; }
 	CutsceneEventSink* GetEventSink() const { return m_eventSink; }

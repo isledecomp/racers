@@ -76,11 +76,11 @@ void SphinxHazard::OnActivate(void*)
 
 	int(__cdecl * compare)(const LegoChar*, const LegoChar*, size_t) = ::strncmp;
 	LegoU32 i = 0;
-	while (i < m_sharedDatabase->GetUnk0x74()) {
+	while (i < m_sharedDatabase->GetMaterialAnimationCount()) {
 		GolName name;
-		::strncpy(name, m_sharedDatabase->GetUnk0x78()[i], sizeof(name));
+		::strncpy(name, m_sharedDatabase->GetMaterialAnimationNames()[i], sizeof(name));
 		if (compare(name, "blowup", sizeof(name)) == 0) {
-			animation = m_sharedDatabase->VTable0x4c(i);
+			animation = m_sharedDatabase->GetMaterialAnimation(i);
 		}
 		i++;
 		if (animation != NULL) {
@@ -162,14 +162,14 @@ void SphinxHazard::ResetState()
 
 	LegoU32 i = 0;
 	while (TRUE) {
-		if (i >= m_sharedDatabase->GetUnk0x74()) {
+		if (i >= m_sharedDatabase->GetMaterialAnimationCount()) {
 			break;
 		}
 
 		GolName name;
-		::strncpy(name, m_sharedDatabase->GetUnk0x78()[i], sizeof(name));
+		::strncpy(name, m_sharedDatabase->GetMaterialAnimationNames()[i], sizeof(name));
 		if (compare(name, "blowup", sizeof(name)) == 0) {
-			animation = m_sharedDatabase->VTable0x4c(i);
+			animation = m_sharedDatabase->GetMaterialAnimation(i);
 		}
 		i++;
 		if (animation != NULL) {

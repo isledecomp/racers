@@ -1490,7 +1490,7 @@ LegoBool32 CarBuildModel::Initialize(
 	m_overlayEntity.SetPrimaryModel(m_overlayModel, g_carBuildModelMaxFloat);
 	m_overlayEntity.SetPrimaryMaterialTable(m_overlayModel->GetMaterialTable());
 
-	GolMaterialLibrary* materialLibrary = m_colorTable->GetWorldDatabase()->VTable0x30(1);
+	GolMaterialLibrary* materialLibrary = m_colorTable->GetWorldDatabase()->GetMaterialLibrary(1);
 	m_overlayModel->GetMaterialTable()->SetPosition(0, materialLibrary->GetItem(0));
 	m_overlayModel->GetMaterialTable()->SetPosition(1, materialLibrary->GetItem(1));
 

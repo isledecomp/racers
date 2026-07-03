@@ -564,10 +564,10 @@ void RacePowerupManager::LoadDatabases(
 )
 {
 	m_worldDatabase = m_golExport->VTable0x08();
-	m_worldDatabase->VTable0x14(m_renderer, p_databaseName, p_binary, 1.0f);
+	m_worldDatabase->Load(m_renderer, p_databaseName, p_binary, 1.0f);
 	m_materialAnimation.VTable0x04(m_renderer, p_animationName, p_binary);
 	m_turbo3Database = m_golExport->VTable0x08();
-	m_turbo3Database->VTable0x14(m_renderer, "turbo3", p_binary, 1.0f);
+	m_turbo3Database->Load(m_renderer, "turbo3", p_binary, 1.0f);
 }
 
 // FUNCTION: LEGORACERS 0x00457cf0
@@ -2236,11 +2236,11 @@ LegoU32 RacePowerupManager::ActivateWarp(Racer* p_racer, LegoU32 p_level)
 	m_activeActions = action;
 
 	GolModelEntity* model;
-	if (m_worldDatabase->GetUnk0xb4NameEntries() == NULL) {
+	if (m_worldDatabase->GetModelEntityEntries() == NULL) {
 		model = NULL;
 	}
 	else {
-		model = m_worldDatabase->GetUnk0xb4Name("warpprt");
+		model = m_worldDatabase->GetModelEntityByName("warpprt");
 	}
 
 	LegoU32 result = action->Activate(p_racer, model, m_aimTarget);

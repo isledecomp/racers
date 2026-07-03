@@ -126,7 +126,7 @@ void TimeRaceManager::Initialize(
 	m_recordRun->m_initialRotation.m_w = 0.0f;
 
 	m_worldDatabase = m_golExport->VTable0x08();
-	m_worldDatabase->VTable0x14(p_renderer, "ghost", p_binary, 1.0f);
+	m_worldDatabase->Load(p_renderer, "ghost", p_binary, 1.0f);
 
 	m_recordGhostMarker = m_worldDatabase->GetAnimatedEntities();
 	m_recordGhostDriver = m_worldDatabase->GetAnimatedEntities() + 1;

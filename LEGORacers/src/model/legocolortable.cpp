@@ -69,7 +69,7 @@ void LegoColorTable::Destroy()
 	}
 
 	if (m_golExport != NULL && m_wdf != NULL) {
-		m_wdf->VTable0x18();
+		m_wdf->Destroy();
 		m_golExport->VTable0x3c(m_wdf);
 	}
 
@@ -185,17 +185,17 @@ void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_bina
 		m_materialTable.Clear();
 	}
 	if (m_wdf != NULL) {
-		m_wdf->VTable0x18();
+		m_wdf->Destroy();
 	}
 	else {
 		m_wdf = m_golExport->VTable0x08();
 	}
 
 	m_wdf->VTable0x54(p_unk0x0c);
-	m_wdf->VTable0x14(m_renderer, p_filename, p_binary, 1.0f);
+	m_wdf->Load(m_renderer, p_filename, p_binary, 1.0f);
 	m_wdf->VTable0x54(TRUE);
 
-	m_materials = m_wdf->VTable0x30(0);
+	m_materials = m_wdf->GetMaterialLibrary(0);
 	LegoS32 materialCount = m_materials->GetItemCount();
 	m_materialCount = materialCount;
 	m_materialTable.Initialize(m_renderer, materialCount);

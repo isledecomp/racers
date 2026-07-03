@@ -127,7 +127,7 @@ void DriverPartResources::LoadPartResource(LegoBool32 p_binary)
 	if (m_partResource == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_partResource->VTable0x14(m_renderer, fileName, p_binary, 1.0f);
+	m_partResource->Load(m_renderer, fileName, p_binary, 1.0f);
 
 	fileName[::strlen(fileName) - 3] = 'g';
 	fileName[::strlen(fileName) - 2] = 'c';

@@ -40,33 +40,33 @@ void CodePuzzleHazard::Load(HazardContext* p_context, GolFileParser*)
 
 	GolWorldDatabase* worldDatabase = p_context->GetTrackDatabase();
 	GolModelEntity* modelEntity;
-	if (!worldDatabase->GetUnk0xb4NameEntries()) {
+	if (!worldDatabase->GetModelEntityEntries()) {
 		modelEntity = NULL;
 	}
 	else {
-		modelEntity = worldDatabase->GetUnk0xb4Name("mmcode1");
+		modelEntity = worldDatabase->GetModelEntityByName("mmcode1");
 	}
 	m_codeModel1 = modelEntity;
 
 	worldDatabase = p_context->GetTrackDatabase();
-	if (!worldDatabase->GetUnk0xb4NameEntries()) {
+	if (!worldDatabase->GetModelEntityEntries()) {
 		modelEntity = NULL;
 	}
 	else {
-		modelEntity = worldDatabase->GetUnk0xb4Name("mmcode2");
+		modelEntity = worldDatabase->GetModelEntityByName("mmcode2");
 	}
 	m_codeModel2 = modelEntity;
 
 	worldDatabase = p_context->GetTrackDatabase();
-	if (!worldDatabase->GetUnk0xb4NameEntries()) {
+	if (!worldDatabase->GetModelEntityEntries()) {
 		modelEntity = NULL;
 	}
 	else {
-		modelEntity = worldDatabase->GetUnk0xb4Name("mmcode3");
+		modelEntity = worldDatabase->GetModelEntityByName("mmcode3");
 	}
 	m_codeModel3 = modelEntity;
 
-	MabMaterialAnimation* animation = p_context->GetTrackDatabase()->VTable0x4c(0);
+	MabMaterialAnimation* animation = p_context->GetTrackDatabase()->GetMaterialAnimation(0);
 	m_codeItem1 = &animation->GetUnk0x0c()[5];
 	m_codeItem2 = &animation->GetUnk0x0c()[4];
 	m_codeItem3 = &animation->GetUnk0x0c()[3];

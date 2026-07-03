@@ -96,7 +96,7 @@ void DriverHeadBuilder::LoadHeadResource(LegoBool32 p_binary)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_worldDatabase->VTable0x14(m_renderer, headModelFileName, p_binary, 1.0f);
+	m_worldDatabase->Load(m_renderer, headModelFileName, p_binary, 1.0f);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");

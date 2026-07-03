@@ -265,7 +265,7 @@ void RaceSkyState::Load(
 	}
 
 	m_skyWorld = m_golExport->VTable0x08();
-	m_skyWorld->VTable0x14(p_renderer, p_worldName, p_binary, 1.0f);
+	m_skyWorld->Load(p_renderer, p_worldName, p_binary, 1.0f);
 }
 
 // FUNCTION: LEGORACERS 0x0041cbe0

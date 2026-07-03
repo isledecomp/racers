@@ -1444,7 +1444,7 @@ void CutsceneDefinition::Clear()
 			LegoU32 i;
 			for (i = 0; i < m_worldDatabaseCount; i++) {
 				if (m_worldDatabases[i]) {
-					m_worldDatabases[i]->VTable0x18();
+					m_worldDatabases[i]->Destroy();
 					m_golExport->VTable0x3c(m_worldDatabases[i]);
 				}
 			}
@@ -1498,7 +1498,7 @@ void CutsceneDefinition::LoadWorlds(LegoBool32 p_binary)
 	if (m_worldNames) {
 		for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
 			m_worldDatabases[i] = m_golExport->VTable0x08();
-			m_worldDatabases[i]->VTable0x14(m_renderer, &m_worldNames[i * 9], p_binary, 1.0f);
+			m_worldDatabases[i]->Load(m_renderer, &m_worldNames[i * 9], p_binary, 1.0f);
 		}
 	}
 }
@@ -1589,13 +1589,13 @@ GolWorldEntity* CutsceneDefinition::FindBspEntity(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x00406f20
 GolWorldEntity* CutsceneDefinition::GetIndexedEntity(LegoU32 p_index, LegoU32 p_modelIndex)
 {
-	return m_worldDatabases[p_index]->VTable0x48(p_modelIndex);
+	return m_worldDatabases[p_index]->GetWorldEntity(p_modelIndex);
 }
 
 // FUNCTION: LEGORACERS 0x00406f40
 MabMaterialAnimation* CutsceneDefinition::GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex)
 {
-	return m_worldDatabases[p_index]->VTable0x4c(p_animationIndex);
+	return m_worldDatabases[p_index]->GetMaterialAnimation(p_animationIndex);
 }
 
 // FUNCTION: LEGORACERS 0x00406f60
@@ -1605,18 +1605,18 @@ MabMaterialTrack* CutsceneDefinition::GetMaterialAnimationItem(
 	LegoU32 p_itemIndex
 )
 {
-	MabMaterialAnimation* materialAnimation = m_worldDatabases[p_index]->VTable0x4c(p_animationIndex);
+	MabMaterialAnimation* materialAnimation = m_worldDatabases[p_index]->GetMaterialAnimation(p_animationIndex);
 	return &materialAnimation->GetUnk0x0c()[p_itemIndex];
 }
 
 // FUNCTION: LEGORACERS 0x00406f90
-LegoU32 CutsceneDefinition::SetWorldScale(LegoFloat p_scale)
+LegoU32 CutsceneDefinition::SetCameraAspectRatios(LegoFloat p_scale)
 {
 	LegoU32 i = 0;
 	LegoU32 result = m_worldDatabaseCount;
 	if (result > 0) {
 		do {
-			m_worldDatabases[i]->SetWorldScale(p_scale);
+			m_worldDatabases[i]->SetCameraAspectRatios(p_scale);
 			result = m_worldDatabaseCount;
 			i++;
 		} while (i < result);

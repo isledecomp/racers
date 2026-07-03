@@ -104,7 +104,7 @@ void MenuSceneScreen::SceneWidget::LoadCutscene(SceneRefBinding* p_createParams,
 	LegoFloat scale =
 		(LegoFloat) ((double) (m_viewportRect.m_right - m_viewportRect.m_left) /
 					 (double) (m_viewportRect.m_bottom - m_viewportRect.m_top) * p_createParams->m_aspectScale);
-	m_definition.SetWorldScale(scale);
+	m_definition.SetCameraAspectRatios(scale);
 
 	m_autoAdvance = p_createParams->m_autoAdvance;
 	m_frameIndex = p_createParams->m_startFrameIndex;

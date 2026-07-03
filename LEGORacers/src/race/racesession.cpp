@@ -747,7 +747,7 @@ void RaceSession::DestroyHudImages()
 void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 {
 	m_effectsDatabase = m_golExport->VTable0x08();
-	m_effectsDatabase->VTable0x14(m_renderer, m_effectsModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_effectsDatabase->Load(m_renderer, m_effectsModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_effectsDatabase->ResetEntities();
 	}
@@ -760,7 +760,7 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	}
 
 	m_trackDatabase = m_golExport->VTable0x08();
-	m_trackDatabase->VTable0x14(m_renderer, m_trackModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_trackDatabase->Load(m_renderer, m_trackModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_trackDatabase->ResetEntities();
 	}
@@ -773,7 +773,7 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	DrawLoadProgress(0.26f);
 
 	m_triggerDatabase = m_golExport->VTable0x08();
-	m_triggerDatabase->VTable0x14(m_renderer, m_triggerModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_triggerDatabase->Load(m_renderer, m_triggerModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_triggerDatabase->ResetEntities();
 	}
@@ -795,15 +795,14 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	DrawLoadProgress(0.38f);
 
 	m_sharedDatabase = m_golExport->VTable0x08();
-	m_sharedDatabase->VTable0x14(m_renderer, m_sharedModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_sharedDatabase->Load(m_renderer, m_sharedModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_sharedDatabase->ResetEntities();
 	}
 	DrawLoadProgress(0.4f);
 
 	m_materialAnimationDatabase = m_golExport->VTable0x08();
-	m_materialAnimationDatabase
-		->VTable0x14(m_renderer, m_materialAnimationModelName, m_context->m_useBinaryFiles, 1.0f);
+	m_materialAnimationDatabase->Load(m_renderer, m_materialAnimationModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
 		m_materialAnimationDatabase->ResetEntities();
 	}
@@ -978,7 +977,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	DrawLoadProgress(0.45f);
 
-	MabMaterialAnimation* materialAnimation = m_materialAnimationDatabase->VTable0x4c(0);
+	MabMaterialAnimation* materialAnimation = m_materialAnimationDatabase->GetMaterialAnimation(0);
 	m_sharedParticleAnimation.Load(
 		4,
 		m_golExport,
@@ -1176,8 +1175,8 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	DrawLoadProgress(0.88f);
 
 	GolMaterial* material = NULL;
-	if (m_materialAnimationDatabase != NULL && m_materialAnimationDatabase->GetUnk0x14() >= 2) {
-		GolMaterialLibrary* materialLibrary = m_materialAnimationDatabase->VTable0x30(1);
+	if (m_materialAnimationDatabase != NULL && m_materialAnimationDatabase->GetMaterialLibraryCount() >= 2) {
+		GolMaterialLibrary* materialLibrary = m_materialAnimationDatabase->GetMaterialLibrary(1);
 		if (materialLibrary != NULL) {
 			material = materialLibrary->GetItem(0);
 		}
@@ -1242,7 +1241,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 		10,
 		m_golExport,
 		m_renderer,
-		m_effectsDatabase->VTable0x4c(0),
+		m_effectsDatabase->GetMaterialAnimation(0),
 		m_particleAnimationName,
 		m_context->m_useBinaryFiles
 	);
@@ -2370,10 +2369,10 @@ void RaceSession::DrawScene(Racer* p_racer)
 	m_sharedParticleAnimation.Draw(m_renderer);
 	m_trailManager.DrawOpaque(m_renderer);
 
-	m_trackDatabase->VTable0x24(m_renderer);
-	m_trackDatabase->VTable0x20(m_renderer);
-	m_trackDatabase->VTable0x28(m_renderer);
-	m_trackDatabase->VTable0x1c(m_renderer);
+	m_trackDatabase->DrawAnimatedEntities(m_renderer);
+	m_trackDatabase->DrawModelEntities(m_renderer);
+	m_trackDatabase->DrawSprites(m_renderer);
+	m_trackDatabase->DrawCollidableEntities(m_renderer);
 
 	m_decalManager.DrawOpaque(m_renderer);
 }

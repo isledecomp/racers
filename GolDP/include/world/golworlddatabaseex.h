@@ -25,23 +25,23 @@ class GolWorldDatabaseEx : public GolWorldDatabase {
 public:
 	GolWorldDatabaseEx();
 	~GolWorldDatabaseEx() override;
-	void VTable0x08() override;                                        // vtable+0x08
-	undefined4* VTable0x0c() override;                                 // vtable+0x0c
-	void VTable0x18() override;                                        // vtable+0x18
-	void VTable0x1c(GolRenderDevice*) override;                        // vtable+0x1c
-	void VTable0x20(GolRenderDevice*) override;                        // vtable+0x20
-	void VTable0x24(GolRenderDevice*) override;                        // vtable+0x24
-	void VTable0x28(GolRenderDevice*) override;                        // vtable+0x28
-	GolTextureList* VTable0x2c(LegoU32 p_index) const override;        // vtable+0x2c
-	GolMaterialLibrary* VTable0x30(LegoU32 p_index) const override;    // vtable+0x30
-	CmbModelPart* VTable0x34(LegoU32 p_index) const override;          // vtable+0x34
-	GolModelBase* VTable0x38(LegoU32 p_index) const override;          // vtable+0x38
-	GolModelMaterialTable* VTable0x3c(LegoU32 p_index) const override; // vtable+0x3c
-	GolSceneNode* VTable0x40(LegoU32 p_index) const override;          // vtable+0x40
-	GolBoundingShape* VTable0x44(LegoU32 p_index) const override;      // vtable+0x44
-	GolWorldEntity* VTable0x48(LegoU32 p_index) const override;        // vtable+0x48
-	MabMaterialAnimation* VTable0x4c(LegoU32 p_index) const override;  // vtable+0x4c
-	GolCameraBase* VTable0x50(LegoU32 p_index) const override;         // vtable+0x50
+	void AllocateResources() override;                                          // vtable+0x08
+	undefined4* LoadResources() override;                                       // vtable+0x0c
+	void Destroy() override;                                                    // vtable+0x18
+	void DrawCollidableEntities(GolRenderDevice*) override;                     // vtable+0x1c
+	void DrawModelEntities(GolRenderDevice*) override;                          // vtable+0x20
+	void DrawAnimatedEntities(GolRenderDevice*) override;                       // vtable+0x24
+	void DrawSprites(GolRenderDevice*) override;                                // vtable+0x28
+	GolTextureList* GetTextureList(LegoU32 p_index) const override;             // vtable+0x2c
+	GolMaterialLibrary* GetMaterialLibrary(LegoU32 p_index) const override;     // vtable+0x30
+	CmbModelPart* GetModelPart(LegoU32 p_index) const override;                 // vtable+0x34
+	GolModelBase* GetModel(LegoU32 p_index) const override;                     // vtable+0x38
+	GolModelMaterialTable* GetMaterialTable(LegoU32 p_index) const override;    // vtable+0x3c
+	GolSceneNode* GetSceneNode(LegoU32 p_index) const override;                 // vtable+0x40
+	GolBoundingShape* GetBoundingShape(LegoU32 p_index) const override;         // vtable+0x44
+	GolWorldEntity* GetWorldEntity(LegoU32 p_index) const override;             // vtable+0x48
+	MabMaterialAnimation* GetMaterialAnimation(LegoU32 p_index) const override; // vtable+0x4c
+	GolCameraBase* GetCamera(LegoU32 p_index) const override;                   // vtable+0x50
 
 	// SYNTHETIC: GOLDP 0x100171e0
 	// GolWorldDatabaseEx::`scalar deleting destructor'

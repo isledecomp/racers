@@ -475,7 +475,8 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
 			case GolFileParser::e_unknown0x38:
-				params.m_materialAnimation = field->m_materialAnimationDatabase->VTable0x4c(p_parser->ReadInteger());
+				params.m_materialAnimation =
+					field->m_materialAnimationDatabase->GetMaterialAnimation(p_parser->ReadInteger());
 				break;
 			case EvbTxtParser::e_active:
 				params.m_activeTrackIndex = p_parser->ReadInteger();
@@ -530,11 +531,11 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 							if (!entity) {
 								entity = field->m_sharedDatabase->FindAnimatedEntity(destination);
 								if (!entity) {
-									if (field->m_sharedDatabase->GetUnk0xccNameEntries() == NULL) {
+									if (field->m_sharedDatabase->GetCollidableEntityEntries() == NULL) {
 										entity = NULL;
 									}
 									else {
-										entity = field->m_sharedDatabase->GetUnk0xccName(destination);
+										entity = field->m_sharedDatabase->GetCollidableEntityByName(destination);
 									}
 								}
 							}
@@ -903,8 +904,8 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 				GolName name;
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-				if (field->m_trackDatabase->GetUnk0xb4NameEntries()) {
-					params.m_worldEntity = field->m_trackDatabase->GetUnk0xb4Name(name);
+				if (field->m_trackDatabase->GetModelEntityEntries()) {
+					params.m_worldEntity = field->m_trackDatabase->GetModelEntityByName(name);
 				}
 				else {
 					params.m_worldEntity = NULL;
@@ -925,8 +926,8 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 					break;
 				}
 
-				if (field->m_trackDatabase->GetUnk0xccNameEntries()) {
-					params.m_worldEntity = field->m_trackDatabase->GetUnk0xccName(name);
+				if (field->m_trackDatabase->GetCollidableEntityEntries()) {
+					params.m_worldEntity = field->m_trackDatabase->GetCollidableEntityByName(name);
 				}
 				else {
 					params.m_worldEntity = NULL;

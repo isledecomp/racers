@@ -83,17 +83,17 @@ LegoBool32 MenuSceneView::Destroy()
 	LegoBool32 result = TRUE;
 
 	if (result & m_flags) {
-		if (m_camera && m_world && !m_world->GetUnk0x7c()) {
+		if (m_camera && m_world && !m_world->GetCameraCount()) {
 			m_golExport->VTable0x54(m_camera);
 		}
 
 		if (m_world) {
-			m_world->VTable0x18();
+			m_world->Destroy();
 			m_golExport->VTable0x3c(m_world);
 		}
 
 		if (m_blendedWorld) {
-			m_blendedWorld->VTable0x18();
+			m_blendedWorld->Destroy();
 			m_golExport->VTable0x3c(m_blendedWorld);
 		}
 
@@ -114,7 +114,7 @@ void MenuSceneView::LoadWorlds(CreateParams* p_createParams, undefined4 p_binary
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_world->VTable0x14(m_renderer, p_createParams->m_worldName, p_binary, m_worldScale);
+	m_world->Load(m_renderer, p_createParams->m_worldName, p_binary, m_worldScale);
 
 	if (p_createParams->m_hasBlendedWorld) {
 		m_blendedWorld = m_golExport->VTable0x08();
@@ -122,7 +122,7 @@ void MenuSceneView::LoadWorlds(CreateParams* p_createParams, undefined4 p_binary
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_blendedWorld->VTable0x14(m_renderer, "blended", p_binary, m_worldScale);
+		m_blendedWorld->Load(m_renderer, "blended", p_binary, m_worldScale);
 	}
 
 	ColorRGBA color = {0, 0, 0, 0};
@@ -132,8 +132,8 @@ void MenuSceneView::LoadWorlds(CreateParams* p_createParams, undefined4 p_binary
 // FUNCTION: LEGORACERS 0x004659b0
 void MenuSceneView::SetupCamera(CreateParams* p_createParams)
 {
-	if (m_world->GetUnk0x7c()) {
-		m_camera = static_cast<GolCamera*>(m_world->VTable0x50(0));
+	if (m_world->GetCameraCount()) {
+		m_camera = static_cast<GolCamera*>(m_world->GetCamera(0));
 	}
 	else {
 		GolVec3* cameraVectors = &p_createParams->m_cameraEye;
@@ -349,14 +349,14 @@ void MenuSceneView::ClampToScreen(Rect* p_rect)
 // FUNCTION: LEGORACERS 0x00465ea0
 void MenuSceneView::ApplySceneMaterials()
 {
-	if (m_world->GetUnk0x84() || m_world->GetUnk0x8c()) {
+	if (m_world->GetAmbientLightCount() || m_world->GetLightCount()) {
 		m_renderer->VTable0x28();
 
-		if (m_world->GetUnk0x84()) {
+		if (m_world->GetAmbientLightCount()) {
 			m_renderer->VTable0x2c(m_world->GetAmbientMaterial());
 		}
 
-		for (LegoU32 i = 0; i < m_world->GetUnk0x8c(); i++) {
+		for (LegoU32 i = 0; i < m_world->GetLightCount(); i++) {
 			m_renderer->VTable0x30(&m_world->GetLight()[i]);
 		}
 

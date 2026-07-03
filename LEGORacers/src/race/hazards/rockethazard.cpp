@@ -63,20 +63,20 @@ void RocketHazard::Load(HazardContext* p_context, GolFileParser*)
 
 	GolWorldDatabase* worldDatabase = p_context->GetTrackDatabase();
 	GolModelEntity* modelEntity;
-	if (!worldDatabase->GetUnk0xb4NameEntries()) {
+	if (!worldDatabase->GetModelEntityEntries()) {
 		modelEntity = NULL;
 	}
 	else {
-		modelEntity = worldDatabase->GetUnk0xb4Name("mmrocof");
+		modelEntity = worldDatabase->GetModelEntityByName("mmrocof");
 	}
 	m_offModel = modelEntity;
 
 	worldDatabase = p_context->GetTrackDatabase();
-	if (!worldDatabase->GetUnk0xb4NameEntries()) {
+	if (!worldDatabase->GetModelEntityEntries()) {
 		modelEntity = NULL;
 	}
 	else {
-		modelEntity = worldDatabase->GetUnk0xb4Name("mmrocon");
+		modelEntity = worldDatabase->GetModelEntityByName("mmrocon");
 	}
 	m_onModel = modelEntity;
 

@@ -45,137 +45,137 @@ GolWorldDatabaseEx::GolWorldDatabaseEx()
 // FUNCTION: GOLDP 0x10017200
 GolWorldDatabaseEx::~GolWorldDatabaseEx()
 {
-	VTable0x18();
+	Destroy();
 }
 
 // FUNCTION: GOLDP 0x10017250
-GolTextureList* GolWorldDatabaseEx::VTable0x2c(LegoU32 p_index) const
+GolTextureList* GolWorldDatabaseEx::GetTextureList(LegoU32 p_index) const
 {
 	return &m_unk0xf0[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017270
-GolMaterialLibrary* GolWorldDatabaseEx::VTable0x30(LegoU32 p_index) const
+GolMaterialLibrary* GolWorldDatabaseEx::GetMaterialLibrary(LegoU32 p_index) const
 {
 	return &m_unk0xf4[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017290
-CmbModelPart* GolWorldDatabaseEx::VTable0x34(LegoU32 p_index) const
+CmbModelPart* GolWorldDatabaseEx::GetModelPart(LegoU32 p_index) const
 {
 	return &m_unk0x10c[p_index];
 }
 
 // FUNCTION: GOLDP 0x100172b0
-GolModelBase* GolWorldDatabaseEx::VTable0x38(LegoU32 p_index) const
+GolModelBase* GolWorldDatabaseEx::GetModel(LegoU32 p_index) const
 {
 	return &m_unk0xf8[p_index];
 }
 
 // FUNCTION: GOLDP 0x100172d0
-GolModelMaterialTable* GolWorldDatabaseEx::VTable0x3c(LegoU32 p_index) const
+GolModelMaterialTable* GolWorldDatabaseEx::GetMaterialTable(LegoU32 p_index) const
 {
 	return &m_unk0x104[p_index];
 }
 
 // FUNCTION: GOLDP 0x100172f0
-GolSceneNode* GolWorldDatabaseEx::VTable0x40(LegoU32 p_index) const
+GolSceneNode* GolWorldDatabaseEx::GetSceneNode(LegoU32 p_index) const
 {
 	return &m_unk0xfc[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017310
-GolBoundingShape* GolWorldDatabaseEx::VTable0x44(LegoU32 p_index) const
+GolBoundingShape* GolWorldDatabaseEx::GetBoundingShape(LegoU32 p_index) const
 {
 	return &m_unk0x110[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017330
-GolWorldEntity* GolWorldDatabaseEx::VTable0x48(LegoU32 p_index) const
+GolWorldEntity* GolWorldDatabaseEx::GetWorldEntity(LegoU32 p_index) const
 {
 	return &m_unk0x100[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017350
-MabMaterialAnimation* GolWorldDatabaseEx::VTable0x4c(LegoU32 p_index) const
+MabMaterialAnimation* GolWorldDatabaseEx::GetMaterialAnimation(LegoU32 p_index) const
 {
 	return &m_unk0x108[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017370
-GolCameraBase* GolWorldDatabaseEx::VTable0x50(LegoU32 p_index) const
+GolCameraBase* GolWorldDatabaseEx::GetCamera(LegoU32 p_index) const
 {
 	return &m_unk0x114[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017390
-void GolWorldDatabaseEx::VTable0x08()
+void GolWorldDatabaseEx::AllocateResources()
 {
-	if (GetUnk0x0c() != 0) {
-		m_unk0xf0 = new GolD3DTextureList[GetUnk0x0c()];
+	if (GetTextureListCount() != 0) {
+		m_unk0xf0 = new GolD3DTextureList[GetTextureListCount()];
 		if (m_unk0xf0 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x14() != 0) {
-		m_unk0xf4 = new GolSoftwareMaterialLibrary[GetUnk0x14()];
+	if (GetMaterialLibraryCount() != 0) {
+		m_unk0xf4 = new GolSoftwareMaterialLibrary[GetMaterialLibraryCount()];
 		if (m_unk0xf4 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x1c() != 0) {
-		m_unk0x10c = new CmbModelPart[GetUnk0x1c()];
+	if (GetModelPartCount() != 0) {
+		m_unk0x10c = new CmbModelPart[GetModelPartCount()];
 		if (m_unk0x10c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x24() != 0) {
-		m_unk0xf8 = new GolModel[GetUnk0x24()];
+	if (GetModelCount() != 0) {
+		m_unk0xf8 = new GolModel[GetModelCount()];
 		if (m_unk0xf8 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x2c() != 0) {
-		m_unk0x104 = new GolModelMaterialTable[GetUnk0x2c()];
+	if (GetMaterialTableCount() != 0) {
+		m_unk0x104 = new GolModelMaterialTable[GetMaterialTableCount()];
 		if (m_unk0x104 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x34() != 0) {
-		m_unk0xfc = new GolSceneTransformNode[GetUnk0x34()];
+	if (GetSceneNodeCount() != 0) {
+		m_unk0xfc = new GolSceneTransformNode[GetSceneNodeCount()];
 		if (m_unk0xfc == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x3c() != 0) {
-		m_unk0x110 = new GolBoundingShape[GetUnk0x3c()];
+	if (GetBoundingShapeCount() != 0) {
+		m_unk0x110 = new GolBoundingShape[GetBoundingShapeCount()];
 		if (m_unk0x110 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x6c() != 0) {
-		m_unk0x100 = new GolBillboardEx[GetUnk0x6c()];
+	if (GetSpriteCount() != 0) {
+		m_unk0x100 = new GolBillboardEx[GetSpriteCount()];
 		if (m_unk0x100 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x74() != 0) {
-		m_unk0x108 = new MabMaterialAnimation[GetUnk0x74()];
+	if (GetMaterialAnimationCount() != 0) {
+		m_unk0x108 = new MabMaterialAnimation[GetMaterialAnimationCount()];
 		if (m_unk0x108 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (GetUnk0x7c()) {
-		m_unk0x114 = new GolCamera[GetUnk0x7c()];
+	if (GetCameraCount()) {
+		m_unk0x114 = new GolCamera[GetCameraCount()];
 		if (m_unk0x114 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -183,109 +183,109 @@ void GolWorldDatabaseEx::VTable0x08()
 }
 
 // STUB: GOLDP 0x10017ac0
-undefined4* GolWorldDatabaseEx::VTable0x0c()
+undefined4* GolWorldDatabaseEx::LoadResources()
 {
 	LegoU32 i;
-	GolD3DRenderDevice* textureRenderer = static_cast<GolD3DRenderDevice*>(m_unk0x04);
+	GolD3DRenderDevice* textureRenderer = static_cast<GolD3DRenderDevice*>(m_renderer);
 
-	for (i = 0; i < m_unk0x0c; i++) {
+	for (i = 0; i < m_textureListCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x10[i], ".tdf");
-		VTable0x2c(i)->VTable0x24(textureRenderer, fileName, m_binary);
+		BuildResourceFileName(fileName, m_textureListNames[i], ".tdf");
+		GetTextureList(i)->VTable0x24(textureRenderer, fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x14; i++) {
+	for (i = 0; i < m_materialLibraryCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x18[i], ".mdf");
-		VTable0x30(i)->VTable0x24(m_unk0x04, fileName, m_binary);
+		BuildResourceFileName(fileName, m_materialLibraryNames[i], ".mdf");
+		GetMaterialLibrary(i)->VTable0x24(m_renderer, fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x1c; i++) {
+	for (i = 0; i < m_modelPartCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x20[i], ".adf");
-		VTable0x34(i)->VTable0x14(fileName, m_binary);
+		BuildResourceFileName(fileName, m_modelPartNames[i], ".adf");
+		GetModelPart(i)->VTable0x14(fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x24; i++) {
+	for (i = 0; i < m_modelCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x28[i], ".gdf");
-		VTable0x38(i)->Load(m_unk0x04, fileName, m_binary);
+		BuildResourceFileName(fileName, m_modelNames[i], ".gdf");
+		GetModel(i)->Load(m_renderer, fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x2c; i++) {
+	for (i = 0; i < m_materialTableCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x30[i], ".gdf");
-		VTable0x3c(i)->FUN_10025e60(m_unk0x04, fileName, m_binary);
+		BuildResourceFileName(fileName, m_materialTableNames[i], ".gdf");
+		GetMaterialTable(i)->FUN_10025e60(m_renderer, fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x34; i++) {
+	for (i = 0; i < m_sceneNodeCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x38[i], ".sdf");
-		VTable0x40(i)->VTable0x14(fileName, m_binary);
+		BuildResourceFileName(fileName, m_sceneNodeNames[i], ".sdf");
+		GetSceneNode(i)->VTable0x14(fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x3c; i++) {
+	for (i = 0; i < m_boundingShapeCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x40[i], ".bdf");
-		VTable0x44(i)->Deserialize(fileName, m_binary);
+		BuildResourceFileName(fileName, m_boundingShapeNames[i], ".bdf");
+		GetBoundingShape(i)->Deserialize(fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x74; i++) {
+	for (i = 0; i < m_materialAnimationCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_unk0x78[i], ".maf");
-		VTable0x4c(i)->VTable0x04(m_unk0x04, fileName, m_binary);
+		BuildResourceFileName(fileName, m_materialAnimationNames[i], ".maf");
+		GetMaterialAnimation(i)->VTable0x04(m_renderer, fileName, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x6c; i++) {
-		WdbBillboardSprite* sprite = &m_unk0x70[i];
+	for (i = 0; i < m_spriteCount; i++) {
+		WdbBillboardSprite* sprite = &m_spriteRecords[i];
 		GolBillboardEx* billboard = &m_unk0x100[i];
-		LegoFloat maxDistanceSquared = sprite->m_unk0x28 * sprite->m_unk0x28;
+		LegoFloat maxDistanceSquared = sprite->m_maxDistance * sprite->m_maxDistance;
 
-		if (sprite->m_flags & WdbBillboardSprite::c_flagBit2) {
-			LegoU32 materialTableIndex = sprite->m_unk0x34;
-			if (materialTableIndex >= m_unk0x2c) {
+		if (sprite->m_flags & WdbBillboardSprite::c_flagMaterialAssignment) {
+			LegoU32 materialTableIndex = sprite->m_materialTableIndex;
+			if (materialTableIndex >= m_materialTableCount) {
 				GOL_FATALERROR_MESSAGE("Illegal mat assign reference");
 			}
 
 			billboard->FUN_10029e90(
 				&m_unk0x104[materialTableIndex],
-				sprite->m_unk0x36,
-				sprite->m_unk0x20,
-				sprite->m_unk0x24,
+				sprite->m_materialIndex,
+				sprite->m_width,
+				sprite->m_height,
 				maxDistanceSquared
 			);
 		}
 		else {
-			if (sprite->m_unk0x00[0] == '\0') {
+			if (sprite->m_materialName[0] == '\0') {
 				GOL_FATALERROR_MESSAGE("Sprite is missing material name");
 			}
 
-			GolMaterial* material = m_unk0x04->FindMaterialByName(sprite->m_unk0x00);
+			GolMaterial* material = m_renderer->FindMaterialByName(sprite->m_materialName);
 			if (material == NULL) {
 				LegoChar message[64];
 				::memset(message, 0, sizeof(message));
-				::strncpy(message, sprite->m_unk0x00, sizeof(GolName));
+				::strncpy(message, sprite->m_materialName, sizeof(GolName));
 				::strcat(message, " sprite material not found");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 
-			billboard->Configure(material, sprite->m_unk0x20, sprite->m_unk0x24, maxDistanceSquared);
+			billboard->Configure(material, sprite->m_width, sprite->m_height, maxDistanceSquared);
 		}
 
-		billboard->SetPosition(sprite->m_unk0x08);
-		if (sprite->m_flags & WdbBillboardSprite::c_flagBit1) {
+		billboard->SetPosition(sprite->m_position);
+		if (sprite->m_flags & WdbBillboardSprite::c_flagAxisLocked) {
 			billboard->EnableFlagBit1();
-			billboard->SetUnk0x30(sprite->m_unk0x14);
+			billboard->SetUnk0x30(sprite->m_axis);
 		}
 
-		FUN_1002e250(billboard, sprite);
+		BindSpriteMaterialAnimation(billboard, sprite);
 	}
 
 	return NULL;
 }
 
 // FUNCTION: GOLDP 0x100180a0
-void GolWorldDatabaseEx::VTable0x18()
+void GolWorldDatabaseEx::Destroy()
 {
 	if (m_unk0x114) {
 		delete[] m_unk0x114;
@@ -328,11 +328,11 @@ void GolWorldDatabaseEx::VTable0x18()
 		m_unk0x108 = NULL;
 	}
 
-	GolWorldDatabase::VTable0x18();
+	GolWorldDatabase::Destroy();
 }
 
 // FUNCTION: GOLDP 0x100181b0
-void GolWorldDatabaseEx::VTable0x1c(GolRenderDevice* p_renderer)
+void GolWorldDatabaseEx::DrawCollidableEntities(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_collidableEntityCount; i++) {
@@ -341,7 +341,7 @@ void GolWorldDatabaseEx::VTable0x1c(GolRenderDevice* p_renderer)
 }
 
 // FUNCTION: GOLDP 0x100181f0
-void GolWorldDatabaseEx::VTable0x20(GolRenderDevice* p_renderer)
+void GolWorldDatabaseEx::DrawModelEntities(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_modelEntityCount; i++) {
@@ -350,7 +350,7 @@ void GolWorldDatabaseEx::VTable0x20(GolRenderDevice* p_renderer)
 }
 
 // FUNCTION: GOLDP 0x10018230
-void GolWorldDatabaseEx::VTable0x24(GolRenderDevice* p_renderer)
+void GolWorldDatabaseEx::DrawAnimatedEntities(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
 	for (i = 0; i < m_animatedEntityCount; i++) {
@@ -359,10 +359,10 @@ void GolWorldDatabaseEx::VTable0x24(GolRenderDevice* p_renderer)
 }
 
 // FUNCTION: GOLDP 0x10018270
-void GolWorldDatabaseEx::VTable0x28(GolRenderDevice* p_renderer)
+void GolWorldDatabaseEx::DrawSprites(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
-	for (i = 0; i < m_unk0x6c; i++) {
+	for (i = 0; i < m_spriteCount; i++) {
 		p_renderer->VTable0xb4(m_unk0x100[i]);
 	}
 }

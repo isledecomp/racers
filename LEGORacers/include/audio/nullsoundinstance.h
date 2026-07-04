@@ -15,12 +15,14 @@ public:
 	NullSoundInstance();
 	virtual void Play(LegoBool32 p_loop);              // vtable+0x00
 	virtual void Stop();                               // vtable+0x04
-	virtual LegoBool32 IsPlaying();                    // vtable+0x08
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+	virtual LegoBool32 IsPlaying() { return FALSE; }                    // vtable+0x08
 	virtual void SetVolume(LegoFloat p_volume);        // vtable+0x0c
 	virtual void SetPan(LegoFloat p_pan);              // vtable+0x10
 	virtual void SetFrequencyScale(LegoFloat p_scale); // vtable+0x14
 	virtual void SetPriority(LegoS32 p_priority);      // vtable+0x18
-	virtual SoundGroup* GetSoundGroup();               // vtable+0x1c
+	// FUNCTION: LEGORACERS 0x0041b5c0 FOLDED
+	virtual SoundGroup* GetSoundGroup() { return m_soundGroup; }               // vtable+0x1c
 	virtual ~NullSoundInstance();                      // vtable+0x20
 
 	void SetSoundGroup(SoundGroup* p_soundGroup) { m_soundGroup = p_soundGroup; }

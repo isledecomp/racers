@@ -26,19 +26,10 @@ LegoS32 KeyboardDevice::GetButtonCount()
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0044f2e0 FOLDED
-#pragma code_seg(".text$kbd_vt20")
 LegoS32 KeyboardDevice::GetAxisCount()
 {
 	return 0;
 }
-#pragma code_seg()
-
-// FUNCTION: LEGORACERS 0x0044f2f0
-#pragma code_seg(".text$kbd_vt08")
-void KeyboardDevice::SetAxisValue(undefined4, LegoFloat)
-{
-}
-#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0044f320
 KeyboardDevice::~KeyboardDevice()
@@ -135,9 +126,3 @@ void KeyboardDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool
 	}
 }
 
-// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-#pragma code_seg(".text$fold_44f590")
-void KeyboardDevice::SetDeadZonePercent(LegoU32)
-{
-}
-#pragma code_seg()

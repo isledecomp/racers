@@ -250,18 +250,6 @@ void SpatialSoundInstance::SetVolume(LegoFloat p_volume)
 	m_volume = soundManager->GetVolumeScale() * p_volume;
 }
 
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoBool32 SpatialSoundInstance::IsPlaying()
-{
-	return FALSE;
-}
-
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-DirectSoundGroup* SpatialSoundInstance::GetSoundGroup()
-{
-	return NULL;
-}
-
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void SpatialSoundInstance::Play(LegoBool32)
 {

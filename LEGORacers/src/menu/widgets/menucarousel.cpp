@@ -80,15 +80,6 @@ void MenuCarousel::SetColor(VisualStateColor* p_visualState)
 	MenuWidget::SetColor(p_visualState);
 }
 
-// Keep this null-return override in the scene-widget null-return fold group.
-#pragma code_seg(".text$legoracers_00466090")
-// FUNCTION: LEGORACERS 0x00466090 FOLDED
-MenuWidget* MenuCarousel::OnKeyDown(InputEventQueue::Event*, undefined4, undefined4)
-{
-	return NULL;
-}
-#pragma code_seg()
-
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
 void MenuCarousel::SetItemColors(VisualStateColor*, VisualStateColor*)
 {

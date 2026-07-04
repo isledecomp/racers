@@ -69,12 +69,6 @@ void GolDrawState::SelectDevice(const char* p_driverName, const char* p_deviceNa
 	// empty
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-LegoU32 GolDrawState::GetDriverCount()
-{
-	return 0;
-}
-
 // FUNCTION: GOLDP 0x1001d640
 void GolDrawState::ReleaseDisplay()
 {
@@ -184,12 +178,6 @@ void GolDrawState::GetDriverGuid(LegoU32 p_driverIndex, GUID* p_guid)
 void GolDrawState::GetDeviceGuid(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid)
 {
 	// empty
-}
-
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-GUID* GolDrawState::GetCurrentDriverGuid() const
-{
-	return NULL;
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

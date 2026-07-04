@@ -2744,12 +2744,6 @@ void GolD3DRenderDevice::SetRenderTarget(GolRenderTarget* p_surface, undefined4 
 	BeginFrame(p_flags);
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-LegoBool32 GolD3DRenderDevice::VTable0x110() const
-{
-	return FALSE;
-}
-
 // FUNCTION: GOLDP 0x1000b4a0
 void GolD3DRenderDevice::FUN_1000b4a0()
 {

@@ -59,14 +59,6 @@ const LegoFloat g_dropGroundOffset = 1.0f;
 // GLOBAL: LEGORACERS 0x004b162c
 const LegoFloat g_dropProbeDepth = 50.0f;
 
-// FUNCTION: LEGORACERS 0x00452430 FOLDED
-#pragma code_seg(".text$animatedpartresource_vt18")
-LegoS32 WeaponActionBase::GetBrickColor()
-{
-	return RacePowerupManager::c_brickColorRed;
-}
-#pragma code_seg()
-
 // FUNCTION: LEGORACERS 0x004562d0
 HazardActionBase::HazardActionBase()
 {
@@ -128,7 +120,7 @@ void HazardActionBase::ComputeDropPosition(
 // FUNCTION: LEGORACERS 0x0044f570 FOLDED
 LegoS32 HazardActionBase::GetBrickColor()
 {
-	return RacePowerupManager::c_brickColorYellow;
+	return PowerupAction::c_brickColorYellow;
 }
 
 // FUNCTION: LEGORACERS 0x0045bbe0

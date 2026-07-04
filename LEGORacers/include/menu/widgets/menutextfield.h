@@ -45,7 +45,8 @@ public:
 	~MenuTextField() override;                                                       // vtable+0x04
 	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;               // vtable+0x2c
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+	// FUNCTION: LEGORACERS 0x00466090 FOLDED
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override { return NULL; }   // vtable+0x34
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
 	void Select(undefined4) override;                                                // vtable+0x4c
 	void Deselect(undefined4) override;                                              // vtable+0x50

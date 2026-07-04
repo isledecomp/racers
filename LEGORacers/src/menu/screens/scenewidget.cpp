@@ -7,15 +7,6 @@
 
 DECOMP_SIZE_ASSERT(MenuSceneScreen::SceneWidget, 0x2d0)
 
-// Keep this fold pair out of the unrelated MenuWidget null-return fold group.
-#pragma code_seg(".text$legoracers_00466090")
-// FUNCTION: LEGORACERS 0x00466090 FOLDED
-MenuWidget* MenuSceneScreen::SceneWidget::OnCursorEvent(void*, undefined4, undefined4)
-{
-	return NULL;
-}
-#pragma code_seg()
-
 // FUNCTION: LEGORACERS 0x00466a10
 MenuSceneScreen::SceneWidget::SceneWidget()
 {

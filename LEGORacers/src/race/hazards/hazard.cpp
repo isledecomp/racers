@@ -72,12 +72,6 @@ void Hazard::Draw(GolD3DRenderDevice*)
 {
 }
 
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoBool32 Hazard::CanRetrigger()
-{
-	return FALSE;
-}
-
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void Hazard::ResetState()
 {

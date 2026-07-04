@@ -829,19 +829,3 @@ InputManager* Win32GolApp::GetInputManager()
 {
 	return &m_inputManager;
 }
-
-// The original folds the two activation callbacks together (0x417990), separate from the
-// image-wide empty-void group.
-#pragma code_seg(".text$win32_activation")
-
-// FUNCTION: LEGORACERS 0x00417990 FOLDED
-void Win32GolApp::OnAppDeactivated()
-{
-}
-
-// FUNCTION: LEGORACERS 0x00417990 FOLDED
-void Win32GolApp::OnAppActivated()
-{
-}
-
-#pragma code_seg()

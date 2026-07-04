@@ -31,7 +31,8 @@ public:
 	void OnStartAt(GolVec3* p_position) override;
 	void OnEnd() override;
 	void Update(LegoU32 p_elapsedMs) override;
-	virtual LegoU32 GetKind(); // vtable+0x18
+	// FUNCTION: LEGORACERS 0x00452430 FOLDED
+	virtual LegoU32 GetKind() { return 1; } // vtable+0x18
 
 	void Initialize(InitParams* p_params);
 	void Destroy();

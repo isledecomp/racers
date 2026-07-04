@@ -45,8 +45,11 @@ public:
 	void ToggleFullscreen() override;                          // vtable+0x30
 	LegoS32 Tick(GolAppEventHandler* p_eventHandler) override; // vtable+0x34
 	InputManager* GetInputManager() override;                  // vtable+0x38
-	virtual void OnAppDeactivated();                           // vtable+0x3c
-	virtual void OnAppActivated();                             // vtable+0x40
+	// FUNCTION: LEGORACERS 0x00417990 FOLDED
+	virtual void OnAppDeactivated() {} // vtable+0x3c
+
+	// FUNCTION: LEGORACERS 0x00417990 FOLDED
+	virtual void OnAppActivated() {} // vtable+0x40
 
 	enum {
 		c_golBackendDP = 0x0,

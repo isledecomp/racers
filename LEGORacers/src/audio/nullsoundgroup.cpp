@@ -93,12 +93,6 @@ LegoBool32 NullSoundGroup::IsLoaded()
 	return TRUE;
 }
 
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoU32 NullSoundGroup::GetSoundCount()
-{
-	return 0;
-}
-
 // FUNCTION: LEGORACERS 0x0041b2d0 FOLDED
 void NullSoundGroup::DestroySoundInstance(SoundInstance* p_sound)
 {

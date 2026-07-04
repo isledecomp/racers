@@ -21,6 +21,14 @@ class TriggerWorld;
 // SIZE 0x18
 class PowerupAction : public LegoEventQueue::Callback {
 public:
+	// Brick color codes (PWB color tokens map to these; GetBrickColor returns them)
+	enum {
+		c_brickColorRed = 1,
+		c_brickColorBlue = 2,
+		c_brickColorGreen = 3,
+		c_brickColorYellow = 4,
+	};
+
 	PowerupAction();
 	void OnEvent(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
 	virtual ~PowerupAction();                                     // vtable+0x04
@@ -32,7 +40,8 @@ public:
 	virtual void Draw(GolD3DRenderDevice*);            // vtable+0x0c
 	virtual void DrawTransparent(GolD3DRenderDevice*); // vtable+0x10
 	virtual void AdvanceState() = 0;                   // vtable+0x14
-	virtual LegoS32 GetBrickColor() = 0;               // vtable+0x18
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+	virtual LegoS32 GetBrickColor() = 0 { return 0; } // vtable+0x18
 	virtual void Deactivate();                         // vtable+0x1c
 
 	PowerupAction* GetNext() { return m_next; }

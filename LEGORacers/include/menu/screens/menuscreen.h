@@ -43,25 +43,40 @@ public:
 	// SIZE 0x54
 	MenuScreen();
 
-	void OnWidgetCreated(MenuWidget*) override;                                                      // vtable+0x00
-	void OnWidgetDestroyed(MenuWidget*) override;                                                    // vtable+0x04
-	void OnWidgetMoved(MenuWidget*) override;                                                        // vtable+0x08
-	void OnWidgetResized(MenuWidget*) override;                                                      // vtable+0x0c
-	void OnCarouselSettled(MenuWidget*) override;                                                    // vtable+0x10
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnWidgetCreated(MenuWidget*) override {}                                                      // vtable+0x00
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnWidgetDestroyed(MenuWidget*) override {}                                                    // vtable+0x04
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnWidgetMoved(MenuWidget*) override {}                                                        // vtable+0x08
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnWidgetResized(MenuWidget*) override {}                                                      // vtable+0x0c
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnCarouselSettled(MenuWidget*) override {}                                                    // vtable+0x10
 	undefined4 OnWidgetKeyUp(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x14
 	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
 	LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x1c
-	void OnWidgetFocused(MenuWidget*) override;                                                      // vtable+0x20
-	void OnWidgetUnfocused(MenuWidget*) override;                                                    // vtable+0x24
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnWidgetFocused(MenuWidget*) override {}                                                      // vtable+0x20
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnWidgetUnfocused(MenuWidget*) override {}                                                    // vtable+0x24
 	undefined4 OnWidgetKeyDown(MenuWidget*, void*, undefined4, undefined4) override;                 // vtable+0x28
-	void OnIconEnabled(MenuIcon*) override;                                                          // vtable+0x2c
-	void OnIconDisabled(MenuIcon*) override;                                                         // vtable+0x30
-	void OnIconFocused(MenuIcon*) override;                                                          // vtable+0x34
-	void OnIconUnfocused(MenuWidget*) override;                                                      // vtable+0x38
-	void OnIconSelected(MenuIcon*) override;                                                         // vtable+0x3c
-	void OnIconDeselected(MenuIcon*) override;                                                       // vtable+0x40
-	void OnWidgetValueChanged(MenuWidget*) override;                                                 // vtable+0x44
-	void OnSelectorSettled(MenuWidget*) override;                                                    // vtable+0x48
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnIconEnabled(MenuIcon*) override {}                                                          // vtable+0x2c
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnIconDisabled(MenuIcon*) override {}                                                         // vtable+0x30
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnIconFocused(MenuIcon*) override {}                                                          // vtable+0x34
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnIconUnfocused(MenuWidget*) override {}                                                      // vtable+0x38
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnIconSelected(MenuIcon*) override {}                                                         // vtable+0x3c
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnIconDeselected(MenuIcon*) override {}                                                       // vtable+0x40
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnWidgetValueChanged(MenuWidget*) override {}                                                 // vtable+0x44
+	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+	void OnSelectorSettled(MenuWidget*) override {}                                                    // vtable+0x48
 	virtual void CreateWidgets() = 0;                                                                // vtable+0x4c
 	virtual undefined4 ShouldLoadResources();                                                        // vtable+0x50
 	virtual void Reset();                                                                            // vtable+0x54

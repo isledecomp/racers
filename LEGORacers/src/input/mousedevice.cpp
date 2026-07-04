@@ -20,13 +20,6 @@ LegoS32 MouseDevice::GetAxisCount()
 	return 3;
 }
 
-// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-#pragma code_seg(".text$fold_44f590")
-void MouseDevice::SetDeadZonePercent(LegoU32)
-{
-}
-#pragma code_seg()
-
 // FUNCTION: LEGORACERS 0x0044f5c0
 MouseDevice::~MouseDevice()
 {

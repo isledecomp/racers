@@ -98,14 +98,6 @@ public:
 		};
 	};
 
-	// Brick color codes (PWB color tokens map to these; GetBrickColor returns them)
-	enum {
-		c_brickColorRed = 1,
-		c_brickColorBlue = 2,
-		c_brickColorGreen = 3,
-		c_brickColorYellow = 4,
-	};
-
 	// SIZE 0x80
 	class BrickDebris {
 	public:

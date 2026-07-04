@@ -120,13 +120,6 @@ void GolFileParser::OpenFileForRead(const LegoChar*)
 	// empty
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-GolFileParser::ParserTokenType GolFileParser::GetNextToken()
-{
-	return e_syntaxerror;
-}
-
 // FUNCTION: GOLDP 0x10029950 FOLDED
 // FUNCTION: LEGORACERS 0x0044e7f0 FOLDED
 undefined4 GolFileParser::VTable0x48(undefined4, undefined4)

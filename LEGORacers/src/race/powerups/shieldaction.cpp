@@ -304,5 +304,5 @@ void ShieldAction::AdvanceState()
 // FUNCTION: LEGORACERS 0x0045c330 FOLDED
 LegoS32 ShieldAction::GetBrickColor()
 {
-	return RacePowerupManager::c_brickColorBlue;
+	return PowerupAction::c_brickColorBlue;
 }

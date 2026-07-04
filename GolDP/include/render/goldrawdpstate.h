@@ -46,7 +46,8 @@ public:
 	LegoBool32 SupportsFogTable() const override;              // vtable+0x88
 	LegoBool32 SupportsTextureAlpha() const override;          // vtable+0x8c
 	LegoBool32 SupportsAdditiveBlend() const override;         // vtable+0x90
-	undefined4 SupportsWBuffer() override;                     // vtable+0x94
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	undefined4 SupportsWBuffer() override { return FALSE; }                     // vtable+0x94
 	LegoBool32 SupportsZBufferlessHsr() const override;        // vtable+0x98
 	LegoBool32 SupportsPaletteAlpha() const override;          // vtable+0x9c
 	LegoBool32 SupportsTextureSystemMemory() const override;   // vtable+0xa0

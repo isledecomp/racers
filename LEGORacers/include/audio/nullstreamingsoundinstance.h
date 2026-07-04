@@ -20,7 +20,8 @@ public:
 	~NullStreamingSoundInstance() override;         // vtable+0x00
 	void Play(LegoBool32 p_loop) override;          // vtable+0x04
 	void Stop() override;                           // vtable+0x08
-	LegoBool32 IsPlaying() override;                // vtable+0x0c
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+	LegoBool32 IsPlaying() override { return FALSE; }                // vtable+0x0c
 	DirectSoundGroup* GetSoundGroup() override;     // vtable+0x10
 	void SetPriority(undefined4 p_arg) override;    // vtable+0x14
 	void UpdateSpatial(SoundNode* p_node) override; // vtable+0x18

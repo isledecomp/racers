@@ -216,10 +216,3 @@ void PartAnimationResource::OnEnd()
 	SetState(nextState);
 }
 
-#pragma code_seg(".text$animatedpartresource_vt18")
-// FUNCTION: LEGORACERS 0x00452430 FOLDED
-LegoU32 PartAnimationResource::GetKind()
-{
-	return 1;
-}
-#pragma code_seg()

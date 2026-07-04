@@ -16,7 +16,9 @@ public:
 	void SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x08
 	void GetEntry(ColorRGBA* p_entry, LegoU32 p_index) override;                      // vtable+0x0c
 	LegoS32 FindEntry(const ColorRGBA& p_entry) override;                             // vtable+0x10
-	LegoU32 GetFirstEntry() override;                                                 // vtable+0x14
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+	LegoU32 GetFirstEntry() override { return 0; }                                                 // vtable+0x14
 	LegoU32 GetEntryCount() override;                                                 // vtable+0x18
 	LegoU32 GetPaletteSize() override;                                                // vtable+0x1c
 	virtual ~GolTexturePalette();                                                     // vtable+0x20

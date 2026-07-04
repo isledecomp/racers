@@ -433,11 +433,3 @@ undefined4 MenuSceneView::OnEvent(undefined4 p_elapsedMs)
 	return 0;
 }
 
-// Keep this fold pair out of the unrelated MenuWidget null-return fold group.
-#pragma code_seg(".text$legoracers_00466090")
-// FUNCTION: LEGORACERS 0x00466090 FOLDED
-MenuWidget* MenuSceneView::OnCursorEvent(void*, undefined4, undefined4)
-{
-	return NULL;
-}
-#pragma code_seg()

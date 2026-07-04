@@ -22,12 +22,6 @@ NullStreamingSoundInstance::~NullStreamingSoundInstance()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoBool32 NullStreamingSoundInstance::IsPlaying()
-{
-	return FALSE;
-}
-
 // FUNCTION: LEGORACERS 0x0041ae00 FOLDED
 DirectSoundGroup* NullStreamingSoundInstance::GetSoundGroup()
 {

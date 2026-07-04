@@ -32,7 +32,9 @@ public:
 	virtual void ComputeVisibility(const GolViewFrustum& p_view, ViewResult* p_result); // vtable+0x14
 	virtual LegoBool32 Intersects(GolWorldEntity* p_model);                             // vtable+0x18
 	virtual void Draw(GolRenderDevice& p_renderer);                                     // vtable+0x1c
-	virtual undefined4 GetKind();                                                       // vtable+0x20
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+	virtual undefined4 GetKind() { return 0; }                                                       // vtable+0x20
 	virtual void ApplyColorTransform(ColorTransform* p_transform);                      // vtable+0x24
 	virtual void ClearColorTransform();                                                 // vtable+0x28
 	virtual void LocalToWorld(const GolVec3& p_add, GolVec3* p_dest) const;             // vtable+0x2c

@@ -206,10 +206,8 @@ void SoundResource::StopSound()
 	}
 }
 
-#pragma code_seg(".text$kbd_vt20")
 // FUNCTION: LEGORACERS 0x0044f2e0 FOLDED
 LegoU32 SoundResource::GetKind()
 {
 	return 0;
 }
-#pragma code_seg()

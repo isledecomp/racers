@@ -69,7 +69,9 @@ public:
 	virtual LegoS32 Seek(LegoS32 p_offset) = 0;                                                      // vtable+0x08
 	virtual LegoS32 Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead) = 0;                       // vtable+0x0c
 	virtual LegoS32 Write(void* p_buf, LegoU32 p_size);                                              // vtable+0x10
-	virtual LegoS32 Flush();                                                                         // vtable+0x14
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+	virtual LegoS32 Flush() { return 0; }                                                                         // vtable+0x14
 	virtual ~GolStream();                                                                            // vtable+0x18
 	virtual LegoS32 BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize);  // vtable+0x1c
 	virtual LegoS32 Dispose();                                                                       // vtable+0x20

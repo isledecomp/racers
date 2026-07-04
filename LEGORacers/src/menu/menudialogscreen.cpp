@@ -377,8 +377,3 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 	return m_closed == 0;
 }
 
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-undefined4 MenuDialog::DialogScreen::ShouldLoadResources()
-{
-	return 0;
-}

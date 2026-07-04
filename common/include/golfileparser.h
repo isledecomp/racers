@@ -109,7 +109,9 @@ public:
 	virtual void OpenFileForRead(const LegoChar*);           // vtable+0x38
 	virtual const LegoChar* GetSuffix();                     // vtable+0x3c
 	virtual void HandleUnexpectedToken(ParserTokenType) = 0; // vtable+0x40
-	virtual ParserTokenType GetNextToken();                  // vtable+0x44
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+	virtual ParserTokenType GetNextToken() { return e_syntaxerror; }                  // vtable+0x44
 	virtual undefined4 VTable0x48(undefined4, undefined4);   // vtable+0x48
 	virtual void OpenFileForWrite(LegoChar* p_fileName) = 0; // vtable+0x4c
 	virtual void WriteToken(ParserTokenType) = 0;            // vtable+0x50

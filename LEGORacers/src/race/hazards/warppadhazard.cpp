@@ -107,11 +107,3 @@ void WarpPadHazard::Update(undefined4 p_elapsedMs)
 	}
 }
 #pragma code_seg()
-
-#pragma code_seg(".text$animatedpartresource_vt18")
-// FUNCTION: LEGORACERS 0x00452430 FOLDED
-LegoBool32 WarpPadHazard::CanRetrigger()
-{
-	return 1;
-}
-#pragma code_seg()

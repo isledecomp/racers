@@ -51,7 +51,8 @@ public:
 							   undefined4) override;            // vtable+0x1c
 		void OnIconUnfocused(MenuWidget*) override;             // vtable+0x38
 		void CreateWidgets() override;                          // vtable+0x4c
-		undefined4 ShouldLoadResources() override;              // vtable+0x50
+	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+		undefined4 ShouldLoadResources() override { return 0; }              // vtable+0x50
 		void Reset() override;                                  // vtable+0x54
 		MenuStyleTable* GetMenuStyles() override;               // vtable+0x5c
 		MenuInputBindingTable* GetMenuInputBindings() override; // vtable+0x64

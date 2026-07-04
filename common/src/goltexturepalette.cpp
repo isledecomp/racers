@@ -113,13 +113,6 @@ LegoS32 GolTexturePalette::FindEntry(const ColorRGBA& p_entry)
 	return -1;
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoU32 GolTexturePalette::GetFirstEntry()
-{
-	return 0;
-}
-
 // FUNCTION: GOLDP 0x1002a350 FOLDED
 // FUNCTION: LEGORACERS 0x00413650 FOLDED
 LegoU32 GolTexturePalette::GetEntryCount()

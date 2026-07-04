@@ -76,11 +76,3 @@ void SoundInstance::SetPriority(LegoS32 p_priority)
 	m_soundBuffer->SetPriority(p_priority);
 }
 
-// The original folds the two sound-instance getters together, separate from identical getters elsewhere.
-#pragma code_seg(".text$legoracers_0041b5c0")
-// FUNCTION: LEGORACERS 0x0041b5c0 FOLDED
-DirectSoundGroup* SoundInstance::GetSoundGroup()
-{
-	return m_soundGroup;
-}
-#pragma code_seg()

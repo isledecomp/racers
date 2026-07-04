@@ -37,12 +37,6 @@ void NullMusicInstance::Resume()
 {
 }
 
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoBool32 NullMusicInstance::IsPlaying()
-{
-	return FALSE;
-}
-
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void NullMusicInstance::SetVolume(LegoFloat)
 {

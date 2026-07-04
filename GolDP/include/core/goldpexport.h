@@ -23,7 +23,8 @@ public:
 	GolSceneNode* CreateSceneNode() override;                  // vtable+0x18
 	GolBoundingShape* CreateBoundingShape() override;          // vtable+0x1c
 	GolCamera* CreateCamera() override;                        // vtable+0x20
-	undefined4 VTable0x24() override;                          // vtable+0x24
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	undefined4 VTable0x24() override { return 0; }                          // vtable+0x24
 	GolTiledTexture* CreateTiledTexture() override;            // vtable+0x28
 	GolFontBase* CreateFont() override;                        // vtable+0x2c
 	GolWorldEntity* CreateBillboard() override;                // vtable+0x30

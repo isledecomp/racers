@@ -114,22 +114,16 @@ void PowerupAction::AdvanceState()
 {
 }
 
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoS32 PowerupAction::GetBrickColor()
-{
-	return 0;
-}
-
 // FUNCTION: LEGORACERS 0x0044f580 FOLDED
 LegoS32 TurboAction::GetBrickColor()
 {
-	return RacePowerupManager::c_brickColorGreen;
+	return PowerupAction::c_brickColorGreen;
 }
 
 // FUNCTION: LEGORACERS 0x0044f580 FOLDED
 LegoS32 WarpAction::GetBrickColor()
 {
-	return RacePowerupManager::c_brickColorGreen;
+	return PowerupAction::c_brickColorGreen;
 }
 
 // FUNCTION: LEGORACERS 0x004513e0 FOLDED
@@ -793,16 +787,16 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 				position.m_z = p_parser->ReadFloat();
 				break;
 			case PwbTxtParser::e_colorRed:
-				state = c_brickColorRed;
+				state = PowerupAction::c_brickColorRed;
 				break;
 			case PwbTxtParser::e_colorYellow:
-				state = c_brickColorYellow;
+				state = PowerupAction::c_brickColorYellow;
 				break;
 			case PwbTxtParser::e_colorBlue:
-				state = c_brickColorBlue;
+				state = PowerupAction::c_brickColorBlue;
 				break;
 			case PwbTxtParser::e_colorGreen:
-				state = c_brickColorGreen;
+				state = PowerupAction::c_brickColorGreen;
 				break;
 			case PwbTxtParser::e_respawnMs:
 				duration = p_parser->ReadInteger();
@@ -1616,7 +1610,7 @@ void RacePowerupManager::Draw(LegoBool32 p_warpOnly)
 
 	PowerupAction* action = m_activeActions;
 	while (action != NULL) {
-		if (!p_warpOnly || (action->GetBrickColor() == c_brickColorGreen && action->GetLevel() == 3)) {
+		if (!p_warpOnly || (action->GetBrickColor() == PowerupAction::c_brickColorGreen && action->GetLevel() == 3)) {
 			action->Draw(m_renderer);
 		}
 
@@ -1757,7 +1751,7 @@ LegoU32 RacePowerupManager::FireCannonball(Racer* p_racer, LegoU32 p_level)
 
 	CannonballAction* action = static_cast<CannonballAction*>(m_freeCannonballActions);
 	if (!action) {
-		action = static_cast<CannonballAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
+		action = static_cast<CannonballAction*>(ReclaimAction(PowerupAction::c_brickColorRed, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeCannonballActions = action->m_next;
@@ -1809,7 +1803,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
 
 	GrapplingHookAction* action = static_cast<GrapplingHookAction*>(m_freeGrapplingHookActions);
 	if (!action) {
-		action = static_cast<GrapplingHookAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
+		action = static_cast<GrapplingHookAction*>(ReclaimAction(PowerupAction::c_brickColorRed, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeGrapplingHookActions = action->m_next;
@@ -1833,7 +1827,7 @@ void RacePowerupManager::FireLightning(Racer* p_racer, LegoU32 p_level)
 {
 	LightningAction* action = static_cast<LightningAction*>(m_freeLightningActions);
 	if (!action) {
-		action = static_cast<LightningAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
+		action = static_cast<LightningAction*>(ReclaimAction(PowerupAction::c_brickColorRed, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeLightningActions = action->m_next;
@@ -1850,7 +1844,7 @@ void RacePowerupManager::DropOilSlick(Racer* p_racer, LegoU32 p_level)
 {
 	OilSlickAction* action = static_cast<OilSlickAction*>(m_freeOilSlickActions);
 	if (!action) {
-		action = static_cast<OilSlickAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
+		action = static_cast<OilSlickAction*>(ReclaimAction(PowerupAction::c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeOilSlickActions = action->m_next;
@@ -1867,7 +1861,7 @@ LegoU32 RacePowerupManager::ThrowDynamite(Racer* p_racer, LegoU32 p_level)
 {
 	DynamiteAction* action = static_cast<DynamiteAction*>(m_freeDynamiteActions);
 	if (!action) {
-		action = static_cast<DynamiteAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
+		action = static_cast<DynamiteAction*>(ReclaimAction(PowerupAction::c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeDynamiteActions = action->m_next;
@@ -1902,7 +1896,7 @@ void RacePowerupManager::ActivateMagnet(Racer* p_racer, LegoU32 p_level)
 {
 	MagnetAction* action = static_cast<MagnetAction*>(m_freeMagnetActions);
 	if (!action) {
-		action = static_cast<MagnetAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
+		action = static_cast<MagnetAction*>(ReclaimAction(PowerupAction::c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeMagnetActions = action->m_next;
@@ -1948,7 +1942,7 @@ void RacePowerupManager::CastCurse(Racer* p_racer, LegoU32 p_level)
 
 	CurseAction* action = static_cast<CurseAction*>(m_freeCurseActions);
 	if (!action) {
-		action = static_cast<CurseAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
+		action = static_cast<CurseAction*>(ReclaimAction(PowerupAction::c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeCurseActions = action->m_next;
@@ -1988,7 +1982,7 @@ void RacePowerupManager::FireHomingMissiles(Racer* p_racer, LegoU32 p_level)
 	for (LegoU32 i = 0; i < 3; i++) {
 		HomingMissileAction* action = static_cast<HomingMissileAction*>(m_freeHomingMissileActions);
 		if (!action) {
-			action = static_cast<HomingMissileAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
+			action = static_cast<HomingMissileAction*>(ReclaimAction(PowerupAction::c_brickColorRed, p_level, -1, -1, -1));
 		}
 		else {
 			m_freeHomingMissileActions = action->m_next;
@@ -2025,7 +2019,7 @@ void RacePowerupManager::UseBluePowerup(Racer* p_racer, LegoU32 p_level)
 		LegoU32 subtype = p_level;
 		ShieldAction* action = static_cast<ShieldAction*>(m_freeShieldActions);
 		if (action == NULL) {
-			action = static_cast<ShieldAction*>(ReclaimAction(c_brickColorBlue, 0, 1, 2, 3));
+			action = static_cast<ShieldAction*>(ReclaimAction(PowerupAction::c_brickColorBlue, 0, 1, 2, 3));
 		}
 		else {
 			m_freeShieldActions = action->GetNext();
@@ -2117,7 +2111,7 @@ void RacePowerupManager::UseGreenPowerup(Racer* p_racer, LegoU32 p_level)
 	else if (25 - m_usedEffectEntityCount >= 3) {
 		TurboAction* action = static_cast<TurboAction*>(m_freeTurboActions);
 		if (!action) {
-			action = static_cast<TurboAction*>(ReclaimAction(c_brickColorGreen, 0, 1, 2, -1));
+			action = static_cast<TurboAction*>(ReclaimAction(PowerupAction::c_brickColorGreen, 0, 1, 2, -1));
 		}
 		else {
 			m_freeTurboActions = action->m_next;
@@ -2135,7 +2129,7 @@ LegoU32 RacePowerupManager::ActivateWarp(Racer* p_racer, LegoU32 p_level)
 {
 	WarpAction* action = static_cast<WarpAction*>(m_freeWarpActions);
 	if (!action) {
-		action = static_cast<WarpAction*>(ReclaimAction(c_brickColorGreen, p_level, -1, -1, -1));
+		action = static_cast<WarpAction*>(ReclaimAction(PowerupAction::c_brickColorGreen, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeWarpActions = action->m_next;
@@ -2518,13 +2512,13 @@ LegoU32 RacePowerupManager::ReleaseEffectEntity(GolAnimatedEntity* p_entity)
 GolMaterial* RacePowerupManager::GetBrickMaterial(LegoU32* p_brickColor)
 {
 	switch (*p_brickColor) {
-	case c_brickColorRed:
+	case PowerupAction::c_brickColorRed:
 		return m_brickMaterials[c_brickMaterialRed];
-	case c_brickColorBlue:
+	case PowerupAction::c_brickColorBlue:
 		return m_brickMaterials[c_brickMaterialBlue];
-	case c_brickColorGreen:
+	case PowerupAction::c_brickColorGreen:
 		return m_brickMaterials[c_brickMaterialGreen];
-	case c_brickColorYellow:
+	case PowerupAction::c_brickColorYellow:
 		return m_brickMaterials[c_brickMaterialYellow];
 	default:
 		return NULL;
@@ -2535,13 +2529,13 @@ GolMaterial* RacePowerupManager::GetBrickMaterial(LegoU32* p_brickColor)
 GolMaterial* RacePowerupManager::GetTrailMaterial(LegoU32* p_brickColor)
 {
 	switch (*p_brickColor) {
-	case c_brickColorRed:
+	case PowerupAction::c_brickColorRed:
 		return m_brickMaterials[c_trailMaterialRed];
-	case c_brickColorBlue:
+	case PowerupAction::c_brickColorBlue:
 		return m_brickMaterials[c_trailMaterialBlue];
-	case c_brickColorGreen:
+	case PowerupAction::c_brickColorGreen:
 		return m_brickMaterials[c_trailMaterialGreen];
-	case c_brickColorYellow:
+	case PowerupAction::c_brickColorYellow:
 		return m_brickMaterials[c_trailMaterialYellow];
 	default:
 		return NULL;

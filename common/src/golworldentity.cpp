@@ -239,13 +239,6 @@ void GolWorldEntity::ClearColorTransform()
 	// empty
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-undefined4 GolWorldEntity::GetKind()
-{
-	return 0;
-}
-
 // FUNCTION: GOLDP 0x1002c010 FOLDED
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
 void GolWorldEntity::SetDirectionUp(const GolVec3& p_direction, const GolVec3& p_up)

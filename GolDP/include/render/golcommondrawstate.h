@@ -40,12 +40,15 @@ public:
 	virtual LegoBool32 SupportsFogTable() const;              // vtable+0x88
 	virtual LegoBool32 SupportsTextureAlpha() const;          // vtable+0x8c
 	virtual LegoBool32 SupportsAdditiveBlend() const;         // vtable+0x90
-	virtual undefined4 SupportsWBuffer();                     // vtable+0x94
-	virtual LegoBool32 SupportsZBufferlessHsr() const;        // vtable+0x98
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	virtual undefined4 SupportsWBuffer() { return 0; }                     // vtable+0x94
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	virtual LegoBool32 SupportsZBufferlessHsr() const { return 0; }        // vtable+0x98
 	virtual LegoBool32 SupportsPaletteAlpha() const;          // vtable+0x9c
 	virtual LegoBool32 SupportsTextureSystemMemory() const;   // vtable+0xa0
 	virtual LegoBool32 SupportsTextureVideoMemory() const;    // vtable+0xa4
-	virtual LegoBool32 SupportsRenderingInWindow() const;     // vtable+0xa8
+	// FUNCTION: GOLDP 0x100016f0 FOLDED
+	virtual LegoBool32 SupportsRenderingInWindow() const { return FALSE; }     // vtable+0xa8
 	virtual LPDIRECTDRAW GetDirectDraw();                     // vtable+0xac
 	virtual LPDIRECTDRAWSURFACE GetDisplaySurface();          // vtable+0xb0
 	virtual LPDIRECTDRAWSURFACE GetRenderSurface();           // vtable+0xb4

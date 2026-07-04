@@ -20,12 +20,6 @@
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
 DECOMP_SIZE_ASSERT(GolDPExport, 0xc8ac8)
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-undefined4 GolDPExport::VTable0x24()
-{
-	return 0;
-}
-
 // FUNCTION: GOLDP 0x10007060
 GolDPExport::~GolDPExport()
 {

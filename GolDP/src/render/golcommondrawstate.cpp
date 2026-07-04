@@ -181,18 +181,6 @@ LegoBool32 GolCommonDrawState::SupportsAdditiveBlend() const
 	return TRUE;
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-undefined4 GolCommonDrawState::SupportsWBuffer()
-{
-	return 0;
-}
-
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-LegoBool32 GolCommonDrawState::SupportsZBufferlessHsr() const
-{
-	return 0;
-}
-
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
 LegoBool32 GolCommonDrawState::SupportsPaletteAlpha() const
 {
@@ -210,15 +198,6 @@ LegoBool32 GolCommonDrawState::SupportsTextureVideoMemory() const
 {
 	return TRUE;
 }
-
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-LegoBool32 GolCommonDrawState::SupportsRenderingInWindow() const
-{
-	return FALSE;
-}
-
-// The original keeps the 0x10018630 zero-return fold group separate from 0x100016f0.
-#pragma code_seg(".text$goldp_10018630")
 
 // FUNCTION: GOLDP 0x10018630 FOLDED
 LPDIRECTDRAW GolCommonDrawState::GetDirectDraw()
@@ -238,4 +217,3 @@ LPDIRECTDRAWSURFACE GolCommonDrawState::GetRenderSurface()
 	return NULL;
 }
 
-#pragma code_seg()

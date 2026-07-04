@@ -396,9 +396,3 @@ LegoFloat JoystickDevice::GetAxisValueByIndex(undefined4 p_arg)
 	return m_axisValues[p_arg];
 }
 
-// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-#pragma code_seg(".text$fold_44f590")
-void JoystickDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA&)
-{
-}
-#pragma code_seg()

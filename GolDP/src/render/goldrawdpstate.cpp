@@ -323,12 +323,6 @@ LegoBool32 GolDrawDPState::SupportsAdditiveBlend() const
 	}
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-undefined4 GolDrawDPState::SupportsWBuffer()
-{
-	return FALSE;
-}
-
 // FUNCTION: GOLDP 0x10001700
 LegoBool32 GolDrawDPState::SupportsPaletteAlpha() const
 {

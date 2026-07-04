@@ -1032,8 +1032,3 @@ void GolRenderDevice::VTable0xf4()
 	// empty
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-LegoBool32 GolRenderDevice::VTable0x110() const
-{
-	return FALSE;
-}

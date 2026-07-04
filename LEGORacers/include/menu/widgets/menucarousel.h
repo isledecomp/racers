@@ -19,7 +19,8 @@ public:
 	void Reset() override;                                                           // vtable+0x00
 	~MenuCarousel() override;                                                        // vtable+0x04
 	void SetColor(VisualStateColor*) override;                                       // vtable+0x14
-	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	// FUNCTION: LEGORACERS 0x00466090 FOLDED
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override { return NULL; } // vtable+0x30
 	virtual void SnapToSelection() = 0;                                              // vtable+0x40
 	virtual void StartScroll(undefined4) = 0;                                        // vtable+0x44
 	virtual void SetItemColors(VisualStateColor*, VisualStateColor*);                // vtable+0x48

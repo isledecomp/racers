@@ -154,7 +154,7 @@ CheckpointGraph::Entry* CheckpointGraph::GetCheckpoint(LegoU32 p_index)
 	return &m_entries[p_index];
 }
 
-// STUB: LEGORACERS 0x0041e950
+// FUNCTION: LEGORACERS 0x0041e950
 void CheckpointGraph::ComputeLapFractions()
 {
 	LegoS32 pathCount = static_cast<LegoS32>(CountLapCheckpoints());

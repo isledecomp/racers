@@ -447,7 +447,7 @@ void RaceHud::DrawMapArrow(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, Leg
 	m_mapMaterial = material;
 }
 
-// STUB: LEGORACERS 0x004249b0
+// FUNCTION: LEGORACERS 0x004249b0
 void RaceHud::DrawFixedMap()
 {
 	const LegoFloat maxTextureCoordinate = 0.9990000129f;
@@ -474,11 +474,10 @@ void RaceHud::DrawFixedMap()
 		vertices[i].m_z = 0.0f;
 	}
 
-	LegoS32 verticalOffset =
-		static_cast<LegoS32>(static_cast<LegoFloat>(m_screenHeight) * g_hudMapInsetScale * m_scaleY);
-	LegoS32 horizontalOffset =
-		static_cast<LegoS32>(static_cast<LegoFloat>(m_screenHeight) * g_hudMapInsetScale * m_scaleX);
+	double inset = static_cast<double>(m_screenHeight) * g_hudMapInsetScale;
+	LegoS32 verticalOffset = static_cast<LegoS32>(m_scaleY * inset);
 	LegoS32 mapOriginY = m_viewport.m_bottom - verticalOffset;
+	LegoS32 horizontalOffset = static_cast<LegoS32>(m_scaleX * inset);
 	LegoS32 mapOriginX = m_viewport.m_right - horizontalOffset;
 
 	LegoFloat referenceY;
@@ -491,10 +490,10 @@ void RaceHud::DrawFixedMap()
 
 	LegoFloat rangeX = m_mapMaxX - m_mapMinX;
 	LegoFloat rangeY = m_mapMaxY - m_mapMinY;
-	LegoFloat scale = rangeX > rangeY ? g_hudMapSize / rangeX : g_hudMapSize / rangeY;
+	double scale = rangeX > rangeY ? g_hudMapSize / rangeX : g_hudMapSize / rangeY;
 	scale *= m_mapScale;
-	LegoFloat scaleX = m_scaleX * scale;
-	LegoFloat scaleY = m_scaleY * scale;
+	LegoFloat scaleX = static_cast<LegoFloat>(m_scaleX * scale);
+	LegoFloat scaleY = static_cast<LegoFloat>(m_scaleY * scale);
 
 	if (m_mapMaterial) {
 		if (m_mirror) {
@@ -536,7 +535,10 @@ void RaceHud::DrawFixedMap()
 	LegoS32 markerOriginX = mapOriginX - halfMarkerWidth;
 	LegoS32 markerOriginY = mapOriginY - halfMarkerHeight;
 
-	for (LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
+	LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount());
+	while (racerIndex > 0) {
+		racerIndex--;
+
 		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 		if (racer != m_racer) {
 			GolVec3 position;
@@ -631,7 +633,7 @@ void RaceHud::DrawFixedMap()
 	DrawMapArrow(currentX, currentY, directionX, directionY);
 }
 
-// STUB: LEGORACERS 0x00424fb0
+// FUNCTION: LEGORACERS 0x00424fb0
 void RaceHud::DrawRotatingMap()
 {
 	const LegoFloat maxTextureCoordinate = 0.9990000129f;
@@ -654,11 +656,10 @@ void RaceHud::DrawRotatingMap()
 	}
 
 	LegoFloat directionLengthScale = m_mapScale * 0.12f * m_scaleY;
-	LegoS32 verticalInset =
-		static_cast<LegoS32>(static_cast<LegoFloat>(m_screenHeight) * g_hudMapInsetScale * m_scaleY);
-	LegoS32 horizontalInset =
-		static_cast<LegoS32>(static_cast<LegoFloat>(m_screenHeight) * g_hudMapInsetScale * m_scaleX);
+	double inset = static_cast<double>(m_screenHeight) * g_hudMapInsetScale;
+	LegoS32 verticalInset = static_cast<LegoS32>(m_scaleY * inset);
 	LegoS32 mapBottom = m_viewport.m_bottom - verticalInset;
+	LegoS32 horizontalInset = static_cast<LegoS32>(m_scaleX * inset);
 	LegoS32 mapRight = m_viewport.m_right - horizontalInset;
 
 	LegoFloat mapSize = m_mapScale * g_hudMapSize;
@@ -740,7 +741,10 @@ void RaceHud::DrawRotatingMap()
 	Rect destRect;
 	Rect sourceRect;
 
-	for (LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
+	LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount());
+	while (racerIndex > 0) {
+		racerIndex--;
+
 		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 		if (racer != m_racer) {
 			racer->m_visuals.m_carEntity->GetPosition(&position);

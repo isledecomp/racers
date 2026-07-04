@@ -158,7 +158,7 @@ void CannonballAction::Deactivate()
 	}
 }
 
-// STUB: LEGORACERS 0x00451b50
+// FUNCTION: LEGORACERS 0x00451b50
 void CannonballAction::Update(LegoU32 p_elapsedMs)
 {
 	GolVec2 perpendicular;
@@ -295,7 +295,7 @@ void CannonballAction::Draw(GolD3DRenderDevice* p_renderer)
 	}
 }
 
-// STUB: LEGORACERS 0x00451f50
+// FUNCTION: LEGORACERS 0x00451f50
 void CannonballAction::AdvanceState()
 {
 	switch (m_state) {

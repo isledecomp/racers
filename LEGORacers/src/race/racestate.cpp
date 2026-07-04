@@ -59,6 +59,7 @@ extern const LegoFloat g_proximityPitchSpeedRange;
 extern const LegoFloat g_carModelScale;
 extern const LegoFloat g_proximitySoundMinDistance;
 extern const LegoFloat g_proximitySoundMaxDistance;
+extern LegoFloat g_proximitySoundMaxDistanceSquared;
 
 DECOMP_SIZE_ASSERT(RaceRouteRecord, 0x48)
 DECOMP_SIZE_ASSERT(Racer::StandingsDeltaEntry, 0x0c)
@@ -766,7 +767,7 @@ void RaceState::UpdateRacers(LegoU32 p_elapsedMs)
 	m_setup.Update(p_elapsedMs);
 }
 
-// STUB: LEGORACERS 0x0043c1b0
+// FUNCTION: LEGORACERS 0x0043c1b0
 void RaceState::UpdateStandings()
 {
 	RaceState::RacerProgressEntry* entries = g_racerProgressEntries;
@@ -892,13 +893,7 @@ void RaceState::UpdateStandings()
 			}
 		}
 
-		if (nearestDistanceSquared >= g_proximitySoundMaxDistance * g_proximitySoundMaxDistance) {
-			if (sound->IsPlaying()) {
-				sound->Stop();
-				return;
-			}
-		}
-		else {
+		if (nearestDistanceSquared < g_proximitySoundMaxDistanceSquared) {
 			if (!sound->IsPlaying()) {
 				sound->Play(TRUE);
 			}
@@ -930,6 +925,9 @@ void RaceState::UpdateStandings()
 			}
 
 			sound->SetFrequencyScale(frequencyScale);
+		}
+		else if (sound->IsPlaying()) {
+			sound->Stop();
 		}
 	}
 }

@@ -49,7 +49,7 @@ GolWorldDatabase* TriggerWorld::Initialize(
 	return result;
 }
 
-// STUB: LEGORACERS 0x0041f4d0
+// FUNCTION: LEGORACERS 0x0041f4d0
 LegoBool32 TriggerWorld::IntersectSegment(
 	GolVec3* p_start,
 	GolVec3* p_end,

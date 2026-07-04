@@ -94,6 +94,7 @@ address,type,x-text
 0x4b2c14,string,"angry"
 0x4b2c1c,string,"blink"
 0x4b2c24,string,"happy"
+0x4b2c2c,string,"sad"
 0x4b2c34,string,"suprz"
 0x4b2c54,string,"carbody"
 0x4b2f50,string,"spanish"

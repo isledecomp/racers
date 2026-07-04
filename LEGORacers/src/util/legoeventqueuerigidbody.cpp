@@ -5,7 +5,7 @@
 
 DECOMP_SIZE_ASSERT(LegoEventQueue::Descriptor::RigidBody, 0xe4)
 
-// STUB: LEGORACERS 0x00441330
+// FUNCTION: LEGORACERS 0x00441330
 LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 	RigidBody* p_other,
 	LegoFloat* p_penetration,
@@ -34,74 +34,70 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 			position = &m_centerOfMassWorld;
 			distance = distance0;
 
-			const GolMatrix3& orientation = m_body->m_orientation;
 			LegoFloat halfX = m_boxSizeX * 0.5f;
-			axes[0].m_x = orientation.m_m[0][0] * halfX;
-			axes[0].m_y = orientation.m_m[0][1] * halfX;
-			axes[0].m_z = orientation.m_m[0][2] * halfX;
+			axes[0].m_x = m_body->m_orientation.m_m[0][0] * halfX;
+			axes[0].m_y = m_body->m_orientation.m_m[0][1] * halfX;
+			axes[0].m_z = m_body->m_orientation.m_m[0][2] * halfX;
 
 			LegoFloat halfY = m_boxSizeY * 0.5f;
-			axes[1].m_x = orientation.m_m[1][0] * halfY;
-			axes[1].m_y = orientation.m_m[1][1] * halfY;
-			axes[1].m_z = orientation.m_m[1][2] * halfY;
+			axes[1].m_x = m_body->m_orientation.m_m[1][0] * halfY;
+			axes[1].m_y = m_body->m_orientation.m_m[1][1] * halfY;
+			axes[1].m_z = m_body->m_orientation.m_m[1][2] * halfY;
 
 			LegoFloat halfZ = m_boxSizeZ * 0.5f;
-			axes[2].m_x = orientation.m_m[2][0] * halfZ;
-			axes[2].m_y = orientation.m_m[2][1] * halfZ;
-			axes[2].m_z = orientation.m_m[2][2] * halfZ;
+			axes[2].m_x = m_body->m_orientation.m_m[2][0] * halfZ;
+			axes[2].m_y = m_body->m_orientation.m_m[2][1] * halfZ;
+			axes[2].m_z = m_body->m_orientation.m_m[2][2] * halfZ;
 
-			LegoFloat scale = m_boxScale;
-			if (scale != 1.0f) {
-				if (scale == 0.0f) {
+			if (m_boxScale != 1.0f) {
+				if (m_boxScale == 0.0f) {
 					return FALSE;
 				}
 
-				axes[0].m_x *= scale;
-				axes[0].m_y *= scale;
-				axes[0].m_z *= scale;
-				axes[1].m_x *= scale;
-				axes[1].m_y *= scale;
-				axes[1].m_z *= scale;
-				axes[2].m_x *= scale;
-				axes[2].m_y *= scale;
-				axes[2].m_z *= scale;
+				axes[0].m_x *= m_boxScale;
+				axes[0].m_y *= m_boxScale;
+				axes[0].m_z *= m_boxScale;
+				axes[1].m_x *= m_boxScale;
+				axes[1].m_y *= m_boxScale;
+				axes[1].m_z *= m_boxScale;
+				axes[2].m_x *= m_boxScale;
+				axes[2].m_y *= m_boxScale;
+				axes[2].m_z *= m_boxScale;
 			}
 		}
 		else {
 			position = &p_other->m_centerOfMassWorld;
 			distance = distance1;
 
-			const GolMatrix3& orientation = p_other->m_body->m_orientation;
 			LegoFloat halfX = p_other->m_boxSizeX * 0.5f;
-			axes[0].m_x = orientation.m_m[0][0] * halfX;
-			axes[0].m_y = orientation.m_m[0][1] * halfX;
-			axes[0].m_z = orientation.m_m[0][2] * halfX;
+			axes[0].m_x = p_other->m_body->m_orientation.m_m[0][0] * halfX;
+			axes[0].m_y = p_other->m_body->m_orientation.m_m[0][1] * halfX;
+			axes[0].m_z = p_other->m_body->m_orientation.m_m[0][2] * halfX;
 
 			LegoFloat halfY = p_other->m_boxSizeY * 0.5f;
-			axes[1].m_x = orientation.m_m[1][0] * halfY;
-			axes[1].m_y = orientation.m_m[1][1] * halfY;
-			axes[1].m_z = orientation.m_m[1][2] * halfY;
+			axes[1].m_x = p_other->m_body->m_orientation.m_m[1][0] * halfY;
+			axes[1].m_y = p_other->m_body->m_orientation.m_m[1][1] * halfY;
+			axes[1].m_z = p_other->m_body->m_orientation.m_m[1][2] * halfY;
 
 			LegoFloat halfZ = p_other->m_boxSizeZ * 0.5f;
-			axes[2].m_x = orientation.m_m[2][0] * halfZ;
-			axes[2].m_y = orientation.m_m[2][1] * halfZ;
-			axes[2].m_z = orientation.m_m[2][2] * halfZ;
+			axes[2].m_x = p_other->m_body->m_orientation.m_m[2][0] * halfZ;
+			axes[2].m_y = p_other->m_body->m_orientation.m_m[2][1] * halfZ;
+			axes[2].m_z = p_other->m_body->m_orientation.m_m[2][2] * halfZ;
 
-			LegoFloat scale = p_other->m_boxScale;
-			if (scale != 1.0f) {
-				if (scale == 0.0f) {
+			if (p_other->m_boxScale != 1.0f) {
+				if (p_other->m_boxScale == 0.0f) {
 					return FALSE;
 				}
 
-				axes[0].m_x *= scale;
-				axes[0].m_y *= scale;
-				axes[0].m_z *= scale;
-				axes[1].m_x *= scale;
-				axes[1].m_y *= scale;
-				axes[1].m_z *= scale;
-				axes[2].m_x *= scale;
-				axes[2].m_y *= scale;
-				axes[2].m_z *= scale;
+				axes[0].m_x *= p_other->m_boxScale;
+				axes[0].m_y *= p_other->m_boxScale;
+				axes[0].m_z *= p_other->m_boxScale;
+				axes[1].m_x *= p_other->m_boxScale;
+				axes[1].m_y *= p_other->m_boxScale;
+				axes[1].m_z *= p_other->m_boxScale;
+				axes[2].m_x *= p_other->m_boxScale;
+				axes[2].m_y *= p_other->m_boxScale;
+				axes[2].m_z *= p_other->m_boxScale;
 			}
 		}
 

@@ -131,7 +131,7 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	return result;
 }
 
-// STUB: LEGORACERS 0x00475f40
+// FUNCTION: LEGORACERS 0x00475f40
 void AwardCinematicScreen::CreateWidgets()
 {
 	struct ResourcePathLocals {

@@ -76,7 +76,7 @@ void PlayerControls::Reset()
 	m_input.m_stateFlags = (m_input.m_stateFlags & ~2) | 1;
 }
 
-// STUB: LEGORACERS 0x00430120
+// FUNCTION: LEGORACERS 0x00430120
 void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 {
 	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.001f;
@@ -114,7 +114,7 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 				delta = turnRate;
 			}
 		}
-		else if (!(inputFlags & c_inputFlagSteerPositive) && (inputFlags & c_inputFlagSteerNegative)) {
+		else if ((inputFlags & c_inputFlagSteerNegative) && !(inputFlags & c_inputFlagSteerPositive)) {
 			if (m_input.m_steering > 0.0f) {
 				delta = -g_steeringReturnRate;
 			}

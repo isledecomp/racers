@@ -27,7 +27,6 @@ extern const LegoFloat g_unk0x004afde0 = 10.0f;
 
 extern const LegoFloat g_ghostAnimationRateScale;
 extern const LegoFloat g_ghostSpeedScale;
-extern const LegoFloat g_homingProjectileCollisionStartOffset;
 
 // GLOBAL: LEGORACERS 0x004b02a0
 extern const LegoFloat g_hudArrowBaseLength = 6.5f;
@@ -409,11 +408,11 @@ void RaceHud::DrawMapArrow(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, Leg
 	LegoFloat tailSide = p_directionY;
 	tailSide *= g_ghostSpeedScale;
 	LegoFloat tailForward = p_directionX;
-	tailForward *= g_homingProjectileCollisionStartOffset;
+	tailForward *= 5.0f;
 	vertices[4].m_x = tailSide - tailForward;
 
 	LegoFloat tailForwardY = p_directionY;
-	tailForwardY *= g_homingProjectileCollisionStartOffset;
+	tailForwardY *= 5.0f;
 	LegoFloat tailSideX = p_directionX;
 	tailSideX *= g_ghostSpeedScale;
 	vertices[4].m_y = -tailForwardY - tailSideX;

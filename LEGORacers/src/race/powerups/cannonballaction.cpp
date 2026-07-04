@@ -52,9 +52,6 @@ const LegoFloat g_cannonballLaunchHeight = 5.0f;
 // GLOBAL: LEGORACERS 0x004b13e4
 extern const LegoFloat g_scarNormalThreshold = 0.70709997f;
 
-// GLOBAL: LEGORACERS 0x004b13e8
-extern const LegoFloat g_emplacementGravityScale = 3.0f;
-
 // GLOBAL: LEGORACERS 0x004c1c4c
 ColorRGBA g_cannonballTrailColor = {0x32, 0x32, 0x32, 0xc8};
 
@@ -357,7 +354,7 @@ void CannonballAction::AdvanceState()
 	else if (m_emplacement != NULL) {
 		projectileParams.m_lifetimeMs = m_emplacement->m_lifetimeMs;
 		m_billboard->SetPosition(m_emplacement->m_position);
-		projectileParams.m_gravity = g_cannonballGravity * g_emplacementGravityScale;
+		projectileParams.m_gravity = g_cannonballGravity * 3.0f;
 		m_projectile.LaunchAtPosition(&projectileParams, &m_emplacement->m_targetPosition);
 	}
 	else {

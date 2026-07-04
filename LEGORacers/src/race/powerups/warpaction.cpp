@@ -28,8 +28,6 @@ extern const LegoFloat g_negativeRadiansToTableIndex;
 
 extern const LegoFloat g_homingProjectileCollisionProbeDepth;
 
-extern const LegoFloat g_homingProjectileCollisionStartOffset;
-
 extern const LegoFloat g_unk0x004b02fc;
 
 // GLOBAL: LEGORACERS 0x004b1a60
@@ -483,13 +481,13 @@ void WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 
 	GolVec3 start = position;
 	GolVec3 end = position;
-	end.m_z += g_homingProjectileCollisionStartOffset;
-	start.m_z += g_homingProjectileCollisionStartOffset;
+	end.m_z += 5.0f;
+	start.m_z += 5.0f;
 	start.m_z -= g_homingProjectileCollisionProbeDepth;
 
 	GolBoundingVolume::HitTriangle record;
 	m_manager->m_collisionWorld->IntersectSegment(&start, &end, &record, &position, NULL);
 
-	position.m_z += g_homingProjectileCollisionStartOffset;
+	position.m_z += 5.0f;
 	p_entity->SetPosition(position);
 }

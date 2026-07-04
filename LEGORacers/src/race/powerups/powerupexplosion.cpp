@@ -16,7 +16,6 @@ LegoFloat g_explosionScarAlpha = 180.0f;
 
 extern const LegoFloat g_violetShoalTwo;
 extern const LegoFloat g_unk0x004b0544;
-extern const LegoFloat g_homingProjectileCollisionStartOffset;
 
 // FUNCTION: LEGORACERS 0x004210b0
 PowerupExplosion::PowerupExplosion()
@@ -182,7 +181,7 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 	GolVec3 position;
 	position.m_x = p_position->m_x;
 	position.m_y = p_position->m_y;
-	position.m_z = p_position->m_z + g_homingProjectileCollisionStartOffset;
+	position.m_z = p_position->m_z + 5.0f;
 	m_scarDecal.m_center = position;
 
 	GolVec3 forward;
@@ -224,7 +223,7 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 		GolVec3 particlePosition;
 		particlePosition.m_x = position.m_x;
 		particlePosition.m_y = position.m_y;
-		particlePosition.m_z = position.m_z - g_homingProjectileCollisionStartOffset;
+		particlePosition.m_z = position.m_z - 5.0f;
 		m_particleAnimation->SpawnParticle("explode", &particlePosition, NULL, NULL);
 	}
 }

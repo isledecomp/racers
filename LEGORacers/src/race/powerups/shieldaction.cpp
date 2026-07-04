@@ -27,8 +27,6 @@ extern const LegoFloat g_shieldExpireSoundMinDistance;
 
 extern const LegoFloat g_shieldExpireSoundMaxDistance;
 
-extern const LegoFloat g_homingProjectileCollisionStartOffset;
-
 extern const LegoFloat g_violetShoalTwo;
 
 // FUNCTION: LEGORACERS 0x0045bc50
@@ -284,7 +282,7 @@ void ShieldAction::AdvanceState()
 		CarVisuals* racerEntities = &m_racer->m_visuals;
 		racerEntities->m_carEntity->GetPosition(&position);
 		LegoFloat positionZ = position.m_z;
-		positionZ += g_homingProjectileCollisionStartOffset;
+		positionZ += 5.0f;
 		position.m_z = positionZ;
 		m_soundSource->PlaySpatialSoundById(
 			0x3b,

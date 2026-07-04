@@ -17,8 +17,6 @@
 #include <float.h>
 #include <math.h>
 
-extern const LegoFloat g_homingProjectileCollisionStartOffset;
-
 // GLOBAL: LEGORACERS 0x004b16c0
 const LegoFloat g_oilSoundMinDistance = 30.0f;
 
@@ -209,12 +207,12 @@ void OilSlickAction::AdvanceState()
 		m_bubbleParticle->m_particle->SetPosition(&position);
 	}
 
-	position.m_z += g_homingProjectileCollisionStartOffset;
+	position.m_z += 5.0f;
 	m_slickDecal.m_width = 15.0f;
 	m_slickDecal.m_length = 15.0f;
 	m_slickDecal.m_depth = 15.0f;
 	m_slickDecal.m_center = position;
-	position.m_z -= g_homingProjectileCollisionStartOffset;
+	position.m_z -= 5.0f;
 	m_slickDecal.GetEntity().SetPrimaryMaterialTable(&m_materialTable);
 
 	GolVec3 normal;

@@ -213,7 +213,7 @@ void GolImage::Draw(GolD3DRenderDevice* p_renderer, undefined4 p_unk0x08, Rect* 
 	DrawStretched(p_renderer, p_unk0x08, p_destRect, &sourceRect, p_clipRect);
 }
 
-// STUB: GOLDP 0x10005510
+// FUNCTION: GOLDP 0x10005510
 void GolImage::DrawStretched(
 	GolD3DRenderDevice* p_renderer,
 	undefined4,

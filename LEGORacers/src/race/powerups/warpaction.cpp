@@ -351,9 +351,7 @@ void WarpAction::AdvanceState()
 		}
 
 		CarVisuals* racerField = &m_racer->m_visuals;
-		GolAnimatedEntity** entitySlot = &racerField->m_carEntity;
-		GolAnimatedEntity* entity = *entitySlot;
-		entity->GetPosition(&m_startPosition);
+		racerField->m_carEntity->GetPosition(&m_startPosition);
 
 		if (!m_isDemoRacer) {
 			m_soundSource->PlaySoundById(c_soundStart);

@@ -86,8 +86,8 @@ void TriggeredAnimationHazard::Load(HazardContext* p_context, GolFileParser* p_p
 	GolNameTable* nameTable = p_context->GetColliderTable();
 	m_collider = nameTable->GetNameEntries() == NULL ? NULL : static_cast<ColliderRecord*>(nameTable->GetName(name));
 
-	GolAnimatedEntity** entity = m_entities;
 	GolName* modelName = modelNames;
+	GolAnimatedEntity** entity = m_entities;
 	LegoS32 count = c_entityCount;
 	do {
 		if ((*modelName)[0] != '\0') {

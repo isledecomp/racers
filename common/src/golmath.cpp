@@ -348,7 +348,7 @@ void GolMath::RotateAboutAxis(const GolVec3* p_src, GolVec3* p_dest, const GolVe
 	dest->m_z = src.m_z * matrix[2][2] + src.m_y * matrix[2][1] + src.m_x * matrix[2][0];
 }
 
-// STUB: LEGORACERS 0x004497f0
+// FUNCTION: LEGORACERS 0x004497f0
 LegoBool32 GolMath::PointInTriangle(const GolVec3* p_point, const LegoFloat* p_triangle)
 {
 	LegoFloat normalX = p_triangle[9];

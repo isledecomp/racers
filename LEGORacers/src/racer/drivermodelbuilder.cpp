@@ -504,7 +504,7 @@ void DriverModelBuilder::ApplyFaceExpression(GolModelBase* p_model, DriverCosmet
 	p_model->GetMaterialTable()->AssignEntryByName(materialIndex, materialName);
 }
 
-// STUB: LEGORACERS 0x0049dd50
+// FUNCTION: LEGORACERS 0x0049dd50
 void DriverModelBuilder::CopyGroupsUntilFace()
 {
 	GolName faceName;

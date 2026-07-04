@@ -161,7 +161,7 @@ void MultiplayerPickScreen::RestoreSlotLighting(LegoS32 p_index)
 	light->SetColor(color);
 }
 
-// STUB: LEGORACERS 0x00481c80
+// FUNCTION: LEGORACERS 0x00481c80
 LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 	MenuWidget* p_source,
 	InputEventQueue::Event* p_event,

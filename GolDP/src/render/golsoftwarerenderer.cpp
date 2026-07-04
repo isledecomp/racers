@@ -480,7 +480,7 @@ void GolSoftwareRenderer::FUN_100417a0(TriangleCommand* p_cmds, LegoU32 p_count,
 	}
 }
 
-// STUB: GOLDP 0x100417c0
+// FUNCTION: GOLDP 0x100417c0
 void GolSoftwareRenderer::FUN_100417c0(TriangleCommand* p_cmds, LegoU32 p_count)
 {
 	while (p_count != 0) {
@@ -598,7 +598,7 @@ static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	return result;
 }
 
-// STUB: GOLDP 0x100419b0
+// FUNCTION: GOLDP 0x100419b0
 void GolSoftwareRenderer::DrawCommandList()
 {
 	TriangleCommand* command = m_commandHead;

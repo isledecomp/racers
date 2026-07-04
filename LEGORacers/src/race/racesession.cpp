@@ -961,7 +961,7 @@ void RaceSession::DestroyRouteRecords()
 	} while (--remaining);
 }
 
-// STUB: LEGORACERS 0x00433480
+// FUNCTION: LEGORACERS 0x00433480
 void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 {
 	if (m_checkpointFileName[0]) {
@@ -1468,7 +1468,7 @@ void RaceSession::StartIntroCamera()
 	}
 }
 
-// STUB: LEGORACERS 0x004343e0
+// FUNCTION: LEGORACERS 0x004343e0
 void RaceSession::InitializeInput()
 {
 	RaceSession* session = this;

@@ -184,7 +184,7 @@ LegoBool32 DriverLicenseScreen::Destroy()
 	return MenuGameScreen::Destroy();
 }
 
-// STUB: LEGORACERS 0x0047b580
+// FUNCTION: LEGORACERS 0x0047b580
 LegoBool32 DriverLicenseScreen::HasUnsavedChanges()
 {
 	GolString name;

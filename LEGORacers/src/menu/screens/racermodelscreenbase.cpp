@@ -90,7 +90,7 @@ void RacerModelScreenBase::CreateCarModels()
 	m_modelParts.Load("rsanim", m_context->m_context->m_useBinaryFiles);
 }
 
-// STUB: LEGORACERS 0x00485c80
+// FUNCTION: LEGORACERS 0x00485c80
 void RacerModelScreenBase::OpenRecordCursors(MenuGameContext* p_context, LegoU32 p_mask)
 {
 	SaveSystem* saveSystem = &p_context->m_saveSystem;

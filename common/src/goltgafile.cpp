@@ -270,8 +270,8 @@ void GolTgaFile::LoadSurface(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* 
 	p_texture->UnlockPixels();
 }
 
-// STUB: GOLDP 0x1002ad40
-// STUB: LEGORACERS 0x00414010
+// FUNCTION: GOLDP 0x1002ad40
+// FUNCTION: LEGORACERS 0x00414010
 void GolTgaFile::DecodeRleRow(LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU32 bytesPerPixel = m_format.m_bitsPerPixel;

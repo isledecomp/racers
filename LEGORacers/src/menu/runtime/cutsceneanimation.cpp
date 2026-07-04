@@ -159,7 +159,7 @@ LegoBool32 CutsceneAnimation::HasEmitter(const LegoChar* p_param)
 	return GetName(p_param) != NULL;
 }
 
-// STUB: LEGORACERS 0x00489d70
+// FUNCTION: LEGORACERS 0x00489d70
 CutsceneParticleRef* CutsceneAnimation::SpawnParticle(
 	const LegoChar* p_param1,
 	GolVec3* p_param2,

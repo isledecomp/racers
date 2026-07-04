@@ -1186,7 +1186,7 @@ void RaceState::DrawRacerEntities(GolRenderDevice* p_renderer, Racer* p_racer)
 	}
 }
 
-// STUB: LEGORACERS 0x0043cda0
+// FUNCTION: LEGORACERS 0x0043cda0
 LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 {
 	TimeRaceManager* timeRaceManager = m_roster.m_timeRaceManager;

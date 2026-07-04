@@ -1780,7 +1780,7 @@ void Racer::PlayReaction(LegoBool32 p_positive)
 	}
 }
 
-// STUB: LEGORACERS 0x00439340
+// FUNCTION: LEGORACERS 0x00439340
 void Racer::OnRaceStart()
 {
 	LegoU32 value = m_flags & 0xfffffffd;

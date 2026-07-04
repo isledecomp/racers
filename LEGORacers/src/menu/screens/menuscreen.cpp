@@ -392,7 +392,7 @@ void MenuScreen::ApplyIconDefaults(MenuIcon::CreateParams* p_createParams)
 	ApplyWidgetDefaults(p_createParams);
 }
 
-// STUB: LEGORACERS 0x0046bb90
+// FUNCTION: LEGORACERS 0x0046bb90
 void MenuScreen::ApplySelectorDefaults(
 	MenuSelectorBase::CreateParamsWithCarousel* p_createParams,
 	MenuStyleTable::SelectorStyle* p_styleEntry

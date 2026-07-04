@@ -643,7 +643,7 @@ LegoBool32 GolAnimatedEntity::IsPartAnimationDone()
 		   (!(flags & c_flagLoopCurrentPart) && static_cast<LegoFloat>(activePart.GetFrameCount() - 1) <= m_partTimeMs);
 }
 
-// STUB: LEGORACERS 0x0040e3c0
+// FUNCTION: LEGORACERS 0x0040e3c0
 void GolAnimatedEntity::SamplePartPosition(
 	LegoU32 p_modelIndex,
 	LegoU32 p_trackOffset,
@@ -666,7 +666,7 @@ void GolAnimatedEntity::SamplePartPosition(
 	animationData.InterpolatePosition(p_dest, track, time, frameCount);
 }
 
-// STUB: LEGORACERS 0x0040e420
+// FUNCTION: LEGORACERS 0x0040e420
 void GolAnimatedEntity::SamplePartRotation(
 	LegoU32 p_modelIndex,
 	LegoU32 p_trackOffset,

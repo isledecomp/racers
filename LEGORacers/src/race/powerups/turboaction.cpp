@@ -298,7 +298,7 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x0045cf90
+// FUNCTION: LEGORACERS 0x0045cf90
 void TurboAction::AnchorToRacer()
 {
 	GolAnimatedEntity* racerEntity = m_racer->m_visuals.m_carEntity;

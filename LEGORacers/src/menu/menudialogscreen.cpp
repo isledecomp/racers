@@ -238,7 +238,7 @@ void MenuDialog::DialogScreen::EnableWidgets()
 	}
 }
 
-// STUB: LEGORACERS 0x00468740
+// FUNCTION: LEGORACERS 0x00468740
 void MenuDialog::DialogScreen::DisableWidgets()
 {
 	m_messageLabel.ClearFlags(2);

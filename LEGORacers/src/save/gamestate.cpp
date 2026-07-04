@@ -224,7 +224,7 @@ void GameState::SelectInputBinding(LegoU32 p_playerIndex, LegoU32 p_entryIndex)
 	}
 }
 
-// STUB: LEGORACERS 0x0042eb60
+// FUNCTION: LEGORACERS 0x0042eb60
 void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex)
 {
 	PersistentGameState state;

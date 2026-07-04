@@ -193,7 +193,7 @@ void MainMenuScreen::Navigate()
 	m_context->m_menuStack.ResetSize();
 }
 
-// STUB: LEGORACERS 0x004812f0
+// FUNCTION: LEGORACERS 0x004812f0
 LegoBool32 MainMenuScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	LegoBool32 result = m_navPending;

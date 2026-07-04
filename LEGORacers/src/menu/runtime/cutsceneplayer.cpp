@@ -1644,7 +1644,7 @@ void CutscenePlayer::Draw(GolD3DRenderDevice* p_renderer)
 	}
 }
 
-// STUB: LEGORACERS 0x004a2f80
+// FUNCTION: LEGORACERS 0x004a2f80
 void CutscenePlayer::UpdateListener(GolCamera* p_lens)
 {
 	GolVec3 position;

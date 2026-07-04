@@ -1019,7 +1019,7 @@ void MenuManager::ReleasePartResources()
 	m_gameContext.m_partCatalog.Destroy();
 }
 
-// STUB: LEGORACERS 0x0042dfa0
+// FUNCTION: LEGORACERS 0x0042dfa0
 void MenuManager::BuildPlayerDriverModel(
 	SaveRecordList::Record* p_record,
 	LegoRacers::Context::PlayerSetupSlot* p_slot,
@@ -1213,7 +1213,7 @@ LegoBool32 MenuManager::HasPendingMemoryCardSaves()
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x0042e490
+// FUNCTION: LEGORACERS 0x0042e490
 LegoS32 MenuManager::CommitBestTimes()
 {
 	LegoU8 flags = m_gameContext.m_context->m_flags;

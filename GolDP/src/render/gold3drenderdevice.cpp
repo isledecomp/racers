@@ -2916,7 +2916,7 @@ HRESULT GolD3DRenderDevice::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_for
 	return TRUE;
 }
 
-// STUB: GOLDP 0x1000b8e0
+// FUNCTION: GOLDP 0x1000b8e0
 void GolD3DRenderDevice::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -2963,7 +2963,7 @@ void GolD3DRenderDevice::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000baa0
+// FUNCTION: GOLDP 0x1000baa0
 void GolD3DRenderDevice::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3006,7 +3006,7 @@ void GolD3DRenderDevice::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000bc40
+// FUNCTION: GOLDP 0x1000bc40
 void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3054,7 +3054,7 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000be20
+// FUNCTION: GOLDP 0x1000be20
 void GolD3DRenderDevice::FUN_1000be20(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3094,7 +3094,7 @@ void GolD3DRenderDevice::FUN_1000be20(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000bfb0
+// FUNCTION: GOLDP 0x1000bfb0
 void GolD3DRenderDevice::FUN_1000bfb0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3149,7 +3149,7 @@ void GolD3DRenderDevice::FUN_1000bfb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000c160
+// FUNCTION: GOLDP 0x1000c160
 void GolD3DRenderDevice::FUN_1000c160(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3186,7 +3186,7 @@ void GolD3DRenderDevice::FUN_1000c160(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000c2d0
+// FUNCTION: GOLDP 0x1000c2d0
 void GolD3DRenderDevice::FUN_1000c2d0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3227,7 +3227,7 @@ void GolD3DRenderDevice::FUN_1000c2d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000c470
+// FUNCTION: GOLDP 0x1000c470
 void GolD3DRenderDevice::FUN_1000c470(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3698,7 +3698,7 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	}
 }
 
-// STUB: GOLDP 0x1000dbb0
+// FUNCTION: GOLDP 0x1000dbb0
 void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	{
@@ -3778,7 +3778,7 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	}
 }
 
-// STUB: GOLDP 0x1000e010
+// FUNCTION: GOLDP 0x1000e010
 void GolD3DRenderDevice::FUN_1000e010(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3826,7 +3826,7 @@ void GolD3DRenderDevice::FUN_1000e010(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000e180
+// FUNCTION: GOLDP 0x1000e180
 void GolD3DRenderDevice::FUN_1000e180(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
@@ -3958,7 +3958,7 @@ void GolD3DRenderDevice::FUN_1000e540(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// STUB: GOLDP 0x1000e790
+// FUNCTION: GOLDP 0x1000e790
 void GolD3DRenderDevice::FUN_1000e790(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;

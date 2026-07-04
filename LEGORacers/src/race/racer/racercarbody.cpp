@@ -884,7 +884,7 @@ void RacerCarBody::LimitUprightTilt()
 	}
 }
 
-// STUB: LEGORACERS 0x00445dc0
+// FUNCTION: LEGORACERS 0x00445dc0
 void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 {
 	LegoU32 flags = m_flags;

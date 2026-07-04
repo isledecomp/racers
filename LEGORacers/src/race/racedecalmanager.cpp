@@ -103,7 +103,7 @@ void RaceDecalManager::Trail::Reset()
 	}
 }
 
-// STUB: LEGORACERS 0x00491c70
+// FUNCTION: LEGORACERS 0x00491c70
 void RaceDecalManager::Trail::Initialize(
 	GolD3DRenderDevice* p_renderer,
 	GolExport* p_golExport,

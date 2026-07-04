@@ -42,7 +42,7 @@ static const LegoFloat g_defaultSoundMinDistance = 30.0f;
 // GLOBAL: LEGORACERS 0x004b1b48
 static const LegoFloat g_defaultSoundMaxDistance = 300.0f;
 
-// STUB: LEGORACERS 0x0045c660
+// FUNCTION: LEGORACERS 0x0045c660
 LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_index)
 {
 	LegoU32 i = 0;

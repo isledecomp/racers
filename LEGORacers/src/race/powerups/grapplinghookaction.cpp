@@ -349,7 +349,7 @@ void GrapplingHookAction::Draw(GolD3DRenderDevice* p_renderer)
 	}
 }
 
-// STUB: LEGORACERS 0x00454360
+// FUNCTION: LEGORACERS 0x00454360
 void GrapplingHookAction::AdvanceState()
 {
 	SoundVector targetPosition;

@@ -358,10 +358,13 @@ void CannonballAction::AdvanceState()
 		m_projectile.LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, TRUE, FALSE);
 	}
 	else if (m_emplacement != NULL) {
+		target = m_emplacement->m_targetPosition;
 		projectileParams.m_lifetimeMs = m_emplacement->m_lifetimeMs;
 		m_billboard->SetPosition(m_emplacement->m_position);
 		projectileParams.m_gravity = g_cannonballGravity * 3.0f;
-		m_projectile.LaunchAtPosition(&projectileParams, &m_emplacement->m_targetPosition);
+		projectileParams.m_launchHeight = 0.0f;
+		projectileParams.m_lifetimeMs = 5000;
+		m_projectile.LaunchAtPosition(&projectileParams, &target);
 	}
 	else {
 		if (m_targetPoint != NULL) {

@@ -402,7 +402,7 @@ void RaceCameraController::SetView(LegoS32 p_viewIndex, LegoBool32 p_alternate)
 	m_lookBack = FALSE;
 }
 
-// STUB: LEGORACERS 0x00428500
+// FUNCTION: LEGORACERS 0x00428500
 GolVec3* RaceCameraController::GetViewDirection(GolVec3* p_dest)
 {
 	if (m_mode == c_modeFinish) {

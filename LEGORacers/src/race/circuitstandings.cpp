@@ -162,7 +162,7 @@ LegoU32 CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 	return extraMinutes;
 }
 
-// STUB: LEGORACERS 0x00440350
+// FUNCTION: LEGORACERS 0x00440350
 void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 {
 	GolString string;

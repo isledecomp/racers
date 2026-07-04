@@ -128,7 +128,7 @@ LegoS32 TetherProjectile::Update(LegoU32 p_elapsedMs)
 	return result;
 }
 
-// STUB: LEGORACERS 0x00444540
+// FUNCTION: LEGORACERS 0x00444540
 void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapsedMs, LegoFloat p_amount)
 {
 	LegoFloat elapsedStep = p_elapsedMs;
@@ -169,7 +169,7 @@ void TetherProjectile::Draw(GolD3DRenderDevice* p_renderer)
 	m_beam.Draw(p_renderer);
 }
 
-// STUB: LEGORACERS 0x00444690
+// FUNCTION: LEGORACERS 0x00444690
 LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 {
 	GolVec3 position;

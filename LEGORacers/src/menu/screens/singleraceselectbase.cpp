@@ -84,8 +84,8 @@ void SingleRaceSelectBase::CreateWidgets()
 	CreateTriangle(&m_sceneOverlay, 0x5e);
 
 	Rect rect;
-	rect.m_left = 0;
 	rect.m_top = 0;
+	rect.m_left = 0;
 	rect.m_right = m_sceneWidget.GetRect()->m_right - m_sceneWidget.GetRect()->m_left;
 	rect.m_bottom = m_sceneWidget.GetRect()->m_bottom - m_sceneWidget.GetRect()->m_top;
 	m_sceneOverlay.SetRect(&rect);

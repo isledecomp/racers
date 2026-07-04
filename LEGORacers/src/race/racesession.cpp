@@ -1739,21 +1739,21 @@ void RaceSession::UpdateIntroState()
 
 			LegoU32 i = 0;
 			if (m_context->m_playerCount > 0) {
-				RaceHud* cobaltTrail = m_huds;
 				RaceForceFeedback* forceFeedback = m_forceFeedback;
 				Racer** racer = m_raceState.m_playerRacers;
+				RaceHud* hud = m_huds;
 				do {
 					(*racer)->ReapplyCameraView();
 					if (!m_returnToGarage) {
-						cobaltTrail->StartCountdown();
+						hud->StartCountdown();
 					}
 					(*racer)->StartEngine();
 					forceFeedback->StartEngineEffect();
 
-					RaceHud* nextCobaltTrail = cobaltTrail + 1;
+					RaceHud* nextHud = hud + 1;
 					i++;
 					racer++;
-					cobaltTrail = nextCobaltTrail;
+					hud = nextHud;
 					forceFeedback++;
 				} while (i < m_context->m_playerCount);
 			}

@@ -36,6 +36,12 @@ DECOMP_SIZE_ASSERT(RaceActionSource, 0x24)
 
 DECOMP_SIZE_ASSERT(RaceEventTable, 0x90)
 
+// GLOBAL: LEGORACERS 0x004b1b44
+static const LegoFloat g_defaultSoundMinDistance = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b1b48
+static const LegoFloat g_defaultSoundMaxDistance = 300.0f;
+
 // STUB: LEGORACERS 0x0045c660
 LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_index)
 {
@@ -254,8 +260,8 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 			p_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 		}
 
-		params.m_maxDistance = 300.0f;
-		params.m_minDistance = 30.0f;
+		params.m_minDistance = g_defaultSoundMinDistance;
+		params.m_maxDistance = g_defaultSoundMaxDistance;
 		params.m_soundId = 0;
 		params.m_looping = FALSE;
 		params.m_noEnd = FALSE;

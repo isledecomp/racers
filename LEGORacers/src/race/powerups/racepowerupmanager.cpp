@@ -120,10 +120,6 @@ LegoS32 PowerupAction::GetBrickColor()
 	return 0;
 }
 
-void WeaponActionBase::AdvanceState()
-{
-}
-
 // FUNCTION: LEGORACERS 0x0044f580 FOLDED
 LegoS32 TurboAction::GetBrickColor()
 {
@@ -140,10 +136,6 @@ LegoS32 WarpAction::GetBrickColor()
 void PowerupAction::Deactivate()
 {
 	m_state = 1;
-}
-
-void WeaponActionBase::OnHitRacer(Racer*)
-{
 }
 
 // FUNCTION: LEGORACERS 0x004513f0

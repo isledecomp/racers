@@ -42,27 +42,6 @@ static const LegoFloat g_defaultSoundMinDistance = 30.0f;
 // GLOBAL: LEGORACERS 0x004b1b48
 static const LegoFloat g_defaultSoundMaxDistance = 300.0f;
 
-// FUNCTION: LEGORACERS 0x0045c660
-LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_index)
-{
-	LegoU32 i = 0;
-	if (static_cast<LegoU32>(m_count) > 0) {
-		Entry* entry = m_entries;
-		while (i < static_cast<LegoU32>(m_count)) {
-			if (entry->m_index == p_index) {
-				if (entry->m_flags & TargetPointList::Entry::c_flagEnabled) {
-					entry->m_flags &= ~TargetPointList::Entry::c_flagEnabled;
-				}
-			}
-
-			i++;
-			entry++;
-		}
-	}
-
-	return m_count;
-}
-
 // FUNCTION: LEGORACERS 0x0045ee50
 void RaceEventResource::OnEventStart(GolVec3* p_position)
 {

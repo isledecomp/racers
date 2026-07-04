@@ -137,6 +137,27 @@ void TgbTargetPointList::Reset()
 	m_count = 0;
 }
 
+// FUNCTION: LEGORACERS 0x0045c660
+LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_index)
+{
+	LegoU32 i = 0;
+	if (static_cast<LegoU32>(m_count) > 0) {
+		Entry* entry = m_entries;
+		while (i < static_cast<LegoU32>(m_count)) {
+			if (entry->m_index == p_index) {
+				if (entry->m_flags & TargetPointList::Entry::c_flagEnabled) {
+					entry->m_flags &= ~TargetPointList::Entry::c_flagEnabled;
+				}
+			}
+
+			i++;
+			entry++;
+		}
+	}
+
+	return m_count;
+}
+
 // FUNCTION: LEGORACERS 0x0045c6a0
 TargetPointList::Entry* TargetPointList::FindTargetInCone(
 	GolVec3* p_position,

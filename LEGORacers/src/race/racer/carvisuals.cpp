@@ -31,8 +31,9 @@ extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_carShadowScale;
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-extern const LegoFloat g_shieldSoundMaxDistance;
-extern const LegoFloat g_shieldSoundMinDistance;
+extern const LegoFloat g_landingSoundMaxDistance;
+extern const LegoFloat g_landingSoundMinDistance;
+extern const LegoFloat g_wheelParticleVelocityScale;
 extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_unk0x004b0544;
 extern const LegoFloat g_hiddenModelDistance;
@@ -524,7 +525,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 			m_curseBlendMs = 1000;
 		}
 
-		GolVec3 velocity = m_racerPhysics->m_velocity * 0.5f;
+		GolVec3 velocity = m_racerPhysics->m_velocity * g_wheelParticleVelocityScale;
 
 		for (LegoU32 particleIndex = 0; particleIndex < sizeOfArray(m_wheelParticles); particleIndex++) {
 			CutsceneParticleRef* ref = m_wheelParticles[particleIndex];
@@ -563,8 +564,8 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 					m_racer->m_soundSource->PlaySpatialSoundById(
 						0x3f,
 						&position,
-						g_shieldSoundMinDistance,
-						g_shieldSoundMaxDistance,
+						g_landingSoundMinDistance,
+						g_landingSoundMaxDistance,
 						1.0f,
 						1.0f
 					);
@@ -574,8 +575,8 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 					m_racer->m_soundSource->PlaySpatialSoundById(
 						0x40,
 						&position,
-						g_shieldSoundMinDistance,
-						g_shieldSoundMaxDistance,
+						g_landingSoundMinDistance,
+						g_landingSoundMaxDistance,
 						1.0f,
 						1.0f
 					);
@@ -584,8 +585,8 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 					m_racer->m_soundSource->PlaySpatialSoundById(
 						4,
 						&position,
-						g_shieldSoundMinDistance,
-						g_shieldSoundMaxDistance,
+						g_landingSoundMinDistance,
+						g_landingSoundMaxDistance,
 						1.0f,
 						1.0f
 					);

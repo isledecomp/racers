@@ -117,6 +117,9 @@ extern const LegoFloat g_routeSlideLiftRate = 3.0f;
 // GLOBAL: LEGORACERS 0x004b04b0
 extern const LegoFloat g_slideLiftReleaseRate = 15.0f;
 
+// GLOBAL: LEGORACERS 0x004b04b4
+extern const LegoFloat g_directionalImpulseMax = 240.0f;
+
 // GLOBAL: LEGORACERS 0x004b04b8
 extern const LegoFloat g_routePlaybackDecel = 0.0020000001f;
 
@@ -442,10 +445,10 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 		p_magnitude = -p_magnitude;
 	}
 
-	if (p_magnitude > g_routePushImpulseMax) {
-		p_magnitude = g_routePushImpulseMax;
+	if (p_magnitude > g_directionalImpulseMax) {
+		p_magnitude = g_directionalImpulseMax;
 	}
-	LegoFloat scaled = p_magnitude / g_routePushImpulseMax;
+	LegoFloat scaled = p_magnitude / g_directionalImpulseMax;
 
 	if (dot >= 0.0f) {
 		LegoFloat amount = (1.0f - dot) * g_unk0x004b0544;

@@ -17,12 +17,14 @@
 #include <float.h>
 #include <math.h>
 
-// GLOBAL: LEGORACERS 0x004b13f8
-const LegoFloat g_curseTriggerRadius = 10.0f;
+// GLOBAL: LEGORACERS 0x004b13f0
+const LegoFloat g_curseSoundMinDistance = 30.0f;
 
+// GLOBAL: LEGORACERS 0x004b13f4
 const LegoFloat g_curseSoundMaxDistanceSquared = 300.0f;
 
-const LegoFloat g_curseSoundMinDistance = 30.0f;
+// GLOBAL: LEGORACERS 0x004b13f8
+const LegoFloat g_curseTriggerRadius = 10.0f;
 
 // FUNCTION: LEGORACERS 0x00452440
 CurseAction::CurseAction()

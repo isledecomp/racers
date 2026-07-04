@@ -181,11 +181,20 @@ extern const LegoFloat g_proximitySoundMaxDistance = 200.0f;
 // GLOBAL: LEGORACERS 0x004b0ac0
 extern const LegoFloat g_hiddenModelDistance = -1.0f;
 
+// GLOBAL: LEGORACERS 0x004b0ae8
+extern const LegoFloat g_landingSoundMinDistance = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b0aec
+extern const LegoFloat g_landingSoundMaxDistance = 300.0f;
+
 // GLOBAL: LEGORACERS 0x004b0af0
 extern const LegoFloat g_unk0x004b0af0 = 15.0f;
 
 // GLOBAL: LEGORACERS 0x004b0af4
 extern const LegoFloat g_shadowProbeHeight = 6.0f;
+
+// GLOBAL: LEGORACERS 0x004b0b08
+extern const LegoFloat g_wheelParticleVelocityScale = 0.60000002f;
 
 // GLOBAL: LEGORACERS 0x004b0b24
 extern const LegoFloat g_lookTargetRangeSquared = 40000.0f;

@@ -17,10 +17,6 @@
 #include <float.h>
 #include <math.h>
 
-const LegoFloat g_dynamiteThrowDistance = -90.0f;
-
-const LegoFloat g_dynamiteSparkOffsetScale = -0.727681994f;
-
 // GLOBAL: LEGORACERS 0x004b1424
 const LegoFloat g_dynamiteLaunchHeight = 5.0f;
 
@@ -38,6 +34,12 @@ const LegoFloat g_dynamiteSoundMaxDistance = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b1444
 const LegoFloat g_dynamiteTumbleRate = 0.012f;
+
+// GLOBAL: LEGORACERS 0x004b1474
+const LegoFloat g_dynamiteSparkOffsetScale = -0.727681994f;
+
+// GLOBAL: LEGORACERS 0x004b147c
+const LegoFloat g_dynamiteThrowDistance = -90.0f;
 
 extern LegoFloat g_cosineTable[1024];
 

@@ -11,16 +11,22 @@
 
 DECOMP_SIZE_ASSERT(WarpPadHazard, 0x18)
 
+// GLOBAL: LEGORACERS 0x004b4178
 static const LegoFloat g_warpPadActionPositionX = 132.673004f;
 
+// GLOBAL: LEGORACERS 0x004b417c
 static const LegoFloat g_warpPadActionPositionY = 86.304001f;
 
+// GLOBAL: LEGORACERS 0x004b4180
 static const LegoFloat g_warpPadActionPositionZ = 14.722000f;
 
+// GLOBAL: LEGORACERS 0x004b4188
 static const LegoFloat g_warpPadActionDirectionX = 1.0f;
 
+// GLOBAL: LEGORACERS 0x004b418c
 static const LegoFloat g_warpPadActionDirectionY = -0.5f;
 
+// GLOBAL: LEGORACERS 0x004b4190
 static const LegoFloat g_warpPadActionDirectionZ = 0.0f;
 
 // FUNCTION: LEGORACERS 0x0048ae80

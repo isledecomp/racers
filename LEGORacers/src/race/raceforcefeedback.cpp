@@ -5,7 +5,10 @@
 
 DECOMP_SIZE_ASSERT(RaceForceFeedback, 0x28)
 
+// GLOBAL: LEGORACERS 0x004b0174
 static const LegoFloat g_engineEffectPeriodSeconds = 0.2f;
+
+// GLOBAL: LEGORACERS 0x004b0180
 static const LegoFloat g_microsecondsPerSecond = 1000000.0f;
 
 // FUNCTION: LEGORACERS 0x00421da0
@@ -142,11 +145,11 @@ LegoS32 RaceForceFeedback::UpdateSurfacePulse(LegoFloat p_forwardSpeed)
 		p_forwardSpeed = -p_forwardSpeed;
 	}
 
-	if (p_forwardSpeed > 0.2f) {
-		p_forwardSpeed = 0.2f;
+	if (p_forwardSpeed > g_engineEffectPeriodSeconds) {
+		p_forwardSpeed = g_engineEffectPeriodSeconds;
 	}
 
-	LegoFloat value = (p_forwardSpeed / 0.2f) * (p_forwardSpeed / 0.2f);
+	LegoFloat value = (p_forwardSpeed / g_engineEffectPeriodSeconds) * (p_forwardSpeed / g_engineEffectPeriodSeconds);
 	if (value < 0.02f) {
 		value = 0.0f;
 	}
@@ -371,15 +374,16 @@ undefined4 RaceForceFeedback::UpdateEngineEffect(LegoFloat p_forwardSpeed)
 		p_forwardSpeed = -p_forwardSpeed;
 	}
 
-	if (p_forwardSpeed > 0.2f) {
-		p_forwardSpeed = 0.2f;
+	if (p_forwardSpeed > g_engineEffectPeriodSeconds) {
+		p_forwardSpeed = g_engineEffectPeriodSeconds;
 	}
 
 	DIPERIODIC periodicParams;
 	periodicParams.dwMagnitude = 2000;
 	periodicParams.lOffset = 0;
 	periodicParams.dwPhase = 0;
-	periodicParams.dwPeriod = static_cast<LegoS32>((0.2f - p_forwardSpeed) * 1000000.0f);
+	periodicParams.dwPeriod =
+		static_cast<LegoS32>((g_engineEffectPeriodSeconds - p_forwardSpeed) * g_microsecondsPerSecond);
 
 	DIEFFECT effectParams;
 	effectParams.dwSize = sizeof(effectParams);

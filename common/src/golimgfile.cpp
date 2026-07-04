@@ -628,11 +628,10 @@ void GolImgFile::ConvertRowRgbTo32(const LegoU8* p_src, LegoU32* p_dst)
 void GolImgFile::RemapRow4To4(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* end = p_dst + ((m_width + 1) >> 1);
-	for (; p_dst < end; p_dst++) {
+	for (; p_dst < end; p_dst++, p_src++) {
 		LegoU8 low = m_paletteRemap[*p_src & 0x0f];
 		*p_dst = low;
 		*p_dst = (m_paletteRemap[*p_src >> 4] << 4) | low;
-		p_src++;
 	}
 }
 
@@ -640,11 +639,10 @@ void GolImgFile::RemapRow4To4(const LegoU8* p_src, LegoU8* p_dst)
 void GolImgFile::RemapRow4To4Swapped(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* end = p_dst + ((m_width + 1) >> 1);
-	for (; p_dst < end; p_dst++) {
+	for (; p_dst < end; p_dst++, p_src++) {
 		LegoU8 low = m_paletteRemap[*p_src >> 4];
 		*p_dst = low;
 		*p_dst = (m_paletteRemap[*p_src & 0x0f] << 4) | low;
-		p_src++;
 	}
 }
 
@@ -666,8 +664,8 @@ void GolImgFile::RemapRow4To8(const LegoU8* p_src, LegoU8* p_dst)
 void GolImgFile::RemapRow8To8(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* end = p_dst + m_width;
-	for (; p_dst < end; p_dst++) {
-		*p_dst = m_paletteRemap[*p_src++];
+	while (p_dst < end) {
+		*p_dst++ = m_paletteRemap[*p_src++];
 	}
 }
 
@@ -693,8 +691,7 @@ void GolImgFile::ConvertRowIndexed4To8(const LegoU8* p_src, LegoU8* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				*p_dst++ = pixel;
 			}
 
@@ -713,8 +710,7 @@ void GolImgFile::ConvertRowIndexed4To8(const LegoU8* p_src, LegoU8* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				*p_dst++ = pixel;
 			}
 		}
@@ -732,8 +728,7 @@ void GolImgFile::ConvertRowIndexed4To8(const LegoU8* p_src, LegoU8* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				p_dst[0] = pixel;
 			}
 		}
@@ -801,8 +796,7 @@ void GolImgFile::ConvertRowIndexed4To16(const LegoU8* p_src, LegoU16* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				*p_dst++ = pixel;
 			}
 
@@ -821,8 +815,7 @@ void GolImgFile::ConvertRowIndexed4To16(const LegoU8* p_src, LegoU16* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				*p_dst++ = pixel;
 			}
 		}
@@ -840,8 +833,7 @@ void GolImgFile::ConvertRowIndexed4To16(const LegoU8* p_src, LegoU16* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				p_dst[0] = pixel;
 			}
 		}
@@ -1074,8 +1066,7 @@ void GolImgFile::ConvertRowIndexed8To8(const LegoU8* p_src, LegoU8* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				*p_dst = pixel;
 			}
 		}
@@ -1109,8 +1100,7 @@ void GolImgFile::ConvertRowIndexed8To16(const LegoU8* p_src, LegoU16* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				*p_dst = pixel;
 			}
 		}
@@ -1190,8 +1180,7 @@ void GolImgFile::ConvertRowIndexed8To32(const LegoU8* p_src, LegoU32* p_dst)
 				r <<= m_redDstShift;
 				LegoU32 pixel = b | g;
 				pixel |= r;
-				r = m_constPixelBits;
-				pixel |= r;
+				pixel |= m_constPixelBits;
 				*p_dst = pixel;
 			}
 		}

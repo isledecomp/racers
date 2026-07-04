@@ -9,7 +9,7 @@
 #include "scene/golbillboard.h"
 #include "types.h"
 
-class ColorTransform;
+struct ColorTransform;
 class CutsceneAnimation;
 class GolCamera;
 class GolCollidableEntity;

@@ -68,8 +68,8 @@ void CutsceneMenuAnimationEvent::Parse(
 	m_animationList = p_animationList;
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case e_durationMs:
 			m_durationMs = p_parser->ReadInteger();
@@ -101,8 +101,6 @@ void CutsceneMenuAnimationEvent::Parse(
 			ParseCommonToken(p_parser, p_owner, token);
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	if (materialName[0] != '\0') {

@@ -64,8 +64,8 @@ void CutsceneColorEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 {
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case e_shifts:
 			m_shiftRed = p_parser->ReadInteger();
@@ -86,8 +86,6 @@ void CutsceneColorEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 			ParseCommonToken(p_parser, p_owner, token);
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 }
 

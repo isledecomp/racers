@@ -297,6 +297,26 @@ Current pattern:
 
 Do not steer common-code matches by duplicating implementations, moving selected functions into headers, adding `.inl.h` files, or using `#pragma inline_depth`. If a common function differs between GOLDP and LEGORACERS because of inlining, first verify whether it belongs to this target-level common-source pattern.
 
+## Float Constants: Literals vs Named Globals
+
+Proven by experiment (cl 12.00.8168 `/O2`) and by census of the original binaries (`tools/float_census.py`).
+
+**Compiler behavior.**
+
+- **Literals** are per-value COMDATs: deduped within a TU and merged across TUs by the linker — one address per value per binary. Codegen: pure FPU uses keep the constant as the *memory operand* (`fld arg; fmul [pool]`); stores are immediate (`mov [dst], 0x3f000000`); args are immediate (`push 0x3f000000`); constant expressions fold (`x = 0.5f; x = -x` compiles to a pooled `-0.5`).
+- **Named const globals** (`static const` and `extern const` behave identically): never fold, never merge, live in `.rdata`. `fmul`/`fadd` load the constant FIRST (`fld [g]; fmul arg`); stores/pushes go through a register (`mov eax, [g]; push eax`); negation emits `fld [g]; fchs`.
+- **Writable `.data` floats** are named non-const globals; codegen like named consts.
+
+**Classifying an original float datum** (what the 1999 source used):
+
+- References from multiple TUs, all in literal shape → the merged literal pool entry for that value. Source uses plain literals.
+- Any load+push, load+store, `fld`+`fchs`, const-first `fmul`/`fadd`, or a second same-value datum elsewhere → a NAMED constant of the owning TU (`static const LegoFloat` at file scope; `extern const` only if other TUs reference the same address). Multiple named constants may hold the same value — even within one TU.
+- Only `fcom`/`fld`-shaped single-TU references → ambiguous; prefer the literal unless a match proves otherwise.
+
+**reccmp rules.** Operands compare by rendered entity name. Literal pool entries are auto-discovered on BOTH sides (FPU-referenced addresses in read-only sections) and render as the value (`0.5 (FLOAT)`), so literal↔literal matches with no configuration. `reccmp/lego-racers-floats.csv` seeds orig-side FLOAT entities where auto-discovery fails (non-FPU references such as double push-pairs; writable sections). A GLOBAL annotation and a floats-CSV row on the SAME address is always wrong — it renders `(DATA)` vs `(FLOAT)` and permanently mismatches every reference.
+
+**Policy.** Literal in source ⇔ CSV row (or auto-discovery), no annotation. Named constant in source ⇔ GLOBAL annotation, no CSV row, and the name used at every original reference site. Run `python3 tools/float_census.py <orig-binary> --csv reccmp/lego-racers-floats.csv --src LEGORacers common` to find conflicts and misclassifications.
+
 ## Naming Members from Matched Code
 
 A member name is proven when a `// FUNCTION:` match forces a specific semantic interpretation — e.g. a member that is both `count++` inside a loop bounded at 20 AND stored into `g_fileSourceCount` is unambiguously a file-source count. Rename the `m_unk0xNN` placeholder once a match corroborates usage. Member *types* still follow the `undefined`/`undefined4` rule.

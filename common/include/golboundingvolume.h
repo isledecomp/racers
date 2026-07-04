@@ -41,11 +41,6 @@ public:
 	// VTABLE: GOLDP 0x10056c48
 	// SIZE 0x1fc
 	class BvbTxtParser : public GolTxtParser {
-		// SYNTHETIC: GOLDP 0x10030050 FOLDED
-		// GolBoundingVolume::BvbTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-		// GolBoundingVolume::BvbTxtParser::~BvbTxtParser
 	};
 
 	GolBoundingVolume();

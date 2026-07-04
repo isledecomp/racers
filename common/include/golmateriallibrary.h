@@ -66,12 +66,6 @@ public:
 			e_unknown0x4b = 0x4b,
 			e_unknown0x4c = 0x4c,
 		};
-
-		// SYNTHETIC: GOLDP 0x10030050 FOLDED
-		// GolMaterialLibrary::MdbTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-		// GolMaterialLibrary::MdbTxtParser::~MdbTxtParser
 	};
 
 	GolMaterialLibrary();

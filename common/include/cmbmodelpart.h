@@ -25,6 +25,14 @@ public:
 	// VTABLE: LEGORACERS 0x004af23c
 	// SIZE 0x1fc
 	class AdbTxtParser : public GolTxtParser {
+	public:
+		// SYNTHETIC: GOLDP 0x10030050 FOLDED
+		// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
+		// CmbModelPart::AdbTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+		// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
+		// CmbModelPart::AdbTxtParser::~AdbTxtParser
 	};
 
 	CmbModelPart();

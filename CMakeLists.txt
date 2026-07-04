@@ -76,141 +76,72 @@ option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 
 add_cxx_warning(parentheses)
 
-# LEGORacers.exe: common sources in the original binary's link order (reccmp-roadmap --order).
-# The two targets linked the same common code in different object order, which
-# determines COMDAT fold-survivor identity; keep the two lists independently ordered.
-set(COMMON_SOURCES_LEGORACERS
-  common/src/cmbmodelpartdata.cpp
-  common/src/cmbmodelpart.cpp
-  common/src/golbmpfile.cpp
-  common/src/goltgafile.cpp
-  common/src/golbmpwriterfile.cpp
-  common/src/golcollidableentity.cpp
-  common/src/golorientedentity.cpp
-  common/src/golboundingshape.cpp
-  common/src/golboundedentity.cpp
-  common/src/golboundingvolume.cpp
-  common/src/golcamerabase.cpp
-  common/src/golsurfaceformat.cpp
-  common/src/golrenderdevicelight.cpp
-  common/src/golsurface.cpp
-  common/src/golpalettedtexture.cpp
-  common/src/goltexture.cpp
-  common/src/golfontbase.cpp
-  common/src/golimgfile.cpp
-  common/src/golimgfilewriter.cpp
-  common/src/golanimatedentity.cpp
-  common/src/cmbmodelparttrackdata.cpp
-  common/src/golrenderdevicematerialcolor.cpp
-  common/src/golmodelrenderstate.cpp
-  common/src/golmaterial.cpp
-  common/src/mabmaterialanimation.cpp
-  common/src/mabmaterialtrack.cpp
-  common/src/managedmaterialtable.cpp
-  common/src/golmodelmaterialtable.cpp
-  common/src/materialtable.cpp
-  common/src/mabmaterialframe.cpp
-  common/src/golmateriallibrary.cpp
-  common/src/golworldentity.cpp
-  common/src/golmodelbase.cpp
-  common/src/golmodelentity.cpp
-  common/src/golnametable.cpp
-  common/src/golworldentitygroup.cpp
-  common/src/golscenenode.cpp
-  common/src/goltexturepalette.cpp
-  common/src/gdbvertexarray.cpp
-  common/src/golerror.cpp
-  common/src/golmath.cpp
-  common/src/golstring.cpp
-  common/src/goltxtparser.cpp
-  common/src/golbinparser.cpp
-  common/src/golhashtable.cpp
-  common/src/golstream.cpp
-  common/src/golfilesource.cpp
-  common/src/goldirentry.cpp
-  common/src/golstringtable.cpp
-  common/src/golfileparser.cpp
-  common/src/goldecompress.cpp
-  common/src/golfile.cpp
-  common/src/golfsutil.cpp
-  # No address-mapped functions in this target; position unconstrained.
-  common/src/gdbmodelindexarray.cpp
-  common/src/gdbmodelindexarraybase.cpp
-  common/src/golconstants.cpp
-  common/src/golcpu.cpp
-  common/src/goltransformbase.cpp
-  common/src/golviewfrustum.cpp
-)
-
-# GolDP.dll: common sources in the original binary's link order (reccmp-roadmap --order).
-# The two targets linked the same common code in different object order, which
-# determines COMDAT fold-survivor identity; keep the two lists independently ordered.
-set(COMMON_SOURCES_GOLDP
-  common/src/golpalettedtexture.cpp
-  common/src/gdbvertexarray.cpp
-  common/src/golerror.cpp
-  common/src/cmbmodelpartdata.cpp
-  common/src/cmbmodelpart.cpp
-  common/src/golbmpfile.cpp
-  common/src/golcollidableentity.cpp
-  common/src/golorientedentity.cpp
-  common/src/golboundingshape.cpp
-  common/src/golscenenode.cpp
-  common/src/golboundedentity.cpp
-  common/src/golboundingvolume.cpp
-  common/src/golcamerabase.cpp
-  common/src/golsurfaceformat.cpp
-  common/src/goltransformbase.cpp
-  common/src/golrenderdevicelight.cpp
-  common/src/golsurface.cpp
-  common/src/gdbmodelindexarraybase.cpp
-  common/src/golfontbase.cpp
-  common/src/golimgfile.cpp
-  common/src/golanimatedentity.cpp
-  common/src/cmbmodelparttrackdata.cpp
-  common/src/golrenderdevicematerialcolor.cpp
-  common/src/golmodelrenderstate.cpp
-  common/src/golmaterial.cpp
-  common/src/mabmaterialanimation.cpp
-  common/src/mabmaterialtrack.cpp
-  common/src/golmodelmaterialtable.cpp
-  common/src/mabmaterialframe.cpp
-  common/src/golmateriallibrary.cpp
-  common/src/golworldentity.cpp
-  common/src/golmodelbase.cpp
-  common/src/golmodelentity.cpp
-  common/src/golnametable.cpp
-  common/src/goltexturepalette.cpp
-  common/src/goltgafile.cpp
-  common/src/gdbmodelindexarray.cpp
-  common/src/goltexture.cpp
-  common/src/golviewfrustum.cpp
-  common/src/golmath.cpp
-  common/src/golstring.cpp
-  common/src/goltxtparser.cpp
-  common/src/golbinparser.cpp
-  common/src/golhashtable.cpp
-  common/src/golstream.cpp
-  common/src/golfileparser.cpp
-  common/src/goldecompress.cpp
-  common/src/golfile.cpp
-  common/src/golfsutil.cpp
-  common/src/golcpu.cpp
-  # No address-mapped functions in this target; position unconstrained.
-  common/src/golbmpwriterfile.cpp
-  common/src/golconstants.cpp
-  common/src/goldirentry.cpp
-  common/src/golfilesource.cpp
-  common/src/golimgfilewriter.cpp
-  common/src/golstringtable.cpp
-  common/src/golworldentitygroup.cpp
-  common/src/managedmaterialtable.cpp
-  common/src/materialtable.cpp
-)
-
-#These GOLDP - only files currently need the same inline expansion behavior as common_goldp.
+#These GOLDP - only files need the same inline expansion behavior (/Ob2) as the common/ sources
 #This might represent another original static library or project grouping; keep the list
 #narrow until more source units show the same codegen fingerprint.
+# common/ sources as compiled into GolDP.dll with /Ob2 (golmateriallibrary.cpp stays /Ob1,
+# see below).
+set(GOLDP_COMMON_INLINE_EXPANSION_SOURCES
+  common/src/golstream.cpp
+  common/src/golpalettedtexture.cpp
+  common/src/gdbvertexarray.cpp
+  common/src/golerror.cpp
+  common/src/cmbmodelpartdata.cpp
+  common/src/cmbmodelpart.cpp
+  common/src/golbmpfile.cpp
+  common/src/golcollidableentity.cpp
+  common/src/golorientedentity.cpp
+  common/src/golboundingshape.cpp
+  common/src/golboundedentity.cpp
+  common/src/golboundingvolume.cpp
+  common/src/golcamerabase.cpp
+  common/src/golsurfaceformat.cpp
+  common/src/goltransformbase.cpp
+  common/src/golrenderdevicelight.cpp
+  common/src/golsurface.cpp
+  common/src/gdbmodelindexarraybase.cpp
+  common/src/golfontbase.cpp
+  common/src/golimgfile.cpp
+  common/src/golanimatedentity.cpp
+  common/src/cmbmodelparttrackdata.cpp
+  common/src/golrenderdevicematerialcolor.cpp
+  common/src/golmodelrenderstate.cpp
+  common/src/golmaterial.cpp
+  common/src/mabmaterialanimation.cpp
+  common/src/mabmaterialtrack.cpp
+  common/src/golmodelmaterialtable.cpp
+  common/src/mabmaterialframe.cpp
+  common/src/golmodelbase.cpp
+  common/src/golmodelentity.cpp
+  common/src/golnametable.cpp
+  common/src/golworldentity.cpp
+  common/src/golbinparser.cpp
+  common/src/golscenenode.cpp
+  common/src/goltexturepalette.cpp
+  common/src/goltgafile.cpp
+  common/src/gdbmodelindexarray.cpp
+  common/src/goltexture.cpp
+  common/src/golviewfrustum.cpp
+  common/src/golmath.cpp
+  common/src/golstring.cpp
+  common/src/goltxtparser.cpp
+  common/src/golhashtable.cpp
+  common/src/golfileparser.cpp
+  common/src/goldecompress.cpp
+  common/src/golfile.cpp
+  common/src/golfsutil.cpp
+  common/src/golcpu.cpp
+  common/src/golimgfilewriter.cpp
+  common/src/goldirentry.cpp
+  common/src/golconstants.cpp
+  common/src/managedmaterialtable.cpp
+  common/src/golworldentitygroup.cpp
+  common/src/golstringtable.cpp
+  common/src/golbmpwriterfile.cpp
+  common/src/golfilesource.cpp
+  common/src/materialtable.cpp
+)
+
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/material/golsoftwarematerial.cpp
   GolDP/src/render/goldrawstate.cpp
@@ -230,49 +161,26 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/camera/golscenetransformnode.cpp
 )
 
-add_library(common_goldp OBJECT ${COMMON_SOURCES_GOLDP})
-target_compile_definitions(common_goldp PRIVATE BUILDING_GOL)
-target_include_directories(common_goldp PRIVATE
-  "${PROJECT_SOURCE_DIR}/GolDP/include"
-  "${PROJECT_SOURCE_DIR}/GolDP"
-  "${PROJECT_SOURCE_DIR}/common/include"
-  "${PROJECT_SOURCE_DIR}/util"
-)
-
-add_library(common_legoracers OBJECT ${COMMON_SOURCES_LEGORACERS})
-target_compile_definitions(common_legoracers PRIVATE BUILDING_LEGORACERS)
-target_include_directories(common_legoracers PRIVATE
-  "${PROJECT_SOURCE_DIR}/LEGORacers/include"
-  "${PROJECT_SOURCE_DIR}/LEGORacers"
-  "${PROJECT_SOURCE_DIR}/common/include"
-  "${PROJECT_SOURCE_DIR}/util"
-  "${PROJECT_SOURCE_DIR}/GolDP/include"
-)
-
 #-- - GolDP.dll target -- -
 add_library(goldp SHARED
-  # Ordered by the original GolDP.dll link order (reccmp-roadmap --order).
+  # Ordered by the original GolDP.dll link order (reccmp-roadmap, median address per object).
+  # common/ sources are interleaved among GolDP sources exactly as the original linker saw
+  # the objects; object order determines COMDAT fold-survivor identity.
   GolDP/src/render/goldrawdpstate.cpp
-  GolDP/src/render/golcommondrawstate.cpp
-  GolDP/src/render/goldrawstate.cpp
   GolDP/src/camera/golcamera.cpp
   GolDP/src/camera/goltransform.cpp
   GolDP/src/device/ddrawutil.cpp
   GolDP/src/surface/golrendertarget.cpp
   GolDP/src/font/golfonttable.cpp
   GolDP/src/font/golfont.cpp
-  GolDP/src/surface/gold3dtexture.cpp
-  GolDP/src/material/gold3dtexturelist.cpp
-  GolDP/src/material/golsoftwaremateriallibrary.cpp
   GolDP/src/image/golimage.cpp
   GolDP/src/material/golimagedefinitionlist.cpp
   GolDP/src/mesh/gdbcoloredvertexarray.cpp
-  GolDP/src/mesh/gdbuncoloredvertexarray.cpp
-  GolDP/src/mesh/gdbnormalvertexarray.cpp
   GolDP/src/material/golsoftwarematerial.cpp
+  GolDP/src/material/golsoftwaremateriallibrary.cpp
   GolDP/src/mesh/golmodel.cpp
   GolDP/src/core/main.cpp
-  GolDP/src/core/goldpexport.cpp
+  common/src/golerror.cpp
   GolDP/src/device/goldirectdrawpalette.cpp
   GolDP/src/render/gold3drenderdevice.cpp
   GolDP/src/render/gold3drendersurface.cpp
@@ -280,24 +188,88 @@ add_library(goldp SHARED
   GolDP/src/surface/gold3dtexturepalette.cpp
   GolDP/src/camera/golscenetransformnode.cpp
   GolDP/src/scene/golbillboardex.cpp
+  GolDP/src/core/goldpexport.cpp
+  GolDP/src/mesh/gdbuncoloredvertexarray.cpp
+  GolDP/src/material/gold3dtexturelist.cpp
+  GolDP/src/surface/gold3dtexture.cpp
   GolDP/src/mesh/gdbprelitvertexarray.cpp
+  GolDP/src/mesh/gdbnormalvertexarray.cpp
   GolDP/src/mesh/gdbcoloredvertexarraybase.cpp
   GolDP/src/world/golworlddatabaseex.cpp
   GolDP/src/surface/goldepthbuffer.cpp
+  GolDP/src/render/golcommondrawstate.cpp
+  common/src/cmbmodelpartdata.cpp
+  common/src/cmbmodelpart.cpp
+  common/src/golbmpfile.cpp
+  common/src/golcollidableentity.cpp
+  common/src/golboundingshape.cpp
+  common/src/golboundedentity.cpp
+  common/src/golboundingvolume.cpp
+  common/src/golcamerabase.cpp
+  common/src/golsurfaceformat.cpp
+  common/src/goltransformbase.cpp
+  common/src/golrenderdevicelight.cpp
+  common/src/golsurface.cpp
+  GolDP/src/render/goldrawstate.cpp
   GolDP/src/surface/goldisplaysurface.cpp
+  common/src/gdbmodelindexarraybase.cpp
   GolDP/src/font/golfontlibrary.cpp
+  common/src/golfontbase.cpp
   GolDP/src/image/goltiledtexture.cpp
+  common/src/golimgfile.cpp
   GolDP/src/material/golimagelist.cpp
+  common/src/golanimatedentity.cpp
+  common/src/cmbmodelparttrackdata.cpp
+  common/src/golrenderdevicematerialcolor.cpp
+  common/src/golmodelrenderstate.cpp
+  common/src/golmaterial.cpp
+  common/src/mabmaterialanimation.cpp
+  common/src/mabmaterialtrack.cpp
+  common/src/golmodelmaterialtable.cpp
+  common/src/mabmaterialframe.cpp
+  common/src/golmateriallibrary.cpp
+  common/src/golorientedentity.cpp
+  common/src/golmodelbase.cpp
+  common/src/golmodelentity.cpp
+  common/src/golnametable.cpp
+  common/src/golworldentity.cpp
   GolDP/src/render/golrenderdevice.cpp
+  common/src/golscenenode.cpp
   GolDP/src/scene/golbillboard.cpp
+  common/src/goltexturepalette.cpp
+  common/src/golpalettedtexture.cpp
+  common/src/goltgafile.cpp
+  common/src/gdbmodelindexarray.cpp
   GolDP/src/material/goltexturelist.cpp
+  common/src/goltexture.cpp
+  common/src/golviewfrustum.cpp
+  common/src/gdbvertexarray.cpp
   GolDP/src/world/golworlddatabase.cpp
   GolDP/src/surface/golattachedsurface.cpp
+  common/src/golmath.cpp
+  common/src/golstring.cpp
+  common/src/goltxtparser.cpp
+  common/src/golbinparser.cpp
+  common/src/golhashtable.cpp
+  common/src/golstream.cpp
+  common/src/golfileparser.cpp
+  common/src/goldecompress.cpp
+  common/src/golfile.cpp
+  common/src/golfsutil.cpp
+  common/src/golcpu.cpp
   GolDP/src/render/golrasterizers1.cpp
   GolDP/src/render/golsoftwarerenderer.cpp
   GolDP/src/render/golrasterizers2.cpp
   # No address-mapped functions; position unconstrained.
-  $<TARGET_OBJECTS:common_goldp>
+  common/src/golimgfilewriter.cpp
+  common/src/goldirentry.cpp
+  common/src/golconstants.cpp
+  common/src/managedmaterialtable.cpp
+  common/src/golworldentitygroup.cpp
+  common/src/golstringtable.cpp
+  common/src/golbmpwriterfile.cpp
+  common/src/golfilesource.cpp
+  common/src/materialtable.cpp
   util/decomp.cpp
 )
 target_compile_definitions(goldp PRIVATE BUILDING_GOL)
@@ -325,25 +297,61 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 
 #-- - LEGORacers.exe target -- -
 add_executable(legoracers WIN32
-  # Ordered by the original LEGORacers.exe link order (reccmp-roadmap --order).
-  LEGORacers/src/menu/menumanager.cpp
-  LEGORacers/src/race/racedecaltrail.cpp
+  # Ordered by the original LEGORacers.exe link order (reccmp-roadmap, median address per
+  # object). common/ sources are interleaved among LEGORacers sources exactly as the
+  # original linker saw the objects; object order determines COMDAT fold-survivor identity.
+  common/src/cmbmodelpartdata.cpp
+  common/src/cmbmodelpart.cpp
+  common/src/golbmpfile.cpp
+  common/src/golbmpwriterfile.cpp
+  common/src/golcollidableentity.cpp
+  common/src/golboundingshape.cpp
+  common/src/golboundedentity.cpp
+  common/src/golboundingvolume.cpp
+  common/src/golcamerabase.cpp
   LEGORacers/src/menu/runtime/cutscenedefinition.cpp
+  common/src/golsurfaceformat.cpp
   LEGORacers/src/model/gdbpartdefinition.cpp
   LEGORacers/src/model/gdbpartlibrary.cpp
   LEGORacers/src/model/gdbpartfacegroup.cpp
   LEGORacers/src/model/gdbpartvertexpool.cpp
+  common/src/golrenderdevicelight.cpp
+  common/src/golsurface.cpp
+  common/src/golpalettedtexture.cpp
+  common/src/golfontbase.cpp
   LEGORacers/src/util/carshadowrenderstate.cpp
   LEGORacers/src/gol/goltexturelist.cpp
-  LEGORacers/src/race/loadingscreen.cpp
+  common/src/golimgfile.cpp
+  common/src/golimgfilewriter.cpp
+  common/src/golanimatedentity.cpp
+  common/src/cmbmodelparttrackdata.cpp
+  common/src/golrenderdevicematerialcolor.cpp
+  common/src/golmodelrenderstate.cpp
+  common/src/golmaterial.cpp
+  common/src/mabmaterialanimation.cpp
+  common/src/mabmaterialtrack.cpp
+  common/src/managedmaterialtable.cpp
+  common/src/golmodelmaterialtable.cpp
+  common/src/materialtable.cpp
+  common/src/mabmaterialframe.cpp
+  common/src/golmateriallibrary.cpp
+  common/src/golorientedentity.cpp
+  common/src/golmodelbase.cpp
+  common/src/golmodelentity.cpp
+  common/src/golnametable.cpp
+  common/src/golworldentity.cpp
+  common/src/golworldentitygroup.cpp
   LEGORacers/src/util/particlesystem.cpp
   LEGORacers/src/gol/golrenderdevice.cpp
+  common/src/golscenenode.cpp
+  common/src/goltexturepalette.cpp
+  common/src/goltgafile.cpp
   LEGORacers/src/util/particle.cpp
-  LEGORacers/src/racer/driverpartresources.cpp
-  LEGORacers/src/model/carbuildmodel.cpp
+  LEGORacers/src/race/racedecaltrail.cpp
+  common/src/goltexture.cpp
+  common/src/gdbvertexarray.cpp
   LEGORacers/src/model/golworlddatabase.cpp
   LEGORacers/src/app/golapp.cpp
-  LEGORacers/src/app/golappeventhandler.cpp
   LEGORacers/src/app/win32golapp.cpp
   LEGORacers/src/audio/soundnode.cpp
   LEGORacers/src/audio/musicinstance.cpp
@@ -357,22 +365,21 @@ add_executable(legoracers WIN32
   LEGORacers/src/audio/directmusicstream.cpp
   LEGORacers/src/audio/musicinstancestate.cpp
   LEGORacers/src/audio/directmusicgroup.cpp
-  LEGORacers/src/audio/nullmusicgroup.cpp
   LEGORacers/src/audio/sounddata.cpp
   LEGORacers/src/audio/streamingsoundinstance.cpp
-  LEGORacers/src/audio/nullstreamingsoundinstance.cpp
   LEGORacers/src/audio/directsoundgroup.cpp
-  LEGORacers/src/audio/nullsoundgroup.cpp
   LEGORacers/src/audio/soundinstance.cpp
-  LEGORacers/src/audio/nullsoundinstance.cpp
   LEGORacers/src/audio/soundbuffer.cpp
   LEGORacers/src/audio/nullsoundmanager.cpp
   LEGORacers/src/audio/nullmusicinstance.cpp
+  LEGORacers/src/audio/nullmusicgroup.cpp
+  LEGORacers/src/audio/nullstreamingsoundinstance.cpp
+  LEGORacers/src/audio/nullsoundgroup.cpp
+  LEGORacers/src/audio/nullsoundinstance.cpp
   LEGORacers/src/race/racesky.cpp
   LEGORacers/src/race/data/championdefinitionlist.cpp
   LEGORacers/src/racer/chassismodeltable.cpp
   LEGORacers/src/race/checkpointgraph.cpp
-  LEGORacers/src/menu/runtime/cutsceneplayer.cpp
   LEGORacers/src/race/checkpointgraphwalk.cpp
   LEGORacers/src/race/circuitracerunner.cpp
   LEGORacers/src/race/data/circuitdefinitionlist.cpp
@@ -391,19 +398,22 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racer/racerphysics.cpp
   LEGORacers/src/save/saverecordlist.cpp
   LEGORacers/src/app/legoracers.cpp
+  LEGORacers/src/menu/menumanager.cpp
   LEGORacers/src/save/gamestate.cpp
-  LEGORacers/src/app/main.cpp
+  LEGORacers/src/race/loadingscreen.cpp
   LEGORacers/src/app/gamemain.cpp
+  common/src/golerror.cpp
   LEGORacers/src/util/legoeventqueue.cpp
-  LEGORacers/src/race/raceroster.cpp
   LEGORacers/src/race/playercontrols.cpp
   LEGORacers/src/race/powerups/powerupprojectile.cpp
   LEGORacers/src/race/racesession.cpp
   LEGORacers/src/race/data/racenamelist.cpp
   LEGORacers/src/race/racer/racer.cpp
-  LEGORacers/src/race/racestate.cpp
   LEGORacers/src/race/racereset.cpp
   LEGORacers/src/util/legoeventqueuecollision.cpp
+  LEGORacers/src/race/racestate.cpp
+  LEGORacers/src/app/main.cpp
+  LEGORacers/src/race/raceroster.cpp
   LEGORacers/src/race/racer/carvisuals.cpp
   LEGORacers/src/race/circuitstandings.cpp
   LEGORacers/src/util/legoeventqueueevent.cpp
@@ -419,25 +429,31 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/surfacetable.cpp
   LEGORacers/src/race/powerups/tetherprojectile.cpp
   LEGORacers/src/race/racer/racercarbody.cpp
-  LEGORacers/src/menu/menuscreenfactory.cpp
+  common/src/golmath.cpp
+  common/src/golstring.cpp
+  common/src/goltxtparser.cpp
+  common/src/golbinparser.cpp
   LEGORacers/src/input/inputeventqueue.cpp
   LEGORacers/src/input/inputdevice.cpp
+  common/src/golhashtable.cpp
+  common/src/golstream.cpp
+  common/src/golfilesource.cpp
+  common/src/goldirentry.cpp
   LEGORacers/src/save/saveslotbase.cpp
   LEGORacers/src/save/savegamefile.cpp
-  LEGORacers/src/menu/menudialogscreen.cpp
+  common/src/golstringtable.cpp
+  common/src/golfileparser.cpp
+  common/src/goldecompress.cpp
   LEGORacers/src/input/joystickdevice.cpp
   LEGORacers/src/input/keyboarddevice.cpp
-  LEGORacers/src/race/events/soundresource.cpp
   LEGORacers/src/input/mousedevice.cpp
-  LEGORacers/src/race/powerups/powerupaction.cpp
-  LEGORacers/src/race/powerups/racepowerupmanager.cpp
-  LEGORacers/src/menu/screens/menuscreen.cpp
   LEGORacers/src/input/directinputdevice.cpp
   LEGORacers/src/input/directinputmanager.cpp
+  common/src/golfile.cpp
+  common/src/golfsutil.cpp
   LEGORacers/src/save/memorycardfilebase.cpp
   LEGORacers/src/save/savedirectory.cpp
   LEGORacers/src/race/powerups/cannonballaction.cpp
-  LEGORacers/src/race/hazards/warppadhazard.cpp
   LEGORacers/src/race/powerups/curseaction.cpp
   LEGORacers/src/race/powerups/dynamiteaction.cpp
   LEGORacers/src/race/powerups/whitebrick.cpp
@@ -446,12 +462,13 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/grapplinghookaction.cpp
   LEGORacers/src/race/powerups/lightningaction.cpp
   LEGORacers/src/race/powerups/magnetaction.cpp
+  LEGORacers/src/race/powerups/powerupaction.cpp
   LEGORacers/src/race/powerups/homingmissileaction.cpp
   LEGORacers/src/race/powerups/oilslickaction.cpp
   LEGORacers/src/race/powerups/colorbrick.cpp
+  LEGORacers/src/race/powerups/racepowerupmanager.cpp
   LEGORacers/src/race/powerups/shieldaction.cpp
   LEGORacers/src/race/targetpointlist.cpp
-  LEGORacers/src/race/raceeventtable.cpp
   LEGORacers/src/race/powerups/turboaction.cpp
   LEGORacers/src/race/powerups/warpaction.cpp
   LEGORacers/src/race/events/skystateresource.cpp
@@ -460,30 +477,33 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/events/timerresource.cpp
   LEGORacers/src/race/events/particleresource.cpp
   LEGORacers/src/race/events/raceeventresource.cpp
+  LEGORacers/src/app/golappeventhandler.cpp
+  LEGORacers/src/race/raceeventtable.cpp
   LEGORacers/src/race/events/externalforceresource.cpp
   LEGORacers/src/race/events/materialanimationresource.cpp
   LEGORacers/src/race/events/partanimationresource.cpp
   LEGORacers/src/race/events/modeldistanceresource.cpp
   LEGORacers/src/race/events/nodetransformresource.cpp
   LEGORacers/src/race/racertriggerlist.cpp
+  LEGORacers/src/race/events/soundresource.cpp
   LEGORacers/src/race/events/lapzoneresource.cpp
   LEGORacers/src/race/racetimerlist.cpp
   LEGORacers/src/race/triggerlist.cpp
   LEGORacers/src/race/events/colortransformresource.cpp
   LEGORacers/src/menu/widgets/menusceneview.cpp
-  LEGORacers/src/menu/screens/scenewidget.cpp
   LEGORacers/src/menu/widgets/menuframedsceneview.cpp
   LEGORacers/src/menu/widgets/menubutton.cpp
-  LEGORacers/src/menu/widgets/menuicon.cpp
   LEGORacers/src/menu/widgets/menuhotspotbutton.cpp
+  LEGORacers/src/menu/screens/scenewidget.cpp
   LEGORacers/src/menu/widgets/menuselector.cpp
-  LEGORacers/src/menu/menuinputdispatcher.cpp
   LEGORacers/src/menu/widgets/menucolorbox.cpp
+  LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
+  LEGORacers/src/menu/menuinputdispatcher.cpp
   LEGORacers/src/menu/style/menuinputbindingtable.cpp
   LEGORacers/src/menu/style/menuresourcetable.cpp
   LEGORacers/src/menu/widgets/menusceneelement.cpp
-  LEGORacers/src/menu/screens/editcarscreen.cpp
+  LEGORacers/src/menu/screens/menuscreen.cpp
   LEGORacers/src/menu/widgets/menucarousel.cpp
   LEGORacers/src/menu/widgets/optionsrow.cpp
   LEGORacers/src/audio/soundgroupbinding.cpp
@@ -495,10 +515,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/style/menustyletable.cpp
   LEGORacers/src/menu/widgets/menutextfield.cpp
   LEGORacers/src/menu/widgets/menutextentry.cpp
+  LEGORacers/src/menu/widgets/menuicon.cpp
   LEGORacers/src/menu/widgets/menuwidget.cpp
   LEGORacers/src/menu/widgets/menutriangle.cpp
   LEGORacers/src/menu/screens/carbuildscreen.cpp
-  LEGORacers/src/menu/screens/menugamescreen.cpp
   LEGORacers/src/menu/screens/carbuildscreenbase.cpp
   LEGORacers/src/menu/screens/optionsscreen.cpp
   LEGORacers/src/menu/screens/awardcinematicscreen.cpp
@@ -510,11 +530,14 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/circuitracescreen.cpp
   LEGORacers/src/menu/screens/controlconfigscreen.cpp
   LEGORacers/src/menu/screens/driverlicensescreen.cpp
+  LEGORacers/src/menu/screens/editcarscreen.cpp
   LEGORacers/src/menu/screens/editdriverscreen.cpp
   LEGORacers/src/menu/screens/mainmenumodelslot.cpp
   LEGORacers/src/menu/screens/garagescreen.cpp
   LEGORacers/src/menu/screens/buttonbindingtable.cpp
+  LEGORacers/src/menu/menuscreenfactory.cpp
   LEGORacers/src/util/stackoflegou16.cpp
+  LEGORacers/src/menu/screens/menugamescreen.cpp
   LEGORacers/src/menu/style/sharedmenustyletable.cpp
   LEGORacers/src/menu/screens/mainintroscreen.cpp
   LEGORacers/src/menu/screens/mainmenuscreen.cpp
@@ -538,6 +561,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/runtime/cutsceneanimation.cpp
   LEGORacers/src/race/hazards/hazard.cpp
   LEGORacers/src/race/hazardmanager.cpp
+  LEGORacers/src/race/hazards/warppadhazard.cpp
   LEGORacers/src/race/hazards/oscillatorhazard.cpp
   LEGORacers/src/race/hazards/cursedrophazard.cpp
   LEGORacers/src/race/hazards/sweepcannonhazard.cpp
@@ -557,22 +581,25 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/hazards/multilauncherhazard.cpp
   LEGORacers/src/race/hazards/launcherhazard.cpp
   LEGORacers/src/race/hazards/movingobstaclehazard.cpp
-  LEGORacers/src/menu/menuanimationlist.cpp
   LEGORacers/src/race/racedecalmanager.cpp
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/powerups/beammesh.cpp
+  LEGORacers/src/menu/menuanimationlist.cpp
   LEGORacers/src/model/legocolortable.cpp
+  LEGORacers/src/racer/driverpartresources.cpp
   LEGORacers/src/racer/driverpartcatalog.cpp
   LEGORacers/src/racer/driverheadbuilder.cpp
+  LEGORacers/src/model/carbuildmodel.cpp
   LEGORacers/src/model/carpartset.cpp
   LEGORacers/src/racer/drivermodelbuilder.cpp
   LEGORacers/src/model/legopiecelibrary.cpp
   LEGORacers/src/model/carbuildpiecelist.cpp
-  LEGORacers/src/menu/runtime/cutscenestreamingsoundevent.cpp
+  LEGORacers/src/menu/runtime/cutsceneplayer.cpp
   LEGORacers/src/menu/runtime/cutscenevisual.cpp
   LEGORacers/src/menu/runtime/cutsceneimagevisual.cpp
   LEGORacers/src/menu/runtime/cutsceneanimationevent.cpp
   LEGORacers/src/menu/runtime/cutscenesoundevent.cpp
+  LEGORacers/src/menu/runtime/cutscenestreamingsoundevent.cpp
   LEGORacers/src/menu/runtime/cutscenetextvisual.cpp
   LEGORacers/src/menu/runtime/cutscenemenuanimationevent.cpp
   LEGORacers/src/menu/runtime/cutscenecolorevent.cpp
@@ -580,12 +607,17 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racer/routecursor.cpp
   LEGORacers/src/video/videoplayer.cpp
   # No address-mapped functions; position unconstrained.
-  $<TARGET_OBJECTS:common_legoracers>
-  LEGORacers/racers.rc
-  LEGORacers/src/app/guids.cpp
-  LEGORacers/src/race/powerups/racepowerupmanagerglobals.cpp
+  common/src/gdbmodelindexarraybase.cpp
+  common/src/goltransformbase.cpp
+  common/src/gdbmodelindexarray.cpp
+  common/src/golconstants.cpp
+  common/src/golcpu.cpp
+  common/src/golviewfrustum.cpp
   LEGORacers/src/save/memorycardfile.cpp
+  LEGORacers/src/app/guids.cpp
   util/decomp.cpp
+  LEGORacers/src/race/powerups/racepowerupmanagerglobals.cpp
+  LEGORacers/racers.rc
 )
 if(MSVC)
   target_link_options(legoracers PRIVATE "-MAP:$<TARGET_FILE_DIR:legoracers>/$<TARGET_FILE_BASE_NAME:legoracers>.map")
@@ -629,11 +661,17 @@ endif()
 
 if (RACERS_DECOMP_ASSERT)
   message(STATUS "Decomp asserts enabled")
-  set_property(TARGET goldp legoracers common_goldp common_legoracers APPEND PROPERTY COMPILE_DEFINITIONS "ENABLE_DECOMP_ASSERTS")
+  set_property(TARGET goldp legoracers APPEND PROPERTY COMPILE_DEFINITIONS "ENABLE_DECOMP_ASSERTS")
 endif()
 
 if (MSVC_FOR_DECOMP)
-  target_compile_options(common_goldp PRIVATE "/Ob2")
+  # The original GolDP.dll built the shared common code with inline expansion (/Ob2) while
+  # LEGORacers.exe used the default (/Ob1). The same source files are compiled per target, so
+  # the option is scoped to the consuming target via a generator expression.
+  set_source_files_properties(
+    ${GOLDP_COMMON_INLINE_EXPANSION_SOURCES}
+    PROPERTIES COMPILE_OPTIONS "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,goldp>:/Ob2>"
+  )
 
   set_source_files_properties(
     ${GOLDP_INLINE_EXPANSION_SOURCES}
@@ -655,11 +693,11 @@ if (MSVC_FOR_DECOMP)
   endif()
 
 #LegoRacers.exe links to MSVCRT.dll(/ MD), GolDP.dll has embedded its runtime library(/ MT)
-  set_property(TARGET legoracers common_legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
-  set_property(TARGET goldp common_goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  set_property(TARGET legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+  set_property(TARGET goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 #Embed debug information(/ Z7) for Debug and RelWithDebInfo configuration type
-  set_property(TARGET goldp legoracers common_goldp common_legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
+  set_property(TARGET goldp legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
 
   set(CMAKE_CXX_FLAGS "/W3 /GX /DWIN32 /D_WINDOWS")
   set(CMAKE_CXX_FLAGS_DEBUG "/Gm /Od /D_DEBUG")

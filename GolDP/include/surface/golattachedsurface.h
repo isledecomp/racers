@@ -12,9 +12,6 @@ class GolAttachedSurface : public GolSurface {
 public:
 	GolAttachedSurface();
 
-	// SYNTHETIC: GOLDP 0x1002f380 FOLDED
-	// GolAttachedSurface::`scalar deleting destructor'
-
 protected:
 	GolRenderTarget* m_attachedSurface; // 0x30
 };

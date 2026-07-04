@@ -238,70 +238,71 @@ void RaceTimerList::Load(
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TibTxtParser::e_timer));
 	parser->AssertNextTokenIs(GolFileParser::e_leftBracket);
 	m_count = parser->ReadInteger();
+	if (!m_count) {
+		parser->Dispose();
+		delete parser;
+		return;
+	}
 
-	if (m_count) {
-		parser->AssertNextTokenIs(GolFileParser::e_rightBracket);
+	parser->AssertNextTokenIs(GolFileParser::e_rightBracket);
+	parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
+
+	m_timers = new Resource[m_count];
+	if (m_timers == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (LegoU32 i = 0; i < m_count; i++) {
+		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TibTxtParser::e_timer));
 		parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
 
-		m_timers = new Resource[m_count];
-		if (m_timers == NULL) {
-			GOL_FATALERROR(c_golErrorOutOfMemory);
-		}
+		LegoU32 onDuration = 0;
+		LegoU32 offDuration = 0;
+		LegoU32 initialDelay = 0;
+		LegoS32 eventIndex = -1;
+		LegoU32 flags = 0;
 
-		for (LegoU32 i = 0; i < m_count; i++) {
-			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TibTxtParser::e_timer));
-			parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
-
-			LegoU32 onDuration = 0;
-			LegoU32 offDuration = 0;
-			LegoU32 initialDelay = 0;
-			LegoS32 eventIndex = -1;
-			LegoU32 flags = 0;
-
-			GolFileParser::ParserTokenType token = parser->GetNextToken();
-			while (token != GolFileParser::e_rightCurly) {
-				switch (token) {
-				case TibTxtParser::e_onPhase:
-					if (parser->GetNextToken() == TibTxtParser::e_duration) {
-						flags |= Resource::c_randomizeOnDuration;
-						onDuration = parser->ReadInteger();
-					}
-					else {
-						onDuration = parser->GetLastInt();
-					}
-					break;
-				case TibTxtParser::e_offPhase:
-					if (parser->GetNextToken() == TibTxtParser::e_duration) {
-						flags |= Resource::c_randomizeOffDuration;
-						offDuration = parser->ReadInteger();
-					}
-					else {
-						offDuration = parser->GetLastInt();
-					}
-					break;
-				case TibTxtParser::e_event:
-					eventIndex = parser->ReadInteger();
-					break;
-				case TibTxtParser::e_initialDelay:
-					initialDelay = parser->ReadInteger();
-					break;
-				default:
-					parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
-					break;
+		GolFileParser::ParserTokenType token = parser->GetNextToken();
+		while (token != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case TibTxtParser::e_onPhase:
+				if (parser->GetNextToken() == TibTxtParser::e_duration) {
+					flags |= Resource::c_randomizeOnDuration;
+					onDuration = parser->ReadInteger();
 				}
-
-				token = parser->GetNextToken();
+				else {
+					onDuration = parser->GetLastInt();
+				}
+				break;
+			case TibTxtParser::e_offPhase:
+				if (parser->GetNextToken() == TibTxtParser::e_duration) {
+					flags |= Resource::c_randomizeOffDuration;
+					offDuration = parser->ReadInteger();
+				}
+				else {
+					offDuration = parser->GetLastInt();
+				}
+				break;
+			case TibTxtParser::e_event:
+				eventIndex = parser->ReadInteger();
+				break;
+			case TibTxtParser::e_initialDelay:
+				initialDelay = parser->ReadInteger();
+				break;
+			default:
+				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
 			}
 
-			m_timers[i]
-				.Initialize(p_eventQueue, m_eventTable, onDuration, offDuration, initialDelay, eventIndex, flags);
+			token = parser->GetNextToken();
 		}
+
+		m_timers[i].Initialize(p_eventQueue, m_eventTable, onDuration, offDuration, initialDelay, eventIndex, flags);
 	}
 
 	parser->Dispose();
 	delete parser;
 }
-
 // FUNCTION: LEGORACERS 0x00464dd0
 LegoU32 RaceTimerList::Update(LegoU32 p_elapsedMs)
 {

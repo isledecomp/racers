@@ -980,15 +980,15 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 		LegoU32 alpha;
 		if (m_pieceAnimPhase & c_placementFeedbackMask) {
 			alpha = 0x96;
-			LegoFloat value = m_pieceHeight - m_pieceRestHeight - 1.2f;
+			LegoFloat value = m_pieceHeight - m_pieceRestHeight - g_carPartHoverHeight;
 
-			if (value < 1.2f && m_pitchTarget != 2) {
+			if (value < g_carPartHoverHeight && m_pitchTarget != 2) {
 				if (value < 0.0f) {
 					alpha = 0;
 				}
 				else {
 					LegoFloat alphaValue = value;
-					alphaValue /= 1.2f;
+					alphaValue /= g_carPartHoverHeight;
 					alphaValue *= 150.0f;
 					alpha = static_cast<LegoU32>(alphaValue);
 				}

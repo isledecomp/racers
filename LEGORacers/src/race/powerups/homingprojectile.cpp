@@ -194,7 +194,7 @@ void HomingProjectile::StartHoming()
 	}
 }
 
-// STUB: LEGORACERS 0x00423a20
+// FUNCTION: LEGORACERS 0x00423a20
 LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 state = m_state;

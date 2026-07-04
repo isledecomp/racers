@@ -322,7 +322,7 @@ undefined4 OptionsRow::MapCursorToNavigation(undefined4 p_event, undefined4 p_x,
 	return p_event;
 }
 
-// STUB: LEGORACERS 0x0046e810
+// FUNCTION: LEGORACERS 0x0046e810
 MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y)
 {
 	MenuIcon::OnCursorEvent(p_item, p_x, p_y);

@@ -2727,7 +2727,7 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_visible, LegoS32 p_height)
 	EndModelWrite(m_overlayModel);
 }
 
-// STUB: LEGORACERS 0x0049c230
+// FUNCTION: LEGORACERS 0x0049c230
 void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_entity)
 {
 	GolModelBase* model = p_entity->GetModel(0);
@@ -2842,7 +2842,7 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 	}
 }
 
-// STUB: LEGORACERS 0x0049c6a0
+// FUNCTION: LEGORACERS 0x0049c6a0
 LegoS32 CarBuildModel::ComputeHighPieceCentroid(LegoFloat* p_centroidX, LegoFloat* p_centroidY, LegoFloat* p_centroidZ)
 {
 	LegoS32 zTotal = 0;

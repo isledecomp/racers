@@ -176,7 +176,7 @@ void PowerupExplosion::Destroy()
 	m_state = c_stateUninitialized;
 }
 
-// STUB: LEGORACERS 0x00421520
+// FUNCTION: LEGORACERS 0x00421520
 void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
 	if (p_position->m_x > g_explosionPositionLimit || p_position->m_x < -g_explosionPositionLimit ||
@@ -421,7 +421,7 @@ void PowerupExplosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	}
 }
 
-// STUB: LEGORACERS 0x00421c00
+// FUNCTION: LEGORACERS 0x00421c00
 void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	LegoU32 mode = m_blastMode;

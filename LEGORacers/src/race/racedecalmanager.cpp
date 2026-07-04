@@ -40,7 +40,7 @@ void RaceDecalManager::Trail::DrawOpaque(GolD3DRenderDevice*)
 {
 }
 
-// STUB: LEGORACERS 0x00491ac0
+// FUNCTION: LEGORACERS 0x00491ac0
 RaceDecalManager::Trail::Trail()
 {
 	Reset();
@@ -319,7 +319,7 @@ void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 	m_flags |= c_samplePending;
 }
 
-// STUB: LEGORACERS 0x00492180
+// FUNCTION: LEGORACERS 0x00492180
 void RaceDecalManager::Trail::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & c_active) {

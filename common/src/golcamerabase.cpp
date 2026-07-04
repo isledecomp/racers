@@ -361,7 +361,7 @@ void GolCameraBase::ComputeFrustumFromBounds(GolViewFrustum* p_view)
 	p_view->m_planes[4].m_distance = -GOLVECTOR3_DOT(normal, p_view->m_corners[2]);
 }
 
-// STUB: GOLDP 0x1001c900
+// FUNCTION: GOLDP 0x1001c900
 LegoBool32 GolCameraBase::ProjectSphere(GolVec3* p_center, LegoFloat p_radius, GolVec4* p_bounds)
 {
 	LegoBool32 visibility = m_viewFrustum.ClassifySphere(*p_center, p_radius);

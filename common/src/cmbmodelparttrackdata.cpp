@@ -162,7 +162,7 @@ LegoBool32 CmbModelPartTrackData::InterpolatePosition(
 }
 
 // STUB: GOLDP 0x10024540
-// STUB: LEGORACERS 0x0040e830
+// FUNCTION: LEGORACERS 0x0040e830
 LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	GolQuat* p_dest,
 	const CmbModelPartTrack& p_track,

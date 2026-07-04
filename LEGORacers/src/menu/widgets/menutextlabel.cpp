@@ -111,7 +111,7 @@ void MenuTextLabel::WrapText(LegoS32 p_rightMargin)
 	m_rect.m_left = right - width;
 }
 
-// STUB: LEGORACERS 0x0046f6f0
+// FUNCTION: LEGORACERS 0x0046f6f0
 MenuWidget* MenuTextLabel::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
 	LegoS32 lineCount = m_string.CountLines();

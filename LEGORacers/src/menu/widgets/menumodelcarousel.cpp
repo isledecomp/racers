@@ -100,7 +100,7 @@ LegoBool32 MenuModelCarousel::Destroy()
 	return result;
 }
 
-// STUB: LEGORACERS 0x0046cc10
+// FUNCTION: LEGORACERS 0x0046cc10
 void MenuModelCarousel::SetupCamera(CreateParams* p_createParams)
 {
 	m_cameraDistance = p_createParams->m_cameraVectors[7];

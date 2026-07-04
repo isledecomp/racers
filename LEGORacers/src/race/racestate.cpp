@@ -1268,7 +1268,7 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 	return result;
 }
 
-// STUB: LEGORACERS 0x0043cf30
+// FUNCTION: LEGORACERS 0x0043cf30
 void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntry* p_entries)
 {
 	LegoU32 lapCount = m_setup.m_lapCount;

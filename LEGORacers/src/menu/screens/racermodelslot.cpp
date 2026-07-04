@@ -20,7 +20,7 @@ RacerModelSlot::~RacerModelSlot()
 	Destroy();
 }
 
-// STUB: LEGORACERS 0x00487570
+// FUNCTION: LEGORACERS 0x00487570
 void RacerModelSlot::Reset()
 {
 	::memset(&m_createParams, 0, sizeof(m_createParams));

@@ -324,8 +324,8 @@ void GolTgaFile::ReadPixels(LegoU8* p_buffer)
 	// empty
 }
 
-// STUB: GOLDP 0x1002ae50
-// STUB: LEGORACERS 0x00414120
+// FUNCTION: GOLDP 0x1002ae50
+// FUNCTION: LEGORACERS 0x00414120
 void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	GolSurfaceFormat format;

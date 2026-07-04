@@ -2224,7 +2224,7 @@ PowerupAction* RacePowerupManager::ReclaimAction(
 	return best;
 }
 
-// STUB: LEGORACERS 0x0045b3a0
+// FUNCTION: LEGORACERS 0x0045b3a0
 PowerupExplosion* __stdcall RacePowerupManager::ReclaimExplosion(PowerupExplosion** p_head)
 {
 	PowerupExplosion* selected = NULL;

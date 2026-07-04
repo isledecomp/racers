@@ -258,7 +258,7 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 	}
 }
 
-// STUB: GOLDP 0x100330d0
+// FUNCTION: GOLDP 0x100330d0
 void FUN_100330d0(GolSoftwareRenderer* p_renderer, MipmapLevel* p_mipmap)
 {
 	LegoU32 previousSizeLog2;

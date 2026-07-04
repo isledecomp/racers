@@ -1004,7 +1004,7 @@ void Racer::UpdateDriftLean()
 	m_visuals.m_rollLean += value * 0.059999999f;
 }
 
-// STUB: LEGORACERS 0x00437be0
+// FUNCTION: LEGORACERS 0x00437be0
 void Racer::UpdateSpatialSounds()
 {
 	for (LegoU32 i = 0; i <= 3; i++) {

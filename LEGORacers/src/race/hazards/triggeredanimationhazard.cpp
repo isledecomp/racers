@@ -30,7 +30,7 @@ TriggeredAnimationHazard::~TriggeredAnimationHazard()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x0048edd0
+// FUNCTION: LEGORACERS 0x0048edd0
 void TriggeredAnimationHazard::ClearFields()
 {
 	m_triggerId = -1;

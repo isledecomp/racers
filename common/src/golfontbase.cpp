@@ -541,7 +541,7 @@ void GolFontBase::MeasureString(const LegoChar* p_string, LegoS32* p_width, Lego
 	}
 }
 
-// STUB: LEGORACERS 0x00408d50
+// FUNCTION: LEGORACERS 0x00408d50
 void GolFontBase::MeasureString(
 	GolString* p_string,
 	LegoS32 p_wrapWidth,

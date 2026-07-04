@@ -171,7 +171,7 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 	}
 }
 
-// STUB: LEGORACERS 0x0042ea50
+// FUNCTION: LEGORACERS 0x0042ea50
 void GameState::SelectFallbackInputBinding(LegoU32 p_playerIndex)
 {
 	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;

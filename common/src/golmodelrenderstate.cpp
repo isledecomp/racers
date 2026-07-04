@@ -246,8 +246,8 @@ void GolModelRenderState::LightVertices1(
 	}
 }
 
-// STUB: GOLDP 0x100248e0
-// STUB: LEGORACERS 0x0040ef10
+// FUNCTION: GOLDP 0x100248e0
+// FUNCTION: LEGORACERS 0x0040ef10
 void GolModelRenderState::LightVertices2(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
@@ -314,8 +314,8 @@ void GolModelRenderState::LightVertices2(
 	}
 }
 
-// STUB: GOLDP 0x10024a70
-// STUB: LEGORACERS 0x0040f0a0
+// FUNCTION: GOLDP 0x10024a70
+// FUNCTION: LEGORACERS 0x0040f0a0
 void GolModelRenderState::LightVertices3(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
@@ -388,8 +388,8 @@ void GolModelRenderState::LightVertices3(
 	}
 }
 
-// STUB: GOLDP 0x10024c50
-// STUB: LEGORACERS 0x0040f280
+// FUNCTION: GOLDP 0x10024c50
+// FUNCTION: LEGORACERS 0x0040f280
 void GolModelRenderState::LightVertices4(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
@@ -468,8 +468,8 @@ void GolModelRenderState::LightVertices4(
 	}
 }
 
-// STUB: GOLDP 0x10024e90
-// STUB: LEGORACERS 0x0040f4c0
+// FUNCTION: GOLDP 0x10024e90
+// FUNCTION: LEGORACERS 0x0040f4c0
 void GolModelRenderState::LightVertices5(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
@@ -554,8 +554,8 @@ void GolModelRenderState::LightVertices5(
 	}
 }
 
-// STUB: GOLDP 0x10025130
-// STUB: LEGORACERS 0x0040f760
+// FUNCTION: GOLDP 0x10025130
+// FUNCTION: LEGORACERS 0x0040f760
 void GolModelRenderState::LightVertices6(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,
@@ -646,8 +646,8 @@ void GolModelRenderState::LightVertices6(
 	}
 }
 
-// STUB: GOLDP 0x10025420
-// STUB: LEGORACERS 0x0040fa50
+// FUNCTION: GOLDP 0x10025420
+// FUNCTION: LEGORACERS 0x0040fa50
 void GolModelRenderState::LightVertices7(
 	const CommandVertex* p_vertices,
 	LegoU32 p_outputFirst,

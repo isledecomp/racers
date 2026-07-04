@@ -512,8 +512,8 @@ void GolBmpFile::LoadSurface(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* 
 	p_texture->UnlockPixels();
 }
 
-// STUB: GOLDP 0x10019da0
-// STUB: LEGORACERS 0x004027d0
+// FUNCTION: GOLDP 0x10019da0
+// FUNCTION: LEGORACERS 0x004027d0
 void GolBmpFile::LoadSurfaceFromBuffer(LegoU8* p_buffer, GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	LegoU32 widthScale = 1;

@@ -2482,7 +2482,7 @@ void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 	}
 }
 
-// STUB: GOLDP 0x1000add0
+// FUNCTION: GOLDP 0x1000add0
 void GolD3DRenderDevice::FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData)
 {
 	GolOrientedEntity* model = static_cast<GolOrientedEntity*>(p_model);
@@ -5182,7 +5182,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 	}
 }
 
-// STUB: GOLDP 0x10013110
+// FUNCTION: GOLDP 0x10013110
 void GolD3DRenderDevice::FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* source = m_sourcePositions + p_firstVertex;

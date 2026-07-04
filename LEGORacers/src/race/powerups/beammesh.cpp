@@ -80,7 +80,7 @@ void BeamMesh::Reset()
 	m_vertexCapacity = 0;
 }
 
-// STUB: LEGORACERS 0x00493c90
+// FUNCTION: LEGORACERS 0x00493c90
 void BeamMesh::Initialize(const SetupParams* p_params)
 {
 	if (m_model != NULL) {
@@ -631,7 +631,7 @@ GolSceneNode* BeamEntity::GetSceneNode(undefined4)
 	return m_sceneNode;
 }
 
-// STUB: LEGORACERS 0x00494ca0
+// FUNCTION: LEGORACERS 0x00494ca0
 void BeamEntity::Draw(GolRenderDevice& p_renderer)
 {
 	if (m_faceCamera != 0) {

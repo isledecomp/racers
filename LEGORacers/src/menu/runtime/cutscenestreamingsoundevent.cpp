@@ -139,7 +139,7 @@ void CutsceneStreamingSoundEvent::Start()
 	}
 }
 
-// STUB: LEGORACERS 0x004a43a0
+// FUNCTION: LEGORACERS 0x004a43a0
 void CutsceneStreamingSoundEvent::CreateInstance(const GolVec3* p_position)
 {
 	if (m_streamInstance == NULL) {

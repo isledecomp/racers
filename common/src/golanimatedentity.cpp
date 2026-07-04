@@ -433,7 +433,7 @@ void GolAnimatedEntity::TransitionToPart(
 }
 
 // FUNCTION: GOLDP 0x10023b10
-// STUB: LEGORACERS 0x0040dd60
+// FUNCTION: LEGORACERS 0x0040dd60
 void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 {
 	m_flags &= ~c_flagLoopWrapped;
@@ -542,8 +542,8 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 	GolModelEntity::Update(p_elapsed);
 }
 
-// STUB: GOLDP 0x10023ef0
-// STUB: LEGORACERS 0x0040e0b0
+// FUNCTION: GOLDP 0x10023ef0
+// FUNCTION: LEGORACERS 0x0040e0b0
 void GolAnimatedEntity::ComputeBoundsFromModel(LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];

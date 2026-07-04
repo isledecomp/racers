@@ -105,7 +105,7 @@ void RaceCameraController::UpdateListener()
 	}
 }
 
-// STUB: LEGORACERS 0x00427d30
+// FUNCTION: LEGORACERS 0x00427d30
 void RaceCameraController::UpdateFollow()
 {
 	GolCamera* camera = m_camera;

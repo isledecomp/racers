@@ -844,7 +844,7 @@ void RaceSession::DestroyDatabases()
 	m_trackCamera = NULL;
 }
 
-// STUB: LEGORACERS 0x00433190
+// FUNCTION: LEGORACERS 0x00433190
 void RaceSession::LoadRouteRecords(LegoBool32 p_mirror)
 {
 	LegoChar fileName[12];

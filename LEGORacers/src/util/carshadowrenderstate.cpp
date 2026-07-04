@@ -375,7 +375,7 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 	}
 }
 
-// STUB: LEGORACERS 0x00409f90
+// FUNCTION: LEGORACERS 0x00409f90
 void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 {
 	TransformedVertex** vertices = p_triangle;

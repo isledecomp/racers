@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "golworldentity.h"
+#include "managedmaterialtable.h"
 #include "material/materialtable.h"
 
 #include <d3d.h>
@@ -28,15 +29,6 @@ public:
 #else
 	typedef void VTable0x4cReturn;
 #endif
-
-	// SIZE 0x0c
-	struct ManagedMaterialTable : public MaterialTable {
-		ManagedMaterialTable();
-		~ManagedMaterialTable();
-
-		void Initialize(GolRenderDevice* p_renderer, LegoU32 p_count);
-		void Clear();
-	};
 
 	GolBillboard();
 	static void InitializeTexCoords();

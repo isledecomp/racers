@@ -42,7 +42,7 @@ public:
 	// MenuRacerCarousel::`scalar deleting destructor'
 
 protected:
-	void CopyModelMaterialTable(GolModelBase* p_model, GolBillboard::ManagedMaterialTable* p_materialTable);
+	void CopyModelMaterialTable(GolModelBase* p_model, ManagedMaterialTable* p_materialTable);
 	void CreateMaterialTables(LegoS32);
 	void CollectHats(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
 	void CollectFaces(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
@@ -50,11 +50,11 @@ protected:
 	void CollectLegs(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
 	void CollectItems();
 
-	GolBillboard::ManagedMaterialTable* m_materialTables; // 0xc0
-	DriverHeadBuilder* m_headBuilder;                     // 0xc4
-	MenuGameContext* m_context;                           // 0xc8
-	LegoU32 m_partType;                                   // 0xcc
-	LegoS32 m_itemValues[(0x170 - 0xd0) / 4];             // 0xd0
+	ManagedMaterialTable* m_materialTables;   // 0xc0
+	DriverHeadBuilder* m_headBuilder;         // 0xc4
+	MenuGameContext* m_context;               // 0xc8
+	LegoU32 m_partType;                       // 0xcc
+	LegoS32 m_itemValues[(0x170 - 0xd0) / 4]; // 0xd0
 };
 
 #endif // MENURACERCAROUSEL_H

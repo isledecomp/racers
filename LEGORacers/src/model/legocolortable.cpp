@@ -209,7 +209,7 @@ void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_bina
 }
 
 // FUNCTION: LEGORACERS 0x00497cf0
-GolBillboard::ManagedMaterialTable* LegoColorTable::GetMaterialTable()
+ManagedMaterialTable* LegoColorTable::GetMaterialTable()
 {
 	return m_materialTable.m_renderer != NULL ? &m_materialTable : NULL;
 }

@@ -1,11 +1,14 @@
+#include "managedmaterialtable.h"
+
 #include "golerror.h"
-#include "scene/golbillboard.h"
 
 #include <string.h>
 
+DECOMP_SIZE_ASSERT(ManagedMaterialTable, 0x0c)
+
 // FUNCTION: LEGORACERS 0x004a00b0 FOLDED
 // FUNCTION: GOLDP 0x10025de0 FOLDED
-GolBillboard::ManagedMaterialTable::ManagedMaterialTable()
+ManagedMaterialTable::ManagedMaterialTable()
 {
 	m_renderer = NULL;
 	m_count = 0;
@@ -14,14 +17,14 @@ GolBillboard::ManagedMaterialTable::ManagedMaterialTable()
 
 // FUNCTION: LEGORACERS 0x004105c0 FOLDED
 // FUNCTION: GOLDP 0x100260d0 FOLDED
-GolBillboard::ManagedMaterialTable::~ManagedMaterialTable()
+ManagedMaterialTable::~ManagedMaterialTable()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x004105d0 FOLDED
 // FUNCTION: GOLDP 0x10025df0 FOLDED
-void GolBillboard::ManagedMaterialTable::Initialize(GolRenderDevice* p_renderer, LegoU32 p_count)
+void ManagedMaterialTable::Initialize(GolRenderDevice* p_renderer, LegoU32 p_count)
 {
 	if (m_renderer != NULL) {
 		Clear();
@@ -39,7 +42,7 @@ void GolBillboard::ManagedMaterialTable::Initialize(GolRenderDevice* p_renderer,
 
 // FUNCTION: LEGORACERS 0x00410630 FOLDED
 // FUNCTION: GOLDP 0x100260d0 FOLDED
-void GolBillboard::ManagedMaterialTable::Clear()
+void ManagedMaterialTable::Clear()
 {
 	if (m_entries != NULL) {
 		delete[] m_entries;

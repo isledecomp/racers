@@ -23,7 +23,6 @@ extern const LegoFloat g_physicsSoundMaxDistance;
 extern const LegoFloat g_physicsSoundMinDistance;
 extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 extern const LegoFloat g_twoPi;
-extern const LegoFloat g_unk0x004b043c;
 extern const LegoFloat g_wallMaxRiseSpeed;
 extern const LegoS32 g_wheelDiagonalIndices[];
 extern const LegoS32 g_wheelLengthwiseIndices[];
@@ -116,6 +115,9 @@ extern const LegoS32 g_wheelLengthwiseIndices[] = {2, 3, 0, 1};
 
 // GLOBAL: LEGORACERS 0x004b0d60
 extern const LegoS32 g_wheelSidewaysIndices[] = {1, 0, 3, 2};
+
+// GLOBAL: LEGORACERS 0x004b0d78
+static const LegoFloat g_maxVisualBankAngle = 0.5f;
 
 // GLOBAL: LEGORACERS 0x004b0d80
 LegoU32 g_defaultPowerslideFactorBits = 0x3e4ccccd;
@@ -494,12 +496,11 @@ void RacerCarBody::UpdateVisualBank(LegoS32 p_elapsedMs)
 			speedScale /= m_maxSpeed;
 			targetAngle *= speedScale;
 
-			if (targetAngle > 0.5f) {
-				targetAngle = 0.5f;
+			if (targetAngle > g_maxVisualBankAngle) {
+				targetAngle = g_maxVisualBankAngle;
 			}
 			else {
-				minTargetAngle = g_unk0x004b043c;
-				minTargetAngle = -minTargetAngle;
+				minTargetAngle = -g_maxVisualBankAngle;
 				if (targetAngle < minTargetAngle) {
 					targetAngle = minTargetAngle;
 				}

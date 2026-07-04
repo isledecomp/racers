@@ -35,7 +35,7 @@ undefined4 CarBuildScreenBase::OnWidgetKeyUp(MenuWidget* p_vantage, void* p_item
 		}
 	}
 	else {
-		if (m_selectedIcon != m_hoverIcon) {
+		if (m_hoverIcon != m_selectedIcon) {
 			m_hoverMs = 0;
 
 			if (m_selectedIcon == p_vantage) {

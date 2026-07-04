@@ -449,8 +449,8 @@ void RaceSession::Run()
 
 				if (frameSampleCount >= 64) {
 					frameSampleElapsedMs >>= 6;
-					frameSampleCount = 0;
 					m_fps = 1.0f / (static_cast<LegoFloat>((LegoS32) frameSampleElapsedMs) * 0.001f);
+					frameSampleCount = 0;
 					frameSampleElapsedMs = 0;
 				}
 			}

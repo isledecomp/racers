@@ -34,6 +34,12 @@ extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_landingSoundMaxDistance;
 extern const LegoFloat g_landingSoundMinDistance;
 extern const LegoFloat g_wheelParticleVelocityScale;
+extern const LegoFloat g_curseChaseMinSpeed;
+extern const LegoFloat g_curseOrbitRadius;
+extern const LegoFloat g_curseHoverHeight;
+extern const LegoFloat g_unk0x004b0b18;
+extern const LegoFloat g_curseShrinkRate;
+extern const LegoFloat g_curseMinScale;
 extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_unk0x004b0544;
 extern const LegoFloat g_hiddenModelDistance;
@@ -1162,13 +1168,13 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 
 	GolVec3 target;
 	m_bodyModelEntity->GetPosition(&target);
-	target.m_x += 6.0f * offsetX;
-	target.m_y += 6.0f * offsetY;
-	target.m_z += 9.0f;
+	target.m_x += g_curseOrbitRadius * offsetX;
+	target.m_y += g_curseOrbitRadius * offsetY;
+	target.m_z += g_curseHoverHeight;
 
 	LegoFloat speed = m_racerPhysics->m_speed;
-	if (speed <= 0.1f) {
-		speed = 0.1f;
+	if (speed <= g_curseChaseMinSpeed) {
+		speed = g_curseChaseMinSpeed;
 	}
 
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
@@ -1251,10 +1257,10 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	}
 
 	LegoFloat scale = entity->GetScale();
-	if (scale > 0.66600001f) {
-		scale -= elapsed * 0.0099999998f * 0.065999999f;
-		if (scale < 0.66600001f) {
-			scale = 0.66600001f;
+	if (scale > g_curseMinScale) {
+		scale -= elapsed * g_unk0x004b0b18 * g_curseShrinkRate;
+		if (scale < g_curseMinScale) {
+			scale = g_curseMinScale;
 		}
 		entity->SetScaleThenInvalidateRadius(scale);
 	}

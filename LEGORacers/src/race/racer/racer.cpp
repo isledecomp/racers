@@ -202,6 +202,24 @@ extern const LegoFloat g_shadowProbeHeight = 6.0f;
 // GLOBAL: LEGORACERS 0x004b0b08
 extern const LegoFloat g_wheelParticleVelocityScale = 0.60000002f;
 
+// GLOBAL: LEGORACERS 0x004b0b0c
+extern const LegoFloat g_curseChaseMinSpeed = 0.1f;
+
+// GLOBAL: LEGORACERS 0x004b0b10
+extern const LegoFloat g_curseOrbitRadius = 6.0f;
+
+// GLOBAL: LEGORACERS 0x004b0b14
+extern const LegoFloat g_curseHoverHeight = 9.0f;
+
+// GLOBAL: LEGORACERS 0x004b0b18
+extern const LegoFloat g_unk0x004b0b18 = 0.0099999998f;
+
+// GLOBAL: LEGORACERS 0x004b0b1c
+extern const LegoFloat g_curseShrinkRate = 0.065999999f;
+
+// GLOBAL: LEGORACERS 0x004b0b20
+extern const LegoFloat g_curseMinScale = 0.66600001f;
+
 // GLOBAL: LEGORACERS 0x004b0b24
 extern const LegoFloat g_lookTargetRangeSquared = 40000.0f;
 

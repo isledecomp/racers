@@ -199,14 +199,6 @@ void CutsceneEvent::Stop()
 {
 }
 
-// FUNCTION: LEGORACERS 0x004a00b0 FOLDED
-CutsceneEventLink::CutsceneEventLink()
-{
-	m_isStart = 0;
-	m_event = NULL;
-	m_next = NULL;
-}
-
 // FUNCTION: LEGORACERS 0x004a00c0
 void CutsceneEventLink::Bind(undefined4 p_isStart, CutsceneEvent* p_event)
 {
@@ -1302,8 +1294,8 @@ void CutscenePlayer::ParseTriggerChannel(
 	GolNameTable& p_names
 )
 {
-	CutsceneEvent* event = NULL;
 	undefined4 mode = 0;
+	CutsceneEvent* event = NULL;
 
 	if (p_links != NULL) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -1782,4 +1774,12 @@ GolStringTable* CutscenePlayer::GetStringTableByIndex(LegoU32 p_index)
 	}
 
 	return &m_stringTables[p_index];
+}
+
+// FUNCTION: LEGORACERS 0x004a00b0 FOLDED
+CutsceneEventLink::CutsceneEventLink()
+{
+	m_isStart = 0;
+	m_event = NULL;
+	m_next = NULL;
 }

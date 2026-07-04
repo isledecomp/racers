@@ -17,13 +17,29 @@
 #include <float.h>
 #include <math.h>
 
-const LegoFloat g_magnetHoldHeightOffset = 30.0f;
+// GLOBAL: LEGORACERS 0x004b15dc
+const LegoFloat g_magnetSoundMinDistance = 30.0f;
 
-const LegoFloat g_magnetGrabDistanceSquared = 81.0f;
-
+// GLOBAL: LEGORACERS 0x004b15e0
 const LegoFloat g_magnetSoundMaxDistance = 300.0f;
 
-const LegoFloat g_magnetSoundMinDistance = 30.0f;
+// GLOBAL: LEGORACERS 0x004b15e4
+const LegoFloat g_magnetTriggerRadius = 10.0f;
+
+// GLOBAL: LEGORACERS 0x004b15e8
+const LegoFloat g_magnetPullDistanceSquared = 100.0f;
+
+// GLOBAL: LEGORACERS 0x004b15ec
+const LegoFloat g_magnetGrabDistanceSquared = 81.0f;
+
+// GLOBAL: LEGORACERS 0x004b15f0
+const LegoFloat g_magnetHoldHeightOffset = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b15f4
+const LegoFloat g_magnetHoldImpulseScale = 1.0f;
+
+// GLOBAL: LEGORACERS 0x004b15f8
+const LegoFloat g_magnetPullImpulseScale = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b1620
 const LegoFloat g_magnetFadeAlpha = 127.0f;
@@ -280,13 +296,16 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 
 			if (m_heldRacer->m_physics.m_routeMode == 0 && (m_flags & c_flagVictimStopped) &&
 				!(m_flags & c_flagVictimLifted)) {
-				modelPosition.m_z -= 30.0f;
+				modelPosition.m_z -= g_magnetHoldHeightOffset;
 				direction.m_x = modelPosition.m_x - racerPosition.m_x;
 				direction.m_y = modelPosition.m_y - racerPosition.m_y;
 				direction.m_z = modelPosition.m_z - racerPosition.m_z;
 				GolMath::NormalizeVector3(direction, &direction);
 
-				m_heldRacer->m_physics.ApplyDirectionalImpulse(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+				m_heldRacer->m_physics.ApplyDirectionalImpulse(
+					&direction,
+					static_cast<LegoS32>(p_elapsedMs) * g_magnetHoldImpulseScale
+				);
 
 				if (m_heldRacer->m_physics.m_speed <= 0.002f) {
 					direction.m_x = racerPosition.m_x - modelPosition.m_x;
@@ -295,7 +314,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 					LegoFloat distanceSquared =
 						direction.m_x * direction.m_x + direction.m_y * direction.m_y + direction.m_z * direction.m_z;
 
-					if (distanceSquared <= 100.0f) {
+					if (distanceSquared <= g_magnetPullDistanceSquared) {
 						m_flags |= c_flagVictimLifted;
 					}
 				}
@@ -307,13 +326,16 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 			}
 		}
 		else {
-			modelPosition.m_z -= 30.0f;
+			modelPosition.m_z -= g_magnetHoldHeightOffset;
 			direction.m_x = modelPosition.m_x - racerPosition.m_x;
 			direction.m_y = modelPosition.m_y - racerPosition.m_y;
 			direction.m_z = modelPosition.m_z - racerPosition.m_z;
 			GolMath::NormalizeVector3(direction, &direction);
 
-			m_pulledRacer->m_physics.ApplyDirectionalImpulse(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+			m_pulledRacer->m_physics.ApplyDirectionalImpulse(
+				&direction,
+				static_cast<LegoS32>(p_elapsedMs) * g_magnetPullImpulseScale
+			);
 			m_pulledRacer = NULL;
 		}
 	}
@@ -434,9 +456,9 @@ void MagnetAction::Deploy()
 	SoundVector position;
 	ComputeDropPosition(m_ownerRacer, &position, NULL);
 
-	position.m_z += 30.0f;
+	position.m_z += g_magnetHoldHeightOffset;
 	m_magnetEntity->SetPosition(position);
-	position.m_z -= 30.0f;
+	position.m_z -= g_magnetHoldHeightOffset;
 	m_ringEntity->CopyPositionFrom(*m_magnetEntity);
 	m_insideEntity->CopyPositionFrom(*m_magnetEntity);
 
@@ -463,13 +485,20 @@ void MagnetAction::Deploy()
 	m_magnetEntity->SetDirectionUp(m_direction, up);
 
 	m_worldEntity.SetPosition(position);
-	m_worldEntity.SetBoundsRadius(10.0f);
+	m_worldEntity.SetBoundsRadius(g_magnetTriggerRadius);
 	m_ownerRacer->m_physics.ApplyPitchImpulse(0.0015f, 150);
-	m_soundSource->PlaySpatialSoundById(c_soundDeploy, &position, 30.0f, 300.0f, 1.0f, 1.0f);
+	m_soundSource->PlaySpatialSoundById(
+		c_soundDeploy,
+		&position,
+		g_magnetSoundMinDistance,
+		g_magnetSoundMaxDistance,
+		1.0f,
+		1.0f
+	);
 
 	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
 	m_sound->Play(TRUE);
-	m_sound->SetDistanceRange(30.0f, 300.0f);
+	m_sound->SetDistanceRange(g_magnetSoundMinDistance, g_magnetSoundMaxDistance);
 	m_sound->SetPosition(position);
 	m_sound->ClearVelocity();
 

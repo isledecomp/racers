@@ -22,9 +22,11 @@ extern const LegoFloat g_missileFireSoundMinDistance = 30.0f;
 // GLOBAL: LEGORACERS 0x004b1660
 extern const LegoFloat g_missileFireSoundMaxDistance = 300.0f;
 
-const LegoFloat g_missileTargetMaxDistanceSquared = 160000.0f;
-
+// GLOBAL: LEGORACERS 0x004b1684
 const LegoFloat g_missileTargetMinDistanceSquared = 100.0f;
+
+// GLOBAL: LEGORACERS 0x004b1688
+const LegoFloat g_missileTargetMaxDistanceSquared = 160000.0f;
 
 extern const LegoFloat g_scarNormalThreshold;
 

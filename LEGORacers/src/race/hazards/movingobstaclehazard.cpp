@@ -19,6 +19,9 @@
 
 DECOMP_SIZE_ASSERT(MovingObstacleHazard, 0x17c)
 
+// GLOBAL: LEGORACERS 0x004b4700
+const LegoFloat g_obstacleTriggerRadius = 3.0f;
+
 // FUNCTION: LEGORACERS 0x0048fe30
 MovingObstacleHazard::MovingObstacleHazard()
 {
@@ -59,7 +62,7 @@ void MovingObstacleHazard::Load(HazardContext* p_context, GolFileParser*)
 	position.m_z = 0.0f;
 	m_trigger.ClearVelocity();
 	m_trigger.SetBoundsCenter(position);
-	m_trigger.SetBoundsRadius(3.0f);
+	m_trigger.SetBoundsRadius(g_obstacleTriggerRadius);
 
 	m_shadowMaterialTable.Initialize(p_context->GetRenderer(), 1);
 	m_shadowMaterialTable.AssignEntryByName(0, "crneshd");

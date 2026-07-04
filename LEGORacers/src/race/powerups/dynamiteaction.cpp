@@ -21,15 +21,23 @@ const LegoFloat g_dynamiteThrowDistance = -90.0f;
 
 const LegoFloat g_dynamiteSparkOffsetScale = -0.727681994f;
 
-const LegoFloat g_dynamiteSoundMaxDistance = 600.0f;
+// GLOBAL: LEGORACERS 0x004b1424
+const LegoFloat g_dynamiteLaunchHeight = 5.0f;
 
-const LegoFloat g_dynamiteSoundMinDistance = 200.0f;
-
-const LegoFloat g_dynamiteFuseSoundMaxDistance = 300.0f;
-
+// GLOBAL: LEGORACERS 0x004b1434
 const LegoFloat g_dynamiteFuseSoundMinDistance = 30.0f;
 
-const LegoFloat g_dynamiteLaunchHeight = 5.0f;
+// GLOBAL: LEGORACERS 0x004b1438
+const LegoFloat g_dynamiteFuseSoundMaxDistance = 300.0f;
+
+// GLOBAL: LEGORACERS 0x004b143c
+const LegoFloat g_dynamiteSoundMinDistance = 200.0f;
+
+// GLOBAL: LEGORACERS 0x004b1440
+const LegoFloat g_dynamiteSoundMaxDistance = 600.0f;
+
+// GLOBAL: LEGORACERS 0x004b1444
+const LegoFloat g_dynamiteTumbleRate = 0.012f;
 
 extern LegoFloat g_cosineTable[1024];
 
@@ -177,7 +185,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	m_tumbleAngle += static_cast<LegoFloat>(p_elapsedMs) * 0.012f;
+	m_tumbleAngle += static_cast<LegoFloat>(p_elapsedMs) * g_dynamiteTumbleRate;
 
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(m_tumbleAngle * g_negativeRadiansToTableIndex)) & 0x3ff;
 	GolVec3 up;
@@ -257,7 +265,7 @@ void DynamiteAction::AdvanceState()
 			GolVec3 target;
 			target.m_x = racerPosition.m_x + forward.m_x * g_dynamiteThrowDistance;
 			target.m_y = racerPosition.m_y + forward.m_y * g_dynamiteThrowDistance;
-			target.m_z = racerPosition.m_z + forward.m_z * g_dynamiteThrowDistance + 5.0f;
+			target.m_z = racerPosition.m_z + forward.m_z * g_dynamiteThrowDistance + g_dynamiteLaunchHeight;
 
 			m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &targetVelocity, TRUE);
 		}

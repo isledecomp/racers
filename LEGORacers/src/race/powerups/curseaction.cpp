@@ -17,6 +17,7 @@
 #include <float.h>
 #include <math.h>
 
+// GLOBAL: LEGORACERS 0x004b13f8
 const LegoFloat g_curseTriggerRadius = 10.0f;
 
 const LegoFloat g_curseSoundMaxDistanceSquared = 300.0f;
@@ -159,7 +160,7 @@ void CurseAction::Activate(
 
 		GolWorldEntity* target = &m_worldEntity;
 		target->SetPosition(position);
-		m_worldEntity.SetBoundsRadius(10.0f);
+		m_worldEntity.SetBoundsRadius(g_curseTriggerRadius);
 		m_auraEntity->SetPosition(position);
 		m_innerAuraEntity->SetPosition(position);
 

@@ -16,10 +16,6 @@
 #include <float.h>
 #include <math.h>
 
-const LegoFloat g_powerupHitSoundMaxDistance = 600.0f;
-
-const LegoFloat g_powerupHitSoundMinDistance = 200.0f;
-
 extern const LegoFloat g_unlimitedDrawDistance;
 
 // GLOBAL: LEGORACERS 0x004b1370
@@ -31,6 +27,12 @@ const LegoFloat g_powerupSoundMinDistance = 30.0f;
 // GLOBAL: LEGORACERS 0x004b1388
 const LegoFloat g_powerupSoundMaxDistance = 300.0f;
 
+// GLOBAL: LEGORACERS 0x004b138c
+const LegoFloat g_powerupHitSoundMinDistance = 200.0f;
+
+// GLOBAL: LEGORACERS 0x004b1390
+const LegoFloat g_powerupHitSoundMaxDistance = 600.0f;
+
 // GLOBAL: LEGORACERS 0x004b1394
 const LegoFloat g_cannonballGravity = -32.1759987f;
 
@@ -39,6 +41,9 @@ const LegoFloat g_cannonballSpeed = 180.0f;
 
 // GLOBAL: LEGORACERS 0x004b139c
 const LegoFloat g_cannonballDefaultRange = 500.0f;
+
+// GLOBAL: LEGORACERS 0x004b13a0
+const LegoFloat g_cannonballBillboardSize = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b13a4
 const LegoFloat g_cannonballTrailSize = 3.0f;
@@ -123,7 +128,8 @@ LegoU32 CannonballAction::Activate(ActionSetup* p_setup)
 		material = renderDevice->FindMaterialByName("cannon");
 	}
 
-	return m_billboard->Configure(material, 5.0f, 5.0f, g_unlimitedDrawDistance);
+	return m_billboard
+		->Configure(material, g_cannonballBillboardSize, g_cannonballBillboardSize, g_unlimitedDrawDistance);
 }
 
 // FUNCTION: LEGORACERS 0x00451ad0

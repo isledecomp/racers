@@ -61,6 +61,12 @@ extern const LegoFloat g_unk0x004b02e0 = 0.2f;
 // GLOBAL: LEGORACERS 0x004b02e4
 extern const LegoFloat g_unk0x004b02e4 = 0.0057142857f;
 
+// GLOBAL: LEGORACERS 0x004b02e8
+extern const LegoFloat g_unk0x004b02e8 = -6.0f;
+
+// GLOBAL: LEGORACERS 0x004b02ec
+extern const LegoFloat g_unk0x004b02ec = -14.0f;
+
 // GLOBAL: LEGORACERS 0x004b0424
 extern const LegoFloat g_statMax = 100.0f;
 

@@ -45,6 +45,27 @@ extern const LegoFloat g_hudMapInsetScale = 0.03125f;
 // GLOBAL: LEGORACERS 0x004b02b4
 extern const LegoFloat g_hudMarkerSize = 16.0f;
 
+// GLOBAL: LEGORACERS 0x004b02b8
+extern const LegoFloat g_hudMapDirectionScale = 0.12f;
+
+// GLOBAL: LEGORACERS 0x004b02bc
+extern const LegoFloat g_speedometerNeedleBaseSize = 7.0f;
+
+// GLOBAL: LEGORACERS 0x004b02c0
+extern const LegoFloat g_speedometerNeedleLength = 45.0f;
+
+// GLOBAL: LEGORACERS 0x004b02c4
+extern const LegoFloat g_speedometerNeedleSpread = 2.0943952f;
+
+// GLOBAL: LEGORACERS 0x004b02c8
+extern const LegoFloat g_speedometerNeedleBaseAngle = 2.25f;
+
+// GLOBAL: LEGORACERS 0x004b02cc
+extern const LegoFloat g_speedometerMaxAngle = 3.4000001f;
+
+// GLOBAL: LEGORACERS 0x004b02d0
+extern const LegoFloat g_speedometerAngleScale = 18.0f;
+
 // GLOBAL: LEGORACERS 0x004b02d4
 extern const LegoFloat g_hudTopTextOffset = -7.0f;
 
@@ -53,6 +74,8 @@ extern const LegoFloat g_hudBaseScale = 0.0020833334f;
 
 extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_unk0x004b02e4;
+extern const LegoFloat g_unk0x004b02e8;
+extern const LegoFloat g_unk0x004b02ec;
 extern const LegoFloat g_violetShoalTwo;
 
 // GLOBAL: LEGORACERS 0x004be8a8
@@ -655,7 +678,7 @@ void RaceHud::DrawRotatingMap()
 		vertices[i].m_z = 0.0f;
 	}
 
-	LegoFloat directionLengthScale = m_mapScale * 0.12f * m_scaleY;
+	LegoFloat directionLengthScale = m_mapScale * g_hudMapDirectionScale * m_scaleY;
 	double inset = static_cast<double>(m_screenHeight) * g_hudMapInsetScale;
 	LegoS32 verticalInset = static_cast<LegoS32>(m_scaleY * inset);
 	LegoS32 mapBottom = m_viewport.m_bottom - verticalInset;
@@ -876,12 +899,13 @@ void RaceHud::DrawSpeedometer()
 
 	LegoFloat centerX = static_cast<LegoFloat>(m_viewport.m_right - ((52 * width0) >> 7) - 2);
 	LegoFloat centerY = static_cast<LegoFloat>(m_viewport.m_bottom - ((52 * height0) >> 7) - 2);
-	LegoFloat angle = m_speedValue * 18.0f;
+	LegoFloat angle = m_speedValue;
+	angle *= g_speedometerAngleScale;
 	if (angle < 0.0f) {
 		angle = 0.0f;
 	}
-	else if (angle > 3.4000001f) {
-		angle = 3.4000001f;
+	else if (angle > g_speedometerMaxAngle) {
+		angle = g_speedometerMaxAngle;
 	}
 
 	GolRenderDevice::TexturedVertex vertices[5];
@@ -891,43 +915,46 @@ void RaceHud::DrawSpeedometer()
 		vertices[i].m_color.m_alp = 0xff;
 	}
 
-	LegoFloat angle0 = angle + 2.25f;
+	LegoFloat angle0 = angle;
+	angle0 += g_speedometerNeedleBaseAngle;
 	GolMath::SinCos(angle0, &vertices[0].m_y, &vertices[0].m_x);
 
-	LegoFloat angle1 = angle0 + 2.0943952f;
+	LegoFloat angle1 = angle0;
+	angle1 += g_speedometerNeedleSpread;
 	GolMath::SinCos(angle1, &vertices[2].m_y, &vertices[2].m_x);
 
-	LegoFloat angle2 = angle1 + 2.0943952f;
+	LegoFloat angle2 = angle1;
+	angle2 += g_speedometerNeedleSpread;
 	GolMath::SinCos(angle2, &vertices[1].m_y, &vertices[1].m_x);
 
-	vertices[0].m_x *= 45.0f;
+	vertices[0].m_x *= g_speedometerNeedleLength;
 	vertices[1].m_color.m_red = 0x96;
 	vertices[0].m_color.m_red = 0x96;
 
-	vertices[0].m_y *= 45.0f;
+	vertices[0].m_y *= g_speedometerNeedleLength;
 	vertices[1].m_color.m_grn = 0x96;
 	vertices[0].m_color.m_grn = 0x96;
 	vertices[1].m_color.m_blu = 0x96;
 	vertices[0].m_color.m_blu = 0x96;
 
-	vertices[1].m_x *= 7.0f;
+	vertices[1].m_x *= g_speedometerNeedleBaseSize;
 	vertices[3].m_x = 0.0f;
 	vertices[3].m_color.m_red = 0xc8;
 	vertices[3].m_color.m_grn = 0xc8;
 
-	vertices[1].m_y *= 7.0f;
+	vertices[1].m_y *= g_speedometerNeedleBaseSize;
 	vertices[3].m_color.m_blu = 0xc8;
 	vertices[3].m_y = 0.0f;
 	vertices[4].m_color.m_red = 0xff;
 	vertices[2].m_color.m_red = 0xff;
 
-	vertices[2].m_x *= 7.0f;
+	vertices[2].m_x *= g_speedometerNeedleBaseSize;
 	vertices[4].m_color.m_grn = 0xff;
 	vertices[2].m_color.m_grn = 0xff;
 	vertices[4].m_color.m_blu = 0xff;
 	vertices[2].m_color.m_blu = 0xff;
 
-	vertices[2].m_y *= 7.0f;
+	vertices[2].m_y *= g_speedometerNeedleBaseSize;
 
 	for (i = 0; i < 4; i++) {
 		vertices[i].m_x = (vertices[i].m_x * m_mapScale) * m_scaleX + centerX;
@@ -1498,7 +1525,9 @@ void RaceHud::Draw()
 		m_font->MeasureString(m_scratchString, &textWidth, &textHeight);
 
 		LegoS32 scaledLabelWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
-		LegoS32 labelPadding = static_cast<LegoS32>(m_textScale * -14.0f);
+		LegoFloat paddingScale = m_textScale;
+		paddingScale *= g_unk0x004b02ec;
+		LegoS32 labelPadding = static_cast<LegoS32>(paddingScale);
 		LegoS32 labelOffset =
 			static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_textScaleX);
 		LegoS32 lapLabelX = m_lapTimeX - labelOffset;
@@ -1516,7 +1545,9 @@ void RaceHud::Draw()
 		m_stringTable->CopyStringByIndex(&m_labelString, 0x27);
 		m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
 		scaledLabelWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
-		labelPadding = static_cast<LegoS32>(m_textScale * -6.0f);
+		paddingScale = m_textScale;
+		paddingScale *= g_unk0x004b02e8;
+		labelPadding = static_cast<LegoS32>(paddingScale);
 		labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_textScaleX);
 		lapLabelX -= labelOffset;
 		m_renderer->DrawString(

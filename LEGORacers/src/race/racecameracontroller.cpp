@@ -12,6 +12,18 @@
 DECOMP_SIZE_ASSERT(RaceCameraController, 0x150)
 DECOMP_SIZE_ASSERT(RaceCameraController::Profile, 0x18)
 
+// GLOBAL: LEGORACERS 0x004b0314
+extern const LegoFloat g_shakeFovMax = 80.0f;
+
+// GLOBAL: LEGORACERS 0x004b0318
+extern const LegoFloat g_shakeFovMin = 40.0f;
+
+// GLOBAL: LEGORACERS 0x004b031c
+extern const LegoFloat g_unk0x004b031c = 0.02f;
+
+// GLOBAL: LEGORACERS 0x004b0320
+extern const LegoFloat g_unk0x004b0320 = 0.1f;
+
 // GLOBAL: LEGORACERS 0x004b0328
 const RaceCameraController::Profile g_cameraProfiles[8] = {
 	{1, 5.0f, 35.0f, 20.0f, 0.1f, 0.25f},
@@ -187,12 +199,12 @@ void RaceCameraController::UpdateShake()
 		m_baseFov = m_camera->m_fov;
 
 		if (m_racer->m_flags & 0x800) {
-			if ((m_shakeAmount > 0.0f || m_baseFov <= 40.0f) && m_baseFov < 80.0f) {
+			if ((m_shakeAmount > 0.0f || m_baseFov <= g_shakeFovMin) && m_baseFov < g_shakeFovMax) {
 				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 				m_shakeAmount =
 					-(static_cast<LegoFloat>(
 						  static_cast<LegoU16>(g_randomTable[g_randomTableIndex]) %
-						  static_cast<LegoS32>(80.0f - m_baseFov)
+						  static_cast<LegoS32>(g_shakeFovMax - m_baseFov)
 					  ) *
 					  0.5f);
 			}
@@ -200,7 +212,7 @@ void RaceCameraController::UpdateShake()
 				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 				m_shakeAmount = static_cast<LegoFloat>(
 									static_cast<LegoU16>(g_randomTable[g_randomTableIndex]) %
-									static_cast<LegoS32>(m_baseFov - 40.0f)
+									static_cast<LegoS32>(m_baseFov - g_shakeFovMin)
 								) *
 								0.5f;
 			}
@@ -221,8 +233,8 @@ void RaceCameraController::UpdateShake()
 		GolCamera* camera = m_camera;
 		remaining -= m_shakeMs;
 		LegoFloat phase = static_cast<LegoFloat>(remaining);
-		phase *= 0.02f;
-		phase *= 0.1f;
+		phase *= g_unk0x004b031c;
+		phase *= g_unk0x004b0320;
 		phase *= g_hazardPi;
 		LegoFloat angle = static_cast<LegoFloat>(cos(phase));
 		LegoFloat fov = angle * m_shakeAmount + (m_baseFov - m_shakeAmount);

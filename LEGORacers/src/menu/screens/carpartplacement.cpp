@@ -40,6 +40,9 @@ LegoFloat g_pieceCommitHeight = 1.0f;
 // GLOBAL: LEGORACERS 0x004c7668
 LegoFloat g_viewAngleStep = g_twoPiPlacement * 0.125f;
 
+// GLOBAL: LEGORACERS 0x004b02f0
+extern const LegoFloat g_selectedPulseAmplitude = -64.0f;
+
 // GLOBAL: LEGORACERS 0x004b02f4
 extern const LegoFloat g_negativeRadiansToTableIndex = -162.97466f;
 

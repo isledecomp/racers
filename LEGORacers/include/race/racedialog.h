@@ -54,7 +54,6 @@ private:
 		c_selectedAlphaFlag = 1,
 		c_selectedBlinkThresholdMs = 250,
 		c_selectedPulseAlphaCenter = 0xbf,
-		c_selectedPulseAlphaAmplitude = 64,
 		c_cosineTableMask = 0x3ff,
 		c_backdropAlpha = 64,
 		c_backdropAlphaFlag = 2

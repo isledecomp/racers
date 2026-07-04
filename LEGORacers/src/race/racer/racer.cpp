@@ -1315,7 +1315,7 @@ void Racer::StopEngineSounds()
 	}
 }
 
-// STUB: LEGORACERS 0x00438560
+// FUNCTION: LEGORACERS 0x00438560
 void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
 	if (p_data->m_type == LegoEventQueue::Descriptor::c_typeTimer) {
@@ -1488,7 +1488,8 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 			GolMath::NormalizeVector3(soundDirection, &soundDirection);
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-			LegoU32 soundId = (g_randomTable[g_randomTableIndex] & 1) ? 0x37 : 0x18;
+			LegoS32 randomValue = g_randomTable[g_randomTableIndex];
+			LegoU32 soundId = (randomValue % 2) ? 0x37 : 0x18;
 			m_soundSource->PlaySpatialSoundById(
 				soundId,
 				contactPosition,

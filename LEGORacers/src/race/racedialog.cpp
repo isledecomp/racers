@@ -9,6 +9,8 @@ DECOMP_SIZE_ASSERT(RaceDialog, 0x68)
 
 extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_negativeRadiansToTableIndex;
+extern const LegoFloat g_unk0x004b02fc;
+extern const LegoFloat g_selectedPulseAmplitude;
 extern const LegoFloat g_twoPi;
 
 // FUNCTION: LEGORACERS 0x00427160
@@ -133,7 +135,7 @@ void RaceDialog::Update(LegoU32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x00427440
+// FUNCTION: LEGORACERS 0x00427440
 void RaceDialog::Draw()
 {
 	if (m_state != 1) {
@@ -145,12 +147,14 @@ void RaceDialog::Draw()
 
 	LegoS32 selectedAlpha = c_selectedAlpha;
 	if (m_selecting) {
-		LegoS32 index =
-			0xffffff00 -
-			static_cast<LegoS32>(static_cast<LegoFloat>(m_blinkMs) * 0.002f * g_twoPi * g_negativeRadiansToTableIndex);
+		LegoFloat blinkPhase = static_cast<LegoFloat>(static_cast<LegoS32>(m_blinkMs)) * g_unk0x004b02fc;
+		blinkPhase *= g_twoPi;
+		blinkPhase *= g_negativeRadiansToTableIndex;
+
+		LegoS32 index = 0xffffff00 - static_cast<LegoS32>(blinkPhase);
 		index &= c_cosineTableMask;
-		selectedAlpha = c_selectedPulseAlphaCenter -
-						static_cast<LegoS32>(g_cosineTable[index] * (int) c_selectedPulseAlphaAmplitude);
+		selectedAlpha =
+			c_selectedPulseAlphaCenter + static_cast<LegoS32>(g_cosineTable[index] * g_selectedPulseAmplitude);
 	}
 
 	m_font->SetColor(c_promptColor);

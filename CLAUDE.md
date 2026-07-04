@@ -312,6 +312,8 @@ Proven by experiment (cl 12.00.8168 `/O2`) and by census of the original binarie
 - References from multiple TUs, all in literal shape → the merged literal pool entry for that value. Source uses plain literals.
 - Any load+push, load+store, `fld`+`fchs`, const-first `fmul`/`fadd`, or a second same-value datum elsewhere → a NAMED constant of the owning TU (`static const LegoFloat` at file scope; `extern const` only if other TUs reference the same address). Multiple named constants may hold the same value — even within one TU.
 - Only `fcom`/`fld`-shaped single-TU references → ambiguous; prefer the literal unless a match proves otherwise.
+- **`x += c` is a shape oracle:** `fld [x]; fadd [c]` (value-first) ⇒ literal; `fld [c]; fadd [x]` (const-first) ⇒ named. Same for commutative `fmul`: const as the memory operand ⇒ literal; const loaded first ⇒ named.
+- A single-TU-referenced datum can still be that value's literal pool if every other user of the value compiles to immediates (`mov [dst], imm32` stores never reference the pool) — check the shapes, not just the spread.
 
 **reccmp rules.** Operands compare by rendered entity name. Literal pool entries are auto-discovered on BOTH sides (FPU-referenced addresses in read-only sections) and render as the value (`0.5 (FLOAT)`), so literal↔literal matches with no configuration. `reccmp/lego-racers-floats.csv` seeds orig-side FLOAT entities where auto-discovery fails (non-FPU references such as double push-pairs; writable sections). A GLOBAL annotation and a floats-CSV row on the SAME address is always wrong — it renders `(DATA)` vs `(FLOAT)` and permanently mismatches every reference.
 

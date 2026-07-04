@@ -157,7 +157,6 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/material/gold3dtexturelist.cpp
   GolDP/src/material/golsoftwaremateriallibrary.cpp
   GolDP/src/mesh/gdbcoloredvertexarraybase.cpp
-  GolDP/src/mesh/golmodel.cpp
   GolDP/src/camera/golscenetransformnode.cpp
 )
 
@@ -576,10 +575,10 @@ if (MSVC_FOR_DECOMP)
 #game was originally built with) and tweaked slightly to produce more debugging info for reccmp.
 #They ensure a recompilation that can be byte / instruction accurate to the original binaries.
   if (TARGET legoracers)
-    target_link_options(legoracers PRIVATE "/OPT:NOREF,ICF")
+    target_link_options(legoracers PRIVATE "/OPT:REF,ICF")
   endif()
   if (TARGET goldp)
-    target_link_options(goldp PRIVATE "/OPT:NOREF,ICF")
+    target_link_options(goldp PRIVATE "/OPT:REF,ICF")
   endif()
 
 #LegoRacers.exe links to MSVCRT.dll(/ MD), GolDP.dll has embedded its runtime library(/ MT)

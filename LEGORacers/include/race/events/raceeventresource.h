@@ -35,6 +35,7 @@ public:
 	virtual void OnEnd();                         // vtable+0x0c
 	virtual ~RaceEventResource();                 // vtable+0x10
 	virtual void Update(LegoU32 p_elapsedMs);     // vtable+0x14
+	virtual LegoU32 GetKind() = 0;                // vtable+0x18
 
 	void ForceEventStart(Racer* p_racer);
 	void ForceEventEnd(Racer* p_racer);

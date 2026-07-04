@@ -9,7 +9,7 @@ class BeamEntity : public GolModelEntity {
 public:
 	BeamEntity();
 	~BeamEntity();
-	BeamEntity* Destroy(undefined4 p_flags);
+	virtual BeamEntity* Destroy(undefined4 p_flags); // vtable+0x60
 	void Draw(GolRenderDevice& p_renderer) override; // vtable+0x1c
 	void Initialize(
 		GolModelBase* p_model,

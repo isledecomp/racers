@@ -10,12 +10,6 @@ DECOMP_SIZE_ASSERT(RaceTimerList::TibTxtParser, 0x1fc)
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
-// FUNCTION: LEGORACERS 0x00464700
-LegoU32 RaceTimerList::GetCapacity()
-{
-	return 8;
-}
-
 // FUNCTION: LEGORACERS 0x00464710
 RaceTimerList::Resource::Resource()
 {

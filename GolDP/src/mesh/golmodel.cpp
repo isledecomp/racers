@@ -85,19 +85,6 @@ void GolModel::Allocate(
 	m_dirty = 1;
 }
 
-// FUNCTION: GOLDP 0x10006a60
-void GolModel::Destroy()
-{
-	if (m_modelVertexArray != NULL) {
-		m_modelVertexArray->Destroy();
-		delete m_modelVertexArray;
-		m_modelVertexArray = NULL;
-		m_vertexArray = 0;
-	}
-
-	GolModelBase::Destroy();
-}
-
 // FUNCTION: GOLDP 0x10006aa0
 void GolModel::ParseUncoloredVertices(GolFileParser& p_parser)
 {

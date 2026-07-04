@@ -26,8 +26,6 @@ public:
 		};
 	};
 
-	static LegoU32 GetCapacity();
-
 	// VTABLE: LEGORACERS 0x004b1cc0
 	// SIZE 0x24
 	class Resource : public LegoEventQueue::Callback {

@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "gdbvertexarray.h"
 #include "golboundingshape.h"
 #include "golmodelbase.h"
 
@@ -54,7 +55,18 @@ public:
 		undefined4
 	) override;                                                                                   // vtable+0x18
 	void Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
-	void Destroy() override;                                                                      // vtable+0x24
+	// FUNCTION: GOLDP 0x10006a60
+	void Destroy() override // vtable+0x24
+	{
+		if (m_modelVertexArray != NULL) {
+			m_modelVertexArray->Destroy();
+			delete m_modelVertexArray;
+			m_modelVertexArray = NULL;
+			m_vertexArray = 0;
+		}
+
+		GolModelBase::Destroy();
+	}
 	void Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable);
 	void DrawNode(
 		GolD3DRenderDevice* p_renderer,

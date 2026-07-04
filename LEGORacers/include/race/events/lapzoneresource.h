@@ -19,6 +19,7 @@ public:
 	~LapZoneResource() override;
 	void OnStartForRacer(Racer* p_racer) override;
 	void OnEndForRacer(Racer* p_racer) override;
+	LegoU32 GetKind() override; // vtable+0x18
 
 	void Initialize(InitParams* p_params);
 	void Destroy();

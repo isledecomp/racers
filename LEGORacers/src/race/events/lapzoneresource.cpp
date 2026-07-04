@@ -72,3 +72,9 @@ void LapZoneResource::OnEndForRacer(Racer*)
 	NotifyStateChange(m_state, 3);
 	m_state = c_stateEnded;
 }
+
+// FUNCTION: LEGORACERS 0x00464700
+LegoU32 LapZoneResource::GetKind()
+{
+	return 8;
+}

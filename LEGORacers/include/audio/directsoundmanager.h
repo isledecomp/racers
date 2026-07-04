@@ -83,8 +83,8 @@ private:
 	LegoBool32 MakeSoundAvailable(LegoS32 p_priority);
 	void InsertByPriority(SoundBufferList& p_list, SoundBuffer& p_sound)
 	{
-		GolListLink* link = p_list.FirstLink();
-		while (link && p_list.IsValidLink(link)) {
+		GolListLink* link = p_list.FirstValidLink();
+		while (link) {
 			SoundBuffer& currentSound = p_list.GetItem(*link);
 
 			if (p_sound.m_priority <= currentSound.m_priority) {

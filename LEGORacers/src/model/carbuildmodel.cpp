@@ -2395,7 +2395,8 @@ void CarBuildModel::UpdateOffset(LegoBool32 p_restoreCachedOffset)
 		partType = pieceRecord->GetPartType();
 		if (partType != 0xffff) {
 			library->GetColor(partType, &m_offsetX, &m_offsetY, &m_offsetZ);
-			m_offsetZ *= g_carBuildModelNegativeHeightScale;
+			LegoFloat offsetZ = m_offsetZ;
+			m_offsetZ = offsetZ * g_carBuildModelNegativeHeightScale;
 			m_offsetX = -m_offsetX;
 			m_offsetY = -m_offsetY;
 		}

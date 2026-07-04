@@ -32,8 +32,6 @@ DECOMP_SIZE_ASSERT(WdbBillboardSprite, 0x38)
 // GLOBAL: GOLDP 0x100576e4
 LegoFloat g_fltMax0x100576e4 = FLT_MAX;
 
-static const LegoFloat g_floatyBoatMaxFloat = FLT_MAX;
-
 // GLOBAL: GOLDP 0x100576e8
 LegoFloat g_fltMax0x100576e8 = FLT_MAX;
 
@@ -1363,7 +1361,7 @@ void GolWorldDatabase::InitializeEntities()
 				break;
 			}
 
-			if (!(model->m_modelDistances[lod] < g_floatyBoatMaxFloat)) {
+			if (!(model->m_modelDistances[lod] < FLT_MAX)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {
@@ -1444,7 +1442,7 @@ void GolWorldDatabase::InitializeEntities()
 				break;
 			}
 
-			if (!(model->m_modelDistances[lod] < g_floatyBoatMaxFloat)) {
+			if (!(model->m_modelDistances[lod] < FLT_MAX)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {
@@ -1561,7 +1559,7 @@ void GolWorldDatabase::InitializeEntities()
 				break;
 			}
 
-			if (!(model->m_modelDistances[lod] < g_floatyBoatMaxFloat)) {
+			if (!(model->m_modelDistances[lod] < FLT_MAX)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {

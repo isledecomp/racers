@@ -96,8 +96,8 @@ void TgbTargetPointList::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoB
 		position.m_z = 0.0f;
 		LegoS32 index = -1;
 
-		GolFileParser::ParserTokenType token = parser->GetNextToken();
-		while (token != GolFileParser::e_rightCurly) {
+		GolFileParser::ParserTokenType token;
+		while ((token = parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case TgbTxtParser::e_position:
 				position.m_x = parser->ReadFloat();
@@ -114,8 +114,6 @@ void TgbTargetPointList::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoB
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 				break;
 			}
-
-			token = parser->GetNextToken();
 		}
 
 		m_entries[i].Set(&position, index);

@@ -16,7 +16,6 @@
 
 extern LegoFloat g_arcCosineTable[1024];
 extern LegoU32 g_defaultPowerslideFactorBits;
-extern const LegoFloat g_ghostSpeedScale;
 extern const LegoFloat g_maxTurnRadius;
 extern const LegoFloat g_minTurnRadius;
 extern const LegoFloat g_physicsSoundMaxDistance;
@@ -458,12 +457,10 @@ void RacerCarBody::Update(LegoS32 p_elapsedMs)
 		m_skidSound->SetVelocity(m_velocity);
 
 		if (m_flags & c_flagPowerslide) {
-			m_skidSound->SetFrequencyScale(
-				(m_powerslideFactor * 0.5f + 1.4f) - ((0.17f - m_forwardSpeed) * g_ghostSpeedScale)
-			);
+			m_skidSound->SetFrequencyScale((m_powerslideFactor * 0.5f + 1.4f) - ((0.17f - m_forwardSpeed) * 4.0f));
 		}
 		else {
-			m_skidSound->SetFrequencyScale(1.4f - ((0.17f - m_forwardSpeed) * g_ghostSpeedScale));
+			m_skidSound->SetFrequencyScale(1.4f - ((0.17f - m_forwardSpeed) * 4.0f));
 		}
 	}
 

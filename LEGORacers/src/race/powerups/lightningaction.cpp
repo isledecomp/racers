@@ -21,8 +21,6 @@ extern LegoFloat g_lightningReach;
 
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 
-extern const LegoFloat g_ghostSpeedScale;
-
 // GLOBAL: LEGORACERS 0x004b02fc
 extern const LegoFloat g_unk0x004b02fc = 0.002f;
 
@@ -474,7 +472,7 @@ void LightningAction::UpdateBoltPath()
 	GolVec3 hit;
 	GolBoundingVolume::HitTriangle record;
 	LegoFloat scale = m_boltLength;
-	scale *= g_ghostSpeedScale;
+	scale *= 4.0f;
 	scaledDirection.m_x = direction.m_x * scale;
 	scaledDirection.m_y = direction.m_y * scale;
 	scaledDirection.m_z = direction.m_z * scale;

@@ -26,7 +26,6 @@ undefined2 g_textConversionBuffer[42];
 extern const LegoFloat g_unk0x004afde0 = 10.0f;
 
 extern const LegoFloat g_ghostAnimationRateScale;
-extern const LegoFloat g_ghostSpeedScale;
 
 // GLOBAL: LEGORACERS 0x004b02a0
 extern const LegoFloat g_hudArrowBaseLength = 6.5f;
@@ -406,7 +405,7 @@ void RaceHud::DrawMapArrow(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, Leg
 	vertices[3].m_x = p_directionX * tailEndLength;
 	vertices[3].m_y = p_directionY * tailEndLength;
 	LegoFloat tailSide = p_directionY;
-	tailSide *= g_ghostSpeedScale;
+	tailSide *= 4.0f;
 	LegoFloat tailForward = p_directionX;
 	tailForward *= 5.0f;
 	vertices[4].m_x = tailSide - tailForward;
@@ -414,7 +413,7 @@ void RaceHud::DrawMapArrow(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, Leg
 	LegoFloat tailForwardY = p_directionY;
 	tailForwardY *= 5.0f;
 	LegoFloat tailSideX = p_directionX;
-	tailSideX *= g_ghostSpeedScale;
+	tailSideX *= 4.0f;
 	vertices[4].m_y = -tailForwardY - tailSideX;
 	vertices[5].m_x = -tailForward - tailSide;
 	vertices[5].m_y = tailSideX - tailForwardY;

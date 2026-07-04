@@ -15,9 +15,6 @@ DECOMP_SIZE_ASSERT(TimeRaceManager::GhbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(TimeRaceManager::GhostRunData, 0x25c0)
 DECOMP_SIZE_ASSERT(TimeRaceManager::GhostRunData::Sample, 0x0a)
 
-// GLOBAL: LEGORACERS 0x004af674
-extern const LegoFloat g_ghostSpeedScale = 4.0f;
-
 // GLOBAL: LEGORACERS 0x004b01a4
 extern const LegoFloat g_ghostAnimationRateScale = 1.8f;
 
@@ -364,7 +361,7 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 
 			LegoFloat distanceSquared = delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x;
 			LegoFloat speed = static_cast<LegoFloat>(sqrt(distanceSquared));
-			speed *= g_ghostSpeedScale;
+			speed *= 4.0f;
 			speed *= g_ghostAnimationRateScale;
 			animatedEntity->SetMsPerFrame(speed);
 

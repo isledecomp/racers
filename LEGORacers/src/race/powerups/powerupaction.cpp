@@ -19,7 +19,6 @@ DECOMP_SIZE_ASSERT(ActionSetup, 0x14)
 #include <float.h>
 #include <math.h>
 
-extern const LegoFloat g_ghostSpeedScale;
 extern const LegoFloat g_lightningRange;
 
 const LegoFloat g_unk0x004b15f8 = 1.0f;
@@ -52,7 +51,7 @@ const LegoFloat g_unk0x004b1484 = 3.0f;
 extern const LegoFloat g_brickScalePercentBase = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004c7600
-LegoFloat g_lightningReach = g_ghostSpeedScale * g_lightningRange;
+LegoFloat g_lightningReach = 4.0f * g_lightningRange;
 
 // GLOBAL: LEGORACERS 0x004b1628
 const LegoFloat g_dropGroundOffset = 1.0f;

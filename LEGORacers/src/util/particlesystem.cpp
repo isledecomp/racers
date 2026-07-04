@@ -280,8 +280,8 @@ void ParticleSystem::Update(LegoS32 p_elapsedMs)
 					else {
 						other->m_next = next;
 					}
-					current->m_next = m_freeList;
 					current->m_material = NULL;
+					current->m_next = m_freeList;
 					m_freeList = current;
 				}
 				else {

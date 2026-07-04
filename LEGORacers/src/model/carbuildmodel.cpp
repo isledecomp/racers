@@ -3391,7 +3391,7 @@ LegoPieceLibrary::PieceRecord* CarBuildModel::PieceGrid::UnstampPiece(LegoS32 p_
 		for (LegoS32 j = 0; j < height; j++) {
 			LegoPieceLibrary::ShapeCell* cell = pieceRecord->GetCell(i, j, static_cast<LegoU8>(rotation));
 			if ((cell->m_first | cell->m_second) & 0x3f) {
-				if (m_entries[y + j + ((x + i) * m_height)].m_entryIndex != p_index) {
+				if (p_index != m_entries[y + j + ((x + i) * m_height)].m_entryIndex) {
 					result = NULL;
 				}
 			}

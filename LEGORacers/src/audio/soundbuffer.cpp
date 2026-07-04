@@ -176,8 +176,8 @@ LegoBool32 SoundBuffer::CreateDirectSoundBuffer(LegoU32 p_bufferSize)
 	bufferDesc.dwSize = sizeof(bufferDesc);
 	bufferDesc.dwFlags = DSBCAPS_CTRLFREQUENCY | DSBCAPS_CTRLPAN | DSBCAPS_CTRLVOLUME;
 	bufferDesc.dwBufferBytes = p_bufferSize;
-	bufferDesc.dwReserved = 0;
 	bufferDesc.lpwfxFormat = &waveFormat;
+	bufferDesc.dwReserved = 0;
 
 	if (m_soundManager->GetDirectSound()->CreateSoundBuffer(&bufferDesc, &m_directSoundBuffer, NULL)) {
 		m_directSoundBufferSize = 0;

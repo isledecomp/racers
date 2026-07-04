@@ -240,8 +240,8 @@ void CutsceneParticle::ActivateEmitter(CutsceneAnimation::Emitter* p_runtime)
 	m_velocity.m_x = 0.0f;
 	m_velocity.m_y = 0.0f;
 	m_velocity.m_z = 0.0f;
-	m_ageMs = 0;
 	m_emitTimerMs = m_emitter->GetEmitIntervalMs();
+	m_ageMs = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004897a0

@@ -94,7 +94,7 @@ void HazardActionBase::OnEvent(LegoEventQueue::CallbackData* p_param)
 	}
 }
 
-// STUB: LEGORACERS 0x00456360
+// FUNCTION: LEGORACERS 0x00456360
 void HazardActionBase::ComputeDropPosition(
 	Racer* p_racer,
 	GolVec3* p_position,

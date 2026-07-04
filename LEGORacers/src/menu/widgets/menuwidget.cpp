@@ -209,7 +209,7 @@ undefined4 MenuWidget::HitTest(LegoS32 p_x, LegoS32 p_y)
 	return p_x >= 0 && p_x <= (m_rect.m_right - m_rect.m_left) && p_y >= 0 && p_y <= (m_rect.m_bottom - m_rect.m_top);
 }
 
-// STUB: LEGORACERS 0x00472c80
+// FUNCTION: LEGORACERS 0x00472c80
 void MenuWidget::CenterRectIn(const Rect* p_source, Rect* p_dest) const
 {
 	const Rect* source = p_source;

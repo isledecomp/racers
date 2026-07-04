@@ -154,7 +154,7 @@ void CmbModelPart::ParseParts(GolFileParser& p_parser)
 	p_parser.ReadRightCurly();
 }
 
-// STUB: LEGORACERS 0x004015e0
+// FUNCTION: LEGORACERS 0x004015e0
 void CmbModelPart::MirrorY()
 {
 	for (LegoU32 i = 0; i < m_partCount; i++) {

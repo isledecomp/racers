@@ -190,7 +190,7 @@ void GolSurface::Fill(LegoU32 p_color)
 }
 
 // FUNCTION: GOLDP 0x1001d240
-// STUB: LEGORACERS 0x004087d0
+// FUNCTION: LEGORACERS 0x004087d0
 void GolSurface::Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_sourceRect)
 {
 	LegoU8* destPixels;

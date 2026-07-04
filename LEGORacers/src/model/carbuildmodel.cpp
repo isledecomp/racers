@@ -137,7 +137,7 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x00495160
+// FUNCTION: LEGORACERS 0x00495160
 LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, const BuildVertex* p_rhs)
 {
 	LegoS32 lhsKey;
@@ -2148,7 +2148,7 @@ void CarBuildModel::EmitPrimitives(GolModelEntity* p_entity)
 	}
 }
 
-// STUB: LEGORACERS 0x0049b150
+// FUNCTION: LEGORACERS 0x0049b150
 LegoS32 CarBuildModel::ComparePrimitiveMaterial(const void* p_lhs, const void* p_rhs)
 {
 	const BuildPrimitive* lhs = *static_cast<BuildPrimitive* const*>(p_lhs);

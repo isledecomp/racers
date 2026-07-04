@@ -217,7 +217,7 @@ MenuInputBindingTable* MenuDialog::DialogScreen::GetMenuInputBindings()
 	return (MenuInputBindingTable*) m_owner;
 }
 
-// STUB: LEGORACERS 0x004686f0
+// FUNCTION: LEGORACERS 0x004686f0
 void MenuDialog::DialogScreen::EnableWidgets()
 {
 	m_messageLabel.SetFlags(2);

@@ -2747,7 +2747,7 @@ void RacerCarBody::ComputeWheelPositions()
 	points[2].m_wheelPosition.m_z = points[0].m_wheelPosition.m_z - lengthOffset.m_z;
 }
 
-// STUB: LEGORACERS 0x00448d90
+// FUNCTION: LEGORACERS 0x00448d90
 void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_sweepHeight, LegoFloat p_sweepDistance)
 {
 	const GolMatrix3& resourceOrientation = p_world->GetOrientation();

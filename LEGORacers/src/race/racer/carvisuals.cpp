@@ -1132,7 +1132,7 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x0043f530
+// FUNCTION: LEGORACERS 0x0043f530
 void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 {
 	if (p_elapsedMs > m_cursePhaseMs) {

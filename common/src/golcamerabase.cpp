@@ -151,7 +151,7 @@ GolCameraBase::~GolCameraBase()
 {
 }
 
-// STUB: GOLDP 0x1001bfc0
+// FUNCTION: GOLDP 0x1001bfc0
 void GolCameraBase::ComputeFrustum(GolViewFrustum* p_view)
 {
 	m_transform->GetPosition(&p_view->m_position);
@@ -255,7 +255,7 @@ void GolCameraBase::ComputeFrustum(GolViewFrustum* p_view)
 	p_view->m_planes[4].m_distance = -GOLVECTOR3_DOT(normal, p_view->m_corners[2]);
 }
 
-// STUB: GOLDP 0x1001c450
+// FUNCTION: GOLDP 0x1001c450
 void GolCameraBase::ComputeFrustumFromBounds(GolViewFrustum* p_view)
 {
 	m_transform->GetPosition(&p_view->m_position);

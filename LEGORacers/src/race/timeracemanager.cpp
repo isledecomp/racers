@@ -239,7 +239,7 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x00422960
+// FUNCTION: LEGORACERS 0x00422960
 void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 {
 	GolAnimatedEntity* optionalEntity = NULL;

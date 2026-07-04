@@ -221,7 +221,7 @@ void GolFont::SelectSurface(LegoU32 p_index)
 	m_inverseTextureHeight = 1.0f / static_cast<LegoFloat>(m_textures[index].GetHeight());
 }
 
-// STUB: GOLDP 0x10004c20
+// FUNCTION: GOLDP 0x10004c20
 void GolFont::DrawGlyph(Rect* p_sourceRect, Rect* p_destRect)
 {
 	LegoS32 sourceBottom = p_sourceRect->m_bottom - 1;

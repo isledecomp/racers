@@ -123,7 +123,7 @@ void RacerPhysics::RouteCursor::AttachAtLoop(RaceRouteRecord* p_entry)
 	m_endPosition.m_z = offset.m_z + currentPosition->m_z;
 }
 
-// STUB: LEGORACERS 0x004a5320
+// FUNCTION: LEGORACERS 0x004a5320
 void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 {
 	RaceRouteRecord* entry = m_record;
@@ -293,7 +293,7 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x004a5750
+// FUNCTION: LEGORACERS 0x004a5750
 void RacerPhysics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 {
 	LegoS32 endIndex = m_endIndex;

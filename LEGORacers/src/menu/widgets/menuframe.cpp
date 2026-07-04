@@ -76,7 +76,7 @@ LegoBool32 MenuFrame::CreateBorder(CreateParams* p_createParams)
 	return m_fill.Create(&createParams);
 }
 
-// STUB: LEGORACERS 0x0046ee40
+// FUNCTION: LEGORACERS 0x0046ee40
 void MenuFrame::SetRect(Rect* p_rect)
 {
 	MenuWidget::SetRect(p_rect);

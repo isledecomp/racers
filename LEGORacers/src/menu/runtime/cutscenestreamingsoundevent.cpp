@@ -209,7 +209,7 @@ void CutsceneStreamingSoundEvent::Stop()
 	}
 }
 
-// STUB: LEGORACERS 0x004a44f0
+// FUNCTION: LEGORACERS 0x004a44f0
 void CutsceneStreamingSoundEvent::Update()
 {
 	if (m_streamInstance) {

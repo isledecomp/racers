@@ -90,8 +90,8 @@ void CmbModelPartTrackData::Parse(GolFileParser& p_parser)
 	}
 }
 
-// STUB: GOLDP 0x10024380
-// STUB: LEGORACERS 0x0040e670
+// FUNCTION: GOLDP 0x10024380
+// FUNCTION: LEGORACERS 0x0040e670
 LegoBool32 CmbModelPartTrackData::InterpolatePosition(
 	GolVec3* p_dest,
 	const CmbModelPartTrack& p_track,
@@ -161,7 +161,7 @@ LegoBool32 CmbModelPartTrackData::InterpolatePosition(
 	return TRUE;
 }
 
-// STUB: GOLDP 0x10024540
+// FUNCTION: GOLDP 0x10024540
 // FUNCTION: LEGORACERS 0x0040e830
 LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	GolQuat* p_dest,

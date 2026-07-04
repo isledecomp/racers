@@ -405,7 +405,7 @@ GolD3DTexture* GolImage::GetTile(LegoU32 p_row, LegoU32 p_column)
 	return &m_texture[p_row * m_tileRowCount + p_column];
 }
 
-// STUB: GOLDP 0x10005b00
+// FUNCTION: GOLDP 0x10005b00
 void GolImage::UploadTiles()
 {
 	GolSurfaceFormat textureFormat = m_surface.GetTextureFormat();

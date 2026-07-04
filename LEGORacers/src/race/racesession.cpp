@@ -2544,7 +2544,7 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 	}
 }
 
-// STUB: LEGORACERS 0x00435e70
+// FUNCTION: LEGORACERS 0x00435e70
 void RaceSession::BindCheckpointMaterials()
 {
 	LegoU32 materialIndex;

@@ -71,7 +71,7 @@ void PowerupProjectile::Initialize(Params* p_params)
 	m_hitRacer = NULL;
 }
 
-// STUB: LEGORACERS 0x00430d80
+// FUNCTION: LEGORACERS 0x00430d80
 void PowerupProjectile::LaunchAtRacer(
 	Params* p_params,
 	Racer* p_racer,
@@ -283,7 +283,7 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 	RegisterCollisionEvent(p_params->m_eventQueue);
 }
 
-// STUB: LEGORACERS 0x00431310
+// FUNCTION: LEGORACERS 0x00431310
 void PowerupProjectile::Deflect(Racer* p_racer)
 {
 	GolVec3 velocity;

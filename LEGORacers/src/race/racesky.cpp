@@ -67,7 +67,7 @@ void RaceSkyState::Reset()
 	m_heightOffset = 0.0f;
 }
 
-// STUB: LEGORACERS 0x0041c550
+// FUNCTION: LEGORACERS 0x0041c550
 void RaceSkyState::Load(
 	GolD3DRenderDevice* p_renderer,
 	GolExport* p_golExport,

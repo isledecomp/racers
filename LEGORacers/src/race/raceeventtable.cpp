@@ -1493,7 +1493,7 @@ void RaceEventTable::ParseExternalForces(GolFileParser* p_parser, LegoBool32 p_m
 	p_parser->ReadRightCurly();
 }
 
-// STUB: LEGORACERS 0x00461990
+// FUNCTION: LEGORACERS 0x00461990
 void RaceEventTable::ParseLapZones(GolFileParser* p_parser)
 {
 	RaceEventTable* field = this;

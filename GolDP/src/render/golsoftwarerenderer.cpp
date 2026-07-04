@@ -56,7 +56,7 @@ static LegoU8 GetSoftwareTextureSizeCode(const MipmapLevel* p_level)
 	}
 }
 
-// STUB: GOLDP 0x10041000
+// FUNCTION: GOLDP 0x10041000
 static LegoU8 __fastcall BucketCommandsBySortByte3(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command
@@ -75,7 +75,7 @@ static LegoU8 __fastcall BucketCommandsBySortByte3(
 	return static_cast<LegoU8>(bucketIndex);
 }
 
-// STUB: GOLDP 0x10041030
+// FUNCTION: GOLDP 0x10041030
 static LegoU8 __fastcall BucketCommandsBySortByte2(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command
@@ -94,7 +94,7 @@ static LegoU8 __fastcall BucketCommandsBySortByte2(
 	return static_cast<LegoU8>(bucketIndex);
 }
 
-// STUB: GOLDP 0x10041060
+// FUNCTION: GOLDP 0x10041060
 static LegoU8 __fastcall BucketCommandsBySortByte1(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command
@@ -113,7 +113,7 @@ static LegoU8 __fastcall BucketCommandsBySortByte1(
 	return static_cast<LegoU8>(bucketIndex);
 }
 
-// STUB: GOLDP 0x10041090
+// FUNCTION: GOLDP 0x10041090
 static LegoU8 __fastcall BucketCommandsBySortByte0(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command
@@ -576,7 +576,7 @@ void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 	m_nodes->m_next = NULL;
 }
 
-// STUB: GOLDP 0x10041980
+// FUNCTION: GOLDP 0x10041980
 static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command,

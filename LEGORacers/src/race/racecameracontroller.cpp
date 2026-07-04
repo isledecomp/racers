@@ -54,7 +54,7 @@ void RaceCameraController::SetHeightAngle(LegoFloat p_degrees)
 	m_heightSine = static_cast<LegoFloat>(sin(g_degreesToRadians * p_degrees));
 }
 
-// STUB: LEGORACERS 0x00427c00
+// FUNCTION: LEGORACERS 0x00427c00
 void RaceCameraController::UpdateListener()
 {
 	if (m_listenerNode == NULL || m_racer == NULL) {

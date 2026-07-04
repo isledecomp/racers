@@ -356,7 +356,7 @@ void BeamMesh::EmitQuads()
 	}
 }
 
-// STUB: LEGORACERS 0x004944e0
+// FUNCTION: LEGORACERS 0x004944e0
 void BeamMesh::FlushWindow()
 {
 	LegoU32 vertexCount = m_vertexCursor - m_runStartVertex;
@@ -399,7 +399,7 @@ void BeamMesh::FlushWindow()
 	m_runStartIndex = m_indexCursor;
 }
 
-// STUB: LEGORACERS 0x004946b0
+// FUNCTION: LEGORACERS 0x004946b0
 void BeamMesh::FlushRuns()
 {
 	LegoU32 vertexCount = m_vertexCursor - m_runStartVertex;

@@ -189,7 +189,7 @@ void RaceTrailManager::Trail::Update(LegoU32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x00492c30
+// FUNCTION: LEGORACERS 0x00492c30
 void RaceTrailManager::Trail::AdvanceTail(LegoU32 p_elapsedMs)
 {
 	LegoU32 queuedDuration = 0;

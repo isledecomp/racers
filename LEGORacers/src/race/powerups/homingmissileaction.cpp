@@ -232,7 +232,7 @@ void HomingMissileAction::Deactivate()
 	}
 }
 
-// STUB: LEGORACERS 0x004568f0
+// FUNCTION: LEGORACERS 0x004568f0
 void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 {
 	GolVec3 direction;

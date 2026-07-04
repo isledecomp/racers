@@ -70,7 +70,7 @@ void PartAnimationResource::Destroy()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x004633f0
+// FUNCTION: LEGORACERS 0x004633f0
 void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 {
 	RaceEventResource::Update(p_elapsedMs);

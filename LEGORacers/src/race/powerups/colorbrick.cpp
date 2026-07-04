@@ -58,7 +58,7 @@ void ColorBrick::Destroy()
 	PickupBrick::Destroy();
 }
 
-// STUB: LEGORACERS 0x00457710
+// FUNCTION: LEGORACERS 0x00457710
 void ColorBrick::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateInactive) {

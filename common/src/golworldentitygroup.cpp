@@ -61,7 +61,7 @@ void GolWorldEntityGroup::AddEntity(GolWorldEntity* p_entity)
 	m_inverseCount = 1.0f / m_count;
 }
 
-// STUB: LEGORACERS 0x00411ef0
+// FUNCTION: LEGORACERS 0x00411ef0
 void GolWorldEntityGroup::UpdateBounds()
 {
 	LegoFloat radius;

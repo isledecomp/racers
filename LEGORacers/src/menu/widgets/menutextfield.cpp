@@ -147,7 +147,7 @@ MenuWidget* MenuTextField::OnCursorEvent(void* p_item, undefined4 p_x, undefined
 	return this;
 }
 
-// STUB: LEGORACERS 0x00471300
+// FUNCTION: LEGORACERS 0x00471300
 MenuWidget* MenuTextField::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;

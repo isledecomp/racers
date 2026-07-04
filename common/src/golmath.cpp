@@ -56,7 +56,7 @@ void GolMath::MultiplyMatrix4Affine(const GolMatrix4& p_left, const GolMatrix4& 
 	}
 }
 
-// STUB: LEGORACERS 0x00449170
+// FUNCTION: LEGORACERS 0x00449170
 void GolMath::SinCos(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos)
 {
 	*p_sin = static_cast<LegoFloat>(sin(p_angle));

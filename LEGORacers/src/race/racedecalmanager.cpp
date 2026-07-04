@@ -263,7 +263,7 @@ void RaceDecalManager::Trail::Update(LegoU32 p_elapsedMs)
 	m_flags &= ~c_samplePending;
 }
 
-// STUB: LEGORACERS 0x00491fa0
+// FUNCTION: LEGORACERS 0x00491fa0
 void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 {
 	m_lastX = p_position.m_x;

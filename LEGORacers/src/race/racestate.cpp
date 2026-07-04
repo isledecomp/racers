@@ -57,6 +57,7 @@ extern const LegoFloat g_proximityPitchFloor;
 extern const LegoFloat g_proximityPitchBand;
 extern const LegoFloat g_proximityPitchSpeedRange;
 extern const LegoFloat g_carModelScale;
+extern const LegoFloat g_driverModelScale;
 extern const LegoFloat g_proximitySoundMinDistance;
 extern const LegoFloat g_proximitySoundMaxDistance;
 extern LegoFloat g_proximitySoundMaxDistanceSquared;
@@ -458,8 +459,12 @@ void RaceState::CreateRacer(
 			p_slot->m_altTextures->LoadTextures();
 			p_slot->m_altMaterials->CreateMaterials();
 			initParams.m_driverEntity = m_roster.m_customCarEntities[customIndex];
-			initParams.m_driverEntity
-				->SetModel(p_slot->m_altModel, m_driverTable.m_rootNode, &m_driverTable.m_modelParts, g_carModelScale);
+			initParams.m_driverEntity->SetModel(
+				p_slot->m_altModel,
+				m_driverTable.m_rootNode,
+				&m_driverTable.m_modelParts,
+				g_driverModelScale
+			);
 		}
 
 		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(p_slot->m_chassisName));

@@ -166,6 +166,9 @@ extern const LegoFloat g_shieldShoveStrength = 200.0f;
 // GLOBAL: LEGORACERS 0x004b09dc
 extern const LegoFloat g_rubberBandScale = 0.050000001f;
 
+// GLOBAL: LEGORACERS 0x004b0a00
+extern const LegoFloat g_driverModelScale = 250000.0f;
+
 // GLOBAL: LEGORACERS 0x004b0a08
 extern const LegoFloat g_proximityPitchFloor = 0.40000001f;
 

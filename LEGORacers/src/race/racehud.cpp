@@ -72,6 +72,9 @@ extern const LegoFloat g_hudTopTextOffset = -7.0f;
 // GLOBAL: LEGORACERS 0x004b02d8
 extern const LegoFloat g_hudBaseScale = 0.0020833334f;
 
+// GLOBAL: LEGORACERS 0x004b02dc
+extern const LegoFloat g_unk0x004b02dc = 0.80000001f;
+
 extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_unk0x004b02e4;
 extern const LegoFloat g_unk0x004b02e8;
@@ -1783,7 +1786,7 @@ void RaceHud::Draw()
 		}
 	}
 
-	m_speedValue = m_racer->m_physics.m_forwardSpeed * g_unk0x004b02e0 + m_speedValue * 0.80000001f;
+	m_speedValue = m_racer->m_physics.m_forwardSpeed * g_unk0x004b02e0 + m_speedValue * g_unk0x004b02dc;
 
 	switch (m_gadgetMode) {
 	case 1:

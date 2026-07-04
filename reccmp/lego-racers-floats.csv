@@ -5,6 +5,7 @@ address,type,size
 0x4af354,float,4
 0x4af388,float,4
 0x4af58c,float,4
+0x4af590,float,4
 0x4af594,float,4
 0x4af598,float,4
 0x4af674,float,4

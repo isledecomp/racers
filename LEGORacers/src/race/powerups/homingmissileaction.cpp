@@ -16,6 +16,9 @@
 #include <float.h>
 #include <math.h>
 
+// GLOBAL: LEGORACERS 0x004b1654
+const LegoFloat g_missileTargetHeightOffset = 5.0f;
+
 // GLOBAL: LEGORACERS 0x004b165c
 extern const LegoFloat g_missileFireSoundMinDistance = 30.0f;
 
@@ -194,7 +197,7 @@ void HomingMissileAction::LaunchProjectile()
 		GolVec3 target;
 		target.m_x = position.m_x + scaledDirection.m_x;
 		target.m_y = position.m_y + scaledDirection.m_y;
-		target.m_z = position.m_z + scaledDirection.m_z + g_missileLaunchHeight;
+		target.m_z = position.m_z + scaledDirection.m_z + g_missileTargetHeightOffset;
 
 		if (m_missileIndex == 0) {
 			target.m_x += direction.m_y * 150.0f;

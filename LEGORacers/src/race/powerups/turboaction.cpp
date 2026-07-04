@@ -227,8 +227,7 @@ void TurboAction::StartBoost()
 
 	SoundVector position;
 	CarVisuals* racerField = &m_racer->m_visuals;
-	GolAnimatedEntity** racerEntity = &racerField->m_carEntity;
-	(*racerEntity)->GetPosition(&position);
+	racerField->m_carEntity->GetPosition(&position);
 
 	m_soundSource->PlaySpatialSoundById(
 		m_level + c_soundBoostBase,

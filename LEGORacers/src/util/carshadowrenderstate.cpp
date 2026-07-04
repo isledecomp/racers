@@ -232,7 +232,7 @@ void CarShadowRenderState::ProcessMaterial(MaterialCommand* p_command)
 	}
 }
 
-// STUB: LEGORACERS 0x00409b10
+// FUNCTION: LEGORACERS 0x00409b10
 void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 {
 	TransformedVertex** vertices = p_triangle;
@@ -505,7 +505,7 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 	}
 }
 
-// STUB: LEGORACERS 0x0040a3e0
+// FUNCTION: LEGORACERS 0x0040a3e0
 void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 {
 	TransformedVertex** vertices = p_triangle;

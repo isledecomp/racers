@@ -81,7 +81,7 @@ void GolModelRenderState::AddLight(const GolRenderDevice::Light* p_light)
 	}
 }
 
-// STUB: LEGORACERS 0x0040ec00
+// FUNCTION: LEGORACERS 0x0040ec00
 void GolModelRenderState::UpdateMaterialCaches()
 {
 	GolMaterial* activeMaterial = m_activeMaterial;

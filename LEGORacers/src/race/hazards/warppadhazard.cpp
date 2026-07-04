@@ -49,8 +49,7 @@ void WarpPadHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_state = c_stateLoaded;
 }
 
-#pragma code_seg(".text$warppadhazard_reset")
-// FUNCTION: LEGORACERS 0x0048af50
+// FUNCTION: LEGORACERS 0x0048af50 FOLDED
 LegoS32 WarpPadHazard::Reset()
 {
 	OnDeactivate(NULL);
@@ -58,7 +57,6 @@ LegoS32 WarpPadHazard::Reset()
 	m_mirror = 0;
 	return Hazard::Reset();
 }
-#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0048af80
 void WarpPadHazard::OnActivate(void* p_racer)

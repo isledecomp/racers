@@ -5,6 +5,7 @@
 
 class RacePowerupManager;
 
+// VTABLE: LEGORACERS 0x004b148c
 // SIZE 0x68
 class WhiteBrick : public DroppableBrick {
 public:

@@ -77,6 +77,7 @@ void CurseDropHazard::OnActivate(void*)
 	m_state = c_stateActive;
 }
 
+// FUNCTION: LEGORACERS 0x0048af50 FOLDED
 LegoS32 CurseDropHazard::Reset()
 {
 	OnDeactivate(NULL);

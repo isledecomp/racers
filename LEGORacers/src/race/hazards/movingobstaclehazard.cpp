@@ -25,7 +25,6 @@ const LegoFloat g_obstacleTriggerRadius = 3.0f;
 // FUNCTION: LEGORACERS 0x0048fe30
 MovingObstacleHazard::MovingObstacleHazard()
 {
-	m_shadowMaterialTable.Reset();
 	m_entity = NULL;
 	m_collisionEvent = NULL;
 	m_eventQueue = NULL;
@@ -39,7 +38,6 @@ MovingObstacleHazard::MovingObstacleHazard()
 MovingObstacleHazard::~MovingObstacleHazard()
 {
 	Reset();
-	m_shadowMaterialTable.Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0048ff50

@@ -46,7 +46,6 @@ extern const LegoFloat g_violetShoalTwo;
 // FUNCTION: LEGORACERS 0x004210b0
 PowerupExplosion::PowerupExplosion()
 {
-	m_materialTable.Reset();
 	m_state = c_stateUninitialized;
 	m_golExport = NULL;
 	m_billboard = NULL;
@@ -81,7 +80,6 @@ PowerupExplosion::PowerupExplosion()
 PowerupExplosion::~PowerupExplosion()
 {
 	Destroy();
-	m_materialTable.Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00421250

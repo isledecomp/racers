@@ -8,6 +8,7 @@
 #include "race/hazards/hazardcontext.h"
 #include "race/racedecalmanager.h"
 #include "race/raceresourcemanager.h"
+#include "scene/golbillboard.h"
 
 class CutsceneAnimation;
 class GolAnimatedEntity;
@@ -46,17 +47,17 @@ private:
 		c_nearImpactEventId = 0x15,
 	};
 
-	GolWorldEntity m_trigger;                     // 0x10
-	GolAnimatedEntity* m_entity;                  // 0x38
-	LegoEventQueue::Event* m_collisionEvent;      // 0x3c
-	LegoEventQueue* m_eventQueue;                 // 0x40
-	RaceDecalManager::Trail::Decal m_shadowDecal; // 0x44
-	MaterialTable m_shadowMaterialTable;          // 0x160
-	GolCollidableEntity* m_trackCollidable;       // 0x16c
-	SpatialSoundInstance* m_loopSound;            // 0x170
-	RacerSoundSource* m_soundSource;              // 0x174
-	LegoU8 m_flags;                               // 0x178
-	undefined m_unk0x179[0x17c - 0x179];          // 0x179
+	GolWorldEntity m_trigger;                                 // 0x10
+	GolAnimatedEntity* m_entity;                              // 0x38
+	LegoEventQueue::Event* m_collisionEvent;                  // 0x3c
+	LegoEventQueue* m_eventQueue;                             // 0x40
+	RaceDecalManager::Trail::Decal m_shadowDecal;             // 0x44
+	GolBillboard::ManagedMaterialTable m_shadowMaterialTable; // 0x160
+	GolCollidableEntity* m_trackCollidable;                   // 0x16c
+	SpatialSoundInstance* m_loopSound;                        // 0x170
+	RacerSoundSource* m_soundSource;                          // 0x174
+	LegoU8 m_flags;                                           // 0x178
+	undefined m_unk0x179[0x17c - 0x179];                      // 0x179
 };
 
 #endif // MOVINGOBSTACLEHAZARD_H

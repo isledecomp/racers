@@ -3,6 +3,7 @@
 
 #include "race/powerups/powerupaction.h"
 
+// VTABLE: LEGORACERS 0x004b1900
 // SIZE 0x30
 class WeaponActionBase : public PowerupAction {
 public:

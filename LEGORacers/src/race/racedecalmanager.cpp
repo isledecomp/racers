@@ -24,6 +24,8 @@ const LegoFloat g_raceDecalMaxFloat = FLT_MAX;
 // GLOBAL: LEGORACERS 0x004b4778
 const LegoFloat g_raceDecalDefaultDepth = 15.0f;
 
+extern LegoFloat g_minSoundPan;
+
 // GLOBAL: LEGORACERS 0x004b477c
 const LegoFloat g_raceDecalTrailOffsetZ = 6.0f;
 
@@ -304,7 +306,7 @@ void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 
 	p_position.m_x = 0.0f;
 	p_position.m_y = 0.0f;
-	p_position.m_z = g_raceDecalTrailOffsetZ * -1.0f;
+	p_position.m_z = g_minSoundPan * g_raceDecalTrailOffsetZ;
 	centerX -= p_position.m_x;
 	centerY -= p_position.m_y;
 	centerZ -= p_position.m_z;

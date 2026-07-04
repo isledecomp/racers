@@ -20,11 +20,6 @@ public:
 	// VTABLE: LEGORACERS 0x004b01ac
 	// SIZE 0x1fc
 	class GhbTxtParser : public GolTxtParser {
-		// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-		// TimeRaceManager::GhbTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-		// TimeRaceManager::GhbTxtParser::~GhbTxtParser
 	};
 
 	class GhostRunData;

@@ -31,6 +31,12 @@ public:
 			e_frames = 0x27,
 			e_worlds = 0x28,
 		};
+
+		// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
+		// CutsceneDefinition::CdbTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
+		// CutsceneDefinition::CdbTxtParser::~CdbTxtParser
 	};
 
 	enum ParserToken {

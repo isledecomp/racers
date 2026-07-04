@@ -89,12 +89,6 @@ public:
 			e_direction = 0x4b,
 			e_modelFlag2 = 0x4c,
 		};
-
-		// SYNTHETIC: GOLDP 0x10030050 FOLDED
-		// GolWorldDatabase::WdbTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-		// GolWorldDatabase::WdbTxtParser::~WdbTxtParser
 	};
 
 	GolWorldDatabase();

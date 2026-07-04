@@ -33,9 +33,6 @@ public:
 	void Spawn();
 	void Update(LegoU32 p_elapsedMs);
 
-	// SYNTHETIC: LEGORACERS 0x004a20e0 FOLDED
-	// CutsceneAnimationEvent::~CutsceneAnimationEvent
-
 	// SYNTHETIC: LEGORACERS 0x004a1f20
 	// CutsceneAnimationEvent::`vector deleting destructor'
 

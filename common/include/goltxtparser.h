@@ -27,15 +27,6 @@ public:
 	void WriteSpace() override;                             // vtable+0x6c
 	void WriteTab() override;                               // vtable+0x70
 	void WriteTabs(undefined4) override;                    // vtable+0x74
-
-	// SYNTHETIC: GOLDP 0x10030050 FOLDED
-	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-	// GolTxtParser::`scalar deleting destructor'
-
-	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-	// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-	// GolTxtParser::~GolTxtParser
-
 protected:
 	LegoS32 m_lineCount;    // 0x1f0
 	LegoS32 m_bufferLength; // 0x1f4

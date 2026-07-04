@@ -12,6 +12,9 @@ class GolMaterial;
 // SIZE 0x2c
 class CutsceneMenuAnimationEvent : public CutsceneEvent {
 public:
+	// SYNTHETIC: LEGORACERS 0x004a20e0 FOLDED
+	// CutsceneMenuAnimationEvent::~CutsceneMenuAnimationEvent
+
 	// .ceb menu-animation field tokens
 	enum {
 		e_durationMs = 0x61,

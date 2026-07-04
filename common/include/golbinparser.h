@@ -31,15 +31,6 @@ public:
 	void WriteSpace() override;                                // vtable+0x6c
 	void WriteTab() override;                                  // vtable+0x70
 	void WriteTabs(undefined4) override;                       // vtable+0x74
-
-	// SYNTHETIC: GOLDP 0x10030050 FOLDED
-	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-	// GolBinParser::`scalar deleting destructor'
-
-	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-	// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-	// GolBinParser::~GolBinParser
-
 	void Reset();
 	void ReadTokenSequenceDefinition();
 	undefined4 ReadBytes(LegoS32 p_size);

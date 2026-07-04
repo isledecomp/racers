@@ -26,12 +26,6 @@ public:
 			e_rotation = 0x29,
 			e_parent = 0x2a,
 		};
-
-		// SYNTHETIC: GOLDP 0x10030050 FOLDED
-		// GolSceneNode::DdfTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-		// GolSceneNode::DdfTxtParser::~DdfTxtParser
 	};
 
 	class TransformComposer {

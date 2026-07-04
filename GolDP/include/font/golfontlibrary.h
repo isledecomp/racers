@@ -19,6 +19,12 @@ public:
 	// SIZE 0x1fc
 	class FdbTxtParser : public GolTxtParser {
 	public:
+		// SYNTHETIC: GOLDP 0x10030050 FOLDED
+		// GolFontLibrary::FdbTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+		// GolFontLibrary::FdbTxtParser::~FdbTxtParser
+
 		// .fdb tokens; ids proven by the field or flag each one feeds
 		enum {
 			e_font = GolFileParser::e_unknown0x27,

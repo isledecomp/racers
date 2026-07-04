@@ -17,10 +17,6 @@ public:
 	void LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey) override; // vtable+0x1c
 	void LoadSurface(GolSurface* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey) override;         // vtable+0x20
 
-	// SYNTHETIC: GOLDP 0x1002a4d0 FOLDED
-	// SYNTHETIC: LEGORACERS 0x004016a0 FOLDED
-	// GolTgaFile::`scalar deleting destructor'
-
 	void DecodeRleRow(LegoU8* p_src, LegoU8* p_dst);
 
 private:

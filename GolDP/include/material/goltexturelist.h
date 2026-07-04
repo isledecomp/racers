@@ -49,12 +49,6 @@ public:
 			e_unknown0x2d = 0x2d,
 			e_unknown0x2e = 0x2e,
 		};
-
-		// SYNTHETIC: GOLDP 0x10030050 FOLDED
-		// GolTextureList::TdbTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-		// GolTextureList::TdbTxtParser::~TdbTxtParser
 	};
 
 	GolTextureList();

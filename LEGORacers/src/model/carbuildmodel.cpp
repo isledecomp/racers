@@ -61,6 +61,9 @@ extern const LegoFloat g_carBuildModelTextureCoordinateScale = 0.25f;
 // GLOBAL: LEGORACERS 0x004b4938
 static const LegoFloat g_carBuildModelNegativeHeightScale = -0.4f;
 
+// GLOBAL: LEGORACERS 0x004b493c
+static const LegoFloat g_overlayTextureNudge = 0.49f;
+
 // GLOBAL: LEGORACERS 0x004b4940
 static const LegoFloat g_carBuildModelCenterYOffset = 2.5f;
 
@@ -2685,21 +2688,21 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_visible, LegoS32 p_height)
 
 				m_modelVertexCount++;
 				position.m_x += 1.0f;
-				texCoord.m_x += 0.49f;
+				texCoord.m_x += g_overlayTextureNudge;
 				m_modelVertices->SetPosition(m_modelVertexCount, position);
 				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
 				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				position.m_y += 1.0f;
-				texCoord.m_y += 0.49f;
+				texCoord.m_y += g_overlayTextureNudge;
 				m_modelVertices->SetPosition(m_modelVertexCount, position);
 				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
 				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				position.m_x -= 1.0f;
-				texCoord.m_x -= 0.49f;
+				texCoord.m_x -= g_overlayTextureNudge;
 				m_modelVertices->SetPosition(m_modelVertexCount, position);
 				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
 				m_modelVertices->SetColor(m_modelVertexCount, color);

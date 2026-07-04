@@ -38,6 +38,12 @@ extern const LegoFloat g_returnPathMinClosing = 0.00050000002f;
 // GLOBAL: LEGORACERS 0x004b007c
 extern const LegoFloat g_slideSteerAssistMin = 0.050000001f;
 
+// GLOBAL: LEGORACERS 0x004b0080
+extern const LegoFloat g_unk0x004b0080 = 0.03f;
+
+// GLOBAL: LEGORACERS 0x004b0084
+extern const LegoFloat g_unk0x004b0084 = 0.0089999996f;
+
 // GLOBAL: LEGORACERS 0x004b0088
 extern const LegoFloat g_returnPathArriveDistance = 3.0f;
 
@@ -136,7 +142,7 @@ void DriveController::Update(LegoU32 p_elapsedMs)
 
 	flags = m_flags;
 	if (flags & c_flagSliding) {
-		if (m_physics->m_forwardSpeed < 0.03f) {
+		if (m_physics->m_forwardSpeed < g_unk0x004b0080) {
 			m_slideMs = 0;
 			ReleaseSlide();
 		}
@@ -201,7 +207,7 @@ void DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs)
 		}
 	}
 	else {
-		if (physics->m_forwardSpeed > 0.009f || -0.009f > physics->m_forwardSpeed) {
+		if (physics->m_forwardSpeed > g_unk0x004b0084 || -g_unk0x004b0084 > physics->m_forwardSpeed) {
 			m_stuckMs = 0;
 		}
 		else if (m_stuckMs >= 1000) {

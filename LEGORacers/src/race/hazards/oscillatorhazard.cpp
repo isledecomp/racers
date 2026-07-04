@@ -16,8 +16,10 @@ DECOMP_SIZE_ASSERT(OscillatorHazard, 0x20)
 
 extern LegoFloat g_cosineTable[1024];
 
+// GLOBAL: LEGORACERS 0x004b41f8
 static const LegoFloat g_oscillatorCycleMs = 10000.0f;
 
+// GLOBAL: LEGORACERS 0x004b41f4
 static const LegoFloat g_oscillatorInvCycleMs = 0.0001f;
 
 static const LegoFloat g_oscillatorTau = 6.2831855f;

@@ -44,6 +44,9 @@ extern LegoU32 g_raceLapCount;
 extern LegoU32 g_randomTableIndex;
 
 DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
+
+// GLOBAL: LEGORACERS 0x004b08c0
+extern const LegoFloat g_unk0x004b08c0 = 1.75f;
 DECOMP_SIZE_ASSERT(InputEventSink, 0x04)
 DECOMP_SIZE_ASSERT(RaceSession::RabTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(RacerContext, 0x40)
@@ -2043,8 +2046,9 @@ void RaceSession::Update()
 {
 	LegoU32 elapsedMs = m_golApp->GetFrameDeltaMs();
 	if (m_context->m_cheatFlags & c_cheatFastForward) {
-		elapsedMs =
-			static_cast<LegoU32>(static_cast<LegoFloat>(static_cast<LegoS32>(m_golApp->GetFrameDeltaMs())) * 1.75f);
+		elapsedMs = static_cast<LegoU32>(
+			static_cast<LegoFloat>(static_cast<LegoS32>(m_golApp->GetFrameDeltaMs())) * g_unk0x004b08c0
+		);
 	}
 
 	if (!m_pauseState ||

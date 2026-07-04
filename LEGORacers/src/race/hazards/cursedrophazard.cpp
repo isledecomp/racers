@@ -13,6 +13,7 @@ DECOMP_SIZE_ASSERT(CurseDropHazard, 0x18)
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
+// GLOBAL: LEGORACERS 0x004b4230
 static const GolVec3 g_curseDropActionDirection = {1.0f, 0.0f, 0.0f};
 
 static const GolVec3 g_curseDropActionPositions[] = {

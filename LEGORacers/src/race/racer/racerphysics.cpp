@@ -81,6 +81,9 @@ extern const LegoFloat g_surfaceSoundPitchSpeed = 0.22f;
 // GLOBAL: LEGORACERS 0x004b047c
 extern const LegoFloat g_surfaceSoundFadeInMs = 280.0f;
 
+// GLOBAL: LEGORACERS 0x004b0480
+extern const LegoFloat g_unk0x004b0480 = 0.78539819f;
+
 // GLOBAL: LEGORACERS 0x004b0484
 extern const LegoFloat g_routePushImpulseMax = 300.0f;
 
@@ -888,7 +891,7 @@ void RacerPhysics::UpdateRouteSlideBank()
 		dot = -1.0f;
 	}
 
-	m_slideBankTarget = 0.78539819f * dot;
+	m_slideBankTarget = g_unk0x004b0480 * dot;
 }
 
 // FUNCTION: LEGORACERS 0x0042a220

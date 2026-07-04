@@ -13,6 +13,9 @@ extern LegoFloat g_minSoundPan;
 // GLOBAL: LEGORACERS 0x004b0740
 extern const LegoFloat g_idleTurnRate = 2.5f;
 
+// GLOBAL: LEGORACERS 0x004b0758
+extern const LegoFloat g_unk0x004b0758 = 0.5f;
+
 // GLOBAL: LEGORACERS 0x004b0744
 extern const LegoFloat g_inputTurnRate = 1.25f;
 
@@ -269,7 +272,7 @@ void PlayerControls::UpdateThrottle()
 	}
 
 	if (!(m_racer->m_flags & Racer::c_flagDrifting) && reverseValue < 0.0f && throttleValue > 0.0f) {
-		driveValue = 0.5f;
+		driveValue = g_unk0x004b0758;
 	}
 
 	if (!(m_input.m_stateFlags & c_stateControlMask)) {

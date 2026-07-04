@@ -70,6 +70,9 @@ const LegoFloat g_decalGeometryDefaultDepth = 20.0f;
 // GLOBAL: LEGORACERS 0x004af914
 const LegoFloat g_decalGeometryDefaultLift = 0.4f;
 
+// GLOBAL: LEGORACERS 0x004af920
+const LegoFloat g_decalMaxTextureCoordinate = 0.99000001f;
+
 extern LegoFloat g_decalWAxisX;
 extern LegoFloat g_decalWAxisY;
 extern LegoFloat g_decalWAxisZ;
@@ -473,9 +476,9 @@ void RaceDecalManager::Trail::Decal::SetOrientation(GolVec3* p_normal, GolVec3* 
 void RaceDecalManager::Trail::Decal::ComputeProjection()
 {
 	LegoFloat scaleX = m_width;
-	scaleX = 0.99000001f / scaleX;
+	scaleX = g_decalMaxTextureCoordinate / scaleX;
 	LegoFloat scaleY = m_length;
-	scaleY = 0.99000001f / scaleY;
+	scaleY = g_decalMaxTextureCoordinate / scaleY;
 
 	LegoFloat value = m_widthAxis.m_x;
 	value *= scaleX;
@@ -685,7 +688,7 @@ void RaceDecalManager::Trail::Decal::EmitPolygon(LegoU32 p_firstPolygon, LegoU32
 									(1.0f - previous->m_projected.m_x.m_float) /
 									(current->m_projected.m_x.m_float - previous->m_projected.m_x.m_float);
 
-								clipped->m_projected.m_x.m_float = 0.99000001f;
+								clipped->m_projected.m_x.m_float = g_decalMaxTextureCoordinate;
 								clipped->m_position.m_x =
 									(current->m_position.m_x - previous->m_position.m_x) * amount +
 									previous->m_position.m_x;

@@ -8,6 +8,12 @@
 
 DECOMP_SIZE_ASSERT(PowerupProjectile, 0xa8)
 
+// GLOBAL: LEGORACERS 0x004b076c
+extern const LegoFloat g_projectileTargetHeightOffset = 5.0f;
+
+// GLOBAL: LEGORACERS 0x004b0774
+extern const LegoFloat g_projectileMinSpeed = 0.001f;
+
 // FUNCTION: LEGORACERS 0x00430ca0
 PowerupProjectile::PowerupProjectile()
 {
@@ -99,7 +105,7 @@ void PowerupProjectile::LaunchAtRacer(
 	GolVec3* startPosition = &m_startPosition;
 	GolVec3* target = &m_targetPosition;
 	targetRacer->m_visuals.m_carEntity->GetPosition(target);
-	target->m_z += 5.0f;
+	target->m_z += g_projectileTargetHeightOffset;
 
 	GolVec3 scaledVelocity;
 	GolVec3 targetVelocity = targetRacer->m_physics.m_velocity;
@@ -128,8 +134,8 @@ void PowerupProjectile::LaunchAtRacer(
 	}
 
 	speed += dot * racer->m_physics.m_speed * g_floatConst1000;
-	if (speed <= 0.001f) {
-		speed = 0.001f;
+	if (speed <= g_projectileMinSpeed) {
+		speed = g_projectileMinSpeed;
 	}
 
 	speed = distance / speed;
@@ -296,7 +302,7 @@ void PowerupProjectile::Deflect(Racer* p_racer)
 	m_targetRacer = m_ownerRacer;
 	if (m_targetRacer) {
 		m_targetRacer->m_visuals.m_carEntity->GetPosition(&m_targetPosition);
-		m_targetPosition.m_z += 5.0f;
+		m_targetPosition.m_z += g_projectileTargetHeightOffset;
 		velocity = m_targetRacer->m_physics.m_velocity;
 	}
 	else {

@@ -112,6 +112,9 @@ extern const LegoFloat g_engineFadeVolumeScale = 2.2439947f;
 // GLOBAL: LEGORACERS 0x004b0998
 extern const LegoFloat g_engineVolumeRampScale = 0.059999999f;
 
+// GLOBAL: LEGORACERS 0x004b09cc
+extern const LegoFloat g_unk0x004b09cc = 0.059999999f;
+
 // GLOBAL: LEGORACERS 0x004b099c
 extern const LegoFloat g_engineVolumeRampRate = 0.030000029f;
 
@@ -1037,7 +1040,7 @@ void Racer::UpdateDriftLean()
 		value = -value;
 	}
 
-	m_visuals.m_rollLean += value * 0.059999999f;
+	m_visuals.m_rollLean += value * g_unk0x004b09cc;
 }
 
 // FUNCTION: LEGORACERS 0x00437be0

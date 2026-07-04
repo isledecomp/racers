@@ -18,6 +18,9 @@ DECOMP_SIZE_ASSERT(LauncherHazard, 0x124)
 // GLOBAL: LEGORACERS 0x004b46b4
 extern const LegoFloat g_launcherMaxDistanceSquared = FLT_MAX;
 
+// GLOBAL: LEGORACERS 0x004b46c4
+extern const LegoFloat g_launcherTrailSize = 3.0f;
+
 // GLOBAL: LEGORACERS 0x004c22fc
 extern const ColorRGBA g_launcherTrailColor = {0x32, 0x32, 0x32, 0x64};
 
@@ -245,22 +248,22 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 	}
 
 	GolMath::NormalizeVector2(perpendicular, &perpendicular);
-	LegoFloat widthX = perpendicular.m_x * 3.0f;
-	LegoFloat widthY = perpendicular.m_y * 3.0f;
+	LegoFloat widthX = perpendicular.m_x * g_launcherTrailSize;
+	LegoFloat widthY = perpendicular.m_y * g_launcherTrailSize;
 
 	GolVec3 positions[4];
 	positions[0].m_x = center.m_x - widthX * 0.5f;
 	positions[0].m_y = center.m_y - widthY * 0.5f;
-	positions[0].m_z = center.m_z + 3.0f * 0.5f;
+	positions[0].m_z = center.m_z + g_launcherTrailSize * 0.5f;
 	positions[1].m_x = positions[0].m_x;
 	positions[1].m_y = positions[0].m_y;
-	positions[1].m_z = positions[0].m_z - 3.0f;
+	positions[1].m_z = positions[0].m_z - g_launcherTrailSize;
 	positions[2].m_x = positions[0].m_x + widthX;
 	positions[2].m_y = positions[0].m_y + widthY;
 	positions[2].m_z = positions[1].m_z;
 	positions[3].m_x = positions[2].m_x;
 	positions[3].m_y = positions[2].m_y;
-	positions[3].m_z = positions[1].m_z + 3.0f;
+	positions[3].m_z = positions[1].m_z + g_launcherTrailSize;
 
 	RaceTrailManager::Trail* item = m_trail;
 	item->AddSampleWithCenter(p_elapsedMs, positions, center);

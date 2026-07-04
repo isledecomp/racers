@@ -1,5 +1,8 @@
 #include "race/events/modeldistanceresource.h"
 
+// GLOBAL: LEGORACERS 0x004b1c1c
+const LegoFloat g_unk0x004b1c1c = -1.0f;
+
 #include "decomp.h"
 #include "golmodelentity.h"
 
@@ -56,7 +59,7 @@ void ModelDistanceResource::Initialize(InitParams* p_params)
 	for (i = 0; i < sizeOfArray(m_modelDistances); i++) {
 		m_modelDistances[i] = m_modelEntity->GetModelDistance(i);
 		if (!m_hideWhenActive) {
-			LegoFloat modelDistance = -1.0f;
+			LegoFloat modelDistance = g_unk0x004b1c1c;
 			m_modelEntity->SetModelDistance(i, modelDistance);
 		}
 	}
@@ -77,7 +80,7 @@ void ModelDistanceResource::OnStartAt(GolVec3*)
 	for (LegoU32 i = 0; i < sizeOfArray(m_modelDistances); i++) {
 		LegoFloat modelDistance;
 		if (m_hideWhenActive) {
-			modelDistance = -1.0f;
+			modelDistance = g_unk0x004b1c1c;
 		}
 		else {
 			modelDistance = m_modelDistances[i];
@@ -97,7 +100,7 @@ void ModelDistanceResource::OnEnd()
 			modelDistance = m_modelDistances[i];
 		}
 		else {
-			modelDistance = -1.0f;
+			modelDistance = g_unk0x004b1c1c;
 		}
 		m_modelEntity->SetModelDistance(i, modelDistance);
 	}

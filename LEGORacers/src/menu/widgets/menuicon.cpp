@@ -23,8 +23,9 @@ LegoBool32 MenuIcon::IsEnabled()
 	return FALSE;
 }
 
+// The original keeps this null-return body (0x4676c0) separate from the 0x466090 group.
 // FUNCTION: LEGORACERS 0x004676c0
-#pragma code_seg(".text$obscureicon_vt38")
+#pragma code_seg(".text$legoracers_004676c0")
 MenuWidget* MenuIcon::DrawSelf(Rect*, Rect*)
 {
 	return NULL;

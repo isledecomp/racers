@@ -217,7 +217,7 @@ LegoBool32 GolCommonDrawState::SupportsRenderingInWindow() const
 	return FALSE;
 }
 
-// TODO: This section keeps the 0x10018630 zero-return fold group from folding into 0x100016f0.
+// The original keeps the 0x10018630 zero-return fold group separate from 0x100016f0.
 #pragma code_seg(".text$goldp_10018630")
 
 // FUNCTION: GOLDP 0x10018630 FOLDED

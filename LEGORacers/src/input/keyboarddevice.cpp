@@ -14,9 +14,8 @@ LegoFloat KeyboardDevice::GetAxisValue(undefined4)
 	return 0.0f;
 }
 
-// TODO: Temporary workaround until we figure out how the original code was written.
-// The pragma code_seg is a hack to prevent the linker from folding these trivial bodies
-// with identical functions elsewhere.
+// The original keeps each of these trivial bodies out of the image-wide fold group for its
+// byte pattern (see tools/fold_census.py); the named sections reproduce the original splits.
 
 // FUNCTION: LEGORACERS 0x0044f2d0
 #pragma code_seg(".text$kbd_vt1c")

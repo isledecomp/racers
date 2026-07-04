@@ -380,8 +380,7 @@ LegoS32 JoystickDevice::GetButtonCount()
 	return m_buttonCount;
 }
 
-// TODO: Temporary workaround until we figure out how the original code was written.
-// The pragma code_seg is a hack to prevent the linker from folding with InputDevice::GetAxisCount.
+// The original keeps this body separate from InputDevice::GetAxisCount despite identical bytes.
 
 // FUNCTION: LEGORACERS 0x0044f250
 #pragma code_seg(".text$joy_vt20")

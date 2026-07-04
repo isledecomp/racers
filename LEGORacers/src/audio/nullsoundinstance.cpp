@@ -24,7 +24,7 @@ LegoBool32 NullSoundInstance::IsPlaying()
 	return FALSE;
 }
 
-#pragma code_seg(".text$soundinstance_getsoundGroup")
+#pragma code_seg(".text$legoracers_0041b5c0")
 // FUNCTION: LEGORACERS 0x0041b5c0 FOLDED
 SoundGroup* NullSoundInstance::GetSoundGroup()
 {

@@ -76,8 +76,8 @@ void SoundInstance::SetPriority(LegoS32 p_priority)
 	m_soundBuffer->SetPriority(p_priority);
 }
 
-// TODO: Match the original fold group for sound-instance getters.
-#pragma code_seg(".text$soundinstance_getsoundGroup")
+// The original folds the two sound-instance getters together, separate from identical getters elsewhere.
+#pragma code_seg(".text$legoracers_0041b5c0")
 // FUNCTION: LEGORACERS 0x0041b5c0 FOLDED
 DirectSoundGroup* SoundInstance::GetSoundGroup()
 {

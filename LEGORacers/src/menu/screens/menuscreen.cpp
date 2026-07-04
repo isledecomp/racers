@@ -875,8 +875,7 @@ MenuInputBindingTable* MenuScreen::GetMenuInputBindings()
 	return &m_bindingTable;
 }
 
-// TODO: Temporary workaround until we figure out how the original code was written.
-// The pragma code_seg prevents this trivial body from folding with identical functions elsewhere.
+// The original keeps this body out of the image-wide fold group for its byte pattern.
 
 // FUNCTION: LEGORACERS 0x0046c850
 #pragma code_seg(".text$menuscreen_vt6c")

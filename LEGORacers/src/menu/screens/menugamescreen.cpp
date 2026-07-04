@@ -348,8 +348,7 @@ void MenuGameScreen::ClearCosmeticTable()
 	cosmeticTable->Clear();
 }
 
-// TODO: Temporary workaround until we figure out how the original code was written.
-// The pragma code_seg prevents this trivial body from folding with identical functions elsewhere.
+// The original keeps this body out of the image-wide fold group for its byte pattern.
 
 // FUNCTION: LEGORACERS 0x004803c0
 #pragma code_seg(".text$menugamescreen_vt6c")

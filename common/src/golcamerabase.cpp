@@ -76,7 +76,7 @@ GolVec3* GolCameraBase::Scale(GolVec3* p_src, LegoFloat p_scale, GolVec3* p_dest
 	return p_src;
 }
 
-// TODO: Unique section prevents ICF; the original keeps both dot helpers as distinct functions.
+// The original keeps both dot helpers as distinct functions despite identical bytes.
 #pragma code_seg(".text$golcamerabase_00404680")
 // FUNCTION: LEGORACERS 0x00404680
 LegoFloat GolCameraBase::Dot(GolVec3* p_left, GolVec3* p_right)

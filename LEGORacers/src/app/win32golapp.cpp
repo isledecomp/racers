@@ -830,7 +830,8 @@ InputManager* Win32GolApp::GetInputManager()
 	return &m_inputManager;
 }
 
-// TODO: Keeps this original two-function fold group from folding into unrelated empty methods.
+// The original folds the two activation callbacks together (0x417990), separate from the
+// image-wide empty-void group.
 #pragma code_seg(".text$win32_activation")
 
 // FUNCTION: LEGORACERS 0x00417990 FOLDED

@@ -12,15 +12,6 @@ address,type,size
 0x4af818,float,4
 0x4af870,float,4
 0x4b0098,float,4
-0x4b0134,float,4
-0x4b0138,float,4
-0x4b013c,float,4
-0x4b0140,float,4
-0x4b0144,float,4
-0x4b0148,float,4
-0x4b014c,float,4
-0x4b0158,float,4
-0x4b0160,float,4
 0x4b0170,float,4
 0x4b0174,float,4
 0x4b0178,float,4

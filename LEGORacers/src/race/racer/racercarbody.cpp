@@ -726,7 +726,8 @@ void RacerCarBody::AccumulateForces()
 				}
 				else {
 					if (m_forwardSpeed < 0.03f && m_forwardSpeed > 0.00050000002f) {
-						scale = 0.03f / m_turnRadius;
+						LegoFloat turnRadius = m_turnRadius;
+						scale = 0.03f / turnRadius;
 					}
 					else {
 						scale = m_forwardSpeed / m_turnRadius;
@@ -750,24 +751,24 @@ void RacerCarBody::AccumulateForces()
 	}
 
 	if (!(m_flags & (c_flagSliding | c_flagSpinOut))) {
-		GolVec3 sum;
-		sum.m_x = 0.0f;
-		sum.m_y = 0.0f;
-		sum.m_z = 0.0f;
+		LegoFloat sumZ = 0.0f;
+		LegoFloat sumY = 0.0f;
+		LegoFloat sumX = 0.0f;
 		WheelProbe* entry = m_wheelProbes;
 		while (entry < &m_wheelProbes[sizeOfArray(m_wheelProbes)]) {
-			sum.m_x += entry->m_surfaceForce.m_x;
-			sum.m_y += entry->m_surfaceForce.m_y;
-			sum.m_z += entry->m_surfaceForce.m_z;
+			GolVec3& surfaceForce = entry->m_surfaceForce;
+			sumX += surfaceForce.m_x;
+			sumY += surfaceForce.m_y;
+			sumZ += surfaceForce.m_z;
 			entry++;
 		}
 
 		LegoFloat scale = m_massScale * 0.25f;
-		force.m_x = sum.m_x * scale;
-		force.m_y = sum.m_y;
-		force.m_y *= scale;
-		force.m_z = sum.m_z;
-		force.m_z *= scale;
+		force.m_x = sumX * scale;
+		sumY *= scale;
+		force.m_y = sumY;
+		sumZ *= scale;
+		force.m_z = sumZ;
 		AddForce(&force);
 	}
 

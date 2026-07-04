@@ -182,7 +182,7 @@ void GolWorldDatabaseEx::AllocateResources()
 	}
 }
 
-// STUB: GOLDP 0x10017ac0
+// FUNCTION: GOLDP 0x10017ac0
 undefined4* GolWorldDatabaseEx::LoadResources()
 {
 	LegoU32 i;
@@ -191,49 +191,49 @@ undefined4* GolWorldDatabaseEx::LoadResources()
 	for (i = 0; i < m_textureListCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_textureListNames[i], ".tdf");
-		GetTextureList(i)->Load(textureRenderer, fileName, m_binary);
+		m_textureLists[i].Load(textureRenderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_materialLibraryCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_materialLibraryNames[i], ".mdf");
-		GetMaterialLibrary(i)->Load(m_renderer, fileName, m_binary);
+		m_materialLibraries[i].Load(m_renderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_modelPartCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_modelPartNames[i], ".adf");
-		GetModelPart(i)->Load(fileName, m_binary);
+		m_modelParts[i].Load(fileName, m_binary);
 	}
 
 	for (i = 0; i < m_modelCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_modelNames[i], ".gdf");
-		GetModel(i)->Load(m_renderer, fileName, m_binary);
+		m_models[i].Load(m_renderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_materialTableCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_materialTableNames[i], ".gdf");
-		GetMaterialTable(i)->Load(m_renderer, fileName, m_binary);
+		m_materialTables[i].Load(m_renderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_sceneNodeCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_sceneNodeNames[i], ".sdf");
-		GetSceneNode(i)->Load(fileName, m_binary);
+		m_sceneNodes[i].Load(fileName, m_binary);
 	}
 
 	for (i = 0; i < m_boundingShapeCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_boundingShapeNames[i], ".bdf");
-		GetBoundingShape(i)->Deserialize(fileName, m_binary);
+		m_boundingShapes[i].Deserialize(fileName, m_binary);
 	}
 
 	for (i = 0; i < m_materialAnimationCount; i++) {
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_materialAnimationNames[i], ".maf");
-		GetMaterialAnimation(i)->Load(m_renderer, fileName, m_binary);
+		m_materialAnimations[i].Load(m_renderer, fileName, m_binary);
 	}
 
 	for (i = 0; i < m_spriteCount; i++) {

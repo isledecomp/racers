@@ -61,10 +61,9 @@ public:
 	}
 	void SetColorKey(const ColorRGBA& p_colorKey)
 	{
+		m_textureFlags |= c_textureFlagColorKeyDirty;
 		m_colorKey = p_colorKey;
 		m_colorKey.m_alp = 0;
-		m_textureFlags = c_textureFlagColorKeyed;
-		m_textureFlags |= c_textureFlagColorKeyDirty;
 	}
 
 	// SYNTHETIC: GOLDP 0x10004470 FOLDED

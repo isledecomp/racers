@@ -146,7 +146,7 @@ void GolModel::ParseNormalVertices(GolFileParser& p_parser)
 	m_modelVertexArray->Parse(p_parser);
 }
 
-// STUB: GOLDP 0x10006c50
+// FUNCTION: GOLDP 0x10006c50
 void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable)
 {
 	if (p_materialTable == NULL) {
@@ -240,7 +240,7 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 	}
 }
 
-// STUB: GOLDP 0x10006e00
+// FUNCTION: GOLDP 0x10006e00
 void GolModel::DrawNode(
 	GolD3DRenderDevice* p_renderer,
 	MaterialTable* p_materialTable,

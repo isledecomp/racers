@@ -118,7 +118,7 @@ void GolSceneTransformNode::UpdateWorldMatricesAffine(const GolMatrix34* p_m)
 	UpdateWorldMatrices(m);
 }
 
-// STUB: GOLDP 0x10014c20
+// FUNCTION: GOLDP 0x10014c20
 void GolSceneTransformNode::UpdateWorldMatrices(const GolMatrix4& p_m)
 {
 	LegoU32 i = 0;
@@ -129,12 +129,8 @@ void GolSceneTransformNode::UpdateWorldMatrices(const GolMatrix4& p_m)
 
 		for (; obj < end; obj++) {
 			GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
-			if (parent == NULL) {
-				GolMath::MultiplyMatrix4Affine(obj->m_matrix, p_m, &obj->m_worldMatrix);
-			}
-			else {
-				GolMath::MultiplyMatrix4Affine(obj->m_matrix, parent->m_worldMatrix, &obj->m_worldMatrix);
-			}
+			const GolMatrix4& parentMatrix = parent != NULL ? parent->m_worldMatrix : p_m;
+			GolMath::MultiplyMatrix4Affine(obj->m_matrix, parentMatrix, &obj->m_worldMatrix);
 		}
 		return;
 	}
@@ -152,20 +148,12 @@ void GolSceneTransformNode::UpdateWorldMatrices(const GolMatrix4& p_m)
 			position.m_y = obj->m_matrix.m_m[3][1];
 			position.m_z = obj->m_matrix.m_m[3][2];
 
-			if (parent != NULL) {
-				m_composer->Compose(i, rotation, position, parent->m_worldMatrix, &obj->m_worldMatrix);
-			}
-			else {
-				m_composer->Compose(i, rotation, position, p_m, &obj->m_worldMatrix);
-			}
+			const GolMatrix4& parentMatrix = parent != NULL ? parent->m_worldMatrix : p_m;
+			m_composer->Compose(i, rotation, position, parentMatrix, &obj->m_worldMatrix);
 		}
 		else {
-			if (parent != NULL) {
-				GolMath::MultiplyMatrix4Affine(obj->m_matrix, parent->m_worldMatrix, &obj->m_worldMatrix);
-			}
-			else {
-				GolMath::MultiplyMatrix4Affine(obj->m_matrix, p_m, &obj->m_worldMatrix);
-			}
+			const GolMatrix4& parentMatrix = parent != NULL ? parent->m_worldMatrix : p_m;
+			GolMath::MultiplyMatrix4Affine(obj->m_matrix, parentMatrix, &obj->m_worldMatrix);
 		}
 	}
 }

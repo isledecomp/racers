@@ -3619,7 +3619,7 @@ void GolD3DRenderDevice::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_renderState->ProcessVertices(&m_drawCommand);
 }
 
-// STUB: GOLDP 0x1000d760
+// FUNCTION: GOLDP 0x1000d760
 void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	{

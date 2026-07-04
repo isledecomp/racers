@@ -14,6 +14,8 @@
 #include "surface/golrendertarget.h"
 
 extern GolPalettedTexture g_palettedTexture;
+extern GolTgaFile g_textureTgaFile;
+extern GolBmpFile g_textureBmpFile;
 
 #include <math.h>
 #include <stdio.h>
@@ -27,7 +29,7 @@ DECOMP_SIZE_ASSERT(GolFontBase, 0x40)
 static LegoU8 g_glyphIndexBuffer[0x80];
 
 // GLOBAL: GOLDP 0x10063c9c
-GolSurface* g_fontSourceImage;
+GolTexture* g_fontSourceImage;
 
 // FUNCTION: GOLDP 0x1001dea0
 GolFontBase::GolFontBase()
@@ -97,42 +99,38 @@ void GolFontBase::Clear()
 	m_color.m_alp = 0xff;
 }
 
-// STUB: GOLDP 0x1001e070
+// FUNCTION: GOLDP 0x1001e070
 void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 {
-	GolTgaFile tgaFile;
-	GolBmpFile bmpFile;
-	GolImgFile* imageFile = &tgaFile;
+	GolSurfaceFormat textureFormat;
+
+	GolImgFile* imageFile = &g_textureTgaFile;
 	if (!(m_flags & c_flagTgaSource)) {
-		imageFile = &bmpFile;
+		imageFile = &g_textureBmpFile;
 	}
 
 	imageFile->Open(p_name);
 	m_fontHeight = imageFile->GetHeight();
 
-	if (g_fontSourceImage == NULL) {
-		imageFile->Destroy();
-		GOL_FATALERROR_MESSAGE("Font source image storage is not initialized");
-	}
-
-	ColorRGBA* colorKey = NULL;
+	g_fontSourceImage = &g_palettedTexture;
+	g_palettedTexture.SetTextureFlags(static_cast<LegoU16>(m_flags));
 	if (m_flags & c_flagColorKeyed) {
-		colorKey = &m_colorKey;
+		g_palettedTexture.SetColorKey(m_colorKey);
 	}
 
-	imageFile->LoadSurface(g_fontSourceImage, m_flags & c_flagBit2, colorKey);
+	g_fontSourceImage->LoadFromImgFile(*p_renderer, imageFile);
+	textureFormat = g_fontSourceImage->GetTextureFormat();
 	imageFile->Destroy();
 
 	ScanGlyphs(p_name);
-
-	GolSurfaceFormat surfaceFormat = g_fontSourceImage->GetTextureFormat();
-	GolSurfaceFormat textureFormat;
-	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, m_flags & c_flagColorKeyed);
 	PackGlyphTextures(p_renderer, &textureFormat);
 	CreateSurfaces(p_renderer, &textureFormat);
 	CopyGlyphsToTextures();
 
 	::qsort(m_glyphs, m_glyphCount, sizeof(Glyph), CompareGlyphChars);
+
+	g_fontSourceImage->SetTextureFlags(0);
+	g_fontSourceImage->Destroy();
 }
 
 // FUNCTION: GOLDP 0x1001e190

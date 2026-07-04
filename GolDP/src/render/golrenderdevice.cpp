@@ -718,7 +718,7 @@ void GolRenderDevice::SelectTextureFormat(
 	m_requestedPaletteBitCount = 0;
 }
 
-// STUB: GOLDP 0x10029500
+// FUNCTION: GOLDP 0x10029500
 void GolRenderDevice::DrawModelEntityEnvironmentMapped(GolWorldEntity* p_model)
 {
 	GolWorldEntity::ResultStruct result;

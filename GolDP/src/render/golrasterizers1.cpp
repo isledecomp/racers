@@ -51,7 +51,7 @@ inline void FoldedBlockTodo(GolSoftwareRenderer* p_renderer)
 	}
 }
 
-// STUB: GOLDP 0x10032c80
+// FUNCTION: GOLDP 0x10032c80
 void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 {
 	LegoU32 sizeLog2;

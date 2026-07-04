@@ -20,7 +20,7 @@ DECOMP_SIZE_ASSERT(GolFont, 0xa0)
 // GLOBAL: GOLDP 0x10062568
 static GolImgFile g_fontImgFile;
 
-extern GolSurface* g_fontSourceImage;
+extern GolTexture* g_fontSourceImage;
 
 extern GolTgaFile g_textureTgaFile;
 
@@ -118,7 +118,7 @@ void GolFont::RefreshSurfaces(GolD3DRenderDevice* p_renderer)
 	CopyGlyphsToTextures(p_renderer, &sourceFormat, &textureFormat);
 }
 
-// STUB: GOLDP 0x100047b0
+// FUNCTION: GOLDP 0x100047b0
 void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
 	m_textures = new GolD3DTexture[m_surfaceCount];
@@ -137,6 +137,7 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 
 	for (; i < m_surfaceCount - 1; i++) {
 		if (m_flags & c_flagColorKeyed) {
+			texture->SetTextureFlags(GolTexture::c_textureFlagColorKeyed);
 			texture->SetColorKey(m_colorKey);
 		}
 
@@ -170,6 +171,7 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 	material = &m_materials[i];
 
 	if (m_flags & c_flagColorKeyed) {
+		texture->SetTextureFlags(GolTexture::c_textureFlagColorKeyed);
 		texture->SetColorKey(m_colorKey);
 	}
 

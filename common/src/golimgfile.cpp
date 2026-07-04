@@ -1300,7 +1300,7 @@ void GolImgFile::ConvertImage(
 	}
 }
 
-// STUB: GOLDP 0x10022880
+// FUNCTION: GOLDP 0x10022880
 void GolImgFile::ConvertImageHalfSize(
 	LegoU8* p_src,
 	LegoU8* p_dst,
@@ -1451,7 +1451,7 @@ void GolImgFile::UpscaleRow(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledWid
 	}
 }
 
-// STUB: GOLDP 0x10022b80
+// FUNCTION: GOLDP 0x10022b80
 void GolImgFile::DownsampleRowPair(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_dst)
 {
 	LegoU8* end = p_dst + (m_width >> 1) * sizeof(LegoU16);

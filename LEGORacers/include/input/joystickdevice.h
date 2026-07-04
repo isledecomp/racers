@@ -22,14 +22,15 @@ public:
 	~JoystickDevice() override;                                                            // vtable+0x0c
 	undefined4 Poll(LegoS32 p_elapsedMs) override;                                         // vtable+0x14
 	LegoS32 GetButtonCount() override;                                                     // vtable+0x1c
-	LegoS32 GetAxisCount() override;                                                       // vtable+0x20
-	void SetDeadZonePercent(LegoU32 p_deadZonePercent) override;                           // vtable+0x28
-	LegoFloat GetAxisValueByIndex(undefined4) override;                                    // vtable+0x2c
-	LegoFloat GetAxisValue(undefined4) override;                                           // vtable+0x30
-	undefined4 GetButtonState(undefined4) override;                                        // vtable+0x34
-	LegoBool32 CreateDevice(DirectInputDevice::CreateParams* p_params) override;           // vtable+0x64
+	// FUNCTION: LEGORACERS 0x0044f250
+	LegoS32 GetAxisCount() override { return 16; }                               // vtable+0x20
+	void SetDeadZonePercent(LegoU32 p_deadZonePercent) override;                 // vtable+0x28
+	LegoFloat GetAxisValueByIndex(undefined4) override;                          // vtable+0x2c
+	LegoFloat GetAxisValue(undefined4) override;                                 // vtable+0x30
+	undefined4 GetButtonState(undefined4) override;                              // vtable+0x34
+	LegoBool32 CreateDevice(DirectInputDevice::CreateParams* p_params) override; // vtable+0x64
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) override {}                     // vtable+0x68
+	void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) override {} // vtable+0x68
 
 	// SYNTHETIC: LEGORACERS 0x0044ea70
 	// JoystickDevice::`scalar deleting destructor'

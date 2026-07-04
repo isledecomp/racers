@@ -77,12 +77,13 @@ public:
 	MenuStyleTable* GetMenuStyles() override;                                                        // vtable+0x5c
 	MenuInputBindingTable* GetMenuInputBindings() override;                                          // vtable+0x64
 	~MenuGameScreen() override;                                                                      // vtable+0x68
-	LegoFloat GetAspectScale() override;                                                             // vtable+0x6c
-	LegoBool32 Destroy() override;                                                                   // vtable+0x74
-	LegoBool32 Update(undefined4) override;                                                          // vtable+0x78
-	virtual void SetupLighting();                                                                    // vtable+0x80
-	virtual void Navigate() = 0;                                                                     // vtable+0x84
-	virtual LegoBool32 CanNavigate();                                                                // vtable+0x88
+	// FUNCTION: LEGORACERS 0x004803c0
+	LegoFloat GetAspectScale() override { return 1.0f; } // vtable+0x6c
+	LegoBool32 Destroy() override;                       // vtable+0x74
+	LegoBool32 Update(undefined4) override;              // vtable+0x78
+	virtual void SetupLighting();                        // vtable+0x80
+	virtual void Navigate() = 0;                         // vtable+0x84
+	virtual LegoBool32 CanNavigate();                    // vtable+0x88
 	virtual LegoBool32 Initialize(MenuGameContext*,
 								  MenuScreenCreateParams*); // vtable+0x8c
 	virtual void OnChar(undefined4);                        // vtable+0x90

@@ -22,7 +22,6 @@ static const GolVec3 g_curseDropActionPositions[] = {
 	{-362.258179f, 397.303925f, -94.959518f},
 };
 
-#pragma code_seg(".text$hazard_masked_update")
 // FUNCTION: LEGORACERS 0x0048b060 FOLDED
 void CurseDropHazard::Update(undefined4 p_elapsedMs)
 {
@@ -30,7 +29,6 @@ void CurseDropHazard::Update(undefined4 p_elapsedMs)
 		Hazard::Update(p_elapsedMs);
 	}
 }
-#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0048b2f0
 CurseDropHazard::CurseDropHazard()

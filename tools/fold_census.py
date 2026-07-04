@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Census of standalone trivial-body functions in a PE .text section.
 
-The original binaries fold byte-identical trivial bodies only within certain
-groups: the same bytes coexist at several addresses (e.g. `xor eax,eax; ret 0xc`
-at both 0x466090 and 0x473490 in LEGORacers.exe). A uniform /OPT:REF,ICF link
-folds each byte pattern image-wide instead, so the split groups are reproduced
-with #pragma code_seg named sections (see CLAUDE.md). This tool lists, per
+The original binaries fold byte-identical trivial bodies in two separate pools:
+methods defined in the class body (SELECT_ANY COMDATs) fold only with each
+other, and out-of-line /Gy functions fold only with each other - so the same
+bytes coexist at two addresses (e.g. `xor eax,eax; ret 0xc` at both 0x466090
+and 0x473490 in LEGORacers.exe). Matching the original means defining each
+function on its original side of that boundary (see CLAUDE.md). This tool lists, per
 trivial byte pattern, every 16-aligned standalone occurrence (padding before
 and after), so the recompiled binary's fold landscape can be compared against
 the original's.

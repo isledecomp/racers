@@ -380,19 +380,8 @@ LegoS32 JoystickDevice::GetButtonCount()
 	return m_buttonCount;
 }
 
-// The original keeps this body separate from InputDevice::GetAxisCount despite identical bytes.
-
-// FUNCTION: LEGORACERS 0x0044f250
-#pragma code_seg(".text$joy_vt20")
-LegoS32 JoystickDevice::GetAxisCount()
-{
-	return 16;
-}
-#pragma code_seg()
-
 // FUNCTION: LEGORACERS 0x0044f260
 LegoFloat JoystickDevice::GetAxisValueByIndex(undefined4 p_arg)
 {
 	return m_axisValues[p_arg];
 }
-

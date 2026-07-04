@@ -9,12 +9,6 @@
 
 DECOMP_SIZE_ASSERT(GolCameraBase, 0x120)
 
-// FUNCTION: LEGORACERS 0x004044f0
-LegoFloat GolCameraBase::Dot2(GolVec3* p_left, GolVec3* p_right)
-{
-	return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
-}
-
 // FUNCTION: LEGORACERS 0x00404510
 GolVec3* GolCameraBase::Cross(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
 {
@@ -76,14 +70,11 @@ GolVec3* GolCameraBase::Scale(GolVec3* p_src, LegoFloat p_scale, GolVec3* p_dest
 	return p_src;
 }
 
-// The original keeps both dot helpers as distinct functions despite identical bytes.
-#pragma code_seg(".text$golcamerabase_00404680")
 // FUNCTION: LEGORACERS 0x00404680
 LegoFloat GolCameraBase::Dot(GolVec3* p_left, GolVec3* p_right)
 {
 	return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
 }
-#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x004046a0
 void GolCameraBase::LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up)

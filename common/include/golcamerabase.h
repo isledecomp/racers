@@ -41,7 +41,11 @@ public:
 
 	void ComputeFrustum(GolViewFrustum* p_view);
 	void ComputeFrustumFromBounds(GolViewFrustum* p_view);
-	static LegoFloat Dot2(GolVec3* p_left, GolVec3* p_right);
+	// STUB: LEGORACERS 0x004044f0
+	static LegoFloat Dot2(GolVec3* p_left, GolVec3* p_right)
+	{
+		return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
+	}
 	static GolVec3* Cross(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest);
 	static GolVec3* Add(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest);
 	static GolVec3* Subtract(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest);

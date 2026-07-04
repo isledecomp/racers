@@ -14,16 +14,11 @@ LegoFloat KeyboardDevice::GetAxisValue(undefined4)
 	return 0.0f;
 }
 
-// The original keeps each of these trivial bodies out of the image-wide fold group for its
-// byte pattern (see tools/fold_census.py); the named sections reproduce the original splits.
-
 // FUNCTION: LEGORACERS 0x0044f2d0
-#pragma code_seg(".text$kbd_vt1c")
 LegoS32 KeyboardDevice::GetButtonCount()
 {
 	return sizeOfArray(m_keyStates);
 }
-#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0044f2e0 FOLDED
 LegoS32 KeyboardDevice::GetAxisCount()
@@ -125,4 +120,3 @@ void KeyboardDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool
 		InputDevice::SetButtonState(originalEvent, p_state, p_notify);
 	}
 }
-

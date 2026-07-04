@@ -98,7 +98,6 @@ void WarpPadHazard::OnDeactivate(void* p_context)
 	}
 }
 
-#pragma code_seg(".text$hazard_masked_update")
 // FUNCTION: LEGORACERS 0x0048b060 FOLDED
 void WarpPadHazard::Update(undefined4 p_elapsedMs)
 {
@@ -106,4 +105,3 @@ void WarpPadHazard::Update(undefined4 p_elapsedMs)
 		Hazard::Update(p_elapsedMs);
 	}
 }
-#pragma code_seg()

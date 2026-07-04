@@ -797,15 +797,11 @@ MenuInputBindingTable* MenuScreen::GetMenuInputBindings()
 	return &m_bindingTable;
 }
 
-// The original keeps this body out of the image-wide fold group for its byte pattern.
-
 // FUNCTION: LEGORACERS 0x0046c850
-#pragma code_seg(".text$menuscreen_vt6c")
 LegoFloat MenuScreen::GetAspectScale()
 {
 	return 1.0f;
 }
-#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
 undefined4 MenuScreen::OnWidgetKeyUp(MenuWidget*, void*, undefined4, undefined4)

@@ -341,12 +341,6 @@ LegoS16 InputDevice::StoreString(const LegoChar* p_str)
 	return result;
 }
 
-// FUNCTION: LEGORACERS 0x0044bed0
-LegoS32 InputDevice::GetButtonCount()
-{
-	return sizeOfArray(g_defaultMapping);
-}
-
 // FUNCTION: LEGORACERS 0x0044bee0
 const wchar_t* InputDevice::GetControlName(undefined4)
 {

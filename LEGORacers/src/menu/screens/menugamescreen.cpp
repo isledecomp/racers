@@ -348,16 +348,6 @@ void MenuGameScreen::ClearCosmeticTable()
 	cosmeticTable->Clear();
 }
 
-// The original keeps this body out of the image-wide fold group for its byte pattern.
-
-// FUNCTION: LEGORACERS 0x004803c0
-#pragma code_seg(".text$menugamescreen_vt6c")
-LegoFloat MenuGameScreen::GetAspectScale()
-{
-	return 1.0f;
-}
-#pragma code_seg()
-
 // FUNCTION: LEGORACERS 0x004803d0
 void MenuGameScreen::ReinitializeInputBindings()
 {

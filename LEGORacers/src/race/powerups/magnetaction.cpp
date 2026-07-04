@@ -17,6 +17,8 @@
 #include <float.h>
 #include <math.h>
 
+extern const LegoFloat g_brickSettleRate;
+
 // GLOBAL: LEGORACERS 0x004b15dc
 const LegoFloat g_magnetSoundMinDistance = 30.0f;
 
@@ -282,7 +284,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		m_magnetEntity->SetUpDirection(direction, up);
 
 		if (m_heldRacer != NULL) {
-			if (m_heldRacer->m_physics.m_speed <= 0.002f) {
+			if (m_heldRacer->m_physics.m_speed <= g_brickSettleRate) {
 				m_flags |= c_flagVictimStopped;
 
 				if (!(m_heldRacer->m_flags & c_flagHalted)) {
@@ -307,7 +309,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 					static_cast<LegoS32>(p_elapsedMs) * g_magnetHoldImpulseScale
 				);
 
-				if (m_heldRacer->m_physics.m_speed <= 0.002f) {
+				if (m_heldRacer->m_physics.m_speed <= g_brickSettleRate) {
 					direction.m_x = racerPosition.m_x - modelPosition.m_x;
 					direction.m_y = racerPosition.m_y - modelPosition.m_y;
 					direction.m_z = racerPosition.m_z - modelPosition.m_z;

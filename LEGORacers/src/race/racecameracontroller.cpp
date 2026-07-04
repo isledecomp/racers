@@ -201,6 +201,7 @@ extern const LegoFloat g_hazardPi;
 extern const LegoFloat g_statMax;
 extern const LegoFloat g_hazardPi;
 extern const LegoFloat g_twoPi;
+extern const LegoFloat g_brickSettleRate;
 extern const LegoFloat g_unk0x004afde0;
 extern const LegoFloat g_warpPortalHeightOffset;
 
@@ -660,7 +661,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 				transitionStep = m_elapsed * 0.0040000002f;
 			}
 			else {
-				transitionStep = m_elapsed * 0.0020000001f;
+				transitionStep = m_elapsed * g_brickSettleRate;
 			}
 			m_followDistanceScale += transitionStep;
 

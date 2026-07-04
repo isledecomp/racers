@@ -60,18 +60,14 @@ void CutsceneImageVisual::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner
 	p_parser->ReadLeftCurly();
 	m_flags = 3;
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	if (token != GolFileParser::e_rightCurly) {
-		do {
-			if (token != CutscenePlayer::CebTxtParser::e_imageVisuals) {
-				ParseVisualToken(p_parser, token, p_owner, p_renderer);
-			}
-			else {
-				::strncpy(m_imageName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
-			}
-
-			token = p_parser->GetNextToken();
-		} while (token != GolFileParser::e_rightCurly);
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
+		if (token != CutscenePlayer::CebTxtParser::e_imageVisuals) {
+			ParseVisualToken(p_parser, token, p_owner, p_renderer);
+		}
+		else {
+			::strncpy(m_imageName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		}
 	}
 
 	if (m_imageName[0] == '\0') {

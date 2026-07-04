@@ -792,8 +792,8 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 		LegoU32 state = 3;
 		LegoS32 duration = -1;
 
-		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-		while (token != GolFileParser::e_rightCurly) {
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case PwbTxtParser::e_position:
 				position.m_x = p_parser->ReadFloat();
@@ -825,8 +825,6 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 				break;
 			}
-
-			token = p_parser->GetNextToken();
 		}
 
 		if (!(m_cheatFlags & (c_pgllrd | c_rpcrnly))) {
@@ -890,8 +888,8 @@ void RacePowerupManager::ParseWhiteBricks(GolFileParser* p_parser, LegoBool32 p_
 		position.m_y = 0.0f;
 		position.m_z = 0.0f;
 
-		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-		while (token != GolFileParser::e_rightCurly) {
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case PwbTxtParser::e_position:
 				position.m_x = p_parser->ReadFloat();
@@ -908,8 +906,6 @@ void RacePowerupManager::ParseWhiteBricks(GolFileParser* p_parser, LegoBool32 p_
 				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 				break;
 			}
-
-			token = p_parser->GetNextToken();
 		}
 
 		if (p_mirror) {

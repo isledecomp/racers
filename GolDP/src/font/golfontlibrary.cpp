@@ -189,8 +189,8 @@ void GolFontLibrary::ReadFontCharList(GolFileParser* p_parser, undefined2* p_cha
 		p_parser->HandleUnexpectedToken(GolFileParser::e_leftBracket);
 	}
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightBracket) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightBracket) {
 		switch (token) {
 		case GolFileParser::e_string:
 			LegoChar character;
@@ -214,7 +214,6 @@ void GolFontLibrary::ReadFontCharList(GolFileParser* p_parser, undefined2* p_cha
 		}
 
 		(*p_count)++;
-		token = p_parser->GetNextToken();
 	}
 }
 

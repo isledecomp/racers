@@ -46,8 +46,8 @@ void CheckpointGraph::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 	p_parser->ReadLeftCurly();
 
 	LegoU32 i;
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CpbTxtParser::e_plane:
 			m_planeNormal.m_x = p_parser->ReadFloat();
@@ -79,8 +79,6 @@ void CheckpointGraph::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 }
 

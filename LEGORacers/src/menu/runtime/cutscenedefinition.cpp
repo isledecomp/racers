@@ -83,8 +83,8 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::Parse(CutsceneDefinition* p_paren
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStaticModelName:
 			::strncpy(m_modelRef.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_modelRef.m_name));
@@ -151,8 +151,6 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::Parse(CutsceneDefinition* p_paren
 		default:
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	// duration += m_startFrame;
@@ -336,8 +334,8 @@ LegoU32 CutsceneDefinition::Frame::CameraEvent::Parse(CutsceneDefinition* p_pare
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenCameraName:
 			::strncpy(m_cameraName, p_parser->ReadStringWithMaxLength(8), sizeof(m_cameraName));
@@ -354,8 +352,6 @@ LegoU32 CutsceneDefinition::Frame::CameraEvent::Parse(CutsceneDefinition* p_pare
 		default:
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	m_endFrame = duration + m_startFrame;
@@ -423,8 +419,8 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::Parse(GolFileParser* p
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStartFrame:
 			m_startFrame = p_parser->ReadInteger();
@@ -457,8 +453,6 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::Parse(GolFileParser* p
 		default:
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	LegoU32 end = m_startFrame;
@@ -626,8 +620,8 @@ void CutsceneDefinition::Frame::AmbientLightEvent::Parse(GolFileParser* p_parser
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStartFrame:
 			m_startFrame = p_parser->ReadInteger();
@@ -652,8 +646,6 @@ void CutsceneDefinition::Frame::AmbientLightEvent::Parse(GolFileParser* p_parser
 		default:
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	LegoU32 end = m_startFrame;
@@ -774,8 +766,8 @@ void CutsceneDefinition::Frame::Parse(CutsceneDefinition* p_parent, GolFileParse
 	m_definition = p_parent;
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenCameraBlock:
 			ParseCameraEvents(p_parser);
@@ -803,8 +795,6 @@ void CutsceneDefinition::Frame::Parse(CutsceneDefinition* p_parent, GolFileParse
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	if (!m_frameCount && m_cameraEventCount) {
@@ -1660,8 +1650,8 @@ LegoU32 CutsceneDefinition::Frame::TransformEvent::Parse(GolFileParser* p_parser
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStartFrame:
 			m_startFrame = p_parser->ReadInteger();
@@ -1685,8 +1675,6 @@ LegoU32 CutsceneDefinition::Frame::TransformEvent::Parse(GolFileParser* p_parser
 		default:
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	m_endFrame = duration + m_startFrame;

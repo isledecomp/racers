@@ -1015,24 +1015,21 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 				params.m_flags |= 4;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
-				if (eventIndex) {
-					eventIndex -= 2;
-					if (eventIndex) {
-						if (--eventIndex) {
-							eventIndex = 3;
-							p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
-						}
-						else {
-							eventIndex = 2;
-						}
-					}
-					else {
-						eventIndex = 0;
-					}
-				}
-				else {
+				LegoS32 eventIndex;
+				switch (p_parser->GetNextToken()) {
+				default:
+					eventIndex = 3;
+					p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+					break;
+				case 55:
+					eventIndex = 2;
+					break;
+				case 54:
+					eventIndex = 0;
+					break;
+				case 52:
 					eventIndex = 1;
+					break;
 				}
 
 				params.m_stateEventIds[eventIndex] = p_parser->ReadInteger();

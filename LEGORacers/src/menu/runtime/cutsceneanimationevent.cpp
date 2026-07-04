@@ -63,8 +63,8 @@ void CutsceneAnimationEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_ow
 {
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case e_animationIndex: {
 			LegoU32 index = p_parser->ReadInteger();
@@ -102,8 +102,6 @@ void CutsceneAnimationEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_ow
 			ParseCommonToken(p_parser, p_owner, token);
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 }
 

@@ -10,12 +10,13 @@
 #include "race/racer/racerphysics.h"
 #include "util/legoeventqueue.h"
 
+class DroppableBrick;
 class GolFileParser;
 class RaceCameraController;
 class RaceForceFeedback;
 class RaceHud;
 class RacePowerupManager;
-class DroppableBrick;
+class RaceState;
 class RacerContext;
 class RacerSoundSource;
 class SpatialSoundInstance;

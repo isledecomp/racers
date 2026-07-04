@@ -298,52 +298,50 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 void ChassisModelTable::ParseVariantNames(GolFileParser* p_parser, LegoU32 p_index, LegoU32 p_variant)
 {
 	p_parser->ReadLeftCurly();
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	GolFileParser::ParserTokenType token;
 
-	if (token != GolFileParser::e_rightCurly) {
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		LegoU32 variant = p_variant;
 		LegoU32 index = p_index;
-		do {
-			switch (token) {
-			case CmbTxtParser::e_materialLibrary:
-				::strncpy(
-					m_items[index].m_materialNames[variant],
-					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
-					sizeof(GolName)
-				);
-				break;
-			case CmbTxtParser::e_textureList:
-				::strncpy(
-					m_items[index].m_textureNames[variant],
-					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
-					sizeof(GolName)
-				);
-				break;
-			case CmbTxtParser::e_model:
-				::strncpy(
-					m_items[index].m_modelNames[variant],
-					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
-					sizeof(GolName)
-				);
-				break;
-			case CmbTxtParser::e_sceneNode:
-				::strncpy(
-					m_items[index].m_nodeNames[variant],
-					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
-					sizeof(GolName)
-				);
-				break;
-			case CmbTxtParser::e_modelPart:
-				::strncpy(
-					m_items[index].m_modelPartNames[variant],
-					p_parser->ReadStringWithMaxLength(sizeof(GolName)),
-					sizeof(GolName)
-				);
-				break;
-			default:
-				continue;
-			}
-		} while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly);
+		switch (token) {
+		case CmbTxtParser::e_materialLibrary:
+			::strncpy(
+				m_items[index].m_materialNames[variant],
+				p_parser->ReadStringWithMaxLength(sizeof(GolName)),
+				sizeof(GolName)
+			);
+			break;
+		case CmbTxtParser::e_textureList:
+			::strncpy(
+				m_items[index].m_textureNames[variant],
+				p_parser->ReadStringWithMaxLength(sizeof(GolName)),
+				sizeof(GolName)
+			);
+			break;
+		case CmbTxtParser::e_model:
+			::strncpy(
+				m_items[index].m_modelNames[variant],
+				p_parser->ReadStringWithMaxLength(sizeof(GolName)),
+				sizeof(GolName)
+			);
+			break;
+		case CmbTxtParser::e_sceneNode:
+			::strncpy(
+				m_items[index].m_nodeNames[variant],
+				p_parser->ReadStringWithMaxLength(sizeof(GolName)),
+				sizeof(GolName)
+			);
+			break;
+		case CmbTxtParser::e_modelPart:
+			::strncpy(
+				m_items[index].m_modelPartNames[variant],
+				p_parser->ReadStringWithMaxLength(sizeof(GolName)),
+				sizeof(GolName)
+			);
+			break;
+		default:
+			continue;
+		}
 	}
 }
 

@@ -389,9 +389,9 @@ void CutsceneAnimation::Emitter::Parse(
 	p_param4->AddName(name, this);
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	GolFileParser::ParserTokenType token;
 
-	while (token != GolFileParser::e_rightCurly) {
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneAnimation::EmbTxtParser::e_emitInterval:
 			m_emitIntervalMs = static_cast<LegoS32>(g_floatConst1000 / p_parser->ReadFloat());
@@ -461,7 +461,6 @@ void CutsceneAnimation::Emitter::Parse(
 		default:
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 		}
-		token = p_parser->GetNextToken();
 	}
 }
 

@@ -69,8 +69,8 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 
 	p_parser->ReadLeftCurly();
 
-	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
-	while (token != GolFileParser::e_rightCurly) {
+	GolFileParser::ParserTokenType token;
+	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case HazardManager::HzbTxtParser::e_source:
 			m_launchPosition.m_x = p_parser->ReadFloat();
@@ -99,8 +99,6 @@ void LauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser)
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			break;
 		}
-
-		token = p_parser->GetNextToken();
 	}
 
 	if (p_context->GetMirror()) {

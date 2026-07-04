@@ -1318,9 +1318,10 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 
 		if (m_brakeSound) {
 			m_brakeSound->Play(TRUE);
-			LegoFloat maxDistance = g_shieldSoundMaxDistance;
-			LegoFloat minDistance = g_shieldSoundMinDistance;
-			m_brakeSound->SetDistanceRangeWithMinSquared(minDistance * minDistance, maxDistance);
+			m_brakeSound->SetDistanceRangeWithMinSquared(
+				g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+				g_shieldSoundMaxDistance
+			);
 			m_brakeSound->SetPosition(position);
 			m_brakeSound->SetVelocity(velocity);
 			frequencyScale = m_physics.m_speed;

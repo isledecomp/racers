@@ -207,9 +207,10 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 				m_loopSound = m_soundSource->AcquireSoundById(c_soundId);
 				if (m_loopSound) {
 					m_loopSound->Play(TRUE);
-					LegoFloat maxDistance = g_lavaGeyserSoundMaxDistance;
-					LegoFloat minDistance = g_lavaGeyserSoundMinDistance;
-					m_loopSound->SetDistanceRangeWithMinSquared(minDistance * minDistance, maxDistance);
+					m_loopSound->SetDistanceRangeWithMinSquared(
+						g_lavaGeyserSoundMinDistance * g_lavaGeyserSoundMinDistance,
+						g_lavaGeyserSoundMaxDistance
+					);
 				}
 			}
 		}

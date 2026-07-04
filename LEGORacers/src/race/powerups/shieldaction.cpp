@@ -112,7 +112,10 @@ void ShieldAction::Activate(
 	m_sound = m_soundSource->AcquireSoundById(soundId);
 	if (m_sound != NULL) {
 		m_sound->Play(TRUE);
-		m_sound->SetDistanceRange(g_shieldExpireSoundMinDistance, g_shieldExpireSoundMaxDistance);
+		m_sound->SetDistanceRangeWithMinSquared(
+			g_shieldExpireSoundMinDistance * g_shieldExpireSoundMinDistance,
+			g_shieldExpireSoundMaxDistance
+		);
 	}
 
 	m_state = c_stateActive;

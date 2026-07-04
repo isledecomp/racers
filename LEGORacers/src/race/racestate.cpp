@@ -1350,8 +1350,8 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntr
 // FUNCTION: LEGORACERS 0x0043d070
 RaceRouteRecord* RaceState::FindNearestRouteRecord(Racer* p_racer)
 {
-	LegoFloat nearestDistanceSquared = FLT_MAX;
 	RaceRouteRecord* result = NULL;
+	LegoFloat nearestDistanceSquared = FLT_MAX;
 
 	GolVec3 racerPosition;
 	p_racer->m_visuals.m_carEntity->GetPosition(&racerPosition);

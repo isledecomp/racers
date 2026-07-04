@@ -145,10 +145,12 @@ void CarModelScreenBase::PopulateCategoryCarousel()
 		m_partCategoryAvailable[i] = TRUE;
 	}
 
-	for (i = 0; i < c_saveUnlockedPartCategoryCount; i++) {
+	LegoBool32* available = &m_partCategoryAvailable[c_alwaysAvailablePartCategoryCount];
+	for (i = c_saveUnlockedPartCategoryCount; i; i--) {
 		if (m_partCategoryUnlockFlags & mask) {
-			m_partCategoryAvailable[i + c_alwaysAvailablePartCategoryCount] = TRUE;
+			*available = TRUE;
 		}
+		available++;
 		mask <<= 1;
 	}
 

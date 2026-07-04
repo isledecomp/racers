@@ -197,10 +197,12 @@ void EditCarScreen::PopulateCategoryCarousel()
 		m_partCategoryAvailable[i] = TRUE;
 	}
 
-	for (i = 0; i < 8; i++) {
+	LegoBool32* available = &m_partCategoryAvailable[4];
+	for (i = 8; i; i--) {
 		if (m_partCategoryUnlockFlags & mask) {
-			m_partCategoryAvailable[i + 4] = TRUE;
+			*available = TRUE;
 		}
+		available++;
 		mask <<= 1;
 	}
 

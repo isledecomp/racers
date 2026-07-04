@@ -1862,7 +1862,7 @@ void RacerCarBody::ClearWallContacts()
 	m_wallContact = 0;
 }
 
-// STUB: LEGORACERS 0x004478b0
+// FUNCTION: LEGORACERS 0x004478b0
 LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_queryTrack)
 {
 	RaceEventRecord* hitRecord = NULL;

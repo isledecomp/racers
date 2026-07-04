@@ -718,7 +718,7 @@ void MenuManager::Run()
 	}
 }
 
-// STUB: LEGORACERS 0x0042d730
+// FUNCTION: LEGORACERS 0x0042d730
 void MenuManager::PrepareRaceContext()
 {
 	GolString string;

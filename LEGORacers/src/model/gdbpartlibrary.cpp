@@ -318,7 +318,7 @@ LegoS32 GdbPartLibrary::CopyBatchVertex(LegoU32 p_sourceVertex)
 	return g_copyBatchVertexCount++;
 }
 
-// STUB: LEGORACERS 0x00407d60
+// FUNCTION: LEGORACERS 0x00407d60
 void GdbPartLibrary::FlushCopyBatch()
 {
 	if (g_copyBatchIndexCount == 0) {

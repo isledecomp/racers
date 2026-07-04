@@ -58,6 +58,9 @@ extern LegoFloat g_cosineTable[1024];
 // GLOBAL: LEGORACERS 0x004b02e0
 extern const LegoFloat g_unk0x004b02e0 = 0.2f;
 
+// GLOBAL: LEGORACERS 0x004b02e4
+extern const LegoFloat g_unk0x004b02e4 = 0.0057142857f;
+
 // GLOBAL: LEGORACERS 0x004b0424
 extern const LegoFloat g_statMax = 100.0f;
 

@@ -424,7 +424,7 @@ LegoU32 GolFontBase::PackGlyphTextures(GolD3DRenderDevice* p_renderer, GolSurfac
 	}
 }
 
-// STUB: GOLDP 0x1001e870
+// FUNCTION: GOLDP 0x1001e870
 void GolFontBase::CopyGlyphsToTextures()
 {
 	LegoU32 currentSurface = 0;

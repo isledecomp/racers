@@ -219,7 +219,7 @@ LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 	return c_stateFlying;
 }
 
-// STUB: LEGORACERS 0x00444820
+// FUNCTION: LEGORACERS 0x00444820
 LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 {
 	GolVec3 targetPosition;
@@ -268,12 +268,12 @@ LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 
 	LegoFloat remainingAmount = 1.0f - m_tension;
 	GolVec3 step;
-	step.m_x = delta.m_x * 0.2f;
-	step.m_y = delta.m_y * 0.2f;
-	step.m_z = delta.m_z * 0.2f;
+	step.m_x = delta.m_x * g_unk0x004b02e0;
+	step.m_y = delta.m_y * g_unk0x004b02e0;
+	step.m_z = delta.m_z * g_unk0x004b02e0;
 	m_beam.Begin(&origin, &step);
 
-	LegoFloat elapsedStep = static_cast<LegoFloat>(m_flightTimeMs) * 0.2f * 0.001f;
+	LegoFloat elapsedStep = static_cast<LegoFloat>(m_flightTimeMs) * g_unk0x004b02e0 * 0.001f;
 	LegoFloat elapsed = 0.0f;
 	GolVec3 position = origin;
 	for (LegoU32 i = 0; i < 4; i++) {

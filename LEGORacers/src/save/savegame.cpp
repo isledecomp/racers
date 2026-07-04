@@ -177,7 +177,7 @@ LegoU32 SaveGame::CalculateBlockChecksum(const LegoU8* p_source, LegoU32 p_size)
 	return result;
 }
 
-// STUB: LEGORACERS 0x00442a00
+// FUNCTION: LEGORACERS 0x00442a00
 void SaveGame::ReadPersistentGameState(PersistentGameState* p_state)
 {
 	LegoU8* dest;
@@ -264,7 +264,7 @@ void SaveGame::ReadPersistentGameState(PersistentGameState* p_state)
 	}
 }
 
-// STUB: LEGORACERS 0x00442c20
+// FUNCTION: LEGORACERS 0x00442c20
 void SaveGame::WritePersistentGameState(PersistentGameState* p_state)
 {
 	LegoU8* dest;

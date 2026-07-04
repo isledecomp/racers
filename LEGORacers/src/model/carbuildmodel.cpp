@@ -2432,7 +2432,7 @@ void CarBuildModel::CenterOnPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, 
 	m_offsetZ = -((m_pieceMaxZ + m_pieceMinZ) * 0.5f);
 }
 
-// STUB: LEGORACERS 0x0049b920
+// FUNCTION: LEGORACERS 0x0049b920
 void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 {
 	LegoS32 activePieceCount = m_placedPieceCount;

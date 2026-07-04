@@ -52,6 +52,8 @@ extern const LegoFloat g_hudTopTextOffset = -7.0f;
 extern const LegoFloat g_hudBaseScale = 0.0020833334f;
 
 extern const LegoFloat g_unk0x004b02e0;
+extern const LegoFloat g_unk0x004b02e4;
+extern const LegoFloat g_violetShoalTwo;
 
 // GLOBAL: LEGORACERS 0x004be8a8
 const LegoChar* g_hudFontName = "font_ths";
@@ -59,7 +61,10 @@ const LegoChar* g_hudFontName = "font_ths";
 // GLOBAL: LEGORACERS 0x004be8ac
 const LegoChar* g_hudNumberFontName = "ignum";
 
+// GLOBAL: LEGORACERS 0x004b0270
 static const LegoChar* g_positionDigits[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
+
+// GLOBAL: LEGORACERS 0x004b0290
 static const LegoS16 g_positionStringIds[8] = {0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20};
 
 // FUNCTION: LEGORACERS 0x00423fc0
@@ -1269,7 +1274,7 @@ void RaceHud::Update(LegoU32 p_elapsedMs)
 	m_elapsedMs += p_elapsedMs;
 }
 
-// STUB: LEGORACERS 0x004263a0
+// FUNCTION: LEGORACERS 0x004263a0
 void RaceHud::Draw()
 {
 	LegoBool32 drawLapTime = TRUE;
@@ -1588,13 +1593,14 @@ void RaceHud::Draw()
 					}
 					positionScale = 1.0f;
 				}
-				else if (m_positionPulseMs <= 175) {
+				else if (m_positionPulseMs > 175) {
+					LegoU32 timer = m_positionPulseMs - 175;
 					positionScale =
-						static_cast<LegoFloat>(static_cast<LegoS32>(m_positionPulseMs)) * 0.0057142857f + 1.0f;
+						g_violetShoalTwo - static_cast<LegoFloat>(static_cast<LegoS32>(timer)) * g_unk0x004b02e4;
 				}
 				else {
-					LegoU32 timer = m_positionPulseMs - 175;
-					positionScale = 2.0f - static_cast<LegoFloat>(static_cast<LegoS32>(timer)) * 0.0057142857f;
+					positionScale =
+						static_cast<LegoFloat>(static_cast<LegoS32>(m_positionPulseMs)) * g_unk0x004b02e4 + 1.0f;
 				}
 				positionScale *= m_textScale;
 

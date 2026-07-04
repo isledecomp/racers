@@ -15,6 +15,7 @@
 #include <string.h>
 
 extern const LegoFloat g_carBuildModelHeightScale;
+extern LegoFloat g_minSoundPan;
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 extern const LegoFloat g_surfaceSoundMaxDistance;
 extern const LegoFloat g_surfaceSoundMinDistance;
@@ -887,8 +888,8 @@ void RacerPhysics::UpdateRouteSlideBank()
 	if (dot > 1.0f) {
 		dot = 1.0f;
 	}
-	else if (dot < -1.0f) {
-		dot = -1.0f;
+	else if (dot < g_minSoundPan) {
+		dot = g_minSoundPan;
 	}
 
 	m_slideBankTarget = g_unk0x004b0480 * dot;

@@ -27,7 +27,7 @@ extern const LegoFloat g_shieldExpireSoundMinDistance;
 
 extern const LegoFloat g_shieldExpireSoundMaxDistance;
 
-extern const LegoFloat g_violetShoalTwo;
+extern const LegoFloat g_two;
 
 // FUNCTION: LEGORACERS 0x0045bc50
 ShieldAction::ShieldAction()
@@ -240,7 +240,7 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	GolVec3 position;
 	m_racer->m_visuals.m_carEntity->GetPosition(&position);
 	LegoFloat positionZ = position.m_z;
-	positionZ += g_violetShoalTwo;
+	positionZ += g_two;
 	position.m_z = positionZ;
 	m_shieldEntity->SetPosition(position);
 

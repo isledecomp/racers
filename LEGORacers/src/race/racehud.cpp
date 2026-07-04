@@ -79,7 +79,7 @@ extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_unk0x004b02e4;
 extern const LegoFloat g_unk0x004b02e8;
 extern const LegoFloat g_unk0x004b02ec;
-extern const LegoFloat g_violetShoalTwo;
+extern const LegoFloat g_two;
 
 // GLOBAL: LEGORACERS 0x004be8a8
 const LegoChar* g_hudFontName = "font_ths";
@@ -1633,8 +1633,7 @@ void RaceHud::Draw()
 				}
 				else if (m_positionPulseMs > 175) {
 					LegoU32 timer = m_positionPulseMs - 175;
-					positionScale =
-						g_violetShoalTwo - static_cast<LegoFloat>(static_cast<LegoS32>(timer)) * g_unk0x004b02e4;
+					positionScale = g_two - static_cast<LegoFloat>(static_cast<LegoS32>(timer)) * g_unk0x004b02e4;
 				}
 				else {
 					positionScale =

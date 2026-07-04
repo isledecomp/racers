@@ -485,7 +485,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/widgets/menusceneelement.cpp
   LEGORacers/src/menu/screens/editcarscreen.cpp
   LEGORacers/src/menu/widgets/menucarousel.cpp
-  LEGORacers/src/menu/widgets/menumodelcarousel.cpp
   LEGORacers/src/menu/widgets/optionsrow.cpp
   LEGORacers/src/audio/soundgroupbinding.cpp
   LEGORacers/src/menu/widgets/menustaticwidget.cpp

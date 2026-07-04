@@ -22,7 +22,7 @@ extern const LegoFloat g_ghostSampleFractionScale;
 extern const LegoFloat g_brickScalePercentBase;
 
 // GLOBAL: LEGORACERS 0x004b0400
-const LegoFloat g_brickSettleRate = 0.002f;
+extern const LegoFloat g_brickSettleRate = 0.002f;
 
 // GLOBAL: LEGORACERS 0x004b14ac
 const LegoFloat g_brickScale = 0.8f;

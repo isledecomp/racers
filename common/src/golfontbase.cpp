@@ -3,6 +3,7 @@
 #include "decomp.h"
 #include "golbmpfile.h"
 #include "golerror.h"
+#include "golpalettedtexture.h"
 #include "golstring.h"
 #include "golsurface.h"
 #include "goltgafile.h"
@@ -11,6 +12,8 @@
 #include "render/rectangle.h"
 #include "surface/gold3dtexture.h"
 #include "surface/golrendertarget.h"
+
+extern GolPalettedTexture g_palettedTexture;
 
 #include <math.h>
 #include <stdio.h>
@@ -449,7 +452,7 @@ void GolFontBase::CopyGlyphsToTextures()
 
 		sourceRect.m_left = glyph->m_sourceX;
 		sourceRect.m_right = sourceRect.m_left + glyph->m_width;
-		texture->Blit(glyph->m_textureX, glyph->m_textureY, g_fontSourceImage, &sourceRect);
+		texture->Blit(glyph->m_textureX, glyph->m_textureY, &g_palettedTexture, &sourceRect);
 	}
 
 	texture->UnlockPixels();

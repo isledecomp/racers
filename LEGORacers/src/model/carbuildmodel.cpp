@@ -2211,7 +2211,8 @@ LegoS32 CarBuildModel::BuildPieceModel(
 	for (LegoS32 i = 0; i < m_buildVertexCount; i++) {
 		m_buildVertices[i].m_position.m_x += m_offsetX;
 		m_buildVertices[i].m_position.m_y += m_offsetY;
-		m_buildVertices[i].m_position.m_z = (m_buildVertices[i].m_position.m_z * g_carBuildModelHeightScale) + m_offsetZ;
+		m_buildVertices[i].m_position.m_z =
+			(m_buildVertices[i].m_position.m_z * g_carBuildModelHeightScale) + m_offsetZ;
 	}
 
 	BeginModelWrite(model);
@@ -2500,7 +2501,8 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 				for (i = 0; i < m_buildVertexCount; i++) {
 					m_buildVertices[i].m_position.m_x = m_offsetX + m_buildVertices[i].m_position.m_x;
 					m_buildVertices[i].m_position.m_y += m_offsetY;
-					m_buildVertices[i].m_position.m_z = (m_buildVertices[i].m_position.m_z * g_carBuildModelHeightScale) + m_offsetZ;
+					m_buildVertices[i].m_position.m_z =
+						(m_buildVertices[i].m_position.m_z * g_carBuildModelHeightScale) + m_offsetZ;
 				}
 
 				BeginModelWrite(m_model);

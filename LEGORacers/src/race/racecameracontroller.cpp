@@ -162,6 +162,11 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_halfPi;
 extern const LegoFloat g_hazardPi;
+extern const LegoFloat g_statMax;
+extern const LegoFloat g_hazardPi;
+extern const LegoFloat g_twoPi;
+extern const LegoFloat g_unk0x004afde0;
+extern const LegoFloat g_warpPortalHeightOffset;
 
 // FUNCTION: LEGORACERS 0x00427e80
 void RaceCameraController::UpdateShake()
@@ -442,11 +447,11 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 	m_frameDirty = m_dirty;
 	m_dirty &= 0xf0;
-	if (p_elapsedMs <= 100.0f) {
+	if (p_elapsedMs <= g_statMax) {
 		m_elapsed = p_elapsedMs;
 	}
 	else {
-		m_elapsed = 100.0f;
+		m_elapsed = g_statMax;
 	}
 
 	m_elapsedMs = static_cast<LegoS32>(m_elapsed);
@@ -564,11 +569,11 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 				LegoFloat desiredAngle = VectorToAngle(desiredDirection.m_x, desiredDirection.m_y);
 				LegoFloat delta = currentAngle - desiredAngle;
 				if (delta < -0.014f || delta > 0.014f) {
-					while (delta < -3.1415927f) {
-						delta += 6.2831855f;
+					while (delta < -g_hazardPi) {
+						delta += g_twoPi;
 					}
-					while (delta > 3.1415927f) {
-						delta -= 6.2831855f;
+					while (delta > g_hazardPi) {
+						delta -= g_twoPi;
 					}
 
 					LegoFloat angleAmount = 1.0f / (m_viewAngleRate * m_elapsed + 1.0f);
@@ -722,10 +727,10 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 		entity->GetPosition(&m_rawTransform.m_position);
 		if (m_alternate) {
-			m_rawTransform.m_position.m_z += 6.0f;
+			m_rawTransform.m_position.m_z += g_warpPortalHeightOffset;
 		}
 		else {
-			m_rawTransform.m_position.m_z += 10.0f;
+			m_rawTransform.m_position.m_z += g_unk0x004afde0;
 		}
 
 		ApplySmoothing();

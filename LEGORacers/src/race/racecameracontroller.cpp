@@ -425,7 +425,7 @@ GolVec3* RaceCameraController::GetViewDirection(GolVec3* p_dest)
 	return p_dest;
 }
 
-// STUB: LEGORACERS 0x00428540
+// FUNCTION: LEGORACERS 0x00428540
 void RaceCameraController::Update(LegoFloat p_elapsedMs)
 {
 	if (m_racer == NULL) {
@@ -728,11 +728,11 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		entity->GetPosition(&m_rawTransform.m_position);
 		if (m_alternate) {
 			m_rawTransform.m_position.m_z += g_warpPortalHeightOffset;
-		}
-		else {
-			m_rawTransform.m_position.m_z += g_unk0x004afde0;
+			ApplySmoothing();
+			return;
 		}
 
+		m_rawTransform.m_position.m_z += g_unk0x004afde0;
 		ApplySmoothing();
 		return;
 	}

@@ -902,7 +902,7 @@ void RacerPhysics::SaveRouteState()
 	m_savedRouteSpinAngle = m_routeSpinAngle;
 }
 
-// STUB: LEGORACERS 0x0042a290
+// FUNCTION: LEGORACERS 0x0042a290
 void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 {
 	GolQuat rotation = m_routeCursor.m_rotation;
@@ -1400,7 +1400,7 @@ LegoBool32 RacerPhysics::CanSteer(LegoFloat p_turnRadius)
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0042af90 FOLDED
+// FUNCTION: LEGORACERS 0x0042af90 FOLDED
 SpatialSoundInstance* RacerPhysics::PlaySurfaceSound(LegoS32 p_soundId)
 {
 	if (m_surfaceSound != NULL) {

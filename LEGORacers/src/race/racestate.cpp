@@ -376,7 +376,7 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 	m_setup.Initialize(m_roster.m_racers, m_roster.m_racerCount);
 }
 
-// STUB: LEGORACERS 0x0043b480
+// FUNCTION: LEGORACERS 0x0043b480
 void RaceState::CreateRacer(
 	LegoRacers::Context::PlayerSetupSlot* p_slot,
 	RacerContext* p_context,

@@ -360,7 +360,7 @@ void RaceTrailManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3* p_position
 	m_flags |= c_drawable;
 }
 
-// STUB: LEGORACERS 0x004931a0
+// FUNCTION: LEGORACERS 0x004931a0
 void RaceTrailManager::Trail::RebuildGeometry()
 {
 	LegoU32 frameCount;

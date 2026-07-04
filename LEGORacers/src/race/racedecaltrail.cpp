@@ -569,7 +569,7 @@ LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(
 	return result;
 }
 
-// STUB: LEGORACERS 0x00414f40
+// FUNCTION: LEGORACERS 0x00414f40
 void RaceDecalManager::Trail::Decal::EmitPolygon(LegoU32 p_firstPolygon, LegoU32 p_polygonCount)
 {
 	LegoU8* indices = m_sourceIndexBytes + 4 * p_firstPolygon;

@@ -658,7 +658,7 @@ void CarBuildModel::InterpolateBuildVertex(
 	p_dest->m_normalZ = static_cast<LegoS8>(p_left->m_normalZ * p_leftScale + p_right->m_normalZ * p_rightScale);
 }
 
-// STUB: LEGORACERS 0x00497360
+// FUNCTION: LEGORACERS 0x00497360
 LegoS32 CarBuildModel::BuildBatches(LegoS8 p_buildFlags)
 {
 	::memset(g_carBuildModelVertexUses, 0, sizeof(g_carBuildModelVertexUses));
@@ -1655,7 +1655,7 @@ void CarBuildModel::EndModelWrite(GolModelBase* p_model)
 	m_modelTriangles = NULL;
 }
 
-// STUB: LEGORACERS 0x0049a450
+// FUNCTION: LEGORACERS 0x0049a450
 LegoS16 CarBuildModel::EmitPieceGeometry(
 	LegoPieceLibrary::PieceRecord* p_pieceRecord,
 	LegoS32 p_x,

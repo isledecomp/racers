@@ -473,7 +473,7 @@ void CarVisuals::StartCarSmoke()
 	}
 }
 
-// STUB: LEGORACERS 0x0043e070
+// FUNCTION: LEGORACERS 0x0043e070
 void CarVisuals::Update(LegoU32 p_elapsedMs)
 {
 	UpdateBodyLean(p_elapsedMs);

@@ -136,7 +136,7 @@ RacerTriggerList::~RacerTriggerList()
 	Destroy();
 }
 
-// STUB: LEGORACERS 0x00463dc0
+// FUNCTION: LEGORACERS 0x00463dc0
 void RacerTriggerList::Load(
 	RaceState* p_raceState,
 	RaceEventTable* p_eventTable,

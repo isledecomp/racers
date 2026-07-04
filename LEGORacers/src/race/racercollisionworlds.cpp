@@ -107,7 +107,7 @@ void RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x0045e520
+// FUNCTION: LEGORACERS 0x0045e520
 void RacerCollisionWorlds::ActivateWorld(Racer* p_racer, LegoU32 p_worldIndex)
 {
 	Racer* target = p_racer;

@@ -504,7 +504,7 @@ void RaceSkyState::ModelBuilder::Build(Params* p_params)
 	}
 }
 
-// STUB: LEGORACERS 0x004907f0
+// FUNCTION: LEGORACERS 0x004907f0
 void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 {
 	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
@@ -834,7 +834,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 	p_params->m_model->AddFlags(1);
 }
 
-// STUB: LEGORACERS 0x004910e0
+// FUNCTION: LEGORACERS 0x004910e0
 void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 {
 	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));

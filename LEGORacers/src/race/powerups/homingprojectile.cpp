@@ -75,7 +75,7 @@ void HomingProjectile::Destruct()
 	PowerupProjectile::~PowerupProjectile();
 }
 
-// STUB: LEGORACERS 0x00423640
+// FUNCTION: LEGORACERS 0x00423640
 void HomingProjectile::UpdateTargeting(
 	LegoU32 p_elapsedMs,
 	RaceState* p_raceState,

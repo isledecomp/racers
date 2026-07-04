@@ -1173,7 +1173,7 @@ void RacerCarBody::UpdateSlideBank(LegoS32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x004465c0
+// FUNCTION: LEGORACERS 0x004465c0
 void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 {
 	LegoU32 flags = m_flags;

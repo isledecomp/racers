@@ -571,7 +571,7 @@ void CutsceneDefinition::Frame::Event::End(Frame* p_frame, CutsceneEventSink* p_
 }
 
 // FUNCTION: LEGORACERS 0x004055f0
-static LegoS32 __cdecl CompareEventStart(const void* p_left, const void* p_right)
+LegoS32 __cdecl CompareEventStart(const void* p_left, const void* p_right)
 {
 	CutsceneDefinition::Frame::Event* left = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_left);
 	CutsceneDefinition::Frame::Event* right = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_right);
@@ -588,7 +588,7 @@ static LegoS32 __cdecl CompareEventStart(const void* p_left, const void* p_right
 }
 
 // FUNCTION: LEGORACERS 0x00405610
-static LegoS32 __cdecl CompareEventEnd(const void* p_left, const void* p_right)
+LegoS32 __cdecl CompareEventEnd(const void* p_left, const void* p_right)
 {
 	CutsceneDefinition::Frame::Event* left = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_left);
 	CutsceneDefinition::Frame::Event* right = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_right);

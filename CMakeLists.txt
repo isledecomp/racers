@@ -396,6 +396,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/raceinputrouter.cpp
   LEGORacers/src/race/racecameracontroller.cpp
   LEGORacers/src/race/racer/racerphysics.cpp
+  LEGORacers/src/race/racemoderunner.cpp
   LEGORacers/src/save/saverecordlist.cpp
   LEGORacers/src/app/legoracers.cpp
   LEGORacers/src/menu/menumanager.cpp

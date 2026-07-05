@@ -583,6 +583,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/hazards/multilauncherhazard.cpp
   LEGORacers/src/race/hazards/launcherhazard.cpp
   LEGORacers/src/race/hazards/movingobstaclehazard.cpp
+  LEGORacers/src/menu/menuanimationlistentry.cpp
   LEGORacers/src/race/racedecalmanager.cpp
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/powerups/beammesh.cpp

@@ -1,0 +1,168 @@
+#include "golcamerabase.h"
+#include "golerror.h"
+#include "menu/menuanimationlist.h"
+#include "render/gold3drenderdevice.h"
+#include "surface/golrendertarget.h"
+
+DECOMP_SIZE_ASSERT(MenuAnimationList::Entry, 0x18)
+DECOMP_SIZE_ASSERT(MenuAnimationList::Entry::DrawScratch, 0x78)
+
+// FUNCTION: LEGORACERS 0x00490500
+MenuAnimationList::Entry::Entry()
+{
+	Clear();
+}
+
+// FUNCTION: LEGORACERS 0x00490510
+MenuAnimationList::Entry::~Entry()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00490520
+void MenuAnimationList::Entry::Reset()
+{
+	Deactivate();
+}
+
+// FUNCTION: LEGORACERS 0x00490530
+void MenuAnimationList::Entry::Clear()
+{
+	m_material = NULL;
+	m_rectSource = NULL;
+	m_remainingMs = 0;
+	m_durationMs = 0;
+	m_flags = 0;
+	m_color.m_red = 0;
+	m_color.m_grn = 0;
+	m_color.m_blu = 0;
+	m_color.m_alp = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00490550
+void MenuAnimationList::Entry::Activate(
+	LegoU32 p_durationMs,
+	LegoBool32 p_fadeOut,
+	GolMaterial* p_material,
+	const GolCameraBase* p_rectSource
+)
+{
+	m_material = p_material;
+	m_remainingMs = p_durationMs;
+	m_durationMs = p_durationMs;
+	LegoU8 flags = m_flags | c_flagActive;
+	m_rectSource = p_rectSource;
+	m_flags = flags;
+
+	if (p_fadeOut) {
+		m_flags = flags | c_flagFadeOut;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00490580
+void MenuAnimationList::Entry::Deactivate()
+{
+	Clear();
+}
+
+// FUNCTION: LEGORACERS 0x00490590
+void MenuAnimationList::Entry::Update(LegoU32 p_elapsedMs)
+{
+	if (m_flags & c_flagActive) {
+		if (!m_remainingMs) {
+			if (m_flags & c_flagExpired) {
+				Deactivate();
+			}
+			else {
+				m_flags |= c_flagExpired;
+			}
+		}
+
+		if (p_elapsedMs > m_remainingMs) {
+			m_remainingMs = 0;
+			return;
+		}
+
+		m_remainingMs -= p_elapsedMs;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004905e0
+void MenuAnimationList::Entry::Draw(GolD3DRenderDevice* p_renderer)
+{
+	DrawScratch scratch;
+
+	if (!(m_flags & c_flagActive)) {
+		return;
+	}
+
+	if (m_rectSource) {
+		scratch.m_rect = *m_rectSource->GetViewport();
+	}
+	else {
+		scratch.m_rect.m_top = 0;
+		scratch.m_rect.m_left = 0;
+		const GolRenderTarget* renderTargetInfo = p_renderer->GetRenderTargetInfo();
+		scratch.m_rect.m_bottom = renderTargetInfo->GetHeight();
+		renderTargetInfo = p_renderer->GetRenderTargetInfo();
+		scratch.m_rect.m_right = renderTargetInfo->GetWidth();
+	}
+
+	if (!(m_flags & c_flagFadeOut)) {
+		LegoFloat duration = (LegoFloat) (LegoS32) m_durationMs;
+		LegoFloat progress = (LegoFloat) (LegoS32) m_remainingMs / duration;
+		progress = 1.0f - progress;
+		scratch.m_alpha = progress * 255.0f;
+	}
+	else {
+		LegoFloat duration = (LegoFloat) (LegoS32) m_durationMs;
+		LegoFloat progress = (LegoFloat) (LegoS32) m_remainingMs / duration;
+		scratch.m_alpha = progress * 255.0f;
+	}
+
+	scratch.m_topLeft.m_x = (LegoFloat) scratch.m_rect.m_left;
+	scratch.m_topAsFloat = (LegoFloat) scratch.m_rect.m_top;
+	scratch.m_topLeft.m_y = scratch.m_topAsFloat;
+	scratch.m_topLeft.m_z = 0.0f;
+	scratch.m_topLeft.m_u = 0.0f;
+	scratch.m_topLeft.m_v = 0.0f;
+	scratch.m_topLeft.m_color.m_red = m_color.m_red;
+	scratch.m_topLeft.m_color.m_grn = m_color.m_grn;
+	scratch.m_topLeft.m_color.m_blu = m_color.m_blu;
+	scratch.m_topLeft.m_color.m_alp = scratch.m_alpha;
+
+	scratch.m_bottomLeft.m_x = scratch.m_topLeft.m_x;
+	scratch.m_bottomLeft.m_y = (LegoFloat) scratch.m_rect.m_bottom;
+	scratch.m_bottomLeft.m_z = 0.0f;
+	scratch.m_bottomLeft.m_u = 0.0f;
+	scratch.m_bottomLeft.m_v = 1.0f;
+	scratch.m_bottomLeft.m_color.m_red = m_color.m_red;
+	scratch.m_bottomLeft.m_color.m_grn = m_color.m_grn;
+	scratch.m_bottomLeft.m_color.m_blu = m_color.m_blu;
+	scratch.m_bottomLeft.m_color.m_alp = scratch.m_alpha;
+
+	scratch.m_topRight.m_x = (LegoFloat) scratch.m_rect.m_right;
+	scratch.m_topRight.m_y = scratch.m_topAsFloat;
+	scratch.m_topRight.m_z = 0.0f;
+	scratch.m_topRight.m_u = 1.0f;
+	scratch.m_topRight.m_v = 0.0f;
+	scratch.m_topRight.m_color.m_red = m_color.m_red;
+	scratch.m_topRight.m_color.m_grn = m_color.m_grn;
+	scratch.m_topRight.m_color.m_blu = m_color.m_blu;
+	scratch.m_topRight.m_color.m_alp = scratch.m_alpha;
+
+	scratch.m_bottomRight.m_x = scratch.m_topRight.m_x;
+	scratch.m_bottomRight.m_y = scratch.m_bottomLeft.m_y;
+	scratch.m_bottomRight.m_z = 0.0f;
+	scratch.m_bottomRight.m_u = 1.0f;
+	scratch.m_bottomRight.m_v = 1.0f;
+	scratch.m_bottomRight.m_color.m_red = m_color.m_red;
+	scratch.m_bottomRight.m_color.m_grn = m_color.m_grn;
+	scratch.m_bottomRight.m_color.m_blu = m_color.m_blu;
+	scratch.m_bottomRight.m_color.m_alp = scratch.m_alpha;
+
+	p_renderer->SetAlphaOverride(scratch.m_alpha, TRUE);
+	p_renderer->DrawTriangle(&scratch.m_bottomLeft, &scratch.m_topLeft, &scratch.m_bottomRight, m_material, 0);
+	p_renderer->DrawTriangle(&scratch.m_bottomRight, &scratch.m_topLeft, &scratch.m_topRight, m_material, 0);
+	p_renderer->ClearAlphaOverride();
+}

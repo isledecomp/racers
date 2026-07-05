@@ -103,7 +103,7 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 			GOL_FATALERROR_MESSAGE(errorMessage);
 		}
 	}
-	else if (p_drawState->m_flags & GolDrawState::c_flagBit19) {
+	else if (p_drawState->m_flags & GolDrawState::c_flagSystemMemorySurfaces) {
 		m_surfaceFlags &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
 		surfaceDesc.dwFlags = DDSD_CAPS;
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;

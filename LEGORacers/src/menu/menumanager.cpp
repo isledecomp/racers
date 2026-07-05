@@ -1130,7 +1130,7 @@ void MenuManager::ApplySettings()
 			if (deviceIndex < drawState->GetDeviceCount(driverIndex)) {
 				const LegoChar* deviceName = drawState->GetDeviceName(driverIndex, deviceIndex);
 				drawState->SelectDevice(driverName, deviceName);
-				selectedDrawFlags = GolDrawState::c_flagBit14;
+				selectedDrawFlags = GolDrawState::c_flagDeviceSelected;
 			}
 		}
 	}

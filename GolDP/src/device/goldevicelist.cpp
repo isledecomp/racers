@@ -139,7 +139,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 	GolDeviceList::GolD3DDeviceInfo* device;
 	device = FindMatchingDevice(p_flags, p_driverDescription, p_deviceName);
 
-	if (p_flags & GolDrawState::c_flagBit15) {
+	if (p_flags & GolDrawState::c_flagShowDeviceDialog) {
 		HINSTANCE hInstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtrA_COMPAT(p_hWnd, GWLP_HINSTANCE_COMPAT));
 		LPDLGTEMPLATE dialogTemplate = reinterpret_cast<LPDLGTEMPLATE>(new LegoChar[TEMPLATE_SIZE]);
 		if (dialogTemplate != NULL) {
@@ -224,7 +224,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 	GolD3DDriverInfo* driver;
 	GolD3DDeviceInfo* device;
 
-	if (p_flags & GolDrawState::c_flagBit14) {
+	if (p_flags & GolDrawState::c_flagDeviceSelected) {
 		for (m_driverIndex = 0; m_driverIndex < m_countDrivers; m_driverIndex++) {
 			driver = &m_drivers[m_driverIndex];
 			if (::strcmp(driver->m_description, p_driverDescription) == 0) {

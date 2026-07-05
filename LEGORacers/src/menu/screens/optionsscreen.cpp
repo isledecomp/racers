@@ -184,7 +184,7 @@ void OptionsScreen::ApplyVideoDriver()
 	if (deviceIndex < drawState->GetDeviceCount(driverIndex)) {
 		const LegoChar* deviceName = drawState->GetDeviceName(driverIndex, deviceIndex);
 		drawState->SelectDevice(driverName, deviceName);
-		flags = GolDrawState::c_flagBit14;
+		flags = GolDrawState::c_flagDeviceSelected;
 	}
 
 	LegoU32 appFlags = m_context->m_context->m_golApp->GetFlags();

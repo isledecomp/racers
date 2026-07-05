@@ -269,7 +269,7 @@ void Win32GolApp::InitializeDisplayWithDevice(
 )
 {
 	m_golDrawState->SelectDevice(p_driverName, p_deviceName);
-	InitializeDisplay(p_width, p_height, p_bpp, p_flags | c_flagBit2);
+	InitializeDisplay(p_width, p_height, p_bpp, p_flags | c_flagDeviceSelected);
 }
 
 // FUNCTION: LEGORACERS 0x00416b00
@@ -486,7 +486,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 
 	m_golDrawState->ReleaseDisplay();
 
-	LegoU32 drawFlags = BuildDrawStateFlags(m_flags) & ~GolDrawState::c_flagBit15;
+	LegoU32 drawFlags = BuildDrawStateFlags(m_flags) & ~GolDrawState::c_flagShowDeviceDialog;
 
 	OutputDebugString("Changing window state\n");
 
@@ -800,22 +800,22 @@ LegoU32 Win32GolApp::BuildDrawStateFlags(LegoU32 p_flags)
 		result |= GolDrawState::c_flagBit13;
 	}
 	if (p_flags & c_flagSelect3DDevice) {
-		result |= GolDrawState::c_flagBit15;
+		result |= GolDrawState::c_flagShowDeviceDialog;
 	}
-	if (p_flags & c_flagBit10) {
+	if (p_flags & c_flagForceSoftware) {
 		result |= GolDrawState::c_flagForceSoftware;
 	}
 	if (p_flags & c_flagBit17) {
 		result |= GolDrawState::c_flagBit17;
 	}
-	if (p_flags & c_flagBit2) {
-		result |= GolDrawState::c_flagBit14;
+	if (p_flags & c_flagDeviceSelected) {
+		result |= GolDrawState::c_flagDeviceSelected;
 	}
 	if (p_flags & c_flagBit12) {
 		result |= GolDrawState::c_flagTexturePalettes;
 	}
-	if (p_flags & c_flagBit13) {
-		result |= GolDrawState::c_flagBit19;
+	if (p_flags & c_flagSystemMemorySurfaces) {
+		result |= GolDrawState::c_flagSystemMemorySurfaces;
 	}
 	if (p_flags & c_flagAlphaTransparency) {
 		result |= GolDrawState::c_flagPreferAlphaTest;

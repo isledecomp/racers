@@ -1,6 +1,7 @@
 #include "golorientedentity.h"
 
 #include "decomp.h"
+#include "golworldentity.h"
 
 DECOMP_SIZE_ASSERT(GolOrientedEntity, 0x58)
 
@@ -409,4 +410,13 @@ void GolOrientedEntity::CopyScaledOrientationTo(GolMatrix4* p_dest, LegoFloat p_
 	p_dest->m_m[2][1] = value * p_scale;
 	value = m_orientation.m_m[2][2];
 	p_dest->m_m[2][2] = value * p_scale;
+}
+
+// FUNCTION: GOLDP 0x10026fa0 FOLDED
+// FUNCTION: LEGORACERS 0x00410f10
+void GolWorldEntity::SetBoundsRadius(LegoFloat p_scalar)
+{
+	m_radius = p_scalar;
+	m_minX = m_center.m_x - p_scalar;
+	m_maxX = p_scalar + m_center.m_x;
 }

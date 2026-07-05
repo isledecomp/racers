@@ -1,3 +1,5 @@
+#include "race/racesky.h"
+
 #include "core/gol.h"
 #include "gdbmodelindexarray.h"
 #include "gdbvertexarray.h"
@@ -7,7 +9,7 @@
 #include "golfileparser.h"
 #include "golmodelbase.h"
 #include "golmodelmaterialtable.h"
-#include "race/racesession.h"
+#include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "world/golworlddatabase.h"
 

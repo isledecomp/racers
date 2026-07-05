@@ -1,8 +1,9 @@
+#include "race/powerups/beammesh.h"
+
 #include "camera/golcamera.h"
 #include "camera/goltransform.h"
 #include "core/gol.h"
 #include "decomp.h"
-#include "gdbmodelindexarray.h"
 #include "gdbvertexarray.h"
 #include "golmaterial.h"
 #include "golmath.h"
@@ -10,7 +11,6 @@
 #include "golscenenode.h"
 #include "goltransformbase.h"
 #include "material/materialtable.h"
-#include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 
 #include <math.h>

@@ -1,6 +1,7 @@
+#include "race/raceinputrouter.h"
+
 #include "decomp.h"
 #include "input/directinputdevice.h"
-#include "race/racesession.h"
 
 #include <string.h>
 

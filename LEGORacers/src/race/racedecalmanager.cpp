@@ -1,3 +1,5 @@
+#include "race/racedecalmanager.h"
+
 #include "core/gol.h"
 #include "decomp.h"
 #include "gdbmodelindexarray.h"
@@ -7,7 +9,6 @@
 #include "golmaterial.h"
 #include "golmodelbase.h"
 #include "material/materialtable.h"
-#include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 
 #include <float.h>

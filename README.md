@@ -79,8 +79,8 @@ targets:
 
 Then run:
 ```
-reccmp-reccmp --target LEGORACERS -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png
-reccmp-reccmp --target GOLDP -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png
+reccmp-reccmp --target LEGORACERS -S LEGORACERSPROGRESS.SVG
+reccmp-reccmp --target GOLDP -S GOLDPPROGRESS.SVG
 ```
 
 ## Project Structure

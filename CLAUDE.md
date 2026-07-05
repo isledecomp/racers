@@ -32,8 +32,8 @@ reccmp-datacmp --target LEGORACERS --verbose --print-rec-addr
 reccmp-datacmp --target GOLDP --verbose --print-rec-addr
 
 # Progress SVGs
-reccmp-reccmp --target LEGORACERS --total 3986 --nolib -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png
-reccmp-reccmp --target GOLDP --total 1071 --nolib -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png
+reccmp-reccmp --target LEGORACERS --total 3986 --nolib -S LEGORACERSPROGRESS.SVG
+reccmp-reccmp --target GOLDP --total 1071 --nolib -S GOLDPPROGRESS.SVG
 
 # Lint annotations (pass source dir to avoid scanning gitignored files)
 reccmp-decomplint --module LEGORACERS --warnfail <path-to-LEGORacers>

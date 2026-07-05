@@ -1,8 +1,9 @@
 #ifndef WHITEBRICK_H
 #define WHITEBRICK_H
 
-#include "race/racer/racer.h"
+#include "race/powerups/droppablebrick.h"
 
+class Racer;
 class RacePowerupManager;
 
 // VTABLE: LEGORACERS 0x004b148c

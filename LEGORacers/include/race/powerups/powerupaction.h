@@ -42,7 +42,7 @@ public:
 	virtual void AdvanceState() = 0;                   // vtable+0x14
 
 	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-	virtual LegoS32 GetBrickColor() = 0 { return 0; } // vtable+0x18
+	virtual LegoS32 GetBrickColor() { return 0; } // vtable+0x18
 
 	virtual void Deactivate(); // vtable+0x1c
 

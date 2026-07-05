@@ -1,6 +1,9 @@
+#include "race/playercontrols.h"
+
 #include "decomp.h"
 #include "input/directinputdevice.h"
-#include "race/racesession.h"
+#include "race/powerups/racepowerupmanager.h"
+#include "race/racer/racer.h"
 
 #include <string.h>
 

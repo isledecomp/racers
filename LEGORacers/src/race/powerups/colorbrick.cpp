@@ -1,17 +1,12 @@
+#include "race/powerups/colorbrick.h"
+
 #include "audio/soundnode.h"
-#include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
-#include "cmbmodelpart.h"
-#include "decomp.h"
 #include "golmodelbase.h"
-#include "golscenenode.h"
-#include "goltransformbase.h"
 #include "material/materialtable.h"
 #include "menu/runtime/cutsceneparticle.h"
-#include "race/racesession.h"
-#include "render/golcommondrawstate.h"
-#include "render/gold3drenderdevice.h"
-#include "world/golworlddatabase.h"
+#include "race/powerups/racepowerupmanager.h"
+#include "race/racesoundsource.h"
 
 #include <float.h>
 #include <math.h>

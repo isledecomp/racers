@@ -6,6 +6,7 @@
 class GolBoundedEntity;
 class GolWorldDatabase;
 class RaceSession;
+class RaceState;
 class Racer;
 
 // VTABLE: LEGORACERS 0x004b1acc

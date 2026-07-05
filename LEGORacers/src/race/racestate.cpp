@@ -17,7 +17,7 @@
 #include "race/raceforcefeedback.h"
 #include "race/racehud.h"
 #include "race/racer/racerouterecord.h"
-#include "race/racesession.h"
+#include "race/racesoundsource.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/gold3dtexture.h"

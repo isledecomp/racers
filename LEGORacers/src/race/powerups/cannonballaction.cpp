@@ -1,3 +1,5 @@
+#include "race/powerups/cannonballaction.h"
+
 #include "audio/soundnode.h"
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
@@ -8,7 +10,8 @@
 #include "goltransformbase.h"
 #include "material/materialtable.h"
 #include "menu/runtime/cutsceneparticle.h"
-#include "race/racesession.h"
+#include "race/powerups/racepowerupmanager.h"
+#include "race/racesoundsource.h"
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"

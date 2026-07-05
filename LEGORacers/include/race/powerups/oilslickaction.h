@@ -1,8 +1,9 @@
 #ifndef OILSLICKACTION_H
 #define OILSLICKACTION_H
 
-#include "golmodelentity.h"
+#include "managedmaterialtable.h"
 #include "race/powerups/hazardactionbase.h"
+#include "race/racedecalmanager.h"
 
 class CutsceneAnimation;
 class MabMaterialTrack;

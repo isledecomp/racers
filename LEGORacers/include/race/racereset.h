@@ -6,9 +6,11 @@
 
 class CutsceneAnimation;
 class HazardManager;
+class RaceEventTable;
 class RacePowerupManager;
 class RaceSession;
 class RaceState;
+class RacerCollisionWorlds;
 class RacerTriggerList;
 class TimeRaceManager;
 class TriggerList;

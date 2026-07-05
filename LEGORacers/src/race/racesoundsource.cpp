@@ -1,6 +1,7 @@
+#include "race/racesoundsource.h"
+
 #include "audio/soundgroup.h"
 #include "audio/soundmanager.h"
-#include "race/racesession.h"
 
 DECOMP_SIZE_ASSERT(RaceSoundSource, 0x14)
 

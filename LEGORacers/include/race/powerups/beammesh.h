@@ -1,8 +1,10 @@
 #ifndef BEAMMESH_H
 #define BEAMMESH_H
 
+#include "gdbmodelindexarray.h"
 #include "golmath.h"
 #include "race/powerups/beamentity.h"
+#include "surface/color.h"
 #include "types.h"
 
 class GolD3DRenderDevice;

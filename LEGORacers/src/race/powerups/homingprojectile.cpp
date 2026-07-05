@@ -1,6 +1,8 @@
+#include "race/powerups/homingprojectile.h"
+
 #include "decomp.h"
 #include "golmath.h"
-#include "race/racesession.h"
+#include "race/triggerworld.h"
 
 #include <float.h>
 #include <math.h>

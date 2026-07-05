@@ -1,5 +1,12 @@
-#include "race/racesession.h"
+#include "race/racereset.h"
+
+#include "race/hazardmanager.h"
+#include "race/powerups/racepowerupmanager.h"
+#include "race/raceeventtable.h"
+#include "race/racercollisionworlds.h"
+#include "race/racertriggerlist.h"
 #include "race/timeracemanager.h"
+#include "race/triggerlist.h"
 
 DECOMP_SIZE_ASSERT(RaceReset, 0x2c)
 

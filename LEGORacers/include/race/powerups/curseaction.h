@@ -6,6 +6,7 @@
 #include "race/raceresourcemanager.h"
 
 class CutsceneAnimation;
+class GolAnimatedEntity;
 class MabMaterialTrack;
 class SpatialSoundInstance;
 

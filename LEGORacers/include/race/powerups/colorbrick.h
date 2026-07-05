@@ -3,6 +3,8 @@
 
 #include "race/powerups/pickupbrick.h"
 
+class GolMaterial;
+
 // VTABLE: LEGORACERS 0x004b1710
 // SIZE 0x68
 class ColorBrick : public PickupBrick {

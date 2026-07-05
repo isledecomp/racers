@@ -1,10 +1,7 @@
-#include "app/cheatflags.h"
-#include "audio/spatialsoundinstance.h"
-#include "cmbmodelpart.h"
 #include "decomp.h"
 #include "golmateriallibrary.h"
-#include "golworldentity.h"
-#include "race/racesession.h"
+#include "race/powerups/powerupaction.h"
+#include "race/powerups/racepowerupmanager.h"
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"
 

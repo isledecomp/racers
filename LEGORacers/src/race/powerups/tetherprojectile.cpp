@@ -1,5 +1,7 @@
+#include "race/powerups/tetherprojectile.h"
+
 #include "decomp.h"
-#include "race/racesession.h"
+#include "race/triggerworld.h"
 #include "render/golcommondrawstate.h"
 
 DECOMP_SIZE_ASSERT(TetherProjectile, 0x238)

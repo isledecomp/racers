@@ -1,7 +1,9 @@
+#include "race/racetimerlist.h"
+
 #include "decomp.h"
 #include "golbinparser.h"
 #include "golerror.h"
-#include "race/racesession.h"
+#include "race/raceeventtable.h"
 
 DECOMP_SIZE_ASSERT(RaceTimerList, 0x0c)
 DECOMP_SIZE_ASSERT(RaceTimerList::Resource, 0x24)

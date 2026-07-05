@@ -5,6 +5,7 @@
 #include "race/powerups/powerupaction.h"
 
 class CutsceneAnimation;
+class GolAnimatedEntity;
 class MabMaterialTrack;
 class SpatialSoundInstance;
 

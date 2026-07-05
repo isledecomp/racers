@@ -1,7 +1,8 @@
 #include "race/events/colortransformresource.h"
 
 #include "decomp.h"
-#include "race/racesession.h"
+#include "golworldentity.h"
+#include "race/racer/racer.h"
 
 DECOMP_SIZE_ASSERT(ColorTransformResource, 0x48)
 DECOMP_SIZE_ASSERT(ColorTransformResource::InitParams, 0x3c)

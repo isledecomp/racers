@@ -241,10 +241,8 @@ public:
 	void RemoveMaterialList(GolMaterialLibrary* p_param);
 	GolMaterial* FindMaterialByName(const LegoChar* p_name);
 
-#ifdef BUILDING_LEGORACERS
 	GolFont* FindFontByName(const LegoChar* p_name);
 	GolImage* FindImageByName(const LegoChar* p_name);
-#endif
 
 	// SYNTHETIC: GOLDP 0x100288b0
 	// GolRenderDevice::`scalar deleting destructor'

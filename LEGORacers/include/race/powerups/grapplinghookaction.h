@@ -47,7 +47,7 @@ public:
 	void OnHitRacer(Racer* p_racer) override;           // vtable+0x20
 	void Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld, undefined4 p_billboardMaterialIndex);
 	void Shutdown();
-	LegoU32 Activate(
+	void Activate(
 		GolModelEntity* p_hookEntity,
 		Racer* p_racer,
 		Racer* p_targetRacer,

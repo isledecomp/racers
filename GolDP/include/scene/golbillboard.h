@@ -24,12 +24,6 @@ public:
 		c_flagMaterialAssignment = 1 << 2,
 	};
 
-#ifdef BUILDING_LEGORACERS
-	typedef LegoU32 VTable0x4cReturn;
-#else
-	typedef void VTable0x4cReturn;
-#endif
-
 	GolBillboard();
 	static void InitializeTexCoords();
 
@@ -39,7 +33,7 @@ public:
 	void ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result) override; // vtable+0x14
 	void Draw(GolRenderDevice&) override;                                                  // vtable+0x1c
 	LegoBool32 GetKind() override;                                                         // vtable+0x20
-	virtual VTable0x4cReturn Configure(
+	virtual void Configure(
 		GolMaterial* p_material,
 		LegoFloat p_width,
 		LegoFloat p_height,
@@ -50,7 +44,7 @@ public:
 	LegoBool32 BuildModelMatrix(const GolVec3* p_right, const GolVec3* p_forward, GolMatrix4* p_matrix);
 	void DrawQuad(GolD3DRenderDevice* p_renderer);
 	void SetBoundsRadius(LegoFloat p_arg1);
-	VTable0x4cReturn ConfigureFromMaterialTable(
+	void ConfigureFromMaterialTable(
 		MaterialTable* p_container,
 		LegoS32 p_index,
 		LegoFloat p_width,

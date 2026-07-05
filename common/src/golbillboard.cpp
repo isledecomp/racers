@@ -47,6 +47,7 @@ void GolBillboard::Configure(
 }
 
 // FUNCTION: GOLDP 0x10029e90
+// FUNCTION: LEGORACERS 0x004133a0
 void GolBillboard::ConfigureFromMaterialTable(
 	MaterialTable* p_container,
 	LegoS32 p_index,

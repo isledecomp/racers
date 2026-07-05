@@ -1378,7 +1378,7 @@ void RacePowerupManager::UseYellowPowerup(Racer* p_racer, LegoU32 p_level)
 }
 
 // FUNCTION: LEGORACERS 0x0045aa30
-LegoU32 RacePowerupManager::FireCannonball(Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::FireCannonball(Racer* p_racer, LegoU32 p_level)
 {
 	ActionSetup setup;
 	setup.m_racer = p_racer;
@@ -1426,13 +1426,12 @@ LegoU32 RacePowerupManager::FireCannonball(Racer* p_racer, LegoU32 p_level)
 
 	action->m_next = m_activeActions;
 	m_activeActions = action;
-	LegoU32 result = action->Activate(&setup);
+	action->Activate(&setup);
 	action->m_level = p_level;
-	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045ab50
-LegoU32 RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
 {
 	TargetPointList::Entry* entry = NULL;
 
@@ -1482,11 +1481,9 @@ LegoU32 RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
 	GolWorldDatabase* worldDatabase = m_worldDatabase;
 	m_activeActions = action;
 	GrapplingHookAction* activeAction = static_cast<GrapplingHookAction*>(m_activeActions);
-	LegoU32 result =
-		activeAction
-			->Activate(worldDatabase->GetModelEntities(), p_racer, target, setupEntry, GetMaterialAnimationTracks(), 0);
+	activeAction
+		->Activate(worldDatabase->GetModelEntities(), p_racer, target, setupEntry, GetMaterialAnimationTracks(), 0);
 	action->m_level = p_level;
-	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045ac80

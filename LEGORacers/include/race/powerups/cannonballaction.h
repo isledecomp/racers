@@ -43,7 +43,7 @@ public:
 	void OnHitRacer(Racer* p_racer) override;           // vtable+0x20
 	void Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld);
 	void Destroy();
-	LegoU32 Activate(ActionSetup* p_setup);
+	void Activate(ActionSetup* p_setup);
 
 private:
 	// SIZE 0x24

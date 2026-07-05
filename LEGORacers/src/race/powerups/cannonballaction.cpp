@@ -105,7 +105,7 @@ void CannonballAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00451a50
-LegoU32 CannonballAction::Activate(ActionSetup* p_setup)
+void CannonballAction::Activate(ActionSetup* p_setup)
 {
 	m_state = c_stateArmed;
 	m_ownerRacer = p_setup->m_racer;
@@ -128,8 +128,7 @@ LegoU32 CannonballAction::Activate(ActionSetup* p_setup)
 		material = renderDevice->FindMaterialByName("cannon");
 	}
 
-	return m_billboard
-		->Configure(material, g_cannonballBillboardSize, g_cannonballBillboardSize, g_unlimitedDrawDistance);
+	m_billboard->Configure(material, g_cannonballBillboardSize, g_cannonballBillboardSize, g_unlimitedDrawDistance);
 }
 
 // FUNCTION: LEGORACERS 0x00451ad0

@@ -140,6 +140,7 @@ set(GOLDP_COMMON_INLINE_EXPANSION_SOURCES
   common/src/golbmpwriterfile.cpp
   common/src/golfilesource.cpp
   common/src/materialtable.cpp
+  common/src/golrenderdevice.cpp
 )
 
 set(GOLDP_INLINE_EXPANSION_SOURCES
@@ -147,9 +148,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/render/golrasterizers1.cpp
   GolDP/src/render/golrasterizers2.cpp
-  GolDP/src/image/golimage.cpp
   GolDP/src/image/goltiledtexture.cpp
-  GolDP/src/render/golrenderdevice.cpp
   GolDP/src/render/gold3drendersurface.cpp
   GolDP/src/surface/gold3dtexturepalette.cpp
   GolDP/src/surface/goldepthbuffer.cpp
@@ -159,6 +158,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/material/golsoftwaremateriallibrary.cpp
   GolDP/src/mesh/gdbcoloredvertexarraybase.cpp
   GolDP/src/camera/golscenetransformnode.cpp
+  GolDP/src/image/golimage.cpp
 )
 
 #-- - GolDP.dll target -- -
@@ -233,9 +233,9 @@ add_library(goldp SHARED
   common/src/golmodelentity.cpp
   common/src/golnametable.cpp
   common/src/golworldentity.cpp
-  GolDP/src/render/golrenderdevice.cpp
+  common/src/golrenderdevice.cpp
   common/src/golscenenode.cpp
-  GolDP/src/scene/golbillboard.cpp
+  common/src/golbillboard.cpp
   common/src/goltexturepalette.cpp
   common/src/golpalettedtexture.cpp
   common/src/goltgafile.cpp
@@ -320,7 +320,6 @@ add_executable(legoracers WIN32
   common/src/golpalettedtexture.cpp
   common/src/golfontbase.cpp
   LEGORacers/src/util/carshadowrenderstate.cpp
-  LEGORacers/src/gol/goltexturelist.cpp
   common/src/golimgfile.cpp
   common/src/golimgfilewriter.cpp
   common/src/golanimatedentity.cpp
@@ -342,13 +341,16 @@ add_executable(legoracers WIN32
   common/src/golworldentity.cpp
   common/src/golworldentitygroup.cpp
   LEGORacers/src/util/particlesystem.cpp
-  LEGORacers/src/gol/golrenderdevice.cpp
+  common/src/golrenderdevice.cpp
   common/src/golscenenode.cpp
+  common/src/golbillboard.cpp
   common/src/goltexturepalette.cpp
   common/src/goltgafile.cpp
   LEGORacers/src/util/particle.cpp
+  LEGORacers/src/model/goltexturelist.cpp
   LEGORacers/src/race/racedecaltrail.cpp
   common/src/goltexture.cpp
+  common/src/golviewfrustum.cpp
   common/src/gdbvertexarray.cpp
   LEGORacers/src/model/golworlddatabase.cpp
   LEGORacers/src/app/golapp.cpp
@@ -620,7 +622,6 @@ add_executable(legoracers WIN32
   common/src/gdbmodelindexarray.cpp
   common/src/golconstants.cpp
   common/src/golcpu.cpp
-  common/src/golviewfrustum.cpp
   LEGORacers/src/save/memorycardfile.cpp
   LEGORacers/src/app/guids.cpp
   util/decomp.cpp

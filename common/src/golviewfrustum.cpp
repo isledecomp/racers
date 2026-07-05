@@ -1,5 +1,32 @@
 #include "golviewfrustum.h"
 
+// FUNCTION: GOLDP 0x1002bc20
+// FUNCTION: LEGORACERS 0x00415d60
+LegoS32 GolViewFrustum::ClassifySphere(const GolVec3& p_center, LegoFloat p_radius) const
+{
+	LegoS32 insideCount = 0;
+	const Plane* plane = m_planes;
+	const Plane* end = m_planes + sizeOfArray(m_planes);
+
+	for (; plane < end; plane++) {
+		LegoFloat distance = plane->m_normal.m_z * p_center.m_z;
+		distance += plane->m_normal.m_y * p_center.m_y;
+		distance += plane->m_normal.m_x * p_center.m_x;
+		distance += plane->m_distance;
+		if (distance > p_radius) {
+			insideCount++;
+		}
+		else if (distance < -p_radius) {
+			return 0;
+		}
+	}
+
+	if (insideCount == 6) {
+		return 2;
+	}
+	return 1;
+}
+
 // FUNCTION: GOLDP 0x1002bc90
 LegoS32 __fastcall GolViewFrustum::ClassifyBox(const GolViewFrustum* p_frustum, undefined4, const LegoFloat* p_bounds)
 {

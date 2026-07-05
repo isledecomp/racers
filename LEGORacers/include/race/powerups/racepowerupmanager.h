@@ -233,8 +233,8 @@ private:
 	void Destroy();
 	void UpdateBricks(LegoU32 p_elapsedMs);
 	void CreateBrickEvents();
-	LegoU32 FireCannonball(Racer* p_racer, LegoU32 p_level);
-	LegoU32 FireGrapplingHook(Racer* p_racer, LegoU32 p_level);
+	void FireCannonball(Racer* p_racer, LegoU32 p_level);
+	void FireGrapplingHook(Racer* p_racer, LegoU32 p_level);
 	void FireLightning(Racer* p_racer, LegoU32 p_level);
 	void DropOilSlick(Racer* p_racer, LegoU32 p_level);
 	LegoU32 ThrowDynamite(Racer* p_racer, LegoU32 p_level);

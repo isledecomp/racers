@@ -123,7 +123,7 @@ void GrapplingHookAction::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x00453de0
-LegoU32 GrapplingHookAction::Activate(
+void GrapplingHookAction::Activate(
 	GolModelEntity* p_hookEntity,
 	Racer* p_racer,
 	Racer* p_targetRacer,
@@ -145,7 +145,7 @@ LegoU32 GrapplingHookAction::Activate(
 	m_billboardAnimation.Assign(m_owner->GetBillboardMaterialTable(), m_billboardMaterialIndex, FALSE);
 	m_billboardAnimation.Update(0, m_owner->GetMaterialAnimationItems(), m_owner->GetMaterialAnimationItemCount());
 
-	return m_billboard->ConfigureFromMaterialTable(
+	m_billboard->ConfigureFromMaterialTable(
 		m_owner->GetBillboardMaterialTable(),
 		m_billboardMaterialIndex,
 		g_hookBillboardSize,

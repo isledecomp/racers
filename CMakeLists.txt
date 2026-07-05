@@ -409,6 +409,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesession.cpp
   LEGORacers/src/race/data/racenamelist.cpp
   LEGORacers/src/race/racer/racer.cpp
+  LEGORacers/src/race/racesetup.cpp
   LEGORacers/src/race/racereset.cpp
   LEGORacers/src/util/legoeventqueuecollision.cpp
   LEGORacers/src/race/racestate.cpp
@@ -498,6 +499,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/widgets/menuhotspotbutton.cpp
   LEGORacers/src/menu/screens/scenewidget.cpp
   LEGORacers/src/menu/widgets/menuselector.cpp
+  LEGORacers/src/menu/menuinputcursor.cpp
   LEGORacers/src/menu/widgets/menucolorbox.cpp
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp

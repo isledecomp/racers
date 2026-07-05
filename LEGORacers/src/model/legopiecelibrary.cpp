@@ -12,7 +12,7 @@ DECOMP_SIZE_ASSERT(LegoPieceLibrary, 0x3c)
 DECOMP_SIZE_ASSERT(LegoPieceLibrary::LebTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(LegoPieceLibrary::ShapeCell, 0x02)
 DECOMP_SIZE_ASSERT(LegoPieceLibrary::PieceRecord, 0x1c)
-DECOMP_SIZE_ASSERT(LegoPieceLibrary::Color, 0x06)
+DECOMP_SIZE_ASSERT(LegoPieceLibrary::Position, 0x06)
 DECOMP_SIZE_ASSERT(LegoPieceLibrary::TextureCoordinate, 0x04)
 
 // GLOBAL: LEGORACERS 0x004cebac
@@ -22,7 +22,7 @@ static const LegoS32 g_highPieceTypeBase = 0x800;
 static const LegoU8 g_shapeCellValueMask = 0x3f;
 
 // GLOBAL: LEGORACERS 0x004b4948
-static const LegoFloat g_pieceLibraryColorScale = 1.0f / 256.0f;
+static const LegoFloat g_pieceLibraryPositionScale = 1.0f / 256.0f;
 
 // GLOBAL: LEGORACERS 0x004b494c
 static const LegoFloat g_pieceLibraryTextureCoordinateScale = 1.0f / 1024.0f;
@@ -224,12 +224,12 @@ void LegoPieceLibrary::DestroyData()
 		delete[] m_indices;
 	}
 
-	if (m_colors) {
-		delete[] m_colors;
+	if (m_positions) {
+		delete[] m_positions;
 	}
 
-	if (m_colorTriples) {
-		delete[] m_colorTriples;
+	if (m_normals) {
+		delete[] m_normals;
 	}
 
 	if (m_textureCoordinates) {
@@ -248,10 +248,10 @@ void LegoPieceLibrary::Reset()
 	m_shapeData = NULL;
 	m_indexCount = 0;
 	m_indices = NULL;
-	m_colorCount = 0;
-	m_colors = NULL;
-	m_colorTripleCount = 0;
-	m_colorTriples = NULL;
+	m_positionCount = 0;
+	m_positions = NULL;
+	m_normalCount = 0;
+	m_normals = NULL;
 	m_textureCoordinateCount = 0;
 	m_textureCoordinates = NULL;
 	m_maxHighPieceOffset = 0;
@@ -259,11 +259,11 @@ void LegoPieceLibrary::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0049ed60
-LegoBool32 LegoPieceLibrary::IsColorBlack(LegoS32 p_index) const
+LegoBool32 LegoPieceLibrary::IsOriginPosition(LegoS32 p_index) const
 {
-	Color* color = &m_colors[p_index];
-	if (static_cast<LegoU8>(color->m_red) == 0 && static_cast<LegoU8>(color->m_green) == 0 &&
-		static_cast<LegoU8>(color->m_blue) == 0) {
+	Position* position = &m_positions[p_index];
+	if (static_cast<LegoU8>(position->m_x) == 0 && static_cast<LegoU8>(position->m_y) == 0 &&
+		static_cast<LegoU8>(position->m_z) == 0) {
 		return TRUE;
 	}
 
@@ -271,12 +271,12 @@ LegoBool32 LegoPieceLibrary::IsColorBlack(LegoS32 p_index) const
 }
 
 // FUNCTION: LEGORACERS 0x0049ed90
-void LegoPieceLibrary::GetColor(LegoS32 p_index, LegoFloat* p_red, LegoFloat* p_green, LegoFloat* p_blue) const
+void LegoPieceLibrary::GetPosition(LegoS32 p_index, LegoFloat* p_x, LegoFloat* p_y, LegoFloat* p_z) const
 {
-	Color* color = &m_colors[p_index];
-	*p_red = static_cast<LegoFloat>(color->m_red) * g_pieceLibraryColorScale;
-	*p_green = static_cast<LegoFloat>(color->m_green) * g_pieceLibraryColorScale;
-	*p_blue = static_cast<LegoFloat>(color->m_blue) * g_pieceLibraryColorScale;
+	Position* position = &m_positions[p_index];
+	*p_x = static_cast<LegoFloat>(position->m_x) * g_pieceLibraryPositionScale;
+	*p_y = static_cast<LegoFloat>(position->m_y) * g_pieceLibraryPositionScale;
+	*p_z = static_cast<LegoFloat>(position->m_z) * g_pieceLibraryPositionScale;
 }
 
 // FUNCTION: LEGORACERS 0x0049edf0
@@ -342,40 +342,40 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 			SkipCurrentBlock(*parser);
 			break;
 		}
-		case LebTxtParser::e_colors: {
-			m_colorCount = ReadBracketedCountAndLeftCurly(parser);
-			m_colors = new Color[m_colorCount];
-			if (m_colors == NULL) {
+		case LebTxtParser::e_positions: {
+			m_positionCount = ReadBracketedCountAndLeftCurly(parser);
+			m_positions = new Position[m_positionCount];
+			if (m_positions == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 			LegoS32 i;
-			for (i = 0; i < m_colorCount; i++) {
-				LegoS32 red = parser->ReadInteger();
-				LegoS32 green = parser->ReadInteger();
-				LegoS32 blue = parser->ReadInteger();
-				Color* color = &m_colors[i];
-				color->m_red = static_cast<LegoS16>(red);
-				color->m_green = static_cast<LegoS16>(green);
-				color->m_blue = static_cast<LegoS16>(blue);
+			for (i = 0; i < m_positionCount; i++) {
+				LegoS32 x = parser->ReadInteger();
+				LegoS32 y = parser->ReadInteger();
+				LegoS32 z = parser->ReadInteger();
+				Position* position = &m_positions[i];
+				position->m_x = static_cast<LegoS16>(x);
+				position->m_y = static_cast<LegoS16>(y);
+				position->m_z = static_cast<LegoS16>(z);
 			}
 			SkipCurrentBlock(*parser);
 			break;
 		}
-		case LebTxtParser::e_colorTriples: {
-			m_colorTripleCount = ReadBracketedCountAndLeftCurly(parser);
-			m_colorTriples = new LegoU8[m_colorTripleCount * 3];
-			if (m_colors == NULL) {
+		case LebTxtParser::e_normals: {
+			m_normalCount = ReadBracketedCountAndLeftCurly(parser);
+			m_normals = new LegoU8[m_normalCount * 3];
+			if (m_positions == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 			LegoS32 i;
-			for (i = 0; i < m_colorTripleCount; i++) {
-				LegoS32 red = parser->ReadInteger();
-				LegoS32 green = parser->ReadInteger();
-				LegoS32 blue = parser->ReadInteger();
-				LegoU8* triple = &m_colorTriples[i * 3];
-				triple[0] = static_cast<LegoU8>(red);
-				triple[1] = static_cast<LegoU8>(green);
-				triple[2] = static_cast<LegoU8>(blue);
+			for (i = 0; i < m_normalCount; i++) {
+				LegoS32 x = parser->ReadInteger();
+				LegoS32 y = parser->ReadInteger();
+				LegoS32 z = parser->ReadInteger();
+				LegoU8* normal = &m_normals[i * 3];
+				normal[0] = static_cast<LegoU8>(x);
+				normal[1] = static_cast<LegoU8>(y);
+				normal[2] = static_cast<LegoU8>(z);
 			}
 			SkipCurrentBlock(*parser);
 			break;

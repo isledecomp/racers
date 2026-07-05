@@ -322,7 +322,7 @@ public:
 		c_modelGroupCapacity = 1610,
 		c_modelBatchVertexCapacity = 64,
 		c_modelMaterialGroup = 0x80000000,
-		c_buildPrimitiveFlagAllBlack = 0x01,
+		c_buildPrimitiveFlagAllOrigin = 0x01,
 		c_buildPrimitiveFlagSameX = 0x02,
 		c_buildPrimitiveFlagSameY = 0x04,
 		c_buildPrimitiveFlagSameZ = 0x08,

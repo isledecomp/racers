@@ -585,6 +585,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/powerups/beammesh.cpp
   LEGORacers/src/menu/menuanimationlist.cpp
+  LEGORacers/src/model/carbuildmodelgeometry.cpp
   LEGORacers/src/model/legocolortable.cpp
   LEGORacers/src/racer/driverpartresources.cpp
   LEGORacers/src/racer/driverpartcatalog.cpp
@@ -592,6 +593,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/carbuildmodel.cpp
   LEGORacers/src/model/carpartset.cpp
   LEGORacers/src/racer/drivermodelbuilder.cpp
+  LEGORacers/src/model/carbuildpiecegrid.cpp
   LEGORacers/src/model/legopiecelibrary.cpp
   LEGORacers/src/model/carbuildpiecelist.cpp
   LEGORacers/src/menu/runtime/cutsceneplayer.cpp

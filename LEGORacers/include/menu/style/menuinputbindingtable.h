@@ -110,16 +110,7 @@ public:
 	};
 
 	// SIZE 0xa0
-	class TextFieldBinding : public IconBinding {
-	public:
-		GolStringTable* m_stringTable;            // 0x84
-		undefined2 m_charsetStringId;             // 0x88
-		undefined m_unk0x8a[0x8c - 0x8a];         // 0x8a
-		GolFont* m_font;                          // 0x8c
-		GolString* m_initialText;                 // 0x90
-		undefined2 m_maxLength;                   // 0x94
-		MenuTextField::SoundIdSet m_editSoundIds; // 0x96
-	};
+	class TextFieldBinding : public MenuTextField::CreateParams {};
 
 	// SIZE 0xb8
 	class CompositeBinding : public MenuSelectorBase::CreateParams {

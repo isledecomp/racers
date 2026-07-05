@@ -22,8 +22,7 @@ GolSoftwareRenderer::SpanRasterizerCallback g_spanRasterizers[84] = {
 // GLOBAL: GOLDP 0x1005799c
 const LegoFloat g_floatConst65536 = 65536.0f;
 
-/// Temporary, until we figure out how to get the block to fold correctly. See the comments below.
-inline void FoldedBlockTodo(GolSoftwareRenderer* p_renderer)
+inline void SelectMipmapRasterizers(GolSoftwareRenderer* p_renderer)
 {
 	if (p_renderer->GetCurrentMipmap()->m_paletteData) {
 		if (p_renderer->GetRasterizerFlags() & 0x200) {
@@ -61,7 +60,7 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		if (p_renderer->GetPixelFormat() != 1) {
 			p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
 			p_renderer->SetTriangleRasterizer(NoopTriangleRasterizer);
-			// TODO: This double assignment is weird, seems to be optimized away most of the time. Maybe volatile?
+			// The original stores the rasterizer twice.
 			p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
 			return;
 		}
@@ -156,7 +155,7 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 			}
 		}
 		else {
-			FoldedBlockTodo(p_renderer);
+			SelectMipmapRasterizers(p_renderer);
 		}
 	}
 	else {
@@ -251,9 +250,7 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 			}
 		}
 		else {
-			// TODO: Matches better with this one disabled because the code gets folded as expected, but in the wrong
-			// place. A `goto` to the other invocation has the same effect.
-			FoldedBlockTodo(p_renderer);
+			SelectMipmapRasterizers(p_renderer);
 		}
 	}
 }

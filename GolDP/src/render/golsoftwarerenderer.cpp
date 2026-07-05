@@ -216,7 +216,7 @@ void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMateria
 					rasterizerMode |= c_flag0x2cBit2;
 				}
 				else {
-					rasterizerMode |= c_flag0x2cBit4; // TODO: this is folded with a wrong but equivalent line
+					rasterizerMode |= c_flag0x2cBit4;
 				}
 			}
 			else {
@@ -234,7 +234,6 @@ void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMateria
 	}
 	else {
 		FUN_100330d0(this, NULL);
-		// TODO: Can't get a `& 0xff` to appear
 		rasterizerMode = flags & GolMaterial::c_flagGouraudShading ? c_flag0x2cBit0 : 0;
 	}
 

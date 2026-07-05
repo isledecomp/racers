@@ -1,5 +1,6 @@
 #include "menu/style/menuinputbindingtable.h"
 
+#include "font/golfont.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"

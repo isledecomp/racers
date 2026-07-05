@@ -427,6 +427,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/saverecordcursor.cpp
   LEGORacers/src/save/savesystem.cpp
   LEGORacers/src/save/memorycardsavegame.cpp
+  LEGORacers/src/audio/staticnullsoundinstance.cpp
   LEGORacers/src/race/racesoundsource.cpp
   LEGORacers/src/race/racer/racersoundsource.cpp
   LEGORacers/src/race/raceresourcemanager.cpp

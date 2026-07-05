@@ -74,9 +74,11 @@ public:
 	void OnIconSelected(MenuIcon*) override;                                                         // vtable+0x3c
 	void OnIconDeselected(MenuIcon*) override;                                                       // vtable+0x40
 	void Reset() override;                                                                           // vtable+0x54
-	MenuStyleTable* GetMenuStyles() override;                                                        // vtable+0x5c
-	MenuInputBindingTable* GetMenuInputBindings() override;                                          // vtable+0x64
-	~MenuGameScreen() override;                                                                      // vtable+0x68
+	// FUNCTION: LEGORACERS 0x00474bf0 FOLDED
+	MenuStyleTable* GetMenuStyles() override { return &m_sharedStyles; } // vtable+0x5c
+	// FUNCTION: LEGORACERS 0x00474c00
+	MenuInputBindingTable* GetMenuInputBindings() override { return &m_buttonBindings; } // vtable+0x64
+	~MenuGameScreen() override;                                                          // vtable+0x68
 	// FUNCTION: LEGORACERS 0x004803c0
 	LegoFloat GetAspectScale() override { return 1.0f; } // vtable+0x6c
 	LegoBool32 Destroy() override;                       // vtable+0x74

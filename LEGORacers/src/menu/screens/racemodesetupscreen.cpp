@@ -143,6 +143,12 @@ void RaceModeSetupScreen::OnIconSelected(MenuIcon* p_icon)
 	UpdateRacePreview();
 }
 
+// FUNCTION: LEGORACERS 0x00487d30
+void MenuGameScreen::OnIconDeselected(MenuIcon*)
+{
+	m_selectedIcon = NULL;
+}
+
 // FUNCTION: LEGORACERS 0x00487d40
 void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 {

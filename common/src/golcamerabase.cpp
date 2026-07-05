@@ -1,7 +1,9 @@
 #include "golcamerabase.h"
 
 #include "camera/goltransform.h"
+#include "gdbvertexarray.h"
 #include "golanimatedentity.h"
+#include "golboundingvolume.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
 
@@ -9,65 +11,34 @@
 
 DECOMP_SIZE_ASSERT(GolCameraBase, 0x120)
 
-// FUNCTION: LEGORACERS 0x00404510
-GolVec3* GolCameraBase::Cross(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+// FUNCTION: LEGORACERS 0x004045e0
+void GolBoundingVolume::MirrorY()
 {
-	LegoFloat x = p_left->m_y;
-	x *= p_right->m_z;
-	x -= p_left->m_z * p_right->m_y;
-	p_dest->m_x = x;
+	LegoU32 i;
+	for (i = 0; i < m_nodeCount; i++) {
+		m_nodes[i].m_planeNormal.m_y = -m_nodes[i].m_planeNormal.m_y;
+	}
 
-	LegoFloat y = p_left->m_z;
-	y *= p_right->m_x;
-	LegoFloat ySub = p_right->m_z;
-	ySub *= p_left->m_x;
-	y -= ySub;
-	p_dest->m_y = y;
+	GolVec3* vertices = m_vertices->GetPositions();
+	for (i = 0; i < m_vertices->GetCount(); i++) {
+		vertices[i].m_y = -vertices[i].m_y;
+	}
 
-	LegoFloat z = p_right->m_y;
-	z *= p_left->m_x;
-	LegoFloat zSub = p_left->m_y;
-	zSub *= p_right->m_x;
-	z -= zSub;
-	p_dest->m_z = z;
-
-	return p_left;
+	for (i = 0; i < m_triangleCount; i++) {
+		LegoU16 value = m_triangles[i].m_vertex1;
+		m_triangles[i].m_vertex1 = m_triangles[i].m_vertex2;
+		m_triangles[i].m_vertex2 = value;
+	}
 }
 
-// FUNCTION: LEGORACERS 0x00404550
-GolVec3* GolCameraBase::Add(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+// FUNCTION: LEGORACERS 0x00404660
+GolVec3* GolBoundingVolume::BspNode::GetPlaneNormal(GolVec3* p_dest) const
 {
-	p_dest->m_x = p_left->m_x + p_right->m_x;
-	p_dest->m_y = p_left->m_y + p_right->m_y;
-	p_dest->m_z = p_left->m_z + p_right->m_z;
+	p_dest->m_x = m_planeNormal.m_x;
+	p_dest->m_y = m_planeNormal.m_y;
+	p_dest->m_z = m_planeNormal.m_z;
 
-	return p_left;
-}
-
-// FUNCTION: LEGORACERS 0x00404580
-GolVec3* GolCameraBase::Subtract(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
-{
-	p_dest->m_x = p_left->m_x - p_right->m_x;
-	p_dest->m_y = p_left->m_y - p_right->m_y;
-	p_dest->m_z = p_left->m_z - p_right->m_z;
-
-	return p_left;
-}
-
-// FUNCTION: LEGORACERS 0x004045b0
-GolVec3* GolCameraBase::Scale(GolVec3* p_src, LegoFloat p_scale, GolVec3* p_dest)
-{
-	p_dest->m_x = p_scale * p_src->m_x;
-
-	LegoFloat y = p_src->m_y;
-	y *= p_scale;
-	p_dest->m_y = y;
-
-	LegoFloat z = p_src->m_z;
-	z *= p_scale;
-	p_dest->m_z = z;
-
-	return p_src;
+	return p_dest;
 }
 
 // FUNCTION: LEGORACERS 0x00404680

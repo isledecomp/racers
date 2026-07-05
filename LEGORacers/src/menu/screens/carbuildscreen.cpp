@@ -849,12 +849,6 @@ GolFont* CarBuildScreen::GetHelpFont(undefined4 p_helpStringId)
 	return m_renderer->FindFontByName(fontName);
 }
 
-// FUNCTION: LEGORACERS 0x00474be0
-void CarBuildScreen::GetTooltipLayout(LegoS32*, LegoS32*, LegoS32* p_wrapWidth, LegoS32*)
-{
-	*p_wrapWidth = 0;
-}
-
 // FUNCTION: LEGORACERS 0x004774e0
 void CarBuildScreen::HandleViewDrag(LegoS32 p_deltaX, LegoS32 p_deltaY)
 {

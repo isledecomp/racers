@@ -39,18 +39,6 @@ void MenuGameScreen::VTable0x94(undefined4)
 {
 }
 
-// FUNCTION: LEGORACERS 0x00474bf0 FOLDED
-MenuStyleTable* MenuGameScreen::GetMenuStyles()
-{
-	return &m_sharedStyles;
-}
-
-// FUNCTION: LEGORACERS 0x00474c00
-MenuInputBindingTable* MenuGameScreen::GetMenuInputBindings()
-{
-	return &m_buttonBindings;
-}
-
 // FUNCTION: LEGORACERS 0x0047fae0
 MenuGameScreen::MenuGameScreen()
 {
@@ -430,10 +418,4 @@ LegoBool32 MenuGameScreen::Update(undefined4)
 	}
 
 	return FALSE;
-}
-
-// FUNCTION: LEGORACERS 0x00487d30
-void MenuGameScreen::OnIconDeselected(MenuIcon*)
-{
-	m_selectedIcon = NULL;
 }

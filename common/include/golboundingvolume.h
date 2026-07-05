@@ -40,8 +40,7 @@ public:
 
 	// VTABLE: GOLDP 0x10056c48
 	// SIZE 0x1fc
-	class BvbTxtParser : public GolTxtParser {
-	};
+	class BvbTxtParser : public GolTxtParser {};
 
 	GolBoundingVolume();
 

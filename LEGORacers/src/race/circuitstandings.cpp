@@ -53,7 +53,7 @@ void CircuitStandings::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00440270
-undefined4 CircuitStandings::SetContext(LegoRacers::Context* p_context)
+LegoRacers::Context* CircuitStandings::SetContext(LegoRacers::Context* p_context)
 {
 	LegoRacers::Context* previous = m_context;
 
@@ -63,7 +63,7 @@ undefined4 CircuitStandings::SetContext(LegoRacers::Context* p_context)
 	}
 
 	m_context = p_context;
-	return (undefined4) previous;
+	return previous;
 }
 
 // FUNCTION: LEGORACERS 0x004402a0

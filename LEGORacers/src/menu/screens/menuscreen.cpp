@@ -35,7 +35,7 @@ DECOMP_SIZE_ASSERT(MenuScreen, 0x290)
 DECOMP_SIZE_ASSERT(SceneRefBinding, 0x54)
 
 // GLOBAL: LEGORACERS 0x004b2240
-const undefined4 g_rootIconParams[14] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+const MenuWidget::CreateParams g_rootIconParams = {NULL, NULL, NULL, NULL, {0, 0, 0, 0}, 1};
 
 // GLOBAL: LEGORACERS 0x004b2278
 const MenuIcon::CreateState g_rootIconState = {{0}};
@@ -132,7 +132,7 @@ LegoBool32 MenuScreen::CreateRootIcon()
 	MenuIcon::CreateParams createParams;
 
 	memset(&createParams, 0, sizeof(createParams));
-	memcpy(&createParams, g_rootIconParams, sizeof(g_rootIconParams));
+	memcpy(&createParams, &g_rootIconParams, sizeof(g_rootIconParams));
 
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;

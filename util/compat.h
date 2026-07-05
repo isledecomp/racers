@@ -5,7 +5,7 @@
 
 #define MSVC600_VERSION 1200
 
-#if defined(__MINGW32__) || (defined(_MSC_VER) && _MSC_VER > MSVC600_VERSION)
+#if defined(__MINGW32__) || defined(__clang__) || defined(__GNUC__) || (defined(_MSC_VER) && _MSC_VER > MSVC600_VERSION)
 #define COMPAT_MODE
 #endif
 

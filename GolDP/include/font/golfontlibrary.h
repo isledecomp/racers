@@ -1,6 +1,7 @@
 #ifndef GOLFONTLIBRARY_H
 #define GOLFONTLIBRARY_H
 
+#include "golhashtable.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
 #include "image/goltiledtexture.h"
@@ -69,13 +70,13 @@ public:
 protected:
 	void ReadFontCharList(GolFileParser* p_parser, undefined2* p_chars, LegoU16* p_count);
 
-	GolD3DRenderDevice* m_renderer;   // 0x0c
-	GolFontLibrary* m_next;           // 0x10
-	LegoU32 m_itemCount;              // 0x14
-	GolString* m_charStrings;         // 0x18
-	undefined2** m_charCodes;         // 0x1c
-	LegoU16* m_charCounts;            // 0x20
-	undefined4 m_hashTableCheckpoint; // 0x24
+	GolD3DRenderDevice* m_renderer;             // 0x0c
+	GolFontLibrary* m_next;                     // 0x10
+	LegoU32 m_itemCount;                        // 0x14
+	GolString* m_charStrings;                   // 0x18
+	undefined2** m_charCodes;                   // 0x1c
+	LegoU16* m_charCounts;                      // 0x20
+	GolHashTable::Entry* m_hashTableCheckpoint; // 0x24
 };
 
 #endif // GOLFONTLIBRARY_H

@@ -16,7 +16,7 @@ public:
 	~CircuitStandings();
 
 	void Reset();
-	undefined4 SetContext(LegoRacers::Context* p_context);
+	LegoRacers::Context* SetContext(LegoRacers::Context* p_context);
 	void Shutdown();
 	LegoU32 GetPoints(LegoU32 p_index);
 	LegoS32 GetRank(LegoU32 p_index);

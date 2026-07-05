@@ -21,7 +21,7 @@ GolFontLibrary::GolFontLibrary()
 {
 	m_renderer = NULL;
 	m_itemCount = 0;
-	m_hashTableCheckpoint = 0;
+	m_hashTableCheckpoint = NULL;
 }
 
 // FUNCTION: GOLDP 0x1001d870
@@ -83,7 +83,7 @@ void GolFontLibrary::LoadFontDefinitions(
 	}
 
 	GolNameTable::Allocate(m_itemCount);
-	m_hashTableCheckpoint = g_hashTable ? (undefined4) g_hashTable->GetCurrentEntry() : 0;
+	m_hashTableCheckpoint = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
 	AllocateItems();
 
 	for (LegoU32 i = 0; i < m_itemCount; i++) {
@@ -171,7 +171,7 @@ void GolFontLibrary::LoadFontDefinitions(
 	delete parser;
 
 	if (g_hashTable) {
-		g_hashTable->SetCurrentEntry((GolHashTable::Entry*) m_hashTableCheckpoint);
+		g_hashTable->SetCurrentEntry(m_hashTableCheckpoint);
 	}
 
 	for (LegoU32 j = 0; j < m_itemCount; j++) {

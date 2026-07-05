@@ -49,7 +49,7 @@ LegoS32 CircuitRaceRunner::Initialize(LegoRacers::Context* p_context, RaceSessio
 	m_context = p_context;
 	m_session = p_session;
 	sprintf(p_context->m_commonDataDirectory, "GAMEDATA\\COMMON");
-	return m_standings.SetContext(m_context);
+	return (LegoS32) m_standings.SetContext(m_context);
 }
 
 // FUNCTION: LEGORACERS 0x0041ed60

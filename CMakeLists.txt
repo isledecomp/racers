@@ -320,6 +320,7 @@ add_executable(legoracers WIN32
   common/src/golpalettedtexture.cpp
   common/src/golfontbase.cpp
   LEGORacers/src/util/carshadowrenderstate.cpp
+  LEGORacers/src/model/goltexturelist.cpp
   common/src/golimgfile.cpp
   common/src/golimgfilewriter.cpp
   common/src/golanimatedentity.cpp
@@ -347,7 +348,6 @@ add_executable(legoracers WIN32
   common/src/goltexturepalette.cpp
   common/src/goltgafile.cpp
   LEGORacers/src/util/particle.cpp
-  LEGORacers/src/model/goltexturelist.cpp
   LEGORacers/src/race/racedecaltrail.cpp
   common/src/goltexture.cpp
   common/src/golviewfrustum.cpp

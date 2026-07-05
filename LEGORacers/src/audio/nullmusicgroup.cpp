@@ -1,8 +1,8 @@
 #include "audio/nullmusicgroup.h"
 
+#include "audio/musicinstance.h"
 #include "audio/nullmusicinstance.h"
 #include "decomp.h"
-#include "audio/musicinstance.h"
 #include "types.h"
 
 #include <stddef.h>

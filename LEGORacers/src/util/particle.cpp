@@ -1,4 +1,5 @@
 #include "util/particle.h"
+
 #include "decomp.h"
 #include "golmath.h"
 

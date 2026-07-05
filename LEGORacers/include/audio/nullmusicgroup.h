@@ -1,10 +1,10 @@
 #ifndef NULLMUSICGROUP_H
 #define NULLMUSICGROUP_H
 
-#include "gollist.h"
-#include "types.h"
 #include "audio/musicgroup.h"
 #include "compat.h"
+#include "gollist.h"
+#include "types.h"
 
 class MusicInstance;
 

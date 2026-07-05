@@ -1,7 +1,6 @@
-#include "render/golrenderdevice.h"
-
 #include "decomp.h"
 #include "golmath.h"
+#include "render/golrenderdevice.h"
 
 DECOMP_SIZE_ASSERT(GolRenderDevice::Light, 0x10)
 

@@ -1,7 +1,7 @@
 #include "menu/widgets/menustaticwidget.h"
 
-#include "menu/screens/menuscreeninterface.h"
 #include "input/inputdevice.h"
+#include "menu/screens/menuscreeninterface.h"
 
 #include <stddef.h>
 

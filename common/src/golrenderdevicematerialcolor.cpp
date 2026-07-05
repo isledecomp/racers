@@ -1,6 +1,5 @@
-#include "render/golrenderdevice.h"
-
 #include "decomp.h"
+#include "render/golrenderdevice.h"
 #include "surface/color.h"
 
 DECOMP_SIZE_ASSERT(GolRenderDevice::MaterialColor, 0x4)

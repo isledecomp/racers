@@ -2,8 +2,8 @@
 #define MODELDISTANCERESOURCE_H
 
 #include "compat.h"
-#include "types.h"
 #include "race/events/raceeventresource.h"
+#include "types.h"
 
 class GolModelEntity;
 class RaceEventTable;

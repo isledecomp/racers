@@ -321,6 +321,15 @@ void GolOrientedEntity::SetBoundsCenterAndSpan(const GolVec3& p_v)
 	m_maxX = m_center.m_x + m_radius;
 }
 
+// FUNCTION: GOLDP 0x10026fa0 FOLDED
+// FUNCTION: LEGORACERS 0x00410f10
+void GolWorldEntity::SetBoundsRadius(LegoFloat p_scalar)
+{
+	m_radius = p_scalar;
+	m_minX = m_center.m_x - p_scalar;
+	m_maxX = p_scalar + m_center.m_x;
+}
+
 // FUNCTION: LEGORACERS 0x00410f30
 void GolOrientedEntity::TransformMatrixToLocal(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const
 {
@@ -412,11 +421,3 @@ void GolOrientedEntity::CopyScaledOrientationTo(GolMatrix4* p_dest, LegoFloat p_
 	p_dest->m_m[2][2] = value * p_scale;
 }
 
-// FUNCTION: GOLDP 0x10026fa0 FOLDED
-// FUNCTION: LEGORACERS 0x00410f10
-void GolWorldEntity::SetBoundsRadius(LegoFloat p_scalar)
-{
-	m_radius = p_scalar;
-	m_minX = m_center.m_x - p_scalar;
-	m_maxX = p_scalar + m_center.m_x;
-}

@@ -36,6 +36,7 @@ public:
 
 	// SYNTHETIC: LEGORACERS 0x004584b0
 	// CurseAction::`vector deleting destructor'
+
 	void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
 	void Draw(GolD3DRenderDevice* p_renderer) override;            // vtable+0x0c
 	void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10

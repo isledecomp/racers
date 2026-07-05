@@ -15,15 +15,18 @@ class RaceState;
 class SpatialSoundInstance {
 public:
 	SpatialSoundInstance();
-	virtual ~SpatialSoundInstance();           // vtable+0x00
-	virtual void Play(LegoBool32 p_loop);      // vtable+0x04
-	virtual void Stop();                       // vtable+0x08
+	virtual ~SpatialSoundInstance();      // vtable+0x00
+	virtual void Play(LegoBool32 p_loop); // vtable+0x04
+	virtual void Stop();                  // vtable+0x08
+
 	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-	virtual LegoBool32 IsPlaying() { return FALSE; }            // vtable+0x0c
+	virtual LegoBool32 IsPlaying() { return FALSE; } // vtable+0x0c
+
 	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
 	virtual DirectSoundGroup* GetSoundGroup() { return NULL; } // vtable+0x10
-	virtual void SetPriority(undefined4);      // vtable+0x14
-	virtual void UpdateSpatial(SoundNode*);    // vtable+0x18
+
+	virtual void SetPriority(undefined4);   // vtable+0x14
+	virtual void UpdateSpatial(SoundNode*); // vtable+0x18
 
 	void SetVolume(LegoFloat p_volume);
 	void SetFrequencyScale(LegoFloat p_scale) { m_frequencyScale = p_scale; }

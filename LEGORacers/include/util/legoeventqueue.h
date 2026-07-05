@@ -142,8 +142,10 @@ public:
 	LegoEventQueue();
 	virtual LegoS32 AddEvent(Event* p_event); // vtable+0x00
 	virtual ~LegoEventQueue();                // vtable+0x04
+
 	// SYNTHETIC: LEGORACERS 0x0042fa10
 	// LegoEventQueue::`scalar deleting destructor'
+
 	virtual void Initialize(LegoU32 p_count); // vtable+0x08
 	virtual void Destroy();                   // vtable+0x0c
 	virtual void Update(LegoU32 p_elapsedMs); // vtable+0x10

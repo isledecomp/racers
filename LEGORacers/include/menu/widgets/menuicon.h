@@ -81,9 +81,11 @@ public:
 	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;               // vtable+0x2c
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+
 	// FUNCTION: LEGORACERS 0x004676c0
-	MenuWidget* DrawSelf(Rect*, Rect*) override { return NULL; }                                     // vtable+0x38
-	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
+	MenuWidget* DrawSelf(Rect*, Rect*) override { return NULL; } // vtable+0x38
+
+	undefined4 OnEvent(undefined4) override; // vtable+0x3c
 	virtual void SetIconEventHandler(MenuScreenInterface*);
 	virtual void Enable(undefined4);
 	virtual void Disable(undefined4);

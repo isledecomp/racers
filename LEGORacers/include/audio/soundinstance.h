@@ -21,9 +21,11 @@ public:
 	virtual void SetPan(LegoFloat p_pan);              // vtable+0x10
 	virtual void SetFrequencyScale(LegoFloat p_scale); // vtable+0x14
 	virtual void SetPriority(LegoS32 p_priority);      // vtable+0x18
+
 	// FUNCTION: LEGORACERS 0x0041b5c0 FOLDED
-	virtual DirectSoundGroup* GetSoundGroup() { return m_soundGroup; }         // vtable+0x1c
-	virtual ~SoundInstance();                          // vtable+0x20
+	virtual DirectSoundGroup* GetSoundGroup() { return m_soundGroup; } // vtable+0x1c
+
+	virtual ~SoundInstance(); // vtable+0x20
 
 	// SYNTHETIC: LEGORACERS 0x0041b4d0
 	// SoundInstance::`scalar deleting destructor'

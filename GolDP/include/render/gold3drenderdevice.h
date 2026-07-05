@@ -176,8 +176,9 @@ public:
 	LegoU32 GetMaximumTextureHeight(undefined4) const override;                                         // vtable+0x104
 	LegoBool32 TexturesMustBeSquare() const override;                                                   // vtable+0x108
 	LegoBool32 TextureSizesMustBePowersOfTwo() const override;                                          // vtable+0x10c
+
 	// FUNCTION: GOLDP 0x100016f0 FOLDED
-	LegoBool32 VTable0x110() const override { return FALSE; }                                                            // vtable+0x110
+	LegoBool32 VTable0x110() const override { return FALSE; } // vtable+0x110
 
 	LegoS32 Initialize(GolDrawDPState*, GolRenderTarget*, LegoU32 p_flags);
 	LegoS32 CreateRenderer(LegoU32 p_flags);

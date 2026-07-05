@@ -342,8 +342,8 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 	stack->m_stage = 0;
 	stack->m_nodeIndex = 0;
 
-	BspNode* node = m_nodes;
 	GolVec3* vertices = m_vertices->GetPositions();
+	BspNode* node = m_nodes;
 
 	for (;;) {
 		LegoU32 stage = stack->m_stage;
@@ -359,11 +359,11 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 			LegoFloat startDistance = GolCameraBase::Dot(&node->m_planeNormal, &delta);
 			stack->m_startDistance = startDistance;
 
-			if (startDistance > 0.0f) {
-				childIndex = node->m_childIndices[0];
+			if (startDistance <= 0.0f) {
+				childIndex = node->m_childIndices[1];
 			}
 			else {
-				childIndex = node->m_childIndices[1];
+				childIndex = node->m_childIndices[0];
 			}
 
 			stack->m_stage++;

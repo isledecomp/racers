@@ -297,6 +297,7 @@ void RaceTimerList::Load(
 	parser->Dispose();
 	delete parser;
 }
+
 // FUNCTION: LEGORACERS 0x00464dd0
 LegoU32 RaceTimerList::Update(LegoU32 p_elapsedMs)
 {

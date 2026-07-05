@@ -1243,6 +1243,7 @@ RaceRouteRecord* RaceState::FindNearestRouteRecord(Racer* p_racer)
 
 	return result;
 }
+
 // FUNCTION: LEGORACERS 0x0043d120
 void RaceState::StopProximitySound()
 {

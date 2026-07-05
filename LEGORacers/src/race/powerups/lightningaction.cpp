@@ -17,7 +17,10 @@
 #include <float.h>
 #include <math.h>
 
-extern LegoFloat g_lightningReach;
+extern const LegoFloat g_lightningRange;
+
+// GLOBAL: LEGORACERS 0x004c7600
+LegoFloat g_lightningReach = g_lightningRange * 4.0f;
 
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 

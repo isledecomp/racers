@@ -216,4 +216,3 @@ LPDIRECTDRAWSURFACE GolCommonDrawState::GetRenderSurface()
 {
 	return NULL;
 }
-

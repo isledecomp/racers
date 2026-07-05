@@ -39,6 +39,7 @@ public:
 
 	// SYNTHETIC: LEGORACERS 0x00458690 FOLDED
 	// ShieldAction::`vector deleting destructor'
+
 	void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
 	void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 	void AdvanceState() override;                                  // vtable+0x14

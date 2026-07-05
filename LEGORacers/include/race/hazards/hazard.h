@@ -23,11 +23,13 @@ public:
 	virtual void Update(undefined4 p_elapsedMs);                 // vtable+0x14
 	virtual void UpdatePerRacer(GolCamera*, Racer*);             // vtable+0x18
 	virtual void Draw(GolD3DRenderDevice*);                      // vtable+0x1c
+
 	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-	virtual LegoBool32 CanRetrigger() { return FALSE; }                           // vtable+0x20
-	virtual void ResetState();                                   // vtable+0x24
-	virtual void OnEventStart(LegoS32, void*);                   // vtable+0x28
-	virtual void OnEventEnd(LegoS32, void*);                     // vtable+0x2c
+	virtual LegoBool32 CanRetrigger() { return FALSE; } // vtable+0x20
+
+	virtual void ResetState();                 // vtable+0x24
+	virtual void OnEventStart(LegoS32, void*); // vtable+0x28
+	virtual void OnEventEnd(LegoS32, void*);   // vtable+0x2c
 
 	enum {
 		c_stateUnloaded = 0,

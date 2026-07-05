@@ -2250,6 +2250,7 @@ void RaceSession::Draw()
 }
 
 // Separate helpers keep MSVC from merging the identical switch arms in Draw; ICF folds the bodies.
+
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
 void RaceSession::DrawRacerViewportForState1(Racer* p_racer)
 {

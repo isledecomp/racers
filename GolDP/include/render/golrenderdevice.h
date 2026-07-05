@@ -226,6 +226,7 @@ public:
 	virtual LegoU32 GetMaximumTextureHeight(undefined4) const = 0;         // vtable+0x104
 	virtual LegoBool32 TexturesMustBeSquare() const = 0;                   // vtable+0x108
 	virtual LegoBool32 TextureSizesMustBePowersOfTwo() const = 0;          // vtable+0x10c
+
 	// FUNCTION: GOLDP 0x100016f0 FOLDED
 	virtual LegoBool32 VTable0x110() const { return FALSE; }
 

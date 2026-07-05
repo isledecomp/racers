@@ -376,4 +376,3 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 
 	return m_closed == 0;
 }
-

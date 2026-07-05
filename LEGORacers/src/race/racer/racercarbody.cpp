@@ -2822,6 +2822,7 @@ void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_
 	GolCameraBase::Add(&corner2, &zHeight, &entries[2].m_rayStart);
 	GolCameraBase::Subtract(&corner2, &zDistance, &entries[2].m_rayEnd);
 }
+
 // FUNCTION: LEGORACERS 0x00449060
 GolOrientedEntity* RacerCarBody::GetEntity()
 {
@@ -2850,6 +2851,7 @@ undefined4 RacerPhysics::EndPowerslide()
 	m_powerslideFactorBits = value;
 	return value;
 }
+
 // FUNCTION: LEGORACERS 0x004490b0
 void RacerCarBody::MoveBy(GolVec3* p_delta)
 {

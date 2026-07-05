@@ -29,10 +29,12 @@ void GolExit()
 }
 
 // This function only seems to match with /O1 (minimize size)
+
 // FUNCTION: GOLDP 0x100502e3
 #pragma optimize("s", on)
 BOOL WINAPI DllMain(HINSTANCE p_hinstDLL, DWORD p_fdwReason, LPVOID p_lpvReserved)
 {
 	return TRUE;
 }
+
 #pragma optimize("", on)

@@ -2237,6 +2237,7 @@ void RaceEventTable::FireEventsForRacer(undefined4 p_startId, undefined4 p_endId
 		m_hazardManager->DispatchEventPair(p_startId, p_endId, p_racer);
 	}
 }
+
 // FUNCTION: LEGORACERS 0x00462c60
 void RaceEventTable::ForceAllEvents()
 {

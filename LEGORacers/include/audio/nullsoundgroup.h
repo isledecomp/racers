@@ -22,8 +22,10 @@ public:
 	void Load(const LegoChar* p_name) override; // vtable+0x00
 	void Unload() override;                     // vtable+0x04
 	LegoBool32 IsLoaded() override;             // vtable+0x08
+
 	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-	LegoU32 GetSoundCount() override { return 0; }           // vtable+0x0c
+	LegoU32 GetSoundCount() override { return 0; } // vtable+0x0c
+
 	void PlaySpatialSound(
 		LegoU32 p_index,
 		SoundVector* p_position,

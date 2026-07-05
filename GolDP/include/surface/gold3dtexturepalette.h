@@ -23,6 +23,7 @@ public:
 	LegoU16* GetMappedEntries() const { return m_mappedEntries; }
 
 	static void SetTextureFormat(const GolSurfaceFormat& p_format);
+
 	// SYNTHETIC: GOLDP 0x100146e0
 	// GolD3DTexturePalette::`scalar deleting destructor'
 

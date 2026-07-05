@@ -16,18 +16,20 @@ public:
 	class CreateParams : public MenuWidget::CreateParams {};
 
 	MenuCarousel();
-	void Reset() override;                                                           // vtable+0x00
-	~MenuCarousel() override;                                                        // vtable+0x04
-	void SetColor(VisualStateColor*) override;                                       // vtable+0x14
+	void Reset() override;                     // vtable+0x00
+	~MenuCarousel() override;                  // vtable+0x04
+	void SetColor(VisualStateColor*) override; // vtable+0x14
+
 	// FUNCTION: LEGORACERS 0x00466090 FOLDED
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override { return NULL; } // vtable+0x30
-	virtual void SnapToSelection() = 0;                                              // vtable+0x40
-	virtual void StartScroll(undefined4) = 0;                                        // vtable+0x44
-	virtual void SetItemColors(VisualStateColor*, VisualStateColor*);                // vtable+0x48
-	virtual void SetFocusedItemColors(VisualStateColor*, VisualStateColor*);         // vtable+0x4c
-	virtual void SetSelection(undefined4) = 0;                                       // vtable+0x50
-	virtual LegoS32 ScrollNext() = 0;                                                // vtable+0x54
-	virtual LegoS32 ScrollPrevious() = 0;                                            // vtable+0x58
+
+	virtual void SnapToSelection() = 0;                                      // vtable+0x40
+	virtual void StartScroll(undefined4) = 0;                                // vtable+0x44
+	virtual void SetItemColors(VisualStateColor*, VisualStateColor*);        // vtable+0x48
+	virtual void SetFocusedItemColors(VisualStateColor*, VisualStateColor*); // vtable+0x4c
+	virtual void SetSelection(undefined4) = 0;                               // vtable+0x50
+	virtual LegoS32 ScrollNext() = 0;                                        // vtable+0x54
+	virtual LegoS32 ScrollPrevious() = 0;                                    // vtable+0x58
 
 	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
 	LegoS32 WrapIndex(LegoS32 p_index);

@@ -264,7 +264,7 @@ Small inline-defined class methods are a matching tool of their own — expansio
 - **Fused memset across adjacent members of different types.** One contiguous zero-store spanning two members won't come from two `memset` calls — use one call sized `sizeof(first) + sizeof(second)` with a short comment, or nest the members in a struct.
 - **`ZeroMemory` can beat aggregate init for Win32/DirectX structs.** `Type s; ZeroMemory(&s, sizeof(s)); s.dwSize = ...;` can match stack-store order that `{0}` and field-by-field zeroing miss.
 - **Small fixed-size `memcmp` inlines** into pointer loads + scalar compares; a hand-cast `*(LegoU32*)a != *(LegoU32*)b` compiles to direct global memory operands instead and misses. Don't widen an existing global buffer for scratch space — its declared size perturbs register allocation in other users.
-- **ICF folds in two pools: in-class (inline) vs out-of-line — never across.** link 6.00.8168 folds byte-identical COMDATs only within the same kind: methods defined in the class body (SELECT_ANY) fold with each other, out-of-line /Gy functions fold with each other; identical bytes never fold across that boundary. This is why the original keeps the same trivial body at two addresses (e.g. `xor eax,eax; ret 0xc` at 0x466090 and 0x473490; census: `tools/fold_census.py <orig> <recomp>`). When reccmp shows a GONE fold twin or a vtable slot pointing at a wrong fold survivor, the function is on the wrong SIDE: move its definition in-class (or out-of-line) to match the original pool. Deciding the side: an `e8` direct call to a pool address proves that pool out-of-line (calls to in-class trivial bodies inline away under /Ob1); an inline-pool survivor sits at its first INCLUDER's contribution tail, an out-of-line survivor inside its own TU's range. Never use `#pragma code_seg` section splitting for this. A non-trivial in-class body can still be legitimately e8-called when the caller's size makes /Ob1 decline the inline (GolCameraBase::Dot2) — if our draft caller inlines it instead, the symbol vanishes: keep the in-class form and demote its annotation to `// STUB:` until the caller matches.
+- **ICF folds in two pools: in-class (inline) vs out-of-line — never across.** link 6.00.8168 folds byte-identical COMDATs only within the same kind: methods defined in the class body (SELECT_ANY) fold with each other, out-of-line /Gy functions fold with each other; identical bytes never fold across that boundary. This is why the original keeps the same trivial body at two addresses (e.g. `xor eax,eax; ret 0xc` at 0x466090 and 0x473490). When reccmp shows a GONE fold twin or a vtable slot pointing at a wrong fold survivor, the function is on the wrong SIDE: move its definition in-class (or out-of-line) to match the original pool. Deciding the side: an `e8` direct call to a pool address proves that pool out-of-line (calls to in-class trivial bodies inline away under /Ob1); an inline-pool survivor sits at its first INCLUDER's contribution tail, an out-of-line survivor inside its own TU's range. Never use `#pragma code_seg` section splitting for this. A non-trivial in-class body can still be legitimately e8-called when the caller's size makes /Ob1 decline the inline (GolCameraBase::Dot2) — if our draft caller inlines it instead, the symbol vanishes: keep the in-class form and demote its annotation to `// STUB:` until the caller matches.
 
 ## COMDAT Folding Across Targets
 
@@ -299,7 +299,7 @@ Do not steer common-code matches by duplicating implementations, moving selected
 
 ## Float Constants: Literals vs Named Globals
 
-Proven by experiment (cl 12.00.8168 `/O2`) and by census of the original binaries (`tools/float_census.py`).
+Proven by experiment (cl 12.00.8168 `/O2`) and by census of the original binaries.
 
 **Compiler behavior.**
 
@@ -317,7 +317,7 @@ Proven by experiment (cl 12.00.8168 `/O2`) and by census of the original binarie
 
 **reccmp rules.** Operands compare by rendered entity name. Literal pool entries are auto-discovered on BOTH sides (FPU-referenced addresses in read-only sections) and render as the value (`0.5 (FLOAT)`), so literal↔literal matches with no configuration. `reccmp/lego-racers-floats.csv` seeds orig-side FLOAT entities where auto-discovery fails (non-FPU references such as double push-pairs; writable sections). A GLOBAL annotation and a floats-CSV row on the SAME address is always wrong — it renders `(DATA)` vs `(FLOAT)` and permanently mismatches every reference.
 
-**Policy.** Literal in source ⇔ CSV row (or auto-discovery), no annotation. Named constant in source ⇔ GLOBAL annotation, no CSV row, and the name used at every original reference site. Run `python3 tools/float_census.py <orig-binary> --csv reccmp/lego-racers-floats.csv --src LEGORacers common` to find conflicts and misclassifications.
+**Policy.** Literal in source ⇔ CSV row (or auto-discovery), no annotation. Named constant in source ⇔ GLOBAL annotation, no CSV row, and the name used at every original reference site.
 
 ## Naming Members from Matched Code
 

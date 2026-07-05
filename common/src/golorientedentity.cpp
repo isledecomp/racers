@@ -420,4 +420,3 @@ void GolOrientedEntity::CopyScaledOrientationTo(GolMatrix4* p_dest, LegoFloat p_
 	value = m_orientation.m_m[2][2];
 	p_dest->m_m[2][2] = value * p_scale;
 }
-

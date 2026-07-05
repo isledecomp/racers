@@ -27,6 +27,7 @@ public:
 	void WriteSpace() override;                             // vtable+0x6c
 	void WriteTab() override;                               // vtable+0x70
 	void WriteTabs(undefined4) override;                    // vtable+0x74
+
 protected:
 	LegoS32 m_lineCount;    // 0x1f0
 	LegoS32 m_bufferLength; // 0x1f4

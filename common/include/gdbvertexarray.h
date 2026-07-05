@@ -44,6 +44,7 @@ public:
 	// LEGORACERS and GOLDP order these shared methods differently in the common .cpp,
 	// so keep the conflicting LEGORACERS annotations here as by-name references.
 	// Maybe some of these are FOLDED.
+
 	// FUNCTION: LEGORACERS 0x00415f60
 	// GdbVertexArray::GetPosition
 

@@ -75,4 +75,3 @@ void SoundInstance::SetPriority(LegoS32 p_priority)
 {
 	m_soundBuffer->SetPriority(p_priority);
 }
-

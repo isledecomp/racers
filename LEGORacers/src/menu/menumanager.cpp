@@ -206,6 +206,7 @@ void RaceModeRunner::InitializeRaceScene()
 
 	m_session.Initialize(m_context, g_raceNameBuffer, m_context->m_raceSlots[0].m_mirror, NULL);
 }
+
 // FUNCTION: LEGORACERS 0x0042c5d0
 MenuManager::MenuManager()
 {

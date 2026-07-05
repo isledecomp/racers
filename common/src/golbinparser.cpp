@@ -9,9 +9,17 @@ DECOMP_SIZE_ASSERT(GolBinParser, 0x650)
 
 #include <stdio.h>
 
+// GLOBAL: GOLDP 0x10065b54
+// GLOBAL: LEGORACERS 0x004c706c
+extern const FloatConstant g_floatConst4096(4096.0f);
+
 // GLOBAL: GOLDP 0x10065b58
 // GLOBAL: LEGORACERS 0x004c7070
 const LegoFloat g_dequantize4096 = 1.0f / g_floatConst4096.m_value;
+
+// GLOBAL: GOLDP 0x10065b5c
+// GLOBAL: LEGORACERS 0x004c7074
+extern const FloatConstant g_floatConst32(32.0f);
 
 // GLOBAL: GOLDP 0x10065b60
 // GLOBAL: LEGORACERS 0x004c7078

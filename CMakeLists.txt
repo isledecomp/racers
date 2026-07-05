@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25...4.2 FATAL_ERROR)
 
-#MSVC runtime library flags are selected by an abstraction
+# MSVC runtime library flags are selected by an abstraction
 cmake_policy(SET CMP0091 NEW)
 
 project(racers CXX)
@@ -40,7 +40,7 @@ endif()
 
 set(MSVC_FOR_DECOMP FALSE)
 if (MSVC)
-#Visual C++ 6.0->cl version 12.x
+  # Visual C++ 6.0 -> cl version 12.x
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13.0")
     set(MSVC_FOR_DECOMP TRUE)
   endif()
@@ -76,9 +76,9 @@ option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 
 add_cxx_warning(parentheses)
 
-#These GOLDP - only files need the same inline expansion behavior (/Ob2) as the common/ sources
-#This might represent another original static library or project grouping; keep the list
-#narrow until more source units show the same codegen fingerprint.
+# These GOLDP-only files need the same inline expansion behavior (/Ob2) as the common/ sources.
+# This might represent another original static library or project grouping; keep the list
+# narrow until more source units show the same codegen fingerprint.
 # common/ sources as compiled into GolDP.dll with /Ob2 (golmateriallibrary.cpp stays /Ob1,
 # see below).
 set(GOLDP_COMMON_INLINE_EXPANSION_SOURCES
@@ -161,7 +161,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/image/golimage.cpp
 )
 
-#-- - GolDP.dll target -- -
+# --- GolDP.dll target ---
 add_library(goldp SHARED
   # Ordered by the original GolDP.dll link order (reccmp-roadmap, median address per object).
   # common/ sources are interleaved among GolDP sources exactly as the original linker saw
@@ -295,7 +295,7 @@ set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
 set_property(TARGET goldp PROPERTY PREFIX "")
 set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 
-#-- - LEGORacers.exe target -- -
+# --- LEGORacers.exe target ---
 add_executable(legoracers WIN32
   # Ordered by the original LEGORacers.exe link order (reccmp-roadmap, median address per
   # object). common/ sources are interleaved among LEGORacers sources exactly as the
@@ -657,12 +657,12 @@ set_property(SOURCE LEGORacers/racers.rc APPEND PROPERTY OBJECT_DEPENDS "${PROJE
 
 add_custom_target(game DEPENDS legoracers goldp)
 
-#-- - Modern compiler compatibility -- -
+# --- Modern compiler compatibility ---
 if (MSVC)
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
   endif()
-#Visual Studio 2017 version 15.7 needs "/Zc:__cplusplus" for __cplusplus
+  # Visual Studio 2017 version 15.7 needs "/Zc:__cplusplus" for __cplusplus
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "19.14.26428")
     add_compile_options(-Zc:__cplusplus)
   endif()
@@ -691,9 +691,9 @@ if (MSVC_FOR_DECOMP)
     PROPERTIES COMPILE_OPTIONS "/Ob1"
   )
 
-#These flags have been taken from the defaults for a Visual C++ 6.0 project(the compiler the
-#game was originally built with) and tweaked slightly to produce more debugging info for reccmp.
-#They ensure a recompilation that can be byte / instruction accurate to the original binaries.
+  # These flags have been taken from the defaults for a Visual C++ 6.0 project (the compiler the
+  # game was originally built with) and tweaked slightly to produce more debugging info for reccmp.
+  # They ensure a recompilation that can be byte/instruction accurate to the original binaries.
   if (TARGET legoracers)
     target_link_options(legoracers PRIVATE "/OPT:REF,ICF")
   endif()
@@ -701,11 +701,11 @@ if (MSVC_FOR_DECOMP)
     target_link_options(goldp PRIVATE "/OPT:REF,ICF")
   endif()
 
-#LegoRacers.exe links to MSVCRT.dll(/ MD), GolDP.dll has embedded its runtime library(/ MT)
+  # LegoRacers.exe links to MSVCRT.dll (/MD), GolDP.dll has embedded its runtime library (/MT)
   set_property(TARGET legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
   set_property(TARGET goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-#Embed debug information(/ Z7) for Debug and RelWithDebInfo configuration type
+  # Embed debug information (/Z7) for Debug and RelWithDebInfo configuration type
   set_property(TARGET goldp legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
 
   set(CMAKE_CXX_FLAGS "/W3 /GX /DWIN32 /D_WINDOWS")

@@ -989,6 +989,7 @@ GolVec3* RaceDecalManager::Trail::Decal::ComputeQueryPoints()
 
 	return result;
 }
+
 // FUNCTION: LEGORACERS 0x00415bf0
 LegoU8 DecalGeometry::SetColor(const ColorRGBA* p_color)
 {

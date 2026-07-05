@@ -19,8 +19,7 @@ class TimeRaceManager {
 public:
 	// VTABLE: LEGORACERS 0x004b01ac
 	// SIZE 0x1fc
-	class GhbTxtParser : public GolTxtParser {
-	};
+	class GhbTxtParser : public GolTxtParser {};
 
 	class GhostRunData;
 

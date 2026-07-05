@@ -292,4 +292,3 @@ void GolTextureList::RestoreTextures()
 {
 	// empty
 }
-

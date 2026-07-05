@@ -45,6 +45,7 @@ public:
 	void ToggleFullscreen() override;                          // vtable+0x30
 	LegoS32 Tick(GolAppEventHandler* p_eventHandler) override; // vtable+0x34
 	InputManager* GetInputManager() override;                  // vtable+0x38
+
 	// FUNCTION: LEGORACERS 0x00417990 FOLDED
 	virtual void OnAppDeactivated() {} // vtable+0x3c
 

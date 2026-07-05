@@ -10,13 +10,8 @@ public:
 	LegoFloat m_value; // 0x00
 };
 
-// GLOBAL: GOLDP 0x10065b54
-// GLOBAL: LEGORACERS 0x004c706c
-const FloatConstant g_floatConst4096(4096.0f);
-
-// GLOBAL: GOLDP 0x10065b5c
-// GLOBAL: LEGORACERS 0x004c7074
-const FloatConstant g_floatConst32(32.0f);
+extern const FloatConstant g_floatConst4096;
+extern const FloatConstant g_floatConst32;
 
 extern const LegoFloat g_floatConst127;
 extern const LegoFloat g_floatConst256;

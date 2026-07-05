@@ -446,6 +446,7 @@ JoystickDevice* InputManager::FindJoystickByDeviceId(LegoS32 p_deviceId) const
 
 	return NULL;
 }
+
 // FUNCTION: LEGORACERS 0x0044c100
 InputDevice::DirectionalTrigger::DirectionalTrigger()
 {

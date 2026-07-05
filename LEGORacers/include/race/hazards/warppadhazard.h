@@ -25,8 +25,9 @@ public:
 	void OnDeactivate(void* p_context) override;                  // vtable+0x08
 	void Load(HazardContext* p_context, GolFileParser*) override; // vtable+0x10
 	void Update(undefined4 p_elapsedMs) override;                 // vtable+0x14
+
 	// FUNCTION: LEGORACERS 0x00452430 FOLDED
-	LegoBool32 CanRetrigger() override { return TRUE; }                           // vtable+0x20
+	LegoBool32 CanRetrigger() override { return TRUE; } // vtable+0x20
 
 	LegoS32 Reset();
 

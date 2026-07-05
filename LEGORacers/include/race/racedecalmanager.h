@@ -105,6 +105,7 @@ public:
 
 		// SYNTHETIC: LEGORACERS 0x00492760
 		// RaceDecalManager::Trail::`vector deleting destructor'
+
 		Trail();
 		virtual ~Trail(); // vtable+0x00
 

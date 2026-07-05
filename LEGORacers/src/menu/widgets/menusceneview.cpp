@@ -432,4 +432,3 @@ undefined4 MenuSceneView::OnEvent(undefined4 p_elapsedMs)
 	UpdateFreeCamera(p_elapsedMs);
 	return 0;
 }
-

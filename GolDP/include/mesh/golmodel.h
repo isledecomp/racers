@@ -55,6 +55,7 @@ public:
 		undefined4
 	) override;                                                                                   // vtable+0x18
 	void Load(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
+
 	// FUNCTION: GOLDP 0x10006a60
 	void Destroy() override // vtable+0x24
 	{
@@ -67,6 +68,7 @@ public:
 
 		GolModelBase::Destroy();
 	}
+
 	void Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTable);
 	void DrawNode(
 		GolD3DRenderDevice* p_renderer,

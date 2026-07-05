@@ -15,16 +15,18 @@ public:
 	// SYNTHETIC: GOLDP 0x10007040
 	// GolDPExport::`scalar deleting destructor'
 
-	GolCommonDrawState* GetDrawState() override;               // vtable+0x04
-	GolWorldDatabase* CreateWorldDatabase() override;          // vtable+0x08
-	GolTextureList* CreateTextureList() override;              // vtable+0x0c
-	GolMaterialLibrary* CreateMaterialList() override;         // vtable+0x10
-	GolModelBase* CreateModel() override;                      // vtable+0x14
-	GolSceneNode* CreateSceneNode() override;                  // vtable+0x18
-	GolBoundingShape* CreateBoundingShape() override;          // vtable+0x1c
-	GolCamera* CreateCamera() override;                        // vtable+0x20
+	GolCommonDrawState* GetDrawState() override;       // vtable+0x04
+	GolWorldDatabase* CreateWorldDatabase() override;  // vtable+0x08
+	GolTextureList* CreateTextureList() override;      // vtable+0x0c
+	GolMaterialLibrary* CreateMaterialList() override; // vtable+0x10
+	GolModelBase* CreateModel() override;              // vtable+0x14
+	GolSceneNode* CreateSceneNode() override;          // vtable+0x18
+	GolBoundingShape* CreateBoundingShape() override;  // vtable+0x1c
+	GolCamera* CreateCamera() override;                // vtable+0x20
+
 	// FUNCTION: GOLDP 0x100016f0 FOLDED
-	undefined4 VTable0x24() override { return 0; }                          // vtable+0x24
+	undefined4 VTable0x24() override { return 0; } // vtable+0x24
+
 	GolTiledTexture* CreateTiledTexture() override;            // vtable+0x28
 	GolFontBase* CreateFont() override;                        // vtable+0x2c
 	GolWorldEntity* CreateBillboard() override;                // vtable+0x30

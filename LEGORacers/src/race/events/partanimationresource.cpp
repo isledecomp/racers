@@ -215,4 +215,3 @@ void PartAnimationResource::OnEnd()
 
 	SetState(nextState);
 }
-

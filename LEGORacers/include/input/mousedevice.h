@@ -17,12 +17,14 @@ public:
 	~MouseDevice() override;                                                               // vtable+0x0c
 	LegoS32 GetButtonCount() override;                                                     // vtable+0x1c
 	LegoS32 GetAxisCount() override;                                                       // vtable+0x20
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void SetDeadZonePercent(LegoU32) override {}                                             // vtable+0x28
-	LegoFloat GetAxisValue(undefined4) override;                                           // vtable+0x30
-	undefined4 GetButtonState(undefined4) override;                                        // vtable+0x34
-	undefined4 CreateDevice(DirectInputDevice::CreateParams* p_params) override;           // vtable+0x64
-	void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) override;                     // vtable+0x68
+	void SetDeadZonePercent(LegoU32) override {} // vtable+0x28
+
+	LegoFloat GetAxisValue(undefined4) override;                                 // vtable+0x30
+	undefined4 GetButtonState(undefined4) override;                              // vtable+0x34
+	undefined4 CreateDevice(DirectInputDevice::CreateParams* p_params) override; // vtable+0x64
+	void ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data) override;           // vtable+0x68
 
 	// SYNTHETIC: LEGORACERS 0x0044f5a0
 	// MouseDevice::`scalar deleting destructor'

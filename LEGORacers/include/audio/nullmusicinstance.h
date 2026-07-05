@@ -18,8 +18,10 @@ public:
 	void Stop() override;                        // vtable+0x08
 	void Pause() override;                       // vtable+0x0c
 	void Resume() override;                      // vtable+0x10
+
 	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-	LegoBool32 IsPlaying() override { return FALSE; }             // vtable+0x14
+	LegoBool32 IsPlaying() override { return FALSE; } // vtable+0x14
+
 	void SetVolume(LegoFloat p_volume) override; // vtable+0x18
 	void VTable0x1c(undefined4 p_arg) override;  // vtable+0x1c
 	void VTable0x20(undefined4 p_arg) override;  // vtable+0x20

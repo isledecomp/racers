@@ -44,52 +44,69 @@ public:
 	MenuScreen();
 
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnWidgetCreated(MenuWidget*) override {}                                                      // vtable+0x00
+	void OnWidgetCreated(MenuWidget*) override {} // vtable+0x00
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnWidgetDestroyed(MenuWidget*) override {}                                                    // vtable+0x04
+	void OnWidgetDestroyed(MenuWidget*) override {} // vtable+0x04
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnWidgetMoved(MenuWidget*) override {}                                                        // vtable+0x08
+	void OnWidgetMoved(MenuWidget*) override {} // vtable+0x08
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnWidgetResized(MenuWidget*) override {}                                                      // vtable+0x0c
+	void OnWidgetResized(MenuWidget*) override {} // vtable+0x0c
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnCarouselSettled(MenuWidget*) override {}                                                    // vtable+0x10
+	void OnCarouselSettled(MenuWidget*) override {} // vtable+0x10
+
 	undefined4 OnWidgetKeyUp(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x14
 	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
 	LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x1c
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnWidgetFocused(MenuWidget*) override {}                                                      // vtable+0x20
+	void OnWidgetFocused(MenuWidget*) override {} // vtable+0x20
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnWidgetUnfocused(MenuWidget*) override {}                                                    // vtable+0x24
-	undefined4 OnWidgetKeyDown(MenuWidget*, void*, undefined4, undefined4) override;                 // vtable+0x28
+	void OnWidgetUnfocused(MenuWidget*) override {} // vtable+0x24
+
+	undefined4 OnWidgetKeyDown(MenuWidget*, void*, undefined4, undefined4) override; // vtable+0x28
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnIconEnabled(MenuIcon*) override {}                                                          // vtable+0x2c
+	void OnIconEnabled(MenuIcon*) override {} // vtable+0x2c
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnIconDisabled(MenuIcon*) override {}                                                         // vtable+0x30
+	void OnIconDisabled(MenuIcon*) override {} // vtable+0x30
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnIconFocused(MenuIcon*) override {}                                                          // vtable+0x34
+	void OnIconFocused(MenuIcon*) override {} // vtable+0x34
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnIconUnfocused(MenuWidget*) override {}                                                      // vtable+0x38
+	void OnIconUnfocused(MenuWidget*) override {} // vtable+0x38
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnIconSelected(MenuIcon*) override {}                                                         // vtable+0x3c
+	void OnIconSelected(MenuIcon*) override {} // vtable+0x3c
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnIconDeselected(MenuIcon*) override {}                                                       // vtable+0x40
+	void OnIconDeselected(MenuIcon*) override {} // vtable+0x40
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnWidgetValueChanged(MenuWidget*) override {}                                                 // vtable+0x44
+	void OnWidgetValueChanged(MenuWidget*) override {} // vtable+0x44
+
 	// FUNCTION: LEGORACERS 0x0044f590 FOLDED
-	void OnSelectorSettled(MenuWidget*) override {}                                                    // vtable+0x48
-	virtual void CreateWidgets() = 0;                                                                // vtable+0x4c
-	virtual undefined4 ShouldLoadResources();                                                        // vtable+0x50
-	virtual void Reset();                                                                            // vtable+0x54
-	virtual LegoBool32 LoadStylesAndBindings(MenuScreenCreateParams*);                               // vtable+0x58
-	virtual MenuStyleTable* GetMenuStyles();                                                         // vtable+0x5c
-	virtual MenuStyleTable* GetActiveStyles();                                                       // vtable+0x60
-	virtual MenuInputBindingTable* GetMenuInputBindings();                                           // vtable+0x64
-	virtual ~MenuScreen();                                                                           // vtable+0x68
-	virtual LegoFloat GetAspectScale();                                                              // vtable+0x6c
-	virtual LegoBool32 Initialize(MenuScreenCreateParams*);                                          // vtable+0x70
-	virtual LegoBool32 Destroy();                                                                    // vtable+0x74
-	virtual LegoBool32 Update(undefined4);                                                           // vtable+0x78
-	virtual LegoBool32 Draw(Rect* p_arg1, Rect* p_arg2);                                             // vtable+0x7c
+	void OnSelectorSettled(MenuWidget*) override {} // vtable+0x48
+
+	virtual void CreateWidgets() = 0;                                  // vtable+0x4c
+	virtual undefined4 ShouldLoadResources();                          // vtable+0x50
+	virtual void Reset();                                              // vtable+0x54
+	virtual LegoBool32 LoadStylesAndBindings(MenuScreenCreateParams*); // vtable+0x58
+	virtual MenuStyleTable* GetMenuStyles();                           // vtable+0x5c
+	virtual MenuStyleTable* GetActiveStyles();                         // vtable+0x60
+	virtual MenuInputBindingTable* GetMenuInputBindings();             // vtable+0x64
+	virtual ~MenuScreen();                                             // vtable+0x68
+	virtual LegoFloat GetAspectScale();                                // vtable+0x6c
+	virtual LegoBool32 Initialize(MenuScreenCreateParams*);            // vtable+0x70
+	virtual LegoBool32 Destroy();                                      // vtable+0x74
+	virtual LegoBool32 Update(undefined4);                             // vtable+0x78
+	virtual LegoBool32 Draw(Rect* p_arg1, Rect* p_arg2);               // vtable+0x7c
 
 	LegoBool32 CreateRootIcon();
 	LegoBool32 LoadImagesAndFonts(MenuScreenCreateParams*);

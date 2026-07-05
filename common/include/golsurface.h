@@ -27,16 +27,18 @@ public:
 
 	GolSurface();
 
-	virtual ~GolSurface();                                                                  // vtable+0x00
-	virtual void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);          // vtable+0x04
-	virtual void UnlockPixels();                                                            // vtable+0x08
-	virtual void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);       // vtable+0x0c
-	virtual void UnlockAuxPixels();                                                         // vtable+0x10
-	virtual void Present(undefined4);                                                       // vtable+0x14
-	virtual void FinishPendingFlip();                                                       // vtable+0x18
+	virtual ~GolSurface();                                                            // vtable+0x00
+	virtual void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);    // vtable+0x04
+	virtual void UnlockPixels();                                                      // vtable+0x08
+	virtual void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags); // vtable+0x0c
+	virtual void UnlockAuxPixels();                                                   // vtable+0x10
+	virtual void Present(undefined4);                                                 // vtable+0x14
+	virtual void FinishPendingFlip();                                                 // vtable+0x18
+
 	// FUNCTION: GOLDP 0x100016f0 FOLDED
 	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-	virtual GolPaletteBase* GetPalette() { return NULL; }                                                   // vtable+0x1c
+	virtual GolPaletteBase* GetPalette() { return NULL; } // vtable+0x1c
+
 	virtual void Fill(LegoU32 p_color);                                                     // vtable+0x20
 	virtual void Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_sourceRect);  // vtable+0x24
 	virtual void BlitStretched(Rect* p_destRect, GolSurface* p_source, Rect* p_sourceRect); // vtable+0x28

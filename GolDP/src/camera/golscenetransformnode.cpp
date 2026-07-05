@@ -12,6 +12,7 @@ GolSceneTransformNode::GolSceneTransformNode()
 {
 	m_transforms = 0;
 }
+
 // FUNCTION: GOLDP 0x10014900
 GolSceneTransformNode::~GolSceneTransformNode()
 {

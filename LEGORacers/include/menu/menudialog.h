@@ -48,11 +48,13 @@ public:
 		LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4,
 								 undefined4) override; // vtable+0x18
 		LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4,
-							   undefined4) override;            // vtable+0x1c
-		void OnIconUnfocused(MenuWidget*) override;             // vtable+0x38
-		void CreateWidgets() override;                          // vtable+0x4c
-	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-		undefined4 ShouldLoadResources() override { return 0; }              // vtable+0x50
+							   undefined4) override; // vtable+0x1c
+		void OnIconUnfocused(MenuWidget*) override;  // vtable+0x38
+		void CreateWidgets() override;               // vtable+0x4c
+
+		// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
+		undefined4 ShouldLoadResources() override { return 0; } // vtable+0x50
+
 		void Reset() override;                                  // vtable+0x54
 		MenuStyleTable* GetMenuStyles() override;               // vtable+0x5c
 		MenuInputBindingTable* GetMenuInputBindings() override; // vtable+0x64

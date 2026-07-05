@@ -24,7 +24,7 @@ public:
 	~LookTargetResource() override;
 	void OnStartForRacer(Racer* p_racer) override;
 	void OnEndForRacer(Racer* p_racer) override;
-	virtual LegoU32 GetKind(); // vtable+0x18
+	LegoU32 GetKind() override; // vtable+0x18
 
 	void FUN_004513d0(undefined4);
 	void Initialize(InitParams* p_params);

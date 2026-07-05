@@ -104,25 +104,27 @@ public:
 	virtual LegoBool32 Destroy();                                                         // vtable+0x10
 	virtual undefined4 Poll(LegoS32 p_elapsedMs);                                         // vtable+0x14
 	virtual undefined4 IsAcquired();                                                      // vtable+0x18
+
 	// FUNCTION: LEGORACERS 0x0044bed0
 	virtual LegoS32 GetButtonCount() { return sizeOfArray(g_defaultMapping); } // vtable+0x1c
-	virtual LegoS32 GetAxisCount();                                            // vtable+0x20
-	virtual const wchar_t* GetControlName(undefined4);                         // vtable+0x24
-	virtual void SetDeadZonePercent(LegoU32) = 0;                              // vtable+0x28
-	virtual LegoFloat GetAxisValueByIndex(undefined4) = 0;                     // vtable+0x2c
-	virtual LegoFloat GetAxisValue(undefined4) = 0;                            // vtable+0x30
-	virtual undefined4 GetButtonState(undefined4) = 0;                         // vtable+0x34
-	virtual undefined4 SetBackgroundMode() = 0;                                // vtable+0x38
-	virtual undefined4 SetForegroundMode() = 0;                                // vtable+0x3c
-	virtual undefined4 SetExclusiveMode() = 0;                                 // vtable+0x40
-	virtual undefined4 SetNonExclusiveMode() = 0;                              // vtable+0x44
-	virtual undefined4 IsBackgroundMode() = 0;                                 // vtable+0x48
-	virtual undefined4 IsExclusiveMode() = 0;                                  // vtable+0x4c
-	virtual undefined4 Acquire();                                              // vtable+0x50
-	virtual undefined4 Unacquire();                                            // vtable+0x54
-	virtual LegoBool32 CreateForceFeedbackEffect() = 0;                        // vtable+0x58
-	virtual LegoS32 StartForceFeedbackEffect() = 0;                            // vtable+0x5c
-	virtual LegoBool32 StopForceFeedbackEffect() = 0;                          // vtable+0x60
+
+	virtual LegoS32 GetAxisCount();                        // vtable+0x20
+	virtual const wchar_t* GetControlName(undefined4);     // vtable+0x24
+	virtual void SetDeadZonePercent(LegoU32) = 0;          // vtable+0x28
+	virtual LegoFloat GetAxisValueByIndex(undefined4) = 0; // vtable+0x2c
+	virtual LegoFloat GetAxisValue(undefined4) = 0;        // vtable+0x30
+	virtual undefined4 GetButtonState(undefined4) = 0;     // vtable+0x34
+	virtual undefined4 SetBackgroundMode() = 0;            // vtable+0x38
+	virtual undefined4 SetForegroundMode() = 0;            // vtable+0x3c
+	virtual undefined4 SetExclusiveMode() = 0;             // vtable+0x40
+	virtual undefined4 SetNonExclusiveMode() = 0;          // vtable+0x44
+	virtual undefined4 IsBackgroundMode() = 0;             // vtable+0x48
+	virtual undefined4 IsExclusiveMode() = 0;              // vtable+0x4c
+	virtual undefined4 Acquire();                          // vtable+0x50
+	virtual undefined4 Unacquire();                        // vtable+0x54
+	virtual LegoBool32 CreateForceFeedbackEffect() = 0;    // vtable+0x58
+	virtual LegoS32 StartForceFeedbackEffect() = 0;        // vtable+0x5c
+	virtual LegoBool32 StopForceFeedbackEffect() = 0;      // vtable+0x60
 
 	void ReleasePressedButtons();
 	void SetRepeatDelays(LegoS32 p_repeatDelayMs, LegoS32 p_initialRepeatDelayMs);

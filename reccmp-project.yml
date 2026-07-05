@@ -13,6 +13,7 @@ targets:
       - reccmp/lego-racers-dxguid.csv
       - reccmp/lego-racers-function-size.csv
     report:
+      icon: assets/legoracers.png
       ignore-variables:
         # Cannot be handled right now due to anonymous pointer in struct.
         - c_dfDIJoystick2
@@ -28,3 +29,5 @@ targets:
       sha256: 37856363c936c6baeb3bdbed69de182d9ecb92752b36e6db444369117e80fdba
     data-sources:
       - reccmp/goldp-function-size.csv
+    report:
+      icon: assets/goldp.png

@@ -10,7 +10,8 @@
 // VTABLE: LEGORACERS 0x004b0ffc
 class GolFileParser : public GolFile {
 public:
-	enum ParserTokenType {
+	typedef int ParserTokenType;
+	enum {
 		e_syntaxerror = 0,
 		e_numericTooLong = 1,
 		e_string = 2,

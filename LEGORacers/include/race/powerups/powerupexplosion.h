@@ -3,13 +3,18 @@
 
 #include "golmath.h"
 #include "golmodelentity.h"
+#include "mabmaterialtrack.h"
 #include "managedmaterialtable.h"
+#include "race/racedecalmanager.h"
 #include "util/legoeventqueue.h"
 
 class GolBoundedEntity;
 class GolCollidableEntity;
 class GolD3DRenderDevice;
+class GolBillboard;
 class GolExport;
+class GolMaterial;
+class MabMaterialTrack;
 class RacePowerupManager;
 class Racer;
 class RacerSoundSource;

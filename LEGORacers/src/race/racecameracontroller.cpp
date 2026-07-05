@@ -4,7 +4,6 @@
 #include "camera/golcamera.h"
 #include "camera/goltransform.h"
 #include "decomp.h"
-#include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 
 #include <math.h>

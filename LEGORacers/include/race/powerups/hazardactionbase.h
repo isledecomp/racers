@@ -1,6 +1,7 @@
 #ifndef HAZARDACTIONBASE_H
 #define HAZARDACTIONBASE_H
 
+#include "golboundingvolume.h"
 #include "race/powerups/powerupaction.h"
 
 // VTABLE: LEGORACERS 0x004b1630

@@ -2,6 +2,7 @@
 #define PLAYERCONTROLS_H
 
 #include "golmath.h"
+#include "inputeventsink.h"
 #include "types.h"
 
 class DirectInputDevice;

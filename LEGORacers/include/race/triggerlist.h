@@ -2,6 +2,7 @@
 #define TRIGGERLIST_H
 
 #include "golmath.h"
+#include "goltxtparser.h"
 #include "types.h"
 #include "util/legoeventqueue.h"
 

@@ -95,7 +95,7 @@ void GolBoundingShape::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 		case BdbTxtParser::e_pvsIndices:
 			m_pvsIndexCount = parser->ReadBracketedCountAndLeftCurly();
 			if (m_pvsIndexCount == 0) {
-				parser->HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
+				parser->HandleUnexpectedToken(GolFileParser::e_int);
 			}
 
 			m_pvsIndices = new LegoU16[m_pvsIndexCount];
@@ -110,7 +110,7 @@ void GolBoundingShape::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 			parser->ReadRightCurly();
 			break;
 		default:
-			parser->HandleUnexpectedToken(GolFileParser::ParserTokenType::e_syntaxerror);
+			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			break;
 		}
 	}
@@ -126,7 +126,7 @@ void GolBoundingShape::ParseNodes(GolFileParser& p_parser)
 
 	m_nodeCount = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_nodeCount == 0) {
-		p_parser.HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
 	m_root = m_nodes = new TreeNode[m_nodeCount];
@@ -205,7 +205,7 @@ void GolBoundingShape::ParseBounds(GolFileParser& p_parser)
 
 	m_boundsCount = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_boundsCount == 0) {
-		p_parser.HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
 	m_bounds = new Bounds[m_boundsCount];

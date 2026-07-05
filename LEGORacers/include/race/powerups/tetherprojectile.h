@@ -1,6 +1,7 @@
 #ifndef TETHERPROJECTILE_H
 #define TETHERPROJECTILE_H
 
+#include "race/powerups/beammesh.h"
 #include "race/powerups/powerupprojectile.h"
 
 class Racer;

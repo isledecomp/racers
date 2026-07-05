@@ -1,8 +1,12 @@
+#include "race/racertriggerlist.h"
+
 #include "decomp.h"
 #include "golbinparser.h"
 #include "golboundedentity.h"
 #include "golerror.h"
-#include "race/racesession.h"
+#include "race/powerups/racepowerupmanager.h"
+#include "race/raceeventtable.h"
+#include "race/racercollisionworlds.h"
 #include "world/golworlddatabase.h"
 
 #include <string.h>

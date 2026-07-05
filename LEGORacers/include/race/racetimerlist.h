@@ -1,6 +1,7 @@
 #ifndef RACETIMERLIST_H
 #define RACETIMERLIST_H
 
+#include "goltxtparser.h"
 #include "types.h"
 #include "util/legoeventqueue.h"
 

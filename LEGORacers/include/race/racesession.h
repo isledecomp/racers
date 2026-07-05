@@ -3,30 +3,20 @@
 
 #include "app/golappeventhandler.h"
 #include "app/legoracers.h"
-#include "audio/soundnode.h"
 #include "compat.h"
 #include "core/gol.h"
 #include "decomp.h"
-#include "gdbmodelindexarray.h"
-#include "golanimatedentity.h"
 #include "golmath.h"
-#include "golmodelentity.h"
-#include "golnametable.h"
 #include "golstring.h"
 #include "golstringtable.h"
 #include "goltxtparser.h"
-#include "golworldentity.h"
 #include "input/inputeventqueue.h"
-#include "mabmaterialanimation.h"
-#include "mabmaterialtrack.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/checkpointgraph.h"
 #include "race/hazardmanager.h"
-#include "race/inputeventsink.h"
 #include "race/loadingscreen.h"
 #include "race/playercontrols.h"
-#include "race/powerups/powerupprojectile.h"
 #include "race/powerups/racepowerupmanager.h"
 #include "race/racecameracontroller.h"
 #include "race/racedecalmanager.h"
@@ -36,10 +26,8 @@
 #include "race/racehud.h"
 #include "race/raceinputrouter.h"
 #include "race/racer/racerouterecord.h"
-#include "race/racer/racersoundsource.h"
 #include "race/racercollisionworlds.h"
 #include "race/racereset.h"
-#include "race/raceresourcemanager.h"
 #include "race/racertriggerlist.h"
 #include "race/racesky.h"
 #include "race/racesoundsource.h"
@@ -50,11 +38,7 @@
 #include "race/tgbtargetpointlist.h"
 #include "race/triggerlist.h"
 #include "race/triggerworld.h"
-#include "scene/golbillboard.h"
-#include "surface/color.h"
 #include "types.h"
-#include "util/decalgeometry.h"
-#include "util/legoeventqueue.h"
 
 class GolD3DRenderDevice;
 class GolRenderDevice;
@@ -227,6 +211,17 @@ private:
 	void OpenPauseDialog();
 	void ProcessPauseDialog();
 	void RestartRace();
+	bool ProcessDialogs(LegoS32 p_elapsedMs)
+	{
+		m_dialog.Update(p_elapsedMs);
+		if (m_dialog.GetState() == 2) {
+			ProcessPauseDialog();
+			if (m_pauseState != 3) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	LegoRacers::Context* m_context;                        // 0x04
 	Win32GolApp* m_golApp;                                 // 0x08

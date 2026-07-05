@@ -40,11 +40,8 @@ public:
 	virtual void Draw(GolD3DRenderDevice*);            // vtable+0x0c
 	virtual void DrawTransparent(GolD3DRenderDevice*); // vtable+0x10
 	virtual void AdvanceState() = 0;                   // vtable+0x14
-
-	// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-	virtual LegoS32 GetBrickColor() = 0 { return 0; } // vtable+0x18
-
-	virtual void Deactivate(); // vtable+0x1c
+	virtual LegoS32 GetBrickColor() = 0;               // vtable+0x18
+	virtual void Deactivate();                         // vtable+0x1c
 
 	PowerupAction* GetNext() { return m_next; }
 	LegoS32 GetState() const { return m_state; }

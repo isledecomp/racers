@@ -6,7 +6,7 @@
 #include "golcollidableentity.h"
 #include "golmaterial.h"
 #include "golmodelbase.h"
-#include "race/racesession.h"
+#include "race/racedecalmanager.h"
 #include "render/golrenderdevice.h"
 #include "util/decalgeometry.h"
 

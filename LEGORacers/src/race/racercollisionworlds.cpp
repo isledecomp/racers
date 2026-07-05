@@ -1,6 +1,8 @@
+#include "race/racercollisionworlds.h"
+
 #include "golboundedentity.h"
 #include "golerror.h"
-#include "race/racesession.h"
+#include "race/racestate.h"
 #include "world/golworlddatabase.h"
 
 #include <stdlib.h>

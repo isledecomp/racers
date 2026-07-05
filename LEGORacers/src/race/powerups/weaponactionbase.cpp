@@ -1,7 +1,6 @@
 #include "race/powerups/weaponactionbase.h"
 
 #include "race/powerups/powerupprojectile.h"
-#include "race/racesession.h"
 
 // FUNCTION: LEGORACERS 0x0045bbe0
 WeaponActionBase::WeaponActionBase()

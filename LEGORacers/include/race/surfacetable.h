@@ -1,6 +1,7 @@
 #ifndef SURFACETABLE_H
 #define SURFACETABLE_H
 
+#include "golmath.h"
 #include "golname.h"
 #include "golnametable.h"
 #include "goltxtparser.h"

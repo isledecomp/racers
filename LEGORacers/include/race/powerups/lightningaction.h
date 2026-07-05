@@ -1,11 +1,11 @@
 #ifndef LIGHTNINGACTION_H
 #define LIGHTNINGACTION_H
 
-#include "golmodelentity.h"
+#include "race/powerups/beammesh.h"
 #include "race/powerups/weaponactionbase.h"
-#include "race/targetpointlist.h"
 
 class CutsceneAnimation;
+class GolBillboard;
 class MabMaterialTrack;
 class SpatialSoundInstance;
 

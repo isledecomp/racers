@@ -1,6 +1,7 @@
+#include "race/surfacetable.h"
+
 #include "golbinparser.h"
 #include "golerror.h"
-#include "race/racesession.h"
 
 #include <stdlib.h>
 #include <string.h>

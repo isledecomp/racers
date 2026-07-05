@@ -3,6 +3,8 @@
 
 #include "race/triggerlist.h"
 
+class RacerCollisionWorlds;
+class RacePowerupManager;
 class Racer;
 class RaceState;
 

@@ -1,4 +1,7 @@
-#include "race/racesession.h"
+#include "race/powerups/droppablebrick.h"
+
+#include "golboundingvolume.h"
+#include "race/powerups/racepowerupmanager.h"
 
 DECOMP_SIZE_ASSERT(DroppableBrick, 0x68)
 

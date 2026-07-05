@@ -2,6 +2,8 @@
 #define LOADINGSCREEN_H
 
 #include "golstring.h"
+#include "golstringtable.h"
+#include "goltxtparser.h"
 #include "types.h"
 
 class GolD3DRenderDevice;

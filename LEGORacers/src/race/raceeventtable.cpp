@@ -2,6 +2,7 @@
 
 #include "audio/spatialsoundinstance.h"
 #include "decomp.h"
+#include "golanimatedentity.h"
 #include "golbinparser.h"
 #include "golboundedentity.h"
 #include "golcollidableentity.h"
@@ -24,7 +25,7 @@
 #include "race/events/soundresource.h"
 #include "race/events/timerresource.h"
 #include "race/hazardmanager.h"
-#include "race/racesession.h"
+#include "race/raceactionsource.h"
 #include "race/targetpointlist.h"
 #include "world/golworlddatabase.h"
 

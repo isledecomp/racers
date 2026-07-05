@@ -1,6 +1,8 @@
+#include "race/targetpointlist.h"
+
 #include "golbinparser.h"
 #include "golerror.h"
-#include "race/racesession.h"
+#include "race/tgbtargetpointlist.h"
 
 #include <float.h>
 

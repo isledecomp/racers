@@ -2051,8 +2051,7 @@ void RaceSession::Update()
 		);
 	}
 
-	if (!m_pauseState ||
-		(m_dialog.Update(elapsedMs), m_dialog.GetState() == 2) && (ProcessPauseDialog(), m_pauseState != 3)) {
+	if (!(m_pauseState && ProcessDialogs(elapsedMs))) {
 		if (elapsedMs > m_demoTextMs) {
 			m_demoTextMs = c_demoTextCycleMs;
 		}

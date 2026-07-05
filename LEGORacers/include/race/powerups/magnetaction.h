@@ -1,10 +1,10 @@
 #ifndef MAGNETACTION_H
 #define MAGNETACTION_H
 
-#include "golmodelentity.h"
 #include "race/powerups/hazardactionbase.h"
 
 class CutsceneAnimation;
+class GolAnimatedEntity;
 class MabMaterialTrack;
 class SpatialSoundInstance;
 

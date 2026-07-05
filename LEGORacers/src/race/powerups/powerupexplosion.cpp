@@ -1,7 +1,11 @@
+#include "race/powerups/powerupexplosion.h"
+
+#include "core/gol.h"
 #include "decomp.h"
-#include "race/racesession.h"
+#include "race/powerups/racepowerupmanager.h"
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
+#include "scene/golbillboard.h"
 
 DECOMP_SIZE_ASSERT(PowerupExplosion, 0x270)
 

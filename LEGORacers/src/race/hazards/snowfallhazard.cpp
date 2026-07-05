@@ -122,7 +122,7 @@ void SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, Racer* p_racer)
 		GolVec3 position;
 		GolVec3 direction;
 		GolVec3 up;
-		p_camera->GetTransform()->VTable0x1c(&direction, &up);
+		p_camera->GetTransform()->GetDirectionUp(&direction, &up);
 
 		p_camera->GetTransform()->GetPosition(&position);
 		position.m_x = g_snowfallCameraForwardScale * direction.m_x + position.m_x;

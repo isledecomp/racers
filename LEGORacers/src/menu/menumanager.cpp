@@ -361,7 +361,7 @@ void MenuManager::SetupCamera()
 
 	lens->GetTransform()->SetPosition(&position);
 	lens->m_flags |= GolCamera::c_flagViewDirty;
-	lens->GetTransform()->VTable0x24(&right, &forward);
+	lens->GetTransform()->SetDirectionUp(&right, &forward);
 	lens->m_flags |= GolCamera::c_flagViewDirty;
 	m_renderer->SetCamera(lens);
 }

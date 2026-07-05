@@ -1692,7 +1692,7 @@ void GolWorldDatabase::SetupCamera(LegoU32 p_cameraIndex, GolCameraBase* p_lens)
 
 	p_lens->m_transform->SetPosition(&camera->m_position);
 	p_lens->m_flags |= 1;
-	p_lens->m_transform->VTable0x24(&camera->m_direction, &camera->m_up);
+	p_lens->m_transform->SetDirectionUp(&camera->m_direction, &camera->m_up);
 	p_lens->m_flags |= 1;
 
 	if (camera->m_animatedEntityIndex >= 0) {

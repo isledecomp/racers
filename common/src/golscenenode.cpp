@@ -241,9 +241,9 @@ void GolSceneNode::MirrorY()
 
 		GolVec3 right;
 		GolVec3 forward;
-		transform->VTable0x20(&right, &forward);
+		transform->GetRightDirection(&right, &forward);
 		right.m_y = -right.m_y;
 		forward.m_y = -forward.m_y;
-		transform->VTable0x28(&right, &forward);
+		transform->SetRightDirection(&right, &forward);
 	}
 }

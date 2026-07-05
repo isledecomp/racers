@@ -1388,7 +1388,7 @@ void RaceSession::CreateCameras()
 			currentCamera->GetTransform()->SetPosition(&m_cameraStartPosition);
 			currentCamera->m_flags |= GolCamera::c_flagViewDirty;
 
-			m_cameras[i]->GetTransform()->VTable0x24(&m_cameraStartDirection, &m_cameraStartUp);
+			m_cameras[i]->GetTransform()->SetDirectionUp(&m_cameraStartDirection, &m_cameraStartUp);
 			m_cameras[i]->m_flags |= GolCamera::c_flagViewDirty;
 
 			Rect viewport;
@@ -1712,7 +1712,7 @@ void RaceSession::UpdateIntroState()
 		currentCamera = *camera;
 		GolVec3* rightPtr = &right;
 		GolVec3* forwardPtr = &forward;
-		currentCamera->m_transform->VTable0x1c(forwardPtr, rightPtr);
+		currentCamera->m_transform->GetDirectionUp(forwardPtr, rightPtr);
 
 		RaceCameraController* cameraController = m_cameraControllers;
 		LegoS32 remaining = sizeOfArray(m_cameraControllers);

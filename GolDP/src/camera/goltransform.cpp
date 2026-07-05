@@ -59,121 +59,119 @@ GolTransform::GolTransform()
 }
 
 // FUNCTION: GOLDP 0x10002980
-void GolTransform::GetBasis(GolVec3* p_right, GolVec3* p_forward, GolVec3* p_up)
+void GolTransform::GetBasis(GolVec3* p_direction, GolVec3* p_up, GolVec3* p_right)
 {
-	p_up->m_x = m_matrix.m_m[0][0];
-	p_up->m_y = m_matrix.m_m[0][1];
-	p_up->m_z = m_matrix.m_m[0][2];
-	p_forward->m_x = m_matrix.m_m[1][0];
-	p_forward->m_y = m_matrix.m_m[1][1];
-	p_forward->m_z = m_matrix.m_m[1][2];
-	p_right->m_x = m_matrix.m_m[2][0];
-	p_right->m_y = m_matrix.m_m[2][1];
-	p_right->m_z = m_matrix.m_m[2][2];
+	p_right->m_x = m_matrix.m_m[0][0];
+	p_right->m_y = m_matrix.m_m[0][1];
+	p_right->m_z = m_matrix.m_m[0][2];
+	p_up->m_x = m_matrix.m_m[1][0];
+	p_up->m_y = m_matrix.m_m[1][1];
+	p_up->m_z = m_matrix.m_m[1][2];
+	p_direction->m_x = m_matrix.m_m[2][0];
+	p_direction->m_y = m_matrix.m_m[2][1];
+	p_direction->m_z = m_matrix.m_m[2][2];
 }
 
 // FUNCTION: GOLDP 0x100029d0
-void GolTransform::VTable0x1c(GolVec3* p_right, GolVec3* p_forward)
+void GolTransform::GetDirectionUp(GolVec3* p_direction, GolVec3* p_up)
 {
-	p_forward->m_x = m_matrix.m_m[1][0];
-	p_forward->m_y = m_matrix.m_m[1][1];
-	p_forward->m_z = m_matrix.m_m[1][2];
-	p_right->m_x = m_matrix.m_m[2][0];
-	p_right->m_y = m_matrix.m_m[2][1];
-	p_right->m_z = m_matrix.m_m[2][2];
+	p_up->m_x = m_matrix.m_m[1][0];
+	p_up->m_y = m_matrix.m_m[1][1];
+	p_up->m_z = m_matrix.m_m[1][2];
+	p_direction->m_x = m_matrix.m_m[2][0];
+	p_direction->m_y = m_matrix.m_m[2][1];
+	p_direction->m_z = m_matrix.m_m[2][2];
 }
 
 // FUNCTION: GOLDP 0x10002a00
-void GolTransform::VTable0x20(GolVec3* p_up, GolVec3* p_right)
+void GolTransform::GetRightDirection(GolVec3* p_right, GolVec3* p_direction)
 {
-	p_up->m_x = m_matrix.m_m[0][0];
-	p_up->m_y = m_matrix.m_m[0][1];
-	p_up->m_z = m_matrix.m_m[0][2];
-	p_right->m_x = m_matrix.m_m[2][0];
-	p_right->m_y = m_matrix.m_m[2][1];
-	p_right->m_z = m_matrix.m_m[2][2];
+	p_right->m_x = m_matrix.m_m[0][0];
+	p_right->m_y = m_matrix.m_m[0][1];
+	p_right->m_z = m_matrix.m_m[0][2];
+	p_direction->m_x = m_matrix.m_m[2][0];
+	p_direction->m_y = m_matrix.m_m[2][1];
+	p_direction->m_z = m_matrix.m_m[2][2];
 }
 
 // FUNCTION: GOLDP 0x10002a30
-void GolTransform::VTable0x24(GolVec3* p_right, GolVec3* p_forward)
+void GolTransform::SetDirectionUp(GolVec3* p_direction, GolVec3* p_up)
+{
+	GolVec3 direction;
+	GolMath::NormalizeVector3(*p_direction, &direction);
+
+	LegoFloat dot = p_up->m_y;
+	dot *= direction.m_y;
+	dot += direction.m_z * p_up->m_z;
+	dot += direction.m_x * p_up->m_x;
+
+	GolVec3 up;
+	up.m_x = p_up->m_x - (direction.m_x * dot);
+	up.m_y = p_up->m_y - (direction.m_y * dot);
+	up.m_z = p_up->m_z - (direction.m_z * dot);
+	GolMath::NormalizeVector3(up, &up);
+
+	GolVec3 right;
+	right.m_x = direction.m_z;
+	right.m_x *= up.m_y;
+	right.m_x -= up.m_z * direction.m_y;
+	right.m_y = up.m_z * direction.m_x;
+	LegoFloat directionZUpX = direction.m_z;
+	directionZUpX *= up.m_x;
+	right.m_y -= directionZUpX;
+	right.m_z = direction.m_y;
+	right.m_z *= up.m_x;
+	right.m_z -= up.m_y * direction.m_x;
+
+	m_matrix.m_m[0][0] = right.m_x;
+	m_matrix.m_m[0][1] = right.m_y;
+	m_matrix.m_m[0][2] = right.m_z;
+	m_matrix.m_m[1][0] = up.m_x;
+	m_matrix.m_m[1][1] = up.m_y;
+	m_matrix.m_m[1][2] = up.m_z;
+	m_matrix.m_m[2][0] = direction.m_x;
+	m_matrix.m_m[2][1] = direction.m_y;
+	m_matrix.m_m[2][2] = direction.m_z;
+}
+
+// FUNCTION: GOLDP 0x10002b20
+void GolTransform::SetRightDirection(GolVec3* p_right, GolVec3* p_direction)
 {
 	GolVec3 right;
 	GolMath::NormalizeVector3(*p_right, &right);
 
-	LegoFloat dot = p_forward->m_y;
+	LegoFloat dot = p_direction->m_y;
 	dot *= right.m_y;
-	dot += right.m_z * p_forward->m_z;
-	dot += right.m_x * p_forward->m_x;
+	dot += right.m_z * p_direction->m_z;
+	dot += right.m_x * p_direction->m_x;
 
-	GolVec3 forward;
-	forward.m_x = p_forward->m_x - (right.m_x * dot);
-	forward.m_y = p_forward->m_y - (right.m_y * dot);
-	forward.m_z = p_forward->m_z - (right.m_z * dot);
-	GolMath::NormalizeVector3(forward, &forward);
+	GolVec3 direction;
+	direction.m_x = p_direction->m_x - (right.m_x * dot);
+	direction.m_y = p_direction->m_y - (right.m_y * dot);
+	direction.m_z = p_direction->m_z - (right.m_z * dot);
+	GolMath::NormalizeVector3(direction, &direction);
 
 	GolVec3 up;
 	up.m_x = right.m_z;
-	up.m_x *= forward.m_y;
-	up.m_x -= forward.m_z * right.m_y;
-	up.m_y = forward.m_z * right.m_x;
-	LegoFloat rightZForwardX = right.m_z;
-	rightZForwardX *= forward.m_x;
-	up.m_y -= rightZForwardX;
+	up.m_x *= direction.m_y;
+	up.m_x -= direction.m_z * right.m_y;
+	up.m_y = direction.m_z * right.m_x;
+	LegoFloat rightZDirectionX = right.m_z;
+	rightZDirectionX *= direction.m_x;
+	up.m_y -= rightZDirectionX;
 	up.m_z = right.m_y;
-	up.m_z *= forward.m_x;
-	up.m_z -= forward.m_y * right.m_x;
+	up.m_z *= direction.m_x;
+	up.m_z -= direction.m_y * right.m_x;
 
-	// TODO: This is behaviorally complete, but the final member-store schedule
-	// remains 92.65% in reccmp.
-	m_matrix.m_m[0][0] = up.m_x;
-	m_matrix.m_m[0][1] = up.m_y;
-	m_matrix.m_m[0][2] = up.m_z;
-	m_matrix.m_m[1][0] = forward.m_x;
-	m_matrix.m_m[1][1] = forward.m_y;
-	m_matrix.m_m[1][2] = forward.m_z;
-	m_matrix.m_m[2][0] = right.m_x;
-	m_matrix.m_m[2][1] = right.m_y;
-	m_matrix.m_m[2][2] = right.m_z;
-}
-
-// FUNCTION: GOLDP 0x10002b20
-void GolTransform::VTable0x28(GolVec3* p_up, GolVec3* p_right)
-{
-	GolVec3 up;
-	GolMath::NormalizeVector3(*p_up, &up);
-
-	LegoFloat dot = p_right->m_y;
-	dot *= up.m_y;
-	dot += up.m_z * p_right->m_z;
-	dot += up.m_x * p_right->m_x;
-
-	GolVec3 right;
-	right.m_x = p_right->m_x - (up.m_x * dot);
-	right.m_y = p_right->m_y - (up.m_y * dot);
-	right.m_z = p_right->m_z - (up.m_z * dot);
-	GolMath::NormalizeVector3(right, &right);
-
-	GolVec3 forward;
-	forward.m_x = up.m_z;
-	forward.m_x *= right.m_y;
-	forward.m_x -= right.m_z * up.m_y;
-	forward.m_y = right.m_z * up.m_x;
-	LegoFloat upZRightX = up.m_z;
-	upZRightX *= right.m_x;
-	forward.m_y -= upZRightX;
-	forward.m_z = up.m_y;
-	forward.m_z *= right.m_x;
-	forward.m_z -= right.m_y * up.m_x;
-
-	m_matrix.m_m[0][0] = up.m_x;
-	m_matrix.m_m[0][1] = up.m_y;
-	m_matrix.m_m[0][2] = up.m_z;
-	m_matrix.m_m[1][0] = forward.m_x;
-	m_matrix.m_m[1][1] = forward.m_y;
-	m_matrix.m_m[1][2] = forward.m_z;
-	m_matrix.m_m[2][0] = right.m_x;
-	m_matrix.m_m[2][1] = right.m_y;
-	m_matrix.m_m[2][2] = right.m_z;
+	m_matrix.m_m[0][0] = right.m_x;
+	m_matrix.m_m[0][1] = right.m_y;
+	m_matrix.m_m[0][2] = right.m_z;
+	m_matrix.m_m[1][0] = up.m_x;
+	m_matrix.m_m[1][1] = up.m_y;
+	m_matrix.m_m[1][2] = up.m_z;
+	m_matrix.m_m[2][0] = direction.m_x;
+	m_matrix.m_m[2][1] = direction.m_y;
+	m_matrix.m_m[2][2] = direction.m_z;
 }
 
 // FUNCTION: GOLDP 0x10002c10

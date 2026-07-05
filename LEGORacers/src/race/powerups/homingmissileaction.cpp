@@ -380,7 +380,7 @@ void HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 		up.m_x = 0.0f;
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
-		transform->VTable0x28(&direction, &up);
+		transform->SetRightDirection(&direction, &up);
 
 		p_renderer->DrawModelEntity(&m_missileEntity);
 	}

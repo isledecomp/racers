@@ -1675,7 +1675,7 @@ void GolD3DRenderDevice::DrawBillboard(GolBillboard& p_param)
 		GolVec3 forward;
 		GolVec3 right;
 		GolCamera* camera = m_currentCamera;
-		camera->m_transform->VTable0x1c(&right, &forward);
+		camera->m_transform->GetDirectionUp(&right, &forward);
 
 		forward.m_x = -forward.m_x;
 		forward.m_y = -forward.m_y;

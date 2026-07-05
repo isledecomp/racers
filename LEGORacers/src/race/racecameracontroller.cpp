@@ -166,7 +166,7 @@ void RaceCameraController::UpdateFollow()
 		right.m_z = m_smoothedTransform.m_orientation.m_rows[2].m_z;
 		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
 
-		camera->GetTransform()->VTable0x24(&right, &forward);
+		camera->GetTransform()->SetDirectionUp(&right, &forward);
 		camera->m_flags |= GolCamera::c_flagViewDirty;
 		return;
 	}
@@ -181,13 +181,13 @@ void RaceCameraController::UpdateFollow()
 		right.m_z = -m_smoothedTransform.m_orientation.m_rows[2].m_z;
 		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
 
-		camera->GetTransform()->VTable0x24(&right, &forward);
+		camera->GetTransform()->SetDirectionUp(&right, &forward);
 		camera->m_flags |= GolCamera::c_flagViewDirty;
 		return;
 	}
 	camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
 	camera->m_flags |= GolCamera::c_flagViewDirty;
-	camera->GetTransform()->VTable0x24(
+	camera->GetTransform()->SetDirectionUp(
 		&m_smoothedTransform.m_orientation.m_rows[2],
 		&m_smoothedTransform.m_orientation.m_rows[1]
 	);

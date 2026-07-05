@@ -90,31 +90,32 @@ void GolCamera::UpdateMatrices()
 void GolCamera::UpdateViewMatrix()
 {
 	GolVec3 position;
-	GolVec3 up;
-	GolVec3 forward;
 	GolVec3 right;
-	m_cameraMatrices.m_transform.GetBasis(&right, &forward, &up);
+	GolVec3 up;
+	GolVec3 direction;
+	m_cameraMatrices.m_transform.GetBasis(&direction, &up, &right);
 	m_cameraMatrices.m_transform.GetPosition(&position);
 
 	GolMatrix4& viewMatrix = m_cameraMatrices.m_view;
-	viewMatrix.m_m[0][0] = up.m_x;
-	viewMatrix.m_m[0][1] = forward.m_x;
-	viewMatrix.m_m[0][2] = right.m_x;
+	viewMatrix.m_m[0][0] = right.m_x;
+	viewMatrix.m_m[0][1] = up.m_x;
+	viewMatrix.m_m[0][2] = direction.m_x;
 	viewMatrix.m_m[0][3] = 0.0f;
-	viewMatrix.m_m[1][0] = up.m_y;
-	viewMatrix.m_m[1][1] = forward.m_y;
-	viewMatrix.m_m[1][2] = right.m_y;
+	viewMatrix.m_m[1][0] = right.m_y;
+	viewMatrix.m_m[1][1] = up.m_y;
+	viewMatrix.m_m[1][2] = direction.m_y;
 	viewMatrix.m_m[1][3] = 0.0f;
-	viewMatrix.m_m[2][0] = up.m_z;
-	viewMatrix.m_m[2][1] = forward.m_z;
-	viewMatrix.m_m[2][2] = right.m_z;
+	viewMatrix.m_m[2][0] = right.m_z;
+	viewMatrix.m_m[2][1] = up.m_z;
+	viewMatrix.m_m[2][2] = direction.m_z;
 	viewMatrix.m_m[2][3] = 0.0f;
-	viewMatrix.m_m[3][0] = -(position.m_x * up.m_x + position.m_y * up.m_y + position.m_z * up.m_z);
-	viewMatrix.m_m[3][1] = -(position.m_x * forward.m_x + position.m_y * forward.m_y + position.m_z * forward.m_z);
+	viewMatrix.m_m[3][0] = -(position.m_x * right.m_x + position.m_y * right.m_y + position.m_z * right.m_z);
+	viewMatrix.m_m[3][1] = -(position.m_x * up.m_x + position.m_y * up.m_y + position.m_z * up.m_z);
 	viewMatrix.m_m[3][3] = 1.0f;
 
 	m_flags &= ~c_flagViewDirty;
-	viewMatrix.m_m[3][2] = -(position.m_x * right.m_x + position.m_y * right.m_y + position.m_z * right.m_z);
+	viewMatrix.m_m[3][2] =
+		-(position.m_x * direction.m_x + position.m_y * direction.m_y + position.m_z * direction.m_z);
 	if (m_flags & c_flagCustomViewBounds) {
 		ComputeFrustumFromBounds(&m_viewFrustum);
 	}

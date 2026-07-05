@@ -261,7 +261,7 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 
 	GolVec3* forward = &m_forward;
 	GolVec3* right = &m_right;
-	m_camera->GetTransform()->VTable0x1c(right, forward);
+	m_camera->GetTransform()->GetDirectionUp(right, forward);
 
 	GolVec3* axis = &m_up;
 	LegoFloat axisX = right->m_y;
@@ -316,7 +316,7 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 
 	lens->m_flags |= GolCamera::c_flagViewDirty;
 	GolCamera* currentLens = m_camera;
-	currentLens->GetTransform()->VTable0x24(right, forward);
+	currentLens->GetTransform()->SetDirectionUp(right, forward);
 	currentLens->m_flags |= GolCamera::c_flagViewDirty;
 }
 

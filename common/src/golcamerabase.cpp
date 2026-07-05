@@ -60,7 +60,7 @@ void GolCameraBase::LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up
 	up.m_y = -p_up->m_y;
 	up.m_z = -p_up->m_z;
 
-	m_transform->VTable0x24(&forward, &up);
+	m_transform->SetDirectionUp(&forward, &up);
 	m_transform->SetPosition(p_position);
 }
 
@@ -437,7 +437,7 @@ void GolCameraBase::UpdateFromTrackedEntity()
 	GolVec3 transformedRight;
 	GolVec3 transformedForward;
 	orbit->GetPosition(&position);
-	orbit->VTable0x20(&right, &forward);
+	orbit->GetRightDirection(&right, &forward);
 
 	for (GolTransformBase* parent = orbit->m_parent; parent != NULL; parent = parent->m_parent) {
 		parent->TransformPoint(&position, &transformedPosition);
@@ -458,7 +458,7 @@ void GolCameraBase::UpdateFromTrackedEntity()
 	m_flags |= c_flagViewDirty;
 	transformedForward.m_y = -transformedForward.m_y;
 	transformedForward.m_z = -transformedForward.m_z;
-	m_transform->VTable0x24(&transformedRight, &transformedForward);
+	m_transform->SetDirectionUp(&transformedRight, &transformedForward);
 	m_flags |= c_flagViewDirty;
 }
 

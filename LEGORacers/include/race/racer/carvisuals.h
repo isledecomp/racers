@@ -1,6 +1,7 @@
 #ifndef CARVISUALS_H
 #define CARVISUALS_H
 
+#include "colortransform.h"
 #include "golanimatedentity.h"
 #include "golmath.h"
 #include "golname.h"

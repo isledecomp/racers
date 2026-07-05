@@ -1,6 +1,7 @@
 #include "camera/goltransform.h"
 
-#include "camera/golcameramatrices.h"
+#include "camera/golcameramatrices.h"  // IWYU pragma: keep
+#include "decomp.h"
 
 DECOMP_SIZE_ASSERT(GolTransform, 0xd0)
 DECOMP_SIZE_ASSERT(GolCameraMatrices, 0x220)

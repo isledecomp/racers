@@ -1,8 +1,6 @@
 #ifndef NULLSOUNDINSTANCE_H
 #define NULLSOUNDINSTANCE_H
 
-#include "compat.h"
-#include "decomp.h"
 #include "gollist.h"
 #include "types.h"
 

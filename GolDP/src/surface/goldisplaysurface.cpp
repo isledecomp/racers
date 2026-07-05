@@ -1,5 +1,9 @@
 #include "surface/goldisplaysurface.h"
 
+#include "golsurfaceformat.h"
+
+#include <stddef.h>
+
 DECOMP_SIZE_ASSERT(GolDisplaySurface, 0x38)
 
 // FUNCTION: GOLDP 0x1001d730

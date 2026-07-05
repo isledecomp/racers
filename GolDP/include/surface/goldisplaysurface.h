@@ -2,7 +2,9 @@
 #define GOLDISPLAYSURFACE_H
 
 #include "compat.h"
+#include "decomp.h"
 #include "golsurface.h"
+#include "types.h"
 
 class GolDrawState;
 

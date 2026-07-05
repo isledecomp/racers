@@ -1,5 +1,10 @@
 #include "audio/nullsoundmanager.h"
 
+#include "audio/musicgroup.h"
+#include "audio/nullmusicgroup.h"
+#include "audio/nullsoundgroup.h"
+#include "audio/soundgroup.h"
+#include "audio/soundnode.h"
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(GolListLink, 0x08)

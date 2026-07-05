@@ -1,5 +1,8 @@
 #include "render/golrenderdevice.h"
 
+#include "decomp.h"
+#include "surface/color.h"
+
 DECOMP_SIZE_ASSERT(GolRenderDevice::MaterialColor, 0x4)
 
 // FUNCTION: GOLDP 0x10024760

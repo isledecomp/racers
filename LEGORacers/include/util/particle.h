@@ -1,11 +1,11 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include "decomp.h"
-#include "golmodelentity.h"
+#include "golworldentity.h"
 #include "types.h"
 
 class GolMaterial;
+struct GolVec3;
 
 // VTABLE: LEGORACERS 0x004af8c0
 class Particle : public GolWorldEntity {

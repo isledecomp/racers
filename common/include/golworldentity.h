@@ -2,12 +2,12 @@
 #define GOLWORLDENTITY_H
 
 #include "decomp.h"
-#include "gdbvertexarray.h"
 #include "golmath.h"
-#include "golviewfrustum.h"
+#include "types.h"
 
+struct ColorTransform;
 class GolRenderDevice;
-class GolWorldDatabase;
+class GolViewFrustum;
 
 // VTABLE: GOLDP 0x100572e4
 // VTABLE: LEGORACERS 0x004af7cc

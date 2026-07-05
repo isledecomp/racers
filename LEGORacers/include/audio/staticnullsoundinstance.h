@@ -1,9 +1,10 @@
 #ifndef STATICNULLSOUNDINSTANCE_H
 #define STATICNULLSOUNDINSTANCE_H
 
-#include "compat.h"
 #include "decomp.h"
 #include "types.h"
+
+#include <stddef.h>
 
 class DirectSoundGroup;
 

@@ -1,7 +1,12 @@
 #ifndef TIMERRESOURCE_H
 #define TIMERRESOURCE_H
 
+#include "compat.h"
+#include "decomp.h"
 #include "race/events/raceeventresource.h"
+#include "types.h"
+
+class RaceEventTable;
 
 // VTABLE: LEGORACERS 0x004b1af0
 // SIZE 0x30

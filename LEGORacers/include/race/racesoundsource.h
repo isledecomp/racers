@@ -2,8 +2,8 @@
 #define RACESOUNDSOURCE_H
 
 #include "race/racer/racersoundsource.h"
+#include "types.h"
 
-class RaceSession;
 class SoundManager;
 
 // SIZE 0x14

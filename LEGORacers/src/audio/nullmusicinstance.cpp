@@ -1,5 +1,7 @@
 #include "audio/nullmusicinstance.h"
 
+#include <stddef.h>
+
 DECOMP_SIZE_ASSERT(NullMusicInstance, 0x10)
 
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED

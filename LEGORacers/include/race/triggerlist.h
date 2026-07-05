@@ -3,6 +3,7 @@
 
 #include "golmath.h"
 #include "goltxtparser.h"
+#include "golworldentity.h"
 #include "types.h"
 #include "util/legoeventqueue.h"
 

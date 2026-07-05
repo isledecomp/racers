@@ -1,8 +1,6 @@
 #ifndef MUSICGROUPSTATE_H
 #define MUSICGROUPSTATE_H
 
-#include "decomp.h"
-#include "gollist.h"
 #include "types.h"
 
 class MusicInstance;

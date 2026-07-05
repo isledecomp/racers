@@ -1,5 +1,6 @@
 #include "golmodelrenderstate.h"
 
+#include "gdbvertexarray.h"
 #include "golmaterial.h"
 #include "golmodelbase.h"
 #include "golmodelentity.h"

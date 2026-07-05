@@ -1,9 +1,10 @@
 #ifndef GOLTRANSFORMBASE_H
 #define GOLTRANSFORMBASE_H
 
-#include "decomp.h"
-#include "golworldentity.h"
 #include "types.h"
+
+struct GolQuat;
+struct GolVec3;
 
 // VTABLE: GOLDP 0x10056cf0
 // SIZE 0x10

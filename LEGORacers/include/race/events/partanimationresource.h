@@ -1,9 +1,12 @@
 #ifndef PARTANIMATIONRESOURCE_H
 #define PARTANIMATIONRESOURCE_H
 
+#include "compat.h"
+#include "types.h"
 #include "race/events/raceeventresource.h"
 
 class GolAnimatedEntity;
+class RaceEventTable;
 
 // VTABLE: LEGORACERS 0x004b1c00
 // SIZE 0x34

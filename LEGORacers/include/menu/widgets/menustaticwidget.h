@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "input/inputeventqueue.h"
 #include "menu/widgets/menuwidget.h"
 
 // VTABLE: LEGORACERS 0x004b263c

@@ -3,6 +3,8 @@
 #include "audio/directsoundgroup.h"
 #include "types.h"
 
+#include <stddef.h>
+
 DECOMP_SIZE_ASSERT(NullStreamingSoundInstance, 0x44)
 
 // GLOBAL: LEGORACERS 0x004c6bc0

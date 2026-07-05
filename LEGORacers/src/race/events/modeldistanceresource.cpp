@@ -1,10 +1,12 @@
 #include "race/events/modeldistanceresource.h"
 
-// GLOBAL: LEGORACERS 0x004b1c1c
-const LegoFloat g_unk0x004b1c1c = -1.0f;
-
 #include "decomp.h"
 #include "golmodelentity.h"
+
+#include <stddef.h>
+
+// GLOBAL: LEGORACERS 0x004b1c1c
+const LegoFloat g_unk0x004b1c1c = -1.0f;
 
 DECOMP_SIZE_ASSERT(ModelDistanceResource::InitParams, 0x24)
 DECOMP_SIZE_ASSERT(ModelDistanceResource, 0x34)

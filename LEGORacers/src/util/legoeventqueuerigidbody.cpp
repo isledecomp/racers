@@ -1,5 +1,7 @@
 #include "util/legoeventqueue.h"
 
+#include "golorientedentity.h"
+
 #include <float.h>
 #include <math.h>
 

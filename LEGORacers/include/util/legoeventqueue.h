@@ -1,11 +1,12 @@
 #ifndef LEGOEVENTQUEUE_H
 #define LEGOEVENTQUEUE_H
 
-#include "compat.h"
 #include "decomp.h"
-#include "golorientedentity.h"
+#include "golmath.h"
 #include "types.h"
 
+class GolOrientedEntity;
+class GolWorldEntity;
 class Racer;
 
 // VTABLE: LEGORACERS 0x004b0710

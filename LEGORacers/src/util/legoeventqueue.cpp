@@ -1,8 +1,10 @@
 #include "util/legoeventqueue.h"
 
 #include "golerror.h"
-#include "util/collisioneventqueue.h"
+#include "golworldentity.h"
 #include "util/proximityeventqueue.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(LegoEventQueue, 0x28)
 DECOMP_SIZE_ASSERT(LegoEventQueue::Descriptor, 0x18)

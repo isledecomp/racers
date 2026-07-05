@@ -4,6 +4,8 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/widgets/menutriangle.h"
+#include "menu/widgets/menuwidget.h"
+#include "types.h"
 
 // VTABLE: LEGORACERS 0x004b20a0
 // SIZE 0xc0

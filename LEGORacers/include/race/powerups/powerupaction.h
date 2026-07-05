@@ -1,10 +1,8 @@
 #ifndef POWERUPACTION_H
 #define POWERUPACTION_H
 
-#include "golmath.h"
+#include "compat.h"
 #include "race/powerups/actionsetup.h"
-#include "race/powerups/actiontarget.h"
-#include "race/raceactionsource.h"
 #include "util/legoeventqueue.h"
 
 class GolBoundedEntity;

@@ -2,6 +2,8 @@
 
 #include "audio/soundgroup.h"
 
+#include <stddef.h>
+
 DECOMP_SIZE_ASSERT(SoundGroupBinding, 0xc)
 
 // FUNCTION: LEGORACERS 0x0046e8f0

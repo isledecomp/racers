@@ -1,5 +1,7 @@
 #include "golworldentity.h"
 
+#include "golviewfrustum.h"
+
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(GolWorldEntity, 0x28)

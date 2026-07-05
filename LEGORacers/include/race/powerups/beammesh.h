@@ -7,6 +7,7 @@
 #include "surface/color.h"
 #include "types.h"
 
+class GdbVertexArray;
 class GolD3DRenderDevice;
 class GolExport;
 class GolMaterial;

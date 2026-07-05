@@ -2,7 +2,6 @@
 #define GOLAPPEVENTHANDLER_H
 
 #include "decomp.h"
-#include "types.h"
 
 // VTABLE: LEGORACERS 0x004affa4
 // SIZE 0x4

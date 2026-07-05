@@ -1,7 +1,6 @@
 #ifndef GOLATTACHEDSURFACE_H
 #define GOLATTACHEDSURFACE_H
 
-#include "decomp.h"
 #include "golsurface.h"
 
 class GolRenderTarget;

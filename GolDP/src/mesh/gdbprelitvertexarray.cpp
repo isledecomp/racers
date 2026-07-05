@@ -1,6 +1,10 @@
 #include "mesh/gdbprelitvertexarray.h"
 
+#include "decomp.h"
+#include "gdbvertexarray.h"
 #include "golmath.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(GdbPrelitVertexArray, 0x20)
 

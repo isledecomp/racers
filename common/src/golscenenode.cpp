@@ -2,6 +2,7 @@
 
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golmath.h"
 #include "goltransformbase.h"
 
 #include <string.h>

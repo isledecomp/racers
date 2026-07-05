@@ -1,6 +1,9 @@
 #include "mabmaterialtrack.h"
 
 #include "mabmaterialframe.h"
+#include "material/materialtable.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(MabMaterialTrack, 0x18)
 

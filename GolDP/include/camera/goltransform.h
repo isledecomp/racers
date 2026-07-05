@@ -2,6 +2,7 @@
 #define GOLTRANSFORM_H
 
 #include "compat.h"
+#include "golmath.h"
 #include "goltransformbase.h"
 #include "types.h"
 

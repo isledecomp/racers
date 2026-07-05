@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "golmath.h"
 #include "golworldentity.h"
+#include "types.h"
 
 // VTABLE: GOLDP 0x100571d8
 // VTABLE: LEGORACERS 0x004af700

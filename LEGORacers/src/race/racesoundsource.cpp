@@ -2,6 +2,9 @@
 
 #include "audio/soundgroup.h"
 #include "audio/soundmanager.h"
+#include "decomp.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(RaceSoundSource, 0x14)
 

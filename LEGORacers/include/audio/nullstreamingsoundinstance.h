@@ -7,10 +7,7 @@
 #include "gollist.h"
 #include "types.h"
 
-class StreamingSoundInstance;
-
 class SoundGroup;
-struct SoundNode;
 
 // VTABLE: LEGORACERS 0x004afce4
 // SIZE 0x44

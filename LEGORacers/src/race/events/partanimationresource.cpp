@@ -2,6 +2,9 @@
 
 #include "decomp.h"
 #include "golanimatedentity.h"
+#include "types.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(PartAnimationResource::InitParams, 0x3c)
 DECOMP_SIZE_ASSERT(PartAnimationResource, 0x34)

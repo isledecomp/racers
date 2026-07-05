@@ -2,10 +2,10 @@
 #define MABMATERIALTRACK_H
 
 #include "decomp.h"
-#include "material/materialtable.h"
 #include "types.h"
 
 class MabMaterialFrame;
+struct MaterialTable;
 class GolMaterial;
 
 // SIZE 0x18

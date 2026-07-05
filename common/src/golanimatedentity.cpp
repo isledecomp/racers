@@ -5,6 +5,7 @@
 #include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
+#include "golviewfrustum.h"
 
 #include <float.h>
 #include <math.h>

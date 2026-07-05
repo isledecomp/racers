@@ -3,7 +3,6 @@
 
 #include "audio/musicinstance.h"
 #include "compat.h"
-#include "decomp.h"
 #include "types.h"
 
 class MusicGroup;

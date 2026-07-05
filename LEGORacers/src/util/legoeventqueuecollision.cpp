@@ -1,7 +1,13 @@
 #include "race/racer/racer.h"
 #include "util/collisioneventqueue.h"
+
+#include "decomp.h"
+#include "golworldentity.h"
+#include "types.h"
 #include "util/legoeventqueue.h"
 #include "util/proximityeventqueue.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(CollisionEventQueue, 0x48)
 

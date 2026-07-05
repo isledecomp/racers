@@ -2,6 +2,7 @@
 #define GOLTEXTURE_H
 
 #include "golsurface.h"
+#include "surface/color.h"
 
 class GolRenderDevice;
 class GolImgFile;

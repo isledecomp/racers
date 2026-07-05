@@ -1,16 +1,14 @@
 #ifndef NULLSOUNDMANAGER_H
 #define NULLSOUNDMANAGER_H
 
-#include "audio/musicgroup.h"
-#include "audio/nullmusicgroup.h"
-#include "audio/nullsoundgroup.h"
-#include "audio/soundgroup.h"
 #include "audio/soundmanager.h"
-#include "audio/soundnode.h"
 #include "compat.h"
 #include "decomp.h"
 #include "gollist.h"
 #include "types.h"
+
+class MusicGroup;
+class SoundGroup;
 
 // VTABLE: LEGORACERS 0x004afc6c
 // SIZE 0x30

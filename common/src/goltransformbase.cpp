@@ -1,5 +1,9 @@
 #include "goltransformbase.h"
 
+#include "decomp.h"
+
+#include <stddef.h>
+
 DECOMP_SIZE_ASSERT(GolTransformBase, 0x10)
 
 // FUNCTION: GOLDP 0x1001ce90

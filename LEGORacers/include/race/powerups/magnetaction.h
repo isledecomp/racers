@@ -1,6 +1,7 @@
 #ifndef MAGNETACTION_H
 #define MAGNETACTION_H
 
+#include "golworldentity.h"
 #include "race/powerups/hazardactionbase.h"
 
 class CutsceneAnimation;

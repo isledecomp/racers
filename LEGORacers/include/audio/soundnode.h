@@ -3,7 +3,6 @@
 
 #include "audio/soundvector.h"
 #include "decomp.h"
-#include "golmath.h"
 #include "types.h"
 
 // SIZE 0x50

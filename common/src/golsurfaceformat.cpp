@@ -1,6 +1,7 @@
 #include "golsurfaceformat.h"
 
 #include "decomp.h"
+#include "surface/color.h"
 
 DECOMP_SIZE_ASSERT(GolSurfaceFormat, 0x18)
 

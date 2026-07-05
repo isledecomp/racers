@@ -5,6 +5,7 @@
 #include "golnametable.h"
 #include "golsurfaceformat.h"
 #include "goltxtparser.h"
+#include "surface/color.h"
 
 class GolD3DRenderDevice;
 class GolTexture;

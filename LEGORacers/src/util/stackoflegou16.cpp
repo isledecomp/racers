@@ -1,6 +1,9 @@
 #include "util/stackoflegou16.h"
 
+#include "decomp.h"
 #include "golerror.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(StackOfLegoU16, 0x0c)
 

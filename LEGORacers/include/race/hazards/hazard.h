@@ -1,6 +1,7 @@
 #ifndef HAZARD_H
 #define HAZARD_H
 
+#include "compat.h"
 #include "util/legoeventqueue.h"
 
 class GolCamera;

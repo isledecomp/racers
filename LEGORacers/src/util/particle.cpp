@@ -1,4 +1,8 @@
 #include "util/particle.h"
+#include "decomp.h"
+#include "golmath.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(Particle, 0x38)
 

@@ -4,7 +4,10 @@
 #include "audio/nullstreamingsoundinstance.h"
 #include "audio/soundinstance.h"
 #include "audio/streamingsoundinstance.h"
+#include "decomp.h"
 #include "types.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(SoundGroup, 0x10)
 DECOMP_SIZE_ASSERT(NullSoundGroup, 0x28)

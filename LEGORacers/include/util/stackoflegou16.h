@@ -1,7 +1,6 @@
 #ifndef STACKOFLEGOU16_H
 #define STACKOFLEGOU16_H
 
-#include "decomp.h"
 #include "types.h"
 
 // SIZE 0x0c

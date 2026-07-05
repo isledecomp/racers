@@ -2,6 +2,9 @@
 
 #include "audio/musicgroup.h"
 #include "audio/soundmanager.h"
+#include "decomp.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(MusicInstanceState, 0x18)
 

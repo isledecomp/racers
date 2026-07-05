@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "mesh/gdbnormalvertexarray.h"
+#include "types.h"
 
 // VTABLE: GOLDP 0x10056858
 // SIZE 0x20

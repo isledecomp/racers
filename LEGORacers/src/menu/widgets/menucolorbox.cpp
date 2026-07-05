@@ -1,5 +1,9 @@
 #include "menu/widgets/menucolorbox.h"
 
+#include "render/rectangle.h"
+
+#include <stddef.h>
+
 DECOMP_SIZE_ASSERT(MenuColorBox, 0xc0)
 DECOMP_SIZE_ASSERT(MenuColorBox::CreateParams, 0x44)
 

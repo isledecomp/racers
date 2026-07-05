@@ -3,15 +3,11 @@
 
 #include "audio/soundgroup.h"
 #include "compat.h"
-#include "decomp.h"
 #include "gollist.h"
+#include "types.h"
 
-class SoundInstance;
-class SoundManager;
-struct SoundVector;
 class NullSoundInstance;
 class NullStreamingSoundInstance;
-class StreamingSoundInstance;
 
 // VTABLE: LEGORACERS 0x004afd04
 // SIZE 0x28

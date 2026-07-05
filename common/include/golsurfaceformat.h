@@ -2,8 +2,9 @@
 #define GOLSURFACEFORMAT_H
 
 #include "decomp.h"
-#include "surface/color.h"
 #include "types.h"
+
+struct ColorRGBA;
 
 // SIZE 0x18
 class GolSurfaceFormat {

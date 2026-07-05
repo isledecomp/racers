@@ -2,6 +2,8 @@
 
 #include "audio/soundnode.h"
 
+#include <stddef.h>
+
 DECOMP_SIZE_ASSERT(SoundManager, 0x18)
 
 // GLOBAL: LEGORACERS 0x004afa3c

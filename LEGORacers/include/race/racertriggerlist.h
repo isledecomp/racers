@@ -3,6 +3,7 @@
 
 #include "race/triggerlist.h"
 
+class GolWorldDatabase;
 class RacerCollisionWorlds;
 class RacePowerupManager;
 class Racer;

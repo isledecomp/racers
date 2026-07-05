@@ -20,6 +20,8 @@
 #if __cplusplus < 201103L
 #define override
 #define static_assert(expr, msg)
+#else
+#define override override
 #endif
 
 #endif // COMPAT_H

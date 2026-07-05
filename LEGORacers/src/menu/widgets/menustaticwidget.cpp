@@ -1,6 +1,9 @@
 #include "menu/widgets/menustaticwidget.h"
 
+#include "menu/screens/menuscreeninterface.h"
 #include "input/inputdevice.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(MenuStaticWidget, 0x58)
 

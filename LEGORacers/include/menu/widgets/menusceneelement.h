@@ -1,7 +1,6 @@
 #ifndef MENUSCENEELEMENT_H
 #define MENUSCENEELEMENT_H
 
-#include "compat.h"
 #include "decomp.h"
 #include "types.h"
 

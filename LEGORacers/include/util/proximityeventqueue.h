@@ -1,6 +1,7 @@
 #ifndef PROXIMITYEVENTQUEUE_H
 #define PROXIMITYEVENTQUEUE_H
 
+#include "compat.h"
 #include "util/legoeventqueue.h"
 
 // VTABLE: LEGORACERS 0x004b0724

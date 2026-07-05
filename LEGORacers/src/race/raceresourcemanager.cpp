@@ -1,7 +1,11 @@
 #include "race/raceresourcemanager.h"
 
 #include "audio/directsoundgroup.h"
+#include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
+#include "decomp.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(RaceResourceManager, 0x04)
 

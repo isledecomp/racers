@@ -1,6 +1,7 @@
 #ifndef WARPACTION_H
 #define WARPACTION_H
 
+#include "audio/soundvector.h"
 #include "golmodelentity.h"
 #include "race/powerups/powerupaction.h"
 

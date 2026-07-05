@@ -1,5 +1,7 @@
 #include "audio/musicgroupstate.h"
 
+#include "decomp.h"
+
 DECOMP_SIZE_ASSERT(MusicGroupState, 0x08)
 
 // FUNCTION: LEGORACERS 0x00417bb0

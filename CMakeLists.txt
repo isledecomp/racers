@@ -76,6 +76,11 @@ option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 
 add_cxx_warning(parentheses)
 
+find_program(IWYU_BIN NAMES "include-what-you-use")
+if(IWYU_BIN)
+  set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "${IWYU_BIN}" -target i686-pc-windows-msvc "-Xiwyu" "--mapping_file=${PROJECT_SOURCE_DIR}/tools/iwyu.imp")
+endif()
+
 # These GOLDP-only files need the same inline expansion behavior (/Ob2) as the common/ sources.
 # This might represent another original static library or project grouping; keep the list
 # narrow until more source units show the same codegen fingerprint.

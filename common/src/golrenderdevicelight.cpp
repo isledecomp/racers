@@ -1,5 +1,8 @@
 #include "render/golrenderdevice.h"
 
+#include "decomp.h"
+#include "golmath.h"
+
 DECOMP_SIZE_ASSERT(GolRenderDevice::Light, 0x10)
 
 // FUNCTION: GOLDP 0x1001ced0

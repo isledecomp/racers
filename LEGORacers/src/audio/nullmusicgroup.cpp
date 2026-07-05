@@ -1,7 +1,11 @@
 #include "audio/nullmusicgroup.h"
 
 #include "audio/nullmusicinstance.h"
+#include "decomp.h"
+#include "audio/musicinstance.h"
 #include "types.h"
+
+#include <stddef.h>
 
 DECOMP_SIZE_ASSERT(MusicGroup, 0x10)
 DECOMP_SIZE_ASSERT(NullMusicGroup, 0x20)

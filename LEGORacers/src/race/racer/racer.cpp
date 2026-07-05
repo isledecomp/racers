@@ -32,7 +32,7 @@ extern LegoFloat g_minSoundPan;
 
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(Racer, 0xe34)
-DECOMP_SIZE_ASSERT(RaceEventRecord, 0x20)
+DECOMP_SIZE_ASSERT(RaceEventRecord, 0x24)
 DECOMP_SIZE_ASSERT(RaceEventRecord::Target, 0x5c)
 DECOMP_SIZE_ASSERT(RaceState::RacerProgressEntry, 0x0c)
 DECOMP_SIZE_ASSERT(Racer::SetupParams, 0x88)

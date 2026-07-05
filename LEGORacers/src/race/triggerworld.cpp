@@ -125,7 +125,7 @@ fallback:
 
 finish:
 	if (p_hitTarget) {
-		*p_hitTarget = hitRecord->m_target;
+		*p_hitTarget = hitRecord->GetTarget();
 	}
 
 	return TRUE;

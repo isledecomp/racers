@@ -1076,14 +1076,14 @@ LegoU32 RacerPhysics::OnCollisionRecord(
 			return FALSE;
 		}
 
-		LegoS32 eventKind = p_record->m_kind;
+		LegoS32 eventKind = p_record->GetKind();
 		if (static_cast<LegoChar>(eventKind) >= '0' && static_cast<LegoChar>(eventKind) <= '9') {
-			m_ownerRacer->OnCheckpointCrossed(p_record->m_pathField, p_context);
+			m_ownerRacer->OnCheckpointCrossed(p_record->GetPathField(), p_context);
 			return FALSE;
 		}
 	}
 
-	RaceEventRecord::Target* target = p_record->m_target;
+	RaceEventRecord::Target* target = p_record->GetTarget();
 	if (!target) {
 		return TRUE;
 	}
@@ -1118,7 +1118,7 @@ void RacerPhysics::UpdateWheelSurfaces()
 			target0 = NULL;
 		}
 		else {
-			target0 = record->m_target;
+			target0 = record->GetTarget();
 		}
 
 		record = entry->m_previousHitRecord;
@@ -1127,7 +1127,7 @@ void RacerPhysics::UpdateWheelSurfaces()
 			target1 = NULL;
 		}
 		else {
-			target1 = record->m_target;
+			target1 = record->GetTarget();
 		}
 
 		if (target0) {

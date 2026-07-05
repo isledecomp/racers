@@ -49,7 +49,7 @@ LegoS32 GolHashTable::Initialize(LegoS32 p_numBuckets, LegoU32 p_bufferSize)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	memset(m_buckets, 0, 4 * p_numBuckets);
+	memset(m_buckets, 0, sizeof(Entry*) * p_numBuckets);
 	memset(m_buffer, 0, p_bufferSize);
 	m_bufferCursor = m_buffer;
 	m_initialized = 1;

@@ -453,6 +453,7 @@ add_executable(legoracers WIN32
   common/src/golfsutil.cpp
   LEGORacers/src/save/memorycardfilebase.cpp
   LEGORacers/src/save/savedirectory.cpp
+  LEGORacers/src/race/powerups/racepowerupbrickdebris.cpp
   LEGORacers/src/race/powerups/cannonballaction.cpp
   LEGORacers/src/race/powerups/curseaction.cpp
   LEGORacers/src/race/powerups/dynamiteaction.cpp
@@ -462,11 +463,12 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/grapplinghookaction.cpp
   LEGORacers/src/race/powerups/lightningaction.cpp
   LEGORacers/src/race/powerups/magnetaction.cpp
-  LEGORacers/src/race/powerups/powerupaction.cpp
+  LEGORacers/src/race/powerups/hazardactionbase.cpp
   LEGORacers/src/race/powerups/homingmissileaction.cpp
   LEGORacers/src/race/powerups/oilslickaction.cpp
   LEGORacers/src/race/powerups/colorbrick.cpp
   LEGORacers/src/race/powerups/racepowerupmanager.cpp
+  LEGORacers/src/race/powerups/weaponactionbase.cpp
   LEGORacers/src/race/powerups/shieldaction.cpp
   LEGORacers/src/race/targetpointlist.cpp
   LEGORacers/src/race/powerups/turboaction.cpp

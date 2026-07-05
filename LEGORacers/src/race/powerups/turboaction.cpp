@@ -39,6 +39,12 @@ const LegoFloat g_turboFadeAlphaScale = 0.0028571428f;
 // GLOBAL: LEGORACERS 0x004b1a58
 const LegoFloat g_turboEndVolumeBase = 0.6f;
 
+// FUNCTION: LEGORACERS 0x0044f580 FOLDED
+LegoS32 TurboAction::GetBrickColor()
+{
+	return PowerupAction::c_brickColorGreen;
+}
+
 // FUNCTION: LEGORACERS 0x0045c7e0
 TurboAction::TurboAction()
 {

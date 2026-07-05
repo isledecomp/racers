@@ -48,6 +48,12 @@ const LegoFloat g_warpLaunchSpeed = 700.0f;
 // GLOBAL: LEGORACERS 0x004b1aa8
 const LegoFloat g_warpLerpScale = 0.00066666666f;
 
+// FUNCTION: LEGORACERS 0x0044f580 FOLDED
+LegoS32 WarpAction::GetBrickColor()
+{
+	return PowerupAction::c_brickColorGreen;
+}
+
 // FUNCTION: LEGORACERS 0x0045d400
 WarpAction::WarpAction()
 {

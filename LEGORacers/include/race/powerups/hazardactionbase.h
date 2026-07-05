@@ -18,7 +18,7 @@ public:
 	// WeaponActionBase::~WeaponActionBase
 
 	// SYNTHETIC: LEGORACERS 0x00456300 FOLDED
-	// WeaponActionBase::`scalar deleting destructor'
+	// HazardActionBase::`scalar deleting destructor'
 
 	void OnEvent(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
 	void Update(LegoU32) override = 0;                            // vtable+0x08

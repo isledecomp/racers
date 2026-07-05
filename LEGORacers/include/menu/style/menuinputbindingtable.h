@@ -91,11 +91,7 @@ public:
 	};
 
 	// SIZE 0x98
-	class SelectorBinding : public MenuSelectorBase::CreateParamsWithCarousel {
-	public:
-		undefined4 m_carouselWidget;       // 0x90 (filled at runtime; see MenuSelector::CreateParams)
-		undefined4 m_acceptUnfocusedInput; // 0x94
-	};
+	class SelectorBinding : public MenuSelector::CreateParams {};
 
 	// SIZE 0x9c
 	class ButtonBinding : public IconBinding {

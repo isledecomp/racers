@@ -5,11 +5,11 @@
 #include "decomp.h"
 #include "menu/screens/menuscreen.h"
 #include "menu/style/sharedmenustyletable.h"
+#include "menu/widgets/menutextbutton.h"
 #include "render/golrenderdevice.h"
 
 class MenuGameContext;
 class MenuScreenCreateParams;
-class MenuTextButton;
 class MenuWidget;
 class GolFont;
 class GolImage;
@@ -44,17 +44,7 @@ public:
 		void ParseSection(undefined4 p_token) override;  // vtable+0x14
 
 		// SIZE 0xe0
-		class ButtonBinding : public MenuInputBindingTable::IconBinding {
-		public:
-			GolFont* m_stateFonts[6];          // 0x84
-			GolImage* m_stateImages[6];        // 0x9c
-			VisualStateColor m_stateColors[6]; // 0xb4
-			undefined m_unk0xcc[0xd0 - 0xcc];  // 0xcc
-			VisualStateColor m_unk0xd0;        // 0xd0
-			undefined m_unk0xd4[0xd8 - 0xd4];  // 0xd4
-			LegoU32 m_maxTextWidth;            // 0xd8
-			LegoBool32 m_hasMaxTextWidth;      // 0xdc
-		};
+		class ButtonBinding : public MenuTextButton::CreateParams {};
 
 		// SYNTHETIC: LEGORACERS 0x0047f0f0
 		// MenuGameScreen::ButtonBindingTable::`scalar deleting destructor'

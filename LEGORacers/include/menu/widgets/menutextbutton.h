@@ -23,7 +23,7 @@ public:
 		GolImage* m_stateImages[6];        // 0x9c
 		VisualStateColor m_stateColors[6]; // 0xb4
 		GolStringTable* m_stringTable;     // 0xcc
-		undefined4 m_unk0xd0;              // 0xd0
+		VisualStateColor m_unk0xd0;        // 0xd0
 		undefined2 m_stringId;             // 0xd4
 		undefined2 m_unk0xd6;              // 0xd6
 		LegoU32 m_maxTextWidth;            // 0xd8

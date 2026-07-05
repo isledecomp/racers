@@ -248,8 +248,8 @@ void HazardManager::NotifyEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_
 // FUNCTION: LEGORACERS 0x0048ac30
 void HazardManager::DispatchEventStart(LegoS32 p_eventId, void* p_context)
 {
-	HazardContext* context = static_cast<HazardContext*>(p_context);
-	undefined position[12];
+	Racer* racer = static_cast<Racer*>(p_context);
+	GolVec3 position;
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
@@ -261,16 +261,16 @@ void HazardManager::DispatchEventStart(LegoS32 p_eventId, void* p_context)
 			}
 		}
 
-		context->m_positionProvider->GetPosition(position);
-		m_entries[i]->OnEventStart(p_eventId, position);
+		racer->m_visuals.m_carEntity->GetPosition(&position);
+		m_entries[i]->OnEventStart(p_eventId, &position);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048aca0
 void HazardManager::DispatchEventEnd(LegoS32 p_eventId, void* p_context)
 {
-	HazardContext* context = static_cast<HazardContext*>(p_context);
-	undefined position[12];
+	Racer* racer = static_cast<Racer*>(p_context);
+	GolVec3 position;
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
@@ -282,16 +282,16 @@ void HazardManager::DispatchEventEnd(LegoS32 p_eventId, void* p_context)
 			}
 		}
 
-		context->m_positionProvider->GetPosition(position);
-		m_entries[i]->OnEventEnd(p_eventId, position);
+		racer->m_visuals.m_carEntity->GetPosition(&position);
+		m_entries[i]->OnEventEnd(p_eventId, &position);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048ad10
 void HazardManager::DispatchEventPair(LegoS32 p_startId, LegoS32 p_endId, void* p_context)
 {
-	HazardContext* context = static_cast<HazardContext*>(p_context);
-	undefined position[12];
+	Racer* racer = static_cast<Racer*>(p_context);
+	GolVec3 position;
 	LegoU32 i;
 
 	for (i = 0; i < m_count; i++) {
@@ -313,9 +313,9 @@ void HazardManager::DispatchEventPair(LegoS32 p_startId, LegoS32 p_endId, void* 
 			}
 		}
 
-		context->m_positionProvider->GetPosition(position);
-		m_entries[i]->OnEventStart(p_startId, position);
-		m_entries[i]->OnEventEnd(p_endId, position);
+		racer->m_visuals.m_carEntity->GetPosition(&position);
+		m_entries[i]->OnEventStart(p_startId, &position);
+		m_entries[i]->OnEventEnd(p_endId, &position);
 	}
 }
 

@@ -1,3 +1,4 @@
+#include "race/racer/racer.h"
 #include "util/collisioneventqueue.h"
 #include "util/legoeventqueue.h"
 #include "util/proximityeventqueue.h"
@@ -88,7 +89,7 @@ void CollisionEventQueue::PruneBodyList()
 // FUNCTION: LEGORACERS 0x0043aaf0
 GolWorldEntity* CollisionEventQueue::GetEventEntity(Event* p_event)
 {
-	return &p_event->m_descriptor.m_target->m_ownerData->m_entityGroup;
+	return &p_event->m_descriptor.m_target->m_ownerData->m_visuals.m_entityGroup;
 }
 
 // FUNCTION: LEGORACERS 0x0043ab10

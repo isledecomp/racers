@@ -6,6 +6,8 @@
 #include "golorientedentity.h"
 #include "types.h"
 
+class Racer;
+
 // VTABLE: LEGORACERS 0x004b0710
 // SIZE 0x28
 class LegoEventQueue {
@@ -37,17 +39,6 @@ public:
 				GolVec3* p_contactPoint
 			);
 
-			class RacerView {
-			public:
-				LegoU32 GetFlags() const { return m_flags; }
-
-				undefined m_unk0x00[0x1c - 0x00];  // 0x00
-				GolWorldEntity m_entityGroup;      // 0x1c
-				undefined m_unk0x44[0xd04 - 0x44]; // 0x44
-				LegoU32 m_flags;                   // 0xd04
-				LegoU32 m_controlMode;             // 0xd08
-			};
-
 			GolOrientedEntity* m_body;         // 0x004
 			GolVec3 m_velocity;                // 0x008
 			GolVec3 m_centerOfMassLocal;       // 0x014
@@ -66,8 +57,8 @@ public:
 			LegoFloat m_boxSizeZ;              // 0x0d8
 			LegoFloat m_boxScale;              // 0x0dc
 			union {
-				RacerView* m_ownerData; // 0x0e0
-				void* m_owner;          // 0x0e0
+				Racer* m_ownerData; // 0x0e0
+				void* m_owner;      // 0x0e0
 			};
 
 		private:
@@ -109,11 +100,11 @@ public:
 			Descriptor::RigidBody* m_target0; // 0x10
 		};
 		union {
-			LegoU32 m_elapsedMs;                            // 0x14
-			void* m_data;                                   // 0x14
-			GolWorldEntity* m_worldEntity1;                 // 0x14
-			Descriptor::RigidBody* m_target1;               // 0x14
-			Descriptor::RigidBody::RacerView* m_racerView1; // 0x14
+			LegoU32 m_elapsedMs;              // 0x14
+			void* m_data;                     // 0x14
+			GolWorldEntity* m_worldEntity1;   // 0x14
+			Descriptor::RigidBody* m_target1; // 0x14
+			Racer* m_racerView1;              // 0x14
 		};
 	};
 

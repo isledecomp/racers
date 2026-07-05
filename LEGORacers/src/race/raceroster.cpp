@@ -94,7 +94,7 @@ GolWorldEntity* RaceRoster::GetEventEntity(LegoEventQueue::Event* p_event)
 void RaceRoster::TestRacerCollisions()
 {
 	LegoEventQueue::Event* other;
-	LegoEventQueue::Descriptor::RigidBody::RacerView* target;
+	Racer* target;
 	GolWorldEntity* model;
 	GolWorldEntity* otherModel;
 	LegoFloat modelMinX;

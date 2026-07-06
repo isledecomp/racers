@@ -4,6 +4,8 @@ This is a work-in-progress decompilation of LEGO Racers (1999). It aims to be as
 
 This project is modeled after the [LEGO Island decompilation](https://github.com/isledecomp/isle).
 
+> **Note:** This repository is for decompilation only and its code is true to the original release. It will not compile for targets other than 32-bit Windows. For a modern adaptation of the LEGO Racers codebase with native compatibility for all major platforms and the Web, see [racers-portable](https://github.com/isledecomp/racers-portable) instead.
+
 ## Status
 
 <a href="https://isledecomp.github.io/racers/LEGORACERSPROGRESS.HTML"><img src="https://isledecomp.github.io/racers/LEGORACERSPROGRESS.SVG" width="50%"></a><a href="https://isledecomp.github.io/racers/GOLDPPROGRESS.HTML"><img src="https://isledecomp.github.io/racers/GOLDPPROGRESS.SVG" width="50%"></a>

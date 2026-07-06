@@ -630,16 +630,16 @@ void CutscenePlayer::Clear()
 				m_golExport->DestroyImageList(m_imageLists[i]);
 			}
 		}
-		delete m_imageLists;
+		delete[] m_imageLists;
 	}
 	if (m_imageListNames) {
-		delete m_imageListNames;
+		delete[] m_imageListNames;
 	}
 	if (m_animations) {
 		delete[] m_animations;
 	}
 	if (m_animationNames) {
-		delete m_animationNames;
+		delete[] m_animationNames;
 	}
 	if (m_materialAnimations) {
 		delete[] m_materialAnimations;
@@ -648,7 +648,7 @@ void CutscenePlayer::Clear()
 		delete[] m_stringTables;
 	}
 	if (m_stringTableNames) {
-		delete m_stringTableNames;
+		delete[] m_stringTableNames;
 	}
 	if (m_moveEvents) {
 		delete[] m_moveEvents;
@@ -693,22 +693,22 @@ void CutscenePlayer::Clear()
 		delete m_modelEndedLinks;
 	}
 	if (m_transformStartedLinks) {
-		delete m_transformStartedLinks;
+		delete[] m_transformStartedLinks;
 	}
 	if (m_transformEndedLinks) {
-		delete m_transformEndedLinks;
+		delete[] m_transformEndedLinks;
 	}
 	if (m_ambientStartedLinks) {
-		delete m_ambientStartedLinks;
+		delete[] m_ambientStartedLinks;
 	}
 	if (m_ambientEndedLinks) {
-		delete m_ambientEndedLinks;
+		delete[] m_ambientEndedLinks;
 	}
 	if (m_directionalStartedLinks) {
-		delete m_directionalStartedLinks;
+		delete[] m_directionalStartedLinks;
 	}
 	if (m_directionalEndedLinks) {
-		delete m_directionalEndedLinks;
+		delete[] m_directionalEndedLinks;
 	}
 	m_moveEventNames.Clear();
 	m_soundEventNames.Clear();

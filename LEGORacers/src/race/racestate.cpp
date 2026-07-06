@@ -1093,7 +1093,7 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 		return 0;
 	}
 
-	if (p_racer->m_lapTimes[5] == 1) {
+	if (p_racer->m_standingsPosition == 1) {
 		return 0;
 	}
 
@@ -1195,7 +1195,7 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntr
 				entry->m_delta = otherTime - racerTime;
 			}
 			else {
-				entry->m_delta = otherRacer->m_lapTimes[5] + 2147483641;
+				entry->m_delta = otherRacer->m_standingsPosition + 2147483641;
 			}
 
 			racerIndex++;

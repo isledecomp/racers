@@ -863,7 +863,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 	}
 
 	if (m_racer->m_lapsCompleted >= g_raceLapCount) {
-		if (m_racer->m_lapTimes[5] == 1) {
+		if (m_racer->m_standingsPosition == 1) {
 			if (activePart == c_animationPart13 || activePart == c_animationPart15 || activePart == c_animationPart14) {
 				return;
 			}

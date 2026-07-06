@@ -61,9 +61,9 @@ void GolNameTable::AddName(const LegoChar* p_name, void* p_value)
 			break;
 		}
 
-		startIndex += c << shift;
+		startIndex += static_cast<LegoU32>(c) << shift;
 		shift += 7;
-		shift &= 0x1f;
+		shift %= 32;
 	}
 
 	startIndex %= m_capacity;
@@ -105,9 +105,9 @@ void* GolNameTable::GetName(const LegoChar* p_name) const
 			break;
 		}
 
-		startIndex += c << shift;
+		startIndex += static_cast<LegoU32>(c) << shift;
 		shift += 7;
-		shift &= 0x1f;
+		shift %= 32;
 	}
 
 	startIndex %= m_capacity;

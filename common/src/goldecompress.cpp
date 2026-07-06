@@ -43,7 +43,8 @@ LegoU32 GolDecompress(LegoU8* p_src, LegoU8* p_dst)
 					dst++;
 				} while (count != 0);
 
-				ctrl *= 2;
+				// Overflow of a signed integer is undefined behavior, so cast to a unsigned one.
+				ctrl = static_cast<LegoS32>(2 * static_cast<LegoU32>(ctrl));
 				if (!(ctrl & 0xff)) {
 					break;
 				}

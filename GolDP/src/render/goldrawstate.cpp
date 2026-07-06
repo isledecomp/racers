@@ -113,7 +113,7 @@ LegoS32 GolDrawState::CreateDisplay(LegoS32 p_width, LegoS32 p_height, undefined
 // FUNCTION: GOLDP 0x1001d6d0
 void GolDrawState::Present()
 {
-	m_displaySurface->Present(NULL);
+	m_displaySurface->Present(0);
 }
 
 // FUNCTION: GOLDP 0x1001d6e0

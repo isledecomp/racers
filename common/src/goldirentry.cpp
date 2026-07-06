@@ -45,13 +45,13 @@ void GolDirEntry::DeleteChildren()
 			m_dirs[i].DeleteChildren();
 		}
 
-		delete m_dirs;
+		delete[] m_dirs;
 		m_dirs = NULL;
 		m_dirCount = 0;
 	}
 
 	if (m_files) {
-		delete m_files;
+		delete[] m_files;
 		m_files = NULL;
 		m_fileCount = 0;
 	}

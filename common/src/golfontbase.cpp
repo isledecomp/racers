@@ -84,7 +84,7 @@ void GolFontBase::CreateGlyphs(GolD3DRenderDevice* p_renderer, GolString* p_stri
 void GolFontBase::Clear()
 {
 	if (m_glyphs != NULL) {
-		delete m_glyphs;
+		delete[] m_glyphs;
 		m_glyphs = NULL;
 	}
 

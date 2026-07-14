@@ -185,24 +185,12 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 		LegoFloat m_half0x;
 		LegoFloat m_half1y;
 		GolVec3 m_delta;
-		LegoFloat m_thisRow2X;
-		LegoFloat m_thisRow2Y;
-		LegoFloat m_thisRow2Z;
-		LegoFloat m_thisRow0X;
-		LegoFloat m_thisRow0Y;
-		LegoFloat m_thisRow0Z;
-		LegoFloat m_otherRow2X;
-		LegoFloat m_otherRow2Y;
-		LegoFloat m_otherRow2Z;
-		LegoFloat m_otherRow0X;
-		LegoFloat m_otherRow0Y;
-		LegoFloat m_otherRow0Z;
-		LegoFloat m_thisRow1X;
-		LegoFloat m_thisRow1Y;
-		LegoFloat m_thisRow1Z;
-		LegoFloat m_otherRow1X;
-		LegoFloat m_otherRow1Y;
-		LegoFloat m_otherRow1Z;
+		GolVec3 m_thisRow2;
+		GolVec3 m_thisRow0;
+		GolVec3 m_otherRow2;
+		GolVec3 m_otherRow0;
+		GolVec3 m_thisRow1;
+		GolVec3 m_otherRow1;
 		GolMatrix3 m_absOrientation;
 		GolMatrix3 m_relativeOrientation;
 		GolMatrix3 m_orientation0;
@@ -214,9 +202,7 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 	p_other->m_body->CopyOrientation(&scratch.m_absOrientation);
 
 	GolMath::TransformVector(
-		p_other->m_centerOfMassWorld.m_x - m_centerOfMassWorld.m_x,
-		p_other->m_centerOfMassWorld.m_y - m_centerOfMassWorld.m_y,
-		p_other->m_centerOfMassWorld.m_z - m_centerOfMassWorld.m_z,
+		p_other->m_centerOfMassWorld - m_centerOfMassWorld,
 		&scratch.m_orientation0.m_m[0][0],
 		&scratch.m_delta
 	);
@@ -235,9 +221,9 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 			return FALSE;
 		}
 
-		scratch.m_half0x = scratch.m_half0x * m_boxScale;
-		scratch.m_half0y = scratch.m_half0y * m_boxScale;
-		scratch.m_half0z = scratch.m_half0z * m_boxScale;
+		scratch.m_half0x = m_boxScale * scratch.m_half0x;
+		scratch.m_half0y = m_boxScale * scratch.m_half0y;
+		scratch.m_half0z = m_boxScale * scratch.m_half0z;
 	}
 
 	scratch.m_half1x = p_other->m_boxSizeX * 0.5f;
@@ -248,9 +234,9 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 			return FALSE;
 		}
 
-		scratch.m_half1x = scratch.m_half1x * p_other->m_boxScale;
-		scratch.m_half1y = scratch.m_half1y * p_other->m_boxScale;
-		scratch.m_half1z = scratch.m_half1z * p_other->m_boxScale;
+		scratch.m_half1x = p_other->m_boxScale * scratch.m_half1x;
+		scratch.m_half1y = p_other->m_boxScale * scratch.m_half1y;
+		scratch.m_half1z = p_other->m_boxScale * scratch.m_half1z;
 	}
 
 	scratch.m_absOrientation.m_m[0][0] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[0][0]));
@@ -264,9 +250,7 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 	scratch.m_absOrientation.m_m[2][2] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[2][2]));
 
 	*p_penetration = FLT_MAX;
-	p_normal->m_x = 0.0f;
-	p_normal->m_y = 0.0f;
-	p_normal->m_z = 0.0f;
+	p_normal->Clear();
 
 	LegoFloat distance = static_cast<LegoFloat>(fabs(scratch.m_delta.m_x));
 	scratch.m_projection = scratch.m_absOrientation.m_m[2][0] * scratch.m_half1z +
@@ -490,119 +474,147 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 		return FALSE;
 	}
 
-	scratch.m_thisRow0X = m_body->m_orientation.m_m[0][0];
-	scratch.m_thisRow0Y = m_body->m_orientation.m_m[0][1];
-	scratch.m_thisRow0Z = m_body->m_orientation.m_m[0][2];
-	scratch.m_thisRow1X = m_body->m_orientation.m_m[1][0];
-	scratch.m_thisRow1Y = m_body->m_orientation.m_m[1][1];
-	scratch.m_thisRow1Z = m_body->m_orientation.m_m[1][2];
-	scratch.m_thisRow2X = m_body->m_orientation.m_m[2][0];
-	scratch.m_thisRow2Y = m_body->m_orientation.m_m[2][1];
-	scratch.m_thisRow2Z = m_body->m_orientation.m_m[2][2];
+	scratch.m_thisRow0.m_x = m_body->m_orientation.m_m[0][0];
+	scratch.m_thisRow0.m_y = m_body->m_orientation.m_m[0][1];
+	scratch.m_thisRow0.m_z = m_body->m_orientation.m_m[0][2];
+	scratch.m_thisRow1.m_x = m_body->m_orientation.m_m[1][0];
+	scratch.m_thisRow1.m_y = m_body->m_orientation.m_m[1][1];
+	scratch.m_thisRow1.m_z = m_body->m_orientation.m_m[1][2];
+	scratch.m_thisRow2.m_x = m_body->m_orientation.m_m[2][0];
+	scratch.m_thisRow2.m_y = m_body->m_orientation.m_m[2][1];
+	scratch.m_thisRow2.m_z = m_body->m_orientation.m_m[2][2];
 
-	scratch.m_otherRow0X = p_other->m_body->m_orientation.m_m[0][0];
-	scratch.m_otherRow0Y = p_other->m_body->m_orientation.m_m[0][1];
-	scratch.m_otherRow0Z = p_other->m_body->m_orientation.m_m[0][2];
-	scratch.m_otherRow1X = p_other->m_body->m_orientation.m_m[1][0];
-	scratch.m_otherRow1Y = p_other->m_body->m_orientation.m_m[1][1];
-	scratch.m_otherRow1Z = p_other->m_body->m_orientation.m_m[1][2];
-	scratch.m_otherRow2X = p_other->m_body->m_orientation.m_m[2][0];
-	scratch.m_otherRow2Y = p_other->m_body->m_orientation.m_m[2][1];
-	scratch.m_otherRow2Z = p_other->m_body->m_orientation.m_m[2][2];
+	scratch.m_otherRow0.m_x = p_other->m_body->m_orientation.m_m[0][0];
+	scratch.m_otherRow0.m_y = p_other->m_body->m_orientation.m_m[0][1];
+	scratch.m_otherRow0.m_z = p_other->m_body->m_orientation.m_m[0][2];
+	scratch.m_otherRow1.m_x = p_other->m_body->m_orientation.m_m[1][0];
+	scratch.m_otherRow1.m_y = p_other->m_body->m_orientation.m_m[1][1];
+	scratch.m_otherRow1.m_z = p_other->m_body->m_orientation.m_m[1][2];
+	scratch.m_otherRow2.m_x = p_other->m_body->m_orientation.m_m[2][0];
+	scratch.m_otherRow2.m_y = p_other->m_body->m_orientation.m_m[2][1];
+	scratch.m_otherRow2.m_z = p_other->m_body->m_orientation.m_m[2][2];
 
 	switch (bestAxis) {
 	case 0:
-		p_normal->m_x = scratch.m_thisRow0X;
-		p_normal->m_y = scratch.m_thisRow0Y;
-		p_normal->m_z = scratch.m_thisRow0Z;
+		p_normal->m_x = scratch.m_thisRow0.m_x;
+		p_normal->m_y = scratch.m_thisRow0.m_y;
+		p_normal->m_z = scratch.m_thisRow0.m_z;
 		break;
 	case 1:
-		p_normal->m_x = scratch.m_otherRow0X;
-		p_normal->m_y = scratch.m_otherRow0Y;
-		p_normal->m_z = scratch.m_otherRow0Z;
+		p_normal->m_x = scratch.m_otherRow0.m_x;
+		p_normal->m_y = scratch.m_otherRow0.m_y;
+		p_normal->m_z = scratch.m_otherRow0.m_z;
 		break;
 	case 2:
-		p_normal->m_x = scratch.m_thisRow1X;
-		p_normal->m_y = scratch.m_thisRow1Y;
-		p_normal->m_z = scratch.m_thisRow1Z;
+		p_normal->m_x = scratch.m_thisRow1.m_x;
+		p_normal->m_y = scratch.m_thisRow1.m_y;
+		p_normal->m_z = scratch.m_thisRow1.m_z;
 		break;
 	case 3:
-		p_normal->m_x = scratch.m_thisRow2X;
-		p_normal->m_y = scratch.m_thisRow2Y;
-		p_normal->m_z = scratch.m_thisRow2Z;
+		p_normal->m_x = scratch.m_thisRow2.m_x;
+		p_normal->m_y = scratch.m_thisRow2.m_y;
+		p_normal->m_z = scratch.m_thisRow2.m_z;
 		break;
 	case 4:
-		p_normal->m_x = scratch.m_otherRow1X;
-		p_normal->m_y = scratch.m_otherRow1Y;
-		p_normal->m_z = scratch.m_otherRow1Z;
+		p_normal->m_x = scratch.m_otherRow1.m_x;
+		p_normal->m_y = scratch.m_otherRow1.m_y;
+		p_normal->m_z = scratch.m_otherRow1.m_z;
 		break;
 	case 5:
-		p_normal->m_x = scratch.m_otherRow2X;
-		p_normal->m_y = scratch.m_otherRow2Y;
-		p_normal->m_z = scratch.m_otherRow2Z;
+		p_normal->m_x = scratch.m_otherRow2.m_x;
+		p_normal->m_y = scratch.m_otherRow2.m_y;
+		p_normal->m_z = scratch.m_otherRow2.m_z;
 		break;
 	case 6:
-		p_normal->m_x = scratch.m_otherRow0Z * scratch.m_thisRow0Y - scratch.m_otherRow0Y * scratch.m_thisRow0Z;
-		p_normal->m_y = scratch.m_thisRow0Z * scratch.m_otherRow0X - scratch.m_otherRow0Z * scratch.m_thisRow0X;
-		p_normal->m_z = scratch.m_otherRow0Y * scratch.m_thisRow0X - scratch.m_thisRow0Y * scratch.m_otherRow0X;
+		p_normal->m_x =
+			scratch.m_otherRow0.m_z * scratch.m_thisRow0.m_y - scratch.m_otherRow0.m_y * scratch.m_thisRow0.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow0.m_z * scratch.m_otherRow0.m_x - scratch.m_otherRow0.m_z * scratch.m_thisRow0.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow0.m_y * scratch.m_thisRow0.m_x - scratch.m_thisRow0.m_y * scratch.m_otherRow0.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 7:
-		p_normal->m_x = scratch.m_otherRow1Z * scratch.m_thisRow0Y - scratch.m_otherRow1Y * scratch.m_thisRow0Z;
-		p_normal->m_y = scratch.m_thisRow0Z * scratch.m_otherRow1X - scratch.m_otherRow1Z * scratch.m_thisRow0X;
-		p_normal->m_z = scratch.m_otherRow1Y * scratch.m_thisRow0X - scratch.m_thisRow0Y * scratch.m_otherRow1X;
+		p_normal->m_x =
+			scratch.m_otherRow1.m_z * scratch.m_thisRow0.m_y - scratch.m_otherRow1.m_y * scratch.m_thisRow0.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow0.m_z * scratch.m_otherRow1.m_x - scratch.m_otherRow1.m_z * scratch.m_thisRow0.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow1.m_y * scratch.m_thisRow0.m_x - scratch.m_thisRow0.m_y * scratch.m_otherRow1.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 8:
-		p_normal->m_x = scratch.m_otherRow2Z * scratch.m_thisRow0Y - scratch.m_otherRow2Y * scratch.m_thisRow0Z;
-		p_normal->m_y = scratch.m_thisRow0Z * scratch.m_otherRow2X - scratch.m_otherRow2Z * scratch.m_thisRow0X;
-		p_normal->m_z = scratch.m_otherRow2Y * scratch.m_thisRow0X - scratch.m_thisRow0Y * scratch.m_otherRow2X;
+		p_normal->m_x =
+			scratch.m_otherRow2.m_z * scratch.m_thisRow0.m_y - scratch.m_otherRow2.m_y * scratch.m_thisRow0.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow0.m_z * scratch.m_otherRow2.m_x - scratch.m_otherRow2.m_z * scratch.m_thisRow0.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow2.m_y * scratch.m_thisRow0.m_x - scratch.m_thisRow0.m_y * scratch.m_otherRow2.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 9:
-		p_normal->m_x = scratch.m_otherRow0Z * scratch.m_thisRow1Y - scratch.m_otherRow0Y * scratch.m_thisRow1Z;
-		p_normal->m_y = scratch.m_thisRow1Z * scratch.m_otherRow0X - scratch.m_otherRow0Z * scratch.m_thisRow1X;
-		p_normal->m_z = scratch.m_otherRow0Y * scratch.m_thisRow1X - scratch.m_thisRow1Y * scratch.m_otherRow0X;
+		p_normal->m_x =
+			scratch.m_otherRow0.m_z * scratch.m_thisRow1.m_y - scratch.m_otherRow0.m_y * scratch.m_thisRow1.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow1.m_z * scratch.m_otherRow0.m_x - scratch.m_otherRow0.m_z * scratch.m_thisRow1.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow0.m_y * scratch.m_thisRow1.m_x - scratch.m_thisRow1.m_y * scratch.m_otherRow0.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 10:
-		p_normal->m_x = scratch.m_otherRow1Z * scratch.m_thisRow1Y - scratch.m_otherRow1Y * scratch.m_thisRow1Z;
-		p_normal->m_y = scratch.m_thisRow1Z * scratch.m_otherRow1X - scratch.m_otherRow1Z * scratch.m_thisRow1X;
-		p_normal->m_z = scratch.m_otherRow1Y * scratch.m_thisRow1X - scratch.m_thisRow1Y * scratch.m_otherRow1X;
+		p_normal->m_x =
+			scratch.m_otherRow1.m_z * scratch.m_thisRow1.m_y - scratch.m_otherRow1.m_y * scratch.m_thisRow1.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow1.m_z * scratch.m_otherRow1.m_x - scratch.m_otherRow1.m_z * scratch.m_thisRow1.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow1.m_y * scratch.m_thisRow1.m_x - scratch.m_thisRow1.m_y * scratch.m_otherRow1.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 11:
-		p_normal->m_x = scratch.m_otherRow2Z * scratch.m_thisRow1Y - scratch.m_otherRow2Y * scratch.m_thisRow1Z;
-		p_normal->m_y = scratch.m_thisRow1Z * scratch.m_otherRow2X - scratch.m_otherRow2Z * scratch.m_thisRow1X;
-		p_normal->m_z = scratch.m_otherRow2Y * scratch.m_thisRow1X - scratch.m_thisRow1Y * scratch.m_otherRow2X;
+		p_normal->m_x =
+			scratch.m_otherRow2.m_z * scratch.m_thisRow1.m_y - scratch.m_otherRow2.m_y * scratch.m_thisRow1.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow1.m_z * scratch.m_otherRow2.m_x - scratch.m_otherRow2.m_z * scratch.m_thisRow1.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow2.m_y * scratch.m_thisRow1.m_x - scratch.m_thisRow1.m_y * scratch.m_otherRow2.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 12:
-		p_normal->m_x = scratch.m_otherRow0Z * scratch.m_thisRow2Y - scratch.m_otherRow0Y * scratch.m_thisRow2Z;
-		p_normal->m_y = scratch.m_thisRow2Z * scratch.m_otherRow0X - scratch.m_otherRow0Z * scratch.m_thisRow2X;
-		p_normal->m_z = scratch.m_otherRow0Y * scratch.m_thisRow2X - scratch.m_thisRow2Y * scratch.m_otherRow0X;
+		p_normal->m_x =
+			scratch.m_otherRow0.m_z * scratch.m_thisRow2.m_y - scratch.m_otherRow0.m_y * scratch.m_thisRow2.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow2.m_z * scratch.m_otherRow0.m_x - scratch.m_otherRow0.m_z * scratch.m_thisRow2.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow0.m_y * scratch.m_thisRow2.m_x - scratch.m_thisRow2.m_y * scratch.m_otherRow0.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 13:
-		p_normal->m_x = scratch.m_otherRow1Z * scratch.m_thisRow2Y - scratch.m_otherRow1Y * scratch.m_thisRow2Z;
-		p_normal->m_y = scratch.m_thisRow2Z * scratch.m_otherRow1X - scratch.m_otherRow1Z * scratch.m_thisRow2X;
-		p_normal->m_z = scratch.m_otherRow1Y * scratch.m_thisRow2X - scratch.m_thisRow2Y * scratch.m_otherRow1X;
+		p_normal->m_x =
+			scratch.m_otherRow1.m_z * scratch.m_thisRow2.m_y - scratch.m_otherRow1.m_y * scratch.m_thisRow2.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow2.m_z * scratch.m_otherRow1.m_x - scratch.m_otherRow1.m_z * scratch.m_thisRow2.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow1.m_y * scratch.m_thisRow2.m_x - scratch.m_thisRow2.m_y * scratch.m_otherRow1.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 14:
-		p_normal->m_x = scratch.m_otherRow2Z * scratch.m_thisRow2Y - scratch.m_otherRow2Y * scratch.m_thisRow2Z;
-		p_normal->m_y = scratch.m_thisRow2Z * scratch.m_otherRow2X - scratch.m_otherRow2Z * scratch.m_thisRow2X;
-		p_normal->m_z = scratch.m_otherRow2Y * scratch.m_thisRow2X - scratch.m_thisRow2Y * scratch.m_otherRow2X;
+		p_normal->m_x =
+			scratch.m_otherRow2.m_z * scratch.m_thisRow2.m_y - scratch.m_otherRow2.m_y * scratch.m_thisRow2.m_z;
+		p_normal->m_y =
+			scratch.m_thisRow2.m_z * scratch.m_otherRow2.m_x - scratch.m_otherRow2.m_z * scratch.m_thisRow2.m_x;
+		p_normal->m_z =
+			scratch.m_otherRow2.m_y * scratch.m_thisRow2.m_x - scratch.m_thisRow2.m_y * scratch.m_otherRow2.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	default:
 		break;
 	}
 
-	if ((m_centerOfMassWorld.m_y - p_other->m_centerOfMassWorld.m_y) * p_normal->m_y +
-			p_normal->m_z * (m_centerOfMassWorld.m_z - p_other->m_centerOfMassWorld.m_z) +
-			(m_centerOfMassWorld.m_x - p_other->m_centerOfMassWorld.m_x) * p_normal->m_x <
-		0.0f) {
+	GolVec3 direction = m_centerOfMassWorld - p_other->m_centerOfMassWorld;
+	LegoFloat dot = p_normal->m_y * direction.m_y;
+	dot += direction.m_z * p_normal->m_z;
+	dot += direction.m_x * p_normal->m_x;
+	if (dot < 0.0f) {
 		p_normal->m_x = -p_normal->m_x;
 		p_normal->m_y = -p_normal->m_y;
 		p_normal->m_z = -p_normal->m_z;

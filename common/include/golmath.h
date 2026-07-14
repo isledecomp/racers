@@ -139,8 +139,16 @@ class GolMath {
 public:
 	static LegoFloat QuatDot(const GolQuat& p_left, const GolQuat& p_right)
 	{
-		return p_left.m_x * p_right.m_x + p_left.m_y * p_right.m_y + p_left.m_z * p_right.m_z +
-			   p_left.m_w * p_right.m_w;
+		LegoFloat result = p_left.m_y;
+		result *= p_right.m_y;
+		LegoFloat z = p_left.m_z;
+		z *= p_right.m_z;
+		result += z;
+		LegoFloat w = p_left.m_w;
+		w *= p_right.m_w;
+		result += w;
+		result += p_left.m_x * p_right.m_x;
+		return result;
 	}
 
 	static void MultiplyMatrix4(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
@@ -162,13 +170,7 @@ public:
 		LegoFloat p_speed,
 		LegoFloat p_dt
 	);
-	static void TransformVector(
-		LegoFloat p_x,
-		LegoFloat p_y,
-		LegoFloat p_z,
-		const LegoFloat* p_matrix,
-		GolVec3* p_dest
-	);
+	static void TransformVector(GolVec3 p_src, const LegoFloat* p_matrix, GolVec3* p_dest);
 	static void MultiplyMatrixByTranspose(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
 };
 

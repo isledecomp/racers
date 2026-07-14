@@ -49,10 +49,8 @@ public:
 	}
 	void SetPosition(const GolVec3* p_position)
 	{
-		SoundVector* position = &m_position;
-		position->m_x = p_position->m_x;
-		position->m_y = p_position->m_y;
-		position->m_z = p_position->m_z;
+		GolVec3* position = &m_position;
+		*position = *p_position;
 	}
 	void SetVelocity(const GolVec3& p_velocity)
 	{

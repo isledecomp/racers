@@ -24,6 +24,9 @@ public:
 	LegoU32 GetVertexCount() const { return m_vertexCount; }
 	LegoU32 GetTriangleCount() const { return m_triangleCount; }
 	GolModelEntity& GetEntity() { return m_entity; }
+	void SetWidth(LegoFloat p_width) { m_width = p_width; }
+	void SetLength(LegoFloat p_length) { m_length = p_length; }
+	void SetDepth(LegoFloat p_depth) { m_depth = p_depth; }
 
 public:
 	enum {

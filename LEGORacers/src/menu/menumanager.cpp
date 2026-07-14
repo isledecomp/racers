@@ -969,8 +969,8 @@ void MenuManager::LoadPartResources(LegoBool32 p_arg)
 	DriverModelBuilder::LoadParams menuParams;
 	menuParams.m_golExport = partParams.m_golExport;
 	menuParams.m_renderer = partParams.m_renderer;
-	menuParams.m_menuId = 6;
 	menuParams.m_partResources = &m_gameContext.m_partResources;
+	menuParams.m_menuId = 6;
 	m_gameContext.m_modelBuilder.Load(&menuParams);
 
 	if (g_hashTable) {
@@ -1067,6 +1067,7 @@ void MenuManager::BuildPlayerDriverModel(
 void MenuManager::ApplySettings()
 {
 	LegoU32 driverIndex = 0;
+	LegoS32 savedMusicVolume;
 	LegoFloat musicVolume;
 	GameState& state = m_gameContext.m_saveSystem.GetGameState();
 
@@ -1074,8 +1075,9 @@ void MenuManager::ApplySettings()
 	m_gameContext.m_context->m_lapCount = state.GetLapCount();
 
 	if (m_gameContext.m_context->GetSoundManager() != NULL) {
-		musicVolume = state.GetMusicVolume() * g_inv255;
+		savedMusicVolume = state.GetMusicVolume();
 		m_gameContext.m_context->GetSoundManager()->SetMusicVolumeScale(1.0f);
+		musicVolume = savedMusicVolume * g_inv255;
 
 		if (m_gameContext.m_modelBuilder.m_musicInstance) {
 			m_gameContext.m_modelBuilder.m_musicInstance->SetVolume(musicVolume);

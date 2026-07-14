@@ -116,26 +116,21 @@ void GolWorldEntityGroup::Draw(GolRenderDevice& p_renderer)
 // FUNCTION: LEGORACERS 0x004120e0
 void GolWorldEntityGroup::Update(LegoS32 p_elapsed)
 {
-	LegoU32 i = 0;
-	if (static_cast<LegoU32>(m_count) > 0) {
+	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
-		for (;;) {
-			m_entities[i]->Update(p_elapsed);
+		m_entities[i]->Update(p_elapsed);
 
-			GolVec3 center;
-			m_entities[i]->GetPosition(&center);
+		GolVec3 center;
+		m_entities[i]->GetPosition(&center);
 
-			GolVec3 delta;
-			delta.m_x = elapsed * m_velocity.m_x;
-			delta.m_y = m_velocity.m_y * elapsed;
-			delta.m_z = m_velocity.m_z * elapsed;
-			center += delta;
-			m_entities[i]->SetPosition(center);
-
-			if (++i >= static_cast<LegoU32>(m_count)) {
-				break;
-			}
-		}
+		GolVec3 delta;
+		delta.m_x = elapsed * m_velocity.m_x;
+		delta.m_y = m_velocity.m_y;
+		delta.m_y *= elapsed;
+		delta.m_z = m_velocity.m_z;
+		delta.m_z *= elapsed;
+		center += delta;
+		m_entities[i]->SetPosition(center);
 	}
 
 	m_radius = -1.0f;

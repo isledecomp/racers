@@ -161,12 +161,11 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 			m_state.m_inputBindings.m_entries[4].m_deviceSubType = keyboard->GetDeviceSubType();
 		}
 
-		InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[i + 2];
-		entry->m_deviceType = 3;
-		entry->m_deviceId = 0;
+		m_state.m_inputBindings.m_entries[i + 2].m_deviceType = 3;
+		m_state.m_inputBindings.m_entries[i + 2].m_deviceId = 0;
 
-		for (j = 0; j < sizeOfArray(entry->m_events); j++) {
-			entry->m_events[j] = g_keyboardInputBindingEvents[i][j];
+		for (j = 0; j < sizeOfArray(m_state.m_inputBindings.m_entries[i + 2].m_events); j++) {
+			m_state.m_inputBindings.m_entries[i + 2].m_events[j] = g_keyboardInputBindingEvents[i][j];
 		}
 	}
 }

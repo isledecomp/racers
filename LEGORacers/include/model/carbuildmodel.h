@@ -83,6 +83,7 @@ public:
 
 		PieceList();
 		~PieceList();
+		void SetPieceGrid(PieceGrid* p_pieceGrid) { m_pieceGrid = p_pieceGrid; }
 		void Clear();
 		LegoBool32 Initialize(LegoS32 p_capacity);
 		LegoS32 AddEntry(
@@ -366,7 +367,7 @@ private:
 	LegoS32 GetBatchVertexIndex(LegoS32 p_vertexIndex);
 	static LegoS32 ComparePrimitiveDrawOrder(const void* p_lhs, const void* p_rhs);
 	static void GetBuildPrimitiveBounds(BuildPrimitive* p_primitive, BuildPrimitiveBounds* p_bounds);
-	LegoS32 ResolvePrimitiveIntersections();
+	void ResolvePrimitiveIntersections();
 	static void InterpolateBuildVertex(
 		BuildVertex* p_dest,
 		BuildVertex* p_left,

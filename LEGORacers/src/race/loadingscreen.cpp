@@ -17,6 +17,9 @@
 DECOMP_SIZE_ASSERT(LoadingScreen, 0x30)
 DECOMP_SIZE_ASSERT(LoadingScreen::LsbTxtParser, 0x1fc)
 
+// GLOBAL: LEGORACERS 0x004b0690
+const LegoChar g_loadingScreenTickImageName[] = "tick";
+
 // GLOBAL: LEGORACERS 0x004bed40
 const LegoChar* g_loadScreenName = "loadscrn";
 
@@ -126,7 +129,7 @@ void LoadingScreen::Initialize(
 				}
 			}
 
-			for (LegoS32 i = 0; i < m_dotCount; i++) {
+			for (LegoU32 i = 0; i < static_cast<LegoU32>(m_dotCount); i++) {
 				m_dotPositions[i * 2] = static_cast<LegoS32>(parser->ReadFloat() * renderTargetWidth);
 				m_dotPositions[i * 2 + 1] = static_cast<LegoS32>(parser->ReadFloat() * renderTargetHeight);
 			}
@@ -137,7 +140,6 @@ void LoadingScreen::Initialize(
 			::strncpy(imageName, parser->ReadStringWithMaxLength(sizeof(imageName) - 1), sizeof(imageName));
 			break;
 		default:
-			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			break;
 		}
 
@@ -165,10 +167,12 @@ void LoadingScreen::Initialize(
 	m_images = m_golExport->CreateImageList();
 	m_images->LoadImageDefinitions(m_renderer, g_loadScreenName, p_binary);
 
-	GolImage* image = NULL;
-	GolNameTable::Entry* nameEntries = m_images->GetNameEntries();
-	if (nameEntries) {
-		image = static_cast<GolImage*>(m_images->GetName("tick"));
+	GolImage* image;
+	if (!m_images->GetNameEntries()) {
+		image = NULL;
+	}
+	else {
+		image = static_cast<GolImage*>(m_images->GetName(g_loadingScreenTickImageName));
 	}
 	m_tickImage = image;
 }

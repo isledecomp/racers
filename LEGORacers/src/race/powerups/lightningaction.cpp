@@ -129,8 +129,9 @@ void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_mana
 
 	BeamMesh::SetupParams params;
 	params.m_material = renderer->FindMaterialByName("lightng");
-	params.m_ringVertices[1].m_y = g_lightningBeamThickness * 0.5f;
-	params.m_ringVertices[2].m_x = -g_lightningBeamThickness;
+	LegoFloat halfThickness = g_lightningBeamThickness * 0.5f;
+	params.m_ringVertices[1].m_z = halfThickness;
+	params.m_ringVertices[2].m_y = -g_lightningBeamThickness;
 	params.m_golExport = p_export;
 	params.m_renderer = renderer;
 	params.m_sectionCount = 4;
@@ -140,9 +141,9 @@ void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_mana
 	params.m_ringVertices[0].m_y = g_lightningBeamThickness;
 	params.m_ringVertices[0].m_z = -0.25f;
 	params.m_ringVertices[1].m_x = 0.0f;
-	params.m_ringVertices[1].m_z = 0.0f;
-	params.m_ringVertices[2].m_y = -0.25f;
-	params.m_ringVertices[2].m_z = 0.0f;
+	params.m_ringVertices[1].m_y = 0.0f;
+	params.m_ringVertices[2].m_x = 0.0f;
+	params.m_ringVertices[2].m_z = -0.25f;
 	params.m_ringTextureXs[0] = 0.0f;
 	params.m_ringTextureXs[1] = 0.5f;
 	params.m_ringTextureXs[2] = 1.0f;
@@ -219,8 +220,6 @@ void LightningAction::FillJitterTable()
 void LightningAction::RebuildBolt()
 {
 	LegoS32 index = static_cast<LegoS32>(m_jitterCursor) - 1;
-	GolVec3* modelPosition = m_boltPoints;
-	BeamMesh* field = &m_beam;
 	RaceActionSource* source = m_source;
 
 	GolVec3 position;
@@ -230,32 +229,29 @@ void LightningAction::RebuildBolt()
 	position.m_z += g_lightningSourceHeightOffset;
 
 	GolVec3 direction;
-	direction.m_x = modelPosition[0].m_x - position.m_x;
-	direction.m_y = modelPosition[0].m_y - position.m_y;
-	direction.m_z = modelPosition[0].m_z - position.m_z;
-	field->Begin(&position, &direction);
+	direction.m_x = m_boltPoints[0].m_x - position.m_x;
+	direction.m_y = m_boltPoints[0].m_y - position.m_y;
+	direction.m_z = m_boltPoints[0].m_z - position.m_z;
+	m_beam.Begin(&position, &direction);
 
-	for (LegoS32 i = 0; i < 4; i++) {
-		GolVec3* offset = g_beamSegmentOffsets;
-		while (offset < &g_beamSegmentOffsets[5]) {
+	for (LegoS32 i = 0; i < sizeOfArray(m_boltPoints); i++) {
+		for (LegoS32 j = 0; j < sizeOfArray(g_beamSegmentOffsets); j++) {
 			if (index < 0) {
 				index = 19;
 			}
 
-			offset->m_x = m_jitterTable[index--];
-			offset->m_y = offset->m_x;
-			offset->m_z = 0.0f;
-			offset++;
+			g_beamSegmentOffsets[j].m_x = m_jitterTable[index--];
+			g_beamSegmentOffsets[j].m_y = g_beamSegmentOffsets[j].m_x;
+			g_beamSegmentOffsets[j].m_z = 0.0f;
 		}
 
-		field->SetSegmentOffsets(g_beamSegmentOffsets);
-		field->AppendSpan(modelPosition, amount);
+		m_beam.SetSegmentOffsets(g_beamSegmentOffsets);
+		m_beam.AppendSpan(&m_boltPoints[i], amount);
 
-		modelPosition++;
 		amount = -amount;
 	}
 
-	field->Finish();
+	m_beam.Finish();
 }
 
 // FUNCTION: LEGORACERS 0x00454cb0
@@ -342,14 +338,14 @@ void LightningAction::Update(LegoU32 p_elapsedMs)
 void LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 {
 	if (m_sound != NULL) {
-		m_sound->SetPosition(*m_source);
+		m_sound->SetPosition(m_source);
 		m_sound->SetVelocity(m_source->m_velocity);
 
 		switch (m_state) {
 		case c_stateRampIn:
 			m_sound->SetFrequencyScale(
-				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_lightningFrequencyRampScale *
-						   g_unk0x004b02fc
+				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b02fc *
+						   g_lightningFrequencyRampScale
 			);
 			break;
 		case c_stateSustain:
@@ -358,7 +354,7 @@ void LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 		case c_stateFade:
 			m_sound->SetFrequencyScale(
 				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(c_fadeDurationMs - m_stateTimerMs)) *
-						   g_lightningFrequencyRampScale * g_unk0x004b02fc
+						   g_unk0x004b02fc * g_lightningFrequencyRampScale
 			);
 			break;
 		}
@@ -376,7 +372,8 @@ void LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 		SoundVector* right = &m_source->m_forward;
 		GolVec3 offset;
 		offset.m_x = static_cast<LegoFloat>(distance) * right->m_x;
-		offset.m_y = right->m_y * static_cast<LegoFloat>(distance);
+		offset.m_y = right->m_y;
+		offset.m_y *= static_cast<LegoFloat>(distance);
 		offset.m_z = static_cast<LegoFloat>(distance) * right->m_z;
 		position.m_x += offset.m_x;
 		position.m_y += offset.m_y;
@@ -478,35 +475,32 @@ void LightningAction::UpdateBoltPath()
 	scaledDirection.m_z = direction.m_z * scale;
 	GolCameraBase::Add(&position, &scaledDirection, &end);
 
-	if (m_targetRacer != NULL) {
-		m_targetRacer->m_visuals.m_carEntity->GetPosition(&end);
+	LegoFloat distance;
+	do {
+		if (m_targetRacer != NULL) {
+			m_targetRacer->m_visuals.m_carEntity->GetPosition(&end);
 
-		direction.m_x = end.m_x - position.m_x;
-		direction.m_y = end.m_y - position.m_y;
-		direction.m_z = end.m_z - position.m_z;
-		GolMath::NormalizeVector3(direction, &direction);
+			direction.m_x = end.m_x - position.m_x;
+			direction.m_y = end.m_y - position.m_y;
+			direction.m_z = end.m_z - position.m_z;
+			GolMath::NormalizeVector3(direction, &direction);
 
-		LegoFloat distance = static_cast<LegoFloat>(::sqrt(
-			(position.m_z - end.m_z) * (position.m_z - end.m_z) + (position.m_y - end.m_y) * (position.m_y - end.m_y) +
-			(position.m_x - end.m_x) * (position.m_x - end.m_x)
-		));
-		LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.GetBoundsRadius();
-		if (distance > radius) {
-			distance -= radius;
+			distance = static_cast<LegoFloat>(::sqrt(GOLVECTOR3_DISTANCE_SQUARED(position, end)));
+			LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.GetBoundsRadius();
+			if (distance > radius) {
+				distance -= radius;
+			}
+		}
+		else {
+			if (!m_collisionWorld->IntersectSegmentAndFireEvents(&position, &end, &record, &hit)) {
+				break;
+			}
+
+			distance = static_cast<LegoFloat>(::sqrt(GOLVECTOR3_DISTANCE_SQUARED(position, hit)));
 		}
 
 		m_boltLength = distance * g_carBuildModelTextureCoordinateScale;
-	}
-	else {
-		if (m_collisionWorld->IntersectSegmentAndFireEvents(&position, &end, &record, &hit)) {
-			LegoFloat distance = static_cast<LegoFloat>(::sqrt(
-				(position.m_z - hit.m_z) * (position.m_z - hit.m_z) +
-				(position.m_y - hit.m_y) * (position.m_y - hit.m_y) +
-				(position.m_x - hit.m_x) * (position.m_x - hit.m_x)
-			));
-			m_boltLength = distance * g_carBuildModelTextureCoordinateScale;
-		}
-	}
+	} while (FALSE);
 
 	direction *= m_boltLength;
 	for (LegoS32 i = 0; i < sizeOfArray(m_boltPoints); i++) {
@@ -580,6 +574,7 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 
 		if (!(racer->m_physics.m_flags & RacerPhysics::c_flagSpinOut)) {
 			RacerPhysics* physics = &racer->m_physics;
+			GolVec3 impulse;
 			GolVec3 direction = physics->m_facingDirection;
 			racer->StartSpinOut();
 
@@ -587,10 +582,27 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 			physics->m_velocity.m_y = 0.0f;
 			physics->m_velocity.m_z = 0.0f;
 
-			GolVec3 impulse;
-			impulse.m_x = direction.m_x * g_lightningImpulseScale;
-			impulse.m_y = direction.m_y * g_lightningImpulseScale;
-			impulse.m_z = direction.m_z * g_lightningImpulseScale + g_lightningLaunchImpulse;
+			impulse.m_x = direction.m_x;
+			impulse.m_x *= g_lightningImpulseScale;
+			impulse.m_y = direction.m_y;
+			impulse.m_y *= g_lightningImpulseScale;
+			impulse.m_z = direction.m_z;
+			impulse.m_z *= g_lightningImpulseScale;
+
+			direction.Clear();
+			direction.m_z = g_lightningLaunchImpulse;
+
+			LegoFloat impulseX = direction.m_x;
+			impulseX += impulse.m_x;
+			impulse.m_x = impulseX;
+
+			LegoFloat impulseY = direction.m_y;
+			impulseY += impulse.m_y;
+			impulse.m_y = impulseY;
+
+			LegoFloat impulseZ = direction.m_z;
+			impulseZ += impulse.m_z;
+			impulse.m_z = impulseZ;
 
 			physics->ApplyImpulse(&impulse, &impulse);
 
@@ -680,7 +692,8 @@ void LightningAction::UpdateHitParticle()
 		m_hitParticle->m_particle->SetPosition(&m_boltPoints[3]);
 	}
 
-	if (m_hitParticle->m_particle != NULL) {
-		m_hitParticle->m_particle->SetOrientation(&direction, &up);
+	CutsceneParticleRef* hitParticle = m_hitParticle;
+	if (hitParticle->m_particle != NULL) {
+		hitParticle->m_particle->SetOrientation(&direction, &up);
 	}
 }

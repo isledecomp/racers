@@ -205,11 +205,15 @@ void CutsceneAnimationEvent::Update(LegoU32)
 	if (m_particleRef && (m_flags & 8) && m_animatedEntity) {
 		CutsceneEvent::GetJointPosition(m_jointIndex, &v0);
 		GetJointAxes(m_jointIndex, &v1, &v2);
-		if (m_particleRef->m_particle) {
-			m_particleRef->m_particle->SetPosition(&v0);
+
+		CutsceneParticleRef* particleRef = m_particleRef;
+		if (particleRef->m_particle) {
+			particleRef->m_particle->SetPosition(&v0);
 		}
-		if (m_particleRef->m_particle) {
-			m_particleRef->m_particle->SetOrientation(&v1, &v2);
+
+		particleRef = m_particleRef;
+		if (particleRef->m_particle) {
+			particleRef->m_particle->SetOrientation(&v1, &v2);
 		}
 	}
 }

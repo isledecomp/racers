@@ -15,12 +15,12 @@ DECOMP_SIZE_ASSERT(RaceModeSetupScreen, 0x2e60)
 LegoChar g_veronicaVoltageName[] = "VV";
 
 // FUNCTION: LEGORACERS 0x004246d0 FOLDED
-LegoU32 RaceModeSetupScreen::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
+void RaceModeSetupScreen::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 {
 	LegoU32 millisecondsPerHour = 3600000;
 	LegoS32 divisor = 10;
-	LegoU32 time = p_time % millisecondsPerHour;
 	LegoS32 digitOffset;
+	LegoU32 time = p_time % millisecondsPerHour;
 
 	p_buffer[8] = '\0';
 	if (time >= 600000) {
@@ -35,10 +35,10 @@ LegoU32 RaceModeSetupScreen::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 		p_buffer[7] = '\0';
 	}
 
-	LegoU32 centiseconds = time / 10;
-	p_buffer[digitOffset] = static_cast<LegoChar>(centiseconds % 10 + '0');
-	centiseconds /= 10;
-	p_buffer[digitOffset - 1] = static_cast<LegoChar>(centiseconds % 10 + '0');
+	LegoU32 centiseconds = time / divisor;
+	p_buffer[digitOffset] = static_cast<LegoChar>(centiseconds % divisor + '0');
+	centiseconds /= divisor;
+	p_buffer[digitOffset - 1] = static_cast<LegoChar>(centiseconds % divisor + '0');
 
 	LegoU32 seconds = centiseconds / divisor;
 	LegoS32 secondsWithinMinute = static_cast<LegoS32>(seconds % 60);
@@ -50,10 +50,7 @@ LegoU32 RaceModeSetupScreen::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 	LegoU32 extraMinutes = minutes / divisor;
 	if (extraMinutes) {
 		p_buffer[digitOffset - 7] = static_cast<LegoChar>(extraMinutes % divisor + '0');
-		extraMinutes /= divisor;
 	}
-
-	return extraMinutes;
 }
 
 // FUNCTION: LEGORACERS 0x00487850
@@ -294,9 +291,8 @@ void RaceModeSetupScreen::UpdateRacePreview()
 	}
 
 	LegoU32 circuitIndex = m_context->m_circuitList.GetEntryIndex(m_circuitEntry);
-	LegoU32 visualStateIndex = circuitIndex * 4;
-	visualStateIndex += selectedEntryIndex;
-	ApplyThemeColor(visualStateIndex);
+	selectedEntryIndex += circuitIndex * 4;
+	ApplyThemeColor(selectedEntryIndex);
 	if (driverName[0]) {
 		SetPreviewDriver(driverName);
 	}

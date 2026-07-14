@@ -44,11 +44,11 @@ void RaceTimerList::Resource::Initialize(
 {
 	LegoU32 flags = p_flags;
 	m_eventTable = p_eventTable;
-	m_onDurationMs = p_onDurationMs;
-	m_eventId = p_eventId;
 	m_eventQueue = p_eventQueue;
+	m_onDurationMs = p_onDurationMs;
 	m_offDurationMs = p_offDurationMs;
 	m_delayMs = p_delayMs;
+	m_eventId = p_eventId;
 	flags &= ~c_active;
 	m_flags = flags;
 
@@ -178,8 +178,9 @@ LegoEventQueue::Event* RaceTimerList::Resource::Schedule(LegoU32 p_delayMs)
 {
 	LegoEventQueue::Callback* callback = this;
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_maxFireCount = descriptor.m_type = LegoEventQueue::Descriptor::c_typeTimer;
+	descriptor.m_type = LegoEventQueue::Descriptor::c_typeTimer;
 	descriptor.m_flags = 0;
+	descriptor.m_maxFireCount = 1;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_intervalMs = p_delayMs;
 
@@ -252,11 +253,11 @@ void RaceTimerList::Load(
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TibTxtParser::e_timer));
 		parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
 
+		LegoU32 flags = 0;
 		LegoU32 onDuration = 0;
 		LegoU32 offDuration = 0;
 		LegoU32 initialDelay = 0;
 		LegoS32 eventIndex = -1;
-		LegoU32 flags = 0;
 
 		GolFileParser::ParserTokenType token = parser->GetNextToken();
 		while (token != GolFileParser::e_rightCurly) {

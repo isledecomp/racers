@@ -92,24 +92,27 @@ void ControlConfigScreen::PopulateDeviceCarousel()
 		m_deviceCount = 2;
 	}
 
-	for (LegoS32 i = 0; i < 2; i++) {
-		InputDevice* device = m_inputManager->GetJoystick(i);
+	LegoS32 outputIndex = 0;
+	LegoS32 i;
+	for (i = 0; i < 2; i++) {
+		JoystickDevice* device = m_inputManager->GetJoystick(i);
 		if (device) {
 			switch (device->GetDeviceSubType()) {
 			case 4:
-				CreateImage(&m_deviceIcons[i], 0x113, 0x113);
+				CreateImage(&m_deviceIcons[outputIndex], 0x113, 0x113);
 				break;
 			case 6:
-				CreateImage(&m_deviceIcons[i], 0x114, 0x114);
+				CreateImage(&m_deviceIcons[outputIndex], 0x114, 0x114);
 				break;
 			default:
-				CreateImage(&m_deviceIcons[i], 0x112, 0x112);
+				CreateImage(&m_deviceIcons[outputIndex], 0x112, 0x112);
 				break;
 			}
 
-			m_deviceCarousel.AddItem(&m_deviceIcons[i]);
-			m_devices[i] = device;
-			m_bindingIndices[i] = i;
+			m_deviceCarousel.AddItem(&m_deviceIcons[outputIndex]);
+			m_devices[outputIndex] = device;
+			m_bindingIndices[outputIndex] = i;
+			outputIndex++;
 		}
 	}
 

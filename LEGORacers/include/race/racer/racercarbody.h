@@ -102,22 +102,22 @@ public:
 	// SIZE 0x70
 	class SavedWheelState {
 	public:
-		GolVec3 m_wheelPosition;             // 0x00
-		undefined m_unk0x00c[0x030 - 0x00c]; // 0x0c
-		RaceEventRecord* m_hitRecord;        // 0x30
-		undefined m_unk0x034[0x03c - 0x034]; // 0x34
-		LegoU32 m_flags;                     // 0x3c
-		undefined4 m_unk0x040;               // 0x40
-		LegoFloat m_rollingResistance;       // 0x44
-		LegoFloat m_supportThreshold;        // 0x48
-		LegoFloat m_friction;                // 0x4c
-		LegoFloat m_lateralGrip;             // 0x50
-		LegoFloat m_unk0x054;                // 0x54
-		GolVec3 m_surfaceForce;              // 0x58
-		undefined m_unk0x064[0x070 - 0x064]; // 0x64
+		undefined m_unk0x000[0x00c - 0x000]; // 0x00
+		GolVec3 m_wheelPosition;             // 0x0c
+		undefined m_unk0x018[0x03c - 0x018]; // 0x18
+		RaceEventRecord* m_hitRecord;        // 0x3c
+		undefined m_unk0x040[0x048 - 0x040]; // 0x40
+		LegoU32 m_flags;                     // 0x48
+		undefined4 m_unk0x04c;               // 0x4c
+		LegoFloat m_rollingResistance;       // 0x50
+		LegoFloat m_supportThreshold;        // 0x54
+		LegoFloat m_friction;                // 0x58
+		LegoFloat m_lateralGrip;             // 0x5c
+		LegoFloat m_unk0x060;                // 0x60
+		GolVec3 m_surfaceForce;              // 0x64
 	};
 
-	// SIZE 0x1ec
+	// SIZE 0x1f8
 	class SavedWheelStateBlock {
 	public:
 		SavedWheelState* GetEntries() { return m_entries; }
@@ -126,9 +126,9 @@ public:
 		union {
 			SavedWheelState m_entries[4]; // 0x000
 			struct {
-				undefined m_unk0x000[0x1b4 - 0x000];           // 0x000
-				GolBoundingVolume::HitTriangle m_eventContext; // 0x1b4
-				undefined m_unk0x1e8[0x1ec - 0x1e8];           // 0x1e8
+				undefined m_unk0x000[0x1c0 - 0x000];           // 0x000
+				GolBoundingVolume::HitTriangle m_eventContext; // 0x1c0
+				undefined m_unk0x1f4[0x1f8 - 0x1f4];           // 0x1f4
 			};
 		};
 	};
@@ -175,6 +175,8 @@ public:
 	virtual void EndExternalForce0();                   // vtable+0x44
 	virtual void StartExternalForce1(GolVec3* p_force); // vtable+0x48
 	virtual void EndExternalForce1();                   // vtable+0x4c
+
+	LegoFloat GetForwardSpeed() const { return m_forwardSpeed; }
 
 	void Reset();
 	void Initialize(

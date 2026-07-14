@@ -37,7 +37,7 @@ public:
 	void Reset();
 	void Initialize(const SetupParams* p_params);
 	void Destroy();
-	LegoU32 Activate(Racer* p_racer, GolModelEntity* p_portalModel, ActionTarget* p_target);
+	void Activate(Racer* p_racer, GolModelEntity* p_portalModel, ActionTarget* p_target);
 	void TeleportEntity(GolWorldEntity* p_entity);
 
 private:

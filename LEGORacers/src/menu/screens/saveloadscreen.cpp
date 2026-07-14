@@ -219,83 +219,55 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 			ExecuteOperation(&m_context->m_saveSystem);
 			break;
 		}
-
-		m_widgetsDirty = TRUE;
-		return;
 	}
-
-	if (p_source == &m_yesButton && m_status == 0x19) {
+	else if (p_source == &m_yesButton && m_status == 0x19) {
 		SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_saveIndex);
 		LegoS32 status = entry->CreateDirectories();
 		m_status = status;
 		if (!status) {
 			m_status = m_context->m_saveSystem.LoadSlot(m_saveIndex, TRUE);
 		}
-
-		m_widgetsDirty = TRUE;
-		return;
 	}
-
-	if (p_source == &m_noButton && m_status == 0x19) {
+	else if (p_source == &m_noButton && m_status == 0x19) {
 		m_status = 8;
-		m_widgetsDirty = TRUE;
-		return;
 	}
-
-	if (p_source == &m_yesButton || p_source == &m_cancelButton) {
+	else if (p_source == &m_yesButton || p_source == &m_cancelButton) {
 		if (m_status == 0x15) {
 			ExecuteOperation(&m_context->m_saveSystem);
-			m_widgetsDirty = TRUE;
+		}
+		else {
+			Navigate();
 			return;
 		}
-
-		Navigate();
-		return;
 	}
-
-	if (p_source == &m_noButton) {
+	else if (p_source == &m_noButton) {
 		if (m_status == 0x15) {
 			SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_saveIndex);
 			entry->CreateDirectories();
-			m_widgetsDirty = TRUE;
-			return;
 		}
-
-		ExecuteOperation(&m_context->m_saveSystem);
-		m_widgetsDirty = TRUE;
-		return;
+		else {
+			ExecuteOperation(&m_context->m_saveSystem);
+		}
 	}
-
-	if (p_source == &m_slot0Button) {
+	else if (p_source == &m_slot0Button) {
 		m_saveIndex = 0;
 		m_context->m_saveSystem.GetDirectory().GetEntry(0)->EnsureDirectoryExists();
 		m_status = m_context->m_saveSystem.LoadSlot(0, TRUE);
-		m_widgetsDirty = TRUE;
-		return;
 	}
-
-	if (p_source == &m_slot1Button) {
+	else if (p_source == &m_slot1Button) {
 		m_saveIndex = 1;
 		m_context->m_saveSystem.GetDirectory().GetEntry(1)->EnsureDirectoryExists();
 		m_status = m_context->m_saveSystem.LoadSlot(1, TRUE);
-		m_widgetsDirty = TRUE;
-		return;
 	}
-
-	if (p_source == &m_slot2Button) {
+	else if (p_source == &m_slot2Button) {
 		m_saveIndex = 2;
 		m_context->m_saveSystem.GetDirectory().GetEntry(2)->EnsureDirectoryExists();
 		m_status = m_context->m_saveSystem.LoadSlot(2, TRUE);
-		m_widgetsDirty = TRUE;
-		return;
 	}
-
-	if (p_source == &m_slot3Button) {
+	else if (p_source == &m_slot3Button) {
 		m_saveIndex = 3;
 		m_context->m_saveSystem.GetDirectory().GetEntry(3)->EnsureDirectoryExists();
 		m_status = m_context->m_saveSystem.LoadSlot(3, TRUE);
-		m_widgetsDirty = TRUE;
-		return;
 	}
 
 	m_widgetsDirty = TRUE;

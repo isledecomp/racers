@@ -171,24 +171,24 @@ void MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	} while (transform != NULL);
 
 	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
+	LegoFloat y = offset.m_y;
+	LegoFloat z = offset.m_z;
 	offset.m_x *= scale;
-	offset.m_y *= scale;
-	offset.m_z *= scale;
+	offset.m_y = y * scale;
+	offset.m_z = z * scale;
 
 	m_entity->LocalToWorld(offset, &position);
 	m_trigger.SetBoundsCenter(position);
 
 	LegoFloat frame = m_entity->GetPartTimeMs();
-	if ((m_flags & c_flagImpactPending) != 0) {
-		if ((frame > g_obstacleFrame150 && frame < g_obstacleFrame180) ||
-			(frame > g_obstacleFrame0 && frame < g_obstacleFrame30)) {
-			m_eventTable->FireEventsAt(c_impactEventId, c_impactEventId, &position);
-			m_flags &= ~c_flagImpactPending;
-		}
+	if ((m_flags & c_flagImpactPending) && ((frame > g_obstacleFrame150 && frame < g_obstacleFrame180) ||
+											(frame > g_obstacleFrame0 && frame < g_obstacleFrame30))) {
+		m_eventTable->FireEventsAt(c_impactEventId, c_impactEventId, &position);
+		m_flags &= ~c_flagImpactPending;
 	}
 	else if (
-		(frame > g_obstacleFrame60 && frame < g_obstacleFrame120) ||
-		(frame > g_obstacleFrame210 && frame < g_obstacleFrame270)
+		!(m_flags & c_flagImpactPending) && ((frame > g_obstacleFrame60 && frame < g_obstacleFrame120) ||
+											 (frame > g_obstacleFrame210 && frame < g_obstacleFrame270))
 	) {
 		m_flags |= c_flagImpactPending;
 	}
@@ -220,9 +220,10 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 	m_shadowDecal.m_width = 13.0f;
 	m_shadowDecal.m_length = 13.0f;
 	m_shadowDecal.m_depth = 15.0f;
-	m_shadowDecal.m_center.m_x = position.m_x;
-	m_shadowDecal.m_center.m_y = position.m_y;
-	m_shadowDecal.m_center.m_z = position.m_z;
+	RaceDecalManager::Trail::Decal* shadowDecal = &m_shadowDecal;
+	shadowDecal->m_center.m_x = position.m_x;
+	shadowDecal->m_center.m_y = position.m_y;
+	shadowDecal->m_center.m_z = position.m_z;
 	m_shadowDecal.GetEntity().SetPrimaryMaterialTable(&m_shadowMaterialTable);
 
 	GolVec3 up;
@@ -232,8 +233,8 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 	forward.m_x = 0.0f;
 	forward.m_y = 0.0f;
 	forward.m_z = -1.0f;
-	m_shadowDecal.SetOrientation(&forward, &up);
-	m_shadowDecal.Project(m_trackCollidable);
+	shadowDecal->SetOrientation(&forward, &up);
+	shadowDecal->Project(m_trackCollidable);
 
 	m_flags |= c_flagShadowVisible;
 }

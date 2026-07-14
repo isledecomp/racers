@@ -129,9 +129,12 @@ void CutsceneColorEvent::Update(LegoFloat p_elapsedSeconds)
 {
 	if (m_active) {
 		if (m_entity != 0) {
-			LegoFloat deltaX = m_offsetRateRed * p_elapsedSeconds;
-			LegoFloat deltaY = m_offsetRateGrn * p_elapsedSeconds;
-			LegoFloat deltaZ = m_offsetRateBlu * p_elapsedSeconds;
+			LegoFloat deltaX = m_offsetRateRed;
+			deltaX *= p_elapsedSeconds;
+			LegoFloat deltaY = m_offsetRateGrn;
+			deltaY *= p_elapsedSeconds;
+			LegoFloat deltaZ = m_offsetRateBlu;
+			deltaZ *= p_elapsedSeconds;
 
 			if (static_cast<LegoS32>(deltaX) || static_cast<LegoS32>(deltaY) || static_cast<LegoS32>(deltaZ)) {
 				m_offsetRed += deltaX;

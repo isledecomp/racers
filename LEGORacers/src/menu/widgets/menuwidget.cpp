@@ -5,6 +5,8 @@
 #include "image/golimage.h"
 #include "render/gold3drenderdevice.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(MenuWidget, 0x58)
 DECOMP_SIZE_ASSERT(VisualStateColor, 0x04)
 DECOMP_SIZE_ASSERT(MenuWidget::CreateParams, 0x38)
@@ -43,10 +45,7 @@ void MenuWidget::Reset()
 	m_scaleX = 1.0;
 	m_offsetY = 0;
 	m_offsetX = 0;
-	m_rect.m_left = 0;
-	m_rect.m_top = 0;
-	m_rect.m_right = 0;
-	m_rect.m_bottom = 0;
+	::memset(&m_rect, 0, sizeof(m_rect));
 }
 
 // FUNCTION: LEGORACERS 0x00472a60
@@ -342,16 +341,14 @@ MenuWidget* MenuWidget::FindRoot()
 MenuWidget* MenuWidget::FindFocusedLeaf()
 {
 	MenuWidget* result = FindRoot();
-	MenuWidget* child = result->m_focusedChild;
 
-	if (!child) {
+	if (!result->m_focusedChild) {
 		return (result->m_flags & 0x08) ? result : NULL;
 	}
 
 	do {
-		result = child;
-		child = result->m_focusedChild;
-	} while (child);
+		result = result->m_focusedChild;
+	} while (result->m_focusedChild);
 
 	return result;
 }

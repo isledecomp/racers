@@ -91,16 +91,25 @@ void GolSoftwareMaterial::UpdateD3DMaterial(GolD3DRenderDevice* p_renderer)
 {
 	D3DMATERIAL material;
 	LegoChar errorMessage[64];
+	LegoFloat color;
 
 	material.dwSize = sizeof(D3DMATERIAL);
-	material.ambient.r = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_red & 0xff) / 255.0);
-	material.ambient.g = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_grn & 0xff) / 255.0);
-	material.ambient.b = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_blu & 0xff) / 255.0);
-	material.ambient.a = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_alp & 0xff) / 255.0);
-	material.diffuse.r = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_red & 0xff) / 255.0);
-	material.diffuse.g = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_grn & 0xff) / 255.0);
-	material.diffuse.b = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_blu & 0xff) / 255.0);
-	material.diffuse.a = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_alp & 0xff) / 255.0);
+	color = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_red & 0xff) / 255.0);
+	material.ambient.r = color;
+	color = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_grn & 0xff) / 255.0);
+	material.ambient.g = color;
+	color = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_blu & 0xff) / 255.0);
+	material.ambient.b = color;
+	color = static_cast<LegoFloat>(static_cast<double>(m_ambient.m_alp & 0xff) / 255.0);
+	material.ambient.a = color;
+	color = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_red & 0xff) / 255.0);
+	material.diffuse.r = color;
+	color = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_grn & 0xff) / 255.0);
+	material.diffuse.g = color;
+	color = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_blu & 0xff) / 255.0);
+	material.diffuse.b = color;
+	color = static_cast<LegoFloat>(static_cast<double>(m_diffuse.m_alp & 0xff) / 255.0);
+	material.diffuse.a = color;
 	material.specular.r = 0.0f;
 	material.specular.g = 0.0f;
 	material.specular.b = 0.0f;

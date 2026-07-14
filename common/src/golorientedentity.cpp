@@ -65,8 +65,13 @@ void GolOrientedEntity::SetDirectionUp(const GolVec3& p_v1, const GolVec3& p_v2)
 
 	GolVec3 cross;
 	cross.m_x = perp.m_y * unit.m_z - perp.m_z * unit.m_y;
-	cross.m_y = perp.m_z * unit.m_x - perp.m_x * unit.m_z;
-	cross.m_z = perp.m_x * unit.m_y - perp.m_y * unit.m_x;
+	cross.m_y = perp.m_z * unit.m_x;
+	LegoFloat unitZPerpX = unit.m_z;
+	unitZPerpX *= perp.m_x;
+	cross.m_y -= unitZPerpX;
+	cross.m_z = unit.m_y;
+	cross.m_z *= perp.m_x;
+	cross.m_z -= perp.m_y * unit.m_x;
 	LegoFloat* row0 = &m_orientation.m_m[0][0];
 	LegoFloat* row1 = &m_orientation.m_m[1][0];
 	LegoFloat* row2 = &m_orientation.m_m[2][0];
@@ -104,16 +109,21 @@ void GolOrientedEntity::SetDirectionSide(const GolVec3& p_v1, const GolVec3& p_v
 	cross.m_y *= perp.m_x;
 	cross.m_y -= unit.m_x * perp.m_z;
 	cross.m_z = unit.m_x * perp.m_y;
-	cross.m_z -= unit.m_y * perp.m_x;
-	m_orientation.m_m[0][0] = unit.m_x;
-	m_orientation.m_m[0][1] = unit.m_y;
-	m_orientation.m_m[0][2] = unit.m_z;
-	m_orientation.m_m[1][0] = perp.m_x;
-	m_orientation.m_m[1][1] = perp.m_y;
-	m_orientation.m_m[1][2] = perp.m_z;
-	m_orientation.m_m[2][0] = cross.m_x;
-	m_orientation.m_m[2][1] = cross.m_y;
-	m_orientation.m_m[2][2] = cross.m_z;
+	LegoFloat unitYPerpX = unit.m_y;
+	unitYPerpX *= perp.m_x;
+	cross.m_z -= unitYPerpX;
+	LegoFloat* row0 = &m_orientation.m_m[0][0];
+	LegoFloat* row1 = &m_orientation.m_m[1][0];
+	LegoFloat* row2 = &m_orientation.m_m[2][0];
+	row0[0] = unit.m_x;
+	row0[1] = unit.m_y;
+	row2[0] = cross.m_x;
+	row0[2] = unit.m_z;
+	row1[0] = perp.m_x;
+	row1[1] = perp.m_y;
+	row1[2] = perp.m_z;
+	row2[1] = cross.m_y;
+	row2[2] = cross.m_z;
 }
 
 // FUNCTION: LEGORACERS 0x00410b00
@@ -134,9 +144,18 @@ void GolOrientedEntity::SetUpDirection(const GolVec3& p_v1, const GolVec3& p_v2)
 	GolMath::NormalizeVector3(perp, &perp);
 
 	GolVec3 cross;
-	cross.m_x = unit.m_y * perp.m_z - unit.m_z * perp.m_y;
-	cross.m_y = unit.m_z * perp.m_x - unit.m_x * perp.m_z;
-	cross.m_z = unit.m_x * perp.m_y - unit.m_y * perp.m_x;
+	cross.m_x = unit.m_y;
+	cross.m_x *= perp.m_z;
+	LegoFloat unitZPerpY = unit.m_z;
+	unitZPerpY *= perp.m_y;
+	cross.m_x -= unitZPerpY;
+	cross.m_y = unit.m_z;
+	cross.m_y *= perp.m_x;
+	cross.m_y -= unit.m_x * perp.m_z;
+	cross.m_z = unit.m_x * perp.m_y;
+	LegoFloat unitYPerpX = unit.m_y;
+	unitYPerpX *= perp.m_x;
+	cross.m_z -= unitYPerpX;
 	LegoFloat* row0 = &m_orientation.m_m[0][0];
 	LegoFloat* row1 = &m_orientation.m_m[1][0];
 	LegoFloat* row2 = &m_orientation.m_m[2][0];
@@ -199,7 +218,9 @@ void GolOrientedEntity::SetOrientationMatrix(const GolMatrix3& p_matrix)
 // FUNCTION: LEGORACERS 0x00410c80
 void GolOrientedEntity::RotateToWorld(const GolVec3& p_src, GolVec3* p_dest)
 {
-	p_dest->m_x = m_orientation.m_m[0][0] * p_src.m_x;
+	LegoFloat x = m_orientation.m_m[0][0];
+	x *= p_src.m_x;
+	p_dest->m_x = x;
 	p_dest->m_y = m_orientation.m_m[0][1] * p_src.m_x;
 	p_dest->m_z = m_orientation.m_m[0][2] * p_src.m_x;
 	p_dest->m_x += m_orientation.m_m[1][0] * p_src.m_y;
@@ -214,7 +235,9 @@ void GolOrientedEntity::RotateToWorld(const GolVec3& p_src, GolVec3* p_dest)
 // FUNCTION: LEGORACERS 0x00410cf0
 void GolOrientedEntity::RotateToLocal(const GolVec3& p_src, GolVec3* p_dest) const
 {
-	p_dest->m_x = m_orientation.m_m[0][0] * p_src.m_x;
+	LegoFloat x = m_orientation.m_m[0][0];
+	x *= p_src.m_x;
+	p_dest->m_x = x;
 	p_dest->m_y = m_orientation.m_m[1][0] * p_src.m_x;
 	p_dest->m_z = m_orientation.m_m[2][0] * p_src.m_x;
 	p_dest->m_x += m_orientation.m_m[0][1] * p_src.m_y;
@@ -229,7 +252,9 @@ void GolOrientedEntity::RotateToLocal(const GolVec3& p_src, GolVec3* p_dest) con
 // FUNCTION: LEGORACERS 0x00410d60
 void GolOrientedEntity::LocalToWorld(const GolVec3& p_src, GolVec3* p_dest) const
 {
-	p_dest->m_x = m_orientation.m_m[0][0] * p_src.m_x;
+	LegoFloat x = m_orientation.m_m[0][0];
+	x *= p_src.m_x;
+	p_dest->m_x = x;
 	p_dest->m_y = m_orientation.m_m[0][1] * p_src.m_x;
 	p_dest->m_z = m_orientation.m_m[0][2] * p_src.m_x;
 	p_dest->m_x += m_orientation.m_m[1][0] * p_src.m_y;
@@ -270,25 +295,39 @@ void GolOrientedEntity::WorldToLocal(const GolVec3& p_src, GolVec3* p_dest) cons
 	x = m_orientation.m_m[0][2];
 	x *= p_src.m_z;
 	p_dest->m_x += x;
-	y = m_orientation.m_m[1][2];
-	y *= p_src.m_z;
+	y = p_src.m_z;
+	y *= m_orientation.m_m[1][2];
 	p_dest->m_y += y;
 	z = m_orientation.m_m[2][2];
 	z *= p_src.m_z;
 	p_dest->m_z += z;
 
-	x = m_position.m_x * m_orientation.m_m[0][0];
-	x += m_orientation.m_m[0][1] * m_position.m_y;
-	x += m_position.m_z * m_orientation.m_m[0][2];
+	x = m_position.m_x;
+	x *= m_orientation.m_m[0][0];
+	y = m_orientation.m_m[0][1];
+	x += y * m_position.m_y;
+	z = m_position.m_z;
+	z *= m_orientation.m_m[0][2];
+	x += z;
 	p_dest->m_x -= x;
-	y = m_position.m_z * m_orientation.m_m[1][2];
-	y += m_orientation.m_m[1][1] * m_position.m_y;
-	y += m_position.m_x * m_orientation.m_m[1][0];
-	p_dest->m_y -= y;
-	z = m_orientation.m_m[2][2] * m_position.m_z;
-	z += m_orientation.m_m[2][1] * m_position.m_y;
-	z += m_position.m_x * m_orientation.m_m[2][0];
-	p_dest->m_z -= z;
+	x = m_position.m_z;
+	x *= m_orientation.m_m[1][2];
+	y = m_orientation.m_m[1][1];
+	y *= m_position.m_y;
+	x += y;
+	z = m_position.m_x;
+	z *= m_orientation.m_m[1][0];
+	x += z;
+	p_dest->m_y -= x;
+	x = m_orientation.m_m[2][2];
+	x *= m_position.m_z;
+	y = m_orientation.m_m[2][1];
+	y *= m_position.m_y;
+	x += y;
+	z = m_position.m_x;
+	z *= m_orientation.m_m[2][0];
+	x += z;
+	p_dest->m_z -= x;
 }
 
 // FUNCTION: GOLDP 0x10026f30

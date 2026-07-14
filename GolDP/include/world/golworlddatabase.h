@@ -184,9 +184,11 @@ public:
 	}
 	GolCollidableEntity* FindCollidableEntity(const LegoChar* p_name) const
 	{
-		return m_collidableEntityNames.GetNameEntries()
-				   ? static_cast<GolCollidableEntity*>(m_collidableEntityNames.GetName(p_name))
-				   : NULL;
+		if (m_collidableEntityNames.GetNameEntries() == NULL) {
+			return NULL;
+		}
+
+		return static_cast<GolCollidableEntity*>(m_collidableEntityNames.GetName(p_name));
 	}
 	GolBoundedEntity* FindBoundedEntity(const LegoChar* p_name) const
 	{

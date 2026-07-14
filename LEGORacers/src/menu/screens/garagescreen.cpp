@@ -72,17 +72,18 @@ LegoBool32 GarageScreen::Initialize(MenuGameContext* p_context, MenuScreenCreate
 		p_context->m_menuStack.Push(c_menuGarage);
 	}
 
-	p_context->m_modelBuilder.SetMenuFlowFlags(
-		p_context->m_modelBuilder.GetMenuFlowFlags() &
-		~(DriverModelBuilder::c_menuFlowNewRacer | DriverModelBuilder::c_menuFlowLoadRacer)
-	);
-	p_context->m_context->m_flags &= ~LegoRacers::Context::c_flagReturnToGarage;
-	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(0);
+	undefined4 menuFlowFlags = p_context->m_modelBuilder.GetMenuFlowFlags() &
+							   ~(DriverModelBuilder::c_menuFlowNewRacer | DriverModelBuilder::c_menuFlowLoadRacer);
+	LegoRacers::Context* context = p_context->m_context;
 
 	undefined4 params[3];
 	params[0] = 1;
 	params[1] = 1;
 	params[2] = 0xffff2;
+
+	p_context->m_modelBuilder.SetMenuFlowFlags(menuFlowFlags);
+	context->m_flags &= ~LegoRacers::Context::c_flagReturnToGarage;
+	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(NULL);
 
 	if (!RacerPickScreenBase::Initialize(p_context, p_createParams, params)) {
 		return FALSE;
@@ -282,8 +283,7 @@ void GarageScreen::Navigate()
 			m_context->m_saveSystem.GetActiveRecord().CopyFrom(modelState->GetSelectedRecord());
 			m_context->m_menuStack.Push(m_nextMenuId);
 		}
-		CommitRecordSelections();
-		return;
+		break;
 	}
 	case 0x41:
 		m_context->m_menuStack.ResetSize();
@@ -299,9 +299,11 @@ void GarageScreen::Navigate()
 		CommitRecordSelections();
 		return;
 	}
+	default:
+		m_context->m_menuStack.Push(m_nextMenuId);
+		break;
 	}
 
-	m_context->m_menuStack.Push(m_nextMenuId);
 	CommitRecordSelections();
 }
 

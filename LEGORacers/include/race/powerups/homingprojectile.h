@@ -3,6 +3,7 @@
 
 #include "race/powerups/powerupprojectile.h"
 
+class GolAnimatedEntity;
 class Racer;
 
 // VTABLE: LEGORACERS 0x004b0248
@@ -43,7 +44,7 @@ protected:
 	LegoU32 m_hasWaypoint;               // 0x0e8
 	CheckpointGraph::Entry* m_pathEntry; // 0x0ec
 	LegoU32 m_retargetTimerMs;           // 0x0f0
-	undefined4 m_unk0x0f4;               // 0x0f4
+	GolAnimatedEntity* m_unk0x0f4;       // 0x0f4
 };
 
 #endif // HOMINGPROJECTILE_H

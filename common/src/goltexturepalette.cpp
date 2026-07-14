@@ -72,10 +72,10 @@ void GolTexturePalette::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU3
 void GolTexturePalette::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	for (LegoU32 i = 0; i < p_count; i++) {
-		m_entries[p_start].m_red = p_entries[i].m_red;
-		m_entries[p_start].m_grn = p_entries[i].m_grn;
-		m_entries[p_start].m_blu = p_entries[i].m_blu;
-		m_entries[p_start].m_alp = p_entries[i].m_alp;
+		GetEntries()[p_start].m_red = p_entries[i].m_red;
+		GetEntries()[p_start].m_grn = p_entries[i].m_grn;
+		GetEntries()[p_start].m_blu = p_entries[i].m_blu;
+		GetEntries()[p_start].m_alp = p_entries[i].m_alp;
 		p_start++;
 	}
 }

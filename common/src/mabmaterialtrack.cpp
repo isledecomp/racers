@@ -29,12 +29,12 @@ void MabMaterialTrack::Configure(undefined2 p_arg1, undefined2 p_arg2, undefined
 		Reset();
 	}
 
-	LegoFloat f = static_cast<LegoFloat>(p_arg4);
+	LegoFloat framesPerMs = static_cast<LegoFloat>(p_arg4) / 1000.0f;
 	m_firstFrame = p_arg1;
 	m_frameCount = p_arg2;
 	m_durationFrames = p_arg3;
 	m_frameCursor = 0.0f;
-	m_framesPerMs = f / 1000.0f;
+	m_framesPerMs = framesPerMs;
 	m_flags = c_flagConfigured;
 }
 

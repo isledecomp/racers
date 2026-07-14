@@ -192,21 +192,18 @@ void PartAnimationResource::OnEnd()
 		LegoS32 currentPart = entity->GetCurrentPartIndex();
 		if (currentPart != targetPart) {
 			LegoS32 queuedPart = m_endPart;
-			if (queuedPart != -1) {
-				if (currentPart != queuedPart) {
-					queuedPart = m_endPart;
-					if (queuedPart != -1) {
-						entity->SetQueuedPartIndex(static_cast<LegoU16>(queuedPart));
-						LegoU32 flags = entity->GetFlags();
-						flags &= ~c_entityFlags0x4e0000;
-						flags |= GolAnimatedEntity::c_flagRestartQueuedPart;
-						entity->SetFlags(flags);
-						SetState(nextState);
-						return;
-					}
+			if (queuedPart == -1 || currentPart != queuedPart) {
+				queuedPart = m_endPart;
+				if (queuedPart != -1) {
+					entity->SetQueuedPartIndex(static_cast<LegoU16>(queuedPart));
+					LegoU32 flags = entity->GetFlags();
+					flags &= ~c_entityFlags0x4e0000;
+					flags |= GolAnimatedEntity::c_flagRestartQueuedPart;
+					entity->SetFlags(flags);
+					SetState(nextState);
+					return;
 				}
-			}
-			else {
+
 				entity->SetQueuedPartIndex(static_cast<LegoU16>(targetPart));
 				LegoU32 flags = entity->GetFlags();
 				flags &= ~c_entityFlags0x0e0000;

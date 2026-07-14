@@ -510,10 +510,8 @@ void RacerModelScreenBase::PlayRandomNamedAnimation(LegoS32 p_index)
 	GolAnimatedEntity* entity = &m_driverEntities[modelIndex];
 	entity->TransitionToPart(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
 
-	LegoU32 flags = entity->GetFlags();
-	flags &= ~0x40000;
-	flags |= 0x10000;
-	entity->SetFlags(flags);
+	entity->SetLoopCurrentPartEnabled(FALSE);
+	entity->SetPartAnimationEnabled(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x004869b0

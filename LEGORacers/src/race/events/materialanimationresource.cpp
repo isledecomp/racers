@@ -59,10 +59,9 @@ void MaterialAnimationResource::Initialize(InitParams* p_params)
 	}
 
 	m_activeTrack = &m_materialAnimation->GetTracks()[p_params->m_activeTrackIndex];
-	MabMaterialTrack* item = &m_materialAnimation->GetTracks()[p_params->m_idleTrackIndex];
-	m_idleTrack = item;
-	m_materialTable = item->GetMaterialTable();
-	m_materialIndex = item->GetMaterialIndex();
+	m_idleTrack = &m_materialAnimation->GetTracks()[p_params->m_idleTrackIndex];
+	m_materialTable = m_idleTrack->GetMaterialTable();
+	m_materialIndex = m_idleTrack->GetMaterialIndex();
 	if (p_params->m_materialTable) {
 		m_materialTable = p_params->m_materialTable;
 		m_materialIndex = p_params->m_materialIndex;

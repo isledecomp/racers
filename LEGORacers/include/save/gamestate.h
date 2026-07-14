@@ -57,7 +57,7 @@ public:
 		m_state.m_stereo = p_stereo;
 		m_dirty = 1;
 	}
-	void SetLapCount(LegoU32 p_lapCount)
+	void SetLapCount(LegoU8 p_lapCount)
 	{
 		m_dirty = 1;
 		m_state.m_lapCount = static_cast<LegoU8>(p_lapCount);
@@ -95,7 +95,7 @@ public:
 	undefined4 GetActiveSaveIndex() const { return m_activeSaveIndex; }
 	PersistentGameState& GetState() { return m_state; }
 	LegoU8 GetRacerCount() const { return m_state.m_racerCount; }
-	LegoU8 GetMusicVolume() const { return m_state.m_musicVolume; }
+	LegoS32 GetMusicVolume() const { return m_state.m_musicVolume; }
 	LegoU8 GetSoundVolume() const { return m_state.m_soundVolume; }
 	LegoU8 GetStereo() const { return m_state.m_stereo; }
 	LegoU32 GetLanguageIndex() const { return m_state.m_languageIndex; }

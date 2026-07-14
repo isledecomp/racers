@@ -163,7 +163,7 @@ MenuDialog::TextLine::~TextLine()
 }
 
 // FUNCTION: LEGORACERS 0x0046f8d0
-void MenuDialog::TextLine::SetString(GolString* p_string, LegoS32 p_remeasure)
+void MenuDialog::TextLine::SetString(GolString* p_string, LegoBool32 p_remeasure)
 {
 	GolString* originalString = p_string;
 	LegoS32 width;

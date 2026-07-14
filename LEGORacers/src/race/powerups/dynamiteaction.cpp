@@ -39,8 +39,6 @@ const LegoFloat g_dynamiteThrowDistance = -90.0f;
 
 extern LegoFloat g_cosineTable[1024];
 
-extern const LegoFloat g_sweepCannonRadiansToTableIndex;
-
 extern const LegoFloat g_negativeRadiansToTableIndex;
 
 extern LegoU16 g_randomTable[1024];
@@ -97,9 +95,8 @@ void DynamiteAction::Initialize(
 	m_modelEntity.SetPrimaryModel(p_model->GetModel(0), p_model->GetModelDistance(0));
 
 	for (LegoU32 i = 1; i < 3; i++) {
-		GolModelBase* model = p_model->GetModel(i);
-		if (model != NULL) {
-			m_modelEntity.AddModel(model, p_model->GetModelDistance(i));
+		if (p_model->GetModel(i) != NULL) {
+			m_modelEntity.AddModel(p_model->GetModel(i), p_model->GetModelDistance(i));
 		}
 	}
 
@@ -151,10 +148,8 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
 		if (projectileState != PowerupProjectile::c_stateFlying) {
 			if (projectileState == PowerupProjectile::c_stateHitWorld) {
-				const GolVec3* projectilePosition = &m_projectile.GetHitPosition();
-				position.m_x = projectilePosition->m_x;
-				position.m_y = projectilePosition->m_y;
-				position.m_z = projectilePosition->m_z;
+				GolVec3& positionBase = position;
+				positionBase = m_projectile.GetHitPosition();
 			}
 
 			m_manager->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
@@ -190,7 +185,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 	up.m_x = g_cosineTable[tableIndex];
 	up.m_y = 0.0f;
 
-	tableIndex = static_cast<LegoS32>(m_tumbleAngle * g_sweepCannonRadiansToTableIndex) & 0x3ff;
+	tableIndex = static_cast<LegoS32>(m_tumbleAngle * 162.974655f) & 0x3ff;
 	up.m_z = g_cosineTable[tableIndex];
 
 	GolVec3 direction;
@@ -200,7 +195,9 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 	m_modelEntity.SetDirectionUp(direction, up);
 
 	if (m_sparkParticle != NULL) {
-		position.m_x += up.m_x * g_dynamiteSparkOffsetScale;
+		LegoFloat sparkOffsetX = up.m_x;
+		sparkOffsetX *= g_dynamiteSparkOffsetScale;
+		position.m_x += sparkOffsetX;
 		position.m_y += up.m_y * 0.155761003f;
 		position.m_z += up.m_z * 5.17852306f;
 
@@ -240,7 +237,6 @@ void DynamiteAction::AdvanceState()
 		projectileParams.m_targetOffset.m_x = 0.0f;
 		projectileParams.m_targetOffset.m_y = 0.0f;
 		projectileParams.m_targetOffset.m_z = 0.0f;
-		projectileParams.m_speed = 40.0f;
 		projectileParams.m_lifetimeMs = c_flightLifetimeMs;
 		projectileParams.m_launchHeight = g_dynamiteLaunchHeight;
 
@@ -250,6 +246,7 @@ void DynamiteAction::AdvanceState()
 
 		GolVec3 forward;
 		m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&forward);
+		projectileParams.m_speed = 40.0f;
 
 		if (m_targetRacer != NULL) {
 			m_projectile.LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, TRUE, TRUE);
@@ -284,7 +281,7 @@ void DynamiteAction::AdvanceState()
 		m_sound = m_soundSource->AcquireSoundById(c_soundFuse);
 		if (m_sound != NULL) {
 			m_sound->SetDistanceRange(g_dynamiteFuseSoundMinDistance, g_dynamiteFuseSoundMaxDistance);
-			m_sound->SetPosition(position);
+			m_sound->SetPosition(&position);
 			m_sound->Play(TRUE);
 		}
 		break;

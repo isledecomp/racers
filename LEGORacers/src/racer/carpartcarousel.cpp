@@ -20,7 +20,7 @@ DECOMP_SIZE_ASSERT(CarPartCarousel::CreateParams, 0x84)
 extern const LegoFloat g_twoPi = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004b3c0c
-LegoFloat g_maxFloat = FLT_MAX;
+static const LegoFloat g_maxFloat = FLT_MAX;
 
 extern LegoFloat g_cosineTable[1024];
 
@@ -129,14 +129,13 @@ void CarPartCarousel::RefreshItemModel(LegoS32 p_index)
 {
 	GolModelEntity* entity = GetItemEntity(p_index);
 	GolModelBase* model = GetItemModel(p_index);
-	LegoS32 choiceIndex = m_choiceIndices[WrapIndex(m_ringBaseIndex + p_index)];
+	LegoS32 choiceIndex = GetChoiceIndex(WrapIndex(m_ringBaseIndex + p_index));
 	LegoS32 pieceType;
 	LegoS32 colorRecordIndex;
 
 	m_currentEntry->GetChoice(choiceIndex, &pieceType, &colorRecordIndex);
 
-	LegoFloat maxDistance = g_maxFloat;
-	entity->SetPrimaryModel(model, maxDistance);
+	entity->SetPrimaryModel(model, g_maxFloat);
 
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceLibrary->FindPieceRecord(pieceType, 1);
 	m_buildModel->CenterOnPiece(pieceRecord, 0);

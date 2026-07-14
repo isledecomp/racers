@@ -223,12 +223,10 @@ LegoU32 GolSurfaceFormat::MapRGBA(const ColorRGBA& p_rgba) const
 	LegoU32 blu = p_rgba.m_blu >> bluShift;
 	LegoU32 alp = p_rgba.m_alp >> alpShift;
 
-	red <<= GetRedBitShift();
-	grn <<= GetGreenBitShift();
-	red |= grn;
-	blu <<= GetBlueBitShift();
-	red |= blu;
+	LegoU32 result = red << GetRedBitShift();
+	result |= grn << GetGreenBitShift();
+	result |= blu << GetBlueBitShift();
 	alp <<= GetAlphaBitShift();
 
-	return red | alp;
+	return result | alp;
 }

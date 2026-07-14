@@ -59,7 +59,7 @@ MusicInstance* NullMusicGroup::CreateMusicInstance(LegoU32)
 
 	if (node) {
 		node->SetMusicGroup(this);
-		m_musicInstances.Append(*node);
+		m_musicInstances.Append(node);
 	}
 
 	return node;

@@ -43,10 +43,6 @@ void GdbColoredVertexArrayBase::Destroy()
 // FUNCTION: GOLDP 0x10017050
 void GdbColoredVertexArrayBase::ApplyColorTransform(const ColorTransform& p_details)
 {
-	LegoU32* ptrIn;
-	LegoU32* ptrOut;
-	LegoU32* ptrInEnd;
-
 	if (m_transformedColors == NULL) {
 		m_transformedColors = new LegoU32[m_count];
 		if (m_transformedColors == NULL) {
@@ -54,9 +50,9 @@ void GdbColoredVertexArrayBase::ApplyColorTransform(const ColorTransform& p_deta
 		}
 	}
 
-	ptrOut = m_transformedColors;
-	ptrIn = m_colors;
-	ptrInEnd = ptrIn + m_count;
+	LegoU32* ptrIn = m_colors;
+	LegoU32* ptrInEnd = ptrIn + m_count;
+	LegoU32* ptrOut = m_transformedColors;
 
 	for (; ptrIn < ptrInEnd; ptrIn++, ptrOut++) {
 		LegoU32 original = *ptrIn;

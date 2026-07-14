@@ -70,17 +70,15 @@ void CollisionEventQueue::PruneBodyList()
 					if (next) {
 						next->m_descriptor.m_previous = NULL;
 					}
-
-					FreeEvent(event);
 				}
 				else {
 					previous->m_next = next;
 					if (next) {
 						next->m_descriptor.m_previous = previous;
 					}
-
-					FreeEvent(event);
 				}
+
+				FreeEvent(event);
 			}
 			else {
 				previous = event;
@@ -182,27 +180,27 @@ void CollisionEventQueue::TestBodyPairs()
 // FUNCTION: LEGORACERS 0x0043aca0
 void CollisionEventQueue::SortBodyList()
 {
-	Event* previous = m_bodyList;
-	LegoFloat eventMinX;
+	Event* next;
 
-	if (previous == NULL) {
+	if (m_bodyList == NULL) {
 		return;
 	}
 
+	Event* previous = m_bodyList;
 	GolWorldEntity* model = previous->m_descriptor.m_target->GetEntity();
 	if (model->GetRadius() < 0.0f) {
 		model->UpdateBounds();
 	}
 
 	LegoFloat previousMinX = model->GetMinX();
-	Event* event = previous->m_next;
+	Event* event = m_bodyList->m_next;
 
 	if (event == NULL) {
 		return;
 	}
 
 	do {
-		Event* next = event->m_next;
+		next = event->m_next;
 		GolWorldEntity* eventModel = event->m_descriptor.m_target->GetEntity();
 
 		if (eventModel->GetRadius() < 0.0f) {
@@ -216,29 +214,27 @@ void CollisionEventQueue::SortBodyList()
 			}
 
 			Event* insertAfter = previous->m_descriptor.m_previous;
-			if (insertAfter) {
-				do {
-					GolWorldEntity* insertModel = insertAfter->m_descriptor.m_target->GetEntity();
+			while (insertAfter) {
+				GolWorldEntity* insertModel = insertAfter->m_descriptor.m_target->GetEntity();
 
-					if (eventModel->GetRadius() < 0.0f) {
-						eventModel->UpdateBounds();
-					}
+				if (eventModel->GetRadius() < 0.0f) {
+					eventModel->UpdateBounds();
+				}
 
-					eventMinX = eventModel->GetMinX();
-					if (insertModel->GetRadius() < 0.0f) {
-						insertModel->UpdateBounds();
-					}
+				LegoFloat eventMinX = eventModel->GetMinX();
+				if (0.0f > insertModel->GetRadius()) {
+					insertModel->UpdateBounds();
+				}
 
-					if (insertModel->GetMinX() <= eventMinX) {
-						event->m_descriptor.m_previous = insertAfter;
-						event->m_next = insertAfter->m_next;
-						insertAfter->m_next->m_descriptor.m_previous = event;
-						insertAfter->m_next = event;
-						break;
-					}
+				if (insertModel->GetMinX() <= eventMinX) {
+					event->m_descriptor.m_previous = insertAfter;
+					event->m_next = insertAfter->m_next;
+					insertAfter->m_next->m_descriptor.m_previous = event;
+					insertAfter->m_next = event;
+					break;
+				}
 
-					insertAfter = insertAfter->m_descriptor.m_previous;
-				} while (insertAfter);
+				insertAfter = insertAfter->m_descriptor.m_previous;
 			}
 
 			if (insertAfter == NULL) {

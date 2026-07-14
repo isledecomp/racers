@@ -167,16 +167,20 @@ void MenuInputDispatcher::DispatchMouseMove(MouseDevice* p_mouse)
 	MenuIcon* icon = m_activeScreen->GetRootIcon();
 	MenuWidget* active = icon->FindFocusedLeaf();
 	GolImage* cursorImage = m_cursor.m_cursorImage;
+
+	Rect bounds;
+	bounds.m_top = 0;
+	bounds.m_left = 0;
+
 	LegoS32 right = m_screenWidth - (cursorImage->m_width >> 2);
 	LegoS32 bottom = m_screenHeight - (cursorImage->m_height >> 2);
-	Rect* bounds = &m_cursor.m_bounds;
 
-	bounds->m_left = 0;
+	bounds.m_right = right;
+	bounds.m_bottom = bottom;
+	Rect* storedBounds = &m_cursor.m_bounds;
+	*storedBounds = bounds;
+
 	Cursor* cursor = &m_cursor;
-	bounds->m_top = 0;
-	bounds->m_right = right;
-	bounds->m_bottom = bottom;
-
 	undefined4 x = cursor->m_originX + cursor->m_cursorX;
 	undefined4 y = cursor->m_originY + cursor->m_cursorY;
 
@@ -194,59 +198,61 @@ void MenuInputDispatcher::DispatchMouseMove(MouseDevice* p_mouse)
 // FUNCTION: LEGORACERS 0x004692b0
 LegoS32 MenuInputDispatcher::ProcessInputEvents(MenuIcon*)
 {
+	InputEventQueue::Event* item;
 	undefined4 x = m_cursor.m_originX + m_cursor.m_cursorX;
 	undefined4 y = m_cursor.m_originY + m_cursor.m_cursorY;
-	InputEventQueue::Event* item;
 
 	while (m_inputEvents->GetSize()) {
 		item = m_inputEvents->Dequeue();
-		if (!DispatchMouseButtonEvent(item)) {
-			switch (item->m_keyCode) {
-			case c_keyboardLeftShift:
-			case c_keyboardRightShift:
-				g_shiftPressed = item->m_isPressed != FALSE;
-				break;
-			case c_keyboardLeftControl:
-			case c_keyboardRightControl:
-				g_controlPressed = item->m_isPressed != FALSE;
-				break;
-			case c_keyboardTab:
-				if (item->m_isPressed) {
-					if (g_shiftPressed) {
-						FocusPrevious();
-					}
-					else {
-						FocusNext();
-					}
-				}
-				break;
-			case c_keyboardDown:
-			case c_joystickButton8:
-			case c_joystickAxisButton2:
-				if (item->m_isPressed) {
-					FocusNext();
-				}
-				break;
-			case c_keyboardUp:
-			case c_joystickButton6:
-			case c_joystickAxisButton3:
-				if (item->m_isPressed) {
+		if (DispatchMouseButtonEvent(item)) {
+			break;
+		}
+
+		switch (item->m_keyCode) {
+		case c_keyboardLeftShift:
+		case c_keyboardRightShift:
+			g_shiftPressed = item->m_isPressed != FALSE;
+			break;
+		case c_keyboardLeftControl:
+		case c_keyboardRightControl:
+			g_controlPressed = item->m_isPressed != FALSE;
+			break;
+		case c_keyboardTab:
+			if (item->m_isPressed) {
+				if (g_shiftPressed) {
 					FocusPrevious();
 				}
-				break;
-			case c_joystickButton1:
-				break;
-			default:
-				MenuIcon* icon = m_activeScreen->GetRootIcon();
-
-				if (item->m_isPressed) {
-					icon->DispatchKeyDown(item, x, y);
-				}
 				else {
-					icon->DispatchKeyUp(item, x, y);
+					FocusNext();
 				}
-				break;
 			}
+			break;
+		case c_keyboardDown:
+		case c_joystickButton8:
+		case c_joystickAxisButton2:
+			if (item->m_isPressed) {
+				FocusNext();
+			}
+			break;
+		case c_keyboardUp:
+		case c_joystickButton6:
+		case c_joystickAxisButton3:
+			if (item->m_isPressed) {
+				FocusPrevious();
+			}
+			break;
+		case c_joystickButton1:
+			break;
+		default:
+			MenuIcon* icon = m_activeScreen->GetRootIcon();
+
+			if (item->m_isPressed) {
+				icon->DispatchKeyDown(item, x, y);
+			}
+			else {
+				icon->DispatchKeyUp(item, x, y);
+			}
+			break;
 		}
 	}
 
@@ -290,8 +296,8 @@ void MenuInputDispatcher::DrawCursor()
 	rect2.m_top = 0;
 	rect1.m_left = 0;
 	rect1.m_top = 0;
-	rect2.m_right = rect1.m_right = m_drawState->m_width;
-	rect2.m_bottom = rect1.m_bottom = m_drawState->m_height;
+	rect1.m_right = rect2.m_right = m_drawState->m_width;
+	rect1.m_bottom = rect2.m_bottom = m_drawState->m_height;
 
 	if (m_activeScreen->Draw(&rect2, &rect1)) {
 		m_cursor.Draw();

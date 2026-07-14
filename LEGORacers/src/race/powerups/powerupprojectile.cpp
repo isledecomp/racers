@@ -206,6 +206,7 @@ void PowerupProjectile::LaunchAtPoint(
 	GolVec3 delta;
 	delta.m_x = target->m_x - startPosition->m_x;
 	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
+	delta.m_z = 0.0f;
 	LegoFloat deltaY = delta.m_y;
 	LegoFloat distance = static_cast<LegoFloat>(sqrt(deltaY * deltaY + delta.m_x * delta.m_x));
 	LegoFloat inverseDistance;
@@ -217,14 +218,11 @@ void PowerupProjectile::LaunchAtPoint(
 		inverseDistance = 1.0f / distance;
 	}
 
-	LegoFloat directionX = inverseDistance * delta.m_x;
+	delta.m_x *= inverseDistance;
 	Racer* racer = p_racer;
 	GolVec3 racerDirection = racer->m_physics.m_velocityDirection;
-	GolVec3* racerDirectionPtr = &racerDirection;
-	LegoFloat directionY = inverseDistance * deltaY;
-	LegoFloat dot = racerDirectionPtr->m_z * 0.0f;
-	dot += racerDirectionPtr->m_y * directionY;
-	dot += racerDirectionPtr->m_x * directionX;
+	delta.m_y *= inverseDistance;
+	LegoFloat dot = racerDirection.m_z * delta.m_z + racerDirection.m_y * delta.m_y + racerDirection.m_x * delta.m_x;
 	if (dot > 0.0f) {
 		LegoFloat speedDelta = dot * racer->m_physics.m_speed;
 		speedDelta *= g_floatConst1000;
@@ -244,9 +242,7 @@ void PowerupProjectile::LaunchAtPoint(
 	target->m_x += scaledDelta.m_x;
 	target->m_y += scaledDelta.m_y;
 	target->m_z += scaledDelta.m_z;
-	target->m_x += params->m_targetOffset.m_x;
-	target->m_y += params->m_targetOffset.m_y;
-	target->m_z += params->m_targetOffset.m_z;
+	*target += params->m_targetOffset;
 	ComputeTrajectory(durationSeconds);
 	RegisterCollisionEvent(params->m_eventQueue);
 }
@@ -405,11 +401,19 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 
 	LegoFloat elapsed = static_cast<LegoS32>(p_elapsedMs) * 0.001f;
 	GolVec3 vectors[2];
-	vectors[0].m_x =
-		(vectors[1].m_y = m_velocityY * elapsed, vectors[1].m_z = m_velocityZ * elapsed, m_startPosition.m_x) +
-		elapsed * m_velocityX;
+	vectors[0].m_x = elapsed * m_velocityX;
+	vectors[1].m_y = m_velocityY;
+	vectors[1].m_y *= elapsed;
+	vectors[1].m_z = m_velocityZ;
+	vectors[1].m_z *= elapsed;
+	vectors[0].m_x += m_startPosition.m_x;
 	vectors[0].m_y = vectors[1].m_y + m_startPosition.m_y;
-	vectors[0].m_z = (vectors[1].m_z + m_startPosition.m_z) + m_gravity * 0.5f * elapsed * elapsed;
+
+	LegoFloat gravityOffset = elapsed;
+	gravityOffset *= elapsed;
+	gravityOffset *= 0.5f;
+	gravityOffset *= m_gravity;
+	vectors[0].m_z = (vectors[1].m_z + m_startPosition.m_z) + gravityOffset;
 	m_worldEntity->GetPosition(&vectors[1]);
 
 	GolBoundingVolume::HitTriangle record;

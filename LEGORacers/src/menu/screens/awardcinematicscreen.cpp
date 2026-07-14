@@ -22,9 +22,11 @@
 DECOMP_SIZE_ASSERT(AwardCinematicScreen, 0x7b0)
 
 // FUNCTION: LEGORACERS 0x00475c30
-AwardCinematicScreen::AwardCinematicScreen()
-	: m_driverModel(NULL), m_trophyAwarded(0), m_partsUnlocked(0), m_circuitUnlocked(0)
+AwardCinematicScreen::AwardCinematicScreen() : m_driverModel(NULL)
 {
+	m_circuitUnlocked = 0;
+	m_partsUnlocked = 0;
+	m_trophyAwarded = 0;
 	m_unlockedPartIndex = -1;
 }
 
@@ -580,38 +582,30 @@ LegoBool32 AwardCinematicScreen::CreateWinnerCar(undefined4)
 	GolName name;
 
 	do {
-		if (m_resourceMenuId == c_menuWinCar) {
-			LegoRacers::Context* racersContext = m_context->m_context;
-			const LegoChar* driverName = racersContext->m_playerSetupSlots[1].m_driverName;
-			LegoChar firstChar = driverName[0];
+		if (m_resourceMenuId == c_menuWinCar && m_context->m_context->m_playerSetupSlots[1].m_driverName[0]) {
+			const LegoChar* driverName = m_context->m_context->m_playerSetupSlots[1].m_driverName;
+			DriverCosmeticTable::Entry* driverEntry =
+				static_cast<DriverCosmeticTable::Entry*>(m_context->m_cosmeticTable.GetName(driverName));
+			ChampionDefinitionList::ChampionDefinition* championDefinition =
+				static_cast<ChampionDefinitionList::ChampionDefinition*>(
+					m_context->m_championDefinitions.GetName(driverEntry->m_championName)
+				);
 
-			if (firstChar) {
-				DriverCosmeticTable::Entry* driverEntry =
-					static_cast<DriverCosmeticTable::Entry*>(m_context->m_cosmeticTable.GetName(driverName));
-				ChampionDefinitionList::ChampionDefinition* championDefinition =
-					static_cast<ChampionDefinitionList::ChampionDefinition*>(
-						m_context->m_championDefinitions.GetName(driverEntry->m_championName)
-					);
+			SaveGame* quickBuildSave = &m_context->m_saveSystem.GetQuickBuildSave();
+			for (LegoU32 i = 0; !found && i < quickBuildSave->GetRecordCount(); i++) {
+				record = quickBuildSave->GetRecord(i);
 
-				SaveGame* quickBuildSave = &m_context->m_saveSystem.GetQuickBuildSave();
-				for (LegoU32 i = 0; i < quickBuildSave->GetRecordCount() && !found; i++) {
-					record = quickBuildSave->GetRecord(i);
-
-					record->GetChassisName(name);
-					if (::strncmp(name, championDefinition->m_chassisName, sizeof(GolName)) == 0) {
-						record->GetName(name);
-						if (::strncmp(name, "CHAMP", sizeof(name)) == 0) {
-							found = TRUE;
-						}
+				record->GetChassisName(name);
+				if (::strncmp(name, championDefinition->m_chassisName, sizeof(GolName)) == 0) {
+					record->GetName(name);
+					if (::strncmp(name, "CHAMP", sizeof(name)) == 0) {
+						found = TRUE;
 					}
 				}
-
-				if (!found) {
-					break;
-				}
 			}
-			else {
-				record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
+
+			if (!found) {
+				break;
 			}
 		}
 		else {

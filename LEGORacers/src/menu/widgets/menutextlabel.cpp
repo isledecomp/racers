@@ -62,22 +62,23 @@ void MenuTextLabel::SetStringByIndex(undefined2 p_stringId, undefined4 p_remeasu
 }
 
 // FUNCTION: LEGORACERS 0x0046f600
-void MenuTextLabel::SetString(GolString* p_string, LegoS32 p_remeasure)
+void MenuTextLabel::SetString(GolString* p_string, LegoBool32 p_remeasure)
 {
 	m_string.CopyFromGolString(p_string);
 	m_string.ToUpperCase();
 
-	if (!m_rect.m_right || !m_rect.m_bottom || p_remeasure) {
-		LegoS32 height;
+	LegoS32 width;
+	LegoS32 height;
 
+	if (!m_rect.m_right || !m_rect.m_bottom || p_remeasure) {
 		m_string.FirstLine();
 		m_rect.m_bottom = m_rect.m_top;
 		m_rect.m_right = m_rect.m_left;
 
 		for (LegoS32 i = 0; i < m_string.CountLines(); i++) {
-			m_font->MeasureString(&m_string, &p_remeasure, &height);
+			m_font->MeasureString(&m_string, &width, &height);
 
-			LegoU32 right = m_rect.m_left + p_remeasure;
+			LegoU32 right = m_rect.m_left + width;
 			LegoU32 currentRight = m_rect.m_right;
 			if (right > currentRight) {
 				m_rect.m_right = right;

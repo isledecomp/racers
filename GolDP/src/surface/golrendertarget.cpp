@@ -39,25 +39,29 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 	m_displayDrawState = p_drawState;
 	m_drawState = p_drawState;
 
-	LPDIRECTDRAW4 ddraw = static_cast<GolDrawDPState*>(p_drawState)->m_ddraw4;
-	LPDIRECTDRAWSURFACE4* renderSurface = &m_renderSurface;
-	*renderSurface = NULL;
-
+	LPDIRECTDRAW4 ddraw = static_cast<GolDrawDPState*>(m_drawState)->m_ddraw4;
+	m_renderSurface = NULL;
 	::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 	surfaceDesc.dwSize = sizeof(surfaceDesc);
+	LegoU32 drawFlags;
+	drawFlags = m_displayDrawState->GetFlags();
 
-	if (!(p_drawState->m_flags & GolDrawState::c_flagHardwareDevice)) {
+	if (!(drawFlags & GolDrawState::c_flagHardwareDevice)) {
 		m_surfaceFlags |= c_surfaceFlagWindowed;
 
 		DWORD memoryCaps;
+		LegoU32 surfaceFlags;
 		if (static_cast<GolDrawDPState*>(p_drawState)->IsHwAccelerated()) {
-			m_surfaceFlags |= c_surfaceFlagFlip;
+			surfaceFlags = m_surfaceFlags;
 			memoryCaps = DDSCAPS_VIDEOMEMORY;
+			surfaceFlags |= c_surfaceFlagFlip;
 		}
 		else {
-			m_surfaceFlags &= ~c_surfaceFlagFlip;
+			surfaceFlags = m_surfaceFlags;
 			memoryCaps = DDSCAPS_SYSTEMMEMORY;
+			surfaceFlags &= ~c_surfaceFlagFlip;
 		}
+		m_surfaceFlags = surfaceFlags;
 
 		surfaceDesc.dwFlags = DDSD_CAPS;
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
@@ -74,12 +78,12 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 			GOL_FATALERROR_MESSAGE(errorMessage);
 		}
 
-		surfaceDesc.dwHeight = p_height;
 		surfaceDesc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT;
 		surfaceDesc.dwWidth = p_width;
+		surfaceDesc.dwHeight = p_height;
 		surfaceDesc.ddpfPixelFormat.dwSize = sizeof(surfaceDesc.ddpfPixelFormat);
 		surfaceDesc.ddsCaps.dwCaps = memoryCaps | DDSCAPS_OFFSCREENPLAIN | DDSCAPS_3DDEVICE;
-		result = ddraw->CreateSurface(&surfaceDesc, renderSurface, NULL);
+		result = ddraw->CreateSurface(&surfaceDesc, &m_renderSurface, NULL);
 		if (result) {
 			::sprintf(errorMessage, "Unable to create video memory rendering surface\nerror %x", result);
 			GOL_FATALERROR_MESSAGE(errorMessage);
@@ -91,7 +95,8 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 			GOL_FATALERROR_MESSAGE(errorMessage);
 		}
 
-		result = m_clipper->SetHWnd(0, static_cast<GolDrawDPState*>(m_drawState)->m_hWnd);
+		HWND hWnd = static_cast<GolDrawDPState*>(m_drawState)->m_hWnd;
+		result = m_clipper->SetHWnd(0, hWnd);
 		if (result) {
 			::sprintf(errorMessage, "Unable to set window to clipper\nerror %x", result);
 			GOL_FATALERROR_MESSAGE(errorMessage);
@@ -103,7 +108,7 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 			GOL_FATALERROR_MESSAGE(errorMessage);
 		}
 	}
-	else if (p_drawState->m_flags & GolDrawState::c_flagSystemMemorySurfaces) {
+	else if (drawFlags & GolDrawState::c_flagSystemMemorySurfaces) {
 		m_surfaceFlags &= ~(c_surfaceFlagWindowed | c_surfaceFlagFlip);
 		surfaceDesc.dwFlags = DDSD_CAPS;
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
@@ -125,7 +130,7 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 		surfaceDesc.dwHeight = p_height;
 		surfaceDesc.ddpfPixelFormat.dwSize = sizeof(surfaceDesc.ddpfPixelFormat);
 		surfaceDesc.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY | DDSCAPS_OFFSCREENPLAIN | DDSCAPS_3DDEVICE;
-		result = ddraw->CreateSurface(&surfaceDesc, renderSurface, NULL);
+		result = ddraw->CreateSurface(&surfaceDesc, &m_renderSurface, NULL);
 		if (result) {
 			::sprintf(errorMessage, "Unable to create system memory rendering surface\nerror %x", result);
 			GOL_FATALERROR_MESSAGE(errorMessage);
@@ -146,27 +151,21 @@ void GolRenderTarget::Create(GolDrawState* p_drawState, undefined4 p_width, unde
 		DDSCAPS2 backBufferCaps;
 		backBufferCaps.dwCaps = DDSCAPS_BACKBUFFER;
 		LegoU32 restoreCount = 0;
-		for (;;) {
-			result = (*displaySurface)->GetAttachedSurface(&backBufferCaps, renderSurface);
+		do {
+			result = (*displaySurface)->GetAttachedSurface(&backBufferCaps, &m_renderSurface);
 			if (result) {
 				if (result == DDERR_SURFACELOST && restoreCount < 1000) {
 					(*displaySurface)->Restore();
 					restoreCount++;
 				}
-				else if (result == DDERR_SURFACEBUSY || result == DDERR_WASSTILLDRAWING) {
-					continue;
-				}
-				else {
+				else if (result != DDERR_SURFACEBUSY && result != DDERR_WASSTILLDRAWING) {
 					::sprintf(errorMessage, "Unable to get attached back buffer\nerror %x", result);
 					GOL_FATALERROR_MESSAGE(errorMessage);
-					continue;
 				}
 			}
-			else {
-				m_surfaceFlags |= c_surfaceFlagFlip;
-				break;
-			}
-		}
+		} while (result);
+
+		m_surfaceFlags |= c_surfaceFlagFlip;
 	}
 
 	m_pixelFlags = c_lockRequestRead;

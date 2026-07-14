@@ -1,69 +1,14 @@
 #include "decomp.h"
 #include "golmateriallibrary.h"
-#include "race/powerups/powerupaction.h"
 #include "race/powerups/racepowerupmanager.h"
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"
 
-DECOMP_SIZE_ASSERT(PowerupAction, 0x18)
 DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris, 0x80)
 DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris::Entry, 0x14)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-
-// FUNCTION: LEGORACERS 0x00451350
-PowerupAction::PowerupAction()
-{
-	m_state = 0;
-	m_stateTimerMs = 0;
-	m_next = NULL;
-	m_soundSource = NULL;
-	m_level = 0;
-}
-
-// FUNCTION: LEGORACERS 0x00451390
-PowerupAction::~PowerupAction()
-{
-}
-
-// FUNCTION: LEGORACERS 0x004513a0 FOLDED
-void PowerupAction::Update(LegoU32 p_elapsedMs)
-{
-	if (p_elapsedMs >= m_stateTimerMs) {
-		m_stateTimerMs = 0;
-		AdvanceState();
-	}
-	else {
-		m_stateTimerMs -= p_elapsedMs;
-	}
-}
-
-// FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupAction::OnEvent(LegoEventQueue::CallbackData*)
-{
-}
-
-// FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupAction::Draw(GolD3DRenderDevice*)
-{
-}
-
-// FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupAction::DrawTransparent(GolD3DRenderDevice*)
-{
-}
-
-// FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void PowerupAction::AdvanceState()
-{
-}
-
-// FUNCTION: LEGORACERS 0x004513e0 FOLDED
-void PowerupAction::Deactivate()
-{
-	m_state = 1;
-}
 
 // FUNCTION: LEGORACERS 0x004513f0
 RacePowerupManager::BrickDebris::Entry::Entry()
@@ -104,7 +49,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	const GolVec3* p_position,
 	const GolVec3* p_direction,
 	LegoU32 p_partIndex,
-	void* p_billboardPosition
+	GolMaterial* p_material
 )
 {
 	m_entity = p_entity;
@@ -138,8 +83,8 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	flags &= ~GolAnimatedEntity::c_flagLoopCurrentPart;
 	m_entity->SetFlags(flags);
 
-	if (p_billboardPosition) {
-		m_materialTable.SetEntry(0, p_billboardPosition);
+	if (p_material) {
+		m_materialTable.SetEntry(0, p_material);
 		m_entity->SetPrimaryMaterialTable(&m_materialTable);
 	}
 
@@ -217,6 +162,9 @@ LegoS32 RacePowerupManager::BrickDebris::Reset()
 	return 0;
 }
 
+// GLOBAL: LEGORACERS 0x004b1350
+const GolName g_brickModelNames[4] = {"brick1", "brick2", "brick3", "brick4"};
+
 // FUNCTION: LEGORACERS 0x00451750
 void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_manager, GolD3DRenderDevice* p_renderer)
 {
@@ -226,27 +174,21 @@ void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_manager, 
 
 	m_manager = p_manager;
 
-	const LegoChar* name = "brick1\0\0brick2\0\0brick3\0\0brick4\0";
-	const LegoChar* endName = name + (sizeof(GolName) * 4);
-	GolAnimatedEntity** entity = m_brickModels;
 	GolWorldDatabase* worldDatabase = p_manager->m_worldDatabase;
+	LegoS32 i;
 
-	while (name < endName) {
+	for (i = 0; i < sizeOfArray(m_brickModels); i++) {
 		GolAnimatedEntity* model;
 		if (worldDatabase->GetAnimatedEntityEntries() == NULL) {
 			model = NULL;
 		}
 		else {
-			model = worldDatabase->GetAnimatedEntityByName(name);
+			model = worldDatabase->GetAnimatedEntityByName(g_brickModelNames[i]);
 		}
-		*entity = model;
-
-		name += sizeof(GolName);
-		entity++;
+		m_brickModels[i] = model;
 	}
 
 	Entry* entry = m_entries;
-	LegoS32 i;
 	for (i = 5; i != 0; i--) {
 		entry->Initialize(p_renderer);
 		entry++;

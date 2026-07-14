@@ -25,7 +25,6 @@
 
 DECOMP_SIZE_ASSERT(RaceSetup, 0x1c)
 
-extern LegoFloat g_minSoundPan;
 extern const LegoFloat g_rubberBandScale;
 
 // FUNCTION: LEGORACERS 0x0043a410
@@ -95,7 +94,7 @@ LegoU32 RaceSetup::Update(LegoU32 p_elapsedMs)
 			racerIndex++;
 		} while (racerIndex < result);
 
-		if (bestProgress == g_minSoundPan) {
+		if (bestProgress == -1.0f) {
 		ResetRacerPacing:
 			result = m_racerCount;
 			LegoU32 index = 0;
@@ -125,8 +124,7 @@ LegoU32 RaceSetup::Update(LegoU32 p_elapsedMs)
 					if (racerIndex) {
 						if (!(m_racers[racerIndex].m_flags & c_rubberBandFlags)) {
 							if (m_racers[racerIndex].GetRaceProgress() > bestProgress) {
-								LegoFloat adjustment = 1.0f - g_rubberBandScale;
-								adjustment += m_rubberBandBoost;
+								LegoFloat adjustment = 1.0f - g_rubberBandScale + m_rubberBandBoost;
 								RacerPhysics* physics = &m_racers[racerIndex].m_physics;
 								LegoU32 physicsFlags = physics->m_flags;
 								physics->m_routeBaseSpeed = adjustment;
@@ -135,8 +133,7 @@ LegoU32 RaceSetup::Update(LegoU32 p_elapsedMs)
 								}
 							}
 							else if (m_racers[racerIndex].GetRaceProgress() < bestProgress) {
-								LegoFloat adjustment = g_rubberBandScale + m_rubberBandBoost;
-								adjustment += 1.0f;
+								LegoFloat adjustment = g_rubberBandScale + m_rubberBandBoost + 1.0f;
 								RacerPhysics* physics = &m_racers[racerIndex].m_physics;
 								LegoU32 physicsFlags = physics->m_flags;
 								physics->m_routeBaseSpeed = adjustment;

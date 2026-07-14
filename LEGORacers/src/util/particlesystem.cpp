@@ -190,9 +190,11 @@ void ParticleSystem::ConfigureCommon(
 		m_flags |= c_flagSizeAnimated;
 	}
 
+	LegoFloat radiusSquared = p_radius * p_radius;
+
 	m_acceleration = *p_position;
 	m_spawnedCount = 0;
-	m_modelEntity.SetModelDistance(0, p_radius * p_radius);
+	m_modelEntity.SetModelDistance(0, radiusSquared);
 	m_materialCount = 0;
 	m_groupCount = 0;
 	m_flags |= c_flagActive | c_flagBit3;
@@ -280,8 +282,8 @@ void ParticleSystem::Update(LegoS32 p_elapsedMs)
 					else {
 						other->m_next = next;
 					}
+					current->SetNext(m_freeList);
 					current->m_material = NULL;
-					current->m_next = m_freeList;
 					m_freeList = current;
 				}
 				else {
@@ -466,26 +468,53 @@ void ParticleSystem::EmitQuad(Particle* p_particle)
 		LegoFloat ageMs = static_cast<LegoFloat>((LegoS32) p_particle->m_ageMs);
 		LegoFloat lifetimeMs = static_cast<LegoFloat>((LegoS32) p_particle->m_lifetimeMs);
 		LegoFloat amount = ageMs / lifetimeMs;
-		LegoFloat upScale = m_sizeGrowthUp * amount + m_startSizeUp;
-		LegoFloat forwardScale = m_sizeGrowthForward * amount + m_startSizeForward;
+		LegoFloat upScale = m_sizeGrowthUp;
+		upScale *= amount;
+		upScale += m_startSizeUp;
+		LegoFloat forwardScale = m_sizeGrowthForward;
+		forwardScale *= amount;
+		forwardScale += m_startSizeForward;
 		if (upScale <= 0.0f || forwardScale <= 0.0f) {
 			return;
 		}
 
 		m_scaledCameraUp.m_x = upScale * m_cameraUp.m_x;
-		m_scaledCameraUp.m_y = m_cameraUp.m_y * upScale;
-		m_scaledCameraUp.m_z = m_cameraUp.m_z * upScale;
+		LegoFloat upY = m_cameraUp.m_y;
+		upY *= upScale;
+		m_scaledCameraUp.m_y = upY;
+		LegoFloat upZ = m_cameraUp.m_z;
+		upZ *= upScale;
+		m_scaledCameraUp.m_z = upZ;
 		m_scaledCameraForward.m_x = forwardScale * m_cameraForward.m_x;
-		m_scaledCameraForward.m_y = m_cameraForward.m_y * forwardScale;
-		m_scaledCameraForward.m_z = m_cameraForward.m_z * forwardScale;
+		LegoFloat forwardY = m_cameraForward.m_y;
+		forwardY *= forwardScale;
+		m_scaledCameraForward.m_y = forwardY;
+		LegoFloat forwardZ = m_cameraForward.m_z;
+		forwardZ *= forwardScale;
+		m_scaledCameraForward.m_z = forwardZ;
 	}
 
 	GolVec3 position;
 	p_particle->GetBoundsCenter(&position);
 
-	position.m_x -= m_scaledCameraUp.m_x * 0.5f + m_scaledCameraForward.m_x * 0.5f;
-	position.m_y -= m_scaledCameraUp.m_y * 0.5f + m_scaledCameraForward.m_y * 0.5f;
-	position.m_z -= m_scaledCameraUp.m_z * 0.5f + m_scaledCameraForward.m_z * 0.5f;
+	LegoFloat upX = m_scaledCameraUp.m_x;
+	upX *= 0.5f;
+	LegoFloat forwardX = m_scaledCameraForward.m_x;
+	forwardX *= 0.5f;
+	position.m_x -= upX + forwardX;
+
+	LegoFloat upY = m_scaledCameraUp.m_y;
+	upY *= 0.5f;
+	LegoFloat forwardY = m_scaledCameraForward.m_y;
+	forwardY *= 0.5f;
+	position.m_y -= upY + forwardY;
+
+	LegoFloat forwardZ = m_scaledCameraForward.m_z;
+	forwardZ *= 0.5f;
+	LegoFloat upZ = m_scaledCameraUp.m_z;
+	upZ *= 0.5f;
+	forwardZ += upZ;
+	position.m_z -= forwardZ;
 
 	GolVec2 texCoord;
 	texCoord.m_x = 0.01f;
@@ -546,8 +575,8 @@ LegoU32 ParticleSystem::FlushBatch()
 	model->GetMutableGroups()[groupCount] |= firstBatchVertex & 0xffff;
 	model->SetDirty(TRUE);
 
-	LegoU32 groupCount2 = m_groupCount;
 	LegoU32 batchTriangleCount = m_batchTriangleCount;
+	LegoU32 groupCount2 = m_groupCount;
 	LegoU32 firstBatchTriangle = m_firstBatchTriangle;
 	m_groupCount = groupCount2 + 1;
 	model = m_model;
@@ -556,10 +585,10 @@ LegoU32 ParticleSystem::FlushBatch()
 	model->GetMutableGroups()[groupCount2] |= firstBatchTriangle & 0xffff;
 	model->SetDirty(TRUE);
 
-	LegoU32 triangleCount = m_triangleCount;
+	LegoU32 vertexCount = m_vertexCount;
 	m_batchVertexCount = 0;
 	m_batchTriangleCount = 0;
-	LegoU32 vertexCount = m_vertexCount;
+	LegoU32 triangleCount = m_triangleCount;
 	m_firstBatchVertex = vertexCount;
 	m_firstBatchTriangle = triangleCount;
 

@@ -81,7 +81,9 @@ GolStream::~GolStream()
 // FUNCTION: LEGORACERS 0x0044c990
 void GolStream::Initialize()
 {
+#ifndef BUILDING_GOL
 	m_handle = -1;
+#endif
 	m_mode = 0;
 	m_flags = 0;
 	m_position = 0;
@@ -91,6 +93,9 @@ void GolStream::Initialize()
 	m_bufferStart = 0;
 	m_bufferEnd = 0;
 	m_buffer = NULL;
+#ifdef BUILDING_GOL
+	m_handle = -1;
+#endif
 }
 
 // FUNCTION: LEGORACERS 0x0044c9c0
@@ -353,9 +358,9 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 			offset += available;
 			memcpy(buf, src, available);
 			p_buf = (LegoU8*) p_buf + available;
+			buf = p_buf;
 			*lenRead += available;
 			p_size -= available;
-			buf = p_buf;
 		}
 	}
 
@@ -402,8 +407,8 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 				result = savedResult;
 				m_position += p_offset;
 
-				if (!p_size) {
-					return result;
+				if (p_size <= 0) {
+					break;
 				}
 
 				m_flags &= ~c_flagCached;
@@ -423,7 +428,6 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 		if (!result) {
 			*lenRead += p_offset;
 			m_position += p_offset;
-			return result;
 		}
 	}
 
@@ -615,7 +619,11 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 	}
 
 	if (slash) {
+#ifdef BUILDING_GOL
 		LegoU32 directoryEnd;
+#else
+		LegoU32 directoryEnd = prefixLength;
+#endif
 		if (p_path[0] != '\\' && currentEntryPath) {
 			LegoU32 currentEntryLength = strlen(currentEntryPath);
 			if (pathLength + currentEntryLength + prefixLength + 1 >= sizeOfArray(g_pathBuffer)) {
@@ -634,13 +642,19 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 				directoryEnd++;
 			}
 		}
-		else if (p_path[0] == '\\') {
+		else
+#ifdef BUILDING_GOL
+		{
 			directoryEnd = prefixLength;
+			if (p_path[0] == '\\') {
+				p_path++;
+			}
+		}
+#else
+			if (p_path[0] == '\\') {
 			p_path++;
 		}
-		else {
-			directoryEnd = prefixLength;
-		}
+#endif
 
 		strcat(g_pathBuffer, p_path);
 		TransformToUpper(g_pathBuffer);

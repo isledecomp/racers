@@ -97,18 +97,14 @@ void HammerHazard::Update(undefined4 p_elapsedMs)
 
 	LegoFloat frame = m_entity->GetPartTimeMs();
 	LegoU32 state = m_unk0x14;
-	LegoU32 active = state;
-	active &= 1;
-	if (active) {
-		if ((frame > g_hammerStrikeStart0 && frame < g_hammerStrikeEnd0) ||
-			(frame > g_hammerStrikeStart1 && frame < g_hammerStrikeEnd1)) {
-			m_eventTable->FireEventsAt(0x2b, 0x2b, NULL);
-			m_unk0x14 &= ~1;
-		}
+	if ((state & 1) && ((frame > g_hammerStrikeStart0 && frame < g_hammerStrikeEnd0) ||
+						(frame > g_hammerStrikeStart1 && frame < g_hammerStrikeEnd1))) {
+		m_eventTable->FireEventsAt(0x2b, 0x2b, NULL);
+		m_unk0x14 &= ~1;
 	}
 	else if (
-		(frame > g_hammerRaisedStart0 && frame < g_hammerRaisedEnd0) ||
-		(frame > g_hammerRaisedStart1 && frame < g_hammerRaisedEnd1)
+		!(state & 1) && ((frame > g_hammerRaisedStart0 && frame < g_hammerRaisedEnd0) ||
+						 (frame > g_hammerRaisedStart1 && frame < g_hammerRaisedEnd1))
 	) {
 		m_unk0x14 = state | 1;
 	}

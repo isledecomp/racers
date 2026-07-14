@@ -62,9 +62,9 @@ void WhiteBrick::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	LegoU32 state = m_state;
-	if (state != c_stateActive) {
-		if (state == c_stateTransition && m_stateTimerMs > 250) {
+	switch (m_state) {
+	case c_stateTransition:
+		if (m_stateTimerMs > 250) {
 			LegoU8 flags = m_flags;
 			if (flags & c_flagReturnHome) {
 				m_flags = flags & ~c_flagReturnHome;
@@ -78,11 +78,14 @@ void WhiteBrick::Update(LegoU32 p_elapsedMs)
 			m_stateTimerMs = 0;
 			SetTouchable(FALSE);
 		}
-	}
-	else if (m_stateTimerMs > 500) {
-		m_state = c_stateIdle;
-		m_stateTimerMs = 0;
-		SetTouchable(TRUE);
+		break;
+	case c_stateActive:
+		if (m_stateTimerMs > 500) {
+			m_state = c_stateIdle;
+			m_stateTimerMs = 0;
+			SetTouchable(TRUE);
+		}
+		break;
 	}
 }
 

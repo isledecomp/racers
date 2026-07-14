@@ -36,14 +36,15 @@ void DroppableBrick::ReturnHome()
 {
 	LegoU32 state = m_state;
 	LegoU8 flags = m_flags;
-	flags &= 0xfe;
+	flags &= ~c_flagDropped;
 	m_droppedTimeMs = 0;
 	m_flags = flags;
 
+	LegoU8 result = m_flags;
 	if (!state) {
-		flags |= 2;
+		result |= c_flagReturnHome;
 		m_state = c_stateTransition;
-		m_flags = flags;
+		m_flags = result;
 		m_stateTimerMs = 0;
 		return;
 	}

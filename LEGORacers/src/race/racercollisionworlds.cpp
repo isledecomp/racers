@@ -70,13 +70,10 @@ void RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 	if (m_worldCount) {
 		while (p_elapsedMs > 0) {
 			LegoU8 elapsedStep;
-			LegoU8 savedElapsedStep;
 			if (p_elapsedMs > c_maxElapsedChunk) {
 				elapsedStep = static_cast<LegoU8>(-1);
-				savedElapsedStep = elapsedStep;
 			}
 			else {
-				savedElapsedStep = static_cast<LegoU8>(p_elapsedMs);
 				elapsedStep = static_cast<LegoU8>(p_elapsedMs);
 			}
 
@@ -92,7 +89,6 @@ void RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 								m_racers[racerIndex]->m_physics.RemoveCollisionWorld(
 									m_worldDatabase->GetBoundedEntities() + entryIndex
 								);
-								elapsedStep = savedElapsedStep;
 							}
 							else {
 								*timer = value - elapsedStep;
@@ -104,7 +100,7 @@ void RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 				}
 			}
 
-			p_elapsedMs -= savedElapsedStep;
+			p_elapsedMs -= elapsedStep;
 		}
 	}
 }

@@ -64,9 +64,8 @@ LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* 
 	LegoS32 pos = -1;
 
 	while (TRUE) {
-		LegoChar ch = p_fileName[pos + 1];
 		LegoU32 nameLen = 0;
-		pos++;
+		LegoChar ch = p_fileName[++pos];
 
 		while (ch && ch != '\\') {
 			if (nameLen >= GOL_NAME_LENGTH) {
@@ -111,9 +110,8 @@ LegoS32 GolFileSource::Find(LegoChar* p_fileName)
 	LegoS32 pos = -1;
 
 	while (TRUE) {
-		LegoChar ch = p_fileName[pos + 1];
 		LegoU32 nameLen = 0;
-		pos++;
+		LegoChar ch = p_fileName[++pos];
 
 		while (ch && ch != '\\') {
 			if (nameLen >= GOL_NAME_LENGTH) {

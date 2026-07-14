@@ -143,7 +143,8 @@ void GdbPartVertexPool::SetTextureCoordinate(LegoU32 p_index, const GolVec2& p_s
 {
 	Vertex* vertex = &m_vertices[p_index];
 	vertex->m_u = static_cast<LegoS16>(g_gdbPartTexCoordDivisor * p_src.m_x);
-	vertex->m_v = static_cast<LegoS16>(p_src.m_y * g_gdbPartTexCoordDivisor);
+	LegoFloat v = p_src.m_y;
+	vertex->m_v = static_cast<LegoS16>(v * g_gdbPartTexCoordDivisor);
 }
 
 // FUNCTION: LEGORACERS 0x004083e0
@@ -151,8 +152,10 @@ void GdbPartVertexPool::SetNormal(LegoU32 p_index, const GolVec3& p_src)
 {
 	Vertex* vertex = &m_vertices[p_index];
 	vertex->m_tail.m_normal.m_nx = static_cast<LegoS8>(g_gdbPartNormalDivisor * p_src.m_x);
-	vertex->m_tail.m_normal.m_ny = static_cast<LegoS8>(p_src.m_y * g_gdbPartNormalDivisor);
-	vertex->m_tail.m_normal.m_nz = static_cast<LegoS8>(p_src.m_z * g_gdbPartNormalDivisor);
+	LegoFloat y = p_src.m_y;
+	vertex->m_tail.m_normal.m_ny = static_cast<LegoS8>(y * g_gdbPartNormalDivisor);
+	LegoFloat z = p_src.m_z;
+	vertex->m_tail.m_normal.m_nz = static_cast<LegoS8>(z * g_gdbPartNormalDivisor);
 	vertex->m_tail.m_normal.m_argb = 0xff;
 }
 

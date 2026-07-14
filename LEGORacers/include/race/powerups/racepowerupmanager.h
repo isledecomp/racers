@@ -123,7 +123,7 @@ public:
 				const GolVec3* p_position,
 				const GolVec3* p_direction,
 				LegoU32 p_partIndex,
-				void* p_billboardPosition
+				GolMaterial* p_material
 			);
 			GolAnimatedEntity* GetEntity() { return m_entity; }
 			LegoS32 GetState() const { return m_state; }
@@ -166,7 +166,7 @@ public:
 	void UseYellowPowerup(Racer* p_racer, LegoU32 p_level);
 	void UseBluePowerup(Racer* p_racer, LegoU32 p_level);
 	void UseGreenPowerup(Racer* p_racer, LegoU32 p_level);
-	LegoU32 ActivateWarp(Racer* p_racer, LegoU32 p_level);
+	void ActivateWarp(Racer* p_racer, LegoU32 p_level);
 	void SpawnExplosion(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer);
 	void FUN_0045b4d0(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer);
 	void SpawnSpikeExplosion(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer);
@@ -182,6 +182,7 @@ public:
 	LegoU32 GetMaterialAnimationItemCount() const { return m_materialAnimation.GetFrameCount(); }
 	MabMaterialTrack* GetMaterialAnimationTracks() const { return m_materialAnimation.GetTracks(); }
 	RaceState* GetRaceState() { return m_raceState; }
+	GolD3DRenderDevice* GetRenderer() const { return m_renderer; }
 	void SetAimTarget(ActionTarget* p_aimTarget) { m_aimTarget = p_aimTarget; }
 
 private:

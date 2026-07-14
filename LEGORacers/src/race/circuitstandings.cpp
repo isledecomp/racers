@@ -121,12 +121,12 @@ void CircuitStandings::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004246d0 FOLDED
-LegoU32 CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
+void CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 {
 	LegoU32 millisecondsPerHour = 3600000;
 	LegoS32 divisor = 10;
-	LegoU32 time = p_time % millisecondsPerHour;
 	LegoS32 digitOffset;
+	LegoU32 time = p_time % millisecondsPerHour;
 
 	p_buffer[8] = '\0';
 	if (time >= 600000) {
@@ -141,10 +141,10 @@ LegoU32 CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 		p_buffer[7] = '\0';
 	}
 
-	LegoU32 centiseconds = time / 10;
-	p_buffer[digitOffset] = static_cast<LegoChar>(centiseconds % 10 + '0');
-	centiseconds /= 10;
-	p_buffer[digitOffset - 1] = static_cast<LegoChar>(centiseconds % 10 + '0');
+	LegoU32 centiseconds = time / divisor;
+	p_buffer[digitOffset] = static_cast<LegoChar>(centiseconds % divisor + '0');
+	centiseconds /= divisor;
+	p_buffer[digitOffset - 1] = static_cast<LegoChar>(centiseconds % divisor + '0');
 
 	LegoU32 seconds = centiseconds / divisor;
 	LegoS32 secondsWithinMinute = static_cast<LegoS32>(seconds % 60);
@@ -156,10 +156,7 @@ LegoU32 CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 	LegoU32 extraMinutes = minutes / divisor;
 	if (extraMinutes) {
 		p_buffer[digitOffset - 7] = static_cast<LegoChar>(extraMinutes % divisor + '0');
-		extraMinutes /= divisor;
 	}
-
-	return extraMinutes;
 }
 
 // FUNCTION: LEGORACERS 0x00440350

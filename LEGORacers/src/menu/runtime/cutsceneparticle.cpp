@@ -170,15 +170,18 @@ void CutsceneParticle::SetOrientation(GolVec3* p_param1, GolVec3* p_param2)
 	cross.m_z *= v2.m_x;
 	cross.m_z -= term;
 
-	m_basis.m_m[0][0] = v0.m_x;
-	m_basis.m_m[0][1] = v0.m_y;
-	m_basis.m_m[0][2] = v0.m_z;
-	m_basis.m_m[1][0] = cross.m_x;
-	m_basis.m_m[1][1] = cross.m_y;
-	m_basis.m_m[1][2] = cross.m_z;
-	m_basis.m_m[2][0] = v2.m_x;
-	m_basis.m_m[2][1] = v2.m_y;
-	m_basis.m_m[2][2] = v2.m_z;
+	LegoFloat* row0 = &m_basis.m_m[0][0];
+	LegoFloat* row1 = &m_basis.m_m[1][0];
+	LegoFloat* row2 = &m_basis.m_m[2][0];
+	row0[0] = v0.m_x;
+	row0[1] = v0.m_y;
+	row1[0] = cross.m_x;
+	row0[2] = v0.m_z;
+	row1[1] = cross.m_y;
+	row1[2] = cross.m_z;
+	row2[0] = v2.m_x;
+	row2[1] = v2.m_y;
+	row2[2] = v2.m_z;
 }
 
 // FUNCTION: LEGORACERS 0x00489660
@@ -289,15 +292,14 @@ void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 
 				m_emitter->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_emitter->GetPointCount());
 
+				LegoFloat other = m_basis.m_m[1][0];
+				other *= local18.m_y;
 				LegoFloat term = m_basis.m_m[2][0];
 				term *= local18.m_z;
-				localc.m_x = term;
-				term = m_basis.m_m[1][0];
-				term *= local18.m_y;
-				localc.m_x += term;
-				term = m_basis.m_m[0][0];
-				term *= local18.m_x;
-				localc.m_x += term;
+				term += other;
+				other = m_basis.m_m[0][0];
+				other *= local18.m_x;
+				localc.m_x = term + other;
 
 				term = m_basis.m_m[2][1];
 				term *= local18.m_z;

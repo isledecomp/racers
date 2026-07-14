@@ -119,7 +119,7 @@ void RaceTrailManager::Trail::Start(Params* p_params)
 
 	m_durationMs = p_params->m_durationMs;
 	m_sampleCount = p_params->m_sampleCount;
-	m_ringSize = p_params->m_sampleCount + 2;
+	m_ringSize = m_sampleCount + 2;
 	m_pointCount = p_params->m_pointCount;
 	m_unk0x0c0 = p_params->m_unk0x10;
 	m_endScale = p_params->m_endScale;
@@ -297,6 +297,8 @@ void RaceTrailManager::Trail::AddSampleWithCenter(LegoU32 p_elapsedMs, GolVec3* 
 // FUNCTION: LEGORACERS 0x00492f10
 void RaceTrailManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3* p_positions)
 {
+	LegoU32 remainingMs = p_elapsedMs;
+
 	if (m_flags & c_firstSample) {
 		for (LegoU32 i = 0; i < m_pointCount; i++) {
 			m_samples[m_headIndex].m_points[i].m_x = p_positions[i].m_x;
@@ -312,24 +314,23 @@ void RaceTrailManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3* p_position
 		return;
 	}
 
-	if (p_elapsedMs != 0) {
+	if (remainingMs > 0) {
 		do {
-			LegoU32 remainingMs = 0;
 			LegoU32 stepMs = m_sampleMs - 1;
-			if (p_elapsedMs > stepMs) {
-				remainingMs = p_elapsedMs - m_sampleMs;
+			if (remainingMs > stepMs) {
+				remainingMs -= m_sampleMs;
 			}
 			else {
-				stepMs = p_elapsedMs;
+				stepMs = remainingMs;
+				remainingMs = 0;
 			}
 
-			Sample* activeFrame = &m_samples[m_headIndex];
-			activeFrame->m_durationMs += stepMs;
+			m_samples[m_headIndex].m_durationMs += stepMs;
 			AdvanceTail(stepMs);
 
-			if (activeFrame->m_durationMs >= m_sampleMs) {
-				LegoU32 overflowMs = activeFrame->m_durationMs - m_sampleMs;
-				activeFrame->m_durationMs = m_sampleMs;
+			if (m_samples[m_headIndex].m_durationMs >= m_sampleMs) {
+				LegoU32 overflowMs = m_samples[m_headIndex].m_durationMs - m_sampleMs;
+				m_samples[m_headIndex].m_durationMs = m_sampleMs;
 
 				m_headIndex++;
 				if (m_headIndex == m_ringSize) {
@@ -352,8 +353,7 @@ void RaceTrailManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3* p_position
 			m_samples[m_headIndex].m_center.m_x = m_centerX;
 			m_samples[m_headIndex].m_center.m_y = m_centerY;
 			m_samples[m_headIndex].m_center.m_z = m_centerZ;
-			p_elapsedMs = remainingMs;
-		} while (p_elapsedMs != 0);
+		} while (remainingMs > 0);
 	}
 
 	RebuildGeometry();
@@ -619,8 +619,7 @@ LegoU32 RaceTrailManager::Update(LegoU32 p_elapsedMs)
 	LegoU32 result = m_trailCount;
 
 	for (i = 0; i < result; i++) {
-		LegoU8 flags = m_trails[i].GetFlags();
-		if (flags & Trail::c_active) {
+		if (m_trails[i].IsActive()) {
 			m_trails[i].Update(p_elapsedMs);
 		}
 
@@ -637,8 +636,7 @@ LegoU32 RaceTrailManager::DrawOpaque(GolD3DRenderDevice* p_renderer)
 	LegoU32 result = m_trailCount;
 
 	for (i = 0; i < result; i++) {
-		LegoU8 flags = m_trails[i].GetFlags();
-		if (flags & Trail::c_active) {
+		if (m_trails[i].IsActive()) {
 			m_trails[i].FUN_004513d0(p_renderer);
 		}
 

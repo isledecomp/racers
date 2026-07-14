@@ -136,9 +136,7 @@ LegoBool32 MenuModelCarousel::Create(CreateParams* p_createParams, MenuStyleTabl
 	PopCamera();
 
 	VisualStateColor state;
-	state.m_color.m_red = 0xff;
-	state.m_color.m_grn = 0xff;
-	state.m_color.m_blu = 0xff;
+	state.m_color.m_red = state.m_color.m_grn = state.m_color.m_blu = 0xff;
 	state.m_color.m_alp = 0xff;
 	SetItemColors(&state, &state);
 	SetFocusedItemColors(&state, &state);
@@ -297,23 +295,18 @@ void MenuModelCarousel::CreateItems(CreateParams* p_createParams)
 // FUNCTION: LEGORACERS 0x0046cf20
 void MenuModelCarousel::DestroyItems()
 {
-	LegoS32 left = m_rect.m_left;
-	LegoS32 width = m_rect.m_right - left;
-	LegoS32 top = m_rect.m_top;
-	LegoS32 height = m_rect.m_bottom - top;
+	LegoS32 width = m_rect.m_right - m_rect.m_left;
+	LegoS32 height = m_rect.m_bottom - m_rect.m_top;
 	LegoS32 halfWidth = -(width >> 1);
 	Item* item = m_items;
-	LegoS32 zero = 0;
-	LegoS32 i = zero;
+	LegoS32 i = 0;
 
 	LegoFloat widthFloat = static_cast<LegoFloat>(width);
 	m_scaleX = (m_camera->m_nearHalfWidth + m_camera->m_nearHalfWidth) / widthFloat;
-	LegoFloat heightNumerator = m_camera->m_nearHalfHeight;
-	heightNumerator += heightNumerator;
 	LegoFloat heightFloat = static_cast<LegoFloat>(height);
-	m_scaleY = heightNumerator / heightFloat;
+	m_scaleY = (m_camera->m_nearHalfHeight + m_camera->m_nearHalfHeight) / heightFloat;
 
-	if (m_slotCount > zero) {
+	if (m_slotCount > 0) {
 		do {
 			Rect* rect = &item->m_rect;
 
@@ -618,11 +611,12 @@ undefined4 MenuModelCarousel::OnEvent(undefined4 p_elapsed)
 			SnapToSelection();
 		}
 
+		LegoS32 scrollDurationMs = m_scrollDurationMs;
 		elapsed = p_elapsed;
-		if (p_elapsed > static_cast<undefined4>(m_scrollDurationMs)) {
-			elapsed = m_scrollDurationMs;
+		if (p_elapsed > static_cast<undefined4>(scrollDurationMs)) {
+			elapsed = scrollDurationMs;
 		}
-		m_scrollDurationMs -= elapsed;
+		m_scrollDurationMs = scrollDurationMs - elapsed;
 	}
 	else {
 		elapsed = p_elapsed;
@@ -803,10 +797,12 @@ void MenuCarouselNavigator::StartScroll(undefined4 p_distance)
 	LegoS32 count = m_style->m_scrollDurationMs;
 
 	m_scrollDurationMs = count;
+	LegoFloat divisor = (LegoFloat) count;
+	LegoFloat scrollSpeed = (LegoFloat) (LegoS32) p_distance;
+	scrollSpeed /= divisor;
 	m_animFlags |= 1;
 	m_scrolling = 1;
-	LegoFloat divisor = (LegoFloat) count;
-	m_scrollSpeed = (LegoFloat) (LegoS32) p_distance / divisor;
+	m_scrollSpeed = scrollSpeed;
 	m_scrollPosition = (LegoFloat) m_offsetX;
 }
 
@@ -838,16 +834,18 @@ LegoS32 MenuCarouselNavigator::ScrollPrevious()
 		return 0;
 	}
 
-	if (!m_scrolling) {
-		if (m_selectedIndex == 0 && !m_style->m_wrap) {
-			m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[2]);
-			return m_selectedIndex;
-		}
-
-		StartScroll(m_rect.m_left - m_rect.m_right);
-		SetSelection(WrapIndex(m_selectedIndex - 1));
-		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[1]);
+	if (m_scrolling) {
+		return m_selectedIndex;
 	}
+
+	if (m_selectedIndex == 0 && !m_style->m_wrap) {
+		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[2]);
+		return m_selectedIndex;
+	}
+
+	StartScroll(m_rect.m_left - m_rect.m_right);
+	SetSelection(WrapIndex(m_selectedIndex - 1));
+	m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[1]);
 
 	return m_selectedIndex;
 }
@@ -882,14 +880,11 @@ MenuWidget* MenuCarouselNavigator::DrawSelf(Rect* p_param1, Rect* p_param2)
 		m_offsetX = 0;
 
 		Rect local1 = *p_param1;
-		Rect local2;
-		local2.m_top = p_param2->m_top;
-		local2.m_bottom = p_param2->m_bottom;
-		local2.m_right = p_param2->m_right;
-		local2.m_left = p_param2->m_left + (roundedExtent - savedLeft);
+		Rect local2 = *p_param2;
+		local2.m_left += roundedExtent - savedLeft;
 
 		local1.m_left = 0;
-		local1.m_right = p_param2->m_right - local2.m_left;
+		local1.m_right = local2.m_right - local2.m_left;
 
 		for (child = m_firstChild; child; child = child->GetNextSibling()) {
 			child->Draw(&local1, &local2);

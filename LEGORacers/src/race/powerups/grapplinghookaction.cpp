@@ -38,6 +38,9 @@ const LegoFloat g_hookGravity = -90.1760025f;
 // GLOBAL: LEGORACERS 0x004b14f4
 const LegoFloat g_hookSpeed = 320.0f;
 
+// GLOBAL: LEGORACERS 0x004b1504
+const LegoFloat g_hookSmokeHeightOffset = 4.0f;
+
 // GLOBAL: LEGORACERS 0x004b150c
 const LegoFloat g_hookLaunchHeight = 5.0f;
 
@@ -92,13 +95,13 @@ void GrapplingHookAction::Initialize(
 
 	TetherProjectile::SetupParams params;
 	params.m_golExport = p_manager->m_golExport;
+	params.m_attachHeight = 3.0f;
 	params.m_ropeThickness = g_hookRopeThickness;
 	params.m_waveAmplitude = g_hookRopeWaveAmplitude;
 	params.m_baseColor = g_hookRopeBaseColor;
-	params.m_attachHeight = 3.0f;
 	params.m_secondaryColor = g_hookRopeSecondaryColor;
 	params.m_tertiaryColor = g_hookRopeTertiaryColor;
-	params.m_material = p_manager->m_renderer->FindMaterialByName("tether");
+	params.m_material = p_manager->GetRenderer()->FindMaterialByName("tether");
 	m_projectile.Initialize(&params);
 
 	m_state = c_stateReady;
@@ -177,6 +180,7 @@ void GrapplingHookAction::Deactivate()
 // FUNCTION: LEGORACERS 0x00453ef0
 void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 {
+	LegoS32 projectileState = 0;
 	GolVec3 direction;
 	SoundVector targetPosition;
 	SoundVector position;
@@ -189,7 +193,6 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	LegoS32 projectileState = 0;
 	if (p_elapsedMs >= m_stateTimerMs) {
 		p_elapsedMs -= m_stateTimerMs;
 		m_stateTimerMs = projectileState;
@@ -199,14 +202,12 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		m_stateTimerMs -= p_elapsedMs;
 	}
 
-	if (m_state == c_stateArmed) {
-		return;
-	}
-
-	projectileState = m_projectile.Update(p_elapsedMs);
-	if (projectileState != PowerupProjectile::c_stateFlying) {
-		if (projectileState == PowerupProjectile::c_stateHitRacer) {
-			OnHitRacer(m_projectile.GetHitRacer());
+	if (m_state != c_stateArmed) {
+		projectileState = m_projectile.Update(p_elapsedMs);
+		if (projectileState != PowerupProjectile::c_stateFlying) {
+			if (projectileState == PowerupProjectile::c_stateHitRacer) {
+				OnHitRacer(m_projectile.GetHitRacer());
+			}
 		}
 	}
 
@@ -311,9 +312,10 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		}
 
 		m_ownerRacer->m_physics.m_carEntity->GetPosition(&position);
-		position.m_z += 4.0f;
+		LegoFloat raisedPositionZ = g_hookSmokeHeightOffset + position.m_z;
 
 		velocity = m_ownerRacer->m_physics.m_velocity;
+		position.m_z = raisedPositionZ;
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticleRef->m_particle->GetBasis());
 		}
@@ -420,7 +422,7 @@ void GrapplingHookAction::AdvanceState()
 	m_smokeParticleRef = m_owner->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticleRef != NULL) {
 		m_ownerRacer->m_physics.m_carEntity->GetPosition(&position);
-		position.m_z += 4.0f;
+		position.m_z += g_hookSmokeHeightOffset;
 
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticleRef->m_particle->GetBasis());

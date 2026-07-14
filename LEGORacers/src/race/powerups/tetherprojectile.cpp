@@ -65,23 +65,22 @@ void TetherProjectile::Initialize(const SetupParams* p_params)
 	m_currentWaveAmplitude = 0;
 	m_hitRacer = 0;
 
-	GolD3DRenderDevice* renderer = p_params->m_golExport->GetDrawState()->m_currentRenderer;
-
 	BeamMesh::SetupParams params;
 	params.m_golExport = p_params->m_golExport;
-	params.m_renderer = renderer;
+	params.m_renderer = params.m_golExport->GetDrawState()->m_currentRenderer;
 	params.m_material = p_params->m_material;
 	params.m_sectionCount = 5;
 	params.m_segmentCount = p_params->m_waveAmplitude == 0.0f ? 1 : 5;
+	LegoFloat halfThickness = p_params->m_ropeThickness * 0.5f;
+	params.m_ringVertices[1].m_z = halfThickness;
+	params.m_ringVertices[2].m_y = -p_params->m_ropeThickness;
 	params.m_ringQuadCount = 2;
 	params.m_ringVertices[0].m_x = 0.0f;
-	params.m_ringVertices[0].m_y = p_params->m_ropeThickness * 0.5f;
-	params.m_ringVertices[0].m_z = -p_params->m_ropeThickness;
+	params.m_ringVertices[0].m_y = p_params->m_ropeThickness;
+	params.m_ringVertices[0].m_z = 0.0f;
 	params.m_ringVertices[1].m_x = 0.0f;
 	params.m_ringVertices[1].m_y = 0.0f;
-	params.m_ringVertices[1].m_z = 0.0f;
 	params.m_ringVertices[2].m_x = 0.0f;
-	params.m_ringVertices[2].m_y = 0.0f;
 	params.m_ringVertices[2].m_z = 0.0f;
 	params.m_ringTextureXs[0] = 0.0f;
 	params.m_ringTextureXs[1] = 0.5f;

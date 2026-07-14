@@ -78,6 +78,15 @@ public:
 			m_flags &= ~c_flagPartAnimation;
 		}
 	}
+	void SetLoopCurrentPartEnabled(LegoBool32 p_enabled)
+	{
+		if (p_enabled) {
+			m_flags |= c_flagLoopCurrentPart;
+		}
+		else {
+			m_flags &= ~c_flagLoopCurrentPart;
+		}
+	}
 	LegoU16 GetActiveState() const { return (m_flags & 0x20000) ? m_queuedPartIndex : m_currentPartIndex; }
 	LegoU16 GetCurrentPartIndex() const { return m_currentPartIndex; }
 	LegoU16 GetQueuedPartIndex() const { return m_queuedPartIndex; }

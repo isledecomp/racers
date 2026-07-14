@@ -21,34 +21,34 @@ GolTexture::GolTexture()
 // FUNCTION: LEGORACERS 0x00415c60
 void GolTexture::LoadFromImgFile(GolRenderDevice& p_renderer, GolImgFile* p_source)
 {
-	GolTexture* texture = this;
-	GolImgFile* source = p_source;
-	GolSurfaceFormat requestedFormat = source->GetTextureFormat();
+	GolSurfaceFormat requestedFormat;
 	GolSurfaceFormat textureFormat;
 	LegoU32 rendererAlphaFlag = GolRenderDevice::c_flagBlackColorKey;
+	requestedFormat = p_source->GetTextureFormat();
 
 	if (p_renderer.VTable0x110()) {
-		texture->m_textureFlags |= c_textureFlagBit6;
-	}
-	if ((texture->m_textureFlags & c_textureFlagColorKeyed) && (p_renderer.GetFlags() & rendererAlphaFlag)) {
-		texture->m_textureFlags |= c_textureFlagBlackColorKey;
+		m_textureFlags |= c_textureFlagBit6;
 	}
 
-	p_renderer.SelectTextureFormat(requestedFormat, &textureFormat, texture->m_textureFlags & c_textureFlagColorKeyed);
-	texture->Allocate(p_renderer, textureFormat, source->GetWidth(), source->GetHeight());
+	if ((m_textureFlags & c_textureFlagColorKeyed) && (p_renderer.GetFlags() & rendererAlphaFlag)) {
+		m_textureFlags |= c_textureFlagBlackColorKey;
+	}
 
-	if (texture->m_textureFlags & c_textureFlagColorKeyed) {
-		ColorRGBA colorKey = texture->m_colorKey;
+	p_renderer.SelectTextureFormat(requestedFormat, &textureFormat, m_textureFlags & c_textureFlagColorKeyed);
+	Allocate(p_renderer, textureFormat, p_source->GetWidth(), p_source->GetHeight());
+
+	if (m_textureFlags & c_textureFlagColorKeyed) {
+		ColorRGBA colorKey = m_colorKey;
 		if (p_renderer.GetFlags() & rendererAlphaFlag) {
-			source->SetColorKeyReplacement(g_transparentBlack);
+			p_source->SetColorKeyReplacement(g_transparentBlack);
 		}
 		else {
-			source->SetColorKeyReplacement(texture->m_colorKey);
+			p_source->SetColorKeyReplacement(m_colorKey);
 		}
 
-		source->LoadSurface(texture, texture->m_textureFlags & c_textureFlagFlipVertically, &colorKey);
+		p_source->LoadSurface(this, m_textureFlags & c_textureFlagFlipVertically, &colorKey);
 	}
 	else {
-		source->LoadSurface(texture, texture->m_textureFlags & c_textureFlagFlipVertically, NULL);
+		p_source->LoadSurface(this, m_textureFlags & c_textureFlagFlipVertically, NULL);
 	}
 }

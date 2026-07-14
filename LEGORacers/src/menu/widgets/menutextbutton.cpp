@@ -76,13 +76,14 @@ LegoBool32 MenuTextButton::CreateLabel(CreateParams* p_createParams, MenuStyleTa
 	MeasureText(m_stateFonts[m_visualStateIndex], &string, &source, &createParams.m_rect, 0);
 
 	LegoS32 right = m_image.GetRect()->m_right;
+	createParams.m_rect.m_left += right;
 	createParams.m_rect.m_right += right;
-	createParams.m_flags |= 3;
+	createParams.m_flags |= 1;
+	createParams.m_stringId = p_createParams->m_stringId;
 	createParams.m_stringTable = p_createParams->m_stringTable;
 	createParams.m_font = m_stateFonts[0];
-	createParams.m_stringId = p_createParams->m_stringId;
-	createParams.m_color = m_stateImageColors[0];
-	createParams.m_rect.m_left += right;
+	createParams.m_color = m_stateColors[0];
+	createParams.m_flags |= 2;
 	createParams.m_parent = this;
 	m_textStyle.m_centered = 0;
 
@@ -137,7 +138,10 @@ void MenuTextButton::SetTextByIndex(undefined4 p_stringId)
 	m_label.SetStringByIndex(static_cast<undefined2>(p_stringId), TRUE);
 
 	if (m_maxTextWidth && m_label.GetRect()->m_right - m_label.GetRect()->m_left > m_maxTextWidth) {
-		Rect rect = *m_label.GetRect();
+		Rect rect;
+		rect.m_top = m_label.GetRect()->m_top;
+		rect.m_left = m_label.GetRect()->m_left;
+		rect.m_bottom = m_label.GetRect()->m_bottom;
 		rect.m_right = rect.m_left + m_maxTextWidth;
 		m_label.SetRect(&rect);
 	}
@@ -151,7 +155,10 @@ void MenuTextButton::SetText(GolString* p_string)
 	m_label.SetString(p_string, TRUE);
 
 	if (m_maxTextWidth && m_label.GetRect()->m_right - m_label.GetRect()->m_left > m_maxTextWidth) {
-		Rect rect = *m_label.GetRect();
+		Rect rect;
+		rect.m_top = m_label.GetRect()->m_top;
+		rect.m_left = m_label.GetRect()->m_left;
+		rect.m_bottom = m_label.GetRect()->m_bottom;
 		rect.m_right = rect.m_left + m_maxTextWidth;
 		m_label.SetRect(&rect);
 	}

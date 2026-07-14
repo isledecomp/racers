@@ -12,6 +12,18 @@
 
 #include <string.h>
 
+inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_z;
+	result *= p_right.m_z;
+	LegoFloat y = p_left.m_y;
+	y *= p_right.m_y;
+	result += y;
+	result += p_left.m_x * p_right.m_x;
+
+	return result;
+}
+
 // GLOBAL: GOLDP 0x1005dfec
 LegoFloat g_arccosTable[1024] = {
 	3.1415927f,  3.079052f,   3.0531323f,  3.0332336f,  3.0164499f,   3.001656f,    2.9882746f,  2.975963f,
@@ -819,12 +831,12 @@ void GolRenderDevice::DrawModelEntityWithUvAxes(
 	GolVec3 localForward;
 	p_model->GetAxes(&localRight, &localForward);
 
-	LegoFloat normalDotRight = p_normal->m_z * localRight.m_z;
-	normalDotRight += p_normal->m_y * localRight.m_y;
-	normalDotRight += p_normal->m_x * localRight.m_x;
+	LegoFloat normalDotRight = DotVectors(*p_normal, localRight);
 	GolVec3 scaledNormal;
 	scaledNormal.m_x = normalDotRight * p_normal->m_x;
-	scaledNormal.m_y = normalDotRight * p_normal->m_y;
+	LegoFloat scaledY = p_normal->m_y;
+	scaledY *= normalDotRight;
+	scaledNormal.m_y = scaledY;
 	scaledNormal.m_z = normalDotRight * p_normal->m_z;
 	GolVec3 projectedRight;
 	projectedRight.m_x = localRight.m_x - scaledNormal.m_x;
@@ -839,22 +851,16 @@ void GolRenderDevice::DrawModelEntityWithUvAxes(
 	}
 	else {
 		GolMath::NormalizeVector3(projectedRight, &projectedRight);
-		LegoFloat uDot = p_uAxis->m_z * projectedRight.m_z;
-		uDot += p_uAxis->m_y * projectedRight.m_y;
-		uDot += p_uAxis->m_x * projectedRight.m_x;
+		LegoFloat uDot = DotVectors(*p_uAxis, projectedRight);
 		u = g_arccosTable[static_cast<LegoS32>((uDot + 1.0f) * 511.5f)] * 0.31830987f;
 		u *= 0.5f;
 
-		LegoFloat vAxisDot = p_vAxis->m_z * projectedRight.m_z;
-		vAxisDot += p_vAxis->m_y * projectedRight.m_y;
-		vAxisDot += p_vAxis->m_x * projectedRight.m_x;
+		LegoFloat vAxisDot = DotVectors(*p_vAxis, projectedRight);
 		if (vAxisDot < 0.0f) {
 			u = 1.0f - u;
 		}
 
-		LegoFloat normalDotForward = p_normal->m_z * localForward.m_z;
-		normalDotForward += p_normal->m_y * localForward.m_y;
-		normalDotForward += p_normal->m_x * localForward.m_x;
+		LegoFloat normalDotForward = DotVectors(*p_normal, localForward);
 		v = g_arccosTable[static_cast<LegoS32>((normalDotForward + 1.0f) * 511.5f)] * 0.31830987f;
 	}
 

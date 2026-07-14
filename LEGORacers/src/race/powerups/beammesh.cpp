@@ -22,8 +22,6 @@ DECOMP_SIZE_ASSERT(BeamEntity, 0x98)
 // GLOBAL: LEGORACERS 0x004b47a4
 extern const LegoFloat g_beamMinStepDistanceSquared = 0.02f;
 
-extern LegoFloat g_minSoundPan;
-
 // FUNCTION: LEGORACERS 0x00493ae0
 BeamMesh::BeamMesh()
 {
@@ -39,13 +37,7 @@ BeamMesh::~BeamMesh()
 // FUNCTION: LEGORACERS 0x00493b80
 void BeamMesh::Reset()
 {
-	m_golExport = NULL;
-	m_model = NULL;
-	m_vertices = 0;
-	m_indices = 0;
-	m_sceneNode = NULL;
-	m_material = 0;
-	m_windowBaseVertex = 0;
+	ResetHead();
 	m_ringVertexIndex = 0;
 	m_previousRingVertexIndex = 0;
 	m_vertexCursor = 0;
@@ -61,13 +53,12 @@ void BeamMesh::Reset()
 	m_ringVertexCount = 0;
 	::memset(m_ringVertices, 0, sizeof(m_ringVertices));
 	::memset(m_ringTextureXs, 0, sizeof(m_ringTextureXs));
-	m_baseColor.m_alp = 0xff;
-	m_secondaryColor.m_alp = 0xff;
-	m_tertiaryColor.m_alp = 0xff;
 	m_textureColumnCount = 0;
 	m_flags = 0;
 	m_segmentOffsets = NULL;
-	m_startPosition.Clear();
+	m_startPosition.m_x = 0.0f;
+	m_startPosition.m_y = 0.0f;
+	m_startPosition.m_z = 0.0f;
 	m_baseColor.m_red = 0;
 	m_baseColor.m_grn = 0;
 	m_baseColor.m_blu = 0;
@@ -78,6 +69,9 @@ void BeamMesh::Reset()
 	m_tertiaryColor.m_grn = 0;
 	m_tertiaryColor.m_blu = 0;
 	m_vertexCapacity = 0;
+	m_baseColor.m_alp = 0xff;
+	m_secondaryColor.m_alp = 0xff;
+	m_tertiaryColor.m_alp = 0xff;
 }
 
 // FUNCTION: LEGORACERS 0x00493c90
@@ -167,6 +161,7 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 	GdbModelIndexArrayBase* indexArray;
 	m_model->GetIndexArrayInto(&indexArray);
 	m_indices = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
+	GolModelBase* model = m_model;
 
 	m_windowBaseVertex = 0;
 	m_ringVertexIndex = -static_cast<LegoS32>(m_ringVertexCount);
@@ -178,9 +173,9 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 	m_flags &= ~c_flagVisible;
 	m_groupCursor = 1;
 
-	m_model->GetMutableGroups()[0] = c_groupBegin;
+	model->GetMutableGroups()[0] = c_groupBegin;
+	model->SetDirty(TRUE);
 	m_startPosition = *p_position;
-	m_model->SetDirty(TRUE);
 	m_lastPosition = *p_position;
 	m_sectionIndex = 0;
 
@@ -195,7 +190,7 @@ void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 	GolMath::NormalizeVector3(*p_direction, &direction);
 
 	LegoFloat dot = GOLVECTOR3_DOT(direction, up);
-	if (dot >= 1.0f || dot <= g_minSoundPan) {
+	if (dot >= 1.0f || dot <= -1.0f) {
 		up.m_x = 1.0f;
 		up.m_y = 0.0f;
 		up.m_z = 0.0f;
@@ -291,8 +286,9 @@ void BeamMesh::EmitRing(
 	LegoU32 p_offsetIndex
 )
 {
+	LegoFloat textureY = static_cast<LegoFloat>(static_cast<LegoS32>(p_textureColumn));
 	GolVec2 texture;
-	texture.m_y = static_cast<LegoFloat>(static_cast<LegoS32>(p_textureColumn));
+	texture.m_y = textureY;
 
 	if (static_cast<LegoU32>(m_ringVertexIndex) + m_ringVertexCount * 2 >= 0x40) {
 		FlushWindow();
@@ -306,9 +302,12 @@ void BeamMesh::EmitRing(
 	if (m_flags & c_flagUseSegmentOffsets) {
 		for (i = 0; i < m_ringVertexCount; i++) {
 			GolVec3 vertex;
-			vertex.m_x = m_ringVertices[i].m_x + p_position->m_x;
-			vertex.m_x += m_segmentOffsets[p_offsetIndex].m_x;
-			vertex.m_y = p_position->m_y + m_ringVertices[i].m_y + m_segmentOffsets[p_offsetIndex].m_y;
+			LegoFloat x = m_ringVertices[i].m_x + p_position->m_x;
+			x += m_segmentOffsets[p_offsetIndex].m_x;
+			vertex.m_x = x;
+			LegoFloat y = m_segmentOffsets[p_offsetIndex].m_y + m_ringVertices[i].m_y;
+			y += p_position->m_y;
+			vertex.m_y = y;
 			vertex.m_z = p_position->m_z + m_ringVertices[i].m_z + m_segmentOffsets[p_offsetIndex].m_z;
 
 			m_vertices->SetPosition(m_vertexCursor, vertex);
@@ -322,7 +321,9 @@ void BeamMesh::EmitRing(
 		for (i = 0; i < m_ringVertexCount; i++) {
 			GolVec3 vertex;
 			vertex.m_x = p_position->m_x + m_ringVertices[i].m_x;
-			vertex.m_y = p_position->m_y + m_ringVertices[i].m_y;
+			LegoFloat y = m_ringVertices[i].m_y;
+			y += p_position->m_y;
+			vertex.m_y = y;
 			vertex.m_z = p_position->m_z + m_ringVertices[i].m_z;
 
 			m_vertices->SetPosition(m_vertexCursor, vertex);
@@ -485,11 +486,19 @@ void BeamMesh::AppendSpan(const GolVec3* p_position, LegoFloat p_amount)
 	endPosition.m_z = 0.0f;
 
 	GolVec3 middlePosition;
-	middlePosition.m_x = distance * 0.5f;
-	middlePosition.m_y = 0.0f;
+	LegoFloat middleX = endPosition.m_x * 0.5f;
+
+	ColorRGBA endColor;
+	if (p_amount > 0.0f) {
+		endColor = m_secondaryColor;
+	}
+	else {
+		endColor = m_tertiaryColor;
+	}
+	middlePosition.m_x = middleX;
+	middlePosition.m_y = p_amount;
 	middlePosition.m_z = 0.0f;
 
-	ColorRGBA endColor = p_amount > 0.0f ? m_secondaryColor : m_tertiaryColor;
 	LegoFloat amount = 0.0f;
 
 	LegoU32 offsetIndex = 0;
@@ -553,12 +562,13 @@ void BeamMesh::Interpolate(
 	p_positionResult->m_z = p_toPosition->m_z - p_fromPosition->m_z;
 
 	scaledPosition.m_x = p_positionResult->m_x * p_amount;
-	scaledPosition.m_y = p_positionResult->m_y * p_amount;
-	p_positionResult->m_z *= p_amount;
+	scaledPosition.m_y = p_positionResult->m_y;
+	scaledPosition.m_y *= p_amount;
+	scaledPosition.m_z = p_positionResult->m_z * p_amount;
 
 	p_positionResult->m_x = scaledPosition.m_x + p_fromPosition->m_x;
 	p_positionResult->m_y = scaledPosition.m_y + p_fromPosition->m_y;
-	p_positionResult->m_z += p_fromPosition->m_z;
+	p_positionResult->m_z = scaledPosition.m_z + p_fromPosition->m_z;
 
 	p_colorResult->m_red = static_cast<LegoU8>(
 		p_fromColor->m_red + static_cast<LegoS32>((p_toColor->m_red - p_fromColor->m_red) * p_amount)
@@ -651,7 +661,7 @@ void BeamEntity::Draw(GolRenderDevice& p_renderer)
 
 			LegoFloat dot =
 				localRight.m_z * cameraRight.m_z + localRight.m_y * cameraRight.m_y + localRight.m_x * cameraRight.m_x;
-			if (dot < 1.0f && dot > g_minSoundPan) {
+			if (dot < 1.0f && dot > -1.0f) {
 				transform->SetRightDirection(&cameraRight, &localRight);
 			}
 		}

@@ -37,9 +37,8 @@ static void CALLBACK DirectMusicTimerCallback(
 		GolListLink* link = g_directMusicStreams.LastLink();
 		if (g_directMusicStreams.IsValidLastLink(link)) {
 			do {
+				HANDLE mutex = g_directMusicStreams.GetItem(*link).GetMutex();
 				DirectMusicStream& stream = g_directMusicStreams.GetItem(*link);
-
-				HANDLE mutex = stream.GetMutex();
 				if (mutex && !WaitForSingleObject(mutex, 0)) {
 					stream.Service();
 					ReleaseMutex(stream.GetMutex());

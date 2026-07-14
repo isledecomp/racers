@@ -34,6 +34,7 @@ public:
 
 		Entry();
 		~Entry();
+		LegoFloat GetLapFraction() const { return m_lapFraction; }
 
 	private:
 		friend class CheckpointGraph;

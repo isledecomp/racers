@@ -42,7 +42,7 @@ public:
 	// FUNCTION: LEGORACERS 0x00431980
 	~RaceHud() {}
 
-	LegoS32 SetResolution(LegoS32 p_width, LegoS32 p_height);
+	void SetResolution(LegoS32 p_width, LegoS32 p_height);
 	void SetMapInfo(
 		GolMaterial* p_material,
 		LegoFloat p_minX,
@@ -84,11 +84,11 @@ private:
 		const GolRenderDevice::TexturedVertex* p_v2
 	);
 	void DrawMapArrow(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, LegoFloat p_directionY);
-	LegoU32 FormatTime(LegoChar* p_buffer, LegoU32 p_time);
+	void FormatTime(LegoChar* p_buffer, LegoU32 p_time);
 	void DrawSpeedometer();
 	void Draw();
 	LegoS32 DrawTime(const LegoChar* p_text, LegoS32 p_x, LegoS32 p_y);
-	LegoS32 Initialize(
+	void Initialize(
 		GolD3DRenderDevice* p_renderer,
 		GolNameTable* p_nameTable,
 		GolString* p_string,
@@ -100,7 +100,7 @@ private:
 		LegoBool p_isTimeRace,
 		undefined4 p_hideRaceInfo
 	);
-	LegoS32 SetLayout(LegoS32 p_v0);
+	void SetLayout(LegoS32 p_mode);
 	void Reset();
 
 	static undefined4 CopyToGolString(const LegoChar* p_text, GolString* p_string);

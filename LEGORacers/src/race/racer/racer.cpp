@@ -28,8 +28,6 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern LegoFloat g_carBuildPreviewMouseScale;
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
-extern LegoFloat g_minSoundPan;
-
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(Racer, 0xe34)
 DECOMP_SIZE_ASSERT(RaceEventRecord, 0x24)
@@ -48,12 +46,21 @@ DECOMP_SIZE_ASSERT(RaceSetup, 0x1c)
 
 extern const LegoFloat g_ghostAnimationRateScale;
 extern const LegoFloat g_ghostSampleFractionScale;
-extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_two;
 extern LegoU32 g_silhouetteClearFlag;
 extern LegoU32 g_silhouetteFlattenFlag;
 extern LegoFloat g_cosineTable[1024];
+
+inline GolVec3 CrossVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	GolVec3 result;
+	result.m_x = p_left.m_y * p_right.m_z - p_left.m_z * p_right.m_y;
+	result.m_y = p_left.m_z * p_right.m_x - p_left.m_x * p_right.m_z;
+	result.m_z = p_left.m_x * p_right.m_y - p_left.m_y * p_right.m_x;
+
+	return result;
+}
 
 // GLOBAL: LEGORACERS 0x004b02e0
 extern const LegoFloat g_unk0x004b02e0 = 0.2f;
@@ -360,15 +367,13 @@ void Racer::Reset()
 	m_aiPowerupCheckMs = 0;
 	m_raceState = NULL;
 
-	LegoU32 lapTime;
 	m_lapsCompleted = 0;
-	lapTime = 0;
+	LegoU32 lapTime = 0;
 	m_lapTransitionCount = 0xffffffff;
-	m_lapTimes[0] = lapTime;
-	m_lapTimes[1] = lapTime;
-	m_lapTimes[2] = lapTime;
-	m_lapTimes[3] = lapTime;
-	m_lapTimes[4] = lapTime;
+	LegoS32 i;
+	for (i = 0; i < sizeOfArray(m_lapTimes); i++) {
+		m_lapTimes[i] = lapTime;
+	}
 	m_heldPowerupColor = 0;
 	m_flags = 0;
 	m_controlMode = c_controlAi;
@@ -432,9 +437,9 @@ void Racer::Reset()
 	m_checkpointCount = 0xffffffff;
 	m_unk0xdb0 = 0;
 	m_whiteBrickCount = 0;
-	m_whiteBricks[0] = brick;
-	m_whiteBricks[1] = brick;
-	m_whiteBricks[2] = brick;
+	for (i = 0; i < sizeOfArray(m_whiteBricks); i++) {
+		m_whiteBricks[i] = brick;
+	}
 	m_cameraController = NULL;
 	m_cameraViewIndex = 0;
 	m_forceFeedback = 0;
@@ -559,10 +564,7 @@ void Racer::Initialize(
 	}
 	m_driverStat5 = static_cast<LegoU8>(colorScale * 255.0f);
 
-	LegoS32 aggressionScore = m_aiBlueUseChance;
-	aggressionScore = m_aiYellowUseChance - aggressionScore;
-	aggressionScore -= m_aiGreenUseChance;
-	aggressionScore += m_aiRedUseChance;
+	LegoS32 aggressionScore = m_aiYellowUseChance - m_aiBlueUseChance - m_aiGreenUseChance + m_aiRedUseChance;
 	if (aggressionScore < 0) {
 		m_aiAggression = 0;
 	}
@@ -573,19 +575,11 @@ void Racer::Initialize(
 		m_aiAggression = static_cast<LegoU8>(aggressionScaled);
 	}
 
-	LegoU32 randomIndex = g_randomTableIndex;
-	randomIndex++;
-	randomIndex &= c_randomTableMask;
-	g_randomTableIndex = randomIndex;
-	LegoU32 randomValue = g_randomTable[randomIndex];
-	m_tauntCooldownMs = randomValue * 8 + 2000;
+	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	m_tauntCooldownMs = g_randomTable[g_randomTableIndex] * 8 + 2000;
 
-	randomIndex = g_randomTableIndex;
-	randomIndex++;
-	randomIndex &= c_randomTableMask;
-	g_randomTableIndex = randomIndex;
-	randomValue = g_randomTable[randomIndex];
-	m_reactionCooldownMs = randomValue * 4 + 5000;
+	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	m_reactionCooldownMs = g_randomTable[g_randomTableIndex] * 4 + 5000;
 
 	LegoU32 state = 2;
 	m_controlMode = state;
@@ -846,8 +840,9 @@ void Racer::UpdateCarAnimation(LegoU32 p_elapsedMs)
 	field->PlayForwardAnimation();
 
 setSpeed:
+	LegoFloat speed = value;
 	GolAnimatedEntity* entity = field->m_carEntity;
-	LegoFloat speed = value * g_ghostAnimationRateScale;
+	speed *= g_ghostAnimationRateScale;
 	entity->SetMsPerFrame(speed);
 
 	if (field->m_secondaryEntity) {
@@ -955,8 +950,8 @@ void Racer::UpdateTimers(LegoU32 p_elapsedMs)
 	}
 
 	m_flags &= ~c_flagSpeedRamping;
-	m_visuals.m_carEntity->GetPosition(&m_actionSource);
-	m_visuals.m_carEntity->GetOrientationRow0(&m_actionSource.m_forward);
+	m_visuals.GetCarEntity()->GetPosition(&m_actionSource);
+	m_visuals.GetCarEntity()->GetOrientationRow0(&m_actionSource.m_forward);
 	GolVec3& velocity = m_actionSource.m_velocity;
 	velocity = m_physics.m_velocity;
 
@@ -1035,15 +1030,25 @@ void Racer::UpdateDriftLean()
 
 	direction = m_physics.m_facingDirection;
 
-	LegoFloat value = 1.0f - (m_physics.m_carEntity->GetOrientation().m_m[0][0] * direction.m_x +
-							  m_physics.m_carEntity->GetOrientation().m_m[0][1] * direction.m_y +
-							  m_physics.m_carEntity->GetOrientation().m_m[0][2] * direction.m_z);
+	GolVec2 orientation;
+	orientation.m_x = m_physics.m_carEntity->GetOrientation().m_rows[0].m_x;
+	orientation.m_y = m_physics.m_carEntity->GetOrientation().m_rows[0].m_y;
+	LegoFloat orientationY = orientation.m_y;
+	LegoFloat dot = direction.m_z;
+	dot *= m_physics.m_carEntity->GetOrientation().m_rows[0].m_z;
+	LegoFloat y = direction.m_y;
+	y *= orientationY;
+	dot += y;
+	dot += orientation.m_x * direction.m_x;
+	LegoFloat value = 1.0f - dot;
 
 	if (m_physics.m_turnRadius < 0.0f) {
 		value = -value;
 	}
 
-	m_visuals.m_rollLean += value * g_unk0x004b09cc;
+	LegoFloat scaledValue = value;
+	scaledValue *= g_unk0x004b09cc;
+	m_visuals.m_rollLean += scaledValue;
 }
 
 // FUNCTION: LEGORACERS 0x00437be0
@@ -1078,8 +1083,9 @@ void Racer::UpdateSpatialSounds()
 
 				GolVec3 position;
 				m_visuals.m_carEntity->GetPosition(&position);
-				resource->SetPosition(position);
-				resource->SetVelocity(m_physics.m_velocity);
+				GolVec3 velocity = m_physics.m_velocity;
+				resource->SetPosition(&position);
+				resource->SetVelocity(velocity);
 			}
 			else if ((flags & c_flagGhost) && i == 3) {
 				if (!resource->IsPlaying()) {
@@ -1095,7 +1101,7 @@ void Racer::UpdateSpatialSounds()
 	if (m_curseSound) {
 		GolVec3 position;
 		m_visuals.m_curseEntity.GetPosition(&position);
-		m_curseSound->SetPosition(position);
+		m_curseSound->SetPosition(&position);
 	}
 }
 
@@ -1255,7 +1261,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 			frequencyScale = 1.0f;
 		}
 
-		m_engineIdleSound->SetPosition(position);
+		m_engineIdleSound->SetPosition(&position);
 		m_engineIdleSound->SetVelocity(velocity);
 		m_engineIdleSound->SetFrequencyScale(frequencyScale);
 
@@ -1289,14 +1295,14 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 			frequencyScale = 1.0f;
 		}
 
-		m_engineFastSound->SetPosition(position);
+		m_engineFastSound->SetPosition(&position);
 		m_engineFastSound->SetVelocity(velocity);
 		m_engineFastSound->SetFrequencyScale(frequencyScale);
 	}
 
 	if (m_brakeSound) {
-		if (m_physics.m_forwardSpeed >= g_brakeSoundMinSpeed && m_physics.m_thrust < 0.0f) {
-			m_brakeSound->SetPosition(position);
+		if (m_physics.GetForwardSpeed() >= g_brakeSoundMinSpeed && m_physics.m_thrust < 0.0f) {
+			m_brakeSound->SetPosition(&position);
 			m_brakeSound->SetVelocity(velocity);
 			frequencyScale = m_physics.m_speed;
 			frequencyScale = g_enginePitchSpeedRange - frequencyScale;
@@ -1311,7 +1317,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (m_physics.m_forwardSpeed > g_brakeSoundMinSpeed && m_physics.m_thrust < 0.0f) {
+	if (m_physics.GetForwardSpeed() > g_brakeSoundMinSpeed && m_physics.m_thrust < 0.0f) {
 		m_soundSource
 			->PlaySpatialSoundById(2, &position, g_shieldSoundMinDistance, g_shieldSoundMaxDistance, 1.0f, 1.0f);
 		m_brakeSound = m_soundSource->AcquireSoundById(3);
@@ -1891,8 +1897,7 @@ LegoBool32 Racer::CollectWhiteBrick(DroppableBrick* p_brick)
 		m_whiteBricks[index] = p_brick;
 		m_soundSource->PlaySoundById(m_whiteBrickCount + 11);
 
-		LegoU32 count = m_whiteBrickCount + 1;
-		m_whiteBrickCount = count;
+		LegoU32 count = ++m_whiteBrickCount;
 
 		if (count == sizeOfArray(m_whiteBricks)) {
 			PlayReaction(TRUE);
@@ -2147,20 +2152,16 @@ void Racer::EndDrift()
 // FUNCTION: LEGORACERS 0x00439900
 void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 {
+	GolAnimatedEntity* entity = &m_visuals.m_curseEntity;
 	LegoU32 flags = m_flags;
 	m_curseTimerMs = p_durationMs;
 	flags |= c_flagCursed;
 	m_curseTickMs = 1000;
 	m_flags = flags;
 
-	LegoU32 controllerFlags = m_driveController.m_flags;
-	controllerFlags |= DriveController::c_flagCursed;
-	GolAnimatedEntity* entity = &m_visuals.m_curseEntity;
-	m_driveController.m_flags = controllerFlags;
+	m_driveController.SetFlags(DriveController::c_flagCursed);
 
-	LegoU32 reactionFlags = m_visuals.m_reactionFlags;
-	reactionFlags |= CarVisuals::c_reactionHit;
-	m_visuals.m_reactionFlags = reactionFlags;
+	m_visuals.SetReactionFlags(CarVisuals::c_reactionHit);
 
 	entity->SetModel(
 		p_curseEntity->GetModel(0),
@@ -2195,18 +2196,18 @@ void Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_durationMs)
 
 		GolVec3 position;
 		p_curseEntity->GetPosition(&position);
-		m_curseSound->SetPosition(position);
+		m_curseSound->SetPosition(&position);
 	}
 
 	ColorTransform transform;
-	transform.m_redShift = 0;
-	transform.m_grnShift = 1;
-	transform.m_bluShift = 0;
-	transform.m_alpShift = 1;
-	transform.m_redOffset = 0x40;
-	transform.m_grnOffset = 0;
+	transform.m_redOffset = 0;
+	transform.m_redShift = 1;
+	transform.m_grnOffset = 0x40;
+	transform.m_grnShift = 0;
 	transform.m_bluOffset = 0;
+	transform.m_bluShift = 1;
 	transform.m_alpOffset = 0;
+	transform.m_alpShift = 0;
 	m_visuals.FlashColor(&transform, p_durationMs);
 	m_physics.StartCurseSlow();
 }
@@ -2224,8 +2225,11 @@ void Racer::RemoveCurse()
 	flags &= ~c_flagCursed;
 	m_flags = flags;
 
-	m_driveController.m_flags &= ~DriveController::c_flagCursed;
-	m_visuals.m_curseEntity.ResetModelState();
+	LegoU32 controllerFlags = m_driveController.m_flags;
+	controllerFlags &= ~DriveController::c_flagCursed;
+	GolAnimatedEntity* entity = &m_visuals.m_curseEntity;
+	m_driveController.m_flags = controllerFlags;
+	entity->ResetModelState();
 	m_visuals.EndFlash();
 	m_physics.EndCurseSlow();
 }
@@ -2347,9 +2351,7 @@ void Racer::UpdateFacing(LegoU32 p_elapsedMs)
 			if (checkpoint->m_next.m_items[i] != 0xff) {
 				m_checkpointGraph->GetCheckpoint(checkpoint->m_next.m_items[i]);
 				checkpoint = m_checkpoint;
-				LegoFloat dot = direction.m_z * checkpoint->m_planeNormal.m_z +
-								direction.m_y * checkpoint->m_planeNormal.m_y +
-								direction.m_x * checkpoint->m_planeNormal.m_x;
+				LegoFloat dot = GOLVECTOR3_DOT(direction, checkpoint->m_planeNormal);
 				if (dot <= g_unk0x004b02e0) {
 					isBlocked = TRUE;
 				}
@@ -2414,10 +2416,11 @@ void Racer::UpdateLookTarget(LegoU32)
 
 		LegoFloat forwardDot = direction.m_z * delta.m_z + direction.m_y * delta.m_y + direction.m_x * delta.m_x;
 		if (forwardDot < 0.5f) {
-			GolVec3 side;
-			side.m_x = direction.m_y - 0.0f;
-			side.m_y = 0.0f - direction.m_x;
-			side.m_z = 0.0f;
+			GolVec3 up;
+			up.m_x = 0.0f;
+			up.m_y = 0.0f;
+			up.m_z = 1.0f;
+			GolVec3 side = CrossVectors(direction, up);
 			if (GOLVECTOR3_DOT(side, delta) > 0.0f) {
 				m_flags |= c_flagLookTargetLeft;
 			}
@@ -2442,35 +2445,34 @@ void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_entry, GolBoundingVolu
 	}
 
 	if (p_entry != m_checkpoint || isForward != m_checkpointForward) {
+		LegoS32 checkpointCount;
+
 		if (p_entry->m_lapFraction == 0.0f) {
-			LegoU32 flags = m_flags;
-			if (isForward) {
-				if (!(flags & c_flagCrossedBackward)) {
-					m_checkpointCount++;
+			if (isForward == TRUE) {
+				if (!(m_flags & c_flagCrossedBackward)) {
+					checkpointCount = m_checkpointCount;
+					checkpointCount++;
+					m_checkpointCount = checkpointCount;
 				}
 			}
 			else {
+				m_flags |= c_flagCrossedBackward;
 				m_checkpointForward = isForward;
-				m_flags = flags | c_flagCrossedBackward;
 				m_currentZone = 0;
 				m_previousZone = 2;
 				m_zoneBeforePrevious = 2;
 				m_checkpoint = p_entry;
+
 				return;
 			}
 
-			m_flags = flags & ~c_flagCrossedBackward;
+			m_flags &= ~c_flagCrossedBackward;
 		}
-		else {
-			LegoU32 flags = m_flags;
-			if (!(flags & c_flagCrossedBackward)) {
-				m_checkpoint = p_entry;
-				m_checkpointForward = isForward;
-				return;
-			}
-
-			m_checkpointCount--;
-			m_flags = flags & ~c_flagCrossedBackward;
+		else if (m_flags & c_flagCrossedBackward) {
+			checkpointCount = m_checkpointCount;
+			checkpointCount--;
+			m_checkpointCount = checkpointCount;
+			m_flags &= ~c_flagCrossedBackward;
 		}
 
 		m_checkpoint = p_entry;
@@ -2570,12 +2572,9 @@ void Racer::SetStandingsPosition(LegoU32 p_position)
 		else if (p_position > previousPosition) {
 			PlayReaction(FALSE);
 		}
+	}
 
-		m_standingsPosition = p_position;
-	}
-	else {
-		m_standingsPosition = p_position;
-	}
+	m_standingsPosition = p_position;
 }
 
 // FUNCTION: LEGORACERS 0x0043a270

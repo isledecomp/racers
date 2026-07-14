@@ -20,11 +20,6 @@
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
 DECOMP_SIZE_ASSERT(GolDPExport, 0xc8ac8)
 
-// FUNCTION: GOLDP 0x10007060
-GolDPExport::~GolDPExport()
-{
-}
-
 // FUNCTION: GOLDP 0x10015090
 GolCommonDrawState* GolDPExport::GetDrawState()
 {

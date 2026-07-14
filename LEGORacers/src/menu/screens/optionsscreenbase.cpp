@@ -225,11 +225,13 @@ void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 	}
 	else if (p_widget == &m_racerCountSelector) {
 		m_context->m_context->m_racerCount = m_racerCountCarousel.GetSelectedIndex();
-		m_gameState->SetRacerCount(m_context->m_context->m_racerCount);
+		GameState* gameState = m_gameState;
+		gameState->SetRacerCount(m_context->m_context->m_racerCount);
 	}
 	else if (p_widget == &m_lapCountSelector) {
 		m_context->m_context->m_lapCount = static_cast<LegoU8>(m_lapCountCarousel.GetSelectedIndex() + 1);
-		m_gameState->SetLapCount(m_context->m_context->m_lapCount);
+		GameState* gameState = m_gameState;
+		gameState->SetLapCount(m_context->m_context->m_lapCount);
 	}
 	else if (p_widget == &m_stereoSelector) {
 		m_gameState->SetStereo(m_stereoCarousel.GetSelectedIndex() == 0);
@@ -373,10 +375,10 @@ LegoBool32 OptionsScreenBase::Update(undefined4 p_elapsed)
 	if (m_page == 0) {
 		if (m_inputManager->GetJoystickCount() <= 1 && !m_inputManager->IsKeyboardAvailable()) {
 			m_controls2Button.Disable(5);
-			return MenuGameScreen::Update(p_elapsed);
 		}
-
-		m_controls2Button.Enable(5);
+		else {
+			m_controls2Button.Enable(5);
+		}
 	}
 
 	return MenuGameScreen::Update(p_elapsed);

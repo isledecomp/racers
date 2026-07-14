@@ -26,10 +26,24 @@ LegoFloat g_carPartPlacementMaxFloat = FLT_MAX;
 static const LegoFloat g_twoPiPlacement = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004b2e80
-const LegoFloat g_carPartCameraPositions[] = {
-	0.0f, -14.0f, 9.0f,  0.0f, -10.0f, 14.0f, 0.0f, -0.3f, 17.0f, 0.0f,
-	0.0f, -18.0f, 10.0f, 0.0f, -12.0f, 17.0f, 0.0f, -0.3f, 20.0f,
+const GolVec3 g_carPartCameraMinPositions[] = {
+	{0.0f, -14.0f, 9.0f},
+	{0.0f, -10.0f, 14.0f},
+	{0.0f, -0.3f, 17.0f},
 };
+
+// GLOBAL: LEGORACERS 0x004b2ea8
+const GolVec3 g_carPartCameraMaxPositions[] = {
+	{0.0f, -18.0f, 10.0f},
+	{0.0f, -12.0f, 17.0f},
+	{0.0f, -0.3f, 20.0f},
+};
+
+// GLOBAL: LEGORACERS 0x004b2ecc
+extern const LegoFloat g_carPartCameraMinDistance = 5.9f;
+
+// GLOBAL: LEGORACERS 0x004b2ed0
+extern const LegoFloat g_carPartCameraMaxDistance = 8.5f;
 
 // GLOBAL: LEGORACERS 0x004b2ed4
 extern const LegoFloat g_carPartHoverHeight = 1.2f;
@@ -754,20 +768,24 @@ void CarModelScreenBase::CarPartPlacement::SnapViewPitch()
 	}
 
 	GolVec3 cameraPosition;
-	m_sceneView->GetCamera()->GetTransform()->GetPosition(&cameraPosition);
+	GolCamera* camera = m_sceneView->GetCamera();
+	camera->m_transform->GetPosition(&cameraPosition);
 
 	LegoU32 closestIndex = 0;
 	GolVec3 position;
 	GetViewPosition(&position, 0);
-	LegoFloat closestDistance = GOL_SQUARED(cameraPosition.m_z - position.m_z) +
-								GOL_SQUARED(cameraPosition.m_y - position.m_y) +
-								GOL_SQUARED(cameraPosition.m_x - position.m_x);
+	LegoFloat deltaX = cameraPosition.m_x - position.m_x;
+	LegoFloat deltaY = cameraPosition.m_y - position.m_y;
+	LegoFloat deltaZ = cameraPosition.m_z - position.m_z;
+	LegoU32 i = 1;
+	LegoFloat closestDistance = GOL_SQUARED(deltaX) + GOL_SQUARED(deltaY) + GOL_SQUARED(deltaZ);
 
-	for (LegoU32 i = 1; i < 3; i++) {
+	for (; i < 3; i++) {
 		GetViewPosition(&position, i);
-		LegoFloat distance = GOL_SQUARED(cameraPosition.m_z - position.m_z) +
-							 GOL_SQUARED(cameraPosition.m_y - position.m_y) +
-							 GOL_SQUARED(cameraPosition.m_x - position.m_x);
+		LegoFloat currentDeltaX = cameraPosition.m_x - position.m_x;
+		LegoFloat currentDeltaY = cameraPosition.m_y - position.m_y;
+		LegoFloat currentDeltaZ = cameraPosition.m_z - position.m_z;
+		LegoFloat distance = GOL_SQUARED(currentDeltaX) + GOL_SQUARED(currentDeltaY) + GOL_SQUARED(currentDeltaZ);
 		if (distance < closestDistance) {
 			closestDistance = distance;
 			closestIndex = i;
@@ -929,14 +947,22 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::UndoLastPiece(
 // FUNCTION: LEGORACERS 0x004788f0
 LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 {
-	ColorRGBA originalColor = {0x78, 0x78, 0x78, 0xff};
-	ColorRGBA highlightColor = {0xb4, 0xb4, 0xb4, 0xff};
+	ColorRGBA originalColor;
+	ColorRGBA highlightColor;
+	originalColor.m_alp = 0xff;
+	highlightColor.m_alp = 0xff;
 	GolRenderDevice::MaterialColor* material = m_renderer->GetCurrentMaterialColor();
+	originalColor.m_red = 0x78;
+	originalColor.m_grn = 0x78;
+	originalColor.m_blu = 0x78;
+	highlightColor.m_red = 0xb4;
+	highlightColor.m_grn = 0xb4;
+	highlightColor.m_blu = 0xb4;
 
 	if (material == NULL) {
-		m_pieceMaterial.SetColor(originalColor);
-		m_renderer->SetAmbient(&m_pieceMaterial);
 		material = &m_pieceMaterial;
+		material->SetColor(originalColor);
+		m_renderer->SetAmbient(material);
 	}
 
 	originalColor = material->GetColor();
@@ -990,7 +1016,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 					LegoFloat alphaValue = value;
 					alphaValue /= g_carPartHoverHeight;
 					alphaValue *= 150.0f;
-					alpha = static_cast<LegoU32>(alphaValue);
+					alpha = static_cast<LegoS32>(alphaValue);
 				}
 			}
 		}
@@ -1001,8 +1027,11 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 			scaledTime *= g_negativeRadiansToTableIndex;
 			LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
 			LegoFloat interpolation = g_cosineTable[index];
-			interpolation *= 50.0f;
-			alpha = static_cast<LegoU32>(interpolation) + 0x64;
+			LegoFloat scaledAlpha;
+			scaledAlpha = interpolation * 50.0f;
+			interpolation = scaledAlpha;
+			alpha = static_cast<LegoS32>(interpolation);
+			alpha += 0x64;
 		}
 
 		position.m_z = m_pieceRestHeight;
@@ -1348,7 +1377,8 @@ void CarModelScreenBase::CarPartPlacement::ClearFocusPane()
 // FUNCTION: LEGORACERS 0x00479330
 void CarModelScreenBase::CarPartPlacement::GetViewPosition(GolVec3* p_dest, LegoS32 p_index)
 {
-	m_carSizeBlend = (m_carGroup.GetBoundsRadius() - 5.9f) / (8.5f - 5.9f);
+	m_carSizeBlend = (m_carGroup.GetBoundsRadius() - g_carPartCameraMinDistance) /
+					 (g_carPartCameraMaxDistance - g_carPartCameraMinDistance);
 	if (m_carSizeBlend > 1.0f) {
 		m_carSizeBlend = 1.0f;
 	}
@@ -1356,18 +1386,18 @@ void CarModelScreenBase::CarPartPlacement::GetViewPosition(GolVec3* p_dest, Lego
 		m_carSizeBlend = 0.0f;
 	}
 
-	LegoFloat value = g_carPartCameraPositions[p_index * 3];
+	LegoFloat value = g_carPartCameraMinPositions[p_index].m_x;
 	value *= 1.0f - m_carSizeBlend;
-	value += g_carPartCameraPositions[p_index * 3 + 10] * m_carSizeBlend;
+	value += g_carPartCameraMaxPositions[p_index].m_x * m_carSizeBlend;
 	p_dest->m_x = value;
 
-	value = g_carPartCameraPositions[p_index * 3 + 1];
+	value = g_carPartCameraMinPositions[p_index].m_y;
 	value *= 1.0f - m_carSizeBlend;
-	value += g_carPartCameraPositions[p_index * 3 + 11] * m_carSizeBlend;
+	value += g_carPartCameraMaxPositions[p_index].m_y * m_carSizeBlend;
 	p_dest->m_y = value;
 
-	value = g_carPartCameraPositions[p_index * 3 + 2];
+	value = g_carPartCameraMinPositions[p_index].m_z;
 	value *= 1.0f - m_carSizeBlend;
-	value += g_carPartCameraPositions[p_index * 3 + 12] * m_carSizeBlend;
+	value += g_carPartCameraMaxPositions[p_index].m_z * m_carSizeBlend;
 	p_dest->m_z = value;
 }

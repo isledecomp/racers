@@ -81,7 +81,8 @@ void RacerPickScreenBase::RefreshNameLabels(LegoS32 p_index)
 
 	for (LegoS32 i = 0; i < 3; i++) {
 		LegoS32 widgetIndex = p_index * 3 + i;
-		modelState->SelectNext()->GetName(&m_nameStrings[widgetIndex]);
+		SaveRecordList::Record* record = modelState->SelectNext();
+		record->GetName(&m_nameStrings[widgetIndex]);
 		m_nameLabels[widgetIndex].SetString(&m_nameStrings[widgetIndex], 0);
 	}
 

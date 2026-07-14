@@ -193,10 +193,11 @@ void CarBuildScreen::HandleCursorDrag(LegoS32 p_deltaX, LegoS32 p_deltaY)
 		return;
 	}
 
+	LegoS32 categoryIndex = m_partPlacement.GetViewSlot();
 	LegoS32 index = regionId - 1;
 	MovePieceByDrag(
-		g_carBuildDragHorizontalOffsets[m_partPlacement.GetViewSlot() * 8 + index],
-		g_carBuildDragVerticalOffsets[m_partPlacement.GetViewSlot() * 8 + index],
+		g_carBuildDragHorizontalOffsets[categoryIndex * 8 + index],
+		g_carBuildDragVerticalOffsets[categoryIndex * 8 + index],
 		index & 1,
 		0
 	);
@@ -294,15 +295,15 @@ void CarBuildScreen::ExitBusyMode()
 // FUNCTION: LEGORACERS 0x00473ee0
 LegoBool32 CarBuildScreen::HandleBuildKey(MenuWidget*, InputEventQueue::Event* p_event, undefined4, undefined4)
 {
-	LegoU32 keyCode = p_event->m_keyCode;
 	LegoU32 sound = 0;
-	if ((keyCode & InputDevice::c_sourceMask) != InputDevice::c_sourceKeyboard) {
+	LegoU32 keyCode = p_event->m_keyCode;
+	LegoBool32 result = (keyCode & InputDevice::c_sourceMask) == InputDevice::c_sourceKeyboard;
+	if (!result) {
 		return FALSE;
 	}
 
 	LegoS32 categoryIndex = m_partPlacement.GetViewSlot();
-	undefined4 nextMode = 1;
-	LegoBool32 result = TRUE;
+	undefined4 nextMode = result;
 	LegoBool32 moved;
 	SoundVector position;
 
@@ -704,10 +705,8 @@ void CarBuildScreen::OnWidgetValueChanged(MenuWidget* p_source)
 	if (p_source == &m_movePad) {
 		LegoU32 index = m_movePad.GetHotspotIndex();
 		LegoS32 categoryIndex = m_partPlacement.GetViewSlot();
-		LegoU32 regionId = index;
-		index--;
 
-		if (regionId) {
+		if (index--) {
 			MovePieceByDrag(
 				g_carBuildDragHorizontalOffsets[index + (categoryIndex * 8)],
 				g_carBuildDragVerticalOffsets[index + (categoryIndex * 8)],

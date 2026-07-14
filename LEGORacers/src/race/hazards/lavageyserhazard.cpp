@@ -33,11 +33,14 @@ extern const LegoFloat g_lavaGeyserLavaStartFrames[3] = {0.0f, 61.0f, 119.0f};
 extern const LegoFloat g_lavaGeyserLavaEndFrames[3] = {26.0f, 86.0f, 146.0f};
 
 // GLOBAL: LEGORACERS 0x004c22d8
-extern const GolVec3 g_lavaGeyserLavaPositions[3] = {
+GolVec3 g_lavaGeyserLavaPositions[3] = {
 	{577.0f, -444.0f, 7.3340001f},
 	{605.0f, -500.0f, 19.0f},
 	{525.0f, -505.0f, 4.6f},
 };
+
+// GLOBAL: LEGORACERS 0x004c22fc
+ColorRGBA g_launcherTrailColor = {0x32, 0x32, 0x32, 0x64};
 
 // FUNCTION: LEGORACERS 0x0048d7f0
 LavaGeyserHazard::LavaGeyserHazard()

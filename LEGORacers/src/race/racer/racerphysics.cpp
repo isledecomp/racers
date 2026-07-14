@@ -15,7 +15,6 @@
 #include <string.h>
 
 extern const LegoFloat g_carBuildModelHeightScale;
-extern LegoFloat g_minSoundPan;
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 extern const LegoFloat g_surfaceSoundMaxDistance;
 extern const LegoFloat g_surfaceSoundMinDistance;
@@ -186,8 +185,8 @@ void RacerPhysics::Reset()
 	SetAccelerationStat(0x21);
 	SetTopSpeedStat(0x21);
 
-	m_surfaceSoundMs = 0;
 	m_maxSpeedSetting = g_routeBaseMaxSpeed;
+	m_surfaceSoundMs = 0;
 	m_routeMode = 0;
 	m_routeMotion.m_sink = 0.0f;
 	m_routeMotion.m_sideOffset = 0.0f;
@@ -208,10 +207,10 @@ void RacerPhysics::Reset()
 	m_resetRotation.m_x = 0.0f;
 	m_resetRotation.m_y = 0.0f;
 	m_resetRotation.m_z = 0.0f;
-	m_resetRotation.m_w = 1.0f;
 	m_surfaceSound = NULL;
 	m_routeBaseSpeed = 1.0f;
 	m_routeTargetSpeed = 1.0f;
+	m_resetRotation.m_w = 1.0f;
 	m_surfaceSoundId = -1;
 }
 
@@ -290,8 +289,8 @@ void RacerPhysics::EndBoost()
 		m_routeTargetSpeed = 1.0f;
 	}
 
-	m_gripScale = 1.0f;
 	m_maxSpeedSetting = g_routeBaseMaxSpeed;
+	m_gripScale = 1.0f;
 	SetMaxSpeed(g_routeBaseMaxSpeed);
 }
 
@@ -410,20 +409,30 @@ void RacerPhysics::MoveBy(GolVec3* p_delta)
 		m_routeCursor.SeekByDelta(&direction);
 		UpdateRouteRotation(0);
 
-		const GolVec3& side = m_carEntity->GetOrientation().m_rows[1];
-		LegoFloat dot = side.m_z * direction.m_z;
-		dot += side.m_y * direction.m_y;
+		GolVec2 side;
+		side.m_x = m_carEntity->GetOrientation().m_rows[1].m_x;
+		side.m_y = m_carEntity->GetOrientation().m_rows[1].m_y;
+		LegoFloat sideY = side.m_y;
+		LegoFloat dot = direction.m_z;
+		dot *= m_carEntity->GetOrientation().m_rows[1].m_z;
+		LegoFloat y = direction.m_y;
+		y *= sideY;
+		dot += y;
 		dot += side.m_x * direction.m_x;
 		m_routeMotion.m_sideOffset = dot;
 
 		if (dot > 0.0f) {
-			if (m_routeCursor.m_widthRight < dot) {
+			LegoFloat widthRight = m_routeCursor.m_widthRight;
+			if (dot > widthRight) {
 				dot = m_routeCursor.m_widthRight;
 				m_routeMotion.m_sideOffset = dot;
 			}
 		}
-		else if (m_routeCursor.m_widthLeft < -dot) {
-			m_routeMotion.m_sideOffset = -m_routeCursor.m_widthLeft;
+		else {
+			LegoFloat widthLeft = m_routeCursor.m_widthLeft;
+			if (-dot > widthLeft) {
+				m_routeMotion.m_sideOffset = -m_routeCursor.m_widthLeft;
+			}
 		}
 
 		ApplyRoutePosition();
@@ -441,7 +450,8 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 		return;
 	}
 
-	LegoFloat dot = m_facingDirection.m_z * p_direction->m_z;
+	LegoFloat dot = m_facingDirection.m_z;
+	dot *= p_direction->m_z;
 	dot += m_facingDirection.m_y * p_direction->m_y;
 	dot += m_facingDirection.m_x * p_direction->m_x;
 	if (p_magnitude < 0.0f) {
@@ -455,7 +465,6 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 	LegoFloat scaled = p_magnitude / g_directionalImpulseMax;
 
 	if (dot >= 0.0f) {
-		LegoFloat amount = (1.0f - dot) * g_unk0x004b0544;
 		LegoFloat value;
 		if (m_flags & c_flagSpinning) {
 			value = g_routeSpinSpeed;
@@ -465,12 +474,12 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 			value = m_routeCursor.m_playbackSpeed;
 			value += scaled;
 		}
-		amount += value;
+		value += (1.0f - dot) * g_unk0x004b0544;
 
-		if (amount > g_routeMaxPlaybackSpeed) {
-			amount = g_routeMaxPlaybackSpeed;
+		if (value > g_routeMaxPlaybackSpeed) {
+			value = g_routeMaxPlaybackSpeed;
 		}
-		m_routeCursor.m_playbackSpeed = amount;
+		m_routeCursor.m_playbackSpeed = value;
 	}
 	else {
 		LegoFloat amount = (dot + 1.0f) * g_carBuildModelTextureCoordinateScale;
@@ -556,11 +565,13 @@ void RacerPhysics::EndRoutePush()
 // FUNCTION: LEGORACERS 0x00429990
 void RacerPhysics::StartRoutePush(GolVec3* p_force)
 {
-	LegoU32 flags = m_flags | c_flagRoutePushed;
-	m_flags = flags;
+	LegoU32& flags = m_flags;
+	flags |= c_flagRoutePushed;
 
-	LegoFloat dot = m_facingDirection.m_x * p_force->m_x + m_facingDirection.m_y * p_force->m_y +
-					m_facingDirection.m_z * p_force->m_z;
+	LegoFloat dot = m_facingDirection.m_z;
+	dot *= p_force->m_z;
+	dot += m_facingDirection.m_y * p_force->m_y;
+	dot += m_facingDirection.m_x * p_force->m_x;
 	if (dot >= 0.0f) {
 		if (flags & c_flagSpinning) {
 			LegoFloat value = g_routeSpinSpeed;
@@ -623,7 +634,8 @@ void RacerPhysics::StartRouteGhost()
 void RacerPhysics::EndRouteGhost()
 {
 	if (m_routeMode) {
-		m_routeCursor.m_playbackSpeed = m_routeBaseSpeed;
+		LegoFloat playbackSpeed = m_routeBaseSpeed;
+		m_routeCursor.m_playbackSpeed = playbackSpeed;
 		m_slideLiftTarget = 0;
 		m_slideBankTarget = 0;
 		m_slideLiftRate = g_slideLiftReleaseRate;
@@ -888,8 +900,8 @@ void RacerPhysics::UpdateRouteSlideBank()
 	if (dot > 1.0f) {
 		dot = 1.0f;
 	}
-	else if (dot < g_minSoundPan) {
-		dot = g_minSoundPan;
+	else if (dot < -1.0f) {
+		dot = -1.0f;
 	}
 
 	m_slideBankTarget = g_unk0x004b0480 * dot;
@@ -901,11 +913,11 @@ void RacerPhysics::SaveRouteState()
 	SaveState();
 
 	m_savedRouteMotion.m_sink = m_routeMotion.m_sink;
-	m_savedRouteMotion.m_jumpVelocity = m_routeMotion.m_jumpVelocity;
-	m_savedRouteMotion.m_sideOffset = m_routeMotion.m_sideOffset;
 	m_savedRouteCursor = m_routeCursor;
-	m_savedRouteSpinRate = m_routeSpinRate;
 	m_savedRouteMotion.m_jumpHeight = m_routeMotion.m_jumpHeight;
+	m_savedRouteMotion.m_sideOffset = m_routeMotion.m_sideOffset;
+	m_savedRouteMotion.m_jumpVelocity = m_routeMotion.m_jumpVelocity;
+	m_savedRouteSpinRate = m_routeSpinRate;
 	m_savedRouteSpinAngle = m_routeSpinAngle;
 }
 
@@ -1004,8 +1016,10 @@ void RacerPhysics::ApplyRoutePosition()
 	position.m_z = position.m_z - m_routeMotion.m_sink + m_routeTiltHeight + m_routeMotion.m_jumpHeight + m_slideLift;
 	GolVec3 scaledSide;
 	scaledSide.m_x = side.m_x * sideOffset;
-	scaledSide.m_y = side.m_y * sideOffset;
-	scaledSide.m_z = side.m_z * sideOffset;
+	scaledSide.m_y = side.m_y;
+	scaledSide.m_y *= sideOffset;
+	scaledSide.m_z = side.m_z;
+	scaledSide.m_z *= sideOffset;
 	position.m_x += scaledSide.m_x;
 	position.m_y += scaledSide.m_y;
 	position.m_z += scaledSide.m_z;
@@ -1076,8 +1090,8 @@ LegoU32 RacerPhysics::OnCollisionRecord(
 			return FALSE;
 		}
 
-		LegoS32 eventKind = p_record->GetKind();
-		if (static_cast<LegoChar>(eventKind) >= '0' && static_cast<LegoChar>(eventKind) <= '9') {
+		GolMaterial::NameRecord nameRecord = p_record->GetNameRecord();
+		if (nameRecord.m_name[0] >= '0' && nameRecord.m_name[0] <= '9') {
 			m_ownerRacer->OnCheckpointCrossed(p_record->GetPathField(), p_context);
 			return FALSE;
 		}
@@ -1147,8 +1161,10 @@ void RacerPhysics::UpdateWheelSurfaces()
 			LegoBool32 notify0 = target0 != NULL;
 			LegoBool32 notify1 = target1 != NULL;
 
-			for (WheelProbe* other = self->m_wheelProbes; other < end; other++) {
-				if (other == entry) {
+			WheelProbe* other = self->m_wheelProbes;
+			while (other < end) {
+				if (entry == other) {
+					other++;
 					continue;
 				}
 
@@ -1160,6 +1176,8 @@ void RacerPhysics::UpdateWheelSurfaces()
 				if (record1 == other->m_hitRecord || (record1 == otherRecord1 && other < entry)) {
 					notify1 = FALSE;
 				}
+
+				other++;
 			}
 
 			if (notify1) {
@@ -1407,12 +1425,12 @@ LegoBool32 RacerPhysics::CanSteer(LegoFloat p_turnRadius)
 	return TRUE;
 }
 
-// FUNCTION: LEGORACERS 0x0042af90 FOLDED
-SpatialSoundInstance* RacerPhysics::PlaySurfaceSound(LegoS32 p_soundId)
+// FUNCTION: LEGORACERS 0x0042af90
+void RacerPhysics::PlaySurfaceSound(LegoS32 p_soundId)
 {
 	if (m_surfaceSound != NULL) {
 		if (p_soundId == m_surfaceSoundId) {
-			return m_surfaceSound;
+			return;
 		}
 
 		StopSurfaceSound();
@@ -1430,10 +1448,9 @@ SpatialSoundInstance* RacerPhysics::PlaySurfaceSound(LegoS32 p_soundId)
 		);
 		m_surfaceSound->Play(TRUE);
 		m_carEntity->GetPosition(&position);
-		m_surfaceSound->SetPositionAndVelocity(position, m_velocity);
+		m_surfaceSound->SetPosition(&position);
+		m_surfaceSound->SetVelocity(m_velocity);
 	}
-
-	return m_surfaceSound;
 }
 
 // FUNCTION: LEGORACERS 0x0042b060 FOLDED

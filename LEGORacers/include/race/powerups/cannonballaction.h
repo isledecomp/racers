@@ -53,7 +53,7 @@ private:
 		undefined m_unk0x000[0x008 - 0x000]; // 0x000
 		GolVec3 m_targetPosition;            // 0x008
 		GolVec3 m_position;                  // 0x014
-		LegoU32 m_lifetimeMs;                // 0x020
+		LegoFloat m_speed;                   // 0x020
 	};
 
 	PowerupProjectile m_projectile;       // 0x030

@@ -26,7 +26,6 @@
 extern LegoFloat g_carBuildPreviewMouseScale;
 extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_fadeAlphaScale;
-extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_carShadowScale;
 extern LegoU16 g_randomTable[1024];
@@ -317,13 +316,15 @@ void CarVisuals::StartSkidEffects()
 
 			if (m_tireSmokeParticle) {
 				GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
+				CutsceneParticle* particle = m_tireSmokeParticle->m_particle;
 				GolAnimatedEntity* entity = m_carEntity;
-				if (m_tireSmokeParticle->m_particle) {
-					entity->CopyOrientation(m_tireSmokeParticle->m_particle->GetBasis());
+				if (particle) {
+					entity->CopyOrientation(particle->GetBasis());
 				}
 
-				if (m_tireSmokeParticle->m_particle) {
-					m_tireSmokeParticle->m_particle->SetPosition(&position);
+				CutsceneParticleRef* ref = m_tireSmokeParticle;
+				if (ref->m_particle) {
+					ref->m_particle->SetPosition(&position);
 				}
 			}
 		}
@@ -395,8 +396,9 @@ void CarVisuals::SetWheelParticle(LegoU32 p_wheelIndex, const LegoChar* p_name)
 		entity->CopyOrientation(particle->GetBasis());
 	}
 
-	if (m_wheelParticles[p_wheelIndex]->m_particle) {
-		m_wheelParticles[p_wheelIndex]->m_particle->SetPosition(&position);
+	ref = m_wheelParticles[p_wheelIndex];
+	if (ref->m_particle) {
+		ref->m_particle->SetPosition(&position);
 	}
 }
 
@@ -443,8 +445,9 @@ void CarVisuals::StartDust()
 		entity->CopyOrientation(particle->GetBasis());
 	}
 
-	if (m_dustParticle->m_particle) {
-		m_dustParticle->m_particle->SetPosition(&position);
+	ref = m_dustParticle;
+	if (ref->m_particle) {
+		ref->m_particle->SetPosition(&position);
 	}
 }
 
@@ -475,8 +478,9 @@ void CarVisuals::StartCarSmoke()
 		entity->CopyOrientation(particle->GetBasis());
 	}
 
-	if (m_carSmokeParticle->m_particle) {
-		m_carSmokeParticle->m_particle->SetPosition(&position);
+	CutsceneParticleRef* smokeRef = m_carSmokeParticle;
+	if (smokeRef->m_particle) {
+		smokeRef->m_particle->SetPosition(&position);
 	}
 }
 
@@ -736,25 +740,48 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	oldRow2.m_z = oldOrientation.m_m[2][2];
 	m_carEntity->Update(p_elapsedMs);
 
-	const GolVec3& modelRow2 = m_bodyModelEntity->GetOrientation().m_rows[2];
 	GolVec3 targetRow0;
-	targetRow0.m_x = oldRow1.m_y * modelRow2.m_z - oldRow1.m_z * modelRow2.m_y;
-	targetRow0.m_y = oldRow1.m_z * modelRow2.m_x - oldRow1.m_x * modelRow2.m_z;
-	targetRow0.m_z = oldRow1.m_x * modelRow2.m_y - oldRow1.m_y * modelRow2.m_x;
+	GolVec3 targetRow1;
+	targetRow0.m_x = m_bodyModelEntity->GetOrientation().m_rows[0].m_x;
+	targetRow0.m_y = m_bodyModelEntity->GetOrientation().m_rows[0].m_y;
+	targetRow0.m_z = m_bodyModelEntity->GetOrientation().m_rows[0].m_z;
+	targetRow1.m_x = m_bodyModelEntity->GetOrientation().m_rows[1].m_x;
+	targetRow1.m_y = m_bodyModelEntity->GetOrientation().m_rows[1].m_y;
+	targetRow1.m_z = m_bodyModelEntity->GetOrientation().m_rows[1].m_z;
+	LegoFloat modelX = m_bodyModelEntity->GetOrientation().m_rows[2].m_x;
+	LegoFloat modelY = m_bodyModelEntity->GetOrientation().m_rows[2].m_y;
+	LegoFloat modelZ = m_bodyModelEntity->GetOrientation().m_rows[2].m_z;
+	{
+		LegoFloat x = modelZ;
+		x *= oldRow1.m_y;
+		x -= oldRow1.m_z * modelY;
+		targetRow0.m_x = x;
 
-	LegoFloat length = static_cast<LegoFloat>(sqrt(
-		(oldRow0.m_z - targetRow0.m_z) * (oldRow0.m_z - targetRow0.m_z) +
-		(oldRow0.m_y - targetRow0.m_y) * (oldRow0.m_y - targetRow0.m_y) +
-		(oldRow0.m_x - targetRow0.m_x) * (oldRow0.m_x - targetRow0.m_x)
-	));
-	if (targetRow0.m_z * oldRow2.m_z + targetRow0.m_y * oldRow2.m_y + targetRow0.m_x * oldRow2.m_x < 0.0f) {
-		length = -length;
+		LegoFloat y = oldRow1.m_z;
+		y *= modelX;
+		LegoFloat ySub = modelZ;
+		ySub *= oldRow1.m_x;
+		y -= ySub;
+		targetRow0.m_y = y;
+
+		LegoFloat z = modelY;
+		z *= oldRow1.m_x;
+		LegoFloat zSub = oldRow1.m_y;
+		zSub *= modelX;
+		z -= zSub;
+		targetRow0.m_z = z;
+	}
+
+	LegoFloat pitchLength = static_cast<LegoFloat>(sqrt(targetRow0.DistanceSquaredTo(oldRow0)));
+	LegoFloat dot = GolCameraBase::Dot2(&targetRow0, &oldRow2);
+	if (dot < 0.0f) {
+		pitchLength = -pitchLength;
 	}
 
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
 	LegoFloat scale = g_pitchLeanRate;
 	scale = -scale;
-	m_pitchLean += (scale * length) * elapsed / m_racerPhysics->m_mass;
+	m_pitchLean += (scale * pitchLength) * elapsed / m_racerPhysics->m_mass;
 	LegoFloat decay = elapsed;
 	decay *= g_pitchLeanDamping;
 	decay *= m_pitchLean;
@@ -765,23 +792,35 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		m_pitchLean = 0.0f;
 	}
 
-	GolVec3 targetRow1;
-	targetRow1.m_x = modelRow2.m_y * oldRow0.m_z - modelRow2.m_z * oldRow0.m_y;
-	targetRow1.m_y = modelRow2.m_z * oldRow0.m_x - modelRow2.m_x * oldRow0.m_z;
-	targetRow1.m_z = modelRow2.m_x * oldRow0.m_y - modelRow2.m_y * oldRow0.m_x;
+	{
+		LegoFloat x = modelY;
+		x *= oldRow0.m_z;
+		x -= modelZ * oldRow0.m_y;
+		targetRow1.m_x = x;
 
-	length = static_cast<LegoFloat>(sqrt(
-		(oldRow1.m_z - targetRow1.m_z) * (oldRow1.m_z - targetRow1.m_z) +
-		(oldRow1.m_y - targetRow1.m_y) * (oldRow1.m_y - targetRow1.m_y) +
-		(oldRow1.m_x - targetRow1.m_x) * (oldRow1.m_x - targetRow1.m_x)
-	));
-	if (targetRow1.m_z * oldRow2.m_z + targetRow1.m_y * oldRow2.m_y + targetRow1.m_x * oldRow2.m_x < 0.0f) {
-		length = -length;
+		LegoFloat y = modelZ;
+		y *= oldRow0.m_x;
+		LegoFloat ySub = oldRow0.m_z;
+		ySub *= modelX;
+		y -= ySub;
+		targetRow1.m_y = y;
+
+		LegoFloat z = oldRow0.m_y;
+		z *= modelX;
+		LegoFloat zSub = modelY;
+		zSub *= oldRow0.m_x;
+		z -= zSub;
+		targetRow1.m_z = z;
+	}
+
+	LegoFloat rollLength = static_cast<LegoFloat>(sqrt(targetRow1.DistanceSquaredTo(oldRow1)));
+	if (GolCameraBase::Dot2(&targetRow1, &oldRow2) < 0.0f) {
+		rollLength = -rollLength;
 	}
 
 	scale = g_rollLeanRate;
 	scale = -scale;
-	m_rollLean += (scale * length) * elapsed / m_racerPhysics->m_mass;
+	m_rollLean += (scale * rollLength) * elapsed / m_racerPhysics->m_mass;
 	decay = elapsed;
 	decay *= g_rollLeanDamping;
 	decay *= m_rollLean;
@@ -798,9 +837,15 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	}
 	else {
 		LegoFloat value = m_pitchLean;
-		oldRow0.m_x = oldRow2.m_x * value;
-		oldRow0.m_y = oldRow2.m_y * value;
-		oldRow0.m_z = oldRow2.m_z * value;
+		LegoFloat x = value;
+		x *= oldRow2.m_x;
+		oldRow0.m_x = x;
+		LegoFloat y = oldRow2.m_y;
+		y *= value;
+		oldRow0.m_y = y;
+		LegoFloat z = oldRow2.m_z;
+		z *= value;
+		oldRow0.m_z = z;
 		GolCameraBase::Add(&targetRow0, &oldRow0, &row0);
 	}
 
@@ -810,9 +855,15 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	}
 	else {
 		LegoFloat value = m_rollLean;
-		oldRow1.m_x = oldRow2.m_x * value;
-		oldRow1.m_y = oldRow2.m_y * value;
-		oldRow1.m_z = oldRow2.m_z * value;
+		LegoFloat x = value;
+		x *= oldRow2.m_x;
+		oldRow1.m_x = x;
+		LegoFloat y = oldRow2.m_y;
+		y *= value;
+		oldRow1.m_y = y;
+		LegoFloat z = oldRow2.m_z;
+		z *= value;
+		oldRow1.m_z = z;
 		GolCameraBase::Add(&targetRow1, &oldRow1, &row1);
 	}
 
@@ -954,9 +1005,12 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		m_nearbyRacer = nearbyRacer;
 
 		if (nearbyRacer != NULL) {
+			GolVec3 row0;
+			m_carEntity->GetOrientationRow0(&row0);
+
+			GolVec3 row1;
+			m_carEntity->GetOrientationRow1(&row1);
 			GolAnimatedEntity* nearbyEntity = nearbyRacer->m_visuals.m_carEntity;
-			GolVec3 row0 = m_carEntity->GetOrientation().m_rows[0];
-			GolVec3 row1 = m_carEntity->GetOrientation().m_rows[1];
 
 			GolVec3 nearbyPosition;
 			nearbyEntity->GetPosition(&nearbyPosition);
@@ -973,7 +1027,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 				LegoFloat sideDot = row1.m_z * direction.m_z + row1.m_y * direction.m_y + row1.m_x * direction.m_x;
 				animationPart = sideDot < 0.0f ? c_animationPart7 : c_animationPart16;
 			}
-			else if (forwardDot < g_unk0x004b02e0 && forwardDot > g_lookAtDotBehind) {
+			else if (forwardDot <= g_lookAtDotBeside && forwardDot > g_lookAtDotBehind) {
 				LegoFloat sideDot = row1.m_z * direction.m_z + row1.m_y * direction.m_y + row1.m_x * direction.m_x;
 				animationPart = sideDot < 0.0f ? c_animationPart8 : c_animationPart17;
 			}
@@ -989,17 +1043,13 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (activeValue < 0.0f) {
-		if (activePart != c_animationPart5) {
-			m_driverEntity->TransitionToPart(c_animationPart5, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
-		}
+	if (activeValue < 0.0f && activePart != c_animationPart5) {
+		m_driverEntity->TransitionToPart(c_animationPart5, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
 		return;
 	}
 
-	if (activeValue > 0.0f) {
-		if (activePart != c_animationPart6) {
-			m_driverEntity->TransitionToPart(c_animationPart6, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
-		}
+	if (activeValue > 0.0f && activePart != c_animationPart6) {
+		m_driverEntity->TransitionToPart(c_animationPart6, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
 		return;
 	}
 
@@ -1082,54 +1132,43 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 	}
 
 	{
-		RaceDecalManager::Trail** itemSlot = m_skidMarks;
 		LegoU32 i = 0;
+		RaceDecalManager::Trail** itemSlot = m_skidMarks;
 		LegoU8 colorByte = 0xff;
 		do {
-			LegoU32 sliding = m_flags & c_flagSliding;
-			if (sliding) {
-				RaceDecalManager::Trail* item = *itemSlot;
-				if (item && item->GetDurationMs() == 1000) {
-					m_skidMarkManager->ReleaseTrail(item, 0);
-					*itemSlot = NULL;
-				}
-			}
-			else {
-				RaceDecalManager::Trail* item = *itemSlot;
-				if (item && item->GetDurationMs() == 250) {
-					m_skidMarkManager->ReleaseTrail(item, 0);
-					*itemSlot = NULL;
-				}
+			RaceDecalManager::Trail* item;
+			if (((m_flags & c_flagSliding) && (item = *itemSlot) && item->GetDurationMs() == 1000) ||
+				(!(m_flags & c_flagSliding) && (item = *itemSlot) && item->GetDurationMs() == 250)) {
+				m_skidMarkManager->ReleaseTrail(item, 0);
+				*itemSlot = NULL;
 			}
 
-			if (m_wheelSkidFlags[i] & c_wheelSkidActive) {
-				if (!*itemSlot) {
-					if (m_flags & c_flagSliding) {
-						*itemSlot = m_skidMarkManager->AcquireTrail(250);
+			if ((m_wheelSkidFlags[i] & c_wheelSkidActive) && !*itemSlot) {
+				if (m_flags & c_flagSliding) {
+					*itemSlot = m_skidMarkManager->AcquireTrail(250);
+				}
+				else {
+					*itemSlot = m_skidMarkManager->AcquireTrail(1000);
+				}
+
+				if (*itemSlot) {
+					ColorRGBA color;
+					color.m_red = colorByte;
+					color.m_grn = colorByte;
+					color.m_blu = colorByte;
+					color.m_alp = colorByte;
+					(*itemSlot)->SetColor(&color);
+					(*itemSlot)->SetMaterialTable(&m_skidMaterialTable);
+
+					if (i == 0 || i == 1) {
+						(*itemSlot)->SetWidth(m_frontSkidWidth);
 					}
 					else {
-						*itemSlot = m_skidMarkManager->AcquireTrail(1000);
-					}
-
-					if (*itemSlot) {
-						ColorRGBA color;
-						color.m_red = colorByte;
-						color.m_grn = colorByte;
-						color.m_blu = colorByte;
-						color.m_alp = colorByte;
-						(*itemSlot)->SetColor(&color);
-						(*itemSlot)->SetMaterialTable(&m_skidMaterialTable);
-
-						if (i == 0 || i == 1) {
-							(*itemSlot)->SetWidth(m_frontSkidWidth);
-						}
-						else {
-							(*itemSlot)->SetWidth(m_rearSkidWidth);
-						}
+						(*itemSlot)->SetWidth(m_rearSkidWidth);
 					}
 				}
 			}
-			else if (*itemSlot) {
+			if (!(m_wheelSkidFlags[i] & c_wheelSkidActive) && *itemSlot) {
 				m_skidMarkManager->ReleaseTrail(*itemSlot, 0);
 				*itemSlot = NULL;
 			}
@@ -1159,7 +1198,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	LegoFloat phase = static_cast<LegoFloat>(m_cursePhaseMs) * g_cursePhaseScale;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase * g_negativeRadiansToTableIndex)) & c_randomTableMask;
 	LegoFloat offsetX = g_cosineTable[tableIndex];
-	tableIndex = static_cast<LegoS32>(phase * g_sweepCannonRadiansToTableIndex) & c_randomTableMask;
+	tableIndex = static_cast<LegoS32>(phase * 162.974655f) & c_randomTableMask;
 	LegoFloat offsetY = g_cosineTable[tableIndex];
 
 	GolModelEntity* entity = &m_curseEntity;
@@ -1295,27 +1334,31 @@ void CarVisuals::UpdateShadow(GolCamera* p_camera)
 		GolVec3 center;
 		m_carEntity->GetBoundsCenter(&center);
 
-		LegoFloat scale = m_carEntity->GetScale();
-		if (scale != 1.0f) {
-			m_shadowDecal.m_width = m_shadowWidth * scale;
-			m_shadowDecal.m_length = scale * m_shadowLength;
+		LegoFloat length;
+		if (m_carEntity->GetScale() != 1.0f) {
+			LegoFloat width = m_shadowWidth;
+			width *= m_carEntity->GetScale();
+			m_shadowDecal.SetWidth(width);
+			length = m_carEntity->GetScale() * m_shadowLength;
 		}
 		else {
-			m_shadowDecal.m_width = m_shadowWidth * 1.0f;
-			m_shadowDecal.m_length = m_shadowLength * 1.0f;
+			LegoFloat width = m_shadowWidth;
+			m_shadowDecal.SetWidth(width);
+			length = m_shadowLength;
 		}
+		m_shadowDecal.SetLength(length);
 
-		m_shadowDecal.m_depth = g_unk0x004b0af0;
+		m_shadowDecal.SetDepth(g_unk0x004b0af0);
 		center.m_z += g_shadowProbeHeight;
 
 		RaceDecalManager::Trail::Decal* field = &m_shadowDecal;
+		MaterialTable* materialTable = &m_shadowMaterialTable;
 		field->m_center.m_x = center.m_x;
 		field->m_center.m_y = center.m_y;
 		field->m_center.m_z = center.m_z;
 
 		up.m_x = -up.m_x;
 		up.m_y = -up.m_y;
-		MaterialTable* materialTable = &m_shadowMaterialTable;
 		GolVec3* upVector = &up;
 		GolVec3* vector = &m_shadowDirection;
 		m_shadowDecal.GetEntity().SetPrimaryMaterialTable(materialTable);
@@ -1349,16 +1392,15 @@ void CarVisuals::Draw(GolD3DRenderDevice* p_renderer)
 void CarVisuals::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & c_flagShadowVisible) {
-		RaceDecalManager::Trail::Decal* field = &m_shadowDecal;
 		GolVec3 cameraPosition;
 		p_renderer->GetCurrentCamera()->GetTransform()->GetPosition(&cameraPosition);
 
+		RaceDecalManager::Trail::Decal* field = &m_shadowDecal;
 		GolVec3 position;
 		LegoFloat deltaX = field->m_center.m_x;
+		deltaX = cameraPosition.m_x - deltaX;
 		position.m_y = field->m_center.m_y;
 		position.m_z = field->m_center.m_z;
-
-		deltaX = cameraPosition.m_x - deltaX;
 		LegoFloat deltaY = cameraPosition.m_y - position.m_y;
 		LegoFloat deltaZ = cameraPosition.m_z - position.m_z;
 		LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
@@ -1367,15 +1409,14 @@ void CarVisuals::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		if (distanceSquared <= g_shadowFadeNearSquared) {
 			alpha = c_fadeAlphaMax;
 		}
-		else if (distanceSquared < g_shadowFadeFarSquared) {
-			alpha =
-				c_fadeAlphaMax -
-				static_cast<LegoS32>(
-					((distanceSquared - g_shadowFadeNearSquared) / (g_shadowFadeFarSquared - g_shadowFadeNearSquared)) *
-					g_fadeAlphaScale
-				);
-		}
-		else {
+		else if (
+			distanceSquared >= g_shadowFadeFarSquared ||
+			!(alpha = c_fadeAlphaMax - static_cast<LegoS32>(
+										   ((distanceSquared - g_shadowFadeNearSquared) /
+											(g_shadowFadeFarSquared - g_shadowFadeNearSquared)) *
+										   g_fadeAlphaScale
+									   ))
+		) {
 			alpha = 0;
 		}
 

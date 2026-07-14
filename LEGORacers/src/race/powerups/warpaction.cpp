@@ -100,13 +100,13 @@ void WarpAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045d560
-LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarget* p_target)
+void WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarget* p_target)
 {
 	LegoU32 flags = p_racer->m_flags;
 	if (!(flags & c_flagGhost)) {
 		if (flags & Racer::c_flagWarping) {
 			m_state = c_stateDone;
-			return flags;
+			return;
 		}
 
 		m_manager->CancelMagnetHold(p_racer);
@@ -116,9 +116,8 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 
 		m_modelEntity.SetPrimaryModel(p_model->GetModel(0), p_model->GetModelDistance(0));
 		for (LegoU32 i = 1; i < 3; i++) {
-			GolModelBase* model = p_model->GetModel(i);
-			if (model != NULL) {
-				m_modelEntity.AddModel(model, p_model->GetModelDistance(i));
+			if (p_model->GetModel(i) != NULL) {
+				m_modelEntity.AddModel(p_model->GetModel(i), p_model->GetModelDistance(i));
 			}
 		}
 
@@ -130,8 +129,7 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 		GolAnimatedEntity* racerEntity = p_racer->m_visuals.m_carEntity;
 		GolVec3 position;
 		racerEntity->GetPosition(&position);
-		LegoFloat positionZ = position.m_z;
-		position.m_z = positionZ + g_warpPortalHeightOffset;
+		position.m_z += g_warpPortalHeightOffset;
 		m_modelEntity.SetPosition(position);
 		position.m_z -= g_warpPortalHeightOffset;
 		m_modelEntity.CopyOrientationFrom(*racerEntity);
@@ -152,11 +150,10 @@ LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarg
 		}
 
 		m_state = c_stateStarting;
-		return 0;
+		return;
 	}
 
 	m_state = c_stateDone;
-	return flags;
 }
 
 // FUNCTION: LEGORACERS 0x0045d780
@@ -238,7 +235,7 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	}
 
 	CarVisuals* racerField = &m_racer->m_visuals;
-	GolAnimatedEntity* entity = racerField->m_carEntity;
+	GolAnimatedEntity* entity = racerField->GetCarEntity();
 
 	GolVec3 savedPosition;
 	GolMatrix3 savedOrientation;
@@ -328,8 +325,7 @@ void WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	}
 
 	CarVisuals* racerField = &m_racer->m_visuals;
-	GolAnimatedEntity* entity = racerField->m_carEntity;
-	entity->GetPosition(&position);
+	racerField->m_carEntity->GetPosition(&position);
 	m_modelEntity.SetPosition(position);
 	m_modelEntity.Draw(*p_renderer);
 }
@@ -484,9 +480,8 @@ void WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 
 	GolVec3 start = position;
 	GolVec3 end = position;
-	end.m_z += 5.0f;
 	start.m_z += 5.0f;
-	start.m_z -= g_homingProjectileCollisionProbeDepth;
+	end.m_z -= g_homingProjectileCollisionProbeDepth;
 
 	GolBoundingVolume::HitTriangle record;
 	m_manager->m_collisionWorld->IntersectSegment(&start, &end, &record, &position, NULL);

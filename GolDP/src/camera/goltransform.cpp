@@ -124,15 +124,18 @@ void GolTransform::SetDirectionUp(GolVec3* p_direction, GolVec3* p_up)
 	right.m_z *= up.m_x;
 	right.m_z -= up.m_y * direction.m_x;
 
-	m_matrix.m_m[0][0] = right.m_x;
-	m_matrix.m_m[0][1] = right.m_y;
-	m_matrix.m_m[0][2] = right.m_z;
-	m_matrix.m_m[1][0] = up.m_x;
-	m_matrix.m_m[1][1] = up.m_y;
-	m_matrix.m_m[1][2] = up.m_z;
-	m_matrix.m_m[2][0] = direction.m_x;
-	m_matrix.m_m[2][1] = direction.m_y;
-	m_matrix.m_m[2][2] = direction.m_z;
+	LegoFloat* row0 = &m_matrix.m_m[0][0];
+	LegoFloat* row1 = &m_matrix.m_m[1][0];
+	LegoFloat* row2 = &m_matrix.m_m[2][0];
+	row0[0] = right.m_x;
+	row0[1] = right.m_y;
+	row0[2] = right.m_z;
+	row1[0] = up.m_x;
+	row1[1] = up.m_y;
+	row1[2] = up.m_z;
+	row2[0] = direction.m_x;
+	row2[1] = direction.m_y;
+	row2[2] = direction.m_z;
 }
 
 // FUNCTION: GOLDP 0x10002b20
@@ -164,15 +167,18 @@ void GolTransform::SetRightDirection(GolVec3* p_right, GolVec3* p_direction)
 	up.m_z *= direction.m_x;
 	up.m_z -= direction.m_y * right.m_x;
 
-	m_matrix.m_m[0][0] = right.m_x;
-	m_matrix.m_m[0][1] = right.m_y;
-	m_matrix.m_m[0][2] = right.m_z;
-	m_matrix.m_m[1][0] = up.m_x;
-	m_matrix.m_m[1][1] = up.m_y;
-	m_matrix.m_m[1][2] = up.m_z;
-	m_matrix.m_m[2][0] = direction.m_x;
-	m_matrix.m_m[2][1] = direction.m_y;
-	m_matrix.m_m[2][2] = direction.m_z;
+	LegoFloat* row0 = &m_matrix.m_m[0][0];
+	LegoFloat* row1 = &m_matrix.m_m[1][0];
+	LegoFloat* row2 = &m_matrix.m_m[2][0];
+	row0[0] = right.m_x;
+	row0[1] = right.m_y;
+	row1[0] = up.m_x;
+	row0[2] = right.m_z;
+	row1[1] = up.m_y;
+	row1[2] = up.m_z;
+	row2[0] = direction.m_x;
+	row2[1] = direction.m_y;
+	row2[2] = direction.m_z;
 }
 
 // FUNCTION: GOLDP 0x10002c10
@@ -238,30 +244,16 @@ void GolTransform::InverseTransformPoint(const GolVec3* p_src, GolVec3* p_dest)
 	product *= p_src->m_z;
 	p_dest->m_z = product + p_dest->m_z;
 
-	LegoFloat offset = m_matrix.m_m[3][0] * m_matrix.m_m[0][0];
-	product = m_matrix.m_m[0][1];
-	product *= m_matrix.m_m[3][1];
-	offset += product;
+	LegoFloat offset = (m_matrix.m_m[3][0] * m_matrix.m_m[0][0]) + (m_matrix.m_m[0][1] * m_matrix.m_m[3][1]);
 	offset += m_matrix.m_m[3][2] * m_matrix.m_m[0][2];
 	p_dest->m_x -= offset;
 
-	offset = m_matrix.m_m[3][2] * m_matrix.m_m[1][2];
-	product = m_matrix.m_m[1][1];
-	product *= m_matrix.m_m[3][1];
-	offset += product;
-	product = m_matrix.m_m[3][0];
-	product *= m_matrix.m_m[1][0];
-	offset += product;
+	offset = (m_matrix.m_m[3][2] * m_matrix.m_m[1][2]) + (m_matrix.m_m[1][1] * m_matrix.m_m[3][1]);
+	offset += m_matrix.m_m[3][0] * m_matrix.m_m[1][0];
 	p_dest->m_y -= offset;
 
-	offset = m_matrix.m_m[2][2];
-	offset *= m_matrix.m_m[3][2];
-	product = m_matrix.m_m[2][1];
-	product *= m_matrix.m_m[3][1];
-	offset += product;
-	product = m_matrix.m_m[3][0];
-	product *= m_matrix.m_m[2][0];
-	offset += product;
+	offset = (m_matrix.m_m[2][2] * m_matrix.m_m[3][2]) + (m_matrix.m_m[2][1] * m_matrix.m_m[3][1]);
+	offset += m_matrix.m_m[3][0] * m_matrix.m_m[2][0];
 	p_dest->m_z -= offset;
 }
 

@@ -62,7 +62,7 @@ HomingMissileAction::HomingMissileAction()
 	m_activeProjectile = 0;
 	m_activeProjectile = &m_projectile;
 	m_trail = 0;
-	m_projectile.m_unk0x0f4 = 0;
+	m_projectile.m_unk0x0f4 = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x004564b0
@@ -94,7 +94,7 @@ void HomingMissileAction::Shutdown()
 // FUNCTION: LEGORACERS 0x00456560
 void HomingMissileAction::Activate(
 	GolAnimatedEntity* p_missileTemplate,
-	GolAnimatedEntity*,
+	GolAnimatedEntity* p_unk0x08,
 	Racer* p_racer,
 	LegoU32 p_missileIndex
 )
@@ -104,15 +104,16 @@ void HomingMissileAction::Activate(
 	m_missileIndex = p_missileIndex;
 	m_ownerRacer = p_racer;
 	m_targetRacer = NULL;
+	m_projectile.m_unk0x0f4 = p_unk0x08;
 
-	GolAnimatedEntity* projectile = &m_missileEntity;
-	projectile->SetModel(
+	m_missileEntity.SetModel(
 		p_missileTemplate->GetModel(0),
 		p_missileTemplate->GetSceneNode(0),
 		p_missileTemplate->GetModelPart(0),
 		p_missileTemplate->GetModelDistance(0)
 	);
 
+	GolAnimatedEntity* projectile = &m_missileEntity;
 	SoundVector position;
 	CarVisuals* racerEntities = &m_ownerRacer->m_visuals;
 	racerEntities->m_carEntity->GetPosition(&position);
@@ -487,10 +488,9 @@ void HomingMissileAction::OnHitRacer(Racer* p_racer)
 
 			p_racer->PlayReaction(FALSE);
 			p_racer->DropWhiteBrick();
-			p_racer->m_visuals.m_reactionFlags |= CarVisuals::c_reactionHit;
-
 			SoundVector position;
-			p_racer->m_visuals.m_carEntity->GetPosition(&position);
+			p_racer->m_visuals.SetReactionFlags(CarVisuals::c_reactionHit);
+			p_racer->m_visuals.GetCarEntity()->GetPosition(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundExplode,
 				&position,

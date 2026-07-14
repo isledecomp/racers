@@ -462,13 +462,12 @@ void GolModelBase::MirrorY()
 
 	GetIndexArrayInto(&indexArray);
 
-	GdbModelIndexArray* modelIndexArray = static_cast<GdbModelIndexArray*>(indexArray);
-	GdbModelIndexArray::Indices* indices = modelIndexArray->GetMutableIndices();
 	LegoU32 indexCount = indexArray->GetCount();
 	for (i = 0; i < indexCount; i++) {
-		LegoU8 value = indices[i].m_b;
-		indices[i].m_b = indices[i].m_c;
-		indices[i].m_c = value;
+		GdbModelIndexArray::Indices* indices = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndex(i);
+		LegoU8 value = indices->m_b;
+		indices->m_b = indices->m_c;
+		indices->m_c = value;
 	}
 
 	AddFlags(1);

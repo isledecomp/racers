@@ -150,9 +150,8 @@ void CutsceneEvent::ParseCommonToken(
 
 	switch (p_token) {
 	case CutscenePlayer::CebTxtParser::e_jointedEntityName:
-		m_parsedEntity = p_owner->FindJointedEntity(name);
-		m_entity = m_parsedEntity;
-		m_animatedEntity = static_cast<GolAnimatedEntity*>(m_parsedEntity);
+		m_parsedEntity = m_entity = m_animatedEntity =
+			static_cast<GolAnimatedEntity*>(p_owner->FindJointedEntity(name));
 		if (m_parsedEntity) {
 			return;
 		}
@@ -162,8 +161,7 @@ void CutsceneEvent::ParseCommonToken(
 		GOL_FATALERROR_MESSAGE(text);
 		break;
 	case CutscenePlayer::CebTxtParser::e_modelEntityName:
-		m_parsedEntity = p_owner->FindModelEntity(name);
-		m_entity = m_parsedEntity;
+		m_parsedEntity = m_entity = p_owner->FindModelEntity(name);
 		if (m_parsedEntity) {
 			return;
 		}
@@ -173,8 +171,7 @@ void CutsceneEvent::ParseCommonToken(
 		GOL_FATALERROR_MESSAGE(text);
 		break;
 	case CutscenePlayer::CebTxtParser::e_bspEntityName:
-		m_parsedEntity = p_owner->FindBspEntity(name);
-		m_entity = m_parsedEntity;
+		m_parsedEntity = m_entity = p_owner->FindBspEntity(name);
 		if (m_parsedEntity) {
 			return;
 		}

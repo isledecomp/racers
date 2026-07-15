@@ -1,9 +1,8 @@
 #ifndef GOLRASTERIZERS1_H
 #define GOLRASTERIZERS1_H
 
+#include "golrasterizers_shared.h"
 #include "surface/gold3dtexture.h"
-
-class GolSoftwareRenderer;
 
 void FUN_10032c80(GolSoftwareRenderer* p_renderer);
 void FUN_100330d0(GolSoftwareRenderer* p_renderer, MipmapLevel* p_mipmap);

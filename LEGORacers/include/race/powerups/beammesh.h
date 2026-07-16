@@ -70,6 +70,17 @@ public:
 	void SetSegmentOffsets(const GolVec3* p_offsets);
 
 private:
+	void ResetHead()
+	{
+		m_golExport = NULL;
+		m_model = NULL;
+		m_vertices = NULL;
+		m_indices = NULL;
+		m_sceneNode = NULL;
+		m_material = NULL;
+		m_windowBaseVertex = 0;
+	}
+
 	GolExport* m_golExport;                 // 0x000
 	GolModelBase* m_model;                  // 0x004
 	GdbVertexArray* m_vertices;             // 0x008

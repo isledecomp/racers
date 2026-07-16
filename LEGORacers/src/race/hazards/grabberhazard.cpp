@@ -134,7 +134,7 @@ void GrabberHazard::Update(undefined4 p_elapsedMs)
 	m_trigger.SetBoundsCenter(position);
 
 	if (m_stateMs) {
-		if (elapsedMs >= m_stateMs) {
+		if (m_stateMs <= elapsedMs) {
 			m_stateMs = 0;
 			ReleaseRacer();
 			m_grabState = 0;
@@ -217,8 +217,10 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 			GolMath::NormalizeVector3(force, &force);
 			LegoFloat scale = m_pullStrength;
 			force.m_x = scale * force.m_x;
-			force.m_y = force.m_y * scale;
-			force.m_z = force.m_z * scale;
+			LegoFloat y = force.m_y;
+			force.m_y = y * scale;
+			LegoFloat z = force.m_z;
+			force.m_z = z * scale;
 			physics->StartExternalForce1(&force);
 		}
 
@@ -235,9 +237,12 @@ void GrabberHazard::GetGrabPosition(GolVec3* p_position)
 
 	GolVec3 localPosition;
 	transform->GetPosition(&localPosition);
-	localPosition.m_x *= scale;
-	localPosition.m_y *= scale;
-	localPosition.m_z *= scale;
+	LegoFloat x = localPosition.m_x * scale;
+	LegoFloat y = localPosition.m_y * scale;
+	LegoFloat z = localPosition.m_z * scale;
+	localPosition.m_x = x;
+	localPosition.m_y = y;
+	localPosition.m_z = z;
 
 	m_entity->LocalToWorld(localPosition, p_position);
 }

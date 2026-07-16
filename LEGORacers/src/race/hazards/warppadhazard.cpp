@@ -49,8 +49,8 @@ void WarpPadHazard::Load(HazardContext* p_context, GolFileParser*)
 		Reset();
 	}
 
-	m_triggerId = 0;
 	m_powerupManager = p_context->GetPowerupManager();
+	m_triggerId = 0;
 	m_mirror = p_context->GetMirror();
 	m_state = c_stateLoaded;
 }

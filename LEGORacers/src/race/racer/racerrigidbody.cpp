@@ -14,6 +14,9 @@
 #include <math.h>
 #include <string.h>
 
+// GLOBAL: LEGORACERS 0x004b0b70
+static const LegoFloat g_linearVelocityThreshold = 9.9999997e-05f;
+
 // GLOBAL: LEGORACERS 0x004b0b90
 extern const LegoFloat g_boxInertiaFactor = 0.083333336f;
 
@@ -118,8 +121,9 @@ void RacerCarBody::AddForceAtPoint(GolVec3* p_force, GolVec3* p_point)
 	LegoFloat value = offset.m_y;
 	value *= p_force->m_z;
 	LegoFloat crossValue = p_force->m_y;
-	crossValue *= offset.m_z;
-	torque.m_x = value - crossValue;
+	LegoFloat offsetValue = offset.m_z;
+	offsetValue *= crossValue;
+	torque.m_x = value - offsetValue;
 
 	value = offset.m_z;
 	value *= p_force->m_x;
@@ -191,8 +195,9 @@ void RacerCarBody::CancelAngularMomentum(GolVec3* p_direction, GolVec3* p_point)
 	LegoFloat value = offset.m_y;
 	value *= p_direction->m_z;
 	LegoFloat crossValue = p_direction->m_y;
-	crossValue *= offset.m_z;
-	axis.m_x = value - crossValue;
+	LegoFloat offsetValue = offset.m_z;
+	offsetValue *= crossValue;
+	axis.m_x = value - offsetValue;
 
 	value = offset.m_z;
 	value *= p_direction->m_x;
@@ -207,8 +212,8 @@ void RacerCarBody::CancelAngularMomentum(GolVec3* p_direction, GolVec3* p_point)
 	axis.m_z = value - crossValue;
 	GolMath::NormalizeVector3(axis, &axis);
 
-	LegoFloat dot = axis.m_z;
-	dot *= m_angularMomentum.m_z;
+	LegoFloat dot = m_angularMomentum.m_z;
+	dot *= axis.m_z;
 	value = m_angularMomentum.m_y;
 	value *= axis.m_y;
 	dot += value;
@@ -218,9 +223,12 @@ void RacerCarBody::CancelAngularMomentum(GolVec3* p_direction, GolVec3* p_point)
 
 	if (dot >= 0.0f) {
 		GolVec3 scaled;
-		scaled.m_x = axis.m_x * dot;
-		scaled.m_y = axis.m_y * dot;
-		scaled.m_z = axis.m_z * dot;
+		scaled.m_x = axis.m_x;
+		scaled.m_x *= dot;
+		scaled.m_y = axis.m_y;
+		scaled.m_y *= dot;
+		scaled.m_z = axis.m_z;
+		scaled.m_z *= dot;
 		m_angularMomentum.m_x -= scaled.m_x;
 		m_angularMomentum.m_y -= scaled.m_y;
 		m_angularMomentum.m_z -= scaled.m_z;
@@ -230,7 +238,8 @@ void RacerCarBody::CancelAngularMomentum(GolVec3* p_direction, GolVec3* p_point)
 // FUNCTION: LEGORACERS 0x00440da0
 void RacerCarBody::CancelAngularMomentumAlong(GolVec3* p_axis)
 {
-	LegoFloat dot = m_angularMomentum.m_z * p_axis->m_z;
+	LegoFloat dot = m_angularMomentum.m_z;
+	dot *= p_axis->m_z;
 	dot += m_angularMomentum.m_y * p_axis->m_y;
 	dot += m_angularMomentum.m_x * p_axis->m_x;
 	GolVec3 scaled;
@@ -285,15 +294,13 @@ void RacerRigidBody::Update(LegoS32 p_elapsedMs)
 		m_body->SetPosition(position);
 
 		if (linearDelta.m_x == 0.0f && linearDelta.m_y == 0.0f && linearDelta.m_z == 0.0f) {
-			const LegoFloat velocityThreshold = 9.9999997e-05f;
-
-			if (m_velocity.m_x < velocityThreshold && -velocityThreshold < m_velocity.m_x) {
+			if (m_velocity.m_x < g_linearVelocityThreshold && -g_linearVelocityThreshold < m_velocity.m_x) {
 				m_velocity.m_x = 0.0f;
 			}
-			if (m_velocity.m_y < velocityThreshold && -velocityThreshold < m_velocity.m_y) {
+			if (m_velocity.m_y < g_linearVelocityThreshold && -g_linearVelocityThreshold < m_velocity.m_y) {
 				m_velocity.m_y = 0.0f;
 			}
-			if (m_velocity.m_z < velocityThreshold && -velocityThreshold < m_velocity.m_z) {
+			if (m_velocity.m_z < g_linearVelocityThreshold && -g_linearVelocityThreshold < m_velocity.m_z) {
 				m_velocity.m_z = 0.0f;
 			}
 		}
@@ -340,38 +347,20 @@ void RacerRigidBody::Update(LegoS32 p_elapsedMs)
 	newRight.m_z += value;
 
 	GolVec3 newForward;
-	value = forward.m_y;
-	value *= angularStepZ;
-	newForward.m_x = forward.m_x - value;
-	value = forward.m_z;
-	value *= angularStepY;
-	newForward.m_x += value;
+	newForward.m_x = forward.m_x - forward.m_y * angularStepZ + forward.m_z * angularStepY;
 
-	value = forward.m_x;
-	value *= angularStepZ;
-	newForward.m_y = forward.m_y + value;
-	value = forward.m_z;
-	value *= angularStepX;
-	newForward.m_y -= value;
+	newForward.m_y = forward.m_y + forward.m_x * angularStepZ - forward.m_z * angularStepX;
 
-	value = forward.m_x;
-	value *= angularStepY;
-	newForward.m_z = forward.m_z - value;
-	value = forward.m_y;
-	value *= angularStepX;
-	newForward.m_z += value;
-	GolOrientedEntity* entity = m_body;
-	entity->SetDirectionUp(newRight, newForward);
+	newForward.m_z = forward.m_z - forward.m_x * angularStepY + forward.m_y * angularStepX;
+	m_body->SetDirectionUp(newRight, newForward);
 
-	LegoFloat angularDeltaY = m_torque.m_y;
-	angularDeltaY *= elapsed;
-	LegoFloat angularDeltaZ = m_torque.m_z;
-	angularDeltaZ *= elapsed;
-	LegoFloat velocityTerm = elapsed;
-	velocityTerm *= m_torque.m_x;
-	m_angularMomentum.m_x += velocityTerm;
-	m_angularMomentum.m_y += angularDeltaY;
-	m_angularMomentum.m_z += angularDeltaZ;
+	GolVec3 angularDelta;
+	angularDelta.m_x = elapsed * m_torque.m_x;
+	angularDelta.m_y = m_torque.m_y;
+	angularDelta.m_y *= elapsed;
+	angularDelta.m_z = m_torque.m_z;
+	angularDelta.m_z *= elapsed;
+	m_angularMomentum += angularDelta;
 
 	if (m_torque.m_x == 0.0f && m_torque.m_y == 0.0f && m_torque.m_z == 0.0f) {
 		LegoFloat angularStepLengthSq =
@@ -440,7 +429,8 @@ void RacerBoxBody::ComputeInertiaTensor()
 	LegoFloat xSquared = m_sizeX * m_sizeX;
 	LegoFloat ySquared = m_sizeY * m_sizeY;
 	LegoFloat zSquared = m_sizeZ * m_sizeZ;
-	LegoFloat scaledMass = m_mass / m_sizeX;
+	LegoFloat scaledMass = m_mass;
+	scaledMass /= m_sizeX;
 
 	m_inertiaTensor.m_m[0][1] = 0.0f;
 	m_inertiaTensor.m_m[0][2] = 0.0f;
@@ -457,9 +447,15 @@ void RacerBoxBody::ComputeInertiaTensor()
 
 	LegoFloat xInertia = scaledMass * (zSquared + ySquared) * g_boxInertiaFactor;
 	m_inertiaTensor.m_m[0][0] = xInertia;
-	LegoFloat yInertia = (m_mass / m_sizeY) * (zSquared + xSquared) * g_boxInertiaFactor;
+	LegoFloat yInertia = m_mass;
+	yInertia /= m_sizeY;
+	yInertia *= zSquared + xSquared;
+	yInertia *= g_boxInertiaFactor;
 	m_inertiaTensor.m_m[1][1] = yInertia;
-	LegoFloat zInertia = (m_mass / m_sizeZ) * (ySquared + xSquared) * g_boxInertiaFactor;
+	LegoFloat zInertia = m_mass;
+	zInertia /= m_sizeZ;
+	zInertia *= ySquared + xSquared;
+	zInertia *= g_boxInertiaFactor;
 	m_inertiaTensor.m_m[2][2] = zInertia;
 	m_inverseInertiaTensor.m_m[0][0] = 1.0f / xInertia;
 	m_inverseInertiaTensor.m_m[1][1] = 1.0f / yInertia;

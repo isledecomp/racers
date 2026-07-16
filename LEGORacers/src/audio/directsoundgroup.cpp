@@ -74,7 +74,7 @@ void DirectSoundGroup::Load(const LegoChar* p_name)
 			if (soundPaths) {
 				LegoChar* currentPath = soundPaths;
 
-				while (index < (LegoS32) m_soundCount) {
+				for (; index < (LegoS32) m_soundCount; index++) {
 					if (file.ReadLine(soundName, c_audioPathLength)) {
 						*currentPath = '\0';
 					}
@@ -83,7 +83,6 @@ void DirectSoundGroup::Load(const LegoChar* p_name)
 						JoinAudioPath(currentPath, c_audioPathLength, soundBasePath, soundName);
 					}
 
-					index++;
 					currentPath += c_audioPathLength;
 				}
 
@@ -92,9 +91,8 @@ void DirectSoundGroup::Load(const LegoChar* p_name)
 				index = 0;
 				currentPath = soundPaths;
 
-				while (index < (LegoS32) m_soundCount) {
+				for (; index < (LegoS32) m_soundCount; index++) {
 					m_soundData[index].Load(currentPath);
-					index++;
 					currentPath += c_audioPathLength;
 				}
 
@@ -105,7 +103,9 @@ void DirectSoundGroup::Load(const LegoChar* p_name)
 			Unload();
 		}
 
-		file.Dispose();
+		if (file.IsOpen()) {
+			file.Dispose();
+		}
 	}
 }
 
@@ -174,38 +174,32 @@ void DirectSoundGroup::PlaySoundByIndex(LegoU32 p_index)
 // FUNCTION: LEGORACERS 0x0041b1d0
 SoundInstance* DirectSoundGroup::CreateSoundInstance(LegoU32 p_index)
 {
-	if (p_index >= m_soundCount) {
-		return NULL;
+	if (p_index < m_soundCount && m_soundData) {
+		SoundData* soundData = &m_soundData[p_index];
+
+		if (soundData->GetData()) {
+			SoundBuffer* soundBuffer = static_cast<DirectSoundManager*>(m_soundManager)->CreateSoundBuffer(soundData);
+
+			if (soundBuffer) {
+				SoundInstance* sound = new SoundInstance();
+
+				if (sound) {
+					sound->SetSoundGroup(this);
+					m_soundInstances.Append(static_cast<GolListLink*>(sound));
+					sound->SetSoundBuffer(soundBuffer);
+					soundBuffer->m_soundInstance = sound;
+					sound->SetVolume(g_defaultSoundInstanceVolume);
+				}
+				else {
+					static_cast<DirectSoundManager*>(m_soundManager)->DestroySoundBuffer(soundBuffer);
+				}
+
+				return sound;
+			}
+		}
 	}
 
-	if (!m_soundData) {
-		return NULL;
-	}
-
-	SoundData* soundData = &m_soundData[p_index];
-	if (!soundData->GetData()) {
-		return NULL;
-	}
-
-	SoundBuffer* soundBuffer = static_cast<DirectSoundManager*>(m_soundManager)->CreateSoundBuffer(soundData);
-	if (!soundBuffer) {
-		return NULL;
-	}
-
-	SoundInstance* sound = new SoundInstance();
-	if (sound) {
-		sound->SetSoundGroup(this);
-		m_soundInstances.Append(static_cast<GolListLink*>(sound));
-		sound->SetSoundBuffer(soundBuffer);
-		soundBuffer->m_soundInstance = sound;
-		sound->SetVolume(g_defaultSoundInstanceVolume);
-		return sound;
-	}
-	else {
-		static_cast<DirectSoundManager*>(m_soundManager)->DestroySoundBuffer(soundBuffer);
-	}
-
-	return sound;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0041b2d0 FOLDED
@@ -244,38 +238,33 @@ void DirectSoundGroup::PlaySpatialSound(
 // FUNCTION: LEGORACERS 0x0041b370
 StreamingSoundInstance* DirectSoundGroup::CreateStreamingSoundInstance(LegoU32 p_index)
 {
-	if (p_index >= m_soundCount) {
-		return NULL;
+	if (p_index < m_soundCount && m_soundData) {
+		SoundData* soundData = &m_soundData[p_index];
+
+		if (soundData->GetData()) {
+			SoundBuffer* soundBuffer =
+				static_cast<DirectSoundManager*>(m_soundManager)->CreateStreamingSoundBuffer(soundData);
+
+			if (soundBuffer) {
+				StreamingSoundInstance* sound = new StreamingSoundInstance();
+
+				if (sound) {
+					sound->SetSoundGroup(this);
+					m_streamingSoundInstances.Append(static_cast<GolListLink*>(sound));
+					sound->SetSoundBuffer(soundBuffer);
+					soundBuffer->m_streamingSoundInstance = sound;
+					sound->SetVolume(g_defaultSoundInstanceVolume);
+				}
+				else {
+					static_cast<DirectSoundManager*>(m_soundManager)->DestroySoundBuffer(soundBuffer);
+				}
+
+				return sound;
+			}
+		}
 	}
 
-	if (!m_soundData) {
-		return NULL;
-	}
-
-	SoundData* soundData = &m_soundData[p_index];
-	if (!soundData->GetData()) {
-		return NULL;
-	}
-
-	SoundBuffer* soundBuffer = static_cast<DirectSoundManager*>(m_soundManager)->CreateStreamingSoundBuffer(soundData);
-	if (!soundBuffer) {
-		return NULL;
-	}
-
-	StreamingSoundInstance* sound = new StreamingSoundInstance();
-	if (sound) {
-		sound->SetSoundGroup(this);
-		m_streamingSoundInstances.Append(static_cast<GolListLink*>(sound));
-		sound->SetSoundBuffer(soundBuffer);
-		soundBuffer->m_streamingSoundInstance = sound;
-		sound->SetVolume(g_defaultSoundInstanceVolume);
-		return sound;
-	}
-	else {
-		static_cast<DirectSoundManager*>(m_soundManager)->DestroySoundBuffer(soundBuffer);
-	}
-
-	return sound;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0041b470 FOLDED

@@ -19,6 +19,15 @@ public:
 		m_paletteMask = 0;
 		m_bitsPerPixel = 0;
 	}
+	void ClearMasks()
+	{
+		m_redBitMask = 0;
+		m_grnBitMask = 0;
+		m_bluBitMask = 0;
+		m_alpBitMask = 0;
+		m_intensityMask = 0;
+		m_paletteMask = 0;
+	}
 
 	LegoU32 GetRedBitCount() const;
 	LegoU32 GetBlueBitCount() const;

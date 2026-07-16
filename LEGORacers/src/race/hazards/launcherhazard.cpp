@@ -21,8 +21,7 @@ extern const LegoFloat g_launcherMaxDistanceSquared = FLT_MAX;
 // GLOBAL: LEGORACERS 0x004b46c4
 extern const LegoFloat g_launcherTrailSize = 3.0f;
 
-// GLOBAL: LEGORACERS 0x004c22fc
-extern const ColorRGBA g_launcherTrailColor = {0x32, 0x32, 0x32, 0x64};
+extern ColorRGBA g_launcherTrailColor;
 
 // FUNCTION: LEGORACERS 0x0048f6e0
 LauncherHazard::LauncherHazard()
@@ -209,12 +208,11 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 
 	Hazard::Update(p_elapsedMs);
 
-	PowerupProjectile* projectile = &m_projectile;
-	if (projectile->GetState() != 0) {
-		if (projectile->Update(p_elapsedMs) == 3) {
-			GolVec3 position = projectile->GetHitPosition();
+	if (m_projectile.GetState() != 0) {
+		if (m_projectile.Update(p_elapsedMs) == 3) {
+			GolVec3 position = m_projectile.GetHitPosition();
 			m_powerupManager->SpawnExplosion(&position, 0, 0);
-			projectile->Deactivate();
+			m_projectile.Deactivate();
 			m_eventTable->FireEventsAt(7, 7, &position);
 
 			if (m_trail != NULL) {
@@ -226,7 +224,7 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 		}
 	}
 
-	if (projectile->GetState() == 0) {
+	if (m_projectile.GetState() == 0) {
 		OnDeactivate(NULL);
 	}
 
@@ -235,10 +233,10 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 	}
 
 	GolVec3 center;
-	projectile->GetWorldEntity()->GetBoundsCenter(&center);
+	m_projectile.GetWorldEntity()->GetBoundsCenter(&center);
 
 	GolVec3 velocity;
-	projectile->GetVelocity(&velocity);
+	m_projectile.GetVelocity(&velocity);
 
 	GolVec2 perpendicular;
 	perpendicular.m_x = velocity.m_y;
@@ -248,18 +246,20 @@ void LauncherHazard::Update(undefined4 p_elapsedMs)
 	}
 
 	GolMath::NormalizeVector2(perpendicular, &perpendicular);
-	LegoFloat widthX = perpendicular.m_x * g_launcherTrailSize;
-	LegoFloat widthY = perpendicular.m_y * g_launcherTrailSize;
+	perpendicular.m_x *= g_launcherTrailSize;
+	LegoFloat perpendicularY = perpendicular.m_y;
+	perpendicularY *= g_launcherTrailSize;
+	perpendicular.m_y = perpendicularY;
 
 	GolVec3 positions[4];
-	positions[0].m_x = center.m_x - widthX * 0.5f;
-	positions[0].m_y = center.m_y - widthY * 0.5f;
+	positions[0].m_x = center.m_x - perpendicular.m_x * 0.5f;
+	positions[0].m_y = center.m_y - perpendicular.m_y * 0.5f;
 	positions[0].m_z = center.m_z + g_launcherTrailSize * 0.5f;
 	positions[1].m_x = positions[0].m_x;
 	positions[1].m_y = positions[0].m_y;
 	positions[1].m_z = positions[0].m_z - g_launcherTrailSize;
-	positions[2].m_x = positions[0].m_x + widthX;
-	positions[2].m_y = positions[0].m_y + widthY;
+	positions[2].m_x = positions[0].m_x + perpendicular.m_x;
+	positions[2].m_y = positions[0].m_y + perpendicular.m_y;
 	positions[2].m_z = positions[1].m_z;
 	positions[3].m_x = positions[2].m_x;
 	positions[3].m_y = positions[2].m_y;

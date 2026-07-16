@@ -63,17 +63,15 @@ void RaceRoster::PruneBodyEvents()
 					if (next) {
 						next->m_descriptor.m_previous = NULL;
 					}
-
-					FreeEvent(event);
 				}
 				else {
 					previous->m_next = next;
 					if (next) {
 						next->m_descriptor.m_previous = previous;
 					}
-
-					FreeEvent(event);
 				}
+
+				FreeEvent(event);
 			}
 			else {
 				previous = event;

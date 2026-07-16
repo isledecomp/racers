@@ -29,7 +29,7 @@ private:
 
 	void ClearRoundPoints();
 	void AwardPoints(LegoU32 p_racerIndex, LegoU32 p_position);
-	LegoU32 FormatTime(LegoChar* p_buffer, LegoU32 p_time);
+	void FormatTime(LegoChar* p_buffer, LegoU32 p_time);
 
 	enum {
 		c_racerCount = 6,

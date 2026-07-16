@@ -18,6 +18,11 @@ public:
 	SaveRecordList::Record* GetSelectedRecord() const { return m_selectedRecords[0]; }
 	SaveRecordList::Record* GetSelectedRecord(LegoU32 p_index) const { return m_selectedRecords[p_index]; }
 	void SetSelectedRecordCount(undefined4 p_count) { m_selectedRecordCount = p_count; }
+	void ClearSelectedRecords()
+	{
+		m_selectedRecords[1] = NULL;
+		m_selectedRecords[0] = NULL;
+	}
 	void SetSelectedRecord(SaveRecordList::Record* p_record) { m_selectedRecords[0] = p_record; }
 	void SetSelectedRecord(LegoU32 p_index, SaveRecordList::Record* p_record) { m_selectedRecords[p_index] = p_record; }
 

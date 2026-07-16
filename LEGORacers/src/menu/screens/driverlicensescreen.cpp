@@ -150,12 +150,12 @@ LegoBool32 DriverLicenseScreen::Initialize(MenuGameContext* p_context, MenuScree
 	GolAnimatedEntity* entity;
 	ColorRGBA materialColor;
 	ColorRGBA lightColor;
-	materialColor.m_red = 0x78;
-	materialColor.m_grn = 0x78;
 	materialColor.m_blu = 0x78;
-	lightColor.m_red = 0xb4;
-	lightColor.m_grn = 0xb4;
+	materialColor.m_grn = 0x78;
+	materialColor.m_red = 0x78;
 	lightColor.m_blu = 0xb4;
+	lightColor.m_grn = 0xb4;
+	lightColor.m_red = 0xb4;
 	SetLighting(&materialColor, &lightColor);
 
 	LoadLicenseData();

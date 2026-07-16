@@ -68,19 +68,27 @@ extern const LegoFloat g_transitionProgressScale = 0.00050000002f;
 // FUNCTION: LEGORACERS 0x00427b70
 void RaceCameraController::SetPositionLag(LegoFloat p_amount)
 {
-	m_positionLag = (1.0f - p_amount) / (g_lagTimeScale * p_amount);
+	LegoFloat numerator = 1.0f - p_amount;
+	LegoFloat denominator = p_amount;
+	denominator *= g_lagTimeScale;
+	m_positionLag = numerator / denominator;
 }
 
 // FUNCTION: LEGORACERS 0x00427b90
 void RaceCameraController::SetRotationLag(LegoFloat p_amount)
 {
-	m_rotationLag = (1.0f - p_amount) / (g_lagTimeScale * p_amount);
+	LegoFloat numerator = 1.0f - p_amount;
+	LegoFloat denominator = p_amount;
+	denominator *= g_lagTimeScale;
+	m_rotationLag = numerator / denominator;
 }
 
 // FUNCTION: LEGORACERS 0x00427bb0
 void RaceCameraController::SetPitchAngle(LegoFloat p_degrees)
 {
-	GolMath::SinCos(g_degreesToRadians * p_degrees, &m_pitchSine, &m_pitchCosine);
+	LegoFloat radians = p_degrees;
+	radians *= g_degreesToRadians;
+	GolMath::SinCos(radians, &m_pitchSine, &m_pitchCosine);
 }
 
 // FUNCTION: LEGORACERS 0x00427be0
@@ -150,46 +158,51 @@ void RaceCameraController::UpdateFollow()
 
 	GolVec3 right;
 	GolVec3 forward;
-	if (m_mode == c_modeChase && m_lookBack) {
-		GolVec3 position;
-		position.m_x = m_lastRacerPosition.m_x + m_lastRacerPosition.m_x - m_smoothedTransform.m_position.m_x;
-		position.m_y = m_lastRacerPosition.m_y + m_lastRacerPosition.m_y - m_smoothedTransform.m_position.m_y;
-		position.m_z = m_smoothedTransform.m_position.m_z;
-		camera->GetTransform()->SetPosition(&position);
-		camera->m_flags |= GolCamera::c_flagViewDirty;
+	if (m_mode != c_modeChase || !m_lookBack) {
+		if (m_mode == c_modeCockpit && m_lookBack) {
+			camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
+			camera->m_flags |= GolCamera::c_flagViewDirty;
 
-		right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
-		right.m_y = -m_smoothedTransform.m_orientation.m_rows[2].m_y;
-		forward.m_x = -m_smoothedTransform.m_orientation.m_rows[1].m_x;
-		forward.m_y = -m_smoothedTransform.m_orientation.m_rows[1].m_y;
-		right.m_z = m_smoothedTransform.m_orientation.m_rows[2].m_z;
-		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
+			forward.m_x = m_smoothedTransform.m_orientation.m_rows[1].m_x;
+			right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
+			right.m_y = -m_smoothedTransform.m_orientation.m_rows[2].m_y;
+			forward.m_y = m_smoothedTransform.m_orientation.m_rows[1].m_y;
+			right.m_z = -m_smoothedTransform.m_orientation.m_rows[2].m_z;
+			forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
 
-		camera->GetTransform()->SetDirectionUp(&right, &forward);
-		camera->m_flags |= GolCamera::c_flagViewDirty;
-		return;
-	}
-	if (m_mode == c_modeCockpit && m_lookBack) {
+			camera = m_camera;
+			camera->GetTransform()->SetDirectionUp(&right, &forward);
+			camera->m_flags |= GolCamera::c_flagViewDirty;
+			return;
+		}
+
 		camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
 		camera->m_flags |= GolCamera::c_flagViewDirty;
-
-		forward.m_x = m_smoothedTransform.m_orientation.m_rows[1].m_x;
-		right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
-		right.m_y = -m_smoothedTransform.m_orientation.m_rows[2].m_y;
-		forward.m_y = m_smoothedTransform.m_orientation.m_rows[1].m_y;
-		right.m_z = -m_smoothedTransform.m_orientation.m_rows[2].m_z;
-		forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
-
-		camera->GetTransform()->SetDirectionUp(&right, &forward);
+		camera = m_camera;
+		camera->GetTransform()->SetDirectionUp(
+			&m_smoothedTransform.m_orientation.m_rows[2],
+			&m_smoothedTransform.m_orientation.m_rows[1]
+		);
 		camera->m_flags |= GolCamera::c_flagViewDirty;
 		return;
 	}
-	camera->GetTransform()->SetPosition(&m_smoothedTransform.m_position);
+
+	GolVec3 position;
+	position.m_x = m_lastRacerPosition.m_x + m_lastRacerPosition.m_x - m_smoothedTransform.m_position.m_x;
+	position.m_y = m_lastRacerPosition.m_y + m_lastRacerPosition.m_y - m_smoothedTransform.m_position.m_y;
+	position.m_z = m_smoothedTransform.m_position.m_z;
+	camera->GetTransform()->SetPosition(&position);
 	camera->m_flags |= GolCamera::c_flagViewDirty;
-	camera->GetTransform()->SetDirectionUp(
-		&m_smoothedTransform.m_orientation.m_rows[2],
-		&m_smoothedTransform.m_orientation.m_rows[1]
-	);
+
+	right.m_x = -m_smoothedTransform.m_orientation.m_rows[2].m_x;
+	right.m_y = -m_smoothedTransform.m_orientation.m_rows[2].m_y;
+	forward.m_x = -m_smoothedTransform.m_orientation.m_rows[1].m_x;
+	forward.m_y = -m_smoothedTransform.m_orientation.m_rows[1].m_y;
+	right.m_z = m_smoothedTransform.m_orientation.m_rows[2].m_z;
+	forward.m_z = m_smoothedTransform.m_orientation.m_rows[1].m_z;
+
+	camera = m_camera;
+	camera->GetTransform()->SetDirectionUp(&right, &forward);
 	camera->m_flags |= GolCamera::c_flagViewDirty;
 }
 
@@ -215,12 +228,11 @@ void RaceCameraController::UpdateShake()
 	}
 
 	if (m_racer->m_flags & 0x10) {
-		m_shakeAmount = 0.0f;
 		m_shakeMs = 0;
 	}
 	else if (!m_shakeMs) {
 		m_shakeMs = 500;
-		m_baseFov = m_camera->m_fov;
+		m_baseFov = m_camera->GetFov();
 
 		if (m_racer->m_flags & 0x800) {
 			if ((m_shakeAmount > 0.0f || m_baseFov <= g_shakeFovMin) && m_baseFov < g_shakeFovMax) {
@@ -241,14 +253,12 @@ void RaceCameraController::UpdateShake()
 								0.5f;
 			}
 		}
+		else if (m_camera->GetFov() != m_targetFov) {
+			m_shakeAmount = (m_baseFov - m_targetFov) * 0.5f;
+		}
 		else {
-			if (m_camera->m_fov != m_targetFov) {
-				m_shakeAmount = (m_baseFov - m_targetFov) * 0.5f;
-			}
-			else {
-				m_shakeAmount = 0.0f;
-				m_shakeMs = 0;
-			}
+			m_shakeAmount = 0.0f;
+			m_shakeMs = 0;
 		}
 	}
 
@@ -364,21 +374,25 @@ void RaceCameraController::SetOrientation(GolVec3* p_direction, GolVec3* p_up)
 void RaceCameraController::BuildOrientation(GolVec3* p_direction, GolVec3* p_up, GolMatrix3* p_dest)
 {
 	GolVec3* source = p_direction;
-	GolVec3* up = &p_dest->m_rows[1];
 	GolVec3* back = &p_dest->m_rows[2];
 
 	GolMath::NormalizeVector3(*source, back);
 
 	GolVec3 forward;
+	GolVec3* up = &p_dest->m_rows[1];
 	GolMath::NormalizeVector3(*source, &forward);
 
-	LegoFloat dot = p_up->m_z * forward.m_z;
-	dot += p_up->m_y * forward.m_y;
+	LegoFloat contribution = p_up->m_y;
+	contribution *= forward.m_y;
+	LegoFloat dot = p_up->m_z;
+	dot *= forward.m_z;
+	dot += contribution;
 	dot += forward.m_x * p_up->m_x;
 
 	GolVec3 projection;
 	projection.m_x = forward.m_x * dot;
-	projection.m_y = forward.m_y * dot;
+	projection.m_y = forward.m_y;
+	projection.m_y *= dot;
 	projection.m_z = forward.m_z * dot;
 
 	up->m_x = p_up->m_x - projection.m_x;
@@ -388,9 +402,21 @@ void RaceCameraController::BuildOrientation(GolVec3* p_direction, GolVec3* p_up,
 	GolMath::NormalizeVector3(*up, up);
 
 	GolVec3* right = &p_dest->m_rows[0];
-	right->m_x = up->m_y * back->m_z - up->m_z * back->m_y;
-	right->m_y = up->m_z * back->m_x - back->m_z * up->m_x;
-	right->m_z = back->m_y * up->m_x - up->m_y * back->m_x;
+	LegoFloat x = up->m_y;
+	x *= back->m_z;
+	LegoFloat xSub = up->m_z;
+	xSub *= back->m_y;
+	right->m_x = x - xSub;
+
+	LegoFloat y = up->m_z;
+	y *= back->m_x;
+	LegoFloat ySub = back->m_z;
+	ySub *= up->m_x;
+	y -= ySub;
+	right->m_y = y;
+
+	LegoFloat z = back->m_y;
+	right->m_z = z * up->m_x - up->m_y * back->m_x;
 }
 
 // FUNCTION: LEGORACERS 0x00428390
@@ -444,21 +470,16 @@ void RaceCameraController::SetView(LegoS32 p_viewIndex, LegoBool32 p_alternate)
 }
 
 // FUNCTION: LEGORACERS 0x00428500
-GolVec3* RaceCameraController::GetViewDirection(GolVec3* p_dest)
+void RaceCameraController::GetViewDirection(GolVec3* p_dest)
 {
 	if (m_mode == c_modeFinish) {
-		GolVec3* source = &m_viewDirection;
-		p_dest->m_x = source->m_x;
-		p_dest->m_y = source->m_y;
-		p_dest->m_z = source->m_z;
+		*p_dest = m_viewDirection;
 	}
 	else {
 		p_dest->m_x = m_smoothedTransform.m_orientation.m_rows[2].m_x;
 		p_dest->m_y = m_smoothedTransform.m_orientation.m_rows[2].m_y;
 		p_dest->m_z = m_smoothedTransform.m_orientation.m_rows[2].m_z;
 	}
-
-	return p_dest;
 }
 
 // FUNCTION: LEGORACERS 0x00428540

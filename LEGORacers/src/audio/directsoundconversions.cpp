@@ -5,9 +5,6 @@
 
 #include <dsound.h>
 
-// GLOBAL: LEGORACERS 0x004afaec
-LegoFloat g_minSoundPan = -1.0f;
-
 // GLOBAL: LEGORACERS 0x004afb28
 LegoFloat g_directSoundVolumeScale = -3000.0f;
 
@@ -36,7 +33,7 @@ LegoS32 ConvertPanToDirectSound(LegoFloat p_pan)
 		return DSBPAN_RIGHT;
 	}
 
-	if (p_pan == g_minSoundPan) {
+	if (p_pan == -1.0f) {
 		return DSBPAN_LEFT;
 	}
 
@@ -48,8 +45,8 @@ LegoS32 ConvertPanToDirectSound(LegoFloat p_pan)
 // FUNCTION: LEGORACERS 0x004196c0
 GolListLink* GolListLink::InsertBefore(GolListLink* p_link)
 {
-	m_next = p_link;
 	m_prev = p_link->m_prev;
+	m_next = p_link;
 	p_link->m_prev->m_next = this;
 	p_link->m_prev = this;
 	return p_link;

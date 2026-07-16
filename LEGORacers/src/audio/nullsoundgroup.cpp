@@ -64,7 +64,7 @@ SoundInstance* NullSoundGroup::CreateSoundInstance(LegoU32)
 
 	if (sound) {
 		sound->SetSoundGroup(this);
-		m_soundInstances.Append(*sound);
+		m_soundInstances.Append(static_cast<GolListLink*>(sound));
 		sound->SetVolume(g_defaultNullSoundVolume);
 	}
 
@@ -83,7 +83,7 @@ StreamingSoundInstance* NullSoundGroup::CreateStreamingSoundInstance(LegoU32)
 
 	if (sound) {
 		sound->SetSoundGroup(this);
-		m_streamingSoundInstances.Append(*sound);
+		m_streamingSoundInstances.Append(static_cast<GolListLink*>(sound));
 		sound->SetVolume(g_defaultNullSoundVolume);
 	}
 

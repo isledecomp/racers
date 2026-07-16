@@ -13,6 +13,7 @@ public:
 	Particle();
 
 	void Integrate(LegoFloat p_deltaT, GolVec3* p_acceleration);
+	void SetNext(Particle* p_next) { m_next = p_next; }
 
 	LegoU32 m_ageMs;         // 0x28
 	LegoU32 m_lifetimeMs;    // 0x2c

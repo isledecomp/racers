@@ -116,12 +116,15 @@ undefined4 MenuColorBox::OnEvent(undefined4 p_param)
 		else {
 			m_visible = (m_visible == 0);
 
+			LegoU32 duration;
 			if (m_visible) {
-				m_blinkMs = m_onDurationMs;
+				duration = m_onDurationMs;
 			}
 			else {
-				m_blinkMs = m_offDurationMs;
+				duration = m_offDurationMs;
 			}
+
+			m_blinkMs = duration;
 		}
 	}
 

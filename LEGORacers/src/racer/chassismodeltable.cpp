@@ -253,34 +253,33 @@ LegoU32 ChassisModelTable::Load(const Params* p_params)
 
 	LegoU32 result = m_instantiateCount;
 	if (result != 0) {
-		LegoU32 modelCount = 2 * result;
-		m_animatedEntities = new GolAnimatedEntity[modelCount];
+		m_animatedEntities = new GolAnimatedEntity[2 * m_instantiateCount];
 		if (m_animatedEntities == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_models = new GolModelBase*[modelCount];
+		m_models = new GolModelBase*[2 * m_instantiateCount];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_textureLists = new GolTextureList*[modelCount];
-		if (m_textureLists == NULL) {
+		m_textureLists = new GolTextureList*[2 * m_instantiateCount];
+		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_materialLists = new GolMaterialLibrary*[modelCount];
-		if (m_materialLists == NULL) {
+		m_materialLists = new GolMaterialLibrary*[2 * m_instantiateCount];
+		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_sceneNodes = new GolSceneNode*[modelCount];
+		m_sceneNodes = new GolSceneNode*[2 * m_instantiateCount];
 		if (m_sceneNodes == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_modelParts = new CmbModelPart[modelCount];
+		m_modelParts = new CmbModelPart[2 * m_instantiateCount];
 		if (m_modelParts == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
 		result = 0;
-		if ((m_instantiateCount & 0x7fffffff) != 0) {
+		if ((m_instantiateCount & 0x7fffffff) > 0) {
 			do {
 				result++;
 				m_models[result - 1] = NULL;

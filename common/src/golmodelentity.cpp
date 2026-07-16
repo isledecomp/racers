@@ -121,7 +121,7 @@ void GolModelEntity::SelectLod(const GolVec3& p_vector, GolModelEntity::ResultSt
 	if (*threshold != g_maxFloat) {
 		GolVec3 v3;
 		GetPosition(&v3);
-		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(p_vector, v3);
+		LegoFloat distanceSquared = v3.DistanceSquaredTo(p_vector);
 
 		for (; distanceSquared > *threshold;) {
 			i++;
@@ -144,19 +144,15 @@ void GolModelEntity::SelectLod(const GolVec3& p_vector, GolModelEntity::ResultSt
 // FUNCTION: LEGORACERS 0x004112c0
 void GolModelEntity::ComputeVisibility(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
-	LegoU32 i;
-	LegoFloat* threshold;
+	LegoU32 i = 0;
 	GolVec3 position;
 
-	i = 0;
-	threshold = m_modelDistances;
-	if (*threshold != g_maxFloat) {
+	if (m_modelDistances[0] != g_maxFloat) {
 		GetPosition(&position);
 		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
 
-		for (; distanceSquared > *threshold;) {
+		for (; distanceSquared > m_modelDistances[i];) {
 			i++;
-			threshold++;
 			if (i >= 3) {
 				p_result->m_visibility = 0;
 				return;
@@ -198,16 +194,17 @@ void GolModelEntity::ComputeBoundsFromModel(LegoU32 p_index)
 		return;
 	}
 
+	GolVec3 position;
 	LegoFloat scale = m_scale;
 	GolVec3 center = model->GetCenter();
 	LegoFloat radius = model->GetRadius();
-	center.m_x *= scale;
-	center.m_y *= scale;
-	center.m_z *= scale;
-	GolVec3 position;
+	center *= scale;
 	LocalToWorld(center, &position);
 	SetBoundsCenterAndSpan(position);
-	SetBoundsRadius(m_scale * radius);
+
+	LegoFloat scaledRadius = m_scale;
+	scaledRadius *= radius;
+	SetBoundsRadius(scaledRadius);
 }
 
 // FUNCTION: GOLDP 0x10027f40

@@ -6,8 +6,6 @@
 DECOMP_SIZE_ASSERT(CheckpointGraph::Entry, 0x24)
 DECOMP_SIZE_ASSERT(CheckpointGraph, 0x08)
 
-extern LegoFloat g_minSoundPan;
-
 // FUNCTION: LEGORACERS 0x0041e5e0
 CheckpointGraph::Entry::Entry()
 {
@@ -212,7 +210,7 @@ LegoU32 CheckpointGraph::FindNextFractionedCheckpoint(LegoU32 p_startIndex, Lego
 	*p_stepCount = 0;
 
 	Entry* entry = &m_entries[p_startIndex];
-	while (entry->m_lapFraction == g_minSoundPan) {
+	while (entry->GetLapFraction() == -1.0f) {
 		if (*p_stepCount >= m_count) {
 			break;
 		}

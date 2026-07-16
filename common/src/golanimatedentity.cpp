@@ -310,7 +310,7 @@ void GolAnimatedEntity::PlayPartScaled(LegoU32 p_partIndex, LegoS32 p_timeScale)
 	p_partIndex &= 0xffff;
 	m_flags = flags;
 
-	CmbModelPart* modelPart = m_modelParts[0];
+	CmbModelPart* modelPart = GetModelPart();
 	m_radius = -1.0f;
 	LegoFloat rate = modelPart->GetPartData()[p_partIndex].GetMsPerFrame();
 	m_msPerFrame = rate;
@@ -340,8 +340,8 @@ void GolAnimatedEntity::PlayPartDirect(LegoU32 p_partIndex)
 	flags &= ~c_flagsPartAnimationMask;
 	m_currentPartIndex = p_partIndex;
 	flags |= c_flagLoopCurrentPart;
-	p_partIndex &= 0xffff;
 	m_flags = flags;
+	p_partIndex &= 0xffff;
 
 	CmbModelPart* modelPart = m_modelParts[0];
 	m_radius = -1.0f;
@@ -415,9 +415,10 @@ void GolAnimatedEntity::TransitionToPart(
 		m_flags = flags;
 	}
 
-	LegoU32 queuedPartIndex = static_cast<LegoU16>(p_partIndex);
+	p_partIndex &= 0xffff;
 	LegoBool32 updateQueued = p_updateQueued;
-	m_queuedMsPerFrame = m_modelParts[0]->GetPartData()[queuedPartIndex].GetMsPerFrame();
+	m_queuedMsPerFrame = GetModelPart()->GetPartData()[p_partIndex].GetMsPerFrame();
+	CmbModelPart* modelPart = GetModelPart();
 	m_transitionProgress = 0.0f;
 	m_queuedPartTimeMs = p_time;
 	LegoBool32 updateCurrent = p_updateCurrent;
@@ -430,7 +431,7 @@ void GolAnimatedEntity::TransitionToPart(
 		m_currentPartVelocity.m_z = 0.0f;
 	}
 
-	m_queuedPartVelocity = m_modelParts[0]->GetPartData()[queuedPartIndex].GetVelocity();
+	m_queuedPartVelocity = modelPart->GetPartData()[p_partIndex].GetVelocity();
 }
 
 // FUNCTION: GOLDP 0x10023b10
@@ -439,12 +440,15 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 {
 	m_flags &= ~c_flagLoopWrapped;
 	if (m_flags & c_flagPartAnimation) {
+		LegoFloat endFrame;
+		LegoFloat currentTime;
 		ResetPartIndices();
 		LegoU32 flags = m_flags;
 		if (flags & c_flagPartTransition) {
 			m_radius = -1.0f;
 			LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
-			m_transitionProgress += m_transitionRate * elapsed;
+			LegoFloat transitionRate = m_transitionRate;
+			m_transitionProgress += transitionRate * elapsed;
 			if (m_transitionProgress >= 1.0f) {
 				LegoFloat consumed = (m_transitionProgress - 1.0f) / m_transitionRate;
 
@@ -464,13 +468,14 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 			}
 			else {
 				if (m_advanceCurrent) {
-					const CmbModelPartData& activePart = m_modelParts[0]->GetPartData()[m_currentPartIndex];
 					LegoFloat activeRate = m_msPerFrame;
 					m_partTimeMs += activeRate * elapsed;
-					LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
+					currentTime = m_partTimeMs;
+					const CmbModelPartData& activePart = m_modelParts[0]->GetPartData()[m_currentPartIndex];
+					endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
 					if (m_partTimeMs > endFrame) {
 						if (flags & c_flagLoopCurrentPart) {
-							m_partTimeMs = activePart.WrapTime(m_partTimeMs);
+							m_partTimeMs = activePart.WrapTime(currentTime);
 						}
 						else {
 							m_partTimeMs = endFrame;
@@ -479,28 +484,32 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 				}
 
 				if (m_advanceQueued) {
-					const CmbModelPartData& queuedPart = m_modelParts[0]->GetPartData()[m_queuedPartIndex];
 					LegoFloat queuedRate = m_queuedMsPerFrame;
 					m_queuedPartTimeMs += queuedRate * elapsed;
-					LegoFloat endFrame = static_cast<LegoFloat>(queuedPart.GetFrameCount() - 1);
-					if (m_queuedPartTimeMs > endFrame) {
+					LegoFloat queuedTime = m_queuedPartTimeMs;
+					const CmbModelPartData& queuedPart = m_modelParts[0]->GetPartData()[m_queuedPartIndex];
+					LegoS32 queuedEndFrameIndex = queuedPart.GetFrameCount() - 1;
+					LegoFloat queuedEndFrame = static_cast<LegoFloat>(queuedEndFrameIndex);
+					if (m_queuedPartTimeMs > queuedEndFrame) {
 						if (m_flags & c_flagLoopQueuedPart) {
-							m_queuedPartTimeMs = queuedPart.WrapTime(m_queuedPartTimeMs);
+							m_queuedPartTimeMs = queuedPart.WrapTime(queuedTime);
 						}
 						else {
-							m_queuedPartTimeMs = endFrame;
+							m_queuedPartTimeMs = queuedEndFrame;
 						}
 					}
 				}
 
+				m_velocity.m_x = m_queuedPartVelocity.m_x - m_currentPartVelocity.m_x;
+				m_velocity.m_y = m_queuedPartVelocity.m_y - m_currentPartVelocity.m_y;
+				m_velocity.m_z = m_queuedPartVelocity.m_z - m_currentPartVelocity.m_z;
 				GolVec3* velocity = &m_velocity;
-				velocity->m_x = m_queuedPartVelocity.m_x - m_currentPartVelocity.m_x;
-				velocity->m_y = m_queuedPartVelocity.m_y - m_currentPartVelocity.m_y;
-				velocity->m_z = m_queuedPartVelocity.m_z - m_currentPartVelocity.m_z;
+				LegoFloat progress = m_transitionProgress;
 				GolVec3 blendedVelocity;
-				blendedVelocity.m_x = velocity->m_x * m_transitionProgress;
-				blendedVelocity.m_y = velocity->m_y * m_transitionProgress;
-				blendedVelocity.m_z = velocity->m_z * m_transitionProgress;
+				blendedVelocity.m_x = progress * velocity->m_x;
+				LegoFloat y = velocity->m_y;
+				blendedVelocity.m_y = y * progress;
+				blendedVelocity.m_z = progress * velocity->m_z;
 				velocity->m_x = m_currentPartVelocity.m_x + blendedVelocity.m_x;
 				velocity->m_y = m_currentPartVelocity.m_y + blendedVelocity.m_y;
 				velocity->m_z = m_currentPartVelocity.m_z + blendedVelocity.m_z;
@@ -508,10 +517,21 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 		}
 
 		if (!(m_flags & c_flagPartTransition)) {
-			const CmbModelPartData& activePart = m_modelParts[0]->GetPartData()[m_currentPartIndex];
+			CmbModelPart* modelPart = m_modelParts[0];
+#ifdef BUILDING_GOL
+			LegoU32 currentPartIndex = m_currentPartIndex;
 			m_partTimeMs += m_msPerFrame * static_cast<LegoFloat>(p_elapsed);
-			LegoFloat currentTime = m_partTimeMs;
-			LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
+#else
+			LegoU32 currentPartIndex = m_currentPartIndex;
+			LegoFloat activeRate = m_msPerFrame;
+			LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
+			activeRate *= elapsed;
+			m_partTimeMs += activeRate;
+#endif
+			currentTime = m_partTimeMs;
+			const CmbModelPartData& activePart = modelPart->GetPartData()[currentPartIndex];
+			LegoS32 endFrameIndex = activePart.GetFrameCount() - 1;
+			endFrame = static_cast<LegoFloat>(endFrameIndex);
 			if (m_partTimeMs >= endFrame) {
 				if (m_flags & c_flagLoopCurrentPart) {
 					LegoFloat wrappedTime = activePart.WrapTime(currentTime);
@@ -520,8 +540,10 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 					}
 
 					m_partTimeMs = wrappedTime;
+#ifndef BUILDING_GOL
 					GolModelEntity::Update(p_elapsed);
 					return;
+#endif
 				}
 				else {
 					if (m_flags & c_flagRestartQueuedPart) {

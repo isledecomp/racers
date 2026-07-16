@@ -16,6 +16,24 @@
 
 extern const LegoFloat g_brickSettleRate;
 
+inline void CrossVectors(const GolVec3& p_left, const GolVec3& p_right, GolVec3* p_dest)
+{
+	LegoFloat x = p_left.m_y * p_right.m_z;
+	LegoFloat xSub = p_left.m_z * p_right.m_y;
+	x -= xSub;
+	p_dest->m_x = x;
+
+	LegoFloat y = p_left.m_z * p_right.m_x;
+	LegoFloat ySub = p_left.m_x * p_right.m_z;
+	y -= ySub;
+	p_dest->m_y = y;
+
+	LegoFloat z = p_left.m_x * p_right.m_y;
+	LegoFloat zSub = p_left.m_y * p_right.m_x;
+	z -= zSub;
+	p_dest->m_z = z;
+}
+
 // GLOBAL: LEGORACERS 0x004b15dc
 const LegoFloat g_magnetSoundMinDistance = 30.0f;
 
@@ -134,11 +152,13 @@ void MagnetAction::Activate(
 
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_magnetTemplate->GetModel(i);
-		if (model != NULL) {
-			LegoFloat modelDistance = p_magnetTemplate->GetModelDistance(i);
-			CmbModelPart* modelPart = p_magnetTemplate->GetModelPart(i);
-			m_magnetEntity->AddModel(model, p_magnetTemplate->GetSceneNode(i), modelPart, modelDistance);
+		if (p_magnetTemplate->GetModel(i) != NULL) {
+			m_magnetEntity->AddModel(
+				p_magnetTemplate->GetModel(i),
+				p_magnetTemplate->GetSceneNode(i),
+				p_magnetTemplate->GetModelPart(i),
+				p_magnetTemplate->GetModelDistance(i)
+			);
 		}
 	}
 
@@ -149,11 +169,13 @@ void MagnetAction::Activate(
 		p_ringTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_ringTemplate->GetModel(i);
-		if (model != NULL) {
-			LegoFloat modelDistance = p_ringTemplate->GetModelDistance(i);
-			CmbModelPart* modelPart = p_ringTemplate->GetModelPart(i);
-			m_ringEntity->AddModel(model, p_ringTemplate->GetSceneNode(i), modelPart, modelDistance);
+		if (p_ringTemplate->GetModel(i) != NULL) {
+			m_ringEntity->AddModel(
+				p_ringTemplate->GetModel(i),
+				p_ringTemplate->GetSceneNode(i),
+				p_ringTemplate->GetModelPart(i),
+				p_ringTemplate->GetModelDistance(i)
+			);
 		}
 	}
 	m_ringEntity->SetTextureScrollU(p_ringTemplate->GetTextureScrollU());
@@ -168,11 +190,13 @@ void MagnetAction::Activate(
 		p_insideTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_insideTemplate->GetModel(i);
-		if (model != NULL) {
-			LegoFloat modelDistance = p_insideTemplate->GetModelDistance(i);
-			CmbModelPart* modelPart = p_insideTemplate->GetModelPart(i);
-			m_insideEntity->AddModel(model, p_insideTemplate->GetSceneNode(i), modelPart, modelDistance);
+		if (p_insideTemplate->GetModel(i) != NULL) {
+			m_insideEntity->AddModel(
+				p_insideTemplate->GetModel(i),
+				p_insideTemplate->GetSceneNode(i),
+				p_insideTemplate->GetModelPart(i),
+				p_insideTemplate->GetModelDistance(i)
+			);
 		}
 	}
 	m_insideEntity->SetTextureScrollU(p_insideTemplate->GetTextureScrollU());
@@ -240,12 +264,12 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 
 	PowerupAction::Update(p_elapsedMs);
 
+	GolVec3 direction;
 	if (m_heldRacer == NULL && m_pulledRacer == NULL) {
-		GolVec3 up;
-		up.m_x = 0.0f;
-		up.m_y = 0.0f;
-		up.m_z = 1.0f;
-		m_magnetEntity->SetDirectionUp(m_direction, up);
+		direction.m_x = 0.0f;
+		direction.m_y = 0.0f;
+		direction.m_z = 1.0f;
+		m_magnetEntity->SetDirectionUp(m_direction, direction);
 	}
 	else {
 		GolAnimatedEntity* racerEntity;
@@ -253,7 +277,8 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 			racerEntity = m_heldRacer->m_visuals.m_carEntity;
 		}
 		else {
-			racerEntity = m_pulledRacer->m_visuals.m_carEntity;
+			CarVisuals* racerVisuals = &m_pulledRacer->m_visuals;
+			racerEntity = racerVisuals->GetCarEntity();
 		}
 
 		GolVec3 racerPosition;
@@ -262,22 +287,22 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		GolVec3 modelPosition;
 		m_magnetEntity->GetPosition(&modelPosition);
 
-		GolVec3 direction;
 		direction.m_x = modelPosition.m_x - racerPosition.m_x;
 		direction.m_y = modelPosition.m_y - racerPosition.m_y;
 		direction.m_z = modelPosition.m_z - racerPosition.m_z;
 		GolMath::NormalizeVector3(direction, &direction);
 
-		LegoFloat zero = 0.0f;
-		GolVec3 side;
-		side.m_x = zero - direction.m_y;
-		side.m_y = direction.m_x - zero;
-		side.m_z = zero;
-
 		GolVec3 up;
+		up.m_x = 0.0f;
+		up.m_y = 0.0f;
+		up.m_z = 1.0f;
+		GolVec3 side;
+		CrossVectors(up, direction, &side);
 		up.m_x = side.m_y * direction.m_z - side.m_z * direction.m_y;
-		up.m_y = side.m_z * direction.m_x - side.m_x * direction.m_z;
-		up.m_z = side.m_x * direction.m_y - side.m_y * direction.m_x;
+		LegoFloat directionZ = direction.m_z;
+		up.m_y = side.m_z * direction.m_x - directionZ * side.m_x;
+		LegoFloat directionY = direction.m_y;
+		up.m_z = directionY * side.m_x - side.m_y * direction.m_x;
 		m_magnetEntity->SetUpDirection(direction, up);
 
 		if (m_heldRacer != NULL) {
@@ -307,11 +332,7 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 				);
 
 				if (m_heldRacer->m_physics.m_speed <= g_brickSettleRate) {
-					direction.m_x = racerPosition.m_x - modelPosition.m_x;
-					direction.m_y = racerPosition.m_y - modelPosition.m_y;
-					direction.m_z = racerPosition.m_z - modelPosition.m_z;
-					LegoFloat distanceSquared =
-						direction.m_x * direction.m_x + direction.m_y * direction.m_y + direction.m_z * direction.m_z;
+					LegoFloat distanceSquared = modelPosition.DistanceSquaredTo(racerPosition);
 
 					if (distanceSquared <= g_magnetPullDistanceSquared) {
 						m_flags |= c_flagVictimLifted;
@@ -468,8 +489,12 @@ void MagnetAction::Deploy()
 	m_insideEntity->SetFlags(m_insideEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_insideEntity->PlayPart(0);
 
-	if (m_ownerRacer->m_checkpoint != NULL) {
-		m_direction = m_ownerRacer->m_checkpoint->m_planeNormal;
+	CheckpointGraph::Entry* checkpoint = m_ownerRacer->m_checkpoint;
+	if (checkpoint != NULL) {
+		GolVec3* direction = &m_direction;
+		direction->m_x = checkpoint->m_planeNormal.m_x;
+		direction->m_y = checkpoint->m_planeNormal.m_y;
+		direction->m_z = checkpoint->m_planeNormal.m_z;
 	}
 	else {
 		m_direction.m_x = 1.0f;
@@ -498,6 +523,7 @@ void MagnetAction::Deploy()
 	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
 	m_sound->Play(TRUE);
 	m_sound->SetDistanceRange(g_magnetSoundMinDistance, g_magnetSoundMaxDistance);
+
 	m_sound->SetPosition(position);
 	m_sound->ClearVelocity();
 

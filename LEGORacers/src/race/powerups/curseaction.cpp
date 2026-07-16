@@ -21,6 +21,16 @@ const LegoFloat g_curseSoundMaxDistanceSquared = 300.0f;
 // GLOBAL: LEGORACERS 0x004b13f8
 const LegoFloat g_curseTriggerRadius = 10.0f;
 
+inline GolVec3 CrossVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	GolVec3 result;
+	result.m_x = p_left.m_y * p_right.m_z - p_left.m_z * p_right.m_y;
+	result.m_y = p_left.m_z * p_right.m_x - p_left.m_x * p_right.m_z;
+	result.m_z = p_left.m_x * p_right.m_y - p_left.m_y * p_right.m_x;
+
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x00452440
 CurseAction::CurseAction()
 {
@@ -99,11 +109,13 @@ void CurseAction::Activate(
 
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_curseTemplate->GetModel(i);
-		if (model != NULL) {
-			LegoFloat modelDistance = p_curseTemplate->GetModelDistance(i);
-			CmbModelPart* modelPart = p_curseTemplate->GetModelPart(i);
-			m_curseEntity->AddModel(model, p_curseTemplate->GetSceneNode(i), modelPart, modelDistance);
+		if (p_curseTemplate->GetModel(i) != NULL) {
+			m_curseEntity->AddModel(
+				p_curseTemplate->GetModel(i),
+				p_curseTemplate->GetSceneNode(i),
+				p_curseTemplate->GetModelPart(i),
+				p_curseTemplate->GetModelDistance(i)
+			);
 		}
 	}
 	m_curseEntity->SetFlags(m_curseEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
@@ -116,11 +128,13 @@ void CurseAction::Activate(
 		p_auraTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_auraTemplate->GetModel(i);
-		if (model != NULL) {
-			LegoFloat modelDistance = p_auraTemplate->GetModelDistance(i);
-			CmbModelPart* modelPart = p_auraTemplate->GetModelPart(i);
-			m_auraEntity->AddModel(model, p_auraTemplate->GetSceneNode(i), modelPart, modelDistance);
+		if (p_auraTemplate->GetModel(i) != NULL) {
+			m_auraEntity->AddModel(
+				p_auraTemplate->GetModel(i),
+				p_auraTemplate->GetSceneNode(i),
+				p_auraTemplate->GetModelPart(i),
+				p_auraTemplate->GetModelDistance(i)
+			);
 		}
 	}
 	m_auraEntity->SetFlags(m_auraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
@@ -137,11 +151,13 @@ void CurseAction::Activate(
 		p_innerAuraTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_innerAuraTemplate->GetModel(i);
-		if (model != NULL) {
-			LegoFloat modelDistance = p_innerAuraTemplate->GetModelDistance(i);
-			CmbModelPart* modelPart = p_innerAuraTemplate->GetModelPart(i);
-			m_innerAuraEntity->AddModel(model, p_innerAuraTemplate->GetSceneNode(i), modelPart, modelDistance);
+		if (p_innerAuraTemplate->GetModel(i) != NULL) {
+			m_innerAuraEntity->AddModel(
+				p_innerAuraTemplate->GetModel(i),
+				p_innerAuraTemplate->GetSceneNode(i),
+				p_innerAuraTemplate->GetModelPart(i),
+				p_innerAuraTemplate->GetModelDistance(i)
+			);
 		}
 	}
 	m_innerAuraEntity->SetFlags(m_innerAuraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
@@ -173,9 +189,11 @@ void CurseAction::Activate(
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
 
+		LegoFloat forwardX = up.m_z * direction.m_y;
+
 		GolVec3 forward;
-		forward.m_x = -direction.m_y;
-		forward.m_y = direction.m_x;
+		forward.m_x = up.m_y * direction.m_z - forwardX;
+		forward.m_y = up.m_z * direction.m_x - direction.m_z * up.m_x;
 		forward.m_z = 0.0f;
 		m_curseEntity->SetDirectionUp(forward, up);
 
@@ -259,7 +277,11 @@ void CurseAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	if (m_state == c_stateFade) {
 		LegoFloat scale = static_cast<LegoS32>(m_stateTimerMs) * 0.001f;
 		m_auraEntity->SetScaleAndInvalidateRadius(scale);
-		m_innerAuraEntity->SetScaleThenInvalidateRadius(m_auraEntity->GetScale());
+
+		GolAnimatedEntity* entity = m_auraEntity;
+		scale = entity->GetScale();
+		entity = m_innerAuraEntity;
+		entity->SetScaleThenInvalidateRadius(scale);
 	}
 
 	m_auraEntity->Draw(*p_renderer);
@@ -310,11 +332,7 @@ void CurseAction::AdvanceState()
 		position.m_z += up.m_z * 13.0f;
 		m_curseEntity->SetPosition(position);
 
-		GolVec3 cross;
-		cross.m_x = up.m_y * direction.m_z - up.m_z * direction.m_y;
-		cross.m_y = up.m_z * direction.m_x - direction.m_z * up.m_x;
-		cross.m_z = direction.m_y * up.m_x - up.m_y * direction.m_x;
-		m_curseEntity->SetDirectionUp(cross, up);
+		m_curseEntity->SetDirectionUp(CrossVectors(up, direction), up);
 
 		m_auraEntity->CopyOrientationFrom(*m_curseEntity);
 		m_innerAuraEntity->CopyOrientationFrom(*m_curseEntity);

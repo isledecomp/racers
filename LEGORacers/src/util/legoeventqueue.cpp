@@ -126,7 +126,7 @@ void LegoEventQueue::Update(LegoU32 p_elapsedMs)
 			Descriptor* descriptor = &event->m_descriptor;
 			LegoU32 elapsedMs = descriptor->m_elapsedMs;
 			elapsedMs += p_elapsedMs;
-			descriptor->m_elapsedMs = elapsedMs;
+			event->m_descriptor.m_elapsedMs = elapsedMs;
 			LegoU32 durationMs = descriptor->m_intervalMs;
 
 			if (elapsedMs >= durationMs) {
@@ -235,19 +235,19 @@ void ProximityEventQueue::TestPairs()
 // FUNCTION: LEGORACERS 0x0042fe10
 void ProximityEventQueue::SortList()
 {
-	LegoFloat eventMinX;
+	Event* next;
 
 	if (m_sortedList == NULL) {
 		return;
 	}
 
-	GolWorldEntity* model = GetEventEntity(m_sortedList);
+	Event* previous = m_sortedList;
+	GolWorldEntity* model = GetEventEntity(previous);
 	if (model->GetRadius() < 0.0f) {
 		model->UpdateBounds();
 	}
 
 	LegoFloat previousMinX = model->GetMinX();
-	Event* previous = m_sortedList;
 	Event* event = m_sortedList->m_next;
 
 	if (event == NULL) {
@@ -255,7 +255,7 @@ void ProximityEventQueue::SortList()
 	}
 
 	do {
-		Event* next = event->m_next;
+		next = event->m_next;
 		GolWorldEntity* eventModel = GetEventEntity(event);
 
 		if (eventModel->GetRadius() < 0.0f) {
@@ -269,29 +269,27 @@ void ProximityEventQueue::SortList()
 			}
 
 			Event* insertAfter = previous->m_descriptor.m_previous;
-			if (insertAfter) {
-				do {
-					GolWorldEntity* insertModel = GetEventEntity(insertAfter);
+			while (insertAfter) {
+				GolWorldEntity* insertModel = GetEventEntity(insertAfter);
 
-					if (eventModel->GetRadius() < 0.0f) {
-						eventModel->UpdateBounds();
-					}
+				if (eventModel->GetRadius() < 0.0f) {
+					eventModel->UpdateBounds();
+				}
 
-					eventMinX = eventModel->GetMinX();
-					if (insertModel->GetRadius() < 0.0f) {
-						insertModel->UpdateBounds();
-					}
+				LegoFloat eventMinX = eventModel->GetMinX();
+				if (0.0f > insertModel->GetRadius()) {
+					insertModel->UpdateBounds();
+				}
 
-					if (insertModel->GetMinX() <= eventMinX) {
-						event->m_descriptor.m_previous = insertAfter;
-						event->m_next = insertAfter->m_next;
-						insertAfter->m_next->m_descriptor.m_previous = event;
-						insertAfter->m_next = event;
-						break;
-					}
+				if (insertModel->GetMinX() <= eventMinX) {
+					event->m_descriptor.m_previous = insertAfter;
+					event->m_next = insertAfter->m_next;
+					insertAfter->m_next->m_descriptor.m_previous = event;
+					insertAfter->m_next = event;
+					break;
+				}
 
-					insertAfter = insertAfter->m_descriptor.m_previous;
-				} while (insertAfter);
+				insertAfter = insertAfter->m_descriptor.m_previous;
 			}
 
 			if (insertAfter == NULL) {
@@ -353,17 +351,15 @@ void ProximityEventQueue::PruneSortedList()
 					if (next) {
 						next->m_descriptor.m_previous = NULL;
 					}
-
-					FreeEvent(event);
 				}
 				else {
 					previous->m_next = next;
 					if (next) {
 						next->m_descriptor.m_previous = previous;
 					}
-
-					FreeEvent(event);
 				}
+
+				FreeEvent(event);
 			}
 			else {
 				previous = event;

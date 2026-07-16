@@ -46,14 +46,17 @@ extern const LegoFloat g_carBuildModelTextureCoordinateScale = 0.25f;
 // GLOBAL: LEGORACERS 0x004b4938
 static const LegoFloat g_carBuildModelNegativeHeightScale = -0.4f;
 
-// GLOBAL: LEGORACERS 0x004b493c
-static const LegoFloat g_overlayTextureNudge = 0.49f;
-
 // GLOBAL: LEGORACERS 0x004b4940
 static const LegoFloat g_carBuildModelCenterYOffset = 2.5f;
 
 // GLOBAL: LEGORACERS 0x004b4944
 static const LegoFloat g_carBuildModelCenterXOffset = 4.5f;
+
+inline static void ScaleAndOffset(LegoFloat& p_value, LegoFloat p_scale, LegoFloat p_offset)
+{
+	LegoFloat value = p_value;
+	p_value = (value * p_scale) + p_offset;
+}
 
 // FUNCTION: LEGORACERS 0x00499530
 void CarBuildModel::Placement::Reset()
@@ -582,7 +585,7 @@ void CarBuildModel::Reset()
 // FUNCTION: LEGORACERS 0x00499d70
 CarBuildModel::CarBuildModel()
 {
-	m_pieceList.m_pieceGrid = &m_pieceGrid;
+	m_pieceList.SetPieceGrid(&m_pieceGrid);
 	m_pieceGrid.m_pieceList = &m_pieceList;
 	m_buildVertices = NULL;
 	m_buildPrimitives = NULL;
@@ -1360,9 +1363,9 @@ LegoS32 CarBuildModel::BuildPieceModel(
 {
 	GolModelBase* model = p_entity->GetModel(0);
 	LegoPieceLibrary::PieceRecord* pieceRecord = p_pieceRecord->GetVariant(1);
+	m_buildFlags = 0xef;
 	m_savedHasHighBasePiece = m_hasHighBasePiece;
 	m_applyBaseTexture = m_baseTextureEnabled;
-	m_buildFlags = 0xef;
 	m_buildStatus = 0;
 
 	if (m_colorTable != NULL) {
@@ -1400,8 +1403,8 @@ LegoS32 CarBuildModel::BuildPieceModel(
 	for (LegoS32 i = 0; i < m_buildVertexCount; i++) {
 		m_buildVertices[i].m_position.m_x += m_offsetX;
 		m_buildVertices[i].m_position.m_y += m_offsetY;
-		m_buildVertices[i].m_position.m_z =
-			(m_buildVertices[i].m_position.m_z * g_carBuildModelHeightScale) + m_offsetZ;
+		LegoFloat z = m_buildVertices[i].m_position.m_z;
+		m_buildVertices[i].m_position.m_z = (z * g_carBuildModelHeightScale) + m_offsetZ;
 	}
 
 	BeginModelWrite(model);
@@ -1634,11 +1637,11 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 	LegoU8 startFlags;
 	do {
 		ResetBuildVertexTree();
-		m_buildStatus <<= 1;
 		m_buildPrimitiveCount = 0;
+		m_buildStatus <<= 1;
 		if ((m_buildStatus & 0xf8) && activePieceCount > 1) {
-			activePieceCount--;
 			m_buildStatus &= 7;
+			activePieceCount--;
 		}
 
 		startFlags = m_buildStatus;
@@ -1656,13 +1659,13 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 		}
 
 		for (i = 0; i < activePieceCount; i++) {
-			PieceList::Entry* entry = &m_pieceList.m_entries[i];
+			LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceList.m_entries[i].m_pieceRecord;
 			LegoS32 x;
 			LegoS32 y;
 			LegoS32 height;
 			LegoS32 rotation;
-			entry->GetPlacement(&x, &y, &height, &rotation);
-			EmitPieceGeometry(entry->m_pieceRecord, x, y, rotation, height, entry->m_colorRecordIndex, i);
+			m_pieceList.m_entries[i].GetPlacement(&x, &y, &height, &rotation);
+			EmitPieceGeometry(pieceRecord, x, y, rotation, height, m_pieceList.m_entries[i].m_colorRecordIndex, i);
 		}
 
 		if (!(m_buildStatus & 1)) {
@@ -1690,8 +1693,7 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 				for (i = 0; i < m_buildVertexCount; i++) {
 					m_buildVertices[i].m_position.m_x = m_offsetX + m_buildVertices[i].m_position.m_x;
 					m_buildVertices[i].m_position.m_y += m_offsetY;
-					m_buildVertices[i].m_position.m_z =
-						(m_buildVertices[i].m_position.m_z * g_carBuildModelHeightScale) + m_offsetZ;
+					ScaleAndOffset(m_buildVertices[i].m_position.m_z, g_carBuildModelHeightScale, m_offsetZ);
 				}
 
 				BeginModelWrite(m_model);
@@ -1837,15 +1839,17 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_visible, LegoS32 p_height)
 
 	BeginModelWrite(m_overlayModel);
 
-	LegoU32 groupIndex = m_modelGroupCount;
+	LegoU32 groupIndex = m_modelGroupCount++;
+	GolModelBase* overlayModel = m_overlayModel;
+	LegoFloat z = static_cast<LegoFloat>(p_height);
 	m_overlayVisible = disabled;
-	m_modelGroupCount++;
-	m_overlayModel->GetMutableGroups()[groupIndex] = c_modelMaterialGroup;
-	m_overlayModel->GetMutableGroups()[groupIndex] |= enabled;
-	m_overlayModel->SetDirty(enabled);
+	z *= g_carBuildModelHeightScale;
+	overlayModel->GetMutableGroups()[groupIndex] = c_modelMaterialGroup;
+	overlayModel->GetMutableGroups()[groupIndex] |= enabled;
+	overlayModel->SetDirty(enabled);
 
 	GolVec3 position;
-	position.m_z = (static_cast<LegoFloat>(p_height) * 0.4f) + m_offsetZ;
+	position.m_z = z + m_offsetZ;
 	GolVec2 texCoord;
 	LegoS32 quadVertexCount = 4;
 	LegoS32 quadTriangleCount = 2;
@@ -1874,21 +1878,21 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_visible, LegoS32 p_height)
 
 				m_modelVertexCount++;
 				position.m_x += 1.0f;
-				texCoord.m_x += g_overlayTextureNudge;
+				texCoord.m_x += 0.49f;
 				m_modelVertices->SetPosition(m_modelVertexCount, position);
 				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
 				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				position.m_y += 1.0f;
-				texCoord.m_y += g_overlayTextureNudge;
+				texCoord.m_y += 0.49f;
 				m_modelVertices->SetPosition(m_modelVertexCount, position);
 				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
 				m_modelVertices->SetColor(m_modelVertexCount, color);
 
 				m_modelVertexCount++;
 				position.m_x -= 1.0f;
-				texCoord.m_x -= g_overlayTextureNudge;
+				texCoord.m_x -= 0.49f;
 				m_modelVertices->SetPosition(m_modelVertexCount, position);
 				m_modelVertices->SetTextureCoordinate(m_modelVertexCount, texCoord);
 				m_modelVertices->SetColor(m_modelVertexCount, color);

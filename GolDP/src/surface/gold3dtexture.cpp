@@ -21,8 +21,13 @@ static GolImgFile g_uploadImgFile;
 
 // FUNCTION: GOLDP 0x10015b70
 GolD3DTexture::GolD3DTexture()
-	: m_palette(NULL), m_mipmaps(NULL), m_surface(NULL), m_d3dTexture(NULL), m_deviceWidth(0), m_deviceHeight(0)
 {
+	m_palette = NULL;
+	m_mipmaps = NULL;
+	m_surface = NULL;
+	m_d3dTexture = NULL;
+	m_deviceWidth = 0;
+	m_deviceHeight = 0;
 }
 
 // FUNCTION: GOLDP 0x10015bf0
@@ -151,23 +156,24 @@ void GolD3DTexture::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_fl
 			::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 			surfaceDesc.dwSize = sizeof(surfaceDesc);
 
-			for (;;) {
-				HRESULT hresult = LockDirectDrawSurface(m_surface, NULL, &surfaceDesc, lockFlags, NULL);
-				switch (hresult) {
-				case DD_OK:
+			HRESULT hresult;
+			do {
+				hresult = LockDirectDrawSurface(m_surface, NULL, &surfaceDesc, lockFlags, NULL);
+				if (hresult == DD_OK) {
 					*p_pixels = static_cast<LegoU8*>(surfaceDesc.lpSurface);
 					*p_pitch = surfaceDesc.lPitch;
-					return;
-				case DDERR_SURFACELOST:
-					if (m_surface->Restore() != DD_OK) {
-						GOL_FATALERROR_MESSAGE("Unable to restore lost surface");
-					}
-					break;
-				default:
-					GOL_FATALERROR_MESSAGE("Unable to lock surface");
-					break;
 				}
-			}
+				else {
+					if (hresult == DDERR_SURFACELOST) {
+						if (m_surface->Restore() != DD_OK) {
+							GOL_FATALERROR_MESSAGE("Unable to restore lost surface");
+						}
+					}
+					else {
+						GOL_FATALERROR_MESSAGE("Unable to lock surface");
+					}
+				}
+			} while (hresult != DD_OK);
 		}
 	}
 	else {

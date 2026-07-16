@@ -5,7 +5,6 @@
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern LegoFloat g_carBuildPreviewMouseScale;
-extern LegoFloat g_minSoundPan;
 
 // GLOBAL: LEGORACERS 0x004b0058
 extern const LegoFloat g_driveMaxTurnRadius = 4096.0f;
@@ -117,14 +116,12 @@ void DriveController::Initialize(RacerPhysics* p_physics)
 // FUNCTION: LEGORACERS 0x0041fc00
 void DriveController::Update(LegoU32 p_elapsedMs)
 {
-	LegoU32 flags = m_flags;
 	m_previousTurnRadius = m_turnRadius;
+	m_flags &= ~c_flagBit1;
 	LegoU32 countdown = m_curseJitterMs;
-	flags &= ~c_flagBit1;
-	m_flags = flags;
+	LegoU32 flags = m_flags;
 
-	LegoU32 elapsedMs = p_elapsedMs;
-	if (elapsedMs > countdown) {
+	if (p_elapsedMs > countdown) {
 		if (flags & c_flagCursed) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 			m_curseJitterMs = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 500;
@@ -139,7 +136,7 @@ void DriveController::Update(LegoU32 p_elapsedMs)
 		}
 	}
 	else {
-		m_curseJitterMs = countdown - elapsedMs;
+		m_curseJitterMs = countdown - p_elapsedMs;
 	}
 
 	flags = m_flags;
@@ -149,14 +146,14 @@ void DriveController::Update(LegoU32 p_elapsedMs)
 			ReleaseSlide();
 		}
 		else {
-			m_slideMs += elapsedMs;
+			m_slideMs += p_elapsedMs;
 		}
 	}
 	else if (flags & c_flagSlideBoost) {
 		LegoU32 timerMs = m_slideMs;
-		timerMs += elapsedMs;
-		LegoU32 compareMs = timerMs;
+		timerMs += p_elapsedMs;
 		m_slideMs = timerMs;
+		LegoU32 compareMs = m_slideMs;
 		if (compareMs >= 300) {
 			flags &= ~c_flagSlideBoost;
 			m_slideMs = 0;
@@ -209,7 +206,7 @@ void DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs)
 		}
 	}
 	else {
-		if (physics->m_forwardSpeed > g_unk0x004b0084 || -g_unk0x004b0084 > physics->m_forwardSpeed) {
+		if (physics->GetForwardSpeed() > g_unk0x004b0084 || physics->GetForwardSpeed() < -g_unk0x004b0084) {
 			m_stuckMs = 0;
 		}
 		else if (m_stuckMs >= 1000) {
@@ -326,8 +323,8 @@ void DriveController::SetThrottleInput(LegoFloat p_input)
 		if (p_input > 1.0f) {
 			p_input = 1.0f;
 		}
-		else if (p_input < g_minSoundPan) {
-			p_input = g_minSoundPan;
+		else if (p_input < -1.0f) {
+			p_input = -1.0f;
 		}
 	}
 
@@ -487,24 +484,21 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 
 	m_physics->m_carEntity->GetOrientationRow1(&pathDirection);
 	LegoBool32 positiveDirection;
-	if (pathDirection.m_z * delta.m_z + pathDirection.m_y * delta.m_y + pathDirection.m_x * delta.m_x >= 0.0f) {
-		activePathDirection = pathDirection;
+	if (GOLVECTOR3_DOT(pathDirection, delta) >= 0.0f) {
 		positiveDirection = TRUE;
+		activePathDirection = pathDirection;
 	}
 	else {
+		positiveDirection = FALSE;
 		activePathDirection.m_x = -pathDirection.m_x;
 		activePathDirection.m_y = -pathDirection.m_y;
 		activePathDirection.m_z = -pathDirection.m_z;
-		positiveDirection = FALSE;
 	}
 
 	LegoFloat inverseDistance = 1.0f / distance;
-	delta.m_x = inverseDistance * delta.m_x;
-	delta.m_y = inverseDistance * delta.m_y;
-	delta.m_z = inverseDistance * delta.m_z;
+	delta *= inverseDistance;
 
-	LegoFloat closingSpeed =
-		delta.m_z * activePathDirection.m_z + delta.m_y * activePathDirection.m_y + delta.m_x * activePathDirection.m_x;
+	LegoFloat closingSpeed = GOLVECTOR3_DOT(activePathDirection, delta);
 	if (closingSpeed < g_returnPathMinClosing) {
 		m_turnRadius = g_driveMaxTurnRadius;
 	}
@@ -516,14 +510,12 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 		m_turnRadius = -m_turnRadius;
 	}
 
+	m_thrust = g_returnPathThrust;
 	LegoU8 flags = static_cast<LegoU8>(m_flags);
+
 	if (flags & c_flagReversing) {
-		m_thrust = g_returnPathThrust;
 		m_turnRadius = -m_turnRadius;
 		m_thrust = -g_fullThrottleThrust;
-	}
-	else {
-		m_thrust = g_returnPathThrust;
 	}
 
 	LegoBool32 updatePath = FALSE;

@@ -18,9 +18,6 @@ extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_twoPi;
 
-// GLOBAL: LEGORACERS 0x004b0b48
-extern const LegoFloat g_sweepCannonRadiansToTableIndex = 162.974655f;
-
 // GLOBAL: LEGORACERS 0x004b03f0
 extern const LegoFloat g_hazardPi = 3.1415927f;
 
@@ -132,7 +129,6 @@ void SweepCannonHazard::OnActivate(void*)
 void SweepCannonHazard::Update(undefined4 p_elapsedMs)
 {
 	if (m_state != c_stateLoaded) {
-		ActionTarget target;
 		Hazard::Update(p_elapsedMs);
 
 		LegoU32 elapsedMs = static_cast<LegoU32>(p_elapsedMs);
@@ -142,28 +138,31 @@ void SweepCannonHazard::Update(undefined4 p_elapsedMs)
 		}
 
 		LegoU32 currentTime = m_sweepMs;
+		LegoFloat currentTimeFloat = static_cast<LegoFloat>(static_cast<LegoS32>(currentTime));
 		LegoU32 halfPeriod = m_periodMs >> 1;
-		LegoFloat lateralAngle = static_cast<LegoFloat>(static_cast<LegoS32>(currentTime)) /
-								 static_cast<LegoFloat>(static_cast<LegoS32>(halfPeriod));
+		LegoFloat lateralAngle = currentTimeFloat / static_cast<LegoFloat>(static_cast<LegoS32>(halfPeriod));
 		lateralAngle *= m_sweepAngle;
 		if (currentTime > halfPeriod) {
 			lateralAngle = g_hazardPi - lateralAngle;
 		}
 
-		LegoS32 index = static_cast<LegoS32>(lateralAngle * g_sweepCannonRadiansToTableIndex) & 0x3ff;
-		m_source.m_forward.m_x = g_cosineTable[index];
+		LegoS32 index = static_cast<LegoS32>(lateralAngle * 162.974655f) & 0x3ff;
+		LegoFloat forwardX = g_cosineTable[index];
+		m_source.m_forward.m_x = forwardX;
 
-		index = (0xffffff00 - static_cast<LegoS32>(lateralAngle * g_negativeRadiansToTableIndex)) & 0x3ff;
+		LegoFloat yTableAngle = lateralAngle;
+		yTableAngle *= g_negativeRadiansToTableIndex;
+		LegoS32 yTableOffset = static_cast<LegoS32>(yTableAngle);
+		index = (0xffffff00 - yTableOffset) & 0x3ff;
 		m_source.m_forward.m_y = g_cosineTable[index];
 		if (m_mirror) {
 			m_source.m_forward.m_y = -m_source.m_forward.m_y;
 		}
 
 		LegoU32 quarterPeriod = m_periodMs >> 2;
-		LegoFloat verticalAngle = static_cast<LegoFloat>(static_cast<LegoS32>(currentTime)) /
-								  static_cast<LegoFloat>(static_cast<LegoS32>(quarterPeriod));
+		LegoFloat verticalAngle = currentTimeFloat / static_cast<LegoFloat>(static_cast<LegoS32>(quarterPeriod));
 		verticalAngle *= g_twoPi;
-		verticalAngle *= g_sweepCannonRadiansToTableIndex;
+		verticalAngle *= 162.974655f;
 		index = static_cast<LegoS32>(verticalAngle) & 0x3ff;
 		m_source.m_forward.m_z = g_cosineTable[index] * m_verticalRange + m_verticalBase;
 
@@ -176,6 +175,7 @@ void SweepCannonHazard::Update(undefined4 p_elapsedMs)
 
 		m_cooldownMs += elapsedMs;
 		if (m_cooldownMs >= c_actionCooldownMs) {
+			ActionTarget target;
 			target.m_source = &m_source;
 			m_powerupManager->SetAimTarget(&target);
 			m_powerupManager->UseRedPowerup(NULL, 2);

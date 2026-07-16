@@ -25,18 +25,14 @@ void RacerModelSlot::Reset()
 {
 	::memset(&m_createParams, 0, sizeof(m_createParams));
 
-	undefined4 zero = 0;
-	undefined4* values = m_unk0x88;
+	::memset(m_unk0x88, 0, sizeof(m_unk0x88));
 	m_entity = NULL;
-	*values++ = zero;
 	m_entityB = NULL;
 	m_entityA = NULL;
 	m_spinAxis.m_y = 0.0f;
-	*values++ = zero;
 	m_spinAxis.m_x = 0.0f;
 	m_spinAxis.m_z = 1.0f;
 	m_unk0x84 = 0;
-	*values = zero;
 	m_unk0x80 = 0;
 	m_unk0x7c = 0;
 	m_timerBMs = 0;
@@ -125,7 +121,8 @@ LegoBool32 RacerModelSlot::UpdateSpin(LegoS32 p_elapsed)
 		return TRUE;
 	}
 
-	LegoFloat angle = static_cast<LegoFloat>(p_elapsed) * m_createParams.m_spinSpeed;
+	LegoFloat angle = static_cast<LegoFloat>(p_elapsed);
+	angle *= m_createParams.m_spinSpeed;
 	GolVec3 right;
 	GolVec3 forward;
 	m_entity->GetAxes(&right, &forward);

@@ -101,26 +101,28 @@ LegoBool32 CutsceneSoundEvent::ParseToken(
 
 		m_soundGroup = p_owner->GetSoundGroupByIndex(index);
 		m_soundIndex = static_cast<LegoU16>(p_parser->ReadInteger());
-		return TRUE;
+		break;
 	}
 	case e_priority:
 		m_priority = p_parser->ReadInteger();
-		return TRUE;
+		break;
 	case e_volume:
 		m_volume = p_parser->ReadFloat();
-		return TRUE;
+		break;
 	case e_frequencyScale:
 		m_frequencyScale = p_parser->ReadFloat();
-		return TRUE;
+		break;
 	case e_pan:
 		m_pan = p_parser->ReadFloat();
-		return TRUE;
+		break;
 	case e_looping:
 		m_looping = 1;
-		return TRUE;
+		break;
 	default:
 		return FALSE;
 	}
+
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x004a4050

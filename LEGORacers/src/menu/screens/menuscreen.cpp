@@ -707,8 +707,8 @@ LegoBool32 MenuScreen::CreateTextField(
 	}
 
 	createParams.m_charsetStringId = p_charsetStringId;
-	createParams.m_initialText = p_initialText;
 	createParams.m_font = sourceParams->m_font;
+	createParams.m_initialText = p_initialText;
 
 	return p_source->CreateField(&createParams, styleEntry);
 }

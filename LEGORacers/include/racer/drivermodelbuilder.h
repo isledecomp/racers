@@ -89,7 +89,7 @@ private:
 	LegoBool32 FitsOutputModel() const;
 	void MergeHeadMaterials();
 	LegoBool32 NeedsNewOutputModel(GolModelBase* p_model) const;
-	GolModelBase* CreateOutputModel(undefined4 p_vertexType);
+	GolModelBase* CreateOutputModel(LegoU16 p_vertexType);
 	void CopyModelVertices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_vertexOffset);
 	void CopyModelIndices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset);
 	void CopyBodyIntoOutput();

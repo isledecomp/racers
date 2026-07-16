@@ -62,27 +62,19 @@ void MaterialTable::Clear()
 // FUNCTION: LEGORACERS 0x00410660
 LegoS32 MaterialTable::FindEntryIndexByName(const LegoChar* p_name) const
 {
-	LegoS32 index = 0;
-	if (m_count <= 0) {
-		return -1;
-	}
-
-	while (TRUE) {
+	LegoS32 index;
+	GolMaterial::NameRecord materialName;
+	for (index = 0; index < m_count; index++) {
 		GolMaterial* material = static_cast<GolMaterial*>(m_entries[index]);
 		if (material != NULL) {
-			GolMaterial::NameRecord materialName;
 			materialName = material->GetNameRecord();
 			if (::strncmp(p_name, materialName.m_name, sizeof(GolName)) == 0) {
-				break;
+				return index;
 			}
-		}
-
-		if (++index >= m_count) {
-			return -1;
 		}
 	}
 
-	return index;
+	return -1;
 }
 
 // FUNCTION: LEGORACERS 0x004106d0

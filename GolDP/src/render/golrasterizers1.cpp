@@ -353,12 +353,13 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 // FUNCTION: GOLDP 0x100330d0
 void FUN_100330d0(GolSoftwareRenderer* p_renderer, MipmapLevel* p_mipmap)
 {
-	LegoU32 previousSizeLog2;
+	LegoS32 previousSizeLog2;
 
 	if (p_renderer->GetCurrentMipmap() == p_mipmap) {
 		return;
 	}
-	// LINE: GOLDP 0x100330e3
+
+	// LINE: GOLDP 0x100330e1
 	previousSizeLog2 = p_renderer->GetCurrentMipmap() ? p_renderer->GetCurrentMipmap()->m_sizeLog2 : -1;
 
 	p_renderer->SetCurrentMipmap(p_mipmap);
@@ -395,6 +396,9 @@ void FUN_100330d0(GolSoftwareRenderer* p_renderer, MipmapLevel* p_mipmap)
 			default:
 				p_mipmap->m_sizeLog2 = MipmapLevel::c_sizeGeneric;
 			}
+		}
+		else {
+			p_mipmap->m_sizeLog2 = MipmapLevel::c_sizeGeneric;
 		}
 	}
 

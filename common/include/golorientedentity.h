@@ -81,9 +81,7 @@ public:
 		m_orientation.m_m[2][0] = p_other.m_orientation.m_m[2][0];
 		m_orientation.m_m[2][1] = p_other.m_orientation.m_m[2][1];
 		m_orientation.m_m[2][2] = p_other.m_orientation.m_m[2][2];
-		m_position.m_x = position.m_x;
-		m_position.m_y = position.m_y;
-		m_position.m_z = position.m_z;
+		m_position = position;
 		m_radius = -1.0f;
 	}
 	void CopyOrientationFrom2(const GolOrientedEntity& p_other);

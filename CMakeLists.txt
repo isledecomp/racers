@@ -463,6 +463,7 @@ add_executable(legoracers WIN32
   common/src/golfsutil.cpp
   LEGORacers/src/save/memorycardfilebase.cpp
   LEGORacers/src/save/savedirectory.cpp
+  LEGORacers/src/race/powerups/powerupaction.cpp
   LEGORacers/src/race/powerups/racepowerupbrickdebris.cpp
   LEGORacers/src/race/powerups/cannonballaction.cpp
   LEGORacers/src/race/powerups/curseaction.cpp

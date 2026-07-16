@@ -563,14 +563,8 @@ void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 	}
 
 	m_commandHead = m_nodes + p_count - 1;
-	if (p_count > 1) {
-		TriangleCommand* command = m_nodes + 1;
-		LegoS32 remaining = p_count - 1;
-		do {
-			command->m_next = command - 1;
-			command++;
-			remaining--;
-		} while (remaining != 0);
+	for (LegoS32 i = 1; i < p_count; i++) {
+		m_nodes[i].m_next = &m_nodes[i - 1];
 	}
 	m_nodes->m_next = NULL;
 }

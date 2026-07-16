@@ -252,6 +252,7 @@ void EditDriverScreen::PlayNextAnimation()
 // FUNCTION: LEGORACERS 0x0047d740
 void EditDriverScreen::PlayExitAnimation()
 {
+	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 	GolString string;
 	GolName name;
 
@@ -261,10 +262,10 @@ void EditDriverScreen::PlayExitAnimation()
 	m_menuNameStrings->CopyStringByIndex(&string, g_exitAnimTextIds[textIdIndex]);
 	string.CopyToBuf8(name);
 
-	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 	LegoS32 partIndex = m_modelSlot.GetBodyModelPart()->GetPartIndex(name);
 	entity->TransitionToPart(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
-	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
+	entity->SetLoopCurrentPartEnabled(FALSE);
+	entity->SetPartAnimationEnabled(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x0047d840

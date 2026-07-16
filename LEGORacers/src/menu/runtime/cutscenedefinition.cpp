@@ -464,8 +464,8 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::Parse(GolFileParser* p
 // FUNCTION: LEGORACERS 0x00405410
 void CutsceneDefinition::Frame::DirectionalLightEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	m_blinkFlags |= 2;
 	m_blinkTimerMs = m_blinkOnMs;
+	m_blinkFlags |= 2;
 	p_frame->AddLight(&m_light);
 
 	Event::Begin(p_frame, p_event);
@@ -656,8 +656,8 @@ void CutsceneDefinition::Frame::AmbientLightEvent::Parse(GolFileParser* p_parser
 // FUNCTION: LEGORACERS 0x00405780
 void CutsceneDefinition::Frame::AmbientLightEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	m_blinkFlags |= 2;
 	m_blinkTimerMs = m_blinkOnMs;
+	m_blinkFlags |= 2;
 	p_frame->SetAmbientMaterial(&m_material);
 
 	Event::Begin(p_frame, p_event);
@@ -797,7 +797,7 @@ void CutsceneDefinition::Frame::Parse(CutsceneDefinition* p_parent, GolFileParse
 		}
 	}
 
-	if (!m_frameCount && m_cameraEventCount) {
+	if (!m_frameCount) {
 		for (LegoU32 i = 0; i < m_cameraEventCount; i++) {
 			CameraEvent* camera = &m_cameraEvents[i];
 			if (camera->m_endFrame > m_frameCount) {
@@ -806,12 +806,8 @@ void CutsceneDefinition::Frame::Parse(CutsceneDefinition* p_parent, GolFileParse
 		}
 	}
 
-	LegoU32 eventCount = m_directionalEventCount;
-	eventCount += m_transformEventCount;
-	eventCount += m_modelEventCount;
-	eventCount += m_ambientEventCount;
-	eventCount += m_cameraEventCount;
-	m_eventCount = eventCount;
+	m_eventCount =
+		m_directionalEventCount + m_transformEventCount + m_modelEventCount + m_ambientEventCount + m_cameraEventCount;
 	m_eventsByStart = new Event*[m_eventCount];
 	if (!m_eventsByStart) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -836,8 +832,10 @@ void CutsceneDefinition::Frame::Parse(CutsceneDefinition* p_parent, GolFileParse
 	}
 
 	for (i = 0; i < m_transformEventCount; i++) {
-		m_eventsByStart[eventIndex] = &m_transformEvents[i];
-		m_eventsByEnd[eventIndex] = &m_transformEvents[i];
+		TransformEvent* startEvent = &m_transformEvents[i];
+		m_eventsByStart[eventIndex] = startEvent;
+		TransformEvent* endEvent = &m_transformEvents[i];
+		m_eventsByEnd[eventIndex] = endEvent;
 		eventIndex++;
 	}
 

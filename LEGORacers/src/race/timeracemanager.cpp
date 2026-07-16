@@ -15,6 +15,12 @@ DECOMP_SIZE_ASSERT(TimeRaceManager::GhbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(TimeRaceManager::GhostRunData, 0x25c0)
 DECOMP_SIZE_ASSERT(TimeRaceManager::GhostRunData::Sample, 0x0a)
 
+// GLOBAL: LEGORACERS 0x004b0188
+extern const LegoFloat g_ghostPositionQuantizationScale = 32.0f;
+
+// GLOBAL: LEGORACERS 0x004b018c
+extern const LegoFloat g_ghostRotationQuantizationScale = 127.0f;
+
 // GLOBAL: LEGORACERS 0x004b01a4
 extern const LegoFloat g_ghostAnimationRateScale = 1.8f;
 
@@ -206,22 +212,22 @@ void TimeRaceManager::Update(LegoU32 p_elapsedMs)
 			racerField->m_carEntity->GetPosition(&position);
 
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionX =
-				static_cast<LegoS16>(32.0f * position.m_x);
+				static_cast<LegoS16>(position.m_x * g_ghostPositionQuantizationScale);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionY =
-				static_cast<LegoS16>(32.0f * position.m_y);
+				static_cast<LegoS16>(position.m_y * g_ghostPositionQuantizationScale);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionZ =
-				static_cast<LegoS16>(32.0f * position.m_z);
+				static_cast<LegoS16>(position.m_z * g_ghostPositionQuantizationScale);
 
 			GolQuat rotation;
 			GolMath::Matrix3ToQuat(m_racer->m_visuals.m_carEntity->GetOrientation(), &rotation);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationX =
-				static_cast<LegoS8>(127.0f * rotation.m_x);
+				static_cast<LegoS8>(rotation.m_x * g_ghostRotationQuantizationScale);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationY =
-				static_cast<LegoS8>(127.0f * rotation.m_y);
+				static_cast<LegoS8>(rotation.m_y * g_ghostRotationQuantizationScale);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationZ =
-				static_cast<LegoS8>(127.0f * rotation.m_z);
+				static_cast<LegoS8>(rotation.m_z * g_ghostRotationQuantizationScale);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationW =
-				static_cast<LegoS8>(127.0f * rotation.m_w);
+				static_cast<LegoS8>(rotation.m_w * g_ghostRotationQuantizationScale);
 
 			if (m_scratchRun->m_sampleCount == 0) {
 				m_scratchRun->m_initialPosition = position;
@@ -327,13 +333,16 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			GhostRunData::Sample* nextSample = sample + 1;
 
 			GolVec3 position;
-			position.m_x = static_cast<LegoFloat>(sample->m_positionX) / 32.0f;
-			position.m_y = static_cast<LegoFloat>(sample->m_positionY) / 32.0f;
-			position.m_z = static_cast<LegoFloat>(sample->m_positionZ) / 32.0f;
+			position.m_x = static_cast<LegoFloat>(sample->m_positionX) / g_ghostPositionQuantizationScale;
+			position.m_y = static_cast<LegoFloat>(sample->m_positionY) / g_ghostPositionQuantizationScale;
+			position.m_z = static_cast<LegoFloat>(sample->m_positionZ) / g_ghostPositionQuantizationScale;
 
-			LegoFloat nextPositionX = static_cast<LegoFloat>(nextSample->m_positionX) / 32.0f;
-			LegoFloat nextPositionY = static_cast<LegoFloat>(nextSample->m_positionY) / 32.0f;
-			LegoFloat nextPositionZ = static_cast<LegoFloat>(nextSample->m_positionZ) / 32.0f;
+			LegoFloat nextPositionX =
+				static_cast<LegoFloat>(nextSample->m_positionX) / g_ghostPositionQuantizationScale;
+			LegoFloat nextPositionY =
+				static_cast<LegoFloat>(nextSample->m_positionY) / g_ghostPositionQuantizationScale;
+			LegoFloat nextPositionZ =
+				static_cast<LegoFloat>(nextSample->m_positionZ) / g_ghostPositionQuantizationScale;
 
 			GolVec3 delta;
 			delta.m_x = nextPositionX - position.m_x;
@@ -345,16 +354,16 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			position.m_z += delta.m_z * amount;
 
 			GolQuat rotation;
-			rotation.m_x = static_cast<LegoFloat>(sample->m_rotationX) / 127.0f;
-			rotation.m_y = static_cast<LegoFloat>(sample->m_rotationY) / 127.0f;
-			rotation.m_z = static_cast<LegoFloat>(sample->m_rotationZ) / 127.0f;
-			rotation.m_w = static_cast<LegoFloat>(sample->m_rotationW) / 127.0f;
+			rotation.m_x = static_cast<LegoFloat>(sample->m_rotationX) / g_ghostRotationQuantizationScale;
+			rotation.m_y = static_cast<LegoFloat>(sample->m_rotationY) / g_ghostRotationQuantizationScale;
+			rotation.m_z = static_cast<LegoFloat>(sample->m_rotationZ) / g_ghostRotationQuantizationScale;
+			rotation.m_w = static_cast<LegoFloat>(sample->m_rotationW) / g_ghostRotationQuantizationScale;
 
 			GolQuat nextRotation;
-			nextRotation.m_x = static_cast<LegoFloat>(nextSample->m_rotationX) / 127.0f;
-			nextRotation.m_y = static_cast<LegoFloat>(nextSample->m_rotationY) / 127.0f;
-			nextRotation.m_z = static_cast<LegoFloat>(nextSample->m_rotationZ) / 127.0f;
-			nextRotation.m_w = static_cast<LegoFloat>(nextSample->m_rotationW) / 127.0f;
+			nextRotation.m_x = static_cast<LegoFloat>(nextSample->m_rotationX) / g_ghostRotationQuantizationScale;
+			nextRotation.m_y = static_cast<LegoFloat>(nextSample->m_rotationY) / g_ghostRotationQuantizationScale;
+			nextRotation.m_z = static_cast<LegoFloat>(nextSample->m_rotationZ) / g_ghostRotationQuantizationScale;
+			nextRotation.m_w = static_cast<LegoFloat>(nextSample->m_rotationW) / g_ghostRotationQuantizationScale;
 
 			GolQuat interpolatedRotation;
 			GolMath::LerpQuat(rotation, nextRotation, amount, &interpolatedRotation);
@@ -509,7 +518,7 @@ void TimeRaceManager::UpdateBestRun()
 	LegoU32 latestSum = 0;
 
 	for (i = 0; i < 3; i++) {
-		m_scratchRun->m_lapTimes[i] = m_racer->m_lapTimes[i];
+		GetScratchLapTimes()[i] = m_racer->m_lapTimes[i];
 	}
 
 	for (i = 0; i < 3; i++) {
@@ -595,19 +604,18 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 		case c_ghostPathNodesToken: {
 			p_ghostRun->m_sampleCount = parser->ReadBracketedCountAndLeftCurly();
 			for (LegoU32 i = 0; i < p_ghostRun->m_sampleCount; i++) {
-				GhostRunData::Sample* sample = &p_ghostRun->m_samples[i];
-				sample->m_positionX = static_cast<LegoS16>(parser->ReadInteger());
-				sample->m_positionY = static_cast<LegoS16>(parser->ReadInteger());
-				sample->m_positionZ = static_cast<LegoS16>(parser->ReadInteger());
-				sample->m_rotationX = static_cast<LegoS8>(parser->ReadInteger());
-				sample->m_rotationY = static_cast<LegoS8>(parser->ReadInteger());
-				sample->m_rotationZ = static_cast<LegoS8>(parser->ReadInteger());
-				sample->m_rotationW = static_cast<LegoS8>(parser->ReadInteger());
+				p_ghostRun->m_samples[i].m_positionX = static_cast<LegoS16>(parser->ReadInteger());
+				p_ghostRun->m_samples[i].m_positionY = static_cast<LegoS16>(parser->ReadInteger());
+				p_ghostRun->m_samples[i].m_positionZ = static_cast<LegoS16>(parser->ReadInteger());
+				p_ghostRun->m_samples[i].m_rotationX = static_cast<LegoS8>(parser->ReadInteger());
+				p_ghostRun->m_samples[i].m_rotationY = static_cast<LegoS8>(parser->ReadInteger());
+				p_ghostRun->m_samples[i].m_rotationZ = static_cast<LegoS8>(parser->ReadInteger());
+				p_ghostRun->m_samples[i].m_rotationW = static_cast<LegoS8>(parser->ReadInteger());
 
 				if (m_flags & c_flagMirror) {
-					sample->m_positionY = -sample->m_positionY;
-					sample->m_rotationY = -sample->m_rotationY;
-					sample->m_rotationW = -sample->m_rotationW;
+					p_ghostRun->m_samples[i].m_positionY = -p_ghostRun->m_samples[i].m_positionY;
+					p_ghostRun->m_samples[i].m_rotationY = -p_ghostRun->m_samples[i].m_rotationY;
+					p_ghostRun->m_samples[i].m_rotationW = -p_ghostRun->m_samples[i].m_rotationW;
 				}
 			}
 			parser->ReadRightCurly();
@@ -627,11 +635,7 @@ void TimeRaceManager::LoadGhostRun(GhostRunData* p_ghostRun, const LegoChar* p_n
 // FUNCTION: LEGORACERS 0x004234b0
 LegoBool32 TimeRaceManager::HasBeatenRecord()
 {
-	LegoU8 flags = m_flags;
-	if (!(flags & (c_flagBestRunValid | c_flagBit4))) {
-		return FALSE;
-	}
-	if (!(flags & c_flagRecordRunValid)) {
+	if (!(HasBestRunLapTimes() || (m_flags & c_flagBit4)) || !HasRecordRunLapTimes()) {
 		return FALSE;
 	}
 

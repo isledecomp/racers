@@ -129,7 +129,8 @@ void OilSlickAction::Update(LegoU32 p_elapsedMs)
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		LegoS32 distance = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomBubbleOffsetRange;
 
-		LegoFloat angle = static_cast<LegoFloat>(phase) * g_oilBubbleAngleScale;
+		LegoFloat angle = static_cast<LegoFloat>(phase);
+		angle *= g_oilBubbleAngleScale;
 		LegoFloat offset = static_cast<LegoFloat>(distance);
 		GolVec3 position;
 		m_worldEntity.GetPosition(&position);
@@ -179,7 +180,7 @@ void OilSlickAction::AdvanceState()
 
 		LegoFloat maxDistance = g_oilSoundMaxDistance;
 		LegoFloat minDistance = g_oilSoundMinDistance;
-		m_sound->SetDistanceRangeWithMinSquared(minDistance * g_oilSoundMinDistance, maxDistance);
+		m_sound->SetDistanceRange(minDistance, maxDistance);
 		m_sound->SetPosition(position);
 	}
 
@@ -206,7 +207,10 @@ void OilSlickAction::AdvanceState()
 	m_slickDecal.m_width = 15.0f;
 	m_slickDecal.m_length = 15.0f;
 	m_slickDecal.m_depth = 15.0f;
-	m_slickDecal.m_center = position;
+	RaceDecalManager::Trail::Decal* slickDecal = &m_slickDecal;
+	slickDecal->m_center.m_x = position.m_x;
+	slickDecal->m_center.m_y = position.m_y;
+	slickDecal->m_center.m_z = position.m_z;
 	position.m_z -= 5.0f;
 	m_slickDecal.GetEntity().SetPrimaryMaterialTable(&m_materialTable);
 
@@ -220,8 +224,8 @@ void OilSlickAction::AdvanceState()
 	normal.m_y = 0.0f;
 	normal.m_z = -1.0f;
 
-	m_slickDecal.SetOrientation(&normal, &tangent);
-	m_slickDecal.Project(m_collidable);
+	slickDecal->SetOrientation(&normal, &tangent);
+	slickDecal->Project(m_collidable);
 }
 
 // FUNCTION: LEGORACERS 0x004575b0

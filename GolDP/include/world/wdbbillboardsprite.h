@@ -19,8 +19,7 @@ struct WdbBillboardSprite {
 	LegoFloat m_width;                   // 0x20
 	LegoFloat m_height;                  // 0x24
 	LegoFloat m_maxDistance;             // 0x28
-	LegoU8 m_flags;                      // 0x2c
-	undefined m_unk0x2d[0x2e - 0x2d];    // 0x2d
+	LegoU16 m_flags;                     // 0x2c
 	undefined2 m_materialAnimationIndex; // 0x2e
 	undefined2 m_materialTrackIndex;     // 0x30
 	undefined2 m_hasMaterialAnimation;   // 0x32

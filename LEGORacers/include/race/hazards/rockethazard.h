@@ -28,7 +28,7 @@ public:
 	void Load(HazardContext* p_context, GolFileParser* p_parser) override; // vtable+0x10
 	void Update(undefined4 p_elapsedMs) override;                          // vtable+0x14
 
-	LegoS32 ClearFields();
+	void ClearFields();
 	LegoS32 Reset();
 	void ShowOnModel();
 	void ShowOffModel();

@@ -157,8 +157,8 @@ void Win32GolApp::AddFileSourcesFromList(const LegoChar* p_fileList)
 		return;
 	}
 
-	LegoChar* buffer = new LegoChar[strlen(p_fileList) + 1];
-	LegoChar* saved = buffer;
+	LegoChar* saved = new LegoChar[strlen(p_fileList) + 1];
+	LegoChar* buffer = saved;
 
 	if (buffer) {
 		strcpy(buffer, p_fileList);

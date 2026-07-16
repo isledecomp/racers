@@ -14,6 +14,17 @@ DECOMP_SIZE_ASSERT(SnowfallHazard, 0x20)
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
+inline GolVec3 CrossVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	GolVec3 result;
+	result.m_x = p_left.m_y * p_right.m_z;
+	result.m_x -= p_left.m_z * p_right.m_y;
+	result.m_z = p_left.m_x * p_right.m_y - p_left.m_y * p_right.m_x;
+	result.m_y = p_left.m_z * p_right.m_x - p_left.m_x * p_right.m_z;
+
+	return result;
+}
+
 // GLOBAL: LEGORACERS 0x004b461c
 extern const LegoFloat g_snowfallCameraForwardScale = 100.0f;
 
@@ -127,11 +138,9 @@ void SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, Racer* p_racer)
 		p_camera->GetTransform()->GetPosition(&position);
 		position.m_x = g_snowfallCameraForwardScale * direction.m_x + position.m_x;
 		position.m_y = g_snowfallCameraForwardScale * direction.m_y + position.m_y;
-		LegoFloat scaledZ = g_snowfallCameraForwardScale * direction.m_z;
-
+		position.m_z =
+			g_snowfallCameraVerticalOffset * up.m_z + (g_snowfallCameraForwardScale * direction.m_z + position.m_z);
 		direction.m_z = 0.0f;
-		scaledZ += position.m_z;
-		position.m_z = scaledZ + g_snowfallCameraVerticalOffset * up.m_z;
 		GolMath::NormalizeVector3(direction, &direction);
 
 		up.m_x = 0.0f;
@@ -140,14 +149,13 @@ void SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, Racer* p_racer)
 		LegoU16 randomValue = g_randomTable[g_randomTableIndex];
 		up.m_z = 1.0f;
 
-		LegoFloat lateral = direction.m_y;
-		lateral -= up.m_x;
+		GolVec3 lateral = CrossVectors(direction, up);
 		LegoU32 remainder = static_cast<LegoU32>(randomValue) % 200;
 		LegoS32 offsetInt = static_cast<LegoS32>(remainder - 100);
 		LegoFloat offset = static_cast<LegoFloat>(offsetInt);
 		CutsceneParticleRef* ref = m_snowParticle;
-		position.m_x = lateral * offset + position.m_x;
-		position.m_y = (up.m_y - direction.m_x) * offset + position.m_y;
+		position.m_x = lateral.m_x * offset + position.m_x;
+		position.m_y = lateral.m_y * offset + position.m_y;
 
 		if (ref->m_particle) {
 			ref->m_particle->SetOrientation(&direction, &up);

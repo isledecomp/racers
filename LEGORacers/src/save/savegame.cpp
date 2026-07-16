@@ -137,11 +137,13 @@ LegoS32 SaveGame::WriteBlocks(GolStream* p_file, const LegoU8* p_source, LegoU32
 // FUNCTION: LEGORACERS 0x00442910
 LegoS32 SaveGame::ReadBlocks(GolStream& p_file, LegoU8* p_dest, LegoU32 p_size)
 {
+	SaveGame* saveGame = this;
 	LegoU8* end = p_dest + p_size;
+	LegoU32 fileOffset;
 
 	while (p_dest < end) {
 		LegoS32 bytesRead;
-		LegoS32 result = p_file.BufferedRead(m_fileOffset, g_saveFileBlock, c_saveFileBlockSize, &bytesRead);
+		LegoS32 result = p_file.BufferedRead(saveGame->m_fileOffset, g_saveFileBlock, c_saveFileBlockSize, &bytesRead);
 		if (result) {
 			return result;
 		}
@@ -158,8 +160,10 @@ LegoS32 SaveGame::ReadBlocks(GolStream& p_file, LegoU8* p_dest, LegoU32 p_size)
 		}
 
 		::memcpy(p_dest, g_saveFileBlock, chunkSize);
+		fileOffset = saveGame->m_fileOffset;
+		fileOffset += c_saveFileBlockSize;
+		saveGame->m_fileOffset = fileOffset;
 		p_dest += chunkSize;
-		m_fileOffset += c_saveFileBlockSize;
 	}
 
 	return GolStream::e_ioSuccess;

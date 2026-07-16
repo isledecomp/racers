@@ -346,7 +346,8 @@ void RaceSkyState::Update(LegoU32 p_elapsedMs)
 
 		LegoFloat elapsedMs = static_cast<LegoFloat>(static_cast<LegoS32>(m_transitionElapsedMs));
 		LegoFloat transitionMs = static_cast<LegoFloat>(static_cast<LegoS32>(m_transitionMs));
-		LegoFloat amount = elapsedMs / transitionMs;
+		LegoFloat amount = elapsedMs;
+		amount /= transitionMs;
 		LerpColor(&transitionColor0, &color0, &color0, amount);
 		LerpColor(&transitionColor1, &color1, &color1, amount);
 		LerpColor(&transitionColor2, &color2, &color2, amount);

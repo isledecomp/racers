@@ -167,15 +167,23 @@ void DriverModelBuilder::LoadFaceExpressionMaterials(LegoS32 p_faceIndex)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
+	GolName name;
 	LegoChar previousPath[48];
+	GolHashTable::Entry* currentEntry;
 	if (g_hashTable != NULL) {
-		::strcpy(previousPath, g_hashTable->GetCurrentEntry()->m_data);
+		currentEntry = g_hashTable->GetCurrentEntry();
+	}
+	else {
+		currentEntry = NULL;
+	}
+	::strcpy(previousPath, currentEntry->m_data);
+
+	if (g_hashTable != NULL) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
 	}
 
 	for (LegoS32 expressionIndex = 0; expressionIndex < 6; expressionIndex++) {
 		if (m_expressionMask & (1 << expressionIndex)) {
-			GolName name;
 			m_partResources->GetPartCatalog()->BuildFaceExpressionName(p_faceIndex, expressionIndex, name);
 			if (m_renderer->FindMaterialByName(name) == NULL) {
 				LoadFaceTexture(name, imageFile);
@@ -259,7 +267,7 @@ LegoBool32 DriverModelBuilder::NeedsNewOutputModel(GolModelBase* p_model) const
 }
 
 // FUNCTION: LEGORACERS 0x0049d6e0
-GolModelBase* DriverModelBuilder::CreateOutputModel(undefined4 p_vertexType)
+GolModelBase* DriverModelBuilder::CreateOutputModel(LegoU16 p_vertexType)
 {
 	GolModelBase* model = m_golExport->CreateModel();
 	if (model == NULL) {
@@ -273,18 +281,11 @@ GolModelBase* DriverModelBuilder::CreateOutputModel(undefined4 p_vertexType)
 
 	GdbVertexArray* vertexArray;
 	m_bodySummary.m_model->GetVertexArray(&vertexArray);
-	if (static_cast<undefined2>(p_vertexType) == 0) {
+	if (p_vertexType == 0) {
 		p_vertexType = vertexArray->GetVertexType();
 	}
 
-	model->Allocate(
-		m_renderer,
-		static_cast<undefined2>(p_vertexType),
-		vertexCount,
-		indexCount,
-		groupCount,
-		materialCount
-	);
+	model->Allocate(m_renderer, p_vertexType, vertexCount, indexCount, groupCount, materialCount);
 	m_bodySummary.m_model->AddFlagsWithBounds(0, FALSE);
 
 	return model;
@@ -362,9 +363,8 @@ void DriverModelBuilder::CopyBodyIntoOutput()
 	CopyModelVertices(bodyModel, outputModel, 0);
 	CopyModelIndices(bodyModel, outputModel, 0);
 
-	GolModelMaterialTable* outputMaterials = outputModel->GetMaterialTable();
 	for (LegoS32 i = 0; i < bodyMaterialCount; i++) {
-		outputMaterials->SetEntry(i, bodyMaterials->GetMaterial(i));
+		outputModel->GetMaterialTable()->SetEntry(i, bodyMaterials->GetMaterial(i));
 	}
 }
 

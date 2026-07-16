@@ -89,70 +89,126 @@ void HazardManager::LoadHazards(void* p_context, const LegoChar* p_name, LegoBoo
 		switch (parser->GetNextToken()) {
 		case HzbTxtParser::e_fallingPillar:
 			m_entries[i] = new FallingPillarHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_sphinx:
 			m_entries[i] = new SphinxHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_hammer:
 			m_entries[i] = new HammerHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_ghost:
 			m_entries[i] = new GhostHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_lavaGeyser:
 			m_entries[i] = new LavaGeyserHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_codePuzzle:
 			m_entries[i] = new CodePuzzleHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_rocket:
 			m_entries[i] = new RocketHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_snowfall:
 			m_entries[i] = new SnowfallHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_smokeVent:
 			m_entries[i] = new SmokeVentHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_movingObstacle:
 			m_entries[i] = new MovingObstacleHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_launcher:
 			m_entries[i] = new LauncherHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_triggeredAnimation:
 			m_entries[i] = new TriggeredAnimationHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_oscillator:
 			m_entries[i] = new OscillatorHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_multiLauncher:
 			m_entries[i] = new MultiLauncherHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_rollingRock:
 			m_entries[i] = new RollingRockHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_curseDrop:
 			m_entries[i] = new CurseDropHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_sweepCannon:
 			m_entries[i] = new SweepCannonHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_cannonballRain:
 			m_entries[i] = new CannonballRainHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_grabber:
 			m_entries[i] = new GrabberHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		case HzbTxtParser::e_warpPad:
 			m_entries[i] = new WarpPadHazard;
+			if (m_entries[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
 			break;
 		default:
 			break;
-		}
-
-		if (m_entries[i] == NULL) {
-			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
 		m_entries[i]->Load(context, parser);

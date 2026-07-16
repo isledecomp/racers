@@ -233,14 +233,12 @@ LegoU32 SaveRecordList::Record::GetTrophy(undefined4 p_raceIndex) const
 // FUNCTION: LEGORACERS 0x0042b640
 LegoBool32 SaveRecordList::Record::SetTrophy(LegoU32 p_raceIndex, LegoU32 p_trophy)
 {
-	Record* record = this;
-
 	if (p_trophy > 3) {
 		return FALSE;
 	}
 
-	LegoU16 value = record->m_data[0x22c];
-	LegoU16 low = record->m_data[0x22b];
+	LegoU16 value = m_data[0x22c];
+	LegoU16 low = m_data[0x22b];
 	value <<= 8;
 	value += low;
 
@@ -254,14 +252,10 @@ LegoBool32 SaveRecordList::Record::SetTrophy(LegoU32 p_raceIndex, LegoU32 p_trop
 	}
 
 	LegoU32 bitShift = p_raceIndex << 1;
-	LegoU32 mask = 3;
-	mask <<= bitShift;
-	p_trophy <<= bitShift;
-	value &= ~mask;
-	value |= static_cast<LegoU16>(p_trophy);
-	record->m_data[0x22b] = static_cast<LegoU8>(value);
-	record->m_data[0x22c] = static_cast<LegoU8>(value >> 8);
-	record->MarkDirty();
+	value = static_cast<LegoU16>((value & ~(3 << bitShift)) | (p_trophy << bitShift));
+	m_data[0x22b] = static_cast<LegoU8>(value);
+	m_data[0x22c] = static_cast<LegoU8>(value >> 8);
+	MarkDirty();
 
 	return TRUE;
 }

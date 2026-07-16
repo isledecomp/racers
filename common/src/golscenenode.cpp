@@ -89,7 +89,8 @@ void GolSceneNode::CopyFrom(GolSceneNode* p_node)
 		if (sourceOrbit->m_parent != NULL) {
 			GolName parentName;
 			p_node->GetNameByValue(sourceOrbit->m_parent, parentName);
-			static_cast<GolTransformBase*>(GetName(parentName))->AttachChild(destOrbit);
+			GolTransformBase* parentTransform = static_cast<GolTransformBase*>(GetName(parentName));
+			parentTransform->AttachChild(destOrbit);
 		}
 
 		destOrbit->CopyFrom(sourceOrbit);

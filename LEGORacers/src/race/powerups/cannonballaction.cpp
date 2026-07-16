@@ -165,6 +165,8 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 {
 	GolVec2 perpendicular;
 	GolVec3 direction;
+	GolVec3 hitNormal;
+	SoundVector position;
 	GolVec3 particlePosition;
 	GolVec3 particleVelocity;
 	GolVec3 trailVelocity;
@@ -182,7 +184,6 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 	if (m_state == c_stateFlying) {
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
 		if (projectileState != PowerupProjectile::c_stateFlying) {
-			SoundVector position;
 			GolVec3& positionBase = position;
 			positionBase = m_projectile.GetHitPosition();
 			LegoBool32 skipBurst = FALSE;
@@ -208,10 +209,13 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 			}
 
 			if (!skipBurst) {
-				GolVec3 hitNormal = m_projectile.GetHitNormal();
-				LegoBool32 upwardHit = FALSE;
+				hitNormal = m_projectile.GetHitNormal();
+				LegoBool32 upwardHit;
 				if (projectileState == PowerupProjectile::c_stateHitWorld && hitNormal.m_z > g_scarNormalThreshold) {
 					upwardHit = TRUE;
+				}
+				else {
+					upwardHit = FALSE;
 				}
 
 				m_owner->SpawnExplosion(&position, upwardHit, m_ownerRacer);
@@ -232,27 +236,33 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_smokeParticle != NULL) {
 		CutsceneParticle* particle = m_smokeParticle->m_particle;
-		if (particle != NULL && particle->GetSpawnedCount() < 3) {
-			if (m_ownerRacer != NULL) {
-				m_ownerRacer->m_physics.m_carEntity->GetPosition(&particlePosition);
-				particlePosition.m_z += g_cannonballSmokeHeightOffset;
-
-				particleVelocity = m_ownerRacer->m_physics.m_velocity;
-				if (m_smokeParticle->m_particle != NULL) {
-					m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticle->m_particle->GetBasis());
-				}
-
-				if (m_smokeParticle->m_particle != NULL) {
-					m_smokeParticle->m_particle->SetPosition(&particlePosition);
-				}
-				if (m_smokeParticle->m_particle != NULL) {
-					m_smokeParticle->m_particle->SetVelocity(&particleVelocity);
-				}
-			}
-		}
-		else {
+		LegoBool32 finished = FALSE;
+		if (particle == NULL || particle->GetSpawnedCount() >= 3) {
 			m_owner->m_cutsceneAnimation->FinishRef(m_smokeParticle);
 			m_smokeParticle = NULL;
+			finished = TRUE;
+		}
+
+		if (!finished && m_ownerRacer != NULL) {
+			m_ownerRacer->m_physics.m_carEntity->GetPosition(&particlePosition);
+			LegoFloat raisedPositionZ = g_cannonballSmokeHeightOffset + particlePosition.m_z;
+
+			particleVelocity = m_ownerRacer->m_physics.m_velocity;
+			particlePosition.m_z = raisedPositionZ;
+			particle = m_smokeParticle->m_particle;
+			GolOrientedEntity* carEntity = m_ownerRacer->m_physics.m_carEntity;
+			if (particle != NULL) {
+				carEntity->CopyOrientation(particle->GetBasis());
+			}
+
+			if (m_smokeParticle->m_particle != NULL) {
+				m_smokeParticle->m_particle->SetPosition(&particlePosition);
+			}
+
+			CutsceneParticleRef* particleRef = m_smokeParticle;
+			if (particleRef->m_particle != NULL) {
+				particleRef->m_particle->SetVelocity(&particleVelocity);
+			}
 		}
 	}
 
@@ -265,10 +275,14 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 
 			perpendicular.m_x = trailVelocity.m_y;
 			perpendicular.m_y = -trailVelocity.m_x;
-			if (perpendicular.m_y != 0.0f || perpendicular.m_x != 0.0f) {
+			if (perpendicular.m_x != 0.0f || perpendicular.m_y != 0.0f) {
 				GolMath::NormalizeVector2(perpendicular, &perpendicular);
-				perpendicular.m_x *= g_cannonballTrailSize;
-				perpendicular.m_y *= g_cannonballTrailSize;
+				LegoFloat perpendicularX = g_cannonballTrailSize;
+				perpendicularX *= perpendicular.m_x;
+				perpendicular.m_x = perpendicularX;
+				LegoFloat perpendicularY = perpendicular.m_y;
+				perpendicularY *= g_cannonballTrailSize;
+				perpendicular.m_y = perpendicularY;
 
 				positions[0].m_x = position.m_x - perpendicular.m_x * 0.5f;
 				positions[0].m_y = position.m_y - perpendicular.m_y * 0.5f;
@@ -322,12 +336,12 @@ void CannonballAction::AdvanceState()
 	m_state = c_stateFlying;
 	LegoU32 durationMs = 3000;
 	SoundVector position;
-	GolVec3 direction;
 	GolVec3 target;
 	GolVec3 velocity;
+	GolVec3 direction;
+	PowerupProjectile::Params projectileParams;
 	GolVec3 right;
 	GolVec3 forward;
-	PowerupProjectile::Params projectileParams;
 	RaceTrailManager::Trail::Params trailParams;
 
 	m_stateTimerMs = durationMs;
@@ -356,32 +370,37 @@ void CannonballAction::AdvanceState()
 	projectileParams.m_lifetimeMs = durationMs;
 	projectileParams.m_launchHeight = g_cannonballLaunchHeight;
 
-	if (m_targetRacer != NULL) {
-		m_projectile.LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, TRUE, FALSE);
-	}
-	else if (m_emplacement != NULL) {
-		target = m_emplacement->m_targetPosition;
-		projectileParams.m_lifetimeMs = m_emplacement->m_lifetimeMs;
-		m_billboard->SetPosition(m_emplacement->m_position);
-		projectileParams.m_gravity = g_cannonballGravity * 3.0f;
-		projectileParams.m_launchHeight = 0.0f;
-		projectileParams.m_lifetimeMs = 5000;
-		m_projectile.LaunchAtPosition(&projectileParams, &target);
-	}
-	else {
-		if (m_targetPoint != NULL) {
-			target = m_targetPoint->m_position;
+	if (m_targetRacer == NULL) {
+		if (m_emplacement != NULL) {
+			target = m_emplacement->m_targetPosition;
+			projectileParams.m_speed = m_emplacement->m_speed;
+			m_billboard->SetPosition(m_emplacement->m_position);
+			projectileParams.m_gravity = g_cannonballGravity * 3.0f;
+			projectileParams.m_launchHeight = 0.0f;
+			projectileParams.m_lifetimeMs = 5000;
+			m_projectile.LaunchAtPosition(&projectileParams, &target);
 		}
 		else {
-			target.m_x = position.m_x + direction.m_x * g_cannonballDefaultRange;
-			target.m_y = position.m_y + direction.m_y * g_cannonballDefaultRange;
-			target.m_z = position.m_z + direction.m_z * g_cannonballDefaultRange + g_cannonballTargetHeightOffset;
+			if (m_targetPoint != NULL) {
+				target = m_targetPoint->m_position;
+				velocity.m_x = 0.0f;
+				velocity.m_y = 0.0f;
+				velocity.m_z = 0.0f;
+				m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &velocity, TRUE);
+			}
+			else {
+				target.m_x = position.m_x + direction.m_x * g_cannonballDefaultRange;
+				target.m_y = position.m_y + direction.m_y * g_cannonballDefaultRange;
+				target.m_z = position.m_z + direction.m_z * g_cannonballDefaultRange + g_cannonballTargetHeightOffset;
+				velocity.m_x = 0.0f;
+				velocity.m_y = 0.0f;
+				velocity.m_z = 0.0f;
+				m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &velocity, TRUE);
+			}
 		}
-
-		velocity.m_x = 0.0f;
-		velocity.m_y = 0.0f;
-		velocity.m_z = 0.0f;
-		m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &velocity, TRUE);
+	}
+	else {
+		m_projectile.LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, TRUE, FALSE);
 	}
 
 	m_smokeParticle = m_owner->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
@@ -402,22 +421,28 @@ void CannonballAction::AdvanceState()
 		}
 
 		position.m_z += g_cannonballSmokeHeightOffset;
-		if (m_smokeParticle->m_particle != NULL) {
-			m_smokeParticle->m_particle->SetOrientation(&right, &forward);
+		CutsceneParticleRef* particleRef = m_smokeParticle;
+		if (particleRef->m_particle != NULL) {
+			particleRef->m_particle->SetOrientation(&right, &forward);
 		}
-		if (m_smokeParticle->m_particle != NULL) {
-			m_smokeParticle->m_particle->SetPosition(&position);
+
+		particleRef = m_smokeParticle;
+		if (particleRef->m_particle != NULL) {
+			particleRef->m_particle->SetPosition(&position);
 		}
 	}
 
-	trailParams.m_durationMs = 300;
 	trailParams.m_sampleCount = 4;
 	trailParams.m_pointCount = 4;
+	RacePowerupManager* owner = m_owner;
+	trailParams.m_durationMs = 300;
 	trailParams.m_unk0x0c = 1;
 	trailParams.m_unk0x10 = 0;
 	trailParams.m_endScale = 0.1f;
 	trailParams.m_endAlpha = 0.0f;
-	m_trail = m_owner->m_trailManager->AcquireTrail(&trailParams);
+
+	RaceTrailManager* trailManager = owner->m_trailManager;
+	m_trail = trailManager->AcquireTrail(&trailParams);
 	if (m_trail != NULL) {
 		m_trail->SetColor(&g_cannonballTrailColor);
 

@@ -64,14 +64,14 @@ void CarModelScreenBase::CreatePlacementScene()
 	::memset(&params, 0, sizeof(params));
 	params.m_golExport = m_golExport;
 	params.m_renderer = m_renderer;
-	params.m_sceneView = &m_sceneView;
 	params.m_soundGroupBinding = m_soundGroupBinding;
+	params.m_sceneView = &m_sceneView;
 	params.m_context = m_context;
 	params.m_screen = this;
+	params.m_unk0x28 = 0.001f;
 	params.m_piecePosition.m_x = 0.0f;
 	params.m_piecePosition.m_y = 0.0f;
 	params.m_piecePosition.m_z = 1.0f;
-	params.m_unk0x28 = 0.001f;
 	params.m_useBinaryFiles = m_context->m_context->m_useBinaryFiles;
 	m_partPlacement.Create(&params);
 

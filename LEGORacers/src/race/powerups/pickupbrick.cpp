@@ -71,8 +71,8 @@ void PickupBrick::Initialize(
 
 	m_manager = p_owner;
 	m_soundSource = p_soundResource;
-	m_blendModel = p_model1;
 	m_model = p_model0;
+	m_blendModel = p_model1;
 	m_worldEntity.SetPosition(*p_position);
 	m_state = c_stateWait;
 	m_stateTimerMs = 3000;
@@ -98,23 +98,24 @@ void PickupBrick::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	LegoU32 elapsedMs = p_elapsedMs + m_stateTimerMs;
-	m_stateTimerMs = elapsedMs;
+	m_stateTimerMs += p_elapsedMs;
+	p_elapsedMs = m_stateTimerMs;
 
-	LegoS32 stateOffset = m_state - c_stateActive;
-	if (stateOffset != 0) {
-		if (stateOffset == 1 && elapsedMs <= 250) {
-			LegoFloat transition = (LegoS32) (250 - elapsedMs) * g_brickShrinkPercentPerMs;
+	switch (m_state) {
+	case c_stateActive:
+		if (p_elapsedMs < 400) {
+			m_scale = (LegoS32) p_elapsedMs * 0.0024999999f;
+		}
+		else if (p_elapsedMs < 500) {
+			m_scale = 1.0f - (LegoS32) (p_elapsedMs - 400) * g_brickSettleRate;
+		}
+		break;
+	case c_stateTransition:
+		if (p_elapsedMs <= 250) {
+			LegoFloat transition = (LegoS32) (250 - p_elapsedMs) * g_brickShrinkPercentPerMs;
 			m_scale = transition * (g_brickScale * g_brickScalePercentInverse);
 		}
-	}
-	else {
-		if (elapsedMs < 400) {
-			m_scale = (LegoS32) elapsedMs * 0.0024999999f;
-		}
-		else if (elapsedMs < 500) {
-			m_scale = 1.0f - (LegoS32) (elapsedMs - 400) * g_brickSettleRate;
-		}
+		break;
 	}
 
 	LegoU8 flags = m_flags;

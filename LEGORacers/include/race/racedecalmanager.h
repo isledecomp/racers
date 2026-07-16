@@ -109,7 +109,7 @@ public:
 		Trail();
 		virtual ~Trail(); // vtable+0x00
 
-		// SIZE 0x9c
+		// SIZE 0x98
 		struct ModelEntry {
 			void SetPosition(const GolVec3& p_position) { m_entity.SetPosition(p_position); }
 			void VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance)

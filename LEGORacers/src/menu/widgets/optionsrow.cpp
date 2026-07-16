@@ -49,10 +49,8 @@ LegoBool32 OptionsRowBase::Create(
 	m_value = p_createParams->m_initialValue;
 	m_stepCount = p_createParams->m_stepCount;
 
-	MenuIcon::SoundIdPair* soundIds = &p_createParams->m_stepSoundIds;
-	if (!p_createParams->m_hasSoundIds) {
-		soundIds = &p_styleEntry->m_stepSoundIds;
-	}
+	MenuIcon::SoundIdPair* soundIds =
+		p_createParams->m_hasSoundIds ? &p_createParams->m_stepSoundIds : &p_styleEntry->m_stepSoundIds;
 
 	m_soundIds = *soundIds;
 
@@ -337,9 +335,9 @@ MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p
 
 		Rect rect = *m_thumb.GetRect();
 		LegoS32 width = rect.m_right;
+		rect.m_right += p_x;
 		width -= rect.m_left;
 		rect.m_left += p_x;
-		rect.m_right += p_x;
 
 		if (rect.m_left < m_prevButton.GetRect()->m_right) {
 			rect.m_left = m_prevButton.GetRect()->m_right;

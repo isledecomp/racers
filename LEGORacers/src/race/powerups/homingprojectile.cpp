@@ -339,7 +339,7 @@ void HomingProjectile::GetVelocity(GolVec3* p_velocity)
 void HomingProjectile::ApplySpiral(LegoFloat p_elapsedSeconds, GolVec3* p_direction, GolVec3* p_position)
 {
 	m_spiralAmplitude += g_homingProjectileOscillationGrowth * p_elapsedSeconds;
-	if (m_maxSpiralAmplitude <= m_spiralAmplitude) {
+	if (m_maxSpiralAmplitude < m_spiralAmplitude) {
 		m_spiralAmplitude = m_maxSpiralAmplitude;
 	}
 
@@ -353,9 +353,15 @@ void HomingProjectile::ApplySpiral(LegoFloat p_elapsedSeconds, GolVec3* p_direct
 	LegoFloat xSine = p_elapsedSeconds * p_direction->m_x;
 	LegoFloat ySine = p_direction->m_y;
 	ySine *= p_elapsedSeconds;
-	LegoFloat oneMinusCosine = 1.0f - cosine;
-	LegoFloat zY = p_direction->m_z * p_direction->m_y * oneMinusCosine;
-	p_position->m_x += ((p_direction->m_z * p_direction->m_x * oneMinusCosine) - ySine) * m_spiralAmplitude;
+	p_elapsedSeconds = 1.0f - cosine;
+	LegoFloat zY = p_direction->m_z;
+	zY *= p_direction->m_y;
+	zY *= p_elapsedSeconds;
+	LegoFloat xSpiral = p_direction->m_z;
+	xSpiral *= p_direction->m_x;
+	xSpiral *= p_elapsedSeconds;
+	xSpiral -= ySine;
+	p_position->m_x += xSpiral * m_spiralAmplitude;
 	p_position->m_y += (zY + xSine) * m_spiralAmplitude;
-	p_position->m_z += ((p_direction->m_z * p_direction->m_z * oneMinusCosine) + cosine) * m_spiralAmplitude;
+	p_position->m_z += ((p_direction->m_z * p_direction->m_z * p_elapsedSeconds) + cosine) * m_spiralAmplitude;
 }

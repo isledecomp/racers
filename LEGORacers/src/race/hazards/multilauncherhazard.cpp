@@ -42,7 +42,8 @@ void MultiLauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser
 
 	GolFileParser::ParserTokenType token;
 	while ((token = p_parser->GetNextToken()) != HazardManager::HzbTxtParser::e_launcher) {
-		if (token == HazardManager::HzbTxtParser::e_target) {
+		switch (token) {
+		case HazardManager::HzbTxtParser::e_target: {
 			p_parser->ReadLeftBracket();
 			m_targetPositionCount = p_parser->ReadInteger();
 			p_parser->ReadRightBracket();
@@ -70,8 +71,9 @@ void MultiLauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser
 			}
 
 			p_parser->ReadRightCurly();
+			break;
 		}
-		else if (token == HazardManager::HzbTxtParser::e_source) {
+		case HazardManager::HzbTxtParser::e_source: {
 			p_parser->ReadLeftBracket();
 			m_launchPositionCount = p_parser->ReadInteger();
 			p_parser->ReadRightBracket();
@@ -99,6 +101,8 @@ void MultiLauncherHazard::Load(HazardContext* p_context, GolFileParser* p_parser
 			}
 
 			p_parser->ReadRightCurly();
+			break;
+		}
 		}
 	}
 

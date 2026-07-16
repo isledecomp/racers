@@ -87,10 +87,9 @@ void MenuDialog::DialogScreen::AttachPopupIcon()
 	m_halfHeight += bottom * 0.5f;
 
 	rect.m_top = m_messageLabel.GetRect()->m_bottom + 0x14;
-	LegoS32 rectBottom = m_popupIcon->GetRect()->m_bottom;
-	rectBottom += rect.m_top;
+	rect.m_bottom = m_popupIcon->GetRect()->m_bottom;
+	rect.m_bottom += rect.m_top;
 	rect.m_left = 0x19;
-	rect.m_bottom = rectBottom;
 	rect.m_right = m_popupIcon->GetRect()->m_right + 0x19;
 
 	m_popupIcon->SetRect(&rect);
@@ -110,10 +109,9 @@ void MenuDialog::DialogScreen::AttachYesIcon()
 	m_halfHeight += bottom * 0.5f;
 
 	rect.m_top = m_messageLabel.GetRect()->m_bottom + 0x14;
-	LegoS32 rectBottom = m_yesIcon->GetRect()->m_bottom;
-	rectBottom += rect.m_top;
+	rect.m_bottom = m_yesIcon->GetRect()->m_bottom;
+	rect.m_bottom += rect.m_top;
 	rect.m_left = 0x19;
-	rect.m_bottom = rectBottom;
 	rect.m_right = m_yesIcon->GetRect()->m_right + 0x19;
 
 	m_yesIcon->SetRect(&rect);
@@ -135,14 +133,12 @@ void MenuDialog::DialogScreen::AttachNoIcon()
 	LegoS32 bottom = m_noIcon->GetRect()->m_bottom + 0x14;
 	m_halfHeight += bottom * 0.5f;
 
-	LegoS32 rectTop = m_yesIcon->GetRect()->m_bottom + 0x14;
-	rect.m_top = rectTop;
-	LegoS32 rectBottom = m_noIcon->GetRect()->m_bottom;
-	rectBottom += rectTop;
+	rect.m_top = m_yesIcon->GetRect()->m_bottom + 0x14;
+	rect.m_bottom = m_noIcon->GetRect()->m_bottom;
+	rect.m_bottom += rect.m_top;
 	LegoS32 rectRight = m_noIcon->GetRect()->m_right;
 	rectRight += 0x19;
 	rect.m_left = 0x19;
-	rect.m_bottom = rectBottom;
 	rect.m_right = rectRight;
 
 	m_noIcon->SetRect(&rect);
@@ -320,11 +316,9 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 
 	if (m_state == 1 || m_state == 3) {
 		m_animMs += p_elapsedMs;
-		LegoS32 elapsedMs = m_animMs;
-		LegoFloat elapsedScale = (LegoFloat) elapsedMs;
-		scale = elapsedScale * g_dialogAnimRate;
+		scale = (LegoFloat) m_animMs * g_dialogAnimRate;
 
-		if ((LegoU32) elapsedMs > 300) {
+		if ((LegoU32) m_animMs > 300) {
 			if (m_state == 1) {
 				EnableWidgets();
 				m_animMs = 0;
@@ -360,17 +354,17 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 	Rect rect;
 	LegoS32 right = m_centerX;
 	LegoS32 left = right;
-	right += x;
-	rect.m_right = right;
 	left -= x;
 	rect.m_left = left;
+	right += x;
+	rect.m_right = right;
 
 	LegoS32 bottom = m_centerY;
 	LegoS32 top = bottom;
-	bottom += y;
-	rect.m_bottom = bottom;
 	top -= y;
 	rect.m_top = top;
+	bottom += y;
+	rect.m_bottom = bottom;
 
 	m_frame.SetRect(&rect);
 

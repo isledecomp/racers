@@ -198,21 +198,22 @@ MenuWidget* MenuTextField::HandleCharacterInput(InputEventQueue::Event* p_event)
 		}
 		else {
 			LegoS32 charsetLength = m_charset.SelectionLength();
-			LegoS32 i;
-			for (i = 0; i < charsetLength; i++) {
+			LegoS32 i = 0;
+			for (;;) {
+				if (i >= charsetLength) {
+					m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
+					return NULL;
+				}
+
 				if (character == *m_charset.FromCursor(i)) {
 					break;
 				}
-			}
 
-			if (i >= charsetLength) {
-				m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
-				return NULL;
+				i++;
 			}
 
 			if (m_length != m_maxLength) {
-				*m_text.FromCursor(m_length) = character;
-				m_length++;
+				*m_text.FromCursor(m_length++) = character;
 				m_text.FirstLine();
 				m_eventHandler->OnWidgetValueChanged(this);
 				m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[0]);
@@ -282,14 +283,10 @@ MenuWidget* MenuTextField::HandleJoystickInput(InputEventQueue::Event* p_event)
 	case InputDevice::c_sourceJoystickButton | 0x9:
 	case InputDevice::c_sourceJoystickAxisButton | 0x1:
 		if (m_length != m_maxLength) {
-			LegoU16 index = m_charsetIndex;
-			if (index == 0) {
-				index = m_charset.SelectionLength();
-			}
-
+			LegoU32 index = m_charsetIndex ? m_charsetIndex : m_charset.SelectionLength();
 			index--;
 			m_charsetIndex = index;
-			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_charsetIndex);
+			*m_text.FromCursor(m_length) = *m_charset.FromCursor(static_cast<LegoU16>(index));
 			m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[0]);
 			break;
 		}

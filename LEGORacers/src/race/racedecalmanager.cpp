@@ -25,8 +25,6 @@ const LegoFloat g_raceDecalMaxFloat = FLT_MAX;
 // GLOBAL: LEGORACERS 0x004b4778
 const LegoFloat g_raceDecalDefaultDepth = 15.0f;
 
-extern LegoFloat g_minSoundPan;
-
 // GLOBAL: LEGORACERS 0x004b477c
 const LegoFloat g_raceDecalTrailOffsetZ = 6.0f;
 
@@ -307,7 +305,7 @@ void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 
 	p_position.m_x = 0.0f;
 	p_position.m_y = 0.0f;
-	p_position.m_z = g_minSoundPan * g_raceDecalTrailOffsetZ;
+	p_position.m_z = -1.0f * g_raceDecalTrailOffsetZ;
 	centerX -= p_position.m_x;
 	centerY -= p_position.m_y;
 	centerZ -= p_position.m_z;
@@ -397,16 +395,15 @@ void RaceDecalManager::Trail::BakeSegment()
 	GdbModelIndexArrayBase* destIndexArrayBase;
 	m_slots[m_slotIndex].m_model->GetIndexArrayInto(&destIndexArrayBase);
 
-	GdbModelIndexArray* sourceIndexArray = static_cast<GdbModelIndexArray*>(sourceIndexArrayBase);
-	GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
 	LegoU32 index = 0;
 	while (index < m_slots[m_slotIndex].m_entry.m_triangleCount) {
+		GdbModelIndexArray* sourceIndexArray = static_cast<GdbModelIndexArray*>(sourceIndexArrayBase);
+		GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
 		LegoU32 offset = index * sizeof(GdbModelIndexArray::Indices);
 		LegoU8* sourceIndexBytes = sourceIndexArray->GetIndexBytes() + offset;
-		LegoU8* destIndexBytes = destIndexArray->GetIndexBytes() + offset;
-		destIndexBytes[0] = sourceIndexBytes[0];
-		destIndexBytes[1] = sourceIndexBytes[1];
-		destIndexBytes[2] = sourceIndexBytes[2];
+		destIndexArray->GetIndexBytes()[offset] = sourceIndexBytes[0];
+		destIndexArray->GetIndexBytes()[offset + 1] = sourceIndexBytes[1];
+		destIndexArray->GetIndexBytes()[offset + 2] = sourceIndexBytes[2];
 		index++;
 	}
 
@@ -584,8 +581,7 @@ LegoU32 RaceDecalManager::DrawOpaque(GolD3DRenderDevice* p_renderer)
 	LegoU32 result = m_count;
 
 	for (i = 0; i < result; i++) {
-		LegoU8 flags = m_items[i].GetFlags();
-		if (flags & Trail::c_active) {
+		if (m_items[i].IsActive()) {
 			m_items[i].DrawOpaque(p_renderer);
 		}
 

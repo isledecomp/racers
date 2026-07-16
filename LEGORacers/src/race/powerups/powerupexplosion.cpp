@@ -211,11 +211,14 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 		m_modelEntity.SetPosition(*p_position);
 	}
 
+	RaceDecalManager::Trail::Decal* scarDecal = &m_scarDecal;
 	GolVec3 position;
 	position.m_x = p_position->m_x;
 	position.m_y = p_position->m_y;
 	position.m_z = p_position->m_z + 5.0f;
-	m_scarDecal.m_center = position;
+	scarDecal->m_center.m_x = position.m_x;
+	scarDecal->m_center.m_y = position.m_y;
+	scarDecal->m_center.m_z = position.m_z;
 
 	GolVec3 forward;
 	forward.m_x = 0.0f;
@@ -226,7 +229,7 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 	up.m_x = 1.0f;
 	up.m_y = 0.0f;
 	up.m_z = 0.0f;
-	m_scarDecal.SetOrientation(&forward, &up);
+	scarDecal->SetOrientation(&forward, &up);
 
 	if (m_collisionEvent != NULL) {
 		m_collisionEvent->m_active = 0;
@@ -253,11 +256,8 @@ void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar,
 	}
 
 	if (m_particleAnimation != NULL) {
-		GolVec3 particlePosition;
-		particlePosition.m_x = position.m_x;
-		particlePosition.m_y = position.m_y;
-		particlePosition.m_z = position.m_z - 5.0f;
-		m_particleAnimation->SpawnParticle("explode", &particlePosition, NULL, NULL);
+		position.m_z -= 5.0f;
+		m_particleAnimation->SpawnParticle("explode", &position, NULL, NULL);
 	}
 }
 
@@ -316,11 +316,12 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 				LegoFloat width2 = m_flashWidth;
 				m_remainingMs = finishDuration;
 				m_alpha = g_explosionScarAlpha;
-				m_scarDecal.m_width = width;
-				m_scarDecal.m_length = width2;
+				RaceDecalManager::Trail::Decal& decal = m_scarDecal;
+				decal.m_width = width;
+				decal.m_length = width2;
 				LegoFloat depth = g_explosionScarDepth;
-				m_scarDecal.m_depth = depth;
-				m_scarDecal.Project(m_collidable);
+				decal.m_depth = depth;
+				decal.Project(m_collidable);
 			}
 			else {
 				Deactivate();
@@ -344,9 +345,10 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 			m_materialTable.SetEntry(0, m_scarMaterial);
 			m_scarDecal.m_width = width;
 			m_scarDecal.m_length = width;
+			RaceDecalManager::Trail::Decal& decal = m_scarDecal;
 			LegoFloat depth = g_explosionScarDepth;
-			m_scarDecal.m_depth = depth;
-			m_scarDecal.Project(m_collidable);
+			decal.m_depth = depth;
+			decal.Project(m_collidable);
 		}
 
 		if (m_billboard != NULL) {
@@ -442,12 +444,8 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 		return;
 	}
 
-	mode--;
-	if (mode) {
-		if (--mode) {
-			return;
-		}
-
+	switch (mode) {
+	case c_blastLaunch: {
 		if ((racer->m_physics.m_flags & RacerPhysics::c_flagSpinOut) && racer->m_controlMode != Racer::c_controlAi) {
 			return;
 		}
@@ -489,9 +487,13 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 		physics->ApplyImpulse(&impulse, &impulse);
 		return;
 	}
-
-	if (!(physics->m_flags & RacerPhysics::c_flagSpinning)) {
-		physics->StartSpin(2.0f, 0.007f, 0);
+	case c_blastShake:
+		if (!(physics->m_flags & RacerPhysics::c_flagSpinning)) {
+			physics->StartSpin(2.0f, 0.007f, 0);
+		}
+		return;
+	default:
+		return;
 	}
 }
 

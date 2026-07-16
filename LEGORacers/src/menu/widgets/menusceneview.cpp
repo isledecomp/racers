@@ -229,10 +229,7 @@ void MenuSceneView::GetEntityScreenRect(GolWorldEntity* p_entity, Rect* p_rect)
 		p_rect->m_bottom = static_cast<LegoS32>(bounds.m_u);
 	}
 	else {
-		p_rect->m_left = 0;
-		p_rect->m_top = 0;
-		p_rect->m_right = 0;
-		p_rect->m_bottom = 0;
+		ZeroMemory(p_rect, sizeof(*p_rect));
 	}
 }
 

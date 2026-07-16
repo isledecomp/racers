@@ -10,10 +10,11 @@
 // SIZE 0xc8ac8
 class GolDPExport : public GolExport {
 public:
-	~GolDPExport() override; // vtable+0x00
-
 	// SYNTHETIC: GOLDP 0x10007040
 	// GolDPExport::`scalar deleting destructor'
+
+	// FUNCTION: GOLDP 0x10007060
+	// GolDPExport::~GolDPExport
 
 	GolCommonDrawState* GetDrawState() override;       // vtable+0x04
 	GolWorldDatabase* CreateWorldDatabase() override;  // vtable+0x08

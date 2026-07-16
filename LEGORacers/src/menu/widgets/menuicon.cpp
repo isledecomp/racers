@@ -190,15 +190,14 @@ MenuIcon* MenuIcon::FindRoot()
 MenuIcon* MenuIcon::FindSelectedLeaf()
 {
 	MenuIcon* result = FindRoot();
-	MenuIcon* child = result->m_selectedChild;
 
-	if (!child) {
+	if (!result->m_selectedChild) {
 		return NULL;
 	}
 
 	do {
-		result = child;
-	} while ((child = result->m_selectedChild));
+		result = result->m_selectedChild;
+	} while (result->m_selectedChild);
 
 	return result;
 }

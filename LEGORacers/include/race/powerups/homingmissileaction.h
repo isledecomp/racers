@@ -43,7 +43,12 @@ public:
 	void OnHitRacer(Racer* p_racer) override;           // vtable+0x20
 	void Initialize(RacePowerupManager* p_manager, TriggerWorld* p_collisionWorld);
 	void Shutdown();
-	void Activate(GolAnimatedEntity* p_missileTemplate, GolAnimatedEntity*, Racer* p_racer, LegoU32 p_missileIndex);
+	void Activate(
+		GolAnimatedEntity* p_missileTemplate,
+		GolAnimatedEntity* p_unk0x08,
+		Racer* p_racer,
+		LegoU32 p_missileIndex
+	);
 	void LaunchProjectile();
 
 private:

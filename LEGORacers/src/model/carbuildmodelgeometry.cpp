@@ -66,33 +66,41 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 
 	BuildVertex* node = *p_root;
 	if (node != NULL) {
-		for (;;) {
+		do {
 			LegoS32 compare = CompareBuildVertex(p_vertex, node);
-			if (compare == 0) {
-				return node;
-			}
+			if (compare != 0) {
+				if (compare > 0) {
+					if (node->m_right == NULL) {
+						p_vertex->m_parent = node;
+						node->m_right = p_vertex;
+						node = NULL;
+						break;
+					}
 
-			if (compare > 0) {
-				if (node->m_right == NULL) {
-					p_vertex->m_parent = node;
-					node->m_right = p_vertex;
-					RebalanceBuildVertexInsert(p_root, p_vertex);
-					return NULL;
+					node = node->m_right;
 				}
+				else {
+					if (node->m_left == NULL) {
+						p_vertex->m_parent = node;
+						node->m_left = p_vertex;
+						node = NULL;
+						break;
+					}
 
-				node = node->m_right;
+					node = node->m_left;
+				}
 			}
 			else {
-				if (node->m_left == NULL) {
-					p_vertex->m_parent = node;
-					node->m_left = p_vertex;
-					RebalanceBuildVertexInsert(p_root, p_vertex);
-					return NULL;
-				}
-
-				node = node->m_left;
+				break;
 			}
+		} while (node != NULL);
+
+		if (node != NULL) {
+			return node;
 		}
+
+		RebalanceBuildVertexInsert(p_root, p_vertex);
+		return NULL;
 	}
 
 	p_vertex->m_parent = NULL;
@@ -310,7 +318,7 @@ void CarBuildModel::GetBuildPrimitiveBounds(BuildPrimitive* p_primitive, BuildPr
 }
 
 // FUNCTION: LEGORACERS 0x00495440
-LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
+void CarBuildModel::ResolvePrimitiveIntersections()
 {
 #define SWAP_ACTIVE_BUILD_PRIMITIVES()                                                                                 \
 	do {                                                                                                               \
@@ -360,7 +368,7 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 		*outsidePrimitive = *primitive;                                                                                \
 		if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {                                                       \
 			m_buildStatus |= c_buildStatusOverflow;                                                                    \
-			return m_buildPrimitiveCount;                                                                              \
+			return;                                                                                                    \
 		}                                                                                                              \
 	} while (0)
 
@@ -373,7 +381,7 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 	*outsidePrimitive = *primitive;                                                                                    \
 	if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {                                                           \
 		m_buildStatus |= c_buildStatusOverflow;                                                                        \
-		return m_buildPrimitiveCount;                                                                                  \
+		return;                                                                                                        \
 	}
 
 #define SET_SPLIT_VERTEX_POSITION_X(vertex, boundsField, splitCoordinate)                                              \
@@ -403,9 +411,9 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 		ROTATE_BUILD_PRIMITIVE_TO_MIN(coordMember, minField);                                                          \
 		ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MIN();                                                                        \
 		rightScale = rhsBounds.minField - lhsBounds.minField;                                                          \
-		firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                              \
-		firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                             \
+		BuildVertex* firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                 \
 		rightScale = rightScale / (lhsBounds.maxField - lhsBounds.minField);                                           \
+		BuildVertex* firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                \
 		setPosition(firstLowVertex, minField, rhsBounds.minField);                                                     \
 		leftScale = 1.0f - rightScale;                                                                                 \
 		InterpolateBuildVertex(&splitVertex, firstLowVertex, firstHighVertex, leftScale, rightScale);                  \
@@ -430,9 +438,9 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 		ROTATE_BUILD_PRIMITIVE_TO_MAX(coordMember, maxField);                                                          \
 		ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MAX();                                                                        \
 		rightScale = rhsBounds.maxField - lhsBounds.minField;                                                          \
-		firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                              \
-		firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                             \
+		BuildVertex* firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                 \
 		rightScale = rightScale / (lhsBounds.maxField - lhsBounds.minField);                                           \
+		BuildVertex* firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                \
 		setPosition(firstLowVertex, maxField, rhsBounds.maxField);                                                     \
 		leftScale = 1.0f - rightScale;                                                                                 \
 		InterpolateBuildVertex(&splitVertex, firstLowVertex, firstHighVertex, leftScale, rightScale);                  \
@@ -467,6 +475,9 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 	} while (0)
 
 	LegoS32 i;
+	LegoS32 planePrimitiveCount;
+	LegoS32 lhsIndex;
+	LegoS32 rhsIndex;
 	LegoU16 splitFirstIndex;
 	LegoU16 splitSecondIndex;
 	LegoFloat leftScale;
@@ -474,16 +485,14 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 	BuildPrimitive* primitive;
 	BuildPrimitive* outsidePrimitive;
 	BuildPrimitive* swappedPrimitive;
+	BuildPrimitive* lhs;
 	BuildPrimitiveBounds swappedBounds;
-	BuildVertex* firstLowVertex;
-	BuildVertex* firstHighVertex;
 	BuildVertex* secondLowVertex;
 	BuildVertex* secondHighVertex;
 	BuildVertex splitVertex;
 
 	{
-		LegoS32 planePrimitiveCount = 0;
-		for (i = 0; i < m_buildPrimitiveCount; i++) {
+		for (i = 0, planePrimitiveCount = 0; i < m_buildPrimitiveCount; i++) {
 			BuildPrimitive* primitive = m_buildPrimitiveOrder[i];
 			if ((primitive->m_flags & 0x89) == 0x89 && primitive->m_vertexCount == 4) {
 				m_buildPrimitiveOrder[i] = m_buildPrimitiveOrder[planePrimitiveCount++];
@@ -491,16 +500,16 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 			}
 		}
 
-		for (LegoS32 lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
+		for (lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
 			BuildPrimitiveBounds lhsBounds;
 			GetBuildPrimitiveBounds(m_buildPrimitiveOrder[lhsIndex], &lhsBounds);
 
-			for (LegoS32 rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
+			for (rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
 				BuildPrimitiveBounds rhsBounds;
 				GetBuildPrimitiveBounds(m_buildPrimitiveOrder[rhsIndex], &rhsBounds);
 
 				LegoFloat planeDelta = lhsBounds.m_minZ - rhsBounds.m_minZ;
-				BuildPrimitive* lhs = m_buildPrimitiveOrder[lhsIndex];
+				lhs = m_buildPrimitiveOrder[lhsIndex];
 				BuildPrimitive* rhs = m_buildPrimitiveOrder[rhsIndex];
 				if (g_carBuildModelNegativePlaneEpsilon < planeDelta && planeDelta < g_minAudibleSoundVolume &&
 					lhs->m_partIndex != rhs->m_partIndex && lhsBounds.m_minX < rhsBounds.m_maxX &&
@@ -517,8 +526,7 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 	}
 
 	{
-		LegoS32 planePrimitiveCount = 0;
-		for (i = 0; i < m_buildPrimitiveCount; i++) {
+		for (i = 0, planePrimitiveCount = 0; i < m_buildPrimitiveCount; i++) {
 			BuildPrimitive* primitive = m_buildPrimitiveOrder[i];
 			if ((primitive->m_flags & 0x85) == 0x85 && primitive->m_vertexCount == 4) {
 				m_buildPrimitiveOrder[i] = m_buildPrimitiveOrder[planePrimitiveCount++];
@@ -526,15 +534,15 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 			}
 		}
 
-		for (LegoS32 lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
+		for (lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
 			BuildPrimitiveBounds lhsBounds;
 			GetBuildPrimitiveBounds(m_buildPrimitiveOrder[lhsIndex], &lhsBounds);
 
-			for (LegoS32 rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
+			for (rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
 				BuildPrimitiveBounds rhsBounds;
 				GetBuildPrimitiveBounds(m_buildPrimitiveOrder[rhsIndex], &rhsBounds);
 
-				BuildPrimitive* lhs = m_buildPrimitiveOrder[lhsIndex];
+				lhs = m_buildPrimitiveOrder[lhsIndex];
 				BuildPrimitive* rhs = m_buildPrimitiveOrder[rhsIndex];
 				if (lhsBounds.m_minY == rhsBounds.m_minY && lhs->m_partIndex != rhs->m_partIndex &&
 					lhsBounds.m_minX < rhsBounds.m_maxX && rhsBounds.m_minX < lhsBounds.m_maxX &&
@@ -549,27 +557,24 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 		}
 	}
 
-	LegoS32 result = m_buildPrimitiveCount;
 	{
-		LegoS32 planePrimitiveCount = 0;
-		for (i = 0; i < result; i++) {
+		for (i = 0, planePrimitiveCount = 0; i < m_buildPrimitiveCount; i++) {
 			BuildPrimitive* primitive = m_buildPrimitiveOrder[i];
 			if ((primitive->m_flags & 0x83) == 0x83 && primitive->m_vertexCount == 4) {
 				m_buildPrimitiveOrder[i] = m_buildPrimitiveOrder[planePrimitiveCount++];
 				m_buildPrimitiveOrder[planePrimitiveCount - 1] = primitive;
 			}
-			result = m_buildPrimitiveCount;
 		}
 
-		for (LegoS32 lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
+		for (lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
 			BuildPrimitiveBounds lhsBounds;
 			GetBuildPrimitiveBounds(m_buildPrimitiveOrder[lhsIndex], &lhsBounds);
 
-			for (LegoS32 rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
+			for (rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
 				BuildPrimitiveBounds rhsBounds;
 				GetBuildPrimitiveBounds(m_buildPrimitiveOrder[rhsIndex], &rhsBounds);
 
-				BuildPrimitive* lhs = m_buildPrimitiveOrder[lhsIndex];
+				lhs = m_buildPrimitiveOrder[lhsIndex];
 				BuildPrimitive* rhs = m_buildPrimitiveOrder[rhsIndex];
 				if (lhsBounds.m_minX == rhsBounds.m_minX && lhs->m_partIndex != rhs->m_partIndex &&
 					lhsBounds.m_minY < rhsBounds.m_maxY && rhsBounds.m_minY < lhsBounds.m_maxY &&
@@ -581,8 +586,6 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 					REMOVE_MATCHED_BUILD_PRIMITIVES();
 				}
 			}
-
-			result = planePrimitiveCount - 1;
 		}
 	}
 
@@ -597,8 +600,6 @@ LegoS32 CarBuildModel::ResolvePrimitiveIntersections()
 #undef ROTATE_BUILD_PRIMITIVE_TO_MAX
 #undef ROTATE_BUILD_PRIMITIVE_TO_MIN
 #undef SWAP_ACTIVE_BUILD_PRIMITIVES
-
-	return result;
 }
 
 // FUNCTION: LEGORACERS 0x004972a0
@@ -788,8 +789,7 @@ void CarBuildModel::FinalizeBuild(LegoU8 p_buildFlags)
 		for (i = 0; i < m_buildPrimitiveCount; i++) {
 			if (m_buildPrimitiveOrder[i]->m_commandFlags == c_buildPrimitiveCommandMaterial1) {
 				m_buildPrimitiveCount--;
-				i--;
-				BuildPrimitive* primitive = m_buildPrimitiveOrder[i + 1];
+				BuildPrimitive* primitive = m_buildPrimitiveOrder[i--];
 				m_buildPrimitiveOrder[i + 1] = m_buildPrimitiveOrder[m_buildPrimitiveCount];
 				m_buildPrimitiveOrder[m_buildPrimitiveCount] = primitive;
 			}

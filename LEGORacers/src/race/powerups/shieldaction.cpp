@@ -130,14 +130,11 @@ void ShieldAction::Activate(
 
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_shieldTemplate->GetModel(i);
-		if (model != NULL) {
-			m_shieldEntity->AddModel(
-				model,
-				p_shieldTemplate->GetSceneNode(i),
-				p_shieldTemplate->GetModelPart(i),
-				p_shieldTemplate->GetModelDistance(i)
-			);
+		if (p_shieldTemplate->GetModel(i) != NULL) {
+			LegoFloat modelDistance = p_shieldTemplate->GetModelDistance(i);
+			CmbModelPart* modelPart = p_shieldTemplate->GetModelPart(i);
+			m_shieldEntity
+				->AddModel(p_shieldTemplate->GetModel(i), p_shieldTemplate->GetSceneNode(i), modelPart, modelDistance);
 		}
 	}
 
@@ -158,13 +155,14 @@ void ShieldAction::Activate(
 	);
 
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_innerShieldTemplate->GetModel(i);
-		if (model != NULL) {
+		if (p_innerShieldTemplate->GetModel(i) != NULL) {
+			LegoFloat modelDistance = p_innerShieldTemplate->GetModelDistance(i);
+			CmbModelPart* modelPart = p_innerShieldTemplate->GetModelPart(i);
 			m_innerShieldEntity->AddModel(
-				model,
+				p_innerShieldTemplate->GetModel(i),
 				p_innerShieldTemplate->GetSceneNode(i),
-				p_innerShieldTemplate->GetModelPart(i),
-				p_innerShieldTemplate->GetModelDistance(i)
+				modelPart,
+				modelDistance
 			);
 		}
 	}
@@ -218,7 +216,7 @@ void ShieldAction::Update(LegoU32 p_elapsedMs)
 
 	GolVec3 velocity = m_racer->m_physics.m_velocity;
 	if (m_sound) {
-		m_sound->SetPosition(position);
+		m_sound->SetPosition(&position);
 		m_sound->SetVelocity(velocity);
 	}
 
@@ -234,7 +232,8 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	}
 
 	GolVec3 position;
-	m_racer->m_visuals.m_carEntity->GetPosition(&position);
+	CarVisuals* racerEntities = &m_racer->m_visuals;
+	racerEntities->m_carEntity->GetPosition(&position);
 	LegoFloat positionZ = position.m_z;
 	positionZ += g_two;
 	position.m_z = positionZ;

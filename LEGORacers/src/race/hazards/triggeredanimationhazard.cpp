@@ -190,13 +190,14 @@ void TriggeredAnimationHazard::Draw(GolD3DRenderDevice* p_renderer)
 			}
 
 			CmbModelPartData* partData = (*entity)->GetModelPart(0)->GetPartData();
-			LegoU16 frameCount = partData[(*entity)->GetCurrentPartIndex()].GetFrameCount();
-			LegoS32 alpha = static_cast<LegoS32>(
-				(static_cast<LegoFloat>(frameCount) - (*entity)->GetPartTimeMs()) / static_cast<LegoFloat>(frameCount) *
-				255.0f
+			CmbModelPartData* activePart = &partData[(*entity)->GetCurrentPartIndex()];
+			p_renderer->SetAlphaOverride(
+				static_cast<LegoS32>(
+					(static_cast<LegoFloat>(activePart->GetFrameCount()) - (*entity)->GetPartTimeMs()) /
+					static_cast<LegoFloat>(activePart->GetFrameCount()) * 255.0f
+				),
+				TRUE
 			);
-
-			p_renderer->SetAlphaOverride(alpha, TRUE);
 			p_renderer->DrawModelEntity(*entity);
 			p_renderer->ClearAlphaOverride();
 

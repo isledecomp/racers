@@ -38,9 +38,10 @@ LegoFloat g_defaultCameraNearClip = 5.0f;
 LegoFloat g_defaultCameraFarClip = 800.0f;
 
 // FUNCTION: LEGORACERS 0x0042b9d0
-LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
+LegoRacers::LegoRacers()
 {
 	m_golBackendType = Win32GolApp::c_golBackendDP;
+	m_soundManager = &m_nullSoundManager;
 	m_cutscenes = TRUE;
 	m_unk0xa1c = 0;
 	m_videoFlags = c_videoFullScreen | c_videoBit4;

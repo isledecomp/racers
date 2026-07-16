@@ -16,6 +16,7 @@ extern LegoU32 g_randomTableIndex;
 // GLOBAL: LEGORACERS 0x004b4230
 static const GolVec3 g_curseDropActionDirection = {1.0f, 0.0f, 0.0f};
 
+// GLOBAL: LEGORACERS 0x004b4208
 static const GolVec3 g_curseDropActionPositions[] = {
 	{-357.582703f, 458.126984f, -11.665112f},
 	{-351.203125f, 518.713013f, -94.215683f},

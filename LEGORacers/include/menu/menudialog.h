@@ -20,9 +20,9 @@ public:
 	class TextLine : public MenuTextLabel {
 	public:
 		TextLine();
-		~TextLine() override;                         // vtable+0x04
-		MenuWidget* DrawSelf(Rect*, Rect*) override;  // vtable+0x38
-		void SetString(GolString*, LegoS32) override; // vtable+0x40
+		~TextLine() override;                            // vtable+0x04
+		MenuWidget* DrawSelf(Rect*, Rect*) override;     // vtable+0x38
+		void SetString(GolString*, LegoBool32) override; // vtable+0x40
 
 		// SYNTHETIC: LEGORACERS 0x0046f860
 		// MenuDialog::TextLine::`scalar deleting destructor'

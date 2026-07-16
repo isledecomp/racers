@@ -26,8 +26,8 @@ MultiplayerPickScreen::~MultiplayerPickScreen()
 // FUNCTION: LEGORACERS 0x00481800
 void MultiplayerPickScreen::Reset()
 {
-	m_playerDevices[0] = NULL;
 	m_playerDevices[1] = NULL;
+	m_playerDevices[0] = NULL;
 	m_bindingEntries = NULL;
 	::memset(m_nameBuffers, 0, sizeof(m_nameBuffers));
 	RacerModelScreenBase::Reset();
@@ -90,8 +90,7 @@ LegoBool32 MultiplayerPickScreen::Initialize(MenuGameContext* p_context, MenuScr
 	undefined4 params[3];
 	params[0] = 2;
 	params[1] = 2;
-	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(1, NULL);
-	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, NULL);
+	p_context->m_saveSystem.GetActiveRecord().ClearSelectedRecords();
 	params[2] = 0xffff3;
 
 	if (!RacerModelScreenBase::Initialize(p_context, p_createParams, params)) {
@@ -148,16 +147,16 @@ void MultiplayerPickScreen::RestoreSlotLighting(LegoS32 p_index)
 	GolRenderDevice::MaterialColor* materialColor = (*database)->GetAmbientMaterial();
 
 	ColorRGBA color = materialColor->GetColor();
-	color.m_red *= 2;
-	color.m_grn *= 2;
-	color.m_blu *= 2;
+	color.m_red <<= 1;
+	color.m_grn <<= 1;
+	color.m_blu <<= 1;
 	materialColor->SetColor(color);
 
 	GolRenderDevice::Light* light = (*database)->GetLight();
 	color = light->GetColor();
-	color.m_red *= 2;
-	color.m_grn *= 2;
-	color.m_blu *= 2;
+	color.m_red <<= 1;
+	color.m_grn <<= 1;
+	color.m_blu <<= 1;
 	light->SetColor(color);
 }
 

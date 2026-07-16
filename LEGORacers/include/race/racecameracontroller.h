@@ -45,7 +45,7 @@ public:
 	void SnapPosition(GolVec3* p_position);
 	void SetMode(LegoU8 p_mode);
 	void SetView(LegoS32 p_viewIndex, LegoBool32 p_alternate);
-	GolVec3* GetViewDirection(GolVec3* p_dest);
+	void GetViewDirection(GolVec3* p_dest);
 	void Update(LegoFloat p_elapsedMs);
 
 private:

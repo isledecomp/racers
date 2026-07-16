@@ -33,7 +33,7 @@ private:
 	LegoS32 StartSurfaceRumble();
 	LegoS32 UpdateSurfacePulse(LegoFloat p_forwardSpeed);
 	void CreateEngineEffect();
-	undefined4 UpdateEngineEffect(LegoFloat p_forwardSpeed);
+	void UpdateEngineEffect(LegoFloat p_forwardSpeed);
 
 	DirectInputDevice* m_device;        // 0x00
 	LegoU32 m_totalMs;                  // 0x04

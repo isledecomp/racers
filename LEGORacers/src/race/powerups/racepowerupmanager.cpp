@@ -407,6 +407,8 @@ void RacePowerupManager::CreatePools()
 // FUNCTION: LEGORACERS 0x00458a80
 void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
+	LegoU32 state;
+
 	m_colorBrickCount = p_parser->ReadBracketedCountAndLeftCurly();
 	if (m_colorBrickCount == 0) {
 		return;
@@ -441,7 +443,7 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 		position.m_x = 0.0f;
 		position.m_y = 0.0f;
 		position.m_z = 0.0f;
-		LegoU32 state = 3;
+		state = 3;
 		LegoS32 duration = -1;
 
 		GolFileParser::ParserTokenType token;
@@ -484,7 +486,7 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 				state = 4;
 			}
 			else if (m_cheatFlags & c_pgllgrn) {
-				state = i * sizeof(ColorBrick);
+				state = PowerupAction::c_brickColorGreen;
 			}
 		}
 		else {
@@ -1054,11 +1056,9 @@ void RacePowerupManager::CreateBrickEvents()
 		m_brickEvents[i] = eventQueue->AllocateEvent(entry, &descriptor);
 	}
 
-	WhiteBrick* whiteBricks = m_whiteBricks;
 	for (i = 0; i < m_whiteBrickCount; i++) {
-		WhiteBrick* entry = &whiteBricks[i];
-		descriptor.m_data = entry->GetWorldEntity();
-		m_brickEvents[m_colorBrickCount + i] = eventQueue->AllocateEvent(entry, &descriptor);
+		descriptor.m_data = m_whiteBricks[i].GetWorldEntity();
+		m_brickEvents[m_colorBrickCount + i] = eventQueue->AllocateEvent(&m_whiteBricks[i], &descriptor);
 	}
 }
 
@@ -1789,7 +1789,7 @@ void RacePowerupManager::UseGreenPowerup(Racer* p_racer, LegoU32 p_level)
 }
 
 // FUNCTION: LEGORACERS 0x0045b260
-LegoU32 RacePowerupManager::ActivateWarp(Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::ActivateWarp(Racer* p_racer, LegoU32 p_level)
 {
 	WarpAction* action = static_cast<WarpAction*>(m_freeWarpActions);
 	if (!action) {
@@ -1810,9 +1810,8 @@ LegoU32 RacePowerupManager::ActivateWarp(Racer* p_racer, LegoU32 p_level)
 		model = m_worldDatabase->GetModelEntityByName("warpprt");
 	}
 
-	LegoU32 result = action->Activate(p_racer, model, m_aimTarget);
+	action->Activate(p_racer, model, m_aimTarget);
 	action->m_level = p_level;
-	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045b2e0
@@ -1837,8 +1836,8 @@ PowerupAction* RacePowerupManager::ReclaimAction(
 				subtype == static_cast<LegoU32>(p_level3) || subtype == static_cast<LegoU32>(p_level4)) {
 				LegoS32 score = action->GetState();
 				if (score > bestScore) {
-					bestPriority = action->GetStateTimerMs();
 					bestScore = action->GetState();
+					bestPriority = action->GetStateTimerMs();
 					best = action;
 					bestPrevious = previous;
 				}
@@ -2024,13 +2023,12 @@ void RacePowerupManager::CancelMagnetHold(Racer* p_racer)
 void RacePowerupManager::CancelWarp(Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[10]; i++) {
-		WarpAction* item = &m_warpActions[i];
-		if (item->m_racer == p_racer) {
-			if (item->m_state == WarpAction::c_stateStarting) {
-				item->m_state = WarpAction::c_stateDone;
+		if (m_warpActions[i].m_racer == p_racer) {
+			if (m_warpActions[i].m_state == WarpAction::c_stateStarting) {
+				m_warpActions[i].m_state = WarpAction::c_stateDone;
 			}
-			else if (item->m_state == WarpAction::c_stateActive) {
-				item->m_stateTimerMs = 0;
+			else if (m_warpActions[i].m_state == WarpAction::c_stateActive) {
+				m_warpActions[i].m_stateTimerMs = 0;
 			}
 		}
 	}
@@ -2124,17 +2122,13 @@ LegoBool32 RacePowerupManager::IsProjectileEntity(GolWorldEntity* p_entity)
 	while (node != NULL) {
 		if (node->GetBrickColor() == 1 &&
 			static_cast<WeaponActionBase*>(node)->GetProjectileWorldEntity() == p_entity) {
-			break;
+			return TRUE;
 		}
 
 		node = node->GetNext();
 	}
 
-	if (node == NULL) {
-		return FALSE;
-	}
-
-	return TRUE;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0045b9e0 FOLDED

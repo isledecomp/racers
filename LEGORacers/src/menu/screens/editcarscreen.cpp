@@ -513,8 +513,7 @@ void EditCarScreen::Navigate()
 		}
 		m_context->m_carBuildModel.Serialize(m_carBuildSaveBuffer);
 		m_activeRecord->SetCarData(m_carBuildSaveBuffer);
-		m_context->m_menuStack.Push(m_nextMenuId);
-		break;
+		// Fall through.
 	case c_menuCarBuild:
 		m_context->m_menuStack.Push(m_nextMenuId);
 		break;

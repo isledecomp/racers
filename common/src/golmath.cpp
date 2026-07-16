@@ -2,6 +2,12 @@
 
 #include <math.h>
 
+#ifdef BUILDING_GOL
+static const LegoFloat g_two = 2.0f;
+#else
+extern const LegoFloat g_two;
+#endif
+
 DECOMP_SIZE_ASSERT(GolVec2, 0x8)
 DECOMP_SIZE_ASSERT(GolVec3, 0xc)
 DECOMP_SIZE_ASSERT(GolMatrix4, 0x40)
@@ -162,19 +168,28 @@ void __fastcall GolMath::NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest)
 // FUNCTION: LEGORACERS 0x00449340
 void GolMath::QuatToMatrix3(const GolQuat* p_quat, LegoFloat* p_dest)
 {
-	LegoFloat scale = 2.0f / (p_quat->m_x * p_quat->m_x + p_quat->m_y * p_quat->m_y + p_quat->m_z * p_quat->m_z +
-							  p_quat->m_w * p_quat->m_w);
+	LegoFloat x = p_quat->m_x;
+	LegoFloat y = p_quat->m_y;
+	LegoFloat z = p_quat->m_z;
+	LegoFloat w = p_quat->m_w;
+	LegoFloat scale = g_two / (w * w + z * z + y * y + x * x);
 	LegoFloat sx = scale * p_quat->m_x;
-	LegoFloat sy = p_quat->m_y * scale;
+	LegoFloat sy = p_quat->m_y;
+	sy *= scale;
 	LegoFloat sz = scale * p_quat->m_z;
-	LegoFloat wx = p_quat->m_w * sx;
-	LegoFloat wy = p_quat->m_w * sy;
-	LegoFloat wz = p_quat->m_w * sz;
+	LegoFloat wx = p_quat->m_w;
+	wx *= sx;
+	LegoFloat wy = p_quat->m_w;
+	wy *= sy;
+	LegoFloat wz = p_quat->m_w;
+	wz *= sz;
 	LegoFloat xx = sx * p_quat->m_x;
 	LegoFloat xy = sy * p_quat->m_x;
 	LegoFloat xz = sz * p_quat->m_x;
-	LegoFloat yy = p_quat->m_y * sy;
-	LegoFloat yz = p_quat->m_y * sz;
+	LegoFloat yy = p_quat->m_y;
+	yy *= sy;
+	LegoFloat yz = p_quat->m_y;
+	yz *= sz;
 	LegoFloat zz = sz * p_quat->m_z;
 
 	p_dest[0] = 1.0f - (zz + yy);
@@ -498,21 +513,21 @@ LegoBool32 GolMath::MoveToward(
 }
 
 // FUNCTION: LEGORACERS 0x00449b90
-void GolMath::TransformVector(LegoFloat p_x, LegoFloat p_y, LegoFloat p_z, const LegoFloat* p_matrix, GolVec3* p_dest)
+void GolMath::TransformVector(GolVec3 p_src, const LegoFloat* p_matrix, GolVec3* p_dest)
 {
-	LegoFloat x = p_matrix[2] * p_z;
-	x += p_matrix[1] * p_y;
-	x += p_x * p_matrix[0];
+	LegoFloat x = p_matrix[2] * p_src.m_z;
+	x += p_matrix[1] * p_src.m_y;
+	x += p_src.m_x * p_matrix[0];
 	p_dest->m_x = x;
 
-	LegoFloat y = p_matrix[5] * p_z;
-	y += p_matrix[4] * p_y;
-	y += p_matrix[3] * p_x;
+	LegoFloat y = p_matrix[5] * p_src.m_z;
+	y += p_matrix[4] * p_src.m_y;
+	y += p_matrix[3] * p_src.m_x;
 	p_dest->m_y = y;
 
-	LegoFloat z = p_matrix[8] * p_z;
-	z += p_matrix[7] * p_y;
-	z += p_matrix[6] * p_x;
+	LegoFloat z = p_matrix[8] * p_src.m_z;
+	z += p_matrix[7] * p_src.m_y;
+	z += p_matrix[6] * p_src.m_x;
 	p_dest->m_z = z;
 }
 

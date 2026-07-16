@@ -95,7 +95,7 @@ public:
 	LegoFloat GetMinTurnRadius();
 	LegoBool32 CanPowerslide();
 	LegoBool32 CanSteer(LegoFloat p_turnRadius);
-	SpatialSoundInstance* PlaySurfaceSound(LegoS32 p_soundId);
+	void PlaySurfaceSound(LegoS32 p_soundId);
 	void StopSurfaceSound();
 	void ResetRouteMotion();
 	LegoFloat ComputeMinTurnRadius();

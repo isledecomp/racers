@@ -80,14 +80,12 @@ void ModelDistanceResource::Destroy()
 void ModelDistanceResource::OnStartAt(GolVec3*)
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_modelDistances); i++) {
-		LegoFloat modelDistance;
 		if (m_hideWhenActive) {
-			modelDistance = g_unk0x004b1c1c;
+			m_modelEntity->SetModelDistance(i, g_unk0x004b1c1c);
 		}
 		else {
-			modelDistance = m_modelDistances[i];
+			m_modelEntity->SetModelDistance(i, m_modelDistances[i]);
 		}
-		m_modelEntity->SetModelDistance(i, modelDistance);
 	}
 
 	m_state = c_stateActive;
@@ -97,14 +95,12 @@ void ModelDistanceResource::OnStartAt(GolVec3*)
 void ModelDistanceResource::OnEnd()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_modelDistances); i++) {
-		LegoFloat modelDistance;
 		if (m_hideWhenActive) {
-			modelDistance = m_modelDistances[i];
+			m_modelEntity->SetModelDistance(i, m_modelDistances[i]);
 		}
 		else {
-			modelDistance = g_unk0x004b1c1c;
+			m_modelEntity->SetModelDistance(i, g_unk0x004b1c1c);
 		}
-		m_modelEntity->SetModelDistance(i, modelDistance);
 	}
 
 	m_state = c_stateIdle;

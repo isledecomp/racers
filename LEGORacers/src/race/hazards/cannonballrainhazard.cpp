@@ -169,9 +169,7 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 		m_dropPosition.m_x = positionX;
 	}
 
-	LegoFloat positionZ = m_emitterPosition.m_z;
-	positionZ += 1.0f;
-	m_dropPosition.m_z = positionZ;
+	m_dropPosition.m_z = m_emitterPosition.m_z + 1.0f;
 
 	ActionTarget target;
 	target.m_materialName = m_materialName;

@@ -55,12 +55,12 @@ undefined4 CarShadowRenderState::ProcessVerticesPrelit(DrawCommand*)
 // FUNCTION: LEGORACERS 0x00409740
 CarShadowRenderState::CarShadowRenderState()
 {
-	m_scaleX = 1.0f;
-	m_scaleY = 1.0f;
 	m_renderer = NULL;
 	m_texture = NULL;
 	m_fillValue = 0;
 	m_silhouetteValue = 0;
+	m_scaleX = 1.0f;
+	m_scaleY = 1.0f;
 	m_drawFunction = &CarShadowRenderState::DrawTriangles8Bpp;
 	m_flags = 0;
 	m_offsetX = 0.0f;
@@ -149,8 +149,7 @@ void CarShadowRenderState::BeginCapture(
 	}
 
 	m_texture->LockPixels(&m_pixels, &m_pitch, GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite);
-	LegoFloat halfWidth = p_width;
-	halfWidth *= 0.5f;
+	LegoFloat halfWidth = p_width * 0.5f;
 	m_offsetX = halfWidth - p_origin[0];
 
 	LegoFloat halfHeight = p_height;
@@ -189,11 +188,9 @@ void CarShadowRenderState::EndCapture()
 void CarShadowRenderState::ProcessVertices(DrawCommand* p_command)
 {
 	LegoU32 outputFirst = p_command->m_outputFirst;
-	const CommandVertex* vertices = p_command->m_vertices;
-	LegoU32 vertexCount = p_command->m_vertexCount;
-	const CommandVertex* vertex = vertices + outputFirst;
-	const CommandVertex* end = vertex + vertexCount;
+	const CommandVertex* vertex = p_command->m_vertices + outputFirst;
 	TransformedVertex* transformed = &m_transformed[outputFirst];
+	const CommandVertex* end = vertex + p_command->m_vertexCount;
 
 	if (vertex < end) {
 		do {

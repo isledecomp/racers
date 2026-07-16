@@ -248,10 +248,12 @@ void CarPartSet::Load(
 	}
 
 	LegoChar* entryFiles = new LegoChar[m_entryCount * 16];
+	LegoChar* entryFile = entryFiles;
 	LegoS32 i;
 	for (i = 0; i < m_entryCount; i++) {
-		::strncpy(&entryFiles[i * 16], parser->ReadString(), 16);
-		entryFiles[i * 16 + 15] = '\0';
+		::strncpy(entryFile, parser->ReadString(), 16);
+		entryFile[15] = '\0';
+		entryFile += 16;
 	}
 
 	if (parser->GetNextToken() != GolFileParser::e_rightCurly) {
@@ -259,9 +261,11 @@ void CarPartSet::Load(
 	}
 	delete parser;
 
+	entryFile = entryFiles;
 	for (i = 0; i < m_entryCount; i++) {
 		m_entries[i].SetIndex(i);
-		m_entries[i].Load(&entryFiles[i * 16], m_pieceLibrary, m_colorTable, p_binary);
+		m_entries[i].Load(entryFile, m_pieceLibrary, m_colorTable, p_binary);
+		entryFile += 16;
 	}
 
 	delete[] entryFiles;

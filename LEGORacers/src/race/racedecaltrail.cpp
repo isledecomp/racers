@@ -370,8 +370,8 @@ void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_model)
 	model = m_model;
 	m_indexBytes = destIndexBytes;
 	LegoU32 one = 1;
-	model->GetMutableGroups()[0] = c_commandModelFlags;
 	model->SetDirty(one);
+	model->GetMutableGroups()[0] = c_commandModelFlags;
 	m_groupIndex = one;
 }
 
@@ -453,23 +453,42 @@ void RaceDecalManager::Trail::Decal::SetOrientation(GolVec3* p_normal, GolVec3* 
 	GolVec3* normalized = &m_normal;
 	GolMath::NormalizeVector3(*p_normal, normalized);
 
+	LegoFloat dot = normalized->m_z;
 	GolVec3* perpendicular = &m_lengthAxis;
-	LegoFloat dot = normalized->m_z * p_lengthAxis->m_z;
+	dot *= p_lengthAxis->m_z;
 	dot += normalized->m_y * p_lengthAxis->m_y;
 	dot += normalized->m_x * p_lengthAxis->m_x;
 
 	GolVec3 scaled;
 	scaled.m_x = dot * normalized->m_x;
-	scaled.m_y = normalized->m_y * dot;
+	scaled.m_y = normalized->m_y;
+	scaled.m_y *= dot;
 	scaled.m_z = dot * normalized->m_z;
 	perpendicular->m_x = p_lengthAxis->m_x - scaled.m_x;
 	perpendicular->m_y = p_lengthAxis->m_y - scaled.m_y;
 	perpendicular->m_z = p_lengthAxis->m_z - scaled.m_z;
 	GolMath::NormalizeVector3(*perpendicular, perpendicular);
 
-	m_widthAxis.m_x = perpendicular->m_y * normalized->m_z - perpendicular->m_z * normalized->m_y;
-	m_widthAxis.m_y = perpendicular->m_z * normalized->m_x - normalized->m_z * perpendicular->m_x;
-	m_widthAxis.m_z = normalized->m_y * perpendicular->m_x - perpendicular->m_y * normalized->m_x;
+	LegoFloat width = perpendicular->m_y;
+	width *= normalized->m_z;
+	LegoFloat term = perpendicular->m_z;
+	term *= normalized->m_y;
+	width -= term;
+	m_widthAxis.m_x = width;
+
+	width = perpendicular->m_z;
+	width *= normalized->m_x;
+	term = normalized->m_z;
+	term *= perpendicular->m_x;
+	width -= term;
+	m_widthAxis.m_y = width;
+
+	width = normalized->m_y;
+	width *= perpendicular->m_x;
+	term = perpendicular->m_y;
+	term *= normalized->m_x;
+	width -= term;
+	m_widthAxis.m_z = width;
 }
 
 // FUNCTION: LEGORACERS 0x00414d50
@@ -543,16 +562,22 @@ LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(
 	while (vertexIndex < end) {
 		m_sourceVertices->GetPosition(vertexIndex, &projected->m_position);
 
-		projected->m_projected.m_x.m_float = g_decalUAxisX * projected->m_position.m_x;
+		LegoFloat value = g_decalUAxisX;
+		value *= projected->m_position.m_x;
+		projected->m_projected.m_x.m_float = value;
 		projected->m_projected.m_y.m_float = g_decalVAxisX * projected->m_position.m_x;
-		projected->m_projected.m_x.m_float =
-			projected->m_position.m_y * g_decalUAxisY + projected->m_projected.m_x.m_float;
-		projected->m_projected.m_y.m_float =
-			projected->m_position.m_y * g_decalVAxisY + projected->m_projected.m_y.m_float;
-		projected->m_projected.m_x.m_float =
-			projected->m_position.m_z * g_decalUAxisZ + projected->m_projected.m_x.m_float;
-		projected->m_projected.m_y.m_float =
-			projected->m_position.m_z * g_decalVAxisZ + projected->m_projected.m_y.m_float;
+		value = projected->m_position.m_y;
+		value *= g_decalUAxisY;
+		projected->m_projected.m_x.m_float += value;
+		value = projected->m_position.m_y;
+		value *= g_decalVAxisY;
+		projected->m_projected.m_y.m_float += value;
+		value = projected->m_position.m_z;
+		value *= g_decalUAxisZ;
+		projected->m_projected.m_x.m_float += value;
+		value = projected->m_position.m_z;
+		value *= g_decalVAxisZ;
+		projected->m_projected.m_y.m_float += value;
 		projected->m_projected.m_x.m_float = g_decalUOffset + projected->m_projected.m_x.m_float;
 
 		LegoU32 projectedXBits = projected->m_projected.m_x.m_bits;
@@ -885,23 +910,11 @@ void RaceDecalManager::Trail::Decal::EmitTriangle(
 		m_vertexCount = vertexIndex + 1;
 		m_vertices->SetTextureCoordinate(vertexIndex, p_vertex2->m_projected.m_vec);
 
-		LegoU32 polygonIndex = m_triangleCount;
-		LegoU32 polygonCount = m_batchTriangleCount;
-		LegoU8* indices = m_indexBytes + 4 * polygonIndex;
-		polygonIndex++;
-		m_triangleCount = polygonIndex;
-		polygonIndex = m_batchVertexCount;
-		m_batchTriangleCount = polygonCount + 1;
-		indices[0] = static_cast<LegoU8>(polygonIndex);
-
-		LegoU32 batchVertexIndex = m_batchVertexCount + 1;
-		m_batchVertexCount = batchVertexIndex;
-		indices[1] = static_cast<LegoU8>(batchVertexIndex);
-		polygonIndex = m_batchVertexCount;
-		polygonIndex++;
-		m_batchVertexCount = polygonIndex;
-		indices[2] = static_cast<LegoU8>(polygonIndex);
-		m_batchVertexCount++;
+		LegoU8* indices = m_indexBytes + 4 * m_triangleCount++;
+		m_batchTriangleCount++;
+		indices[0] = static_cast<LegoU8>(m_batchVertexCount++);
+		indices[1] = static_cast<LegoU8>(m_batchVertexCount++);
+		indices[2] = static_cast<LegoU8>(m_batchVertexCount++);
 	}
 }
 

@@ -89,9 +89,6 @@ void GolTextureList::Load(GolD3DRenderDevice* p_renderer, const LegoChar* p_file
 
 	for (LegoU32 i = 0; i < m_itemCount; i++) {
 		GolName textureName;
-		ColorRGBA colorKey;
-		LegoU16 mipmapCount;
-		LegoU16 flags;
 
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TdbTxtParser::e_texture));
 		GolD3DTexture* texture = GetItem(i);
@@ -105,8 +102,9 @@ void GolTextureList::Load(GolD3DRenderDevice* p_renderer, const LegoChar* p_file
 		}
 
 		parser->ReadLeftCurly();
-		mipmapCount = 0;
-		flags = 0;
+		ColorRGBA colorKey;
+		LegoU16 flags = 0;
+		LegoU16 mipmapCount = 0;
 		colorKey.m_red = 0;
 		colorKey.m_grn = 0;
 		colorKey.m_blu = 0;
@@ -187,12 +185,12 @@ void GolTextureList::LoadTextures()
 			}
 
 			texture->SetTextureFlags(flags);
-			texture->SetSourceTextureDefinition(sourceItem.m_mipmapCount, flags, sourceItem.m_colorKey);
+			texture->SetTextureDefinition(sourceItem.m_mipmapCount, flags, sourceItem.m_colorKey);
 
 			m_renderer->SelectTextureFormat(
 				sourceItem.m_textureFormat,
 				&textureFormat,
-				flags & GolTexture::c_textureFlagColorKeyed
+				texture->GetTextureFlags() & GolTexture::c_textureFlagColorKeyed
 			);
 			AllocateTexture(i, textureFormat, sourceItem.m_width, sourceItem.m_height);
 			m_textureSource->OnTextureLoaded(i, 0, texture);
@@ -210,15 +208,15 @@ void GolTextureList::LoadTextures()
 			continue;
 		}
 
-		const GolName& sourceName = texture->GetName();
+		GolName sourceName;
+		::memcpy(sourceName, texture->GetName(), sizeof(GolName));
 		if (sourceName[0] == '\0') {
 			continue;
 		}
-
 		::memcpy(textureName, sourceName, sizeof(GolName));
 		textureName[sizeof(GolName)] = '\0';
 
-		LegoU8 textureFlags = static_cast<LegoU8>(texture->GetTextureFlags());
+		LegoU8 textureFlags = static_cast<LegoU8>(texture->m_textureFlags);
 		GolImgFile* imageFile = &g_textureBmpFile;
 		if (!(textureFlags & GolTexture::c_textureFlagBmpSource)) {
 			imageFile = &g_textureTgaFile;

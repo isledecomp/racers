@@ -48,13 +48,11 @@ void ParticleResource::ClearFields()
 	m_position.m_x = 0.0f;
 	m_position.m_y = 0.0f;
 	m_position.m_z = 0.0f;
-	m_direction.m_x = 0.0f;
+	m_direction.m_x = 1.0f;
 	m_direction.m_y = 0.0f;
 	m_direction.m_z = 0.0f;
-	m_direction.m_x = 1.0f;
 	m_up.m_x = 0.0f;
 	m_up.m_y = 0.0f;
-	m_up.m_z = 0.0f;
 	m_up.m_z = 1.0f;
 	m_partAnimations = 0;
 	m_nodeIndex = 0;
@@ -117,7 +115,9 @@ void ParticleResource::Destroy()
 void ParticleResource::OnStartAt(GolVec3* p_position)
 {
 	if (p_position && (m_flags & c_flagAtEventPosition)) {
-		m_position = *p_position;
+		m_position.m_x = p_position->m_x;
+		m_position.m_y = p_position->m_y;
+		m_position.m_z = p_position->m_z;
 	}
 
 	if (m_particleAnimation->HasEmitter(m_particleName)) {
@@ -196,13 +196,19 @@ void ParticleResource::Update(LegoU32 p_elapsedMs)
 		} while (transform);
 
 		LegoFloat scale = m_trackedEntity->GetModel(0)->GetScale() * m_trackedEntity->GetScale();
-		position.m_x *= scale;
-		position.m_y *= scale;
-		position.m_z *= scale;
+		position.m_x = scale * position.m_x;
+		LegoFloat y = position.m_y;
+		y *= scale;
+		position.m_y = y;
+		LegoFloat z = position.m_z;
+		z *= scale;
+		position.m_z = z;
 
 		m_trackedEntity->LocalToWorld(position, &transformedPosition);
-		if (m_particle->m_particle) {
-			m_particle->m_particle->SetPosition(&transformedPosition);
+
+		CutsceneParticleRef* particleRef = m_particle;
+		if (particleRef->m_particle) {
+			particleRef->m_particle->SetPosition(&transformedPosition);
 		}
 	}
 }

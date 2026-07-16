@@ -31,6 +31,10 @@ public:
 	// a raised underside (arches).
 	// SIZE 0x02
 	struct ShapeCell {
+		enum {
+			c_flagOccupied = 0x80,
+		};
+
 		LegoS32 GetRaisedBottomHeight();
 		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation);
 		LegoS32 GetPartType();

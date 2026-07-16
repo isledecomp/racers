@@ -62,12 +62,7 @@ void GolImgFile::Open(const LegoChar* p_fileName)
 		GOL_FATALERROR_MESSAGE(buffer);
 	}
 
-	m_format.m_redBitMask = 0;
-	m_format.m_grnBitMask = 0;
-	m_format.m_bluBitMask = 0;
-	m_format.m_alpBitMask = 0;
-	m_format.m_intensityMask = 0;
-	m_format.m_paletteMask = 0;
+	m_format.ClearMasks();
 	m_keepNibbleOrder = 0;
 	m_remapPureBlack = 0;
 
@@ -430,9 +425,10 @@ void GolImgFile::ConvertRow(const void* p_src, void* p_dst, const GolSurfaceForm
 void GolImgFile::ConvertRowRgbTo8(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* endDst = p_dst + m_width;
+	LegoU32 u32;
 	if (m_hasColorKey) {
-		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src;
+		for (; p_dst < endDst;) {
+			u32 = *p_src;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;
@@ -443,22 +439,21 @@ void GolImgFile::ConvertRowRgbTo8(const LegoU8* p_src, LegoU8* p_dst)
 			LegoU32 r = (m_format.m_redBitMask & u32) >> m_redSrcShift;
 			LegoU32 g = (m_format.m_grnBitMask & u32) >> m_grnSrcShift;
 			LegoU32 b = (m_format.m_bluBitMask & u32) >> m_bluSrcShift;
-			LegoU8 pixel;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
-				pixel = static_cast<LegoU8>(m_colorKeyPixel);
+				*p_dst++ = m_colorKeyPixel;
 			}
 			else {
-				pixel = r << m_redDstShift;
+				LegoU32 pixel = r << m_redDstShift;
 				pixel |= g << m_grnDstShift;
 				pixel |= b << m_bluDstShift;
 				pixel |= m_constPixelBits;
+				*p_dst++ = pixel;
 			}
-			*p_dst = pixel;
 		}
 	}
 	else {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src;
+			u32 = *p_src;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;
@@ -466,11 +461,11 @@ void GolImgFile::ConvertRowRgbTo8(const LegoU8* p_src, LegoU8* p_dst)
 			p_src += (m_srcStrideMask >> 2) & 0x1;
 			u32 |= *p_src << 24;
 			p_src += (m_srcStrideMask >> 3) & 0x1;
-			LegoU32 alp = ((m_format.m_alpBitMask & u32) >> m_alpSrcShift) << m_alpDstShift;
-			LegoU32 blu = ((m_format.m_bluBitMask & u32) >> m_bluSrcShift) << m_bluDstShift;
-			LegoU32 grn = ((m_format.m_grnBitMask & u32) >> m_grnSrcShift) << m_grnDstShift;
-			LegoU32 red = ((m_format.m_redBitMask & u32) >> m_redSrcShift) << m_redDstShift;
-			*p_dst = alp | blu | grn | red;
+			LegoU8 pixel = ((m_format.m_alpBitMask & u32) >> m_alpSrcShift) << m_alpDstShift;
+			pixel |= ((m_format.m_bluBitMask & u32) >> m_bluSrcShift) << m_bluDstShift;
+			pixel |= ((m_format.m_grnBitMask & u32) >> m_grnSrcShift) << m_grnDstShift;
+			pixel |= ((m_format.m_redBitMask & u32) >> m_redSrcShift) << m_redDstShift;
+			*p_dst = pixel;
 		}
 	}
 }
@@ -482,7 +477,7 @@ void GolImgFile::ConvertRowRgbTo16(const LegoU8* p_src, LegoU16* p_dst)
 	LegoU16* endDst = p_dst + m_width;
 	LegoU32 u32;
 	if (m_hasColorKey) {
-		for (; p_dst < endDst; p_dst++) {
+		for (; p_dst < endDst;) {
 			u32 = *p_src;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
@@ -495,14 +490,14 @@ void GolImgFile::ConvertRowRgbTo16(const LegoU8* p_src, LegoU16* p_dst)
 			LegoU32 g = (m_format.m_grnBitMask & u32) >> m_grnSrcShift;
 			LegoU32 b = (m_format.m_bluBitMask & u32) >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
-				*p_dst = m_colorKeyPixel;
+				*p_dst++ = m_colorKeyPixel;
 			}
 			else {
 				LegoU32 pixel = r << m_redDstShift;
 				pixel |= g << m_grnDstShift;
 				pixel |= b << m_bluDstShift;
 				pixel |= m_constPixelBits;
-				*p_dst = pixel;
+				*p_dst++ = pixel;
 			}
 		}
 	}
@@ -516,11 +511,11 @@ void GolImgFile::ConvertRowRgbTo16(const LegoU8* p_src, LegoU16* p_dst)
 			p_src += (m_srcStrideMask >> 2) & 0x1;
 			u32 |= *p_src << 24;
 			p_src += (m_srcStrideMask >> 3) & 0x1;
-			LegoU32 blu = ((m_format.m_bluBitMask & u32) >> m_bluSrcShift) << m_bluDstShift;
-			LegoU32 grn = ((m_format.m_grnBitMask & u32) >> m_grnSrcShift) << m_grnDstShift;
-			LegoU32 red = ((m_format.m_redBitMask & u32) >> m_redSrcShift) << m_redDstShift;
-			LegoU32 alp = ((m_format.m_alpBitMask & u32) >> m_alpSrcShift) << m_alpDstShift;
-			*p_dst = blu | grn | red | alp;
+			LegoU32 pixel = ((m_format.m_bluBitMask & u32) >> m_bluSrcShift) << m_bluDstShift;
+			pixel |= ((m_format.m_grnBitMask & u32) >> m_grnSrcShift) << m_grnDstShift;
+			pixel |= ((m_format.m_redBitMask & u32) >> m_redSrcShift) << m_redDstShift;
+			pixel |= ((m_format.m_alpBitMask & u32) >> m_alpSrcShift) << m_alpDstShift;
+			*p_dst = pixel;
 		}
 	}
 }
@@ -586,7 +581,7 @@ void GolImgFile::ConvertRowRgbTo32(const LegoU8* p_src, LegoU32* p_dst)
 	LegoU32* endDst = p_dst + m_width;
 	LegoU32 u32;
 	if (m_hasColorKey) {
-		for (; p_dst < endDst; p_dst++) {
+		for (; p_dst < endDst;) {
 			u32 = *p_src << 0;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
@@ -599,10 +594,14 @@ void GolImgFile::ConvertRowRgbTo32(const LegoU8* p_src, LegoU32* p_dst)
 			LegoU32 g = (m_format.m_grnBitMask & u32) >> m_grnSrcShift;
 			LegoU32 b = (m_format.m_bluBitMask & u32) >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
-				*p_dst = m_colorKeyPixel;
+				*p_dst++ = m_colorKeyPixel;
 			}
 			else {
-				*p_dst = (r << m_redDstShift) | (g << m_grnDstShift) | (b << m_bluDstShift) | m_constPixelBits;
+				LegoU32 pixel = r << m_redDstShift;
+				pixel |= g << m_grnDstShift;
+				pixel |= b << m_bluDstShift;
+				pixel |= m_constPixelBits;
+				*p_dst++ = pixel;
 			}
 		}
 	}
@@ -616,10 +615,11 @@ void GolImgFile::ConvertRowRgbTo32(const LegoU8* p_src, LegoU32* p_dst)
 			p_src += (m_srcStrideMask >> 2) & 0x1;
 			u32 |= *p_src << 24;
 			p_src += (m_srcStrideMask >> 3) & 0x1;
-			*p_dst = (((m_format.m_redBitMask & u32) >> m_redSrcShift) << m_redDstShift) |
-					 (((m_format.m_grnBitMask & u32) >> m_grnSrcShift) << m_grnDstShift) |
-					 (((m_format.m_bluBitMask & u32) >> m_bluSrcShift) << m_bluDstShift) |
-					 (((m_format.m_alpBitMask & u32) >> m_alpSrcShift) << m_alpDstShift);
+			LegoU32 pixel = ((m_format.m_redBitMask & u32) >> m_redSrcShift) << m_redDstShift;
+			pixel |= ((m_format.m_bluBitMask & u32) >> m_bluSrcShift) << m_bluDstShift;
+			pixel |= ((m_format.m_grnBitMask & u32) >> m_grnSrcShift) << m_grnDstShift;
+			pixel |= ((m_format.m_alpBitMask & u32) >> m_alpSrcShift) << m_alpDstShift;
+			*p_dst = pixel;
 		}
 	}
 }
@@ -650,10 +650,9 @@ void GolImgFile::RemapRow4To4Swapped(const LegoU8* p_src, LegoU8* p_dst)
 void GolImgFile::RemapRow4To8(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* end = p_dst + m_width;
-	for (; p_dst + 1 < end; p_dst += 2) {
+	for (; p_dst + 1 < end; p_dst += 2, p_src++) {
 		*p_dst = m_paletteRemap[*p_src >> 4];
 		p_dst[1] = m_paletteRemap[*p_src & 0x0f];
-		p_src++;
 	}
 	if (p_dst < end) {
 		*p_dst = m_paletteRemap[*p_src & 0x0f];
@@ -677,11 +676,15 @@ void GolImgFile::ConvertRowIndexed4To8(const LegoU8* p_src, LegoU8* p_dst)
 	LegoU8 index;
 
 	if (m_hasColorKey) {
+		LegoU32 r;
+		LegoU32 g;
+		LegoU32 b;
+
 		while (p_dst + 1 < endDst) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
-			LegoU32 b = c->m_blu >> m_bluSrcShift;
-			LegoU32 g = c->m_grn >> m_grnSrcShift;
-			LegoU32 r = c->m_red >> m_redSrcShift;
+			r = c->m_red >> m_redSrcShift;
+			g = c->m_grn >> m_grnSrcShift;
+			b = c->m_blu >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
 				*p_dst++ = m_colorKeyPixel;
 			}
@@ -698,9 +701,9 @@ void GolImgFile::ConvertRowIndexed4To8(const LegoU8* p_src, LegoU8* p_dst)
 			index = *p_src & 0x0f;
 			p_src++;
 			c = &m_palette[index];
-			b = c->m_blu >> m_bluSrcShift;
-			g = c->m_grn >> m_grnSrcShift;
 			r = c->m_red >> m_redSrcShift;
+			g = c->m_grn >> m_grnSrcShift;
+			b = c->m_blu >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
 				*p_dst++ = m_colorKeyPixel;
 			}
@@ -716,9 +719,9 @@ void GolImgFile::ConvertRowIndexed4To8(const LegoU8* p_src, LegoU8* p_dst)
 		}
 		if (p_dst < endDst) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
-			LegoU32 b = c->m_blu >> m_bluSrcShift;
-			LegoU32 g = c->m_grn >> m_grnSrcShift;
-			LegoU32 r = c->m_red >> m_redSrcShift;
+			r = c->m_red >> m_redSrcShift;
+			g = c->m_grn >> m_grnSrcShift;
+			b = c->m_blu >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
 				p_dst[0] = m_colorKeyPixel;
 			}
@@ -782,11 +785,15 @@ void GolImgFile::ConvertRowIndexed4To16(const LegoU8* p_src, LegoU16* p_dst)
 	LegoU8 index;
 
 	if (m_hasColorKey) {
+		LegoU32 r;
+		LegoU32 g;
+		LegoU32 b;
+
 		while (p_dst + 1 < endDst) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
-			LegoU32 b = c->m_blu >> m_bluSrcShift;
-			LegoU32 g = c->m_grn >> m_grnSrcShift;
-			LegoU32 r = c->m_red >> m_redSrcShift;
+			r = c->m_red >> m_redSrcShift;
+			g = c->m_grn >> m_grnSrcShift;
+			b = c->m_blu >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
 				*p_dst++ = m_colorKeyPixel;
 			}
@@ -803,9 +810,9 @@ void GolImgFile::ConvertRowIndexed4To16(const LegoU8* p_src, LegoU16* p_dst)
 			index = *p_src & 0x0f;
 			p_src++;
 			c = &m_palette[index];
-			b = c->m_blu >> m_bluSrcShift;
-			g = c->m_grn >> m_grnSrcShift;
 			r = c->m_red >> m_redSrcShift;
+			g = c->m_grn >> m_grnSrcShift;
+			b = c->m_blu >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
 				*p_dst++ = m_colorKeyPixel;
 			}
@@ -821,9 +828,9 @@ void GolImgFile::ConvertRowIndexed4To16(const LegoU8* p_src, LegoU16* p_dst)
 		}
 		if (p_dst < endDst) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
-			LegoU32 b = c->m_blu >> m_bluSrcShift;
-			LegoU32 g = c->m_grn >> m_grnSrcShift;
-			LegoU32 r = c->m_red >> m_redSrcShift;
+			r = c->m_red >> m_redSrcShift;
+			g = c->m_grn >> m_grnSrcShift;
+			b = c->m_blu >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
 				p_dst[0] = m_colorKeyPixel;
 			}

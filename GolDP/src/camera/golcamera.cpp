@@ -109,10 +109,15 @@ void GolCamera::UpdateViewMatrix()
 	viewMatrix.m_m[2][1] = up.m_z;
 	viewMatrix.m_m[2][2] = direction.m_z;
 	viewMatrix.m_m[2][3] = 0.0f;
-	viewMatrix.m_m[3][0] = -(position.m_x * right.m_x + position.m_y * right.m_y + position.m_z * right.m_z);
-	viewMatrix.m_m[3][1] = -(position.m_x * up.m_x + position.m_y * up.m_y + position.m_z * up.m_z);
-	viewMatrix.m_m[3][3] = 1.0f;
+	LegoFloat rightDot = position.m_z * right.m_z + position.m_y * right.m_y;
+	rightDot += position.m_x * right.m_x;
+	viewMatrix.m_m[3][0] = -rightDot;
 
+	LegoFloat upDot = position.m_z * up.m_z + position.m_y * up.m_y;
+	upDot += position.m_x * up.m_x;
+	viewMatrix.m_m[3][1] = -upDot;
+
+	viewMatrix.m_m[3][3] = 1.0f;
 	m_flags &= ~c_flagViewDirty;
 	viewMatrix.m_m[3][2] =
 		-(position.m_x * direction.m_x + position.m_y * direction.m_y + position.m_z * direction.m_z);
@@ -151,12 +156,16 @@ void GolCamera::BuildProjection(
 	p_matrix->m_m[1][2] = 0.0f;
 	p_matrix->m_m[1][3] = 0.0f;
 	p_matrix->m_m[2][0] = p_offsetX - ((m_viewBounds.m_x + m_viewBounds.m_z) * xScale);
-	p_matrix->m_m[2][1] = p_offsetY - ((m_viewBounds.m_y + m_viewBounds.m_u) * yScale);
+	LegoFloat yBounds = m_viewBounds.m_y;
+	yBounds += m_viewBounds.m_u;
+	p_matrix->m_m[2][1] = p_offsetY - (yBounds * yScale);
 	p_matrix->m_m[2][2] = zScale;
 	p_matrix->m_m[2][3] = 1.0f;
 	p_matrix->m_m[3][0] = 0.0f;
 	p_matrix->m_m[3][1] = 0.0f;
-	p_matrix->m_m[3][2] = -(m_nearClip * zScale);
+	LegoFloat nearProduct = m_nearClip;
+	nearProduct *= zScale;
+	p_matrix->m_m[3][2] = -nearProduct;
 	p_matrix->m_m[3][3] = 0.0f;
 }
 

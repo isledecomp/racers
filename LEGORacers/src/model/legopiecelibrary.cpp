@@ -386,8 +386,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 			if (m_textureCoordinates == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
-			LegoS32 i;
-			for (i = 0; i < m_textureCoordinateCount; i++) {
+			for (LegoS32 i = 0; i < m_textureCoordinateCount; i++) {
 				LegoS32 u = parser->ReadInteger();
 				LegoS32 v = parser->ReadInteger();
 				TextureCoordinate* textureCoordinate = &m_textureCoordinates[i];
@@ -422,28 +421,26 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 	parser->Dispose();
 	delete parser;
 
+	LegoS32 i;
 	if (m_pieces != NULL && m_pieceCount != 0) {
 		::qsort(m_pieces, m_pieceCount, sizeof(PieceRecord), ComparePieceRecords);
 
-		LegoS32 i;
-		LegoS32 j;
 		LegoS32 previousPieceType = -1;
 		LegoS32 variantCount = 0;
 		for (i = 0; i < m_pieceCount; i++) {
 			PieceRecord* piece = &m_pieces[i];
-			if (piece->m_pieceType == previousPieceType) {
+			LegoS32 pieceType = piece->m_pieceType;
+			if (previousPieceType == pieceType) {
 				piece->m_variantIndex = static_cast<LegoU8>(variantCount);
 				variantCount++;
 			}
 			else {
 				piece->m_variantIndex = 0;
-				previousPieceType = piece->m_pieceType;
+				previousPieceType = pieceType;
 
 				if (variantCount > 0) {
-					PieceRecord* previousPiece = piece;
-					for (j = variantCount; j > 0; j--) {
-						previousPiece--;
-						previousPiece->m_variantCount = static_cast<LegoU8>(variantCount);
+					for (LegoS32 j = 0; j < variantCount; j++) {
+						m_pieces[i - j - 1].m_variantCount = static_cast<LegoU8>(variantCount);
 					}
 				}
 
@@ -452,16 +449,14 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 		}
 
 		if (variantCount > 0) {
-			PieceRecord* previousPiece = &m_pieces[m_pieceCount];
-			for (j = variantCount; j > 0; j--) {
-				previousPiece--;
-				previousPiece->m_variantCount = static_cast<LegoU8>(variantCount);
+			for (LegoS32 j = 0; j < variantCount; j++) {
+				m_pieces[i - j - 1].m_variantCount = static_cast<LegoU8>(variantCount);
 			}
 		}
 	}
 
-	LegoS32 lowPieceOffset = 0;
 	LegoS32 highPieceOffset = 0;
+	LegoS32 lowPieceOffset = 0;
 	LegoS32 highPieceBaseOffset = 0;
 
 	PieceRecord* highBasePiece = FindPieceRecord(g_highPieceTypeBase, 1);
@@ -469,7 +464,6 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 		highPieceBaseOffset = highBasePiece->m_indexCommandCount;
 	}
 
-	LegoS32 i;
 	LegoS32 x;
 	LegoS32 y;
 	for (i = 0; i < m_pieceCount; i++) {
@@ -479,7 +473,7 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 		LegoS32 height = piece.GetHeight();
 		for (y = 0; y < height; y++) {
 			for (x = 0; x < width; x++) {
-				if (static_cast<LegoS8>(piece.GetCell(x, y, 0)->m_first) < 0) {
+				if (piece.GetCell(x, y, 0)->m_first & ShapeCell::c_flagOccupied) {
 					offset += highPieceBaseOffset;
 				}
 			}
@@ -536,8 +530,8 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_piece
 	if (pieces != NULL) {
 		LegoS32 count = m_pieceCount;
 		if (count != 0) {
-			LegoS32 right = count;
 			LegoS32 left = 0;
+			LegoS32 right = count;
 			for (;;) {
 				LegoS32 middle = (right + left) >> 1;
 				LegoS32 currentType = pieces[middle].m_pieceType;
@@ -624,19 +618,15 @@ LegoS32 LegoPieceLibrary::PieceRecord::ComputeVolumeMoments(
 		do {
 			LegoS32 x = 0;
 			if (width > 0) {
-				LegoS32 yOffset = y + p_y;
 				do {
 					ShapeCell* cell = pieceRecord->GetCell(x, y, static_cast<LegoU8>(p_rotation));
-					LegoS32 lower = cell->m_second & g_shapeCellValueMask;
 					LegoS32 upper = cell->m_first & g_shapeCellValueMask;
-					if (lower > upper) {
-						lower = 0;
-					}
+					LegoS32 lower = cell->GetClampedLower();
 
 					LegoS32 delta = upper - lower;
 					result += delta;
 					*p_momentX += delta * (x + p_x);
-					*p_momentY += delta * yOffset;
+					*p_momentY += (y + p_y) * delta;
 					for (LegoS32 z = lower; z < upper; z++) {
 						*p_momentZ += z + p_height;
 					}

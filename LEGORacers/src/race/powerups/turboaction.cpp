@@ -125,37 +125,19 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 	m_level = p_level;
 	switch (p_level) {
 	case 2:
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			model = m_manager->m_worldDatabase->GetAnimatedEntityByName("TurboL2");
-		}
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			effect0 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb2f1");
-		}
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			effect1 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb2f2");
-		}
+		model = m_manager->m_worldDatabase->FindAnimatedEntity("TurboL2");
+		effect0 = m_manager->m_worldDatabase->FindAnimatedEntity("turb2f1");
+		effect1 = m_manager->m_worldDatabase->FindAnimatedEntity("turb2f2");
 		break;
 	case 1:
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			model = m_manager->m_worldDatabase->GetAnimatedEntityByName("TurboL1");
-		}
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			effect0 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb1f1");
-		}
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			effect1 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb1f2");
-		}
+		model = m_manager->m_worldDatabase->FindAnimatedEntity("TurboL1");
+		effect0 = m_manager->m_worldDatabase->FindAnimatedEntity("turb1f1");
+		effect1 = m_manager->m_worldDatabase->FindAnimatedEntity("turb1f2");
 		break;
 	case 0:
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			model = m_manager->m_worldDatabase->GetAnimatedEntityByName("TurboL0");
-		}
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			effect0 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb0f1");
-		}
-		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
-			effect1 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb0f2");
-		}
+		model = m_manager->m_worldDatabase->FindAnimatedEntity("TurboL0");
+		effect0 = m_manager->m_worldDatabase->FindAnimatedEntity("turb0f1");
+		effect1 = m_manager->m_worldDatabase->FindAnimatedEntity("turb0f2");
 		break;
 	}
 
@@ -163,10 +145,13 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 		->SetModel(model->GetModel(0), model->GetSceneNode(0), model->GetModelPart(0), model->GetModelDistance(0));
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
-		GolModelBase* lodModel = model->GetModel(i);
-		if (lodModel != NULL) {
-			m_turboEntity
-				->AddModel(lodModel, model->GetSceneNode(i), model->GetModelPart(i), model->GetModelDistance(i));
+		if (model->GetModel(i) != NULL) {
+			m_turboEntity->AddModel(
+				model->GetModel(i),
+				model->GetSceneNode(i),
+				model->GetModelPart(i),
+				model->GetModelDistance(i)
+			);
 		}
 	}
 
@@ -177,10 +162,13 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 		effect0->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* lodModel = effect0->GetModel(i);
-		if (lodModel != NULL) {
-			m_flameEntity
-				->AddModel(lodModel, effect0->GetSceneNode(i), effect0->GetModelPart(i), effect0->GetModelDistance(i));
+		if (effect0->GetModel(i) != NULL) {
+			m_flameEntity->AddModel(
+				effect0->GetModel(i),
+				effect0->GetSceneNode(i),
+				effect0->GetModelPart(i),
+				effect0->GetModelDistance(i)
+			);
 		}
 	}
 	m_flameEntity->SetTextureScrollU(effect0->GetTextureScrollU());
@@ -195,10 +183,13 @@ void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 		effect1->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* lodModel = effect1->GetModel(i);
-		if (lodModel != NULL) {
-			m_flame2Entity
-				->AddModel(lodModel, effect1->GetSceneNode(i), effect1->GetModelPart(i), effect1->GetModelDistance(i));
+		if (effect1->GetModel(i) != NULL) {
+			m_flame2Entity->AddModel(
+				effect1->GetModel(i),
+				effect1->GetSceneNode(i),
+				effect1->GetModelPart(i),
+				effect1->GetModelDistance(i)
+			);
 		}
 	}
 	m_flame2Entity->SetTextureScrollU(effect1->GetTextureScrollU());
@@ -268,7 +259,6 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_smokeParticle != NULL) {
 		GolAnimatedEntity* racerEntity = m_racer->m_visuals.m_carEntity;
-		GolVec3 velocity;
 		GolVec3 offset;
 		GolVec3 position;
 
@@ -285,9 +275,8 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 			m_smokeParticle->m_particle->SetPosition(&position);
 		}
 
-		RacerPhysics* racerPhysics = &m_racer->m_physics;
-		velocity = racerPhysics->m_velocity;
 		CutsceneParticleRef* particleRef = m_smokeParticle;
+		GolVec3 velocity = m_racer->m_physics.m_velocity;
 		velocity *= g_turboSmokeVelocityScale;
 
 		if (particleRef->m_particle != NULL) {
@@ -377,8 +366,7 @@ void TurboAction::AdvanceState()
 	case c_stateFade: {
 		SoundVector position;
 		CarVisuals* racerField = &m_racer->m_visuals;
-		GolAnimatedEntity* racerEntity = racerField->GetCarEntity();
-		racerEntity->GetPosition(&position);
+		racerField->m_carEntity->GetPosition(&position);
 
 		LegoS32 state = m_level;
 		if (state == 2) {

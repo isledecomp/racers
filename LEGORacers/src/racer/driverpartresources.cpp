@@ -70,8 +70,8 @@ GolWorldDatabase* DriverPartResources::Load(const LoadParams* p_params, LegoS32 
 	ReleaseResources();
 	m_golExport = p_params->m_golExport;
 	m_renderer = p_params->m_renderer;
-	m_resourceIndex = p_resourceIndex;
 	m_partCatalog = p_params->m_partCatalog;
+	m_resourceIndex = p_resourceIndex;
 	m_textureBinaryMode = p_params->m_textureBinaryMode;
 
 	LoadMaterialAndTextureLists(p_params->m_binary);
@@ -154,15 +154,15 @@ void DriverPartResources::LoadMaterialAndTextureLists(LegoBool32 p_binary)
 }
 
 // FUNCTION: LEGORACERS 0x004981a0
-LegoU32 DriverPartResources::ReplaceModelGroupMaterialIndex(
+void DriverPartResources::ReplaceModelGroupMaterialIndex(
 	GolAnimatedEntity* p_resourceModel,
 	LegoU32 p_oldIndex,
 	LegoU32 p_newIndex
 )
 {
 	GolModelBase* model = p_resourceModel->GetModel(0);
-	LegoU32 oldGroupTag = (p_oldIndex & 0x00ffffff) | 0x80000000;
 	LegoS32 groupIndex = 0;
+	LegoU32 oldGroupTag = (p_oldIndex & 0x00ffffff) | 0x80000000;
 	LegoS32 groupCount = static_cast<LegoS32>(model->GetGroupCount());
 	LegoU32* groups = model->GetMutableGroups();
 
@@ -176,52 +176,50 @@ LegoU32 DriverPartResources::ReplaceModelGroupMaterialIndex(
 		oldGroupTag = (p_newIndex & 0x00ffffff) | 0x80000000;
 		groups[groupIndex - 1] = oldGroupTag;
 	}
-
-	return oldGroupTag;
 }
 
 // FUNCTION: LEGORACERS 0x004981f0
 void DriverPartResources::NormalizeHeadGroupOrder()
 {
-	LegoS32 remainingModels = m_partResource->GetAnimatedEntityCount();
-	if (remainingModels <= 0) {
-		return;
-	}
-
+	LegoS32 modelCount = m_partResource->GetAnimatedEntityCount();
 	LegoS32 modelIndex = 0;
-	do {
-		GolAnimatedEntity* resourceModel = &m_partResource->GetAnimatedEntities()[modelIndex];
-		MaterialTable* materialTable = resourceModel->GetMaterialTable(0);
-		if (materialTable == NULL) {
-			materialTable = resourceModel->GetModel(0)->GetMaterialTable();
-		}
 
-		LegoS32 materialIndex = 1;
-		LegoS32 materialCount = materialTable->m_count;
-		if (materialCount > 1) {
-			do {
-				GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetEntry(materialIndex));
-				GolMaterial::NameRecord materialName;
-				materialName = material->GetNameRecord();
+	if (modelCount > 0) {
+		LegoS32 remainingModels = modelCount;
+		do {
+			GolAnimatedEntity* resourceModel = &m_partResource->GetAnimatedEntities()[modelIndex];
+			MaterialTable* materialTable = resourceModel->GetMaterialTable(0);
+			if (materialTable == NULL) {
+				materialTable = resourceModel->GetModel(0)->GetMaterialTable();
+			}
 
-				if (material != NULL) {
-					if (::strncmp(materialName.m_name, "face", sizeof(GolName)) == 0) {
-						GolMaterial* firstMaterial = static_cast<GolMaterial*>(materialTable->GetEntry(0));
-						materialTable->SetEntry(0, material);
-						materialTable->SetEntry(materialIndex, firstMaterial);
-						ReplaceModelGroupMaterialIndex(resourceModel, materialIndex, 0xffff);
-						ReplaceModelGroupMaterialIndex(resourceModel, 0, materialIndex);
-						ReplaceModelGroupMaterialIndex(resourceModel, 0xffff, 0);
+			LegoS32 materialIndex = 1;
+			LegoS32 materialCount = materialTable->m_count;
+			if (materialCount > 1) {
+				do {
+					GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetEntry(materialIndex));
+					GolMaterial::NameRecord materialName;
+					materialName = material->GetNameRecord();
+
+					if (material != NULL) {
+						if (::strncmp(materialName.m_name, "face", sizeof(GolName)) == 0) {
+							GolMaterial* firstMaterial = static_cast<GolMaterial*>(materialTable->GetEntry(0));
+							materialTable->SetEntry(0, material);
+							materialTable->SetEntry(materialIndex, firstMaterial);
+							ReplaceModelGroupMaterialIndex(resourceModel, materialIndex, 0xffff);
+							ReplaceModelGroupMaterialIndex(resourceModel, 0, materialIndex);
+							ReplaceModelGroupMaterialIndex(resourceModel, 0xffff, 0);
+						}
 					}
-				}
 
-				materialIndex++;
-			} while (materialIndex < materialCount);
-		}
+					materialIndex++;
+				} while (materialIndex < materialCount);
+			}
 
-		modelIndex++;
-		remainingModels--;
-	} while (remainingModels != 0);
+			modelIndex++;
+			remainingModels--;
+		} while (remainingModels != 0);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00498300

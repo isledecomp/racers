@@ -270,19 +270,14 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 			m_ghostEntity->LocalToWorld(position, &worldPosition);
 			m_loopSound->SetPosition(&worldPosition);
 
+			m_soundJitterMs += static_cast<LegoU32>(p_elapsedMs);
 			LegoU32 soundElapsedMs = m_soundJitterMs;
-			soundElapsedMs += static_cast<LegoU32>(p_elapsedMs);
-			m_soundJitterMs = soundElapsedMs;
 			if (soundElapsedMs >= c_soundFrequencyUpdateMs) {
 				m_soundJitterMs = 0;
 
-				LegoU32 randomIndex = g_randomTableIndex + 1;
-				randomIndex &= c_randomTableMask;
-				g_randomTableIndex = randomIndex;
-
-				LegoU16 randomValue = g_randomTable[randomIndex];
-				LegoS32 randomFrequency = randomValue;
-				randomFrequency %= c_randomFrequencyVariantCount;
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+				LegoS32 randomFrequency =
+					static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomFrequencyVariantCount;
 				LegoFloat frequencyScale = static_cast<LegoFloat>(randomFrequency);
 				frequencyScale *= g_carBuildPreviewMouseScale;
 				frequencyScale *= g_ghostFrequencyScaleJitter;
@@ -322,7 +317,8 @@ void GhostHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 	physics->m_velocity.m_y = impulse.m_y;
 	physics->m_velocity.m_z = impulse.m_z;
 
-	impulse.m_y = impulse.m_x = 0.0f;
+	impulse.m_x = impulse.m_z;
+	impulse.m_y = impulse.m_z;
 	LegoFloat impulseZ = g_ghostImpulseVectorZ;
 	impulse.m_z = impulseZ;
 	physics->ApplyImpulse(&impulse, &impulse);

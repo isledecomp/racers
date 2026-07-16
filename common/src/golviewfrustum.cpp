@@ -37,11 +37,18 @@ LegoS32 __fastcall GolViewFrustum::ClassifyBox(const GolViewFrustum* p_frustum, 
 	for (; plane < end; plane++) {
 		LegoS32 outsideCount = 0;
 		LegoFloat x0 = plane->m_normal.m_x * p_bounds[0];
-		LegoFloat y0 = plane->m_normal.m_y * p_bounds[1];
-		LegoFloat z0 = plane->m_normal.m_z * p_bounds[2] + plane->m_distance;
-		LegoFloat x1 = plane->m_normal.m_x * p_bounds[3];
-		LegoFloat y1 = plane->m_normal.m_y * p_bounds[4];
-		LegoFloat z1 = plane->m_normal.m_z * p_bounds[5] + plane->m_distance;
+		LegoFloat y0 = plane->m_normal.m_y;
+		y0 *= p_bounds[1];
+		LegoFloat z0 = plane->m_normal.m_z;
+		z0 *= p_bounds[2];
+		z0 += plane->m_distance;
+		LegoFloat x1 = p_bounds[3];
+		x1 *= plane->m_normal.m_x;
+		LegoFloat y1 = p_bounds[4];
+		y1 *= plane->m_normal.m_y;
+		LegoFloat z1 = plane->m_normal.m_z;
+		z1 *= p_bounds[5];
+		z1 += plane->m_distance;
 		LegoFloat yz0 = y0 + z0;
 
 		if (yz0 + x0 < 0.0f) {

@@ -70,22 +70,24 @@ LegoS32 SphinxHazard::Reset()
 void SphinxHazard::OnActivate(void*)
 {
 	MabMaterialAnimation* animation = NULL;
+	GolName name;
+
 	if (m_entity->GetModelDistance(0) == g_sphinxInactiveModelDistance) {
 		return;
 	}
 
 	int(__cdecl * compare)(const LegoChar*, const LegoChar*, size_t) = ::strncmp;
 	LegoU32 i = 0;
-	while (i < m_sharedDatabase->GetMaterialAnimationCount()) {
-		GolName name;
+	while (animation == NULL) {
+		if (i >= m_sharedDatabase->GetMaterialAnimationCount()) {
+			break;
+		}
+
 		::strncpy(name, m_sharedDatabase->GetMaterialAnimationNames()[i], sizeof(name));
 		if (compare(name, "blowup", sizeof(name)) == 0) {
 			animation = m_sharedDatabase->GetMaterialAnimation(i);
 		}
 		i++;
-		if (animation != NULL) {
-			break;
-		}
 	}
 
 	if (animation != NULL) {
@@ -161,7 +163,7 @@ void SphinxHazard::ResetState()
 	m_entity->SetModelDistance(0, 640000.0f);
 
 	LegoU32 i = 0;
-	while (TRUE) {
+	while (animation == NULL) {
 		if (i >= m_sharedDatabase->GetMaterialAnimationCount()) {
 			break;
 		}
@@ -172,16 +174,13 @@ void SphinxHazard::ResetState()
 			animation = m_sharedDatabase->GetMaterialAnimation(i);
 		}
 		i++;
-		if (animation != NULL) {
-			break;
-		}
 	}
 
 	if (animation != NULL) {
 		MabMaterialTrack* items = animation->GetTracks();
-		MabMaterialTrack* item2 = &items[2];
-		MabMaterialTrack* item1 = &items[1];
 		MabMaterialTrack* item3 = &items[3];
+		MabMaterialTrack* item2 = item3 - 1;
+		MabMaterialTrack* item1 = &items[1];
 		item2->Unassign();
 		item3->Unassign();
 		items[0].Assign(items[0].GetMaterialTable(), items[0].GetMaterialIndex(), TRUE);

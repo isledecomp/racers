@@ -11,8 +11,6 @@ DECOMP_SIZE_ASSERT(PlayerControls, 0x74)
 DECOMP_SIZE_ASSERT(PlayerControls::InputState, 0x70)
 
 extern const LegoChar* g_sideWinderForceFeedName;
-extern LegoFloat g_minSoundPan;
-
 // GLOBAL: LEGORACERS 0x004b0740
 extern const LegoFloat g_idleTurnRate = 2.5f;
 
@@ -149,8 +147,8 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 		if (analogValue > 1.0f) {
 			analogValue = 1.0f;
 		}
-		else if (analogValue < g_minSoundPan) {
-			analogValue = g_minSoundPan;
+		else if (analogValue < -1.0f) {
+			analogValue = -1.0f;
 		}
 
 		if (analogValue > 0.0f) {
@@ -214,20 +212,23 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00430390
 void PlayerControls::UpdateThrottle()
 {
-	LegoFloat driveValue;
-	LegoFloat throttleValue = 0.0f;
-	LegoFloat reverseValue = 0.0f;
+	LegoFloat driveValue = 0.0f;
+	LegoFloat throttleValue;
+	LegoFloat reverseValue;
 	DirectInputDevice* source;
 
+	reverseValue = 0.0f;
+	throttleValue = 0.0f;
 	m_input.GetBinding(&source, 2);
 	if (m_input.m_analogThrottle) {
-		LegoFloat analogValue = -source->GetAxisValue(2);
-		if (analogValue < 0.0f) {
-			reverseValue = analogValue;
-		}
-		else {
-			throttleValue = analogValue;
-		}
+		driveValue = -source->GetAxisValue(2);
+	}
+
+	if (driveValue < 0.0f) {
+		reverseValue = driveValue;
+	}
+	else {
+		throttleValue = driveValue;
 	}
 
 	if (m_input.m_inputFlags & c_inputFlagThrottle) {
@@ -238,7 +239,8 @@ void PlayerControls::UpdateThrottle()
 		reverseValue = -1.0f;
 	}
 
-	driveValue = throttleValue + reverseValue;
+	driveValue = throttleValue;
+	driveValue += reverseValue;
 	if (driveValue > 0.0f) {
 		TrackThrottleHold();
 	}
@@ -415,18 +417,16 @@ void PlayerControls::OnLookBack(LegoBool32 p_enabled)
 // FUNCTION: LEGORACERS 0x00430710
 void PlayerControls::TryStartBoost()
 {
+	m_input.m_stateFlags &= ~1;
 	LegoU32 flags = m_input.m_stateFlags;
-	flags &= ~1;
-	m_input.m_stateFlags = flags;
 
-	if (m_input.m_boostWindowMs > 0) {
-		LegoU32 duration = m_input.m_boostWindowMs;
-		Racer* racer = m_racer;
+	LegoU32 duration = m_input.m_boostWindowMs;
+	if (duration > 0) {
 		if (duration >= 60) {
-			racer->m_powerupManager->UseGreenPowerup(racer, TRUE);
+			m_racer->m_powerupManager->UseGreenPowerup(m_racer, TRUE);
 		}
 		else {
-			racer->m_powerupManager->UseGreenPowerup(racer, FALSE);
+			m_racer->m_powerupManager->UseGreenPowerup(m_racer, FALSE);
 		}
 		m_input.m_boostWindowMs = 0;
 	}
@@ -550,22 +550,15 @@ undefined4 PlayerControls::InputState::GetBinding(DirectInputDevice** p_source, 
 // FUNCTION: LEGORACERS 0x00430930
 void PlayerControls::InputState::AcquireDevices()
 {
-	undefined4* input = m_inputs;
-	DirectInputDevice** current = m_devices;
-	LegoS32 remaining = c_inputSlotCount;
-
-	do {
-		DirectInputDevice* source = *current;
-		if (source && (*input & InputDevice::c_sourceCharacter) != InputDevice::c_sourceKeyboard) {
+	for (LegoS32 i = 0; i < c_inputSlotCount; i++) {
+		DirectInputDevice* source = m_devices[i];
+		if (source && (m_inputs[i] & InputDevice::c_sourceCharacter) != InputDevice::c_sourceKeyboard) {
 			source->SetCallback(this);
-			if (!(*current)->IsAcquired()) {
-				(*current)->Acquire();
+			if (!m_devices[i]->IsAcquired()) {
+				m_devices[i]->Acquire();
 			}
 		}
-
-		input++;
-		current++;
-	} while (--remaining);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00430980

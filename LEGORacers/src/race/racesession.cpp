@@ -602,34 +602,33 @@ void RaceSession::InitializeSound()
 // FUNCTION: LEGORACERS 0x00432a50
 LegoU32 RaceSession::GetPlayerVoiceName(LegoU32 p_index, LegoChar* p_buffer)
 {
-	undefined4 slotState = m_context->m_playerSetupSlots[p_index].m_slotState;
+	LegoU32 index = p_index;
+	undefined4 slotState = m_context->m_playerSetupSlots[index].m_slotState;
 
-	if (slotState && p_index < m_context->m_racerCount) {
-		do {
-			p_index++;
-			slotState = m_context->m_playerSetupSlots[p_index].m_slotState;
-		} while (slotState);
+	while (slotState && index < m_context->m_racerCount) {
+		index++;
+		slotState = m_context->m_playerSetupSlots[index].m_slotState;
 	}
 
 	if (m_demoMode) {
-		p_index = 0;
+		index = 0;
 	}
 
 	strcpy(p_buffer, "voice");
 
-	LegoU8 tens = m_context->m_playerSetupSlots[p_index].m_previewFaceIndex;
-	if (tens < 10) {
+	LegoS32 tens;
+	if (m_context->m_playerSetupSlots[index].m_previewFaceIndex < 10) {
 		tens = 0;
 	}
 	else {
-		tens /= 10;
+		tens = m_context->m_playerSetupSlots[index].m_previewFaceIndex / 10;
 	}
 
 	p_buffer[5] = tens + '0';
-	p_buffer[6] = m_context->m_playerSetupSlots[p_index].m_previewFaceIndex - (tens * 10) + '0';
+	p_buffer[6] = m_context->m_playerSetupSlots[index].m_previewFaceIndex - (tens * 10) + '0';
 	p_buffer[7] = '\0';
 
-	return p_index;
+	return index;
 }
 
 // FUNCTION: LEGORACERS 0x00432b30
@@ -1388,8 +1387,9 @@ void RaceSession::CreateCameras()
 			currentCamera->GetTransform()->SetPosition(&m_cameraStartPosition);
 			currentCamera->m_flags |= GolCamera::c_flagViewDirty;
 
-			m_cameras[i]->GetTransform()->SetDirectionUp(&m_cameraStartDirection, &m_cameraStartUp);
-			m_cameras[i]->m_flags |= GolCamera::c_flagViewDirty;
+			currentCamera = m_cameras[i];
+			currentCamera->GetTransform()->SetDirectionUp(&m_cameraStartDirection, &m_cameraStartUp);
+			currentCamera->m_flags |= GolCamera::c_flagViewDirty;
 
 			Rect viewport;
 			if (!m_splitScreen) {
@@ -1846,79 +1846,75 @@ void RaceSession::UpdateCountdownState()
 // FUNCTION: LEGORACERS 0x00434c80
 void RaceSession::UpdateRacingState()
 {
-	LegoU32 racerIndex = 0;
-	if (m_context->m_racerCount > 0) {
-		do {
-			Racer* racer = &m_raceState.GetRacers()[racerIndex];
-			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & 0x1000)) {
-				racer->m_flags |= 0x1000;
+	for (LegoU32 racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
+		Racer* racer = m_raceState.GetRacer(racerIndex);
+		if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & Racer::c_flagFinished)) {
+			racer->m_flags |= Racer::c_flagFinished;
 
-				if (m_standings) {
-					m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
+			if (m_standings) {
+				m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
+			}
+
+			m_finishedCount++;
+			racer->SetStandingsPosition(m_finishedCount);
+
+			if (racer->m_controlMode != Racer::c_controlAi || (m_demoMode && racerIndex == 0)) {
+				LegoU32 playerIndex = 0;
+				Racer** playerRacer = m_raceState.m_playerRacers;
+				while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
+					playerRacer++;
+					playerIndex++;
 				}
 
-				m_finishedCount++;
-				racer->SetStandingsPosition(m_finishedCount);
+				m_huds[playerIndex].ShowFinish();
+				m_elapsedMs = 0;
+				m_state = 4;
+				if (m_returnToGarage) {
+					m_elapsedMs = 9000;
+				}
 
-				if (racer->m_controlMode != Racer::c_controlAi || (m_demoMode && racerIndex == 0)) {
-					LegoU32 playerIndex = 0;
-					Racer** playerRacer = m_raceState.m_playerRacers;
-					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
-						playerRacer++;
-						playerIndex++;
+				if (m_playerControls[playerIndex].m_racer) {
+					m_playerControls[playerIndex].EnterAiControl();
+				}
+
+				m_powerupManager.CancelWarp(racer);
+
+				if (!(racer->m_flags & Racer::c_flagGhost) && !(racer->m_flags & Racer::c_flagWarping) &&
+					!m_returnToGarage) {
+					m_cameraControllers[playerIndex].SetView(4, m_splitScreen);
+				}
+
+				if (m_timeRaceManager) {
+					m_timeRaceManager->UpdateBestRun();
+				}
+
+				if (m_music) {
+					m_music->Stop();
+					m_musicGroup->DestroyMusicInstance(m_music);
+
+					if (racer->m_standingsPosition == 1) {
+						m_music = m_musicGroup->CreateMusicInstance(3);
 					}
-
-					m_huds[playerIndex].ShowFinish();
-					m_elapsedMs = 0;
-					m_state = 4;
-					if (m_returnToGarage) {
-						m_elapsedMs = 9000;
-					}
-
-					if (m_playerControls[playerIndex].m_racer) {
-						m_playerControls[playerIndex].EnterAiControl();
-					}
-
-					m_powerupManager.CancelWarp(racer);
-
-					if (!(racer->m_flags & Racer::c_flagGhost) && !(racer->m_flags & 0x200000) && !m_returnToGarage) {
-						m_cameraControllers[playerIndex].SetView(4, m_splitScreen);
-					}
-
-					if (m_timeRaceManager) {
-						m_timeRaceManager->UpdateBestRun();
+					else {
+						m_music = m_musicGroup->CreateMusicInstance(2);
 					}
 
 					if (m_music) {
-						m_music->Stop();
-						m_musicGroup->DestroyMusicInstance(m_music);
-
-						if (racer->m_standingsPosition == 1) {
-							m_music = m_musicGroup->CreateMusicInstance(3);
-						}
-						else {
-							m_music = m_musicGroup->CreateMusicInstance(2);
-						}
-
-						if (m_music) {
-							m_music->SetVolume(m_musicVolume);
-							m_music->Play(FALSE);
-						}
+						m_music->SetVolume(m_musicVolume);
+						m_music->Play(FALSE);
 					}
-
-					if (m_standings) {
-						m_standings->m_font = m_loadingFont;
-						m_standings->m_raceState = &m_raceState;
-						m_standings->m_stringTable = &m_stringTable;
-					}
-
-					UpdateFinishedState();
-					return;
 				}
-			}
 
-			racerIndex++;
-		} while (racerIndex < m_context->m_racerCount);
+				if (m_standings) {
+					m_standings->m_font = m_loadingFont;
+					m_standings->m_raceState = &m_raceState;
+					m_standings->m_stringTable = &m_stringTable;
+				}
+
+				UpdateFinishedState();
+				return;
+			}
+		}
 	}
 }
 
@@ -1943,71 +1939,62 @@ void RaceSession::UpdateFinishedState()
 		m_elapsedMs = 0;
 		m_state = 5;
 
-		LegoU32 i = 0;
-		if (m_context->m_racerCount > 0) {
-			Racer* racer = m_raceState.GetRacers();
-			do {
-				if (!(racer->m_flags & 0x1000)) {
-					if (m_standings) {
-						m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
-					}
-
-					m_finishedCount++;
-					racer->SetStandingsPosition(m_finishedCount);
-				}
-
-				m_context->m_playerSetupSlots[i].m_finishPosition = (LegoU8) racer->m_standingsPosition;
-				i++;
-				racer++;
-			} while (i < m_context->m_racerCount);
-		}
-
-		UpdateResultsState();
-		return;
-	}
-
-	LegoU32 racerIndex = 0;
-	if (m_context->m_racerCount > 0) {
-		Racer* racer = m_raceState.GetRacers();
-		do {
-			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & 0x1000)) {
-				racer->m_flags |= 0x1000;
-
+		for (LegoU32 i = 0; i < m_context->m_racerCount; i++) {
+			Racer* racer = m_raceState.GetRacer(i);
+			if (!(racer->m_flags & Racer::c_flagFinished)) {
 				if (m_standings) {
 					m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
 				}
 
 				m_finishedCount++;
 				racer->SetStandingsPosition(m_finishedCount);
+			}
 
-				if (racer->m_controlMode != Racer::c_controlAi) {
-					LegoU32 playerIndex = 0;
-					Racer** playerRacer = m_raceState.m_playerRacers;
-					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
-						playerRacer++;
-						playerIndex++;
-					}
+			LegoU32 finishPosition = racer->m_standingsPosition;
+			m_context->m_playerSetupSlots[i].m_finishPosition = finishPosition;
+		}
 
-					if (m_playerControls[playerIndex].m_racer) {
-						m_playerControls[playerIndex].EnterAiControl();
-					}
+		UpdateResultsState();
+		return;
+	}
 
-					m_powerupManager.CancelWarp(racer);
+	for (LegoU32 racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
+		Racer* racer = m_raceState.GetRacer(racerIndex);
+		if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & Racer::c_flagFinished)) {
+			racer->m_flags |= Racer::c_flagFinished;
 
-					if (!(racer->m_flags & Racer::c_flagGhost) && !(racer->m_flags & 0x200000)) {
-						m_cameraControllers[playerIndex].SetView(4, m_splitScreen);
-					}
+			if (m_standings) {
+				m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
+			}
+
+			m_finishedCount++;
+			racer->SetStandingsPosition(m_finishedCount);
+
+			if (racer->m_controlMode != Racer::c_controlAi) {
+				LegoU32 playerIndex = 0;
+				Racer** playerRacer = m_raceState.m_playerRacers;
+				while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
+					playerRacer++;
+					playerIndex++;
+				}
+
+				if (m_playerControls[playerIndex].m_racer) {
+					m_playerControls[playerIndex].EnterAiControl();
+				}
+
+				m_powerupManager.CancelWarp(racer);
+
+				if (!(racer->m_flags & Racer::c_flagGhost) && !(racer->m_flags & Racer::c_flagWarping)) {
+					m_cameraControllers[playerIndex].SetView(4, m_splitScreen);
 				}
 			}
+		}
 
-			if ((racer->m_flags & 0x1000) && racer->m_cameraController && !(racer->m_flags & Racer::c_flagGhost) &&
-				!(racer->m_flags & 0x200000) && racer->m_cameraViewIndex != 4 && !m_returnToGarage) {
-				racer->m_cameraController->SetView(4, m_splitScreen);
-			}
-
-			racerIndex++;
-			racer++;
-		} while (racerIndex < m_context->m_racerCount);
+		if ((racer->m_flags & Racer::c_flagFinished) && racer->m_cameraController &&
+			!(racer->m_flags & Racer::c_flagGhost) && !(racer->m_flags & Racer::c_flagWarping) &&
+			racer->m_cameraViewIndex != 4 && !m_returnToGarage) {
+			racer->m_cameraController->SetView(4, m_splitScreen);
+		}
 	}
 
 	if (m_standings && m_elapsedMs > 5000) {
@@ -2087,15 +2074,12 @@ void RaceSession::Update()
 		LegoU32 remainingMs = elapsedMs;
 		while (remainingMs > 0) {
 			LegoS32 stepMs;
-			LegoU32 remainingAfterStep;
 
 			if (remainingMs > c_updateStepMs) {
 				remainingMs -= c_updateStepMs;
 				stepMs = c_updateStepMs;
-				remainingAfterStep = remainingMs;
 			}
 			else {
-				remainingAfterStep = 0;
 				stepMs = static_cast<LegoS32>(remainingMs);
 				remainingMs = 0;
 			}
@@ -2106,7 +2090,6 @@ void RaceSession::Update()
 				m_cameraControllers[i].Update(static_cast<LegoFloat>(stepMs));
 			}
 
-			remainingMs = remainingAfterStep;
 			if (m_timeRaceManager) {
 				m_timeRaceManager->Update(stepMs);
 			}
@@ -2749,7 +2732,8 @@ void RaceSession::ProcessPauseDialog()
 			m_forceFeedback[i].Resume();
 		}
 
-		m_inputRouter.m_enabled = TRUE;
+		RaceInputRouter& inputRouter = m_inputRouter;
+		inputRouter.m_enabled = TRUE;
 		m_soundManager->Resume();
 
 		if (m_music) {
@@ -2775,15 +2759,13 @@ void RaceSession::RestartRace()
 	LegoU32 playerIndex = 0;
 	if (m_context->m_playerCount > 0) {
 		do {
-			RaceCameraController* cameraController = &m_cameraControllers[playerIndex];
-
 			m_playerControls[playerIndex].Reset();
 			m_forceFeedback[playerIndex].StopEngineEffect();
 			m_raceState.m_playerRacers[playerIndex]->SetCameraView(m_context->m_cameraViewIndex, m_splitScreen);
-			cameraController->Update(1.0f);
-			cameraController->SetMode(0);
-			cameraController->SnapPosition(&m_cameraStartPosition);
-			cameraController->SetOrientation(&m_cameraStartDirection, &m_cameraStartUp);
+			m_cameraControllers[playerIndex].Update(1.0f);
+			m_cameraControllers[playerIndex].SetMode(0);
+			m_cameraControllers[playerIndex].SnapPosition(&m_cameraStartPosition);
+			m_cameraControllers[playerIndex].SetOrientation(&m_cameraStartDirection, &m_cameraStartUp);
 
 			LegoFloat fov;
 			if (m_splitScreen) {
@@ -2802,12 +2784,11 @@ void RaceSession::RestartRace()
 				fov = m_context->m_cameraFov;
 			}
 
-			cameraController->m_targetFov = fov;
-			cameraController->m_shakeMs = 0;
-			MenuAnimationList* animationList = &m_animationList;
-			cameraController->m_dirty = TRUE;
+			m_cameraControllers[playerIndex].m_targetFov = fov;
+			m_cameraControllers[playerIndex].m_shakeMs = 0;
+			m_cameraControllers[playerIndex].m_dirty = TRUE;
 
-			animationList->DeactivateAll();
+			m_animationList.DeactivateAll();
 
 			playerIndex++;
 		} while (playerIndex < m_context->m_playerCount);

@@ -130,15 +130,19 @@ void GolSceneTransformNode::UpdateWorldMatrices(const GolMatrix4& p_m)
 
 		for (; obj < end; obj++) {
 			GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
-			const GolMatrix4& parentMatrix = parent != NULL ? parent->m_worldMatrix : p_m;
-			GolMath::MultiplyMatrix4Affine(obj->m_matrix, parentMatrix, &obj->m_worldMatrix);
+			if (parent == NULL) {
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, p_m, &obj->m_worldMatrix);
+			}
+			else {
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, parent->m_worldMatrix, &obj->m_worldMatrix);
+			}
 		}
 		return;
 	}
 
 	for (; i < m_capacity; i++) {
+		GolTransform* parent = static_cast<GolTransform*>(m_transforms[i].m_parent);
 		GolTransform* obj = &m_transforms[i];
-		GolTransform* parent = static_cast<GolTransform*>(obj->m_parent);
 
 		if (m_composer->HasOverride(i)) {
 			GolQuat rotation;
@@ -153,8 +157,12 @@ void GolSceneTransformNode::UpdateWorldMatrices(const GolMatrix4& p_m)
 			m_composer->Compose(i, rotation, position, parentMatrix, &obj->m_worldMatrix);
 		}
 		else {
-			const GolMatrix4& parentMatrix = parent != NULL ? parent->m_worldMatrix : p_m;
-			GolMath::MultiplyMatrix4Affine(obj->m_matrix, parentMatrix, &obj->m_worldMatrix);
+			if (parent == NULL) {
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, p_m, &obj->m_worldMatrix);
+			}
+			else {
+				GolMath::MultiplyMatrix4Affine(obj->m_matrix, parent->m_worldMatrix, &obj->m_worldMatrix);
+			}
 		}
 	}
 }

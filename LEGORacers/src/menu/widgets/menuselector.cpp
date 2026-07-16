@@ -246,27 +246,8 @@ LegoBool32 MenuSelectorBase::DispatchKeyUp(InputEventQueue::Event* p_param1, und
 // FUNCTION: LEGORACERS 0x00467560
 LegoBool32 MenuSelectorBase::HandleNavigationKeyDown(InputEventQueue::Event* p_event, undefined4 p_result)
 {
-	switch (p_result) {
-	case InputDevice::c_sourceJoystickButton | 0xa:
-		if (m_nextButton.GetAnimFlags() & 1) {
-			return TRUE;
-		}
-
-		if (p_event->m_isRepeat && (m_nextButton.GetStateFlags() & c_flagFocused)) {
-			OnNextPressed(0);
-			return TRUE;
-		}
-
-		if (m_stateFlags & c_flagFocused) {
-			return TRUE;
-		}
-
-		m_nextButton.Focus(2);
-		OnNextPressed(0);
-		Focus(0);
-		return TRUE;
-
-	case InputDevice::c_sourceJoystickButton | 0xb:
+	p_result -= (InputDevice::c_sourceJoystickButton | 0xa);
+	if (p_result && !--p_result) {
 		if (m_prevButton.GetAnimFlags() & 1) {
 			return TRUE;
 		}
@@ -282,6 +263,25 @@ LegoBool32 MenuSelectorBase::HandleNavigationKeyDown(InputEventQueue::Event* p_e
 
 		m_prevButton.Focus(2);
 		OnPreviousPressed(0);
+		Focus(0);
+		return TRUE;
+	}
+	else if (!p_result) {
+		if (m_nextButton.GetAnimFlags() & 1) {
+			return TRUE;
+		}
+
+		if (p_event->m_isRepeat && (m_nextButton.GetStateFlags() & c_flagFocused)) {
+			OnNextPressed(0);
+			return TRUE;
+		}
+
+		if (m_stateFlags & c_flagFocused) {
+			return TRUE;
+		}
+
+		m_nextButton.Focus(2);
+		OnNextPressed(0);
 		Focus(0);
 		return TRUE;
 	}
@@ -413,7 +413,7 @@ void MenuSelector::StepPrevious()
 	LegoU32 previousIndex = m_carousel->GetSelectedIndex();
 	m_carousel->ScrollPrevious();
 
-	if (m_carousel->GetSelectedIndex() != previousIndex && m_eventHandler) {
+	if (previousIndex != m_carousel->GetSelectedIndex() && m_eventHandler) {
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
@@ -430,7 +430,7 @@ void MenuSelector::StepNext()
 	LegoU32 previousIndex = m_carousel->GetSelectedIndex();
 	m_carousel->ScrollNext();
 
-	if (m_carousel->GetSelectedIndex() != previousIndex && m_eventHandler) {
+	if (previousIndex != m_carousel->GetSelectedIndex() && m_eventHandler) {
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 

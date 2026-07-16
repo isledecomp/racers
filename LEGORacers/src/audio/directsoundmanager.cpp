@@ -501,7 +501,7 @@ SoundBuffer* DirectSoundManager::CreateSoundBuffer()
 
 	if (sound) {
 		sound->m_soundManager = this;
-		m_idleSounds.Append(*sound);
+		m_idleSounds.Append(&sound->GetLink());
 	}
 
 	return sound;
@@ -527,7 +527,7 @@ SoundBuffer* DirectSoundManager::CreateStreamingSoundBuffer()
 
 	if (sound) {
 		sound->m_soundManager = this;
-		m_idleSounds.Append(*sound);
+		m_idleSounds.Append(&sound->GetLink());
 	}
 
 	return sound;

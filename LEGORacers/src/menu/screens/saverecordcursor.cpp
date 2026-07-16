@@ -41,22 +41,18 @@ void SaveRecordCursor::Close()
 LegoU32 SaveRecordCursor::CountRecords(LegoU32 p_mask) const
 {
 	LegoU32 count = 0;
-	const SaveRecordCursor* state = this;
+	SaveSystem* const& saveSystem = m_saveSystem;
 
 	if (p_mask & 0x01) {
-		SaveSystem* saveSystem = state->m_saveSystem;
 		count = saveSystem->GetDefaultSave().GetRecordCount();
 	}
 	if (p_mask & 0x02) {
-		SaveSystem* saveSystem = state->m_saveSystem;
 		count += saveSystem->GetSessionSave().GetRecordCount();
 	}
 	if (p_mask & 0x04) {
-		SaveSystem* saveSystem = state->m_saveSystem;
 		count += saveSystem->GetQuickBuildSave().GetRecordCount();
 	}
 
-	SaveSystem* saveSystem = state->m_saveSystem;
 	LegoU32 i = 0;
 	LegoU32 memoryCardSaveCount = saveSystem->GetMemoryCardSaveCount();
 	if (memoryCardSaveCount > 0) {

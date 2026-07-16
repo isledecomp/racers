@@ -32,19 +32,18 @@ RocketHazard::~RocketHazard()
 }
 
 // FUNCTION: LEGORACERS 0x0048e370
-LegoS32 RocketHazard::ClearFields()
+void RocketHazard::ClearFields()
 {
-	m_savedModelDistances[0] = 0.0f;
-	m_savedModelDistances[1] = 0.0f;
-	m_savedModelDistances[2] = 0.0f;
+	for (LegoS32 i = 0; i < c_modelDistanceCount; i++) {
+		m_savedModelDistances[i] = 0.0f;
+	}
+
 	m_offModel = NULL;
 	m_onModel = NULL;
 	m_collider = NULL;
 	m_eventQueue = NULL;
 	m_collisionEvent = NULL;
 	m_idle = 1;
-
-	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0048e3a0

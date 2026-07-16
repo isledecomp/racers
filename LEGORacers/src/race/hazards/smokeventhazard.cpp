@@ -98,9 +98,12 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 
 	GolVec3 vector;
 	transform->GetPosition(&vector);
-	vector.m_x *= scale;
-	vector.m_y *= scale;
-	vector.m_z *= scale;
+	LegoFloat x = vector.m_x * scale;
+	LegoFloat y = vector.m_y * scale;
+	LegoFloat z = vector.m_z * scale;
+	vector.m_x = x;
+	vector.m_y = y;
+	vector.m_z = z;
 
 	GolVec3 position;
 	m_entity->LocalToWorld(vector, &position);
@@ -121,20 +124,21 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 		}
 
 		transform->TransformPoint(&vector, &position);
-		vector.m_x = position.m_x * scale;
-		vector.m_y = position.m_y * scale;
-		vector.m_z = position.m_z * scale;
+		x = position.m_x * scale;
+		y = position.m_y * scale;
+		z = position.m_z * scale;
+		vector.m_x = x;
+		vector.m_y = y;
+		vector.m_z = z;
 
 		m_entity->LocalToWorld(vector, &position);
 
-		CutsceneParticleRef* particleRef = m_smokeParticle;
 		GolAnimatedEntity* entity = m_entity;
-		CutsceneParticle* particle = particleRef->m_particle;
-		if (particle) {
-			entity->CopyOrientation(particle->GetBasis());
+		if (m_smokeParticle->m_particle) {
+			entity->CopyOrientation(m_smokeParticle->m_particle->GetBasis());
 		}
 
-		particleRef = m_smokeParticle;
+		CutsceneParticleRef* particleRef = m_smokeParticle;
 		if (particleRef->m_particle) {
 			particleRef->m_particle->SetPosition(&position);
 		}

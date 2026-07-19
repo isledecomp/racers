@@ -2,8 +2,7 @@
 #define GOLRASTERIZERS2_H
 
 #include "d3dtypes.h"
-
-class GolSoftwareRenderer;
+#include "golrasterizers_shared.h"
 
 void FUN_10041a50(
 	GolSoftwareRenderer* p_renderer,

@@ -9,10 +9,10 @@
 
 class InputManager;
 
-// VTABLE: LEGORACERS 0x004b0e9c
-// SIZE 0x9c
 extern undefined2 g_defaultMapping[256];
 
+// VTABLE: LEGORACERS 0x004b0e9c
+// SIZE 0x9c
 class InputDevice {
 public:
 	class Callback {

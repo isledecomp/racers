@@ -2845,8 +2845,8 @@ void GolD3DRenderDevice::FUN_1000b4a0()
 		m_textureFormats[1].m_intensityMask = 0;
 		m_textureFormats[1].m_bitsPerPixel = 8;
 
-		GolSurfaceFormat& textureFormat = m_renderTargetInfo->GetTextureFormat();
-		if (textureFormat.GetGreenBitCount() == 6) {
+		GolSurface* renderSurface = m_renderTargetInfo;
+		if (renderSurface->GetTextureFormat().GetGreenBitCount() == 6) {
 			m_textureFormats[0].m_redBitMask = 0xf800;
 			m_textureFormats[0].m_grnBitMask = 0x07e0;
 			m_textureFormats[0].m_bluBitMask = 0x001f;

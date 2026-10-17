@@ -26,7 +26,7 @@ LegoU8 __fastcall BucketCommandsBySortByte0(
 	GolSoftwareRenderer::TriangleCommand* p_command
 );
 
-static LegoS32 __fastcall BucketCommandArrayBySortByte0(
+LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command,
 	LegoS32 p_count
@@ -707,7 +707,7 @@ void GolSoftwareRenderer::FUN_10041830(LegoS32 p_count, LegoBool p_sort)
 
 #ifdef COMPAT_MODE
 
-static LegoS32 __fastcall BucketCommandArrayBySortByte0(
+LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command,
 	LegoS32 p_count
@@ -727,7 +727,7 @@ static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 #else
 
 // FUNCTION: GOLDP 0x10041980
-static __declspec(naked) LegoS32 __fastcall BucketCommandArrayBySortByte0(
+__declspec(naked) LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	GolSoftwareRenderer::TriangleCommand** p_buckets,
 	GolSoftwareRenderer::TriangleCommand* p_command,
 	LegoS32 p_count

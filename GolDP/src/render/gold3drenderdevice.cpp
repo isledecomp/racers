@@ -4247,130 +4247,419 @@ void GolD3DRenderDevice::FUN_1000e180(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
+	LegoU32 color = m_unk0xc83fc;
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
 	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	D3DTLVERTEX* vertex = vertices;
 	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
-
 	const GolMatrix4* matrix = m_currentMatrix;
-	LegoU32 color = m_unk0xc83fc;
-	D3DTLVERTEX* vertex = vertices;
-	for (; position < positionEnd; position++) {
-		vertex->sx = matrix->m_m[0][0] * position->m_x;
-		vertex->rhw = matrix->m_m[0][3] * position->m_x;
-		vertex->sy = matrix->m_m[0][1] * position->m_x;
-		vertex->sz = matrix->m_m[0][2] * position->m_x;
 
-		vertex->sx += matrix->m_m[1][0] * position->m_y;
-		vertex->rhw += matrix->m_m[1][3] * position->m_y;
-		vertex->sy += matrix->m_m[1][1] * position->m_y;
-		vertex->sz += matrix->m_m[1][2] * position->m_y;
-
-		vertex->sx += matrix->m_m[2][0] * position->m_z;
-		vertex->rhw += matrix->m_m[2][3] * position->m_z;
-		vertex->sy += matrix->m_m[2][1] * position->m_z;
-		vertex->sz += matrix->m_m[2][2] * position->m_z;
-
-		vertex->sx += matrix->m_m[3][0];
-		vertex->rhw = 1.0f / (vertex->rhw + matrix->m_m[3][3]);
-		vertex->sy += matrix->m_m[3][1];
-		vertex->sz += matrix->m_m[3][2];
-
-		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
-		vertexMap++;
-		vertex->color = color;
-		vertex->sx *= vertex->rhw;
-		vertex->sy *= vertex->rhw;
-		vertex->sz *= vertex->rhw;
-		vertex->tu = uv->m_x;
-		vertex->tv = uv->m_y;
-		uv++;
-		vertex++;
+	__asm {
+		mov esi, position
+		mov ecx, positionEnd
+		mov edx, matrix
+		mov eax, vertex
+		mov edi, uv
+		mov ebx, color
+		cmp esi, ecx
+		jae done
+	transformVertex:
+		fld dword ptr [esi]
+		fmul dword ptr [edx]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 0xc]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 4]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 8]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x10]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x1c]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x14]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x18]
+		fxch st(3)
+		faddp st(7), st
+		faddp st(4), st
+		faddp st(4), st
+		faddp st(1), st
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x20]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x2c]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x24]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x28]
+		fxch st(3)
+		faddp st(7), st
+		fxch st(1)
+		faddp st(5), st
+		faddp st(3), st
+		faddp st(1), st
+		fxch st(3)
+		fadd dword ptr [edx + 0x30]
+		fxch st(2)
+		fadd dword ptr [edx + 0x3c]
+		fxch st(1)
+		fadd dword ptr [edx + 0x34]
+		fxch st(3)
+		fadd dword ptr [edx + 0x38]
+		fld1
+		fdivrp st(2), st
+		add eax, 0x20
+		mov edx, vertexMap
+		add esi, 0xc
+		add edx, 2
+		mov ecx, dword ptr [edi]
+		mov dword ptr [eax - 0x10], ebx
+		mov dword ptr [eax - 8], ecx
+		mov ecx, dword ptr [edi + 4]
+		mov cx, word ptr [edx - 2]
+		mov vertexMap, edx
+		inc cx
+		add edi, 8
+		mov dword ptr [eax - 4], ecx
+		mov word ptr [edx], cx
+		mov ecx, positionEnd
+		mov edx, matrix
+		fxch st(1)
+		fmul st(3), st
+		fmul st(2), st
+		cmp esi, ecx
+		fmul st(1), st
+		fstp dword ptr [eax - 0x14]
+		fstp dword ptr [eax - 0x18]
+		fstp dword ptr [eax - 0x20]
+		fstp dword ptr [eax - 0x1c]
+		jb transformVertex
+	done:
 	}
 
-	*vertexMap = savedMapEntry;
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000e310
+// FUNCTION: GOLDP 0x1000e310
 void GolD3DRenderDevice::FUN_1000e310(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	LegoU32 cacheIndex = m_unk0xc3848;
-	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	const GolVec3* position = m_sourcePositions + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
 	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
-	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
-	cache[0].m_unk0x10 = cacheIndex;
+	LegoU32 color = m_unk0xc83fc;
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
+	cache->m_unk0x10 = m_unk0xc3848;
+	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
 	m_unk0xc3848 += p_vertexCount;
+	const GolMatrix4* matrix = m_currentMatrix;
+	LegoFloat scaleX = m_viewportMetrics[0];
+	LegoFloat scaleY = m_viewportMetrics[1];
+	LegoFloat offsetX = m_viewportMetrics[2];
+	LegoFloat offsetY = m_viewportMetrics[3];
+	LegoU32 lowFlags;
 
-	const GolMatrix4& matrix = *m_currentMatrix;
-	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
-		LegoU32 sourceIndex = p_firstVertex + i;
-		const GolVec3& source = m_sourcePositions[sourceIndex];
-		VertexCacheEntry& cacheEntry = cache[i];
-		D3DTLVERTEX& vertex = vertices[i];
-
-		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
-						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
-						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
-						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
-						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
-		cacheEntry.m_unk0x10 = cacheIndex;
-		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
-
-		vertex.rhw = 1.0f / cacheEntry.m_w;
-		vertex.sx = cacheEntry.m_x * vertex.rhw * m_viewportMetrics[0] + m_viewportMetrics[2];
-		vertex.sy = cacheEntry.m_y * vertex.rhw * m_viewportMetrics[1] + m_viewportMetrics[3];
-		vertex.sz = cacheEntry.m_z * vertex.rhw;
-		vertex.color = m_unk0xc83fc;
+	__asm {
+		mov esi, position
+		mov edi, positionEnd
+		mov edx, matrix
+		mov eax, vertex
+		mov ebx, color
+		mov ecx, cache
+		cmp esi, edi
+		jae done
+	transformVertex:
+		fld dword ptr [esi]
+		fmul dword ptr [edx]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 0xc]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 4]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 8]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x10]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x1c]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x14]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x18]
+		fxch st(3)
+		faddp st(7), st
+		faddp st(4), st
+		faddp st(4), st
+		faddp st(1), st
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x20]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x2c]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x24]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x28]
+		fxch st(3)
+		faddp st(7), st
+		fxch st(1)
+		faddp st(5), st
+		faddp st(3), st
+		faddp st(1), st
+		fxch st(3)
+		fadd dword ptr [edx + 0x30]
+		fxch st(2)
+		fadd dword ptr [edx + 0x3c]
+		fxch st(1)
+		fadd dword ptr [edx + 0x34]
+		fxch st(3)
+		fadd dword ptr [edx + 0x38]
+		fxch st(2)
+		fst dword ptr [ecx]
+		fxch st(1)
+		fst dword ptr [ecx + 0xc]
+		fxch st(3)
+		fst dword ptr [ecx + 4]
+		fxch st(2)
+		fst dword ptr [ecx + 8]
+		fld1
+		fdivrp st(4), st
+		mov edx, dword ptr [ecx + 0x10]
+		add ecx, 0x20
+		inc edx
+		add eax, 0x20
+		add esi, 0xc
+		mov dword ptr [ecx + 0x10], edx
+		mov edi, dword ptr [ecx - 0x20]
+		mov edx, dword ptr [ecx - 0x1c]
+		mov dword ptr [eax - 0x10], ebx
+		shr edi, 31
+		and edx, 0x80000000
+		shr edx, 29
+		mov ebx, dword ptr [ecx - 0x18]
+		or edi, edx
+		and ebx, 0x80000000
+		shr ebx, 27
+		mov edx, dword ptr [ecx - 0x20]
+		or edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		mov lowFlags, edi
+		sub ebx, edx
+		and ebx, 0x80000000
+		mov edx, dword ptr [ecx - 0x1c]
+		mov edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		shr edi, 30
+		sub ebx, edx
+		and ebx, 0x80000000
+		mov edx, dword ptr [ecx - 0x18]
+		shr ebx, 28
+		mov position, esi
+		or edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		mov esi, lowFlags
+		sub ebx, edx
+		shl esi, 1
+		and ebx, 0x80000000
+		not esi
+		shr ebx, 26
+		or edi, ebx
+		mov ebx, lowFlags
+		and edi, esi
+		mov esi, position
+		or edi, ebx
+		mov ebx, color
+		mov dword ptr [ecx - 0xc], edi
+		mov edi, positionEnd
+		mov edx, matrix
+		fxch st(3)
+		fmul st(1), st
+		fmul st(2), st
+		cmp esi, edi
+		fmul st(3), st
+		fstp dword ptr [eax - 0x14]
+		fmul scaleX
+		fxch st(1)
+		fmul scaleY
+		fxch st(2)
+		fstp dword ptr [eax - 0x18]
+		fadd offsetX
+		fxch st(1)
+		fadd offsetY
+		fxch st(1)
+		fstp dword ptr [eax - 0x20]
+		fstp dword ptr [eax - 0x1c]
+		jb transformVertex
+	done:
 	}
 
-	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+	cacheEnd->m_unk0x10 = savedCacheIndex;
 }
 
-// STUB: GOLDP 0x1000e540
+// FUNCTION: GOLDP 0x1000e540
 void GolD3DRenderDevice::FUN_1000e540(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	LegoU32 cacheIndex = m_unk0xc3848;
-	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	const GolVec3* position = m_sourcePositions + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
 	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
-	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
-	cache[0].m_unk0x10 = cacheIndex;
+	LegoU32 color = m_unk0xc83fc;
+	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
+	cache->m_unk0x10 = m_unk0xc3848;
+	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
 	m_unk0xc3848 += p_vertexCount;
+	const GolMatrix4* matrix = m_currentMatrix;
+	LegoFloat scaleX = m_viewportMetrics[0];
+	LegoFloat scaleY = m_viewportMetrics[1];
+	LegoFloat offsetX = m_viewportMetrics[2];
+	LegoFloat offsetY = m_viewportMetrics[3];
+	LegoU32 lowFlags;
 
-	const GolMatrix4& matrix = *m_currentMatrix;
-	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
-		LegoU32 sourceIndex = p_firstVertex + i;
-		const GolVec3& source = m_sourcePositions[sourceIndex];
-		VertexCacheEntry& cacheEntry = cache[i];
-		D3DTLVERTEX& vertex = vertices[i];
-
-		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
-						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
-						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
-						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
-						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
-		cacheEntry.m_unk0x10 = cacheIndex;
-		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
-
-		vertex.rhw = 1.0f / cacheEntry.m_w;
-		vertex.sx = cacheEntry.m_x * vertex.rhw * m_viewportMetrics[0] + m_viewportMetrics[2];
-		vertex.sy = cacheEntry.m_y * vertex.rhw * m_viewportMetrics[1] + m_viewportMetrics[3];
-		vertex.sz = cacheEntry.m_z * vertex.rhw;
-		vertex.color = m_unk0xc83fc;
-		vertex.tu = m_sourceTexCoords[sourceIndex].m_x;
-		vertex.tv = m_sourceTexCoords[sourceIndex].m_y;
+	__asm {
+		mov esi, position
+		mov edi, positionEnd
+		mov edx, matrix
+		mov eax, vertex
+		mov ebx, color
+		mov ecx, cache
+		cmp esi, edi
+		jae done
+	transformVertex:
+		fld dword ptr [esi]
+		fmul dword ptr [edx]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 0xc]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 4]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 8]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x10]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x1c]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x14]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x18]
+		fxch st(3)
+		faddp st(7), st
+		faddp st(4), st
+		faddp st(4), st
+		faddp st(1), st
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x20]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x2c]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x24]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x28]
+		fxch st(3)
+		faddp st(7), st
+		fxch st(1)
+		faddp st(5), st
+		faddp st(3), st
+		faddp st(1), st
+		fxch st(3)
+		fadd dword ptr [edx + 0x30]
+		fxch st(2)
+		fadd dword ptr [edx + 0x3c]
+		fxch st(1)
+		fadd dword ptr [edx + 0x34]
+		fxch st(3)
+		fadd dword ptr [edx + 0x38]
+		fxch st(2)
+		fst dword ptr [ecx]
+		fxch st(1)
+		fst dword ptr [ecx + 0xc]
+		fxch st(3)
+		fst dword ptr [ecx + 4]
+		fxch st(2)
+		fst dword ptr [ecx + 8]
+		fld1
+		fdivrp st(4), st
+		mov edx, dword ptr [ecx + 0x10]
+		add ecx, 0x20
+		inc edx
+		add eax, 0x20
+		add esi, 0xc
+		mov dword ptr [ecx + 0x10], edx
+		mov edi, dword ptr [ecx - 0x20]
+		mov edx, dword ptr [ecx - 0x1c]
+		mov dword ptr [eax - 0x10], ebx
+		shr edi, 31
+		and edx, 0x80000000
+		shr edx, 29
+		mov ebx, dword ptr [ecx - 0x18]
+		or edi, edx
+		and ebx, 0x80000000
+		shr ebx, 27
+		mov edx, dword ptr [ecx - 0x20]
+		or edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		mov lowFlags, edi
+		sub ebx, edx
+		and ebx, 0x80000000
+		mov edx, dword ptr [ecx - 0x1c]
+		mov edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		shr edi, 30
+		sub ebx, edx
+		and ebx, 0x80000000
+		mov edx, dword ptr [ecx - 0x18]
+		shr ebx, 28
+		mov position, esi
+		or edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		mov esi, lowFlags
+		sub ebx, edx
+		shl esi, 1
+		and ebx, 0x80000000
+		not esi
+		shr ebx, 26
+		or edi, ebx
+		mov ebx, lowFlags
+		and edi, esi
+		mov edx, uv
+		or edi, ebx
+		mov ebx, dword ptr [edx]
+		mov dword ptr [ecx - 0xc], edi
+		mov dword ptr [eax - 8], ebx
+		mov edi, dword ptr [edx + 4]
+		mov ebx, color
+		mov dword ptr [eax - 4], edi
+		add edx, 8
+		mov uv, edx
+		mov edi, positionEnd
+		mov esi, position
+		mov edx, matrix
+		fxch st(3)
+		fmul st(1), st
+		fmul st(2), st
+		cmp esi, edi
+		fmul st(3), st
+		fstp dword ptr [eax - 0x14]
+		fmul scaleX
+		fxch st(1)
+		fmul scaleY
+		fxch st(2)
+		fstp dword ptr [eax - 0x18]
+		fadd offsetX
+		fxch st(1)
+		fadd offsetY
+		fxch st(1)
+		fstp dword ptr [eax - 0x20]
+		fstp dword ptr [eax - 0x1c]
+		jb transformVertex
+	done:
 	}
 
-	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+	cacheEnd->m_unk0x10 = savedCacheIndex;
 }
 
 // FUNCTION: GOLDP 0x1000e790
@@ -4379,93 +4668,276 @@ void GolD3DRenderDevice::FUN_1000e790(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
+	LegoU32 color = m_unk0xc83fc;
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
 	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	D3DTLVERTEX* vertex = vertices;
 	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
-
 	const GolMatrix4* matrix = m_currentMatrix;
-	LegoU32 color = m_unk0xc83fc;
 	LegoFloat textureOffsetX = m_uvOffsetU;
 	LegoFloat textureOffsetY = m_uvOffsetV;
-	D3DTLVERTEX* vertex = vertices;
-	for (; position < positionEnd; position++) {
-		vertex->sx = matrix->m_m[0][0] * position->m_x;
-		vertex->rhw = matrix->m_m[0][3] * position->m_x;
-		vertex->sy = matrix->m_m[0][1] * position->m_x;
-		vertex->sz = matrix->m_m[0][2] * position->m_x;
 
-		vertex->sx += matrix->m_m[1][0] * position->m_y;
-		vertex->rhw += matrix->m_m[1][3] * position->m_y;
-		vertex->sy += matrix->m_m[1][1] * position->m_y;
-		vertex->sz += matrix->m_m[1][2] * position->m_y;
-
-		vertex->sx += matrix->m_m[2][0] * position->m_z;
-		vertex->rhw += matrix->m_m[2][3] * position->m_z;
-		vertex->sy += matrix->m_m[2][1] * position->m_z;
-		vertex->sz += matrix->m_m[2][2] * position->m_z;
-
-		vertex->sx += matrix->m_m[3][0];
-		vertex->rhw = 1.0f / (vertex->rhw + matrix->m_m[3][3]);
-		vertex->sy += matrix->m_m[3][1];
-		vertex->sz += matrix->m_m[3][2];
-
-		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
-		vertexMap++;
-		vertex->color = color;
-		vertex->sx *= vertex->rhw;
-		vertex->sy *= vertex->rhw;
-		vertex->sz *= vertex->rhw;
-		vertex->tu = uv->m_x + textureOffsetX;
-		vertex->tv = uv->m_y + textureOffsetY;
-		uv++;
-		vertex++;
+	__asm {
+		mov esi, position
+		mov ecx, positionEnd
+		mov edx, matrix
+		mov eax, vertex
+		mov edi, uv
+		mov ebx, color
+		cmp esi, ecx
+		jae done
+	transformVertex:
+		fld dword ptr [esi]
+		fmul dword ptr [edx]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 0xc]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 4]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 8]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x10]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x1c]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x14]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x18]
+		fxch st(3)
+		faddp st(7), st
+		faddp st(4), st
+		faddp st(4), st
+		faddp st(1), st
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x20]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x2c]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x24]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x28]
+		fxch st(3)
+		faddp st(7), st
+		fxch st(1)
+		faddp st(5), st
+		faddp st(3), st
+		faddp st(1), st
+		fxch st(3)
+		fadd dword ptr [edx + 0x30]
+		fxch st(2)
+		fadd dword ptr [edx + 0x3c]
+		fxch st(1)
+		fadd dword ptr [edx + 0x34]
+		fxch st(3)
+		fadd dword ptr [edx + 0x38]
+		fld1
+		fdivrp st(2), st
+		mov edx, vertexMap
+		add eax, 0x20
+		add edx, 2
+		add esi, 0xc
+		mov vertexMap, edx
+		mov cx, word ptr [edx - 2]
+		mov dword ptr [eax - 0x10], ebx
+		inc cx
+		mov word ptr [edx], cx
+		mov ecx, positionEnd
+		add edi, 8
+		mov edx, matrix
+		cmp esi, ecx
+		fxch st(1)
+		fmul st(3), st
+		fmul st(2), st
+		fmul st(1), st
+		fstp dword ptr [eax - 0x14]
+		fstp dword ptr [eax - 0x18]
+		fld dword ptr [edi - 8]
+		fadd textureOffsetX
+		fxch st(1)
+		fstp dword ptr [eax - 0x20]
+		fld dword ptr [edi - 4]
+		fadd textureOffsetY
+		fxch st(2)
+		fstp dword ptr [eax - 0x1c]
+		fstp dword ptr [eax - 8]
+		fstp dword ptr [eax - 4]
+		jb transformVertex
+	done:
 	}
 
-	*vertexMap = savedMapEntry;
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000e930
+// FUNCTION: GOLDP 0x1000e930
 void GolD3DRenderDevice::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	LegoU32 cacheIndex = m_unk0xc3848;
-	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	const GolVec3* position = m_sourcePositions + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
 	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
-	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
-	cache[0].m_unk0x10 = cacheIndex;
+	LegoU32 color = m_unk0xc83fc;
+	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
+	cache->m_unk0x10 = m_unk0xc3848;
+	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
 	m_unk0xc3848 += p_vertexCount;
+	const GolMatrix4* matrix = m_currentMatrix;
+	LegoFloat scaleX = m_viewportMetrics[0];
+	LegoFloat scaleY = m_viewportMetrics[1];
+	LegoFloat offsetX = m_viewportMetrics[2];
+	LegoFloat offsetY = m_viewportMetrics[3];
+	LegoFloat uvOffsetU = m_uvOffsetU;
+	LegoFloat uvOffsetV = m_uvOffsetV;
+	LegoU32 lowFlags;
 
-	const GolMatrix4& matrix = *m_currentMatrix;
-	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
-		LegoU32 sourceIndex = p_firstVertex + i;
-		const GolVec3& source = m_sourcePositions[sourceIndex];
-		VertexCacheEntry& cacheEntry = cache[i];
-		D3DTLVERTEX& vertex = vertices[i];
-
-		cacheEntry.m_x = source.m_x * m_currentMatrix->m_m[0][0] + source.m_y * m_currentMatrix->m_m[1][0] +
-						 source.m_z * m_currentMatrix->m_m[2][0] + m_currentMatrix->m_m[3][0];
-		cacheEntry.m_y = source.m_x * m_currentMatrix->m_m[0][1] + source.m_y * m_currentMatrix->m_m[1][1] +
-						 source.m_z * m_currentMatrix->m_m[2][1] + m_currentMatrix->m_m[3][1];
-		cacheEntry.m_z = source.m_x * m_currentMatrix->m_m[0][2] + source.m_y * m_currentMatrix->m_m[1][2] +
-						 source.m_z * m_currentMatrix->m_m[2][2] + m_currentMatrix->m_m[3][2];
-		cacheEntry.m_w = source.m_x * m_currentMatrix->m_m[0][3] + source.m_y * m_currentMatrix->m_m[1][3] +
-						 source.m_z * m_currentMatrix->m_m[2][3] + m_currentMatrix->m_m[3][3];
-		cacheEntry.m_unk0x10 = cacheIndex;
-		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
-
-		vertex.rhw = 1.0f / cacheEntry.m_w;
-		vertex.sx = cacheEntry.m_x * vertex.rhw * m_viewportMetrics[0] + m_viewportMetrics[2];
-		vertex.sy = cacheEntry.m_y * vertex.rhw * m_viewportMetrics[1] + m_viewportMetrics[3];
-		vertex.sz = cacheEntry.m_z * vertex.rhw;
-		vertex.color = m_unk0xc83fc;
-		vertex.tu = m_sourceTexCoords[sourceIndex].m_x + m_uvOffsetU;
-		vertex.tv = m_sourceTexCoords[sourceIndex].m_y + m_uvOffsetV;
+	__asm {
+		mov esi, position
+		mov edi, positionEnd
+		mov edx, matrix
+		mov eax, vertex
+		mov ebx, color
+		mov ecx, cache
+		cmp esi, edi
+		jae done
+	transformVertex:
+		fld dword ptr [esi]
+		fmul dword ptr [edx]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 0xc]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 4]
+		fld dword ptr [esi]
+		fmul dword ptr [edx + 8]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x10]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x1c]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x14]
+		fld dword ptr [esi + 4]
+		fmul dword ptr [edx + 0x18]
+		fxch st(3)
+		faddp st(7), st
+		faddp st(4), st
+		faddp st(4), st
+		faddp st(1), st
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x20]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x2c]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x24]
+		fld dword ptr [esi + 8]
+		fmul dword ptr [edx + 0x28]
+		fxch st(3)
+		faddp st(7), st
+		fxch st(1)
+		faddp st(5), st
+		faddp st(3), st
+		faddp st(1), st
+		fxch st(3)
+		fadd dword ptr [edx + 0x30]
+		fxch st(2)
+		fadd dword ptr [edx + 0x3c]
+		fxch st(1)
+		fadd dword ptr [edx + 0x34]
+		fxch st(3)
+		fadd dword ptr [edx + 0x38]
+		fxch st(2)
+		fst dword ptr [ecx]
+		fxch st(1)
+		fst dword ptr [ecx + 0xc]
+		fxch st(3)
+		fst dword ptr [ecx + 4]
+		fxch st(2)
+		fst dword ptr [ecx + 8]
+		fld1
+		fdivrp st(4), st
+		mov edx, dword ptr [ecx + 0x10]
+		add ecx, 0x20
+		inc edx
+		add eax, 0x20
+		add esi, 0xc
+		mov dword ptr [ecx + 0x10], edx
+		mov edi, dword ptr [ecx - 0x20]
+		mov edx, dword ptr [ecx - 0x1c]
+		mov dword ptr [eax - 0x10], ebx
+		shr edi, 31
+		and edx, 0x80000000
+		shr edx, 29
+		mov ebx, dword ptr [ecx - 0x18]
+		or edi, edx
+		and ebx, 0x80000000
+		shr ebx, 27
+		mov edx, dword ptr [ecx - 0x20]
+		or edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		mov lowFlags, edi
+		sub ebx, edx
+		and ebx, 0x80000000
+		mov edx, dword ptr [ecx - 0x1c]
+		mov edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		shr edi, 30
+		sub ebx, edx
+		and ebx, 0x80000000
+		mov edx, dword ptr [ecx - 0x18]
+		shr ebx, 28
+		mov position, esi
+		or edi, ebx
+		mov ebx, dword ptr [ecx - 0x14]
+		mov esi, lowFlags
+		sub ebx, edx
+		shl esi, 1
+		and ebx, 0x80000000
+		not esi
+		shr ebx, 26
+		or edi, ebx
+		mov ebx, lowFlags
+		and edi, esi
+		mov edx, uv
+		or edi, ebx
+		add edx, 8
+		mov dword ptr [ecx - 0xc], edi
+		mov ebx, color
+		mov uv, edx
+		mov edi, positionEnd
+		mov esi, position
+		fxch st(3)
+		fmul st(1), st
+		fmul st(2), st
+		cmp esi, edi
+		fmul st(3), st
+		fstp dword ptr [eax - 0x14]
+		fmul scaleX
+		fxch st(1)
+		fmul scaleY
+		fxch st(2)
+		fstp dword ptr [eax - 0x18]
+		fadd offsetX
+		fxch st(1)
+		fadd offsetY
+		fxch st(1)
+		fld dword ptr [edx - 8]
+		fadd uvOffsetU
+		fxch st(1)
+		fstp dword ptr [eax - 0x20]
+		fld dword ptr [edx - 4]
+		fadd uvOffsetV
+		mov edx, matrix
+		fxch st(2)
+		fstp dword ptr [eax - 0x1c]
+		fstp dword ptr [eax - 8]
+		fstp dword ptr [eax - 4]
+		jb transformVertex
+	done:
 	}
 
-	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+	cacheEnd->m_unk0x10 = savedCacheIndex;
 }
 
 // FUNCTION: GOLDP 0x1000eb90

@@ -331,7 +331,8 @@ void GolAnimatedEntity::PlayPartScaled(LegoU32 p_partIndex, LegoS32 p_timeScale)
 // GOLDP compiles the time-scale-0 start as a single, standalone function, whereas
 // LEGORACERS factors it into 0x0040dad0 -> 0x0040dae0 -> 0x0040d650 (unannotated
 // helpers). The GOLDP call is probably also to the first one, but inlining isn't right.
-// FUNCTION: GOLDP 0x10023a70
+#ifdef COMPAT_MODE
+
 void GolAnimatedEntity::PlayPartDirect(LegoU32 p_partIndex)
 {
 	ResetPartIndices();
@@ -354,6 +355,58 @@ void GolAnimatedEntity::PlayPartDirect(LegoU32 p_partIndex)
 	m_currentPartVelocity = offset;
 	m_velocity = offset;
 }
+
+#else
+
+// FUNCTION: GOLDP 0x10023a70
+__declspec(naked) void GolAnimatedEntity::PlayPartDirect(LegoU32 p_partIndex)
+{
+	__asm {
+		or eax, 0xffffffff
+		push esi
+		mov dword ptr [ecx + 0x9c], eax
+		push edi
+		mov dword ptr [ecx + 0xa0], eax
+		mov dword ptr [ecx + 0xa4], eax
+		mov edx, dword ptr [ecx + 0x5c]
+		mov eax, dword ptr [esp + 0xc]
+		and edx, 0xffa5ffff
+		mov word ptr [ecx + 0xbc], ax
+		or edx, 0x40000
+		and eax, 0xffff
+		mov dword ptr [ecx + 0x5c], edx
+		mov edx, dword ptr [ecx + 0xa8]
+		mov dword ptr [ecx + 0x10], 0xbf800000
+		lea eax, [eax + eax*4]
+		mov esi, dword ptr [edx + 0x2c]
+		shl eax, 3
+		fld dword ptr [esi + eax]
+		fstp dword ptr [ecx + 0xb8]
+		mov dword ptr [ecx + 0xb4], 0
+		mov edx, dword ptr [edx + 0x2c]
+		lea eax, [edx + eax + 4]
+		lea edx, [ecx + 0xc0]
+		mov esi, eax
+		add ecx, 0x1c
+		mov edi, dword ptr [esi]
+		mov dword ptr [edx], edi
+		mov edi, dword ptr [esi + 4]
+		mov dword ptr [edx + 4], edi
+		pop edi
+		mov esi, dword ptr [esi + 8]
+		mov dword ptr [edx + 8], esi
+		mov edx, dword ptr [eax]
+		mov dword ptr [ecx], edx
+		mov edx, dword ptr [eax + 4]
+		pop esi
+		mov dword ptr [ecx + 4], edx
+		mov eax, dword ptr [eax + 8]
+		mov dword ptr [ecx + 8], eax
+		ret 4
+	}
+}
+
+#endif
 
 // FUNCTION: LEGORACERS 0x0040db80
 void GolAnimatedEntity::TransitionToPart(

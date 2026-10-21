@@ -207,8 +207,8 @@ void GolModelEntity::ComputeBoundsFromModel(LegoU32 p_index)
 	SetBoundsRadius(scaledRadius);
 }
 
-// FUNCTION: GOLDP 0x10027f40
-// FUNCTION: LEGORACERS 0x00411470
+#ifdef COMPAT_MODE
+
 void GolModelEntity::Update(LegoS32 p_elapsed)
 {
 	GolVec3 v;
@@ -222,6 +222,68 @@ void GolModelEntity::Update(LegoS32 p_elapsed)
 		m_textureScrollV += m_textureScrollSpeedV * p_elapsed;
 	}
 }
+
+#else
+
+// FUNCTION: GOLDP 0x10027f40
+// FUNCTION: LEGORACERS 0x00411470
+__declspec(naked) void GolModelEntity::Update(LegoS32 p_elapsed)
+{
+	__asm {
+		sub esp, 0x18
+		push esi
+		mov esi, ecx
+		lea ecx, [esp + 4]
+		mov eax, dword ptr [esi]
+		push ecx
+		mov ecx, esi
+		call dword ptr [eax + 4]
+		fild dword ptr [esp + 0x20]
+		mov edx, dword ptr [esi]
+		lea eax, [esp + 4]
+		push eax
+		mov ecx, esi
+		fld st(0)
+		fmul dword ptr [esi + 0x1c]
+		fstp dword ptr [esp + 0x14]
+		fld dword ptr [esi + 0x20]
+		fmul st(0), st(1)
+		fstp dword ptr [esp + 0x18]
+		fmul dword ptr [esi + 0x24]
+		fld dword ptr [esp + 8]
+		fadd dword ptr [esp + 0x14]
+		fstp dword ptr [esp + 8]
+		fld dword ptr [esp + 0xc]
+		fadd dword ptr [esp + 0x18]
+		fstp dword ptr [esp + 0xc]
+		fld dword ptr [esp + 0x10]
+		fadd st(0), st(1)
+		fstp dword ptr [esp + 0x10]
+		fstp st(0)
+		call dword ptr [edx + 8]
+		mov eax, dword ptr [esi + 0x64]
+		mov dword ptr [esi + 0x10], 0xbf800000
+		test eax, eax
+		jne L_Update_0
+		mov eax, dword ptr [esi + 0x68]
+		test eax, eax
+		je L_Update_1
+	L_Update_0:
+		mov eax, dword ptr [esp + 0x20]
+		mov dx, word ptr [esi + 0x68]
+		mov cx, ax
+		imul dx, ax
+		imul cx, word ptr [esi + 0x64]
+		add word ptr [esi + 0x60], cx
+		add word ptr [esi + 0x62], dx
+	L_Update_1:
+		pop esi
+		add esp, 0x18
+		ret 4
+	}
+}
+
+#endif
 
 // FUNCTION: GOLDP 0x10027fe0
 // FUNCTION: LEGORACERS 0x00411510

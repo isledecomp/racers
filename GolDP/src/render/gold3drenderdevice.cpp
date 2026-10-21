@@ -1744,7 +1744,8 @@ void GolD3DRenderDevice::DrawStringFitted(
 	p_font->DrawStringFitted(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
-// FUNCTION: GOLDP 0x10009bd0
+#ifdef COMPAT_MODE
+
 void GolD3DRenderDevice::DrawRectangle(
 	const Rect& p_rect,
 	LegoFloat p_z,
@@ -1797,6 +1798,98 @@ void GolD3DRenderDevice::DrawRectangle(
 	DrawTriangle(&bottomLeft, &topLeft, &bottomRight, NULL, p_arg7);
 	DrawTriangle(&bottomRight, &topLeft, &topRight, NULL, p_arg7);
 }
+
+#else
+
+// FUNCTION: GOLDP 0x10009bd0
+__declspec(naked) void GolD3DRenderDevice::DrawRectangle(
+	const Rect& p_rect,
+	LegoFloat p_z,
+	const ColorRGBA& p_color1,
+	const ColorRGBA& p_color2,
+	const ColorRGBA& p_color3,
+	const ColorRGBA& p_color4,
+	undefined4 p_arg7
+)
+{
+	__asm {
+		sub esp, 0x60
+		mov eax, dword ptr [esp + 0x64]
+		mov edx, dword ptr [esp + 0x6c]
+		push esi
+		mov esi, ecx
+		fild dword ptr [eax]
+		mov ecx, dword ptr [esp + 0x6c]
+		push edi
+		mov dword ptr [esp + 0x10], ecx
+		mov ecx, dword ptr [edx]
+		fst dword ptr [esp + 8]
+		fild dword ptr [eax + 4]
+		mov edx, dword ptr [esp + 0x70]
+		mov dword ptr [esp + 0x1c], ecx
+		mov ecx, dword ptr [esp + 0x78]
+		mov dword ptr [esp + 0x40], edx
+		fst dword ptr [esp + 0x6c]
+		fstp dword ptr [esp + 0xc]
+		mov edx, dword ptr [ecx]
+		mov edi, dword ptr [esp + 0x84]
+		fstp dword ptr [esp + 0x38]
+		fild dword ptr [eax + 0xc]
+		mov dword ptr [esp + 0x4c], edx
+		mov edx, dword ptr [esp + 0x7c]
+		mov ecx, dword ptr [esp + 0x70]
+		push edi
+		fst dword ptr [esp + 0x40]
+		fild dword ptr [eax + 8]
+		mov eax, dword ptr [esp + 0x70]
+		mov dword ptr [esp + 0x5c], ecx
+		mov dword ptr [esp + 0x58], eax
+		mov eax, dword ptr [edx]
+		mov edx, dword ptr [esp + 0x84]
+		mov dword ptr [esp + 0x68], eax
+		fst dword ptr [esp + 0x54]
+		mov eax, dword ptr [edx]
+		mov edx, dword ptr [esi]
+		fstp dword ptr [esp + 0x24]
+		mov dword ptr [esp + 0x38], eax
+		lea eax, [esp + 0x24]
+		fstp dword ptr [esp + 0x28]
+		mov dword ptr [esp + 0x2c], ecx
+		push 0
+		push eax
+		lea ecx, [esp + 0x14]
+		lea eax, [esp + 0x44]
+		push ecx
+		push eax
+		mov ecx, esi
+		mov dword ptr [esp + 0x28], 0
+		mov dword ptr [esp + 0x2c], 0
+		mov dword ptr [esp + 0x58], 0
+		mov dword ptr [esp + 0x5c], 0
+		mov dword ptr [esp + 0x70], 0
+		mov dword ptr [esp + 0x74], 0
+		mov dword ptr [esp + 0x40], 0
+		mov dword ptr [esp + 0x44], 0
+		call dword ptr [edx + 0x84]
+		mov edx, dword ptr [esi]
+		push edi
+		lea eax, [esp + 0x54]
+		push 0
+		push eax
+		lea ecx, [esp + 0x14]
+		lea eax, [esp + 0x2c]
+		push ecx
+		push eax
+		mov ecx, esi
+		call dword ptr [edx + 0x84]
+		pop edi
+		pop esi
+		add esp, 0x60
+		ret 0x1c
+	}
+}
+
+#endif
 
 // FUNCTION: GOLDP 0x10009ce0
 void GolD3DRenderDevice::DrawTriangle(
@@ -2369,9 +2462,8 @@ void GolD3DRenderDevice::ApplyMaterialSw(GolMaterial* p_material)
 		newFlags &= ~(GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagNoTransparency);
 		newFlags |= GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagTransparent;
 	}
-	else if (
-		newFlags & (GolMaterial::c_flagAlphaTest | GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)
-	) {
+	else if (newFlags &
+			 (GolMaterial::c_flagAlphaTest | GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)) {
 		if (newFlags & GolMaterial::c_flagAlphaTest) {
 			m_activeAlphaFunc = p_material->GetAlphaFunc();
 			m_activeAlphaRef = p_material->GetAlphaRef();
@@ -6061,8 +6153,8 @@ void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_t
 			LegoS32 rasterizerMask = rasterizerMaskBase;
 			LegoU32 rasterizerIndex = 0;
 
-			while (((areaBucket & rasterizerMask) == 0) &
-				   (static_cast<LegoS32>(rasterizerIndex) < maxRasterizerIndex)) {
+			while (((areaBucket & rasterizerMask) == 0) & (static_cast<LegoS32>(rasterizerIndex) < maxRasterizerIndex)
+			) {
 				rasterizerMask >>= 2;
 				rasterizerIndex++;
 			}

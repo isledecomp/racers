@@ -221,7 +221,8 @@ void GolTransform::TransformVector(const GolVec3* p_src, GolVec3* p_dest)
 	p_dest->m_z += m_matrix.m_m[2][2] * p_src->m_z;
 }
 
-// FUNCTION: GOLDP 0x10002d00
+#ifdef COMPAT_MODE
+
 void GolTransform::InverseTransformPoint(const GolVec3* p_src, GolVec3* p_dest)
 {
 	LegoFloat product = m_matrix.m_m[0][0];
@@ -256,6 +257,83 @@ void GolTransform::InverseTransformPoint(const GolVec3* p_src, GolVec3* p_dest)
 	offset += m_matrix.m_m[3][0] * m_matrix.m_m[2][0];
 	p_dest->m_z -= offset;
 }
+
+#else
+
+// FUNCTION: GOLDP 0x10002d00
+__declspec(naked) void GolTransform::InverseTransformPoint(const GolVec3* p_src, GolVec3* p_dest)
+{
+	__asm {
+		fld dword ptr [ecx + 0x10]
+		mov edx, dword ptr [esp + 4]
+		mov eax, dword ptr [esp + 8]
+		fmul dword ptr [edx]
+		fstp dword ptr [eax]
+		fld dword ptr [ecx + 0x20]
+		fmul dword ptr [edx]
+		fstp dword ptr [eax + 4]
+		fld dword ptr [ecx + 0x30]
+		fmul dword ptr [edx]
+		fstp dword ptr [eax + 8]
+		fld dword ptr [edx + 4]
+		fmul dword ptr [ecx + 0x14]
+		fadd dword ptr [eax]
+		fstp dword ptr [eax]
+		fld dword ptr [edx + 4]
+		fmul dword ptr [ecx + 0x24]
+		fadd dword ptr [eax + 4]
+		fstp dword ptr [eax + 4]
+		fld dword ptr [ecx + 0x34]
+		fmul dword ptr [edx + 4]
+		fadd dword ptr [eax + 8]
+		fstp dword ptr [eax + 8]
+		fld dword ptr [edx + 8]
+		fmul dword ptr [ecx + 0x18]
+		fadd dword ptr [eax]
+		fstp dword ptr [eax]
+		fld dword ptr [edx + 8]
+		fmul dword ptr [ecx + 0x28]
+		fadd dword ptr [eax + 4]
+		fstp dword ptr [eax + 4]
+		fld dword ptr [ecx + 0x38]
+		fmul dword ptr [edx + 8]
+		fadd dword ptr [eax + 8]
+		fstp dword ptr [eax + 8]
+		fld dword ptr [ecx + 0x40]
+		fmul dword ptr [ecx + 0x10]
+		fld dword ptr [ecx + 0x14]
+		fmul dword ptr [ecx + 0x44]
+		faddp st(1), st(0)
+		fld dword ptr [ecx + 0x48]
+		fmul dword ptr [ecx + 0x18]
+		faddp st(1), st(0)
+		fsubr dword ptr [eax]
+		fstp dword ptr [eax]
+		fld dword ptr [ecx + 0x48]
+		fmul dword ptr [ecx + 0x28]
+		fld dword ptr [ecx + 0x24]
+		fmul dword ptr [ecx + 0x44]
+		faddp st(1), st(0)
+		fld dword ptr [ecx + 0x40]
+		fmul dword ptr [ecx + 0x20]
+		faddp st(1), st(0)
+		fsubr dword ptr [eax + 4]
+		fstp dword ptr [eax + 4]
+		fld dword ptr [ecx + 0x38]
+		fmul dword ptr [ecx + 0x48]
+		fld dword ptr [ecx + 0x34]
+		fmul dword ptr [ecx + 0x44]
+		faddp st(1), st(0)
+		fld dword ptr [ecx + 0x40]
+		fmul dword ptr [ecx + 0x30]
+		faddp st(1), st(0)
+		fsubr dword ptr [eax + 8]
+		fstp dword ptr [eax + 8]
+		ret 8
+	}
+}
+
+#endif
 
 // FUNCTION: GOLDP 0x10002dc0
 void GolTransform::InverseTransformVector(const GolVec3* p_src, GolVec3* p_dest)

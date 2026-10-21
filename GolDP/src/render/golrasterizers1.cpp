@@ -145,7 +145,8 @@ inline void SelectMipmapRasterizers(GolSoftwareRenderer* p_renderer)
 	}
 }
 
-// FUNCTION: GOLDP 0x10032c80
+#ifdef COMPAT_MODE
+
 void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 {
 	LegoU32 sizeLog2;
@@ -349,6 +350,426 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		}
 	}
 }
+
+#else
+
+// FUNCTION: GOLDP 0x10032c80
+__declspec(naked) void FUN_10032c80(GolSoftwareRenderer* p_renderer)
+{
+	__asm {
+		mov eax, dword ptr [esp + 4]
+		push esi
+		push edi
+		movsx edx, byte ptr [eax + 0x11]
+		mov ecx, dword ptr [eax + 0x2c]
+		and ecx, 0x7fffffff
+		sub edx, 0
+		mov dword ptr [eax + 0x2c], ecx
+		je L_FUN_10032c80_0
+		dec edx
+		je L_FUN_10032c80_1
+		mov ecx, offset NoopTriangleRasterizer
+		pop edi
+		mov dword ptr [eax + 0x20], ecx
+		pop esi
+		mov dword ptr [eax + 0x24], ecx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_1:
+		mov esi, dword ptr [eax + 0x34]
+		test esi, esi
+		je L_FUN_10032c80_2
+		test ch, 1
+		je L_FUN_10032c80_2
+		movsx edx, byte ptr [esi + 0x13]
+		test edx, edx
+		je L_FUN_10032c80_3
+		mov edi, dword ptr [esi + 0x14]
+		test edi, edi
+		je L_FUN_10032c80_4
+		test cl, 4
+		je L_FUN_10032c80_5
+		test ch, 2
+		je L_FUN_10032c80_6
+		mov dword ptr [eax + 0x24], offset FUN_1003d700
+		jmp L_FUN_10032c80_7
+	L_FUN_10032c80_6:
+		mov dword ptr [eax + 0x24], offset FUN_1003ba30
+	L_FUN_10032c80_7:
+		test cl, 2
+		je L_FUN_10032c80_8
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0x140
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_8:
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0x110
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_5:
+		test cl, 8
+		je L_FUN_10032c80_9
+		test ch, 2
+		je L_FUN_10032c80_10
+		mov dword ptr [eax + 0x24], offset FUN_1003d700
+		jmp L_FUN_10032c80_11
+	L_FUN_10032c80_10:
+		mov dword ptr [eax + 0x24], offset FUN_1003ba30
+	L_FUN_10032c80_11:
+		mov ecx, dword ptr [g_cpuSupportsMMX]
+		test ecx, ecx
+		je L_FUN_10032c80_12
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0xb0
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_12:
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0x80
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_9:
+		test ch, 2
+		je L_FUN_10032c80_13
+		mov dword ptr [eax + 0x24], offset FUN_1003e590
+		jmp L_FUN_10032c80_14
+	L_FUN_10032c80_13:
+		mov dword ptr [eax + 0x24], offset FUN_1003c780
+	L_FUN_10032c80_14:
+		test cl, 2
+		je L_FUN_10032c80_15
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0x68
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_15:
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0x50
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_4:
+		test ch, 2
+		je L_FUN_10032c80_16
+		mov dword ptr [eax + 0x24], offset FUN_1003e590
+		jmp L_FUN_10032c80_17
+	L_FUN_10032c80_16:
+		mov dword ptr [eax + 0x24], offset FUN_1003c780
+	L_FUN_10032c80_17:
+		test cl, 4
+		je L_FUN_10032c80_18
+		cmp byte ptr [esi + 0x12], 4
+		jne L_FUN_10032c80_18
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0xe0
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_18:
+		test cl, 2
+		je L_FUN_10032c80_19
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0x38
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_19:
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0x20
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_3:
+		mov edx, dword ptr [esi + 0x14]
+		test edx, edx
+		je L_FUN_10032c80_20
+	L_FUN_10032c80_42:
+		test ch, 2
+		je L_FUN_10032c80_21
+		mov dword ptr [eax + 0x24], offset FUN_1003e590
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_10033890
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_21:
+		mov dword ptr [eax + 0x24], offset FUN_1003c780
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_10033890
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_20:
+		test ch, 2
+		je L_FUN_10032c80_22
+		mov dword ptr [eax + 0x24], offset FUN_1003ee90
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_100336d0
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_22:
+		mov dword ptr [eax + 0x24], offset FUN_1003cf40
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_100336d0
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_2:
+		test cl, 1
+		je L_FUN_10032c80_23
+		mov dword ptr [eax + 0x24], offset FUN_10040670
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_100334d0
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_23:
+		mov dword ptr [eax + 0x24], offset FUN_1003f790
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_100332a0
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_0:
+		mov esi, dword ptr [eax + 0x34]
+		test esi, esi
+		je L_FUN_10032c80_24
+		test ch, 1
+		je L_FUN_10032c80_24
+		movsx edx, byte ptr [esi + 0x13]
+		test edx, edx
+		je L_FUN_10032c80_25
+		mov edi, dword ptr [esi + 0x14]
+		test edi, edi
+		je L_FUN_10032c80_26
+		test cl, 4
+		je L_FUN_10032c80_27
+		test ch, 2
+		je L_FUN_10032c80_28
+		mov dword ptr [eax + 0x24], offset FUN_1003d700
+		jmp L_FUN_10032c80_29
+	L_FUN_10032c80_28:
+		mov dword ptr [eax + 0x24], offset FUN_1003ba30
+	L_FUN_10032c80_29:
+		test cl, 2
+		je L_FUN_10032c80_30
+		shl edx, 2
+		mov ecx, offset g_unk0x10057b58 + 0x8
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_30:
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0x128
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_27:
+		test cl, 8
+		je L_FUN_10032c80_31
+		test ch, 2
+		je L_FUN_10032c80_32
+		mov dword ptr [eax + 0x24], offset FUN_1003d700
+		jmp L_FUN_10032c80_33
+	L_FUN_10032c80_32:
+		mov dword ptr [eax + 0x24], offset FUN_1003ba30
+	L_FUN_10032c80_33:
+		mov ecx, dword ptr [g_cpuSupportsMMX]
+		test ecx, ecx
+		je L_FUN_10032c80_34
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0xc8
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_34:
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0x98
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_31:
+		test ch, 2
+		je L_FUN_10032c80_35
+		mov dword ptr [eax + 0x24], offset FUN_1003e590
+		jmp L_FUN_10032c80_36
+	L_FUN_10032c80_35:
+		mov dword ptr [eax + 0x24], offset FUN_1003c780
+	L_FUN_10032c80_36:
+		test cl, 2
+		je L_FUN_10032c80_37
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0x68
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_37:
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0x50
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_26:
+		test ch, 2
+		je L_FUN_10032c80_38
+		mov dword ptr [eax + 0x24], offset FUN_1003e590
+		jmp L_FUN_10032c80_39
+	L_FUN_10032c80_38:
+		mov dword ptr [eax + 0x24], offset FUN_1003c780
+	L_FUN_10032c80_39:
+		test cl, 4
+		je L_FUN_10032c80_40
+		cmp byte ptr [esi + 0x12], 4
+		jne L_FUN_10032c80_40
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0xf8
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_40:
+		test cl, 2
+		je L_FUN_10032c80_41
+		lea ecx, [edx*4]
+		mov edx, offset g_spanRasterizers + 0x38
+		sub edx, ecx
+		pop edi
+		pop esi
+		mov ecx, dword ptr [edx]
+		mov dword ptr [eax + 0x28], ecx
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_41:
+		shl edx, 2
+		mov ecx, offset g_spanRasterizers + 0x20
+		pop edi
+		sub ecx, edx
+		pop esi
+		mov edx, dword ptr [ecx]
+		mov ecx, dword ptr [eax + 0x24]
+		mov dword ptr [eax + 0x28], edx
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_25:
+		mov edx, dword ptr [esi + 0x14]
+		test edx, edx
+		je L_FUN_10032c80_20
+		jmp L_FUN_10032c80_42
+	L_FUN_10032c80_24:
+		test cl, 1
+		je L_FUN_10032c80_43
+		mov dword ptr [eax + 0x24], offset FUN_1003fce0
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_100332d0
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	L_FUN_10032c80_43:
+		mov dword ptr [eax + 0x24], offset FUN_1003f790
+		mov ecx, dword ptr [eax + 0x24]
+		pop edi
+		pop esi
+		mov dword ptr [eax + 0x28], offset FUN_10033270
+		mov dword ptr [eax + 0x20], ecx
+		ret
+	}
+}
+
+#endif
 
 // FUNCTION: GOLDP 0x100330d0
 void FUN_100330d0(GolSoftwareRenderer* p_renderer, MipmapLevel* p_mipmap)

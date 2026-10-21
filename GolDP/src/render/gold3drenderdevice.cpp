@@ -2462,8 +2462,9 @@ void GolD3DRenderDevice::ApplyMaterialSw(GolMaterial* p_material)
 		newFlags &= ~(GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagNoTransparency);
 		newFlags |= GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagTransparent;
 	}
-	else if (newFlags &
-			 (GolMaterial::c_flagAlphaTest | GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)) {
+	else if (
+		newFlags & (GolMaterial::c_flagAlphaTest | GolMaterial::c_flagAlphaBlend | GolMaterial::c_flagTransparent)
+	) {
 		if (newFlags & GolMaterial::c_flagAlphaTest) {
 			m_activeAlphaFunc = p_material->GetAlphaFunc();
 			m_activeAlphaRef = p_material->GetAlphaRef();
@@ -6153,8 +6154,8 @@ void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_t
 			LegoS32 rasterizerMask = rasterizerMaskBase;
 			LegoU32 rasterizerIndex = 0;
 
-			while (((areaBucket & rasterizerMask) == 0) & (static_cast<LegoS32>(rasterizerIndex) < maxRasterizerIndex)
-			) {
+			while (((areaBucket & rasterizerMask) == 0) &
+				   (static_cast<LegoS32>(rasterizerIndex) < maxRasterizerIndex)) {
 				rasterizerMask >>= 2;
 				rasterizerIndex++;
 			}

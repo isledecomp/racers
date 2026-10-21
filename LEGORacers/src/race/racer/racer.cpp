@@ -357,7 +357,8 @@ void Racer::Destroy()
 	Reset();
 }
 
-// FUNCTION: LEGORACERS 0x00436bd0
+#ifdef COMPAT_MODE
+
 void Racer::Reset()
 {
 	m_soundSource = NULL;
@@ -449,6 +450,108 @@ void Racer::Reset()
 	m_lapCount = 0;
 	m_speedRampTimerMs = 0;
 }
+
+#else
+
+// FUNCTION: LEGORACERS 0x00436bd0
+__declspec(naked) void Racer::Reset()
+{
+	__asm {
+		xor eax, eax
+		mov edx, 2
+		mov dword ptr [ecx + 4], eax
+		mov dword ptr [ecx + 0xd0c], eax
+		mov dword ptr [ecx + 0xd10], edx
+		mov dword ptr [ecx + 0xd14], 1
+		mov dword ptr [ecx + 0xcd8], eax
+		mov dword ptr [ecx + 0xc], eax
+		push ebx
+		mov dword ptr [ecx + 0xce4], eax
+		xor ebx, ebx
+		mov dword ptr [ecx + 0xce8], 0xffffffff
+		mov dword ptr [ecx + 0xcec], ebx
+		mov dword ptr [ecx + 0xcf0], ebx
+		mov dword ptr [ecx + 0xcf4], ebx
+		mov dword ptr [ecx + 0xcf8], ebx
+		mov dword ptr [ecx + 0xcfc], ebx
+		mov dword ptr [ecx + 0xccc], eax
+		mov dword ptr [ecx + 0xd04], eax
+		mov dword ptr [ecx + 0xd08], edx
+		mov dword ptr [ecx + 0xcdc], 0x96
+		mov dword ptr [ecx + 0xd38], eax
+		mov dword ptr [ecx + 0xd34], eax
+		mov dword ptr [ecx + 0xd44], eax
+		mov dword ptr [ecx + 0xd4c], eax
+		mov dword ptr [ecx + 0xd50], eax
+		mov dword ptr [ecx + 0xd40], 0x3e8
+		mov dword ptr [ecx + 0xd3c], eax
+		mov dword ptr [ecx + 0xd54], 0x3f800000
+		mov dword ptr [ecx + 0xd68], eax
+		mov dword ptr [ecx + 0xd6c], eax
+		mov dword ptr [ecx + 0xd70], eax
+		mov dword ptr [ecx + 0xd8c], eax
+		mov dword ptr [ecx + 0xd90], eax
+		mov dword ptr [ecx + 0xd94], eax
+		mov dword ptr [ecx + 0xd98], eax
+		mov dword ptr [ecx + 0xd9c], eax
+		mov dword ptr [ecx + 0xda0], eax
+		mov dword ptr [ecx + 0xda4], eax
+		mov dword ptr [ecx + 0xda8], eax
+		mov dword ptr [ecx + 0xdac], eax
+		mov dword ptr [ecx + 0xd24], eax
+		mov dword ptr [ecx + 0xd28], eax
+		mov dword ptr [ecx + 0xd2c], eax
+		mov dword ptr [ecx + 0xd30], eax
+		mov dword ptr [ecx + 0xd74], eax
+		mov dword ptr [ecx + 0xd7c], eax
+		mov dword ptr [ecx + 0xd84], eax
+		mov dword ptr [ecx + 0xd88], eax
+		mov dl, 0xff
+		mov dword ptr [ecx + 0xd78], eax
+		mov dword ptr [ecx + 0xdf8], eax
+		mov byte ptr [ecx + 0xd1c], dl
+		mov byte ptr [ecx + 0xd1d], dl
+		mov byte ptr [ecx + 0xd1e], dl
+		mov byte ptr [ecx + 0xd1f], dl
+		mov byte ptr [ecx + 0xd20], dl
+		mov byte ptr [ecx + 0xd21], dl
+		mov dword ptr [ecx + 0xdfc], eax
+		xor edx, edx
+		mov dword ptr [ecx + 0xe00], eax
+		mov byte ptr [ecx + 0xd22], al
+		mov dword ptr [ecx + 0xe08], eax
+		mov dword ptr [ecx + 0xe0c], eax
+		mov dword ptr [ecx + 0xe10], eax
+		mov dword ptr [ecx + 0xe14], eax
+		mov dword ptr [ecx + 0xe18], eax
+		mov dword ptr [ecx + 0xe1c], eax
+		mov dword ptr [ecx + 0xe20], eax
+		mov dword ptr [ecx + 0xe24], eax
+		mov dword ptr [ecx + 0xe28], eax
+		mov dword ptr [ecx + 0xcc4], eax
+		mov dword ptr [ecx + 0xcc8], 1
+		mov dword ptr [ecx + 0x10], eax
+		mov dword ptr [ecx + 0xe30], eax
+		mov dword ptr [ecx + 0xd18], 0xffffffff
+		mov dword ptr [ecx + 0xdb0], eax
+		mov dword ptr [ecx + 0xd58], eax
+		mov dword ptr [ecx + 0xd5c], edx
+		mov dword ptr [ecx + 0xd60], edx
+		mov dword ptr [ecx + 0xd64], edx
+		mov dword ptr [ecx + 0xdb4], eax
+		mov dword ptr [ecx + 0xdb8], eax
+		mov dword ptr [ecx + 0x14], eax
+		mov word ptr [ecx + 0xdbc], ax
+		mov dword ptr [ecx + 0xcd0], eax
+		mov dword ptr [ecx + 0xcd4], eax
+		mov byte ptr [ecx + 0xce0], al
+		mov dword ptr [ecx + 0xd48], eax
+		pop ebx
+		ret
+	}
+}
+
+#endif
 
 // FUNCTION: LEGORACERS 0x00436df0
 void Racer::Initialize(

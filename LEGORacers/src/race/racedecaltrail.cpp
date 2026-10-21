@@ -548,7 +548,8 @@ void RaceDecalManager::Trail::Decal::ComputeProjection()
 	g_decalVOffset = dotY + 0.5f;
 }
 
-// FUNCTION: LEGORACERS 0x00414e40
+#ifdef COMPAT_MODE
+
 LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(
 	LegoU32 p_destIndex,
 	LegoU32 p_firstVertex,
@@ -596,6 +597,100 @@ LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(
 
 	return result;
 }
+
+#else
+
+// FUNCTION: LEGORACERS 0x00414e40
+__declspec(naked) LegoU32
+RaceDecalManager::Trail::Decal::TransformVertices(LegoU32 p_destIndex, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	__asm {
+		push ecx
+		mov eax, dword ptr [esp + 0x10]
+		push ebx
+		push esi
+		mov esi, dword ptr [esp + 0x10]
+		push edi
+		mov edi, dword ptr [esp + 0x18]
+		shl esi, 5
+		lea ebx, [edi + eax]
+		add esi, offset g_decalProjectedVertices
+		cmp edi, ebx
+		mov dword ptr [esp + 0xc], ecx
+		jae L_DecalTransformVertices_0
+		push ebp
+	L_DecalTransformVertices_1:
+		mov ecx, dword ptr [esp + 0x10]
+		push esi
+		push edi
+		mov ecx, dword ptr [ecx + 0x114]
+		mov edx, dword ptr [ecx]
+		call dword ptr [edx + 0x14]
+		fld dword ptr [g_decalUAxisX]
+		fmul dword ptr [esi]
+		add esi, 0x20
+		fstp dword ptr [esi - 0x14]
+		fld dword ptr [g_decalVAxisX]
+		fmul dword ptr [esi - 0x20]
+		fstp dword ptr [esi - 0x10]
+		fld dword ptr [esi - 0x1c]
+		fmul dword ptr [g_decalUAxisY]
+		fadd dword ptr [esi - 0x14]
+		fstp dword ptr [esi - 0x14]
+		fld dword ptr [esi - 0x1c]
+		fmul dword ptr [g_decalVAxisY]
+		fadd dword ptr [esi - 0x10]
+		fstp dword ptr [esi - 0x10]
+		fld dword ptr [esi - 0x18]
+		fmul dword ptr [g_decalUAxisZ]
+		fadd dword ptr [esi - 0x14]
+		fstp dword ptr [esi - 0x14]
+		fld dword ptr [esi - 0x18]
+		fmul dword ptr [g_decalVAxisZ]
+		fadd dword ptr [esi - 0x10]
+		fstp dword ptr [esi - 0x10]
+		fld dword ptr [g_decalUOffset]
+		fadd dword ptr [esi - 0x14]
+		fstp dword ptr [esi - 0x14]
+		fld dword ptr [g_decalVOffset]
+		fadd dword ptr [esi - 0x10]
+		mov ecx, dword ptr [esi - 0x14]
+		mov ebp, ecx
+		shr ebp, 2
+		fstp dword ptr [esi - 0x10]
+		mov edx, dword ptr [esi - 0x10]
+		mov eax, edx
+		and eax, 0x9fffffff
+		or eax, ebp
+		mov ebp, 0x3f800000
+		sub ebp, ecx
+		mov ecx, 0x3f800000
+		shr ebp, 2
+		sub ecx, edx
+		and ebp, 0x20000000
+		shr eax, 0x1d
+		and ecx, 0x8fffffff
+		or ebp, ecx
+		lea edx, [eax + eax]
+		shr ebp, 0x1c
+		not edx
+		and ebp, edx
+		or ebp, eax
+		inc edi
+		mov dword ptr [esi - 0xc], ebp
+		cmp edi, ebx
+		jb L_DecalTransformVertices_1
+		pop ebp
+	L_DecalTransformVertices_0:
+		pop edi
+		pop esi
+		pop ebx
+		pop ecx
+		ret 0xc
+	}
+}
+
+#endif
 
 // FUNCTION: LEGORACERS 0x00414f40
 void RaceDecalManager::Trail::Decal::EmitPolygon(LegoU32 p_firstPolygon, LegoU32 p_polygonCount)

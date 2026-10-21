@@ -179,7 +179,8 @@ void PartAnimationResource::OnStartAt(GolVec3*)
 	}
 }
 
-// FUNCTION: LEGORACERS 0x004635c0
+#ifdef COMPAT_MODE
+
 void PartAnimationResource::OnEnd()
 {
 	LegoU32 state = m_state;
@@ -215,3 +216,56 @@ void PartAnimationResource::OnEnd()
 
 	SetState(nextState);
 }
+
+#else
+
+// FUNCTION: LEGORACERS 0x004635c0
+__declspec(naked) void PartAnimationResource::OnEnd()
+{
+	__asm {
+		mov eax, dword ptr [ecx + 0x18]
+		push ebx
+		mov ebx, 1
+		push esi
+		cmp eax, ebx
+		push edi
+		je L_PartAnimOnEnd_0
+		mov eax, dword ptr [ecx + 0x20]
+		mov edi, dword ptr [ecx + 0x28]
+		xor edx, edx
+		mov dx, word ptr [eax + 0xbc]
+		cmp edx, edi
+		je L_PartAnimOnEnd_0
+		mov esi, dword ptr [ecx + 0x30]
+		cmp esi, -1
+		je L_PartAnimOnEnd_1
+		cmp edx, esi
+		je L_PartAnimOnEnd_0
+		cmp esi, -1
+		je L_PartAnimOnEnd_1
+		mov edx, dword ptr [eax + 0x5c]
+		mov word ptr [eax + 0xd8], si
+		and edx, 0xffb1ffff
+		pop edi
+		or edx, 0x100000
+		pop esi
+		mov dword ptr [eax + 0x5c], edx
+		mov dword ptr [ecx + 0x18], ebx
+		pop ebx
+		ret
+	L_PartAnimOnEnd_1:
+		mov edx, dword ptr [eax + 0x5c]
+		mov word ptr [eax + 0xd8], di
+		and edx, 0xfff1ffff
+		or edx, 0x500000
+		mov dword ptr [eax + 0x5c], edx
+	L_PartAnimOnEnd_0:
+		pop edi
+		mov dword ptr [ecx + 0x18], ebx
+		pop esi
+		pop ebx
+		ret
+	}
+}
+
+#endif

@@ -120,7 +120,8 @@ void CircuitStandings::Update(LegoU32 p_elapsedMs)
 	}
 }
 
-// FUNCTION: LEGORACERS 0x004246d0 FOLDED
+#ifdef COMPAT_MODE
+
 void CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 {
 	LegoU32 millisecondsPerHour = 3600000;
@@ -158,6 +159,113 @@ void CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 		p_buffer[digitOffset - 7] = static_cast<LegoChar>(extraMinutes % divisor + '0');
 	}
 }
+
+#else
+
+// FUNCTION: LEGORACERS 0x004246d0 FOLDED
+__declspec(naked) void CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
+{
+	__asm {
+		mov eax, dword ptr [esp + 8]
+		push ebx
+		push ebp
+		push esi
+		xor edx, edx
+		mov esi, 0x36ee80
+		div esi
+		mov ecx, dword ptr [esp + 0x10]
+		xor bl, bl
+		push edi
+		mov byte ptr [ecx + 8], bl
+		cmp edx, 0x927c0
+		jb L_FormatTime_0
+		mov al, 0x3a
+		mov esi, 7
+		mov byte ptr [ecx + 5], al
+		mov byte ptr [ecx + 2], al
+		jmp L_FormatTime_1
+	L_FormatTime_0:
+		mov al, 0x3a
+		mov esi, 6
+		mov byte ptr [ecx + 4], al
+		mov byte ptr [ecx + 1], al
+		mov byte ptr [ecx + 7], bl
+	L_FormatTime_1:
+		mov eax, 0xcccccccd
+		mov ebx, 0xa
+		mul edx
+		mov edi, edx
+		xor edx, edx
+		shr edi, 3
+		mov eax, edi
+		mov ebp, 0xa
+		div ebx
+		mov eax, 0xcccccccd
+		add dl, 0x30
+		mov byte ptr [esi + ecx], dl
+		mul edi
+		mov edi, edx
+		xor edx, edx
+		shr edi, 3
+		mov eax, edi
+		div ebx
+		mov eax, 0xcccccccd
+		mov ebx, 0x3c
+		add dl, 0x30
+		mov byte ptr [esi + ecx - 1], dl
+		mul edi
+		mov edi, edx
+		xor edx, edx
+		shr edi, 3
+		mov eax, edi
+		div ebx
+		mov eax, 0x88888889
+		mov ebx, edx
+		mul edi
+		mov eax, ebx
+		mov edi, edx
+		cdq
+		idiv ebp
+		mov eax, 0x66666667
+		shr edi, 5
+		add dl, 0x30
+		mov byte ptr [esi + ecx - 3], dl
+		imul ebx
+		mov eax, edx
+		mov ebx, ebp
+		sar eax, 2
+		mov edx, eax
+		shr edx, 0x1f
+		add eax, edx
+		cdq
+		idiv ebx
+		mov eax, edi
+		add dl, 0x30
+		mov byte ptr [esi + ecx - 4], dl
+		xor edx, edx
+		div ebx
+		mov eax, 0xcccccccd
+		add dl, 0x30
+		mov byte ptr [esi + ecx - 6], dl
+		mul edi
+		mov eax, edx
+		shr eax, 3
+		je L_FormatTime_2
+		xor edx, edx
+		mov edi, ebp
+		div edi
+		add dl, 0x30
+		mov byte ptr [esi + ecx - 7], dl
+	L_FormatTime_2:
+		pop edi
+		pop esi
+		pop ebp
+		pop ebx
+		ret 8
+	}
+}
+
+#endif
 
 // FUNCTION: LEGORACERS 0x00440350
 void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)

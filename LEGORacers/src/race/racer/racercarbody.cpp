@@ -138,7 +138,8 @@ RacerCarBody::RacerCarBody()
 	Reset();
 }
 
-// FUNCTION: LEGORACERS 0x00444b40
+#ifdef COMPAT_MODE
+
 void RacerCarBody::Reset()
 {
 	LegoU32 i;
@@ -229,6 +230,133 @@ void RacerCarBody::Reset()
 	SetMaxSpeed(g_defaultMaxSpeed);
 	m_gripScale = 1.0f;
 }
+
+#else
+
+// FUNCTION: LEGORACERS 0x00444b40
+__declspec(naked) void RacerCarBody::Reset()
+{
+	__asm {
+		push ebx
+		push esi
+		mov esi, ecx
+		xor edx, edx
+		xor eax, eax
+		mov ebx, 0x3f800000
+		mov dword ptr [esi + 0x13c], edx
+		mov dword ptr [esi + 0x140], eax
+		mov dword ptr [esi + 0x144], eax
+		push edi
+		mov dword ptr [esi + 0x148], eax
+		mov edi, 4
+		mov dword ptr [esi + 0x14c], eax
+		mov dword ptr [esi + 0x150], eax
+		mov dword ptr [esi + 0x154], edx
+		mov dword ptr [esi + 0x158], edx
+		mov dword ptr [esi + 0x164], edx
+		mov ecx, dword ptr [g_carGravity]
+		mov dword ptr [esi + 0x160], ecx
+		mov dword ptr [esi + 0x168], ebx
+		mov dword ptr [esi + 0x16c], edx
+		mov dword ptr [esi + 0x170], edx
+		mov dword ptr [esi + 0x174], edx
+		mov dword ptr [esi + 0x178], edx
+		mov dword ptr [esi + 0x17c], edx
+		mov dword ptr [esi + 0x180], edx
+		mov dword ptr [esi + 0x184], edx
+		mov dword ptr [esi + 0x188], edx
+		mov dword ptr [esi + 0x630], edx
+		mov dword ptr [esi + 0x634], edx
+		mov dword ptr [esi + 0x638], edx
+		mov dword ptr [esi + 0x63c], edx
+		mov dword ptr [esi + 0x640], edx
+		mov dword ptr [esi + 0x644], edx
+		mov dword ptr [esi + 0x18c], edx
+		mov dword ptr [esi + 0x190], edx
+		mov eax, dword ptr [g_defaultRideHeight]
+		mov dword ptr [esi + 0x654], 0xc12f3333
+		mov dword ptr [esi + 0x194], eax
+		mov dword ptr [esi + 0x60c], edx
+		mov dword ptr [esi + 0x610], edx
+		mov dword ptr [esi + 0x614], edx
+		mov dword ptr [esi + 0x5f8], ebx
+		mov dword ptr [esi + 0x5fc], edx
+		mov dword ptr [esi + 0x600], edx
+		mov dword ptr [esi + 0x618], edx
+		mov dword ptr [esi + 0x604], edx
+		mov dword ptr [esi + 0x5f0], edx
+		mov dword ptr [esi + 0x6d0], edx
+		mov dword ptr [esi + 0x628], edx
+		mov dword ptr [esi + 0x62c], edx
+		mov dword ptr [esi + 0x648], edx
+		mov dword ptr [esi + 0x64c], edx
+		mov dword ptr [esi + 0x650], edx
+		mov dword ptr [esi + 0x690], edx
+		mov dword ptr [esi + 0x694], edx
+		mov dword ptr [esi + 0x698], edx
+		mov dword ptr [esi + 0x3ec], edx
+		mov dword ptr [esi + 0x3f0], edx
+		lea ecx, [esi + 0x3d0]
+		lea eax, [esi + 0x374]
+	L_CarBodyResetFn_0:
+		mov dword ptr [eax - 4], edx
+		mov dword ptr [eax], edx
+		mov dword ptr [eax + 4], edx
+		mov dword ptr [eax + 0x2c], edx
+		mov dword ptr [eax + 0x30], edx
+		mov dword ptr [eax + 0x34], edx
+		mov dword ptr [ecx], edx
+		add ecx, 4
+		add eax, 0xc
+		dec edi
+		jne L_CarBodyResetFn_0
+		mov ecx, 0x70
+		xor eax, eax
+		lea edi, [esi + 0x198]
+		rep stosd
+		mov ecx, 0x78
+		lea edi, [esi + 0x3f4]
+		rep stosd
+		mov dword ptr [esi + 0x5d4], edx
+		mov dword ptr [esi + 0x36c], edx
+		mov dword ptr [esi + 0x5d8], edx
+		mov dword ptr [esi + 0x5dc], edx
+		mov dword ptr [esi + 0x5e0], edx
+		mov dword ptr [esi + 0x5e4], edx
+		mov dword ptr [esi + 0x5e8], edx
+		mov dword ptr [esi + 0x6c0], edx
+		mov dword ptr [esi + 0x6c4], ebx
+		mov dword ptr [esi + 0x6c8], 0xbf800000
+		mov dword ptr [esi + 0x6cc], 0x40490fdb
+		mov dword ptr [esi + 0x6e4], edx
+		mov dword ptr [esi + 0x6e8], edx
+		mov dword ptr [esi + 0x6ec], 1
+		mov dword ptr [esi + 0x6dc], edx
+		mov dword ptr [esi + 0x658], edx
+		mov ecx, dword ptr [g_defaultSlideLiftTarget]
+		mov dword ptr [esi + 0x65c], ecx
+		mov eax, dword ptr [g_defaultSlideLiftRate]
+		mov dword ptr [esi + 0x660], eax
+		mov dword ptr [esi + 0x67c], edx
+		mov dword ptr [esi + 0x680], edx
+		mov dword ptr [esi + 0x6d4], edx
+		mov ecx, dword ptr [g_defaultPowerslideFactorBits]
+		mov dword ptr [esi + 0x6e0], edx
+		mov edx, dword ptr [esi]
+		mov dword ptr [esi + 0x6d8], ecx
+		mov eax, dword ptr [g_defaultMaxSpeed]
+		mov ecx, esi
+		push eax
+		call dword ptr [edx + 0x18]
+		mov dword ptr [esi + 0x5f4], ebx
+		pop edi
+		pop esi
+		pop ebx
+		ret
+	}
+}
+
+#endif
 
 // FUNCTION: LEGORACERS 0x00444d90
 void RacerCarBody::Initialize(

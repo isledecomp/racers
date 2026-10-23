@@ -341,16 +341,16 @@ void GolAnimatedEntity::PlayPartDirect(LegoU32 p_partIndex)
 	m_currentPartIndex = p_partIndex;
 	flags |= c_flagLoopCurrentPart;
 	m_flags = flags;
-	p_partIndex &= 0xffff;
+	LegoU16 partIndex = p_partIndex;
 
 	CmbModelPart* modelPart = m_modelParts[0];
 	m_radius = -1.0f;
-	LegoFloat rate = modelPart->GetPartData()[p_partIndex].GetMsPerFrame();
+	LegoFloat rate = modelPart->GetPartData()[partIndex].GetMsPerFrame();
 	m_msPerFrame = rate;
 	rate = 0.0f;
 	m_partTimeMs = rate;
 
-	const GolVec3& offset = modelPart->GetPartData()[p_partIndex].GetVelocity();
+	const GolVec3& offset = modelPart->GetPartData()[partIndex].GetVelocity();
 	m_currentPartVelocity = offset;
 	m_velocity = offset;
 }

@@ -336,16 +336,16 @@ void DriverModelBuilder::CopyModelIndices(GolModelBase* p_sourceModel, GolModelB
 	p_sourceModel->GetIndexArrayInto(&sourceIndexArrayBase);
 	p_destModel->GetIndexArrayInto(&destIndexArrayBase);
 
-	GdbModelIndexArray* sourceIndexArray = static_cast<GdbModelIndexArray*>(sourceIndexArrayBase);
-	GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
-
-	for (LegoU32 i = 0; i < sourceIndexArrayBase->GetCount(); i++) {
-		const GdbModelIndexArray::Indices* sourceIndices = sourceIndexArray->GetIndex(i);
+	LegoS32 count = sourceIndexArrayBase->GetCount();
+	for (LegoS32 i = 0; i < count; i++) {
+		const GdbModelIndexArray::Indices* sourceIndices =
+			static_cast<GdbModelIndexArray*>(sourceIndexArrayBase)->GetIndex(i);
 		if (sourceIndices != NULL) {
-			GdbModelIndexArray::Indices* destIndices = destIndexArray->GetMutableIndex(p_indexOffset + i);
-			destIndices->m_a = sourceIndices->m_a;
-			destIndices->m_b = sourceIndices->m_b;
-			destIndices->m_c = sourceIndices->m_c;
+			GdbModelIndexArray* destIndexArray = static_cast<GdbModelIndexArray*>(destIndexArrayBase);
+			LegoU32 destIndex = p_indexOffset + i;
+			destIndexArray->GetMutableIndex(destIndex)->m_a = sourceIndices->m_a;
+			destIndexArray->GetMutableIndex(destIndex)->m_b = sourceIndices->m_b;
+			destIndexArray->GetMutableIndex(destIndex)->m_c = sourceIndices->m_c;
 		}
 	}
 

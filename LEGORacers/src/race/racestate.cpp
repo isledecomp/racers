@@ -1069,21 +1069,19 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 		}
 
 		if (timeRaceManager->HasRecordRunLapTimes()) {
-			const LegoU32* lapTimes = timeRaceManager->GetRecordLapTimes();
 			for (LegoU32 i = 0; i < lapsCompleted; i++) {
-				recordLapTime += lapTimes[i];
+				recordLapTime += timeRaceManager->GetRecordLapTimes()[i];
 			}
 		}
 
 		if (timeRaceManager->HasBestRunLapTimes()) {
-			const LegoU32* lapTimes = timeRaceManager->GetBestLapTimes();
 			for (LegoU32 i = 0; i < lapsCompleted; i++) {
-				bestLapTime += lapTimes[i];
+				bestLapTime += timeRaceManager->GetBestLapTimes()[i];
 			}
+		}
 
-			if (bestLapTime != 0 && (recordLapTime == 0 || recordLapTime > bestLapTime)) {
-				recordLapTime = bestLapTime;
-			}
+		if ((bestLapTime != 0 && recordLapTime > bestLapTime) || recordLapTime == 0) {
+			recordLapTime = bestLapTime;
 		}
 
 		if (recordLapTime != 0 && recordLapTime < racerLapTime) {
@@ -1104,12 +1102,11 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 	}
 
 	for (LegoU32 racerIndex = 0; racerIndex < m_roster.m_racerCount; racerIndex++) {
-		Racer* otherRacer = &m_roster.m_racers[racerIndex];
-		if (otherRacer == p_racer) {
+		if (&m_roster.m_racers[racerIndex] == p_racer) {
 			continue;
 		}
 
-		LegoU32 otherLapsCompleted = otherRacer->m_lapsCompleted;
+		LegoU32 otherLapsCompleted = m_roster.m_racers[racerIndex].m_lapsCompleted;
 		if (otherLapsCompleted > lapCount) {
 			otherLapsCompleted = lapCount;
 		}
@@ -1118,12 +1115,12 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 			LegoS32 delta = 0;
 			for (LegoU32 completedLapIndex = 0; completedLapIndex < lapsCompleted; completedLapIndex++) {
 				delta += static_cast<LegoS32>(p_racer->m_lapTimes[completedLapIndex]) -
-						 static_cast<LegoS32>(otherRacer->m_lapTimes[completedLapIndex]);
+						 static_cast<LegoS32>(m_roster.m_racers[racerIndex].m_lapTimes[completedLapIndex]);
 			}
 
-			for (LegoU32 remainingLapIndex = lapsCompleted; remainingLapIndex < otherLapsCompleted;
+			for (LegoU32 remainingLapIndex = lapsCompleted; otherLapsCompleted > remainingLapIndex;
 				 remainingLapIndex++) {
-				delta += static_cast<LegoS32>(otherRacer->m_lapTimes[remainingLapIndex]);
+				delta += static_cast<LegoS32>(m_roster.m_racers[racerIndex].m_lapTimes[remainingLapIndex]);
 			}
 
 			if (delta > result) {

@@ -192,6 +192,7 @@ void RaceTrailManager::Trail::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00492c30
 void RaceTrailManager::Trail::AdvanceTail(LegoU32 p_elapsedMs)
 {
+	LegoU32 remainingMs = p_elapsedMs;
 	LegoU32 queuedDuration = 0;
 	LegoU32 index = m_tailIndex;
 
@@ -209,30 +210,29 @@ void RaceTrailManager::Trail::AdvanceTail(LegoU32 p_elapsedMs)
 		m_flags = flags | c_saturated;
 	}
 
-	if (!(m_flags & c_saturated) || p_elapsedMs == 0) {
+	if (!(m_flags & c_saturated)) {
 		return;
 	}
 
-	LegoU32 remainingMs = p_elapsedMs;
-	do {
-		LegoU32 stepMs = remainingMs;
+	while (remainingMs > 0) {
+		LegoU32 stepMs;
 		if (remainingMs > m_sampleMs) {
 			stepMs = m_sampleMs;
 			remainingMs -= stepMs;
 		}
 		else {
+			stepMs = remainingMs;
 			remainingMs = 0;
 		}
 
 		LegoU32 currentIndex = m_tailIndex;
 		LegoU32 nextIndex = (currentIndex + 1) % m_ringSize;
 		if (stepMs > 0) {
-			Sample* next = &m_samples[nextIndex];
-			LegoU32 durationMs = next->m_durationMs;
+			LegoU32 durationMs = m_samples[nextIndex].m_durationMs;
 			if (stepMs >= durationMs) {
-				next->m_durationMs = 0;
+				m_samples[nextIndex].m_durationMs = 0;
 				stepMs -= durationMs;
-				m_tailIndex = currentIndex + 1;
+				m_tailIndex++;
 				if (m_tailIndex == m_ringSize) {
 					m_tailIndex = 0;
 				}
@@ -241,8 +241,8 @@ void RaceTrailManager::Trail::AdvanceTail(LegoU32 p_elapsedMs)
 				nextIndex = (currentIndex + 1) % m_ringSize;
 			}
 
-			queuedDuration = 0;
 			index = currentIndex;
+			queuedDuration = 0;
 			do {
 				index++;
 				if (index == m_ringSize) {
@@ -253,26 +253,22 @@ void RaceTrailManager::Trail::AdvanceTail(LegoU32 p_elapsedMs)
 			} while (index != m_headIndex);
 
 			if (stepMs > 0 && queuedDuration > 0) {
-				next = &m_samples[nextIndex];
-				durationMs = next->m_durationMs;
+				durationMs = m_samples[nextIndex].m_durationMs;
 				if (stepMs > durationMs) {
 					stepMs = durationMs - 1;
 				}
 
-				LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(stepMs)) /
-								   static_cast<LegoFloat>(static_cast<LegoS32>(durationMs));
-				next->m_durationMs = durationMs - stepMs;
+				LegoFloat duration = static_cast<LegoFloat>(static_cast<LegoS32>(durationMs));
+				LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(stepMs)) / duration;
+				m_samples[nextIndex].m_durationMs = durationMs - stepMs;
 
-				Sample* current = &m_samples[m_tailIndex];
 				for (LegoU32 i = 0; i < m_pointCount; i++) {
-					current->m_points[i].m_x += (next->m_points[i].m_x - current->m_points[i].m_x) * amount;
-					current->m_points[i].m_y += (next->m_points[i].m_y - current->m_points[i].m_y) * amount;
-					current->m_points[i].m_z += (next->m_points[i].m_z - current->m_points[i].m_z) * amount;
+					m_samples[m_tailIndex].m_points[i] +=
+						(m_samples[nextIndex].m_points[i] - m_samples[m_tailIndex].m_points[i]) * amount;
 				}
 
-				current->m_center.m_x += (next->m_center.m_x - current->m_center.m_x) * amount;
-				current->m_center.m_y += (next->m_center.m_y - current->m_center.m_y) * amount;
-				current->m_center.m_z += (next->m_center.m_z - current->m_center.m_z) * amount;
+				m_samples[m_tailIndex].m_center +=
+					(m_samples[nextIndex].m_center - m_samples[m_tailIndex].m_center) * amount;
 			}
 		}
 
@@ -282,7 +278,7 @@ void RaceTrailManager::Trail::AdvanceTail(LegoU32 p_elapsedMs)
 				return;
 			}
 		}
-	} while (remainingMs > 0);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00492ee0

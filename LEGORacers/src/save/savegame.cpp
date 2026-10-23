@@ -184,57 +184,57 @@ LegoU32 SaveGame::CalculateBlockChecksum(const LegoU8* p_source, LegoU32 p_size)
 // FUNCTION: LEGORACERS 0x00442a00
 void SaveGame::ReadPersistentGameState(PersistentGameState* p_state)
 {
-	LegoU8* dest;
-	const LegoU8* source;
 	LegoU32 i;
 	LegoU32 j;
 
-	dest = &p_state->m_racerCount;
-	dest[0] = m_fileImage[c_persistentHeaderOffset];
-	source = &m_fileImage[c_persistentHeaderOffset + 1];
+	p_state->m_racerCount = m_fileImage[c_persistentHeaderOffset];
 	for (i = 0; i < sizeof(p_state->m_displayDriverGuid.m_bytes); i++) {
-		dest[i + 1] = source[i];
+		p_state->m_displayDriverGuid.m_bytes[i] = m_fileImage[c_persistentHeaderOffset + 1 + i];
 	}
 
-	dest[0x11] = m_fileImage[c_persistentHeaderOffset + 0x11];
-	dest[0x12] = m_fileImage[c_persistentHeaderOffset + 0x12];
-	dest[0x13] = m_fileImage[c_persistentHeaderOffset + 0x13];
-	dest[0x14] = m_fileImage[c_persistentHeaderOffset + 0x14];
-	dest[0x15] = m_fileImage[c_persistentHeaderOffset + 0x15];
-	dest[0x16] = m_fileImage[c_persistentHeaderOffset + 0x16];
-	dest[0x17] = m_fileImage[c_persistentHeaderOffset + 0x17];
+	p_state->m_unk0x1d = m_fileImage[c_persistentHeaderOffset + 0x11];
+	p_state->m_unk0x1e = m_fileImage[c_persistentHeaderOffset + 0x12];
+	p_state->m_musicVolume = m_fileImage[c_persistentHeaderOffset + 0x13];
+	p_state->m_soundVolume = m_fileImage[c_persistentHeaderOffset + 0x14];
+	p_state->m_stereo = m_fileImage[c_persistentHeaderOffset + 0x15];
+	p_state->m_languageIndex = m_fileImage[c_persistentHeaderOffset + 0x16];
+	p_state->m_lapCount = m_fileImage[c_persistentHeaderOffset + 0x17];
 
-	source = &m_fileImage[c_inputBindingHeaderOffset + 1];
-	dest = &p_state->m_inputBindings.m_players[0].m_selectedRecordSource;
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {
-		dest[-1] = source[-1];
-		dest[0] = source[0];
-		dest[1] = source[1];
-		dest[2] = source[2];
-
-		source += sizeof(InputBindingState::PlayerState);
-		dest += sizeof(InputBindingState::PlayerState);
+		p_state->m_inputBindings.m_players[i].m_selectedRecordId =
+			m_fileImage[c_inputBindingHeaderOffset + i * sizeof(InputBindingState::PlayerState)];
+		p_state->m_inputBindings.m_players[i].m_selectedRecordSource =
+			m_fileImage[c_inputBindingHeaderOffset + 1 + i * sizeof(InputBindingState::PlayerState)];
+		p_state->m_inputBindings.m_players[i].m_selectedSaveIndex =
+			m_fileImage[c_inputBindingHeaderOffset + 2 + i * sizeof(InputBindingState::PlayerState)];
+		p_state->m_inputBindings.m_players[i].m_selectedEntryIndex =
+			m_fileImage[c_inputBindingHeaderOffset + 3 + i * sizeof(InputBindingState::PlayerState)];
 	}
 
-	source = &m_fileImage[c_inputBindingEntryOffset + 2];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_entries); i++) {
-		InputBindingState::Entry* entry = &p_state->m_inputBindings.m_entries[i];
-		entry->m_deviceType = source[-2];
-		entry->m_deviceSubType = source[-1];
-		entry->m_deviceId = source[0];
+		LegoU32 offset = c_inputBindingEntryOffset + i * c_inputBindingEntrySize;
+		p_state->m_inputBindings.m_entries[i].m_deviceType = m_fileImage[offset];
+		p_state->m_inputBindings.m_entries[i].m_deviceSubType = m_fileImage[offset + 1];
+		p_state->m_inputBindings.m_entries[i].m_deviceId = m_fileImage[offset + 2];
 
-		for (j = 0; j < sizeOfArray(entry->m_events); j++) {
-			entry->m_events[j] = ReadLittleEndianU32(&source[1 + (j * sizeof(LegoU32))]);
+		for (j = 0; j < sizeOfArray(p_state->m_inputBindings.m_entries[i].m_events); j++) {
+			LegoU32 eventOffset = offset + 3 + j * sizeof(LegoU32);
+			LegoU32 event = m_fileImage[eventOffset + 3];
+			event <<= 8;
+			event += m_fileImage[eventOffset + 2];
+			event <<= 8;
+			event += m_fileImage[eventOffset + 1];
+			event <<= 8;
+			event += m_fileImage[eventOffset];
+			p_state->m_inputBindings.m_entries[i].m_events[j] = event;
 		}
-
-		source += c_inputBindingEntrySize;
 	}
 
 	p_state->m_partUnlockFlags = m_fileImage[c_unlockStateOffset];
 	p_state->m_unlockedCircuits = m_fileImage[c_unlockStateOffset + 1];
 	p_state->m_unlockedRaces = ReadLittleEndianU16(&m_fileImage[c_unlockStateOffset + 2]);
 
-	source = &m_fileImage[c_scoreRecordsOffset + c_scoreRecordCursorOffset];
+	const LegoU8* source = &m_fileImage[c_scoreRecordsOffset + c_scoreRecordCursorOffset];
 	for (i = 0; i < c_scoreRecordCount; i++) {
 		LegoU32 time = source[c_scoreRecordLapTimeOffset + 3 - c_scoreRecordCursorOffset];
 		time <<= 8;
@@ -287,28 +287,30 @@ void SaveGame::WritePersistentGameState(PersistentGameState* p_state)
 	m_fileImage[c_persistentHeaderOffset + 0x16] = p_state->m_languageIndex;
 	m_fileImage[c_persistentHeaderOffset + 0x17] = p_state->m_lapCount;
 
-	dest = &m_fileImage[c_inputBindingHeaderOffset + 1];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {
-		InputBindingState::PlayerState* player = &p_state->m_inputBindings.m_players[i];
-		dest[-1] = player->m_selectedRecordId;
-		dest[0] = player->m_selectedRecordSource;
-		dest[1] = player->m_selectedSaveIndex;
-		dest[2] = player->m_selectedEntryIndex;
-		dest += sizeof(InputBindingState::PlayerState);
+		m_fileImage[c_inputBindingHeaderOffset + i * sizeof(InputBindingState::PlayerState)] =
+			p_state->m_inputBindings.m_players[i].m_selectedRecordId;
+		m_fileImage[c_inputBindingHeaderOffset + 1 + i * sizeof(InputBindingState::PlayerState)] =
+			p_state->m_inputBindings.m_players[i].m_selectedRecordSource;
+		m_fileImage[c_inputBindingHeaderOffset + 2 + i * sizeof(InputBindingState::PlayerState)] =
+			p_state->m_inputBindings.m_players[i].m_selectedSaveIndex;
+		m_fileImage[c_inputBindingHeaderOffset + 3 + i * sizeof(InputBindingState::PlayerState)] =
+			p_state->m_inputBindings.m_players[i].m_selectedEntryIndex;
 	}
 
-	dest = &m_fileImage[c_inputBindingEntryOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_entries); i++) {
-		InputBindingState::Entry* entry = &p_state->m_inputBindings.m_entries[i];
-		dest[0] = entry->m_deviceType;
-		dest[1] = entry->m_deviceSubType;
-		dest[2] = entry->m_deviceId;
+		LegoU32 offset = c_inputBindingEntryOffset + i * c_inputBindingEntrySize;
+		m_fileImage[offset] = p_state->m_inputBindings.m_entries[i].m_deviceType;
+		m_fileImage[offset + 1] = p_state->m_inputBindings.m_entries[i].m_deviceSubType;
+		m_fileImage[offset + 2] = p_state->m_inputBindings.m_entries[i].m_deviceId;
 
-		for (j = 0; j < sizeOfArray(entry->m_events); j++) {
-			WriteLittleEndianU32(&dest[3 + (j * sizeof(LegoU32))], entry->m_events[j]);
+		for (j = 0; j < sizeOfArray(p_state->m_inputBindings.m_entries[i].m_events); j++) {
+			LegoU32 eventOffset = offset + 3 + j * sizeof(LegoU32);
+			m_fileImage[eventOffset] = static_cast<LegoU8>(p_state->m_inputBindings.m_entries[i].m_events[j]);
+			m_fileImage[eventOffset + 1] = static_cast<LegoU8>(p_state->m_inputBindings.m_entries[i].m_events[j] >> 8);
+			m_fileImage[eventOffset + 2] = static_cast<LegoU8>(p_state->m_inputBindings.m_entries[i].m_events[j] >> 16);
+			m_fileImage[eventOffset + 3] = static_cast<LegoU8>(p_state->m_inputBindings.m_entries[i].m_events[j] >> 24);
 		}
-
-		dest += c_inputBindingEntrySize;
 	}
 
 	m_fileImage[c_unlockStateOffset] = p_state->m_partUnlockFlags;

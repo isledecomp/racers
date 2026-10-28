@@ -1135,10 +1135,9 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 // FUNCTION: LEGORACERS 0x0043cf30
 void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntry* p_entries)
 {
-	LegoU32 lapCount = m_setup.m_lapCount;
 	LegoS32 racerTime = 0;
 
-	if (p_racer->m_lapsCompleted < lapCount) {
+	if (p_racer->m_lapsCompleted < m_setup.m_lapCount) {
 		for (LegoU32 racerIndex = 0; racerIndex < m_roster.m_racerCount; racerIndex++) {
 			p_entries[racerIndex].m_racer = NULL;
 			p_entries[racerIndex].m_delta = 0;
@@ -1147,6 +1146,8 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntr
 
 		return;
 	}
+
+	LegoU32 lapCount = m_setup.m_lapCount;
 
 	if (lapCount > 0) {
 		LegoU32* lapTime = p_racer->m_lapTimes;

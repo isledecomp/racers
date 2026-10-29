@@ -104,6 +104,26 @@ private:
 		}
 	}
 
+	void InsertByPriorityPreservingSentinel(SoundBufferList& p_list, SoundBuffer& p_sound)
+	{
+		SoundBufferList* list = &p_list;
+		GolListLink* link = list->FirstLink();
+		while (list->IsValidLink(link)) {
+			if (p_sound.m_priority <= list->GetItem(*link).m_priority) {
+				GolListLink& soundLink = p_sound.GetLink();
+				soundLink.m_next = link;
+				soundLink.m_prev = link->m_prev;
+				link->m_prev->m_next = &soundLink;
+				link->m_prev = &soundLink;
+				break;
+			}
+			link = link->m_next;
+		}
+		if (!list->IsValidLink(link)) {
+			p_sound.GetLink().InsertBefore(link);
+		}
+	}
+
 	void InsertByPriority(SoundBufferList& p_list, SoundBuffer& p_sound)
 	{
 		GolListLink* link = p_list.FirstValidLink();

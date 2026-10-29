@@ -84,6 +84,7 @@ void RaceSkyState::Load(
 
 	m_golExport = p_golExport;
 
+	GolName name;
 	GolFileParser* parser;
 	if (p_binary) {
 		parser = new GolBinParser;
@@ -115,43 +116,40 @@ void RaceSkyState::Load(
 
 	LegoU32 entryIndex;
 	for (entryIndex = 0; entryIndex < m_count; entryIndex++) {
-		Entry* entry = &m_entries[entryIndex];
-		entry->m_elapsedMs = 0;
-		entry->m_keyframeIndex = 0;
-		entry->m_keyframes = NULL;
-		entry->m_keyframeCount = 0;
+		m_entries[entryIndex].m_elapsedMs = 0;
+		m_entries[entryIndex].m_keyframeIndex = 0;
+		m_entries[entryIndex].m_keyframes = NULL;
+		m_entries[entryIndex].m_keyframeCount = 0;
 
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(SkbTxtParser::e_state));
 		parser->ReadLeftBracket();
-		entry->m_keyframeCount = parser->ReadInteger();
+		m_entries[entryIndex].m_keyframeCount = parser->ReadInteger();
 		parser->ReadRightBracket();
 
-		entry->m_keyframes = new Entry::Keyframe[entry->m_keyframeCount];
-		if (entry->m_keyframes == NULL) {
+		m_entries[entryIndex].m_keyframes = new Entry::Keyframe[m_entries[entryIndex].m_keyframeCount];
+		if (m_entries[entryIndex].m_keyframes == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
-		GolNameTable::AddName(name, entry);
+		GolNameTable::AddName(name, &m_entries[entryIndex]);
 
 		parser->ReadLeftCurly();
 		LegoU32 keyframeIndex;
-		for (keyframeIndex = 0; keyframeIndex < entry->m_keyframeCount; keyframeIndex++) {
-			Entry::Keyframe* keyframe = &entry->m_keyframes[keyframeIndex];
-			keyframe->m_durationMs = 1000;
-			keyframe->m_topColor.m_red = 0xff;
-			keyframe->m_topColor.m_grn = 0xff;
-			keyframe->m_topColor.m_blu = 0xff;
-			keyframe->m_topColor.m_alp = 0xff;
-			keyframe->m_middleColor.m_red = 0xff;
-			keyframe->m_middleColor.m_grn = 0xff;
-			keyframe->m_middleColor.m_blu = 0xff;
-			keyframe->m_middleColor.m_alp = 0xff;
-			keyframe->m_bottomColor.m_red = 0xff;
-			keyframe->m_bottomColor.m_grn = 0xff;
-			keyframe->m_bottomColor.m_blu = 0xff;
-			keyframe->m_bottomColor.m_alp = 0xff;
+		for (keyframeIndex = 0; keyframeIndex < m_entries[entryIndex].m_keyframeCount; keyframeIndex++) {
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_durationMs = 1000;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_topColor.m_red = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_topColor.m_grn = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_topColor.m_blu = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_topColor.m_alp = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_middleColor.m_red = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_middleColor.m_grn = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_middleColor.m_blu = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_middleColor.m_alp = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_bottomColor.m_red = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_bottomColor.m_grn = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_bottomColor.m_blu = 0xff;
+			m_entries[entryIndex].m_keyframes[keyframeIndex].m_bottomColor.m_alp = 0xff;
 
 			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(SkbTxtParser::e_state));
 			parser->ReadLeftCurly();
@@ -160,25 +158,31 @@ void RaceSkyState::Load(
 			while (token != GolFileParser::e_rightCurly) {
 				switch (token) {
 				case SkbTxtParser::e_duration:
-					keyframe->m_durationMs = parser->ReadInteger();
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_durationMs = parser->ReadInteger();
 					break;
 				case SkbTxtParser::e_topColor:
-					keyframe->m_topColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_topColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_topColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_topColor.m_alp = 0xff;
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_topColor.m_red =
+						static_cast<LegoU8>(parser->ReadInteger());
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_topColor.m_grn =
+						static_cast<LegoU8>(parser->ReadInteger());
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_topColor.m_blu =
+						static_cast<LegoU8>(parser->ReadInteger());
 					break;
 				case SkbTxtParser::e_middleColor:
-					keyframe->m_middleColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_middleColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_middleColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_middleColor.m_alp = 0xff;
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_middleColor.m_red =
+						static_cast<LegoU8>(parser->ReadInteger());
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_middleColor.m_grn =
+						static_cast<LegoU8>(parser->ReadInteger());
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_middleColor.m_blu =
+						static_cast<LegoU8>(parser->ReadInteger());
 					break;
 				case SkbTxtParser::e_bottomColor:
-					keyframe->m_bottomColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_bottomColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_bottomColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_bottomColor.m_alp = 0xff;
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_bottomColor.m_red =
+						static_cast<LegoU8>(parser->ReadInteger());
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_bottomColor.m_grn =
+						static_cast<LegoU8>(parser->ReadInteger());
+					m_entries[entryIndex].m_keyframes[keyframeIndex].m_bottomColor.m_blu =
+						static_cast<LegoU8>(parser->ReadInteger());
 					break;
 				default:
 					parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -194,22 +198,21 @@ void RaceSkyState::Load(
 
 	parser->ReadRightCurly();
 
+	Entry* entry = NULL;
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	if (token == SkbTxtParser::e_initialState) {
-		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
-
-		Entry* entry = static_cast<Entry*>(GolNameTable::GetName(name));
-		if (entry == NULL) {
-			m_stateIndex = 0;
-		}
-		else {
-			m_stateIndex = static_cast<LegoU32>(entry - m_entries);
-		}
-
-		token = parser->GetNextToken();
+		entry = static_cast<Entry*>(GolNameTable::GetName(name));
 	}
 
+	if (entry == NULL) {
+		m_stateIndex = 0;
+	}
+	else {
+		m_stateIndex = static_cast<LegoU32>(entry - m_entries);
+	}
+
+	token = parser->GetNextToken();
 	if (token == SkbTxtParser::e_heightOffset) {
 		m_heightOffset = parser->ReadFloat();
 	}
@@ -248,7 +251,6 @@ void RaceSkyState::Load(
 		center.m_x = 0.0f;
 		center.m_y = 0.0f;
 		center.m_z = 0.0f;
-		m_domeEntity.SetPosition(center);
 
 		GolVec3 direction;
 		direction.m_x = 1.0f;
@@ -259,11 +261,12 @@ void RaceSkyState::Load(
 		up.m_x = 0.0f;
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
+		m_domeEntity.SetPosition(center);
 		m_domeEntity.SetDirectionUp(direction, up);
 
-		GolName materialName;
-		::strncpy(materialName, "skymat", sizeof(materialName));
-		m_domeModel->GetMaterialTable()->SetEntry(0, p_renderer->FindMaterialByName(materialName));
+		MaterialTable* materialTable = m_domeModel->GetMaterialTable();
+		::strncpy(name, "skymat", sizeof(name));
+		materialTable->SetEntry(0, p_renderer->FindMaterialByName(name));
 	}
 
 	m_skyWorld = m_golExport->CreateWorldDatabase();

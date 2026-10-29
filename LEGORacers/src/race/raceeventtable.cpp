@@ -200,13 +200,11 @@ void RaceEventTable::Load(Params* p_params)
 // FUNCTION: LEGORACERS 0x0045f220
 void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
-	RaceEventTable* field = this;
-
 	if (p_parser->GetNextToken() != GolFileParser::e_leftBracket) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_leftBracket);
 	}
 
-	field->m_soundCount = p_parser->ReadInteger();
+	m_soundCount = p_parser->ReadInteger();
 	if (p_parser->GetNextToken() != GolFileParser::e_rightBracket) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_rightBracket);
 	}
@@ -215,12 +213,12 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 		p_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 	}
 
-	field->m_sounds = new SoundResource[field->m_soundCount];
-	if (field->m_sounds == NULL) {
+	m_sounds = new SoundResource[m_soundCount];
+	if (m_sounds == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < field->m_soundCount; i++) {
+	for (LegoU32 i = 0; i < m_soundCount; i++) {
 		if (p_parser->GetNextToken() != EvbTxtParser::e_event) {
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 		}
@@ -249,7 +247,7 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 		params.m_unk0x1c = 0;
 		params.m_volume = 1.0f;
 		params.m_frequencyScale = 1.0f;
-		params.m_soundSource = field->m_soundSource;
+		params.m_soundSource = m_soundSource;
 		params.m_probability = 1.0f;
 		params.m_entity = NULL;
 		params.m_nodeIndex = 0;
@@ -297,9 +295,9 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 			case EvbTxtParser::e_entityName: {
 				GolName name;
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
-				params.m_entity = field->m_trackDatabase->FindAnimatedEntity(name);
+				params.m_entity = m_trackDatabase->FindAnimatedEntity(name);
 				if (params.m_entity == NULL) {
-					params.m_entity = field->m_sharedDatabase->FindAnimatedEntity(name);
+					params.m_entity = m_sharedDatabase->FindAnimatedEntity(name);
 				}
 				break;
 			}
@@ -312,7 +310,8 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 			}
 		}
 
-		field->m_sounds[i].Initialize(&params);
+		LegoU32 index = i;
+		m_sounds[index].Initialize(&params);
 	}
 
 	if (p_parser->GetNextToken() != GolFileParser::e_rightCurly) {

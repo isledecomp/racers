@@ -183,105 +183,122 @@ void GolWorldDatabaseEx::AllocateResources()
 }
 
 // FUNCTION: GOLDP 0x10017ac0
-undefined4* GolWorldDatabaseEx::LoadResources()
+void GolWorldDatabaseEx::LoadResources()
 {
 	LegoU32 i;
-	GolD3DRenderDevice* textureRenderer = static_cast<GolD3DRenderDevice*>(m_renderer);
 
-	for (i = 0; i < m_textureListCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_textureListNames[i], ".tdf");
-		m_textureLists[i].Load(textureRenderer, fileName, m_binary);
+	if (m_textureListCount) {
+		for (i = 0; i < m_textureListCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_textureListNames[i], ".tdf");
+			m_textureLists[i].Load(static_cast<GolD3DRenderDevice*>(m_renderer), fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_materialLibraryCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_materialLibraryNames[i], ".mdf");
-		m_materialLibraries[i].Load(m_renderer, fileName, m_binary);
+	if (m_materialLibraryCount) {
+		for (i = 0; i < m_materialLibraryCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_materialLibraryNames[i], ".mdf");
+			m_materialLibraries[i].Load(m_renderer, fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_modelPartCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_modelPartNames[i], ".adf");
-		m_modelParts[i].Load(fileName, m_binary);
+	if (m_modelPartCount) {
+		for (i = 0; i < m_modelPartCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_modelPartNames[i], ".adf");
+			m_modelParts[i].Load(fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_modelCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_modelNames[i], ".gdf");
-		m_models[i].Load(m_renderer, fileName, m_binary);
+	if (m_modelCount) {
+		for (i = 0; i < m_modelCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_modelNames[i], ".gdf");
+			m_models[i].Load(m_renderer, fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_materialTableCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_materialTableNames[i], ".gdf");
-		m_materialTables[i].Load(m_renderer, fileName, m_binary);
+	if (m_materialTableCount) {
+		for (i = 0; i < m_materialTableCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_materialTableNames[i], ".gdf");
+			m_materialTables[i].Load(m_renderer, fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_sceneNodeCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_sceneNodeNames[i], ".sdf");
-		m_sceneNodes[i].Load(fileName, m_binary);
+	if (m_sceneNodeCount) {
+		for (i = 0; i < m_sceneNodeCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_sceneNodeNames[i], ".sdf");
+			m_sceneNodes[i].Load(fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_boundingShapeCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_boundingShapeNames[i], ".bdf");
-		m_boundingShapes[i].Deserialize(fileName, m_binary);
+	if (m_boundingShapeCount) {
+		for (i = 0; i < m_boundingShapeCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_boundingShapeNames[i], ".bdf");
+			m_boundingShapes[i].Deserialize(fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_materialAnimationCount; i++) {
-		LegoChar fileName[sizeof(GolName) + 5];
-		BuildResourceFileName(fileName, m_materialAnimationNames[i], ".maf");
-		m_materialAnimations[i].Load(m_renderer, fileName, m_binary);
+	if (m_materialAnimationCount) {
+		for (i = 0; i < m_materialAnimationCount; i++) {
+			LegoChar fileName[sizeof(GolName) + 5];
+			BuildResourceFileName(fileName, m_materialAnimationNames[i], ".maf");
+			m_materialAnimations[i].Load(m_renderer, fileName, m_binary);
+		}
 	}
 
-	for (i = 0; i < m_spriteCount; i++) {
-		WdbBillboardSprite* sprite = &m_spriteRecords[i];
-		GolBillboardEx* billboard = &m_billboards[i];
-		LegoFloat maxDistanceSquared = sprite->m_maxDistance * sprite->m_maxDistance;
+	if (m_spriteCount) {
+		for (i = 0; i < m_spriteCount; i++) {
+			LegoFloat maxDistanceSquared = m_spriteRecords[i].m_maxDistance * m_spriteRecords[i].m_maxDistance;
 
-		if (sprite->m_flags & WdbBillboardSprite::c_flagMaterialAssignment) {
-			LegoU32 materialTableIndex = sprite->m_materialTableIndex;
-			if (materialTableIndex >= m_materialTableCount) {
-				GOL_FATALERROR_MESSAGE("Illegal mat assign reference");
+			if (m_spriteRecords[i].m_flags & WdbBillboardSprite::c_flagMaterialAssignment) {
+				if (m_spriteRecords[i].m_materialTableIndex >= m_materialTableCount) {
+					GOL_FATALERROR_MESSAGE("Illegal mat assign reference");
+				}
+
+				LegoFloat height = m_spriteRecords[i].m_height;
+				LegoFloat width = m_spriteRecords[i].m_width;
+				m_billboards[i].ConfigureFromMaterialTable(
+					&m_materialTables[m_spriteRecords[i].m_materialTableIndex],
+					m_spriteRecords[i].m_materialIndex,
+					width,
+					height,
+					maxDistanceSquared
+				);
+			}
+			else {
+				if (m_spriteRecords[i].m_materialName[0] == '\0') {
+					GOL_FATALERROR_MESSAGE("Sprite is missing material name");
+				}
+
+				GolMaterial* material = m_renderer->FindMaterialByName(m_spriteRecords[i].m_materialName);
+				if (material == NULL) {
+					LegoChar message[64];
+					::strncpy(message, m_spriteRecords[i].m_materialName, sizeof(GolName));
+					message[sizeof(GolName)] = '\0';
+					::strcat(message, " sprite material not found");
+					GOL_FATALERROR_MESSAGE(message);
+				}
+
+				m_billboards[i]
+					.Configure(material, m_spriteRecords[i].m_width, m_spriteRecords[i].m_height, maxDistanceSquared);
 			}
 
-			billboard->ConfigureFromMaterialTable(
-				&m_materialTables[materialTableIndex],
-				sprite->m_materialIndex,
-				sprite->m_width,
-				sprite->m_height,
-				maxDistanceSquared
-			);
-		}
-		else {
-			if (sprite->m_materialName[0] == '\0') {
-				GOL_FATALERROR_MESSAGE("Sprite is missing material name");
+			m_billboards[i].SetPosition(m_spriteRecords[i].m_position);
+			const GolVec3& axis = m_spriteRecords[i].m_axis;
+			if (m_spriteRecords[i].m_flags & WdbBillboardSprite::c_flagAxisLocked) {
+				GolBillboardEx& billboard = m_billboards[i];
+				billboard.EnableAxisLock();
+				billboard.SetAxis(axis);
 			}
 
-			GolMaterial* material = m_renderer->FindMaterialByName(sprite->m_materialName);
-			if (material == NULL) {
-				LegoChar message[64];
-				::memset(message, 0, sizeof(message));
-				::strncpy(message, sprite->m_materialName, sizeof(GolName));
-				::strcat(message, " sprite material not found");
-				GOL_FATALERROR_MESSAGE(message);
-			}
-
-			billboard->Configure(material, sprite->m_width, sprite->m_height, maxDistanceSquared);
+			BindSpriteMaterialAnimation(&m_billboards[i], &m_spriteRecords[i]);
 		}
-
-		billboard->SetPosition(sprite->m_position);
-		if (sprite->m_flags & WdbBillboardSprite::c_flagAxisLocked) {
-			billboard->EnableAxisLock();
-			billboard->SetAxis(sprite->m_axis);
-		}
-
-		BindSpriteMaterialAnimation(billboard, sprite);
 	}
-
-	return NULL;
 }
 
 // FUNCTION: GOLDP 0x100180a0

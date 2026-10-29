@@ -1414,25 +1414,21 @@ void RaceEventTable::ParseExternalForces(GolFileParser* p_parser, LegoBool32 p_m
 // FUNCTION: LEGORACERS 0x00461990
 void RaceEventTable::ParseLapZones(GolFileParser* p_parser)
 {
-	RaceEventTable* field = this;
-
-	field->m_lapZoneCount = p_parser->ReadBracketedCountAndLeftCurly();
-	field->m_lapZones = new LapZoneResource[field->m_lapZoneCount];
-	if (field->m_lapZones == NULL) {
+	m_lapZoneCount = p_parser->ReadBracketedCountAndLeftCurly();
+	m_lapZones = new LapZoneResource[m_lapZoneCount];
+	if (m_lapZones == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < field->m_lapZoneCount; i++) {
+	LapZoneResource::InitParams params;
+	for (LegoU32 i = 0; i < m_lapZoneCount; i++) {
 		p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(EvbTxtParser::e_event));
 
-		LapZoneResource::InitParams params;
 		params.m_eventId = p_parser->ReadInteger();
 
 		p_parser->ReadLeftCurly();
-		params.m_stateEventIds[0] = -1;
-		params.m_stateEventIds[1] = -1;
-		params.m_eventTable = field;
-		params.m_stateEventIds[2] = -1;
+		memset(params.m_stateEventIds, 0xff, sizeof(params.m_stateEventIds));
+		params.m_eventTable = this;
 		params.m_zone = 1;
 
 		for (GolFileParser::ParserTokenType token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly;
@@ -1445,24 +1441,21 @@ void RaceEventTable::ParseLapZones(GolFileParser* p_parser)
 				params.m_zone = 2;
 				break;
 			case EvbTxtParser::e_event: {
-				LegoS32 eventIndex = p_parser->GetNextToken() - EvbTxtParser::e_active;
-				if (eventIndex) {
-					eventIndex -= 2;
-					if (eventIndex) {
-						if (--eventIndex) {
-							eventIndex = 3;
-							p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
-						}
-						else {
-							eventIndex = 2;
-						}
-					}
-					else {
-						eventIndex = 0;
-					}
-				}
-				else {
+				LegoU32 eventIndex;
+				switch (p_parser->GetNextToken()) {
+				case EvbTxtParser::e_active:
 					eventIndex = 1;
+					break;
+				case EvbTxtParser::e_start:
+					eventIndex = 0;
+					break;
+				case EvbTxtParser::e_end:
+					eventIndex = 2;
+					break;
+				default:
+					eventIndex = 3;
+					p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+					break;
 				}
 
 				params.m_stateEventIds[eventIndex] = p_parser->ReadInteger();
@@ -1474,7 +1467,7 @@ void RaceEventTable::ParseLapZones(GolFileParser* p_parser)
 			}
 		}
 
-		field->m_lapZones[i].Initialize(&params);
+		m_lapZones[i].Initialize(&params);
 	}
 
 	p_parser->ReadRightCurly();

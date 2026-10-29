@@ -1474,156 +1474,147 @@ void RaceSession::StartIntroCamera()
 // FUNCTION: LEGORACERS 0x004343e0
 void RaceSession::InitializeInput()
 {
-	RaceSession* session = this;
-	InputEventQueue* inputEvents = &session->m_inputEvents;
+	PlayerControls::InputState* inputSink = NULL;
+	InputEventQueue* inputEvents = &m_inputEvents;
 	inputEvents->Allocate(32);
 
-	MouseDevice* mouse = session->m_inputManager->GetMouse();
+	MouseDevice* mouse = m_inputManager->GetMouse();
 	if (mouse) {
 		mouse->SetCallback(inputEvents);
 		mouse->SetExclusiveMode();
 		mouse->Acquire();
 	}
 
-	KeyboardDevice* keyboard = session->m_inputManager->GetKeyboard();
+	KeyboardDevice* keyboard = m_inputManager->GetKeyboard();
 	if (keyboard) {
-		session->m_inputRouter.Initialize(keyboard, inputEvents);
-		session->m_inputRouter.AcquireDevice();
+		m_inputRouter.Initialize(keyboard, inputEvents);
+		m_inputRouter.AcquireDevice();
 	}
 
 	LegoU32 playerCount;
-	if (session->m_demoMode) {
+	if (m_demoMode) {
 		playerCount = 2;
 	}
 	else {
-		playerCount = session->m_context->m_playerCount;
+		playerCount = m_context->m_playerCount;
 	}
 
 	if (playerCount > 0) {
-		PlayerControls* controls = session->m_playerControls;
-		Racer** racer = session->m_raceState.m_playerRacers;
+		PlayerControls* controls = m_playerControls;
+		Racer** racer = m_raceState.m_playerRacers;
 		LegoU32 playerIndex = 0;
 
 		do {
 			LegoBool32 bindingAcquired = FALSE;
-			PlayerControls::InputState* inputSink = NULL;
 
-			if (!session->m_demoMode) {
+			if (!m_demoMode) {
 				controls->Initialize(*racer, inputEvents);
 				inputSink = &controls->m_input;
 			}
 
-			InputBindingState::Entry* binding = &session->m_context->m_inputBindings[playerIndex];
-			if (binding->m_deviceType == DIDEVTYPE_JOYSTICK && binding->m_deviceId < 16) {
-				JoystickDevice* joystick = session->m_inputManager->FindJoystickByDeviceId(binding->m_deviceId);
-				if (joystick && joystick->GetDeviceSubType() == binding->m_deviceSubType) {
+			if (m_context->m_inputBindings[playerIndex].m_deviceType == DIDEVTYPE_JOYSTICK &&
+				m_context->m_inputBindings[playerIndex].m_deviceId < 16) {
+				JoystickDevice* joystick =
+					m_inputManager->FindJoystickByDeviceId(m_context->m_inputBindings[playerIndex].m_deviceId);
+				if (joystick &&
+					joystick->GetDeviceSubType() == m_context->m_inputBindings[playerIndex].m_deviceSubType) {
 					joystick->SetCallback(inputEvents);
 					bindingAcquired = TRUE;
 					joystick->Acquire();
 
-					if (!session->m_demoMode) {
-						if (binding->m_deviceSubType == 4) {
+					if (!m_demoMode) {
+						if (m_context->m_inputBindings[playerIndex].m_deviceSubType == 4) {
 							joystick->SetAxisButtonEventsEnabled(TRUE);
 						}
 
-						LegoU32 event = binding->m_events[0];
-						DirectInputDevice* source;
+						LegoU32 event = m_context->m_inputBindings[playerIndex].m_events[0];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 0);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 0);
 						}
-						inputSink->SetBinding(source, event, 0);
 
-						event = binding->m_events[1];
+						event = m_context->m_inputBindings[playerIndex].m_events[1];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 1);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 1);
 						}
-						inputSink->SetBinding(source, event, 1);
 
-						event = binding->m_events[2];
+						event = m_context->m_inputBindings[playerIndex].m_events[2];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 2);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 2);
 						}
-						inputSink->SetBinding(source, event, 2);
 
-						event = binding->m_events[3];
+						event = m_context->m_inputBindings[playerIndex].m_events[3];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 3);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 3);
 						}
-						inputSink->SetBinding(source, event, 3);
 
-						event = binding->m_events[4];
+						event = m_context->m_inputBindings[playerIndex].m_events[4];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 4);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 4);
 						}
-						inputSink->SetBinding(source, event, 4);
 
-						event = binding->m_events[5];
+						event = m_context->m_inputBindings[playerIndex].m_events[5];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 5);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 5);
 						}
-						inputSink->SetBinding(source, event, 5);
 
-						event = binding->m_events[6];
+						event = m_context->m_inputBindings[playerIndex].m_events[6];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 6);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 6);
 						}
-						inputSink->SetBinding(source, event, 6);
 
-						event = binding->m_events[7];
+						event = m_context->m_inputBindings[playerIndex].m_events[7];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 7);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 7);
 						}
-						inputSink->SetBinding(source, event, 7);
 
-						event = binding->m_events[8];
+						event = m_context->m_inputBindings[playerIndex].m_events[8];
 						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
-							source = keyboard;
+							inputSink->SetBinding(keyboard, event, 8);
 						}
 						else {
-							source = joystick;
+							inputSink->SetBinding(joystick, event, 8);
 						}
-						inputSink->SetBinding(source, event, 8);
 
 						inputSink->AcquireDevices();
 					}
 				}
 			}
 
-			if (!session->m_demoMode) {
-				if (binding->m_deviceType == DIDEVTYPE_KEYBOARD && keyboard) {
-					inputSink->SetBinding(keyboard, binding->m_events[0], 0);
-					inputSink->SetBinding(keyboard, binding->m_events[1], 1);
-					inputSink->SetBinding(keyboard, binding->m_events[2], 2);
-					inputSink->SetBinding(keyboard, binding->m_events[3], 3);
-					inputSink->SetBinding(keyboard, binding->m_events[4], 4);
-					inputSink->SetBinding(keyboard, binding->m_events[5], 5);
-					inputSink->SetBinding(keyboard, binding->m_events[6], 6);
-					inputSink->SetBinding(keyboard, binding->m_events[7], 7);
-					inputSink->SetBinding(keyboard, binding->m_events[8], 8);
+			if (!m_demoMode) {
+				if (m_context->m_inputBindings[playerIndex].m_deviceType == DIDEVTYPE_KEYBOARD && keyboard) {
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[0], 0);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[1], 1);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[2], 2);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[3], 3);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[4], 4);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[5], 5);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[6], 6);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[7], 7);
+					inputSink->SetBinding(keyboard, m_context->m_inputBindings[playerIndex].m_events[8], 8);
 					bindingAcquired = TRUE;
 				}
 
@@ -1633,8 +1624,8 @@ void RaceSession::InitializeInput()
 					GOL_FATALERROR_MESSAGE("Could not acquire controller for player");
 				}
 
-				session->m_forceFeedback[playerIndex].Initialize(inputSink->m_devices[4]);
-				(*racer)->m_forceFeedback = &session->m_forceFeedback[playerIndex];
+				m_forceFeedback[playerIndex].Initialize(inputSink->m_devices[4]);
+				(*racer)->m_forceFeedback = &m_forceFeedback[playerIndex];
 				controls->DetectAnalogDevice();
 			}
 
@@ -1645,7 +1636,7 @@ void RaceSession::InitializeInput()
 		} while (playerCount);
 	}
 
-	session->m_inputManager->PollDevices(0);
+	m_inputManager->PollDevices(0);
 	inputEvents->ClearQueue();
 }
 

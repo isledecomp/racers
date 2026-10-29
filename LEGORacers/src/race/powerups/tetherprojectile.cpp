@@ -173,43 +173,40 @@ void TetherProjectile::Draw(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00444690
 LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 {
+	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.001f;
 	GolVec3 position;
 	m_ownerRacer->m_visuals.m_carEntity->GetPosition(&position);
 	position.m_z += m_attachHeight;
 
 	GolVec3* target = &m_endPosition;
-	if (GolMath::MoveToward(
-			target,
-			&position,
-			g_tetherRetractRadius,
-			g_tetherRetractSpeed,
-			static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs))
-		)) {
+	if (GolMath::MoveToward(&position, target, g_tetherRetractRadius, g_tetherRetractSpeed, elapsedSeconds)) {
 		m_flags = 0;
 		return c_stateExpired;
 	}
 
-	m_tension -= g_tetherTautnessRate * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+	m_tension -= g_tetherTautnessRate * elapsedSeconds;
 	if (m_tension < 0.0f) {
 		m_tension = 0.0f;
 	}
 
-	LegoFloat amount = m_tension * g_tetherWaveScale;
+	LegoFloat amount = m_tension;
+	amount *= g_tetherWaveScale;
 	GolVec3 delta;
 	delta.m_x = target->m_x - position.m_x;
 	delta.m_y = target->m_y - position.m_y;
 	delta.m_z = target->m_z - position.m_z;
 
 	GolVec3 step;
-	step.m_x = delta.m_x * g_unk0x004b02e0;
-	step.m_y = delta.m_y * g_unk0x004b02e0;
-	step.m_z = delta.m_z * g_unk0x004b02e0;
-	m_beam.Begin(&position, &step);
+	step.m_x = delta.m_x;
+	step.m_x *= g_unk0x004b02e0;
+	step.m_y = delta.m_y;
+	step.m_y *= g_unk0x004b02e0;
+	step.m_z = delta.m_z;
+	step.m_z *= g_unk0x004b02e0;
+	m_beam.Begin(&position, &delta);
 
 	for (LegoU32 i = 0; i < 4; i++) {
-		position.m_x += step.m_x;
-		position.m_y += step.m_y;
-		position.m_z += step.m_z;
+		position += step;
 		m_beam.AppendSpan(&position, amount);
 		amount = -amount;
 	}

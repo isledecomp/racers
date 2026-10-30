@@ -484,6 +484,13 @@ void CarVisuals::StartCarSmoke()
 	}
 }
 
+inline void CopyParticleOrientation(GolWorldEntity* p_entity, CutsceneParticleRef* p_ref)
+{
+	if (p_ref->m_particle) {
+		p_entity->CopyOrientation(p_ref->m_particle->GetBasis());
+	}
+}
+
 // FUNCTION: LEGORACERS 0x0043e070
 void CarVisuals::Update(LegoU32 p_elapsedMs)
 {
@@ -501,12 +508,10 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (!(m_racer->m_flags & Racer::c_flagGhost)) {
-		if (m_racerPhysics->m_flags & RacerPhysics::c_flagSpinning) {
-			if (!(m_flags & c_flagSliding)) {
-				StartSlideSkid();
-			}
+		if ((m_racerPhysics->m_flags & RacerPhysics::c_flagSpinning) && !(m_flags & c_flagSliding)) {
+			StartSlideSkid();
 		}
-		else if (m_flags & c_flagSliding) {
+		else if (!(m_racerPhysics->m_flags & RacerPhysics::c_flagSpinning) && (m_flags & c_flagSliding)) {
 			StopSlideSkid();
 		}
 
@@ -535,24 +540,23 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 			m_curseBlendMs = 1000;
 		}
 
-		GolVec3 velocity = m_racerPhysics->m_velocity * g_wheelParticleVelocityScale;
+		SoundVector position;
+		GolVec3 velocity = m_racerPhysics->m_velocity;
+		velocity.m_x *= g_wheelParticleVelocityScale;
+		velocity.m_y *= g_wheelParticleVelocityScale;
+		velocity.m_z *= g_wheelParticleVelocityScale;
 
-		for (LegoU32 particleIndex = 0; particleIndex < sizeOfArray(m_wheelParticles); particleIndex++) {
-			CutsceneParticleRef* ref = m_wheelParticles[particleIndex];
-			if (ref) {
-				GolVec3 position = m_racerPhysics->m_wheelProbes[particleIndex].m_wheelPosition;
-				CutsceneParticle* particle = ref->m_particle;
+		for (LegoS32 particleIndex = 0; particleIndex < 4; particleIndex++) {
+			if (m_wheelParticles[particleIndex]) {
+				static_cast<GolVec3&>(position) = m_racerPhysics->m_wheelProbes[particleIndex].m_wheelPosition;
+				CopyParticleOrientation(m_carEntity, m_wheelParticles[particleIndex]);
 
-				if (particle) {
-					m_carEntity->CopyOrientation(particle->GetBasis());
+				if (m_wheelParticles[particleIndex]->m_particle) {
+					m_wheelParticles[particleIndex]->m_particle->SetPosition(&position);
 				}
 
-				if (ref->m_particle) {
-					ref->m_particle->SetPosition(&position);
-				}
-
-				if (ref->m_particle) {
-					ref->m_particle->SetVelocity(&velocity);
+				if (m_wheelParticles[particleIndex]->m_particle) {
+					m_wheelParticles[particleIndex]->m_particle->SetVelocity(&velocity);
 				}
 			}
 		}
@@ -566,7 +570,6 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 			if (m_lastGroundedWheelCount < state) {
 				m_flags &= ~c_flagAirborne;
 
-				SoundVector position;
 				m_carEntity->GetPosition(&position);
 
 				switch (state - m_lastGroundedWheelCount) {
@@ -605,26 +608,24 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 
 				m_particleAnimation->SpawnParticle("carland", &position, NULL, NULL);
 			}
-
-			m_lastGroundedWheelCount = state;
 		}
+		m_lastGroundedWheelCount = m_racer->m_physics.m_contactCount;
 
 		if (m_dustParticle) {
-			CutsceneParticle* particle = m_dustParticle->m_particle;
-			if (particle && particle->GetSpawnedCount() >= 10) {
+			if (!m_dustParticle->m_particle || m_dustParticle->m_particle->GetSpawnedCount() >= 10) {
 				m_particleAnimation->FinishRef(m_dustParticle);
 				m_dustParticle = NULL;
 			}
 			else {
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-				GolVec3 position = (g_randomTable[g_randomTableIndex] & 2)
-									   ? m_racerPhysics->m_wheelProbes[3].m_wheelPosition
-									   : m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
-
-				particle = m_dustParticle->m_particle;
-				if (particle) {
-					m_carEntity->CopyOrientation(particle->GetBasis());
+				if (g_randomTable[g_randomTableIndex] & 2) {
+					static_cast<GolVec3&>(position) = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
 				}
+				else {
+					static_cast<GolVec3&>(position) = m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
+				}
+
+				CopyParticleOrientation(m_carEntity, m_dustParticle);
 
 				if (m_dustParticle->m_particle) {
 					m_dustParticle->m_particle->SetPosition(&position);
@@ -637,22 +638,18 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 		}
 
 		if (m_carSmokeParticle) {
-			CutsceneParticle* particle = m_carSmokeParticle->m_particle;
-			if (particle && particle->GetSpawnedCount() >= 4) {
+			if (!m_carSmokeParticle->m_particle || m_carSmokeParticle->m_particle->GetSpawnedCount() >= 4) {
 				m_particleAnimation->FinishRef(m_carSmokeParticle);
 				m_carSmokeParticle = NULL;
 			}
 			else {
-				GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
+				static_cast<GolVec3&>(position) = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
 				GolVec3 other = m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
-				position.m_x = (position.m_x + other.m_x) * 0.5f;
-				position.m_y = (position.m_y + other.m_y) * 0.5f;
-				position.m_z = (position.m_z + other.m_z) * 0.5f + g_two;
+				position.m_x = (other.m_x + position.m_x) * 0.5f;
+				position.m_y = (other.m_y + position.m_y) * 0.5f;
+				position.m_z = (other.m_z + position.m_z) * 0.5f + g_two;
 
-				particle = m_carSmokeParticle->m_particle;
-				if (particle) {
-					m_carEntity->CopyOrientation(particle->GetBasis());
-				}
+				CopyParticleOrientation(m_carEntity, m_carSmokeParticle);
 
 				if (m_carSmokeParticle->m_particle) {
 					m_carSmokeParticle->m_particle->SetPosition(&position);
@@ -665,31 +662,22 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 		}
 
 		if (m_tireSmokeParticle) {
-			GolVec3 position;
-			position.m_x = 0.0f;
-			position.m_y = 0.0f;
-			position.m_z = 0.0f;
+			position.Clear();
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoBool32 chooseSecond = (g_randomTable[g_randomTableIndex] >> 1) & 1;
 			LegoBool32 found = FALSE;
 
-			for (LegoU32 tireIndex = 0; tireIndex < sizeOfArray(m_wheelSkidFlags); tireIndex++) {
-				if (m_wheelSkidFlags[tireIndex] & c_wheelSkidGrounded) {
-					if (!chooseSecond || !found) {
-						position = m_racerPhysics->m_wheelProbes[tireIndex].m_wheelPosition;
-						found = TRUE;
+			for (LegoS32 tireIndex = 0; tireIndex < 4; tireIndex++) {
+				if (m_wheelSkidFlags[tireIndex] & c_wheelSkidActive) {
+					if ((chooseSecond && !found) || (!chooseSecond && found)) {
+						static_cast<GolVec3&>(position) = m_racerPhysics->m_wheelProbes[tireIndex].m_wheelPosition;
 					}
-					else {
-						break;
-					}
+					found = TRUE;
 				}
 			}
 
-			CutsceneParticle* particle = m_tireSmokeParticle->m_particle;
-			if (particle) {
-				m_carEntity->CopyOrientation(particle->GetBasis());
-			}
+			CopyParticleOrientation(m_carEntity, m_tireSmokeParticle);
 
 			if (m_tireSmokeParticle->m_particle) {
 				m_tireSmokeParticle->m_particle->SetPosition(&position);
@@ -699,9 +687,8 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 				m_tireSmokeParticle->m_particle->SetVelocity(&velocity);
 			}
 		}
+		m_flags &= ~c_flagShadowVisible;
 	}
-
-	m_flags &= ~c_flagShadowVisible;
 }
 
 // FUNCTION: LEGORACERS 0x0043e620

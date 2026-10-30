@@ -166,11 +166,11 @@ void RacerTriggerList::Load(
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
+		EntryParams params;
 		for (LegoU32 i = 0; i < m_count; i++) {
 			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(RacerTriggerList::e_triggers));
 			parser->ReadLeftCurly();
 
-			EntryParams params;
 			params.m_eventTable = m_eventTable;
 			params.m_position.m_x = 0.0f;
 			params.m_position.m_y = 0.0f;
@@ -181,10 +181,10 @@ void RacerTriggerList::Load(
 			params.m_raceState = p_raceState;
 			params.m_powerupManager = p_powerupManager;
 			params.m_collisionWorlds = p_collisionWorlds;
-			params.m_lapNumber = 0;
 			params.m_triggerOnProjectiles = FALSE;
 			params.m_hasCollisionWorld = FALSE;
 			params.m_hasLapNumber = FALSE;
+			params.m_lapNumber = 0;
 			params.m_collisionWorldIndex = 0;
 
 			GolFileParser::ParserTokenType token = parser->GetNextToken();
@@ -199,19 +199,13 @@ void RacerTriggerList::Load(
 
 					GolBoundedEntity* entry = p_worldDatabase->FindBoundedEntity(name);
 
-					LegoU32 index = p_worldDatabase->GetBoundedEntityCount();
-					if (index > 0) {
-						GolBoundedEntity* item = p_worldDatabase->GetBoundedEntities();
-						for (LegoU32 j = 0; j < index; j++) {
-							if (item == entry) {
-								index = j;
-							}
-
-							item++;
+					params.m_collisionWorldIndex = p_worldDatabase->GetBoundedEntityCount();
+					for (LegoU32 j = 0; j < params.m_collisionWorldIndex; j++) {
+						if (&p_worldDatabase->GetBoundedEntities()[j] == entry) {
+							params.m_collisionWorldIndex = j;
 						}
 					}
 
-					params.m_collisionWorldIndex = index;
 					params.m_hasCollisionWorld = TRUE;
 					break;
 				}

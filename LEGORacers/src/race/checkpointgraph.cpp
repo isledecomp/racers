@@ -153,40 +153,39 @@ CheckpointGraph::Entry* CheckpointGraph::GetCheckpoint(LegoU32 p_index)
 // FUNCTION: LEGORACERS 0x0041e950
 void CheckpointGraph::ComputeLapFractions()
 {
-	LegoS32 pathCount = static_cast<LegoS32>(CountLapCheckpoints());
-	Entry* entry = m_entries;
-	LegoFloat step = 1.0f / pathCount;
+	LegoU32 distance = CountLapCheckpoints();
+	LegoU32 lapIndex = 0;
+	LegoFloat step = 1.0f / static_cast<LegoS32>(distance);
 	LegoFloat progress = 0.0f;
 
 	do {
-		entry->m_lapFraction = progress;
+		m_entries[lapIndex].m_lapFraction = progress;
 		progress += step;
-		entry = &m_entries[entry->m_next.m_items[0]];
-	} while (entry != m_entries && progress < 1.0f);
+		lapIndex = m_entries[lapIndex].m_next.m_items[0];
+	} while (&m_entries[lapIndex] != m_entries && progress < 1.0f);
 
 	LegoU32 entryIndex = 0;
 	do {
-		entry = &m_entries[entryIndex];
-		for (LegoU32 i = 1; i < sizeOfArray(entry->m_next.m_items); i++) {
-			LegoU8 next = entry->m_next.m_items[i];
-			if (next != 0xff) {
-				LegoU32 distance;
+		for (LegoU32 i = 1; i < sizeOfArray(m_entries[entryIndex].m_next.m_items); i++) {
+			if (m_entries[entryIndex].m_next.m_items[i] != 0xff) {
+				LegoU8 next = m_entries[entryIndex].m_next.m_items[i];
 				LegoU32 targetIndex = FindNextFractionedCheckpoint(next, &distance);
-				Entry* target = &m_entries[targetIndex];
-				LegoFloat step = (target->m_lapFraction - entry->m_lapFraction) / (distance + 1);
-				Entry* cursor = &m_entries[entry->m_next.m_items[i]];
-				LegoFloat progress = entry->m_lapFraction + step;
+				LegoFloat step = static_cast<LegoFloat>(static_cast<LegoS32>(distance + 1));
+				step = (m_entries[targetIndex].m_lapFraction - m_entries[entryIndex].m_lapFraction) / step;
+				LegoU32 cursorIndex = m_entries[entryIndex].m_next.m_items[i];
+				LegoFloat progress = m_entries[entryIndex].m_lapFraction;
+				progress += step;
 
 				do {
-					cursor->m_lapFraction = progress;
+					m_entries[cursorIndex].m_lapFraction = progress;
 					progress += step;
-					cursor = &m_entries[cursor->m_next.m_items[0]];
-				} while (cursor != target);
+					cursorIndex = m_entries[cursorIndex].m_next.m_items[0];
+				} while (&m_entries[cursorIndex] != &m_entries[targetIndex]);
 			}
 		}
 
-		entryIndex = entry->m_next.m_items[0];
-	} while (entryIndex != 0);
+		entryIndex = m_entries[entryIndex].m_next.m_items[0];
+	} while (&m_entries[entryIndex] != m_entries);
 }
 
 // FUNCTION: LEGORACERS 0x0041ea60

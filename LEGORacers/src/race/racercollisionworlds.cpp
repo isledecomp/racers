@@ -108,36 +108,24 @@ void RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0045e520
 void RacerCollisionWorlds::ActivateWorld(Racer* p_racer, LegoU32 p_worldIndex)
 {
-	Racer* target = p_racer;
-	RacerCollisionWorlds* field = this;
 	LegoU32 racerIndex = 0;
-	if (field->m_racers[0] != target) {
-		Racer** racer = field->m_racers;
-		Racer* nextRacer;
-		while (racerIndex < sizeOfArray(m_racers)) {
-			nextRacer = racer[1];
-			racer++;
-			racerIndex++;
-			if (nextRacer == target) {
-				break;
-			}
-		}
+	while (m_racers[racerIndex] != p_racer && racerIndex < sizeOfArray(m_racers)) {
+		racerIndex++;
 	}
 
-	if (!field->m_ttl[racerIndex][p_worldIndex]) {
-		target->m_physics.AddCollisionWorld(field->m_worldDatabase->GetBoundedEntities() + p_worldIndex);
+	if (!m_ttl[racerIndex][p_worldIndex]) {
+		p_racer->m_physics.AddCollisionWorld(m_worldDatabase->GetBoundedEntities() + p_worldIndex);
 	}
 
-	LegoU32 result = 0;
-	Racer** racer = field->m_racers;
-	for (; *racer != target; racer++) {
-		if (++result >= sizeOfArray(field->m_racers)) {
-			field->m_ttl[result][p_worldIndex] = c_activationTtl;
+	LegoU32 result;
+	for (result = 0; result < sizeOfArray(m_racers); result++) {
+		if (m_racers[result] == p_racer) {
+			m_ttl[result][p_worldIndex] = c_activationTtl;
 			return;
 		}
 	}
 
-	field->m_ttl[result][p_worldIndex] = c_activationTtl;
+	m_ttl[result][p_worldIndex] = c_activationTtl;
 }
 
 // FUNCTION: LEGORACERS 0x0045e5b0

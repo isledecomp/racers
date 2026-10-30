@@ -162,7 +162,13 @@ void CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 // FUNCTION: LEGORACERS 0x00440350
 void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 {
+	LegoS32 rank;
+	LegoS32 sign;
+	LegoU32 bestScore;
 	GolString string;
+	LegoU32 selectedIndex = 0;
+	LegoS32 textWidth;
+	LegoS32 textHeight;
 	LegoChar timeBuffer[12];
 	LegoChar buffer[64];
 	LegoU32 selected[c_racerCount];
@@ -174,12 +180,8 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 		return;
 	}
 
-	Racer* racers = m_raceState->GetRacers();
-
 	if (p_showCircuitPoints) {
 		string.CopyFromBufSelection(m_stringTable->GetStringBuffer(c_titleStringId), 0);
-		LegoS32 textWidth;
-		LegoS32 textHeight;
 		m_font->MeasureString(&string, &textWidth, &textHeight);
 		renderer->DrawString(
 			&string,
@@ -192,11 +194,10 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 			0
 		);
 
-		LegoS32 rank = 0;
+		rank = 0;
 		::memset(selected, 0, sizeof(selected));
 		for (LegoU32 y = c_rowStartY; y < c_rowEndY; y += c_rowStepY) {
-			LegoU32 selectedIndex = 0;
-			LegoU32 bestScore = 0;
+			bestScore = 0;
 
 			for (LegoU32 i = 0; i < c_racerCount; i++) {
 				if (!selected[i] && m_points[i] > bestScore) {
@@ -210,8 +211,16 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 				::sprintf(buffer, "%ld", rank + 1);
 				renderer->DrawCString(buffer, m_font, c_rankX, y, 1.0f, 1.0f, NULL, 0);
 
-				Racer* selectedRacer = &racers[selectedIndex];
-				renderer->DrawString(&selectedRacer->m_displayName, m_font, c_racerNameX, y, 1.0f, 1.0f, NULL, 0);
+				renderer->DrawString(
+					&m_raceState->GetRacers()[selectedIndex].m_displayName,
+					m_font,
+					c_racerNameX,
+					y,
+					1.0f,
+					1.0f,
+					NULL,
+					0
+				);
 
 				::sprintf(buffer, "%ld", m_points[selectedIndex]);
 				renderer->DrawCString(buffer, m_font, c_pointsX, y, 1.0f, 1.0f, NULL, 0);
@@ -222,24 +231,23 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 		}
 	}
 	else {
-		LegoU32 leaderIndex = 0;
+		selectedIndex = 0;
 		LegoU32 leaderScore = 0;
 		for (LegoU32 i = 0; i < c_racerCount; i++) {
 			if (m_roundPoints[i] >= leaderScore) {
 				leaderScore = m_roundPoints[i];
-				leaderIndex = i;
+				selectedIndex = i;
 			}
 		}
 
-		Racer* leaderRacer = &racers[leaderIndex];
+		Racer* leaderRacer = &m_raceState->GetRacers()[selectedIndex];
 		leaderRacer->ComputeStandingsDeltas(deltaEntries);
 
-		LegoS32 sign = 1;
-		LegoS32 rank = 0;
+		sign = 1;
+		rank = 0;
 		::memset(selected, 0, sizeof(selected));
 		for (LegoU32 y = c_rowStartY; y < c_rowEndY; y += c_rowStepY) {
-			LegoU32 selectedIndex = leaderIndex;
-			LegoU32 bestScore = 0;
+			bestScore = 0;
 
 			for (LegoU32 i = 0; i < c_racerCount; i++) {
 				if (!selected[i] && m_roundPoints[i] >= bestScore) {
@@ -253,24 +261,29 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 				::sprintf(buffer, "%ld", rank + 1);
 				renderer->DrawCString(buffer, m_font, c_rankX, y, 1.0f, 1.0f, NULL, 0);
 
-				Racer* selectedRacer = &racers[selectedIndex];
-				renderer->DrawString(&selectedRacer->m_displayName, m_font, c_racerNameX, y, 1.0f, 1.0f, NULL, 0);
+				renderer->DrawString(
+					&m_raceState->GetRacers()[selectedIndex].m_displayName,
+					m_font,
+					c_racerNameX,
+					y,
+					1.0f,
+					1.0f,
+					NULL,
+					0
+				);
 
 				::sprintf(buffer, "%ld", m_roundPoints[selectedIndex]);
 				renderer->DrawCString(buffer, m_font, c_pointsX, y, 1.0f, 1.0f, NULL, 0);
 
+				Racer* selectedRacer = &m_raceState->GetRacers()[selectedIndex];
 				LegoU32 deltaIndex = 0;
-				while (deltaIndex < c_racerCount && deltaEntries[deltaIndex].m_racer != selectedRacer) {
+				while (deltaEntries[deltaIndex].m_racer != selectedRacer && deltaIndex < c_racerCount) {
 					deltaIndex++;
 				}
 
-				if (deltaIndex < c_racerCount) {
+				{
 					Racer::StandingsDeltaEntry* deltaEntry = &deltaEntries[deltaIndex];
-					if (deltaEntry->m_racer == leaderRacer) {
-						string.CopyFromBufSelection(m_stringTable->GetStringBuffer(c_leaderStringId), 0);
-						renderer->DrawString(&string, m_font, c_deltaSignX, y, 1.0f, 1.0f, NULL, 0);
-					}
-					else if (deltaEntry->m_racer->m_flags & Racer::c_flagFinished) {
+					if (deltaEntry->m_racer != leaderRacer && (deltaEntry->m_racer->m_flags & Racer::c_flagFinished)) {
 						LegoS32 delta = deltaEntry->m_delta;
 						if (delta <= 0) {
 							if (delta < 0) {
@@ -304,7 +317,8 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 						}
 					}
 					else {
-						string.CopyFromBufSelection(m_stringTable->GetStringBuffer(c_trailingStringId), 0);
+						LegoU32 stringId = deltaEntry->m_racer == leaderRacer ? c_leaderStringId : c_trailingStringId;
+						string.CopyFromBufSelection(m_stringTable->GetStringBuffer(stringId), 0);
 						renderer->DrawString(&string, m_font, c_deltaSignX, y, 1.0f, 1.0f, NULL, 0);
 					}
 				}

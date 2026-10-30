@@ -144,12 +144,12 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 		LegoU32* group = m_groups;
 		LegoU32* end = m_groups + m_groupCount;
 
-		for (; group < end; group++) {
+		while (group < end) {
 			LegoU32 groupData = *group;
 			LegoU32 groupType = groupData;
 			groupType &= c_groupTypeMask;
 			if (groupType == c_groupTypeTriangleBatch) {
-				LegoU32 firstTriangle = groupData;
+				LegoU32 firstTriangle = *group;
 				LegoU32 triangleCount = groupData;
 				triangleCount >>= c_groupDataUpperWordShift;
 				triangleCount &= c_triangleCountMask;
@@ -158,27 +158,28 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 				*group = ((((lastVertex | c_vertexIndexHighFlag) << 7) | (triangleCount & c_triangleCountMask))
 						  << c_groupDataUpperWordShift) |
 						 (firstTriangle & c_materialMatrixIndexMask);
+				group++;
 			}
 			else if (groupType == c_groupTypeEnd) {
 				break;
+			}
+			else {
+				group++;
 			}
 		}
 
 		m_dirty = FALSE;
 	}
 
-	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray);
-	p_renderer->m_sourcePositions = vertexArray->GetPositions();
-	p_renderer->m_sourceTexCoords = vertexArray->GetTextureCoordinates();
-	if (vertexArray->HasTransformedColors()) {
-		p_renderer->m_sourceColors = vertexArray->GetTransformedColors();
-	}
-	else {
-		p_renderer->m_sourceColors = vertexArray->GetColors();
-	}
+	p_renderer->m_sourcePositions = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetPositions();
+	p_renderer->m_sourceTexCoords =
+		static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetTextureCoordinates();
+	p_renderer->m_sourceColors =
+		static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->HasTransformedColors()
+			? static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetTransformedColors()
+			: static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetColors();
 
-	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_indexArray);
-	p_renderer->m_sourceIndices = indexArray->GetIndexBytes();
+	p_renderer->m_sourceIndices = static_cast<GdbModelIndexArray*>(m_indexArray)->GetIndexBytes();
 	p_renderer->m_materialCommand.m_indices = p_renderer->m_sourceIndices;
 
 	LegoU32* group = m_groups;
@@ -187,42 +188,41 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 	for (; group < end; group++) {
 		LegoU32 groupData = *group;
 		LegoU32 groupType = groupData & c_groupTypeMask;
-		if (groupType <= c_groupTypeMaterial) {
-			if (groupType == c_groupTypeMaterial) {
-				GolMaterial* material =
-					static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
-				(p_renderer->*p_renderer->m_applyMaterialFn)(material);
-				p_renderer->SetCurrentTexture(material->GetTexture());
-			}
-			else if (groupType == c_groupTypeTriangles) {
-				LegoU32 vertexCount = groupData >> c_groupDataUpperWordShift;
-				LegoU32 firstVertex = groupData;
-				vertexCount &= c_vertexCountMask;
-				firstVertex &= c_materialMatrixIndexMask;
-				vertexCount++;
-				(p_renderer->*p_renderer->m_drawTriangleFn1)(
-					(groupData >> c_matrixSelectShift) & c_vertexCountMask,
-					firstVertex,
-					vertexCount
-				);
-			}
-			else if (groupType == c_groupTypeTriangleBatch) {
-				LegoU32 lastVertex = groupData >> c_lastVertexShift;
-				LegoU32 triangleCount = groupData >> c_groupDataUpperWordShift;
-				lastVertex &= c_vertexCountMask;
-				triangleCount &= c_triangleCountMask;
-				(p_renderer->*p_renderer->m_drawTriangleFn2)(
-					groupData & c_materialMatrixIndexMask,
-					triangleCount,
-					lastVertex
-				);
-			}
-		}
-		else if (groupType == c_groupTypeMatrix) {
-			p_renderer->FUN_1000acf0(groupData & c_materialMatrixIndexMask);
-		}
-		else if (groupType == c_groupTypeEnd) {
+		switch (groupType) {
+		case static_cast<LegoU32>(c_groupTypeTriangles): {
+			LegoU32 vertexCount = groupData >> c_groupDataUpperWordShift;
+			LegoU32 firstVertex = groupData;
+			vertexCount &= c_vertexCountMask;
+			firstVertex &= c_materialMatrixIndexMask;
+			vertexCount++;
+			(p_renderer->*p_renderer->m_drawTriangleFn1)(
+				(groupData >> c_matrixSelectShift) & c_vertexCountMask,
+				firstVertex,
+				vertexCount
+			);
 			break;
+		}
+		case static_cast<LegoU32>(c_groupTypeTriangleBatch): {
+			LegoU32 lastVertex = groupData >> c_lastVertexShift;
+			LegoU32 triangleCount = groupData >> c_groupDataUpperWordShift;
+			lastVertex &= c_vertexCountMask;
+			triangleCount &= c_triangleCountMask;
+			(p_renderer->*p_renderer
+							  ->m_drawTriangleFn2)(groupData & c_materialMatrixIndexMask, triangleCount, lastVertex);
+			break;
+		}
+		case static_cast<LegoU32>(c_groupTypeMaterial): {
+			GolMaterial* material =
+				static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
+			(p_renderer->*p_renderer->m_applyMaterialFn)(material);
+			p_renderer->SetCurrentTexture(material->GetTexture());
+			break;
+		}
+		case static_cast<LegoU32>(c_groupTypeMatrix):
+			p_renderer->FUN_1000acf0(groupData & c_materialMatrixIndexMask);
+			break;
+		case static_cast<LegoU32>(c_groupTypeEnd):
+			return;
 		}
 	}
 }
@@ -242,12 +242,12 @@ void GolModel::DrawNode(
 		LegoU32* group = m_groups;
 		LegoU32* end = m_groups + m_groupCount;
 
-		for (; group < end; group++) {
+		while (group < end) {
 			LegoU32 groupData = *group;
 			LegoU32 groupType = groupData;
 			groupType &= c_groupTypeMask;
 			if (groupType == c_groupTypeTriangleBatch) {
-				LegoU32 firstTriangle = groupData;
+				LegoU32 firstTriangle = *group;
 				LegoU32 triangleCount = groupData;
 				triangleCount >>= c_groupDataUpperWordShift;
 				triangleCount &= c_triangleCountMask;
@@ -257,27 +257,28 @@ void GolModel::DrawNode(
 				*group = ((((lastVertex | c_vertexIndexHighFlag) << 7) | (triangleCount & c_triangleCountMask))
 						  << c_groupDataUpperWordShift) |
 						 (firstTriangle & c_materialMatrixIndexMask);
+				group++;
 			}
 			else if (groupType == c_groupTypeEnd) {
 				break;
+			}
+			else {
+				group++;
 			}
 		}
 
 		m_dirty = FALSE;
 	}
 
-	GdbColoredVertexArrayBase* vertexArray = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray);
-	p_renderer->m_sourcePositions = vertexArray->GetPositions();
-	p_renderer->m_sourceTexCoords = vertexArray->GetTextureCoordinates();
-	if (vertexArray->HasTransformedColors()) {
-		p_renderer->m_sourceColors = vertexArray->GetTransformedColors();
-	}
-	else {
-		p_renderer->m_sourceColors = vertexArray->GetColors();
-	}
+	p_renderer->m_sourcePositions = static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetPositions();
+	p_renderer->m_sourceTexCoords =
+		static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetTextureCoordinates();
+	p_renderer->m_sourceColors =
+		static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->HasTransformedColors()
+			? static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetTransformedColors()
+			: static_cast<GdbColoredVertexArrayBase*>(m_modelVertexArray)->GetColors();
 
-	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(m_indexArray);
-	p_renderer->m_sourceIndices = indexArray->GetIndexBytes();
+	p_renderer->m_sourceIndices = static_cast<GdbModelIndexArray*>(m_indexArray)->GetIndexBytes();
 	p_renderer->m_materialCommand.m_indices = p_renderer->m_sourceIndices;
 
 	LegoU32* group = m_groups + p_node->m_firstGroup;
@@ -286,39 +287,38 @@ void GolModel::DrawNode(
 		LegoU32 groupData = *group;
 		LegoU32 groupType = groupData & c_groupTypeMask;
 
-		if (groupType <= c_groupTypeMaterial) {
-			if (groupType == c_groupTypeMaterial) {
-				GolMaterial* material =
-					static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
-				(p_renderer->*p_renderer->m_applyMaterialFn)(material);
-				p_renderer->SetCurrentTexture(material->GetTexture());
-			}
-			else if (groupType == c_groupTypeTriangles) {
-				LegoU32 vertexCount = groupData >> c_groupDataUpperWordShift;
-				LegoU32 firstVertex = groupData;
-				vertexCount &= c_vertexCountMask;
-				firstVertex &= c_materialMatrixIndexMask;
-				vertexCount++;
-				(p_renderer->*p_renderer->m_drawTriangleFn1)(
-					(groupData >> c_matrixSelectShift) & c_vertexCountMask,
-					firstVertex,
-					vertexCount
-				);
-			}
-			else if (groupType == c_groupTypeTriangleBatch) {
-				LegoU32 lastVertex = groupData >> c_lastVertexShift;
-				LegoU32 triangleCount = groupData >> c_groupDataUpperWordShift;
-				lastVertex &= c_vertexCountMask;
-				triangleCount &= c_triangleCountMask;
-				(p_renderer->*p_renderer->m_drawTriangleFn2)(
-					groupData & c_materialMatrixIndexMask,
-					triangleCount,
-					lastVertex
-				);
-			}
-		}
-		else if (groupType == c_groupTypeEnd) {
+		switch (groupType) {
+		case static_cast<LegoU32>(c_groupTypeTriangles): {
+			LegoU32 vertexCount = groupData >> c_groupDataUpperWordShift;
+			LegoU32 firstVertex = groupData;
+			vertexCount &= c_vertexCountMask;
+			firstVertex &= c_materialMatrixIndexMask;
+			vertexCount++;
+			(p_renderer->*p_renderer->m_drawTriangleFn1)(
+				(groupData >> c_matrixSelectShift) & c_vertexCountMask,
+				firstVertex,
+				vertexCount
+			);
 			break;
+		}
+		case static_cast<LegoU32>(c_groupTypeTriangleBatch): {
+			LegoU32 lastVertex = groupData >> c_lastVertexShift;
+			LegoU32 triangleCount = groupData >> c_groupDataUpperWordShift;
+			lastVertex &= c_vertexCountMask;
+			triangleCount &= c_triangleCountMask;
+			(p_renderer->*p_renderer
+							  ->m_drawTriangleFn2)(groupData & c_materialMatrixIndexMask, triangleCount, lastVertex);
+			break;
+		}
+		case static_cast<LegoU32>(c_groupTypeMaterial): {
+			GolMaterial* material =
+				static_cast<GolMaterial*>(p_materialTable->GetEntry(groupData & c_materialMatrixIndexMask));
+			(p_renderer->*p_renderer->m_applyMaterialFn)(material);
+			p_renderer->SetCurrentTexture(material->GetTexture());
+			break;
+		}
+		case static_cast<LegoU32>(c_groupTypeEnd):
+			return;
 		}
 	}
 }

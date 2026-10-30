@@ -26,7 +26,7 @@ public:
 	GolWorldDatabaseEx();
 	~GolWorldDatabaseEx() override;
 	void AllocateResources() override;                                          // vtable+0x08
-	undefined4* LoadResources() override;                                       // vtable+0x0c
+	void LoadResources() override;                                              // vtable+0x0c
 	void Destroy() override;                                                    // vtable+0x18
 	void DrawCollidableEntities(GolRenderDevice*) override;                     // vtable+0x1c
 	void DrawModelEntities(GolRenderDevice*) override;                          // vtable+0x20

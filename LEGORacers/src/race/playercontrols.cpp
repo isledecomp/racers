@@ -126,17 +126,8 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 				delta = -turnRate;
 			}
 		}
-		else if (m_input.m_steering > 0.0f) {
-			delta = -g_steeringReturnRate;
-			limitNegative = 0.0f;
-		}
-		else if (m_input.m_steering < 0.0f) {
-			delta = g_steeringReturnRate;
-			limitPositive = 0.0f;
-		}
 		else {
 			delta = 0.0f;
-			limitNegative = 0.0f;
 		}
 	}
 	else {

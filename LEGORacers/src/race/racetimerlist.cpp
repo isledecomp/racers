@@ -253,10 +253,10 @@ void RaceTimerList::Load(
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TibTxtParser::e_timer));
 		parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
 
-		LegoU32 flags = 0;
-		LegoU32 onDuration = 0;
-		LegoU32 offDuration = 0;
 		LegoU32 initialDelay = 0;
+		LegoU32 onDuration = 0;
+		LegoU32 flags = 0;
+		LegoU32 offDuration = 0;
 		LegoS32 eventIndex = -1;
 
 		GolFileParser::ParserTokenType token = parser->GetNextToken();

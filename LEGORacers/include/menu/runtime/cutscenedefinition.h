@@ -137,7 +137,7 @@ public:
 			void End(Frame* p_frame, CutsceneEventSink* p_event) override;   // vtable+0x14
 
 			LegoU32 Reset();
-			LegoU32 Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser);
+			void Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser);
 			void ResolveEntity();
 			void Destroy();
 			GolWorldEntity* GetEntity() const { return m_entity; }

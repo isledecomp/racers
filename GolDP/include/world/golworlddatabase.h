@@ -92,11 +92,11 @@ public:
 	};
 
 	GolWorldDatabase();
-	virtual void DestroyRecords();           // vtable+0x00
-	virtual void AllocateEntities();         // vtable+0x04
-	virtual void AllocateResources() = 0;    // vtable+0x08
-	virtual undefined4* LoadResources() = 0; // vtable+0x0c
-	virtual ~GolWorldDatabase();             // vtable+0x10
+	virtual void DestroyRecords();        // vtable+0x00
+	virtual void AllocateEntities();      // vtable+0x04
+	virtual void AllocateResources() = 0; // vtable+0x08
+	virtual void LoadResources() = 0;     // vtable+0x0c
+	virtual ~GolWorldDatabase();          // vtable+0x10
 	virtual void Load(
 		GolRenderDevice* p_renderer,
 		const LegoChar* p_name,

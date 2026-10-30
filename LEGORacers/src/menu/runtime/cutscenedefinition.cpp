@@ -74,7 +74,7 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00404a10
-LegoU32 CutsceneDefinition::Frame::ModelEvent::Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser)
+void CutsceneDefinition::Frame::ModelEvent::Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
 	LegoU32 duration = 0;
 	m_definition = p_parent;
@@ -153,9 +153,7 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::Parse(CutsceneDefinition* p_paren
 		}
 	}
 
-	// duration += m_startFrame;
 	m_endFrame = m_startFrame + duration;
-	return duration;
 }
 
 // FUNCTION: LEGORACERS 0x00404c90

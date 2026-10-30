@@ -853,7 +853,6 @@ void RaceSession::LoadRouteRecords(LegoBool32 p_mirror)
 	LegoU32 loaded = FALSE;
 	LegoU32 i;
 	LegoU32 type;
-	RaceRouteRecord* current = m_routeRecords;
 
 	for (i = 0; i < static_cast<LegoU32>(m_context->m_racerCount); i++) {
 		if (m_context->m_playerSetupSlots[i].m_slotState == 2 || m_demoMode) {
@@ -918,11 +917,9 @@ void RaceSession::LoadRouteRecords(LegoBool32 p_mirror)
 				}
 				fileName[5] = static_cast<LegoChar>(index + '0');
 
-				current->Load(fileName, m_context->m_useBinaryFiles, p_mirror);
+				m_routeRecords[i].Load(fileName, m_context->m_useBinaryFiles, p_mirror);
 			}
 		}
-
-		current++;
 	}
 
 	for (i = 0; i < sizeOfArray(m_routeRecords); i++) {
@@ -935,19 +932,20 @@ void RaceSession::LoadRouteRecords(LegoBool32 p_mirror)
 		::strcpy(fileName, "r1_f_0");
 		::strcat(fileName, m_context->m_useBinaryFiles ? ".rrb" : ".rrf");
 
-		LegoBool32 foundFallback = GolStream::FindFile(fileName) == GolStream::e_ioSuccess;
-		if (!foundFallback) {
-			fileName[3] = 'm';
-			foundFallback = GolStream::FindFile(fileName) == GolStream::e_ioSuccess;
-
-			if (!foundFallback) {
-				fileName[3] = 's';
-				foundFallback = GolStream::FindFile(fileName) == GolStream::e_ioSuccess;
-			}
-		}
-
-		if (foundFallback) {
+		if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
 			m_routeRecords[0].Load(fileName, m_context->m_useBinaryFiles, p_mirror);
+		}
+		else {
+			fileName[3] = 'm';
+			if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
+				m_routeRecords[0].Load(fileName, m_context->m_useBinaryFiles, p_mirror);
+			}
+			else {
+				fileName[3] = 's';
+				if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
+					m_routeRecords[0].Load(fileName, m_context->m_useBinaryFiles, p_mirror);
+				}
+			}
 		}
 	}
 }
@@ -980,12 +978,11 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	DrawLoadProgress(0.45f);
 
-	MabMaterialAnimation* materialAnimation = m_materialAnimationDatabase->GetMaterialAnimation(0);
 	m_sharedParticleAnimation.Load(
 		4,
 		m_golExport,
 		m_renderer,
-		materialAnimation,
+		m_materialAnimationDatabase->GetMaterialAnimation(0),
 		m_sharedParticleAnimationName,
 		m_context->m_useBinaryFiles
 	);

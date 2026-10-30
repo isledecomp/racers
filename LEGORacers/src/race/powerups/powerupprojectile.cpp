@@ -86,11 +86,9 @@ void PowerupProjectile::LaunchAtRacer(
 	LegoBool32 p_predictiveLead
 )
 {
-	Params* params = p_params;
 	Racer* targetRacer = p_targetRacer;
-	Initialize(params);
-
-	LegoFloat speed = params->m_speed;
+	Initialize(p_params);
+	LegoFloat speed = p_params->m_speed;
 	m_targetRacer = targetRacer;
 	m_ownerRacer = p_racer;
 	if (p_fromRacerPosition) {
@@ -105,7 +103,7 @@ void PowerupProjectile::LaunchAtRacer(
 	GolVec3* startPosition = &m_startPosition;
 	GolVec3* target = &m_targetPosition;
 	targetRacer->m_visuals.m_carEntity->GetPosition(target);
-	target->m_z += g_projectileTargetHeightOffset;
+	m_targetPosition.m_z += g_projectileTargetHeightOffset;
 
 	GolVec3 scaledVelocity;
 	GolVec3 targetVelocity = targetRacer->m_physics.m_velocity;
@@ -113,8 +111,7 @@ void PowerupProjectile::LaunchAtRacer(
 	GolVec3 delta;
 	delta.m_x = target->m_x - startPosition->m_x;
 	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
-	LegoFloat deltaY = delta.m_y;
-	LegoFloat distance = static_cast<LegoFloat>(sqrt(deltaY * deltaY + delta.m_x * delta.m_x));
+	LegoFloat distance = static_cast<LegoFloat>(sqrt(delta.m_y * delta.m_y + delta.m_x * delta.m_x));
 	LegoFloat inverseDistance;
 	if (distance == 0.0f) {
 		distance = 1.0f;
@@ -124,56 +121,53 @@ void PowerupProjectile::LaunchAtRacer(
 		inverseDistance = 1.0f / distance;
 	}
 
-	LegoFloat directionX = inverseDistance * delta.m_x;
-	Racer* racer = p_racer;
-	racerDirection = racer->m_physics.m_velocityDirection;
-	LegoFloat directionY = inverseDistance * deltaY;
-	LegoFloat dot = racerDirection.m_z * 0.0f + racerDirection.m_y * directionY + racerDirection.m_x * directionX;
+	delta.m_x *= inverseDistance;
+	racerDirection = p_racer->m_physics.m_velocityDirection;
+	delta.m_y *= inverseDistance;
+	LegoFloat dot = racerDirection.m_z * 0.0f + racerDirection.m_y * delta.m_y + racerDirection.m_x * delta.m_x;
 	if (dot < 0.0f) {
 		dot = -dot;
 	}
-
-	speed += dot * racer->m_physics.m_speed * g_floatConst1000;
-	if (speed <= g_projectileMinSpeed) {
+	LegoFloat speedDelta = dot * p_racer->m_physics.m_speed;
+	speedDelta *= g_floatConst1000;
+	speed += speedDelta;
+	if (!(speed > g_projectileMinSpeed)) {
 		speed = g_projectileMinSpeed;
 	}
 
 	speed = distance / speed;
-	LegoFloat durationMs = speed * g_floatConst1000;
+	LegoFloat durationMs = speed;
+	durationMs *= g_floatConst1000;
 	m_flightTimeMs = static_cast<LegoS32>(durationMs);
-	scaledVelocity.m_x = targetVelocity.m_x * durationMs;
-	scaledVelocity.m_y = targetVelocity.m_y * durationMs;
-	scaledVelocity.m_z = targetVelocity.m_z * durationMs;
-
 	if (p_predictiveLead) {
-		GolVec3 predictedTarget;
-		predictedTarget.m_x = target->m_x + scaledVelocity.m_x;
-		predictedTarget.m_y = target->m_y + scaledVelocity.m_y;
-		predictedTarget.m_z = target->m_z + scaledVelocity.m_z;
-
-		GolVec3 racerVector = p_racer->m_physics.m_facingDirection;
+		scaledVelocity.m_x = targetVelocity.m_x * durationMs;
+		scaledVelocity.m_y = targetVelocity.m_y * durationMs;
+		scaledVelocity.m_z = targetVelocity.m_z * durationMs;
+		delta = *target;
+		delta += scaledVelocity;
+		racerDirection = p_racer->m_physics.m_facingDirection;
 		GolVec3 predictedDelta;
-		predictedDelta.m_x = predictedTarget.m_x - startPosition->m_x;
-		predictedDelta.m_y = predictedTarget.m_y - startPosition->m_y;
-		predictedDelta.m_z = predictedTarget.m_z - startPosition->m_z;
-		LegoFloat predictedDot = racerVector.m_z * predictedDelta.m_z;
-		predictedDot += racerVector.m_y * predictedDelta.m_y;
-		predictedDot += racerVector.m_x * predictedDelta.m_x;
+		predictedDelta.m_x = delta.m_x - startPosition->m_x;
+		predictedDelta.m_y = delta.m_y - startPosition->m_y;
+		predictedDelta.m_z = delta.m_z - startPosition->m_z;
+		LegoFloat predictedDot = racerDirection.m_z * predictedDelta.m_z;
+		predictedDot += racerDirection.m_y * predictedDelta.m_y;
+		predictedDot += racerDirection.m_x * predictedDelta.m_x;
 		if (predictedDot < 0.0f) {
-			*target = predictedTarget;
+			*target = delta;
 		}
 	}
 	else {
+		scaledVelocity.m_x = targetVelocity.m_x * durationMs;
+		scaledVelocity.m_y = targetVelocity.m_y * durationMs;
+		scaledVelocity.m_z = targetVelocity.m_z * durationMs;
 		target->m_x += scaledVelocity.m_x;
 		target->m_y += scaledVelocity.m_y;
 		target->m_z += scaledVelocity.m_z;
 	}
-
-	target->m_x += params->m_targetOffset.m_x;
-	target->m_y += params->m_targetOffset.m_y;
-	target->m_z += params->m_targetOffset.m_z;
+	*target += p_params->m_targetOffset;
 	ComputeTrajectory(speed);
-	RegisterCollisionEvent(params->m_eventQueue);
+	RegisterCollisionEvent(p_params->m_eventQueue);
 }
 
 // FUNCTION: LEGORACERS 0x00431050

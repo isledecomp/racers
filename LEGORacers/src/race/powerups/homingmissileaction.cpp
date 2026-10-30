@@ -51,7 +51,7 @@ const LegoFloat g_missileAimAheadDistance = 500.0f;
 const LegoFloat g_missileLaunchHeight = 4.0f;
 
 // GLOBAL: LEGORACERS 0x004b167c
-extern const LegoFloat g_missileTrailWidth = 1.0f;
+const LegoFloat g_missileTrailWidth = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b168c
 const LegoFloat g_missileTargetConeCosine = 0.70709997f;

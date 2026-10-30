@@ -173,21 +173,15 @@ TargetPointList::Entry* TargetPointList::FindTargetInCone(
 	LegoS32 resultIndex = -1;
 
 	for (LegoS32 i = 0; i < m_count; i++) {
-		Entry& entry = m_entries[i];
-
-		if (entry.m_flags & Entry::c_flagEnabled) {
-			GolVec3 position = entry.m_position;
-			LegoFloat deltaX = position.m_x - p_position->m_x;
-			GolVec2 deltaYZ;
-			deltaYZ.m_x = position.m_y - p_position->m_y;
-			deltaYZ.m_y = position.m_z - p_position->m_z;
-			LegoFloat distanceSquared = deltaYZ.m_y * deltaYZ.m_y + deltaYZ.m_x * deltaYZ.m_x + deltaX * deltaX;
+		if (m_entries[i].m_flags & Entry::c_flagEnabled) {
+			GolVec3 position = m_entries[i].m_position;
+			LegoFloat distanceSquared = p_position->DistanceSquaredTo(position);
 
 			if (distanceSquared >= p_minDistanceSquared && distanceSquared <= p_maxDistanceSquared) {
 				GolVec3 delta;
-				delta.m_x = deltaX;
-				delta.m_y = deltaYZ.m_x;
-				delta.m_z = deltaYZ.m_y;
+				delta.m_x = position.m_x - p_position->m_x;
+				delta.m_y = position.m_y - p_position->m_y;
+				delta.m_z = position.m_z - p_position->m_z;
 				GolMath::NormalizeVector3(delta, &delta);
 
 				LegoFloat dotProduct = p_direction->m_z;

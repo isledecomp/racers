@@ -248,67 +248,200 @@ void GolTiledTexture::ComputeTileLayout()
 	m_stateFlags |= c_stateCreated | c_stateFlagBit7 | c_stateFlagBit9;
 }
 
-// STUB: GOLDP 0x1001f790
+// FUNCTION: GOLDP 0x1001f790
 void GolTiledTexture::ComputeSquareTileLayout()
 {
-	LegoU32 bitsPerPixel = m_format.m_bitsPerPixel;
-	LegoU32 minWidth = m_renderer->GetMinimumTextureWidth(bitsPerPixel);
-	LegoU32 maxWidth = m_renderer->GetMaximumTextureWidth(bitsPerPixel);
-	LegoU32 minHeight = m_renderer->GetMinimumTextureHeight(bitsPerPixel);
-	LegoU32 maxHeight = m_renderer->GetMaximumTextureHeight(bitsPerPixel);
+	LegoU32 minWidth = m_renderer->GetMinimumTextureWidth(m_format.m_bitsPerPixel);
+	LegoU32 maxWidth = m_renderer->GetMaximumTextureWidth(m_format.m_bitsPerPixel);
+	LegoU32 minHeight = m_renderer->GetMinimumTextureHeight(m_format.m_bitsPerPixel);
+	LegoU32 maxHeight = m_renderer->GetMaximumTextureHeight(m_format.m_bitsPerPixel);
+	LegoU32 sizes[7];
+	LegoBool32 used[7];
+	LegoU32 position;
+	LegoU32 size;
 	LegoU32 i;
-	LegoU32 row;
-	LegoU32 column;
+	LegoU32 n;
+	LegoS32 j;
+	LegoS32 k;
 
-	LegoU32 minimum = minWidth > minHeight ? minWidth : minHeight;
-	if (minimum < 4) {
-		minimum = 4;
-	}
-
-	LegoU32 maximum = maxWidth < maxHeight ? maxWidth : maxHeight;
-	if (maximum < minimum) {
-		maximum = minimum;
-	}
-
-	LegoU32 remaining = m_width > m_height ? m_width : m_height;
-	LegoU32 tileSize;
-	if (remaining < minimum) {
-		tileSize = minimum;
-	}
-	else if (remaining > maximum) {
-		tileSize = maximum;
-	}
-	else {
-		tileSize = 1;
-		for (i = 0; i < 32 && tileSize < remaining; i++) {
-			tileSize <<= 1;
+	if (m_width < m_height) {
+		m_tileColumnCount = 0;
+		for (position = 0; position < m_width; m_tileColumnCount++) {
+			position += ChooseTileSize(m_width - position, minWidth, maxWidth);
 		}
 
-		if (tileSize > maximum) {
-			tileSize = maximum;
+		AllocateTileWidths();
+
+		for (position = 0, i = 0; position < m_width; i++) {
+			m_tileWidths[i] = ChooseTileSize(m_width - position, minWidth, maxWidth);
+			position += m_tileWidths[i];
 		}
-		if (remaining < tileSize - minimum) {
-			tileSize >>= 1;
-			if (tileSize < minimum) {
-				tileSize = minimum;
+
+		for (i = 0; i < m_tileColumnCount; i++) {
+			::memset(used, 0, sizeof(used));
+
+			for (k = 0; k < 7; k++) {
+				LegoU32 scaled;
+				if (k < 3) {
+					scaled = (LegoU32) m_tileWidths[i] >> (3 - k);
+				}
+				else {
+					scaled = (LegoU32) m_tileWidths[i] << (k - 3);
+				}
+
+				if (i == 0) {
+					sizes[k] = scaled;
+					used[k] = TRUE;
+				}
+				else {
+					for (j = 0; j < 7; j++) {
+						if (scaled == sizes[j]) {
+							used[j] = TRUE;
+						}
+					}
+				}
+			}
+
+			for (j = 0; j < 7; j++) {
+				if (!used[j]) {
+					sizes[j] = 0;
+				}
 			}
 		}
+
+		// The original scans for the first non-zero size and discards the result.
+		for (n = 0; n < 7 && !sizes[n]; n++) {
+		}
+
+		m_tileRowCount = 0;
+		size = 0;
+		for (position = 0; position < m_height; m_tileRowCount++) {
+			size = ChooseTileSize(m_height - position, minHeight, maxHeight);
+			LegoU32 best = 7;
+			LegoU32 bestDiff = 0xffffffff;
+			for (n = 0; n < 7; n++) {
+				LegoS32 diff = sizes[n] - size;
+				if (diff < 0) {
+					diff = -diff;
+				}
+				if (sizes[n] > 0 && (LegoU32) diff < bestDiff) {
+					best = n;
+					bestDiff = diff;
+				}
+			}
+			position += sizes[best];
+		}
+
+		AllocateTileHeights();
+
+		for (position = 0, i = 0; position < m_height; i++) {
+			size = ChooseTileSize(m_height - position, minHeight, maxHeight);
+			LegoU32 best = 7;
+			LegoU32 bestDiff = 0xffffffff;
+			for (n = 0; n < 7; n++) {
+				LegoS32 diff = sizes[n] - size;
+				if (diff < 0) {
+					diff = -diff;
+				}
+				if (sizes[n] > 0 && (LegoU32) diff < bestDiff) {
+					best = n;
+					bestDiff = diff;
+				}
+			}
+			m_tileHeights[i] = sizes[best];
+			position += sizes[best];
+		}
+	}
+	else {
+		m_tileRowCount = 0;
+		for (position = 0; position < m_height; m_tileRowCount++) {
+			position += ChooseTileSize(m_height - position, minHeight, maxHeight);
+		}
+
+		AllocateTileHeights();
+
+		for (position = 0, i = 0; position < m_height; i++) {
+			m_tileHeights[i] = ChooseTileSize(m_height - position, minHeight, maxHeight);
+			position += m_tileHeights[i];
+		}
+
+		for (i = 0; i < m_tileRowCount; i++) {
+			::memset(used, 0, sizeof(used));
+
+			for (k = 0; k < 7; k++) {
+				LegoU32 scaled;
+				if (k < 3) {
+					scaled = (LegoU32) m_tileHeights[i] >> (3 - k);
+				}
+				else {
+					scaled = (LegoU32) m_tileHeights[i] << (k - 3);
+				}
+
+				if (i == 0) {
+					sizes[k] = scaled;
+					used[k] = TRUE;
+				}
+				else {
+					for (j = 0; j < 7; j++) {
+						if (scaled == sizes[j]) {
+							used[j] = TRUE;
+						}
+					}
+				}
+			}
+
+			for (j = 0; j < 7; j++) {
+				if (!used[j]) {
+					sizes[j] = 0;
+				}
+			}
+		}
+
+		// The original scans for the first non-zero size and discards the result.
+		for (n = 0; n < 7 && !sizes[n]; n++) {
+		}
+
+		m_tileColumnCount = 0;
+		size = 0;
+		for (position = 0; position < m_width; m_tileColumnCount++) {
+			size = ChooseTileSize(m_width - position, minWidth, maxWidth);
+			LegoU32 best = 7;
+			LegoU32 bestDiff = 0xffffffff;
+			for (n = 0; n < 7; n++) {
+				LegoS32 diff = sizes[n] - size;
+				if (diff < 0) {
+					diff = -diff;
+				}
+				if (sizes[n] > 0 && (LegoU32) diff < bestDiff) {
+					best = n;
+					bestDiff = diff;
+				}
+			}
+			position += sizes[best];
+		}
+
+		AllocateTileWidths();
+
+		for (position = 0, i = 0; position < m_width; i++) {
+			size = ChooseTileSize(m_width - position, minWidth, maxWidth);
+			LegoU32 best = 7;
+			LegoU32 bestDiff = 0xffffffff;
+			for (n = 0; n < 7; n++) {
+				LegoS32 diff = sizes[n] - size;
+				if (diff < 0) {
+					diff = -diff;
+				}
+				if (sizes[n] > 0 && (LegoU32) diff < bestDiff) {
+					best = n;
+					bestDiff = diff;
+				}
+			}
+			m_tileWidths[i] = sizes[best];
+			position += sizes[best];
+		}
 	}
 
-	m_tileColumnCount = (m_width + tileSize - 1) / tileSize;
-	m_tileRowCount = (m_height + tileSize - 1) / tileSize;
-
-	AllocateTileWidths();
-	AllocateTileHeights();
 	AllocateTileArrays();
-
-	for (row = 0; row < m_tileColumnCount; row++) {
-		m_tileWidths[row] = tileSize;
-	}
-	for (column = 0; column < m_tileRowCount; column++) {
-		m_tileHeights[column] = tileSize;
-	}
-
 	CreateTiles();
 	m_stateFlags |= c_stateCreated | c_stateFlagBit7 | c_stateFlagBit9;
 }

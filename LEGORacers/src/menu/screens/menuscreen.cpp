@@ -330,7 +330,8 @@ void MenuScreen::ApplySelectorDefaults(
 	p_createParams->m_prevButtonParams->m_iconEventHandler = NULL;
 	p_createParams->m_nextButtonParams->m_iconEventHandler = NULL;
 
-	for (LegoS32 i = 0; i < 6; i++) {
+	LegoS32 i;
+	for (i = 0; i < 6; i++) {
 		if (!p_createParams->m_prevButtonParams->m_stateImages[i]) {
 			p_createParams->m_prevButtonParams->m_stateImages[i] = p_styleEntry->GetPrevButtonStyle()->m_stateImages[i];
 		}
@@ -342,8 +343,8 @@ void MenuScreen::ApplySelectorDefaults(
 
 	LegoS32 count = 8;
 	do {
-		if (!p_createParams->m_frameParams->m_images[6]) {
-			p_createParams->m_frameParams->m_images[6] = p_styleEntry->m_frameStyle->m_images[6];
+		if (!p_createParams->m_frameParams->m_images[i]) {
+			p_createParams->m_frameParams->m_images[i] = p_styleEntry->m_frameStyle->m_images[i];
 		}
 	} while (--count);
 

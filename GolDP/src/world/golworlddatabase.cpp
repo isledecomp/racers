@@ -1345,11 +1345,10 @@ void GolWorldDatabase::InitializeEntities()
 {
 	WdbModel* model;
 	LegoU32 i;
+	LegoU32 j;
 	LegoU32 lod;
 	LegoFloat maxDistances[3];
 	LegoChar name[sizeof(GolName) + 1];
-	LegoU32 bindingIndex;
-	LegoU32 j;
 
 	if (m_modelEntityCount) {
 		model = m_modelEntityRecords;
@@ -1413,23 +1412,18 @@ void GolWorldDatabase::InitializeEntities()
 			}
 
 			j = 0;
-			if (model->m_animationBindingCount > 0) {
-				bindingIndex = 0;
-				do {
-					Rect* assignment = &model->m_animationBindings[bindingIndex];
-					if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
-
-						LegoU32 trackIndex = assignment->m_top;
-						MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
-						LegoU32 targetIndex = assignment->m_bottom;
-						MaterialTable* target = runtime->m_materialTables[targetIndex]
-													? runtime->m_materialTables[targetIndex]
-													: runtime->m_models[targetIndex]->GetMaterialTable();
-						item->Assign(target, assignment->m_right, TRUE);
-					}
-					bindingIndex++;
-					j++;
-				} while (j < model->m_animationBindingCount);
+			while (j < model->m_animationBindingCount) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
+				j++;
 			}
 
 			if (model->m_name[0] != '\0') {
@@ -1544,23 +1538,18 @@ void GolWorldDatabase::InitializeEntities()
 			}
 
 			j = 0;
-			if (model->m_animationBindingCount > 0) {
-				bindingIndex = 0;
-				do {
-					Rect* assignment = &model->m_animationBindings[bindingIndex];
-					if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
-
-						LegoU32 trackIndex = assignment->m_top;
-						MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
-						LegoU32 targetIndex = assignment->m_bottom;
-						MaterialTable* target = runtime->m_materialTables[targetIndex]
-													? runtime->m_materialTables[targetIndex]
-													: runtime->m_models[targetIndex]->GetMaterialTable();
-						item->Assign(target, assignment->m_right, TRUE);
-					}
-					bindingIndex++;
-					j++;
-				} while (j < model->m_animationBindingCount);
+			while (j < model->m_animationBindingCount) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
+				j++;
 			}
 
 			if (model->m_name[0] != '\0') {
@@ -1637,23 +1626,18 @@ void GolWorldDatabase::InitializeEntities()
 			}
 
 			j = 0;
-			if (model->m_animationBindingCount > 0) {
-				bindingIndex = 0;
-				do {
-					Rect* assignment = &model->m_animationBindings[bindingIndex];
-					if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
-
-						LegoU32 trackIndex = assignment->m_top;
-						MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
-						LegoU32 targetIndex = assignment->m_bottom;
-						MaterialTable* target = runtime->m_materialTables[targetIndex]
-													? runtime->m_materialTables[targetIndex]
-													: runtime->m_models[targetIndex]->GetMaterialTable();
-						item->Assign(target, assignment->m_right, TRUE);
-					}
-					bindingIndex++;
-					j++;
-				} while (j < model->m_animationBindingCount);
+			while (j < model->m_animationBindingCount) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
+				j++;
 			}
 
 			if (model->m_name[0] != '\0') {
@@ -1685,8 +1669,9 @@ void GolWorldDatabase::InitializeEntities()
 				if (m_boundedEntityRecords[i].m_materialTableIndices[0] >= static_cast<LegoS32>(m_materialTableCount)) {
 					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
 				}
-				GetBoundedEntities()[i].m_materialTableOverride =
+				GolModelMaterialTable* materialTable =
 					GetMaterialTable(m_boundedEntityRecords[i].m_materialTableIndices[0]);
+				GetBoundedEntities()[i].m_materialTableOverride = materialTable;
 			}
 			else {
 				GetBoundedEntities()[i].m_materialTableOverride = NULL;

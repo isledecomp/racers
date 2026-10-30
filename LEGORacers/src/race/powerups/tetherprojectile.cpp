@@ -137,25 +137,34 @@ void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapse
 	elapsedStep *= 0.001f;
 
 	GolVec3 origin;
-	m_ownerRacer->m_visuals.m_carEntity->GetPosition(&origin);
+	m_ownerRacer->m_visuals.GetCarEntity()->GetPosition(&origin);
 	origin.m_z += m_attachHeight;
 
-	LegoFloat deltaX = p_position->m_x - origin.m_x;
-	LegoFloat deltaY = p_position->m_y - origin.m_y;
+	GolVec3 delta;
+	delta.m_x = p_position->m_x - origin.m_x;
+	LegoFloat stepX = delta.m_x;
+	stepX *= g_unk0x004b02e0;
+	delta.m_y = p_position->m_y - origin.m_y;
+	LegoFloat stepY = delta.m_y;
+	stepY *= g_unk0x004b02e0;
+	delta.m_z = p_position->m_z - origin.m_z;
+	m_beam.Begin(&origin, &delta);
 
-	GolVec3 step;
-	step.m_x = deltaX * g_unk0x004b02e0;
-	step.m_y = deltaY * g_unk0x004b02e0;
-	step.m_z = p_position->m_z - origin.m_z;
-	m_beam.Begin(&origin, &step);
-
+	GolVec3 position;
+	position.m_x = origin.m_x;
+	position.m_y = origin.m_y;
 	LegoFloat elapsed = 0.0f;
-	GolVec3 position = origin;
 	for (LegoU32 i = 0; i < 4; i++) {
 		elapsed += elapsedStep;
-		position.m_x += step.m_x;
-		position.m_y += step.m_y;
-		position.m_z = (m_gravity * 0.5f * elapsed * elapsed) + (m_velocityZ * elapsed) + m_startPosition.m_z;
+		position.m_x = position.m_x + stepX;
+		position.m_y = position.m_y + stepY;
+		LegoFloat curve = elapsed * elapsed;
+		curve *= 0.5f;
+		curve *= m_gravity;
+		LegoFloat velocity = m_velocityZ;
+		velocity *= elapsed;
+		curve += velocity;
+		position.m_z = curve + m_startPosition.m_z;
 		m_beam.AppendSpan(&position, p_amount);
 		p_amount = -p_amount;
 	}

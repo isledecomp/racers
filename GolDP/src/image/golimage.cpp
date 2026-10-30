@@ -226,28 +226,38 @@ void GolImage::DrawStretched(
 		return;
 	}
 
+	struct FloatRect {
+		LegoFloat m_left;
+		LegoFloat m_top;
+		LegoFloat m_right;
+		LegoFloat m_bottom;
+	};
+	FloatRect clip;
+	FloatRect dest;
+	FloatRect source;
+
 	LegoS32 renderTargetWidth = p_renderer->GetRenderTargetInfo()->GetWidth();
 	LegoS32 renderTargetHeight = p_renderer->GetRenderTargetInfo()->GetHeight();
-	LegoFloat clipLeft = 0.0f;
-	LegoFloat clipTop = 0.0f;
-	LegoFloat clipRight = static_cast<LegoFloat>(renderTargetWidth);
-	LegoFloat clipBottom = static_cast<LegoFloat>(renderTargetHeight);
+	clip.m_left = 0.0f;
+	clip.m_top = 0.0f;
+	clip.m_right = static_cast<LegoFloat>(renderTargetWidth);
+	clip.m_bottom = static_cast<LegoFloat>(renderTargetHeight);
 
 	if (p_clipRect != NULL) {
 		if (p_clipRect->m_left > 0) {
-			clipLeft = static_cast<LegoFloat>(p_clipRect->m_left);
+			clip.m_left = static_cast<LegoFloat>(p_clipRect->m_left);
 		}
 		if (p_clipRect->m_top > 0) {
-			clipTop = static_cast<LegoFloat>(p_clipRect->m_top);
+			clip.m_top = static_cast<LegoFloat>(p_clipRect->m_top);
 		}
 		if (p_clipRect->m_right < renderTargetWidth) {
-			clipRight = static_cast<LegoFloat>(p_clipRect->m_right);
+			clip.m_right = static_cast<LegoFloat>(p_clipRect->m_right);
 		}
 		if (p_clipRect->m_bottom < renderTargetHeight) {
-			clipBottom = static_cast<LegoFloat>(p_clipRect->m_bottom);
+			clip.m_bottom = static_cast<LegoFloat>(p_clipRect->m_bottom);
 		}
 
-		if (clipRight <= clipLeft || clipBottom <= clipTop) {
+		if (clip.m_right <= clip.m_left || clip.m_bottom <= clip.m_top) {
 			return;
 		}
 	}
@@ -264,12 +274,13 @@ void GolImage::DrawStretched(
 		return;
 	}
 
-	LegoFloat destLeft = static_cast<LegoFloat>(destLeftInt);
-	LegoFloat destTop = static_cast<LegoFloat>(destTopInt);
-	LegoFloat destRight = static_cast<LegoFloat>(destRightInt);
-	LegoFloat destBottom = static_cast<LegoFloat>(destBottomInt);
+	dest.m_left = static_cast<LegoFloat>(destLeftInt);
+	dest.m_top = static_cast<LegoFloat>(destTopInt);
+	dest.m_right = static_cast<LegoFloat>(destRightInt);
+	dest.m_bottom = static_cast<LegoFloat>(destBottomInt);
 
-	if (destLeft > clipRight || destTop > clipBottom || destRight <= clipLeft || destBottom <= clipTop) {
+	if (dest.m_left > clip.m_right || dest.m_top > clip.m_bottom || dest.m_right <= clip.m_left ||
+		dest.m_bottom <= clip.m_top) {
 		return;
 	}
 
@@ -285,28 +296,28 @@ void GolImage::DrawStretched(
 		return;
 	}
 
-	LegoFloat sourceLeft = static_cast<LegoFloat>(sourceLeftInt);
-	LegoFloat sourceTop = static_cast<LegoFloat>(sourceTopInt);
-	LegoFloat sourceRight = static_cast<LegoFloat>(sourceRightInt);
-	LegoFloat sourceBottom = static_cast<LegoFloat>(sourceBottomInt);
-	LegoFloat scaleX = (destRight - destLeft) / (sourceRight - sourceLeft);
-	LegoFloat scaleY = (destBottom - destTop) / (sourceBottom - sourceTop);
+	source.m_left = static_cast<LegoFloat>(sourceLeftInt);
+	source.m_top = static_cast<LegoFloat>(sourceTopInt);
+	source.m_right = static_cast<LegoFloat>(sourceRightInt);
+	source.m_bottom = static_cast<LegoFloat>(sourceBottomInt);
+	LegoFloat scaleX = (dest.m_right - dest.m_left) / (source.m_right - source.m_left);
+	LegoFloat scaleY = (dest.m_bottom - dest.m_top) / (source.m_bottom - source.m_top);
 	LegoFloat sourcePerDestX = 1.0f / scaleX;
 	LegoFloat sourcePerDestY = 1.0f / scaleY;
 
-	if (clipLeft - destLeft > 0.0f) {
-		sourceLeft += (clipLeft - destLeft) * sourcePerDestX;
-		destLeft = clipLeft;
+	if (clip.m_left - dest.m_left > 0.0f) {
+		source.m_left += (clip.m_left - dest.m_left) * sourcePerDestX;
+		dest.m_left = clip.m_left;
 	}
-	if (clipTop - destTop > 0.0f) {
-		sourceTop += (clipTop - destTop) * sourcePerDestY;
-		destTop = clipTop;
+	if (clip.m_top - dest.m_top > 0.0f) {
+		source.m_top += (clip.m_top - dest.m_top) * sourcePerDestY;
+		dest.m_top = clip.m_top;
 	}
-	if (clipRight - destRight < 0.0f) {
-		sourceRight += (clipRight - destRight) * sourcePerDestX;
+	if (clip.m_right - dest.m_right < 0.0f) {
+		source.m_right += (clip.m_right - dest.m_right) * sourcePerDestX;
 	}
-	if (clipBottom - destBottom < 0.0f) {
-		sourceBottom += (clipBottom - destBottom) * sourcePerDestY;
+	if (clip.m_bottom - dest.m_bottom < 0.0f) {
+		source.m_bottom += (clip.m_bottom - dest.m_bottom) * sourcePerDestY;
 	}
 
 	g_imageQuad[0].sz = 0.0f;
@@ -319,8 +330,9 @@ void GolImage::DrawStretched(
 	g_imageQuad[2].rhw = 1.0f;
 	g_imageQuad[3].rhw = 1.0f;
 
-	LegoU32 color = (m_tintColor.m_uBytes[3] << 24) | (m_tintColor.m_uBytes[0] << 16) | (m_tintColor.m_uBytes[1] << 8) |
-					m_tintColor.m_uBytes[2];
+	LegoU32 color = (m_tintColor.m_uBytes[3] << 8) | m_tintColor.m_uBytes[0];
+	color = (color << 8) | m_tintColor.m_uBytes[1];
+	color = (color << 8) | m_tintColor.m_uBytes[2];
 	g_imageQuad[0].color = color;
 	g_imageQuad[1].color = color;
 	g_imageQuad[2].color = color;
@@ -331,35 +343,39 @@ void GolImage::DrawStretched(
 	g_imageQuad[2].specular = 0xffffffff;
 	g_imageQuad[3].specular = 0xffffffff;
 
+	LegoFloat tileTop;
+	LegoFloat tileRight;
+	LegoFloat tileBottom;
 	LegoFloat tileLeft = 0.0f;
+	tileRight = 0.0f;
 	for (LegoU32 row = 0; row < m_tileColumnCount; row++) {
-		LegoFloat tileTop = 0.0f;
-		LegoFloat tileRight;
+		tileTop = 0.0f;
 
 		for (LegoU32 column = 0; column < m_tileRowCount; column++) {
-			LegoFloat tileBottom;
 			LegoFloat tileWidth = static_cast<LegoFloat>(m_tileWidths[row]);
 			LegoFloat tileHeight = static_cast<LegoFloat>(m_tileHeights[column]);
 			tileRight = tileLeft + tileWidth;
 			tileBottom = tileTop + tileHeight;
 
-			if (tileLeft < sourceRight && tileRight > sourceLeft && tileTop < sourceBottom && tileBottom > sourceTop) {
-				LegoFloat clippedLeft = tileLeft;
-				LegoFloat clippedTop = tileTop;
-				LegoFloat clippedRight = tileRight;
-				LegoFloat clippedBottom = tileBottom;
+			if (tileLeft < source.m_right && tileRight > source.m_left && tileTop < source.m_bottom &&
+				tileBottom > source.m_top) {
+				FloatRect tileClip;
+				tileClip.m_left = tileLeft;
+				tileClip.m_top = tileTop;
+				tileClip.m_right = tileRight;
+				tileClip.m_bottom = tileBottom;
 
-				if (clippedLeft < sourceLeft) {
-					clippedLeft = sourceLeft;
+				if (tileClip.m_left < source.m_left) {
+					tileClip.m_left = source.m_left;
 				}
-				if (clippedRight > sourceRight) {
-					clippedRight = sourceRight;
+				if (tileClip.m_right > source.m_right) {
+					tileClip.m_right = source.m_right;
 				}
-				if (clippedTop < sourceTop) {
-					clippedTop = sourceTop;
+				if (tileClip.m_top < source.m_top) {
+					tileClip.m_top = source.m_top;
 				}
-				if (clippedBottom > sourceBottom) {
-					clippedBottom = sourceBottom;
+				if (tileClip.m_bottom > source.m_bottom) {
+					tileClip.m_bottom = source.m_bottom;
 				}
 
 				LegoU32 index = row * m_tileRowCount + column;
@@ -369,26 +385,26 @@ void GolImage::DrawStretched(
 				LegoFloat invTileWidth = 1.0f / tileWidth;
 				LegoFloat invTileHeight = 1.0f / tileHeight;
 
-				g_imageQuad[0].sx = (clippedLeft - sourceLeft) * scaleX + destLeft;
-				g_imageQuad[0].sy = (clippedTop - sourceTop) * scaleY + destTop;
-				g_imageQuad[0].tu = (clippedLeft - tileLeft) * invTileWidth;
-				g_imageQuad[0].tv = (clippedTop - tileTop) * invTileHeight;
+				g_imageQuad[0].sx = (tileClip.m_left - source.m_left) * scaleX + dest.m_left;
+				g_imageQuad[0].sy = (tileClip.m_top - source.m_top) * scaleY + dest.m_top;
+				g_imageQuad[0].tu = (tileClip.m_left - tileLeft) * invTileWidth;
+				g_imageQuad[0].tv = (tileClip.m_top - tileTop) * invTileHeight;
 
-				g_imageQuad[1].sx = (clippedLeft - sourceLeft) * scaleX + destLeft;
-				g_imageQuad[1].sy = (clippedBottom - sourceTop) * scaleY + destTop;
-				g_imageQuad[1].tu = (clippedLeft - tileLeft) * invTileWidth;
-				g_imageQuad[1].tv = (clippedBottom - tileTop) * invTileHeight;
+				g_imageQuad[1].sx = g_imageQuad[0].sx;
+				g_imageQuad[1].sy = (tileClip.m_bottom - source.m_top) * scaleY + dest.m_top;
+				g_imageQuad[1].tu = g_imageQuad[0].tu;
+				g_imageQuad[1].tv = (tileClip.m_bottom - tileTop) * invTileHeight;
 
-				g_imageQuad[2].sx = (clippedRight - sourceLeft) * scaleX + destLeft;
-				g_imageQuad[2].sy = (clippedTop - sourceTop) * scaleY + destTop;
-				g_imageQuad[2].tu = (clippedRight - tileLeft) * invTileWidth;
-				g_imageQuad[2].tv = (clippedTop - tileTop) * invTileHeight;
+				g_imageQuad[2].sx = (tileClip.m_right - source.m_left) * scaleX + dest.m_left;
+				g_imageQuad[2].sy = g_imageQuad[0].sy;
+				g_imageQuad[2].tu = (tileClip.m_right - tileLeft) * invTileWidth;
 
-				g_imageQuad[3].sx = (clippedRight - sourceLeft) * scaleX + destLeft;
-				g_imageQuad[3].sy = (clippedBottom - sourceTop) * scaleY + destTop;
-				g_imageQuad[3].tu = (clippedRight - tileLeft) * invTileWidth;
-				g_imageQuad[3].tv = (clippedBottom - tileTop) * invTileHeight;
+				g_imageQuad[3].tu = g_imageQuad[2].tu;
 
+				g_imageQuad[2].tv = g_imageQuad[0].tv;
+				g_imageQuad[3].tv = g_imageQuad[1].tv;
+				g_imageQuad[3].sx = g_imageQuad[2].sx;
+				g_imageQuad[3].sy = g_imageQuad[1].sy;
 				p_renderer->DrawTriangleStrip(g_imageQuad, sizeOfArray(g_imageQuad));
 			}
 

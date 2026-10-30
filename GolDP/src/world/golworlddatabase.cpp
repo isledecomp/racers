@@ -1340,341 +1340,378 @@ void GolWorldDatabase::AllocateEntities()
 	}
 }
 
-// STUB: GOLDP 0x1002e640
+// FUNCTION: GOLDP 0x1002e640
 void GolWorldDatabase::InitializeEntities()
 {
+	WdbModel* model;
 	LegoU32 i;
 	LegoU32 j;
 	LegoU32 lod;
 	LegoFloat maxDistances[3];
+	LegoChar name[sizeof(GolName) + 1];
 
-	for (i = 0; i < m_modelEntityCount; i++) {
-		WdbModel* model = &m_modelEntityRecords[i];
-		GolModelEntity* runtime = &m_modelEntities[i];
-
-		if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
-			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
-		}
-
-		for (lod = 0; lod < 3; lod++) {
-			if (model->m_modelIndices[lod] < 0) {
-				break;
+	if (m_modelEntityCount) {
+		model = m_modelEntityRecords;
+		GolModelEntity* runtime = m_modelEntities;
+		for (i = 0; i < m_modelEntityCount; i++) {
+			if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
+				GOL_FATALERROR_MESSAGE("Illegal mesh reference");
 			}
 
-			if (!(model->m_modelDistances[lod] < FLT_MAX)) {
-				maxDistances[lod] = g_fltMax0x100576e4;
-			}
-			else {
-				maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
-			}
-
-			if (model->m_materialTableIndices[lod] >= 0) {
-				if (model->m_materialTableIndices[lod] >= static_cast<LegoS32>(m_materialTableCount)) {
-					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
-				}
-				runtime->m_materialTables[lod] = GetMaterialTable(model->m_materialTableIndices[lod]);
-			}
-			else {
-				runtime->m_materialTables[lod] = NULL;
-			}
-		}
-
-		runtime->SetPrimaryModel(GetModel(model->m_modelIndices[0]), maxDistances[0]);
-		for (lod = 1; lod < 3; lod++) {
-			if (model->m_modelIndices[lod] < 0) {
-				break;
-			}
-			runtime->AddModel(GetModel(model->m_modelIndices[lod]), maxDistances[lod]);
-		}
-
-		runtime->SetPosition(model->m_position);
-		runtime->SetDirectionUp(model->m_direction, model->m_up);
-		runtime->m_radius = -1.0f;
-		runtime->m_scale = model->m_scale;
-
-		if (model->m_flags & WdbModel::e_flagTextureScroll) {
-			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
-			runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
-		}
-		if (model->m_flags & WdbModel::e_flagBit1) {
-			runtime->m_flags |= GolModelEntity::c_flagBit1;
-		}
-		if (model->m_flags & WdbModel::e_flagBit2) {
-			runtime->m_flags |= GolModelEntity::c_flagBit2;
-		}
-
-		for (j = 0; j < model->m_animationBindingCount; j++) {
-			Rect* assignment = &model->m_animationBindings[j];
-			if (static_cast<LegoU32>(assignment->m_left) >= m_materialAnimationCount) {
-				continue;
-			}
-
-			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetTracks();
-			LegoU32 targetIndex = assignment->m_bottom;
-			MaterialTable* target = runtime->m_materialTables[targetIndex];
-			if (target == NULL) {
-				target = runtime->m_models[targetIndex]->GetMaterialTable();
-			}
-			item[assignment->m_top].Assign(target, assignment->m_right, TRUE);
-		}
-
-		if (model->m_name[0] != '\0') {
-			if (m_modelEntityNames.GetNameEntries() == NULL) {
-				m_modelEntityNames.Allocate(m_modelEntityCount);
-			}
-			m_modelEntityNames.AddName(model->m_name, runtime);
-		}
-	}
-
-	for (i = 0; i < m_animatedEntityCount; i++) {
-		WdbModel* model = &m_animatedEntityRecords[i];
-		GolAnimatedEntity* runtime = &m_animatedEntities[i];
-
-		if (model->m_modelIndices[0] >= 0 && static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
-			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
-		}
-		if (static_cast<LegoU32>(model->m_sceneNodeIndices[0]) >= m_sceneNodeCount) {
-			GOL_FATALERROR_MESSAGE("Illegal skeleton reference");
-		}
-
-		for (lod = 0; lod < 3; lod++) {
-			if (model->m_sceneNodeIndices[lod] < 0) {
-				break;
-			}
-
-			if (!(model->m_modelDistances[lod] < FLT_MAX)) {
-				maxDistances[lod] = g_fltMax0x100576e4;
-			}
-			else {
-				maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
-			}
-
-			if (model->m_materialTableIndices[lod] >= 0) {
-				if (model->m_materialTableIndices[lod] >= static_cast<LegoS32>(m_materialTableCount)) {
-					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
-				}
-				runtime->m_materialTables[lod] = GetMaterialTable(model->m_materialTableIndices[lod]);
-			}
-			else {
-				runtime->m_materialTables[lod] = NULL;
-			}
-		}
-
-		GolSceneNode* node = GetSceneNode(model->m_sceneNodeIndices[0]);
-		CmbModelPart* part = GetModelPart(model->m_modelPartIndices[0]);
-		CmbModelPart* partForPartName = part;
-
-		if (model->m_modelIndices[0] < 0) {
-			runtime->SetNode(node, part, maxDistances[0]);
-			for (lod = 1; lod < 3; lod++) {
-				if (model->m_sceneNodeIndices[lod] < 0) {
-					break;
-				}
-
-				node = GetSceneNode(model->m_sceneNodeIndices[lod]);
-				part = GetModelPart(model->m_modelPartIndices[lod]);
-				partForPartName = part;
-				runtime->AddNode(node, part, maxDistances[lod]);
-			}
-		}
-		else {
-			runtime->SetModel(GetModel(model->m_modelIndices[0]), node, part, maxDistances[0]);
-			for (lod = 1; lod < 3; lod++) {
+			for (lod = 0; lod < 3; lod++) {
 				if (model->m_modelIndices[lod] < 0) {
 					break;
 				}
 
-				node = GetSceneNode(model->m_sceneNodeIndices[lod]);
-				part = GetModelPart(model->m_modelPartIndices[lod]);
-				partForPartName = part;
-				runtime->AddModel(GetModel(model->m_modelIndices[lod]), node, part, maxDistances[lod]);
-			}
-		}
+				if (!(model->m_modelDistances[lod] < FLT_MAX)) {
+					maxDistances[lod] = g_fltMax0x100576e4;
+				}
+				else {
+					maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
+				}
 
-		runtime->SetPosition(model->m_position);
-		runtime->SetDirectionUp(model->m_direction, model->m_up);
-		runtime->m_radius = -1.0f;
-		runtime->m_scale = model->m_scale;
-
-		if (model->m_flags & WdbModel::e_flagTextureScroll) {
-			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
-			runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
-		}
-
-		if (model->m_nodeName[0] != '\0') {
-			model->m_nodeIndex = partForPartName->GetPartIndex(model->m_nodeName);
-		}
-
-		if (model->m_nodeIndex >= 0) {
-			runtime->PlayPartDirect(model->m_nodeIndex);
-			runtime->SetPartAnimationEnabled(TRUE);
-		}
-		else {
-			runtime->SetPartAnimationEnabled(FALSE);
-		}
-
-		if (model->m_flags & WdbModel::e_flagBit1) {
-			runtime->m_flags |= GolModelEntity::c_flagBit1;
-		}
-		if (model->m_flags & WdbModel::e_flagBit2) {
-			runtime->m_flags |= GolModelEntity::c_flagBit2;
-		}
-
-		for (j = 0; j < model->m_animationBindingCount; j++) {
-			Rect* assignment = &model->m_animationBindings[j];
-			if (static_cast<LegoU32>(assignment->m_left) >= m_materialAnimationCount) {
-				continue;
+				if (model->m_materialTableIndices[lod] >= 0) {
+					if (model->m_materialTableIndices[lod] >= static_cast<LegoS32>(m_materialTableCount)) {
+						GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
+					}
+					GolModelMaterialTable* materialTable = GetMaterialTable(model->m_materialTableIndices[lod]);
+					if (lod < 3) {
+						runtime->m_materialTables[lod] = materialTable;
+					}
+				}
+				else {
+					if (lod < 3) {
+						runtime->m_materialTables[lod] = NULL;
+					}
+				}
 			}
 
-			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetTracks();
-			LegoU32 targetIndex = assignment->m_bottom;
-			MaterialTable* target = runtime->m_materialTables[targetIndex];
-			if (target == NULL) {
-				target = runtime->m_models[targetIndex]->GetMaterialTable();
+			GolModelBase* primaryModel = GetModel(model->m_modelIndices[0]);
+			runtime->SetPrimaryModel(primaryModel, maxDistances[0]);
+			for (lod = 1; lod < 3; lod++) {
+				if (model->m_modelIndices[lod] < 0) {
+					break;
+				}
+				GolModelBase* addedModel = GetModel(model->m_modelIndices[lod]);
+				runtime->AddModel(addedModel, maxDistances[lod]);
 			}
-			item[assignment->m_top].Assign(target, assignment->m_right, TRUE);
-		}
 
-		if (model->m_name[0] != '\0') {
-			if (m_animatedEntityNames.GetNameEntries() == NULL) {
-				m_animatedEntityNames.Allocate(m_animatedEntityCount);
+			runtime->SetPosition(model->m_position);
+			runtime->SetDirectionUp(model->m_direction, model->m_up);
+			runtime->SetScaleAndInvalidateRadius(model->m_scale);
+
+			if (model->m_flags & WdbModel::e_flagTextureScroll) {
+				runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
+				runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
 			}
-			m_animatedEntityNames.AddName(model->m_name, runtime);
+			if (model->m_flags & WdbModel::e_flagBit1) {
+				runtime->m_flags |= GolModelEntity::c_flagBit1;
+			}
+			if (model->m_flags & WdbModel::e_flagBit2) {
+				runtime->m_flags |= GolModelEntity::c_flagBit2;
+			}
+
+			j = 0;
+			while (j < model->m_animationBindingCount) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
+				j++;
+			}
+
+			if (model->m_name[0] != '\0') {
+				if (m_modelEntityNames.GetNameEntries() == NULL) {
+					m_modelEntityNames.Allocate(m_modelEntityCount);
+				}
+				m_modelEntityNames.AddName(model->m_name, GetModelEntities() + i);
+			}
+			runtime++;
+			model++;
 		}
 	}
 
-	for (i = 0; i < m_collidableEntityCount; i++) {
-		WdbModel* model = &m_collidableEntityRecords[i];
-		GolCollidableEntity* runtime = &m_collidableEntities[i];
-
-		if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
-			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
-		}
-		if (static_cast<LegoU32>(model->m_sceneNodeIndices[0]) >= m_boundingShapeCount) {
-			GOL_FATALERROR_MESSAGE("Illegal bsp tree reference");
-		}
-
-		for (lod = 0; lod < 3; lod++) {
-			if (model->m_modelIndices[lod] < 0) {
-				break;
+	if (m_animatedEntityCount) {
+		model = m_animatedEntityRecords;
+		GolAnimatedEntity* runtime = m_animatedEntities;
+		for (i = 0; i < m_animatedEntityCount; i++) {
+			if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount && model->m_modelIndices[0] >= 0) {
+				GOL_FATALERROR_MESSAGE("Illegal mesh reference");
+			}
+			if (static_cast<LegoU32>(model->m_sceneNodeIndices[0]) >= m_sceneNodeCount) {
+				GOL_FATALERROR_MESSAGE("Illegal skeleton reference");
 			}
 
-			if (!(model->m_modelDistances[lod] < FLT_MAX)) {
-				maxDistances[lod] = g_fltMax0x100576e4;
+			for (lod = 0; lod < 3; lod++) {
+				if (model->m_sceneNodeIndices[lod] < 0) {
+					break;
+				}
+
+				if (!(model->m_modelDistances[lod] < FLT_MAX)) {
+					maxDistances[lod] = g_fltMax0x100576e4;
+				}
+				else {
+					maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
+				}
+
+				if (model->m_materialTableIndices[lod] >= 0) {
+					if (model->m_materialTableIndices[lod] >= static_cast<LegoS32>(m_materialTableCount)) {
+						GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
+					}
+					GolModelMaterialTable* materialTable = GetMaterialTable(model->m_materialTableIndices[lod]);
+					if (lod < 3) {
+						runtime->m_materialTables[lod] = materialTable;
+					}
+				}
+				else {
+					if (lod < 3) {
+						runtime->m_materialTables[lod] = NULL;
+					}
+				}
+			}
+
+			GolSceneNode* node = GetSceneNode(model->m_sceneNodeIndices[0]);
+			CmbModelPart* part = GetModelPart(model->m_modelPartIndices[0]);
+			CmbModelPart* partForPartName = part;
+
+			if (model->m_modelIndices[0] < 0) {
+				runtime->SetNode(node, part, maxDistances[0]);
+				for (lod = 1; lod < 3; lod++) {
+					if (model->m_sceneNodeIndices[lod] < 0) {
+						break;
+					}
+
+					node = GetSceneNode(model->m_sceneNodeIndices[lod]);
+					part = GetModelPart(model->m_modelPartIndices[lod]);
+					partForPartName = part;
+					runtime->AddNode(node, part, maxDistances[lod]);
+				}
 			}
 			else {
-				maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
+				GolModelBase* primaryModel = GetModel(model->m_modelIndices[0]);
+				runtime->SetModel(primaryModel, node, part, maxDistances[0]);
+				for (lod = 1; lod < 3; lod++) {
+					if (model->m_modelIndices[lod] < 0) {
+						break;
+					}
+
+					GolModelBase* addedModel = GetModel(model->m_modelIndices[lod]);
+					node = GetSceneNode(model->m_sceneNodeIndices[lod]);
+					part = GetModelPart(model->m_modelPartIndices[lod]);
+					partForPartName = part;
+					runtime->AddModel(addedModel, node, part, maxDistances[lod]);
+				}
 			}
 
-			if (model->m_materialTableIndices[lod] >= 0) {
-				if (model->m_materialTableIndices[lod] >= static_cast<LegoS32>(m_materialTableCount)) {
+			runtime->SetPosition(model->m_position);
+			runtime->SetDirectionUp(model->m_direction, model->m_up);
+			runtime->SetScaleAndInvalidateRadius(model->m_scale);
+
+			if (model->m_flags & WdbModel::e_flagTextureScroll) {
+				runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
+				runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
+			}
+
+			if (model->m_nodeName[0] != '\0') {
+				model->m_nodeIndex = partForPartName->GetPartIndex(model->m_nodeName);
+			}
+
+			if (model->m_nodeIndex >= 0) {
+				runtime->PlayPartDirect(model->m_nodeIndex);
+				runtime->SetPartAnimationEnabled(TRUE);
+			}
+			else {
+				runtime->SetPartAnimationEnabled(FALSE);
+			}
+
+			if (model->m_flags & WdbModel::e_flagBit1) {
+				runtime->m_flags |= GolModelEntity::c_flagBit1;
+			}
+			if (model->m_flags & WdbModel::e_flagBit2) {
+				runtime->m_flags |= GolModelEntity::c_flagBit2;
+			}
+
+			j = 0;
+			while (j < model->m_animationBindingCount) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
+				j++;
+			}
+
+			if (model->m_name[0] != '\0') {
+				if (m_animatedEntityNames.GetNameEntries() == NULL) {
+					m_animatedEntityNames.Allocate(m_animatedEntityCount);
+				}
+				m_animatedEntityNames.AddName(model->m_name, GetAnimatedEntities() + i);
+			}
+			runtime++;
+			model++;
+		}
+	}
+
+	if (m_collidableEntityCount) {
+		GolCollidableEntity* runtime = m_collidableEntities;
+		model = m_collidableEntityRecords;
+		for (i = 0; i < m_collidableEntityCount; i++) {
+			if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
+				GOL_FATALERROR_MESSAGE("Illegal mesh reference");
+			}
+			if (static_cast<LegoU32>(model->m_sceneNodeIndices[0]) >= m_boundingShapeCount) {
+				GOL_FATALERROR_MESSAGE("Illegal bsp tree reference");
+			}
+
+			for (lod = 0; lod < 3; lod++) {
+				if (model->m_modelIndices[lod] < 0) {
+					break;
+				}
+
+				if (!(model->m_modelDistances[lod] < FLT_MAX)) {
+					maxDistances[lod] = g_fltMax0x100576e4;
+				}
+				else {
+					maxDistances[lod] = model->m_modelDistances[lod] * model->m_modelDistances[lod];
+				}
+
+				if (model->m_materialTableIndices[lod] >= 0) {
+					if (model->m_materialTableIndices[lod] >= static_cast<LegoS32>(m_materialTableCount)) {
+						GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
+					}
+					GolModelMaterialTable* materialTable = GetMaterialTable(model->m_materialTableIndices[lod]);
+					if (lod < 3) {
+						runtime->m_materialTables[lod] = materialTable;
+					}
+				}
+				else {
+					if (lod < 3) {
+						runtime->m_materialTables[lod] = NULL;
+					}
+				}
+			}
+
+			GolModelBase* primaryModel = GetModel(model->m_modelIndices[0]);
+			GolBoundingShape* primaryShape = GetBoundingShape(model->m_sceneNodeIndices[0]);
+			runtime->SetPrimaryModelAndShape(primaryModel, primaryShape, maxDistances[0]);
+			for (lod = 1; lod < 3; lod++) {
+				if (model->m_modelIndices[lod] < 0) {
+					break;
+				}
+				GolModelBase* addedModel = GetModel(model->m_modelIndices[lod]);
+				GolBoundingShape* addedShape = GetBoundingShape(model->m_sceneNodeIndices[lod]);
+				runtime->AddModel(addedModel, addedShape, maxDistances[lod]);
+			}
+
+			runtime->SetPosition(model->m_position);
+			runtime->SetDirectionUp(model->m_direction, model->m_up);
+
+			if (model->m_flags & WdbModel::e_flagTextureScroll) {
+				runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
+				runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
+			}
+			if (model->m_flags & WdbModel::e_flagBit1) {
+				runtime->m_flags |= GolModelEntity::c_flagBit1;
+			}
+
+			j = 0;
+			while (j < model->m_animationBindingCount) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
+				j++;
+			}
+
+			if (model->m_name[0] != '\0') {
+				if (m_collidableEntityNames.GetNameEntries() == NULL) {
+					m_collidableEntityNames.Allocate(m_collidableEntityCount);
+				}
+				m_collidableEntityNames.AddName(model->m_name, GetCollidableEntities() + i);
+			}
+			runtime++;
+			model++;
+		}
+	}
+
+	if (m_boundingVolumeCount) {
+		for (i = 0; i < m_boundingVolumeCount; i++) {
+			::memcpy(name, m_boundingVolumeNames[i], sizeof(GolName));
+			name[sizeof(GolName)] = '\0';
+			m_boundingVolumes[i].Load(m_renderer, name, m_binary);
+		}
+	}
+
+	if (m_boundedEntityCount) {
+		for (i = 0; i < m_boundedEntityCount; i++) {
+			if (static_cast<LegoU32>(m_boundedEntityRecords[i].m_sceneNodeIndices[0]) >= m_boundingVolumeCount) {
+				GOL_FATALERROR_MESSAGE("Illegal bsp volume reference");
+			}
+
+			if (m_boundedEntityRecords[i].m_materialTableIndices[0] >= 0) {
+				if (m_boundedEntityRecords[i].m_materialTableIndices[0] >= static_cast<LegoS32>(m_materialTableCount)) {
 					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
 				}
-				runtime->m_materialTables[lod] = GetMaterialTable(model->m_materialTableIndices[lod]);
+				GolModelMaterialTable* materialTable =
+					GetMaterialTable(m_boundedEntityRecords[i].m_materialTableIndices[0]);
+				GetBoundedEntities()[i].m_materialTableOverride = materialTable;
 			}
 			else {
-				runtime->m_materialTables[lod] = NULL;
+				GetBoundedEntities()[i].m_materialTableOverride = NULL;
 			}
-		}
 
-		runtime->SetPrimaryModelAndShape(
-			GetModel(model->m_modelIndices[0]),
-			GetBoundingShape(model->m_sceneNodeIndices[0]),
-			maxDistances[0]
-		);
-		for (lod = 1; lod < 3; lod++) {
-			if (model->m_modelIndices[lod] < 0) {
-				break;
-			}
-			runtime->AddModel(
-				GetModel(model->m_modelIndices[lod]),
-				GetBoundingShape(model->m_sceneNodeIndices[lod]),
-				maxDistances[lod]
+			GetBoundedEntities()[i].SetBoundingVolume(
+				&m_boundingVolumes[m_boundedEntityRecords[i].m_sceneNodeIndices[0]]
 			);
-		}
+			GetBoundedEntities()[i].SetPosition(m_boundedEntityRecords[i].m_position);
+			GetBoundedEntities()[i].SetDirectionUp(
+				m_boundedEntityRecords[i].m_direction,
+				m_boundedEntityRecords[i].m_up
+			);
 
-		runtime->SetPosition(model->m_position);
-		runtime->SetDirectionUp(model->m_direction, model->m_up);
-
-		if (model->m_flags & WdbModel::e_flagTextureScroll) {
-			runtime->SetTextureScrollSpeedU(model->m_textureScrollSpeedU);
-			runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
-		}
-		if (model->m_flags & WdbModel::e_flagBit1) {
-			runtime->m_flags |= GolModelEntity::c_flagBit1;
-		}
-
-		for (j = 0; j < model->m_animationBindingCount; j++) {
-			Rect* assignment = &model->m_animationBindings[j];
-			if (static_cast<LegoU32>(assignment->m_left) >= m_materialAnimationCount) {
-				continue;
+			if (m_boundedEntityRecords[i].m_name[0] != '\0') {
+				if (m_boundedEntityNames.GetNameEntries() == NULL) {
+					m_boundedEntityNames.Allocate(m_boundedEntityCount);
+				}
+				m_boundedEntityNames.AddName(m_boundedEntityRecords[i].m_name, &GetBoundedEntities()[i]);
 			}
-
-			MabMaterialTrack* item = GetMaterialAnimation(assignment->m_left)->GetTracks();
-			LegoU32 targetIndex = assignment->m_bottom;
-			MaterialTable* target = runtime->m_materialTables[targetIndex];
-			if (target == NULL) {
-				target = runtime->m_models[targetIndex]->GetMaterialTable();
-			}
-			item[assignment->m_top].Assign(target, assignment->m_right, TRUE);
-		}
-
-		if (model->m_name[0] != '\0') {
-			if (m_collidableEntityNames.GetNameEntries() == NULL) {
-				m_collidableEntityNames.Allocate(m_collidableEntityCount);
-			}
-			m_collidableEntityNames.AddName(model->m_name, runtime);
 		}
 	}
 
-	for (i = 0; i < m_boundingVolumeCount; i++) {
-		LegoChar name[sizeof(GolName) + 1];
-		::memcpy(name, m_boundingVolumeNames[i], sizeof(GolName));
-		name[sizeof(GolName)] = '\0';
-		m_boundingVolumes[i].Load(m_renderer, name, m_binary);
-	}
-
-	for (i = 0; i < m_boundedEntityCount; i++) {
-		WdbModel* model = &m_boundedEntityRecords[i];
-		GolBoundedEntity* runtime = &m_boundedEntities[i];
-
-		if (static_cast<LegoU32>(model->m_sceneNodeIndices[0]) >= m_boundingVolumeCount) {
-			GOL_FATALERROR_MESSAGE("Illegal bsp volume reference");
-		}
-
-		if (model->m_materialTableIndices[0] >= 0) {
-			if (model->m_materialTableIndices[0] >= static_cast<LegoS32>(m_materialTableCount)) {
-				GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
-			}
-			runtime->m_materialTableOverride = GetMaterialTable(model->m_materialTableIndices[0]);
-		}
-		else {
-			runtime->m_materialTableOverride = NULL;
-		}
-
-		runtime->SetBoundingVolume(&m_boundingVolumes[model->m_sceneNodeIndices[0]]);
-		runtime->SetPosition(model->m_position);
-		runtime->SetDirectionUp(model->m_direction, model->m_up);
-
-		if (model->m_name[0] != '\0') {
-			if (m_boundedEntityNames.GetNameEntries() == NULL) {
-				m_boundedEntityNames.Allocate(m_boundedEntityCount);
-			}
-			m_boundedEntityNames.AddName(model->m_name, runtime);
+	if (m_cameraCount) {
+		for (i = 0; i < m_cameraCount; i++) {
+			SetupCamera(i, GetCamera(i));
 		}
 	}
 
-	for (i = 0; i < m_cameraCount; i++) {
-		SetupCamera(i, GetCamera(i));
+	if (m_ambientLightCount) {
+		for (i = 0; i < m_ambientLightCount; i++) {
+			m_ambientMaterial[i].SetColor(m_ambientLightRecords[i].m_color);
+		}
 	}
 
-	for (i = 0; i < m_ambientLightCount; i++) {
-		m_ambientMaterial[i].SetColor(m_ambientLightRecords[i].m_color);
-	}
-
-	for (i = 0; i < m_lightCount; i++) {
-		m_light[i].SetColor(m_lightRecords[i].m_color);
-		m_light[i].SetDirection(m_lightRecords[i].m_direction);
+	if (m_lightCount) {
+		for (i = 0; i < m_lightCount; i++) {
+			GetLight()[i].SetColor(m_lightRecords[i].m_color);
+			GetLight()[i].SetDirection(m_lightRecords[i].m_direction);
+		}
 	}
 }
 

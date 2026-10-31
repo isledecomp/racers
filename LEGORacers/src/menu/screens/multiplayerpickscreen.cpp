@@ -196,10 +196,8 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x1000009c:
 			case 0x30000004:
 				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
-					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
-						i,
-						m_recordCursors[i].GetSelectedRecord()
-					);
+					SaveRecordList::Record* record = m_recordCursors[i].GetSelectedRecord();
+					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, record);
 					DimSlotLighting(i);
 					m_nextMenuId = 0x41;
 					PlayRandomNamedAnimation(i);

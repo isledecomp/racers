@@ -288,13 +288,13 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 // FUNCTION: LEGORACERS 0x00431310
 void PowerupProjectile::Deflect(Racer* p_racer)
 {
+	m_ageMs = 0;
+	m_state = c_stateFlying;
 	GolVec3 velocity;
 	velocity.m_x = 0.0f;
 	velocity.m_y = 0.0f;
 	velocity.m_z = 0.0f;
 
-	m_ageMs = 0;
-	m_state = c_stateFlying;
 	m_targetRacer = m_ownerRacer;
 	if (m_targetRacer) {
 		m_targetRacer->m_visuals.m_carEntity->GetPosition(&m_targetPosition);
@@ -302,7 +302,9 @@ void PowerupProjectile::Deflect(Racer* p_racer)
 		velocity = m_targetRacer->m_physics.m_velocity;
 	}
 	else {
-		m_targetPosition = m_startPosition;
+		m_targetPosition.m_x = m_startPosition.m_x;
+		m_targetPosition.m_y = m_startPosition.m_y;
+		m_targetPosition.m_z = m_startPosition.m_z;
 	}
 
 	m_ownerRacer = p_racer;
@@ -318,13 +320,18 @@ void PowerupProjectile::Deflect(Racer* p_racer)
 		distance = 1.0f;
 	}
 
-	LegoFloat durationSeconds = distance / m_speed;
-	LegoFloat durationMs = durationSeconds * g_floatConst1000;
+	LegoFloat durationSeconds = m_speed;
+	durationSeconds = distance / durationSeconds;
+	LegoFloat durationMs = durationSeconds;
+	durationMs *= g_floatConst1000;
 	m_flightTimeMs = static_cast<LegoS32>(durationMs);
 
-	m_targetPosition.m_x += velocity.m_x * durationSeconds;
-	m_targetPosition.m_y += velocity.m_y * durationSeconds;
-	m_targetPosition.m_z += velocity.m_z * durationSeconds;
+	GolVec3 scaledVelocity;
+	scaledVelocity.m_x = velocity.m_x * durationMs;
+	scaledVelocity.m_y = velocity.m_y;
+	scaledVelocity.m_y *= durationMs;
+	scaledVelocity.m_z = velocity.m_z * durationMs;
+	m_targetPosition += scaledVelocity;
 	ComputeTrajectory(durationSeconds);
 }
 

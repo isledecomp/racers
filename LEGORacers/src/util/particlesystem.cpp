@@ -360,26 +360,36 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 				GolVec3 center;
 				GolVec3 cameraPosition;
 				m_modelEntity.GetPosition(&center);
+				GolModelEntity* entity = &m_modelEntity;
 				camera->GetTransform()->GetPosition(&cameraPosition);
 
 				LegoFloat deltaX = cameraPosition.m_x - center.m_x;
 				LegoFloat deltaY = cameraPosition.m_y - center.m_y;
 				LegoFloat deltaZ = cameraPosition.m_z - center.m_z;
-				LegoFloat distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+				LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
 				if (distanceSquared <= m_modelEntity.GetModelDistance(0)) {
-					GolTransformBase* cameraTransform = camera->GetTransform();
-					cameraTransform->GetUp(&m_cameraUp);
-					cameraTransform->GetForward(&m_cameraForward);
+					GolVec3& cameraUp = m_cameraUp;
+					camera->GetTransform()->GetUp(&cameraUp);
+					camera->GetTransform()->GetForward(&m_cameraForward);
+					GolVec3& cameraForward = m_cameraForward;
 
 					LegoFloat scale = m_startSizeUp;
-					m_scaledCameraUp.m_x = scale * m_cameraUp.m_x;
-					m_scaledCameraUp.m_y = scale * m_cameraUp.m_y;
-					m_scaledCameraUp.m_z = scale * m_cameraUp.m_z;
+					m_scaledCameraUp.m_x = scale * cameraUp.m_x;
+					LegoFloat upY = cameraUp.m_y;
+					upY *= scale;
+					m_scaledCameraUp.m_y = upY;
+					LegoFloat upZ = cameraUp.m_z;
+					upZ *= scale;
+					m_scaledCameraUp.m_z = upZ;
 
 					scale = m_startSizeForward;
-					m_scaledCameraForward.m_x = scale * m_cameraForward.m_x;
-					m_scaledCameraForward.m_y = scale * m_cameraForward.m_y;
-					m_scaledCameraForward.m_z = scale * m_cameraForward.m_z;
+					m_scaledCameraForward.m_x = scale * cameraForward.m_x;
+					LegoFloat forwardY = cameraForward.m_y;
+					forwardY *= scale;
+					m_scaledCameraForward.m_y = forwardY;
+					LegoFloat forwardZ = cameraForward.m_z;
+					forwardZ *= scale;
+					m_scaledCameraForward.m_z = forwardZ;
 
 					m_materialCount = 0;
 					m_groupCount = 0;
@@ -396,10 +406,10 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 					m_model->GetIndexArrayInto(&indexArray);
 					m_indices = static_cast<GdbModelIndexArray*>(indexArray)->GetMutableIndices();
 
-					Particle* particle = m_activeList;
-					while (particle) {
+					Particle* next;
+					for (Particle* particle = m_activeList; particle; particle = next) {
 						GolMaterial* material = particle->m_material;
-						Particle* next = particle->m_next;
+						next = particle->m_next;
 						if (material) {
 							BeginMaterialGroup(material);
 							do {
@@ -410,11 +420,6 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 
 								particle = particle->m_next;
 							} while (particle);
-
-							particle = next;
-						}
-						else {
-							particle = next;
 						}
 					}
 
@@ -422,11 +427,12 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 						FlushBatch();
 					}
 
-					m_model->GetMutableGroups()[m_groupCount] = 0xc0000000;
-					m_model->SetDirty(TRUE);
+					GolModelBase* model = m_model;
+					model->GetMutableGroups()[m_groupCount] = 0xc0000000;
+					model->SetDirty(TRUE);
 					m_model->AddFlags(0);
 					m_model->AddFlagsWithBounds(0, FALSE);
-					p_renderer->DrawModelEntity(&m_modelEntity);
+					p_renderer->DrawModelEntity(entity);
 				}
 			}
 		}

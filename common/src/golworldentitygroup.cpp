@@ -65,7 +65,7 @@ void GolWorldEntityGroup::AddEntity(GolWorldEntity* p_entity)
 void GolWorldEntityGroup::UpdateBounds()
 {
 	LegoFloat radius;
-	GolVec3 delta;
+	LegoFloat deltaX, deltaY, deltaZ;
 	GolVec3 offset;
 	GolVec3 center;
 	GolVec3 firstCenter;
@@ -73,34 +73,43 @@ void GolWorldEntityGroup::UpdateBounds()
 	offset.m_z = 0.0f;
 	offset.m_y = 0.0f;
 	offset.m_x = 0.0f;
-
 	m_entities[0]->GetBoundsCenter(&firstCenter);
 
 	LegoU32 i;
 	for (i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->GetBoundsCenter(&center);
 		center -= firstCenter;
-		offset += center;
+		offset.m_x = center.m_x + offset.m_x;
+		offset.m_y = center.m_y + offset.m_y;
+		offset.m_z = center.m_z + offset.m_z;
 	}
 
-	offset *= m_inverseCount;
-
+	LegoFloat scale = m_inverseCount;
+	offset.m_x = scale * offset.m_x;
+	LegoFloat scaledY = offset.m_y;
+	scaledY *= scale;
+	offset.m_y = scaledY;
+	LegoFloat scaledZ = offset.m_z;
+	scaledZ *= scale;
+	offset.m_z = scaledZ;
 	radius = 0.0f;
 	for (i = 0; i < static_cast<LegoU32>(m_count); i++) {
 		m_entities[i]->GetBoundsCenter(&center);
 		center -= firstCenter;
-		delta = center - offset;
-
+		deltaX = center.m_x - offset.m_x;
+		deltaY = center.m_y - offset.m_y;
+		deltaZ = center.m_z - offset.m_z;
 		LegoFloat childRadius = m_entities[i]->GetBoundsRadius();
-		LegoFloat distance =
-			childRadius +
-			static_cast<LegoFloat>(::sqrt(delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x));
+		LegoFloat distance = static_cast<LegoFloat>(::sqrt(deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX));
+		distance += childRadius;
 		if (distance > radius) {
 			radius = distance;
 		}
 	}
 
-	offset += firstCenter;
+	offset.m_x = firstCenter.m_x + offset.m_x;
+	offset.m_y = firstCenter.m_y + offset.m_y;
+	offset.m_z = firstCenter.m_z + offset.m_z;
 	SetBoundsCenter(offset);
 	SetBoundsRadius(radius);
 }

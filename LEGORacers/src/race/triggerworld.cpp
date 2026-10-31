@@ -69,21 +69,16 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	GolVec3 hitLocal;
 	GolBoundedEntity* entity;
 	GolBoundingVolume* query;
+	GolBoundingVolume::HitTriangle* record = p_hitTriangle;
 
 	direction.m_x = p_end->m_x - p_start->m_x;
 	direction.m_y = p_end->m_y - p_start->m_y;
 	direction.m_z = p_end->m_z - p_start->m_z;
 	GolMath::NormalizeVector3(direction, &direction);
 
-	GolBoundingVolume::HitTriangle* record = p_hitTriangle;
-	GolWorldDatabase* root = m_triggerDatabase;
-	count = 0;
-	if (!(0 < root->GetBoundedEntityCount())) {
-		goto fallback;
-	}
-
-	while (TRUE) {
-		entity = &root->GetBoundedEntities()[count];
+	LegoBool32 hit = FALSE;
+	for (count = 0; count < m_triggerDatabase->GetBoundedEntityCount(); count++) {
+		entity = &m_triggerDatabase->GetBoundedEntities()[count];
 		if (entity->GetBoundedFlags() & 1) {
 			entity->GetBoundsCenter(&center);
 
@@ -101,54 +96,45 @@ LegoBool32 TriggerWorld::IntersectSegment(
 
 					query = entity->GetBoundingVolume();
 					query->SetMaterialTable(entity->GetMaterialTable());
-					if (query->IntersectSegment(&startLocal, &endLocal, record, &hitLocal, &hitRecord, 0)) {
-						goto hit;
+					hit = query->IntersectSegment(&startLocal, &endLocal, record, &hitLocal, &hitRecord, 0);
+					if (hit) {
+						break;
 					}
 				}
 			}
 		}
+	}
 
-		root = m_triggerDatabase;
-		count++;
-		if (count >= root->GetBoundedEntityCount()) {
-			goto fallback;
+	if (!hit) {
+		entity = m_boundsEntity;
+		query = entity->GetBoundingVolume();
+		query->SetMaterialTable(entity->GetMaterialTable());
+		if (!query->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
+			return FALSE;
 		}
 	}
+	else {
+		entity->LocalToWorld(hitLocal, p_hitPosition);
 
-fallback:
-	entity = m_boundsEntity;
-	query = entity->GetBoundingVolume();
-	query->SetMaterialTable(entity->GetMaterialTable());
-	if (!query->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
-		goto fail;
+		planeLocal.m_y = record->m_normal.m_y;
+		planeLocal.m_z = record->m_normal.m_z;
+		planeLocal.m_x = record->m_normal.m_x;
+
+		entity->RotateToWorld(planeLocal, &planeWorld);
+
+		record->m_normal.m_x = planeWorld.m_x;
+		record->m_normal.m_y = planeWorld.m_y;
+		record->m_normal.m_z = planeWorld.m_z;
+		record->m_planeDistance =
+			-(record->m_normal.m_z * p_hitPosition->m_z + record->m_normal.m_y * p_hitPosition->m_y +
+			  p_hitPosition->m_x * record->m_normal.m_x);
 	}
 
-finish:
 	if (p_hitTarget) {
 		*p_hitTarget = hitRecord->GetTarget();
 	}
 
 	return TRUE;
-
-hit:
-	entity->LocalToWorld(hitLocal, p_hitPosition);
-
-	planeLocal.m_y = record->m_normal.m_y;
-	planeLocal.m_z = record->m_normal.m_z;
-	planeLocal.m_x = record->m_normal.m_x;
-
-	entity->RotateToWorld(planeLocal, &planeWorld);
-
-	record->m_normal.m_x = planeWorld.m_x;
-	record->m_normal.m_y = planeWorld.m_y;
-	record->m_normal.m_z = planeWorld.m_z;
-	record->m_planeDistance =
-		-(record->m_normal.m_z * p_hitPosition->m_z + record->m_normal.m_y * p_hitPosition->m_y +
-		  p_hitPosition->m_x * record->m_normal.m_x);
-	goto finish;
-
-fail:
-	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0041f730

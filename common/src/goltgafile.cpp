@@ -67,24 +67,27 @@ void GolTgaFile::ReadHeader()
 
 	m_imageType = header[0x2]; // 1: type1 color-mapped image, 2: unmapped rgb, 9: RLE color-mapped, 10: RLE rgb
 	m_colorMapFirstEntry = BUF_U16LE(header, 0x3);
-	m_colorMapLength = BUF_U16LE(header, 0x5);
+	LegoU32 colorMapLength = BUF_U16LE(header, 0x5);
+	m_colorMapLength = colorMapLength;
 	m_xOrigin = BUF_U16LE(header, 0x8);
 	m_yOrigin = BUF_U16LE(header, 0xa);
 	m_identificationFieldSize = header[0];
 	m_posImageData = m_identificationFieldSize + 0x12;
 	m_width = BUF_U16LE(header, 0xc);
-	m_height = BUF_U16LE(header, 0xe);
+	LegoU32 height = BUF_U16LE(header, 0xe);
 
 	LegoU32 bpp = header[0x10];
 	m_rowByteStride = ((m_width * bpp + 31) >> 3) & 0x1ffffffc;
 	m_colorMapType = header[1]; // 1: data type 1, 2: data type 2, 9: date type 9, 10: data type 10
-	m_colorMapEntrySize = header[7];
+	LegoS32 colorMapEntrySize = header[7];
+	m_colorMapEntrySize = colorMapEntrySize;
+	m_height = height;
 	m_imageDescriptorByte = header[0x11];
 	m_paletteSize = 0;
-	m_imageByteSize = m_rowByteStride * m_height;
+	m_imageByteSize = m_rowByteStride * height;
 
 	if (m_colorMapType != 0 && bpp <= 8) {
-		LegoU32 rawPaletteByteSize = ((m_colorMapEntrySize + 7) >> 3) * m_colorMapLength;
+		LegoU32 rawPaletteByteSize = ((colorMapEntrySize + 7) >> 3) * colorMapLength;
 		LegoU8* buf = new LegoU8[rawPaletteByteSize];
 		if (buf == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -127,20 +130,20 @@ void GolTgaFile::ReadHeader()
 			break;
 		case 0x18:
 			// bgr888
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++, bufPtr += 3) {
-				m_palette[i].m_blu = bufPtr[0];
-				m_palette[i].m_grn = bufPtr[1];
-				m_palette[i].m_red = bufPtr[2];
+			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+				m_palette[i].m_blu = *bufPtr++;
+				m_palette[i].m_grn = *bufPtr++;
+				m_palette[i].m_red = *bufPtr++;
 				m_palette[i].m_alp = 0xff;
 			}
 			break;
 		case 0x20:
 			// bgr888
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++, bufPtr += 4) {
-				m_palette[i].m_blu = bufPtr[0];
-				m_palette[i].m_grn = bufPtr[1];
-				m_palette[i].m_red = bufPtr[2];
-				m_palette[i].m_alp = bufPtr[3];
+			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+				m_palette[i].m_blu = *bufPtr++;
+				m_palette[i].m_grn = *bufPtr++;
+				m_palette[i].m_red = *bufPtr++;
+				m_palette[i].m_alp = *bufPtr++;
 			}
 			break;
 		}

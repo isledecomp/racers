@@ -118,17 +118,17 @@ MenuWidget* MenuTextLabel::DrawSelf(Rect* p_rect, Rect* p_arg)
 	LegoS32 lineCount = m_string.CountLines();
 	LegoFloat lineCountFloat = static_cast<LegoFloat>(lineCount);
 	LegoFloat lineHeight = static_cast<LegoFloat>(m_rect.m_bottom - m_rect.m_top) / lineCountFloat;
+	LegoFloat lineBottom = 0.0f;
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
-	LegoFloat lineBottom = 0.0f;
 
 	m_string.FirstLine();
 	if (lineCount > 0) {
 		LegoS32 lineTop = 0;
 		for (; lineCount > 0; lineCount--) {
 			Rect source;
-			source.m_left = 0;
 			source.m_top = lineTop;
+			source.m_left = 0;
 
 			lineBottom += lineHeight;
 			lineTop = (LegoS32) lineBottom;
@@ -137,10 +137,10 @@ MenuWidget* MenuTextLabel::DrawSelf(Rect* p_rect, Rect* p_arg)
 
 			Rect dest;
 			MeasureText(m_font, &m_string, &source, &dest, 0);
-			dest.m_left += xOffset;
 			dest.m_top += yOffset;
-			dest.m_right += xOffset;
 			dest.m_bottom += yOffset;
+			dest.m_left += xOffset;
+			dest.m_right += xOffset;
 			DrawString(&dest, p_arg, m_font, &m_string, 0, 0);
 			m_string.NextLine();
 		}

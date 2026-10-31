@@ -263,6 +263,7 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 		GolAnimatedEntity* attachedEntity;
 		GolModelEntity* modelEntity;
 		GolVec3* attachedOffset;
+		GolVec3 position;
 
 		if (i == 0) {
 			flags = m_flags;
@@ -301,21 +302,20 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 		}
 
 		if (!(flags & c_flagRunning)) {
-			GolVec3* position = &ghostRun->m_initialPosition;
+			GolVec3* initialPosition = &ghostRun->m_initialPosition;
 			GolQuat* rotation = &ghostRun->m_initialRotation;
 
-			animatedEntity->SetPosition(*position);
+			animatedEntity->SetPosition(*initialPosition);
 			animatedEntity->SetOrientationFromQuaternion(*rotation);
-			modelEntity->SetPosition(*position);
+			modelEntity->SetPosition(*initialPosition);
 			modelEntity->SetOrientationFromQuaternion(*rotation);
 			if (optionalEntity) {
-				optionalEntity->SetPosition(*position);
+				optionalEntity->SetPosition(*initialPosition);
 				optionalEntity->SetOrientationFromQuaternion(*rotation);
 			}
 
-			GolVec3 attachedPosition;
-			animatedEntity->LocalToWorld(*attachedOffset, &attachedPosition);
-			attachedEntity->SetPosition(attachedPosition);
+			animatedEntity->LocalToWorld(*attachedOffset, &position);
+			attachedEntity->SetPosition(position);
 			attachedEntity->SetOrientationFromQuaternion(*rotation);
 		}
 		else {
@@ -332,26 +332,24 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			GhostRunData::Sample* sample = &ghostRun->m_samples[sampleIndex];
 			GhostRunData::Sample* nextSample = sample + 1;
 
-			GolVec3 position;
-			position.m_x = static_cast<LegoFloat>(sample->m_positionX) / g_ghostPositionQuantizationScale;
-			position.m_y = static_cast<LegoFloat>(sample->m_positionY) / g_ghostPositionQuantizationScale;
-			position.m_z = static_cast<LegoFloat>(sample->m_positionZ) / g_ghostPositionQuantizationScale;
+			GolVec3 previousPosition;
+			previousPosition.m_x = static_cast<LegoFloat>(sample->m_positionX) / g_ghostPositionQuantizationScale;
+			previousPosition.m_y = static_cast<LegoFloat>(sample->m_positionY) / g_ghostPositionQuantizationScale;
+			previousPosition.m_z = static_cast<LegoFloat>(sample->m_positionZ) / g_ghostPositionQuantizationScale;
 
-			LegoFloat nextPositionX =
-				static_cast<LegoFloat>(nextSample->m_positionX) / g_ghostPositionQuantizationScale;
-			LegoFloat nextPositionY =
-				static_cast<LegoFloat>(nextSample->m_positionY) / g_ghostPositionQuantizationScale;
-			LegoFloat nextPositionZ =
-				static_cast<LegoFloat>(nextSample->m_positionZ) / g_ghostPositionQuantizationScale;
+			GolVec3 nextPosition;
+			nextPosition.m_x = static_cast<LegoFloat>(nextSample->m_positionX) / g_ghostPositionQuantizationScale;
+			nextPosition.m_y = static_cast<LegoFloat>(nextSample->m_positionY) / g_ghostPositionQuantizationScale;
+			nextPosition.m_z = static_cast<LegoFloat>(nextSample->m_positionZ) / g_ghostPositionQuantizationScale;
 
 			GolVec3 delta;
-			delta.m_x = nextPositionX - position.m_x;
-			delta.m_y = nextPositionY - position.m_y;
-			delta.m_z = nextPositionZ - position.m_z;
+			delta.m_x = nextPosition.m_x - previousPosition.m_x;
+			delta.m_y = nextPosition.m_y - previousPosition.m_y;
+			delta.m_z = nextPosition.m_z - previousPosition.m_z;
 
-			position.m_x += delta.m_x * amount;
-			position.m_y += delta.m_y * amount;
-			position.m_z += delta.m_z * amount;
+			position.m_x = delta.m_x * amount + previousPosition.m_x;
+			position.m_y = delta.m_y * amount + previousPosition.m_y;
+			position.m_z = delta.m_z * amount + previousPosition.m_z;
 
 			GolQuat rotation;
 			rotation.m_x = static_cast<LegoFloat>(sample->m_rotationX) / g_ghostRotationQuantizationScale;
@@ -383,9 +381,8 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 				optionalEntity->SetOrientationFromQuaternion(interpolatedRotation);
 			}
 
-			GolVec3 attachedPosition;
-			animatedEntity->LocalToWorld(*attachedOffset, &attachedPosition);
-			attachedEntity->SetPosition(attachedPosition);
+			animatedEntity->LocalToWorld(*attachedOffset, &position);
+			attachedEntity->SetPosition(position);
 			attachedEntity->SetOrientationFromQuaternion(interpolatedRotation);
 		}
 

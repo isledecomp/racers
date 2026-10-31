@@ -797,10 +797,10 @@ void MenuManager::PrepareRaceContext()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
 	}
 
-	m_gameContext.m_pieceLibrary.Load("LPieceLo.leg", context->m_useBinaryFiles);
+	m_gameContext.m_pieceLibrary.Load("LPieceLo.leg", m_gameContext.m_context->m_useBinaryFiles);
 	m_gameContext.m_colorTable.Initialize(m_golExport, m_renderer);
-	m_gameContext.m_colorTable.LoadMaterials("LPieceLo.WDF", context->m_useBinaryFiles, FALSE);
-	m_gameContext.m_colorTable.LoadColors("L_Colors.LEG", context->m_useBinaryFiles);
+	m_gameContext.m_colorTable.LoadMaterials("LPieceLo.WDF", m_gameContext.m_context->m_useBinaryFiles, FALSE);
+	m_gameContext.m_colorTable.LoadColors("L_Colors.LEG", m_gameContext.m_context->m_useBinaryFiles);
 	m_gameContext.m_carBuildModel
 		.Initialize(m_golExport, m_renderer, &m_gameContext.m_pieceLibrary, &m_gameContext.m_colorTable);
 
@@ -998,7 +998,7 @@ void MenuManager::BuildPlayerDriverModel(
 	LegoU32 textureCount;
 	DriverCosmetics cosmetics;
 	GolModelMaterialTable* materialTable;
-	LegoU32 materialCount;
+	LegoU32 materialCount = 0;
 	GolMaterialParams params;
 
 	p_record->GetCosmetics(&cosmetics);
@@ -1009,7 +1009,7 @@ void MenuManager::BuildPlayerDriverModel(
 	materialTable = p_slot->m_altModel->GetMaterialTable();
 	textureCount = 0;
 
-	for (materialCount = 0; materialCount < materialTable->GetCount(); materialCount++) {
+	for (; materialCount < materialTable->GetCount(); materialCount++) {
 		GolMaterial* material = materialTable->GetMaterial(materialCount);
 		if (material == NULL) {
 			break;

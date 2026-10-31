@@ -26,115 +26,117 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 	p_contactPoint->m_y = 0.0f;
 	p_contactPoint->m_z = 0.0f;
 
-	while (TRUE) {
+	for (; shapeIndex < 2; shapeIndex++) {
 		LegoU32 cornerIndex = 0;
 		const GolVec3* position;
 		LegoFloat distance;
-		GolVec3 axes[3];
+		GolVec3 axisX;
+		GolVec3 axisY;
+		GolVec3 axisZ;
 		if (!shapeIndex) {
-			position = &m_centerOfMassWorld;
-			distance = distance0;
-
+			axisX.m_x = m_body->m_orientation.m_m[0][0];
+			axisX.m_y = m_body->m_orientation.m_m[0][1];
+			axisX.m_z = m_body->m_orientation.m_m[0][2];
 			LegoFloat halfX = m_boxSizeX * 0.5f;
-			axes[0].m_x = m_body->m_orientation.m_m[0][0] * halfX;
-			axes[0].m_y = m_body->m_orientation.m_m[0][1] * halfX;
-			axes[0].m_z = m_body->m_orientation.m_m[0][2] * halfX;
+			axisX.m_x *= halfX;
+			axisX.m_y *= halfX;
+			axisX.m_z *= halfX;
 
+			axisY.m_x = m_body->m_orientation.m_m[1][0];
+			axisY.m_y = m_body->m_orientation.m_m[1][1];
+			axisY.m_z = m_body->m_orientation.m_m[1][2];
 			LegoFloat halfY = m_boxSizeY * 0.5f;
-			axes[1].m_x = m_body->m_orientation.m_m[1][0] * halfY;
-			axes[1].m_y = m_body->m_orientation.m_m[1][1] * halfY;
-			axes[1].m_z = m_body->m_orientation.m_m[1][2] * halfY;
+			axisY.m_x *= halfY;
+			axisY.m_y *= halfY;
+			axisY.m_z *= halfY;
 
-			LegoFloat halfZ = m_boxSizeZ * 0.5f;
-			axes[2].m_x = m_body->m_orientation.m_m[2][0] * halfZ;
-			axes[2].m_y = m_body->m_orientation.m_m[2][1] * halfZ;
-			axes[2].m_z = m_body->m_orientation.m_m[2][2] * halfZ;
+			axisZ.m_x = m_body->m_orientation.m_m[2][0];
+			axisZ.m_y = m_body->m_orientation.m_m[2][1];
+			axisZ.m_z = m_body->m_orientation.m_m[2][2];
+			axisZ *= m_boxSizeZ * 0.5f;
 
 			if (m_boxScale != 1.0f) {
 				if (m_boxScale == 0.0f) {
 					return FALSE;
 				}
 
-				axes[0].m_x *= m_boxScale;
-				axes[0].m_y *= m_boxScale;
-				axes[0].m_z *= m_boxScale;
-				axes[1].m_x *= m_boxScale;
-				axes[1].m_y *= m_boxScale;
-				axes[1].m_z *= m_boxScale;
-				axes[2].m_x *= m_boxScale;
-				axes[2].m_y *= m_boxScale;
-				axes[2].m_z *= m_boxScale;
+				axisX *= m_boxScale;
+				axisY *= m_boxScale;
+				axisZ *= m_boxScale;
 			}
+
+			position = &m_centerOfMassWorld;
+			distance = distance0;
 		}
 		else {
-			position = &p_other->m_centerOfMassWorld;
-			distance = distance1;
-
+			axisX.m_x = p_other->m_body->m_orientation.m_m[0][0];
+			axisX.m_y = p_other->m_body->m_orientation.m_m[0][1];
+			axisX.m_z = p_other->m_body->m_orientation.m_m[0][2];
 			LegoFloat halfX = p_other->m_boxSizeX * 0.5f;
-			axes[0].m_x = p_other->m_body->m_orientation.m_m[0][0] * halfX;
-			axes[0].m_y = p_other->m_body->m_orientation.m_m[0][1] * halfX;
-			axes[0].m_z = p_other->m_body->m_orientation.m_m[0][2] * halfX;
+			axisX.m_x *= halfX;
+			axisX.m_y *= halfX;
+			axisX.m_z *= halfX;
 
+			axisY.m_x = p_other->m_body->m_orientation.m_m[1][0];
+			axisY.m_y = p_other->m_body->m_orientation.m_m[1][1];
+			axisY.m_z = p_other->m_body->m_orientation.m_m[1][2];
 			LegoFloat halfY = p_other->m_boxSizeY * 0.5f;
-			axes[1].m_x = p_other->m_body->m_orientation.m_m[1][0] * halfY;
-			axes[1].m_y = p_other->m_body->m_orientation.m_m[1][1] * halfY;
-			axes[1].m_z = p_other->m_body->m_orientation.m_m[1][2] * halfY;
+			axisY.m_x *= halfY;
+			axisY.m_y *= halfY;
+			axisY.m_z *= halfY;
 
-			LegoFloat halfZ = p_other->m_boxSizeZ * 0.5f;
-			axes[2].m_x = p_other->m_body->m_orientation.m_m[2][0] * halfZ;
-			axes[2].m_y = p_other->m_body->m_orientation.m_m[2][1] * halfZ;
-			axes[2].m_z = p_other->m_body->m_orientation.m_m[2][2] * halfZ;
+			axisZ.m_x = p_other->m_body->m_orientation.m_m[2][0];
+			axisZ.m_y = p_other->m_body->m_orientation.m_m[2][1];
+			axisZ.m_z = p_other->m_body->m_orientation.m_m[2][2];
+			axisZ *= p_other->m_boxSizeZ * 0.5f;
 
 			if (p_other->m_boxScale != 1.0f) {
 				if (p_other->m_boxScale == 0.0f) {
 					return FALSE;
 				}
 
-				axes[0].m_x *= p_other->m_boxScale;
-				axes[0].m_y *= p_other->m_boxScale;
-				axes[0].m_z *= p_other->m_boxScale;
-				axes[1].m_x *= p_other->m_boxScale;
-				axes[1].m_y *= p_other->m_boxScale;
-				axes[1].m_z *= p_other->m_boxScale;
-				axes[2].m_x *= p_other->m_boxScale;
-				axes[2].m_y *= p_other->m_boxScale;
-				axes[2].m_z *= p_other->m_boxScale;
+				axisX *= p_other->m_boxScale;
+				axisY *= p_other->m_boxScale;
+				axisZ *= p_other->m_boxScale;
 			}
+
+			position = &p_other->m_centerOfMassWorld;
+			distance = distance1;
 		}
 
 		do {
 			GolVec3 corner;
 			if (cornerIndex >= 4) {
-				corner.m_x = -axes[0].m_x;
-				corner.m_y = -axes[0].m_y;
-				corner.m_z = -axes[0].m_z;
+				corner.m_x = -axisX.m_x;
+				corner.m_y = -axisX.m_y;
+				corner.m_z = -axisX.m_z;
 			}
 			else {
-				corner.m_x = axes[0].m_x;
-				corner.m_y = axes[0].m_y;
-				corner.m_z = axes[0].m_z;
+				corner.m_x = axisX.m_x;
+				corner.m_y = axisX.m_y;
+				corner.m_z = axisX.m_z;
 			}
 
 			if (cornerIndex >= 2 && (cornerIndex < 4 || cornerIndex >= 6)) {
-				corner.m_x -= axes[1].m_x;
-				corner.m_y -= axes[1].m_y;
-				corner.m_z -= axes[1].m_z;
+				corner.m_x -= axisY.m_x;
+				corner.m_y -= axisY.m_y;
+				corner.m_z -= axisY.m_z;
 			}
 			else {
-				corner.m_x += axes[1].m_x;
-				corner.m_y += axes[1].m_y;
-				corner.m_z += axes[1].m_z;
+				corner.m_x += axisY.m_x;
+				corner.m_y += axisY.m_y;
+				corner.m_z += axisY.m_z;
 			}
 
 			if (!cornerIndex || cornerIndex == 2 || cornerIndex == 4 || cornerIndex == 6) {
-				corner.m_x += axes[2].m_x;
-				corner.m_y += axes[2].m_y;
-				corner.m_z += axes[2].m_z;
+				corner.m_x += axisZ.m_x;
+				corner.m_y += axisZ.m_y;
+				corner.m_z += axisZ.m_z;
 			}
 			else {
-				corner.m_x -= axes[2].m_x;
-				corner.m_y -= axes[2].m_y;
-				corner.m_z -= axes[2].m_z;
+				corner.m_x -= axisZ.m_x;
+				corner.m_y -= axisZ.m_y;
+				corner.m_z -= axisZ.m_z;
 			}
 
 			LegoFloat projected = p_normal->m_y * corner.m_y;
@@ -152,17 +154,13 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 			}
 			cornerIndex++;
 		} while (cornerIndex < 8);
-
-		shapeIndex++;
-		if (shapeIndex >= 2) {
-			LegoFloat count = static_cast<LegoFloat>(contactCount);
-			p_contactPoint->m_x = p_contactPoint->m_x / count;
-			p_contactPoint->m_y = p_contactPoint->m_y / count;
-			p_contactPoint->m_z = p_contactPoint->m_z / count;
-
-			return TRUE;
-		}
 	}
+
+	LegoFloat count = static_cast<LegoFloat>(contactCount);
+	p_contactPoint->m_x = p_contactPoint->m_x / count;
+	p_contactPoint->m_y = p_contactPoint->m_y / count;
+	p_contactPoint->m_z = p_contactPoint->m_z / count;
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00441790

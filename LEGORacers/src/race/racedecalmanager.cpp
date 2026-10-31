@@ -116,11 +116,10 @@ void RaceDecalManager::Trail::Initialize(
 	m_decal.GetEntity().EnableFlagBit1();
 	m_decal.m_depth = g_raceDecalDefaultDepth;
 
-	ModelSlot* slot = m_slots;
-	LegoU32 count = sizeOfArray(m_slots);
-	do {
-		slot->m_model = m_golExport->CreateModel();
-		slot->m_model->Allocate(
+	for (LegoU32 i = 0; i < sizeOfArray(m_slots); i++) {
+		GolModelBase* model = m_golExport->CreateModel();
+		m_slots[i].m_model = model;
+		model->Allocate(
 			p_renderer,
 			1,
 			m_decal.m_vertexCapacity,
@@ -128,11 +127,9 @@ void RaceDecalManager::Trail::Initialize(
 			m_decal.m_triangleCapacity * 2 + 2,
 			1
 		);
-		slot->m_entry.m_entity.SetPrimaryModel(slot->m_model, g_raceDecalMaxFloat);
-		slot->m_entry.EnableFlagBit1();
-		slot++;
-		count--;
-	} while (count);
+		m_slots[i].m_entry.m_entity.SetPrimaryModel(m_slots[i].m_model, g_raceDecalMaxFloat);
+		m_slots[i].m_entry.EnableFlagBit1();
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00491d20

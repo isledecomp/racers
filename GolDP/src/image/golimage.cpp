@@ -457,7 +457,6 @@ void GolImage::UploadTiles()
 
 	LegoU32 sourceX = 0;
 	LegoU32 copyWidth = 0;
-	LegoU32 copyHeight = 0;
 	LegoU32 row;
 	LegoU32 column;
 	for (row = 0; row < m_tileColumnCount; row++) {
@@ -471,7 +470,7 @@ void GolImage::UploadTiles()
 				copyWidth = remainingWidth;
 			}
 
-			copyHeight = texture->GetHeight();
+			LegoU32 copyHeight = texture->GetHeight();
 			LegoU32 remainingHeight = m_surface.GetHeight() - sourceY;
 			if (copyHeight > remainingHeight) {
 				copyHeight = remainingHeight;
@@ -486,10 +485,7 @@ void GolImage::UploadTiles()
 			LegoU32 destPitch;
 			texture->LockPixels(&destPixels, &destPitch, GolSurface::c_lockRequestWrite);
 
-			GolPaletteBase* destPalette = NULL;
-			if (m_format.m_paletteMask != 0) {
-				destPalette = texture->GetPalette();
-			}
+			GolPaletteBase* destPalette = m_format.m_paletteMask != 0 ? texture->GetPalette() : NULL;
 
 			g_tileImgFile
 				.ConvertImage(source, destPixels, copyWidth, copyHeight, destPitch, m_format, destPalette, 0, colorKey);

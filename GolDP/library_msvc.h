@@ -1,6 +1,15 @@
 #ifdef 0
 // For GOLDP symbols only
 
+// LIBRARY: GOLDP 0x1004af70
+// _DirectDrawCreate@12
+
+// LIBRARY: GOLDP 0x1004af76
+// _DirectDrawCreateClipper@12
+
+// LIBRARY: GOLDP 0x1004af7c
+// _DirectDrawEnumerateA@8
+
 // LIBRARY: GOLDP 0x1004af82
 // ?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
 
@@ -76,6 +85,9 @@
 
 // LIBRARY: GOLDP 0x1004b5ef
 // _atexit
+
+// LIBRARY: GOLDP 0x1004b601
+// ___onexitinit
 
 // LIBRARY: GOLDP 0x1004b630
 // _qsort
@@ -269,6 +281,78 @@
 // LIBRARY: GOLDP 0x1004e72a
 //  __msize
 
+// LIBRARY: GOLDP 0x1004e818
+// __raise_exc
+
+// LIBRARY: GOLDP 0x1004eacb
+// __handle_exc
+
+// LIBRARY: GOLDP 0x1004ece2
+// __set_errno
+
+// LIBRARY: GOLDP 0x1004ed0a
+// __set_exp
+
+// LIBRARY: GOLDP 0x1004ed33
+// __decomp
+
+// LIBRARY: GOLDP 0x1004edf4
+// __statfp
+
+// LIBRARY: GOLDP 0x1004ee02
+// __clrfp
+
+// LIBRARY: GOLDP 0x1004ee11
+// __ctrlfp
+
+// LIBRARY: GOLDP 0x1004ee34
+// __set_statfp
+
+// LIBRARY: GOLDP 0x1004ee90
+// __trandisp1
+
+// LIBRARY: GOLDP 0x1004eef7
+// __trandisp2
+
+// LIBRARY: GOLDP 0x1004ef8d
+// __rtnospopde
+
+// LIBRARY: GOLDP 0x1004efa2
+// __tosnan1
+
+// LIBRARY: GOLDP 0x1004eff7
+// __nan2
+
+// LIBRARY: GOLDP 0x1004f053
+// __rtchsifneg
+
+// LIBRARY: GOLDP 0x1004f060
+// __startTwoArgErrorHandling
+
+// LIBRARY: GOLDP 0x1004f077
+// __startOneArgErrorHandling
+
+// LIBRARY: GOLDP 0x1004f0c0
+// __twoToTOS
+
+// LIBRARY: GOLDP 0x1004f0d5
+// __load_CW
+
+// LIBRARY: GOLDP 0x1004f0ec
+// __convertTOStoQNaN
+
+// LIBRARY: GOLDP 0x1004f105
+// __fload_withFB
+
+// LIBRARY: GOLDP 0x1004f148
+// __checkTOS_withFB
+
+// LIBRARY: GOLDP 0x1004f15e
+// __fast_exit
+
+// LIBRARY: GOLDP 0x1004f16b
+// __math_exit
+
 // LIBRARY: GOLDP 0x1004f24c
 // __isctype
 
@@ -410,6 +494,12 @@
 // LIBRARY: GOLDP 0x10051ca1
 // __isatty
 
+// LIBRARY: GOLDP 0x10051cca
+// ___initstdio
+
+// LIBRARY: GOLDP 0x10051d72
+// ___endstdio
+
 // LIBRARY: GOLDP 0x10051d86
 // __lock_file
 
@@ -512,8 +602,17 @@
 // LIBRARY: GOLDP 0x100529f0
 // _memcpy
 
+// LIBRARY: GOLDP 0x10052d28
+// __87except
+
 // LIBRARY: GOLDP 0x10052df8
 // ___crtGetStringTypeA
+
+// LIBRARY: GOLDP 0x10052f50
+// _strcspn
+
+// LIBRARY: GOLDP 0x10052f90
+// _strpbrk
 
 // LIBRARY: GOLDP 0x10052fd0
 // __chkstk
@@ -554,6 +653,9 @@
 // LIBRARY: GOLDP 0x10053ab7
 // __flush
 
+// LIBRARY: GOLDP 0x10053b13
+// __flushall
+
 // LIBRARY: GOLDP 0x10053bc0
 // ___addl
 
@@ -593,8 +695,14 @@
 // LIBRARY: GOLDP 0x1005493e
 // ___multtenpow12
 
+// LIBRARY: GOLDP 0x100549c0
+// __allmul
+
 // LIBRARY: GOLDP 0x100549f4
 // __freebuf
+
+// LIBRARY: GOLDP 0x10054a20
+// _RtlUnwind@16
 
 // GLOBAL: GOLDP 0x1004bcbb
 // __dosmaperr

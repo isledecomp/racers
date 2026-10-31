@@ -82,9 +82,6 @@ void MenuFrame::SetRect(Rect* p_rect)
 	MenuWidget::SetRect(p_rect);
 
 	if (m_flags & 1) {
-		LegoS32 width = m_rect.m_right - m_rect.m_left;
-		LegoS32 height = m_rect.m_bottom - m_rect.m_top;
-
 		Rect rect;
 		Rect rect2;
 		Rect rect3;
@@ -94,42 +91,41 @@ void MenuFrame::SetRect(Rect* p_rect)
 		rect.m_right = m_images[0]->GetWidth();
 		rect.m_bottom = m_images[0]->GetHeight();
 
-		rect2.m_left = m_images[0]->GetWidth();
-		rect2.m_top = 0;
-		rect2.m_right = width - m_images[2]->GetWidth();
-		rect2.m_bottom = m_images[1]->GetHeight();
-
-		rect3.m_left = width - m_images[2]->GetWidth();
+		rect3.m_right = m_rect.m_right - m_rect.m_left;
+		rect3.m_left = rect3.m_right - m_images[2]->GetWidth();
+		rect2.m_left = rect.m_right;
 		rect3.m_top = 0;
-		rect3.m_right = width;
-		rect3.m_bottom = m_images[0]->GetHeight();
+		rect3.m_bottom = rect.m_bottom;
+		rect2.m_right = rect3.m_left;
+		rect2.m_top = 0;
+		rect2.m_bottom = m_images[1]->GetHeight();
 
 		m_borderImages[0].SetRect(&rect);
 		m_borderImages[1].SetRect(&rect2);
 		m_borderImages[2].SetRect(&rect3);
 
-		rect2.m_left = width - m_images[3]->GetWidth();
-		rect2.m_top = m_images[0]->GetHeight();
-		rect2.m_right = width;
-		rect2.m_bottom = height - m_images[4]->GetHeight();
+		rect.m_right = rect3.m_right;
+		rect.m_left = rect.m_right - m_images[4]->GetWidth();
+		rect.m_bottom = m_rect.m_bottom - m_rect.m_top;
+		rect.m_top = rect.m_bottom - m_images[4]->GetHeight();
 
-		rect.m_left = width - m_images[4]->GetWidth();
-		rect.m_top = height - m_images[4]->GetHeight();
-		rect.m_right = width;
-		rect.m_bottom = height;
+		rect2.m_right = rect.m_right;
+		rect2.m_top = rect3.m_bottom;
+		rect2.m_bottom = rect.m_top;
+		rect2.m_left = rect2.m_right - m_images[3]->GetWidth();
 
 		m_borderImages[3].SetRect(&rect2);
 		m_borderImages[4].SetRect(&rect);
 
-		rect2.m_left = m_images[6]->GetWidth();
-		rect2.m_top = height - m_images[5]->GetHeight();
-		rect2.m_right = width - m_images[4]->GetWidth();
-		rect2.m_bottom = height;
-
 		rect3.m_left = 0;
-		rect3.m_top = height - m_images[6]->GetHeight();
 		rect3.m_right = m_images[6]->GetWidth();
-		rect3.m_bottom = height;
+		rect3.m_bottom = rect.m_bottom;
+		rect3.m_top = rect3.m_bottom - m_images[6]->GetHeight();
+
+		rect2.m_left = rect3.m_right;
+		rect2.m_right = rect.m_left;
+		rect2.m_bottom = rect3.m_bottom;
+		rect2.m_top = rect2.m_bottom - m_images[5]->GetHeight();
 
 		m_borderImages[5].SetRect(&rect2);
 		m_borderImages[6].SetRect(&rect3);
@@ -137,14 +133,15 @@ void MenuFrame::SetRect(Rect* p_rect)
 		rect2.m_left = 0;
 		rect2.m_top = m_borderImages[0].GetRect()->m_bottom;
 		rect2.m_right = m_images[7]->GetWidth();
-		rect2.m_bottom = height - m_images[6]->GetHeight();
+		rect2.m_bottom = rect3.m_top;
+
+		m_borderImages[7].SetRect(&rect2);
 
 		rect.m_left = m_borderImages[0].GetRect()->m_right;
 		rect.m_top = m_borderImages[0].GetRect()->m_bottom;
 		rect.m_right = m_borderImages[2].GetRect()->m_left;
 		rect.m_bottom = m_borderImages[6].GetRect()->m_top;
 
-		m_borderImages[7].SetRect(&rect2);
 		m_fill.SetRect(&rect);
 	}
 }

@@ -156,94 +156,85 @@ void DirectSoundManager::Update(undefined4)
 	SoundBufferList spatialSounds;
 
 	ReleaseStoppedSounds();
-
-	GolListLink* link;
 	m_activeSpatialSounds.Swap(spatialSounds);
-
-	link = spatialSounds.FirstLink();
-	while (link && spatialSounds.IsValidLink(link)) {
-		SoundBuffer& sound = spatialSounds.GetItem(*link);
-		link = spatialSounds.NextLink(link);
-
-		sound.GetLink().Remove();
-		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
-		InsertByPriority(m_activeSpatialSounds, sound);
+	GolListLink* link;
+	while (!spatialSounds.IsEmpty()) {
+		link = spatialSounds.PopLastLink();
+		if (link) {
+			SoundBuffer& sound = spatialSounds.GetItem(*link);
+			sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+			InsertByPriorityForUpdate(m_activeSpatialSounds, sound, TRUE);
+		}
 	}
-
 	m_queuedSpatialSounds.Swap(spatialSounds);
-
-	link = spatialSounds.FirstLink();
-	while (link && spatialSounds.IsValidLink(link)) {
-		SoundBuffer& sound = spatialSounds.GetItem(*link);
-		link = spatialSounds.NextLink(link);
-
-		sound.GetLink().Remove();
-		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
-		InsertByPriority(m_queuedSpatialSounds, sound);
+	while (!spatialSounds.IsEmpty()) {
+		link = spatialSounds.PopLastLink();
+		if (link) {
+			SoundBuffer& sound = spatialSounds.GetItem(*link);
+			sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+			InsertByPriorityForUpdate(m_queuedSpatialSounds, sound, TRUE);
+		}
 	}
 
 	link = m_activeSpatialSounds.FirstLink();
-	while (link && m_activeSpatialSounds.IsValidLink(link)) {
-		SoundBuffer& sound = m_activeSpatialSounds.GetItem(*link);
-		link = m_activeSpatialSounds.NextLink(link);
-
-		if (sound.m_priority) {
-			break;
-		}
-
-		if (sound.m_stopWhenPaused) {
-			sound.StopOrRelease();
-		}
-		else {
-			m_availableSoundCount++;
-			sound.StopDirectSoundBuffer();
-			sound.GetLink().Remove();
-			sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-			m_queuedSpatialSounds.Prepend(sound);
-		}
+	if (m_activeSpatialSounds.IsValidLink(link)) {
+		do {
+			SoundBuffer& sound = m_activeSpatialSounds.GetItem(*link);
+			if (sound.m_priority) {
+				break;
+			}
+			link = m_activeSpatialSounds.NextLink(link);
+			if (sound.m_stopWhenPaused) {
+				sound.StopOrRelease();
+			}
+			else {
+				m_availableSoundCount++;
+				sound.StopDirectSoundBuffer();
+				sound.GetLink().Remove();
+				sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
+				m_queuedSpatialSounds.Prepend(sound);
+			}
+		} while (link);
 	}
 
 	if (!m_paused) {
 		while (TRUE) {
-			SoundBuffer* queuedSound = NULL;
+			SoundBuffer* queuedSound;
+			LegoBool32 haveSound = FALSE;
 			link = m_queuedSounds.LastLink();
 			if (m_queuedSounds.IsValidLastLink(link)) {
 				queuedSound = &m_queuedSounds.GetItem(*link);
+				haveSound = TRUE;
 			}
-
 			link = m_queuedSpatialSounds.LastLink();
 			if (m_queuedSpatialSounds.IsValidLastLink(link)) {
 				SoundBuffer& queuedSpatialSound = m_queuedSpatialSounds.GetItem(*link);
-
-				if (!queuedSound || queuedSpatialSound.m_priority > queuedSound->m_priority) {
-					if (!queuedSpatialSound.m_priority || !MakeSoundAvailable(queuedSpatialSound.m_priority)) {
+				if (!haveSound || queuedSpatialSound.m_priority > queuedSound->m_priority) {
+					if ((!haveSound && !queuedSpatialSound.m_priority) ||
+						!MakeSoundAvailable(queuedSpatialSound.m_priority)) {
 						break;
 					}
-
 					m_availableSoundCount--;
 					queuedSpatialSound.GetLink().Remove();
-					InsertByPriority(m_activeSpatialSounds, queuedSpatialSound);
+					InsertByPriorityForUpdate(m_activeSpatialSounds, queuedSpatialSound, FALSE);
 					queuedSpatialSound.SetPlaybackState(SoundBuffer::c_playbackStateActive);
 					queuedSpatialSound.StartDirectSoundBuffer();
 					continue;
 				}
 			}
-			else if (!queuedSound) {
+			else if (!haveSound) {
 				break;
 			}
-
-			if (!queuedSound || !MakeSoundAvailable(queuedSound->m_priority)) {
+			if (!MakeSoundAvailable(queuedSound->m_priority)) {
 				break;
 			}
-
 			m_availableSoundCount--;
 			queuedSound->GetLink().Remove();
-			InsertByPriority(m_activeSounds, *queuedSound);
+			InsertByPriorityForUpdate(m_activeSounds, *queuedSound, TRUE);
 			queuedSound->SetPlaybackState(SoundBuffer::c_playbackStateActive);
 			queuedSound->StartDirectSoundBuffer();
 		}
 	}
-
 	DestroyPendingStoppedSounds();
 }
 

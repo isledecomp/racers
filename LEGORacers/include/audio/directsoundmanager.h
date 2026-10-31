@@ -124,6 +124,28 @@ private:
 		}
 	}
 
+	void InsertByPriorityForUpdate(SoundBufferList& p_list, SoundBuffer& p_sound, LegoBool32 p_inlineFirst)
+	{
+		GolListLink* link;
+		if (p_inlineFirst) {
+			link = p_list.FirstLink();
+			link = p_list.IsValidLink(link) ? link : NULL;
+		}
+		else {
+			link = p_list.FirstValidLink();
+		}
+
+		while (link) {
+			if (p_sound.m_priority <= p_list.GetItem(*link).m_priority) {
+				p_sound.GetLink().InsertBefore(link);
+				return;
+			}
+			link = link->NextValid();
+		}
+
+		p_list.Append(p_sound);
+	}
+
 	void InsertByPriority(SoundBufferList& p_list, SoundBuffer& p_sound)
 	{
 		GolListLink* link = p_list.FirstValidLink();

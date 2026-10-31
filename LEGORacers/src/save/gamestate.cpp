@@ -179,8 +179,8 @@ void GameState::SelectFallbackInputBinding(LegoU32 p_playerIndex)
 
 	for (i = 0; i < c_joystickBindingCount; i++) {
 		if (otherEntryIndex != i) {
-			InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[i];
-			if (m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) != NULL) {
+			LegoU32 deviceId = m_state.m_inputBindings.m_entries[i].m_deviceId;
+			if (m_inputManager->FindJoystickByDeviceId(deviceId) != NULL) {
 				SelectInputBinding(p_playerIndex, i);
 				return;
 			}

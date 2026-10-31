@@ -72,28 +72,25 @@ void DirectSoundGroup::Load(const LegoChar* p_name)
 			LegoChar* soundPaths = new LegoChar[c_audioPathLength * m_soundCount];
 
 			if (soundPaths) {
-				LegoChar* currentPath = soundPaths;
-
-				for (; index < (LegoS32) m_soundCount; index++) {
+				for (index = 0; index < (LegoS32) m_soundCount; index++) {
 					if (file.ReadLine(soundName, c_audioPathLength)) {
-						*currentPath = '\0';
+						soundPaths[index * c_audioPathLength] = '\0';
 					}
 					else {
 						LowercaseString(soundName);
-						JoinAudioPath(currentPath, c_audioPathLength, soundBasePath, soundName);
+						JoinAudioPath(
+							&soundPaths[index * c_audioPathLength],
+							c_audioPathLength,
+							soundBasePath,
+							soundName
+						);
 					}
-
-					currentPath += c_audioPathLength;
 				}
 
 				file.Dispose();
 
-				index = 0;
-				currentPath = soundPaths;
-
-				for (; index < (LegoS32) m_soundCount; index++) {
-					m_soundData[index].Load(currentPath);
-					currentPath += c_audioPathLength;
+				for (index = 0; index < (LegoS32) m_soundCount; index++) {
+					m_soundData[index].Load(&soundPaths[index * c_audioPathLength]);
 				}
 
 				delete[] soundPaths;

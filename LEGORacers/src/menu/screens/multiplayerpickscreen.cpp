@@ -180,25 +180,22 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		if (p_event->m_device == m_playerDevices[i]) {
-			SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i);
-
 			switch (p_event->m_keyCode) {
 			case 0x10000001:
 			case 0x30000005:
-				if (record != NULL) {
+				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) != NULL) {
 					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, NULL);
 					RestoreSlotLighting(i);
 				}
 				else {
-					LegoS32 modelIndex = m_slotModelToggle[i] + (m_modelsPerSlot * i);
-					m_driverEntities[modelIndex].SetFlags(m_driverEntities[modelIndex].GetFlags() & ~0x10000);
+					m_driverEntities[i].SetFlags(m_driverEntities[i].GetFlags() & ~0x10000);
 					m_nextMenuId = 0x3f;
 				}
 				break;
 			case 0x10000039:
 			case 0x1000009c:
 			case 0x30000004:
-				if (record == NULL) {
+				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
 					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
 						i,
 						m_recordCursors[i].GetSelectedRecord()
@@ -212,7 +209,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x30000009:
 			case 0x3000000b:
 			case 0x40000001:
-				if (record == NULL) {
+				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
 					m_context->m_modelBuilder.RefreshMenuResources();
 					SelectPreviousRecord(i);
 					UpdateNameLabel(i);
@@ -228,7 +225,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x30000007:
 			case 0x3000000a:
 			case 0x40000000:
-				if (record == NULL) {
+				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
 					m_context->m_modelBuilder.RefreshMenuResources();
 					SelectNextRecord(i);
 					UpdateNameLabel(i);

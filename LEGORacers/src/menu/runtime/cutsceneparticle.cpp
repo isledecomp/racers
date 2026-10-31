@@ -271,23 +271,26 @@ void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 	GolVec3 local18;
 	GolVec3 localc;
 	LegoU32 elapsedSinceSpawn = m_emitTimerMs;
+	LegoU32 age = m_ageMs;
 	elapsedSinceSpawn += p_elapsedMs;
-
+	age += p_elapsedMs;
 	m_emitTimerMs = elapsedSinceSpawn;
-	m_ageMs += p_elapsedMs;
+	m_ageMs = age;
 
-	if (m_emitter) {
+	CutsceneAnimation::Emitter* emitter = m_emitter;
+	if (emitter) {
 		// LINE: LEGORACERS 0x00489816
-		if (0 <= m_emitter->GetDurationMs() && m_ageMs >= static_cast<LegoU32>(m_emitter->GetDurationMs())) {
+		if (0 <= emitter->GetDurationMs() && m_ageMs >= static_cast<LegoU32>(emitter->GetDurationMs())) {
 			Finish();
 			return;
 		}
 
-		if (elapsedSinceSpawn >= static_cast<LegoU32>(m_emitter->GetEmitIntervalMs())) {
+		if (elapsedSinceSpawn >= static_cast<LegoU32>(emitter->GetEmitIntervalMs())) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
-			LegoU8 randomValue = static_cast<LegoU8>(g_randomTable[g_randomTableIndex]);
-			if (randomValue >= m_emitter->GetEmitChance()) {
+			LegoU16 randomValue = g_randomTable[g_randomTableIndex] & 0xff;
+			LegoU16 emitChance = emitter->GetEmitChance();
+			if (randomValue >= emitChance) {
 				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
 				m_emitter->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_emitter->GetPointCount());

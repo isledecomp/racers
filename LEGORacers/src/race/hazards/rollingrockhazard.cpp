@@ -142,35 +142,34 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 		GolVec3 forward;
 		transform->GetRightDirection(&right, &forward);
 
-		GolVec3 origin = localPosition;
-		transform->TransformPoint(&origin, &localPosition);
-
-		if (m_isRock) {
-			do {
-				GolVec3 transformedRight = right;
-				GolVec3 transformedForward = forward;
+		GolVec3 origin;
+		GolVec3 transformedRight;
+		GolVec3 transformedForward;
+		do {
+			origin = localPosition;
+			transform->TransformPoint(&origin, &localPosition);
+			if (m_isRock) {
+				transformedRight = right;
+				transformedForward = forward;
 				transform->TransformVector(&transformedRight, &right);
 				transform->TransformVector(&transformedForward, &forward);
-				transform = transform->m_parent;
-			} while (transform != NULL);
-		}
+			}
+			transform = transform->m_parent;
+		} while (transform != NULL);
 
 		LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
 		localPosition.m_x *= scale;
 		localPosition.m_y *= scale;
 		localPosition.m_z *= scale;
-		GolVec3 worldPosition;
-		m_entity->LocalToWorld(localPosition, &worldPosition);
-		m_body.m_centerOfMassWorld = worldPosition;
+		m_entity->LocalToWorld(localPosition, &origin);
+		m_body.m_centerOfMassWorld = origin;
 
 		if (m_isRock) {
-			GolVec3 worldRight;
-			GolVec3 worldForward;
-			m_entity->RotateToWorld(right, &worldRight);
-			m_entity->RotateToWorld(forward, &worldForward);
-			m_bodyEntity.SetDirectionUp(worldRight, worldForward);
+			m_entity->RotateToWorld(right, &transformedRight);
+			m_entity->RotateToWorld(forward, &transformedForward);
+			m_bodyEntity.SetDirectionUp(transformedRight, transformedForward);
 		}
 
-		m_bodyEntity.SetBoundsCenter(worldPosition);
+		m_bodyEntity.SetBoundsCenter(origin);
 	}
 }

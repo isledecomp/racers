@@ -110,54 +110,67 @@ LegoBool32 CmbModelPartTrackData::InterpolatePosition(
 	}
 
 	LegoU32 keyIndex = 0;
-	const LegoU16* allKeys = m_keys;
-	const LegoU16* keys = &allKeys[p_track.m_positionKeyIndex];
-	const LegoU16* cursor = keys;
-	for (; keyIndex < keyCount; keyIndex++) {
-		if (*cursor > p_time) {
-			break;
+	const LegoU16* keys;
+	if (keyCount > 0) {
+		keys = &m_keys[p_track.m_positionKeyIndex];
+		const LegoU16* cursor = keys;
+		for (; keyIndex < keyCount; keyIndex++) {
+			if (*cursor > p_time) {
+				break;
+			}
+			cursor++;
 		}
-		cursor++;
 	}
 
 	const GolVec3* from;
 	const GolVec3* to;
-	LegoS32 duration;
 	LegoFloat elapsed;
 	if (keyIndex == 0) {
 		LegoU32 keyBase = p_track.m_positionKeyIndex;
-		LegoS32 firstKey = allKeys[keyBase];
-		LegoS32 lastKey = allKeys[keyBase + keyCount - 1];
-		duration = p_frameCount + firstKey - lastKey;
-		elapsed = static_cast<LegoFloat>(duration - firstKey) + p_time;
+		LegoS32 firstKey = m_keys[keyBase];
+		LegoS32 lastKey = m_keys[keyBase + keyCount - 1];
+		p_frameCount = firstKey - lastKey + p_frameCount;
+		elapsed = static_cast<LegoFloat>(p_frameCount - firstKey) + p_time;
 		from = &m_vertices[p_track.m_positionFrameIndex + keyCount - 1];
 		to = &m_vertices[p_track.m_positionFrameIndex];
 	}
 	else if (keyIndex == keyCount) {
 		LegoU32 keyBase = p_track.m_positionKeyIndex;
 		LegoS32 firstKey = keys[0];
-		LegoS32 lastKey = allKeys[keyBase + keyCount - 1];
-		duration = p_frameCount + firstKey - lastKey;
+		LegoS32 lastKey = m_keys[keyBase + keyCount - 1];
+		p_frameCount = firstKey - lastKey + p_frameCount;
 		elapsed = p_time - static_cast<LegoFloat>(lastKey);
 		from = &m_vertices[p_track.m_positionFrameIndex + keyCount - 1];
 		to = &m_vertices[p_track.m_positionFrameIndex];
 	}
 	else {
 		LegoU32 keyBase = p_track.m_positionKeyIndex + keyIndex;
-		LegoS32 previousKey = allKeys[keyBase - 1];
-		duration = allKeys[keyBase] - previousKey;
+		LegoS32 previousKey = m_keys[keyBase - 1];
+		p_frameCount = m_keys[keyBase] - previousKey;
 		elapsed = p_time - static_cast<LegoFloat>(previousKey);
 		from = &m_vertices[p_track.m_positionFrameIndex + keyIndex - 1];
 		to = &m_vertices[p_track.m_positionFrameIndex + keyIndex];
 	}
 
-	LegoFloat amount = duration == 0 ? 0.0f : elapsed / static_cast<LegoFloat>(duration);
+	LegoFloat amount;
+	if (p_frameCount == 0) {
+		amount = 0.0f;
+	}
+	else {
+		LegoFloat divisor = static_cast<LegoFloat>(p_frameCount);
+		amount = elapsed / divisor;
+	}
 	p_dest->m_x = to->m_x - from->m_x;
 	p_dest->m_y = to->m_y - from->m_y;
 	p_dest->m_z = to->m_z - from->m_z;
-	p_dest->m_x = from->m_x + p_dest->m_x * amount;
-	p_dest->m_y = from->m_y + p_dest->m_y * amount;
-	p_dest->m_z = from->m_z + p_dest->m_z * amount;
+	GolVec3 scaled;
+	scaled.m_x = p_dest->m_x * amount;
+	scaled.m_y = p_dest->m_y;
+	scaled.m_y *= amount;
+	scaled.m_z = p_dest->m_z * amount;
+	p_dest->m_x = scaled.m_x + from->m_x;
+	p_dest->m_y = scaled.m_y + from->m_y;
+	p_dest->m_z = scaled.m_z + from->m_z;
 	return TRUE;
 }
 

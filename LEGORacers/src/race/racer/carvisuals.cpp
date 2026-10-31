@@ -1165,6 +1165,37 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 	}
 }
 
+inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_z;
+	LegoFloat z = p_right.m_z;
+	result *= z;
+	LegoFloat y = p_left.m_y;
+	y *= p_right.m_y;
+	result += y;
+	result += p_left.m_x * p_right.m_x;
+
+	return result;
+}
+
+inline void CrossVectors(const GolVec3& p_left, const GolVec3& p_right, GolVec3* p_dest)
+{
+	LegoFloat x = p_left.m_y * p_right.m_z;
+	LegoFloat xSub = p_left.m_z * p_right.m_y;
+	x -= xSub;
+	p_dest->m_x = x;
+
+	LegoFloat y = p_right.m_x * p_left.m_z;
+	LegoFloat ySub = p_left.m_x * p_right.m_z;
+	y -= ySub;
+	p_dest->m_y = y;
+
+	LegoFloat z = p_left.m_x * p_right.m_y;
+	LegoFloat zSub = p_right.m_x * p_left.m_y;
+	z -= zSub;
+	p_dest->m_z = z;
+}
+
 // FUNCTION: LEGORACERS 0x0043f530
 void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 {
@@ -1183,38 +1214,40 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	}
 
 	LegoFloat phase = static_cast<LegoFloat>(m_cursePhaseMs) * g_cursePhaseScale;
-	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase * g_negativeRadiansToTableIndex)) & c_randomTableMask;
+	LegoFloat indexPhase = phase;
+	indexPhase *= g_negativeRadiansToTableIndex;
+	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(indexPhase)) & c_randomTableMask;
 	LegoFloat offsetX = g_cosineTable[tableIndex];
 	tableIndex = static_cast<LegoS32>(phase * 162.974655f) & c_randomTableMask;
 	LegoFloat offsetY = g_cosineTable[tableIndex];
 
+	GolVec3 chaseDelta;
+	GolVec3 movement;
 	GolModelEntity* entity = &m_curseEntity;
 	GolVec3 position;
 	entity->GetPosition(&position);
 
 	GolVec3 target;
 	m_bodyModelEntity->GetPosition(&target);
-	target.m_x += g_curseOrbitRadius * offsetX;
-	target.m_y += g_curseOrbitRadius * offsetY;
-	target.m_z += g_curseHoverHeight;
+	target.m_x = g_curseOrbitRadius * offsetX + target.m_x;
+	target.m_y = g_curseOrbitRadius * offsetY + target.m_y;
+	target.m_z = g_curseHoverHeight + target.m_z;
 
-	LegoFloat speed = m_racerPhysics->m_speed;
-	if (speed <= g_curseChaseMinSpeed) {
-		speed = g_curseChaseMinSpeed;
-	}
-
-	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
+	LegoFloat speed = m_racerPhysics->m_speed > g_curseChaseMinSpeed ? m_racerPhysics->m_speed : g_curseChaseMinSpeed;
+	LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 	LegoFloat maxMove = elapsed * speed;
-	GolVec3 delta;
-	delta.m_x = target.m_x - position.m_x;
-	delta.m_y = target.m_y - position.m_y;
-	delta.m_z = target.m_z - position.m_z;
-
-	if (delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x > maxMove * maxMove) {
-		GolMath::NormalizeVector3(delta, &delta);
-		position.m_x += delta.m_x * maxMove;
-		position.m_y += delta.m_y * maxMove;
-		position.m_z += delta.m_z * maxMove;
+	LegoFloat dx = position.m_x - target.m_x;
+	LegoFloat dy = position.m_y - target.m_y;
+	LegoFloat dz = position.m_z - target.m_z;
+	if (dz * dz + dy * dy + dx * dx > maxMove * maxMove) {
+		chaseDelta.m_x = target.m_x - position.m_x;
+		chaseDelta.m_y = target.m_y - position.m_y;
+		chaseDelta.m_z = target.m_z - position.m_z;
+		GolMath::NormalizeVector3(chaseDelta, &chaseDelta);
+		movement.m_x = chaseDelta.m_x * maxMove;
+		movement.m_y = chaseDelta.m_y * maxMove;
+		movement.m_z = chaseDelta.m_z * maxMove;
+		position += movement;
 	}
 	else {
 		position = target;
@@ -1226,6 +1259,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
 
+	GolVec3 delta;
 	m_bodyModelEntity->GetPosition(&target);
 	delta.m_x = target.m_x - position.m_x;
 	delta.m_y = target.m_y - position.m_y;
@@ -1233,50 +1267,44 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	GolMath::NormalizeVector3(delta, &delta);
 
 	GolVec3 right;
-	right.m_x = up.m_y * delta.m_z - up.m_z * delta.m_y;
-	right.m_y = up.m_z * delta.m_x - up.m_x * delta.m_z;
-	right.m_z = up.m_x * delta.m_y - up.m_y * delta.m_x;
+	CrossVectors(up, delta, &right);
 	GolMath::NormalizeVector3(right, &right);
 
 	if (m_curseBlendMs > 0) {
-		GolMatrix3 currentOrientation;
-		entity->CopyOrientation(&currentOrientation);
-		GolVec3 unit;
-		GolMath::NormalizeVector3(right, &unit);
+		GolMatrix34 currentOrientation;
+		entity->CopyOrientation(&currentOrientation.m_orientation);
+		currentOrientation.m_position.Clear();
+		GolMath::NormalizeVector3(right, &movement);
 
-		LegoFloat dot = unit.m_z * up.m_z + unit.m_y * up.m_y + unit.m_x * up.m_x;
-		up.m_x -= unit.m_x * dot;
-		up.m_y -= unit.m_y * dot;
-		up.m_z -= unit.m_z * dot;
+		LegoFloat dot = DotVectors(movement, up);
+		GolVec3 projection = movement * dot;
+		up -= projection;
 		GolMath::NormalizeVector3(up, &up);
 
-		GolVec3 cross;
-		cross.m_x = up.m_y * unit.m_z - up.m_z * unit.m_y;
-		cross.m_y = up.m_z * unit.m_x - up.m_x * unit.m_z;
-		cross.m_z = up.m_x * unit.m_y - up.m_y * unit.m_x;
+		CrossVectors(up, right, &delta);
 
-		GolMatrix3 desiredOrientation;
-		desiredOrientation.m_m[0][0] = unit.m_x;
-		desiredOrientation.m_m[0][1] = unit.m_y;
-		desiredOrientation.m_m[0][2] = unit.m_z;
-		desiredOrientation.m_m[1][0] = cross.m_x;
-		desiredOrientation.m_m[1][1] = cross.m_y;
-		desiredOrientation.m_m[1][2] = cross.m_z;
-		desiredOrientation.m_m[2][0] = up.m_x;
-		desiredOrientation.m_m[2][1] = up.m_y;
-		desiredOrientation.m_m[2][2] = up.m_z;
+		GolMatrix34 desiredOrientation;
+		desiredOrientation.m_orientation.m_m[0][0] = right.m_x;
+		desiredOrientation.m_orientation.m_m[0][1] = right.m_y;
+		desiredOrientation.m_orientation.m_m[0][2] = right.m_z;
+		desiredOrientation.m_orientation.m_m[1][0] = delta.m_x;
+		desiredOrientation.m_orientation.m_m[1][1] = delta.m_y;
+		desiredOrientation.m_orientation.m_m[1][2] = delta.m_z;
+		desiredOrientation.m_orientation.m_m[2][0] = up.m_x;
+		desiredOrientation.m_orientation.m_m[2][1] = up.m_y;
+		desiredOrientation.m_orientation.m_m[2][2] = up.m_z;
 
-		LegoFloat amount = static_cast<LegoFloat>(m_curseBlendMs) * 0.001f;
+		desiredOrientation.m_position.Clear();
+		LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_curseBlendMs)) * 0.001f;
 		GolQuat desiredRotation;
 		GolQuat currentRotation;
 		GolQuat blendedRotation;
-		GolMath::Matrix3ToQuat(desiredOrientation, &desiredRotation);
-		GolMath::Matrix3ToQuat(currentOrientation, &currentRotation);
-		GolMath::LerpQuat(desiredRotation, currentRotation, amount, &blendedRotation);
+		GolMath::Matrix3ToQuat(desiredOrientation.m_orientation, &desiredRotation);
+		GolMath::Matrix3ToQuat(currentOrientation.m_orientation, &currentRotation);
+		GolMath::LerpQuat(currentRotation, desiredRotation, amount, &blendedRotation);
 
-		GolMatrix3 orientation;
-		GolMath::QuatToMatrix3(&blendedRotation, &orientation.m_m[0][0]);
-		entity->SetOrientationMatrix(orientation);
+		GolMath::QuatToMatrix3(&blendedRotation, &currentOrientation.m_orientation.m_m[0][0]);
+		entity->SetOrientationMatrix(currentOrientation.m_orientation);
 	}
 	else {
 		entity->SetDirectionUp(right, up);
@@ -1284,14 +1312,19 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 
 	LegoFloat scale = entity->GetScale();
 	if (scale > g_curseMinScale) {
-		scale -= elapsed * g_unk0x004b0b18 * g_curseShrinkRate;
+		LegoFloat shrink = elapsed;
+		shrink *= g_unk0x004b0b18;
+		shrink *= g_curseShrinkRate;
+		scale -= shrink;
 		if (scale < g_curseMinScale) {
 			scale = g_curseMinScale;
 		}
 		entity->SetScaleThenInvalidateRadius(scale);
+		entity->Update(p_elapsedMs);
 	}
-
-	entity->Update(p_elapsedMs);
+	else {
+		entity->Update(p_elapsedMs);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0043fa50

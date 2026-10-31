@@ -326,12 +326,11 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 	LegoFloat* p_amountOut
 )
 {
-	GolVec3* start = p_start;
 	GolVec3 delta;
 	GolVec3 scaledDelta;
 	LegoU32 childIndex;
 
-	m_segmentStart = *start;
+	m_segmentStart = *p_start;
 	m_segmentEnd = *p_end;
 	m_hitTriangle = p_record;
 	m_hitPoint = p_hit;
@@ -352,9 +351,9 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 			GolVec3* planePoint = &vertices[firstTriangle->m_vertex0];
 			stack->m_planePoint = planePoint;
 
-			delta.m_x = start->m_x - planePoint->m_x;
-			delta.m_y = start->m_y - planePoint->m_y;
-			delta.m_z = start->m_z - planePoint->m_z;
+			delta.m_x = p_start->m_x - planePoint->m_x;
+			delta.m_y = p_start->m_y - planePoint->m_y;
+			delta.m_z = p_start->m_z - planePoint->m_z;
 
 			LegoFloat startDistance = GolCameraBase::Dot(&node->m_planeNormal, &delta);
 			stack->m_startDistance = startDistance;
@@ -416,8 +415,8 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 			vertices = m_vertices->GetPositions();
 			node = m_hitNode;
 
-			Triangle* triangle = &m_triangles[node->m_firstTriangle];
-			Triangle* end = triangle + node->m_triangleCount;
+			LegoU32 triangleIndex = node->m_firstTriangle;
+			LegoU32 endIndex = triangleIndex + node->m_triangleCount;
 			Triangle* candidate = NULL;
 
 			node->GetPlaneNormal(&g_hitNormal);
@@ -425,7 +424,8 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 			m_hitTriangle->m_normal.m_y = g_hitNormal.m_y;
 			m_hitTriangle->m_normal.m_z = g_hitNormal.m_z;
 
-			while (triangle < end) {
+			while (triangleIndex < endIndex) {
+				Triangle* triangle = &m_triangles[triangleIndex];
 				m_hitTriangle->m_vertex0 = vertices[triangle->m_vertex0];
 				m_hitTriangle->m_vertex1 = vertices[triangle->m_vertex1];
 				m_hitTriangle->m_vertex2 = vertices[triangle->m_vertex2];
@@ -453,16 +453,15 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 
 						if (m_hitAmount) {
 							*m_hitAmount = amount;
-							return TRUE;
 						}
 
-						goto successReturn;
+						return TRUE;
 					}
 
 					candidate = triangle;
 				}
 
-				triangle++;
+				triangleIndex++;
 			}
 
 			if (candidate) {
@@ -487,7 +486,7 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 					*m_hitAmount = amount;
 				}
 
-				goto successReturn;
+				return TRUE;
 			}
 
 			if (childIndex < c_invalidChildIndex) {
@@ -496,8 +495,6 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 				stack->m_stage = 0;
 				node = &m_nodes[childIndex];
 			}
-
-			start = p_start;
 		}
 		else {
 			stack--;
@@ -508,9 +505,6 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 			node = &m_nodes[stack->m_nodeIndex];
 		}
 	}
-
-successReturn:
-	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00404510

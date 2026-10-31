@@ -173,435 +173,370 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 )
 {
 	LegoS32 bestAxis = -1;
-	struct CollisionScratch {
-		LegoFloat m_overlap;
-		LegoFloat m_projection;
-		LegoFloat m_half1z;
-		LegoFloat m_half0y;
-		LegoFloat m_half0z;
-		LegoFloat m_half1x;
-		LegoFloat m_half0x;
-		LegoFloat m_half1y;
-		GolVec3 m_delta;
-		GolVec3 m_thisRow2;
-		GolVec3 m_thisRow0;
-		GolVec3 m_otherRow2;
-		GolVec3 m_otherRow0;
-		GolVec3 m_thisRow1;
-		GolVec3 m_otherRow1;
-		GolMatrix3 m_absOrientation;
-		GolMatrix3 m_relativeOrientation;
-		GolMatrix3 m_orientation0;
-	};
+	LegoFloat overlap;
+	LegoFloat projection;
+	LegoFloat half1z;
+	LegoFloat half0y;
+	LegoFloat half0z;
+	LegoFloat half1x;
+	LegoFloat half0x;
+	LegoFloat half1y;
+	GolVec3 delta;
+	GolVec3 thisRow2;
+	GolVec3 thisRow0;
+	GolVec3 otherRow2;
+	GolVec3 otherRow0;
+	GolVec3 thisRow1;
+	GolVec3 otherRow1;
+	GolMatrix3 absOrientation;
+	GolMatrix3 relativeOrientation;
+	GolMatrix3 orientation0;
 
-	CollisionScratch scratch;
+	m_body->CopyOrientation(&orientation0);
+	p_other->m_body->CopyOrientation(&absOrientation);
 
-	m_body->CopyOrientation(&scratch.m_orientation0);
-	p_other->m_body->CopyOrientation(&scratch.m_absOrientation);
-
-	GolMath::TransformVector(
-		p_other->m_centerOfMassWorld - m_centerOfMassWorld,
-		&scratch.m_orientation0.m_m[0][0],
-		&scratch.m_delta
-	);
+	GolMath::TransformVector(p_other->m_centerOfMassWorld - m_centerOfMassWorld, &orientation0.m_m[0][0], &delta);
 
 	GolMath::MultiplyMatrixByTranspose(
-		&scratch.m_absOrientation.m_m[0][0],
-		&scratch.m_orientation0.m_m[0][0],
-		&scratch.m_relativeOrientation.m_m[0][0]
+		&absOrientation.m_m[0][0],
+		&orientation0.m_m[0][0],
+		&relativeOrientation.m_m[0][0]
 	);
 
-	scratch.m_half0x = m_boxSizeX * 0.5f;
-	scratch.m_half0y = m_boxSizeY * 0.5f;
-	scratch.m_half0z = m_boxSizeZ * 0.5f;
+	half0x = m_boxSizeX * 0.5f;
+	half0y = m_boxSizeY * 0.5f;
+	half0z = m_boxSizeZ * 0.5f;
 	if (m_boxScale != 1.0f) {
 		if (m_boxScale == 0.0f) {
 			return FALSE;
 		}
 
-		scratch.m_half0x = m_boxScale * scratch.m_half0x;
-		scratch.m_half0y = m_boxScale * scratch.m_half0y;
-		scratch.m_half0z = m_boxScale * scratch.m_half0z;
+		half0x = m_boxScale * half0x;
+		half0y = m_boxScale * half0y;
+		half0z = m_boxScale * half0z;
 	}
 
-	scratch.m_half1x = p_other->m_boxSizeX * 0.5f;
-	scratch.m_half1y = p_other->m_boxSizeY * 0.5f;
-	scratch.m_half1z = p_other->m_boxSizeZ * 0.5f;
+	half1x = p_other->m_boxSizeX * 0.5f;
+	half1y = p_other->m_boxSizeY * 0.5f;
+	half1z = p_other->m_boxSizeZ * 0.5f;
 	if (p_other->m_boxScale != 1.0f) {
 		if (p_other->m_boxScale == 0.0f) {
 			return FALSE;
 		}
 
-		scratch.m_half1x = p_other->m_boxScale * scratch.m_half1x;
-		scratch.m_half1y = p_other->m_boxScale * scratch.m_half1y;
-		scratch.m_half1z = p_other->m_boxScale * scratch.m_half1z;
+		half1x = p_other->m_boxScale * half1x;
+		half1y = p_other->m_boxScale * half1y;
+		half1z = p_other->m_boxScale * half1z;
 	}
 
-	scratch.m_absOrientation.m_m[0][0] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[0][0]));
-	scratch.m_absOrientation.m_m[0][1] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[0][1]));
-	scratch.m_absOrientation.m_m[0][2] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[0][2]));
-	scratch.m_absOrientation.m_m[1][0] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[1][0]));
-	scratch.m_absOrientation.m_m[1][1] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[1][1]));
-	scratch.m_absOrientation.m_m[1][2] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[1][2]));
-	scratch.m_absOrientation.m_m[2][0] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[2][0]));
-	scratch.m_absOrientation.m_m[2][1] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[2][1]));
-	scratch.m_absOrientation.m_m[2][2] = static_cast<LegoFloat>(fabs(scratch.m_relativeOrientation.m_m[2][2]));
+	absOrientation.m_m[0][0] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[0][0]));
+	absOrientation.m_m[0][1] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[0][1]));
+	absOrientation.m_m[0][2] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[0][2]));
+	absOrientation.m_m[1][0] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[1][0]));
+	absOrientation.m_m[1][1] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[1][1]));
+	absOrientation.m_m[1][2] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[1][2]));
+	absOrientation.m_m[2][0] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[2][0]));
+	absOrientation.m_m[2][1] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[2][1]));
+	absOrientation.m_m[2][2] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[2][2]));
 
 	*p_penetration = FLT_MAX;
 	p_normal->Clear();
 
-	LegoFloat distance = static_cast<LegoFloat>(fabs(scratch.m_delta.m_x));
-	scratch.m_projection = scratch.m_absOrientation.m_m[2][0] * scratch.m_half1z +
-						   scratch.m_absOrientation.m_m[1][0] * scratch.m_half1y +
-						   scratch.m_absOrientation.m_m[0][0] * scratch.m_half1x;
-	LegoFloat total = scratch.m_projection + scratch.m_half0x;
+	LegoFloat distance = static_cast<LegoFloat>(fabs(delta.m_x));
+	projection =
+		absOrientation.m_m[2][0] * half1z + absOrientation.m_m[1][0] * half1y + absOrientation.m_m[0][0] * half1x;
+	LegoFloat total = projection + half0x;
 	if (distance > total) {
 		return FALSE;
 	}
-	scratch.m_overlap = total - distance;
-	if (scratch.m_overlap < *p_penetration) {
+	overlap = total - distance;
+	if (overlap < *p_penetration) {
 		bestAxis = 0;
-		*p_penetration = scratch.m_overlap;
+		*p_penetration = overlap;
 		if (p_distance0) {
-			*p_distance0 = scratch.m_half0x - scratch.m_overlap;
+			*p_distance0 = half0x - overlap;
 		}
 		if (p_distance1) {
-			*p_distance1 = scratch.m_projection - *p_penetration;
+			*p_distance1 = projection - *p_penetration;
 		}
 	}
 
 	distance = static_cast<LegoFloat>(fabs(
-		scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[0][2] +
-		scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[0][1] +
-		scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[0][0]
+		delta.m_z * relativeOrientation.m_m[0][2] + delta.m_y * relativeOrientation.m_m[0][1] +
+		delta.m_x * relativeOrientation.m_m[0][0]
 	));
-	scratch.m_projection = scratch.m_absOrientation.m_m[0][2] * scratch.m_half0z +
-						   scratch.m_absOrientation.m_m[0][1] * scratch.m_half0y +
-						   scratch.m_absOrientation.m_m[0][0] * scratch.m_half0x;
-	total = scratch.m_projection + scratch.m_half1x;
+	projection =
+		absOrientation.m_m[0][2] * half0z + absOrientation.m_m[0][1] * half0y + absOrientation.m_m[0][0] * half0x;
+	total = projection + half1x;
 	if (distance > total) {
 		return FALSE;
 	}
-	scratch.m_overlap = total - distance;
-	if (scratch.m_overlap < *p_penetration) {
+	overlap = total - distance;
+	if (overlap < *p_penetration) {
 		bestAxis = 1;
-		*p_penetration = scratch.m_overlap;
+		*p_penetration = overlap;
 		if (p_distance0) {
-			*p_distance0 = scratch.m_half1x - scratch.m_overlap;
+			*p_distance0 = half1x - overlap;
 		}
 		if (p_distance1) {
-			*p_distance1 = scratch.m_projection - *p_penetration;
+			*p_distance1 = projection - *p_penetration;
 		}
 	}
 
-	distance = static_cast<LegoFloat>(fabs(scratch.m_delta.m_y));
-	scratch.m_projection = scratch.m_absOrientation.m_m[2][1] * scratch.m_half1z +
-						   scratch.m_absOrientation.m_m[1][1] * scratch.m_half1y +
-						   scratch.m_absOrientation.m_m[0][1] * scratch.m_half1x;
-	total = scratch.m_projection + scratch.m_half0y;
+	distance = static_cast<LegoFloat>(fabs(delta.m_y));
+	projection =
+		absOrientation.m_m[2][1] * half1z + absOrientation.m_m[1][1] * half1y + absOrientation.m_m[0][1] * half1x;
+	total = projection + half0y;
 	if (distance > total) {
 		return FALSE;
 	}
-	scratch.m_overlap = total - distance;
-	if (scratch.m_overlap < *p_penetration) {
+	overlap = total - distance;
+	if (overlap < *p_penetration) {
 		bestAxis = 2;
-		*p_penetration = scratch.m_overlap;
+		*p_penetration = overlap;
 		if (p_distance0) {
-			*p_distance0 = scratch.m_half0y - scratch.m_overlap;
+			*p_distance0 = half0y - overlap;
 		}
 		if (p_distance1) {
-			*p_distance1 = scratch.m_projection - *p_penetration;
+			*p_distance1 = projection - *p_penetration;
 		}
 	}
 
-	distance = static_cast<LegoFloat>(fabs(scratch.m_delta.m_z));
-	scratch.m_projection = scratch.m_absOrientation.m_m[2][2] * scratch.m_half1z +
-						   scratch.m_absOrientation.m_m[1][2] * scratch.m_half1y +
-						   scratch.m_absOrientation.m_m[0][2] * scratch.m_half1x;
-	total = scratch.m_projection + scratch.m_half0z;
+	distance = static_cast<LegoFloat>(fabs(delta.m_z));
+	projection =
+		absOrientation.m_m[2][2] * half1z + absOrientation.m_m[1][2] * half1y + absOrientation.m_m[0][2] * half1x;
+	total = projection + half0z;
 	if (distance > total) {
 		return FALSE;
 	}
-	scratch.m_overlap = total - distance;
-	if (scratch.m_overlap < *p_penetration) {
+	overlap = total - distance;
+	if (overlap < *p_penetration) {
 		bestAxis = 3;
-		*p_penetration = scratch.m_overlap;
+		*p_penetration = overlap;
 		if (p_distance0) {
-			*p_distance0 = scratch.m_half0z - scratch.m_overlap;
+			*p_distance0 = half0z - overlap;
 		}
 		if (p_distance1) {
-			*p_distance1 = scratch.m_projection - *p_penetration;
+			*p_distance1 = projection - *p_penetration;
 		}
 	}
 
 	distance = static_cast<LegoFloat>(fabs(
-		scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[1][2] +
-		scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[1][1] +
-		scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[1][0]
+		delta.m_z * relativeOrientation.m_m[1][2] + delta.m_y * relativeOrientation.m_m[1][1] +
+		delta.m_x * relativeOrientation.m_m[1][0]
 	));
-	scratch.m_projection = scratch.m_absOrientation.m_m[1][2] * scratch.m_half0z +
-						   scratch.m_absOrientation.m_m[1][1] * scratch.m_half0y +
-						   scratch.m_absOrientation.m_m[1][0] * scratch.m_half0x;
-	total = scratch.m_projection + scratch.m_half1y;
+	projection =
+		absOrientation.m_m[1][2] * half0z + absOrientation.m_m[1][1] * half0y + absOrientation.m_m[1][0] * half0x;
+	total = projection + half1y;
 	if (distance > total) {
 		return FALSE;
 	}
-	scratch.m_overlap = total - distance;
-	if (scratch.m_overlap < *p_penetration) {
+	overlap = total - distance;
+	if (overlap < *p_penetration) {
 		bestAxis = 4;
-		*p_penetration = scratch.m_overlap;
+		*p_penetration = overlap;
 		if (p_distance0) {
-			*p_distance0 = scratch.m_half1y - scratch.m_overlap;
+			*p_distance0 = half1y - overlap;
 		}
 		if (p_distance1) {
-			*p_distance1 = scratch.m_projection - *p_penetration;
+			*p_distance1 = projection - *p_penetration;
 		}
 	}
 
 	distance = static_cast<LegoFloat>(fabs(
-		scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[2][2] +
-		scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[2][1] +
-		scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[2][0]
+		delta.m_z * relativeOrientation.m_m[2][2] + delta.m_y * relativeOrientation.m_m[2][1] +
+		delta.m_x * relativeOrientation.m_m[2][0]
 	));
-	scratch.m_projection = scratch.m_absOrientation.m_m[2][2] * scratch.m_half0z +
-						   scratch.m_absOrientation.m_m[2][1] * scratch.m_half0y +
-						   scratch.m_absOrientation.m_m[2][0] * scratch.m_half0x;
-	total = scratch.m_projection + scratch.m_half1z;
+	projection =
+		absOrientation.m_m[2][2] * half0z + absOrientation.m_m[2][1] * half0y + absOrientation.m_m[2][0] * half0x;
+	total = projection + half1z;
 	if (distance > total) {
 		return FALSE;
 	}
-	scratch.m_overlap = total - distance;
-	if (scratch.m_overlap < *p_penetration) {
+	overlap = total - distance;
+	if (overlap < *p_penetration) {
 		bestAxis = 5;
-		*p_penetration = scratch.m_overlap;
+		*p_penetration = overlap;
 		if (p_distance0) {
-			*p_distance0 = scratch.m_half1z - scratch.m_overlap;
+			*p_distance0 = half1z - overlap;
 		}
 		if (p_distance1) {
-			*p_distance1 = scratch.m_projection - *p_penetration;
+			*p_distance1 = projection - *p_penetration;
 		}
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][0] * scratch.m_half1y + scratch.m_absOrientation.m_m[1][0] * scratch.m_half1z +
-		scratch.m_absOrientation.m_m[0][2] * scratch.m_half0y + scratch.m_absOrientation.m_m[0][1] * scratch.m_half0z;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[0][1] -
-													 scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[0][2]
-												 )) > total) {
+	total = (absOrientation.m_m[2][0] * half1y + absOrientation.m_m[1][0] * half1z) +
+			(absOrientation.m_m[0][2] * half0y + absOrientation.m_m[0][1] * half0z);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_z * relativeOrientation.m_m[0][1] - delta.m_y * relativeOrientation.m_m[0][2])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][0] * scratch.m_half1x + scratch.m_absOrientation.m_m[0][0] * scratch.m_half1z +
-		scratch.m_absOrientation.m_m[1][2] * scratch.m_half0y + scratch.m_absOrientation.m_m[1][1] * scratch.m_half0z;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[1][1] -
-													 scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[1][2]
-												 )) > total) {
+	total = (absOrientation.m_m[2][0] * half1x + absOrientation.m_m[0][0] * half1z) +
+			(absOrientation.m_m[1][2] * half0y + absOrientation.m_m[1][1] * half0z);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_z * relativeOrientation.m_m[1][1] - delta.m_y * relativeOrientation.m_m[1][2])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][2] * scratch.m_half0y + scratch.m_absOrientation.m_m[2][1] * scratch.m_half0z +
-		scratch.m_absOrientation.m_m[1][0] * scratch.m_half1x + scratch.m_absOrientation.m_m[0][0] * scratch.m_half1y;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[2][1] -
-													 scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[2][2]
-												 )) > total) {
+	total = (absOrientation.m_m[2][2] * half0y + absOrientation.m_m[2][1] * half0z) +
+			(absOrientation.m_m[1][0] * half1x + absOrientation.m_m[0][0] * half1y);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_z * relativeOrientation.m_m[2][1] - delta.m_y * relativeOrientation.m_m[2][2])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][1] * scratch.m_half1y + scratch.m_absOrientation.m_m[1][1] * scratch.m_half1z +
-		scratch.m_absOrientation.m_m[0][2] * scratch.m_half0x + scratch.m_absOrientation.m_m[0][0] * scratch.m_half0z;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[0][2] -
-													 scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[0][0]
-												 )) > total) {
+	total = (absOrientation.m_m[2][1] * half1y + absOrientation.m_m[1][1] * half1z) +
+			(absOrientation.m_m[0][2] * half0x + absOrientation.m_m[0][0] * half0z);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_x * relativeOrientation.m_m[0][2] - delta.m_z * relativeOrientation.m_m[0][0])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][1] * scratch.m_half1x + scratch.m_absOrientation.m_m[0][1] * scratch.m_half1z +
-		scratch.m_absOrientation.m_m[1][2] * scratch.m_half0x + scratch.m_absOrientation.m_m[1][0] * scratch.m_half0z;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[1][2] -
-													 scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[1][0]
-												 )) > total) {
+	total = (absOrientation.m_m[2][1] * half1x + absOrientation.m_m[0][1] * half1z) +
+			(absOrientation.m_m[1][2] * half0x + absOrientation.m_m[1][0] * half0z);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_x * relativeOrientation.m_m[1][2] - delta.m_z * relativeOrientation.m_m[1][0])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][2] * scratch.m_half0x + scratch.m_absOrientation.m_m[2][0] * scratch.m_half0z +
-		scratch.m_absOrientation.m_m[1][1] * scratch.m_half1x + scratch.m_absOrientation.m_m[0][1] * scratch.m_half1y;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[2][2] -
-													 scratch.m_delta.m_z * scratch.m_relativeOrientation.m_m[2][0]
-												 )) > total) {
+	total = (absOrientation.m_m[2][2] * half0x + absOrientation.m_m[2][0] * half0z) +
+			(absOrientation.m_m[1][1] * half1x + absOrientation.m_m[0][1] * half1y);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_x * relativeOrientation.m_m[2][2] - delta.m_z * relativeOrientation.m_m[2][0])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][2] * scratch.m_half1y + scratch.m_absOrientation.m_m[1][2] * scratch.m_half1z +
-		scratch.m_absOrientation.m_m[0][1] * scratch.m_half0x + scratch.m_absOrientation.m_m[0][0] * scratch.m_half0y;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[0][0] -
-													 scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[0][1]
-												 )) > total) {
+	total = (absOrientation.m_m[2][2] * half1y + absOrientation.m_m[1][2] * half1z) +
+			(absOrientation.m_m[0][1] * half0x + absOrientation.m_m[0][0] * half0y);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_y * relativeOrientation.m_m[0][0] - delta.m_x * relativeOrientation.m_m[0][1])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][2] * scratch.m_half1x + scratch.m_absOrientation.m_m[0][2] * scratch.m_half1z +
-		scratch.m_absOrientation.m_m[1][1] * scratch.m_half0x + scratch.m_absOrientation.m_m[1][0] * scratch.m_half0y;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[1][0] -
-													 scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[1][1]
-												 )) > total) {
+	total = (absOrientation.m_m[2][2] * half1x + absOrientation.m_m[0][2] * half1z) +
+			(absOrientation.m_m[1][1] * half0x + absOrientation.m_m[1][0] * half0y);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_y * relativeOrientation.m_m[1][0] - delta.m_x * relativeOrientation.m_m[1][1])
+		) > total) {
 		return FALSE;
 	}
 
-	total =
-		scratch.m_absOrientation.m_m[2][1] * scratch.m_half0x + scratch.m_absOrientation.m_m[2][0] * scratch.m_half0y +
-		scratch.m_absOrientation.m_m[1][2] * scratch.m_half1x + scratch.m_absOrientation.m_m[0][2] * scratch.m_half1y;
-	if ((total >= 0.001f || total <= -0.001f) && static_cast<LegoFloat>(fabs(
-													 scratch.m_delta.m_y * scratch.m_relativeOrientation.m_m[2][0] -
-													 scratch.m_delta.m_x * scratch.m_relativeOrientation.m_m[2][1]
-												 )) > total) {
+	total = (absOrientation.m_m[2][1] * half0x + absOrientation.m_m[2][0] * half0y) +
+			(absOrientation.m_m[1][2] * half1x + absOrientation.m_m[0][2] * half1y);
+	if ((total >= 0.001f || total <= -0.001f) &&
+		static_cast<LegoFloat>(
+			fabs(delta.m_y * relativeOrientation.m_m[2][0] - delta.m_x * relativeOrientation.m_m[2][1])
+		) > total) {
 		return FALSE;
 	}
 
-	scratch.m_thisRow0.m_x = m_body->m_orientation.m_m[0][0];
-	scratch.m_thisRow0.m_y = m_body->m_orientation.m_m[0][1];
-	scratch.m_thisRow0.m_z = m_body->m_orientation.m_m[0][2];
-	scratch.m_thisRow1.m_x = m_body->m_orientation.m_m[1][0];
-	scratch.m_thisRow1.m_y = m_body->m_orientation.m_m[1][1];
-	scratch.m_thisRow1.m_z = m_body->m_orientation.m_m[1][2];
-	scratch.m_thisRow2.m_x = m_body->m_orientation.m_m[2][0];
-	scratch.m_thisRow2.m_y = m_body->m_orientation.m_m[2][1];
-	scratch.m_thisRow2.m_z = m_body->m_orientation.m_m[2][2];
+	thisRow0.m_x = m_body->m_orientation.m_m[0][0];
+	thisRow0.m_y = m_body->m_orientation.m_m[0][1];
+	thisRow0.m_z = m_body->m_orientation.m_m[0][2];
+	thisRow1.m_x = m_body->m_orientation.m_m[1][0];
+	thisRow1.m_y = m_body->m_orientation.m_m[1][1];
+	thisRow1.m_z = m_body->m_orientation.m_m[1][2];
+	thisRow2.m_x = m_body->m_orientation.m_m[2][0];
+	thisRow2.m_y = m_body->m_orientation.m_m[2][1];
+	thisRow2.m_z = m_body->m_orientation.m_m[2][2];
 
-	scratch.m_otherRow0.m_x = p_other->m_body->m_orientation.m_m[0][0];
-	scratch.m_otherRow0.m_y = p_other->m_body->m_orientation.m_m[0][1];
-	scratch.m_otherRow0.m_z = p_other->m_body->m_orientation.m_m[0][2];
-	scratch.m_otherRow1.m_x = p_other->m_body->m_orientation.m_m[1][0];
-	scratch.m_otherRow1.m_y = p_other->m_body->m_orientation.m_m[1][1];
-	scratch.m_otherRow1.m_z = p_other->m_body->m_orientation.m_m[1][2];
-	scratch.m_otherRow2.m_x = p_other->m_body->m_orientation.m_m[2][0];
-	scratch.m_otherRow2.m_y = p_other->m_body->m_orientation.m_m[2][1];
-	scratch.m_otherRow2.m_z = p_other->m_body->m_orientation.m_m[2][2];
+	otherRow0.m_x = p_other->m_body->m_orientation.m_m[0][0];
+	otherRow0.m_y = p_other->m_body->m_orientation.m_m[0][1];
+	otherRow0.m_z = p_other->m_body->m_orientation.m_m[0][2];
+	otherRow1.m_x = p_other->m_body->m_orientation.m_m[1][0];
+	otherRow1.m_y = p_other->m_body->m_orientation.m_m[1][1];
+	otherRow1.m_z = p_other->m_body->m_orientation.m_m[1][2];
+	otherRow2.m_x = p_other->m_body->m_orientation.m_m[2][0];
+	otherRow2.m_y = p_other->m_body->m_orientation.m_m[2][1];
+	otherRow2.m_z = p_other->m_body->m_orientation.m_m[2][2];
 
 	switch (bestAxis) {
 	case 0:
-		p_normal->m_x = scratch.m_thisRow0.m_x;
-		p_normal->m_y = scratch.m_thisRow0.m_y;
-		p_normal->m_z = scratch.m_thisRow0.m_z;
+		*p_normal = thisRow0;
 		break;
 	case 1:
-		p_normal->m_x = scratch.m_otherRow0.m_x;
-		p_normal->m_y = scratch.m_otherRow0.m_y;
-		p_normal->m_z = scratch.m_otherRow0.m_z;
+		*p_normal = otherRow0;
 		break;
 	case 2:
-		p_normal->m_x = scratch.m_thisRow1.m_x;
-		p_normal->m_y = scratch.m_thisRow1.m_y;
-		p_normal->m_z = scratch.m_thisRow1.m_z;
+		*p_normal = thisRow1;
 		break;
 	case 3:
-		p_normal->m_x = scratch.m_thisRow2.m_x;
-		p_normal->m_y = scratch.m_thisRow2.m_y;
-		p_normal->m_z = scratch.m_thisRow2.m_z;
+		*p_normal = thisRow2;
 		break;
 	case 4:
-		p_normal->m_x = scratch.m_otherRow1.m_x;
-		p_normal->m_y = scratch.m_otherRow1.m_y;
-		p_normal->m_z = scratch.m_otherRow1.m_z;
+		*p_normal = otherRow1;
 		break;
 	case 5:
-		p_normal->m_x = scratch.m_otherRow2.m_x;
-		p_normal->m_y = scratch.m_otherRow2.m_y;
-		p_normal->m_z = scratch.m_otherRow2.m_z;
+		*p_normal = otherRow2;
 		break;
 	case 6:
-		p_normal->m_x =
-			scratch.m_otherRow0.m_z * scratch.m_thisRow0.m_y - scratch.m_otherRow0.m_y * scratch.m_thisRow0.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow0.m_z * scratch.m_otherRow0.m_x - scratch.m_otherRow0.m_z * scratch.m_thisRow0.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow0.m_y * scratch.m_thisRow0.m_x - scratch.m_thisRow0.m_y * scratch.m_otherRow0.m_x;
+		p_normal->m_x = otherRow0.m_z * thisRow0.m_y - otherRow0.m_y * thisRow0.m_z;
+		p_normal->m_y = thisRow0.m_z * otherRow0.m_x - otherRow0.m_z * thisRow0.m_x;
+		p_normal->m_z = otherRow0.m_y * thisRow0.m_x - thisRow0.m_y * otherRow0.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 7:
-		p_normal->m_x =
-			scratch.m_otherRow1.m_z * scratch.m_thisRow0.m_y - scratch.m_otherRow1.m_y * scratch.m_thisRow0.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow0.m_z * scratch.m_otherRow1.m_x - scratch.m_otherRow1.m_z * scratch.m_thisRow0.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow1.m_y * scratch.m_thisRow0.m_x - scratch.m_thisRow0.m_y * scratch.m_otherRow1.m_x;
+		p_normal->m_x = otherRow1.m_z * thisRow0.m_y - otherRow1.m_y * thisRow0.m_z;
+		p_normal->m_y = thisRow0.m_z * otherRow1.m_x - otherRow1.m_z * thisRow0.m_x;
+		p_normal->m_z = otherRow1.m_y * thisRow0.m_x - thisRow0.m_y * otherRow1.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 8:
-		p_normal->m_x =
-			scratch.m_otherRow2.m_z * scratch.m_thisRow0.m_y - scratch.m_otherRow2.m_y * scratch.m_thisRow0.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow0.m_z * scratch.m_otherRow2.m_x - scratch.m_otherRow2.m_z * scratch.m_thisRow0.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow2.m_y * scratch.m_thisRow0.m_x - scratch.m_thisRow0.m_y * scratch.m_otherRow2.m_x;
+		p_normal->m_x = otherRow2.m_z * thisRow0.m_y - otherRow2.m_y * thisRow0.m_z;
+		p_normal->m_y = thisRow0.m_z * otherRow2.m_x - otherRow2.m_z * thisRow0.m_x;
+		p_normal->m_z = otherRow2.m_y * thisRow0.m_x - thisRow0.m_y * otherRow2.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 9:
-		p_normal->m_x =
-			scratch.m_otherRow0.m_z * scratch.m_thisRow1.m_y - scratch.m_otherRow0.m_y * scratch.m_thisRow1.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow1.m_z * scratch.m_otherRow0.m_x - scratch.m_otherRow0.m_z * scratch.m_thisRow1.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow0.m_y * scratch.m_thisRow1.m_x - scratch.m_thisRow1.m_y * scratch.m_otherRow0.m_x;
+		p_normal->m_x = otherRow0.m_z * thisRow1.m_y - otherRow0.m_y * thisRow1.m_z;
+		p_normal->m_y = thisRow1.m_z * otherRow0.m_x - otherRow0.m_z * thisRow1.m_x;
+		p_normal->m_z = otherRow0.m_y * thisRow1.m_x - thisRow1.m_y * otherRow0.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 10:
-		p_normal->m_x =
-			scratch.m_otherRow1.m_z * scratch.m_thisRow1.m_y - scratch.m_otherRow1.m_y * scratch.m_thisRow1.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow1.m_z * scratch.m_otherRow1.m_x - scratch.m_otherRow1.m_z * scratch.m_thisRow1.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow1.m_y * scratch.m_thisRow1.m_x - scratch.m_thisRow1.m_y * scratch.m_otherRow1.m_x;
+		p_normal->m_x = otherRow1.m_z * thisRow1.m_y - otherRow1.m_y * thisRow1.m_z;
+		p_normal->m_y = thisRow1.m_z * otherRow1.m_x - otherRow1.m_z * thisRow1.m_x;
+		p_normal->m_z = otherRow1.m_y * thisRow1.m_x - thisRow1.m_y * otherRow1.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 11:
-		p_normal->m_x =
-			scratch.m_otherRow2.m_z * scratch.m_thisRow1.m_y - scratch.m_otherRow2.m_y * scratch.m_thisRow1.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow1.m_z * scratch.m_otherRow2.m_x - scratch.m_otherRow2.m_z * scratch.m_thisRow1.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow2.m_y * scratch.m_thisRow1.m_x - scratch.m_thisRow1.m_y * scratch.m_otherRow2.m_x;
+		p_normal->m_x = otherRow2.m_z * thisRow1.m_y - otherRow2.m_y * thisRow1.m_z;
+		p_normal->m_y = thisRow1.m_z * otherRow2.m_x - otherRow2.m_z * thisRow1.m_x;
+		p_normal->m_z = otherRow2.m_y * thisRow1.m_x - thisRow1.m_y * otherRow2.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 12:
-		p_normal->m_x =
-			scratch.m_otherRow0.m_z * scratch.m_thisRow2.m_y - scratch.m_otherRow0.m_y * scratch.m_thisRow2.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow2.m_z * scratch.m_otherRow0.m_x - scratch.m_otherRow0.m_z * scratch.m_thisRow2.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow0.m_y * scratch.m_thisRow2.m_x - scratch.m_thisRow2.m_y * scratch.m_otherRow0.m_x;
+		p_normal->m_x = otherRow0.m_z * thisRow2.m_y - otherRow0.m_y * thisRow2.m_z;
+		p_normal->m_y = thisRow2.m_z * otherRow0.m_x - otherRow0.m_z * thisRow2.m_x;
+		p_normal->m_z = otherRow0.m_y * thisRow2.m_x - thisRow2.m_y * otherRow0.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 13:
-		p_normal->m_x =
-			scratch.m_otherRow1.m_z * scratch.m_thisRow2.m_y - scratch.m_otherRow1.m_y * scratch.m_thisRow2.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow2.m_z * scratch.m_otherRow1.m_x - scratch.m_otherRow1.m_z * scratch.m_thisRow2.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow1.m_y * scratch.m_thisRow2.m_x - scratch.m_thisRow2.m_y * scratch.m_otherRow1.m_x;
+		p_normal->m_x = otherRow1.m_z * thisRow2.m_y - otherRow1.m_y * thisRow2.m_z;
+		p_normal->m_y = thisRow2.m_z * otherRow1.m_x - otherRow1.m_z * thisRow2.m_x;
+		p_normal->m_z = otherRow1.m_y * thisRow2.m_x - thisRow2.m_y * otherRow1.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 14:
-		p_normal->m_x =
-			scratch.m_otherRow2.m_z * scratch.m_thisRow2.m_y - scratch.m_otherRow2.m_y * scratch.m_thisRow2.m_z;
-		p_normal->m_y =
-			scratch.m_thisRow2.m_z * scratch.m_otherRow2.m_x - scratch.m_otherRow2.m_z * scratch.m_thisRow2.m_x;
-		p_normal->m_z =
-			scratch.m_otherRow2.m_y * scratch.m_thisRow2.m_x - scratch.m_thisRow2.m_y * scratch.m_otherRow2.m_x;
+		p_normal->m_x = otherRow2.m_z * thisRow2.m_y - otherRow2.m_y * thisRow2.m_z;
+		p_normal->m_y = thisRow2.m_z * otherRow2.m_x - otherRow2.m_z * thisRow2.m_x;
+		p_normal->m_z = otherRow2.m_y * thisRow2.m_x - thisRow2.m_y * otherRow2.m_x;
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	default:

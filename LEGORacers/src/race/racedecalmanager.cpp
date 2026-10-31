@@ -278,41 +278,43 @@ void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 	m_elapsedMs += p_elapsedMs;
 
 	LegoFloat distance = static_cast<LegoFloat>(sqrt(
-		(p_position.m_z - m_anchorZ) * (p_position.m_z - m_anchorZ) +
-		(p_position.m_y - m_anchorY) * (p_position.m_y - m_anchorY) +
-		(p_position.m_x - m_anchorX) * (p_position.m_x - m_anchorX)
+		(m_anchorZ - p_position.m_z) * (m_anchorZ - p_position.m_z) +
+		(m_anchorY - p_position.m_y) * (m_anchorY - p_position.m_y) +
+		(m_anchorX - p_position.m_x) * (m_anchorX - p_position.m_x)
 	));
 	if (distance < g_raceDecalMinSampleDistance) {
 		return;
 	}
 
 	GolVec3 direction;
-	direction.m_x = (p_position.m_x - m_anchorX) / distance;
-	direction.m_y = (p_position.m_y - m_anchorY) / distance;
-	direction.m_z = (p_position.m_z - m_anchorZ) / distance;
+	direction.m_x = p_position.m_x - m_anchorX;
+	direction.m_y = p_position.m_y - m_anchorY;
+	direction.m_z = p_position.m_z - m_anchorZ;
 
 	GolVec3 up;
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = -1.0f;
 
-	LegoFloat centerX = (p_position.m_x + m_anchorX) * 0.5f;
-	LegoFloat centerY = (p_position.m_y + m_anchorY) * 0.5f;
-	LegoFloat centerZ = (p_position.m_z + m_anchorZ) * 0.5f;
+	direction.m_x /= distance;
+	direction.m_y /= distance;
+	direction.m_z /= distance;
 
-	p_position.m_x = 0.0f;
-	p_position.m_y = 0.0f;
+	GolVec3 center;
+	center.m_x = (p_position.m_x + m_anchorX) * 0.5f;
+	center.m_y = (p_position.m_y + m_anchorY) * 0.5f;
+	center.m_z = (p_position.m_z + m_anchorZ) * 0.5f;
+
+	p_position.m_x = p_position.m_y = 0.0f;
 	p_position.m_z = -1.0f * g_raceDecalTrailOffsetZ;
-	centerX -= p_position.m_x;
-	centerY -= p_position.m_y;
-	centerZ -= p_position.m_z;
+	center -= p_position;
 
 	Decal* field = &m_decal;
-	field->m_width = m_width;
-	field->m_length = distance;
-	field->m_center.m_x = centerX;
-	field->m_center.m_y = centerY;
-	field->m_center.m_z = centerZ;
+	field->SetWidth(m_width);
+	field->SetLength(distance);
+	field->m_center.m_x = center.m_x;
+	field->m_center.m_y = center.m_y;
+	field->m_center.m_z = center.m_z;
 	field->SetOrientation(&up, &direction);
 	m_flags |= c_samplePending;
 }

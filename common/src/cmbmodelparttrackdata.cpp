@@ -194,14 +194,16 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	}
 
 	LegoU32 keyIndex = 0;
-	const LegoU16* allKeys = m_keys;
-	const LegoU16* keys = &allKeys[p_track.m_rotationKeyIndex];
-	const LegoU16* cursor = keys;
-	for (; keyIndex < keyCount; keyIndex++) {
-		if (*cursor > p_time) {
-			break;
+	const LegoU16* keys;
+	if (keyCount > 0) {
+		keys = &m_keys[p_track.m_rotationKeyIndex];
+		const LegoU16* cursor = keys;
+		for (; keyIndex < keyCount; keyIndex++) {
+			if (*cursor > p_time) {
+				break;
+			}
+			cursor++;
 		}
-		cursor++;
 	}
 
 	GolQuat from;
@@ -210,8 +212,8 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	LegoFloat elapsed;
 	if (keyIndex == 0) {
 		LegoU32 keyBase = p_track.m_rotationKeyIndex;
-		LegoS32 firstKey = allKeys[keyBase];
-		LegoS32 lastKey = allKeys[keyBase + keyCount - 1];
+		LegoS32 firstKey = m_keys[keyBase];
+		LegoS32 lastKey = m_keys[keyBase + keyCount - 1];
 		duration = p_frameCount + firstKey - lastKey;
 		elapsed = static_cast<LegoFloat>(duration - firstKey) + p_time;
 		GetRotationFrame(p_track.m_rotationFrameIndex + keyCount - 1, &from);
@@ -220,7 +222,7 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	else if (keyIndex == keyCount) {
 		LegoU32 keyBase = p_track.m_rotationKeyIndex;
 		LegoS32 firstKey = keys[0];
-		LegoS32 lastKey = allKeys[keyBase + keyCount - 1];
+		LegoS32 lastKey = m_keys[keyBase + keyCount - 1];
 		duration = p_frameCount + firstKey - lastKey;
 		elapsed = p_time - static_cast<LegoFloat>(lastKey);
 		GetRotationFrame(p_track.m_rotationFrameIndex + keyCount - 1, &from);
@@ -228,8 +230,8 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 	}
 	else {
 		LegoU32 keyBase = p_track.m_rotationKeyIndex + keyIndex;
-		LegoS32 previousKey = allKeys[keyBase - 1];
-		duration = allKeys[keyBase] - previousKey;
+		LegoS32 previousKey = m_keys[keyBase - 1];
+		duration = m_keys[keyBase] - previousKey;
 		elapsed = p_time - static_cast<LegoFloat>(previousKey);
 		GetRotationFrame(p_track.m_rotationFrameIndex + keyIndex - 1, &from);
 		GetRotationFrame(p_track.m_rotationFrameIndex + keyIndex, &to);

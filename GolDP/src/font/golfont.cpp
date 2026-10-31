@@ -131,21 +131,19 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	LegoU32 i = 0;
-	GolD3DTexture* texture = m_textures;
-	GolSoftwareMaterial* material = m_materials;
-
-	for (; i < m_surfaceCount - 1; i++) {
+	LegoU32 i;
+	for (i = 0; i < m_surfaceCount - 1; i++) {
 		if (m_flags & c_flagColorKeyed) {
-			texture->SetTextureFlags(GolTexture::c_textureFlagColorKeyed);
-			texture->SetColorKey(m_colorKey);
+			m_textures[i].SetTextureFlags(GolTexture::c_textureFlagColorKeyed);
+			m_textures[i].SetColorKey(m_colorKey);
 		}
 
-		texture->AllocateDeviceOnly(*p_renderer, *p_textureFormat, m_maxTextureWidth, m_maxTextureHeight);
+		m_textures[i].AllocateDeviceOnly(*p_renderer, *p_textureFormat, m_maxTextureWidth, m_maxTextureHeight);
 
+		GolSoftwareMaterial* material = &m_materials[i];
 		GolMaterialParams params;
 		params.m_flags = c_fontMaterialFlags;
-		params.m_texture = texture;
+		params.m_texture = &m_textures[i];
 		params.m_ambient.m_red = 0xff;
 		params.m_ambient.m_grn = 0xff;
 		params.m_ambient.m_blu = 0xff;
@@ -161,26 +159,16 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 
 		material->SetParams(p_renderer, params);
 		material->Create(*p_renderer);
-
-		texture++;
-		material++;
 	}
-
-	i = m_surfaceCount - 1;
-	texture = &m_textures[i];
-	material = &m_materials[i];
 
 	if (m_flags & c_flagColorKeyed) {
-		texture->SetTextureFlags(GolTexture::c_textureFlagColorKeyed);
-		texture->SetColorKey(m_colorKey);
+		m_textures[m_surfaceCount - 1].SetTextureFlags(GolTexture::c_textureFlagColorKeyed);
+		m_textures[m_surfaceCount - 1].SetColorKey(m_colorKey);
 	}
 
-	texture->AllocateDeviceOnly(*p_renderer, *p_textureFormat, m_textureWidth, m_textureHeight);
-	texture->SetName(m_name);
-
+	m_textures[m_surfaceCount - 1].AllocateDeviceOnly(*p_renderer, *p_textureFormat, m_textureWidth, m_textureHeight);
 	GolMaterialParams params;
 	params.m_flags = c_fontMaterialFlags;
-	params.m_texture = texture;
 	params.m_ambient.m_red = 0xff;
 	params.m_ambient.m_grn = 0xff;
 	params.m_ambient.m_blu = 0xff;
@@ -193,6 +181,11 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 	params.m_alphaRef = 0;
 	params.m_srcBlend = 1;
 	params.m_destBlend = 0;
+
+	m_textures[m_surfaceCount - 1].SetName(m_name);
+
+	GolSoftwareMaterial* material = &m_materials[m_surfaceCount - 1];
+	params.m_texture = &m_textures[m_surfaceCount - 1];
 
 	material->SetParams(p_renderer, params);
 	material->Create(*p_renderer);

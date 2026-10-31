@@ -212,9 +212,9 @@ LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 
 	if (m_layoutDirty) {
 		Rect* targetRect = m_hoverIcon->GetGlobalRect();
-		LegoS32 targetLeft = targetRect->m_left;
-		LegoS32 targetTop = targetRect->m_top;
 		LegoS32 targetRight = targetRect->m_right;
+		LegoS32 targetTop = targetRect->m_top;
+		LegoS32 targetLeft = targetRect->m_left;
 		LegoS32 targetBottom = targetRect->m_bottom;
 		m_tooltipFont = GetHelpFont(m_tooltipStringId);
 		m_tooltipString = GetHelpString(m_tooltipStringId);
@@ -327,10 +327,10 @@ LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 	}
 
 	ColorRGBA color;
+	color.m_alp = 0xff;
 	color.m_red = 0x20;
 	color.m_grn = 0x1c;
 	color.m_blu = 0xe0;
-	color.m_alp = 0xff;
 
 	m_tooltipRect.m_top -= 4;
 	m_tooltipRect.m_left -= 4;
@@ -338,8 +338,8 @@ LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 	m_tooltipRect.m_bottom += 4;
 	m_renderer->DrawRectangle(m_tooltipRect, 0.0f, color, color, color, color, 0);
 
-	m_tooltipRect.m_left += 4;
 	m_tooltipRect.m_top += 4;
+	m_tooltipRect.m_left += 4;
 	m_tooltipRect.m_right -= 4;
 	m_tooltipRect.m_bottom -= 4;
 	color.m_red = 0;

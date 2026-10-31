@@ -609,7 +609,7 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 		LegoS32 availableDecompressedSize = 0;
 		LegoU8* availableDecompressedPtr = NULL;
 		LegoU8* decompBuffer = m_decompressBuffer;
-		LegoU8* writePtr = p_buffer + m_height * m_rowByteStride;
+		LegoU8* writePtr = p_buffer + m_rowByteStride * m_height;
 		if (decompBuffer == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -621,16 +621,21 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 			rowByteCount = width * 4 + 4;
 		}
 		else {
-			rowByteCount = width * bitsPerPixel;
+			rowByteCount = width;
+			rowByteCount *= bitsPerPixel;
 		}
 		rowByteCount >>= 3;
 
 		for (y = 0; y < m_height; y++) {
 			writePtr -= m_rowByteStride;
 			if (availableDecompressedSize < rowByteCount) {
-				LegoS32 rowAmount = availableDecompressedSize;
+				LegoS32 rowAmount;
 				if (availableDecompressedSize != 0) {
+					rowAmount = availableDecompressedSize;
 					::memcpy(writePtr, availableDecompressedPtr, availableDecompressedSize);
+				}
+				else {
+					rowAmount = 0;
 				}
 
 				while (rowAmount < rowByteCount) {
@@ -657,7 +662,7 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 					}
 					fileOffset += compressedSize;
 					LegoS32 copySize = rowByteCount - rowAmount;
-					if (availableDecompressedSize < copySize) {
+					if (copySize > availableDecompressedSize) {
 						copySize = availableDecompressedSize;
 					}
 					::memcpy(writePtr + rowAmount, decompBuffer, copySize);
@@ -674,6 +679,7 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 		}
 	}
 	else {
+		LegoU8* destination = p_buffer;
 		LegoU8* rowBuffer1 = new LegoU8[m_rowByteStride + 2];
 		if (rowBuffer1 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -694,9 +700,9 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 			}
 
 			// The original copies from rowBuffer2; for reachable uncompressed BMPs it aliases rowBuffer1.
-			::memcpy(p_buffer, rowBuffer2, m_rowByteStride);
+			::memcpy(destination, rowBuffer2, m_rowByteStride);
 			fileOffset += amount;
-			p_buffer += m_rowByteStride;
+			destination += m_rowByteStride;
 		}
 
 		if (m_compression) {
@@ -761,7 +767,6 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 	}
 
 	LegoU32 fileOffset = m_bitmapOffset;
-	availableDecompressedPtr = NULL;
 	if ((m_compression != 0x80 && !p_flags) || (m_compression == 0x80 && p_flags)) {
 		rowStep = -1;
 		tileRow = p_image->GetTileRowCount() - 1;
@@ -783,6 +788,7 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 	LegoU8* rowBuffer;
 	if (m_compression == 0x80) {
 		readBuffer = m_decompressBuffer;
+		availableDecompressedPtr = NULL;
 		if (readBuffer == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -815,9 +821,9 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 						GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 					}
 					fileOffset += 4;
-					LegoS32 decompressedSize = BUF_U16LE(readBuffer, 0);
+					availableDecompressedSize = BUF_U16LE(readBuffer, 0);
 					LegoS32 compressedSize = BUF_U16LE(readBuffer, 2);
-					if (compressedSize < decompressedSize) {
+					if (compressedSize < availableDecompressedSize) {
 						LegoU8* compressedBuffer = readBuffer + sizeof(m_decompressBuffer) - compressedSize;
 						result = m_file.BufferedRead(fileOffset, compressedBuffer, compressedSize, &amount);
 						if (result != GolStream::e_ioSuccess) {
@@ -831,7 +837,7 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 						GolDecompress(compressedBuffer, readBuffer);
 					}
 					else {
-						result = m_file.BufferedRead(fileOffset, readBuffer, decompressedSize, &amount);
+						result = m_file.BufferedRead(fileOffset, readBuffer, availableDecompressedSize, &amount);
 						if (result != GolStream::e_ioSuccess) {
 							for (column = 0; column < p_image->GetTileColumnCount(); column++) {
 								for (row = 0; row < p_image->GetTileRowCount(); row++) {
@@ -843,11 +849,11 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 					}
 					fileOffset += compressedSize;
 					LegoS32 copySize = rowByteCount - rowAmount;
-					if (copySize > decompressedSize) {
-						copySize = decompressedSize;
+					if (copySize > availableDecompressedSize) {
+						copySize = availableDecompressedSize;
 					}
 					::memcpy(rowBuffer + rowAmount, readBuffer, copySize);
-					availableDecompressedSize = decompressedSize - copySize;
+					availableDecompressedSize -= copySize;
 					availableDecompressedPtr = readBuffer + copySize;
 					rowAmount += copySize;
 				}

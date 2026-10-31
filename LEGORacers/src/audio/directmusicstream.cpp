@@ -125,68 +125,66 @@ void DirectMusicStream::ReleaseResources()
 LegoBool32 DirectMusicStream::Initialize()
 {
 	LPDIRECTSOUND directSound = GetDirectSound();
-	if (!directSound) {
-		return FALSE;
-	}
-
-	WaitForSingleObject(g_directMusicMutex, INFINITE);
-
-	if (!g_directMusicTimerId) {
-		g_directMusicTimerId = timeSetEvent(
-			c_streamTimerDelay,
-			c_streamTimerDelay,
-			DirectMusicTimerCallback,
-			(DirectMusicTimerCallbackData) this,
-			TIME_PERIODIC
-		);
+	if (directSound) {
+		WaitForSingleObject(g_directMusicMutex, INFINITE);
 
 		if (!g_directMusicTimerId) {
-			ReleaseMutex(g_directMusicMutex);
-			return FALSE;
-		}
-	}
+			g_directMusicTimerId = timeSetEvent(
+				c_streamTimerDelay,
+				c_streamTimerDelay,
+				DirectMusicTimerCallback,
+				(DirectMusicTimerCallbackData) this,
+				TIME_PERIODIC
+			);
 
-	if (m_directSoundBuffer) {
+			if (!g_directMusicTimerId) {
+				ReleaseMutex(g_directMusicMutex);
+				return FALSE;
+			}
+		}
+
+		if (m_directSoundBuffer) {
+			DirectMusicStream::ReleaseResources();
+		}
+
+		WAVEFORMATEX waveFormat;
+		waveFormat.nChannels = (WORD) m_channelCount;
+		waveFormat.nSamplesPerSec = m_sampleRate;
+		waveFormat.wBitsPerSample = c_defaultBitsPerSample;
+		waveFormat.wFormatTag = WAVE_FORMAT_PCM;
+		waveFormat.cbSize = 0;
+		waveFormat.nBlockAlign = c_defaultBytesPerSample * waveFormat.nChannels;
+		waveFormat.nAvgBytesPerSec = m_sampleRate * waveFormat.nBlockAlign;
+
+		m_serviceBlocks = c_streamTimerDelay * waveFormat.nAvgBytesPerSec / c_serviceByteScale + c_serviceBlockPadding;
+		m_bufferSize = (waveFormat.nAvgBytesPerSec * m_bufferSeconds + c_streamBufferAlignment - 1) &
+					   ~(c_streamBufferAlignment - 1);
+
+		DSBUFFERDESC bufferDesc;
+		ZeroMemory(&bufferDesc, sizeof(bufferDesc));
+		bufferDesc.dwSize = sizeof(bufferDesc);
+		bufferDesc.dwFlags = c_directSoundBufferFlags;
+		bufferDesc.lpwfxFormat = &waveFormat;
+		bufferDesc.dwBufferBytes = m_bufferSize;
+
+		m_mutex = CreateMutex(NULL, TRUE, NULL);
+		if (m_mutex) {
+			if (directSound->CreateSoundBuffer(&bufferDesc, &m_directSoundBuffer, NULL)) {
+				m_directSoundBuffer = NULL;
+			}
+
+			ReleaseMutex(m_mutex);
+		}
+
+		ReleaseMutex(g_directMusicMutex);
+
+		if (m_directSoundBuffer) {
+			SetVolume(m_volume);
+			return TRUE;
+		}
+
 		DirectMusicStream::ReleaseResources();
 	}
-
-	WAVEFORMATEX waveFormat;
-	waveFormat.nChannels = (WORD) m_channelCount;
-	waveFormat.nSamplesPerSec = m_sampleRate;
-	waveFormat.wBitsPerSample = c_defaultBitsPerSample;
-	waveFormat.wFormatTag = WAVE_FORMAT_PCM;
-	waveFormat.cbSize = 0;
-	waveFormat.nBlockAlign = c_defaultBytesPerSample * waveFormat.nChannels;
-	waveFormat.nAvgBytesPerSec = m_sampleRate * waveFormat.nBlockAlign;
-
-	m_bufferSize =
-		(waveFormat.nAvgBytesPerSec * m_bufferSeconds + c_streamBufferAlignment - 1) & ~(c_streamBufferAlignment - 1);
-	m_serviceBlocks = c_streamTimerDelay * waveFormat.nAvgBytesPerSec / c_serviceByteScale + c_serviceBlockPadding;
-
-	DSBUFFERDESC bufferDesc;
-	bufferDesc.dwSize = sizeof(bufferDesc);
-	bufferDesc.dwFlags = c_directSoundBufferFlags;
-	bufferDesc.dwBufferBytes = m_bufferSize;
-	bufferDesc.dwReserved = 0;
-	bufferDesc.lpwfxFormat = &waveFormat;
-
-	m_mutex = CreateMutex(NULL, TRUE, NULL);
-	if (m_mutex) {
-		if (directSound->CreateSoundBuffer(&bufferDesc, &m_directSoundBuffer, NULL)) {
-			m_directSoundBuffer = NULL;
-		}
-
-		ReleaseMutex(m_mutex);
-	}
-
-	ReleaseMutex(g_directMusicMutex);
-
-	if (m_directSoundBuffer) {
-		SetVolume(m_volume);
-		return TRUE;
-	}
-
-	DirectMusicStream::ReleaseResources();
 	return FALSE;
 }
 

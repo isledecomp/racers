@@ -49,6 +49,19 @@ struct GolList {
 	GolListLink* LastLink() { return m_first; }
 	GolListLink* FirstLink() { return m_sentinel.m_next; }
 	GolListLink* FirstValidLink();
+	GolListLink* PopLastLink()
+	{
+		if (m_first == (GolListLink*) &m_sentinel) {
+			return NULL;
+		}
+
+		GolListLink* link = m_first;
+		m_first = link->m_prev;
+		link->m_prev->m_next = (GolListLink*) &m_first;
+
+		return link;
+	}
+
 	LegoBool32 IsEmpty() { return m_sentinel.m_next == (GolListLink*) &m_first; }
 	LegoBool32 IsValidLink(GolListLink* p_link) { return p_link->m_next && p_link; }
 	LegoBool32 IsValidLastLink(GolListLink* p_link) { return p_link->m_prev && p_link; }

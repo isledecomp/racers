@@ -81,6 +81,49 @@ private:
 	void ReleaseStoppedSounds();
 	LegoS32 GetAvailableSoundCount();
 	LegoBool32 MakeSoundAvailable(LegoS32 p_priority);
+	void InsertByPriorityFromTail(SoundBufferList& p_list, SoundBuffer& p_sound)
+	{
+		GolListLink* link = p_list.LastLink();
+		link = p_list.IsValidLastLink(link) ? link : NULL;
+		while (link) {
+			if (p_sound.m_priority >= p_list.GetItem(*link).m_priority) {
+				break;
+			}
+			link = link->m_prev;
+			link = link->m_prev ? link : NULL;
+		}
+		if (link) {
+			GolListLink& soundLink = p_sound.GetLink();
+			soundLink.m_prev = link;
+			soundLink.m_next = link->m_next;
+			link->m_next->m_prev = &soundLink;
+			link->m_next = &soundLink;
+		}
+		else {
+			p_list.Prepend(p_sound);
+		}
+	}
+
+	void InsertByPriorityPreservingSentinel(SoundBufferList& p_list, SoundBuffer& p_sound)
+	{
+		SoundBufferList* list = &p_list;
+		GolListLink* link = list->FirstLink();
+		while (list->IsValidLink(link)) {
+			if (p_sound.m_priority <= list->GetItem(*link).m_priority) {
+				GolListLink& soundLink = p_sound.GetLink();
+				soundLink.m_next = link;
+				soundLink.m_prev = link->m_prev;
+				link->m_prev->m_next = &soundLink;
+				link->m_prev = &soundLink;
+				break;
+			}
+			link = link->m_next;
+		}
+		if (!list->IsValidLink(link)) {
+			p_sound.GetLink().InsertBefore(link);
+		}
+	}
+
 	void InsertByPriority(SoundBufferList& p_list, SoundBuffer& p_sound)
 	{
 		GolListLink* link = p_list.FirstValidLink();

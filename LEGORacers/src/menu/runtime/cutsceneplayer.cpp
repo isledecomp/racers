@@ -1641,12 +1641,30 @@ void CutscenePlayer::Draw(GolD3DRenderDevice* p_renderer)
 	}
 }
 
+inline void CrossVectors(const GolVec3& p_left, const GolVec3& p_right, GolVec3* p_dest)
+{
+	LegoFloat x = p_left.m_y * p_right.m_z;
+	LegoFloat xSub = p_left.m_z * p_right.m_y;
+	x -= xSub;
+	p_dest->m_x = x;
+
+	LegoFloat y = p_left.m_z * p_right.m_x;
+	LegoFloat ySub = p_left.m_x * p_right.m_z;
+	y -= ySub;
+	p_dest->m_y = y;
+
+	LegoFloat z = p_left.m_x * p_right.m_y;
+	LegoFloat zSub = p_left.m_y * p_right.m_x;
+	z -= zSub;
+	p_dest->m_z = z;
+}
+
 // FUNCTION: LEGORACERS 0x004a2f80
 void CutscenePlayer::UpdateListener(GolCamera* p_lens)
 {
-	GolVec3 position;
-	GolVec3 right;
-	GolVec3 forward;
+	SoundVector position;
+	SoundVector right;
+	SoundVector forward;
 
 	p_lens->GetTransform()->GetPosition(&position);
 	p_lens->GetTransform()->GetRight(&right);
@@ -1654,34 +1672,19 @@ void CutscenePlayer::UpdateListener(GolCamera* p_lens)
 
 	SoundNode* node = &m_listener;
 
-	node->m_position.m_x = position.m_x;
-	node->m_position.m_y = position.m_y;
-	node->m_position.m_z = position.m_z;
+	node->m_position = position;
 	node->m_unk0x44 = 1;
 
 	forward.m_x = -forward.m_x;
 	forward.m_y = -forward.m_y;
 	forward.m_z = -forward.m_z;
 
-	node->m_right.m_x = right.m_x;
-	node->m_right.m_y = right.m_y;
-	node->m_right.m_z = right.m_z;
-	node->m_forward.m_x = forward.m_x;
-	node->m_forward.m_y = forward.m_y;
-	node->m_forward.m_z = forward.m_z;
+	node->m_right = right;
+	node->m_forward = forward;
 
-	node->m_orientation.m_x = (node->m_forward.m_y * node->m_right.m_z) - (node->m_forward.m_z * node->m_right.m_y);
-	node->m_orientation.m_y = (node->m_forward.m_z * node->m_right.m_x) - (node->m_right.m_z * node->m_forward.m_x);
-	node->m_orientation.m_z = (node->m_right.m_y * node->m_forward.m_x) - (node->m_forward.m_y * node->m_right.m_x);
+	CrossVectors(node->m_forward, node->m_right, &node->m_orientation);
 
-	GolVec3 orientation;
-	orientation.m_x = node->m_orientation.m_x;
-	orientation.m_y = node->m_orientation.m_y;
-	orientation.m_z = node->m_orientation.m_z;
-	GolMath::NormalizeVector3(orientation, &orientation);
-	node->m_orientation.m_x = orientation.m_x;
-	node->m_orientation.m_y = orientation.m_y;
-	node->m_orientation.m_z = orientation.m_z;
+	GolMath::NormalizeVector3(node->m_orientation, &node->m_orientation);
 
 	node->m_unk0x44 = 1;
 }

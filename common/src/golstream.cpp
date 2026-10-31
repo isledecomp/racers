@@ -302,28 +302,23 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 	}
 
 	LegoU32 offset = p_offset;
-	void* buf = p_buf;
+	LegoS32 chunkLen;
 
 	if (p_size > c_maxReadChunkSize) {
-		LegoS32 chunkLen;
-
-		while (TRUE) {
-			LegoS32 result = BufferedRead(offset, buf, c_maxReadChunkSize, &chunkLen);
+		do {
+			LegoS32 result = BufferedRead(offset, p_buf, c_maxReadChunkSize, &chunkLen);
 			if (result) {
 				return result;
 			}
 
 			p_size -= chunkLen;
-			buf = (LegoU8*) buf + chunkLen;
-			offset += chunkLen;
 			*lenRead += chunkLen;
-			p_buf = buf;
-
-			if (p_size <= c_maxReadChunkSize) {
-				break;
-			}
-		}
+			p_buf = (LegoU8*) p_buf + chunkLen;
+			offset += chunkLen;
+		} while (p_size > c_maxReadChunkSize);
 	}
+
+	void* buf = p_buf;
 
 	LegoS32 flags = m_flags;
 
@@ -336,11 +331,11 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 			p_size = m_size - offset;
 		}
 
-		LegoS32 savedLen = *lenRead;
+		chunkLen = *lenRead;
 		GolFsLock();
 		LegoS32 result = g_fileSources[m_handle].ForwardRead(offset + m_position, buf, p_size, lenRead);
 		GolFsUnlock();
-		*lenRead += savedLen;
+		*lenRead += chunkLen;
 		return result;
 	}
 
@@ -381,13 +376,11 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 		if (!result) {
 			while (TRUE) {
 				LegoU32 bytesRead = p_offset;
-				LegoU32 bufPtr = (LegoU32) m_buffer;
 				m_flags |= c_flagCached;
 				LegoS32 pos = m_position;
 				m_bufferStart = pos;
 				LegoU32 bufEnd = pos + bytesRead;
-				LegoU32 srcOff = bufPtr - pos;
-				LegoU8* src = (LegoU8*) (offset + srcOff);
+				LegoU8* src = m_buffer + (offset - pos);
 				m_bufferEnd = bufEnd;
 
 				if (offset + p_size <= bufEnd) {

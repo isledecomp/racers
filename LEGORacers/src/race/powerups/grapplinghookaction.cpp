@@ -278,7 +278,9 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			}
 
 			GolMath::NormalizeVector3(direction, &direction);
-			direction.m_x *= g_hookPullForce;
+			LegoFloat scaledX = g_hookPullForce;
+			scaledX *= direction.m_x;
+			direction.m_x = scaledX;
 			direction.m_y *= g_hookPullForce;
 			direction.m_z *= g_hookPullForce;
 			m_ownerRacer->m_physics.StartExternalForce1(&direction);
@@ -316,8 +318,9 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 
 		velocity = m_ownerRacer->m_physics.m_velocity;
 		position.m_z = raisedPositionZ;
+		GolWorldEntity* car = m_ownerRacer->m_physics.m_carEntity;
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticleRef->m_particle->GetBasis());
+			car->CopyOrientation(m_smokeParticleRef->m_particle->GetBasis());
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_smokeParticleRef->m_particle->SetPosition(&position);

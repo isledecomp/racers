@@ -210,11 +210,11 @@ void MenuModelCarousel::SetupCamera(CreateParams* p_createParams)
 	m_camera->LookAt(&position, &target, &up);
 	UpdateViewport();
 
-	const Rect* viewport = m_camera->GetViewport();
-	LegoS32 left = viewport->m_left;
-	LegoS32 top = viewport->m_top;
-	LegoS32 right = viewport->m_right;
-	LegoS32 bottom = viewport->m_bottom;
+	Rect viewport = *m_camera->GetViewport();
+	LegoS32 left = viewport.m_left;
+	LegoS32 top = viewport.m_top;
+	LegoS32 right = viewport.m_right;
+	LegoS32 bottom = viewport.m_bottom;
 	LegoS32 width = right - left;
 	LegoS32 height = bottom - top;
 

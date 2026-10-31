@@ -153,17 +153,10 @@ MenuWidget* MenuTextField::DrawSelf(Rect* p_rect, Rect* p_arg)
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
 
-	Rect clip;
-	clip.m_left = p_arg->m_left;
-	clip.m_top = p_arg->m_top;
-	clip.m_right = p_arg->m_right;
-	clip.m_bottom = p_arg->m_bottom - 4;
-
-	Rect rect;
-	rect.m_left = p_rect->m_left;
-	rect.m_top = p_rect->m_top;
-	rect.m_right = p_rect->m_right;
-	rect.m_bottom = p_rect->m_bottom - 4;
+	Rect clip = *p_arg;
+	Rect rect = *p_rect;
+	clip.m_bottom -= 4;
+	rect.m_bottom -= 4;
 
 	MeasureText(m_font, &m_text, &rect, &m_textRect, 0);
 

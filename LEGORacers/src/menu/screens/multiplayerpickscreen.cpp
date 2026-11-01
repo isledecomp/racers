@@ -213,7 +213,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 					UpdateNameLabel(i);
 
 					for (LegoS32 j = 0; j < m_modelSlotCount; j++) {
-						if (j != i) {
+						if (i != j) {
 							SwapSlotModel(j);
 						}
 					}
@@ -229,7 +229,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 					UpdateNameLabel(i);
 
 					for (LegoS32 j = 0; j < m_modelSlotCount; j++) {
-						if (j != i) {
+						if (i != j) {
 							SwapSlotModel(j);
 						}
 					}

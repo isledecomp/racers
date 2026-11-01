@@ -277,7 +277,13 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 
 		CutsceneParticleRef* particleRef = m_smokeParticle;
 		GolVec3 velocity = m_racer->m_physics.m_velocity;
-		velocity *= g_turboSmokeVelocityScale;
+		LegoFloat velocityY = velocity.m_y;
+		LegoFloat velocityZ = velocity.m_z;
+		velocity.m_x = g_turboSmokeVelocityScale * velocity.m_x;
+		velocityY *= g_turboSmokeVelocityScale;
+		velocity.m_y = velocityY;
+		velocityZ *= g_turboSmokeVelocityScale;
+		velocity.m_z = velocityZ;
 
 		if (particleRef->m_particle != NULL) {
 			particleRef->m_particle->SetVelocity(&velocity);

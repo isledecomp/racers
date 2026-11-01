@@ -568,13 +568,13 @@ LegoBool32 DirectSoundManager::QueueSound(SoundBuffer& p_sound)
 		if (MakeSoundAvailable(p_sound.m_priority)) {
 			p_sound.GetLink().Remove();
 			p_sound.SetPlaybackState(SoundBuffer::c_playbackStateActive);
-			InsertByPriorityPreservingSentinel(m_activeSounds, p_sound);
+			InsertByPriorityBeforeEnd(m_activeSounds, p_sound);
 			m_availableSoundCount--;
 		}
 		else {
 			p_sound.GetLink().Remove();
 			p_sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-			InsertByPriorityPreservingSentinel(m_queuedSounds, p_sound);
+			InsertByPriorityBeforeEnd(m_queuedSounds, p_sound);
 		}
 
 		return p_sound.m_playbackState == SoundBuffer::c_playbackStateActive;
@@ -583,7 +583,7 @@ LegoBool32 DirectSoundManager::QueueSound(SoundBuffer& p_sound)
 	if (p_sound.m_playbackState == SoundBuffer::c_playbackStateIdle) {
 		p_sound.GetLink().Remove();
 		p_sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-		InsertByPriorityPreservingSentinel(m_queuedSpatialSounds, p_sound);
+		InsertByPriorityOrAppend(m_queuedSpatialSounds, p_sound);
 	}
 
 	return p_sound.m_playbackState == SoundBuffer::c_playbackStateActive;

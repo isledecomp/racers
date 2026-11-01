@@ -271,9 +271,9 @@ void AwardCinematicScreen::CreateWidgets()
 		m_context->m_championDefinitions.ClearDefinitions();
 
 		if (swapEntity || pLegEntity) {
-			MaterialTable* carBodyMaterials = m_driverEntity.GetPrimaryMaterialTable();
-			if (!carBodyMaterials) {
-				carBodyMaterials = m_driverEntity.GetModel(0)->GetMaterialTable();
+			MaterialTable* driverMaterials = m_driverEntity.GetPrimaryMaterialTable();
+			if (!driverMaterials) {
+				driverMaterials = m_driverEntity.GetModel(0)->GetMaterialTable();
 			}
 
 			if (swapEntity) {
@@ -281,7 +281,7 @@ void AwardCinematicScreen::CreateWidgets()
 				if (!swapMaterials) {
 					swapMaterials = swapEntity->GetModel(0)->GetMaterialTable();
 				}
-				swapMaterials->SetEntry(0, carBodyMaterials->GetEntry(1));
+				swapMaterials->SetEntry(0, driverMaterials->GetEntry(1));
 			}
 
 			if (pLegEntity) {
@@ -289,7 +289,7 @@ void AwardCinematicScreen::CreateWidgets()
 				if (!pLegMaterials) {
 					pLegMaterials = pLegEntity->GetModel(0)->GetMaterialTable();
 				}
-				pLegMaterials->SetEntry(0, carBodyMaterials->GetEntry(1));
+				pLegMaterials->SetEntry(0, driverMaterials->GetEntry(1));
 			}
 		}
 

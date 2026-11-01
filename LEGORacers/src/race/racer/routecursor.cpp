@@ -250,7 +250,6 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 					m_startPosition = wrapEntry->m_loopPosition;
 					m_endPosition = wrapEntry->m_loopPosition;
 					m_startRotation = wrapEntry->m_loopRotation;
-					m_endRotation = wrapEntry->m_loopRotation;
 					m_segmentStartTime = wrapEntry->m_loopTime;
 					m_startIndex = wrapEntry->m_loopPointIndex;
 					targetTime += m_segmentStartTime - segmentEndTime;
@@ -265,9 +264,9 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 
 				point->GetPosition(&offset);
 				point->GetRotation(&m_endRotation);
-				endPosition->m_x += offset.m_x;
-				endPosition->m_y += offset.m_y;
-				endPosition->m_z += offset.m_z;
+				endPosition->m_x = offset.m_x + endPosition->m_x;
+				endPosition->m_y = offset.m_y + endPosition->m_y;
+				endPosition->m_z = offset.m_z + endPosition->m_z;
 				segmentEndTime += point->GetLength();
 			} while (targetTime >= segmentEndTime);
 		}

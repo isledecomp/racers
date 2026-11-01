@@ -2770,16 +2770,21 @@ void RacerCarBody::ComputeWheelPositions()
 // FUNCTION: LEGORACERS 0x00448d90
 void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_sweepHeight, LegoFloat p_sweepDistance)
 {
-	const GolMatrix3& resourceOrientation = p_world->GetOrientation();
-	GolVec3 zHeight;
-	zHeight.m_x = resourceOrientation.m_m[0][2] * p_sweepDistance;
-	zHeight.m_y = resourceOrientation.m_m[1][2] * p_sweepDistance;
-	zHeight.m_z = resourceOrientation.m_m[2][2] * p_sweepDistance;
+	GolVec3 row0;
+	GolVec3 row1;
+	p_world->GetOrientationRow0(&row0);
+	p_world->GetOrientationRow1(&row1);
 
+	LegoFloat resourceUpZ = p_world->GetOrientation().m_m[2][2];
 	GolVec3 zDistance;
-	zDistance.m_x = resourceOrientation.m_m[0][2] * p_sweepHeight;
-	zDistance.m_y = resourceOrientation.m_m[1][2] * p_sweepHeight;
-	zDistance.m_z = resourceOrientation.m_m[2][2] * p_sweepHeight;
+	zDistance.m_x = row0.m_z * p_sweepDistance;
+	zDistance.m_y = row1.m_z * p_sweepDistance;
+	zDistance.m_z = resourceUpZ * p_sweepDistance;
+
+	GolVec3 zHeight;
+	zHeight.m_x = row0.m_z * p_sweepHeight;
+	zHeight.m_y = row1.m_z * p_sweepHeight;
+	zHeight.m_z = resourceUpZ * p_sweepHeight;
 
 	WheelProbe* entries = m_wheelProbes;
 
@@ -2793,12 +2798,10 @@ void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_
 	entries[1].m_rayEnd.m_y = center.m_y - zDistance.m_y;
 	entries[1].m_rayEnd.m_z = center.m_z - zDistance.m_z;
 
-	GolVec3 row0;
 	row0.m_x = m_physicsEntity.GetOrientation().m_m[0][0];
 	row0.m_y = m_physicsEntity.GetOrientation().m_m[0][1];
 	row0.m_z = m_physicsEntity.GetOrientation().m_m[0][2];
 
-	GolVec3 row1;
 	row1.m_x = m_physicsEntity.GetOrientation().m_m[1][0];
 	row1.m_y = m_physicsEntity.GetOrientation().m_m[1][1];
 	row1.m_z = m_physicsEntity.GetOrientation().m_m[1][2];

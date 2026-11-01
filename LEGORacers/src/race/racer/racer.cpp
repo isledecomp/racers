@@ -2337,7 +2337,11 @@ void Racer::UpdateFacing(LegoU32 p_elapsedMs)
 			if (checkpoint->m_next.m_items[i] != 0xff) {
 				m_checkpointGraph->GetCheckpoint(checkpoint->m_next.m_items[i]);
 				checkpoint = m_checkpoint;
-				LegoFloat dot = GOLVECTOR3_DOT(direction, checkpoint->m_planeNormal);
+				GolVec2 normal;
+				normal.m_x = checkpoint->m_planeNormal.m_x;
+				normal.m_y = checkpoint->m_planeNormal.m_y;
+				LegoFloat dot = direction.m_x * normal.m_x + direction.m_y * normal.m_y +
+								direction.m_z * checkpoint->m_planeNormal.m_z;
 				if (dot <= g_unk0x004b02e0) {
 					isBlocked = TRUE;
 				}

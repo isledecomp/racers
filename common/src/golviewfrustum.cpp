@@ -28,11 +28,11 @@ LegoS32 GolViewFrustum::ClassifySphere(const GolVec3& p_center, LegoFloat p_radi
 }
 
 // FUNCTION: GOLDP 0x1002bc90
-LegoS32 __fastcall GolViewFrustum::ClassifyBox(const GolViewFrustum* p_frustum, undefined4, const LegoFloat* p_bounds)
+LegoS32 GolViewFrustum::ClassifyBox(const LegoFloat* p_bounds) const
 {
 	LegoS32 outsideMask = 0;
-	const GolViewFrustum::Plane* plane = p_frustum->m_planes;
-	const GolViewFrustum::Plane* end = p_frustum->m_planes + sizeOfArray(p_frustum->m_planes);
+	const GolViewFrustum::Plane* plane = m_planes;
+	const GolViewFrustum::Plane* end = m_planes + sizeOfArray(m_planes);
 
 	for (; plane < end; plane++) {
 		LegoS32 outsideCount = 0;

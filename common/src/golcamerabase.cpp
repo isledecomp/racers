@@ -9,13 +9,6 @@
 
 #include <math.h>
 
-inline void SubtractVectors(const GolVec3& p_left, const GolVec3& p_right, GolVec3* p_dest)
-{
-	p_dest->m_x = p_left.m_x - p_right.m_x;
-	p_dest->m_y = p_left.m_y - p_right.m_y;
-	p_dest->m_z = p_left.m_z - p_right.m_z;
-}
-
 DECOMP_SIZE_ASSERT(GolCameraBase, 0x120)
 
 // FUNCTION: LEGORACERS 0x004045e0
@@ -158,60 +151,56 @@ void GolCameraBase::ComputeFrustum(GolViewFrustum* p_view)
 	GolVec3 edge1;
 	GolVec3 normal;
 
-	SubtractVectors(p_view->m_corners[0], p_view->m_corners[4], &edge0);
-	SubtractVectors(p_view->m_corners[6], p_view->m_corners[4], &edge1);
+	edge0.m_x = p_view->m_corners[0].m_x - p_view->m_corners[4].m_x;
+	edge0.m_y = p_view->m_corners[0].m_y - p_view->m_corners[4].m_y;
+	edge0.m_z = p_view->m_corners[0].m_z - p_view->m_corners[4].m_z;
+	edge1.m_x = p_view->m_corners[6].m_x - p_view->m_corners[4].m_x;
+	edge1.m_y = p_view->m_corners[6].m_y - p_view->m_corners[4].m_y;
+	edge1.m_z = p_view->m_corners[6].m_z - p_view->m_corners[4].m_z;
 	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
 	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
 	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[0].m_normal = normal;
-	p_view->m_planes[0].m_distance =
-		-(p_view->m_planes[0].m_normal.m_z * p_view->m_corners[4].m_z +
-		  p_view->m_planes[0].m_normal.m_y * p_view->m_corners[4].m_y +
-		  p_view->m_planes[0].m_normal.m_x * p_view->m_corners[4].m_x);
+	p_view->m_planes[0].Set(normal, p_view->m_corners[4]);
 
-	SubtractVectors(p_view->m_corners[1], p_view->m_corners[5], &edge0);
-	SubtractVectors(p_view->m_corners[7], p_view->m_corners[5], &edge1);
+	edge0.m_x = p_view->m_corners[1].m_x - p_view->m_corners[5].m_x;
+	edge0.m_y = p_view->m_corners[1].m_y - p_view->m_corners[5].m_y;
+	edge0.m_z = p_view->m_corners[1].m_z - p_view->m_corners[5].m_z;
+	edge1.m_x = p_view->m_corners[7].m_x - p_view->m_corners[5].m_x;
+	edge1.m_y = p_view->m_corners[7].m_y - p_view->m_corners[5].m_y;
+	edge1.m_z = p_view->m_corners[7].m_z - p_view->m_corners[5].m_z;
 	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
 	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
 	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[1].m_normal = normal;
-	p_view->m_planes[1].m_distance =
-		-(p_view->m_planes[1].m_normal.m_z * p_view->m_corners[5].m_z +
-		  p_view->m_planes[1].m_normal.m_y * p_view->m_corners[5].m_y +
-		  p_view->m_planes[1].m_normal.m_x * p_view->m_corners[5].m_x);
+	p_view->m_planes[1].Set(normal, p_view->m_corners[5]);
 
-	SubtractVectors(p_view->m_corners[2], p_view->m_corners[6], &edge0);
-	SubtractVectors(p_view->m_corners[7], p_view->m_corners[6], &edge1);
+	edge0.m_x = p_view->m_corners[2].m_x - p_view->m_corners[6].m_x;
+	edge0.m_y = p_view->m_corners[2].m_y - p_view->m_corners[6].m_y;
+	edge0.m_z = p_view->m_corners[2].m_z - p_view->m_corners[6].m_z;
+	edge1.m_x = p_view->m_corners[7].m_x - p_view->m_corners[6].m_x;
+	edge1.m_y = p_view->m_corners[7].m_y - p_view->m_corners[6].m_y;
+	edge1.m_z = p_view->m_corners[7].m_z - p_view->m_corners[6].m_z;
 	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
 	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
 	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[2].m_normal = normal;
-	p_view->m_planes[2].m_distance =
-		-(p_view->m_planes[2].m_normal.m_z * p_view->m_corners[6].m_z +
-		  p_view->m_planes[2].m_normal.m_y * p_view->m_corners[6].m_y +
-		  p_view->m_planes[2].m_normal.m_x * p_view->m_corners[6].m_x);
+	p_view->m_planes[2].Set(normal, p_view->m_corners[6]);
 
-	SubtractVectors(p_view->m_corners[0], p_view->m_corners[4], &edge0);
-	SubtractVectors(p_view->m_corners[5], p_view->m_corners[4], &edge1);
+	edge0.m_x = p_view->m_corners[0].m_x - p_view->m_corners[4].m_x;
+	edge0.m_y = p_view->m_corners[0].m_y - p_view->m_corners[4].m_y;
+	edge0.m_z = p_view->m_corners[0].m_z - p_view->m_corners[4].m_z;
+	edge1.m_x = p_view->m_corners[5].m_x - p_view->m_corners[4].m_x;
+	edge1.m_y = p_view->m_corners[5].m_y - p_view->m_corners[4].m_y;
+	edge1.m_z = p_view->m_corners[5].m_z - p_view->m_corners[4].m_z;
 	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
 	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
 	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[3].m_normal = normal;
-	p_view->m_planes[3].m_distance =
-		-(p_view->m_planes[3].m_normal.m_z * p_view->m_corners[4].m_z +
-		  p_view->m_planes[3].m_normal.m_y * p_view->m_corners[4].m_y +
-		  p_view->m_planes[3].m_normal.m_x * p_view->m_corners[4].m_x);
+	p_view->m_planes[3].Set(normal, p_view->m_corners[4]);
 
 	m_transform->GetRight(&normal);
-	p_view->m_planes[5].m_normal = normal;
-	p_view->m_planes[5].m_distance =
-		-(p_view->m_planes[5].m_normal.m_z * p_view->m_corners[4].m_z +
-		  p_view->m_planes[5].m_normal.m_y * p_view->m_corners[4].m_y +
-		  p_view->m_planes[5].m_normal.m_x * p_view->m_corners[4].m_x);
+	p_view->m_planes[5].Set(normal, p_view->m_corners[4]);
 
 	p_view->m_planes[4].m_normal.m_x = -normal.m_x;
 	p_view->m_planes[4].m_normal.m_y = -normal.m_y;
@@ -262,60 +251,56 @@ void GolCameraBase::ComputeFrustumFromBounds(GolViewFrustum* p_view)
 	GolVec3 edge1;
 	GolVec3 normal;
 
-	SubtractVectors(p_view->m_corners[0], p_view->m_corners[4], &edge0);
-	SubtractVectors(p_view->m_corners[6], p_view->m_corners[4], &edge1);
+	edge0.m_x = p_view->m_corners[0].m_x - p_view->m_corners[4].m_x;
+	edge0.m_y = p_view->m_corners[0].m_y - p_view->m_corners[4].m_y;
+	edge0.m_z = p_view->m_corners[0].m_z - p_view->m_corners[4].m_z;
+	edge1.m_x = p_view->m_corners[6].m_x - p_view->m_corners[4].m_x;
+	edge1.m_y = p_view->m_corners[6].m_y - p_view->m_corners[4].m_y;
+	edge1.m_z = p_view->m_corners[6].m_z - p_view->m_corners[4].m_z;
 	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
 	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
 	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[0].m_normal = normal;
-	p_view->m_planes[0].m_distance =
-		-(p_view->m_planes[0].m_normal.m_z * p_view->m_corners[4].m_z +
-		  p_view->m_planes[0].m_normal.m_y * p_view->m_corners[4].m_y +
-		  p_view->m_planes[0].m_normal.m_x * p_view->m_corners[4].m_x);
+	p_view->m_planes[0].Set(normal, p_view->m_corners[4]);
 
-	SubtractVectors(p_view->m_corners[1], p_view->m_corners[5], &edge0);
-	SubtractVectors(p_view->m_corners[7], p_view->m_corners[5], &edge1);
+	edge0.m_x = p_view->m_corners[1].m_x - p_view->m_corners[5].m_x;
+	edge0.m_y = p_view->m_corners[1].m_y - p_view->m_corners[5].m_y;
+	edge0.m_z = p_view->m_corners[1].m_z - p_view->m_corners[5].m_z;
+	edge1.m_x = p_view->m_corners[7].m_x - p_view->m_corners[5].m_x;
+	edge1.m_y = p_view->m_corners[7].m_y - p_view->m_corners[5].m_y;
+	edge1.m_z = p_view->m_corners[7].m_z - p_view->m_corners[5].m_z;
 	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
 	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
 	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[1].m_normal = normal;
-	p_view->m_planes[1].m_distance =
-		-(p_view->m_planes[1].m_normal.m_z * p_view->m_corners[5].m_z +
-		  p_view->m_planes[1].m_normal.m_y * p_view->m_corners[5].m_y +
-		  p_view->m_planes[1].m_normal.m_x * p_view->m_corners[5].m_x);
+	p_view->m_planes[1].Set(normal, p_view->m_corners[5]);
 
-	SubtractVectors(p_view->m_corners[2], p_view->m_corners[6], &edge0);
-	SubtractVectors(p_view->m_corners[7], p_view->m_corners[6], &edge1);
+	edge0.m_x = p_view->m_corners[2].m_x - p_view->m_corners[6].m_x;
+	edge0.m_y = p_view->m_corners[2].m_y - p_view->m_corners[6].m_y;
+	edge0.m_z = p_view->m_corners[2].m_z - p_view->m_corners[6].m_z;
+	edge1.m_x = p_view->m_corners[7].m_x - p_view->m_corners[6].m_x;
+	edge1.m_y = p_view->m_corners[7].m_y - p_view->m_corners[6].m_y;
+	edge1.m_z = p_view->m_corners[7].m_z - p_view->m_corners[6].m_z;
 	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
 	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
 	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[2].m_normal = normal;
-	p_view->m_planes[2].m_distance =
-		-(p_view->m_planes[2].m_normal.m_z * p_view->m_corners[6].m_z +
-		  p_view->m_planes[2].m_normal.m_y * p_view->m_corners[6].m_y +
-		  p_view->m_planes[2].m_normal.m_x * p_view->m_corners[6].m_x);
+	p_view->m_planes[2].Set(normal, p_view->m_corners[6]);
 
-	SubtractVectors(p_view->m_corners[0], p_view->m_corners[4], &edge0);
-	SubtractVectors(p_view->m_corners[5], p_view->m_corners[4], &edge1);
+	edge0.m_x = p_view->m_corners[0].m_x - p_view->m_corners[4].m_x;
+	edge0.m_y = p_view->m_corners[0].m_y - p_view->m_corners[4].m_y;
+	edge0.m_z = p_view->m_corners[0].m_z - p_view->m_corners[4].m_z;
+	edge1.m_x = p_view->m_corners[5].m_x - p_view->m_corners[4].m_x;
+	edge1.m_y = p_view->m_corners[5].m_y - p_view->m_corners[4].m_y;
+	edge1.m_z = p_view->m_corners[5].m_z - p_view->m_corners[4].m_z;
 	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
 	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
 	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
-	p_view->m_planes[3].m_normal = normal;
-	p_view->m_planes[3].m_distance =
-		-(p_view->m_planes[3].m_normal.m_z * p_view->m_corners[4].m_z +
-		  p_view->m_planes[3].m_normal.m_y * p_view->m_corners[4].m_y +
-		  p_view->m_planes[3].m_normal.m_x * p_view->m_corners[4].m_x);
+	p_view->m_planes[3].Set(normal, p_view->m_corners[4]);
 
 	m_transform->GetRight(&normal);
-	p_view->m_planes[5].m_normal = normal;
-	p_view->m_planes[5].m_distance =
-		-(p_view->m_planes[5].m_normal.m_z * p_view->m_corners[4].m_z +
-		  p_view->m_planes[5].m_normal.m_y * p_view->m_corners[4].m_y +
-		  p_view->m_planes[5].m_normal.m_x * p_view->m_corners[4].m_x);
+	p_view->m_planes[5].Set(normal, p_view->m_corners[4]);
 
 	p_view->m_planes[4].m_normal.m_x = -normal.m_x;
 	p_view->m_planes[4].m_normal.m_y = -normal.m_y;

@@ -151,109 +151,8 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 	LegoU32 sizeLog2;
 
 	p_renderer->SetRasterizerFlags(p_renderer->GetRasterizerFlags() & ~0x80000000);
-	if (p_renderer->GetPixelFormat()) {
-		if (p_renderer->GetPixelFormat() != 1) {
-			p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
-			p_renderer->SetTriangleRasterizer(NoopTriangleRasterizer);
-			// The original stores the rasterizer twice.
-			p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
-			return;
-		}
-		if ((p_renderer->GetCurrentMipmap() == NULL) || ((p_renderer->GetRasterizerFlags() & 0x100) == 0)) {
-			if (p_renderer->GetRasterizerFlags() & 1) {
-				p_renderer->SetTriangleRasterizer(FUN_10040670);
-				p_renderer->SetSpanRasterizer(FUN_100334d0);
-				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-			}
-			else {
-				p_renderer->SetTriangleRasterizer(FUN_1003f790);
-				p_renderer->SetSpanRasterizer(FUN_100332a0);
-				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-			}
-		}
-		else if (sizeLog2 = p_renderer->GetCurrentMipmap()->m_sizeLog2, sizeLog2 != 0) {
-			if (p_renderer->GetCurrentMipmap()->m_paletteData) {
-				if (p_renderer->GetRasterizerFlags() & 4) {
-					if (p_renderer->GetRasterizerFlags() & 0x200) {
-						p_renderer->SetTriangleRasterizer(FUN_1003d700);
-					}
-					else {
-						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
-					}
-					if (p_renderer->GetRasterizerFlags() & 2) {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[80 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					}
-					else {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[68 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					}
-				}
-				else if (p_renderer->GetRasterizerFlags() & 8) {
-					if (p_renderer->GetRasterizerFlags() & 0x200) {
-						p_renderer->SetTriangleRasterizer(FUN_1003d700);
-					}
-					else {
-						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
-					}
-					if (g_cpuSupportsMMX != 0) {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[44 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					}
-					else {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[32 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					}
-				}
-				else {
-					if (p_renderer->GetRasterizerFlags() & 0x200) {
-						p_renderer->SetTriangleRasterizer(FUN_1003e590);
-					}
-					else {
-						p_renderer->SetTriangleRasterizer(FUN_1003c780);
-					}
-					if (p_renderer->GetRasterizerFlags() & 2) {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[24 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-						STUB(0x01); // FIXME: to prevent mismatching code folding
-					}
-					else {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[20 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-						STUB(0x02); // FIXME: to prevent mismatching code folding
-					}
-				}
-			}
-			else {
-				if (p_renderer->GetRasterizerFlags() & 0x200) {
-					p_renderer->SetTriangleRasterizer(FUN_1003e590);
-				}
-				else {
-					p_renderer->SetTriangleRasterizer(FUN_1003c780);
-				}
-
-				if ((p_renderer->GetRasterizerFlags() & 4) && (p_renderer->GetCurrentMipmap()->m_bytesPerPixel == 4)) {
-					p_renderer->SetSpanRasterizer(g_spanRasterizers[56 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-				}
-				else if (p_renderer->GetRasterizerFlags() & 2) {
-					p_renderer->SetSpanRasterizer(g_spanRasterizers[14 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					STUB(0x03); // FIXME: to prevent mismatching code folding
-				}
-				else {
-					// LINE: GOLDP 0x10032e37
-					p_renderer->SetSpanRasterizer(g_spanRasterizers[8 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					STUB(0x04); // FIXME: to prevent mismatching code folding
-				}
-			}
-		}
-		else {
-			SelectMipmapRasterizers(p_renderer);
-		}
-	}
-	else {
+	switch (p_renderer->GetPixelFormat()) {
+	case 0:
 		if ((p_renderer->GetCurrentMipmap() == NULL) || ((p_renderer->GetRasterizerFlags() & 0x100) == 0)) {
 			if (p_renderer->GetRasterizerFlags() & 1) {
 				p_renderer->SetTriangleRasterizer(FUN_1003fce0);
@@ -347,6 +246,108 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		else {
 			SelectMipmapRasterizers(p_renderer);
 		}
+		break;
+	case 1:
+		if ((p_renderer->GetCurrentMipmap() == NULL) || ((p_renderer->GetRasterizerFlags() & 0x100) == 0)) {
+			if (p_renderer->GetRasterizerFlags() & 1) {
+				p_renderer->SetTriangleRasterizer(FUN_10040670);
+				p_renderer->SetSpanRasterizer(FUN_100334d0);
+				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+			}
+			else {
+				p_renderer->SetTriangleRasterizer(FUN_1003f790);
+				p_renderer->SetSpanRasterizer(FUN_100332a0);
+				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+			}
+		}
+		else if (sizeLog2 = p_renderer->GetCurrentMipmap()->m_sizeLog2, sizeLog2 != 0) {
+			if (p_renderer->GetCurrentMipmap()->m_paletteData) {
+				if (p_renderer->GetRasterizerFlags() & 4) {
+					if (p_renderer->GetRasterizerFlags() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003d700);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+					}
+					if (p_renderer->GetRasterizerFlags() & 2) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[80 - sizeLog2]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+					else {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[68 - sizeLog2]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+				}
+				else if (p_renderer->GetRasterizerFlags() & 8) {
+					if (p_renderer->GetRasterizerFlags() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003d700);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+					}
+					if (g_cpuSupportsMMX != 0) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[44 - sizeLog2]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+					else {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[32 - sizeLog2]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+				}
+				else {
+					if (p_renderer->GetRasterizerFlags() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003e590);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003c780);
+					}
+					if (p_renderer->GetRasterizerFlags() & 2) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[24 - sizeLog2]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+						STUB(0x01); // FIXME: to prevent mismatching code folding
+					}
+					else {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[20 - sizeLog2]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+						STUB(0x02); // FIXME: to prevent mismatching code folding
+					}
+				}
+			}
+			else {
+				if (p_renderer->GetRasterizerFlags() & 0x200) {
+					p_renderer->SetTriangleRasterizer(FUN_1003e590);
+				}
+				else {
+					p_renderer->SetTriangleRasterizer(FUN_1003c780);
+				}
+
+				if ((p_renderer->GetRasterizerFlags() & 4) && (p_renderer->GetCurrentMipmap()->m_bytesPerPixel == 4)) {
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[56 - sizeLog2]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+				}
+				else if (p_renderer->GetRasterizerFlags() & 2) {
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[14 - sizeLog2]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					STUB(0x03); // FIXME: to prevent mismatching code folding
+				}
+				else {
+					// LINE: GOLDP 0x10032e37
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[8 - sizeLog2]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					STUB(0x04); // FIXME: to prevent mismatching code folding
+				}
+			}
+		}
+		else {
+			SelectMipmapRasterizers(p_renderer);
+		}
+		break;
+	default:
+		p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
+		p_renderer->SetTriangleRasterizer(NoopTriangleRasterizer);
+		// The original stores the rasterizer twice.
+		p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
+		break;
 	}
 }
 

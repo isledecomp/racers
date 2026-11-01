@@ -373,49 +373,69 @@ void GolWorldEntity::SetBoundsRadius(LegoFloat p_scalar)
 void GolOrientedEntity::TransformMatrixToLocal(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const
 {
 	GolMatrix3 localMatrix;
-	LegoFloat value;
-	LegoFloat term;
 
-	value = m_orientation.m_m[1][0];
-	value *= p_matrix.m_m[1][0];
-	term = m_orientation.m_m[2][0];
-	term *= p_matrix.m_m[2][0];
-	value += term;
-	term = m_orientation.m_m[0][0];
-	term *= p_matrix.m_m[0][0];
-	localMatrix.m_m[0][0] = value + term;
+	{
+		LegoFloat value = m_orientation.m_m[1][0];
+		value *= p_matrix.m_m[1][0];
+		value += m_orientation.m_m[2][0] * p_matrix.m_m[2][0];
+		localMatrix.m_m[0][0] = value + m_orientation.m_m[0][0] * p_matrix.m_m[0][0];
+	}
 
-	value = p_matrix.m_m[2][1] * m_orientation.m_m[2][0];
-	value += m_orientation.m_m[1][0] * p_matrix.m_m[1][1];
-	localMatrix.m_m[0][1] = value + p_matrix.m_m[0][1] * m_orientation.m_m[0][0];
+	{
+		LegoFloat value = p_matrix.m_m[2][1];
+		value *= m_orientation.m_m[2][0];
+		value += m_orientation.m_m[1][0] * p_matrix.m_m[1][1];
+		localMatrix.m_m[0][1] = value + p_matrix.m_m[0][1] * m_orientation.m_m[0][0];
+	}
 
-	value = p_matrix.m_m[2][2] * m_orientation.m_m[2][0];
-	value += m_orientation.m_m[1][0] * p_matrix.m_m[1][2];
-	localMatrix.m_m[0][2] = value + p_matrix.m_m[0][2] * m_orientation.m_m[0][0];
+	{
+		LegoFloat value = p_matrix.m_m[2][2];
+		value *= m_orientation.m_m[2][0];
+		value += m_orientation.m_m[1][0] * p_matrix.m_m[1][2];
+		localMatrix.m_m[0][2] = value + p_matrix.m_m[0][2] * m_orientation.m_m[0][0];
+	}
 
-	value = m_orientation.m_m[2][1] * p_matrix.m_m[2][0];
-	value += p_matrix.m_m[1][0] * m_orientation.m_m[1][1];
-	localMatrix.m_m[1][0] = value + m_orientation.m_m[0][1] * p_matrix.m_m[0][0];
+	{
+		LegoFloat value = m_orientation.m_m[2][1];
+		value *= p_matrix.m_m[2][0];
+		value += p_matrix.m_m[1][0] * m_orientation.m_m[1][1];
+		localMatrix.m_m[1][0] = value + m_orientation.m_m[0][1] * p_matrix.m_m[0][0];
+	}
 
-	value = m_orientation.m_m[2][1] * p_matrix.m_m[2][1];
-	value += m_orientation.m_m[0][1] * p_matrix.m_m[0][1];
-	localMatrix.m_m[1][1] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][1];
+	{
+		LegoFloat value = m_orientation.m_m[2][1];
+		value *= p_matrix.m_m[2][1];
+		value += m_orientation.m_m[0][1] * p_matrix.m_m[0][1];
+		localMatrix.m_m[1][1] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][1];
+	}
 
-	value = m_orientation.m_m[2][1] * p_matrix.m_m[2][2];
-	value += m_orientation.m_m[0][1] * p_matrix.m_m[0][2];
-	localMatrix.m_m[1][2] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][2];
+	{
+		LegoFloat value = m_orientation.m_m[2][1];
+		value *= p_matrix.m_m[2][2];
+		value += m_orientation.m_m[0][1] * p_matrix.m_m[0][2];
+		localMatrix.m_m[1][2] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][2];
+	}
 
-	value = m_orientation.m_m[2][2] * p_matrix.m_m[2][0];
-	value += p_matrix.m_m[1][0] * m_orientation.m_m[1][2];
-	localMatrix.m_m[2][0] = value + m_orientation.m_m[0][2] * p_matrix.m_m[0][0];
+	{
+		LegoFloat value = m_orientation.m_m[2][2];
+		value *= p_matrix.m_m[2][0];
+		value += p_matrix.m_m[1][0] * m_orientation.m_m[1][2];
+		localMatrix.m_m[2][0] = value + m_orientation.m_m[0][2] * p_matrix.m_m[0][0];
+	}
 
-	value = m_orientation.m_m[2][2] * p_matrix.m_m[2][1];
-	value += m_orientation.m_m[0][2] * p_matrix.m_m[0][1];
-	localMatrix.m_m[2][1] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][1];
+	{
+		LegoFloat value = m_orientation.m_m[2][2];
+		value *= p_matrix.m_m[2][1];
+		value += m_orientation.m_m[0][2] * p_matrix.m_m[0][1];
+		localMatrix.m_m[2][1] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][1];
+	}
 
-	value = m_orientation.m_m[2][2] * p_matrix.m_m[2][2];
-	value += m_orientation.m_m[0][2] * p_matrix.m_m[0][2];
-	localMatrix.m_m[2][2] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][2];
+	{
+		LegoFloat value = m_orientation.m_m[2][2];
+		value *= p_matrix.m_m[2][2];
+		value += m_orientation.m_m[0][2] * p_matrix.m_m[0][2];
+		localMatrix.m_m[2][2] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][2];
+	}
 
 	GolMath::MultiplyMatrix3(&localMatrix.m_m[0][0], &m_orientation.m_m[0][0], &p_dest->m_m[0][0]);
 }

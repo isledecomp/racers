@@ -460,7 +460,7 @@ void RacerCarBody::Update(LegoS32 p_elapsedMs)
 	m_physicsEntity.GetPosition(&position);
 
 	if (m_skidSound != NULL) {
-		m_skidSound->SetPosition(position);
+		m_skidSound->SetPosition(&position);
 		m_skidSound->SetVelocity(m_velocity);
 
 		if (m_flags & c_flagPowerslide) {
@@ -472,7 +472,7 @@ void RacerCarBody::Update(LegoS32 p_elapsedMs)
 	}
 
 	if (m_spinSound != NULL) {
-		m_spinSound->SetPosition(position);
+		m_spinSound->SetPosition(&position);
 	}
 
 	UpdateVisualBank(originalElapsedMs);

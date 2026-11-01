@@ -74,38 +74,19 @@ InputDevice::Callback::ResultValue RaceInputRouter::OnKeyDown(
 	undefined4 p_time
 )
 {
-	LegoU32 i;
-	LegoBool32 matched = FALSE;
-
 	if (m_enabled) {
-		i = 0;
-		if (i < m_sinkCount) {
-			do {
-				for (LegoU32 j = 0; j < PlayerControls::c_inputSlotCount; j++) {
-					DirectInputDevice* source;
-					if (m_sinks[i]->GetBinding(&source, j) != p_input || source != m_device) {
-						continue;
-					}
-
-					matched = TRUE;
-					break;
+		for (LegoU32 i = 0; i < m_sinkCount; i++) {
+			for (LegoU32 j = 0; j < PlayerControls::c_inputSlotCount; j++) {
+				DirectInputDevice* source;
+				if (m_sinks[i]->GetBinding(&source, j) == p_input && source == m_device) {
+					return m_sinks[i]->OnKeyDown(p_source, p_input, p_time);
 				}
-
-				if (matched) {
-					break;
-				}
-
-				i++;
-			} while (i < m_sinkCount);
+			}
 		}
 	}
 
-	if (!matched && m_fallback) {
+	if (m_fallback) {
 		return m_fallback->OnKeyDown(p_source, p_input, p_time);
-	}
-
-	if (matched) {
-		return m_sinks[i]->OnKeyDown(p_source, p_input, p_time);
 	}
 
 	InputDevice::Callback::Result result;
@@ -120,38 +101,19 @@ InputDevice::Callback::ResultValue RaceInputRouter::OnKeyUp(
 	undefined4 p_time
 )
 {
-	LegoU32 i;
-	LegoBool32 matched = FALSE;
-
 	if (m_enabled) {
-		i = 0;
-		if (i < m_sinkCount) {
-			do {
-				for (LegoU32 j = 0; j < PlayerControls::c_inputSlotCount; j++) {
-					DirectInputDevice* source;
-					if (m_sinks[i]->GetBinding(&source, j) != p_input || source != m_device) {
-						continue;
-					}
-
-					matched = TRUE;
-					break;
+		for (LegoU32 i = 0; i < m_sinkCount; i++) {
+			for (LegoU32 j = 0; j < PlayerControls::c_inputSlotCount; j++) {
+				DirectInputDevice* source;
+				if (m_sinks[i]->GetBinding(&source, j) == p_input && source == m_device) {
+					return m_sinks[i]->OnKeyUp(p_source, p_input, p_time);
 				}
-
-				if (matched) {
-					break;
-				}
-
-				i++;
-			} while (i < m_sinkCount);
+			}
 		}
 	}
 
-	if (!matched && m_fallback) {
+	if (m_fallback) {
 		return m_fallback->OnKeyUp(p_source, p_input, p_time);
-	}
-
-	if (matched) {
-		return m_sinks[i]->OnKeyUp(p_source, p_input, p_time);
 	}
 
 	InputDevice::Callback::Result result;

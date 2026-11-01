@@ -83,9 +83,10 @@ void PlayerControls::Reset()
 // FUNCTION: LEGORACERS 0x00430120
 void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 {
-	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.001f;
+	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 	LegoU32 inputFlags = m_input.m_inputFlags;
 	LegoU32 hasSteerInput = (inputFlags & c_inputFlagSteerMask) ? TRUE : FALSE;
+	elapsedSeconds *= 0.001f;
 	LegoFloat limitNegative;
 	LegoFloat limitPositive;
 	LegoFloat turnRate;

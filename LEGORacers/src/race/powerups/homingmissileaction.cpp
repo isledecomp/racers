@@ -241,7 +241,7 @@ void HomingMissileAction::Deactivate()
 // FUNCTION: LEGORACERS 0x004568f0
 void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 {
-	GolAnimatedEntity* missileEntity = &m_missileEntity;
+	GolAnimatedEntity* missileEntity;
 	GolVec3 direction;
 	GolVec3 up;
 	GolVec3 armedPosition;
@@ -252,6 +252,7 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 	GolVec3 positions[4];
 
 	if (m_state == c_stateArmed) {
+		missileEntity = &m_missileEntity;
 		missileEntity->Update(p_elapsedMs);
 		if (missileEntity->IsPartAnimationDone()) {
 			AdvanceState();
@@ -266,6 +267,7 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (m_state == c_stateFlying) {
+		missileEntity = &m_missileEntity;
 		missileEntity->Update(p_elapsedMs);
 		HomingProjectile* projectile = &m_projectile;
 		projectile->UpdateTargeting(
@@ -279,11 +281,11 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 		LegoS32 projectileState = projectile->Update(p_elapsedMs);
 		if (projectileState != PowerupProjectile::c_stateFlying) {
 			GolVec3& positionBase = hitPosition;
-			positionBase = projectile->GetHitPosition();
+			positionBase = m_projectile.GetHitPosition();
 
 			LegoBool32 skipBurst = FALSE;
 			if (projectileState == PowerupProjectile::c_stateHitRacer) {
-				Racer* target = projectile->GetHitRacer();
+				Racer* target = m_projectile.GetHitRacer();
 				if ((target->m_flags & Racer::c_flagShielded) && target->m_shieldLevel >= 2) {
 					skipBurst = TRUE;
 				}
@@ -302,20 +304,20 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 			}
 
 			if (!skipBurst) {
-				up = projectile->GetHitNormal();
+				up = m_projectile.GetHitNormal();
 				LegoBool32 upwardHit =
 					(projectileState == PowerupProjectile::c_stateHitWorld && up.m_z > g_scarNormalThreshold) ? TRUE
 																											  : FALSE;
 
 				m_owner->FUN_0045b4d0(&hitPosition, upwardHit, m_ownerRacer);
 				if (projectileState == PowerupProjectile::c_stateHitRacer &&
-					!(projectile->GetHitRacer()->m_flags & Racer::c_flagShielded)) {
+					!(m_projectile.GetHitRacer()->m_flags & Racer::c_flagShielded)) {
 					projectile->GetVelocity(&direction);
 					direction.m_x = -direction.m_x;
 					direction.m_y = -direction.m_y;
 					direction.m_z = 0.0f;
 					GolMath::NormalizeVector3(direction, &direction);
-					m_owner->SpawnBrickDebris(&hitPosition, &direction, projectile->GetHitRacer());
+					m_owner->SpawnBrickDebris(&hitPosition, &direction, m_projectile.GetHitRacer());
 				}
 
 				AdvanceState();
@@ -325,9 +327,9 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 		}
 
 		missileEntity->GetAxes(&direction, &up);
+		direction.m_x = projectile->m_direction.m_x;
 		direction.m_y = projectile->m_direction.m_y;
 		direction.m_z = projectile->m_direction.m_z;
-		direction.m_x = projectile->m_direction.m_x;
 		missileEntity->SetDirectionUp(direction, up);
 
 		missileEntity->GetPosition(&position);
@@ -340,7 +342,9 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 			if (perpendicular.m_x != 0.0f || perpendicular.m_y != 0.0f) {
 				GolMath::NormalizeVector2(perpendicular, &perpendicular);
 				perpendicular.m_x *= g_missileTrailWidth;
-				perpendicular.m_y *= g_missileTrailWidth;
+				LegoFloat scaledY = perpendicular.m_y;
+				scaledY *= g_missileTrailWidth;
+				perpendicular.m_y = scaledY;
 
 				positions[0].m_x = position.m_x - perpendicular.m_x * 0.5f;
 				positions[0].m_y = position.m_y - perpendicular.m_y * 0.5f;

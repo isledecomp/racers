@@ -59,6 +59,11 @@ ColorRGBA g_hookRopeSecondaryColor = {0x8f, 0x5a, 0x1c, 0xff};
 // GLOBAL: LEGORACERS 0x004c1c58
 ColorRGBA g_hookRopeTertiaryColor = {0x14, 0x14, 0x00, 0xff};
 
+inline LegoFloat SquaredLength(const GolVec3& p_vector)
+{
+	return GOL_SQUARED(p_vector.m_y) + GOL_SQUARED(p_vector.m_z) + GOL_SQUARED(p_vector.m_x);
+}
+
 // FUNCTION: LEGORACERS 0x00453bf0
 GrapplingHookAction::GrapplingHookAction()
 {
@@ -258,9 +263,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			direction.m_y = targetPosition.m_y - position.m_y;
 			direction.m_z = targetPosition.m_z - position.m_z;
 
-			LegoFloat distanceSquared = direction.m_y * direction.m_y;
-			distanceSquared += direction.m_z * direction.m_z;
-			distanceSquared += direction.m_x * direction.m_x;
+			LegoFloat distanceSquared = SquaredLength(direction);
 			if (distanceSquared < g_hookReleaseDistanceSquared) {
 				ReleaseHook(&targetPosition);
 				break;
@@ -325,8 +328,9 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_smokeParticleRef->m_particle->SetPosition(&position);
 		}
-		if (m_smokeParticleRef->m_particle != NULL) {
-			m_smokeParticleRef->m_particle->SetVelocity(&velocity);
+		CutsceneParticleRef* smokeRef = m_smokeParticleRef;
+		if (smokeRef->m_particle != NULL) {
+			smokeRef->m_particle->SetVelocity(&velocity);
 		}
 	}
 }

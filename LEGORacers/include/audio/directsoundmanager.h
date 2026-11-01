@@ -165,7 +165,7 @@ private:
 			link = link->NextValid();
 		}
 
-		p_list.Append(p_sound);
+		p_sound.GetLink().InsertBefore(p_list.EndLink());
 	}
 
 	void InsertByPriority(SoundBufferList& p_list, SoundBuffer& p_sound)

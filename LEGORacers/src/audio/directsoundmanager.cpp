@@ -158,22 +158,16 @@ void DirectSoundManager::Update(undefined4)
 	ReleaseStoppedSounds();
 	m_activeSpatialSounds.Swap(spatialSounds);
 	GolListLink* link;
-	while (!spatialSounds.IsEmpty()) {
-		link = spatialSounds.PopLastLink();
-		if (link) {
-			SoundBuffer& sound = spatialSounds.GetItem(*link);
-			sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
-			InsertByPriorityForUpdate(m_activeSpatialSounds, sound, TRUE);
-		}
+	while ((link = spatialSounds.PopLastLink()) != NULL) {
+		SoundBuffer& sound = spatialSounds.GetItem(*link);
+		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+		InsertByPriorityForUpdate(m_activeSpatialSounds, sound, TRUE);
 	}
 	m_queuedSpatialSounds.Swap(spatialSounds);
-	while (!spatialSounds.IsEmpty()) {
-		link = spatialSounds.PopLastLink();
-		if (link) {
-			SoundBuffer& sound = spatialSounds.GetItem(*link);
-			sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
-			InsertByPriorityForUpdate(m_queuedSpatialSounds, sound, TRUE);
-		}
+	while ((link = spatialSounds.PopLastLink()) != NULL) {
+		SoundBuffer& sound = spatialSounds.GetItem(*link);
+		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+		InsertByPriorityForUpdate(m_queuedSpatialSounds, sound, TRUE);
 	}
 
 	link = m_activeSpatialSounds.FirstLink();

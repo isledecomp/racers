@@ -297,6 +297,7 @@ public:
 		void ResolveEntities();
 		GolCamera* GetActiveCamera();
 
+		CutsceneDefinition* GetDefinition() const { return m_definition; }
 		LegoU32 GetFlags() const { return m_flags; }
 		LegoU32 GetCurrentFrame() const { return m_currentFrame; }
 		LegoU32 GetPlaybackRate() const { return m_playbackRate; }

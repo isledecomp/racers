@@ -158,22 +158,16 @@ void DirectSoundManager::Update(undefined4)
 	ReleaseStoppedSounds();
 	m_activeSpatialSounds.Swap(spatialSounds);
 	GolListLink* link;
-	while (!spatialSounds.IsEmpty()) {
-		link = spatialSounds.PopLastLink();
-		if (link) {
-			SoundBuffer& sound = spatialSounds.GetItem(*link);
-			sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
-			InsertByPriorityForUpdate(m_activeSpatialSounds, sound, TRUE);
-		}
+	while ((link = spatialSounds.PopLastLink()) != NULL) {
+		SoundBuffer& sound = spatialSounds.GetItem(*link);
+		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+		InsertByPriorityForUpdate(m_activeSpatialSounds, sound, TRUE);
 	}
 	m_queuedSpatialSounds.Swap(spatialSounds);
-	while (!spatialSounds.IsEmpty()) {
-		link = spatialSounds.PopLastLink();
-		if (link) {
-			SoundBuffer& sound = spatialSounds.GetItem(*link);
-			sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
-			InsertByPriorityForUpdate(m_queuedSpatialSounds, sound, TRUE);
-		}
+	while ((link = spatialSounds.PopLastLink()) != NULL) {
+		SoundBuffer& sound = spatialSounds.GetItem(*link);
+		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+		InsertByPriorityForUpdate(m_queuedSpatialSounds, sound, TRUE);
 	}
 
 	link = m_activeSpatialSounds.FirstLink();
@@ -568,13 +562,13 @@ LegoBool32 DirectSoundManager::QueueSound(SoundBuffer& p_sound)
 		if (MakeSoundAvailable(p_sound.m_priority)) {
 			p_sound.GetLink().Remove();
 			p_sound.SetPlaybackState(SoundBuffer::c_playbackStateActive);
-			InsertByPriorityPreservingSentinel(m_activeSounds, p_sound);
+			InsertByPriorityBeforeEnd(m_activeSounds, p_sound);
 			m_availableSoundCount--;
 		}
 		else {
 			p_sound.GetLink().Remove();
 			p_sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-			InsertByPriorityPreservingSentinel(m_queuedSounds, p_sound);
+			InsertByPriorityBeforeEnd(m_queuedSounds, p_sound);
 		}
 
 		return p_sound.m_playbackState == SoundBuffer::c_playbackStateActive;
@@ -583,7 +577,7 @@ LegoBool32 DirectSoundManager::QueueSound(SoundBuffer& p_sound)
 	if (p_sound.m_playbackState == SoundBuffer::c_playbackStateIdle) {
 		p_sound.GetLink().Remove();
 		p_sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-		InsertByPriorityPreservingSentinel(m_queuedSpatialSounds, p_sound);
+		InsertByPriorityOrAppend(m_queuedSpatialSounds, p_sound);
 	}
 
 	return p_sound.m_playbackState == SoundBuffer::c_playbackStateActive;

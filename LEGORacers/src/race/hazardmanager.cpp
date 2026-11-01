@@ -32,7 +32,7 @@
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(HazardManager, 0x08)
-DECOMP_SIZE_ASSERT(HazardContext, 0x60)
+DECOMP_SIZE_ASSERT(HazardContext, 0x44)
 DECOMP_SIZE_ASSERT(HazardManager::HzbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(ColliderRecord, 0x0c)
 

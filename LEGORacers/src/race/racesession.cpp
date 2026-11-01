@@ -1034,7 +1034,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	LegoU32 racerIndex;
 	RaceRouteRecord* routeRecord = m_routeRecords;
-	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
+	for (racerIndex = 0; racerIndex < racerParams.m_racerCount; racerIndex++) {
 		LegoRacers::Context::PlayerSetupSlot* slot = &m_context->m_playerSetupSlots[racerIndex];
 		racerParams.m_slots[racerIndex] = slot;
 
@@ -1048,12 +1048,8 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 		routeRecord++;
 	}
 
-	if (m_context->m_racerCount < sizeOfArray(racerParams.m_slots)) {
-		::memset(
-			&racerParams.m_slots[m_context->m_racerCount],
-			0,
-			(sizeOfArray(racerParams.m_slots) - m_context->m_racerCount) * sizeof(racerParams.m_slots[0])
-		);
+	for (racerIndex = racerParams.m_racerCount; racerIndex < sizeOfArray(racerParams.m_slots); racerIndex++) {
+		racerParams.m_slots[racerIndex] = NULL;
 	}
 
 	m_raceState.CreateRacers(&racerParams, &racerContext, m_context->m_useBinaryFiles);

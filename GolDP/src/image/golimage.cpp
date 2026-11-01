@@ -443,13 +443,13 @@ void GolImage::UploadTiles()
 
 	ColorRGBA* colorKey;
 	if (m_flags & GolTexture::c_textureFlagColorKeyed) {
-		colorKey = &m_colorKey;
 		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBlackColorKey) {
 			g_tileImgFile.SetColorKeyReplacement(g_transparentBlack);
 		}
 		else {
-			g_tileImgFile.SetColorKeyReplacement(*colorKey);
+			g_tileImgFile.SetColorKeyReplacement(m_colorKey);
 		}
+		colorKey = &m_colorKey;
 	}
 	else {
 		colorKey = NULL;

@@ -9,6 +9,11 @@
 DECOMP_SIZE_ASSERT(PartAnimationResource::InitParams, 0x3c)
 DECOMP_SIZE_ASSERT(PartAnimationResource, 0x34)
 
+inline void SetQueuedPart(GolAnimatedEntity* p_entity, LegoS32 p_part)
+{
+	p_entity->SetQueuedPartIndex(static_cast<LegoU16>(p_part));
+}
+
 // FUNCTION: LEGORACERS 0x004632c0
 PartAnimationResource::PartAnimationResource()
 {
@@ -89,7 +94,7 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 			if (!(entity->GetFlags() & c_entityFlags0x120000) ||
 				static_cast<LegoU32>(entity->GetQueuedPartIndex()) == static_cast<LegoU32>(-1)) {
 				LegoU32 loop = m_flags & c_flagLooping;
-				m_animatedEntity->SetQueuedPartIndex(static_cast<LegoU16>(m_activePart));
+				SetQueuedPart(m_animatedEntity, m_activePart);
 				LegoU32 flags = entity->GetFlags();
 				flags &= ~c_entityFlags0x4e0000;
 				flags |= GolAnimatedEntity::c_flagRestartQueuedPart;
@@ -128,7 +133,7 @@ void PartAnimationResource::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (queueIdle) {
-		m_animatedEntity->SetQueuedPartIndex(static_cast<LegoU16>(m_idlePart));
+		SetQueuedPart(m_animatedEntity, m_idlePart);
 		LegoU32 flags = entity->GetFlags();
 		flags = (flags & ~c_entityFlags0x0e0000) | GolAnimatedEntity::c_flagRestartQueuedPart |
 				GolAnimatedEntity::c_flagLoopQueuedPart;

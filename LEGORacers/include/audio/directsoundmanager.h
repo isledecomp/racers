@@ -104,24 +104,46 @@ private:
 		}
 	}
 
-	void InsertByPriorityPreservingSentinel(SoundBufferList& p_list, SoundBuffer& p_sound)
+	void InsertByPriorityBeforeEnd(SoundBufferList& p_list, SoundBuffer& p_sound)
 	{
-		SoundBufferList* list = &p_list;
-		GolListLink* link = list->FirstLink();
-		while (list->IsValidLink(link)) {
-			if (p_sound.m_priority <= list->GetItem(*link).m_priority) {
-				GolListLink& soundLink = p_sound.GetLink();
-				soundLink.m_next = link;
-				soundLink.m_prev = link->m_prev;
-				link->m_prev->m_next = &soundLink;
-				link->m_prev = &soundLink;
-				break;
-			}
-			link = link->m_next;
+		GolListLink* link = p_list.FirstLink();
+		if (p_list.IsValidLink(link)) {
+			do {
+				if (p_sound.m_priority <= p_list.GetItem(*link).m_priority) {
+					GolListLink& soundLink = p_sound.GetLink();
+					soundLink.m_next = link;
+					soundLink.m_prev = link->m_prev;
+					link->m_prev->m_next = &soundLink;
+					link->m_prev = &soundLink;
+					return;
+				}
+
+				link = p_list.NextLink(link);
+			} while (link);
 		}
-		if (!list->IsValidLink(link)) {
-			p_sound.GetLink().InsertBefore(link);
+
+		p_sound.GetLink().InsertBefore(p_list.EndLink());
+	}
+
+	void InsertByPriorityOrAppend(SoundBufferList& p_list, SoundBuffer& p_sound)
+	{
+		GolListLink* link = p_list.FirstLink();
+		if (p_list.IsValidLink(link)) {
+			do {
+				if (p_sound.m_priority <= p_list.GetItem(*link).m_priority) {
+					GolListLink& soundLink = p_sound.GetLink();
+					soundLink.m_next = link;
+					soundLink.m_prev = link->m_prev;
+					link->m_prev->m_next = &soundLink;
+					link->m_prev = &soundLink;
+					return;
+				}
+
+				link = p_list.NextLink(link);
+			} while (link);
 		}
+
+		p_list.Append(p_sound);
 	}
 
 	void InsertByPriorityForUpdate(SoundBufferList& p_list, SoundBuffer& p_sound, LegoBool32 p_inlineFirst)
@@ -143,7 +165,7 @@ private:
 			link = link->NextValid();
 		}
 
-		p_list.Append(p_sound);
+		p_sound.GetLink().InsertBefore(p_list.EndLink());
 	}
 
 	void InsertByPriority(SoundBufferList& p_list, SoundBuffer& p_sound)

@@ -272,17 +272,14 @@ void MagnetAction::Update(LegoU32 p_elapsedMs)
 		m_magnetEntity->SetDirectionUp(m_direction, direction);
 	}
 	else {
-		GolAnimatedEntity* racerEntity;
+		GolVec3 racerPosition;
 		if (m_heldRacer != NULL) {
-			racerEntity = m_heldRacer->m_visuals.m_carEntity;
+			m_heldRacer->m_visuals.m_carEntity->GetPosition(&racerPosition);
 		}
 		else {
 			CarVisuals* racerVisuals = &m_pulledRacer->m_visuals;
-			racerEntity = racerVisuals->GetCarEntity();
+			racerVisuals->m_carEntity->GetPosition(&racerPosition);
 		}
-
-		GolVec3 racerPosition;
-		racerEntity->GetPosition(&racerPosition);
 
 		GolVec3 modelPosition;
 		m_magnetEntity->GetPosition(&modelPosition);

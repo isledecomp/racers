@@ -165,7 +165,15 @@ void PowerupProjectile::LaunchAtRacer(
 		target->m_y += scaledVelocity.m_y;
 		target->m_z += scaledVelocity.m_z;
 	}
-	*target += p_params->m_targetOffset;
+	LegoFloat offset = target->m_x;
+	offset += p_params->m_targetOffset.m_x;
+	target->m_x = offset;
+	offset = target->m_y;
+	offset += p_params->m_targetOffset.m_y;
+	target->m_y = offset;
+	offset = target->m_z;
+	offset += p_params->m_targetOffset.m_z;
+	target->m_z = offset;
 	ComputeTrajectory(speed);
 	RegisterCollisionEvent(p_params->m_eventQueue);
 }

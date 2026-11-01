@@ -248,6 +248,7 @@ address,type,x-text
 0x4bec10,string,"LPieceLo.WDF"
 0x4bec20,string,"LPieceLo.leg"
 0x4bec30,string,"MENUDATA\\PIECEDB"
+0x4bec44,string,"c6"
 0x4bec48,string,"Unable to load mesh builder with car data"
 0x4bec74,string,"bodypart.pcf"
 0x4bec84,string,"MENUDATA\\PARTDB"

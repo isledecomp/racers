@@ -1880,7 +1880,7 @@ PowerupExplosion* __stdcall RacePowerupManager::ReclaimExplosion(PowerupExplosio
 	LegoU32 pass;
 	PowerupExplosion* head = current;
 
-	for (pass = 0;;) {
+	for (pass = 0; pass < 3; pass++) {
 		PowerupExplosion* previous = NULL;
 		if (current != NULL) {
 			do {
@@ -1892,30 +1892,28 @@ PowerupExplosion* __stdcall RacePowerupManager::ReclaimExplosion(PowerupExplosio
 				previous = current;
 				current = current->GetNext();
 			} while (current != NULL);
+
 			if (selected != NULL) {
-				break;
+				if (selectedPrevious == NULL) {
+					*p_head = selected->GetNext();
+					selected->SetNext(selectedPrevious);
+					return selected;
+				}
+
+				selectedPrevious->SetNext(selected->GetNext());
+				selected->SetNext(NULL);
+				return selected;
 			}
+
 			current = head;
 		}
 		targetState = PowerupExplosion::c_stateExploding;
-		pass++;
-		if (pass >= 3) {
-			PowerupExplosion* result = current;
-			*p_head = result->GetNext();
-			result->SetNext(NULL);
-			return result;
-		}
 	}
 
-	if (selectedPrevious == NULL) {
-		*p_head = selected->GetNext();
-		selected->SetNext(selectedPrevious);
-		return selected;
-	}
-
-	selectedPrevious->SetNext(selected->GetNext());
-	selected->SetNext(NULL);
-	return selected;
+	PowerupExplosion* result = current;
+	*p_head = result->GetNext();
+	result->SetNext(NULL);
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045b470

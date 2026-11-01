@@ -1526,96 +1526,95 @@ void RacerCarBody::UpdateFacingDirection(LegoU32 p_elapsedMs)
 	direction.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
 	direction.m_z = m_physicsEntity.GetOrientation().m_rows[0].m_z;
 
-	if (m_contactCount != 0) {
-		if (!(m_forwardSpeed < 0.03f)) {
-			if (m_contactCount <= 2) {
-				LegoFloat dot = m_supportNormal.m_z;
-				dot *= direction.m_z;
-				LegoFloat value = m_supportNormal.m_y;
-				value *= direction.m_y;
-				dot += value;
-				value = direction.m_x;
-				value *= m_supportNormal.m_x;
-				dot += value;
+	if (!m_contactCount || m_forwardSpeed < 0.03f) {
+		RotateFacingToward(p_elapsedMs, &direction);
+		return;
+	}
 
-				GolVec3 mult;
-				mult.m_x = dot * m_supportNormal.m_x;
-				mult.m_y = m_supportNormal.m_y;
-				mult.m_y *= dot;
-				mult.m_z = dot * m_supportNormal.m_z;
-				direction.m_x -= mult.m_x;
-				direction.m_y -= mult.m_y;
-				direction.m_z -= mult.m_z;
-				GolMath::NormalizeVector3(direction, &direction);
-			}
-			else {
-				if ((m_flags & c_flagSteering) && m_thrust > 0.0f) {
-					GolVec3* current = &m_facingDirection;
-					LegoFloat dot = m_facingDirection.m_z;
-					dot *= direction.m_z;
-					LegoFloat value = current->m_y;
-					value *= direction.m_y;
-					dot += value;
-					value = direction.m_x;
-					value *= current->m_x;
-					dot += value;
-					if (dot > 1.0f) {
-						dot = 1.0f;
-					}
+	if (m_contactCount <= 2) {
+		LegoFloat dot = m_supportNormal.m_z;
+		dot *= direction.m_z;
+		LegoFloat value = m_supportNormal.m_y;
+		value *= direction.m_y;
+		dot += value;
+		value = direction.m_x;
+		value *= m_supportNormal.m_x;
+		dot += value;
 
-					LegoS32 tableIndex = static_cast<LegoS32>((dot + 1.0f) * -511.5f);
-					LegoFloat angle = *(g_arcCosineTable - tableIndex);
-					LegoFloat step = m_yawRate;
-					LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
-					step *= elapsed;
-					if (step > 0.0f) {
-						angle += step;
-					}
-					else {
-						angle -= step;
-					}
+		GolVec3 mult;
+		mult.m_x = dot * m_supportNormal.m_x;
+		mult.m_y = m_supportNormal.m_y;
+		mult.m_y *= dot;
+		mult.m_z = dot * m_supportNormal.m_z;
+		direction.m_x -= mult.m_x;
+		direction.m_y -= mult.m_y;
+		direction.m_z -= mult.m_z;
+		GolMath::NormalizeVector3(direction, &direction);
+		RotateFacingToward(p_elapsedMs, &direction);
+		return;
+	}
 
-					if (angle > m_facingLagMax) {
-						GolVec3 axis;
-						value = direction.m_z;
-						value *= current->m_y;
-						LegoFloat crossValue = current->m_z;
-						crossValue *= direction.m_y;
-						axis.m_x = value - crossValue;
-						value = current->m_z;
-						value *= direction.m_x;
-						crossValue = direction.m_z;
-						crossValue *= current->m_x;
-						axis.m_y = value - crossValue;
-						value = direction.m_y;
-						value *= current->m_x;
-						crossValue = current->m_y;
-						crossValue *= direction.m_x;
-						axis.m_z = value - crossValue;
-						GolMath::RotateAboutAxis(&direction, current, &axis, m_facingLagMax);
-						GolMath::NormalizeVector3(*current, current);
-						return;
-					}
-
-					GolMath::SinCos(step, &cosine, &sine);
-					value = current->m_x;
-					value *= sine;
-					LegoFloat crossValue = m_facingDirection.m_y;
-					crossValue *= cosine;
-					current->m_x = value - crossValue;
-					value = m_facingDirection.m_y;
-					value *= sine;
-					crossValue = current->m_x;
-					crossValue *= cosine;
-					m_facingDirection.m_y = value + crossValue;
-					GolMath::NormalizeVector3(*current, current);
-					return;
-				}
-
-				RotateFacingToward(p_elapsedMs, &direction);
-				return;
-			}
+	if ((m_flags & c_flagSteering) && m_thrust > 0.0f) {
+		GolVec3* current = &m_facingDirection;
+		LegoFloat dot = m_facingDirection.m_z;
+		dot *= direction.m_z;
+		LegoFloat value = current->m_y;
+		value *= direction.m_y;
+		dot += value;
+		value = direction.m_x;
+		value *= current->m_x;
+		dot += value;
+		if (dot > 1.0f) {
+			dot = 1.0f;
 		}
+
+		LegoS32 tableIndex = static_cast<LegoS32>((dot + 1.0f) * -511.5f);
+		LegoFloat angle = *(g_arcCosineTable - tableIndex);
+		LegoFloat step = m_yawRate;
+		LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+		step *= elapsed;
+		if (step > 0.0f) {
+			angle += step;
+		}
+		else {
+			angle -= step;
+		}
+
+		if (angle > m_facingLagMax) {
+			GolVec3 axis;
+			value = direction.m_z;
+			value *= current->m_y;
+			LegoFloat crossValue = current->m_z;
+			crossValue *= direction.m_y;
+			axis.m_x = value - crossValue;
+			value = current->m_z;
+			value *= direction.m_x;
+			crossValue = direction.m_z;
+			crossValue *= current->m_x;
+			axis.m_y = value - crossValue;
+			value = direction.m_y;
+			value *= current->m_x;
+			crossValue = current->m_y;
+			crossValue *= direction.m_x;
+			axis.m_z = value - crossValue;
+			GolMath::RotateAboutAxis(&direction, current, &axis, m_facingLagMax);
+			GolMath::NormalizeVector3(*current, current);
+			return;
+		}
+
+		GolMath::SinCos(step, &cosine, &sine);
+		value = current->m_x;
+		value *= sine;
+		LegoFloat crossValue = m_facingDirection.m_y;
+		crossValue *= cosine;
+		current->m_x = value - crossValue;
+		value = m_facingDirection.m_y;
+		value *= sine;
+		crossValue = current->m_x;
+		crossValue *= cosine;
+		m_facingDirection.m_y = value + crossValue;
+		GolMath::NormalizeVector3(*current, current);
+		return;
 	}
 
 	RotateFacingToward(p_elapsedMs, &direction);

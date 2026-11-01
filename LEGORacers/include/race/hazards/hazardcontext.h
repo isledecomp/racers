@@ -17,15 +17,9 @@ class RaceState;
 class RacerSoundSource;
 class TriggerWorld;
 
-// SIZE 0x60
+// SIZE 0x44
 class HazardContext {
 public:
-	class PositionProvider {
-	public:
-		virtual void VTable0x00() = 0;       // vtable+0x00
-		virtual void GetPosition(void*) = 0; // vtable+0x04
-	};
-
 	RaceEventTable* GetEventTable() const { return m_eventTable; }
 	LegoEventQueue* GetEventQueue() const { return m_eventQueue; }
 	RacerSoundSource* GetSoundSource() const { return m_soundSource; }
@@ -41,7 +35,6 @@ public:
 	RacePowerupManager* GetPowerupManager() const { return m_powerupManager; }
 	RaceTrailManager* GetTrailManager() const { return m_trailManager; }
 	LegoU32 GetMirror() const { return m_mirror; }
-	PositionProvider* GetPositionProvider() const { return m_positionProvider; }
 
 private:
 	friend class HazardManager;
@@ -64,8 +57,6 @@ private:
 	RacePowerupManager* m_powerupManager;   // 0x38
 	RaceTrailManager* m_trailManager;       // 0x3c
 	LegoU32 m_mirror;                       // 0x40
-	undefined m_unk0x44[0x5c - 0x44];       // 0x44
-	PositionProvider* m_positionProvider;   // 0x5c
 };
 
 #endif // HAZARDCONTEXT_H

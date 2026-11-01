@@ -120,44 +120,51 @@ void HomingProjectile::UpdateTargeting(
 	}
 
 	if (!m_hasWaypoint && m_pathEntry != NULL) {
-		CheckpointGraph::Entry* pathField = m_pathEntry;
-		GolVec3 point = pathField->m_position;
+		GolVec3 point = m_pathEntry->m_position;
+		LegoFloat deltaX = point.m_x - m_position.m_x;
+		LegoFloat deltaY = point.m_y - m_position.m_y;
+		LegoFloat deltaZ = point.m_z - m_position.m_z;
+
 		for (;;) {
-			GolVec3 delta = point - m_position;
-			if (GOLVECTOR3_DOT(delta, m_direction) > 0.0f &&
-				GOLVECTOR3_DOT(pathField->m_planeNormal, m_position) + pathField->m_planeDistance >= g_unk0x004afde0) {
+			if (deltaX * m_direction.m_x + deltaY * m_direction.m_y + deltaZ * m_direction.m_z > 0.0f &&
+				GOLVECTOR3_DOT(m_position, m_pathEntry->m_planeNormal) + m_pathEntry->m_planeDistance >=
+					g_unk0x004afde0) {
 				break;
 			}
 
-			pathField = m_ownerRacer->m_checkpointGraph->GetCheckpoint(pathField->m_next.m_items[0]);
+			LegoU8 nextIndex = m_pathEntry->m_next.m_items[0];
+			CheckpointGraph::Entry* pathField = m_ownerRacer->m_checkpointGraph->GetCheckpoint(nextIndex);
 			m_pathEntry = pathField;
-			if (pathField != NULL) {
-				point = pathField->m_position;
-				delta = point - m_position;
-				if (GOLVECTOR3_DOT(delta, delta) > g_homingProjectilePathDistanceLimitSquared ||
-					GOLVECTOR3_DOT(pathField->m_planeNormal, m_direction) > 0.0f) {
-					m_pathEntry = NULL;
-				}
+			if (pathField == NULL) {
+				break;
 			}
 
-			if (m_pathEntry == NULL) {
+			point = pathField->m_position;
+			if (GOLVECTOR3_DISTANCE_SQUARED(point, m_position) > g_homingProjectilePathDistanceLimitSquared) {
+				m_pathEntry = NULL;
+				break;
+			}
+
+			deltaX = point.m_x - m_position.m_x;
+			deltaY = point.m_y - m_position.m_y;
+			deltaZ = point.m_z - m_position.m_z;
+			if (GOLVECTOR3_DOT(m_direction, pathField->m_planeNormal) > 0.0f) {
+				m_pathEntry = NULL;
 				break;
 			}
 		}
 
 		if (m_pathEntry != NULL) {
-			GolVec3 hit = point;
 			GolVec3 start = point;
 			GolVec3 end = point;
 			start.m_z += 5.0f;
 			end.m_z -= g_homingProjectileCollisionProbeDepth;
 
 			GolBoundingVolume::HitTriangle record;
-			if (m_collisionWorld->IntersectSegmentAndFireEvents(&start, &end, &record, &hit)) {
+			if (m_collisionWorld->IntersectSegmentAndFireEvents(&start, &end, &record, &point)) {
 				m_hasWaypoint = 1;
-				m_waypointPosition.m_x = hit.m_x;
-				m_waypointPosition.m_y = hit.m_y;
-				m_waypointPosition.m_z = hit.m_z + g_homingProjectileCollisionHitLift;
+				point.m_z += g_homingProjectileCollisionHitLift;
+				m_waypointPosition = point;
 			}
 		}
 	}

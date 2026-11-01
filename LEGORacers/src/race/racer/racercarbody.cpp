@@ -571,10 +571,12 @@ void RacerCarBody::AccumulateForces()
 	m_gravityForce = baseForce;
 
 	if (flags & c_flagSteering) {
-		const GolVec3& right = m_physicsEntity.GetOrientation().m_rows[0];
+		GolVec2 right;
+		right.m_x = m_physicsEntity.GetOrientation().m_rows[0].m_x;
+		right.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
 		steeringAmount = right.m_x;
 		LegoFloat steeringY = right.m_y;
-		LegoFloat steeringZ = m_velocityDirection.m_z * right.m_z;
+		LegoFloat steeringZ = m_velocityDirection.m_z * m_physicsEntity.GetOrientation().m_rows[0].m_z;
 		steeringY *= m_velocityDirection.m_y;
 		steeringY += steeringZ;
 		steeringAmount *= m_velocityDirection.m_x;
@@ -681,7 +683,10 @@ void RacerCarBody::AccumulateForces()
 				scale = m_thrust;
 				scale *= m_massScale;
 				if (m_contactCount >= 3 && !(m_flags & c_flagSteering)) {
-					const GolVec3 right = m_physicsEntity.GetOrientation().m_rows[0];
+					GolVec3 right;
+					right.m_x = m_physicsEntity.GetOrientation().m_rows[0].m_x;
+					right.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
+					right.m_z = m_physicsEntity.GetOrientation().m_rows[0].m_z;
 					force.m_x = right.m_x * scale;
 					force.m_y = right.m_y;
 					force.m_y *= scale;

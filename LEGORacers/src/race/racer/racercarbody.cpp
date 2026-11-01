@@ -1863,6 +1863,9 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 	LegoFloat bestDistance = -FLT_MAX;
 	LegoFloat hitAmount;
 	LegoFloat selectedHitAmount = 0.0f;
+	GolVec3 hitPoint;
+	GolVec3 worldNormal;
+	GolVec3 collisionNormal;
 
 	GolOrientedEntity* entity = &m_physicsEntity;
 	for (LegoU32 i = 0; i < sizeOfArray(m_bodyPointsLocal); i++) {
@@ -1884,7 +1887,6 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 				GolBoundingVolume* query = resource->GetBoundingVolume();
 				query->SetMaterialTable(resource->GetMaterialTable());
 
-				GolVec3 hitPoint;
 				if (query->IntersectSegment(
 						&g_carBodySavedState.m_rayStartsLocal[pointIndex],
 						&g_carBodySavedState.m_rayEndsLocal[pointIndex],
@@ -1893,8 +1895,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 						&hitRecord,
 						&hitAmount
 					)) {
-					GolVec3 worldNormal;
-					GolVec3 collisionNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
+					collisionNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
 					resource->RotateToWorld(collisionNormal, &worldNormal);
 
 					LegoFloat dot =
@@ -1915,7 +1916,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 						LegoFloat deltaX = g_carBodySavedState.m_rayEndsLocal[pointIndex].m_x - hitPoint.m_x;
 						LegoFloat deltaY = g_carBodySavedState.m_rayEndsLocal[pointIndex].m_y - hitPoint.m_y;
 						LegoFloat deltaZ = g_carBodySavedState.m_rayEndsLocal[pointIndex].m_z - hitPoint.m_z;
-						LegoFloat distance = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+						LegoFloat distance = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
 
 						if (distance > bestDistance) {
 							bestDistance = distance;
@@ -1938,7 +1939,6 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 				GolBoundingVolume* query = resource->GetBoundingVolume();
 				query->SetMaterialTable(resource->GetMaterialTable());
 
-				GolVec3 hitPoint;
 				if (query->IntersectSegment(
 						&g_carBodySavedState.m_bodyPointsWorld[pointIndex],
 						&m_bodyPointsWorld[pointIndex],
@@ -1947,6 +1947,8 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 						&hitRecord,
 						&hitAmount
 					)) {
+					worldNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
+
 					LegoFloat dot = (hitPoint.m_x - m_bodyPointsWorld[pointIndex].m_x) *
 									g_carBodySavedWheels.GetEventContext()->m_normal.m_x;
 					dot += (hitPoint.m_y - m_bodyPointsWorld[pointIndex].m_y) *
@@ -1964,7 +1966,6 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 							continue;
 						}
 
-						GolVec3 collisionNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
 						LegoFloat deltaX = m_bodyPointsWorld[pointIndex].m_x - hitPoint.m_x;
 						LegoFloat deltaY = m_bodyPointsWorld[pointIndex].m_y - hitPoint.m_y;
 						LegoFloat deltaZ = m_bodyPointsWorld[pointIndex].m_z - hitPoint.m_z;
@@ -1972,7 +1973,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 
 						if (distance > bestDistance) {
 							bestDistance = distance;
-							m_wallNormal = collisionNormal;
+							m_wallNormal = worldNormal;
 							m_bodyPointHit[pointIndex] = 1;
 							selectedHitAmount = hitAmount;
 							LegoU32 collisionCount = m_wallContact;

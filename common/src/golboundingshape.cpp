@@ -375,8 +375,7 @@ void GolBoundingShape::CollectVisibleLeaves(
 		node->m_linked = 1;
 		LegoS16 boundsIndex = static_cast<LegoS16>(node->m_boundsIndex);
 		if (boundsIndex >= 0) {
-			LegoS32 classification =
-				GolViewFrustum::ClassifyBox(p_frustum, 3 * boundsIndex, &m_bounds[boundsIndex].m_minX);
+			LegoS32 classification = p_frustum->ClassifyBox(&m_bounds[boundsIndex].m_minX);
 			if (classification == 0) {
 				entry = &m_nodes[entry->m_nextLeafIndex];
 				continue;
@@ -419,7 +418,7 @@ void GolBoundingShape::CollectLeavesFromPvs(
 		LegoBool32 append = TRUE;
 		LegoS16 boundsIndex = static_cast<LegoS16>(node->m_boundsIndex);
 		if (boundsIndex >= 0) {
-			LegoS32 classification = GolViewFrustum::ClassifyBox(p_frustum, 0, &m_bounds[boundsIndex].m_minX);
+			LegoS32 classification = p_frustum->ClassifyBox(&m_bounds[boundsIndex].m_minX);
 			if (classification == 0) {
 				append = FALSE;
 			}

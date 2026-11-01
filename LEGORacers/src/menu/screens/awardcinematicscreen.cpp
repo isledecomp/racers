@@ -312,7 +312,7 @@ void AwardCinematicScreen::CreateWidgets()
 						::memcpy(expressionName, material->GetName(), sizeof(GolName));
 						LegoS32 expressionIndex = 0;
 
-						if (::strncmp(expressionName, "face", sizeof(GolName)) != 0) {
+						if (::strncmp(expressionName, "dflt", sizeof(GolName)) != 0) {
 							if (::strncmp(expressionName, "angry", sizeof(GolName)) == 0) {
 								expressionIndex = 1;
 							}

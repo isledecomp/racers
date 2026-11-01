@@ -87,6 +87,7 @@ address,type,x-text
 0x4b1a28,string,"turb2f2"
 0x4b1a78,string,"dbricks"
 0x4b1a80,string,"dtube"
+0x4b2c0c,string,"dflt"
 0x4b2c14,string,"angry"
 0x4b2c1c,string,"blink"
 0x4b2c24,string,"happy"

@@ -515,14 +515,15 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 			StopSlideSkid();
 		}
 
-		for (LegoU32 slotIndex = 0; slotIndex < sizeOfArray(m_wheelSkidFlags); slotIndex++) {
-			if (m_wheelSkidFlags[slotIndex] & c_wheelSkidFading) {
-				LegoU32 elapsed = m_skidFadeTimers[slotIndex] + p_elapsedMs;
-				m_skidFadeTimers[slotIndex] = elapsed;
-
+		LegoU32* fadeTimer = m_skidFadeTimers;
+		for (LegoU8* skidFlags = m_wheelSkidFlags; skidFlags < m_wheelSkidFlags + sizeOfArray(m_wheelSkidFlags);
+			 skidFlags++, fadeTimer++) {
+			if (*skidFlags & c_wheelSkidFading) {
+				LegoU32 elapsed = *fadeTimer + p_elapsedMs;
+				*fadeTimer = elapsed;
 				if (elapsed > 1000) {
-					m_wheelSkidFlags[slotIndex] &= ~c_wheelSkidFading;
-					m_skidFadeTimers[slotIndex] = 0;
+					*skidFlags &= ~c_wheelSkidFading;
+					*fadeTimer = 0;
 				}
 			}
 		}
@@ -1101,9 +1102,9 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 	}
 	else {
 		GolVec3 slipDirection = m_racerPhysics->m_velocityDirection;
-		LegoFloat dot = m_carEntity->GetOrientation().m_rows[1].m_x * slipDirection.m_x +
-						m_carEntity->GetOrientation().m_rows[1].m_y * slipDirection.m_y +
-						m_carEntity->GetOrientation().m_rows[1].m_z * slipDirection.m_z;
+		GolVec3 side;
+		m_carEntity->GetOrientationRow1(&side);
+		LegoFloat dot = GOLVECTOR3_DOT(side, slipDirection);
 		if (dot > 0.0f) {
 			m_wheelSkidFlags[0] &= ~c_wheelSkidActive;
 			m_wheelSkidFlags[2] &= ~c_wheelSkidActive;
@@ -1155,7 +1156,7 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 					}
 				}
 			}
-			if (!(m_wheelSkidFlags[i] & c_wheelSkidActive) && *itemSlot) {
+			else if (!(m_wheelSkidFlags[i] & c_wheelSkidActive) && *itemSlot) {
 				m_skidMarkManager->ReleaseTrail(*itemSlot, 0);
 				*itemSlot = NULL;
 			}
@@ -1185,13 +1186,15 @@ inline void CrossVectors(const GolVec3& p_left, const GolVec3& p_right, GolVec3*
 	x -= xSub;
 	p_dest->m_x = x;
 
-	LegoFloat y = p_right.m_x * p_left.m_z;
+	LegoFloat y = p_left.m_z;
+	y *= p_right.m_x;
 	LegoFloat ySub = p_left.m_x * p_right.m_z;
 	y -= ySub;
 	p_dest->m_y = y;
 
 	LegoFloat z = p_left.m_x * p_right.m_y;
-	LegoFloat zSub = p_right.m_x * p_left.m_y;
+	LegoFloat zSub = p_left.m_y;
+	zSub *= p_right.m_x;
 	z -= zSub;
 	p_dest->m_z = z;
 }
@@ -1222,35 +1225,40 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	LegoFloat offsetY = g_cosineTable[tableIndex];
 
 	GolVec3 chaseDelta;
-	GolVec3 movement;
 	GolModelEntity* entity = &m_curseEntity;
 	GolVec3 position;
 	entity->GetPosition(&position);
 
 	GolVec3 target;
 	m_bodyModelEntity->GetPosition(&target);
-	target.m_x = g_curseOrbitRadius * offsetX + target.m_x;
+	LegoFloat targetX = g_curseOrbitRadius;
+	targetX *= offsetX;
+	targetX += target.m_x;
+	target.m_x = targetX;
 	target.m_y = g_curseOrbitRadius * offsetY + target.m_y;
 	target.m_z = g_curseHoverHeight + target.m_z;
 
 	LegoFloat speed = m_racerPhysics->m_speed > g_curseChaseMinSpeed ? m_racerPhysics->m_speed : g_curseChaseMinSpeed;
 	LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 	LegoFloat maxMove = elapsed * speed;
-	LegoFloat dx = position.m_x - target.m_x;
+	LegoFloat dx = position.m_x - targetX;
 	LegoFloat dy = position.m_y - target.m_y;
 	LegoFloat dz = position.m_z - target.m_z;
 	if (dz * dz + dy * dy + dx * dx > maxMove * maxMove) {
-		chaseDelta.m_x = target.m_x - position.m_x;
+		chaseDelta.m_x = targetX - position.m_x;
 		chaseDelta.m_y = target.m_y - position.m_y;
 		chaseDelta.m_z = target.m_z - position.m_z;
 		GolMath::NormalizeVector3(chaseDelta, &chaseDelta);
+		GolVec3 movement;
 		movement.m_x = chaseDelta.m_x * maxMove;
 		movement.m_y = chaseDelta.m_y * maxMove;
 		movement.m_z = chaseDelta.m_z * maxMove;
 		position += movement;
 	}
 	else {
-		position = target;
+		position.m_x = targetX;
+		position.m_y = target.m_y;
+		position.m_z = target.m_z;
 	}
 	entity->SetPosition(position);
 
@@ -1274,6 +1282,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		GolMatrix34 currentOrientation;
 		entity->CopyOrientation(&currentOrientation.m_orientation);
 		currentOrientation.m_position.Clear();
+		GolVec3 movement;
 		GolMath::NormalizeVector3(right, &movement);
 
 		LegoFloat dot = DotVectors(movement, up);
@@ -1310,7 +1319,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		entity->SetDirectionUp(right, up);
 	}
 
-	LegoFloat scale = entity->GetScale();
+	LegoFloat scale = m_curseEntity.GetScale();
 	if (scale > g_curseMinScale) {
 		LegoFloat shrink = elapsed;
 		shrink *= g_unk0x004b0b18;

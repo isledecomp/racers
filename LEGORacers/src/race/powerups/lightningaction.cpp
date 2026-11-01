@@ -485,7 +485,7 @@ void LightningAction::UpdateBoltPath()
 			direction.m_z = end.m_z - position.m_z;
 			GolMath::NormalizeVector3(direction, &direction);
 
-			distance = static_cast<LegoFloat>(::sqrt(GOLVECTOR3_DISTANCE_SQUARED(position, end)));
+			distance = static_cast<LegoFloat>(::sqrt(end.DistanceSquaredTo(position)));
 			LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.GetBoundsRadius();
 			if (distance > radius) {
 				distance -= radius;
@@ -496,7 +496,7 @@ void LightningAction::UpdateBoltPath()
 				break;
 			}
 
-			distance = static_cast<LegoFloat>(::sqrt(GOLVECTOR3_DISTANCE_SQUARED(position, hit)));
+			distance = static_cast<LegoFloat>(::sqrt(hit.DistanceSquaredTo(position)));
 		}
 
 		m_boltLength = distance * g_carBuildModelTextureCoordinateScale;

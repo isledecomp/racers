@@ -520,9 +520,9 @@ void GolRenderDevice::SelectTextureFormat(
 	bits.m_palette = p_requestedTextureFormat.GetPaletteBitCount();
 	LegoU32 bpp = p_requestedTextureFormat.m_bitsPerPixel;
 
-	if (bits.m_red == m_requestedRedBitCount && bits.m_green == m_requestedGrnBitCount &&
-		bits.m_blue == m_requestedBluBitCount && bits.m_alpha == m_requestedAlpBitCount &&
-		bits.m_intensity == m_requestedIntensityBitCount && bits.m_palette == m_requestedPaletteBitCount) {
+	if (m_requestedRedBitCount == bits.m_red && m_requestedGrnBitCount == bits.m_green &&
+		m_requestedBluBitCount == bits.m_blue && m_requestedAlpBitCount == bits.m_alpha &&
+		m_requestedIntensityBitCount == bits.m_intensity && m_requestedPaletteBitCount == bits.m_palette) {
 		*p_actualTextureFormat = m_textureFormats[m_textureFormatIndex];
 		return;
 	}
@@ -569,7 +569,9 @@ void GolRenderDevice::SelectTextureFormat(
 				}
 			}
 		}
+	}
 
+	if (bits.m_alpha != 0) {
 		if (bits.m_palette != 0) {
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel > bpp &&

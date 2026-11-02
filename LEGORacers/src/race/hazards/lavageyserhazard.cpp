@@ -145,9 +145,12 @@ void LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 	{
 		GolVec3 localPosition;
 		transform->GetPosition(&localPosition);
-		localPosition.m_x *= scale;
-		localPosition.m_y *= scale;
-		localPosition.m_z *= scale;
+		LegoFloat x = localPosition.m_x * scale;
+		LegoFloat y = localPosition.m_y * scale;
+		LegoFloat z = localPosition.m_z * scale;
+		localPosition.m_x = x;
+		localPosition.m_y = y;
+		localPosition.m_z = z;
 
 		GolVec3 position;
 		m_entity->LocalToWorld(localPosition, &position);

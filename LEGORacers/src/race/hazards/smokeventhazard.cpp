@@ -133,12 +133,13 @@ void SmokeVentHazard::Update(undefined4 p_elapsedMs)
 
 		m_entity->LocalToWorld(vector, &position);
 
+		CutsceneParticleRef* particleRef = m_smokeParticle;
 		GolAnimatedEntity* entity = m_entity;
-		if (m_smokeParticle->m_particle) {
-			entity->CopyOrientation(m_smokeParticle->m_particle->GetBasis());
+		if (particleRef->m_particle) {
+			entity->CopyOrientation(particleRef->m_particle->GetBasis());
 		}
 
-		CutsceneParticleRef* particleRef = m_smokeParticle;
+		particleRef = m_smokeParticle;
 		if (particleRef->m_particle) {
 			particleRef->m_particle->SetPosition(&position);
 		}

@@ -48,6 +48,7 @@ struct GolList {
 	void Prepend(T& p_item) { Prepend(GetLink(p_item)); }
 	GolListLink* LastLink() { return m_first; }
 	GolListLink* FirstLink() { return m_sentinel.m_next; }
+	GolListLink* EndLink() { return (GolListLink*) &m_first; }
 	GolListLink* FirstValidLink();
 	GolListLink* PopLastLink()
 	{

@@ -131,15 +131,15 @@ void MenuFrame::SetRect(Rect* p_rect)
 		m_borderImages[6].SetRect(&rect3);
 
 		rect2.m_left = 0;
-		rect2.m_top = m_borderImages[0].GetRect()->m_bottom;
 		rect2.m_right = m_images[7]->GetWidth();
+		rect2.m_top = m_borderImages[0].GetRect()->m_bottom;
 		rect2.m_bottom = rect3.m_top;
 
 		m_borderImages[7].SetRect(&rect2);
 
 		rect.m_left = m_borderImages[0].GetRect()->m_right;
-		rect.m_top = m_borderImages[0].GetRect()->m_bottom;
 		rect.m_right = m_borderImages[2].GetRect()->m_left;
+		rect.m_top = m_borderImages[0].GetRect()->m_bottom;
 		rect.m_bottom = m_borderImages[6].GetRect()->m_top;
 
 		m_fill.SetRect(&rect);

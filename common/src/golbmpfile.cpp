@@ -685,12 +685,16 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		LegoU8* rowBuffer2 = rowBuffer1;
+		LegoU8* rowBuffer2;
 		if (m_compression) {
 			rowBuffer2 = new LegoU8[m_rowByteStride + 2];
 			if (rowBuffer2 == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
+		}
+
+		else {
+			rowBuffer2 = rowBuffer1;
 		}
 
 		for (y = 0; y < m_height; y++) {

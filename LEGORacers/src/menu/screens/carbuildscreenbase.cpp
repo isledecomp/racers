@@ -326,16 +326,17 @@ LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 		m_layoutDirty = FALSE;
 	}
 
+	m_tooltipRect.m_top -= 4;
+	m_tooltipRect.m_left -= 4;
+	m_tooltipRect.m_right += 4;
+	m_tooltipRect.m_bottom += 4;
+
 	ColorRGBA color;
 	color.m_alp = 0xff;
 	color.m_red = 0x20;
 	color.m_grn = 0x1c;
 	color.m_blu = 0xe0;
 
-	m_tooltipRect.m_top -= 4;
-	m_tooltipRect.m_left -= 4;
-	m_tooltipRect.m_right += 4;
-	m_tooltipRect.m_bottom += 4;
 	m_renderer->DrawRectangle(m_tooltipRect, 0.0f, color, color, color, color, 0);
 
 	m_tooltipRect.m_top += 4;

@@ -313,11 +313,11 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 				LegoU32 finishDuration = m_scarDurationMs;
 				m_state = c_stateScarFading;
 				LegoFloat width = m_flashWidth;
-				LegoFloat width2 = m_flashWidth;
 				m_remainingMs = finishDuration;
 				m_alpha = g_explosionScarAlpha;
 				RaceDecalManager::Trail::Decal& decal = m_scarDecal;
 				decal.m_width = width;
+				LegoFloat width2 = m_flashWidth;
 				decal.m_length = width2;
 				LegoFloat depth = g_explosionScarDepth;
 				decal.m_depth = depth;

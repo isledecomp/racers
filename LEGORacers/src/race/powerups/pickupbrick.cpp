@@ -174,7 +174,7 @@ void PickupBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		GolVec3 position;
 		m_worldEntity.GetPosition(&position);
 		m_blendModel->SetPosition(position);
-		m_blendModel->SetScaleThenInvalidateRadius(m_scale);
+		m_blendModel->SetScaleAndInvalidateRadius(m_scale);
 		m_blendModel->Draw(*p_renderer);
 	}
 }

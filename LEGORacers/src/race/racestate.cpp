@@ -1162,19 +1162,18 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntr
 		p_entries[racerIndex].m_racer = &m_roster.m_racers[racerIndex];
 		p_entries[racerIndex].m_isValid = TRUE;
 
-		Racer* otherRacer = &m_roster.m_racers[racerIndex];
-		if (otherRacer == p_racer) {
+		if (&m_roster.m_racers[racerIndex] == p_racer) {
 			p_entries[racerIndex].m_delta = 0;
 		}
-		else if (otherRacer->m_lapsCompleted < m_setup.m_lapCount) {
-			p_entries[racerIndex].m_delta = otherRacer->m_standingsPosition + 2147483641;
+		else if (m_roster.m_racers[racerIndex].m_lapsCompleted < m_setup.m_lapCount) {
+			p_entries[racerIndex].m_delta = m_roster.m_racers[racerIndex].m_standingsPosition + 2147483641;
 		}
 		else {
 			LegoS32 otherTime = 0;
 			LegoU32 remaining = m_setup.m_lapCount;
 
 			if (remaining > 0) {
-				LegoU32* lapTime = otherRacer->m_lapTimes;
+				LegoU32* lapTime = m_roster.m_racers[racerIndex].m_lapTimes;
 
 				do {
 					otherTime += *lapTime++;

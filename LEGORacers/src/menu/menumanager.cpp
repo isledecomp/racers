@@ -1196,7 +1196,7 @@ LegoS32 MenuManager::CommitBestTimes()
 
 	GolString string;
 	LegoChar name[15];
-	undefined2 wideName[15];
+	undefined2 wideName[14];
 	LegoS32 result = FALSE;
 	LegoU32 raceIndex = 0;
 

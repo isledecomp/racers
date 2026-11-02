@@ -311,19 +311,24 @@ public:
 	LegoFloat m_slideLift;                                          // 0x658
 	LegoFloat m_slideLiftTarget;                                    // 0x65c
 	LegoFloat m_slideLiftRate;                                      // 0x660
-	GolVec3 m_frontAxleMid;                                         // 0x664
-	GolVec3 m_rearAxleMid;                                          // 0x670
-	LegoFloat m_slideBankTarget;                                    // 0x67c
-	LegoFloat m_slideBankAngle;                                     // 0x680
-	GolVec3 m_savedVelocity;                                        // 0x684
-	GolVec3 m_savedPosition;                                        // 0x690
-	GolMatrix3 m_savedOrientation;                                  // 0x69c
-	LegoU32 m_flags;                                                // 0x6c0
-	LegoFloat m_steeringGain;                                       // 0x6c4
-	LegoFloat m_steeringAlignmentMin;                               // 0x6c8
-	LegoFloat m_facingLagMax;                                       // 0x6cc
-	LegoFloat m_slipRatio;                                          // 0x6d0
-	LegoFloat m_visualBankAngle;                                    // 0x6d4
+	union {
+		struct {
+			GolVec3 m_frontAxleMid; // 0x664
+			GolVec3 m_rearAxleMid;  // 0x670
+		};
+		GolVec3 m_axleMidpoints[2]; // 0x664
+	};
+	LegoFloat m_slideBankTarget;      // 0x67c
+	LegoFloat m_slideBankAngle;       // 0x680
+	GolVec3 m_savedVelocity;          // 0x684
+	GolVec3 m_savedPosition;          // 0x690
+	GolMatrix3 m_savedOrientation;    // 0x69c
+	LegoU32 m_flags;                  // 0x6c0
+	LegoFloat m_steeringGain;         // 0x6c4
+	LegoFloat m_steeringAlignmentMin; // 0x6c8
+	LegoFloat m_facingLagMax;         // 0x6cc
+	LegoFloat m_slipRatio;            // 0x6d0
+	LegoFloat m_visualBankAngle;      // 0x6d4
 	union {
 		LegoU32 m_powerslideFactorBits; // 0x6d8
 		LegoFloat m_powerslideFactor;   // 0x6d8

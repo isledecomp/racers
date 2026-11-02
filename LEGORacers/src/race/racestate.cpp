@@ -828,11 +828,12 @@ Racer* RaceState::FindRacerInCone(
 		GolVec3 position;
 		racerField->m_carEntity->GetPosition(&position);
 
-		LegoFloat distanceSquared = GOL_SQUARED(position.m_z - origin->m_z) + GOL_SQUARED(position.m_y - origin->m_y) +
-									GOL_SQUARED(position.m_x - origin->m_x);
+		LegoFloat dx = position.m_x - origin->m_x;
+		LegoFloat distanceSquared =
+			GOL_SQUARED(position.m_z - origin->m_z) + GOL_SQUARED(position.m_y - origin->m_y) + GOL_SQUARED(dx);
 		if (distanceSquared >= p_minDistanceSquared && distanceSquared <= p_maxDistanceSquared) {
 			GolVec3 delta;
-			delta.m_x = position.m_x - origin->m_x;
+			delta.m_x = dx;
 			delta.m_y = position.m_y - origin->m_y;
 			delta.m_z = position.m_z - origin->m_z;
 			GolMath::NormalizeVector3(delta, &delta);

@@ -220,7 +220,8 @@ void OptionsRow::ComputeThumbRange()
 {
 	m_trackMinX = m_prevButton.GetRect()->m_right + ((m_thumb.GetRect()->m_right - m_thumb.GetRect()->m_left) >> 1);
 	m_trackMaxX = m_nextButton.GetRect()->m_left - ((m_thumb.GetRect()->m_right - m_thumb.GetRect()->m_left) >> 1);
-	m_stepWidth = static_cast<LegoFloat>(m_trackMaxX - m_trackMinX);
+	LegoFloat span = static_cast<LegoFloat>(m_trackMaxX - m_trackMinX);
+	m_stepWidth = span;
 
 	if (m_stepCount > 2) {
 		m_stepWidth = m_stepWidth / static_cast<LegoFloat>(m_stepCount - 1);

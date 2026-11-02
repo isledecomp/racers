@@ -88,11 +88,11 @@ void TgbTargetPointList::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoB
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
+	GolVec3 position;
 	for (LegoU32 i = 0; i < m_count; i++) {
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TgbTxtParser::e_target));
 		parser->ReadLeftCurly();
 
-		GolVec3 position;
 		position.m_x = 0.0f;
 		position.m_y = 0.0f;
 		position.m_z = 0.0f;

@@ -131,6 +131,8 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 	for (LegoU32 i = 0; i < m_capacity; i++) {
 		GolTransformBase* orbit = GetTransform(i);
 		GolName name;
+		LegoFloat values[4];
+		GolVec3 position;
 
 		p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(DdfTxtParser::e_node));
 		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeOfArray(name)), sizeOfArray(name));
@@ -152,7 +154,6 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 				break;
 			}
 			case DdfTxtParser::e_rotation: {
-				LegoFloat values[4];
 				values[0] = p_parser->ReadFloat();
 				values[1] = p_parser->ReadFloat();
 				values[2] = p_parser->ReadFloat();
@@ -161,7 +162,6 @@ void GolSceneNode::Parse(GolFileParser* p_parser)
 				break;
 			}
 			case DdfTxtParser::e_position: {
-				GolVec3 position;
 				position.m_x = p_parser->ReadFloat();
 				position.m_y = p_parser->ReadFloat();
 				position.m_z = p_parser->ReadFloat();

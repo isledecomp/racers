@@ -251,10 +251,12 @@ void RaceState::CreateRacer(
 {
 	Racer::SetupParams racerParams;
 	CarVisuals::InitParams initParams;
-	::memset(&racerParams, 0, sizeof(racerParams));
-	::memset(&initParams, 0, sizeof(initParams));
 
 	ChampionDefinitionList::ChampionDefinition* championDefinition = NULL;
+	racerParams.m_displayNameWide = NULL;
+	racerParams.m_displayName[0] = '\0';
+	racerParams.m_aiChargeColor = 0;
+	racerParams.m_aiChargeTarget = 0;
 	ChassisModelTable::Item* chassisItem;
 	if (p_slot->m_driverName[0]) {
 		DriverCosmeticTable::Entry* driverEntry =
@@ -281,10 +283,16 @@ void RaceState::CreateRacer(
 
 		switch (driverEntry->m_aiChargeColor) {
 		case 1:
+			racerParams.m_aiChargeColor = 1;
+			break;
 		case 2:
+			racerParams.m_aiChargeColor = 2;
+			break;
 		case 3:
+			racerParams.m_aiChargeColor = 3;
+			break;
 		case 4:
-			racerParams.m_aiChargeColor = driverEntry->m_aiChargeColor;
+			racerParams.m_aiChargeColor = 4;
 			break;
 		default:
 			racerParams.m_aiChargeColor = 0;
@@ -295,21 +303,21 @@ void RaceState::CreateRacer(
 		racerParams.m_displayNameWide = m_driverTable.GetStringBuffer(p_slot->m_driverName);
 	}
 	else {
-		LegoU32 customIndex = m_roster.m_customCarCount;
-		m_roster.m_customCarModels[customIndex] = new GolModelEntity;
-		if (m_roster.m_customCarModels[customIndex] == NULL) {
+		m_roster.m_customCarModels[m_roster.m_customCarCount] = new GolModelEntity;
+		if (m_roster.m_customCarModels[m_roster.m_customCarCount] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_roster.m_customCarEntities[customIndex] = new GolAnimatedEntity;
-		if (m_roster.m_customCarEntities[customIndex] == NULL) {
+		m_roster.m_customCarEntities[m_roster.m_customCarCount] = new GolAnimatedEntity;
+		// Retail checks the body allocation again after allocating the animated entity.
+		if (m_roster.m_customCarModels[m_roster.m_customCarCount] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
 		p_slot->m_textures->LoadTextures();
 		p_slot->m_materials->CreateMaterials();
-		initParams.m_bodyModel = m_roster.m_customCarModels[customIndex];
-		initParams.m_bodyModel->SetPrimaryModel(p_slot->m_model, g_carModelScale);
+		m_roster.m_customCarModels[m_roster.m_customCarCount]->SetPrimaryModel(p_slot->m_model, g_carModelScale);
+		initParams.m_bodyModel = m_roster.m_customCarModels[m_roster.m_customCarCount];
 
 		if (p_slot->m_altModel == NULL) {
 			LegoChar fallbackName[3];
@@ -322,13 +330,13 @@ void RaceState::CreateRacer(
 		else {
 			p_slot->m_altTextures->LoadTextures();
 			p_slot->m_altMaterials->CreateMaterials();
-			initParams.m_driverEntity = m_roster.m_customCarEntities[customIndex];
-			initParams.m_driverEntity->SetModel(
+			m_roster.m_customCarEntities[m_roster.m_customCarCount]->SetModel(
 				p_slot->m_altModel,
 				m_driverTable.m_rootNode,
 				&m_driverTable.m_modelParts,
 				g_driverModelScale
 			);
+			initParams.m_driverEntity = m_roster.m_customCarEntities[m_roster.m_customCarCount];
 		}
 
 		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(p_slot->m_chassisName));
@@ -337,13 +345,16 @@ void RaceState::CreateRacer(
 		racerParams.m_accelerationStat = chassisItem->m_accelerationStat;
 		racerParams.m_topSpeedStat = chassisItem->m_topSpeedStat;
 
-		for (LegoU32 i = 0; i < sizeOfArray(racerParams.m_driverStats); i++) {
-			racerParams.m_driverStats[i] = 100;
-		}
+		racerParams.m_driverStats[0] = 100;
+		racerParams.m_driverStats[1] = 100;
+		racerParams.m_driverStats[2] = 100;
+		racerParams.m_driverStats[3] = 100;
+		racerParams.m_driverStats[4] = 100;
+		racerParams.m_driverStats[5] = 100;
 
 		racerParams.m_voiceBank = p_racerIndex * 100 + 1000;
 		::strcpy(racerParams.m_displayName, p_slot->m_playerName);
-		m_roster.m_customCarCount = customIndex + 1;
+		m_roster.m_customCarCount++;
 	}
 
 	initParams.m_driverMountOffset = chassisItem->m_driverMountOffset;
@@ -357,31 +368,26 @@ void RaceState::CreateRacer(
 
 	for (LegoU32 i = 0; i < sizeOfArray(initParams.m_wheelOffsets); i++) {
 		initParams.m_wheelOffsets[i] = chassisItem->m_wheelOffsets[i];
+		racerParams.m_wheelPositions[i] = chassisItem->m_wheelPositions[i];
 	}
 
-	racerParams.m_anchorWheelPosition = chassisItem->m_wheelPositions[1];
-	racerParams.m_rearWheelY0 = chassisItem->m_wheelPositions[2].m_y;
-	racerParams.m_rearWheelX = chassisItem->m_wheelPositions[3].m_x;
-	racerParams.m_rearWheelY1 = chassisItem->m_wheelPositions[3].m_y;
-
-	racerParams.m_lapCount = m_setup.m_lapCount;
 	racerParams.m_eventTable = p_context->m_eventTable;
 	racerParams.m_surfaceTable = p_context->m_surfaceTable;
 	racerParams.m_trackWorld = p_context->m_trackWorld;
 	racerParams.m_enginePitchScale = chassisItem->m_enginePitchScale;
 
 	if (championDefinition) {
-		racerParams.m_centerOfMass.m_x = championDefinition->m_centerOfMassX;
-		racerParams.m_centerOfMass.m_y = championDefinition->m_centerOfMassY;
-		racerParams.m_centerOfMass.m_z = championDefinition->m_centerOfMassZ;
+		::memcpy(&racerParams.m_centerOfMass, &championDefinition->m_centerOfMassX, sizeof(racerParams.m_centerOfMass));
 		racerParams.m_mass = championDefinition->m_mass;
 		racerParams.m_weight = 0.0f;
 	}
 	else {
-		racerParams.m_centerOfMass.m_x =
-			p_slot->m_centroidX * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_x;
-		racerParams.m_centerOfMass.m_y =
-			p_slot->m_centroidY * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_y;
+		racerParams.m_centerOfMass.m_x = p_slot->m_centroidX;
+		racerParams.m_centerOfMass.m_x *= g_carBuildModelTextureCoordinateScale;
+		racerParams.m_centerOfMass.m_x += chassisItem->m_centerOfMass.m_x;
+		racerParams.m_centerOfMass.m_y = p_slot->m_centroidY;
+		racerParams.m_centerOfMass.m_y *= g_carBuildModelTextureCoordinateScale;
+		racerParams.m_centerOfMass.m_y += chassisItem->m_centerOfMass.m_y;
 		racerParams.m_centerOfMass.m_z = chassisItem->m_centerOfMass.m_z;
 		racerParams.m_mass = chassisItem->m_baseMass + p_slot->m_highPieceCount;
 		racerParams.m_weight = p_slot->m_highPieceCount;
@@ -402,12 +408,15 @@ void RaceState::CreateRacer(
 
 	LegoU32 placementIndex = m_roster.m_placementSlots[p_racerIndex];
 	initParams.m_carEntity->SetPosition(m_roster.m_startPositions[placementIndex]);
+	placementIndex = m_roster.m_placementSlots[p_racerIndex];
 	initParams.m_carEntity->SetDirectionUp(
 		m_roster.m_startDirections[placementIndex],
 		m_roster.m_startUps[placementIndex]
 	);
 
+	racerParams.m_lapCount = m_setup.m_lapCount;
 	m_roster.m_racers[p_racerIndex].Initialize(p_context, &initParams, &racerParams, this, p_racerIndex);
+	m_roster.m_racers[p_racerIndex].m_driveController.m_previewCursor = &m_sharedRouteCursor;
 
 	GolD3DTexture* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
 	GolMaterial* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
@@ -426,15 +435,12 @@ void RaceState::CreateRacer(
 	shadowMaterial->SetParams(p_context->m_renderer, shadowMaterialParams);
 
 	Racer* racer = &m_roster.m_racers[p_racerIndex];
-	racer->m_driveController.m_previewCursor = &m_sharedRouteCursor;
 
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_type = LegoEventQueue::Descriptor::c_typeCollision;
 	descriptor.m_flags = 5;
-	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &racer->m_physics;
-	descriptor.m_elapsedMs = 0;
 	m_roster.m_racerEvents[p_racerIndex] = m_roster.AllocateEvent(racer, &descriptor);
 }
 

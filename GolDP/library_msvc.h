@@ -13,10 +13,10 @@
 // LIBRARY: GOLDP 0x1004af82
 // ?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
 
-// Depending on the compile run, I've also seen this one as `?_CallMemberFunction1@@YGXPAX00@Z`.
+// Depending on the compile run, this one has also appeared as `?_CallMemberFunction0@@YGXPAX0@Z`.
 // Appears to be somewhat unstable.
 // LIBRARY: GOLDP 0x1004afb6
-// ?_CallMemberFunction0@@YGXPAX0@Z
+// ?_CallMemberFunction1@@YGXPAX00@Z
 
 // LIBRARY: GOLDP 0x1004afbd
 // ?_CallMemberFunction2@@YGXPAX00H@Z

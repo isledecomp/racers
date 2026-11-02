@@ -460,7 +460,7 @@ void RacerCarBody::Update(LegoS32 p_elapsedMs)
 	m_physicsEntity.GetPosition(&position);
 
 	if (m_skidSound != NULL) {
-		m_skidSound->SetPosition(position);
+		m_skidSound->SetPosition(&position);
 		m_skidSound->SetVelocity(m_velocity);
 
 		if (m_flags & c_flagPowerslide) {
@@ -472,7 +472,7 @@ void RacerCarBody::Update(LegoS32 p_elapsedMs)
 	}
 
 	if (m_spinSound != NULL) {
-		m_spinSound->SetPosition(position);
+		m_spinSound->SetPosition(&position);
 	}
 
 	UpdateVisualBank(originalElapsedMs);
@@ -571,10 +571,12 @@ void RacerCarBody::AccumulateForces()
 	m_gravityForce = baseForce;
 
 	if (flags & c_flagSteering) {
-		const GolVec3& right = m_physicsEntity.GetOrientation().m_rows[0];
+		GolVec2 right;
+		right.m_x = m_physicsEntity.GetOrientation().m_rows[0].m_x;
+		right.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
 		steeringAmount = right.m_x;
 		LegoFloat steeringY = right.m_y;
-		LegoFloat steeringZ = m_velocityDirection.m_z * right.m_z;
+		LegoFloat steeringZ = m_velocityDirection.m_z * m_physicsEntity.GetOrientation().m_rows[0].m_z;
 		steeringY *= m_velocityDirection.m_y;
 		steeringY += steeringZ;
 		steeringAmount *= m_velocityDirection.m_x;
@@ -681,7 +683,10 @@ void RacerCarBody::AccumulateForces()
 				scale = m_thrust;
 				scale *= m_massScale;
 				if (m_contactCount >= 3 && !(m_flags & c_flagSteering)) {
-					const GolVec3 right = m_physicsEntity.GetOrientation().m_rows[0];
+					GolVec3 right;
+					right.m_x = m_physicsEntity.GetOrientation().m_rows[0].m_x;
+					right.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
+					right.m_z = m_physicsEntity.GetOrientation().m_rows[0].m_z;
 					force.m_x = right.m_x * scale;
 					force.m_y = right.m_y;
 					force.m_y *= scale;
@@ -902,6 +907,8 @@ void RacerCarBody::LimitUprightTilt()
 // FUNCTION: LEGORACERS 0x00445dc0
 void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 {
+	LegoU32 i;
+
 	LegoU32 flags = m_flags;
 	if (flags & c_flagAtRest) {
 		if (m_velocity.m_x == 0.0f && m_velocity.m_y == 0.0f && m_velocity.m_z == 0.0f &&
@@ -912,8 +919,6 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 		m_flags = flags & ~c_flagAtRest;
 	}
 
-	WheelProbe* entries = m_wheelProbes;
-	WheelProbe* entriesEnd = &m_wheelProbes[sizeOfArray(m_wheelProbes)];
 	AgePlaneCache();
 
 	LegoU32 previousContactCount = m_contactCount;
@@ -941,13 +946,12 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 	m_contactCount = 0;
 	ComputeWheelPositions();
 
-	WheelProbe* entry;
-	for (entry = entries; entry < entriesEnd; entry++) {
-		entry->m_flags &= ~(WheelProbe::c_flagContact | WheelProbe::c_flagHit);
-		entry->m_contactForce.m_z = 0.0f;
-		entry->m_contactForce.m_y = 0.0f;
-		entry->m_contactForce.m_x = 0.0f;
-		entry->m_hitDistanceSquared = -FLT_MAX;
+	for (i = 0; i < sizeOfArray(m_wheelProbes); i++) {
+		m_wheelProbes[i].m_flags &= ~(WheelProbe::c_flagContact | WheelProbe::c_flagHit);
+		m_wheelProbes[i].m_contactForce.m_z = 0.0f;
+		m_wheelProbes[i].m_contactForce.m_y = 0.0f;
+		m_wheelProbes[i].m_contactForce.m_x = 0.0f;
+		m_wheelProbes[i].m_hitDistanceSquared = -FLT_MAX;
 	}
 
 	LegoFloat bestDistance = -FLT_MAX;
@@ -959,33 +963,27 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 		GolBoundedEntity* resource = m_collisionWorlds[resourceIndex];
 		ComputeWheelRaysLocal(resource, sweepHeight, sweepDistance);
 
-		entry = entries;
-		while (entry < entriesEnd) {
+		for (WheelProbe* entry = m_wheelProbes; entry < &m_wheelProbes[sizeOfArray(m_wheelProbes)]; entry++) {
 			if (!(entry->m_flags & WheelProbe::c_flagHit)) {
 				GolBoundingVolume* query = resource->GetBoundingVolume();
 				query->SetMaterialTable(resource->GetMaterialTable());
 
 				GolVec3 hitPoint;
-				RaceEventRecord* hitRecord;
 				if (query->IntersectSegment(
 						&entry->m_rayStart,
 						&entry->m_rayEnd,
 						collisionContext,
 						&hitPoint,
-						&hitRecord,
+						&entry->m_hitRecord,
 						NULL
 					)) {
-					entry->m_hitRecord = hitRecord;
 					entry->m_flags |= WheelProbe::c_flagHit;
 					resource->LocalToWorld(hitPoint, &entry->m_hitPoint);
 
 					GolVec3 collisionNormal = eventContext->m_normal;
 					resource->RotateToWorld(collisionNormal, &entry->m_contactForce);
 
-					LegoFloat deltaX = entry->m_rayEnd.m_x - hitPoint.m_x;
-					LegoFloat deltaY = entry->m_rayEnd.m_y - hitPoint.m_y;
-					LegoFloat deltaZ = entry->m_rayEnd.m_z - hitPoint.m_z;
-					entry->m_hitDistanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+					entry->m_hitDistanceSquared = hitPoint.DistanceSquaredTo(entry->m_rayEnd);
 
 					if (entry->m_hitDistanceSquared > bestDistance) {
 						selectedEntry = entry;
@@ -993,16 +991,12 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 					}
 				}
 			}
-
-			entry++;
 		}
 	}
 
 	GolBoundedEntity* baseResource = m_collisionWorlds[0];
-	entry = entries;
-	while (entry < entriesEnd) {
+	for (WheelProbe* entry = m_wheelProbes; entry < &m_wheelProbes[sizeOfArray(m_wheelProbes)]; entry++) {
 		if (entry->m_flags & WheelProbe::c_flagHit) {
-			entry++;
 			continue;
 		}
 
@@ -1017,30 +1011,24 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 			GolBoundingVolume* query = baseResource->GetBoundingVolume();
 			query->SetMaterialTable(baseResource->GetMaterialTable());
 
-			RaceEventRecord* hitRecord;
 			if (query->IntersectSegment(
 					&entry->m_rayStart,
 					&entry->m_rayEnd,
 					collisionContext,
 					&entry->m_hitPoint,
-					&hitRecord,
+					&entry->m_hitRecord,
 					NULL
 				)) {
-				entry->m_hitRecord = hitRecord;
 				entry->m_cachedPlane = CachePlane(eventContext, entry->m_hitRecord);
 			}
 			else {
-				entry++;
 				continue;
 			}
 		}
 
 		entry->m_contactForce = entry->m_cachedPlane->m_plane.m_normal;
 
-		LegoFloat deltaX = entry->m_rayEnd.m_x - entry->m_hitPoint.m_x;
-		LegoFloat deltaY = entry->m_rayEnd.m_y - entry->m_hitPoint.m_y;
-		LegoFloat deltaZ = entry->m_rayEnd.m_z - entry->m_hitPoint.m_z;
-		entry->m_hitDistanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+		entry->m_hitDistanceSquared = entry->m_hitPoint.DistanceSquaredTo(entry->m_rayEnd);
 
 		if (entry->m_hitDistanceSquared > bestDistance) {
 			selectedEntry = entry;
@@ -1048,7 +1036,6 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 		}
 
 		entry->m_flags |= WheelProbe::c_flagHit;
-		entry++;
 	}
 
 	if (selectedEntry == NULL) {
@@ -1070,23 +1057,20 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 	m_supportNormal.m_y = 0.0f;
 	m_supportNormal.m_z = 0.0f;
 
-	entry = entries;
-	while (entry < entriesEnd) {
-		if (entry->m_hitDistanceSquared >= contactLimitSquared) {
-			m_supportNormal.m_x += entry->m_contactForce.m_x;
-			m_supportNormal.m_y += entry->m_contactForce.m_y;
-			m_supportNormal.m_z += entry->m_contactForce.m_z;
-			entry->m_flags |= WheelProbe::c_flagContact;
+	for (i = 0; i < sizeOfArray(m_wheelProbes); i++) {
+		if (m_wheelProbes[i].m_hitDistanceSquared >= contactLimitSquared) {
+			m_supportNormal.m_x += m_wheelProbes[i].m_contactForce.m_x;
+			m_supportNormal.m_y += m_wheelProbes[i].m_contactForce.m_y;
+			m_supportNormal.m_z += m_wheelProbes[i].m_contactForce.m_z;
+			m_wheelProbes[i].m_flags |= WheelProbe::c_flagContact;
 			m_contactCount++;
 		}
 		else {
-			entry->m_flags &= ~WheelProbe::c_flagContact;
-			entry->m_contactForce.m_x = 0.0f;
-			entry->m_contactForce.m_y = 0.0f;
-			entry->m_contactForce.m_z = 0.0f;
+			m_wheelProbes[i].m_flags &= ~WheelProbe::c_flagContact;
+			m_wheelProbes[i].m_contactForce.m_x = 0.0f;
+			m_wheelProbes[i].m_contactForce.m_y = 0.0f;
+			m_wheelProbes[i].m_contactForce.m_z = 0.0f;
 		}
-
-		entry++;
 	}
 
 	SnapToContacts(selectedEntry);
@@ -1097,10 +1081,8 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 		m_supportNormal.m_y = transform.m_m[2][1];
 		m_supportNormal.m_z = transform.m_m[2][2];
 
-		entry = entries;
-		while (entry < entriesEnd) {
-			entry->m_flags |= WheelProbe::c_flagContact;
-			entry++;
+		for (i = 0; i < sizeOfArray(m_wheelProbes); i++) {
+			m_wheelProbes[i].m_flags |= WheelProbe::c_flagContact;
 		}
 
 		m_contactCount = 4;
@@ -1119,10 +1101,8 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 					m_contactCount = 0;
 					m_velocity.m_z -= scaled;
 
-					entry = entries;
-					while (entry < entriesEnd) {
-						entry->m_flags &= ~WheelProbe::c_flagContact;
-						entry++;
+					for (i = 0; i < sizeOfArray(m_wheelProbes); i++) {
+						m_wheelProbes[i].m_flags &= ~WheelProbe::c_flagContact;
 					}
 					return;
 				}
@@ -1139,14 +1119,13 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 
 	g_carBodySavedState.m_contactForce.m_x = 0.0f;
 	g_carBodySavedState.m_contactForce.m_y = 0.0f;
-	g_carBodySavedState.m_contactForce.m_z = -(m_gravityForce * (1.0f / static_cast<LegoFloat>(m_contactCount + 8)));
+	g_carBodySavedState.m_contactForce.m_z =
+		-(m_gravityForce * (1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_contactCount + 8))));
 
-	entry = entries;
-	while (entry < entriesEnd) {
-		if (entry->m_flags & WheelProbe::c_flagContact) {
-			entry->m_contactForce = g_carBodySavedState.m_contactForce;
+	for (i = 0; i < sizeOfArray(m_wheelProbes); i++) {
+		if (m_wheelProbes[i].m_flags & WheelProbe::c_flagContact) {
+			m_wheelProbes[i].m_contactForce = g_carBodySavedState.m_contactForce;
 		}
-		entry++;
 	}
 }
 
@@ -1191,6 +1170,10 @@ void RacerCarBody::UpdateSlideBank(LegoS32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x004465c0
 void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 {
+	GolVec3 direction;
+	GolVec3 up;
+	LegoU32 entryIndex;
+
 	LegoU32 flags = m_flags;
 	if (flags & c_flagAtRest) {
 		if (m_velocity.m_x == 0.0f && m_velocity.m_y == 0.0f && m_velocity.m_z == 0.0f &&
@@ -1249,12 +1232,12 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 	sweepDistance += m_slideLift;
 
 	WheelProbe* entries = m_wheelProbes;
-	WheelProbe* entriesEnd = &m_wheelProbes[2];
 	WheelProbe* entry;
 	m_contactCount = 0;
 
-	GolVec3* sweepCenter = &m_frontAxleMid;
-	for (entry = entries; entry < entriesEnd; entry++, sweepCenter++) {
+	for (entryIndex = 0; entryIndex < sizeOfArray(m_axleMidpoints); entryIndex++) {
+		entry = &m_wheelProbes[entryIndex];
+		GolVec3* sweepCenter = &m_axleMidpoints[entryIndex];
 		entry->m_rayStart.m_x = sweepCenter->m_x;
 		entry->m_rayStart.m_y = sweepCenter->m_y;
 		entry->m_rayStart.m_z = sweepCenter->m_z + sweepHeight;
@@ -1270,30 +1253,30 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 
 	LegoFloat bestDistance = -FLT_MAX;
 	WheelProbe* selectedEntry = NULL;
-	LegoS32 selectedIndex = 0;
+	LegoU32 selectedIndex = 0;
 	GolBoundingVolume::HitTriangle* eventContext = g_carBodySavedWheels.GetEventContext();
 	GolBoundingVolume::HitTriangle* collisionContext = eventContext;
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_collisionWorldCount; resourceIndex++) {
 		GolBoundedEntity* resource = m_collisionWorlds[resourceIndex];
 
-		LegoS32 entryIndex = 0;
-		for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
+		entryIndex = 0;
+		for (; entryIndex < sizeOfArray(m_axleMidpoints); entryIndex++) {
+			entry = &m_wheelProbes[entryIndex];
 			if (entry->m_flags & WheelProbe::c_flagHit) {
 				continue;
 			}
 
 			GolVec3 start;
-			GolVec3 end;
 			resource->WorldToLocal(entry->m_rayStart, &start);
-			resource->WorldToLocal(entry->m_rayEnd, &end);
+			resource->WorldToLocal(entry->m_rayEnd, &position);
 
 			GolBoundingVolume* query = resource->GetBoundingVolume();
 			query->SetMaterialTable(resource->GetMaterialTable());
 
 			GolVec3 hitPoint;
 			RaceEventRecord* hitRecord;
-			if (!query->IntersectSegment(&start, &end, collisionContext, &hitPoint, &hitRecord, NULL)) {
+			if (!query->IntersectSegment(&start, &position, collisionContext, &hitPoint, &hitRecord, NULL)) {
 				continue;
 			}
 
@@ -1312,10 +1295,7 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 				m_wheelProbes[3].m_hitRecord = hitRecord;
 			}
 
-			LegoFloat deltaX = end.m_x - hitPoint.m_x;
-			LegoFloat deltaY = end.m_y - hitPoint.m_y;
-			LegoFloat deltaZ = end.m_z - hitPoint.m_z;
-			entry->m_hitDistanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+			entry->m_hitDistanceSquared = hitPoint.DistanceSquaredTo(position);
 
 			if (entry->m_hitDistanceSquared > bestDistance) {
 				selectedEntry = entry;
@@ -1326,8 +1306,9 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 	}
 
 	GolBoundedEntity* baseResource = m_collisionWorlds[0];
-	LegoS32 entryIndex = 0;
-	for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
+	entryIndex = 0;
+	for (; entryIndex < sizeOfArray(m_axleMidpoints); entryIndex++) {
+		entry = &m_wheelProbes[entryIndex];
 		if (!(entry->m_flags & WheelProbe::c_flagHit)) {
 			if (!TestCachedPlanes(entry)) {
 				GolBoundingVolume* query = baseResource->GetBoundingVolume();
@@ -1359,10 +1340,7 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 
 			entry->m_contactForce = entry->m_cachedPlane->m_plane.m_normal;
 
-			LegoFloat deltaX = entry->m_rayEnd.m_x - entry->m_hitPoint.m_x;
-			LegoFloat deltaY = entry->m_rayEnd.m_y - entry->m_hitPoint.m_y;
-			LegoFloat deltaZ = entry->m_rayEnd.m_z - entry->m_hitPoint.m_z;
-			entry->m_hitDistanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+			entry->m_hitDistanceSquared = entry->m_hitPoint.DistanceSquaredTo(entry->m_rayEnd);
 
 			if (entry->m_hitDistanceSquared > bestDistance) {
 				selectedEntry = entry;
@@ -1389,6 +1367,7 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 	}
 
 	LegoFloat contactLimitSquared = contactLimit * contactLimit;
+	WheelProbe* entriesEnd = &m_wheelProbes[sizeOfArray(m_axleMidpoints)];
 	m_supportNormal.m_x = 0.0f;
 	m_supportNormal.m_y = 0.0f;
 	m_supportNormal.m_z = 0.0f;
@@ -1410,37 +1389,38 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 	}
 
 	if (m_contactCount >= 2) {
-		GolVec3 direction;
 		direction.m_x = m_wheelProbes[0].m_hitPoint.m_x - m_wheelProbes[1].m_hitPoint.m_x;
 		direction.m_y = m_wheelProbes[0].m_hitPoint.m_y - m_wheelProbes[1].m_hitPoint.m_y;
 		direction.m_z = m_wheelProbes[0].m_hitPoint.m_z - m_wheelProbes[1].m_hitPoint.m_z;
 
-		GolVec3 up;
-		up.m_x = m_physicsEntity.GetTransform().m_m[2][0];
-		up.m_y = m_physicsEntity.GetTransform().m_m[2][1];
-		up.m_z = m_physicsEntity.GetTransform().m_m[2][2];
-		m_physicsEntity.SetDirectionUp(direction, up);
+		GolOrientedEntity* orientationEntity = &m_physicsEntity;
+		const GolMatrix34& transform = orientationEntity->GetTransform();
+		up.m_x = transform.m_m[2][0];
+		up.m_y = transform.m_m[2][1];
+		up.m_z = transform.m_m[2][2];
+		orientationEntity->SetDirectionUp(direction, up);
 
-		m_supportNormal.m_x = m_physicsEntity.GetTransform().m_m[2][0];
-		m_supportNormal.m_y = m_physicsEntity.GetTransform().m_m[2][1];
-		m_supportNormal.m_z = m_physicsEntity.GetTransform().m_m[2][2];
+		m_supportNormal.m_x = transform.m_m[2][0];
+		m_supportNormal.m_y = transform.m_m[2][1];
+		m_supportNormal.m_z = transform.m_m[2][2];
 	}
 	else {
 		GolMath::NormalizeVector3(m_supportNormal, &m_supportNormal);
 	}
 
-	GolVec3* selectedCenter = selectedIndex == 0 ? &m_frontAxleMid : &m_rearAxleMid;
+	GolVec3* selectedCenter = &m_axleMidpoints[selectedIndex];
 	GolVec3 delta;
 	delta.m_x = selectedEntry->m_hitPoint.m_x - selectedCenter->m_x;
 	delta.m_y = selectedEntry->m_hitPoint.m_y - selectedCenter->m_y;
 	delta.m_z = selectedEntry->m_hitPoint.m_z - selectedCenter->m_z + m_slideLift;
 
 	GolVec3 newPosition;
-	m_physicsEntity.GetPosition(&newPosition);
+	GolOrientedEntity* physicsEntity = &m_physicsEntity;
+	physicsEntity->GetPosition(&newPosition);
 	newPosition.m_x += delta.m_x;
 	newPosition.m_y += delta.m_y;
 	newPosition.m_z += delta.m_z;
-	m_physicsEntity.SetPosition(newPosition);
+	physicsEntity->SetPosition(newPosition);
 
 	m_frontAxleMid.m_x += delta.m_x;
 	m_frontAxleMid.m_y += delta.m_y;
@@ -1551,96 +1531,95 @@ void RacerCarBody::UpdateFacingDirection(LegoU32 p_elapsedMs)
 	direction.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
 	direction.m_z = m_physicsEntity.GetOrientation().m_rows[0].m_z;
 
-	if (m_contactCount != 0) {
-		if (!(m_forwardSpeed < 0.03f)) {
-			if (m_contactCount <= 2) {
-				LegoFloat dot = m_supportNormal.m_z;
-				dot *= direction.m_z;
-				LegoFloat value = m_supportNormal.m_y;
-				value *= direction.m_y;
-				dot += value;
-				value = direction.m_x;
-				value *= m_supportNormal.m_x;
-				dot += value;
+	if (!m_contactCount || m_forwardSpeed < 0.03f) {
+		RotateFacingToward(p_elapsedMs, &direction);
+		return;
+	}
 
-				GolVec3 mult;
-				mult.m_x = dot * m_supportNormal.m_x;
-				mult.m_y = m_supportNormal.m_y;
-				mult.m_y *= dot;
-				mult.m_z = dot * m_supportNormal.m_z;
-				direction.m_x -= mult.m_x;
-				direction.m_y -= mult.m_y;
-				direction.m_z -= mult.m_z;
-				GolMath::NormalizeVector3(direction, &direction);
-			}
-			else {
-				if ((m_flags & c_flagSteering) && m_thrust > 0.0f) {
-					GolVec3* current = &m_facingDirection;
-					LegoFloat dot = m_facingDirection.m_z;
-					dot *= direction.m_z;
-					LegoFloat value = current->m_y;
-					value *= direction.m_y;
-					dot += value;
-					value = direction.m_x;
-					value *= current->m_x;
-					dot += value;
-					if (dot > 1.0f) {
-						dot = 1.0f;
-					}
+	if (m_contactCount <= 2) {
+		LegoFloat dot = m_supportNormal.m_z;
+		dot *= direction.m_z;
+		LegoFloat value = m_supportNormal.m_y;
+		value *= direction.m_y;
+		dot += value;
+		value = direction.m_x;
+		value *= m_supportNormal.m_x;
+		dot += value;
 
-					LegoS32 tableIndex = static_cast<LegoS32>((dot + 1.0f) * -511.5f);
-					LegoFloat angle = *(g_arcCosineTable - tableIndex);
-					LegoFloat step = m_yawRate;
-					LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
-					step *= elapsed;
-					if (step > 0.0f) {
-						angle += step;
-					}
-					else {
-						angle -= step;
-					}
+		GolVec3 mult;
+		mult.m_x = dot * m_supportNormal.m_x;
+		mult.m_y = m_supportNormal.m_y;
+		mult.m_y *= dot;
+		mult.m_z = dot * m_supportNormal.m_z;
+		direction.m_x -= mult.m_x;
+		direction.m_y -= mult.m_y;
+		direction.m_z -= mult.m_z;
+		GolMath::NormalizeVector3(direction, &direction);
+		RotateFacingToward(p_elapsedMs, &direction);
+		return;
+	}
 
-					if (angle > m_facingLagMax) {
-						GolVec3 axis;
-						value = direction.m_z;
-						value *= current->m_y;
-						LegoFloat crossValue = current->m_z;
-						crossValue *= direction.m_y;
-						axis.m_x = value - crossValue;
-						value = current->m_z;
-						value *= direction.m_x;
-						crossValue = direction.m_z;
-						crossValue *= current->m_x;
-						axis.m_y = value - crossValue;
-						value = direction.m_y;
-						value *= current->m_x;
-						crossValue = current->m_y;
-						crossValue *= direction.m_x;
-						axis.m_z = value - crossValue;
-						GolMath::RotateAboutAxis(&direction, current, &axis, m_facingLagMax);
-						GolMath::NormalizeVector3(*current, current);
-						return;
-					}
-
-					GolMath::SinCos(step, &cosine, &sine);
-					value = current->m_x;
-					value *= sine;
-					LegoFloat crossValue = m_facingDirection.m_y;
-					crossValue *= cosine;
-					current->m_x = value - crossValue;
-					value = m_facingDirection.m_y;
-					value *= sine;
-					crossValue = current->m_x;
-					crossValue *= cosine;
-					m_facingDirection.m_y = value + crossValue;
-					GolMath::NormalizeVector3(*current, current);
-					return;
-				}
-
-				RotateFacingToward(p_elapsedMs, &direction);
-				return;
-			}
+	if ((m_flags & c_flagSteering) && m_thrust > 0.0f) {
+		GolVec3* current = &m_facingDirection;
+		LegoFloat dot = m_facingDirection.m_z;
+		dot *= direction.m_z;
+		LegoFloat value = current->m_y;
+		value *= direction.m_y;
+		dot += value;
+		value = direction.m_x;
+		value *= current->m_x;
+		dot += value;
+		if (dot > 1.0f) {
+			dot = 1.0f;
 		}
+
+		LegoS32 tableIndex = static_cast<LegoS32>((dot + 1.0f) * -511.5f);
+		LegoFloat angle = *(g_arcCosineTable - tableIndex);
+		LegoFloat step = m_yawRate;
+		LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+		step *= elapsed;
+		if (step > 0.0f) {
+			angle += step;
+		}
+		else {
+			angle -= step;
+		}
+
+		if (angle > m_facingLagMax) {
+			GolVec3 axis;
+			value = direction.m_z;
+			value *= current->m_y;
+			LegoFloat crossValue = current->m_z;
+			crossValue *= direction.m_y;
+			axis.m_x = value - crossValue;
+			value = current->m_z;
+			value *= direction.m_x;
+			crossValue = direction.m_z;
+			crossValue *= current->m_x;
+			axis.m_y = value - crossValue;
+			value = direction.m_y;
+			value *= current->m_x;
+			crossValue = current->m_y;
+			crossValue *= direction.m_x;
+			axis.m_z = value - crossValue;
+			GolMath::RotateAboutAxis(&direction, current, &axis, m_facingLagMax);
+			GolMath::NormalizeVector3(*current, current);
+			return;
+		}
+
+		GolMath::SinCos(step, &cosine, &sine);
+		value = current->m_x;
+		value *= sine;
+		LegoFloat crossValue = m_facingDirection.m_y;
+		crossValue *= cosine;
+		current->m_x = value - crossValue;
+		value = m_facingDirection.m_y;
+		value *= sine;
+		crossValue = current->m_x;
+		crossValue *= cosine;
+		m_facingDirection.m_y = value + crossValue;
+		GolMath::NormalizeVector3(*current, current);
+		return;
 	}
 
 	RotateFacingToward(p_elapsedMs, &direction);
@@ -1888,6 +1867,9 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 	LegoFloat bestDistance = -FLT_MAX;
 	LegoFloat hitAmount;
 	LegoFloat selectedHitAmount = 0.0f;
+	GolVec3 hitPoint;
+	GolVec3 worldNormal;
+	GolVec3 collisionNormal;
 
 	GolOrientedEntity* entity = &m_physicsEntity;
 	for (LegoU32 i = 0; i < sizeOfArray(m_bodyPointsLocal); i++) {
@@ -1909,7 +1891,6 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 				GolBoundingVolume* query = resource->GetBoundingVolume();
 				query->SetMaterialTable(resource->GetMaterialTable());
 
-				GolVec3 hitPoint;
 				if (query->IntersectSegment(
 						&g_carBodySavedState.m_rayStartsLocal[pointIndex],
 						&g_carBodySavedState.m_rayEndsLocal[pointIndex],
@@ -1918,8 +1899,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 						&hitRecord,
 						&hitAmount
 					)) {
-					GolVec3 worldNormal;
-					GolVec3 collisionNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
+					collisionNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
 					resource->RotateToWorld(collisionNormal, &worldNormal);
 
 					LegoFloat dot =
@@ -1940,7 +1920,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 						LegoFloat deltaX = g_carBodySavedState.m_rayEndsLocal[pointIndex].m_x - hitPoint.m_x;
 						LegoFloat deltaY = g_carBodySavedState.m_rayEndsLocal[pointIndex].m_y - hitPoint.m_y;
 						LegoFloat deltaZ = g_carBodySavedState.m_rayEndsLocal[pointIndex].m_z - hitPoint.m_z;
-						LegoFloat distance = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+						LegoFloat distance = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
 
 						if (distance > bestDistance) {
 							bestDistance = distance;
@@ -1963,7 +1943,6 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 				GolBoundingVolume* query = resource->GetBoundingVolume();
 				query->SetMaterialTable(resource->GetMaterialTable());
 
-				GolVec3 hitPoint;
 				if (query->IntersectSegment(
 						&g_carBodySavedState.m_bodyPointsWorld[pointIndex],
 						&m_bodyPointsWorld[pointIndex],
@@ -1972,6 +1951,8 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 						&hitRecord,
 						&hitAmount
 					)) {
+					worldNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
+
 					LegoFloat dot = (hitPoint.m_x - m_bodyPointsWorld[pointIndex].m_x) *
 									g_carBodySavedWheels.GetEventContext()->m_normal.m_x;
 					dot += (hitPoint.m_y - m_bodyPointsWorld[pointIndex].m_y) *
@@ -1989,7 +1970,6 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 							continue;
 						}
 
-						GolVec3 collisionNormal = g_carBodySavedWheels.GetEventContext()->m_normal;
 						LegoFloat deltaX = m_bodyPointsWorld[pointIndex].m_x - hitPoint.m_x;
 						LegoFloat deltaY = m_bodyPointsWorld[pointIndex].m_y - hitPoint.m_y;
 						LegoFloat deltaZ = m_bodyPointsWorld[pointIndex].m_z - hitPoint.m_z;
@@ -1997,7 +1977,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 
 						if (distance > bestDistance) {
 							bestDistance = distance;
-							m_wallNormal = collisionNormal;
+							m_wallNormal = worldNormal;
 							m_bodyPointHit[pointIndex] = 1;
 							selectedHitAmount = hitAmount;
 							LegoU32 collisionCount = m_wallContact;
@@ -2795,16 +2775,21 @@ void RacerCarBody::ComputeWheelPositions()
 // FUNCTION: LEGORACERS 0x00448d90
 void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_sweepHeight, LegoFloat p_sweepDistance)
 {
-	const GolMatrix3& resourceOrientation = p_world->GetOrientation();
-	GolVec3 zHeight;
-	zHeight.m_x = resourceOrientation.m_m[0][2] * p_sweepDistance;
-	zHeight.m_y = resourceOrientation.m_m[1][2] * p_sweepDistance;
-	zHeight.m_z = resourceOrientation.m_m[2][2] * p_sweepDistance;
+	GolVec3 row0;
+	GolVec3 row1;
+	p_world->GetOrientationRow0(&row0);
+	p_world->GetOrientationRow1(&row1);
 
+	LegoFloat resourceUpZ = p_world->GetOrientation().m_m[2][2];
 	GolVec3 zDistance;
-	zDistance.m_x = resourceOrientation.m_m[0][2] * p_sweepHeight;
-	zDistance.m_y = resourceOrientation.m_m[1][2] * p_sweepHeight;
-	zDistance.m_z = resourceOrientation.m_m[2][2] * p_sweepHeight;
+	zDistance.m_x = row0.m_z * p_sweepDistance;
+	zDistance.m_y = row1.m_z * p_sweepDistance;
+	zDistance.m_z = resourceUpZ * p_sweepDistance;
+
+	GolVec3 zHeight;
+	zHeight.m_x = row0.m_z * p_sweepHeight;
+	zHeight.m_y = row1.m_z * p_sweepHeight;
+	zHeight.m_z = resourceUpZ * p_sweepHeight;
 
 	WheelProbe* entries = m_wheelProbes;
 
@@ -2818,12 +2803,10 @@ void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_
 	entries[1].m_rayEnd.m_y = center.m_y - zDistance.m_y;
 	entries[1].m_rayEnd.m_z = center.m_z - zDistance.m_z;
 
-	GolVec3 row0;
 	row0.m_x = m_physicsEntity.GetOrientation().m_m[0][0];
 	row0.m_y = m_physicsEntity.GetOrientation().m_m[0][1];
 	row0.m_z = m_physicsEntity.GetOrientation().m_m[0][2];
 
-	GolVec3 row1;
 	row1.m_x = m_physicsEntity.GetOrientation().m_m[1][0];
 	row1.m_y = m_physicsEntity.GetOrientation().m_m[1][1];
 	row1.m_z = m_physicsEntity.GetOrientation().m_m[1][2];

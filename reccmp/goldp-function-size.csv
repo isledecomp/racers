@@ -1233,7 +1233,7 @@ address,type,size
 1004e3df,function,9
 # __initterm: static CRT function with no recomp symbol; a LIBRARY name would break the __cinit compare
 1004e3e8,library,26
-1004e402,function,380
+1004e402,function,808
 1004e72a,function,238
 1004e818,function,691
 1004eacb,function,535
@@ -1314,8 +1314,7 @@ address,type,size
 10051843,function,69
 10051888,function,520
 10051a90,function,292
-# ___old_sbh_resize_block: static CRT function with no recomp symbol; a LIBRARY name would break the _realloc compare
-10051bb4,library,169
+10051bb4,function,169
 10051c5d,function,68
 10051ca1,function,41
 10051cca,function,168
@@ -1374,7 +1373,8 @@ address,type,size
 100532b3,library,389
 10053438,function,28
 10053454,function,23
-1005346b,function,517
+# _strtoxl: static CRT function with no recomp symbol; a LIBRARY name would break the _strtol compare
+1005346b,library,517
 10053680,function,6
 10053686,function,182
 10053740,function,128

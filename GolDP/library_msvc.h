@@ -548,6 +548,9 @@
 // LIBRARY: GOLDP 0x10051a90
 // ___old_sbh_alloc_block_from_page
 
+// LIBRARY: GOLDP 0x10051bb4
+// ___old_sbh_resize_block
+
 // LIBRARY: GOLDP 0x10051c5d
 // __getbuf
 
@@ -691,9 +694,6 @@
 
 // LIBRARY: GOLDP 0x10053454
 // _strtol
-
-// LIBRARY: GOLDP 0x1005346b
-// _strtoxl
 
 // LIBRARY: GOLDP 0x10053680
 // _strchr

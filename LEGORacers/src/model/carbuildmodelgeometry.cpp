@@ -66,9 +66,9 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 
 	BuildVertex* node = *p_root;
 	if (node != NULL) {
-		do {
-			LegoS32 compare = CompareBuildVertex(p_vertex, node);
-			if (compare != 0) {
+		LegoS32 compare = CompareBuildVertex(p_vertex, node);
+		if (compare != 0) {
+			do {
 				if (compare > 0) {
 					if (node->m_right == NULL) {
 						p_vertex->m_parent = node;
@@ -89,11 +89,8 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 
 					node = node->m_left;
 				}
-			}
-			else {
-				break;
-			}
-		} while (node != NULL);
+			} while (node != NULL && (compare = CompareBuildVertex(p_vertex, node)) != 0);
+		}
 
 		if (node != NULL) {
 			return node;

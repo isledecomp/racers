@@ -30,8 +30,14 @@
 // LIBRARY: GOLDP 0x1004b049
 // ?_CallCatchBlock2@@YAPAXPAUEHRegistrationNode@@PBU_s_FuncInfo@@PAXHK@Z
 
+// LIBRARY: GOLDP 0x1004b09d
+// ?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z
+
 // LIBRARY: GOLDP 0x1004b0c2
 // ?_CallSETranslator@@YAHPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAX2PBU_s_FuncInfo@@H1@Z
+
+// LIBRARY: GOLDP 0x1004b178
+// ?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z
 
 // LIBRARY: GOLDP 0x1004b1ed
 // ?_GetRangeOfTrysToCheck@@YAPBU_s_TryBlockMapEntry@@PBU_s_FuncInfo@@HHPAI1@Z
@@ -104,6 +110,12 @@
 // LIBRARY: GOLDP 0x1004b930
 // _strncmp
 
+// LIBRARY: GOLDP 0x1004b970
+// __CIacos
+
+// LIBRARY: GOLDP 0x1004b984
+// _acos
+
 // LIBRARY: GOLDP 0x1004ba3b
 // _isalpha
 
@@ -170,11 +182,38 @@
 // LIBRARY: GOLDP 0x1004c770
 // ___InternalCxxFrameHandler
 
+// LIBRARY: GOLDP 0x1004c80b
+// ?FindHandler@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@EH1@Z
+
+// LIBRARY: GOLDP 0x1004c9be
+// ?FindHandlerForForeignException@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@HH1@Z
+
+// LIBRARY: GOLDP 0x1004ca68
+// ?TypeMatch@@YAHPBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_ThrowInfo@@@Z
+
 // LIBRARY: GOLDP 0x1004cac5
 // ___FrameUnwindToState
 
+// LIBRARY: GOLDP 0x1004cb63
+// ?FrameUnwindFilter@@YAHPAU_EXCEPTION_POINTERS@@@Z
+
+// LIBRARY: GOLDP 0x1004cb79
+// ?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1E@Z
+
+// LIBRARY: GOLDP 0x1004cbf4
+// ?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z
+
+// LIBRARY: GOLDP 0x1004cd0f
+// ?ExFilterRethrow@@YAHPAU_EXCEPTION_POINTERS@@@Z
+
+// LIBRARY: GOLDP 0x1004cd39
+// ?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PBU_s_HandlerType@@PBU_s_CatchableType@@@Z
+
 // LIBRARY: GOLDP 0x1004cefd
 // ?_DestructExceptionObject@@YAXPAUEHExceptionRecord@@E@Z
+
+// LIBRARY: GOLDP 0x1004cf64
+// ?AdjustPointer@@YAPAXPAXABUPMD@@@Z
 
 // LIBRARY: GOLDP 0x1004cf90
 // __CallSettingFrame@12
@@ -314,14 +353,29 @@
 // LIBRARY: GOLDP 0x1004eef7
 // __trandisp2
 
+// LIBRARY: GOLDP 0x1004ef83
+// __rttospopde
+
 // LIBRARY: GOLDP 0x1004ef8d
 // __rtnospopde
+
+// LIBRARY: GOLDP 0x1004ef94
+// __rtzeropop
+
+// LIBRARY: GOLDP 0x1004ef9b
+// __rtonepop
 
 // LIBRARY: GOLDP 0x1004efa2
 // __tosnan1
 
+// LIBRARY: GOLDP 0x1004efcd
+// __nosnan2
+
 // LIBRARY: GOLDP 0x1004eff7
 // __nan2
+
+// LIBRARY: GOLDP 0x1004f036
+// __rtindfpop
 
 // LIBRARY: GOLDP 0x1004f053
 // __rtchsifneg
@@ -352,6 +406,9 @@
 
 // LIBRARY: GOLDP 0x1004f16b
 // __math_exit
+
+// LIBRARY: GOLDP 0x1004f195
+// __check_overflow_exit
 
 // LIBRARY: GOLDP 0x1004f24c
 // __isctype
@@ -436,6 +493,9 @@
 
 // LIBRARY: GOLDP 0x10050511
 // ?_ValidateExecute@@YAHP6GHXZ@Z
+
+// LIBRARY: GOLDP 0x10050530
+// _strcmp
 
 // LIBRARY: GOLDP 0x100505c0
 // _memmove
@@ -602,6 +662,9 @@
 // LIBRARY: GOLDP 0x100529f0
 // _memcpy
 
+// LIBRARY: GOLDP 0x10052d25
+// __matherr
+
 // LIBRARY: GOLDP 0x10052d28
 // __87except
 
@@ -628,6 +691,9 @@
 
 // LIBRARY: GOLDP 0x10053454
 // _strtol
+
+// LIBRARY: GOLDP 0x1005346b
+// _strtoxl
 
 // LIBRARY: GOLDP 0x10053680
 // _strchr

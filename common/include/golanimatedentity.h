@@ -57,7 +57,7 @@ public:
 		LegoS32 p_frame,
 		GolVec3* p_dest
 	);
-	void SamplePartRotation(
+	LegoBool32 SamplePartRotation(
 		LegoU32 p_modelIndex,
 		LegoU32 p_trackOffset,
 		LegoU32 p_partDataIndex,

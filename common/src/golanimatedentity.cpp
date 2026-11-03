@@ -694,7 +694,7 @@ LegoBool32 GolAnimatedEntity::SamplePartPosition(
 }
 
 // FUNCTION: LEGORACERS 0x0040e420
-void GolAnimatedEntity::SamplePartRotation(
+LegoBool32 GolAnimatedEntity::SamplePartRotation(
 	LegoU32 p_modelIndex,
 	LegoU32 p_trackOffset,
 	LegoU32 p_partDataIndex,
@@ -713,7 +713,7 @@ void GolAnimatedEntity::SamplePartRotation(
 	const CmbModelPartTrack& track = modelPart->GetTrack(trackIndex);
 	LegoS32 frameCount = part.GetFrameCount();
 
-	animationData.InterpolateRotation(p_dest, track, time, frameCount);
+	return animationData.InterpolateRotation(p_dest, track, time, frameCount);
 }
 
 // FUNCTION: GOLDP 0x100241a0

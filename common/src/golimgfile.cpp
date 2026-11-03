@@ -1457,6 +1457,7 @@ void GolImgFile::UpscaleRow(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledWid
 void GolImgFile::DownsampleRowPair(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_dst)
 {
 	LegoU8* end = p_dst + (m_width >> 1) * sizeof(LegoU16);
+	LegoU32 samples[4];
 	LegoU32 red;
 	LegoU32 grn;
 	LegoU32 blu;
@@ -1464,7 +1465,6 @@ void GolImgFile::DownsampleRowPair(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_ds
 
 	if (m_hasColorKey) {
 		for (; p_dst < end; p_dst += sizeof(LegoU16)) {
-			LegoU32 samples[4];
 
 			samples[0] = *p_top;
 			p_top += (m_srcStrideMask >> 0) & 1;
@@ -1532,7 +1532,6 @@ void GolImgFile::DownsampleRowPair(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_ds
 	}
 	else {
 		for (; p_dst < end; p_dst += sizeof(LegoU16)) {
-			LegoU32 samples[4];
 
 			samples[0] = *p_top;
 			p_top += (m_srcStrideMask >> 0) & 1;

@@ -705,25 +705,21 @@ MenuWidget* MenuIcon::OnKeyDown(InputEventQueue::Event* p_item, undefined4 p_x, 
 // FUNCTION: LEGORACERS 0x004728e0
 MenuWidget* MenuIcon::OnKeyUp(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
-	LegoU32 keyCode = p_item->m_keyCode;
-	LegoU32 eventType = keyCode;
-	eventType &= InputDevice::c_sourceMask;
+	LegoU32 eventType = p_item->m_keyCode & InputDevice::c_sourceMask;
 	LegoU32 activeKey = m_activeKeyCode;
 
-	if (keyCode != activeKey) {
+	if (p_item->m_keyCode != activeKey) {
 		return NULL;
 	}
 
+	m_activeKeyCode = 0;
+
 	if (eventType == InputDevice::c_sourceMouse) {
-		m_activeKeyCode = 0;
 
 		if (!HitTest(p_x, p_y) && (m_stateFlags & c_flagFocused)) {
 			Unfocus(1);
 			return this;
 		}
-	}
-	else {
-		m_activeKeyCode = 0;
 	}
 
 	Unfocus(0);

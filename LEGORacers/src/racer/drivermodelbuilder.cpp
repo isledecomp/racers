@@ -546,14 +546,14 @@ void DriverModelBuilder::CopyGroupsUntilFace()
 			group = GolModel::c_groupTypeTriangleBatch | (group & 0x007f0000) |
 					((group + m_bodySummary.m_indexCount) & 0x0000ffff);
 			break;
-		case GolModel::c_groupTypeMaterial: {
+		case static_cast<LegoU32>(GolModel::c_groupTypeMaterial): {
 			GolMaterial* material = m_headSummary.m_model->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
 			name = material->GetNameRecord();
 			group = GolModel::c_groupTypeMaterial |
 					(m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(name.m_name) & 0x00ffffff);
 			break;
 		}
-		case GolModel::c_groupTypeEnd:
+		case static_cast<LegoU32>(GolModel::c_groupTypeEnd):
 			headIndex = m_headSummary.m_groupCount;
 			continue;
 		}

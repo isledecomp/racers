@@ -107,8 +107,8 @@ void RaceCameraController::UpdateListener()
 	}
 
 	GolVec3 velocity = m_racer->m_physics.m_velocity;
-	GolVec3 right;
 	GolVec3 forward;
+	GolVec3 right;
 	m_racer->m_visuals.m_carEntity->GetAxes(&right, &forward);
 
 	GolVec3 position;
@@ -124,28 +124,33 @@ void RaceCameraController::UpdateListener()
 
 	{
 		SoundNode* soundNode = m_listenerNode;
-		SoundVector* rightVector = &soundNode->m_right;
-		SoundVector* forwardVector = &soundNode->m_forward;
-		rightVector->m_x = right.m_x;
-		rightVector->m_y = right.m_y;
-		rightVector->m_z = right.m_z;
-		forwardVector->m_x = forward.m_x;
-		forwardVector->m_y = forward.m_y;
-		forwardVector->m_z = forward.m_z;
+		GolVec3* rightVector = &soundNode->m_right;
+		GolVec3* forwardVector = &soundNode->m_forward;
+		*rightVector = right;
+		*forwardVector = forward;
 
-		SoundVector* orientation = &soundNode->m_orientation;
-		orientation->m_x = forwardVector->m_y * rightVector->m_z - forwardVector->m_z * rightVector->m_y;
-		orientation->m_y = forwardVector->m_z * rightVector->m_x - forwardVector->m_x * rightVector->m_z;
-		orientation->m_z = rightVector->m_y * forwardVector->m_x - forwardVector->m_y * rightVector->m_x;
+		GolVec3* orientation = &soundNode->m_orientation;
+		LegoFloat x = forwardVector->m_y * rightVector->m_z;
+		LegoFloat xSub = forwardVector->m_z * rightVector->m_y;
+		x -= xSub;
+		orientation->m_x = x;
+		LegoFloat y = forwardVector->m_z * rightVector->m_x;
+		LegoFloat ySub = rightVector->m_z;
+		ySub *= forwardVector->m_x;
+		y -= ySub;
+		orientation->m_y = y;
+		LegoFloat z = rightVector->m_y;
+		z *= forwardVector->m_x;
+		LegoFloat zSub = forwardVector->m_y * rightVector->m_x;
+		z -= zSub;
+		orientation->m_z = z;
 		GolMath::NormalizeVector3(*orientation, orientation);
 		soundNode->m_unk0x44 = TRUE;
 	}
 
 	{
 		SoundNode* soundNode = m_listenerNode;
-		soundNode->m_position.m_x = position.m_x;
-		soundNode->m_position.m_y = position.m_y;
-		soundNode->m_position.m_z = position.m_z;
+		static_cast<GolVec3&>(soundNode->m_position) = position;
 		soundNode->m_unk0x44 = TRUE;
 	}
 }

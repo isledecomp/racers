@@ -1942,8 +1942,8 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 		LegoS32 y;
 		p_placement->GetPlacement(&x, &y, &rotation);
 
-		LegoS32 partType = p_placement->GetPartType();
 		LegoS32 colorRecordIndex = p_placement->GetColorRecordIndex();
+		LegoS32 partType = p_placement->GetPartType();
 		BuildPieceModel(p_entity, pieceRecord, x, y, 21, rotation, colorRecordIndex, 239);
 
 		if (pieceRecord->m_pieceType == 0x7ff) {
@@ -2036,9 +2036,8 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 	else {
 		BeginModelWrite(model);
 		EndModelWrite(model);
-		GolModelBase* auxModel = m_overlayModel;
-		BeginModelWrite(auxModel);
-		EndModelWrite(auxModel);
+		BeginModelWrite(m_overlayModel);
+		EndModelWrite(m_overlayModel);
 	}
 }
 
@@ -2155,8 +2154,9 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 		LegoU32 group = m_model->GetGroups()[i];
 		if ((group & 0xe0000000) == 0x80000000) {
 			LegoU32 materialIndex = group & 0xffff;
+			LegoU32 materialOrder = materialUsage[materialIndex].m_order & 0xffffff;
 			outputModel->GetMutableGroups()[i] = 0x80000000;
-			outputModel->GetMutableGroups()[i] |= materialUsage[materialIndex].m_order & 0xffffff;
+			outputModel->GetMutableGroups()[i] |= materialOrder;
 			outputModel->SetDirty(TRUE);
 		}
 		else {

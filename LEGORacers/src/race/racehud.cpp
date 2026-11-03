@@ -107,8 +107,7 @@ void RaceHud::ClipTriangleTop(
 	if (p_v0->m_y < m_clipTop) {
 		GolRenderDevice::TexturedVertex intersection0;
 		GolRenderDevice::TexturedVertex intersection1;
-		intersection0.m_y = m_clipTop;
-		intersection1.m_y = m_clipTop;
+		intersection1.m_y = intersection0.m_y = m_clipTop;
 		intersection0.m_z = 0.0f;
 		intersection1.m_z = 0.0f;
 		intersection0.m_color = p_v0->m_color;
@@ -124,8 +123,6 @@ void RaceHud::ClipTriangleTop(
 			intersection1.m_x = (p_v1->m_x - p_v2->m_x) * amount + p_v2->m_x;
 			intersection1.m_u = (p_v1->m_u - p_v2->m_u) * amount + p_v2->m_u;
 			intersection1.m_v = (p_v1->m_v - p_v2->m_v) * amount + p_v2->m_v;
-
-			ClipTriangleLeft(&intersection0, &intersection1, p_v2);
 		}
 		else {
 			amount = (p_v1->m_y - m_clipTop) / (p_v1->m_y - p_v0->m_y);
@@ -134,9 +131,9 @@ void RaceHud::ClipTriangleTop(
 			intersection1.m_v = (p_v0->m_v - p_v1->m_v) * amount + p_v1->m_v;
 
 			ClipTriangleLeft(p_v2, &intersection1, p_v1);
-			ClipTriangleLeft(&intersection0, &intersection1, p_v2);
 		}
 
+		ClipTriangleLeft(&intersection0, &intersection1, p_v2);
 		return;
 	}
 

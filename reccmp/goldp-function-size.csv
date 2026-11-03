@@ -1135,15 +1135,16 @@ address,type,size
 1004b5ef,function,18
 1004b601,function,47
 1004b630,function,340
-1004b784,function,78
-1004b7d2,function,44
+# _shortsort: static CRT function with no recomp symbol; a LIBRARY name would break the _qsort compare
+1004b784,library,78
+# _swap: static CRT function with no recomp symbol; a LIBRARY name would break the _qsort compare
+1004b7d2,library,44
 1004b7fe,function,9
 1004b808,function,39
 1004b830,function,254
 1004b930,function,56
 1004b970,function,20
-1004b984,function,9
-1004b98d,function,174
+1004b984,function,183
 1004ba3b,function,46
 1004ba70,function,39
 1004ba97,function,111
@@ -1173,18 +1174,10 @@ address,type,size
 1004cac5,function,158
 1004cb63,function,22
 1004cb79,function,123
-1004cbf4,function,165
-1004cc99,function,10
-1004cca3,function,24
-1004ccbb,function,6
-1004ccc1,function,78
+1004cbf4,function,283
 1004cd0f,function,42
-1004cd39,function,440
-1004cef1,function,4
-1004cef5,function,8
+1004cd39,function,452
 1004cefd,function,103
-1004cf53,function,9
-1004cf5c,function,8
 1004cf64,function,35
 1004cf90,function,39
 1004cfdc,function,84
@@ -1197,12 +1190,18 @@ address,type,size
 1004d21f,function,233
 1004d308,function,280
 1004d420,function,1857
-1004db61,function,53
-1004db96,function,49
-1004dbc7,function,56
-1004dbff,function,13
-1004dc0c,function,16
-1004dc1c,function,14
+# _write_char: static CRT function with no recomp symbol; a LIBRARY name would break the __output compare
+1004db61,library,53
+# _write_multi_char: static CRT function with no recomp symbol; a LIBRARY name would break the __output compare
+1004db96,library,49
+# _write_string: static CRT function with no recomp symbol; a LIBRARY name would break the __output compare
+1004dbc7,library,56
+# _get_int_arg: static CRT function with no recomp symbol; a LIBRARY name would break the __output compare
+1004dbff,library,13
+# _get_int64_arg: static CRT function with no recomp symbol; a LIBRARY name would break the __output compare
+1004dc0c,library,16
+# _get_short_arg: static CRT function with no recomp symbol; a LIBRARY name would break the __output compare
+1004dc1c,library,14
 1004dc2a,function,18
 1004dc3c,function,44
 1004dc68,function,252
@@ -1214,34 +1213,28 @@ address,type,size
 1004de85,function,24
 1004de9d,function,62
 1004dedb,function,97
-1004df3c,function,194
+# __cftoe2: static CRT function with no recomp symbol; a LIBRARY name would break the __cftoe compare
+1004df3c,library,194
 1004dffe,function,85
-1004e053,function,167
+# __cftof2: static CRT function with no recomp symbol; a LIBRARY name would break the __cftof compare
+1004e053,library,167
 1004e0fa,function,147
 1004e18d,function,81
-1004e1de,function,37
+# __shift: static CRT function with no recomp symbol; a LIBRARY name would break the __cftof compare
+1004e1de,library,37
 1004e20c,function,189
 1004e2c9,function,27
 1004e2e4,function,45
 1004e311,function,17
 1004e322,function,15
-1004e331,function,165
+# _doexit: static CRT function with no recomp symbol; a LIBRARY name would break the __exit compare
+1004e331,library,165
 1004e3d6,function,9
 1004e3df,function,9
-1004e3e8,function,26
-1004e402,function,380
-1004e57e,function,8
-1004e586,function,9
-1004e58f,function,319
-1004e6ce,function,6
-1004e6d4,function,11
-1004e6df,function,75
-1004e72a,function,103
-1004e791,function,3
-1004e794,function,9
-1004e79d,function,111
-1004e80c,function,3
-1004e80f,function,9
+# __initterm: static CRT function with no recomp symbol; a LIBRARY name would break the __cinit compare
+1004e3e8,library,26
+1004e402,function,808
+1004e72a,function,238
 1004e818,function,691
 1004eacb,function,535
 1004ece2,function,40
@@ -1278,7 +1271,8 @@ address,type,size
 1004f356,function,97
 1004f3b7,function,21
 1004f3cc,function,548
-1004f5f0,function,43
+# _strncnt: static CRT function with no recomp symbol; a LIBRARY name would break the ___crtLCMapStringA compare
+1004f5f0,library,43
 1004f61b,function,291
 1004f73e,function,124
 1004f7ba,function,127
@@ -1290,7 +1284,8 @@ address,type,size
 1004fb0c,function,293
 1004fc31,function,185
 1004fcea,function,153
-1004fd83,function,436
+# _parse_cmdline: static CRT function with no recomp symbol; a LIBRARY name would break the __setargv compare
+1004fd83,library,436
 1004ff37,function,306
 10050069,function,45
 10050096,function,328
@@ -1302,9 +1297,7 @@ address,type,size
 100504d9,function,28
 100504f5,function,28
 10050511,function,24
-10050530,function,67
-10050574,function,6
-1005057a,function,58
+10050530,function,132
 100508f5,function,317
 10050a32,function,23
 10050a49,function,72
@@ -1338,8 +1331,10 @@ address,type,size
 10052055,function,27
 10052070,function,53
 100520a5,function,22
-100520bb,function,146
-1005214d,function,137
+# __abstract_cw: static CRT function with no recomp symbol; a LIBRARY name would break the __control87 compare
+100520bb,library,146
+# __hw_cw: static CRT function with no recomp symbol; a LIBRARY name would break the __control87 compare
+1005214d,library,137
 100521d6,function,111
 10052245,function,203
 10052310,function,73
@@ -1368,26 +1363,31 @@ address,type,size
 10052fd0,function,47
 10052fff,function,97
 10053060,function,429
-1005320d,function,74
-10053257,function,51
-1005328a,function,41
-100532b3,function,389
+# _getSystemCP: static CRT function with no recomp symbol; a LIBRARY name would break the __setmbcp compare
+1005320d,library,74
+# _CPtoLCID: static CRT function with no recomp symbol; a LIBRARY name would break the __setmbcp compare
+10053257,library,51
+# _setSBCS: static CRT function with no recomp symbol; a LIBRARY name would break the __setmbcp compare
+1005328a,library,41
+# _setSBUpLow: static CRT function with no recomp symbol; a LIBRARY name would break the __setmbcp compare
+100532b3,library,389
 10053438,function,28
 10053454,function,23
-1005346b,function,517
-10053670,function,5
-10053675,function,11
+# _strtoxl: static CRT function with no recomp symbol; a LIBRARY name would break the _strtol compare
+1005346b,library,517
 10053680,function,6
 10053686,function,182
 10053740,function,128
 100537c0,function,137
 10053849,function,386
-100539cb,function,61
+# _siglookup: static CRT function with no recomp symbol; a LIBRARY name would break the _raise compare
+100539cb,library,61
 10053a08,function,129
 10053a89,function,46
 10053ab7,function,92
 10053b13,function,9
-10053b1c,function,164
+# _flsall: static CRT function with no recomp symbol; a LIBRARY name would break the __flushall compare
+10053b1c,library,164
 10053bc0,function,33
 10053be1,function,94
 10053c3f,function,46

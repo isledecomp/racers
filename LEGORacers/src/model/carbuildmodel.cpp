@@ -1942,8 +1942,8 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 		LegoS32 y;
 		p_placement->GetPlacement(&x, &y, &rotation);
 
-		LegoS32 partType = p_placement->GetPartType();
 		LegoS32 colorRecordIndex = p_placement->GetColorRecordIndex();
+		LegoS32 partType = p_placement->GetPartType();
 		BuildPieceModel(p_entity, pieceRecord, x, y, 21, rotation, colorRecordIndex, 239);
 
 		if (pieceRecord->m_pieceType == 0x7ff) {
@@ -2036,9 +2036,8 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 	else {
 		BeginModelWrite(model);
 		EndModelWrite(model);
-		GolModelBase* auxModel = m_overlayModel;
-		BeginModelWrite(auxModel);
-		EndModelWrite(auxModel);
+		BeginModelWrite(m_overlayModel);
+		EndModelWrite(m_overlayModel);
 	}
 }
 

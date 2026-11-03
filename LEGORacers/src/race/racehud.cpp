@@ -459,6 +459,8 @@ void RaceHud::DrawFixedMap()
 	LegoFloat markerHeightScale = m_scaleY;
 	markerHeightScale *= g_hudMarkerSize;
 	LegoS32 markerHeight = static_cast<LegoS32>(markerHeightScale);
+	LegoS32 mapOriginY = m_viewport.m_bottom;
+	LegoS32 mapOriginX = m_viewport.m_right;
 
 	m_clipTop = static_cast<LegoFloat>(m_viewport.m_top);
 	m_clipLeft = static_cast<LegoFloat>(m_viewport.m_left);
@@ -476,12 +478,14 @@ void RaceHud::DrawFixedMap()
 
 	double inset = static_cast<double>(m_screenHeight) * g_hudMapInsetScale;
 	LegoS32 verticalOffset = static_cast<LegoS32>(m_scaleY * inset);
-	LegoS32 mapOriginY = m_viewport.m_bottom - verticalOffset;
+	mapOriginY -= verticalOffset;
 	LegoS32 horizontalOffset = static_cast<LegoS32>(m_scaleX * inset);
-	LegoS32 mapOriginX = m_viewport.m_right - horizontalOffset;
+	mapOriginX -= horizontalOffset;
+	LegoBool mirror = m_mirror;
+	LegoFloat referenceX = m_mapMaxX;
 
 	LegoFloat referenceY;
-	if (m_mirror) {
+	if (mirror) {
 		referenceY = -m_mapMaxY;
 	}
 	else {
@@ -496,7 +500,7 @@ void RaceHud::DrawFixedMap()
 	LegoFloat scaleY = static_cast<LegoFloat>(m_scaleY * scale);
 
 	if (m_mapMaterial) {
-		if (m_mirror) {
+		if (mirror) {
 			vertices[0].m_v = 0.0f;
 			vertices[1].m_v = 0.0f;
 			vertices[2].m_v = maxTextureCoordinate;
@@ -509,21 +513,14 @@ void RaceHud::DrawFixedMap()
 			vertices[3].m_v = 0.0f;
 		}
 
-		vertices[0].m_x = static_cast<LegoFloat>(mapOriginX) + (m_mapMinX - m_mapMaxX) * scaleX;
-		vertices[0].m_y = static_cast<LegoFloat>(mapOriginY) + (m_mapMinY - m_mapMaxY) * scaleY;
-		vertices[0].m_u = 0.0f;
-
-		vertices[1].m_x = static_cast<LegoFloat>(mapOriginX);
-		vertices[1].m_y = vertices[0].m_y;
-		vertices[1].m_u = maxTextureCoordinate;
-
-		vertices[2].m_x = static_cast<LegoFloat>(mapOriginX);
-		vertices[2].m_y = static_cast<LegoFloat>(mapOriginY);
-		vertices[2].m_u = maxTextureCoordinate;
-
-		vertices[3].m_x = vertices[0].m_x;
-		vertices[3].m_y = static_cast<LegoFloat>(mapOriginY);
+		vertices[1].m_x = vertices[2].m_x = static_cast<LegoFloat>(mapOriginX);
+		vertices[3].m_y = vertices[2].m_y = static_cast<LegoFloat>(mapOriginY);
 		vertices[3].m_u = 0.0f;
+		vertices[0].m_u = 0.0f;
+		vertices[2].m_u = maxTextureCoordinate;
+		vertices[1].m_u = maxTextureCoordinate;
+		vertices[0].m_x = vertices[3].m_x = static_cast<LegoFloat>(mapOriginX) + (m_mapMinX - m_mapMaxX) * scaleX;
+		vertices[0].m_y = vertices[1].m_y = static_cast<LegoFloat>(mapOriginY) + (m_mapMinY - m_mapMaxY) * scaleY;
 
 		ClipTriangleTop(&vertices[0], &vertices[1], &vertices[2]);
 		ClipTriangleTop(&vertices[3], &vertices[0], &vertices[2]);
@@ -532,8 +529,11 @@ void RaceHud::DrawFixedMap()
 	GolImage* markerResource = m_images->GetItem(10);
 	LegoS32 halfMarkerWidth = markerWidth >> 1;
 	LegoS32 halfMarkerHeight = markerHeight >> 1;
-	LegoS32 markerOriginX = mapOriginX - halfMarkerWidth;
-	LegoS32 markerOriginY = mapOriginY - halfMarkerHeight;
+	mapOriginX -= halfMarkerWidth;
+	mapOriginY -= halfMarkerHeight;
+	GolVec3 position;
+	Rect destRect;
+	Rect sourceRect;
 
 	LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount());
 	while (racerIndex > 0) {
@@ -541,16 +541,13 @@ void RaceHud::DrawFixedMap()
 
 		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 		if (racer != m_racer) {
-			GolVec3 position;
 			racer->m_visuals.m_carEntity->GetPosition(&position);
 
-			Rect destRect;
-			destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
-			destRect.m_left = markerOriginX + static_cast<LegoS32>((position.m_x - m_mapMaxX) * scaleX);
+			destRect.m_top = mapOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
+			destRect.m_left = mapOriginX + static_cast<LegoS32>((position.m_x - referenceX) * scaleX);
 			destRect.m_bottom = destRect.m_top + markerHeight;
 			destRect.m_right = destRect.m_left + markerWidth;
 
-			Rect sourceRect;
 			if (racer->m_controlMode == Racer::c_controlAi && racerIndex == 1) {
 				sourceRect.m_left = 0x10;
 			}
@@ -571,16 +568,13 @@ void RaceHud::DrawFixedMap()
 	}
 
 	if (m_timeRaceManager && m_timeRaceManager->HasRecordGhostMarker()) {
-		GolVec3 position;
 		m_timeRaceManager->GetRecordGhostMarkerEntity()->GetPosition(&position);
 
-		Rect destRect;
-		destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
-		destRect.m_left = markerOriginX + static_cast<LegoS32>((position.m_x - m_mapMaxX) * scaleX);
+		destRect.m_top = mapOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
+		destRect.m_left = mapOriginX + static_cast<LegoS32>((position.m_x - referenceX) * scaleX);
 		destRect.m_bottom = destRect.m_top + markerHeight;
 		destRect.m_right = destRect.m_left + markerWidth;
 
-		Rect sourceRect;
 		sourceRect.m_left = 0x10;
 		if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 			sourceRect.m_top = 0x10;
@@ -595,16 +589,13 @@ void RaceHud::DrawFixedMap()
 	}
 
 	if (m_timeRaceManager && m_timeRaceManager->HasBestGhostMarker()) {
-		GolVec3 position;
 		m_timeRaceManager->GetBestGhostMarkerEntity()->GetPosition(&position);
 
-		Rect destRect;
-		destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
-		destRect.m_left = markerOriginX + static_cast<LegoS32>((position.m_x - m_mapMaxX) * scaleX);
+		destRect.m_top = mapOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
+		destRect.m_left = mapOriginX + static_cast<LegoS32>((position.m_x - referenceX) * scaleX);
 		destRect.m_bottom = destRect.m_top + markerHeight;
 		destRect.m_right = destRect.m_left + markerWidth;
 
-		Rect sourceRect;
 		sourceRect.m_left = 0;
 		if (m_layout == c_layoutSplitTop || m_layout == c_layoutSplitBottom) {
 			sourceRect.m_top = 0x10;
@@ -618,19 +609,22 @@ void RaceHud::DrawFixedMap()
 		m_renderer->DrawImageClipped(markerResource, 0, &destRect, &sourceRect, &m_viewport);
 	}
 
-	GolVec3 currentPosition;
-	m_racer->m_visuals.m_carEntity->GetPosition(&currentPosition);
+	m_racer->m_visuals.m_carEntity->GetPosition(&position);
 
 	GolVec3 direction;
 	m_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 	LegoFloat directionScale =
 		1.0f / static_cast<LegoFloat>(sqrt(direction.m_y * direction.m_y + direction.m_x * direction.m_x));
-	LegoFloat directionX = direction.m_x * directionScale;
-	LegoFloat directionY = -(direction.m_y * directionScale);
+	direction.m_x *= directionScale;
+	direction.m_y *= directionScale;
+	direction.m_y = -direction.m_y;
 
-	LegoS32 currentX = mapOriginX + static_cast<LegoS32>((currentPosition.m_x - m_mapMaxX) * scaleX);
-	LegoS32 currentY = mapOriginY + static_cast<LegoS32>((referenceY - currentPosition.m_y) * scaleY);
-	DrawMapArrow(currentX, currentY, directionX, directionY);
+	DrawMapArrow(
+		mapOriginX + (halfMarkerWidth + static_cast<LegoS32>((position.m_x - referenceX) * scaleX)),
+		mapOriginY + (halfMarkerHeight + static_cast<LegoS32>((referenceY - position.m_y) * scaleY)),
+		direction.m_x,
+		direction.m_y
+	);
 }
 
 // FUNCTION: LEGORACERS 0x00424fb0

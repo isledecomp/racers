@@ -450,7 +450,9 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 			LegoFloat transitionRate = m_transitionRate;
 			m_transitionProgress += transitionRate * elapsed;
 			if (m_transitionProgress >= 1.0f) {
-				LegoFloat consumed = (m_transitionProgress - 1.0f) / m_transitionRate;
+				LegoFloat consumed = m_transitionProgress;
+				consumed -= 1.0f;
+				consumed /= m_transitionRate;
 
 				m_msPerFrame = m_queuedMsPerFrame;
 				m_partTimeMs = m_queuedPartTimeMs;

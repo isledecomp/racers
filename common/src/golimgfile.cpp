@@ -1319,47 +1319,48 @@ void GolImgFile::ConvertImageHalfSize(
 
 	SetupPixelConversion(p_format, p_colorKey);
 
+	LegoU8* source = p_src;
 	LegoU32 rows = m_height >> 1;
 	LegoU32 srcPitch = m_rowByteStride << 1;
 
 	if (p_format.m_paletteMask != 0) {
-		for (; rows != 0; rows--) {
+		for (; rows > 0; rows--) {
 			LegoU8* end = p_dst + (m_width >> 1);
 			if (p_dst < end) {
-				LegoU8* dst = p_dst - 1;
-				LegoU8* bottom = p_src + m_rowByteStride - 1;
-				LegoU8* top = p_src - 1;
+				LegoU8* dst = p_dst;
+				LegoU8* bottom = source + m_rowByteStride - 1;
+				LegoU8* top = source - 1;
 
-				for (; dst + 1 < end;) {
+				do {
 					top += 2;
-					LegoU8 topLeft = top[-1];
-					LegoU8 topRight = top[0];
+					LegoU32 topLeft = top[-1];
+					LegoU32 topRight = top[0];
 					bottom += 2;
-					dst++;
 
-					if (topLeft == topRight) {
-						*dst = topRight;
+					if (topRight == topLeft) {
+						*dst = static_cast<LegoU8>(topRight);
 					}
 					else {
-						LegoU8 bottomLeft = bottom[-1];
+						LegoU32 bottomLeft = bottom[-1];
 						if (bottomLeft != topLeft && bottomLeft != topRight) {
-							*dst = bottom[0];
+							topRight = bottom[0];
+							*dst = static_cast<LegoU8>(topRight);
 						}
 						else {
-							*dst = bottomLeft;
+							*dst = static_cast<LegoU8>(bottomLeft);
 						}
 					}
-				}
+				} while (++dst < end);
 			}
 
-			p_src += srcPitch;
+			source += srcPitch;
 			p_dst += p_pitch;
 		}
 	}
 	else {
-		for (; rows != 0; rows--) {
-			DownsampleRowPair(p_src, p_src + m_rowByteStride, p_dst);
-			p_src += srcPitch;
+		for (; rows > 0; rows--) {
+			DownsampleRowPair(source, source + m_rowByteStride, p_dst);
+			source += srcPitch;
 			p_dst += p_pitch;
 		}
 	}
@@ -1456,6 +1457,7 @@ void GolImgFile::UpscaleRow(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledWid
 void GolImgFile::DownsampleRowPair(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_dst)
 {
 	LegoU8* end = p_dst + (m_width >> 1) * sizeof(LegoU16);
+	LegoU32 samples[4];
 	LegoU32 red;
 	LegoU32 grn;
 	LegoU32 blu;
@@ -1463,7 +1465,6 @@ void GolImgFile::DownsampleRowPair(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_ds
 
 	if (m_hasColorKey) {
 		for (; p_dst < end; p_dst += sizeof(LegoU16)) {
-			LegoU32 samples[4];
 
 			samples[0] = *p_top;
 			p_top += (m_srcStrideMask >> 0) & 1;
@@ -1531,7 +1532,6 @@ void GolImgFile::DownsampleRowPair(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_ds
 	}
 	else {
 		for (; p_dst < end; p_dst += sizeof(LegoU16)) {
-			LegoU32 samples[4];
 
 			samples[0] = *p_top;
 			p_top += (m_srcStrideMask >> 0) & 1;

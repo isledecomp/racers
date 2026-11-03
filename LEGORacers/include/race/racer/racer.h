@@ -38,16 +38,21 @@ public:
 	// SIZE 0x88
 	class SetupParams {
 	public:
-		LegoChar m_displayName[0x18];     // 0x00
-		undefined2* m_displayNameWide;    // 0x18
-		undefined m_unk0x1c[0x28 - 0x1c]; // 0x1c
-		GolVec3 m_anchorWheelPosition;    // 0x28
-		undefined m_unk0x34[0x38 - 0x34]; // 0x34
-		LegoFloat m_rearWheelY0;          // 0x38
-		undefined m_unk0x3c[0x40 - 0x3c]; // 0x3c
-		LegoFloat m_rearWheelX;           // 0x40
-		LegoFloat m_rearWheelY1;          // 0x44
-		undefined m_unk0x48[0x4c - 0x48]; // 0x48
+		LegoChar m_displayName[0x18];  // 0x00
+		undefined2* m_displayNameWide; // 0x18
+		union {
+			GolVec3 m_wheelPositions[4]; // 0x1c
+			struct {
+				undefined m_unk0x1c[0x28 - 0x1c]; // 0x1c
+				GolVec3 m_anchorWheelPosition;    // 0x28
+				undefined m_unk0x34[0x38 - 0x34]; // 0x34
+				LegoFloat m_rearWheelY0;          // 0x38
+				undefined m_unk0x3c[0x40 - 0x3c]; // 0x3c
+				LegoFloat m_rearWheelX;           // 0x40
+				LegoFloat m_rearWheelY1;          // 0x44
+				undefined m_unk0x48[0x4c - 0x48]; // 0x48
+			};
+		};
 		GolVec3 m_centerOfMass;           // 0x4c
 		LegoFloat m_mass;                 // 0x58
 		LegoFloat m_weight;               // 0x5c

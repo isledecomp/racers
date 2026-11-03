@@ -48,6 +48,7 @@ extern const LegoFloat g_twoPi;
 extern const LegoFloat g_pathMinSegmentLengthSquared;
 
 extern const LegoFloat g_unk0x004b02e0;
+extern const LegoFloat g_unk0x004b0a1c;
 extern const LegoChar* g_racerDatabaseNames[3];
 extern const LegoFloat g_proximityPitchFloor;
 extern const LegoFloat g_proximityPitchBand;
@@ -250,10 +251,12 @@ void RaceState::CreateRacer(
 {
 	Racer::SetupParams racerParams;
 	CarVisuals::InitParams initParams;
-	::memset(&racerParams, 0, sizeof(racerParams));
-	::memset(&initParams, 0, sizeof(initParams));
 
 	ChampionDefinitionList::ChampionDefinition* championDefinition = NULL;
+	racerParams.m_displayNameWide = NULL;
+	racerParams.m_displayName[0] = '\0';
+	racerParams.m_aiChargeColor = 0;
+	racerParams.m_aiChargeTarget = 0;
 	ChassisModelTable::Item* chassisItem;
 	if (p_slot->m_driverName[0]) {
 		DriverCosmeticTable::Entry* driverEntry =
@@ -280,10 +283,16 @@ void RaceState::CreateRacer(
 
 		switch (driverEntry->m_aiChargeColor) {
 		case 1:
+			racerParams.m_aiChargeColor = 1;
+			break;
 		case 2:
+			racerParams.m_aiChargeColor = 2;
+			break;
 		case 3:
+			racerParams.m_aiChargeColor = 3;
+			break;
 		case 4:
-			racerParams.m_aiChargeColor = driverEntry->m_aiChargeColor;
+			racerParams.m_aiChargeColor = 4;
 			break;
 		default:
 			racerParams.m_aiChargeColor = 0;
@@ -294,21 +303,21 @@ void RaceState::CreateRacer(
 		racerParams.m_displayNameWide = m_driverTable.GetStringBuffer(p_slot->m_driverName);
 	}
 	else {
-		LegoU32 customIndex = m_roster.m_customCarCount;
-		m_roster.m_customCarModels[customIndex] = new GolModelEntity;
-		if (m_roster.m_customCarModels[customIndex] == NULL) {
+		m_roster.m_customCarModels[m_roster.m_customCarCount] = new GolModelEntity;
+		if (m_roster.m_customCarModels[m_roster.m_customCarCount] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_roster.m_customCarEntities[customIndex] = new GolAnimatedEntity;
-		if (m_roster.m_customCarEntities[customIndex] == NULL) {
+		m_roster.m_customCarEntities[m_roster.m_customCarCount] = new GolAnimatedEntity;
+		// Retail checks the body allocation again after allocating the animated entity.
+		if (m_roster.m_customCarModels[m_roster.m_customCarCount] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
 		p_slot->m_textures->LoadTextures();
 		p_slot->m_materials->CreateMaterials();
-		initParams.m_bodyModel = m_roster.m_customCarModels[customIndex];
-		initParams.m_bodyModel->SetPrimaryModel(p_slot->m_model, g_carModelScale);
+		m_roster.m_customCarModels[m_roster.m_customCarCount]->SetPrimaryModel(p_slot->m_model, g_carModelScale);
+		initParams.m_bodyModel = m_roster.m_customCarModels[m_roster.m_customCarCount];
 
 		if (p_slot->m_altModel == NULL) {
 			LegoChar fallbackName[3];
@@ -321,13 +330,13 @@ void RaceState::CreateRacer(
 		else {
 			p_slot->m_altTextures->LoadTextures();
 			p_slot->m_altMaterials->CreateMaterials();
-			initParams.m_driverEntity = m_roster.m_customCarEntities[customIndex];
-			initParams.m_driverEntity->SetModel(
+			m_roster.m_customCarEntities[m_roster.m_customCarCount]->SetModel(
 				p_slot->m_altModel,
 				m_driverTable.m_rootNode,
 				&m_driverTable.m_modelParts,
 				g_driverModelScale
 			);
+			initParams.m_driverEntity = m_roster.m_customCarEntities[m_roster.m_customCarCount];
 		}
 
 		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(p_slot->m_chassisName));
@@ -336,13 +345,16 @@ void RaceState::CreateRacer(
 		racerParams.m_accelerationStat = chassisItem->m_accelerationStat;
 		racerParams.m_topSpeedStat = chassisItem->m_topSpeedStat;
 
-		for (LegoU32 i = 0; i < sizeOfArray(racerParams.m_driverStats); i++) {
-			racerParams.m_driverStats[i] = 100;
-		}
+		racerParams.m_driverStats[0] = 100;
+		racerParams.m_driverStats[1] = 100;
+		racerParams.m_driverStats[2] = 100;
+		racerParams.m_driverStats[3] = 100;
+		racerParams.m_driverStats[4] = 100;
+		racerParams.m_driverStats[5] = 100;
 
 		racerParams.m_voiceBank = p_racerIndex * 100 + 1000;
 		::strcpy(racerParams.m_displayName, p_slot->m_playerName);
-		m_roster.m_customCarCount = customIndex + 1;
+		m_roster.m_customCarCount++;
 	}
 
 	initParams.m_driverMountOffset = chassisItem->m_driverMountOffset;
@@ -356,31 +368,26 @@ void RaceState::CreateRacer(
 
 	for (LegoU32 i = 0; i < sizeOfArray(initParams.m_wheelOffsets); i++) {
 		initParams.m_wheelOffsets[i] = chassisItem->m_wheelOffsets[i];
+		racerParams.m_wheelPositions[i] = chassisItem->m_wheelPositions[i];
 	}
 
-	racerParams.m_anchorWheelPosition = chassisItem->m_wheelPositions[1];
-	racerParams.m_rearWheelY0 = chassisItem->m_wheelPositions[2].m_y;
-	racerParams.m_rearWheelX = chassisItem->m_wheelPositions[3].m_x;
-	racerParams.m_rearWheelY1 = chassisItem->m_wheelPositions[3].m_y;
-
-	racerParams.m_lapCount = m_setup.m_lapCount;
 	racerParams.m_eventTable = p_context->m_eventTable;
 	racerParams.m_surfaceTable = p_context->m_surfaceTable;
 	racerParams.m_trackWorld = p_context->m_trackWorld;
 	racerParams.m_enginePitchScale = chassisItem->m_enginePitchScale;
 
 	if (championDefinition) {
-		racerParams.m_centerOfMass.m_x = championDefinition->m_centerOfMassX;
-		racerParams.m_centerOfMass.m_y = championDefinition->m_centerOfMassY;
-		racerParams.m_centerOfMass.m_z = championDefinition->m_centerOfMassZ;
+		::memcpy(&racerParams.m_centerOfMass, &championDefinition->m_centerOfMassX, sizeof(racerParams.m_centerOfMass));
 		racerParams.m_mass = championDefinition->m_mass;
 		racerParams.m_weight = 0.0f;
 	}
 	else {
-		racerParams.m_centerOfMass.m_x =
-			p_slot->m_centroidX * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_x;
-		racerParams.m_centerOfMass.m_y =
-			p_slot->m_centroidY * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_y;
+		racerParams.m_centerOfMass.m_x = p_slot->m_centroidX;
+		racerParams.m_centerOfMass.m_x *= g_carBuildModelTextureCoordinateScale;
+		racerParams.m_centerOfMass.m_x += chassisItem->m_centerOfMass.m_x;
+		racerParams.m_centerOfMass.m_y = p_slot->m_centroidY;
+		racerParams.m_centerOfMass.m_y *= g_carBuildModelTextureCoordinateScale;
+		racerParams.m_centerOfMass.m_y += chassisItem->m_centerOfMass.m_y;
 		racerParams.m_centerOfMass.m_z = chassisItem->m_centerOfMass.m_z;
 		racerParams.m_mass = chassisItem->m_baseMass + p_slot->m_highPieceCount;
 		racerParams.m_weight = p_slot->m_highPieceCount;
@@ -401,12 +408,15 @@ void RaceState::CreateRacer(
 
 	LegoU32 placementIndex = m_roster.m_placementSlots[p_racerIndex];
 	initParams.m_carEntity->SetPosition(m_roster.m_startPositions[placementIndex]);
+	placementIndex = m_roster.m_placementSlots[p_racerIndex];
 	initParams.m_carEntity->SetDirectionUp(
 		m_roster.m_startDirections[placementIndex],
 		m_roster.m_startUps[placementIndex]
 	);
 
+	racerParams.m_lapCount = m_setup.m_lapCount;
 	m_roster.m_racers[p_racerIndex].Initialize(p_context, &initParams, &racerParams, this, p_racerIndex);
+	m_roster.m_racers[p_racerIndex].m_driveController.m_previewCursor = &m_sharedRouteCursor;
 
 	GolD3DTexture* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
 	GolMaterial* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
@@ -425,15 +435,12 @@ void RaceState::CreateRacer(
 	shadowMaterial->SetParams(p_context->m_renderer, shadowMaterialParams);
 
 	Racer* racer = &m_roster.m_racers[p_racerIndex];
-	racer->m_driveController.m_previewCursor = &m_sharedRouteCursor;
 
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_type = LegoEventQueue::Descriptor::c_typeCollision;
 	descriptor.m_flags = 5;
-	descriptor.m_maxFireCount = 0;
 	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &racer->m_physics;
-	descriptor.m_elapsedMs = 0;
 	m_roster.m_racerEvents[p_racerIndex] = m_roster.AllocateEvent(racer, &descriptor);
 }
 
@@ -636,89 +643,100 @@ void RaceState::UpdateRacers(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0043c1b0
 void RaceState::UpdateStandings()
 {
-	RaceState::RacerProgressEntry* entries = g_racerProgressEntries;
-	LegoU32 racerCount = m_roster.m_racerCount;
+	GolVec3 position;
 
+	Racer* racer = m_roster.m_racers;
 	LegoU32 racerIndex;
-	for (racerIndex = 0; racerIndex < racerCount; racerIndex++) {
-		Racer* racer = &m_roster.m_racers[racerIndex];
-		entries[racerIndex].m_racer = racer;
-		entries[racerIndex].m_progress = racer->GetRaceProgress();
+	for (racerIndex = 0; racerIndex < m_roster.m_racerCount; racerIndex++, racer++) {
+		g_racerProgressEntries[racerIndex].m_racer = racer;
+		g_racerProgressEntries[racerIndex].m_progress = racer->GetRaceProgress();
 	}
 
 	LegoU32 sortIndex;
-	for (sortIndex = 0; sortIndex + 1 < racerCount; sortIndex++) {
+	for (sortIndex = 0; sortIndex < m_roster.m_racerCount - 1; sortIndex++) {
 		LegoU32 minIndex = sortIndex;
-		LegoFloat minProgress = entries[sortIndex].m_progress;
+		LegoFloat minProgress = g_racerProgressEntries[sortIndex].m_progress;
 
 		LegoU32 scanIndex;
-		for (scanIndex = sortIndex + 1; scanIndex < racerCount; scanIndex++) {
-			if (minProgress > entries[scanIndex].m_progress) {
-				minProgress = entries[scanIndex].m_progress;
+		for (scanIndex = sortIndex + 1; scanIndex < m_roster.m_racerCount; scanIndex++) {
+			if (minProgress > g_racerProgressEntries[scanIndex].m_progress) {
+				minProgress = g_racerProgressEntries[scanIndex].m_progress;
 				minIndex = scanIndex;
 			}
 		}
 
 		if (minIndex > sortIndex) {
-			LegoFloat progress = entries[sortIndex].m_progress;
-			entries[sortIndex].m_progress = entries[minIndex].m_progress;
-			entries[minIndex].m_progress = progress;
+			LegoFloat progress = g_racerProgressEntries[sortIndex].m_progress;
+			g_racerProgressEntries[sortIndex].m_progress = g_racerProgressEntries[minIndex].m_progress;
+			g_racerProgressEntries[minIndex].m_progress = progress;
 
-			Racer* racer = entries[sortIndex].m_racer;
-			entries[sortIndex].m_racer = entries[minIndex].m_racer;
-			entries[minIndex].m_racer = racer;
+			Racer* racer = g_racerProgressEntries[sortIndex].m_racer;
+			g_racerProgressEntries[sortIndex].m_racer = g_racerProgressEntries[minIndex].m_racer;
+			g_racerProgressEntries[minIndex].m_racer = racer;
 		}
 	}
 
 	LegoU32 groupStart;
-	for (groupStart = 0; groupStart + 1 < racerCount;) {
+	for (groupStart = 0; groupStart < m_roster.m_racerCount - 1;) {
 		LegoU32 groupEnd = groupStart + 1;
-		while (groupEnd < racerCount && entries[groupStart].m_progress == entries[groupEnd].m_progress) {
+		while (g_racerProgressEntries[groupStart].m_progress == g_racerProgressEntries[groupEnd].m_progress &&
+			   groupEnd < m_roster.m_racerCount) {
 			groupEnd++;
 		}
 
-		CheckpointGraph::Entry* pathField = entries[groupStart].m_racer->m_checkpoint;
+		CheckpointGraph::Entry* pathField = g_racerProgressEntries[groupStart].m_racer->m_checkpoint;
 		if (groupEnd > groupStart + 1 && pathField) {
-			LegoU32 tiedIndex;
-			for (tiedIndex = groupStart; tiedIndex < groupEnd; tiedIndex++) {
-				GolVec3 position;
-				entries[tiedIndex].m_racer->m_visuals.m_carEntity->GetPosition(&position);
+			LegoU32 tiedCount = groupEnd - groupStart;
+			RacerProgressEntry* tiedEntry = &g_racerProgressEntries[groupStart];
+			do {
+
+				tiedEntry->m_racer->m_visuals.m_carEntity->GetPosition(&position);
 
 				LegoFloat nearestPlaneDistance = FLT_MAX;
 				LegoU32 planeIndex;
 				for (planeIndex = 0; planeIndex < sizeOfArray(pathField->m_next.m_items); planeIndex++) {
-					if (pathField->m_next.m_items[planeIndex] != 0xff) {
-						CheckpointGraph::Entry* plane =
-							m_roster.m_checkpointGraph->GetCheckpoint(pathField->m_next.m_items[planeIndex]);
-						LegoFloat distance = plane->m_planeNormal.m_x * position.m_x +
-											 plane->m_planeNormal.m_y * position.m_y +
-											 plane->m_planeNormal.m_z * position.m_z + plane->m_planeDistance;
+					LegoU8 checkpointIndex = pathField->m_next.m_items[planeIndex];
+					if (checkpointIndex != 0xff) {
+						LegoU32 checkpointNumber = checkpointIndex;
+						CheckpointGraph::Entry* plane = m_roster.m_checkpointGraph->GetCheckpoint(checkpointNumber);
+						LegoFloat distance = plane->m_planeNormal.m_z * position.m_z;
+						distance += plane->m_planeNormal.m_y * position.m_y;
+						distance += position.m_x * plane->m_planeNormal.m_x;
+						distance += plane->m_planeDistance;
 						if (distance < nearestPlaneDistance) {
 							nearestPlaneDistance = distance;
 						}
 					}
 				}
 
-				entries[tiedIndex].m_tieBreakDistance = nearestPlaneDistance;
-			}
+				tiedEntry->m_tieBreakDistance = nearestPlaneDistance;
+				tiedEntry++;
+			} while (--tiedCount);
 
 			LegoU32 tiedSortIndex;
-			for (tiedSortIndex = groupStart; tiedSortIndex + 1 < groupEnd; tiedSortIndex++) {
+			for (tiedSortIndex = groupStart; tiedSortIndex < groupEnd; tiedSortIndex++) {
 				LegoU32 maxIndex = tiedSortIndex;
-				LegoFloat maxDistance = entries[tiedSortIndex].m_tieBreakDistance;
+				LegoFloat maxDistance = g_racerProgressEntries[tiedSortIndex].m_tieBreakDistance;
 
 				LegoU32 tiedScanIndex;
 				for (tiedScanIndex = tiedSortIndex + 1; tiedScanIndex < groupEnd; tiedScanIndex++) {
-					if (maxDistance < entries[tiedScanIndex].m_tieBreakDistance) {
-						maxDistance = entries[tiedScanIndex].m_tieBreakDistance;
+					if (maxDistance < g_racerProgressEntries[tiedScanIndex].m_tieBreakDistance) {
+						maxDistance = g_racerProgressEntries[tiedScanIndex].m_tieBreakDistance;
 						maxIndex = tiedScanIndex;
 					}
 				}
 
 				if (maxIndex > tiedSortIndex) {
-					RaceState::RacerProgressEntry progressEntry = entries[tiedSortIndex];
-					entries[tiedSortIndex] = entries[maxIndex];
-					entries[maxIndex] = progressEntry;
+					LegoFloat progress = g_racerProgressEntries[tiedSortIndex].m_progress;
+					g_racerProgressEntries[tiedSortIndex].m_progress = g_racerProgressEntries[maxIndex].m_progress;
+					g_racerProgressEntries[maxIndex].m_progress = progress;
+					LegoFloat distance = g_racerProgressEntries[tiedSortIndex].m_tieBreakDistance;
+					g_racerProgressEntries[tiedSortIndex].m_tieBreakDistance =
+						g_racerProgressEntries[maxIndex].m_tieBreakDistance;
+					g_racerProgressEntries[maxIndex].m_tieBreakDistance = distance;
+					Racer* racer = g_racerProgressEntries[tiedSortIndex].m_racer;
+					g_racerProgressEntries[tiedSortIndex].m_racer = g_racerProgressEntries[maxIndex].m_racer;
+					g_racerProgressEntries[maxIndex].m_racer = racer;
 				}
 			}
 		}
@@ -727,52 +745,48 @@ void RaceState::UpdateStandings()
 	}
 
 	LegoU32 rankIndex;
-	for (rankIndex = 0; rankIndex < racerCount; rankIndex++) {
-		if (!(entries[rankIndex].m_racer->m_flags & Racer::c_flagFinished)) {
-			entries[rankIndex].m_racer->SetStandingsPosition(racerCount - rankIndex);
+	for (rankIndex = 0; rankIndex < m_roster.m_racerCount; rankIndex++) {
+		if (!(g_racerProgressEntries[rankIndex].m_racer->m_flags & Racer::c_flagFinished)) {
+			g_racerProgressEntries[rankIndex].m_racer->SetStandingsPosition(m_roster.m_racerCount - rankIndex);
 		}
 	}
 
-	SpatialSoundInstance* sound = m_roster.m_proximitySound;
-	Racer* trackedRacer = m_roster.m_currentRacer;
-	if (sound && trackedRacer) {
-		GolVec3 trackedPosition;
-		trackedRacer->m_visuals.m_carEntity->GetPosition(&trackedPosition);
+	if (m_roster.m_proximitySound && m_roster.m_currentRacer) {
 
 		Racer* nearestRacer = NULL;
 		LegoFloat nearestDistanceSquared = FLT_MAX;
-		LegoU32 nearestIndex;
-		for (nearestIndex = 0; nearestIndex < racerCount; nearestIndex++) {
-			Racer* racer = &m_roster.m_racers[nearestIndex];
-			if (racer != trackedRacer) {
-				GolVec3 position;
-				racer->m_visuals.m_carEntity->GetPosition(&position);
+		m_roster.m_currentRacer->m_visuals.m_carEntity->GetPosition(&position);
 
-				LegoFloat deltaX = trackedPosition.m_x - position.m_x;
-				LegoFloat deltaY = trackedPosition.m_y - position.m_y;
-				LegoFloat deltaZ = trackedPosition.m_z - position.m_z;
+		LegoU32 nearestIndex;
+		for (nearestIndex = 0; nearestIndex < m_roster.m_racerCount; nearestIndex++) {
+			Racer* racer = &m_roster.m_racers[nearestIndex];
+			if (racer != m_roster.m_currentRacer) {
+				GolVec3 racerPosition;
+				racer->m_visuals.m_carEntity->GetPosition(&racerPosition);
+
+				LegoFloat deltaX = position.m_x - racerPosition.m_x;
+				LegoFloat deltaY = position.m_y - racerPosition.m_y;
+				LegoFloat deltaZ = position.m_z - racerPosition.m_z;
 				LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
 				if (distanceSquared < nearestDistanceSquared) {
 					nearestDistanceSquared = distanceSquared;
-					nearestRacer = racer;
+					nearestRacer = &m_roster.m_racers[nearestIndex];
 				}
 			}
 		}
 
 		if (nearestDistanceSquared < g_proximitySoundMaxDistanceSquared) {
-			if (!sound->IsPlaying()) {
-				sound->Play(TRUE);
+			if (!m_roster.m_proximitySound->IsPlaying()) {
+				m_roster.m_proximitySound->Play(TRUE);
 			}
 
-			GolVec3 position;
 			nearestRacer->m_visuals.m_carEntity->GetPosition(&position);
-			sound->SetPosition(position);
-
 			GolVec3 velocity = nearestRacer->m_physics.m_velocity;
-			velocity.m_x *= 2.0f;
-			velocity.m_y *= 2.0f;
-			velocity.m_z *= 2.0f;
-			sound->SetVelocity(velocity);
+			m_roster.m_proximitySound->SetPosition(position);
+			velocity.m_x *= g_unk0x004b0a1c;
+			velocity.m_y *= g_unk0x004b0a1c;
+			velocity.m_z *= g_unk0x004b0a1c;
+			m_roster.m_proximitySound->SetVelocity(velocity);
 
 			LegoFloat frequencyScale = nearestRacer->m_physics.m_speed / g_proximityPitchSpeedRange;
 			frequencyScale *= 1.0f - g_proximityPitchFloor - g_proximityPitchBand;
@@ -790,10 +804,10 @@ void RaceState::UpdateStandings()
 				frequencyScale += g_unk0x004b02e0;
 			}
 
-			sound->SetFrequencyScale(frequencyScale);
+			m_roster.m_proximitySound->SetFrequencyScale(frequencyScale);
 		}
-		else if (sound->IsPlaying()) {
-			sound->Stop();
+		else if (m_roster.m_proximitySound->IsPlaying()) {
+			m_roster.m_proximitySound->Stop();
 		}
 	}
 }
@@ -828,11 +842,12 @@ Racer* RaceState::FindRacerInCone(
 		GolVec3 position;
 		racerField->m_carEntity->GetPosition(&position);
 
-		LegoFloat distanceSquared = GOL_SQUARED(position.m_z - origin->m_z) + GOL_SQUARED(position.m_y - origin->m_y) +
-									GOL_SQUARED(position.m_x - origin->m_x);
+		LegoFloat dx = position.m_x - origin->m_x;
+		LegoFloat distanceSquared =
+			GOL_SQUARED(position.m_z - origin->m_z) + GOL_SQUARED(position.m_y - origin->m_y) + GOL_SQUARED(dx);
 		if (distanceSquared >= p_minDistanceSquared && distanceSquared <= p_maxDistanceSquared) {
 			GolVec3 delta;
-			delta.m_x = position.m_x - origin->m_x;
+			delta.m_x = dx;
 			delta.m_y = position.m_y - origin->m_y;
 			delta.m_z = position.m_z - origin->m_z;
 			GolMath::NormalizeVector3(delta, &delta);
@@ -1161,19 +1176,18 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntr
 		p_entries[racerIndex].m_racer = &m_roster.m_racers[racerIndex];
 		p_entries[racerIndex].m_isValid = TRUE;
 
-		Racer* otherRacer = &m_roster.m_racers[racerIndex];
-		if (otherRacer == p_racer) {
+		if (&m_roster.m_racers[racerIndex] == p_racer) {
 			p_entries[racerIndex].m_delta = 0;
 		}
-		else if (otherRacer->m_lapsCompleted < m_setup.m_lapCount) {
-			p_entries[racerIndex].m_delta = otherRacer->m_standingsPosition + 2147483641;
+		else if (m_roster.m_racers[racerIndex].m_lapsCompleted < m_setup.m_lapCount) {
+			p_entries[racerIndex].m_delta = m_roster.m_racers[racerIndex].m_standingsPosition + 2147483641;
 		}
 		else {
 			LegoS32 otherTime = 0;
 			LegoU32 remaining = m_setup.m_lapCount;
 
 			if (remaining > 0) {
-				LegoU32* lapTime = otherRacer->m_lapTimes;
+				LegoU32* lapTime = m_roster.m_racers[racerIndex].m_lapTimes;
 
 				do {
 					otherTime += *lapTime++;

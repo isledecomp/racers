@@ -115,52 +115,64 @@ LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, c
 {
 	LegoS32 lhsKey;
 	LegoS32 rhsKey;
+
 	::memcpy(&lhsKey, &p_lhs->m_position.m_x, sizeof(lhsKey));
 	::memcpy(&rhsKey, &p_rhs->m_position.m_x, sizeof(rhsKey));
-	LegoS32 result = lhsKey - rhsKey;
-	if (result != 0) {
-		return result;
+	lhsKey -= rhsKey;
+	if (lhsKey != 0) {
+		return lhsKey;
 	}
 
 	::memcpy(&lhsKey, &p_lhs->m_position.m_y, sizeof(lhsKey));
 	::memcpy(&rhsKey, &p_rhs->m_position.m_y, sizeof(rhsKey));
-	result = lhsKey - rhsKey;
-	if (result != 0) {
-		return result;
+	lhsKey -= rhsKey;
+	if (lhsKey != 0) {
+		return lhsKey;
 	}
 
 	::memcpy(&lhsKey, &p_lhs->m_position.m_z, sizeof(lhsKey));
 	::memcpy(&rhsKey, &p_rhs->m_position.m_z, sizeof(rhsKey));
-	result = lhsKey - rhsKey;
-	if (result != 0) {
-		return result;
+	lhsKey -= rhsKey;
+	if (lhsKey != 0) {
+		return lhsKey;
 	}
 
-	result = static_cast<LegoU8>(p_lhs->m_normalX) - static_cast<LegoU8>(p_rhs->m_normalX);
-	if (result != 0) {
-		return result;
+	// Equal normal comparisons leave lhsKey zero; only the low byte is replaced.
+	lhsKey = 0;
+	rhsKey = 0;
+	::memcpy(&lhsKey, &p_lhs->m_normalX, sizeof(LegoU8));
+	::memcpy(&rhsKey, &p_rhs->m_normalX, sizeof(LegoU8));
+	lhsKey -= rhsKey;
+	if (lhsKey != 0) {
+		return lhsKey;
 	}
 
-	result = static_cast<LegoU8>(p_lhs->m_normalY) - static_cast<LegoU8>(p_rhs->m_normalY);
-	if (result != 0) {
-		return result;
+	::memcpy(&lhsKey, &p_lhs->m_normalY, sizeof(LegoU8));
+	::memcpy(&rhsKey, &p_rhs->m_normalY, sizeof(LegoU8));
+	lhsKey -= rhsKey;
+	if (lhsKey != 0) {
+		return lhsKey;
 	}
 
-	result = static_cast<LegoU8>(p_lhs->m_normalZ) - static_cast<LegoU8>(p_rhs->m_normalZ);
-	if (result != 0) {
-		return result;
+	::memcpy(&lhsKey, &p_lhs->m_normalZ, sizeof(LegoU8));
+	::memcpy(&rhsKey, &p_rhs->m_normalZ, sizeof(LegoU8));
+	lhsKey -= rhsKey;
+	if (lhsKey != 0) {
+		return lhsKey;
 	}
 
 	::memcpy(&lhsKey, &p_lhs->m_textureCoordinate.m_x, sizeof(lhsKey));
 	::memcpy(&rhsKey, &p_rhs->m_textureCoordinate.m_x, sizeof(rhsKey));
-	result = lhsKey - rhsKey;
-	if (result != 0) {
-		return result;
+	lhsKey -= rhsKey;
+	if (lhsKey != 0) {
+		return lhsKey;
 	}
 
 	::memcpy(&lhsKey, &p_lhs->m_textureCoordinate.m_y, sizeof(lhsKey));
 	::memcpy(&rhsKey, &p_rhs->m_textureCoordinate.m_y, sizeof(rhsKey));
-	return lhsKey - rhsKey;
+	lhsKey -= rhsKey;
+
+	return lhsKey;
 }
 
 // FUNCTION: LEGORACERS 0x004951c0

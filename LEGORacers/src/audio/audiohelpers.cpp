@@ -577,23 +577,28 @@ void DecodeStereoPcmToStereo(
 	LegoS32* p_rightState
 )
 {
-	p_count -= 0x200;
-	while (p_count > 0) {
+	LegoU32 remaining = static_cast<LegoU32>(p_count);
+	for (;;) {
+		LegoU32 previous = remaining;
+		remaining -= 0x200;
+		if (previous <= 0x200) {
+			break;
+		}
+
 		DecodeStereoChannel(p_source, p_destination, 0x100, p_leftState);
 		p_source++;
 		p_destination++;
 		DecodeStereoChannel(p_source, p_destination, 0x100, p_rightState);
 		p_source += 0x1ff;
 		p_destination += 0x3ff;
-		p_count -= 0x200;
 	}
 
-	p_count += 0x200;
-	p_count >>= 1;
-	DecodeStereoChannel(p_source, p_destination, p_count, p_leftState);
+	remaining += 0x200;
+	remaining >>= 1;
+	DecodeStereoChannel(p_source, p_destination, remaining, p_leftState);
 	p_source++;
 	p_destination++;
-	DecodeStereoChannel(p_source, p_destination, p_count, p_rightState);
+	DecodeStereoChannel(p_source, p_destination, remaining, p_rightState);
 }
 
 #ifdef COMPAT_MODE

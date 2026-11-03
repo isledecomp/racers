@@ -359,6 +359,25 @@ void RaceTrailManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3* p_position
 // FUNCTION: LEGORACERS 0x004931a0
 void RaceTrailManager::Trail::RebuildGeometry()
 {
+	LegoU32 pointIndex;
+	LegoU32 frameOffset = 0;
+	LegoU32 vertexIndex = 0;
+	LegoS32 triangleIndex = 0;
+	LegoU32 elapsedMs = 0;
+	ColorRGBA color;
+	color.m_red = m_color.m_red;
+	color.m_grn = m_color.m_grn;
+	color.m_blu = m_color.m_blu;
+	LegoU32 alphaByte = m_color.m_alp;
+	color.m_alp = static_cast<LegoU8>(alphaByte);
+	LegoFloat alpha = static_cast<LegoFloat>(static_cast<LegoS32>(alphaByte));
+	alpha *= g_inv255;
+	alpha -= m_endAlpha;
+	LegoFloat alphaDivisor = static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
+	alpha /= alphaDivisor;
+	alpha *= 255.0f;
+	LegoU8 alphaStep = static_cast<LegoU8>(static_cast<LegoS32>(alpha));
+
 	LegoU32 frameCount;
 	if (m_headIndex > m_tailIndex) {
 		frameCount = m_headIndex - m_tailIndex + 1;
@@ -377,27 +396,16 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	GdbVertexArray* vertexArray;
 	LegoFloat uStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_pointCount + 1));
 	LegoFloat vStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
+	GolVec2 texCoord;
+	texCoord.m_y = 0.0f;
 	m_model->GetVertexArray(&vertexArray);
 
-	ColorRGBA color = m_color;
-	LegoU8 alphaStep = static_cast<LegoU8>(static_cast<LegoS32>(
-		((static_cast<LegoFloat>(m_color.m_alp) * g_inv255 - m_endAlpha) /
-		 static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1))) *
-		255.0f
-	));
-
-	LegoU32 vertexIndex = 0;
-	LegoU32 elapsedMs = 0;
-	GolVec2 texCoord;
-	texCoord.m_x = 0.0f;
-	texCoord.m_y = 0.0f;
-
-	for (LegoU32 frameOffset = 0; frameOffset < frameCount; frameOffset++) {
+	for (; frameOffset < frameCount; frameOffset++) {
 		LegoU32 frameIndex = (m_headIndex + m_ringSize - frameOffset) % m_ringSize;
 		Sample* frame = &m_samples[frameIndex];
 
 		LegoFloat tailAmount;
-		if (frameOffset) {
+		if (frameOffset > 0) {
 			tailAmount = static_cast<LegoFloat>(static_cast<LegoS32>(elapsedMs)) /
 						 static_cast<LegoFloat>(static_cast<LegoS32>(m_durationMs)) * (1.0f - m_endScale);
 			color.m_alp -= alphaStep;
@@ -407,18 +415,14 @@ void RaceTrailManager::Trail::RebuildGeometry()
 		}
 
 		texCoord.m_x = 0.0f;
-		for (LegoU32 pointIndex = 0; pointIndex < m_pointCount; pointIndex++) {
+		for (pointIndex = 0; pointIndex < m_pointCount; pointIndex++) {
 			if (vertexIndex < 0x6a) {
 				GolVec3 position = frame->m_points[pointIndex];
 				if (m_endScale != 1.0f && tailAmount != 0.0f) {
-					position.m_x += (frame->m_center.m_x - position.m_x) * tailAmount;
-					position.m_y += (frame->m_center.m_y - position.m_y) * tailAmount;
-					position.m_z += (frame->m_center.m_z - position.m_z) * tailAmount;
+					position += (frame->m_center - position) * tailAmount;
 				}
 
-				position.m_x -= center.m_x;
-				position.m_y -= center.m_y;
-				position.m_z -= center.m_z;
+				position -= center;
 				vertexArray->SetPosition(vertexIndex, position);
 				vertexArray->SetColor(vertexIndex, color);
 				vertexArray->SetTextureCoordinate(vertexIndex, texCoord);
@@ -447,27 +451,21 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	GdbModelIndexArrayBase* indexArrayBase;
 	m_model->GetIndexArrayInto(&indexArrayBase);
 	GdbModelIndexArray* indexArray = static_cast<GdbModelIndexArray*>(indexArrayBase);
-	GdbModelIndexArray::Indices* indices = indexArray->GetMutableIndices();
 
-	LegoU32 triangleIndex = 0;
 	for (LegoU32 rowIndex = 0; rowIndex < rowsPerGroup - 1; rowIndex++) {
 		LegoU32 rowBase = rowIndex * m_pointCount;
-		for (LegoU32 pointIndex = 0; pointIndex < m_pointCount; pointIndex++) {
-			LegoU32 nextPoint = (pointIndex + 1) % m_pointCount;
+		for (pointIndex = 0; pointIndex < m_pointCount; pointIndex++) {
+			LegoU8 a = static_cast<LegoU8>(rowBase + pointIndex + m_pointCount);
+			LegoU8 b = static_cast<LegoU8>(rowBase + pointIndex);
+			LegoU8 c = static_cast<LegoU8>(rowBase + m_pointCount + (pointIndex + 1) % m_pointCount);
 			if (triangleIndex < 0x35) {
-				indices[triangleIndex].m_a = static_cast<LegoU8>(rowBase + pointIndex + m_pointCount);
-				indices[triangleIndex].m_b = static_cast<LegoU8>(rowBase + pointIndex);
-				indices[triangleIndex].m_c = static_cast<LegoU8>(rowBase + m_pointCount + nextPoint);
-				indices[triangleIndex].m_x = 0;
-				triangleIndex++;
+				indexArray->SetTriangleIndices(triangleIndex++, a, b, c);
 			}
 
+			a = c;
+			c = static_cast<LegoU8>(rowBase + (pointIndex + 1) % m_pointCount);
 			if (triangleIndex < 0x35) {
-				indices[triangleIndex].m_a = static_cast<LegoU8>(rowBase + m_pointCount + nextPoint);
-				indices[triangleIndex].m_b = static_cast<LegoU8>(rowBase + pointIndex);
-				indices[triangleIndex].m_c = static_cast<LegoU8>(rowBase + nextPoint);
-				indices[triangleIndex].m_x = 0;
-				triangleIndex++;
+				indexArray->SetTriangleIndices(triangleIndex++, a, b, c);
 			}
 		}
 	}
@@ -475,26 +473,26 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	LegoU32 batchTriangleCount = triangleIndex;
 	if (m_pointCount > 2) {
 		LegoU32 lastRowBase = (rowsPerGroup - 1) * m_pointCount;
-		for (LegoU32 pointIndex = 1; pointIndex < m_pointCount - 1; pointIndex++) {
+		for (pointIndex = 1; pointIndex < m_pointCount - 1; pointIndex++) {
 			if (triangleIndex < 0x35) {
-				indices[triangleIndex].m_a = static_cast<LegoU8>(lastRowBase);
-				indices[triangleIndex].m_b = static_cast<LegoU8>(lastRowBase + pointIndex);
-				indices[triangleIndex].m_c = static_cast<LegoU8>(lastRowBase + pointIndex + 1);
-				indices[triangleIndex].m_x = 0;
-				triangleIndex++;
+				indexArray->SetTriangleIndices(
+					triangleIndex++,
+					static_cast<LegoU8>(lastRowBase),
+					static_cast<LegoU8>(lastRowBase + pointIndex),
+					static_cast<LegoU8>(lastRowBase + pointIndex + 1)
+				);
 			}
 		}
 	}
 
 	m_model->AddFlags(1);
 
-	LegoU32* groups = m_model->GetMutableGroups();
-	groups[0] = GolModel::c_groupTypeMaterial;
+	m_model->GetMutableGroups()[0] = GolModel::c_groupTypeMaterial;
 	LegoU32 groupWordIndex = 1;
 	LegoU32 firstVertex = 0;
 	for (LegoU32 groupIndex = 0; groupIndex < groupCount; groupIndex++) {
 		if (groupWordIndex < 4) {
-			groups[groupWordIndex++] =
+			m_model->GetMutableGroups()[groupWordIndex++] =
 				(firstVertex & GolModel::c_materialMatrixIndexMask) |
 				(((rowsPerGroup * m_pointCount + 0xffff) << GolModel::c_groupDataUpperWordShift) &
 				 (GolModel::c_vertexCountMask << GolModel::c_groupDataUpperWordShift));
@@ -506,7 +504,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 		}
 
 		if (groupWordIndex < 4) {
-			groups[groupWordIndex++] =
+			m_model->GetMutableGroups()[groupWordIndex++] =
 				GolModel::c_groupTypeTriangleBatch |
 				((groupTriangleCount & GolModel::c_triangleCountMask) << GolModel::c_groupDataUpperWordShift);
 		}
@@ -515,10 +513,13 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	}
 
 	if (groupWordIndex < 4) {
-		groups[groupWordIndex] = GolModel::c_groupTypeEnd;
+		m_model->GetMutableGroups()[groupWordIndex++] = GolModel::c_groupTypeEnd;
 	}
-	else if (groups[3] != GolModel::c_groupTypeEnd) {
-		groups[3] = GolModel::c_groupTypeEnd;
+	if (groupWordIndex == 4) {
+		LegoU32* groups = m_model->GetMutableGroups();
+		if (groups[3] != GolModel::c_groupTypeEnd) {
+			groups[3] = GolModel::c_groupTypeEnd;
+		}
 	}
 }
 

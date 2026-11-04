@@ -333,15 +333,15 @@ void RaceDecalManager::Trail::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		}
 
 		LegoU32 count;
-		count = (m_flags & c_slotsWrapped) ? sizeOfArray(m_slots) : m_slotIndex;
+		if (!(m_flags & c_slotsWrapped)) {
+			count = m_slotIndex;
+		}
+		else {
+			count = sizeOfArray(m_slots);
+		}
 
-		if (count) {
-			ModelSlot* slot = m_slots;
-			do {
-				p_renderer->DrawModelEntity(&slot->m_entry.m_entity);
-				slot++;
-				count--;
-			} while (count);
+		for (ModelSlot* slot = m_slots; count > 0; slot++, count--) {
+			p_renderer->DrawModelEntity(&slot->m_entry.m_entity);
 		}
 
 		if (m_alpha < 0xff) {

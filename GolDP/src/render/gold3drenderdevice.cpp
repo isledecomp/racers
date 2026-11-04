@@ -7637,7 +7637,11 @@ void GolD3DRenderDevice::FUN_100132f0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		cache->m_unk0x10 = cacheIndex;
 
 		vertex->color = 0;
-		vertex->sx = cache->m_x * vertex->rhw * m_viewportMetrics[0] + m_viewportMetrics[2];
+		LegoFloat screenX = vertex->rhw;
+		screenX *= cache->m_x;
+		screenX *= m_viewportMetrics[0];
+		screenX += m_viewportMetrics[2];
+		vertex->sx = screenX;
 		vertex->sy = cache->m_y * vertex->rhw * m_viewportMetrics[1] + m_viewportMetrics[3];
 		vertex->sz = cache->m_z * vertex->rhw;
 	}

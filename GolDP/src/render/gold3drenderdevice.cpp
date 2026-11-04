@@ -2906,14 +2906,12 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
 	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	LegoU32 alpha = (m_alpha & 0xff) << 24;
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
 		vertex->sy = m_currentMatrix->m_m[0][1] * position->m_x;
@@ -2933,7 +2931,7 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
 		vertexMap++;
-		vertex->color = (*color & 0x00ffffff) | alpha;
+		vertex->color = (*color & 0x00ffffff) | (m_alpha << 24);
 		color++;
 		vertex->tu = uv->m_x;
 		vertex->tv = uv->m_y;
@@ -2943,7 +2941,7 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex++;
 	}
 
-	*vertexMap = savedMapEntry;
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
 // FUNCTION: GOLDP 0x1000be20

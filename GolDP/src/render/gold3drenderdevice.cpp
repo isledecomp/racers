@@ -384,9 +384,9 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 			}
 		}
 
+		LPDIRECTDRAWSURFACE4 renderSurface = m_primaryRenderTarget->m_renderSurface;
 		HRESULT hresult =
-			m_drawState->m_d3d3
-				->CreateDevice(m_drawState->m_deviceGuid, m_primaryRenderTarget->m_renderSurface, &m_d3dDevice, NULL);
+			m_drawState->m_d3d3->CreateDevice(m_drawState->m_deviceGuid, renderSurface, &m_d3dDevice, NULL);
 		if (hresult != D3D_OK) {
 			sprintf(errorMessage, "Unable to create Direct3D device\nerror %x", hresult);
 			GOL_FATALERROR_MESSAGE(errorMessage);
@@ -480,46 +480,49 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 			m_unk0x2c = 0;
 			m_d3dDevice->EnumTextureFormats(EnumerateTextureFormatsCallback, this);
 			m_paletteMode = 2;
-			goto rendererCreated;
 		}
 
-		m_d3dDevice->Release();
-		m_d3dDevice = NULL;
+		else {
+			m_d3dDevice->Release();
+			m_d3dDevice = NULL;
+			forceSoftware = TRUE;
+		}
 	}
 
-	m_flags &= ~c_flagZBuffer;
-	m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
-	m_unk0xc384c = -1;
-	m_unk0xc83c4 = 1;
-	m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
-	::memcpy(&swTextureFormat, &m_primaryRenderTarget->m_textureFormat, sizeof(swTextureFormat));
+	if (forceSoftware) {
+		m_flags &= ~c_flagZBuffer;
+		m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
+		m_unk0xc384c = -1;
+		m_unk0xc83c4 = 1;
+		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
+		::memcpy(&swTextureFormat, &m_primaryRenderTarget->m_textureFormat, sizeof(swTextureFormat));
 
-	GolSoftwareRenderer::PixelFormat swPixelFormat;
-	if (swTextureFormat.m_bitsPerPixel == 8) {
-		swPixelFormat = GolSoftwareRenderer::PixelFormat::e_formatIndex8;
-		if (m_drawState->m_flags & GolDrawState::c_flagTexturePalettes) {
-			m_paletteMode = 1;
+		GolSoftwareRenderer::PixelFormat swPixelFormat;
+		if (swTextureFormat.m_bitsPerPixel == 8) {
+			swPixelFormat = GolSoftwareRenderer::PixelFormat::e_formatIndex8;
+			if (m_drawState->m_flags & GolDrawState::c_flagTexturePalettes) {
+				m_paletteMode = 1;
+			}
+			else {
+				m_paletteMode = 0;
+			}
 		}
 		else {
-			m_paletteMode = 0;
+			swPixelFormat = swTextureFormat.GetGreenBitCount() == 6 ? GolSoftwareRenderer::PixelFormat::e_format565
+																	: GolSoftwareRenderer::PixelFormat::e_format555;
+			m_paletteMode = 2;
 		}
-	}
-	else {
-		swPixelFormat = swTextureFormat.GetGreenBitCount() == 6 ? GolSoftwareRenderer::PixelFormat::e_format565
-																: GolSoftwareRenderer::PixelFormat::e_format555;
-		m_paletteMode = 2;
+
+		GolD3DTexturePalette::SetTextureFormat(swTextureFormat);
+		if (!m_softwareRenderer.Initialize(swPixelFormat, 16000)) {
+			GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
+		}
+
+		m_softwareRenderer.SetTlVertices(m_unk0x348);
+		FUN_1000b4a0();
+		::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 	}
 
-	GolD3DTexturePalette::SetTextureFormat(swTextureFormat);
-	if (!m_softwareRenderer.Initialize(swPixelFormat, 16000)) {
-		GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
-	}
-
-	m_softwareRenderer.SetTlVertices(m_unk0x348);
-	FUN_1000b4a0();
-	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
-
-rendererCreated:
 	SetClearColor(m_clearColor);
 	FUN_100082e0();
 	if (m_currentCamera != NULL) {

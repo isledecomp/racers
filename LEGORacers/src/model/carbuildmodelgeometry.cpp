@@ -177,7 +177,10 @@ LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, c
 #else
 
 // FUNCTION: LEGORACERS 0x00495160
-__declspec(naked) LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, const BuildVertex* p_rhs)
+__declspec(naked) LegoS32 __fastcall CarBuildModel::CompareBuildVertex(
+	const BuildVertex* p_lhs,
+	const BuildVertex* p_rhs
+)
 {
 	// Compares the raw position bits, the normal bytes (unsigned) and the raw texture coordinate bits.
 	// The normal bytes reuse the zero upper bits left by each equal comparison.

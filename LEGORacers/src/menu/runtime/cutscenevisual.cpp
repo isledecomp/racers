@@ -178,13 +178,17 @@ void CutsceneVisual::Draw(GolD3DRenderDevice* p_renderer)
 					y + drawHeight <= static_cast<LegoU32>(renderTargetHeight)) {
 					GetContentSize(&sourceWidth, &sourceHeight);
 
-					LegoFloat scaleY = static_cast<LegoFloat>(drawHeight);
 					LegoFloat divisorY = static_cast<LegoFloat>(sourceHeight);
-					scaleY /= divisorY;
-					LegoFloat scaleX = static_cast<LegoFloat>(drawWidth);
 					LegoFloat divisorX = static_cast<LegoFloat>(sourceWidth);
-					scaleX /= divisorX;
-					DrawContent(p_renderer, x, y, drawWidth, drawHeight, scaleX, scaleY);
+					DrawContent(
+						p_renderer,
+						x,
+						y,
+						drawWidth,
+						drawHeight,
+						static_cast<LegoFloat>(drawWidth) / divisorX,
+						static_cast<LegoFloat>(drawHeight) / divisorY
+					);
 				}
 			}
 		}

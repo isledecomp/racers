@@ -783,12 +783,13 @@ void RacerCarBody::AccumulateForces()
 			entry++;
 		}
 
-		LegoFloat scale = m_massScale * 0.25f;
+		LegoFloat scale = m_massScale;
+		scale *= 0.25f;
 		force.m_x = sumX * scale;
-		sumY *= scale;
 		force.m_y = sumY;
-		sumZ *= scale;
+		force.m_y *= scale;
 		force.m_z = sumZ;
+		force.m_z *= scale;
 		AddForce(&force);
 	}
 

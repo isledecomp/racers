@@ -1,4 +1,5 @@
 #include "audio/directsoundconversions.h"
+#include "compat.h"
 #include "core/gol.h"
 #include "gdbmodelindexarray.h"
 #include "gdbvertexarray.h"
@@ -107,7 +108,8 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 	return NULL;
 }
 
-// FUNCTION: LEGORACERS 0x00495160
+#ifdef COMPAT_MODE
+
 LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, const BuildVertex* p_rhs)
 {
 	LegoS32 lhsKey;
@@ -171,6 +173,56 @@ LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, c
 
 	return lhsKey;
 }
+
+#else
+
+// FUNCTION: LEGORACERS 0x00495160
+__declspec(naked) LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, const BuildVertex* p_rhs)
+{
+	// Compares the raw position bits, the normal bytes (unsigned) and the raw texture coordinate bits.
+	// The normal bytes reuse the zero upper bits left by each equal comparison.
+	__asm {
+		push ebx
+		mov eax, dword ptr [ecx + 0x14]
+		mov ebx, dword ptr [edx + 0x14]
+		sub eax, ebx
+		jne L_CompareBuildVertex_done
+		mov eax, dword ptr [ecx + 0x18]
+		mov ebx, dword ptr [edx + 0x18]
+		sub eax, ebx
+		jne L_CompareBuildVertex_done
+		mov eax, dword ptr [ecx + 0x1c]
+		mov ebx, dword ptr [edx + 0x1c]
+		sub eax, ebx
+		jne L_CompareBuildVertex_done
+		xor eax, eax
+		xor ebx, ebx
+		mov al, byte ptr [ecx + 0xf]
+		mov bl, byte ptr [edx + 0xf]
+		sub eax, ebx
+		jne L_CompareBuildVertex_done
+		mov al, byte ptr [ecx + 0x10]
+		mov bl, byte ptr [edx + 0x10]
+		sub eax, ebx
+		jne L_CompareBuildVertex_done
+		mov al, byte ptr [ecx + 0x11]
+		mov bl, byte ptr [edx + 0x11]
+		sub eax, ebx
+		jne L_CompareBuildVertex_done
+		mov eax, dword ptr [ecx + 0x20]
+		mov ebx, dword ptr [edx + 0x20]
+		sub eax, ebx
+		jne L_CompareBuildVertex_done
+		mov eax, dword ptr [ecx + 0x24]
+		mov ebx, dword ptr [edx + 0x24]
+		sub eax, ebx
+	L_CompareBuildVertex_done:
+		pop ebx
+		ret
+	}
+}
+
+#endif
 
 // FUNCTION: LEGORACERS 0x004951c0
 void __fastcall CarBuildModel::RebalanceBuildVertexInsert(BuildVertex** p_root, BuildVertex* p_vertex)

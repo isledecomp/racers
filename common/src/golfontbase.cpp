@@ -573,6 +573,7 @@ void GolFontBase::MeasureString(
 
 	LegoU32 i = 0;
 	while (i < length) {
+		LegoU32 lineWidth = 0;
 		if (!lineBreak) {
 			while (*p_string->FromCursor(i) == ' ') {
 				i++;
@@ -581,9 +582,8 @@ void GolFontBase::MeasureString(
 
 		lineBreak = FALSE;
 		LegoU32 breakIndex = i;
-		LegoU32 lastIndex = i - 1;
 		LegoU32 wordWidth = 0;
-		LegoU32 lineWidth = 0;
+		LegoU32 lastIndex = i - 1;
 
 		while (lineWidth <= static_cast<LegoU32>(p_wrapWidth)) {
 			if (i >= length) {

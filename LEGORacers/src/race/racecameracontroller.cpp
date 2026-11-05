@@ -107,8 +107,8 @@ void RaceCameraController::UpdateListener()
 	}
 
 	GolVec3 velocity = m_racer->m_physics.m_velocity;
-	GolVec3 right;
 	GolVec3 forward;
+	GolVec3 right;
 	m_racer->m_visuals.m_carEntity->GetAxes(&right, &forward);
 
 	GolVec3 position;
@@ -124,28 +124,33 @@ void RaceCameraController::UpdateListener()
 
 	{
 		SoundNode* soundNode = m_listenerNode;
-		SoundVector* rightVector = &soundNode->m_right;
-		SoundVector* forwardVector = &soundNode->m_forward;
-		rightVector->m_x = right.m_x;
-		rightVector->m_y = right.m_y;
-		rightVector->m_z = right.m_z;
-		forwardVector->m_x = forward.m_x;
-		forwardVector->m_y = forward.m_y;
-		forwardVector->m_z = forward.m_z;
+		GolVec3* rightVector = &soundNode->m_right;
+		GolVec3* forwardVector = &soundNode->m_forward;
+		*rightVector = right;
+		*forwardVector = forward;
 
-		SoundVector* orientation = &soundNode->m_orientation;
-		orientation->m_x = forwardVector->m_y * rightVector->m_z - forwardVector->m_z * rightVector->m_y;
-		orientation->m_y = forwardVector->m_z * rightVector->m_x - forwardVector->m_x * rightVector->m_z;
-		orientation->m_z = rightVector->m_y * forwardVector->m_x - forwardVector->m_y * rightVector->m_x;
+		GolVec3* orientation = &soundNode->m_orientation;
+		LegoFloat x = forwardVector->m_y * rightVector->m_z;
+		LegoFloat xSub = forwardVector->m_z * rightVector->m_y;
+		x -= xSub;
+		orientation->m_x = x;
+		LegoFloat y = forwardVector->m_z * rightVector->m_x;
+		LegoFloat ySub = rightVector->m_z;
+		ySub *= forwardVector->m_x;
+		y -= ySub;
+		orientation->m_y = y;
+		LegoFloat z = rightVector->m_y;
+		z *= forwardVector->m_x;
+		LegoFloat zSub = forwardVector->m_y * rightVector->m_x;
+		z -= zSub;
+		orientation->m_z = z;
 		GolMath::NormalizeVector3(*orientation, orientation);
 		soundNode->m_unk0x44 = TRUE;
 	}
 
 	{
 		SoundNode* soundNode = m_listenerNode;
-		soundNode->m_position.m_x = position.m_x;
-		soundNode->m_position.m_y = position.m_y;
-		soundNode->m_position.m_z = position.m_z;
+		static_cast<GolVec3&>(soundNode->m_position) = position;
 		soundNode->m_unk0x44 = TRUE;
 	}
 }
@@ -496,7 +501,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		return;
 	}
 
-	if (p_elapsedMs <= 0.0f) {
+	if (!(p_elapsedMs > 0.0f)) {
 		if (!(m_dirty & 1)) {
 			return;
 		}
@@ -505,22 +510,23 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 	m_frameDirty = m_dirty;
 	m_dirty &= 0xf0;
-	if (p_elapsedMs <= g_statMax) {
-		m_elapsed = p_elapsedMs;
+	if (p_elapsedMs > g_statMax) {
+		m_elapsed = 100.0f;
 	}
 	else {
-		m_elapsed = g_statMax;
+		m_elapsed = p_elapsedMs;
 	}
 
 	m_elapsedMs = static_cast<LegoS32>(m_elapsed);
 	UpdateShake();
 
-	if (m_mode) {
+	LegoU8 mode = m_mode;
+	if (mode) {
 		m_previousTransform = m_smoothedTransform;
 		m_previousRotation = m_smoothedRotation;
 	}
 
-	switch (m_mode) {
+	switch (mode) {
 	case 0: {
 		m_racer->m_visuals.m_carEntity->GetPosition(&m_lastRacerPosition);
 
@@ -615,13 +621,14 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 				m_turnLeadAngle =
 					turnAmount + 1.0f / (m_turnLeadRate * m_elapsed + 1.0f) * (m_turnLeadAngle - turnAmount);
 
-				LegoFloat turnSin;
-				LegoFloat turnCos;
-				GolMath::SinCos(m_turnLeadAngle, &turnSin, &turnCos);
+				{
+					LegoFloat turnSin;
+					LegoFloat turnCos;
+					GolMath::SinCos(m_turnLeadAngle, &turnSin, &turnCos);
 
-				LegoFloat oldX = desiredDirection.m_x;
-				desiredDirection.m_x = turnCos * desiredDirection.m_x - turnSin * desiredDirection.m_y;
-				desiredDirection.m_y = turnCos * desiredDirection.m_y + turnSin * oldX;
+					desiredDirection.m_x = turnCos * desiredDirection.m_x - turnSin * desiredDirection.m_y;
+					desiredDirection.m_y = turnCos * desiredDirection.m_y + turnSin * desiredDirection.m_x;
+				}
 
 				LegoFloat currentAngle = VectorToAngle(m_viewDirection.m_x, m_viewDirection.m_y);
 				LegoFloat desiredAngle = VectorToAngle(desiredDirection.m_x, desiredDirection.m_y);
@@ -678,7 +685,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		}
 		else {
 			LegoFloat transitionStep;
-			if (m_alternate) {
+			if (m_followDistanceScale < 0.0f) {
 				transitionStep = m_elapsed * 0.0040000002f;
 			}
 			else {
@@ -723,7 +730,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		GolVec3 cameraOffset;
 		if (m_mode == c_modeFinish) {
 			m_transitionMs += m_elapsed;
-			if (m_transitionMs <= 2000.0f) {
+			if (m_transitionMs < 2000.0f) {
 				LegoFloat profileAmount = 1.0f - m_transitionMs * g_transitionProgressScale;
 				cameraDistance = m_blendFollowDistance * profileAmount + m_followDistance;
 				height = m_blendPitchSine * profileAmount + m_pitchSine;

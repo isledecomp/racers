@@ -498,7 +498,10 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 	LegoFloat inverseDistance = 1.0f / distance;
 	delta *= inverseDistance;
 
-	LegoFloat closingSpeed = GOLVECTOR3_DOT(activePathDirection, delta);
+	LegoFloat closingSpeed = delta.m_z;
+	closingSpeed *= activePathDirection.m_z;
+	closingSpeed += delta.m_y * activePathDirection.m_y;
+	closingSpeed += delta.m_x * activePathDirection.m_x;
 	if (closingSpeed < g_returnPathMinClosing) {
 		m_turnRadius = g_driveMaxTurnRadius;
 	}

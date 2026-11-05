@@ -188,7 +188,8 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 	}
 
 	for (LegoU32 groupIndex = 0; groupIndex < part->m_groupCount; groupIndex++) {
-		GdbPartFaceGroup& group = part->m_groups[groupIndex];
+		GdbPartFaceGroup* groups = part->m_groups;
+		GdbPartFaceGroup& group = groups[groupIndex];
 		GolName materialName;
 		::memcpy(materialName, group.m_materialName, sizeof(materialName));
 		CopyPartGroupStart(p_renderer, groupIndex, materialName);

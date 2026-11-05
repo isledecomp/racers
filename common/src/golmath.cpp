@@ -580,101 +580,95 @@ void GolMath::RotateAboutAxis(const GolVec3* p_src, GolVec3* p_dest, const GolVe
 LegoBool32 GolMath::PointInTriangle(const GolVec3* p_point, const LegoFloat* p_triangle)
 {
 	LegoFloat normalX = p_triangle[9];
-	if (normalX < 0.0f) {
-		normalX = -normalX;
+	if (p_triangle[9] < 0.0f) {
+		normalX = -p_triangle[9];
 	}
 
 	LegoFloat normalY = p_triangle[10];
-	if (normalY < 0.0f) {
-		normalY = -normalY;
+	if (p_triangle[10] < 0.0f) {
+		normalY = -p_triangle[10];
 	}
 
 	LegoFloat normalZ = p_triangle[11];
-	if (normalZ < 0.0f) {
-		normalZ = -normalZ;
+	if (p_triangle[11] < 0.0f) {
+		normalZ = -p_triangle[11];
 	}
 
-	LegoFloat a0;
-	LegoFloat a1;
-	LegoFloat b0;
-	LegoFloat b1;
-	LegoFloat c0;
-	LegoFloat c1;
-	LegoFloat point0;
-	LegoFloat point1;
+	GolVec2 projected[4];
 
 	if (normalX > normalY) {
 		if (normalZ > normalX) {
-			a0 = p_triangle[0];
-			a1 = p_triangle[1];
-			b0 = p_triangle[3];
-			b1 = p_triangle[4];
-			c0 = p_triangle[6];
-			c1 = p_triangle[7];
-			point0 = p_point->m_x;
-			point1 = p_point->m_y;
+			projected[1].m_x = p_triangle[0];
+			projected[1].m_y = p_triangle[1];
+			projected[2].m_x = p_triangle[3];
+			projected[2].m_y = p_triangle[4];
+			projected[3].m_x = p_triangle[6];
+			projected[3].m_y = p_triangle[7];
+			projected[0].m_x = p_point->m_x;
+			projected[0].m_y = p_point->m_y;
 		}
 		else {
-			a0 = p_triangle[1];
-			a1 = p_triangle[2];
-			b0 = p_triangle[4];
-			b1 = p_triangle[5];
-			c0 = p_triangle[7];
-			c1 = p_triangle[8];
-			point0 = p_point->m_y;
-			point1 = p_point->m_z;
+			projected[1].m_x = p_triangle[1];
+			projected[1].m_y = p_triangle[2];
+			projected[2].m_x = p_triangle[4];
+			projected[2].m_y = p_triangle[5];
+			projected[3].m_x = p_triangle[7];
+			projected[3].m_y = p_triangle[8];
+			projected[0].m_x = p_point->m_y;
+			projected[0].m_y = p_point->m_z;
 		}
 	}
 	else if (normalZ > normalY) {
-		a0 = p_triangle[0];
-		a1 = p_triangle[1];
-		b0 = p_triangle[3];
-		b1 = p_triangle[4];
-		c0 = p_triangle[6];
-		c1 = p_triangle[7];
-		point0 = p_point->m_x;
-		point1 = p_point->m_y;
+		projected[1].m_x = p_triangle[0];
+		projected[1].m_y = p_triangle[1];
+		projected[2].m_x = p_triangle[3];
+		projected[2].m_y = p_triangle[4];
+		projected[3].m_x = p_triangle[6];
+		projected[3].m_y = p_triangle[7];
+		projected[0].m_x = p_point->m_x;
+		projected[0].m_y = p_point->m_y;
 	}
 	else {
-		a0 = p_triangle[0];
-		a1 = p_triangle[2];
-		b0 = p_triangle[3];
-		b1 = p_triangle[5];
-		c0 = p_triangle[6];
-		c1 = p_triangle[8];
-		point0 = p_point->m_x;
-		point1 = p_point->m_z;
+		projected[1].m_x = p_triangle[0];
+		projected[1].m_y = p_triangle[2];
+		projected[2].m_x = p_triangle[3];
+		projected[2].m_y = p_triangle[5];
+		projected[3].m_x = p_triangle[6];
+		projected[3].m_y = p_triangle[8];
+		projected[0].m_x = p_point->m_x;
+		projected[0].m_y = p_point->m_z;
 	}
 
-	LegoFloat edgeAC0 = a0 - c0;
-	LegoFloat edgeAC1 = c1 - a1;
-	LegoFloat edgeACDotC = edgeAC0 * c1 + edgeAC1 * c0;
-	LegoFloat edgeAB0 = b0 - a0;
-	LegoFloat edgeAB1 = a1 - b1;
-	LegoFloat edgeABDotB = edgeAB0 * a1 + edgeAB1 * a0;
-	LegoFloat edgeCB0 = c0 - b0;
-	LegoFloat edgeCB1 = b1 - c1;
-	LegoFloat edgeCBDotC = edgeCB0 * b1 + edgeCB1 * b0;
+	LegoFloat edgeAC1 = projected[3].m_y - projected[1].m_y;
+	LegoFloat edgeAC0 = projected[1].m_x - projected[3].m_x;
+	LegoFloat edgeConstants[3];
+	edgeConstants[0] = edgeAC0 * projected[3].m_y + edgeAC1 * projected[3].m_x;
+	LegoFloat edgeAB1 = projected[1].m_y - projected[2].m_y;
+	LegoFloat edgeAB0 = projected[2].m_x - projected[1].m_x;
+	edgeConstants[1] = edgeAB0 * projected[1].m_y + edgeAB1 * projected[1].m_x;
+	LegoFloat edgeCB1 = projected[2].m_y - projected[3].m_y;
+	LegoFloat edgeCB0 = projected[3].m_x - projected[2].m_x;
+	edgeConstants[2] = edgeCB0 * projected[2].m_y + edgeCB1 * projected[2].m_x;
 
-	if (edgeCB0 * edgeAB1 > edgeCB1 * edgeAB0) {
-		if (edgeAC0 * point1 + edgeAC1 * point0 < edgeACDotC) {
+	if (edgeCB1 * edgeAB0 < edgeCB0 * edgeAB1) {
+		if (edgeAC0 * projected[0].m_y + edgeAC1 * projected[0].m_x < edgeConstants[0]) {
 			return FALSE;
 		}
-		if (edgeAB0 * point1 + edgeAB1 * point0 < edgeABDotB) {
+		if (edgeAB0 * projected[0].m_y + edgeAB1 * projected[0].m_x < edgeConstants[1]) {
 			return FALSE;
 		}
-		if (edgeCB0 * point1 + edgeCB1 * point0 < edgeCBDotC) {
+		if (edgeCB0 * projected[0].m_y + edgeCB1 * projected[0].m_x < edgeConstants[2]) {
 			return FALSE;
 		}
 	}
 	else {
-		if (edgeAC0 * point1 + edgeAC1 * point0 > edgeACDotC) {
+		if (edgeAC0 * projected[0].m_y + edgeAC1 * projected[0].m_x > edgeConstants[0]) {
 			return FALSE;
 		}
-		if (edgeAB0 * point1 + edgeAB1 * point0 > edgeABDotB) {
+		if (edgeAB0 * projected[0].m_y + edgeAB1 * projected[0].m_x > edgeConstants[1]) {
 			return FALSE;
 		}
-		if (edgeCB0 * point1 + edgeCB1 * point0 > edgeCBDotC) {
+		if (edgeCB0 * projected[0].m_y + edgeCB1 * projected[0].m_x > edgeConstants[2]) {
 			return FALSE;
 		}
 	}

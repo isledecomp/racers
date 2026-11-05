@@ -386,10 +386,10 @@ void DriverModelBuilder::ReplaceMaterialTexture(GolMaterial* p_material, const L
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
+	GolMaterial::NameRecord materialName;
 	for (LegoS32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
 		GolMaterial* material = materialTable->GetMaterial(materialIndex);
 		if (material != NULL) {
-			GolMaterial::NameRecord materialName;
 			materialName = material->GetNameRecord();
 
 			if (::strncmp(p_name, materialName.m_name, sizeof(GolName)) == 0) {
@@ -507,78 +507,66 @@ void DriverModelBuilder::ApplyFaceExpression(GolModelBase* p_model, DriverCosmet
 // FUNCTION: LEGORACERS 0x0049dd50
 void DriverModelBuilder::CopyGroupsUntilFace()
 {
-	GolName faceName;
-	::strncpy(faceName, "face", sizeof(GolName));
+	GolMaterial::NameRecord name;
+	::strncpy(name.m_name, "face", sizeof(name));
 	LegoU32 faceGroup = GolModel::c_groupTypeMaterial |
-						(m_bodySummary.m_model->GetMaterialTable()->FindEntryIndexByName(faceName) & 0x00ffffff);
+						(m_bodySummary.m_model->GetMaterialTable()->FindEntryIndexByName(name.m_name) & 0x00ffffff);
 
 	LegoS32 bodyIndex = 0;
 	LegoU32 group;
 	do {
+		group = m_bodySummary.m_model->GetGroups()[bodyIndex];
+		m_outputSummary.m_model->GetMutableGroups()[bodyIndex] = group;
 		bodyIndex++;
-		group = m_bodySummary.m_model->GetGroups()[bodyIndex - 1];
-		m_outputSummary.m_model->GetMutableGroups()[bodyIndex - 1] = group;
 	} while (group != faceGroup);
 
 	LegoS32 outputIndex = bodyIndex - 1;
 	LegoU32 groupType;
 	do {
-		group = m_bodySummary.m_model->GetGroups()[bodyIndex];
-		bodyIndex++;
+		group = m_bodySummary.m_model->GetGroups()[bodyIndex++];
 		groupType = group & GolModel::c_groupTypeMask;
 		if (groupType == GolModel::c_groupTypeMatrix) {
-			m_outputSummary.m_model->GetMutableGroups()[outputIndex++] = group;
+			LegoS32 writeIndex = outputIndex++;
+			m_outputSummary.m_model->GetMutableGroups()[writeIndex] = group;
 		}
 	} while (groupType != GolModel::c_groupTypeMaterial && groupType != GolModel::c_groupTypeEnd);
 
-	LegoS32 headGroupCount = m_headSummary.m_groupCount;
 	LegoS32 bodyCopyIndex = bodyIndex - 1;
-	LegoS32 headIndex = 0;
-	LegoS32 remainingBodyIndex = bodyIndex - 1;
-	if (headGroupCount > 0) {
-		while (TRUE) {
-			group = m_headSummary.m_model->GetGroups()[headIndex];
-			groupType = group & GolModel::c_groupTypeMask;
-			if (groupType > GolModel::c_groupTypeMaterial) {
-				if (groupType == GolModel::c_groupTypeEnd) {
-					headIndex = headGroupCount;
-				}
-			}
-			else if (groupType == GolModel::c_groupTypeMaterial) {
-				GolMaterial* material = m_headSummary.m_model->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
-				GolMaterial::NameRecord materialName;
-				materialName = material->GetNameRecord();
-				group = GolModel::c_groupTypeMaterial |
-						(m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(materialName.m_name) &
-						 0x00ffffff);
-			}
-			else if (groupType) {
-				if (groupType == GolModel::c_groupTypeTriangleBatch) {
-					group = GolModel::c_groupTypeTriangleBatch | (group & 0x007f0000) |
-							((group + m_bodySummary.m_indexCount) & 0x0000ffff);
-				}
-			}
-			else {
-				group =
-					(group & 0x0fc00000) | (group & 0x003f0000) | ((group + m_bodySummary.m_vertexCount) & 0x0000ffff);
-			}
-
-			if (groupType != GolModel::c_groupTypeEnd) {
-				m_outputSummary.m_model->GetMutableGroups()[outputIndex++] = group;
-			}
-			headGroupCount = m_headSummary.m_groupCount;
-			if (++headIndex >= headGroupCount) {
-				bodyCopyIndex = remainingBodyIndex;
-				break;
-			}
+	for (LegoS32 headIndex = 0; headIndex < m_headSummary.m_groupCount; headIndex++) {
+		group = m_headSummary.m_model->GetGroups()[headIndex];
+		groupType = group & GolModel::c_groupTypeMask;
+		switch (group & GolModel::c_groupTypeMask) {
+		case GolModel::c_groupTypeTriangles: {
+			LegoU32 groupVertexCount = (group >> GolModel::c_groupDataUpperWordShift) & GolModel::c_vertexCountMask;
+			group = (group & 0x0fc00000) | (groupVertexCount << GolModel::c_groupDataUpperWordShift) |
+					((group + m_bodySummary.m_vertexCount) & 0x0000ffff);
+			break;
 		}
+		case GolModel::c_groupTypeTriangleBatch:
+			group = GolModel::c_groupTypeTriangleBatch | (group & 0x007f0000) |
+					((group + m_bodySummary.m_indexCount) & 0x0000ffff);
+			break;
+		case static_cast<LegoU32>(GolModel::c_groupTypeMaterial): {
+			GolMaterial* material = m_headSummary.m_model->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
+			name = material->GetNameRecord();
+			group = GolModel::c_groupTypeMaterial |
+					(m_outputSummary.m_model->GetMaterialTable()->FindEntryIndexByName(name.m_name) & 0x00ffffff);
+			break;
+		}
+		case static_cast<LegoU32>(GolModel::c_groupTypeEnd):
+			headIndex = m_headSummary.m_groupCount;
+			continue;
+		}
+		LegoS32 writeIndex = outputIndex++;
+		m_outputSummary.m_model->GetMutableGroups()[writeIndex] = group;
 	}
 
 	while (bodyCopyIndex < m_bodySummary.m_groupCount) {
-		m_outputSummary.m_model->GetMutableGroups()[outputIndex++] =
-			m_bodySummary.m_model->GetGroups()[bodyCopyIndex++];
+		LegoS32 writeIndex = outputIndex++;
+		m_outputSummary.m_model->GetMutableGroups()[writeIndex] = m_bodySummary.m_model->GetGroups()[bodyCopyIndex++];
 	}
 
-	m_outputSummary.m_model->GetMutableGroups()[outputIndex] = GolModel::c_groupTypeEnd;
-	m_outputSummary.m_model->SetDirty(TRUE);
+	GolModelBase* outputModel = m_outputSummary.m_model;
+	outputModel->GetMutableGroups()[outputIndex] = GolModel::c_groupTypeEnd;
+	outputModel->SetDirty(TRUE);
 }

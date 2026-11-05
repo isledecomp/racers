@@ -2057,15 +2057,13 @@ void RacerCarBody::ApplyWallResponse()
 			GolVec2 row1;
 			row1.m_x = orientation.m_rows[1].m_x;
 			row1.m_y = orientation.m_rows[1].m_y;
-			LegoFloat sideX = row1.m_x;
 			LegoFloat sideY = row1.m_y;
-			LegoFloat sideDot = direction->m_z;
+			LegoFloat sideDot = m_wallNormal.m_z;
 			sideDot *= orientation.m_rows[1].m_z;
-			LegoFloat sideYProduct = direction->m_y;
+			LegoFloat sideYProduct = m_wallNormal.m_y;
 			sideYProduct *= sideY;
 			sideDot += sideYProduct;
-			sideX *= direction->m_x;
-			sideDot += sideX;
+			sideDot += row1.m_x * m_wallNormal.m_x;
 
 			LegoFloat amount;
 			if (sideDot < 0.0f) {

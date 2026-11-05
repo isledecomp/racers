@@ -386,10 +386,10 @@ void DriverModelBuilder::ReplaceMaterialTexture(GolMaterial* p_material, const L
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
+	GolMaterial::NameRecord materialName;
 	for (LegoS32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
 		GolMaterial* material = materialTable->GetMaterial(materialIndex);
 		if (material != NULL) {
-			GolMaterial::NameRecord materialName;
 			materialName = material->GetNameRecord();
 
 			if (::strncmp(p_name, materialName.m_name, sizeof(GolName)) == 0) {

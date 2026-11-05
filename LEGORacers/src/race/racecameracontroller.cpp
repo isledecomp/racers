@@ -501,7 +501,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		return;
 	}
 
-	if (p_elapsedMs <= 0.0f) {
+	if (!(p_elapsedMs > 0.0f)) {
 		if (!(m_dirty & 1)) {
 			return;
 		}
@@ -510,22 +510,23 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 	m_frameDirty = m_dirty;
 	m_dirty &= 0xf0;
-	if (p_elapsedMs <= g_statMax) {
-		m_elapsed = p_elapsedMs;
+	if (p_elapsedMs > g_statMax) {
+		m_elapsed = 100.0f;
 	}
 	else {
-		m_elapsed = g_statMax;
+		m_elapsed = p_elapsedMs;
 	}
 
 	m_elapsedMs = static_cast<LegoS32>(m_elapsed);
 	UpdateShake();
 
-	if (m_mode) {
+	LegoU8 mode = m_mode;
+	if (mode) {
 		m_previousTransform = m_smoothedTransform;
 		m_previousRotation = m_smoothedRotation;
 	}
 
-	switch (m_mode) {
+	switch (mode) {
 	case 0: {
 		m_racer->m_visuals.m_carEntity->GetPosition(&m_lastRacerPosition);
 
@@ -620,13 +621,14 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 				m_turnLeadAngle =
 					turnAmount + 1.0f / (m_turnLeadRate * m_elapsed + 1.0f) * (m_turnLeadAngle - turnAmount);
 
-				LegoFloat turnSin;
-				LegoFloat turnCos;
-				GolMath::SinCos(m_turnLeadAngle, &turnSin, &turnCos);
+				{
+					LegoFloat turnSin;
+					LegoFloat turnCos;
+					GolMath::SinCos(m_turnLeadAngle, &turnSin, &turnCos);
 
-				LegoFloat oldX = desiredDirection.m_x;
-				desiredDirection.m_x = turnCos * desiredDirection.m_x - turnSin * desiredDirection.m_y;
-				desiredDirection.m_y = turnCos * desiredDirection.m_y + turnSin * oldX;
+					desiredDirection.m_x = turnCos * desiredDirection.m_x - turnSin * desiredDirection.m_y;
+					desiredDirection.m_y = turnCos * desiredDirection.m_y + turnSin * desiredDirection.m_x;
+				}
 
 				LegoFloat currentAngle = VectorToAngle(m_viewDirection.m_x, m_viewDirection.m_y);
 				LegoFloat desiredAngle = VectorToAngle(desiredDirection.m_x, desiredDirection.m_y);
@@ -683,7 +685,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		}
 		else {
 			LegoFloat transitionStep;
-			if (m_alternate) {
+			if (m_followDistanceScale < 0.0f) {
 				transitionStep = m_elapsed * 0.0040000002f;
 			}
 			else {
@@ -728,7 +730,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		GolVec3 cameraOffset;
 		if (m_mode == c_modeFinish) {
 			m_transitionMs += m_elapsed;
-			if (m_transitionMs <= 2000.0f) {
+			if (m_transitionMs < 2000.0f) {
 				LegoFloat profileAmount = 1.0f - m_transitionMs * g_transitionProgressScale;
 				cameraDistance = m_blendFollowDistance * profileAmount + m_followDistance;
 				height = m_blendPitchSine * profileAmount + m_pitchSine;

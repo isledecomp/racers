@@ -338,8 +338,12 @@ LegoBool32 GolCameraBase::ProjectSphere(GolVec3* p_center, LegoFloat p_radius, G
 	LegoFloat scale = p_radius / dot;
 	{
 		GolVec3 scaledAxis;
-		scaledAxis.m_x = up.m_x * scale;
-		scaledAxis.m_y = up.m_y * scale;
+		LegoFloat x = up.m_x;
+		x *= scale;
+		scaledAxis.m_x = x;
+		LegoFloat y = up.m_y;
+		y *= scale;
+		scaledAxis.m_y = y;
 		scaledAxis.m_z = up.m_z * scale;
 		tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 		tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
@@ -355,8 +359,12 @@ LegoBool32 GolCameraBase::ProjectSphere(GolVec3* p_center, LegoFloat p_radius, G
 	scale = -(p_radius / dot);
 	{
 		GolVec3 scaledAxis;
-		scaledAxis.m_x = up.m_x * scale;
-		scaledAxis.m_y = up.m_y * scale;
+		LegoFloat x = scale;
+		x *= up.m_x;
+		scaledAxis.m_x = x;
+		LegoFloat y = up.m_y;
+		y *= scale;
+		scaledAxis.m_y = y;
 		scaledAxis.m_z = up.m_z * scale;
 		tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 		tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
@@ -374,8 +382,12 @@ LegoBool32 GolCameraBase::ProjectSphere(GolVec3* p_center, LegoFloat p_radius, G
 	scale = -(p_radius / dot);
 	{
 		GolVec3 scaledAxis;
-		scaledAxis.m_x = forward.m_x * scale;
-		scaledAxis.m_y = forward.m_y * scale;
+		LegoFloat x = scale;
+		x *= forward.m_x;
+		scaledAxis.m_x = x;
+		LegoFloat y = forward.m_y;
+		y *= scale;
+		scaledAxis.m_y = y;
 		scaledAxis.m_z = forward.m_z * scale;
 		tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 		tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
@@ -392,8 +404,12 @@ LegoBool32 GolCameraBase::ProjectSphere(GolVec3* p_center, LegoFloat p_radius, G
 	scale = p_radius / dot;
 	{
 		GolVec3 scaledAxis;
-		scaledAxis.m_x = forward.m_x * scale;
-		scaledAxis.m_y = forward.m_y * scale;
+		LegoFloat x = forward.m_x;
+		x *= scale;
+		scaledAxis.m_x = x;
+		LegoFloat y = forward.m_y;
+		y *= scale;
+		scaledAxis.m_y = y;
 		scaledAxis.m_z = forward.m_z * scale;
 		tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 		tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;

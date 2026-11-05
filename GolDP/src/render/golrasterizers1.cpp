@@ -302,7 +302,7 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 						p_renderer->SetTriangleRasterizer(FUN_1003c780);
 					}
 					if (p_renderer->GetRasterizerFlags() & 2) {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[24 - sizeLog2]);
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[26 - sizeLog2]);
 						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 						STUB(0x01); // FIXME: to prevent mismatching code folding
 					}

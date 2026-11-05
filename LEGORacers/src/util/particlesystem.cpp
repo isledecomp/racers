@@ -517,10 +517,7 @@ void ParticleSystem::EmitQuad(Particle* p_particle)
 
 	LegoFloat forwardZ = m_scaledCameraForward.m_z;
 	forwardZ *= 0.5f;
-	LegoFloat upZ = m_scaledCameraUp.m_z;
-	upZ *= 0.5f;
-	forwardZ += upZ;
-	position.m_z -= forwardZ;
+	position.m_z -= forwardZ + m_scaledCameraUp.m_z * 0.5f;
 
 	GolVec2 texCoord;
 	texCoord.m_x = 0.01f;

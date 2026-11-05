@@ -384,9 +384,9 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 			}
 		}
 
+		LPDIRECTDRAWSURFACE4 renderSurface = m_primaryRenderTarget->m_renderSurface;
 		HRESULT hresult =
-			m_drawState->m_d3d3
-				->CreateDevice(m_drawState->m_deviceGuid, m_primaryRenderTarget->m_renderSurface, &m_d3dDevice, NULL);
+			m_drawState->m_d3d3->CreateDevice(m_drawState->m_deviceGuid, renderSurface, &m_d3dDevice, NULL);
 		if (hresult != D3D_OK) {
 			sprintf(errorMessage, "Unable to create Direct3D device\nerror %x", hresult);
 			GOL_FATALERROR_MESSAGE(errorMessage);
@@ -480,46 +480,49 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 			m_unk0x2c = 0;
 			m_d3dDevice->EnumTextureFormats(EnumerateTextureFormatsCallback, this);
 			m_paletteMode = 2;
-			goto rendererCreated;
 		}
 
-		m_d3dDevice->Release();
-		m_d3dDevice = NULL;
+		else {
+			m_d3dDevice->Release();
+			m_d3dDevice = NULL;
+			forceSoftware = TRUE;
+		}
 	}
 
-	m_flags &= ~c_flagZBuffer;
-	m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
-	m_unk0xc384c = -1;
-	m_unk0xc83c4 = 1;
-	m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
-	::memcpy(&swTextureFormat, &m_primaryRenderTarget->m_textureFormat, sizeof(swTextureFormat));
+	if (forceSoftware) {
+		m_flags &= ~c_flagZBuffer;
+		m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
+		m_unk0xc384c = -1;
+		m_unk0xc83c4 = 1;
+		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
+		::memcpy(&swTextureFormat, &m_primaryRenderTarget->m_textureFormat, sizeof(swTextureFormat));
 
-	GolSoftwareRenderer::PixelFormat swPixelFormat;
-	if (swTextureFormat.m_bitsPerPixel == 8) {
-		swPixelFormat = GolSoftwareRenderer::PixelFormat::e_formatIndex8;
-		if (m_drawState->m_flags & GolDrawState::c_flagTexturePalettes) {
-			m_paletteMode = 1;
+		GolSoftwareRenderer::PixelFormat swPixelFormat;
+		if (swTextureFormat.m_bitsPerPixel == 8) {
+			swPixelFormat = GolSoftwareRenderer::PixelFormat::e_formatIndex8;
+			if (m_drawState->m_flags & GolDrawState::c_flagTexturePalettes) {
+				m_paletteMode = 1;
+			}
+			else {
+				m_paletteMode = 0;
+			}
 		}
 		else {
-			m_paletteMode = 0;
+			swPixelFormat = swTextureFormat.GetGreenBitCount() == 6 ? GolSoftwareRenderer::PixelFormat::e_format565
+																	: GolSoftwareRenderer::PixelFormat::e_format555;
+			m_paletteMode = 2;
 		}
-	}
-	else {
-		swPixelFormat = swTextureFormat.GetGreenBitCount() == 6 ? GolSoftwareRenderer::PixelFormat::e_format565
-																: GolSoftwareRenderer::PixelFormat::e_format555;
-		m_paletteMode = 2;
+
+		GolD3DTexturePalette::SetTextureFormat(swTextureFormat);
+		if (!m_softwareRenderer.Initialize(swPixelFormat, 16000)) {
+			GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
+		}
+
+		m_softwareRenderer.SetTlVertices(m_unk0x348);
+		FUN_1000b4a0();
+		::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 	}
 
-	GolD3DTexturePalette::SetTextureFormat(swTextureFormat);
-	if (!m_softwareRenderer.Initialize(swPixelFormat, 16000)) {
-		GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
-	}
-
-	m_softwareRenderer.SetTlVertices(m_unk0x348);
-	FUN_1000b4a0();
-	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
-
-rendererCreated:
 	SetClearColor(m_clearColor);
 	FUN_100082e0();
 	if (m_currentCamera != NULL) {
@@ -2813,13 +2816,12 @@ void GolD3DRenderDevice::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
 	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
 		vertex->sy = m_currentMatrix->m_m[0][1] * position->m_x;
@@ -2849,7 +2851,7 @@ void GolD3DRenderDevice::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex++;
 	}
 
-	*vertexMap = savedMapEntry;
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
 // FUNCTION: GOLDP 0x1000baa0
@@ -2859,13 +2861,12 @@ void GolD3DRenderDevice::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
 	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
 		vertex->sy = m_currentMatrix->m_m[0][1] * position->m_x;
@@ -2887,12 +2888,16 @@ void GolD3DRenderDevice::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertexMap++;
 		vertex->color = *color;
 		color++;
-		vertex->sx *= vertex->rhw;
-		vertex->sy *= vertex->rhw;
+		LegoFloat screenX = vertex->rhw;
+		screenX *= vertex->sx;
+		vertex->sx = screenX;
+		LegoFloat screenY = vertex->rhw;
+		screenY *= vertex->sy;
+		vertex->sy = screenY;
 		vertex++;
 	}
 
-	*vertexMap = savedMapEntry;
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
 // FUNCTION: GOLDP 0x1000bc40
@@ -2903,14 +2908,12 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
 	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	LegoU32 alpha = (m_alpha & 0xff) << 24;
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	D3DTLVERTEX* vertex = vertices;
 	for (; position < positionEnd; position++) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
 		vertex->sy = m_currentMatrix->m_m[0][1] * position->m_x;
@@ -2930,7 +2933,7 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 
 		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
 		vertexMap++;
-		vertex->color = (*color & 0x00ffffff) | alpha;
+		vertex->color = (*color & 0x00ffffff) | (m_alpha << 24);
 		color++;
 		vertex->tu = uv->m_x;
 		vertex->tv = uv->m_y;
@@ -2940,7 +2943,7 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex++;
 	}
 
-	*vertexMap = savedMapEntry;
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
 // FUNCTION: GOLDP 0x1000be20
@@ -4521,32 +4524,55 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	CommandVertex* source = m_unk0xc428c + p_outputFirst;
 	CommandVertex* sourceEnd = source + p_vertexCount;
 
-	for (; source < sourceEnd; cache++, vertex++, cacheIndex++) {
-		cache->m_x = source->m_x * m_viewProjectionMatrix->m_m[0][0] + source->m_y * m_viewProjectionMatrix->m_m[1][0] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][0] + m_viewProjectionMatrix->m_m[3][0];
-		cache->m_y = source->m_x * m_viewProjectionMatrix->m_m[0][1] + source->m_y * m_viewProjectionMatrix->m_m[1][1] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][1] + m_viewProjectionMatrix->m_m[3][1];
-		cache->m_z = source->m_x * m_viewProjectionMatrix->m_m[0][2] + source->m_y * m_viewProjectionMatrix->m_m[1][2] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][2] + m_viewProjectionMatrix->m_m[3][2];
-		cache->m_w = source->m_x * m_viewProjectionMatrix->m_m[0][3] + source->m_y * m_viewProjectionMatrix->m_m[1][3] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][3] + m_viewProjectionMatrix->m_m[3][3];
-		cache->m_unk0x10 = cacheIndex;
+	for (; source < sourceEnd; source++, cache++, vertex++) {
+		cache->m_x = m_viewProjectionMatrix->m_m[0][0] * source->m_x;
+		cache->m_y = m_viewProjectionMatrix->m_m[0][1] * source->m_x;
+		cache->m_z = m_viewProjectionMatrix->m_m[0][2] * source->m_x;
+		cache->m_w = m_viewProjectionMatrix->m_m[0][3] * source->m_x;
+
+		cache->m_x += m_viewProjectionMatrix->m_m[1][0] * source->m_y;
+		cache->m_y += m_viewProjectionMatrix->m_m[1][1] * source->m_y;
+		cache->m_z += m_viewProjectionMatrix->m_m[1][2] * source->m_y;
+		cache->m_w += m_viewProjectionMatrix->m_m[1][3] * source->m_y;
+
+		cache->m_x += m_viewProjectionMatrix->m_m[2][0] * source->m_z;
+		cache->m_y += m_viewProjectionMatrix->m_m[2][1] * source->m_z;
+		cache->m_z += m_viewProjectionMatrix->m_m[2][2] * source->m_z;
+		cache->m_w += m_viewProjectionMatrix->m_m[2][3] * source->m_z;
+
+		cache->m_x += m_viewProjectionMatrix->m_m[3][0];
+		cache->m_y += m_viewProjectionMatrix->m_m[3][1];
+		cache->m_z += m_viewProjectionMatrix->m_m[3][2];
+		LegoFloat w = m_viewProjectionMatrix->m_m[3][3] + cache->m_w;
+		cache->m_w = w;
+		vertex->rhw = 1.0f / w;
+		cache->m_unk0x10 = cacheIndex++;
 		cache->m_clipFlags = BuildModelClipFlags(*cache);
 
-		vertex->rhw = 1.0f / cache->m_w;
-		vertex->sx = cache->m_x * vertex->rhw * m_viewportMetrics[0] + m_viewportMetrics[2];
-		vertex->sy = cache->m_y * vertex->rhw * m_viewportMetrics[1] + m_viewportMetrics[3];
-		vertex->sz = cache->m_z * vertex->rhw;
 		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
 		vertex->color = (sourceColor[3] << 24) | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
-		vertex->tu = source->m_u + m_uvOffsetU;
-		vertex->tv = source->m_v + m_uvOffsetV;
+		vertex->tu = source->m_u;
+		vertex->tv = source->m_v;
+		LegoFloat screenX = vertex->rhw;
+		screenX *= cache->m_x;
+		screenX *= m_viewportMetrics[0];
+		screenX += m_viewportMetrics[2];
+		vertex->sx = screenX;
+
+		LegoFloat screenY = vertex->rhw;
+		screenY *= cache->m_y;
+		screenY *= m_viewportMetrics[1];
+		screenY += m_viewportMetrics[3];
+		vertex->sy = screenY;
+
+		vertex->sz = cache->m_z * vertex->rhw;
 	}
 }
 
 // FUNCTION: GOLDP 0x1000dbb0
 void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
+	LegoU32 alpha = m_alpha << 24;
 	{
 		const GolVec3* position = m_sourcePositions + p_firstVertex;
 		const GolVec3* positionEnd = position + p_vertexCount;
@@ -4599,28 +4625,49 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
 	CommandVertex* source = m_unk0xc428c + p_outputFirst;
 	CommandVertex* sourceEnd = source + p_vertexCount;
-	LegoU32 alpha = (m_alpha & 0xff) << 24;
 
 	for (; source < sourceEnd; source++, cache++, vertex++, cacheIndex++) {
-		cache->m_x = source->m_x * m_viewProjectionMatrix->m_m[0][0] + source->m_y * m_viewProjectionMatrix->m_m[1][0] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][0] + m_viewProjectionMatrix->m_m[3][0];
-		cache->m_y = source->m_x * m_viewProjectionMatrix->m_m[0][1] + source->m_y * m_viewProjectionMatrix->m_m[1][1] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][1] + m_viewProjectionMatrix->m_m[3][1];
-		cache->m_z = source->m_x * m_viewProjectionMatrix->m_m[0][2] + source->m_y * m_viewProjectionMatrix->m_m[1][2] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][2] + m_viewProjectionMatrix->m_m[3][2];
-		cache->m_w = source->m_x * m_viewProjectionMatrix->m_m[0][3] + source->m_y * m_viewProjectionMatrix->m_m[1][3] +
-					 source->m_z * m_viewProjectionMatrix->m_m[2][3] + m_viewProjectionMatrix->m_m[3][3];
+		cache->m_x = m_viewProjectionMatrix->m_m[0][0] * source->m_x;
+		cache->m_y = m_viewProjectionMatrix->m_m[0][1] * source->m_x;
+		cache->m_z = m_viewProjectionMatrix->m_m[0][2] * source->m_x;
+		cache->m_w = m_viewProjectionMatrix->m_m[0][3] * source->m_x;
+
+		cache->m_x += m_viewProjectionMatrix->m_m[1][0] * source->m_y;
+		cache->m_y += m_viewProjectionMatrix->m_m[1][1] * source->m_y;
+		cache->m_z += m_viewProjectionMatrix->m_m[1][2] * source->m_y;
+		cache->m_w += m_viewProjectionMatrix->m_m[1][3] * source->m_y;
+
+		cache->m_x += m_viewProjectionMatrix->m_m[2][0] * source->m_z;
+		cache->m_y += m_viewProjectionMatrix->m_m[2][1] * source->m_z;
+		cache->m_z += m_viewProjectionMatrix->m_m[2][2] * source->m_z;
+		cache->m_w += m_viewProjectionMatrix->m_m[2][3] * source->m_z;
+
+		cache->m_x += m_viewProjectionMatrix->m_m[3][0];
+		cache->m_y += m_viewProjectionMatrix->m_m[3][1];
+		cache->m_z += m_viewProjectionMatrix->m_m[3][2];
+		LegoFloat w = m_viewProjectionMatrix->m_m[3][3] + cache->m_w;
+		cache->m_w = w;
+		vertex->rhw = 1.0f / w;
 		cache->m_unk0x10 = cacheIndex;
 		cache->m_clipFlags = BuildModelClipFlags(*cache);
 
-		vertex->rhw = 1.0f / cache->m_w;
-		vertex->sx = cache->m_x * vertex->rhw * m_viewportMetrics[0] + m_viewportMetrics[2];
-		vertex->sy = cache->m_y * vertex->rhw * m_viewportMetrics[1] + m_viewportMetrics[3];
-		vertex->sz = cache->m_z * vertex->rhw;
 		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
 		vertex->color = alpha | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
-		vertex->tu = source->m_u + m_uvOffsetU;
-		vertex->tv = source->m_v + m_uvOffsetV;
+		vertex->tu = source->m_u;
+		vertex->tv = source->m_v;
+		LegoFloat screenX = vertex->rhw;
+		screenX *= cache->m_x;
+		screenX *= m_viewportMetrics[0];
+		screenX += m_viewportMetrics[2];
+		vertex->sx = screenX;
+
+		LegoFloat screenY = vertex->rhw;
+		screenY *= cache->m_y;
+		screenY *= m_viewportMetrics[1];
+		screenY += m_viewportMetrics[3];
+		vertex->sy = screenY;
+
+		vertex->sz = cache->m_z * vertex->rhw;
 	}
 }
 
@@ -7634,7 +7681,11 @@ void GolD3DRenderDevice::FUN_100132f0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		cache->m_unk0x10 = cacheIndex;
 
 		vertex->color = 0;
-		vertex->sx = cache->m_x * vertex->rhw * m_viewportMetrics[0] + m_viewportMetrics[2];
+		LegoFloat screenX = vertex->rhw;
+		screenX *= cache->m_x;
+		screenX *= m_viewportMetrics[0];
+		screenX += m_viewportMetrics[2];
+		vertex->sx = screenX;
 		vertex->sy = cache->m_y * vertex->rhw * m_viewportMetrics[1] + m_viewportMetrics[3];
 		vertex->sz = cache->m_z * vertex->rhw;
 	}

@@ -1464,10 +1464,7 @@ void RaceHud::Draw()
 
 	LegoS32 positionIndex;
 	if (!m_positionPulseMs) {
-		positionIndex = m_finalPosition;
-		if (positionIndex < 0) {
-			positionIndex = racer->m_standingsPosition - 1;
-		}
+		positionIndex = m_finalPosition < 0 ? racer->m_standingsPosition - 1 : m_finalPosition;
 		if (positionIndex > 8) {
 			positionIndex = 8;
 		}
@@ -1533,18 +1530,18 @@ void RaceHud::Draw()
 		}
 
 		m_lastLapIndex = lapIndex;
-		LegoS32 displayLap = lapIndex + 1;
+		lapIndex++;
 		if (m_displayLapCount > 0) {
-			if (displayLap > static_cast<LegoS32>(m_displayLapCount)) {
-				displayLap = m_displayLapCount;
+			if (lapIndex > static_cast<LegoS32>(m_displayLapCount)) {
+				lapIndex = m_displayLapCount;
 			}
-			::sprintf(m_lapText, "%d/%d", displayLap, m_displayLapCount);
+			::sprintf(m_lapText, "%d/%d", lapIndex, m_displayLapCount);
 		}
 		else {
-			if (displayLap > m_racer->m_lapCount) {
-				displayLap = m_racer->m_lapCount;
+			if (lapIndex > m_racer->m_lapCount) {
+				lapIndex = m_racer->m_lapCount;
 			}
-			::sprintf(m_lapText, "%d", displayLap);
+			::sprintf(m_lapText, "%d", lapIndex);
 		}
 	}
 
@@ -1553,12 +1550,11 @@ void RaceHud::Draw()
 
 		m_font->MeasureString(m_scratchString, &textWidth, &textHeight);
 
-		LegoS32 scaledLabelWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
+		textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
 		LegoFloat paddingScale = m_textScale;
 		paddingScale *= g_unk0x004b02ec;
 		LegoS32 labelPadding = static_cast<LegoS32>(paddingScale);
-		LegoS32 labelOffset =
-			static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_textScaleX);
+		LegoS32 labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth - labelPadding) * m_textScaleX);
 		LegoS32 lapLabelX = m_lapTimeX - labelOffset;
 		m_renderer->DrawString(
 			m_scratchString,
@@ -1573,11 +1569,11 @@ void RaceHud::Draw()
 
 		m_stringTable->CopyStringByIndex(&m_labelString, 0x27);
 		m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
-		scaledLabelWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
+		textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
 		paddingScale = m_textScale;
 		paddingScale *= g_unk0x004b02e8;
 		labelPadding = static_cast<LegoS32>(paddingScale);
-		labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_textScaleX);
+		labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth - labelPadding) * m_textScaleX);
 		lapLabelX -= labelOffset;
 		m_renderer->DrawString(
 			&m_labelString,
@@ -1597,11 +1593,11 @@ void RaceHud::Draw()
 		if (m_bestLapMs) {
 			m_stringTable->CopyStringByIndex(&m_labelString, 0x25);
 			m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
-			scaledLabelWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
+			textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
 			paddingScale = m_textScale;
 			paddingScale *= g_unk0x004b02ec;
 			labelPadding = static_cast<LegoS32>(paddingScale);
-			labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_textScaleX);
+			labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth - labelPadding) * m_textScaleX);
 			m_renderer->DrawString(
 				&m_labelString,
 				m_font,
@@ -1633,10 +1629,11 @@ void RaceHud::Draw()
 		}
 		else if (positionIndex != 8) {
 			m_stringTable->CopyStringByIndex(&m_labelString, g_positionStringIds[positionIndex]);
+			textWidth = static_cast<LegoS32>(m_textScaleX * 5.0f);
 			m_renderer->DrawString(
 				&m_labelString,
 				m_font,
-				m_positionX + static_cast<LegoS32>(m_textScaleX * 5.0f),
+				m_positionX + textWidth,
 				m_positionY,
 				m_textScale * m_textScaleX,
 				m_scaleY * m_textScale,
@@ -1646,9 +1643,8 @@ void RaceHud::Draw()
 
 			CopyToGolString(g_positionDigits[positionIndex], m_scratchString);
 			m_numberFont->MeasureString(m_scratchString, &textWidth, &textHeight);
-			LegoS32 numberOffset = static_cast<LegoS32>(
-				static_cast<double>(static_cast<LegoS32>(static_cast<double>(textWidth) * m_textScaleX)) * m_textScale
-			);
+			textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_textScaleX);
+			textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_textScale);
 
 			if (m_positionPulseMs) {
 				m_positionPulseMs += elapsedMs;
@@ -1672,7 +1668,7 @@ void RaceHud::Draw()
 				m_renderer->DrawString(
 					m_scratchString,
 					m_numberFont,
-					m_positionX - numberOffset,
+					m_positionX - textWidth,
 					m_positionY,
 					m_textScaleX * positionScale,
 					m_scaleY * positionScale,
@@ -1684,7 +1680,7 @@ void RaceHud::Draw()
 				m_renderer->DrawString(
 					m_scratchString,
 					m_numberFont,
-					m_positionX - numberOffset,
+					m_positionX - textWidth,
 					m_positionY,
 					m_textScale * m_textScaleX,
 					m_scaleY * m_textScale,
@@ -1765,12 +1761,14 @@ void RaceHud::Draw()
 
 	if (itemResource || itemLevel) {
 		GolImage* background = m_images->GetItem(11);
-		LegoS32 width = static_cast<LegoS32>(
-			static_cast<double>(static_cast<LegoS32>(background->GetWidth())) * m_imageScale * m_textScaleX
-		);
-		LegoS32 height = static_cast<LegoS32>(
-			static_cast<double>(static_cast<LegoS32>(background->GetHeight())) * m_imageScale * m_scaleY
-		);
+		double backgroundWidthPixels = static_cast<LegoS32>(background->GetWidth());
+		backgroundWidthPixels *= m_imageScale;
+		backgroundWidthPixels *= m_textScaleX;
+		LegoS32 width = static_cast<LegoS32>(backgroundWidthPixels);
+		double backgroundHeightPixels = static_cast<LegoS32>(background->GetHeight());
+		backgroundHeightPixels *= m_imageScale;
+		backgroundHeightPixels *= m_scaleY;
+		LegoS32 height = static_cast<LegoS32>(backgroundHeightPixels);
 		m_renderer->DrawImage(background, 0, m_powerupX, m_powerupY, width, height);
 
 		GolImage* colorResource = m_images->GetItem(12);
@@ -1778,37 +1776,41 @@ void RaceHud::Draw()
 		m_renderer->DrawImage(colorResource, 0, m_powerupX, m_powerupY, width, height);
 
 		if (itemResource) {
-			LegoS32 itemWidth = static_cast<LegoS32>(
-				static_cast<double>(static_cast<LegoS32>(itemResource->GetWidth())) * m_imageScale * m_textScaleX
-			);
-			LegoS32 itemHeight = static_cast<LegoS32>(
-				static_cast<double>(static_cast<LegoS32>(itemResource->GetHeight())) * m_imageScale * m_scaleY
-			);
+			double itemWidthPixels = static_cast<LegoS32>(itemResource->GetWidth());
+			itemWidthPixels *= m_imageScale;
+			itemWidthPixels *= m_textScaleX;
+			textWidth = static_cast<LegoS32>(itemWidthPixels);
+			double itemHeightPixels = static_cast<LegoS32>(itemResource->GetHeight());
+			itemHeightPixels *= m_imageScale;
+			itemHeightPixels *= m_scaleY;
+			textHeight = static_cast<LegoS32>(itemHeightPixels);
 			m_renderer->DrawImage(
 				itemResource,
 				0,
-				m_powerupX + (static_cast<LegoU32>(31 * width) >> 6) - (static_cast<LegoU32>(itemWidth) >> 1),
-				m_powerupY + (static_cast<LegoU32>(38 * height) >> 6) - (static_cast<LegoU32>(itemHeight) >> 1),
-				itemWidth,
-				itemHeight
+				m_powerupX + (static_cast<LegoU32>(31 * width) >> 6) - (static_cast<LegoU32>(textWidth) >> 1),
+				m_powerupY + (static_cast<LegoU32>(38 * height) >> 6) - (static_cast<LegoU32>(textHeight) >> 1),
+				textWidth,
+				textHeight
 			);
 		}
 
 		if (itemLevel) {
 			GolImage* levelResource = m_images->GetItem(itemLevel + 12);
-			LegoS32 levelWidth = static_cast<LegoS32>(
-				static_cast<double>(static_cast<LegoS32>(levelResource->GetWidth())) * m_imageScale * m_textScaleX
-			);
-			LegoS32 levelHeight = static_cast<LegoS32>(
-				static_cast<double>(static_cast<LegoS32>(levelResource->GetHeight())) * m_imageScale * m_scaleY
-			);
+			double levelWidthPixels = static_cast<LegoS32>(levelResource->GetWidth());
+			levelWidthPixels *= m_imageScale;
+			levelWidthPixels *= m_textScaleX;
+			textWidth = static_cast<LegoS32>(levelWidthPixels);
+			double levelHeightPixels = static_cast<LegoS32>(levelResource->GetHeight());
+			levelHeightPixels *= m_imageScale;
+			levelHeightPixels *= m_scaleY;
+			textHeight = static_cast<LegoS32>(levelHeightPixels);
 			m_renderer->DrawImage(
 				levelResource,
 				0,
 				m_powerupX + (static_cast<LegoU32>(24 * width) >> 6),
 				m_powerupY,
-				levelWidth,
-				levelHeight
+				textWidth,
+				textHeight
 			);
 		}
 	}

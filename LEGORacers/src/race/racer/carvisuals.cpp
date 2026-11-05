@@ -908,13 +908,13 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 			}
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-			if (g_randomTable[g_randomTableIndex] % 2 != 0) {
-				m_driverEntity->PlayPart(c_animationPart14);
-				m_driverEntity->QueuePartTransition(c_animationPart15);
-			}
-			else {
+			if (g_randomTable[g_randomTableIndex] % 2 == 0) {
 				m_driverEntity->PlayPart(c_animationPart13);
+				return;
 			}
+
+			m_driverEntity->PlayPart(c_animationPart14);
+			m_driverEntity->QueuePartTransition(c_animationPart15);
 			return;
 		}
 
@@ -1026,7 +1026,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 					(g_randomTable[g_randomTableIndex] % c_avoidanceCooldownRangeMs) + c_avoidanceCooldownBaseMs;
 				m_driverEntity->PlayPart(animationPart);
 				m_driverEntity->QueuePartTransition(c_animationPart9);
-				return;
+				goto done;
 			}
 		}
 	}
@@ -1044,6 +1044,9 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 	if (activeValue == 0.0f && activePart != c_animationPart9) {
 		m_driverEntity->TransitionToPart(c_animationPart9, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
 	}
+
+done:
+	return;
 }
 
 // FUNCTION: LEGORACERS 0x0043f1e0

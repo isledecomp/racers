@@ -760,7 +760,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		targetRow0.m_z = z;
 	}
 
-	LegoFloat pitchLength = static_cast<LegoFloat>(sqrt(targetRow0.DistanceSquaredTo(oldRow0)));
+	LegoFloat pitchLength = sqrtf(targetRow0.DistanceSquaredTo(oldRow0));
 	LegoFloat dot = GolCameraBase::Dot2(&targetRow0, &oldRow2);
 	if (dot < 0.0f) {
 		pitchLength = -pitchLength;
@@ -801,7 +801,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		targetRow1.m_z = z;
 	}
 
-	LegoFloat rollLength = static_cast<LegoFloat>(sqrt(targetRow1.DistanceSquaredTo(oldRow1)));
+	LegoFloat rollLength = sqrtf(targetRow1.DistanceSquaredTo(oldRow1));
 	if (GolCameraBase::Dot2(&targetRow1, &oldRow2) < 0.0f) {
 		rollLength = -rollLength;
 	}

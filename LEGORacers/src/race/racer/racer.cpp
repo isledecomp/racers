@@ -1442,10 +1442,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 	relativeVelocity.m_y = firstVelocity.m_y - secondVelocity.m_y;
 	relativeVelocity.m_z = firstVelocity.m_z - secondVelocity.m_z;
 
-	LegoFloat impulseNumerator =
-		-(relativeVelocity.m_z * collisionNormal.m_z + relativeVelocity.m_y * collisionNormal.m_y +
-		  relativeVelocity.m_x * collisionNormal.m_x) *
-		(g_collisionRestitution + 1.0f);
+	LegoFloat impulseNumerator = -DotVectors(relativeVelocity, collisionNormal) * (g_collisionRestitution + 1.0f);
 
 	LegoFloat collisionNormalLengthSquared = GOLVECTOR3_DOT(collisionNormal, collisionNormal);
 	LegoFloat inverseMassTerm =
@@ -1507,10 +1504,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 	firstAngularContribution.m_y += secondAngularContribution.m_y;
 	firstAngularContribution.m_z += secondAngularContribution.m_z;
 
-	LegoFloat impulseDenominator =
-		(normal->m_z * firstAngularContribution.m_z + normal->m_y * firstAngularContribution.m_y +
-		 normal->m_x * firstAngularContribution.m_x) +
-		inverseMassTerm;
+	LegoFloat impulseDenominator = DotVectors(*normal, firstAngularContribution) + inverseMassTerm;
 	impulseNumerator /= impulseDenominator;
 
 	firstRacer->m_physics.ApplyDirectionalImpulse(&collisionNormal, impulseNumerator);
@@ -1573,7 +1567,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 		if (firstRacer->m_shieldLevel == 1) {
 			GolVec3 secondForward;
 			secondRacer->m_visuals.m_carEntity->GetOrientationRow0(&secondForward);
-			LegoFloat dot = GOLVECTOR3_DOT(secondForward, secondContactOffset);
+			LegoFloat dot = DotVectors(secondForward, secondContactOffset);
 
 			if (dot < g_shieldShoveConeCosine && dot > -g_shieldShoveConeCosine) {
 				secondContactOffset.m_x *= g_shieldShoveStrength;
@@ -1594,7 +1588,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 		if (secondRacer->m_shieldLevel == 1) {
 			GolVec3 firstForward;
 			firstRacer->m_visuals.m_carEntity->GetOrientationRow0(&firstForward);
-			LegoFloat dot = GOLVECTOR3_DOT(firstForward, firstContactOffset);
+			LegoFloat dot = DotVectors(firstForward, firstContactOffset);
 
 			if (dot < g_shieldShoveConeCosine && dot > -g_shieldShoveConeCosine) {
 				firstContactOffset.m_x *= g_shieldShoveStrength;

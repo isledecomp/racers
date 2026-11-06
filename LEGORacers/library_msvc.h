@@ -17,7 +17,7 @@
 // __ftol
 
 // LIBRARY: LEGORACERS 0x004a84b6
-// __CxxFrameHandler
+// ___CxxFrameHandler
 
 // LIBRARY: LEGORACERS 0x004a84bc
 // ??2@YAPAXI@Z

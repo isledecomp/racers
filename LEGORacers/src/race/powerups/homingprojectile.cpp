@@ -45,6 +45,19 @@ inline void SubtractVectors(const GolVec3& p_left, const GolVec3& p_right, GolVe
 	p_dest->m_z = p_left.m_z - p_right.m_z;
 }
 
+inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_z;
+	LegoFloat z = p_right.m_z;
+	result *= z;
+	LegoFloat y = p_left.m_y;
+	LegoFloat rightY = p_right.m_y;
+	y *= rightY;
+	result += y;
+	result += p_left.m_x * p_right.m_x;
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x00423590
 HomingProjectile::HomingProjectile()
 {
@@ -121,14 +134,14 @@ void HomingProjectile::UpdateTargeting(
 
 	if (!m_hasWaypoint && m_pathEntry != NULL) {
 		GolVec3 point = m_pathEntry->m_position;
-		LegoFloat deltaX = point.m_x - m_position.m_x;
-		LegoFloat deltaY = point.m_y - m_position.m_y;
-		LegoFloat deltaZ = point.m_z - m_position.m_z;
+		GolVec3 delta;
+		delta.m_x = point.m_x - m_position.m_x;
+		delta.m_y = point.m_y - m_position.m_y;
+		delta.m_z = point.m_z - m_position.m_z;
 
 		for (;;) {
-			if (deltaX * m_direction.m_x + deltaY * m_direction.m_y + deltaZ * m_direction.m_z > 0.0f &&
-				GOLVECTOR3_DOT(m_position, m_pathEntry->m_planeNormal) + m_pathEntry->m_planeDistance >=
-					g_unk0x004afde0) {
+			if (DotVectors(delta, m_direction) > 0.0f &&
+				DotVectors(m_position, m_pathEntry->m_planeNormal) + m_pathEntry->m_planeDistance >= g_unk0x004afde0) {
 				break;
 			}
 
@@ -145,10 +158,10 @@ void HomingProjectile::UpdateTargeting(
 				break;
 			}
 
-			deltaX = point.m_x - m_position.m_x;
-			deltaY = point.m_y - m_position.m_y;
-			deltaZ = point.m_z - m_position.m_z;
-			if (GOLVECTOR3_DOT(m_direction, pathField->m_planeNormal) > 0.0f) {
+			delta.m_x = point.m_x - m_position.m_x;
+			delta.m_y = point.m_y - m_position.m_y;
+			delta.m_z = point.m_z - m_position.m_z;
+			if (DotVectors(m_direction, pathField->m_planeNormal) > 0.0f) {
 				m_pathEntry = NULL;
 				break;
 			}
@@ -234,8 +247,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 		target->m_visuals.m_carEntity->GetPosition(&m_targetPosition);
 		m_targetPosition.m_z += g_homingProjectileTargetHeightOffset;
 		SubtractVectors(m_targetPosition, m_position, &m_direction);
-		targetDistanceSquared =
-			m_direction.m_z * m_direction.m_z + m_direction.m_y * m_direction.m_y + m_direction.m_x * m_direction.m_x;
+		targetDistanceSquared = DotVectors(m_direction, m_direction);
 	}
 	else {
 		targetDistanceSquared = FLT_MAX;
@@ -265,9 +277,8 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 		nextPosition.m_y = m_position.m_y + m_velocity.m_y * elapsedSeconds;
 		nextPosition.m_z = m_position.m_z + m_velocity.m_z * elapsedSeconds;
 
-		targetDistanceSquared = (m_targetPosition.m_z - nextPosition.m_z) * direction->m_z;
-		targetDistanceSquared += (m_targetPosition.m_y - nextPosition.m_y) * direction->m_y;
-		targetDistanceSquared += (m_targetPosition.m_x - nextPosition.m_x) * direction->m_x;
+		GolVec3 remaining = m_targetPosition - nextPosition;
+		targetDistanceSquared = DotVectors(remaining, *direction);
 		if (targetDistanceSquared <= 0.0f) {
 			m_hitPosition = m_targetPosition;
 			m_worldEntity->SetPosition(m_hitPosition);
@@ -280,7 +291,7 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 			end.m_x = m_waypointPosition.m_x - m_position.m_x;
 			end.m_y = m_waypointPosition.m_y - m_position.m_y;
 			end.m_z = m_waypointPosition.m_z - m_position.m_z;
-			if (m_direction.m_z * end.m_z + m_direction.m_y * end.m_y + end.m_x * m_direction.m_x > 0.0f) {
+			if (DotVectors(m_direction, end) > 0.0f) {
 				m_direction.m_x = end.m_x;
 				m_direction.m_y = end.m_y;
 				m_direction.m_z = end.m_z;

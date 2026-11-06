@@ -1061,8 +1061,9 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	DrawLoadProgress(0.6f);
 
 	hashTable = g_hashTable;
+	LegoChar* gameDataDirectory = m_context->m_gameDataDirectory;
 	if (hashTable) {
-		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_gameDataDirectory));
+		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
 	}
 
 	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
@@ -1266,8 +1267,9 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	DrawLoadProgress(0.97f);
 
 	hashTable = g_hashTable;
+	gameDataDirectory = m_context->m_gameDataDirectory;
 	if (hashTable) {
-		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_gameDataDirectory));
+		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
 	}
 
 	if (m_timeRaceManager) {

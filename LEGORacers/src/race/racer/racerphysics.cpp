@@ -948,7 +948,9 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 		if (m_pitchImpulseMs != 0) {
 			if (p_elapsedMs >= m_pitchImpulseMs) {
 				m_pitchImpulseMs = 0;
-				m_routeTiltRate = -(m_routeTiltRate * g_carBuildModelTextureCoordinateScale);
+				LegoFloat rate = m_routeTiltRate;
+				rate *= g_carBuildModelTextureCoordinateScale;
+				m_routeTiltRate = -rate;
 			}
 			else {
 				m_pitchImpulseMs = m_pitchImpulseMs - p_elapsedMs;
@@ -956,6 +958,7 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 		}
 
 		LegoBool32 wasNonNegative = m_routeTiltAngle >= 0.0f;
+		LegoFloat tiltIncrement = m_routeTiltRate * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 		orientation.m_rows[0].m_x = m_carEntity->GetOrientation().m_rows[0].m_x;
 		orientation.m_rows[0].m_y = m_carEntity->GetOrientation().m_rows[0].m_y;
 		orientation.m_rows[0].m_z = m_carEntity->GetOrientation().m_rows[0].m_z;
@@ -966,7 +969,7 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 		orientation.m_rows[2].m_y = m_carEntity->GetOrientation().m_rows[2].m_y;
 		orientation.m_rows[2].m_z = m_carEntity->GetOrientation().m_rows[2].m_z;
 
-		m_routeTiltAngle += m_routeTiltRate * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+		m_routeTiltAngle += tiltIncrement;
 		LegoBool32 applyTiltRotation = TRUE;
 		if (m_pitchImpulseMs == 0) {
 			LegoBool32 isNonNegative = m_routeTiltAngle >= 0.0f;

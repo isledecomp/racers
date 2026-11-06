@@ -6,6 +6,19 @@
 
 DECOMP_SIZE_ASSERT(LegoEventQueue::Descriptor::RigidBody, 0xe4)
 
+inline LegoFloat DotContactVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_y;
+	LegoFloat y = p_right.m_y;
+	result *= y;
+	LegoFloat z = p_right.m_z;
+	LegoFloat leftZ = p_left.m_z;
+	z *= leftZ;
+	result += z;
+	result += p_right.m_x * p_left.m_x;
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x00441330
 LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 	RigidBody* p_other,
@@ -139,9 +152,7 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 				corner.m_z -= axisZ.m_z;
 			}
 
-			LegoFloat projected = p_normal->m_y * corner.m_y;
-			projected += corner.m_z * p_normal->m_z;
-			projected += corner.m_x * p_normal->m_x;
+			LegoFloat projected = DotContactVectors(*p_normal, corner);
 			if (shapeIndex == 1) {
 				projected = -projected;
 			}

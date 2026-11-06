@@ -159,8 +159,12 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 
 		LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetScale();
 		localPosition.m_x *= scale;
-		localPosition.m_y *= scale;
-		localPosition.m_z *= scale;
+		LegoFloat scaledY = localPosition.m_y;
+		scaledY *= scale;
+		localPosition.m_y = scaledY;
+		LegoFloat scaledZ = localPosition.m_z;
+		scaledZ *= scale;
+		localPosition.m_z = scaledZ;
 		m_entity->LocalToWorld(localPosition, &origin);
 		m_body.m_centerOfMassWorld = origin;
 

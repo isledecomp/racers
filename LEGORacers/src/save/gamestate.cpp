@@ -248,11 +248,10 @@ void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex
 			m_state.m_inputBindings.m_entries[i].m_deviceSubType ==
 				state.m_inputBindings.m_entries[i].m_deviceSubType &&
 			m_state.m_inputBindings.m_entries[i].m_deviceId == state.m_inputBindings.m_entries[i].m_deviceId) {
-			::memcpy(
-				m_state.m_inputBindings.m_entries[i].m_events,
-				state.m_inputBindings.m_entries[i].m_events,
-				sizeof(m_state.m_inputBindings.m_entries[i].m_events)
-			);
+			for (LegoU32 eventIndex = 0; eventIndex < c_inputBindingEventCount; eventIndex++) {
+				m_state.m_inputBindings.m_entries[i].m_events[eventIndex] =
+					state.m_inputBindings.m_entries[i].m_events[eventIndex];
+			}
 		}
 	}
 

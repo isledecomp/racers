@@ -35,10 +35,10 @@
 // __CxxUnhandledExceptionFilter
 
 // LIBRARY: LEGORACERS 0x004a8638
-// _onexit
+// __onexit
 
 // LIBRARY: LEGORACERS 0x004a8664
-// atexit
+// _atexit
 
 // LIBRARY: LEGORACERS 0x004a8676
 // __CIacos
@@ -53,7 +53,7 @@
 // ?terminate@@YAXXZ
 
 // LIBRARY: LEGORACERS 0x004a87e6
-// __dllonexit
+// ___dllonexit
 
 // LIBRARY: LEGORACERS 0x004a87ec
 // __XcptFilter

@@ -663,11 +663,12 @@ LegoBool32 GolAnimatedEntity::SamplePartPosition(
 	GolVec3* p_dest
 )
 {
-	CmbModelPart* modelPart = m_modelParts[p_modelIndex];
 	LegoFloat timeScale = m_msPerFrame;
-	CmbModelPartData* partData = modelPart->GetPartData();
+	LegoFloat frame = static_cast<LegoFloat>(p_frame);
+	LegoFloat time = timeScale * frame;
+	CmbModelPart* modelPart = m_modelParts[p_modelIndex];
 	CmbModelPartTrackData& animationData = modelPart->GetAnimationData();
-	LegoFloat time = static_cast<LegoFloat>(p_frame) * timeScale;
+	CmbModelPartData* partData = modelPart->GetPartData();
 	const CmbModelPartData& part = partData[p_partDataIndex];
 	LegoU32 trackIndex = part.GetTrackIndex();
 	trackIndex += p_trackOffset;
@@ -686,11 +687,12 @@ LegoBool32 GolAnimatedEntity::SamplePartRotation(
 	GolQuat* p_dest
 )
 {
-	CmbModelPart* modelPart = m_modelParts[p_modelIndex];
 	LegoFloat timeScale = m_msPerFrame;
-	CmbModelPartData* partData = modelPart->GetPartData();
+	LegoFloat frame = static_cast<LegoFloat>(p_frame);
+	LegoFloat time = timeScale * frame;
+	CmbModelPart* modelPart = m_modelParts[p_modelIndex];
 	CmbModelPartTrackData& animationData = modelPart->GetAnimationData();
-	LegoFloat time = static_cast<LegoFloat>(p_frame) * timeScale;
+	CmbModelPartData* partData = modelPart->GetPartData();
 	const CmbModelPartData& part = partData[p_partDataIndex];
 	LegoU32 trackIndex = part.GetTrackIndex();
 	trackIndex += p_trackOffset;

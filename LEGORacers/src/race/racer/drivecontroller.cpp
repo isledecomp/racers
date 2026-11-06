@@ -6,6 +6,20 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern LegoFloat g_carBuildPreviewMouseScale;
 
+inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_z;
+	LegoFloat z = p_right.m_z;
+	result *= z;
+	LegoFloat y = p_left.m_y;
+	LegoFloat rightY = p_right.m_y;
+	y *= rightY;
+	result += y;
+	result += p_left.m_x * p_right.m_x;
+
+	return result;
+}
+
 // GLOBAL: LEGORACERS 0x004b0058
 extern const LegoFloat g_driveMaxTurnRadius = 4096.0f;
 
@@ -498,10 +512,7 @@ void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 	LegoFloat inverseDistance = 1.0f / distance;
 	delta *= inverseDistance;
 
-	LegoFloat closingSpeed = delta.m_z;
-	closingSpeed *= activePathDirection.m_z;
-	closingSpeed += delta.m_y * activePathDirection.m_y;
-	closingSpeed += delta.m_x * activePathDirection.m_x;
+	LegoFloat closingSpeed = DotVectors(delta, activePathDirection);
 	if (closingSpeed < g_returnPathMinClosing) {
 		m_turnRadius = g_driveMaxTurnRadius;
 	}

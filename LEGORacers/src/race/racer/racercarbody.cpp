@@ -1431,8 +1431,7 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 	m_rearAxleMid.m_z += delta.m_z;
 
 	if (resetFromAir) {
-		LegoFloat dot = m_velocity.m_z * m_supportNormal.m_z + m_velocity.m_y * m_supportNormal.m_y +
-						m_velocity.m_x * m_supportNormal.m_x;
+		LegoFloat dot = GolCameraBase::Dot2(&m_velocity, &m_supportNormal);
 		if (dot < 0.0f) {
 			if (dot < -g_landingBounceThreshold) {
 				LegoFloat scaled = dot * g_landingBounceScale;

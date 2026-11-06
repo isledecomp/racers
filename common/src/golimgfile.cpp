@@ -1167,27 +1167,21 @@ void GolImgFile::ConvertRowIndexed8To32(const LegoU8* p_src, LegoU32* p_dst)
 {
 	LegoU32* endDst = p_dst + m_width;
 	if (m_hasColorKey) {
-		for (; p_dst < endDst; p_dst++) {
+		while (p_dst < endDst) {
 			const ColorRGBA* c = &m_palette[*p_src++];
 			LegoU32 r = c->m_red >> m_redSrcShift;
 			LegoU32 g = c->m_grn >> m_grnSrcShift;
 			LegoU32 b = c->m_blu >> m_bluSrcShift;
 			if (r == m_colorKeyRed && g == m_colorKeyGrn && b == m_colorKeyBlu) {
-				*p_dst = m_colorKeyPixel;
+				*p_dst++ = m_colorKeyPixel;
 			}
 			else {
-				b <<= m_bluDstShift;
-				g <<= m_grnDstShift;
-				r <<= m_redDstShift;
-				LegoU32 pixel = b | g;
-				pixel |= r;
-				pixel |= m_constPixelBits;
-				*p_dst = pixel;
+				*p_dst++ = (r << m_redDstShift) | (g << m_grnDstShift) | (b << m_bluDstShift) | m_constPixelBits;
 			}
 		}
 	}
 	else {
-		for (; p_dst < endDst; p_dst++) {
+		while (p_dst < endDst) {
 			const ColorRGBA* c = &m_palette[*p_src++];
 			LegoU32 b = c->m_blu >> m_bluSrcShift;
 			b <<= m_bluDstShift;
@@ -1197,7 +1191,7 @@ void GolImgFile::ConvertRowIndexed8To32(const LegoU8* p_src, LegoU32* p_dst)
 			r <<= m_redDstShift;
 			LegoU32 pixel = b | g;
 			pixel |= r;
-			*p_dst = pixel;
+			*p_dst++ = pixel;
 		}
 	}
 }

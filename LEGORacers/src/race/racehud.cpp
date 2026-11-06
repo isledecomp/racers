@@ -1556,16 +1556,11 @@ void RaceHud::Draw()
 		LegoS32 labelPadding = static_cast<LegoS32>(paddingScale);
 		LegoS32 labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth - labelPadding) * m_textScaleX);
 		LegoS32 lapLabelX = m_lapTimeX - labelOffset;
-		m_renderer->DrawString(
-			m_scratchString,
-			m_font,
-			lapLabelX,
-			m_lapTimeY,
-			m_textScale * m_textScaleX,
-			m_scaleY * m_textScale,
-			NULL,
-			0
-		);
+		scaleY = m_scaleY;
+		scaleY *= m_textScale;
+		scaleX = m_textScale;
+		scaleX *= m_textScaleX;
+		m_renderer->DrawString(m_scratchString, m_font, lapLabelX, m_lapTimeY, scaleX, scaleY, NULL, 0);
 
 		m_stringTable->CopyStringByIndex(&m_labelString, 0x27);
 		m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
@@ -1575,16 +1570,11 @@ void RaceHud::Draw()
 		labelPadding = static_cast<LegoS32>(paddingScale);
 		labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth - labelPadding) * m_textScaleX);
 		lapLabelX -= labelOffset;
-		m_renderer->DrawString(
-			&m_labelString,
-			m_font,
-			lapLabelX,
-			m_lapTimeY,
-			m_textScale * m_textScaleX,
-			m_scaleY * m_textScale,
-			NULL,
-			0
-		);
+		scaleY = m_scaleY;
+		scaleY *= m_textScale;
+		scaleX = m_textScale;
+		scaleX *= m_textScaleX;
+		m_renderer->DrawString(&m_labelString, m_font, lapLabelX, m_lapTimeY, scaleX, scaleY, NULL, 0);
 
 		if (drawLapTime) {
 			DrawTime(m_lapTimeText.m_text, m_lapTimeX, m_lapTimeY);
@@ -1598,16 +1588,12 @@ void RaceHud::Draw()
 			paddingScale *= g_unk0x004b02ec;
 			labelPadding = static_cast<LegoS32>(paddingScale);
 			labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth - labelPadding) * m_textScaleX);
-			m_renderer->DrawString(
-				&m_labelString,
-				m_font,
-				m_bestLapX - labelOffset,
-				m_bestLapY,
-				m_textScale * m_textScaleX,
-				m_scaleY * m_textScale,
-				NULL,
-				0
-			);
+			scaleY = m_scaleY;
+			scaleY *= m_textScale;
+			scaleX = m_textScale;
+			scaleX *= m_textScaleX;
+			m_renderer
+				->DrawString(&m_labelString, m_font, m_bestLapX - labelOffset, m_bestLapY, scaleX, scaleY, NULL, 0);
 			DrawTime(m_bestLapText.m_text, m_bestLapX, m_bestLapY);
 		}
 
@@ -1630,16 +1616,12 @@ void RaceHud::Draw()
 		else if (positionIndex != 8) {
 			m_stringTable->CopyStringByIndex(&m_labelString, g_positionStringIds[positionIndex]);
 			textWidth = static_cast<LegoS32>(m_textScaleX * 5.0f);
-			m_renderer->DrawString(
-				&m_labelString,
-				m_font,
-				m_positionX + textWidth,
-				m_positionY,
-				m_textScale * m_textScaleX,
-				m_scaleY * m_textScale,
-				NULL,
-				0
-			);
+			scaleY = m_scaleY;
+			scaleY *= m_textScale;
+			scaleX = m_textScale;
+			scaleX *= m_textScaleX;
+			m_renderer
+				->DrawString(&m_labelString, m_font, m_positionX + textWidth, m_positionY, scaleX, scaleY, NULL, 0);
 
 			CopyToGolString(g_positionDigits[positionIndex], m_scratchString);
 			m_numberFont->MeasureString(m_scratchString, &textWidth, &textHeight);
@@ -1677,13 +1659,17 @@ void RaceHud::Draw()
 				);
 			}
 			else {
+				scaleY = m_scaleY;
+				scaleY *= m_textScale;
+				scaleX = m_textScale;
+				scaleX *= m_textScaleX;
 				m_renderer->DrawString(
 					m_scratchString,
 					m_numberFont,
 					m_positionX - textWidth,
 					m_positionY,
-					m_textScale * m_textScaleX,
-					m_scaleY * m_textScale,
+					scaleX,
+					scaleY,
 					NULL,
 					0
 				);

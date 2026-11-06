@@ -52,6 +52,20 @@ extern LegoU32 g_silhouetteClearFlag;
 extern LegoU32 g_silhouetteFlattenFlag;
 extern LegoFloat g_cosineTable[1024];
 
+inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_z;
+	LegoFloat z = p_right.m_z;
+	result *= z;
+	LegoFloat y = p_left.m_y;
+	LegoFloat rightY = p_right.m_y;
+	y *= rightY;
+	result += y;
+	result += p_left.m_x * p_right.m_x;
+
+	return result;
+}
+
 inline GolVec3 CrossVectors(const GolVec3& p_left, const GolVec3& p_right)
 {
 	GolVec3 result;
@@ -2416,7 +2430,7 @@ void Racer::UpdateLookTarget(LegoU32)
 			up.m_y = 0.0f;
 			up.m_z = 1.0f;
 			GolVec3 side = CrossVectors(direction, up);
-			if (GOLVECTOR3_DOT(side, delta) > 0.0f) {
+			if (DotVectors(delta, side) > 0.0f) {
 				m_flags |= c_flagLookTargetLeft;
 			}
 			else {

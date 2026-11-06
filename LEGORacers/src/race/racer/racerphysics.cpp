@@ -1403,13 +1403,16 @@ LegoBool32 RacerPhysics::CanPowerslide()
 // FUNCTION: LEGORACERS 0x0042aea0
 LegoBool32 RacerPhysics::CanSteer(LegoFloat p_turnRadius)
 {
-	GolOrientedEntity* entity = m_carEntity;
-	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
-	LegoFloat y = entity->m_orientation.m_rows[0].m_y;
-	LegoFloat z = m_velocityDirection.m_z * entity->m_orientation.m_rows[0].m_z;
-	z += y * m_velocityDirection.m_y;
-	dot *= m_velocityDirection.m_x;
-	dot += z;
+	GolVec2 orientation;
+	orientation.m_x = m_carEntity->GetOrientation().m_rows[0].m_x;
+	orientation.m_y = m_carEntity->GetOrientation().m_rows[0].m_y;
+	LegoFloat orientationY = orientation.m_y;
+	LegoFloat dot = m_velocityDirection.m_z;
+	dot *= m_carEntity->GetOrientation().m_rows[0].m_z;
+	LegoFloat y = m_velocityDirection.m_y;
+	y *= orientationY;
+	dot += y;
+	dot += orientation.m_x * m_velocityDirection.m_x;
 	if (dot <= 0.0f) {
 		return FALSE;
 	}

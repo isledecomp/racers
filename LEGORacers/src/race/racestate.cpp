@@ -833,23 +833,19 @@ Racer* RaceState::FindRacerInCone(
 	LegoFloat p_coneCosine
 )
 {
-	LegoS32 i;
-	for (i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount);) {
-		GolVec3* origin = p_position;
+	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount); i++) {
 		Racer* racer = &m_roster.m_racers[i];
 		CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
 		racerField->m_carEntity->GetPosition(&position);
 
-		LegoFloat dx = position.m_x - origin->m_x;
-		LegoFloat distanceSquared =
-			GOL_SQUARED(position.m_z - origin->m_z) + GOL_SQUARED(position.m_y - origin->m_y) + GOL_SQUARED(dx);
+		LegoFloat distanceSquared = p_position->DistanceSquaredTo(position);
 		if (distanceSquared >= p_minDistanceSquared && distanceSquared <= p_maxDistanceSquared) {
 			GolVec3 delta;
-			delta.m_x = dx;
-			delta.m_y = position.m_y - origin->m_y;
-			delta.m_z = position.m_z - origin->m_z;
+			delta.m_x = position.m_x - p_position->m_x;
+			delta.m_y = position.m_y - p_position->m_y;
+			delta.m_z = position.m_z - p_position->m_z;
 			GolMath::NormalizeVector3(delta, &delta);
 
 			LegoFloat dot = p_direction->m_z;
@@ -862,8 +858,6 @@ Racer* RaceState::FindRacerInCone(
 				return &m_roster.m_racers[i];
 			}
 		}
-
-		i++;
 	}
 
 	return NULL;

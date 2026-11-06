@@ -528,7 +528,8 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 	switch (mode) {
 	case 0: {
-		m_racer->m_visuals.m_carEntity->GetPosition(&m_lastRacerPosition);
+		CarVisuals* racerVisuals = &m_racer->m_visuals;
+		racerVisuals->m_carEntity->GetPosition(&m_lastRacerPosition);
 
 		if (m_transitionMs == 0.0f) {
 			GolMath::Matrix3ToQuat(m_previousTransform.m_orientation, &m_previousRotation);
@@ -779,9 +780,9 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		return;
 	}
 	case 2: {
-		Racer* racer = m_racer;
-		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
-		entity->GetPosition(&m_lastRacerPosition);
+		CarVisuals* racerVisuals = &m_racer->m_visuals;
+		racerVisuals->m_carEntity->GetPosition(&m_lastRacerPosition);
+		GolAnimatedEntity* entity = m_racer->m_visuals.m_carEntity;
 
 		GolVec3 right = entity->GetOrientation().m_rows[0];
 		GolVec3 up = entity->GetOrientation().m_rows[2];

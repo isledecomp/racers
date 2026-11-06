@@ -1930,7 +1930,13 @@ LegoBool32 GolD3DRenderDevice::TexturesMustBeSquare() const
 		LegoU32 textureCaps = m_d3dDeviceDesc.dpcTriCaps.dwTextureCaps;
 		LegoU32 result = static_cast<LegoU8>(~textureCaps);
 		result &= 0xff;
-		return (result >> 5) & 1;
+		if (result & D3DPTEXTURECAPS_SQUAREONLY) {
+			result = 1;
+		}
+		else {
+			result = 0;
+		}
+		return result;
 	}
 }
 

@@ -224,49 +224,62 @@ void GolTransform::TransformVector(const GolVec3* p_src, GolVec3* p_dest)
 // FUNCTION: GOLDP 0x10002d00
 void GolTransform::InverseTransformPoint(const GolVec3* p_src, GolVec3* p_dest)
 {
-	LegoFloat product = m_matrix.m_m[0][0];
-	product *= p_src->m_x;
-	p_dest->m_x = product;
-	product = m_matrix.m_m[1][0];
-	product *= p_src->m_x;
-	p_dest->m_y = product;
-	product = m_matrix.m_m[2][0];
-	product *= p_src->m_x;
-	p_dest->m_z = product;
+	LegoFloat x = m_matrix.m_m[0][0];
+	x *= p_src->m_x;
+	p_dest->m_x = x;
+	LegoFloat y = m_matrix.m_m[1][0];
+	y *= p_src->m_x;
+	p_dest->m_y = y;
+	LegoFloat z = m_matrix.m_m[2][0];
+	z *= p_src->m_x;
+	p_dest->m_z = z;
 
-	product = p_src->m_y;
-	product *= m_matrix.m_m[0][1];
-	p_dest->m_x = product + p_dest->m_x;
-	product = p_src->m_y;
-	product *= m_matrix.m_m[1][1];
-	p_dest->m_y = product + p_dest->m_y;
-	product = m_matrix.m_m[2][1];
-	product *= p_src->m_y;
-	p_dest->m_z = product + p_dest->m_z;
+	x = m_matrix.m_m[0][1];
+	x *= p_src->m_y;
+	p_dest->m_x += x;
+	y = m_matrix.m_m[1][1];
+	y *= p_src->m_y;
+	p_dest->m_y += y;
+	z = m_matrix.m_m[2][1];
+	z *= p_src->m_y;
+	p_dest->m_z += z;
 
-	product = p_src->m_z;
-	product *= m_matrix.m_m[0][2];
-	p_dest->m_x = product + p_dest->m_x;
-	product = p_src->m_z;
-	product *= m_matrix.m_m[1][2];
-	p_dest->m_y = product + p_dest->m_y;
-	product = m_matrix.m_m[2][2];
-	product *= p_src->m_z;
-	p_dest->m_z = product + p_dest->m_z;
+	x = m_matrix.m_m[0][2];
+	x *= p_src->m_z;
+	p_dest->m_x += x;
+	y = p_src->m_z;
+	y *= m_matrix.m_m[1][2];
+	p_dest->m_y += y;
+	z = m_matrix.m_m[2][2];
+	z *= p_src->m_z;
+	p_dest->m_z += z;
 
-	LegoFloat offset = (m_matrix.m_m[3][0] * m_matrix.m_m[0][0]) + (m_matrix.m_m[3][1] * m_matrix.m_m[0][1]);
-	LegoFloat tail = m_matrix.m_m[3][2];
-	tail *= m_matrix.m_m[0][2];
-	offset += tail;
-	p_dest->m_x -= offset;
-
-	offset = (m_matrix.m_m[3][2] * m_matrix.m_m[1][2]) + (m_matrix.m_m[3][1] * m_matrix.m_m[1][1]);
-	offset += m_matrix.m_m[3][0] * m_matrix.m_m[1][0];
-	p_dest->m_y -= offset;
-
-	offset = (m_matrix.m_m[2][2] * m_matrix.m_m[3][2]) + (m_matrix.m_m[3][1] * m_matrix.m_m[2][1]);
-	offset += m_matrix.m_m[3][0] * m_matrix.m_m[2][0];
-	p_dest->m_z -= offset;
+	x = m_matrix.m_m[3][0];
+	x *= m_matrix.m_m[0][0];
+	y = m_matrix.m_m[0][1];
+	x += y * m_matrix.m_m[3][1];
+	z = m_matrix.m_m[3][2];
+	z *= m_matrix.m_m[0][2];
+	x += z;
+	p_dest->m_x -= x;
+	x = m_matrix.m_m[3][2];
+	x *= m_matrix.m_m[1][2];
+	y = m_matrix.m_m[1][1];
+	y *= m_matrix.m_m[3][1];
+	x += y;
+	z = m_matrix.m_m[3][0];
+	z *= m_matrix.m_m[1][0];
+	x += z;
+	p_dest->m_y -= x;
+	x = m_matrix.m_m[2][2];
+	x *= m_matrix.m_m[3][2];
+	y = m_matrix.m_m[2][1];
+	y *= m_matrix.m_m[3][1];
+	x += y;
+	z = m_matrix.m_m[3][0];
+	z *= m_matrix.m_m[2][0];
+	x += z;
+	p_dest->m_z -= x;
 }
 
 // FUNCTION: GOLDP 0x10002dc0

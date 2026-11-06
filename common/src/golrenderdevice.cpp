@@ -788,36 +788,41 @@ void GolRenderDevice::DrawModelEntityEnvironmentMapped(GolWorldEntity* p_model)
 
 	GolVec3 localRight;
 	GolVec3 localForward;
+	GolVec3 worldRight;
+	GolVec3 worldForward;
+	GolVec2 uv;
 	GolSceneNode* node = static_cast<GolModelEntity*>(p_model)->GetSceneNode(result.m_lodIndex);
-	if (node != NULL) {
-		GolVec3 worldRight;
-		GolVec3 worldForward;
+	if (node == NULL) {
+		p_model->GetAxes(&localRight, &localForward);
+	}
+	else {
 		static_cast<GolModelEntity*>(p_model)->ApplyPartAnimation(result.m_lodIndex);
 		node->GetTransform(0)->GetRightDirection(&worldRight, &worldForward);
 		p_model->RotateToWorld(worldRight, &localRight);
 		p_model->RotateToWorld(worldForward, &localForward);
 	}
-	else {
-		p_model->GetAxes(&localRight, &localForward);
-	}
 
+	LegoFloat u;
+	LegoFloat v;
 	if (localRight.m_x == 0.0f && localRight.m_y == 0.0f) {
-		DrawModelEntityWithUvOffset(p_model, 0.0f, 0.5f);
+		u = 0.0f;
+		v = 0.5f;
 	}
 	else {
-		GolVec2 uv;
 		uv.m_x = localRight.m_x;
 		uv.m_y = localRight.m_y;
 		GolMath::NormalizeVector2(uv, &uv);
 
-		LegoFloat u = g_arccosTable[static_cast<LegoS32>((uv.m_x + 1.0f) * 511.5f)] * 0.31830987f * 0.5f;
+		u = g_arccosTable[static_cast<LegoS32>((uv.m_x + 1.0f) * 511.5f)] * 0.31830987f;
+		u *= 0.5f;
 		if (uv.m_y < 0.0f) {
 			u = 1.0f - u;
 		}
 
-		LegoFloat v = g_arccosTable[static_cast<LegoS32>((localForward.m_z + 1.0f) * 511.5f)] * 0.31830987f;
-		DrawModelEntityWithUvOffset(p_model, u, v);
+		v = g_arccosTable[static_cast<LegoS32>((localForward.m_z + 1.0f) * 511.5f)] * 0.31830987f;
 	}
+
+	DrawModelEntityWithUvOffset(p_model, u, v);
 }
 
 // FUNCTION: GOLDP 0x10029680

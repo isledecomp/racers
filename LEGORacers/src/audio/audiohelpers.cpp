@@ -568,7 +568,8 @@ __declspec(naked) static void DecodeStereoChannel(
 
 #endif
 
-// FUNCTION: LEGORACERS 0x00418410
+#ifdef COMPAT_MODE
+
 void DecodeStereoPcmToStereo(
 	LegoU8* p_source,
 	LegoS16* p_destination,
@@ -600,6 +601,74 @@ void DecodeStereoPcmToStereo(
 	p_destination++;
 	DecodeStereoChannel(p_source, p_destination, remaining, p_rightState);
 }
+
+#else
+
+// FUNCTION: LEGORACERS 0x00418410
+__declspec(naked) void DecodeStereoPcmToStereo(
+	LegoU8* p_source,
+	LegoS16* p_destination,
+	LegoS32 p_count,
+	LegoS32* p_leftState,
+	LegoS32* p_rightState
+)
+{
+	__asm {
+		push esi
+		push edi
+		push ebx
+		mov edx, dword ptr [esp + 0x1c]
+		mov ebx, dword ptr [esp + 0x18]
+		mov edi, dword ptr [esp + 0x14]
+		mov esi, dword ptr [esp + 0x10]
+		push edx
+		push 0x100
+		push edi
+		push esi
+		jmp L_DecodeStereoPcmToStereo_1
+	L_DecodeStereoPcmToStereo_0:
+		call DecodeStereoChannel
+		inc esi
+		add edi, 2
+		mov eax, 0x100
+		mov edx, dword ptr [esp + 0x30]
+		mov dword ptr [esp], esi
+		mov dword ptr [esp + 4], edi
+		mov dword ptr [esp + 8], eax
+		mov dword ptr [esp + 0xc], edx
+		call DecodeStereoChannel
+		add esi, 0x1ff
+		add edi, 0x7fe
+		mov eax, 0x100
+		mov edx, dword ptr [esp + 0x2c]
+		mov dword ptr [esp], esi
+		mov dword ptr [esp + 4], edi
+		mov dword ptr [esp + 8], eax
+		mov dword ptr [esp + 0xc], edx
+	L_DecodeStereoPcmToStereo_1:
+		sub ebx, 0x200
+		ja L_DecodeStereoPcmToStereo_0
+		add ebx, 0x200
+		shr ebx, 1
+		mov dword ptr [esp + 8], ebx
+		call DecodeStereoChannel
+		inc esi
+		add edi, 2
+		mov edx, dword ptr [esp + 0x30]
+		mov dword ptr [esp], esi
+		mov dword ptr [esp + 4], edi
+		mov dword ptr [esp + 8], ebx
+		mov dword ptr [esp + 0xc], edx
+		call DecodeStereoChannel
+		add esp, 0x10
+		pop ebx
+		pop edi
+		pop esi
+		ret
+	}
+}
+
+#endif
 
 #ifdef COMPAT_MODE
 

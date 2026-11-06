@@ -316,6 +316,8 @@ undefined4 GolBoundingVolume::ComputeTraversalDepth()
 	return maxStackSize + 1;
 }
 
+static LegoFloat DotProduct(GolVec3* p_left, GolVec3* p_right);
+
 // FUNCTION: LEGORACERS 0x00403fa0
 LegoBool32 GolBoundingVolume::IntersectSegment(
 	GolVec3* p_start,
@@ -412,38 +414,32 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 			GolCameraBase::Scale(&g_segmentDelta, amount, &scaledDelta);
 			GolCameraBase::Add(&m_segmentStart, &scaledDelta, m_hitPoint);
 
-			vertices = m_vertices->GetPositions();
-			node = m_hitNode;
-
-			LegoU32 triangleIndex = node->m_firstTriangle;
-			LegoU32 endIndex = triangleIndex + node->m_triangleCount;
+			GolVec3* positions = m_vertices->GetPositions();
+			Triangle* triangle = &m_triangles[m_hitNode->m_firstTriangle];
+			Triangle* endTriangle = triangle + m_hitNode->m_triangleCount;
 			Triangle* candidate = NULL;
 
-			node->GetPlaneNormal(&g_hitNormal);
+			m_hitNode->GetPlaneNormal(&g_hitNormal);
 			m_hitTriangle->m_normal.m_x = g_hitNormal.m_x;
 			m_hitTriangle->m_normal.m_y = g_hitNormal.m_y;
 			m_hitTriangle->m_normal.m_z = g_hitNormal.m_z;
 
-			while (triangleIndex < endIndex) {
-				Triangle* triangle = &m_triangles[triangleIndex];
-				m_hitTriangle->m_vertex0 = vertices[triangle->m_vertex0];
-				m_hitTriangle->m_vertex1 = vertices[triangle->m_vertex1];
-				m_hitTriangle->m_vertex2 = vertices[triangle->m_vertex2];
+			for (; triangle < endTriangle; triangle++) {
+				m_hitTriangle->m_vertex0 = positions[triangle->m_vertex0];
+				m_hitTriangle->m_vertex1 = positions[triangle->m_vertex1];
+				m_hitTriangle->m_vertex2 = positions[triangle->m_vertex2];
 
 				if (GolMath::PointInTriangle(m_hitPoint, m_hitTriangle->GetFloatData())) {
 					GolCameraBase::Subtract(&m_hitTriangle->m_vertex0, &m_hitTriangle->m_vertex1, &g_edge0);
 					GolCameraBase::Subtract(&m_hitTriangle->m_vertex2, &m_hitTriangle->m_vertex1, &g_edge1);
 					GolCameraBase::Cross(&g_edge1, &g_edge0, &g_hitNormal);
 
-					if (GolCameraBase::Dot2(&g_hitNormal, &g_segmentDelta) <= 0.0f) {
+					if (DotProduct(&g_hitNormal, &g_segmentDelta) <= 0.0f) {
 						GolMath::NormalizeVector3(g_hitNormal, &g_hitNormal);
 						m_hitTriangle->m_normal.m_x = g_hitNormal.m_x;
 						m_hitTriangle->m_normal.m_y = g_hitNormal.m_y;
 						m_hitTriangle->m_normal.m_z = g_hitNormal.m_z;
-						m_hitTriangle->m_planeDistance =
-							-(m_hitTriangle->m_vertex0.m_z * g_hitNormal.m_z +
-							  m_hitTriangle->m_vertex0.m_y * g_hitNormal.m_y +
-							  m_hitTriangle->m_vertex0.m_x * g_hitNormal.m_x);
+						m_hitTriangle->m_planeDistance = -GolCameraBase::Dot2(&m_hitTriangle->m_vertex0, &g_hitNormal);
 
 						if (m_hitRecord) {
 							*m_hitRecord = static_cast<RaceEventRecord*>(
@@ -460,22 +456,18 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 
 					candidate = triangle;
 				}
-
-				triangleIndex++;
 			}
 
 			if (candidate) {
-				m_hitTriangle->m_vertex0 = vertices[candidate->m_vertex0];
-				m_hitTriangle->m_vertex1 = vertices[candidate->m_vertex1];
-				m_hitTriangle->m_vertex2 = vertices[candidate->m_vertex2];
+				m_hitTriangle->m_vertex0 = positions[candidate->m_vertex0];
+				m_hitTriangle->m_vertex1 = positions[candidate->m_vertex1];
+				m_hitTriangle->m_vertex2 = positions[candidate->m_vertex2];
 
 				GolMath::NormalizeVector3(g_hitNormal, &g_hitNormal);
 				m_hitTriangle->m_normal.m_x = g_hitNormal.m_x;
 				m_hitTriangle->m_normal.m_y = g_hitNormal.m_y;
 				m_hitTriangle->m_normal.m_z = g_hitNormal.m_z;
-				m_hitTriangle->m_planeDistance =
-					-(m_hitTriangle->m_vertex0.m_z * g_hitNormal.m_z + m_hitTriangle->m_vertex0.m_y * g_hitNormal.m_y +
-					  m_hitTriangle->m_vertex0.m_x * g_hitNormal.m_x);
+				m_hitTriangle->m_planeDistance = -GolCameraBase::Dot2(&m_hitTriangle->m_vertex0, &g_hitNormal);
 
 				if (m_hitRecord) {
 					*m_hitRecord =
@@ -505,6 +497,12 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 			node = &m_nodes[stack->m_nodeIndex];
 		}
 	}
+}
+
+// FUNCTION: LEGORACERS 0x004044f0
+static LegoFloat DotProduct(GolVec3* p_left, GolVec3* p_right)
+{
+	return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
 }
 
 // FUNCTION: LEGORACERS 0x00404510

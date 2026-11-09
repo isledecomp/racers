@@ -14,7 +14,6 @@
 #include <math.h>
 #include <string.h>
 
-extern const LegoFloat g_carBuildModelHeightScale;
 extern const LegoFloat g_surfaceSoundMaxDistance;
 extern const LegoFloat g_surfaceSoundMinDistance;
 extern const LegoFloat g_twoPi;
@@ -380,7 +379,7 @@ void RacerPhysics::Update(LegoS32 p_elapsedMs)
 		m_surfaceSound->SetPosition(soundPosition);
 		m_surfaceSound->SetVelocity(m_velocity);
 
-		LegoFloat frequencyScale = m_speed / g_surfaceSoundPitchSpeed + g_carBuildModelHeightScale;
+		LegoFloat frequencyScale = m_speed / g_surfaceSoundPitchSpeed + 0.4f;
 		if (frequencyScale < g_unk0x004b043c) {
 			frequencyScale = g_unk0x004b043c;
 		}

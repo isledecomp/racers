@@ -2940,10 +2940,10 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
 		vertexMap++;
 		vertex->color = (*color & 0x00ffffff) | (m_alpha << 24);
-		color++;
 		vertex->tu = uv->m_x;
 		vertex->tv = uv->m_y;
 		uv++;
+		color++;
 		vertex->sx *= vertex->rhw;
 		vertex->sy *= vertex->rhw;
 		vertex++;

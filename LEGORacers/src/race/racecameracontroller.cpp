@@ -220,7 +220,6 @@ extern const LegoFloat g_hazardPi;
 extern const LegoFloat g_statMax;
 extern const LegoFloat g_hazardPi;
 extern const LegoFloat g_twoPi;
-extern const LegoFloat g_brickSettleRate;
 extern const LegoFloat g_unk0x004afde0;
 
 // FUNCTION: LEGORACERS 0x00427e80
@@ -689,7 +688,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 				transitionStep = m_elapsed * 0.0040000002f;
 			}
 			else {
-				transitionStep = m_elapsed * g_brickSettleRate;
+				transitionStep = m_elapsed * 0.002f;
 			}
 			m_followDistanceScale += transitionStep;
 

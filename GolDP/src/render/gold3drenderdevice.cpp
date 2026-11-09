@@ -491,9 +491,9 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 
 	if (forceSoftware) {
 		m_flags &= ~c_flagZBuffer;
-		m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 		m_unk0xc384c = -1;
 		m_unk0xc83c4 = 1;
+		m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
 		::memcpy(&swTextureFormat, &m_primaryRenderTarget->m_textureFormat, sizeof(swTextureFormat));
 

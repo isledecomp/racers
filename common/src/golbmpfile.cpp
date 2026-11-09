@@ -809,7 +809,7 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		}
 		availableDecompressedSize = 0;
 		for (y = 0; y < m_height; y++) {
-			if (availableDecompressedSize < rowByteCount) {
+			if (rowByteCount > availableDecompressedSize) {
 				if (availableDecompressedSize != 0) {
 					::memcpy(rowBuffer, availableDecompressedPtr, availableDecompressedSize);
 				}

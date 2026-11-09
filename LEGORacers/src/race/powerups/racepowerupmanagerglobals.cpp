@@ -2,9 +2,6 @@
 
 #include <float.h>
 
-// GLOBAL: LEGORACERS 0x004b03f4
-extern const LegoFloat g_warpPortalHeightOffset = 6.0f;
-
 // GLOBAL: LEGORACERS 0x004b1378
 extern const LegoFloat g_unlimitedDrawDistance = FLT_MAX;
 

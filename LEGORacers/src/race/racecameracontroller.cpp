@@ -222,7 +222,6 @@ extern const LegoFloat g_hazardPi;
 extern const LegoFloat g_twoPi;
 extern const LegoFloat g_brickSettleRate;
 extern const LegoFloat g_unk0x004afde0;
-extern const LegoFloat g_warpPortalHeightOffset;
 
 // FUNCTION: LEGORACERS 0x00427e80
 void RaceCameraController::UpdateShake()
@@ -793,7 +792,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 		entity->GetPosition(&m_rawTransform.m_position);
 		if (m_alternate) {
-			m_rawTransform.m_position.m_z += g_warpPortalHeightOffset;
+			m_rawTransform.m_position.m_z += 6.0f;
 			ApplySmoothing();
 			return;
 		}

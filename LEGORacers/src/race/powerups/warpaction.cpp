@@ -15,8 +15,6 @@
 #include <float.h>
 #include <math.h>
 
-extern const LegoFloat g_warpPortalHeightOffset;
-
 extern const LegoFloat g_warpFovBoost;
 
 extern LegoFloat g_cosineTable[1024];
@@ -130,10 +128,10 @@ void WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarget*
 		GolVec3 position;
 		racerEntity->GetPosition(&position);
 		LegoFloat positionZ = position.m_z;
-		positionZ += g_warpPortalHeightOffset;
+		positionZ += 6.0f;
 		position.m_z = positionZ;
 		m_modelEntity.SetPosition(position);
-		position.m_z -= g_warpPortalHeightOffset;
+		position.m_z -= 6.0f;
 		m_modelEntity.CopyOrientationFrom(*racerEntity);
 
 		if (m_racer->m_cameraController != NULL) {

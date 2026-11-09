@@ -87,9 +87,6 @@ extern const LegoFloat g_unk0x004b02e8 = -6.0f;
 // GLOBAL: LEGORACERS 0x004b02ec
 extern const LegoFloat g_unk0x004b02ec = -14.0f;
 
-// GLOBAL: LEGORACERS 0x004b0424
-extern const LegoFloat g_statMax = 100.0f;
-
 // GLOBAL: LEGORACERS 0x004b0544
 extern const LegoFloat g_unk0x004b0544 = 0.050000001f;
 
@@ -283,7 +280,7 @@ extern const LegoFloat g_twoPi;
 extern const LegoFloat g_pathMinSegmentLengthSquared;
 
 // GLOBAL: LEGORACERS 0x004c67a4
-LegoFloat g_statChanceScale = ((1.0f - g_statChanceBase) * g_statMax) * g_statChanceStep;
+LegoFloat g_statChanceScale = ((1.0f - g_statChanceBase) * 100.0f) * g_statChanceStep;
 
 // GLOBAL: LEGORACERS 0x004c67a8
 LegoFloat g_proximitySoundMaxDistanceSquared = g_proximitySoundMaxDistance * g_proximitySoundMaxDistance;

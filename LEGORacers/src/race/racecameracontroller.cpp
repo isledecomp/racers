@@ -217,7 +217,6 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_halfPi;
 extern const LegoFloat g_hazardPi;
-extern const LegoFloat g_statMax;
 extern const LegoFloat g_hazardPi;
 extern const LegoFloat g_twoPi;
 extern const LegoFloat g_unk0x004afde0;
@@ -508,7 +507,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 	m_frameDirty = m_dirty;
 	m_dirty &= 0xf0;
-	if (p_elapsedMs > g_statMax) {
+	if (p_elapsedMs > 100.0f) {
 		m_elapsed = 100.0f;
 	}
 	else {

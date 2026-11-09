@@ -614,8 +614,8 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		LegoU32 width = m_width;
 		LegoS32 bitsPerPixel = m_format.m_bitsPerPixel;
+		LegoU32 width = m_width;
 		LegoS32 rowByteCount;
 		if (bitsPerPixel == 4) {
 			rowByteCount = width * 4 + 4;

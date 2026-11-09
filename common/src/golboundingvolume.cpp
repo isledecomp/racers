@@ -483,9 +483,9 @@ LegoBool32 GolBoundingVolume::IntersectSegment(
 
 			if (childIndex < c_invalidChildIndex) {
 				stack++;
+				node = &m_nodes[childIndex];
 				stack->m_nodeIndex = childIndex;
 				stack->m_stage = 0;
-				node = &m_nodes[childIndex];
 			}
 		}
 		else {

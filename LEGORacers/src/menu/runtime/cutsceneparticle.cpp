@@ -173,9 +173,9 @@ void CutsceneParticle::SetOrientation(GolVec3* p_param1, GolVec3* p_param2)
 	LegoFloat* row0 = &m_basis.m_m[0][0];
 	LegoFloat* row1 = &m_basis.m_m[1][0];
 	LegoFloat* row2 = &m_basis.m_m[2][0];
+	row1[0] = cross.m_x;
 	row0[0] = v0.m_x;
 	row0[1] = v0.m_y;
-	row1[0] = cross.m_x;
 	row0[2] = v0.m_z;
 	row1[1] = cross.m_y;
 	row1[2] = cross.m_z;

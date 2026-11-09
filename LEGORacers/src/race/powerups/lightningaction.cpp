@@ -19,8 +19,6 @@ extern const LegoFloat g_lightningRange;
 // GLOBAL: LEGORACERS 0x004c7600
 LegoFloat g_lightningReach = g_lightningRange * 4.0f;
 
-extern const LegoFloat g_carBuildModelTextureCoordinateScale;
-
 // GLOBAL: LEGORACERS 0x004b02fc
 extern const LegoFloat g_unk0x004b02fc = 0.002f;
 
@@ -499,7 +497,7 @@ void LightningAction::UpdateBoltPath()
 			distance = static_cast<LegoFloat>(::sqrt(hit.DistanceSquaredTo(position)));
 		}
 
-		m_boltLength = distance * g_carBuildModelTextureCoordinateScale;
+		m_boltLength = distance * 0.25f;
 	} while (FALSE);
 
 	direction *= m_boltLength;

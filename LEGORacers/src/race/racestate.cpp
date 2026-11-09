@@ -686,8 +686,8 @@ void RaceState::UpdateStandings()
 
 		CheckpointGraph::Entry* pathField = g_racerProgressEntries[groupStart].m_racer->m_checkpoint;
 		if (groupEnd > groupStart + 1 && pathField) {
-			LegoU32 tiedCount = groupEnd - groupStart;
 			RacerProgressEntry* tiedEntry = &g_racerProgressEntries[groupStart];
+			LegoU32 tiedCount = groupEnd - groupStart;
 			do {
 
 				tiedEntry->m_racer->m_visuals.m_carEntity->GetPosition(&position);

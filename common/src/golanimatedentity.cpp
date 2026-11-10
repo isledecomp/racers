@@ -402,9 +402,9 @@ void GolAnimatedEntity::TransitionToPart(
 	m_queuedMsPerFrame = GetModelPart()->GetPartData()[p_partIndex].GetMsPerFrame();
 	CmbModelPart* modelPart = GetModelPart();
 	m_transitionProgress = 0.0f;
-	m_queuedPartTimeMs = p_time;
 	LegoBool32 updateCurrent = p_updateCurrent;
 	m_advanceCurrent = updateCurrent;
+	m_queuedPartTimeMs = p_time;
 	m_advanceQueued = updateQueued;
 	m_transitionRate = 1.0f / static_cast<LegoFloat>(p_transitionTime);
 	if (!updateCurrent) {

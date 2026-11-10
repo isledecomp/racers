@@ -528,8 +528,8 @@ void RaceHud::DrawFixedMap()
 
 	GolImage* markerResource = m_images->GetItem(10);
 	LegoS32 halfMarkerWidth = markerWidth >> 1;
-	LegoS32 halfMarkerHeight = markerHeight >> 1;
 	mapOriginX -= halfMarkerWidth;
+	LegoS32 halfMarkerHeight = markerHeight >> 1;
 	mapOriginY -= halfMarkerHeight;
 	GolVec3 position;
 	Rect destRect;

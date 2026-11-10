@@ -115,9 +115,9 @@ void GolOrientedEntity::SetDirectionSide(const GolVec3& p_v1, const GolVec3& p_v
 	LegoFloat* row0 = &m_orientation.m_m[0][0];
 	LegoFloat* row1 = &m_orientation.m_m[1][0];
 	LegoFloat* row2 = &m_orientation.m_m[2][0];
+	row2[0] = cross.m_x;
 	row0[0] = unit.m_x;
 	row0[1] = unit.m_y;
-	row2[0] = cross.m_x;
 	row0[2] = unit.m_z;
 	row1[0] = perp.m_x;
 	row1[1] = perp.m_y;

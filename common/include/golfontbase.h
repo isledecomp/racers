@@ -24,10 +24,7 @@ public:
 		c_flagBmpSource = 0x0008,
 		c_flagTgaSource = 0x0010,
 		c_flagColorKeyed = 0x0020,
-		c_flagBit11 = 0x0800,
-		c_allFlags = 0xffff,
-		c_flagsWithoutBmp = c_allFlags & ~c_flagBmpSource,
-		c_flagsWithoutTga = c_allFlags & ~c_flagTgaSource
+		c_flagBit11 = 0x0800
 	};
 
 	GolFontBase();

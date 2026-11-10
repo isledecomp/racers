@@ -37,6 +37,9 @@ static const LegoFloat g_carBuildModelMaxFloat = FLT_MAX;
 // GLOBAL: LEGORACERS 0x004b4934
 static const LegoFloat g_carBuildModelNormalScale = 1.0f / 127.0f;
 
+// GLOBAL: LEGORACERS 0x004b0538
+extern const LegoFloat g_carBuildModelHeightScale = 0.4f;
+
 // GLOBAL: LEGORACERS 0x004b4938
 static const LegoFloat g_carBuildModelNegativeHeightScale = -0.4f;
 
@@ -45,6 +48,12 @@ static const LegoFloat g_carBuildModelCenterYOffset = 2.5f;
 
 // GLOBAL: LEGORACERS 0x004b4944
 static const LegoFloat g_carBuildModelCenterXOffset = 4.5f;
+
+inline static void ScaleAndOffset(LegoFloat& p_value, LegoFloat p_scale, LegoFloat p_offset)
+{
+	LegoFloat value = p_value;
+	p_value = (value * p_scale) + p_offset;
+}
 
 // FUNCTION: LEGORACERS 0x00499530
 void CarBuildModel::Placement::Reset()
@@ -1388,7 +1397,7 @@ LegoS32 CarBuildModel::BuildPieceModel(
 		m_buildVertices[i].m_position.m_x += m_offsetX;
 		m_buildVertices[i].m_position.m_y += m_offsetY;
 		LegoFloat z = m_buildVertices[i].m_position.m_z;
-		m_buildVertices[i].m_position.m_z = (z * 0.4f) + m_offsetZ;
+		m_buildVertices[i].m_position.m_z = (z * g_carBuildModelHeightScale) + m_offsetZ;
 	}
 
 	BeginModelWrite(model);
@@ -1586,7 +1595,7 @@ void CarBuildModel::UpdateOffset(LegoBool32 p_restoreCachedOffset)
 			m_offsetY = -((m_pieceMaxY + m_pieceMinY) * 0.5f) - yOffset;
 
 			LegoFloat heightOffset = static_cast<LegoFloat>(height);
-			m_offsetZ = -m_pieceMinZ - (heightOffset * 0.4f);
+			m_offsetZ = -m_pieceMinZ - (heightOffset * g_carBuildModelHeightScale);
 		}
 	}
 	else {
@@ -1677,7 +1686,7 @@ void CarBuildModel::RebuildModel(LegoS32 p_variant, LegoU32 p_buildFlags)
 				for (i = 0; i < m_buildVertexCount; i++) {
 					m_buildVertices[i].m_position.m_x = m_offsetX + m_buildVertices[i].m_position.m_x;
 					m_buildVertices[i].m_position.m_y += m_offsetY;
-					m_buildVertices[i].m_position.m_z = (m_buildVertices[i].m_position.m_z * 0.4f) + m_offsetZ;
+					ScaleAndOffset(m_buildVertices[i].m_position.m_z, g_carBuildModelHeightScale, m_offsetZ);
 				}
 
 				BeginModelWrite(m_model);
@@ -1827,7 +1836,7 @@ void CarBuildModel::BuildOverlay(LegoBool32 p_visible, LegoS32 p_height)
 	GolModelBase* overlayModel = m_overlayModel;
 	LegoFloat z = static_cast<LegoFloat>(p_height);
 	m_overlayVisible = disabled;
-	z *= 0.4f;
+	z *= g_carBuildModelHeightScale;
 	overlayModel->GetMutableGroups()[groupIndex] = c_modelMaterialGroup;
 	overlayModel->GetMutableGroups()[groupIndex] |= enabled;
 	overlayModel->SetDirty(enabled);

@@ -262,13 +262,22 @@ void RaceTrailManager::Trail::AdvanceTail(LegoU32 p_elapsedMs)
 				LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(stepMs)) / duration;
 				m_samples[nextIndex].m_durationMs = durationMs - stepMs;
 
+				GolVec3 delta;
 				for (LegoU32 i = 0; i < m_pointCount; i++) {
-					m_samples[m_tailIndex].m_points[i] +=
-						(m_samples[nextIndex].m_points[i] - m_samples[m_tailIndex].m_points[i]) * amount;
+					const GolVec3& next = m_samples[nextIndex].m_points[i];
+					GolVec3& point = m_samples[m_tailIndex].m_points[i];
+					delta.m_x = next.m_x - point.m_x;
+					delta.m_y = next.m_y - point.m_y;
+					delta.m_z = next.m_z - point.m_z;
+					point += delta * amount;
 				}
 
-				m_samples[m_tailIndex].m_center +=
-					(m_samples[nextIndex].m_center - m_samples[m_tailIndex].m_center) * amount;
+				const GolVec3& nextCenter = m_samples[nextIndex].m_center;
+				GolVec3& center = m_samples[m_tailIndex].m_center;
+				delta.m_x = nextCenter.m_x - center.m_x;
+				delta.m_y = nextCenter.m_y - center.m_y;
+				delta.m_z = nextCenter.m_z - center.m_z;
+				center += delta * amount;
 			}
 		}
 

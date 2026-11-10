@@ -48,17 +48,17 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 		GolVec3 axisZ;
 		if (!shapeIndex) {
 			axisX.m_x = m_body->m_orientation.m_m[0][0];
+			LegoFloat halfX = m_boxSizeX * 0.5f;
 			axisX.m_y = m_body->m_orientation.m_m[0][1];
 			axisX.m_z = m_body->m_orientation.m_m[0][2];
-			LegoFloat halfX = m_boxSizeX * 0.5f;
 			axisX.m_x *= halfX;
 			axisX.m_y *= halfX;
 			axisX.m_z *= halfX;
 
 			axisY.m_x = m_body->m_orientation.m_m[1][0];
+			LegoFloat halfY = m_boxSizeY * 0.5f;
 			axisY.m_y = m_body->m_orientation.m_m[1][1];
 			axisY.m_z = m_body->m_orientation.m_m[1][2];
-			LegoFloat halfY = m_boxSizeY * 0.5f;
 			axisY.m_x *= halfY;
 			axisY.m_y *= halfY;
 			axisY.m_z *= halfY;

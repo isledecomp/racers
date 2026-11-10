@@ -297,8 +297,8 @@ void MenuModelCarousel::DestroyItems()
 {
 	LegoS32 width = m_rect.m_right - m_rect.m_left;
 	LegoS32 height = m_rect.m_bottom - m_rect.m_top;
-	LegoS32 halfWidth = -(width >> 1);
 	Item* item = m_items;
+	LegoS32 halfWidth = -(width >> 1);
 	LegoS32 i = 0;
 
 	LegoFloat widthFloat = static_cast<LegoFloat>(width);

@@ -2079,8 +2079,8 @@ LegoS32 CarBuildModel::ComputeHighPieceCentroid(LegoFloat* p_centroidX, LegoFloa
 		*p_centroidZ = static_cast<LegoFloat>(zTotal) / count;
 	}
 	else {
-		*p_centroidZ = 0.0f;
 		*p_centroidY = 0.0f;
+		*p_centroidZ = 0.0f;
 		*p_centroidX = 0.0f;
 	}
 

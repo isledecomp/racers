@@ -135,6 +135,8 @@ void HomingProjectile::UpdateTargeting(
 	if (!m_hasWaypoint && m_pathEntry != NULL) {
 		GolVec3 point = m_pathEntry->m_position;
 		GolVec3 delta;
+		GolVec3 start;
+		GolVec3 end;
 		delta.m_x = point.m_x - m_position.m_x;
 		delta.m_y = point.m_y - m_position.m_y;
 		delta.m_z = point.m_z - m_position.m_z;
@@ -146,14 +148,15 @@ void HomingProjectile::UpdateTargeting(
 			}
 
 			LegoU8 nextIndex = m_pathEntry->m_next.m_items[0];
-			CheckpointGraph::Entry* pathField = m_ownerRacer->m_checkpointGraph->GetCheckpoint(nextIndex);
+			CheckpointGraph* graph = m_ownerRacer->m_checkpointGraph;
+			CheckpointGraph::Entry* pathField = graph->GetCheckpoint(nextIndex);
 			m_pathEntry = pathField;
 			if (pathField == NULL) {
 				break;
 			}
 
 			point = pathField->m_position;
-			if (GOLVECTOR3_DISTANCE_SQUARED(point, m_position) > g_homingProjectilePathDistanceLimitSquared) {
+			if (m_position.DistanceSquaredTo(point) > g_homingProjectilePathDistanceLimitSquared) {
 				m_pathEntry = NULL;
 				break;
 			}
@@ -161,23 +164,28 @@ void HomingProjectile::UpdateTargeting(
 			delta.m_x = point.m_x - m_position.m_x;
 			delta.m_y = point.m_y - m_position.m_y;
 			delta.m_z = point.m_z - m_position.m_z;
-			if (DotVectors(m_direction, pathField->m_planeNormal) > 0.0f) {
+
+			GolVec3 normal;
+			normal.m_x = pathField->m_planeNormal.m_x;
+			normal.m_y = pathField->m_planeNormal.m_y;
+			normal.m_z = pathField->m_planeNormal.m_z;
+			if (DotVectors(m_direction, normal) > 0.0f) {
 				m_pathEntry = NULL;
 				break;
 			}
 		}
 
 		if (m_pathEntry != NULL) {
-			GolVec3 start = point;
-			GolVec3 end = point;
+			start = point;
+			end = point;
 			start.m_z += 5.0f;
 			end.m_z -= g_homingProjectileCollisionProbeDepth;
 
 			GolBoundingVolume::HitTriangle record;
 			if (m_collisionWorld->IntersectSegmentAndFireEvents(&start, &end, &record, &point)) {
-				m_hasWaypoint = 1;
 				point.m_z += g_homingProjectileCollisionHitLift;
 				m_waypointPosition = point;
+				m_hasWaypoint = 1;
 			}
 		}
 	}

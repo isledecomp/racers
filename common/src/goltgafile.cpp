@@ -430,8 +430,8 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 
 		ConvertRow(sourceRow, convertedRow, format);
 
-		LegoU32 sourceOffset = 0;
 		tileHeight = 0;
+		LegoU32 sourceOffset = 0;
 		for (LegoU32 i = 0; i < p_image->GetTileColumnCount(); i++) {
 			tileHeight = p_image->GetTileHeight(tileRow);
 			LegoS32 tileWidth = p_image->GetTileWidth(i);
@@ -463,9 +463,9 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 	}
 
 	delete[] fileRow;
+	delete[] convertedRow;
 	delete[] tilePixels;
 	delete[] tilePitches;
-	delete[] convertedRow;
 	if (m_imageType >= 9) {
 		delete[] sourceRow;
 	}

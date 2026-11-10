@@ -109,12 +109,13 @@ void RaceDecalManager::Trail::Initialize(
 	GolCollidableEntity* p_params
 )
 {
-	m_collidable = p_params;
 	m_golExport = p_golExport;
+	m_collidable = p_params;
 
 	m_decal.Initialize(p_golExport, p_renderer, 12);
 	m_decal.GetEntity().EnableFlagBit1();
-	m_decal.m_depth = g_raceDecalDefaultDepth;
+	LegoFloat depth = g_raceDecalDefaultDepth;
+	m_decal.m_depth = depth;
 
 	for (LegoU32 i = 0; i < sizeOfArray(m_slots); i++) {
 		GolModelBase* model = m_golExport->CreateModel();

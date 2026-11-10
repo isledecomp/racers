@@ -129,9 +129,9 @@ LegoBool32 CmbModelPartTrackData::InterpolatePosition(
 		LegoU32 keyBase = p_track.m_positionKeyIndex;
 		LegoS32 firstKey = m_keys[keyBase];
 		LegoS32 lastKey = m_keys[keyBase + keyCount - 1];
+		from = &m_vertices[p_track.m_positionFrameIndex + keyCount - 1];
 		p_frameCount = firstKey - lastKey + p_frameCount;
 		elapsed = static_cast<LegoFloat>(p_frameCount - firstKey) + p_time;
-		from = &m_vertices[p_track.m_positionFrameIndex + keyCount - 1];
 		to = &m_vertices[p_track.m_positionFrameIndex];
 	}
 	else if (keyIndex == keyCount) {

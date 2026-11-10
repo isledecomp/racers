@@ -1873,9 +1873,9 @@ PowerupAction* RacePowerupManager::ReclaimAction(
 PowerupExplosion* __stdcall RacePowerupManager::ReclaimExplosion(PowerupExplosion** p_head)
 {
 	PowerupExplosion* current = *p_head;
+	LegoU32 selectedRemaining = 0xffffffff;
 	PowerupExplosion* selected = NULL;
 	PowerupExplosion* selectedPrevious = NULL;
-	LegoU32 selectedRemaining = 0xffffffff;
 	LegoS32 targetState = PowerupExplosion::c_stateScarFading;
 	LegoU32 pass;
 	PowerupExplosion* head = current;

@@ -1068,8 +1068,8 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
 		if (m_context->m_playerSetupSlots[racerIndex].m_slotState == 0) {
-			Racer* racer = &m_raceState.GetRacers()[racerIndex];
 			RaceCameraController* cameraController = &m_cameraControllers[racerIndex];
+			Racer* racer = &m_raceState.GetRacers()[racerIndex];
 			m_raceState.m_playerRacers[racerIndex] = racer;
 
 			cameraController->SetRacer(racer);

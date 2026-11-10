@@ -143,8 +143,8 @@ void AwardCinematicScreen::CreateWidgets()
 	} locals;
 
 	GolAnimatedEntity* sourceDriverEntity = NULL;
-	GolModelEntity* carBodyEntity = NULL;
 	GolAnimatedEntity* swapEntity = NULL;
+	GolModelEntity* carBodyEntity = NULL;
 	GolAnimatedEntity* pLegEntity = NULL;
 	LegoBool32 carCreated = FALSE;
 	DriverCosmetics cosmetics;
@@ -301,8 +301,8 @@ void AwardCinematicScreen::CreateWidgets()
 
 				for (LegoU32 j = 0; j < model->GetAnimationCount(); j++) {
 					CutsceneDefinition::Frame::ModelEvent::Animation* animation = model->GetAnimation(j);
-					MabMaterialFrame* animationItems = animation->m_materialAnimation->GetFrames();
 					MabMaterialTrack* animationItem = animation->m_item;
+					MabMaterialFrame* animationItems = animation->m_materialAnimation->GetFrames();
 					LegoS32 firstFrame = animationItem->GetFirstFrame();
 					LegoS32 endFrame = firstFrame + animationItem->GetFrameCount();
 

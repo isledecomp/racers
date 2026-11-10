@@ -140,10 +140,10 @@ void PowerupProjectile::LaunchAtRacer(
 	durationMs *= g_floatConst1000;
 	m_flightTimeMs = static_cast<LegoS32>(durationMs);
 	if (p_predictiveLead) {
+		delta = *target;
 		scaledVelocity.m_x = targetVelocity.m_x * durationMs;
 		scaledVelocity.m_y = targetVelocity.m_y * durationMs;
 		scaledVelocity.m_z = targetVelocity.m_z * durationMs;
-		delta = *target;
 		delta += scaledVelocity;
 		racerDirection = p_racer->m_physics.m_facingDirection;
 		GolVec3 predictedDelta;

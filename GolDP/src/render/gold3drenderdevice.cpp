@@ -491,9 +491,9 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 
 	if (forceSoftware) {
 		m_flags &= ~c_flagZBuffer;
-		m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 		m_unk0xc384c = -1;
 		m_unk0xc83c4 = 1;
+		m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
 		::memcpy(&swTextureFormat, &m_primaryRenderTarget->m_textureFormat, sizeof(swTextureFormat));
 
@@ -2940,10 +2940,10 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
 		vertexMap++;
 		vertex->color = (*color & 0x00ffffff) | (m_alpha << 24);
-		color++;
 		vertex->tu = uv->m_x;
 		vertex->tv = uv->m_y;
 		uv++;
+		color++;
 		vertex->sx *= vertex->rhw;
 		vertex->sy *= vertex->rhw;
 		vertex++;

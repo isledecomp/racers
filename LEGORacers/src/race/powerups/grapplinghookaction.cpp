@@ -14,6 +14,9 @@
 #include <float.h>
 #include <math.h>
 
+// GLOBAL: LEGORACERS 0x004b14cc
+const LegoFloat g_unk0x004b14cc = 5.0f;
+
 // GLOBAL: LEGORACERS 0x004b14dc
 extern const LegoFloat g_hookBillboardDrawDistance = FLT_MAX;
 
@@ -411,7 +414,7 @@ void GrapplingHookAction::AdvanceState()
 			scaledDirection.m_y = direction.m_y * 500.0f;
 			scaledDirection.m_z = direction.m_z * 500.0f;
 			GolCameraBase::Add(&position, &scaledDirection, &targetPosition);
-			targetPosition.m_z = 5.0f + targetPosition.m_z;
+			targetPosition.m_z = g_unk0x004b14cc + targetPosition.m_z;
 		}
 
 		targetVelocity.m_x = 0.0f;

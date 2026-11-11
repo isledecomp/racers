@@ -210,8 +210,8 @@ void MenuWidget::CenterRectIn(const Rect* p_source, Rect* p_dest) const
 	LegoU32 sourceHeight = source->m_bottom;
 	LegoS32 sourceLeft = source->m_left;
 	LegoU32 sourceWidth = source->m_right;
-	sourceHeight -= sourceTop;
 	sourceWidth -= sourceLeft;
+	sourceHeight -= sourceTop;
 
 	Rect* dest = p_dest;
 	LegoU32 destWidth = dest->m_right;

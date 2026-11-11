@@ -357,8 +357,8 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 			*dst |= color;
 		}
 
-		y += 0x10000;
 		row += m_pitch;
+		y += 0x10000;
 		x0 += xStep0;
 		x1 += xStep1;
 	}
@@ -569,13 +569,13 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 
 	LegoBool32 edge1EndsFirst;
 	LegoS32 yEnd;
-	if (edge0->m_y > edge1->m_y) {
-		yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge1->m_y)) & 0xffff0000;
-		edge1EndsFirst = TRUE;
-	}
-	else {
+	if (edge0->m_y <= edge1->m_y) {
 		yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge0->m_y)) & 0xffff0000;
 		edge1EndsFirst = FALSE;
+	}
+	else {
+		yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge1->m_y)) & 0xffff0000;
+		edge1EndsFirst = TRUE;
 	}
 
 	for (;;) {

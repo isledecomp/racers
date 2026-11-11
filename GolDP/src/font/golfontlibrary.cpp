@@ -13,7 +13,6 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(GolFontLibrary::FdbTxtParser, 0x1fc)
-DECOMP_SIZE_ASSERT(GolFontLibrary::FontParseStyle, 0x0c)
 DECOMP_SIZE_ASSERT(GolFontLibrary, 0x28)
 
 // FUNCTION: GOLDP 0x1001d830
@@ -97,32 +96,34 @@ void GolFontLibrary::LoadFontDefinitions(
 
 		parser->ReadLeftCurly();
 
-		FontParseStyle style;
-		style.m_colorKey.m_alp = 0xff;
-		style.m_textColor.m_alp = 0xff;
+		ColorRGBA colorKey;
+		LegoU16 flags;
+		ColorRGBA textColor;
+		colorKey.m_alp = 0xff;
+		textColor.m_alp = 0xff;
 
-		style.m_flags = 0;
-		style.m_colorKey.m_red = 0;
-		style.m_colorKey.m_grn = 0;
-		style.m_colorKey.m_blu = 0;
-		style.m_textColor.m_red = 0xff;
-		style.m_textColor.m_grn = 0xff;
-		style.m_textColor.m_blu = 0xff;
+		flags = 0;
+		colorKey.m_red = 0;
+		colorKey.m_grn = 0;
+		colorKey.m_blu = 0;
+		textColor.m_red = 0xff;
+		textColor.m_grn = 0xff;
+		textColor.m_blu = 0xff;
 
 		GolFileParser::ParserTokenType token = parser->GetNextToken();
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case FdbTxtParser::e_bmp:
-				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutTga) | GolFontBase::c_flagBmpSource;
+				flags = (flags & ~GolFontBase::c_flagTgaSource) | GolFontBase::c_flagBmpSource;
 				break;
 			case FdbTxtParser::e_tga:
-				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutBmp) | GolFontBase::c_flagTgaSource;
+				flags = (flags & ~GolFontBase::c_flagBmpSource) | GolFontBase::c_flagTgaSource;
 				break;
 			case FdbTxtParser::e_colorKey:
-				style.m_flags |= GolFontBase::c_flagColorKeyed;
-				style.m_colorKey.m_red = parser->ReadInteger();
-				style.m_colorKey.m_grn = parser->ReadInteger();
-				style.m_colorKey.m_blu = parser->ReadInteger();
+				flags |= GolFontBase::c_flagColorKeyed;
+				colorKey.m_red = parser->ReadInteger();
+				colorKey.m_grn = parser->ReadInteger();
+				colorKey.m_blu = parser->ReadInteger();
 				break;
 			case FdbTxtParser::e_charSpacing:
 				font->m_charSpacing = parser->ReadInteger();
@@ -142,9 +143,9 @@ void GolFontLibrary::LoadFontDefinitions(
 				break;
 			}
 			case FdbTxtParser::e_textColor:
-				style.m_textColor.m_red = parser->ReadInteger();
-				style.m_textColor.m_grn = parser->ReadInteger();
-				style.m_textColor.m_blu = parser->ReadInteger();
+				textColor.m_red = parser->ReadInteger();
+				textColor.m_grn = parser->ReadInteger();
+				textColor.m_blu = parser->ReadInteger();
 				break;
 			default:
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -155,13 +156,12 @@ void GolFontLibrary::LoadFontDefinitions(
 		}
 
 		font->m_nameParts[0] = name[0];
-		LegoU16 flags = (LegoU16) style.m_flags;
 		font->m_nameParts[1] = name[1];
-		font->m_colorPacked = style.m_textColorPacked;
 		font->m_flags = flags;
+		font->m_color = textColor;
 
 		if (flags & GolFontBase::c_flagColorKeyed) {
-			font->m_colorKeyPacked = style.m_colorKeyPacked;
+			font->m_colorKey = colorKey;
 			font->m_flags = flags | GolFontBase::c_flagBit11;
 		}
 	}

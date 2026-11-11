@@ -109,132 +109,141 @@ LegoS32 DirectMusicInstance::FillBuffer(LegoS32 p_blocks)
 			bytesAvailable = writeBytes;
 			if (m_channelCount == 2) {
 				if (m_sourceChannelCount == 2) {
-					while (writeBytes) {
-						LegoS32 readBytes = writeBytes >> 2;
-						if (readBytes > c_readChunkSize) {
-							readBytes = c_readChunkSize;
-						}
-						if (readBytes > m_remainingBytes) {
-							readBytes = m_remainingBytes;
-						}
+					if (writeBytes) {
+						do {
+							LegoS32 readBytes = writeBytes >> 2;
+							if (readBytes > c_readChunkSize) {
+								readBytes = c_readChunkSize;
+							}
+							if (readBytes > m_remainingBytes) {
+								readBytes = m_remainingBytes;
+							}
 
-						if (!ReadFile(m_file, m_streamBuffer, readBytes, &numberOfBytesRead, NULL)) {
-							m_streamError = TRUE;
-							break;
-						}
+							if (!ReadFile(m_file, m_streamBuffer, readBytes, &numberOfBytesRead, NULL)) {
+								m_streamError = TRUE;
+								break;
+							}
 
-						HRESULT result = m_directSoundBuffer->Lock(
-							m_writeCursor,
-							4 * readBytes,
-							&audioPtr1,
-							&audioBytes1,
-							&audioPtr2,
-							&audioBytes2,
-							0
-						);
-
-						if (!result) {
-							DecodeStereoPcmToStereo(
-								m_streamBuffer,
-								(LegoS16*) audioPtr1,
-								audioBytes1 >> 2,
-								m_leftState,
-								m_rightState
+							HRESULT result = m_directSoundBuffer->Lock(
+								m_writeCursor,
+								readBytes << 2,
+								&audioPtr1,
+								&audioBytes1,
+								&audioPtr2,
+								&audioBytes2,
+								0
 							);
 
-							if (audioPtr2) {
+							if (!result) {
 								DecodeStereoPcmToStereo(
-									m_streamBuffer + (audioBytes1 >> 2),
-									(LegoS16*) audioPtr2,
-									audioBytes2 >> 2,
+									m_streamBuffer,
+									(LegoS16*) audioPtr1,
+									audioBytes1 >> 2,
 									m_leftState,
 									m_rightState
 								);
-								m_writeCursor = audioBytes2;
+
+								if (audioPtr2) {
+									DecodeStereoPcmToStereo(
+										m_streamBuffer + (audioBytes1 >> 2),
+										(LegoS16*) audioPtr2,
+										audioBytes2 >> 2,
+										m_leftState,
+										m_rightState
+									);
+									m_writeCursor = audioBytes2;
+								}
+								else {
+									m_writeCursor += audioBytes1;
+									if (m_writeCursor >= m_bufferSize) {
+										m_writeCursor -= m_bufferSize;
+									}
+								}
+
+								m_directSoundBuffer->Unlock(audioPtr1, audioBytes1, audioPtr2, audioBytes2);
 							}
 							else {
-								m_writeCursor += audioBytes1;
-								if (m_writeCursor >= m_bufferSize) {
-									m_writeCursor -= m_bufferSize;
+								if (result == c_lostBuffer) {
+									m_directSoundBuffer->Restore();
+									writeBytes = 0;
 								}
 							}
 
-							m_directSoundBuffer->Unlock(audioPtr1, audioBytes1, audioPtr2, audioBytes2);
-						}
-						else {
-							if (result == c_lostBuffer) {
-								m_directSoundBuffer->Restore();
-								writeBytes = 0;
+							m_remainingBytes -= readBytes;
+							if (!m_remainingBytes) {
+								break;
 							}
-						}
 
-						m_remainingBytes -= readBytes;
-						if (!m_remainingBytes) {
-							break;
-						}
-
-						writeBytes -= 4 * readBytes;
+							writeBytes -= 4 * readBytes;
+						} while (writeBytes);
 					}
 				}
 				else {
-					while (writeBytes) {
-						LegoS32 readBytes = writeBytes >> 3;
-						if (readBytes > c_readChunkSize) {
-							readBytes = c_readChunkSize;
-						}
-						if (readBytes > m_remainingBytes) {
-							readBytes = m_remainingBytes;
-						}
+					if (writeBytes) {
+						do {
+							LegoS32 readBytes = writeBytes >> 3;
+							if (readBytes > c_readChunkSize) {
+								readBytes = c_readChunkSize;
+							}
+							if (readBytes > m_remainingBytes) {
+								readBytes = m_remainingBytes;
+							}
 
-						if (!ReadFile(m_file, m_streamBuffer, readBytes, &numberOfBytesRead, NULL)) {
-							m_streamError = TRUE;
-							break;
-						}
+							if (!ReadFile(m_file, m_streamBuffer, readBytes, &numberOfBytesRead, NULL)) {
+								m_streamError = TRUE;
+								break;
+							}
 
-						HRESULT result = m_directSoundBuffer->Lock(
-							m_writeCursor,
-							8 * readBytes,
-							&audioPtr1,
-							&audioBytes1,
-							&audioPtr2,
-							&audioBytes2,
-							0
-						);
+							HRESULT result = m_directSoundBuffer->Lock(
+								m_writeCursor,
+								readBytes << 3,
+								&audioPtr1,
+								&audioBytes1,
+								&audioPtr2,
+								&audioBytes2,
+								0
+							);
 
-						if (!result) {
-							DecodeMonoPcmToStereo(m_streamBuffer, (LegoS16*) audioPtr1, audioBytes1 >> 3, m_leftState);
-
-							if (audioPtr2) {
+							if (!result) {
 								DecodeMonoPcmToStereo(
-									m_streamBuffer + (audioBytes1 >> 3),
-									(LegoS16*) audioPtr2,
-									audioBytes2 >> 3,
+									m_streamBuffer,
+									(LegoS16*) audioPtr1,
+									audioBytes1 >> 3,
 									m_leftState
 								);
-								m_writeCursor = audioBytes2;
+
+								if (audioPtr2) {
+									DecodeMonoPcmToStereo(
+										m_streamBuffer + (audioBytes1 >> 3),
+										(LegoS16*) audioPtr2,
+										audioBytes2 >> 3,
+										m_leftState
+									);
+									m_writeCursor = audioBytes2;
+								}
+								else {
+									m_writeCursor += audioBytes1;
+									if (m_writeCursor >= m_bufferSize) {
+										m_writeCursor -= m_bufferSize;
+									}
+								}
+
+								m_directSoundBuffer->Unlock(audioPtr1, audioBytes1, audioPtr2, audioBytes2);
 							}
 							else {
-								m_writeCursor += audioBytes1;
-								if (m_writeCursor >= m_bufferSize) {
-									m_writeCursor -= m_bufferSize;
+								if (result == c_lostBuffer) {
+									m_directSoundBuffer->Restore();
+									writeBytes = 0;
 								}
 							}
 
-							m_directSoundBuffer->Unlock(audioPtr1, audioBytes1, audioPtr2, audioBytes2);
-						}
-						else {
-							if (result == c_lostBuffer) {
-								m_directSoundBuffer->Restore();
-								writeBytes = 0;
+							m_remainingBytes -= readBytes;
+							if (!m_remainingBytes) {
+								break;
 							}
-						}
 
-						m_remainingBytes -= readBytes;
-						if (!m_remainingBytes) {
-							break;
-						}
-
-						writeBytes -= 8 * readBytes;
+							writeBytes -= 8 * readBytes;
+						} while (writeBytes);
 					}
 				}
 			}

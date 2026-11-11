@@ -587,20 +587,21 @@ void LightningAction::OnHitRacer(Racer* p_racer)
 			impulse.m_z = direction.m_z;
 			impulse.m_z *= g_lightningImpulseScale;
 
-			direction.Clear();
-			direction.m_z = g_lightningLaunchImpulse;
+			GolVec3 up;
+			up.m_x = 0.0f;
+			up.m_y = 0.0f;
+			up.m_z = 1.0f;
 
-			LegoFloat impulseX = direction.m_x;
-			impulseX += impulse.m_x;
-			impulse.m_x = impulseX;
+			GolVec3 launch;
+			launch.m_x = up.m_x * g_lightningLaunchImpulse;
+			launch.m_y = up.m_y * g_lightningLaunchImpulse;
+			LegoFloat launchZ = g_lightningLaunchImpulse;
+			launch.m_z = launchZ;
+			direction = launch;
 
-			LegoFloat impulseY = direction.m_y;
-			impulseY += impulse.m_y;
-			impulse.m_y = impulseY;
-
-			LegoFloat impulseZ = direction.m_z;
-			impulseZ += impulse.m_z;
-			impulse.m_z = impulseZ;
+			impulse.m_x = direction.m_x + impulse.m_x;
+			impulse.m_y = direction.m_y + impulse.m_y;
+			impulse.m_z = direction.m_z + impulse.m_z;
 
 			physics->ApplyImpulse(&impulse, &impulse);
 

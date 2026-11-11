@@ -370,7 +370,12 @@ void GolSoftwareRenderer::SetupPipeline(RasterizerPipeline* p_buffer, GolMateria
 	}
 	else {
 		FUN_100330d0(this, NULL);
-		rasterizerMode = flags & GolMaterial::c_flagGouraudShading ? c_flag0x2cBit0 : 0;
+		if (flags & GolMaterial::c_flagGouraudShading) {
+			rasterizerMode = c_flag0x2cBit0;
+		}
+		else {
+			rasterizerMode = 0;
+		}
 	}
 
 	m_rasterizerFlags = rasterizerMode;

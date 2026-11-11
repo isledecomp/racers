@@ -1352,8 +1352,8 @@ void GolWorldDatabase::InitializeEntities()
 	LegoU32 bindingIndex;
 
 	if (m_modelEntityCount) {
-		model = m_modelEntityRecords;
 		GolModelEntity* runtime = m_modelEntities;
+		model = m_modelEntityRecords;
 		for (i = 0; i < m_modelEntityCount; i++) {
 			if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
 				GOL_FATALERROR_MESSAGE("Illegal mesh reference");

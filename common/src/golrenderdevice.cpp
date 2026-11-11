@@ -551,8 +551,8 @@ void GolRenderDevice::SelectTextureFormat(
 				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
 					m_textureFormats[i].GetIntensityBitCount() == bits.m_intensity &&
 					m_textureFormats[i].GetAlphaBitCount() == bits.m_alpha) {
-					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
+					*p_actualTextureFormat = m_textureFormats[i];
 					return;
 				}
 			}
@@ -652,8 +652,8 @@ void GolRenderDevice::SelectTextureFormat(
 			for (i = 0; i < m_countTextureFormats; i++) {
 				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
 					m_textureFormats[i].GetPaletteBitCount() == bits.m_palette) {
-					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
+					*p_actualTextureFormat = m_textureFormats[i];
 					return;
 				}
 			}
@@ -724,8 +724,8 @@ void GolRenderDevice::SelectTextureFormat(
 				if (m_textureFormats[i].m_bitsPerPixel == bpp && m_textureFormats[i].GetRedBitCount() == bits.m_red &&
 					m_textureFormats[i].GetGreenBitCount() == bits.m_green &&
 					m_textureFormats[i].GetBlueBitCount() == bits.m_blue) {
-					*p_actualTextureFormat = m_textureFormats[i];
 					m_textureFormatIndex = i;
+					*p_actualTextureFormat = m_textureFormats[i];
 					return;
 				}
 			}

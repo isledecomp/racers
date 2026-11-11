@@ -30,7 +30,6 @@
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern LegoFloat g_carBuildPreviewMouseScale;
-extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(RaceState::RacerProgressEntry, 0x0c)
@@ -383,10 +382,10 @@ void RaceState::CreateRacer(
 	}
 	else {
 		racerParams.m_centerOfMass.m_x = p_slot->m_centroidX;
-		racerParams.m_centerOfMass.m_x *= g_carBuildModelTextureCoordinateScale;
+		racerParams.m_centerOfMass.m_x *= 0.25f;
 		racerParams.m_centerOfMass.m_x += chassisItem->m_centerOfMass.m_x;
 		racerParams.m_centerOfMass.m_y = p_slot->m_centroidY;
-		racerParams.m_centerOfMass.m_y *= g_carBuildModelTextureCoordinateScale;
+		racerParams.m_centerOfMass.m_y *= 0.25f;
 		racerParams.m_centerOfMass.m_y += chassisItem->m_centerOfMass.m_y;
 		racerParams.m_centerOfMass.m_z = chassisItem->m_centerOfMass.m_z;
 		racerParams.m_mass = chassisItem->m_baseMass + p_slot->m_highPieceCount;

@@ -20,6 +20,9 @@ targets:
         - c_dfDIKeyboard
         - c_dfDIMouse
         # Others
+        # Without a relocation table, reccmp reads code bytes as a pointer to an
+        # import hint that looks like the "4" string, and pairs the wrong copy.
+        - g_positionDigits
   GOLDP:
     filename: GolDP.dll
     source-root:

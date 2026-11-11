@@ -15,7 +15,6 @@
 #include <string.h>
 
 extern const LegoFloat g_carBuildModelHeightScale;
-extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 extern const LegoFloat g_surfaceSoundMaxDistance;
 extern const LegoFloat g_surfaceSoundMinDistance;
 extern const LegoFloat g_twoPi;
@@ -482,7 +481,7 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 		m_routeCursor.m_playbackSpeed = value;
 	}
 	else {
-		LegoFloat amount = (dot + 1.0f) * g_carBuildModelTextureCoordinateScale;
+		LegoFloat amount = (dot + 1.0f) * 0.25f;
 		LegoFloat value;
 		if (m_flags & c_flagSpinning) {
 			value = g_routeSpinSpeed - 0.1f;
@@ -949,7 +948,7 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 			if (p_elapsedMs >= m_pitchImpulseMs) {
 				m_pitchImpulseMs = 0;
 				LegoFloat rate = m_routeTiltRate;
-				rate *= g_carBuildModelTextureCoordinateScale;
+				rate *= 0.25f;
 				m_routeTiltRate = -rate;
 			}
 			else {

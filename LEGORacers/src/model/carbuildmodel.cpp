@@ -40,9 +40,6 @@ static const LegoFloat g_carBuildModelNormalScale = 1.0f / 127.0f;
 // GLOBAL: LEGORACERS 0x004b0538
 extern const LegoFloat g_carBuildModelHeightScale = 0.4f;
 
-// GLOBAL: LEGORACERS 0x004b053c
-extern const LegoFloat g_carBuildModelTextureCoordinateScale = 0.25f;
-
 // GLOBAL: LEGORACERS 0x004b4938
 static const LegoFloat g_carBuildModelNegativeHeightScale = -0.4f;
 
@@ -996,10 +993,8 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 					(primitive->m_commandFlags == c_buildPrimitiveCommandMaterial2 ||
 					 primitive->m_commandFlags & c_buildPrimitiveCommandTextureBit)
 				) {
-					vertex.m_textureCoordinate.m_x =
-						(vertex.m_position.m_x - xOrigin) * g_carBuildModelTextureCoordinateScale;
-					vertex.m_textureCoordinate.m_y =
-						(vertex.m_position.m_y - yOrigin) * g_carBuildModelTextureCoordinateScale;
+					vertex.m_textureCoordinate.m_x = (vertex.m_position.m_x - xOrigin) * 0.25f;
+					vertex.m_textureCoordinate.m_y = (vertex.m_position.m_y - yOrigin) * 0.25f;
 				}
 				else {
 					vertex.m_textureCoordinate.m_x = 0.0f;
@@ -1128,10 +1123,8 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 						(primitive->m_commandFlags == c_buildPrimitiveCommandMaterial2 ||
 						 primitive->m_commandFlags & c_buildPrimitiveCommandTextureBit)
 					) {
-						vertex.m_textureCoordinate.m_x =
-							(vertex.m_position.m_x - xOrigin) * g_carBuildModelTextureCoordinateScale;
-						vertex.m_textureCoordinate.m_y =
-							(vertex.m_position.m_y - yOrigin) * g_carBuildModelTextureCoordinateScale;
+						vertex.m_textureCoordinate.m_x = (vertex.m_position.m_x - xOrigin) * 0.25f;
+						vertex.m_textureCoordinate.m_y = (vertex.m_position.m_y - yOrigin) * 0.25f;
 					}
 					else {
 						vertex.m_textureCoordinate.m_x = 0.0f;

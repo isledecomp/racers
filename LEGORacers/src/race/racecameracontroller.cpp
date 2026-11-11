@@ -217,12 +217,9 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_halfPi;
 extern const LegoFloat g_hazardPi;
-extern const LegoFloat g_statMax;
 extern const LegoFloat g_hazardPi;
 extern const LegoFloat g_twoPi;
-extern const LegoFloat g_brickSettleRate;
 extern const LegoFloat g_unk0x004afde0;
-extern const LegoFloat g_warpPortalHeightOffset;
 
 // FUNCTION: LEGORACERS 0x00427e80
 void RaceCameraController::UpdateShake()
@@ -510,7 +507,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 	m_frameDirty = m_dirty;
 	m_dirty &= 0xf0;
-	if (p_elapsedMs > g_statMax) {
+	if (p_elapsedMs > 100.0f) {
 		m_elapsed = 100.0f;
 	}
 	else {
@@ -690,7 +687,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 				transitionStep = m_elapsed * 0.0040000002f;
 			}
 			else {
-				transitionStep = m_elapsed * g_brickSettleRate;
+				transitionStep = m_elapsed * 0.002f;
 			}
 			m_followDistanceScale += transitionStep;
 
@@ -793,7 +790,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 		entity->GetPosition(&m_rawTransform.m_position);
 		if (m_alternate) {
-			m_rawTransform.m_position.m_z += g_warpPortalHeightOffset;
+			m_rawTransform.m_position.m_z += 6.0f;
 			ApplySmoothing();
 			return;
 		}

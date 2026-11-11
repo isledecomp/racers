@@ -645,9 +645,9 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 			else {
 				static_cast<GolVec3&>(position) = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
 				GolVec3 other = m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
-				position.m_x = (other.m_x + position.m_x) * 0.5f;
-				position.m_y = (other.m_y + position.m_y) * 0.5f;
-				position.m_z = (other.m_z + position.m_z) * 0.5f + g_two;
+				position.m_x = (position.m_x + other.m_x) * 0.5f;
+				position.m_y = (position.m_y + other.m_y) * 0.5f;
+				position.m_z = (position.m_z + other.m_z) * 0.5f + g_two;
 
 				CopyParticleOrientation(m_carEntity, m_carSmokeParticle);
 

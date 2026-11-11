@@ -117,37 +117,11 @@ public:
 		GolVec3 m_surfaceForce;              // 0x64
 	};
 
-	// SIZE 0x1f8
-	class SavedWheelStateBlock {
+	// SIZE 0x3c
+	class SavedBodyPoints {
 	public:
-		SavedWheelState* GetEntries() { return m_entries; }
-		GolBoundingVolume::HitTriangle* GetEventContext() { return &m_eventContext; }
-
-		union {
-			SavedWheelState m_entries[4]; // 0x000
-			struct {
-				undefined m_unk0x000[0x1c0 - 0x000];           // 0x000
-				GolBoundingVolume::HitTriangle m_eventContext; // 0x1c0
-				undefined m_unk0x1f4[0x1f8 - 0x1f4];           // 0x1f4
-			};
-		};
-	};
-
-	// SIZE 0xf4
-	class SavedState {
-	public:
-		GolVec3 m_bodyPointsWorld[4];     // 0x00
-		GolVec3 m_facingDirection;        // 0x30
-		undefined4 m_unk0x03c;            // 0x3c
-		GolVec3 m_rayEndsLocal[4];        // 0x40
-		GolVec3 m_rayStartsLocal[4];      // 0x70
-		GolVec3 m_angularMomentum;        // 0xa0
-		LegoFloat m_slideLift;            // 0xac
-		LegoFloat m_slideBankAngle;       // 0xb0
-		undefined4 m_unk0x0b4;            // 0xb4
-		GolVec3 m_contactForce;           // 0xb8
-		GolMatrix3 m_worldInverseInertia; // 0xc4
-		GolVec3 m_angularVelocity;        // 0xe8
+		GolVec3 m_bodyPointsWorld[4]; // 0x00
+		GolVec3 m_facingDirection;    // 0x30
 	};
 
 	void Update(LegoS32 p_elapsedMs) override; // vtable+0x04

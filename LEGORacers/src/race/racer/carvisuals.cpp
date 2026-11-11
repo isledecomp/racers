@@ -32,7 +32,6 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_landingSoundMaxDistance;
 extern const LegoFloat g_landingSoundMinDistance;
-extern const LegoFloat g_wheelParticleVelocityScale;
 extern const LegoFloat g_curseChaseMinSpeed;
 extern const LegoFloat g_curseOrbitRadius;
 extern const LegoFloat g_curseHoverHeight;
@@ -543,9 +542,9 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 
 		SoundVector position;
 		GolVec3 velocity = m_racerPhysics->m_velocity;
-		velocity.m_x *= g_wheelParticleVelocityScale;
-		velocity.m_y *= g_wheelParticleVelocityScale;
-		velocity.m_z *= g_wheelParticleVelocityScale;
+		velocity.m_x *= 0.6f;
+		velocity.m_y *= 0.6f;
+		velocity.m_z *= 0.6f;
 
 		for (LegoS32 particleIndex = 0; particleIndex < 4; particleIndex++) {
 			if (m_wheelParticles[particleIndex]) {

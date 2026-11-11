@@ -173,7 +173,14 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 // FUNCTION: LEGORACERS 0x0042ea50
 void GameState::SelectFallbackInputBinding(LegoU32 p_playerIndex)
 {
-	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
+	LegoU32 otherPlayerIndex;
+	if (p_playerIndex == 0) {
+		otherPlayerIndex = 1;
+	}
+	else {
+		otherPlayerIndex = 0;
+	}
+
 	LegoU32 otherEntryIndex = m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex);
 	LegoU32 i;
 

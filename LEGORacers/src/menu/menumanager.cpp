@@ -1285,7 +1285,13 @@ void MenuManager::TakeScreenshot()
 	LegoChar fileName[32];
 	LegoU32 screenshotIndex;
 
-	currentEntry = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
+	if (g_hashTable) {
+		currentEntry = g_hashTable->GetCurrentEntry();
+	}
+	else {
+		currentEntry = NULL;
+	}
+
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString(NULL);
 	}

@@ -1,26 +1,8 @@
 #ifdef 0
 // For LEGORACERS symbols only
 
-// LIBRARY: LEGORACERS 0x004a6980
-// _DirectSoundCreate@12
-
 // LIBRARY: LEGORACERS 0x004a83f0
 // c_dfDIKeyboard
-
-// LIBRARY: LEGORACERS 0x004a849e
-// __purecall
-
-// LIBRARY: LEGORACERS 0x004a84a4
-// ??3@YAXPAX@Z
-
-// LIBRARY: LEGORACERS 0x004a84b0
-// __ftol
-
-// LIBRARY: LEGORACERS 0x004a84b6
-// ___CxxFrameHandler
-
-// LIBRARY: LEGORACERS 0x004a84bc
-// ??2@YAPAXI@Z
 
 // LIBRARY: LEGORACERS 0x004a84c2
 // ??_L@YGXPAXIHP6EX0@Z1@Z
@@ -40,26 +22,8 @@
 // LIBRARY: LEGORACERS 0x004a8664
 // _atexit
 
-// LIBRARY: LEGORACERS 0x004a8676
-// __CIacos
-
 // LIBRARY: LEGORACERS 0x004a867c
 // _WinMainCRTStartup
-
-// LIBRARY: LEGORACERS 0x004a87da
-// __except_handler3
-
-// LIBRARY: LEGORACERS 0x004a87e0
-// ?terminate@@YAXXZ
-
-// LIBRARY: LEGORACERS 0x004a87e6
-// ___dllonexit
-
-// LIBRARY: LEGORACERS 0x004a87ec
-// __XcptFilter
-
-// LIBRARY: LEGORACERS 0x004a87f2
-// __initterm
 
 // LIBRARY: LEGORACERS 0x004a87f8
 // __setdefaultprecision
@@ -69,12 +33,6 @@
 
 // LIBRARY: LEGORACERS 0x004a880d
 // __setargv
-
-// LIBRARY: LEGORACERS 0x004a8498
-// _DirectInputCreateA@16
-
-// LIBRARY: LEGORACERS 0x004a880e
-// __controlfp
 
 // GLOBAL: LEGORACERS 0x004be000
 // ___xc_a

@@ -32,19 +32,6 @@ public:
 		};
 	};
 
-	// SIZE 0x0c
-	struct FontParseStyle {
-		union {
-			ColorRGBA m_colorKey;     // 0x00
-			LegoU32 m_colorKeyPacked; // 0x00
-		};
-		LegoU32 m_flags; // 0x04
-		union {
-			ColorRGBA m_textColor;     // 0x08
-			LegoU32 m_textColorPacked; // 0x08
-		};
-	};
-
 	GolFontLibrary();
 	~GolFontLibrary() override; // vtable+0x00
 	void Clear() override;      // vtable+0x08

@@ -535,12 +535,12 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 
 		m_transitionMs += m_elapsed;
 		LegoFloat amount;
-		if (m_transitionMs <= 2000.0f) {
-			amount = m_transitionMs * g_transitionProgressScale;
-		}
-		else {
+		if (m_transitionMs > 2000.0f) {
 			m_transitionMs = 2000.0f;
 			amount = 1.0f;
+		}
+		else {
+			amount = m_transitionMs * g_transitionProgressScale;
 		}
 
 		m_smoothedTransform.m_position.m_x =
@@ -593,11 +593,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 			m_viewDirection.m_y = direction2D.m_y;
 		}
 
-		if (m_frameDirty & 1) {
-			m_turnLeadAngle = 0.0f;
-			m_viewDirection = desiredDirection;
-		}
-		else {
+		if (!(m_frameDirty & 1)) {
 			if (racer->m_physics.m_flags & RacerPhysics::c_flagSpinning) {
 				desiredDirection = m_viewDirection;
 			}
@@ -650,12 +646,13 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 			targetPosition.m_y = (m_lastRacerPosition.m_y - targetPosition.m_y) * positionAmount + targetPosition.m_y;
 			targetPosition.m_z = (m_lastRacerPosition.m_z - targetPosition.m_z) * positionAmount + targetPosition.m_z;
 		}
+		else {
+			m_turnLeadAngle = 0.0f;
+			m_viewDirection = desiredDirection;
+		}
 		m_lastRacerPosition = targetPosition;
 
-		if (m_turboActive) {
-			m_turboActive = racer->m_driveController.m_flags & DriveController::c_flagTurbo;
-		}
-		else {
+		if (!m_turboActive) {
 			m_turboActive = racer->m_driveController.m_flags & DriveController::c_flagTurbo;
 			if (m_turboActive) {
 				switch (racer->m_turboLevel) {
@@ -675,6 +672,9 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 					break;
 				}
 			}
+		}
+		else {
+			m_turboActive = racer->m_driveController.m_flags & DriveController::c_flagTurbo;
 		}
 
 		LegoFloat cameraDistance;

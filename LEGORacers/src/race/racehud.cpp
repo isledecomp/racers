@@ -732,8 +732,8 @@ void RaceHud::DrawRotatingMap()
 		LegoFloat scaledDirectionY = m_aspectScale * cameraDirection.m_y;
 		LegoFloat baseX0 = deltaX0 * scaledDirectionY + static_cast<LegoFloat>(mapCenterX);
 		LegoFloat offsetX0 = deltaY0 * scaledDirectionX;
-		vertices[0].m_x = baseX0 - offsetX0;
 		LegoFloat baseX1 = deltaX1 * scaledDirectionY + static_cast<LegoFloat>(mapCenterX);
+		vertices[0].m_x = baseX0 - offsetX0;
 		vertices[1].m_x = baseX1 - offsetX0;
 		LegoFloat offsetX1 = deltaY1 * scaledDirectionX;
 		vertices[2].m_x = baseX1 - offsetX1;
@@ -744,8 +744,8 @@ void RaceHud::DrawRotatingMap()
 	}
 
 	LegoS32 halfMarkerWidth = markerWidth >> 1;
-	LegoS32 halfMarkerHeight = markerHeight >> 1;
 	mapCenterX -= halfMarkerWidth;
+	LegoS32 halfMarkerHeight = markerHeight >> 1;
 	mapCenterY -= halfMarkerHeight;
 	GolVec3 position;
 	Rect destRect;

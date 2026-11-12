@@ -1934,6 +1934,8 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 		LegoS32 partType = p_placement->GetPartType();
 		BuildPieceModel(p_entity, pieceRecord, x, y, 21, rotation, colorRecordIndex, 239);
 
+		LegoS32 width;
+		LegoS32 height;
 		if (pieceRecord->m_pieceType == 0x7ff) {
 			LegoS32 entryIndex = GetCellEntryIndex(x, y);
 			if (entryIndex >= 0) {
@@ -1952,8 +1954,6 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 			}
 
 			LegoPieceLibrary::PieceRecord* overlayPieceRecord = pieceRecord;
-			LegoS32 width;
-			LegoS32 height;
 			if (rotation & 1) {
 				width = overlayPieceRecord->GetHeight();
 				height = overlayPieceRecord->GetWidth();
@@ -1979,8 +1979,6 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 			m_overlayHeight = 0;
 
 			LegoPieceLibrary::PieceRecord* overlayPieceRecord = pieceRecord;
-			LegoS32 width;
-			LegoS32 height;
 			if (rotation & 1) {
 				width = overlayPieceRecord->GetHeight();
 				height = overlayPieceRecord->GetWidth();
@@ -2012,11 +2010,11 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 				m_overlayHeight = 15;
 			}
 
-			LegoS32 pieceHeight = TestPlacement(pieceRecord, x, y, rotation);
-			if (pieceHeight == -5) {
-				pieceHeight = m_pieceGrid.FindPlacementHeight(pieceRecord, x, y, rotation, FALSE);
+			entryHeight = TestPlacement(pieceRecord, x, y, rotation);
+			if (entryHeight == -5) {
+				entryHeight = m_pieceGrid.FindPlacementHeight(pieceRecord, x, y, rotation, FALSE);
 			}
-			m_pieceGrid.MarkOverlayCells(this, pieceRecord, x, y, rotation, pieceHeight);
+			m_pieceGrid.MarkOverlayCells(this, pieceRecord, x, y, rotation, entryHeight);
 		}
 
 		BuildOverlay(FALSE, -1);

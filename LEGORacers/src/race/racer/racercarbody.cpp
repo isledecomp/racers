@@ -1125,8 +1125,8 @@ void RacerCarBody::UpdateWheelContacts(LegoS32 p_elapsedMs)
 							m_velocity.m_x * m_supportNormal.m_x;
 			if (dot < 0.0f) {
 				if (dot < -g_landingBounceThreshold) {
-					LegoFloat scaled = dot * g_landingBounceScaleFourWheel;
 					m_contactCount = 0;
+					LegoFloat scaled = dot * g_landingBounceScaleFourWheel;
 					m_velocity.m_z -= scaled;
 
 					for (i = 0; i < sizeOfArray(m_wheelProbes); i++) {

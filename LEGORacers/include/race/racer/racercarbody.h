@@ -151,6 +151,7 @@ public:
 	virtual void EndExternalForce1();                   // vtable+0x4c
 
 	LegoFloat GetForwardSpeed() const { return m_forwardSpeed; }
+	void SetSoundsEnabled(LegoU32 p_soundsEnabled) { m_soundsEnabled = p_soundsEnabled; }
 
 	void Reset();
 	void Initialize(

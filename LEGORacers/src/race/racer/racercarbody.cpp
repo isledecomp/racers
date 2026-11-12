@@ -1299,12 +1299,9 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 			resource->WorldToLocal(entry->m_rayStart, &start);
 			resource->WorldToLocal(entry->m_rayEnd, &position);
 
-			GolBoundingVolume* query = resource->GetBoundingVolume();
-			query->SetMaterialTable(resource->GetMaterialTable());
-
 			GolVec3 hitPoint;
 			RaceEventRecord* hitRecord;
-			if (!query->IntersectSegment(&start, &position, collisionContext, &hitPoint, &hitRecord, NULL)) {
+			if (!resource->IntersectSegment(&start, &position, collisionContext, &hitPoint, &hitRecord, NULL)) {
 				continue;
 			}
 
@@ -1339,11 +1336,8 @@ void RacerCarBody::UpdateSlideContacts(LegoU32 p_elapsedMs)
 		entry = &m_wheelProbes[entryIndex];
 		if (!(entry->m_flags & WheelProbe::c_flagHit)) {
 			if (!TestCachedPlanes(entry)) {
-				GolBoundingVolume* query = baseResource->GetBoundingVolume();
-				query->SetMaterialTable(baseResource->GetMaterialTable());
-
 				RaceEventRecord* hitRecord;
-				if (!query->IntersectSegment(
+				if (!baseResource->IntersectSegment(
 						&entry->m_rayStart,
 						&entry->m_rayEnd,
 						collisionContext,
@@ -1915,10 +1909,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 				);
 				resource->WorldToLocal(m_bodyPointsWorld[pointIndex], &g_carBodyRayEndsLocal[pointIndex]);
 
-				GolBoundingVolume* query = resource->GetBoundingVolume();
-				query->SetMaterialTable(resource->GetMaterialTable());
-
-				if (query->IntersectSegment(
+				if (resource->IntersectSegment(
 						&g_carBodyRayStartsLocal[pointIndex],
 						&g_carBodyRayEndsLocal[pointIndex],
 						&g_carBodyHitTriangle,
@@ -1961,10 +1952,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 
 		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_bodyPointsWorld); pointIndex++) {
 			if (!m_bodyPointHit[pointIndex]) {
-				GolBoundingVolume* query = resource->GetBoundingVolume();
-				query->SetMaterialTable(resource->GetMaterialTable());
-
-				if (query->IntersectSegment(
+				if (resource->IntersectSegment(
 						&g_carBodySavedPoints.m_bodyPointsWorld[pointIndex],
 						&m_bodyPointsWorld[pointIndex],
 						&g_carBodyHitTriangle,

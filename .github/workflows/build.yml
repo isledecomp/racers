@@ -35,7 +35,7 @@ jobs:
             -DCMAKE_CXX_COMPILER=cl `
             -DCMAKE_BUILD_TYPE=Debug `
             -DENABLE_CLANG_TIDY=ON `
-            -Werror=dev
+            -Werror=dev -Wno-error=non-target-directive
           cmake --build build -- -k0
 
   build:

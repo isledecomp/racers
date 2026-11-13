@@ -156,9 +156,7 @@ public:
 		ModelSlot m_slots[3];                // 0x120
 		GolExport* m_golExport;              // 0x2f4
 		GolCollidableEntity* m_collidable;   // 0x2f8
-		LegoFloat m_anchorX;                 // 0x2fc
-		LegoFloat m_anchorY;                 // 0x300
-		LegoFloat m_anchorZ;                 // 0x304
+		GolVec3 m_anchor;                    // 0x2fc
 		LegoFloat m_lastX;                   // 0x308
 		LegoFloat m_lastY;                   // 0x30c
 		LegoFloat m_lastZ;                   // 0x310

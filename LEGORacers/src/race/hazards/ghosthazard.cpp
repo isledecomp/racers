@@ -317,8 +317,13 @@ void GhostHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 	physics->m_velocity.m_y = impulse.m_y;
 	physics->m_velocity.m_z = impulse.m_z;
 
-	impulse.m_x = impulse.m_z;
-	impulse.m_y = impulse.m_z;
+	GolVec3 up;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+
+	impulse.m_x = up.m_x * g_ghostImpulseVectorZ;
+	impulse.m_y = up.m_y * g_ghostImpulseVectorZ;
 	LegoFloat impulseZ = g_ghostImpulseVectorZ;
 	impulse.m_z = impulseZ;
 	physics->ApplyImpulse(&impulse, &impulse);

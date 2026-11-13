@@ -164,7 +164,8 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 				delta = analogValue + 1.0f;
 				delta *= 0.5f;
 				delta += 0.5f;
-				delta *= -turnRate;
+				LegoFloat negativeTurnRate = -turnRate;
+				delta *= negativeTurnRate;
 			}
 		}
 		else {
@@ -184,6 +185,7 @@ void PlayerControls::UpdateSteering(LegoU32 p_elapsedMs)
 		else {
 			limitNegative = 0.0f;
 			limitPositive = 0.0f;
+			delta = 0.0f;
 		}
 	}
 

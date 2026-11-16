@@ -51,16 +51,14 @@ public:
 		m_colorKey.m_alp = 0;
 		m_textureFlags = p_textureFlags;
 	}
-	void SetSourceTextureDefinition(LegoU16 p_mipmapCount, LegoU16 p_textureFlags, const ColorRGBA& p_colorKey)
+	void CopyMipmapCountFrom(const GolTexture* p_texture) { m_mipmapCount = p_texture->m_mipmapCount; }
+	void SetColorKey(const ColorRGBA& p_colorKey)
 	{
-		m_textureFlags = p_textureFlags;
-		m_mipmapCount = p_mipmapCount;
-		p_textureFlags |= c_textureFlagColorKeyDirty;
-		m_textureFlags = p_textureFlags;
+		m_textureFlags |= c_textureFlagColorKeyDirty;
 		m_colorKey = p_colorKey;
 		m_colorKey.m_alp = 0;
 	}
-	void SetColorKey(const ColorRGBA& p_colorKey)
+	void SetColorKeyValue(ColorRGBA p_colorKey)
 	{
 		m_textureFlags |= c_textureFlagColorKeyDirty;
 		m_colorKey = p_colorKey;

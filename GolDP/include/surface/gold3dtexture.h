@@ -63,16 +63,6 @@ public:
 	void SetName(const GolName& p_name) { ::memcpy(m_nameRecord.m_name, p_name, sizeof(GolName)); }
 	void SetNameRecord(NameRecord p_nameRecord) { m_nameRecord = p_nameRecord; }
 	void SetNameFromBuffer(const LegoChar* p_name) { ::memcpy(m_nameRecord.m_name, p_name, sizeof(GolName)); }
-	void CopySourceTextureDefinitionFrom(const GolD3DTexture* p_texture)
-	{
-		::memcpy(m_nameRecord.m_name, p_texture->m_nameRecord.m_name, sizeof(GolName));
-		m_textureFlags = p_texture->m_textureFlags;
-		m_mipmapCount = p_texture->m_mipmapCount;
-		ColorRGBA colorKey = p_texture->m_colorKey;
-		m_textureFlags |= GolTexture::c_textureFlagColorKeyDirty;
-		m_colorKey = colorKey;
-		m_colorKey.m_alp = 0;
-	}
 	void CopyNameToBuffer(LegoChar* p_buffer) const
 	{
 		::memcpy(p_buffer, m_nameRecord.m_name, sizeof(GolName));

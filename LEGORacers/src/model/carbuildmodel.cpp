@@ -2125,7 +2125,11 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 				GolD3DTexture* outputTexture = p_textures->GetItem(textureIndex);
 				GolD3DTexture* sourceTexture = static_cast<GolD3DTexture*>(sourceMaterial->GetTexture());
 
-				outputTexture->CopySourceTextureDefinitionFrom(sourceTexture);
+				outputTexture->SetNameRecord(sourceTexture->GetNameRecord());
+				outputTexture->SetTextureFlags(sourceTexture->GetTextureFlags());
+				outputTexture->CopyMipmapCountFrom(sourceTexture);
+				color = sourceTexture->GetColorKey();
+				outputTexture->SetColorKeyValue(color);
 				params.m_texture = outputTexture;
 				textureIndex++;
 			}

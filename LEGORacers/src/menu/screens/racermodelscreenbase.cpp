@@ -93,6 +93,9 @@ void RacerModelScreenBase::CreateCarModels()
 // FUNCTION: LEGORACERS 0x00485c80
 void RacerModelScreenBase::OpenRecordCursors(MenuGameContext* p_context, LegoU32 p_mask)
 {
+	InputBindingState::PlayerState* players =
+		p_context->m_saveSystem.GetGameState().GetState().m_inputBindings.m_players;
+
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		SaveRecordCursor* modelState = &m_recordCursors[i];
 
@@ -102,8 +105,7 @@ void RacerModelScreenBase::OpenRecordCursors(MenuGameContext* p_context, LegoU32
 
 		if (m_recordCounts[i]) {
 			SaveRecordList::Record* firstRecord = modelState->GetSelectedRecord();
-			InputBindingState::PlayerState* player =
-				&p_context->m_saveSystem.GetGameState().GetState().m_inputBindings.m_players[i];
+			InputBindingState::PlayerState* player = &players[i];
 			LegoU32 selectedRecordId = player->m_selectedRecordId;
 			LegoU32 selectedRecordSource = player->m_selectedRecordSource;
 			LegoU32 selectedSaveIndex = player->m_selectedSaveIndex;

@@ -999,18 +999,19 @@ void MenuManager::BuildPlayerDriverModel(
 	LegoU32 textureCount;
 	DriverCosmetics cosmetics;
 	GolModelMaterialTable* materialTable;
-	LegoU32 materialCount = 0;
+	LegoU32 materialCount;
 	GolMaterialParams params;
 
 	p_record->GetCosmetics(&cosmetics);
 
 	DriverModelBuilder* modelBuilder = &m_gameContext.m_modelBuilder;
-	p_slot->m_altModel = modelBuilder->BuildDriverModel(&cosmetics, NULL, 3);
+	GolModelBase* model = modelBuilder->BuildDriverModel(&cosmetics, NULL, 3);
 	p_slot->m_previewFaceIndex = cosmetics.m_faceIndex;
-	materialTable = p_slot->m_altModel->GetMaterialTable();
+	materialTable = model->GetMaterialTable();
+	p_slot->m_altModel = model;
 	textureCount = 0;
 
-	for (; materialCount < materialTable->GetCount(); materialCount++) {
+	for (materialCount = 0; materialCount < materialTable->GetCount(); materialCount++) {
 		GolMaterial* material = materialTable->GetMaterial(materialCount);
 		if (material == NULL) {
 			break;
@@ -1036,12 +1037,10 @@ void MenuManager::BuildPlayerDriverModel(
 
 		if (sourceMaterial->GetFlags() & GolMaterial::c_flagTextured) {
 			GolD3DTexture* texture = p_slot->m_altTextures->GetItem(textureCount++);
-			texture->SetName(static_cast<GolD3DTexture*>(params.m_texture)->GetName());
-			texture->SetSourceTextureDefinition(
-				params.m_texture->GetMipmapCount(),
-				params.m_texture->GetTextureFlags(),
-				params.m_texture->GetColorKey()
-			);
+			texture->SetNameRecord(static_cast<GolD3DTexture*>(params.m_texture)->GetNameRecord());
+			texture->SetTextureFlags(params.m_texture->GetTextureFlags());
+			texture->CopyMipmapCountFrom(params.m_texture);
+			texture->SetColorKeyValue(params.m_texture->GetColorKey());
 			params.m_texture = texture;
 		}
 		else {

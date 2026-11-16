@@ -442,11 +442,13 @@ LegoBool32 DirectSoundManager::MakeSoundAvailable(LegoS32 p_priority)
 	GolListLink* activeSoundLink = m_activeSounds.FirstLink();
 	activeSoundLink = activeSoundLink->m_next ? activeSoundLink : NULL;
 
-	if (!activeSpatialLink || (activeSoundLink && m_activeSounds.GetItem(*activeSoundLink).m_priority <
-													  m_activeSpatialSounds.GetItem(*activeSpatialLink).m_priority)) {
-		SoundBuffer& activeSound = m_activeSounds.GetItem(*activeSoundLink);
+	LegoBool32 useSound =
+		!activeSpatialLink || (activeSoundLink && m_activeSounds.GetItem(*activeSoundLink).m_priority <
+													  m_activeSpatialSounds.GetItem(*activeSpatialLink).m_priority);
+	if (useSound) {
+		if (p_priority > m_activeSounds.GetItem(*activeSoundLink).m_priority) {
+			SoundBuffer& activeSound = m_activeSounds.GetItem(*activeSoundLink);
 
-		if (p_priority > activeSound.m_priority) {
 			if (activeSound.m_stopWhenPaused) {
 				activeSound.StopOrRelease();
 				return m_availableSoundCount != 0;
@@ -456,13 +458,13 @@ LegoBool32 DirectSoundManager::MakeSoundAvailable(LegoS32 p_priority)
 			activeSound.StopDirectSoundBuffer();
 			activeSound.GetLink().Remove();
 			activeSound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-			InsertByPriorityFromTail(m_queuedSounds, activeSound);
+			InsertByPriorityFromTail(m_queuedSounds, &activeSound.GetLink());
 		}
 	}
-	else if (activeSpatialLink) {
-		SoundBuffer& activeSpatialSound = m_activeSpatialSounds.GetItem(*activeSpatialLink);
+	else {
+		if (p_priority > m_activeSpatialSounds.GetItem(*activeSpatialLink).m_priority) {
+			SoundBuffer& activeSpatialSound = m_activeSpatialSounds.GetItem(*activeSpatialLink);
 
-		if (p_priority > activeSpatialSound.m_priority) {
 			if (activeSpatialSound.m_stopWhenPaused) {
 				activeSpatialSound.StopOrRelease();
 				return m_availableSoundCount != 0;
@@ -472,7 +474,7 @@ LegoBool32 DirectSoundManager::MakeSoundAvailable(LegoS32 p_priority)
 			activeSpatialSound.StopDirectSoundBuffer();
 			activeSpatialSound.GetLink().Remove();
 			activeSpatialSound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-			InsertByPriorityFromTail(m_queuedSpatialSounds, activeSpatialSound);
+			InsertByPriorityFromTail(m_queuedSpatialSounds, &activeSpatialSound.GetLink());
 		}
 	}
 

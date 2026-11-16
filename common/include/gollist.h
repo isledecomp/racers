@@ -19,6 +19,8 @@ struct GolListLink {
 
 	GolListLink* InsertBefore(GolListLink* p_link);
 	GolListLink* NextValid();
+	GolListLink* NextOrNull() { return m_next->m_next ? m_next : NULL; }
+	GolListLink* PrevOrNull() { return m_prev->m_prev ? m_prev : NULL; }
 
 	GolListLink* m_prev; // 0x00
 	GolListLink* m_next; // 0x04
@@ -49,6 +51,8 @@ struct GolList {
 	GolListLink* LastLink() { return m_first; }
 	GolListLink* FirstLink() { return m_sentinel.m_next; }
 	GolListLink* EndLink() { return (GolListLink*) &m_first; }
+	GolListLink* FirstLinkOrNull() { return m_sentinel.m_next->m_next ? m_sentinel.m_next : NULL; }
+	GolListLink* LastLinkOrNull() { return m_first->m_prev ? m_first : NULL; }
 	GolListLink* FirstValidLink();
 	GolListLink* PopLastLink()
 	{

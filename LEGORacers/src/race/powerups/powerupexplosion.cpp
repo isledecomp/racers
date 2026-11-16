@@ -482,7 +482,16 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 		impulse.m_x = direction.m_x * scale;
 		impulse.m_y = direction.m_y * scale;
 		impulse.m_z = direction.m_z * scale;
-		impulse.m_z += amount * g_explosionLaunchImpulse;
+
+		GolVec3 up;
+		up.m_x = 0.0f;
+		up.m_y = 0.0f;
+		up.m_z = 1.0f;
+
+		direction = up * (amount * g_explosionLaunchImpulse);
+		impulse.m_x = direction.m_x + impulse.m_x;
+		impulse.m_y = direction.m_y + impulse.m_y;
+		impulse.m_z = direction.m_z + impulse.m_z;
 
 		physics->ApplyImpulse(&impulse, &impulse);
 		return;

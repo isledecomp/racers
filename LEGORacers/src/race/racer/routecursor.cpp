@@ -128,37 +128,24 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 {
 	RaceRouteRecord* entry = m_record;
 	if (entry) {
-		RaceRouteRecord* wrapEntry;
 		RaceRouteRecord::PathPoint* point;
-		GolVec3* currentPosition;
-		GolVec3* endPosition;
 		GolVec3 offset;
-		LegoS32 pointIndex;
-		LegoS32 segmentEndTime;
-		LegoS32 segmentStartTime;
-		LegoS32 targetTime;
-		LegoFloat amount;
-		LegoFloat currentTimeFloat;
 		LegoFloat endWidthLeft;
 		LegoFloat endWidthRight;
-		LegoFloat scaledX;
-		LegoFloat scaledY;
-		LegoFloat scaledZ;
 		LegoFloat startWidthLeft;
 		LegoFloat startWidthRight;
 
-		currentTimeFloat = m_playbackSpeed;
-		currentTimeFloat *= p_elapsedMs;
-		currentTimeFloat += m_currentTime;
-		m_currentTime = currentTimeFloat;
-		LegoS32 currentTime = static_cast<LegoS32>(currentTimeFloat);
-		targetTime = currentTime;
+		LegoFloat currentTime = m_playbackSpeed;
+		currentTime *= p_elapsedMs;
+		currentTime += m_currentTime;
+		m_currentTime = currentTime;
+		LegoS32 targetTime = static_cast<LegoS32>(currentTime);
 
 		if (m_startIndex < 0) {
 			startWidthRight = 0.0f;
 			startWidthLeft = 0.0f;
 
-			currentPosition = &m_startPosition;
+			GolVec3* currentPosition = &m_startPosition;
 			*currentPosition = entry->m_startPosition;
 			m_startRotation = entry->m_startRotation;
 			m_segmentStartTime = 0;
@@ -180,113 +167,96 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 
 		endWidthRight = point->GetWidthRight();
 		endWidthLeft = point->GetWidthLeft();
-		segmentStartTime = m_segmentStartTime;
-		segmentEndTime = segmentStartTime + point->GetLength();
+		LegoS32 segmentEndTime = m_segmentStartTime + point->GetLength();
 
-		if (currentTime < segmentStartTime) {
-			pointIndex = m_startIndex;
-			if (pointIndex) {
-				currentPosition = &m_startPosition;
-				while (TRUE) {
-					segmentEndTime = segmentStartTime;
-					m_endIndex = pointIndex;
-					m_endPosition = m_startPosition;
-					m_endRotation = m_startRotation;
-					endWidthRight = startWidthRight;
-					endWidthLeft = startWidthLeft;
-
-					point = &m_record->m_pathPoints[pointIndex];
-					point->GetPosition(&offset);
-					currentPosition->m_x -= offset.m_x;
-					currentPosition->m_y -= offset.m_y;
-					currentPosition->m_z -= offset.m_z;
-
-					segmentStartTime = m_segmentStartTime - point->GetLength();
-					m_startIndex = pointIndex - 1;
-					m_segmentStartTime = segmentStartTime;
-
-					point = &m_record->m_pathPoints[m_startIndex];
-					m_pointType = point->GetType();
-					startWidthRight = point->GetWidthRight();
-					startWidthLeft = point->GetWidthLeft();
-					point->GetRotation(&m_startRotation);
-
-					if (targetTime >= segmentStartTime) {
-						break;
-					}
-
-					pointIndex = m_startIndex;
-					if (!pointIndex) {
-						goto ClampStart;
-					}
-				}
-			}
-			else {
-			ClampStart:
-				targetTime = 0;
-				m_currentTime = 0.0f;
-			}
-		}
-		else {
-			if (currentTime < segmentEndTime) {
-				goto Interpolate;
-			}
-
-			endPosition = &m_endPosition;
+		if (targetTime < m_segmentStartTime) {
 			do {
-				m_segmentStartTime = segmentEndTime;
-				pointIndex = m_endIndex;
-				m_startIndex = pointIndex;
-				m_startPosition = *endPosition;
-				m_startRotation = m_endRotation;
+				if (!m_startIndex) {
+					targetTime = 0;
+					m_currentTime = 0.0f;
+					break;
+				}
 
+				GolVec3* currentPosition = &m_startPosition;
+				segmentEndTime = m_segmentStartTime;
+				m_endIndex = m_startIndex;
+				m_endPosition = *currentPosition;
+				m_endRotation = m_startRotation;
+				endWidthRight = startWidthRight;
+				endWidthLeft = startWidthLeft;
+
+				RaceRouteRecord::PathPoint* endPoint = &m_record->m_pathPoints[m_endIndex];
+				endPoint->GetPosition(&offset);
+				currentPosition->m_x -= offset.m_x;
+				currentPosition->m_y -= offset.m_y;
+				currentPosition->m_z -= offset.m_z;
+				m_segmentStartTime -= endPoint->GetLength();
+				m_startIndex--;
+
+				RaceRouteRecord::PathPoint* startPoint = &m_record->m_pathPoints[m_startIndex];
+				m_pointType = startPoint->GetType();
+				startWidthRight = startPoint->GetWidthRight();
+				startWidthLeft = startPoint->GetWidthLeft();
+				startPoint->GetRotation(&m_startRotation);
+			} while (targetTime < m_segmentStartTime);
+		}
+		else if (targetTime >= segmentEndTime) {
+			GolVec3* endPosition = &m_endPosition;
+			do {
+				m_startIndex = m_endIndex;
+				m_startPosition = *endPosition;
+				m_segmentStartTime = segmentEndTime;
+				m_startRotation = m_endRotation;
 				startWidthRight = endWidthRight;
 				startWidthLeft = endWidthLeft;
-				pointIndex++;
-				m_endIndex = pointIndex;
+				m_endIndex = m_startIndex + 1;
 
-				wrapEntry = m_record;
-				if (pointIndex >= wrapEntry->m_pathPointCount) {
-					m_startPosition = wrapEntry->m_loopPosition;
-					m_endPosition = wrapEntry->m_loopPosition;
-					m_startRotation = wrapEntry->m_loopRotation;
-					m_segmentStartTime = wrapEntry->m_loopTime;
-					m_startIndex = wrapEntry->m_loopPointIndex;
+				RaceRouteRecord* record = m_record;
+				if (m_endIndex >= record->m_pathPointCount) {
+					m_startPosition = record->m_loopPosition;
+					m_endPosition = record->m_loopPosition;
+					m_startRotation = record->m_loopRotation;
+					m_segmentStartTime = record->m_loopTime;
+					m_startIndex = record->m_loopPointIndex;
 					targetTime += m_segmentStartTime - segmentEndTime;
-					m_endIndex = m_startIndex + 1;
 					m_currentTime = static_cast<LegoFloat>(targetTime);
+					m_endIndex = m_startIndex + 1;
 				}
 
-				point = &wrapEntry->m_pathPoints[m_endIndex];
-				m_pointType = point->GetType();
-				endWidthRight = point->GetWidthRight();
-				endWidthLeft = point->GetWidthLeft();
-
-				point->GetPosition(&offset);
-				point->GetRotation(&m_endRotation);
+				RaceRouteRecord::PathPoint* endPoint = &record->m_pathPoints[m_endIndex];
+				m_pointType = endPoint->GetType();
+				endWidthRight = endPoint->GetWidthRight();
+				endWidthLeft = endPoint->GetWidthLeft();
+				endPoint->GetPosition(&offset);
+				endPoint->GetRotation(&m_endRotation);
 				endPosition->m_x = offset.m_x + endPosition->m_x;
 				endPosition->m_y = offset.m_y + endPosition->m_y;
 				endPosition->m_z = offset.m_z + endPosition->m_z;
-				segmentEndTime += point->GetLength();
+				segmentEndTime += endPoint->GetLength();
 			} while (targetTime >= segmentEndTime);
 		}
 
-	Interpolate:
-		amount = static_cast<LegoFloat>(targetTime - m_segmentStartTime) /
-				 static_cast<LegoFloat>(segmentEndTime - m_segmentStartTime);
+		LegoFloat elapsed = static_cast<LegoFloat>(targetTime - m_segmentStartTime);
+		LegoFloat duration = static_cast<LegoFloat>(segmentEndTime - m_segmentStartTime);
+		LegoFloat amount = elapsed / duration;
 		m_widthLeft = (endWidthLeft - startWidthLeft) * amount + startWidthLeft;
 		m_widthRight = (endWidthRight - startWidthRight) * amount + startWidthRight;
 
 		offset.m_x = m_endPosition.m_x - m_startPosition.m_x;
 		offset.m_y = m_endPosition.m_y - m_startPosition.m_y;
 		offset.m_z = m_endPosition.m_z - m_startPosition.m_z;
-		scaledX = offset.m_x * amount;
-		scaledY = offset.m_y * amount;
-		scaledZ = offset.m_z * amount;
 
-		m_position.m_x = scaledX + m_startPosition.m_x;
-		m_position.m_y = scaledY + m_startPosition.m_y;
-		m_position.m_z = scaledZ + m_startPosition.m_z;
+		GolVec3 scaled;
+		scaled.m_x = offset.m_x;
+		scaled.m_x *= amount;
+		scaled.m_y = offset.m_y;
+		scaled.m_y *= amount;
+		scaled.m_z = offset.m_z;
+		scaled.m_z *= amount;
+
+		m_position.m_x = scaled.m_x + m_startPosition.m_x;
+		m_position.m_y = scaled.m_y + m_startPosition.m_y;
+		m_position.m_z = scaled.m_z + m_startPosition.m_z;
 
 		GolMath::LerpQuat(m_startRotation, m_endRotation, amount, &m_rotation);
 	}

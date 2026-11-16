@@ -105,15 +105,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 		}
 	}
 
-	if (!hit) {
-		entity = m_boundsEntity;
-		query = entity->GetBoundingVolume();
-		query->SetMaterialTable(entity->GetMaterialTable());
-		if (!query->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
-			return FALSE;
-		}
-	}
-	else {
+	if (hit) {
 		entity->LocalToWorld(hitLocal, p_hitPosition);
 
 		planeLocal.m_y = record->m_normal.m_y;
@@ -128,6 +120,14 @@ LegoBool32 TriggerWorld::IntersectSegment(
 		record->m_planeDistance =
 			-(record->m_normal.m_z * p_hitPosition->m_z + record->m_normal.m_y * p_hitPosition->m_y +
 			  p_hitPosition->m_x * record->m_normal.m_x);
+	}
+	else {
+		entity = m_boundsEntity;
+		query = entity->GetBoundingVolume();
+		query->SetMaterialTable(entity->GetMaterialTable());
+		if (!query->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
+			return FALSE;
+		}
 	}
 
 	if (p_hitTarget) {

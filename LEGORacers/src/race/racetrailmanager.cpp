@@ -404,9 +404,9 @@ void RaceTrailManager::Trail::RebuildGeometry()
 
 	GdbVertexArray* vertexArray;
 	LegoFloat uStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_pointCount + 1));
-	LegoFloat vStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
 	GolVec2 texCoord;
 	texCoord.m_y = 0.0f;
+	LegoFloat vStep = 1.0f / static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
 	m_model->GetVertexArray(&vertexArray);
 
 	for (; frameOffset < frameCount; frameOffset++) {

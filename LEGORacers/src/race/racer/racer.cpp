@@ -1534,7 +1534,13 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoS32 randomValue = g_randomTable[g_randomTableIndex];
-			LegoU32 soundId = (randomValue % 2) ? 0x37 : 0x18;
+			LegoU32 soundId;
+			if (randomValue % 2) {
+				soundId = 0x37;
+			}
+			else {
+				soundId = 0x18;
+			}
 			m_soundSource->PlaySpatialSoundById(
 				soundId,
 				contactPosition,
@@ -1825,24 +1831,20 @@ void Racer::PlayReaction(LegoBool32 p_positive)
 // FUNCTION: LEGORACERS 0x00439340
 void Racer::OnRaceStart()
 {
-	LegoU32 value = m_flags & 0xfffffffd;
-	m_flags = value;
-
-	value = 1;
-	m_physics.m_soundsEnabled = value;
+	m_flags &= ~c_flagPreStart;
+	m_physics.SetSoundsEnabled(TRUE);
 
 	if (m_routeRecord) {
 		m_physics.m_routePaused = 0;
 	}
 
-	m_zoneBeforePrevious = value;
-	value = m_controlMode;
-	m_currentZone = 0;
 	m_previousZone = 2;
+	m_zoneBeforePrevious = 1;
+	m_currentZone = 0;
 
-	if (value == 2) {
+	if (m_controlMode == c_controlAi) {
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-		value = g_randomTable[g_randomTableIndex];
+		LegoU32 value = g_randomTable[g_randomTableIndex];
 		if ((value & 0xff) < m_aiGreenUseChance) {
 			m_powerupManager->UseGreenPowerup(this, 0);
 		}

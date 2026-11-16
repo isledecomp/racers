@@ -316,10 +316,7 @@ void TurboAction::AnchorToRacer()
 	up.m_x = racerEntity->GetOrientation().m_rows[2].m_x;
 	up.m_y = racerEntity->GetOrientation().m_rows[2].m_y;
 	up.m_z = racerEntity->GetOrientation().m_rows[2].m_z;
-	LegoFloat rightX = right.m_x;
-	rightX *= g_turboPackOffset;
-	rightX += position.m_x;
-	position.m_x = rightX;
+	position.m_x = right.m_x * g_turboPackOffset + position.m_x;
 	LegoFloat rightY = right.m_y;
 	rightY *= g_turboPackOffset;
 	rightY += position.m_y;
@@ -328,18 +325,9 @@ void TurboAction::AnchorToRacer()
 	rightZ *= g_turboPackOffset;
 	rightZ += position.m_z;
 	position.m_z = rightZ;
-	LegoFloat upX = up.m_x;
-	upX *= 3.0f;
-	upX += position.m_x;
-	position.m_x = upX;
-	LegoFloat upY = up.m_y;
-	upY *= 3.0f;
-	upY += position.m_y;
-	position.m_y = upY;
-	LegoFloat upZ = up.m_z;
-	upZ *= 3.0f;
-	upZ += position.m_z;
-	position.m_z = upZ;
+	position.m_x = up.m_x * 3.0f + position.m_x;
+	position.m_y = up.m_y * 3.0f + position.m_y;
+	position.m_z = up.m_z * 3.0f + position.m_z;
 
 	m_turboEntity->SetPosition(position);
 	m_turboEntity->SetDirectionUp(direction, up);

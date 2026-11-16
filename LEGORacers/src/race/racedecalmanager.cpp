@@ -86,9 +86,9 @@ void RaceDecalManager::Trail::Reset()
 	m_slotIndex = 0;
 	m_flags = 0;
 	m_width = 0;
-	m_anchorX = 0;
-	m_anchorY = 0;
-	m_anchorZ = 0;
+	m_anchor.m_x = 0;
+	m_anchor.m_y = 0;
+	m_anchor.m_z = 0;
 	m_lastX = 0;
 	m_lastY = 0;
 	m_lastZ = 0;
@@ -249,11 +249,11 @@ void RaceDecalManager::Trail::Update(LegoU32 p_elapsedMs)
 				m_flags |= c_slotsWrapped;
 			}
 
-			m_anchorY = m_lastY;
-			m_anchorZ = m_lastZ;
+			m_anchor.m_y = m_lastY;
+			m_anchor.m_z = m_lastZ;
 			m_elapsedMs = zero;
 			m_flags &= ~c_liveSegment;
-			m_anchorX = m_lastX;
+			m_anchor.m_x = m_lastX;
 		}
 	}
 
@@ -269,28 +269,24 @@ void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 
 	LegoU8 flags = m_flags;
 	if (flags & c_firstSample) {
-		m_anchorX = p_position.m_x;
-		m_anchorY = p_position.m_y;
-		m_anchorZ = p_position.m_z;
+		m_anchor.m_x = p_position.m_x;
+		m_anchor.m_y = p_position.m_y;
+		m_anchor.m_z = p_position.m_z;
 		m_flags = flags & ~c_firstSample;
 		return;
 	}
 
 	m_elapsedMs += p_elapsedMs;
 
-	LegoFloat distance = static_cast<LegoFloat>(sqrt(
-		(m_anchorZ - p_position.m_z) * (m_anchorZ - p_position.m_z) +
-		(m_anchorY - p_position.m_y) * (m_anchorY - p_position.m_y) +
-		(m_anchorX - p_position.m_x) * (m_anchorX - p_position.m_x)
-	));
+	LegoFloat distance = static_cast<LegoFloat>(sqrt(m_anchor.DistanceSquaredTo(p_position)));
 	if (distance < g_raceDecalMinSampleDistance) {
 		return;
 	}
 
 	GolVec3 direction;
-	direction.m_x = p_position.m_x - m_anchorX;
-	direction.m_y = p_position.m_y - m_anchorY;
-	direction.m_z = p_position.m_z - m_anchorZ;
+	direction.m_x = p_position.m_x - m_anchor.m_x;
+	direction.m_y = p_position.m_y - m_anchor.m_y;
+	direction.m_z = p_position.m_z - m_anchor.m_z;
 
 	GolVec3 up;
 	up.m_x = 0.0f;
@@ -302,17 +298,16 @@ void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 	direction.m_z /= distance;
 
 	GolVec3 center;
-	center.m_x = (p_position.m_x + m_anchorX) * 0.5f;
-	center.m_y = (p_position.m_y + m_anchorY) * 0.5f;
-	center.m_z = (p_position.m_z + m_anchorZ) * 0.5f;
+	center.m_x = (p_position.m_x + m_anchor.m_x) * 0.5f;
+	center.m_y = (p_position.m_y + m_anchor.m_y) * 0.5f;
+	center.m_z = (p_position.m_z + m_anchor.m_z) * 0.5f;
 
-	p_position.m_x = p_position.m_y = 0.0f;
-	p_position.m_z = -1.0f * g_raceDecalTrailOffsetZ;
+	p_position = up * g_raceDecalTrailOffsetZ;
 	center -= p_position;
 
 	Decal* field = &m_decal;
-	field->SetWidth(m_width);
-	field->SetLength(distance);
+	m_decal.SetWidth(m_width);
+	m_decal.SetLength(distance);
 	field->m_center.m_x = center.m_x;
 	field->m_center.m_y = center.m_y;
 	field->m_center.m_z = center.m_z;

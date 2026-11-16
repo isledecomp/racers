@@ -28,6 +28,26 @@ public:
 		return m_boundingVolume->GetMaterialTable();
 	}
 
+	LegoBool32 IntersectSegment(
+		GolVec3* p_start,
+		GolVec3* p_end,
+		GolBoundingVolume::HitTriangle* p_record,
+		GolVec3* p_hit,
+		RaceEventRecord** p_hitRecord,
+		LegoFloat* p_amountOut
+	)
+	{
+		GolBoundingVolume* volume = m_boundingVolume;
+		if (m_materialTableOverride == NULL) {
+			volume->SetMaterialTable(volume->GetMaterialTable());
+		}
+		else {
+			volume->SetMaterialTable(m_materialTableOverride);
+		}
+
+		return m_boundingVolume->IntersectSegment(p_start, p_end, p_record, p_hit, p_hitRecord, p_amountOut);
+	}
+
 protected:
 	friend class GolWorldDatabase;
 

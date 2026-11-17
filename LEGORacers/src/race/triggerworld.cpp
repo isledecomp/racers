@@ -10,6 +10,20 @@
 
 DECOMP_SIZE_ASSERT(TriggerWorld, 0x10)
 
+inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_z;
+	LegoFloat z = p_right.m_z;
+	result *= z;
+	LegoFloat y = p_left.m_y;
+	LegoFloat rightY = p_right.m_y;
+	y *= rightY;
+	result += y;
+	result += p_left.m_x * p_right.m_x;
+
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x0041f430
 TriggerWorld::TriggerWorld()
 {
@@ -68,7 +82,6 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	GolVec3 startLocal;
 	GolVec3 hitLocal;
 	GolBoundedEntity* entity;
-	GolBoundingVolume* query;
 	GolBoundingVolume::HitTriangle* record = p_hitTriangle;
 
 	direction.m_x = p_end->m_x - p_start->m_x;
@@ -76,7 +89,6 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	direction.m_z = p_end->m_z - p_start->m_z;
 	GolMath::NormalizeVector3(direction, &direction);
 
-	LegoBool32 hit = FALSE;
 	for (count = 0; count < m_triggerDatabase->GetBoundedEntityCount(); count++) {
 		entity = &m_triggerDatabase->GetBoundedEntities()[count];
 		if (entity->GetBoundedFlags() & 1) {
@@ -89,52 +101,44 @@ LegoBool32 TriggerWorld::IntersectSegment(
 			LegoFloat dot = z * direction.m_z + y * direction.m_y + x * direction.m_x;
 			LegoFloat discriminant = radius * radius - (y * y + z * z + x * x - dot * dot);
 			if (discriminant > 0.0f) {
-				LegoFloat distance = static_cast<LegoFloat>(dot - sqrt(discriminant));
+				LegoFloat distance = dot - static_cast<LegoFloat>(sqrt(discriminant));
 				if (distance * distance <= 0.0f) {
 					entity->WorldToLocal(*p_start, &startLocal);
 					entity->WorldToLocal(*p_end, &endLocal);
 
-					query = entity->GetBoundingVolume();
-					query->SetMaterialTable(entity->GetMaterialTable());
-					hit = query->IntersectSegment(&startLocal, &endLocal, record, &hitLocal, &hitRecord, 0);
-					if (hit) {
-						break;
+					if (entity->IntersectSegment(&startLocal, &endLocal, record, &hitLocal, &hitRecord, 0)) {
+						entity->LocalToWorld(hitLocal, p_hitPosition);
+
+						planeLocal.m_x = record->m_normal.m_x;
+						planeLocal.m_y = record->m_normal.m_y;
+						planeLocal.m_z = record->m_normal.m_z;
+
+						entity->RotateToWorld(planeLocal, &planeWorld);
+
+						record->m_normal.Set(planeWorld);
+						record->m_planeDistance = -DotVectors(record->m_normal, *p_hitPosition);
+
+						if (p_hitTarget) {
+							*p_hitTarget = hitRecord->GetTarget();
+						}
+
+						return TRUE;
 					}
 				}
 			}
 		}
 	}
 
-	if (hit) {
-		entity->LocalToWorld(hitLocal, p_hitPosition);
-
-		planeLocal.m_y = record->m_normal.m_y;
-		planeLocal.m_z = record->m_normal.m_z;
-		planeLocal.m_x = record->m_normal.m_x;
-
-		entity->RotateToWorld(planeLocal, &planeWorld);
-
-		record->m_normal.m_x = planeWorld.m_x;
-		record->m_normal.m_y = planeWorld.m_y;
-		record->m_normal.m_z = planeWorld.m_z;
-		record->m_planeDistance =
-			-(record->m_normal.m_z * p_hitPosition->m_z + record->m_normal.m_y * p_hitPosition->m_y +
-			  p_hitPosition->m_x * record->m_normal.m_x);
-	}
-	else {
-		entity = m_boundsEntity;
-		query = entity->GetBoundingVolume();
-		query->SetMaterialTable(entity->GetMaterialTable());
-		if (!query->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
-			return FALSE;
+	entity = m_boundsEntity;
+	if (entity->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
+		if (p_hitTarget) {
+			*p_hitTarget = hitRecord->GetTarget();
 		}
+
+		return TRUE;
 	}
 
-	if (p_hitTarget) {
-		*p_hitTarget = hitRecord->GetTarget();
-	}
-
-	return TRUE;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0041f730

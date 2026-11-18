@@ -11,6 +11,19 @@ DECOMP_SIZE_ASSERT(GolBoundingShape::TreeNode::Payload, 0x1c)
 DECOMP_SIZE_ASSERT(GolBoundingShape::Bounds, 0x18)
 DECOMP_SIZE_ASSERT(GolBoundingShape, 0x2c)
 
+inline LegoFloat VisiblePlaneDot(const GolBoundingShape::TreeNode* p_entry, const GolVec3& p_point)
+{
+	LegoFloat result = p_entry->m_data.m_plane.m_normalZ;
+	LegoFloat z = p_point.m_z;
+	result *= z;
+	LegoFloat y = p_entry->m_data.m_plane.m_normalY;
+	LegoFloat rightY = p_point.m_y;
+	y *= rightY;
+	result += y;
+	result += p_entry->m_data.m_plane.m_normalX * p_point.m_x;
+	return result;
+}
+
 static LegoFloat PlaneDot(const GolBoundingShape::TreeNode* p_entry, const GolVec3& p_point)
 {
 	return p_entry->m_data.m_plane.m_normalZ * p_point.m_z + p_entry->m_data.m_plane.m_normalY * p_point.m_y +
@@ -285,7 +298,7 @@ void GolBoundingShape::CollectVisibleLeaves(
 	m_visitStamp++;
 	entry = m_root;
 	while (entry->m_type == TreeNode::e_plane) {
-		LegoFloat distance = PlaneDot(entry, p_frustum->m_position) + entry->m_data.m_plane.m_distance;
+		LegoFloat distance = VisiblePlaneDot(entry, p_frustum->m_position) + entry->m_data.m_plane.m_distance;
 		LegoU16 childIndex;
 		if (distance >= 0.0f || entry->m_data.m_plane.m_backChild == TreeNode::c_invalidIndex) {
 			if (entry->m_data.m_plane.m_frontChild == TreeNode::c_invalidIndex) {
@@ -327,7 +340,7 @@ void GolBoundingShape::CollectVisibleLeaves(
 			LegoU32 childIndex;
 			if (entry->m_data.m_plane.m_frontStamp != m_visitStamp) {
 				if (entry->m_data.m_plane.m_backStamp != m_visitStamp) {
-					if (PlaneDot(entry, p_frustum->m_position) < -entry->m_data.m_plane.m_distance) {
+					if (VisiblePlaneDot(entry, p_frustum->m_position) < -entry->m_data.m_plane.m_distance) {
 						entry->m_data.m_plane.m_backStamp = m_visitStamp;
 						if (entry->m_data.m_plane.m_backChild == TreeNode::c_invalidIndex) {
 							continue;

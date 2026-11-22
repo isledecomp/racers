@@ -20,6 +20,11 @@ class GolTextureList;
 // SIZE 0x7c
 class GolD3DTexture : public GolTexture {
 public:
+	// SIZE 0x08
+	struct NameRecord {
+		GolName m_name; // 0x00
+	};
+
 	GolD3DTexture();
 	~GolD3DTexture() override; // vtable+0x00
 
@@ -53,23 +58,15 @@ public:
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }
 	MipmapLevel* GetMipmapLevel(LegoU32 p_index) { return m_mipmaps == NULL ? NULL : &m_mipmaps[p_index]; }
 	const MipmapLevel* GetMipmapLevel(LegoU32 p_index) const { return m_mipmaps == NULL ? NULL : &m_mipmaps[p_index]; }
-	const GolName& GetName() const { return m_name; }
-	void SetName(const GolName& p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
-	void SetNameFromBuffer(const LegoChar* p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
-	void CopySourceTextureDefinitionFrom(const GolD3DTexture* p_texture)
-	{
-		::memcpy(m_name, p_texture->m_name, sizeof(m_name));
-		m_textureFlags = p_texture->m_textureFlags;
-		m_mipmapCount = p_texture->m_mipmapCount;
-		ColorRGBA colorKey = p_texture->m_colorKey;
-		m_textureFlags |= GolTexture::c_textureFlagColorKeyDirty;
-		m_colorKey = colorKey;
-		m_colorKey.m_alp = 0;
-	}
+	const GolName& GetName() const { return m_nameRecord.m_name; }
+	const NameRecord& GetNameRecord() const { return m_nameRecord; }
+	void SetName(const GolName& p_name) { ::memcpy(m_nameRecord.m_name, p_name, sizeof(GolName)); }
+	void SetNameRecord(NameRecord p_nameRecord) { m_nameRecord = p_nameRecord; }
+	void SetNameFromBuffer(const LegoChar* p_name) { ::memcpy(m_nameRecord.m_name, p_name, sizeof(GolName)); }
 	void CopyNameToBuffer(LegoChar* p_buffer) const
 	{
-		::memcpy(p_buffer, m_name, sizeof(m_name));
-		p_buffer[sizeof(m_name)] = '\0';
+		::memcpy(p_buffer, m_nameRecord.m_name, sizeof(GolName));
+		p_buffer[sizeof(GolName)] = '\0';
 	}
 
 	MipmapLevel* GetMipmaps() { return m_mipmaps; }
@@ -80,7 +77,7 @@ public:
 private:
 	friend class GolTextureList;
 
-	GolName m_name;                         // 0x38
+	NameRecord m_nameRecord;                // 0x38
 	GolPaletteBase* m_palette;              // 0x40
 	MipmapLevel* m_mipmaps;                 // 0x44
 	LPDIRECTDRAWSURFACE4 m_surface;         // 0x48

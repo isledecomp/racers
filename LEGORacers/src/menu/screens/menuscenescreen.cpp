@@ -49,9 +49,9 @@ LegoBool32 MenuSceneScreen::Initialize(MenuGameContext* p_context, MenuScreenCre
 		font->SetColor(0xff, 0xff, 0xff, 0xff);
 	}
 
+	LegoChar languageFile[12];
 	CutscenePlayer* resourceHelper = &m_sceneWidget.m_player;
 	if (resourceHelper->GetTextVisualCount() && p_context->m_context->m_languageIndex) {
-		LegoChar languageFile[12];
 		languageFile[0] = '\0';
 
 		switch (p_context->m_context->m_languageIndex) {

@@ -158,9 +158,7 @@ void PickRacerScreen::Navigate()
 		if (m_context->m_context->m_raceMode == LegoRacers::Context::c_raceModeCircuit &&
 			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 1) {
 			CircuitDefinitionList::CircuitDefinition* circuitDefinition =
-				static_cast<CircuitDefinitionList::CircuitDefinition*>(
-					m_context->m_circuitList.GetName(m_context->m_context->m_circuitName)
-				);
+				m_context->m_circuitList.FindCircuit(m_context->m_context->m_circuitName);
 			LegoU32 raceIndex = m_context->m_circuitList.GetEntryIndex(circuitDefinition);
 			m_context->m_menuStack.Push(static_cast<LegoU16>(raceIndex + c_menuCircuit1));
 			m_context->m_context->m_racerCount = 5;

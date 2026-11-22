@@ -136,11 +136,9 @@ LegoBool32 AwardCinematicScreen::Destroy()
 // FUNCTION: LEGORACERS 0x00475f40
 void AwardCinematicScreen::CreateWidgets()
 {
-	struct ResourcePathLocals {
-		LegoChar m_name[12];
-		GolString m_string;
-		LegoChar m_path[20];
-	} locals;
+	LegoChar name[10];
+	GolString string;
+	LegoChar path[20];
 
 	GolAnimatedEntity* sourceDriverEntity = NULL;
 	GolAnimatedEntity* swapEntity = NULL;
@@ -167,12 +165,12 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 	}
 
-	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_resourceMenuId);
-	locals.m_string.CopyToString(locals.m_name);
-	::sprintf(locals.m_path, "MENUDATA\\%s", locals.m_name);
+	m_menuNameStrings->CopyStringByIndex(&string, m_resourceMenuId);
+	string.CopyToString(name);
+	::sprintf(path, "MENUDATA\\%s", name);
 
 	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString(locals.m_path);
+		g_hashTable->SetCurrentEntryFromString(path);
 	}
 
 	CreateRegion(&m_sceneWidget, m_resourceMenuId);
@@ -646,10 +644,13 @@ LegoBool32 AwardCinematicScreen::CreateWinnerCar(undefined4)
 
 				if (g_hashTable) {
 					currentEntry = g_hashTable->GetCurrentEntry();
-					g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
 				}
 				else {
 					currentEntry = NULL;
+				}
+
+				if (g_hashTable) {
+					g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
 				}
 
 				GolAnimatedEntity* primary;

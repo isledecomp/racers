@@ -194,14 +194,17 @@ void MainMenuScreen::Navigate()
 }
 
 // FUNCTION: LEGORACERS 0x004812f0
-LegoBool32 MainMenuScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MainMenuScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event* p_item, undefined4, undefined4)
 {
-	LegoBool32 result = m_navPending;
-	if (result) {
-		result = TRUE;
+	if (m_navPending) {
+		return TRUE;
 	}
 
-	return result;
+	if (p_item == NULL) {
+		return FALSE;
+	}
+
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00481310

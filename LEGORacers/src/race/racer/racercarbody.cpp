@@ -1975,7 +1975,7 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 						LegoFloat deltaX = m_bodyPointsWorld[pointIndex].m_x - hitPoint.m_x;
 						LegoFloat deltaY = m_bodyPointsWorld[pointIndex].m_y - hitPoint.m_y;
 						LegoFloat deltaZ = m_bodyPointsWorld[pointIndex].m_z - hitPoint.m_z;
-						LegoFloat distance = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+						LegoFloat distance = deltaX * deltaX + ((deltaY * deltaY)) + deltaZ * deltaZ;
 
 						if (distance > bestDistance) {
 							bestDistance = distance;

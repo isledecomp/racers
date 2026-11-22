@@ -109,7 +109,7 @@ protected:
 	LegoU32 m_mode;           // 0x04
 	LegoU32 m_flags;          // 0x08
 	LegoS32 m_position;       // 0x0c
-	LegoU32 m_unk0x10;        // 0x10
+	LegoU32 m_mappedOffset;   // 0x10
 	LegoS32 m_size;           // 0x14
 	LegoU32 m_bufferCapacity; // 0x18
 	LegoU32 m_bufferStart;    // 0x1c

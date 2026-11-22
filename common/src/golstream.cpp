@@ -12,29 +12,35 @@
 
 DECOMP_SIZE_ASSERT(GolStream, 0x30)
 
+#ifdef BUILDING_GOL
+// Unreferenced in GolDP.dll; sits directly in front of g_pathBuffer, which BuildPathname reads at index -1.
+// GLOBAL: GOLDP 0x10065b68
+undefined g_unk0x10065b68[0x200] = {0};
+#endif
+
 // GLOBAL: GOLDP 0x10065d68
 // GLOBAL: LEGORACERS 0x004c7284
-LegoChar g_pathBuffer[256];
+LegoChar g_pathBuffer[256] = {0};
 
 // GLOBAL: GOLDP 0x10065e68
 // GLOBAL: LEGORACERS 0x004c7384
-LegoChar* g_searchPaths[4];
+LegoChar* g_searchPaths[4] = {0};
 
 // GLOBAL: GOLDP 0x10065e78
 // GLOBAL: LEGORACERS 0x004c7394
-GolFileSource* g_fileSources;
+GolFileSource* g_fileSources = NULL;
 
 // GLOBAL: GOLDP 0x10065e7c
 // GLOBAL: LEGORACERS 0x004c7398
-LegoU32 g_fileSourceCount;
+LegoU32 g_fileSourceCount = 0;
 
 // GLOBAL: GOLDP 0x10065e80
 // GLOBAL: LEGORACERS 0x004c739c
-LegoU32 g_searchPathCount;
+LegoU32 g_searchPathCount = 0;
 
 // GLOBAL: GOLDP 0x10065e84
 // GLOBAL: LEGORACERS 0x004c73a0
-GolHashTable* g_hashTable;
+GolHashTable* g_hashTable = NULL;
 
 // GLOBAL: GOLDP 0x1005f04c
 // GLOBAL: LEGORACERS 0x004c1848
@@ -88,7 +94,7 @@ void GolStream::Initialize()
 	m_flags = 0;
 	m_position = 0;
 	m_size = 0;
-	m_unk0x10 = 0;
+	m_mappedOffset = 0;
 	m_bufferCapacity = 0;
 	m_bufferStart = 0;
 	m_bufferEnd = 0;
@@ -185,7 +191,7 @@ LegoS32 GolStream::BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, Lego
 
 	m_mode = p_mode;
 	m_flags = 0;
-	m_unk0x10 = 0;
+	m_mappedOffset = 0;
 	m_bufferStart = 0;
 	m_bufferEnd = 0;
 	m_position = 0;
@@ -290,8 +296,7 @@ LegoS32 GolStream::Dispose()
 // FUNCTION: LEGORACERS 0x0044cd00
 LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 {
-	LegoS32* lenRead = p_lenRead;
-	*lenRead = 0;
+	*p_lenRead = 0;
 
 	if (!(m_flags & c_flagOpen)) {
 		return e_ioNotOpen;
@@ -301,131 +306,121 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 		return e_ioBadParameter;
 	}
 
-	LegoU32 offset = p_offset;
+	LegoS32 bytesRead;
 	LegoS32 chunkLen;
+	LegoS32 result;
 
-	if (p_size > c_maxReadChunkSize) {
-		do {
-			LegoS32 result = BufferedRead(offset, p_buf, c_maxReadChunkSize, &chunkLen);
-			if (result) {
-				return result;
-			}
+	while (p_size > c_maxReadChunkSize) {
+		result = BufferedRead(p_offset, p_buf, c_maxReadChunkSize, &chunkLen);
+		if (result) {
+			return result;
+		}
 
-			p_size -= chunkLen;
-			*lenRead += chunkLen;
-			p_buf = (LegoU8*) p_buf + chunkLen;
-			offset += chunkLen;
-		} while (p_size > c_maxReadChunkSize);
+		*p_lenRead += chunkLen;
+		p_buf = (LegoU8*) p_buf + chunkLen;
+		p_size -= chunkLen;
+		p_offset += chunkLen;
 	}
-
-	void* buf = p_buf;
 
 	LegoS32 flags = m_flags;
 
 	if (flags & c_flagMapped) {
-		if (offset >= (LegoU32) m_size) {
+		if (p_offset >= (LegoU32) m_size) {
 			return e_ioEndOfFile;
 		}
 
-		if (offset + p_size > (LegoU32) m_size) {
-			p_size = m_size - offset;
+		if (p_offset + p_size > (LegoU32) m_size) {
+			p_size = m_size - p_offset;
 		}
 
-		chunkLen = *lenRead;
+		chunkLen = *p_lenRead;
 		GolFsLock();
-		LegoS32 result = g_fileSources[m_handle].ForwardRead(offset + m_position, buf, p_size, lenRead);
+		result = g_fileSources[m_handle].ForwardRead(p_offset + m_position, p_buf, p_size, p_lenRead);
 		GolFsUnlock();
-		*lenRead += chunkLen;
+		*p_lenRead += chunkLen;
 		return result;
 	}
 
-	if (flags & c_flagCached) {
-		if (offset >= m_bufferStart && offset < m_bufferEnd) {
-			LegoU8* src = m_buffer + offset - m_bufferStart;
+	if ((flags & c_flagCached) && p_offset >= m_bufferStart && p_offset < m_bufferEnd) {
+		LegoU8* src = m_buffer + p_offset - m_bufferStart;
 
-			if (offset + p_size <= m_bufferEnd) {
-				memcpy(buf, src, p_size);
-				*lenRead += p_size;
-				return e_ioSuccess;
-			}
-
-			LegoU32 available = m_bufferEnd - offset;
-			offset += available;
-			memcpy(buf, src, available);
-			p_buf = (LegoU8*) p_buf + available;
-			buf = p_buf;
-			*lenRead += available;
-			p_size -= available;
+		if (p_offset + p_size <= m_bufferEnd) {
+			memcpy(p_buf, src, p_size);
+			*p_lenRead += p_size;
+			return e_ioSuccess;
 		}
+
+		LegoU32 available = m_bufferEnd - p_offset;
+		memcpy(p_buf, src, available);
+		*p_lenRead += available;
+		p_buf = (LegoU8*) p_buf + available;
+		p_offset += available;
+		p_size -= available;
 	}
 
-	if ((LegoU32) m_position != offset) {
-		LegoS32 result = Seek(offset);
+	if ((LegoU32) m_position != p_offset) {
+		result = Seek(p_offset);
 		if (result) {
 			return result;
 		}
 	}
 
-	LegoS32 result;
-
 	if (m_buffer) {
 		m_flags &= ~c_flagCached;
-		result = Read(m_buffer, m_bufferCapacity, (LegoS32*) &p_offset);
-		LegoS32 savedResult = result;
-
+		result = Read(m_buffer, m_bufferCapacity, &bytesRead);
 		if (!result) {
-			while (TRUE) {
-				LegoU32 bytesRead = p_offset;
+			for (;;) {
 				m_flags |= c_flagCached;
 				LegoS32 pos = m_position;
 				m_bufferStart = pos;
 				LegoU32 bufEnd = pos + bytesRead;
-				LegoU8* src = m_buffer + (offset - pos);
+				LegoU8* src = m_buffer + (p_offset - pos);
 				m_bufferEnd = bufEnd;
 
-				if (offset + p_size <= bufEnd) {
-					memcpy(buf, src, p_size);
-					*lenRead += p_size;
+				if (p_offset + p_size <= bufEnd) {
+					memcpy(p_buf, src, p_size);
+					*p_lenRead += p_size;
 					p_size = 0;
 				}
 				else {
-					LegoU32 available = bufEnd - offset;
-					offset += available;
-					memcpy(buf, src, available);
+					LegoU32 available = bufEnd - p_offset;
+					memcpy(p_buf, src, available);
+					*p_lenRead += available;
 					p_buf = (LegoU8*) p_buf + available;
-					*lenRead += available;
+					p_offset += available;
 					p_size -= available;
 				}
 
-				result = savedResult;
-				m_position += p_offset;
+				m_position += bytesRead;
 
 				if (p_size <= 0) {
 					break;
 				}
 
 				m_flags &= ~c_flagCached;
-				result = Read(m_buffer, m_bufferCapacity, (LegoS32*) &p_offset);
-				savedResult = result;
+				result = Read(m_buffer, m_bufferCapacity, &bytesRead);
 
 				if (result) {
 					break;
 				}
-
-				buf = p_buf;
 			}
+		}
+
+		if (result == e_ioEndOfFile && *p_lenRead) {
+			return e_ioSuccess;
 		}
 	}
 	else {
-		result = Read(buf, p_size, (LegoS32*) &p_offset);
-		if (!result) {
-			*lenRead += p_offset;
-			m_position += p_offset;
+		result = Read(p_buf, p_size, &bytesRead);
+		if (result) {
+			if (result == e_ioEndOfFile && *p_lenRead) {
+				return e_ioSuccess;
+			}
 		}
-	}
-
-	if (result == e_ioEndOfFile && *lenRead) {
-		return e_ioSuccess;
+		else {
+			*p_lenRead += bytesRead;
+			m_position += bytesRead;
+		}
 	}
 
 	return result;
@@ -451,7 +446,7 @@ LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 	LegoS32 bytesRead;
 
 	if (flags & c_flagMapped) {
-		LegoU32 pos = m_unk0x10;
+		LegoU32 pos = m_mappedOffset;
 		LegoU32 size = m_size;
 
 		if (pos >= size) {
@@ -465,7 +460,7 @@ LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 		result = g_fileSources[m_handle].Read(pos + m_position, p_buf, p_size, maxSize, (LegoS32*) &p_buf);
 
 		if (!result) {
-			m_unk0x10 += (LegoS32) p_buf;
+			m_mappedOffset += (LegoS32) p_buf;
 			return e_ioSuccess;
 		}
 	}
@@ -607,7 +602,7 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 	if (g_hashTable) {
 		GolHashTable::Entry* currentEntry = g_hashTable->GetCurrentEntry();
 		if (currentEntry) {
-			currentEntryPath = GolHashTable::GetEntryPath(currentEntry);
+			currentEntryPath = g_hashTable->GetEntryPath(currentEntry);
 		}
 	}
 
@@ -659,17 +654,16 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 			g_hashTable->AddString(entryPath);
 			g_pathBuffer[directoryEnd] = '\\';
 		}
-
-		return;
 	}
+	else {
+		if (currentEntryPath && currentEntryPath[0]) {
+			strcat(g_pathBuffer, currentEntryPath);
+			strcat(g_pathBuffer, "\\");
+		}
 
-	if (currentEntryPath && currentEntryPath[0]) {
-		strcat(g_pathBuffer, currentEntryPath);
-		strcat(g_pathBuffer, "\\");
+		strcat(g_pathBuffer, p_path);
+		TransformToUpper(g_pathBuffer);
 	}
-
-	strcat(g_pathBuffer, p_path);
-	TransformToUpper(g_pathBuffer);
 }
 
 // FUNCTION: LEGORACERS 0x0044d4f0

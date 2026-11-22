@@ -204,6 +204,8 @@ void GolWorldDatabase::Load(GolRenderDevice* p_arg1, const LegoChar* p_name, Leg
 // FUNCTION: GOLDP 0x1002c4d0
 void GolWorldDatabase::DestroyRecords()
 {
+	LegoU32 i;
+
 	if (m_lightRecords != NULL) {
 		delete[] m_lightRecords;
 		m_lightRecords = NULL;
@@ -230,7 +232,7 @@ void GolWorldDatabase::DestroyRecords()
 	}
 
 	if (m_collidableEntityRecords != NULL) {
-		for (LegoU32 i = 0; i < m_collidableEntityCount; i++) {
+		for (i = 0; i < m_collidableEntityCount; i++) {
 			if (m_collidableEntityRecords[i].m_animationBindings != NULL) {
 				delete[] m_collidableEntityRecords[i].m_animationBindings;
 			}
@@ -241,7 +243,7 @@ void GolWorldDatabase::DestroyRecords()
 	}
 
 	if (m_animatedEntityRecords != NULL) {
-		for (LegoU32 i = 0; i < m_animatedEntityCount; i++) {
+		for (i = 0; i < m_animatedEntityCount; i++) {
 			if (m_animatedEntityRecords[i].m_animationBindings != NULL) {
 				delete[] m_animatedEntityRecords[i].m_animationBindings;
 			}
@@ -252,7 +254,7 @@ void GolWorldDatabase::DestroyRecords()
 	}
 
 	if (m_modelEntityRecords != NULL) {
-		for (LegoU32 i = 0; i < m_modelEntityCount; i++) {
+		for (i = 0; i < m_modelEntityCount; i++) {
 			if (m_modelEntityRecords[i].m_animationBindings != NULL) {
 				delete[] m_modelEntityRecords[i].m_animationBindings;
 			}
@@ -1345,16 +1347,20 @@ void GolWorldDatabase::InitializeEntities()
 {
 	WdbModel* model;
 	LegoU32 i;
-	LegoU32 j;
-	LegoU32 lod;
+	GolModelBase* addedModel;
 	LegoFloat maxDistances[3];
 	LegoChar name[sizeof(GolName) + 1];
-	LegoU32 bindingIndex;
+	// Never read: these sums only reproduce the expression numbering of the original (beautify later).
+	LegoU32 recordCount = m_modelEntityCount + m_animatedEntityCount + m_collidableEntityCount + m_boundedEntityCount +
+						  m_boundingVolumeCount + m_cameraCount + m_ambientLightCount + m_lightCount + m_spriteCount +
+						  m_materialAnimationCount;
 
 	if (m_modelEntityCount) {
 		GolModelEntity* runtime = m_modelEntities;
 		model = m_modelEntityRecords;
 		for (i = 0; i < m_modelEntityCount; i++) {
+			LegoU32 lod;
+			LegoU32 j;
 			if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
 				GOL_FATALERROR_MESSAGE("Illegal mesh reference");
 			}
@@ -1381,7 +1387,7 @@ void GolWorldDatabase::InitializeEntities()
 					}
 				}
 				else {
-					if (lod < 3) {
+					if (3 > lod) {
 						runtime->m_materialTables[lod] = NULL;
 					}
 				}
@@ -1406,29 +1412,25 @@ void GolWorldDatabase::InitializeEntities()
 				runtime->SetTextureScrollSpeedV(model->m_textureScrollSpeedV);
 			}
 			if (model->m_flags & WdbModel::e_flagBit1) {
-				runtime->m_flags |= GolModelEntity::c_flagBit1;
+				LegoU32& flags = runtime->m_flags;
+				flags |= GolModelEntity::c_flagBit1;
 			}
 			if (model->m_flags & WdbModel::e_flagBit2) {
-				runtime->m_flags |= GolModelEntity::c_flagBit2;
+				LegoU32& flags = runtime->m_flags;
+				flags |= GolModelEntity::c_flagBit2;
 			}
 
-			j = 0;
-			if (model->m_animationBindingCount > 0) {
-				bindingIndex = 0;
-				do {
-					Rect* assignment = &model->m_animationBindings[bindingIndex];
-					if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
-						LegoU32 trackIndex = assignment->m_top;
-						MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
-						LegoU32 targetIndex = assignment->m_bottom;
-						MaterialTable* target = runtime->m_materialTables[targetIndex]
-													? runtime->m_materialTables[targetIndex]
-													: runtime->m_models[targetIndex]->GetMaterialTable();
-						item->Assign(target, assignment->m_right, TRUE);
-					}
-					j++;
-					bindingIndex++;
-				} while (j < model->m_animationBindingCount);
+			for (j = 0; j < model->m_animationBindingCount; j++) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
 			}
 
 			if (model->m_name[0] != '\0') {
@@ -1446,7 +1448,11 @@ void GolWorldDatabase::InitializeEntities()
 		model = m_animatedEntityRecords;
 		GolAnimatedEntity* runtime = m_animatedEntities;
 		for (i = 0; i < m_animatedEntityCount; i++) {
-			if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount && model->m_modelIndices[0] >= 0) {
+			LegoU32 lod;
+			LegoU32 j;
+			LegoBool32 badModel =
+				static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount && model->m_modelIndices[0] >= 0;
+			if (badModel) {
 				GOL_FATALERROR_MESSAGE("Illegal mesh reference");
 			}
 			if (static_cast<LegoU32>(model->m_sceneNodeIndices[0]) >= m_sceneNodeCount) {
@@ -1475,7 +1481,7 @@ void GolWorldDatabase::InitializeEntities()
 					}
 				}
 				else {
-					if (lod < 3) {
+					if (3 > lod) {
 						runtime->m_materialTables[lod] = NULL;
 					}
 				}
@@ -1506,7 +1512,7 @@ void GolWorldDatabase::InitializeEntities()
 						break;
 					}
 
-					GolModelBase* addedModel = GetModel(model->m_modelIndices[lod]);
+					addedModel = GetModel(model->m_modelIndices[lod]);
 					node = GetSceneNode(model->m_sceneNodeIndices[lod]);
 					part = GetModelPart(model->m_modelPartIndices[lod]);
 					partForPartName = part;
@@ -1536,29 +1542,24 @@ void GolWorldDatabase::InitializeEntities()
 			}
 
 			if (model->m_flags & WdbModel::e_flagBit1) {
-				runtime->m_flags |= GolModelEntity::c_flagBit1;
+				LegoU32& flags = runtime->m_flags;
+				flags |= GolModelEntity::c_flagBit1;
 			}
 			if (model->m_flags & WdbModel::e_flagBit2) {
 				runtime->m_flags |= GolModelEntity::c_flagBit2;
 			}
 
-			j = 0;
-			if (model->m_animationBindingCount > 0) {
-				bindingIndex = 0;
-				do {
-					Rect* assignment = &model->m_animationBindings[bindingIndex];
-					if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
-						LegoU32 trackIndex = assignment->m_top;
-						MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
-						LegoU32 targetIndex = assignment->m_bottom;
-						MaterialTable* target = runtime->m_materialTables[targetIndex]
-													? runtime->m_materialTables[targetIndex]
-													: runtime->m_models[targetIndex]->GetMaterialTable();
-						item->Assign(target, assignment->m_right, TRUE);
-					}
-					j++;
-					bindingIndex++;
-				} while (j < model->m_animationBindingCount);
+			for (j = 0; j < model->m_animationBindingCount; j++) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
 			}
 
 			if (model->m_name[0] != '\0') {
@@ -1574,8 +1575,10 @@ void GolWorldDatabase::InitializeEntities()
 
 	if (m_collidableEntityCount) {
 		GolCollidableEntity* runtime = m_collidableEntities;
-		model = m_collidableEntityRecords;
+		WdbModel* model = m_collidableEntityRecords;
 		for (i = 0; i < m_collidableEntityCount; i++) {
+			LegoU32 lod;
+			LegoU32 j;
 			if (static_cast<LegoU32>(model->m_modelIndices[0]) >= m_modelCount) {
 				GOL_FATALERROR_MESSAGE("Illegal mesh reference");
 			}
@@ -1605,7 +1608,7 @@ void GolWorldDatabase::InitializeEntities()
 					}
 				}
 				else {
-					if (lod < 3) {
+					if (3 > lod) {
 						runtime->m_materialTables[lod] = NULL;
 					}
 				}
@@ -1615,10 +1618,10 @@ void GolWorldDatabase::InitializeEntities()
 			GolBoundingShape* primaryShape = GetBoundingShape(model->m_sceneNodeIndices[0]);
 			runtime->SetPrimaryModelAndShape(primaryModel, primaryShape, maxDistances[0]);
 			for (lod = 1; lod < 3; lod++) {
-				if (model->m_modelIndices[lod] < 0) {
+				if (0 > model->m_modelIndices[lod]) {
 					break;
 				}
-				GolModelBase* addedModel = GetModel(model->m_modelIndices[lod]);
+				addedModel = GetModel(model->m_modelIndices[lod]);
 				GolBoundingShape* addedShape = GetBoundingShape(model->m_sceneNodeIndices[lod]);
 				runtime->AddModel(addedModel, addedShape, maxDistances[lod]);
 			}
@@ -1634,23 +1637,17 @@ void GolWorldDatabase::InitializeEntities()
 				runtime->m_flags |= GolModelEntity::c_flagBit1;
 			}
 
-			j = 0;
-			if (model->m_animationBindingCount > 0) {
-				bindingIndex = 0;
-				do {
-					Rect* assignment = &model->m_animationBindings[bindingIndex];
-					if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
-						LegoU32 trackIndex = assignment->m_top;
-						MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
-						LegoU32 targetIndex = assignment->m_bottom;
-						MaterialTable* target = runtime->m_materialTables[targetIndex]
-													? runtime->m_materialTables[targetIndex]
-													: runtime->m_models[targetIndex]->GetMaterialTable();
-						item->Assign(target, assignment->m_right, TRUE);
-					}
-					j++;
-					bindingIndex++;
-				} while (j < model->m_animationBindingCount);
+			for (j = 0; j < model->m_animationBindingCount; j++) {
+				Rect* assignment = &model->m_animationBindings[j];
+				if (static_cast<LegoU32>(assignment->m_left) < m_materialAnimationCount) {
+					LegoU32 trackIndex = assignment->m_top;
+					MabMaterialTrack* item = &GetMaterialAnimation(assignment->m_left)->GetTracks()[trackIndex];
+					LegoU32 targetIndex = assignment->m_bottom;
+					MaterialTable* target = runtime->m_materialTables[targetIndex]
+												? runtime->m_materialTables[targetIndex]
+												: runtime->m_models[targetIndex]->GetMaterialTable();
+					item->Assign(target, assignment->m_right, TRUE);
+				}
 			}
 
 			if (model->m_name[0] != '\0') {

@@ -35,7 +35,7 @@ void GolD3DTextureList::ReleaseTextures()
 	LegoU32 i;
 	if (m_renderer != NULL) {
 		for (i = 0; i < GetItemCount(); i++) {
-			if (m_items[i].GetPixelFlags() & GolSurface::c_lockRequestRead) {
+			if (m_items[i].m_pixelFlags & GolSurface::c_lockRequestRead) {
 				m_items[i].ReleaseDeviceObjects();
 			}
 		}
@@ -48,7 +48,7 @@ void GolD3DTextureList::RestoreTextures()
 	LegoU32 i;
 	if (m_renderer != NULL) {
 		for (i = 0; i < GetItemCount(); i++) {
-			if (m_items[i].GetPixelFlags() & GolSurface::c_lockRequestRead) {
+			if (m_items[i].m_pixelFlags & GolSurface::c_lockRequestRead) {
 				m_items[i].RestoreDeviceObjects(*m_renderer);
 			}
 		}

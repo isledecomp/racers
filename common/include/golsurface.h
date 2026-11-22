@@ -58,6 +58,7 @@ public:
 
 protected:
 	friend class GolD3DRenderDevice;
+	friend class GolD3DTextureList;
 
 	GolSurfaceFormat m_textureFormat; // 0x04
 	LegoU8* m_pixels;                 // 0x1c

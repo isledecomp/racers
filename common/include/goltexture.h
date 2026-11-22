@@ -54,8 +54,8 @@ public:
 	void CopyMipmapCountFrom(const GolTexture* p_texture) { m_mipmapCount = p_texture->m_mipmapCount; }
 	void SetColorKey(const ColorRGBA& p_colorKey)
 	{
-		m_textureFlags |= c_textureFlagColorKeyDirty;
 		m_colorKey = p_colorKey;
+		m_textureFlags |= c_textureFlagColorKeyDirty;
 		m_colorKey.m_alp = 0;
 	}
 	void SetColorKeyValue(ColorRGBA p_colorKey)

@@ -822,30 +822,31 @@ void CutsceneDefinition::Frame::Parse(CutsceneDefinition* p_parent, GolFileParse
 		m_eventsByEnd[eventIndex] = &m_cameraEvents[eventIndex];
 	}
 
-	LegoU32 i;
-	for (i = 0; i < m_modelEventCount; i++) {
-		m_eventsByStart[eventIndex] = &m_modelEvents[i];
-		m_eventsByEnd[eventIndex] = &m_modelEvents[i];
+	for (LegoU32 modelIndex = 0; modelIndex < m_modelEventCount; modelIndex++) {
+		m_eventsByStart[eventIndex] = &m_modelEvents[modelIndex];
+		m_eventsByEnd[eventIndex] = &m_modelEvents[modelIndex];
 		eventIndex++;
 	}
 
-	for (i = 0; i < m_transformEventCount; i++) {
-		TransformEvent* startEvent = &m_transformEvents[i];
+	for (LegoU32 transformIndex = 0; transformIndex < m_transformEventCount; transformIndex++) {
+		TransformEvent* startEvent = &m_transformEvents[transformIndex];
 		m_eventsByStart[eventIndex] = startEvent;
-		TransformEvent* endEvent = &m_transformEvents[i];
+		TransformEvent* endEvent = &m_transformEvents[transformIndex];
 		m_eventsByEnd[eventIndex] = endEvent;
 		eventIndex++;
 	}
 
-	for (i = 0; i < m_ambientEventCount; i++) {
-		m_eventsByStart[eventIndex] = &m_ambientEvents[i];
-		m_eventsByEnd[eventIndex] = &m_ambientEvents[i];
+	for (LegoU32 ambientIndex = 0; ambientIndex < m_ambientEventCount; ambientIndex++) {
+		AmbientLightEvent* startEvent = &m_ambientEvents[ambientIndex];
+		m_eventsByStart[eventIndex] = startEvent;
+		AmbientLightEvent* endEvent = &m_ambientEvents[ambientIndex];
+		m_eventsByEnd[eventIndex] = endEvent;
 		eventIndex++;
 	}
 
-	for (i = 0; i < m_directionalEventCount; i++) {
-		m_eventsByStart[eventIndex] = &m_directionalEvents[i];
-		m_eventsByEnd[eventIndex] = &m_directionalEvents[i];
+	for (LegoU32 directionalIndex = 0; directionalIndex < m_directionalEventCount; directionalIndex++) {
+		m_eventsByStart[eventIndex] = &m_directionalEvents[directionalIndex];
+		m_eventsByEnd[eventIndex] = &m_directionalEvents[directionalIndex];
 		eventIndex++;
 	}
 

@@ -300,25 +300,21 @@ void MenuModelCarousel::DestroyItems()
 	LegoS32 i = 0;
 
 	LegoFloat widthFloat = static_cast<LegoFloat>(width);
-	m_scaleX = (m_camera->m_nearHalfWidth + m_camera->m_nearHalfWidth) / widthFloat;
+	m_scaleX = ((m_camera->m_nearHalfWidth + m_camera->m_nearHalfWidth)) / widthFloat;
 	LegoFloat heightFloat = static_cast<LegoFloat>(height);
-	m_scaleY = (m_camera->m_nearHalfHeight + m_camera->m_nearHalfHeight) / heightFloat;
+	m_scaleY = (((m_camera->m_nearHalfHeight + m_camera->m_nearHalfHeight))) / heightFloat;
 
 	if (m_slotCount > 0) {
 		do {
 			Rect* rect = &item->m_rect;
 
-			LegoS32 rectLeft = rect->m_left;
-			rectLeft += halfWidth;
-			item->m_left = static_cast<LegoFloat>(rectLeft) * m_scaleX;
+			item->m_left = static_cast<LegoFloat>(rect->m_left + halfWidth) * m_scaleX;
 			item->m_right = item->m_left + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_scaleX;
 			item->m_height = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_scaleY;
 			item->m_unk0x0c = 0.0f;
 			item->m_positionZ = 0.0f;
 
-			LegoFloat center = item->m_right;
-			center += item->m_left;
-			item->m_centerY = center * 0.5f;
+			item->m_centerY = (item->m_right + item->m_left) * 0.5f;
 
 			LegoFloat range = item->m_right - item->m_left;
 			if (range > item->m_height) {

@@ -188,7 +188,7 @@ void MenuDialog::TextLine::SetString(GolString* p_string, LegoBool32 p_remeasure
 		LegoS32 bottom = m_rect.m_bottom - m_rect.m_top;
 		if (static_cast<LegoU32>(height) > static_cast<LegoU32>(bottom)) {
 			heightFloat = static_cast<LegoFloat>(height);
-			m_scaleY = static_cast<LegoFloat>(bottom) / heightFloat;
+			m_scaleY = ((static_cast<LegoFloat>(bottom))) / heightFloat;
 		}
 	}
 	else {

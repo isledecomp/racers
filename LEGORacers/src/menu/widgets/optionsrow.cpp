@@ -288,11 +288,10 @@ void OptionsRow::SnapThumbToValue()
 void OptionsRow::SetValue(LegoS32 p_value)
 {
 	if (p_value != m_value) {
-		double step = m_stepWidth;
-		double index = p_value;
 		Rect rect = *m_thumb.GetRect();
 		LegoS32 width = rect.m_right - rect.m_left;
-		rect.m_left = m_trackMinX + static_cast<LegoS32>(step * index) - (width >> 1);
+		rect.m_left =
+			m_trackMinX + static_cast<LegoS32>(GOL_MUL(m_stepWidth, (static_cast<LegoFloat>(p_value)))) - (width >> 1);
 		rect.m_right = width + rect.m_left;
 		m_thumb.SetRect(&rect);
 

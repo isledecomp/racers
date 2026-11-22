@@ -205,40 +205,27 @@ undefined4 MenuWidget::HitTest(LegoS32 p_x, LegoS32 p_y)
 // FUNCTION: LEGORACERS 0x00472c80
 void MenuWidget::CenterRectIn(const Rect* p_source, Rect* p_dest) const
 {
-	const Rect* source = p_source;
-	LegoU32 sourceTop = source->m_top;
-	LegoU32 sourceHeight = source->m_bottom;
-	LegoS32 sourceLeft = source->m_left;
-	LegoU32 sourceWidth = source->m_right;
-	sourceWidth -= sourceLeft;
-	sourceHeight -= sourceTop;
-
-	Rect* dest = p_dest;
-	LegoU32 destWidth = dest->m_right;
-	LegoS32 destLeft = dest->m_left;
-	destWidth -= destLeft;
-
-	LegoU32 destHeight = dest->m_bottom;
-	destHeight -= dest->m_top;
+	LegoU32 sourceWidth = p_source->m_right - p_source->m_left;
+	LegoU32 sourceHeight = p_source->m_bottom - p_source->m_top;
+	LegoU32 destWidth = p_dest->m_right - p_dest->m_left;
+	LegoU32 destHeight = p_dest->m_bottom - p_dest->m_top;
 
 	if (sourceWidth > destWidth) {
-		LegoU32 inset = (sourceWidth - destWidth) >> 1;
-		dest->m_left = sourceLeft + inset;
-		dest->m_right = source->m_right - inset;
+		p_dest->m_left = p_source->m_left + ((sourceWidth - destWidth) >> 1);
+		p_dest->m_right = p_source->m_right - ((sourceWidth - destWidth) >> 1);
 	}
 	else {
-		dest->m_left = sourceLeft;
-		dest->m_right = source->m_right;
+		p_dest->m_left = p_source->m_left;
+		p_dest->m_right = p_source->m_right;
 	}
 
 	if (sourceHeight > destHeight) {
-		LegoU32 inset = (sourceHeight - destHeight) >> 1;
-		dest->m_top = source->m_top + inset;
-		dest->m_bottom = source->m_bottom - inset;
+		p_dest->m_top = p_source->m_top + ((sourceHeight - destHeight) >> 1);
+		p_dest->m_bottom = p_source->m_bottom - ((sourceHeight - destHeight) >> 1);
 	}
 	else {
-		dest->m_top = source->m_top;
-		dest->m_bottom = source->m_bottom;
+		p_dest->m_top = p_source->m_top;
+		p_dest->m_bottom = p_source->m_bottom;
 	}
 }
 
@@ -440,9 +427,8 @@ void MenuWidget::ComputeScale(Rect* p_sourceRect, Rect* p_destRect)
 		m_scaleY = 0.0f;
 	}
 	else {
-		LegoFloat sourceHeight = static_cast<LegoFloat>(p_sourceRect->m_bottom - p_sourceRect->m_top);
-		LegoFloat destHeight = static_cast<LegoFloat>(p_destRect->m_bottom - p_destRect->m_top);
-		m_scaleY = sourceHeight / destHeight;
+		m_scaleY = ((static_cast<LegoFloat>(p_sourceRect->m_bottom - p_sourceRect->m_top))) /
+				   (static_cast<LegoFloat>(p_destRect->m_bottom - p_destRect->m_top));
 	}
 }
 
@@ -505,10 +491,15 @@ Rect* MenuWidget::TranslateRectByOffset(Rect* p_rect)
 	LegoS32 right = p_rect->m_right - p_rect->m_left + left;
 	LegoS32 bottom = p_rect->m_bottom - p_rect->m_top + top;
 
-	p_rect->m_left = left;
-	p_rect->m_top = top;
-	p_rect->m_right = right;
-	p_rect->m_bottom = bottom;
+	LegoS32& rectLeft = p_rect->m_left;
+	LegoS32& rectTop = p_rect->m_top;
+	LegoS32& rectRight = p_rect->m_right;
+	LegoS32& rectBottom = p_rect->m_bottom;
+
+	rectLeft = left;
+	rectTop = top;
+	rectRight = right;
+	rectBottom = bottom;
 
 	return p_rect;
 }

@@ -109,10 +109,10 @@ void MenuFrame::SetRect(Rect* p_rect)
 		rect.m_bottom = m_rect.m_bottom - m_rect.m_top;
 		rect.m_top = rect.m_bottom - m_images[4]->GetHeight();
 
+		rect2.m_left = rect.m_right - m_images[3]->GetWidth();
 		rect2.m_right = rect.m_right;
 		rect2.m_top = rect3.m_bottom;
 		rect2.m_bottom = rect.m_top;
-		rect2.m_left = rect2.m_right - m_images[3]->GetWidth();
 
 		m_borderImages[3].SetRect(&rect2);
 		m_borderImages[4].SetRect(&rect);

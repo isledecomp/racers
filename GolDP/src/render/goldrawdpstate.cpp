@@ -139,7 +139,7 @@ LegoS32 GolDrawDPState::CreateDevice()
 	}
 
 	GolDeviceList::GolD3DDriverInfo* driver = device->m_driver;
-	if (DirectDrawCreate(driver->m_unk0x08 ? &driver->m_guid : NULL, &m_ddraw, NULL) != DD_OK) {
+	if (DirectDrawCreate(driver->m_hasGuid ? &driver->m_guid : NULL, &m_ddraw, NULL) != DD_OK) {
 		GOL_FATALERROR_MESSAGE("Unable to create DirectDraw object");
 	}
 
@@ -563,7 +563,7 @@ GUID* GolDrawDPState::GetCurrentDriverGuid() const
 {
 	if (m_device != NULL) {
 		GolDeviceList::GolD3DDriverInfo* driver = m_device->m_driver;
-		if (driver->m_unk0x08) {
+		if (driver->m_hasGuid) {
 			return &driver->m_guid;
 		}
 	}

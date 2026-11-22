@@ -31,7 +31,7 @@ public:
 	struct GolD3DDriverInfo {
 		LegoBool32 m_unk0x00;        // 0x00
 		LegoBool32 m_accelerated;    // 0x04
-		LegoBool32 m_unk0x08;        // 0x08
+		LegoBool32 m_hasGuid;        // 0x08
 		GUID m_guid;                 // 0x0c
 		LegoChar* m_description;     // 0x1c
 		LegoChar* m_name;            // 0x20

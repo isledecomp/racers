@@ -29,6 +29,7 @@ public:
 
 	void SetSoundManager(SoundManager* p_soundManager) { m_soundManager = p_soundManager; }
 	SoundManager* GetSoundManagerDirect() { return m_soundManager; }
+	LegoChar* GetMusicName(LegoU32 p_index) { return &m_musicNames[c_musicPathLength * p_index]; }
 
 	// SYNTHETIC: LEGORACERS 0x0041a690
 	// DirectMusicGroup::`scalar deleting destructor'

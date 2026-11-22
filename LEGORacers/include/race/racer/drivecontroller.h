@@ -38,6 +38,7 @@ public:
 	void EndReturnToPath();
 	void UpdateReturnToPath(LegoU32 p_elapsedMs);
 	void SetFlags(LegoU32 p_flags) { m_flags |= p_flags; }
+	void ClearFlags(LegoU32 p_flags) { m_flags &= ~p_flags; }
 	DriveController();
 	void Destroy();
 	void Reset();

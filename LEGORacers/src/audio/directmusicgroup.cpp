@@ -109,11 +109,9 @@ MusicInstance* DirectMusicGroup::CreateMusicInstance(LegoU32 p_index)
 	}
 
 	LegoChar source[c_musicPathLength];
-	LegoChar* musicNames = m_musicNames;
-	LegoU32 offset = c_musicPathLength * p_index;
-	JoinAudioPath(source, c_musicPathLength, m_basePath, &musicNames[offset]);
+	JoinAudioPath(source, c_musicPathLength, m_basePath, GetMusicName(p_index));
 
-	if (strstr(&m_musicNames[offset], g_musicTunExtension) || strstr(&m_musicNames[offset], g_musicPcmExtension)) {
+	if (strstr(GetMusicName(p_index), g_musicTunExtension) || strstr(GetMusicName(p_index), g_musicPcmExtension)) {
 		DirectMusicInstance* instance = new DirectMusicInstance();
 
 		if (instance) {
@@ -126,7 +124,7 @@ MusicInstance* DirectMusicGroup::CreateMusicInstance(LegoU32 p_index)
 			else {
 				instance->SetMusicGroup(NULL);
 				delete instance;
-				instance = NULL;
+				return NULL;
 			}
 		}
 

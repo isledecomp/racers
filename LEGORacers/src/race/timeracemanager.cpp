@@ -330,7 +330,7 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 			}
 
 			GhostRunData::Sample* sample = &ghostRun->m_samples[sampleIndex];
-			GhostRunData::Sample* nextSample = sample + 1;
+			GhostRunData::Sample* nextSample = &ghostRun->m_samples[sampleIndex + 1];
 
 			GolVec3 previousPosition;
 			previousPosition.m_x = static_cast<LegoFloat>(sample->m_positionX) / g_ghostPositionQuantizationScale;

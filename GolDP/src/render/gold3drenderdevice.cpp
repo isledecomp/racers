@@ -226,20 +226,20 @@ void GolD3DRenderDevice::Reset()
 	m_renderTargetInfo = NULL;
 	m_renderSurfaces = NULL;
 
-	::memset(m_unk0x348, 0, 0xcc8 - 0x348);
-	::memset(m_unk0xc38ec, 0, sizeof(m_unk0xc38ec));
-	::memset(m_unk0xc428c, 0, sizeof(m_unk0xc428c));
-	m_unk0xc86f0 = NULL;
-	m_unk0xc86f4 = 0;
+	::memset(m_tlVertices, 0, 0xcc8 - 0x348);
+	::memset(m_vertexCache, 0, sizeof(m_vertexCache));
+	::memset(m_commandVertices, 0, sizeof(m_commandVertices));
+	m_triangleCommands = NULL;
+	m_triangleCommandCount = 0;
 	m_unk0xc86f8 = 0;
-	m_unk0xc83ac = 0;
-	m_unk0xc83b0 = 0;
+	m_maxRasterizerIndex = 0;
+	m_rasterizerMaskBase = 0;
 	m_currentScale = 1.0f;
-	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
+	::memset(&m_rasterizerPipelines, 0, sizeof(m_rasterizerPipelines));
 	m_unk0xc83c4 = 0;
 	m_flatDepth = 0.0f;
-	m_unk0xc3848 = 0;
-	m_unk0xc384c = 0;
+	m_nextVertexIndex = 0;
+	m_vertexIndexMask = 0;
 	m_sourcePositions = 0;
 	m_sourceTexCoords = 0;
 	m_sourceColors = 0;
@@ -270,10 +270,10 @@ void GolD3DRenderDevice::Reset()
 	::memset(&m_drawCommand, 0, sizeof(m_drawCommand));
 	::memset(&m_materialCommand, 0, 0xc8568 - 0xc854c);
 	m_drawCommand.m_renderer = this;
-	m_drawCommand.m_vertices = m_unk0xc428c;
+	m_drawCommand.m_vertices = m_commandVertices;
 	m_drawCommand.m_material = NULL;
 	m_materialCommand.m_renderer = this;
-	m_materialCommand.m_vertices = m_unk0xc428c;
+	m_materialCommand.m_vertices = m_commandVertices;
 	m_modelMatrix.m_m[0][0] = 1.0f;
 	m_unk0xc8450.m_m[0][0] = 1.0f;
 	m_modelMatrix.m_m[0][1] = 0.0f;
@@ -309,9 +309,9 @@ void GolD3DRenderDevice::Reset()
 	m_drawTriangleFn1 = &GolD3DRenderDevice::FUN_1000c630;
 	m_drawTriangleFn2 = &GolD3DRenderDevice::FUN_1000edf0;
 
-	for (i = 0; i < (0xcc8 - 0x348) / sizeof(*m_unk0x348); i++) {
-		m_unk0x348[i].color = 0xffffffff;
-		m_unk0x348[i].specular = 0xffffffff;
+	for (i = 0; i < (0xcc8 - 0x348) / sizeof(*m_tlVertices); i++) {
+		m_tlVertices[i].color = 0xffffffff;
+		m_tlVertices[i].specular = 0xffffffff;
 	}
 
 	for (i = 0; i < sizeOfArray(m_unk0xc53a0); i++) {
@@ -373,7 +373,7 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 
 	forceSoftware = p_flags & GolDrawState::c_flagForceSoftware;
 	if (!forceSoftware) {
-		m_unk0xc384c = 0;
+		m_vertexIndexMask = 0;
 		m_unk0xc83c4 = 0;
 		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialHw;
 
@@ -491,7 +491,7 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 
 	if (forceSoftware) {
 		m_flags &= ~c_flagZBuffer;
-		m_unk0xc384c = -1;
+		m_vertexIndexMask = -1;
 		m_unk0xc83c4 = 1;
 		m_flags |= c_flagBlackColorKey | c_flagSoftwareRenderer;
 		m_applyMaterialFn = &GolD3DRenderDevice::ApplyMaterialSw;
@@ -518,9 +518,9 @@ LegoS32 GolD3DRenderDevice::CreateRenderer(LegoU32 p_flags)
 			GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
 		}
 
-		m_softwareRenderer.SetTlVertices(m_unk0x348);
+		m_softwareRenderer.SetTlVertices(m_tlVertices);
 		FUN_1000b4a0();
-		::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
+		::memset(&m_rasterizerPipelines, 0, sizeof(m_rasterizerPipelines));
 	}
 
 	SetClearColor(m_clearColor);
@@ -1241,7 +1241,7 @@ void GolD3DRenderDevice::BeginFrame(undefined4 p_flags)
 	ApplyCamera();
 	ApplyLights();
 
-	m_unk0xc3848 = 0;
+	m_nextVertexIndex = 0;
 
 	if (m_renderTargetInfo->m_pixelFlags & GolSurface::c_lockFlagFlipPending) {
 		m_renderTargetInfo->FinishPendingFlip();
@@ -1281,9 +1281,9 @@ void GolD3DRenderDevice::BeginFrame(undefined4 p_flags)
 		}
 	}
 	else {
-		m_unk0xc86f4 = 0;
+		m_triangleCommandCount = 0;
 		m_softwareRenderer.SetDimensions(m_renderTargetInfo->m_width, m_renderTargetInfo->m_height);
-		m_unk0xc86f0 = m_softwareRenderer.GetCommands();
+		m_triangleCommands = m_softwareRenderer.GetCommands();
 		m_unk0xc86f8 = m_softwareRenderer.GetNodeCapacity();
 	}
 }
@@ -1298,9 +1298,9 @@ void GolD3DRenderDevice::EndFrame()
 		}
 	}
 	else {
-		m_softwareRenderer.FUN_10041830(m_unk0xc86f4, TRUE);
-		if (m_unk0xc86f4 != 0) {
-			m_softwareRenderer.SetTlVertexCount(m_unk0xc3848);
+		m_softwareRenderer.FUN_10041830(m_triangleCommandCount, TRUE);
+		if (m_triangleCommandCount != 0) {
+			m_softwareRenderer.SetTlVertexCount(m_nextVertexIndex);
 
 			LegoU8* pixels;
 			LegoU32 pitch;
@@ -1682,11 +1682,11 @@ void GolD3DRenderDevice::DrawTriangle(
 		v0 = p_vertex0;
 	}
 
-	LegoU32 vertexIndexMask = m_unk0xc384c;
-	LegoU32 vertexIndex = m_unk0xc3848 & vertexIndexMask;
+	LegoU32 vertexIndexMask = m_vertexIndexMask;
+	LegoU32 vertexIndex = m_nextVertexIndex & vertexIndexMask;
 	vertexIndexMask = ~vertexIndexMask;
 	vertexIndexMask &= 0x40;
-	D3DTLVERTEX* vertices = &m_unk0x348[vertexIndexMask + vertexIndex];
+	D3DTLVERTEX* vertices = &m_tlVertices[vertexIndexMask + vertexIndex];
 
 	vertices[0].sx = v0->m_x;
 	vertices[0].sy = v0->m_y;
@@ -1765,15 +1765,15 @@ void GolD3DRenderDevice::DrawTriangle(
 	}
 
 	if (m_unk0xc83c4) {
-		LegoS32 commandIndex = m_unk0xc86f4;
+		LegoS32 commandIndex = m_triangleCommandCount;
 		LegoS32 nextCommandIndex = commandIndex + 1;
 		if (nextCommandIndex < m_unk0xc86f8) {
-			GolSoftwareRenderer::TriangleCommand* cmd = m_unk0xc86f0 + commandIndex;
-			m_unk0xc86f4 = nextCommandIndex;
-			cmd->m_vertexIndex0 = m_unk0xc3848++;
-			cmd->m_vertexIndex1 = m_unk0xc3848++;
-			cmd->m_vertexIndex2 = m_unk0xc3848++;
-			cmd->m_rasterizer = m_unk0xc83b4.m_unk0x00[0];
+			GolSoftwareRenderer::TriangleCommand* cmd = m_triangleCommands + commandIndex;
+			m_triangleCommandCount = nextCommandIndex;
+			cmd->m_vertexIndex0 = m_nextVertexIndex++;
+			cmd->m_vertexIndex1 = m_nextVertexIndex++;
+			cmd->m_vertexIndex2 = m_nextVertexIndex++;
+			cmd->m_rasterizer = m_rasterizerPipelines.m_pipelines[0];
 			if (m_flags & c_flagZBufferActive) {
 				m_softwareRenderer.FUN_100417c0(cmd, 1);
 			}
@@ -1797,7 +1797,7 @@ void GolD3DRenderDevice::DrawTriangle(
 void GolD3DRenderDevice::DrawTriangleStrip(D3DTLVERTEX* p_vertices, LegoU32 p_count)
 {
 	if (m_unk0xc83c4) {
-		D3DTLVERTEX* vertices = &m_unk0x348[m_unk0xc3848];
+		D3DTLVERTEX* vertices = &m_tlVertices[m_nextVertexIndex];
 
 		LegoU32 copyCount = p_count;
 		D3DTLVERTEX* dest = vertices;
@@ -1809,25 +1809,25 @@ void GolD3DRenderDevice::DrawTriangleStrip(D3DTLVERTEX* p_vertices, LegoU32 p_co
 
 		LegoS32 triangleCount = p_count - 2;
 		if (triangleCount >= 0) {
-			LegoS32 commandIndex = m_unk0xc86f4;
+			LegoS32 commandIndex = m_triangleCommandCount;
 			LegoS32 nextCommandIndex = commandIndex + triangleCount;
 			if (nextCommandIndex < m_unk0xc86f8) {
-				GolSoftwareRenderer::TriangleCommand* cmd = m_unk0xc86f0 + commandIndex;
-				m_unk0xc86f4 = nextCommandIndex;
+				GolSoftwareRenderer::TriangleCommand* cmd = m_triangleCommands + commandIndex;
+				m_triangleCommandCount = nextCommandIndex;
 
 				LegoS32 winding = 1;
 				GolSoftwareRenderer::TriangleCommand* command = cmd;
 				for (LegoS32 i = 0; i < triangleCount;) {
 					i++;
-					command->m_vertexIndex0 = static_cast<LegoU16>(m_unk0xc3848 + i + winding);
-					command->m_vertexIndex1 = static_cast<LegoU16>(m_unk0xc3848 + i);
-					command->m_vertexIndex2 = static_cast<LegoU16>(m_unk0xc3848 + i - winding);
-					command->m_rasterizer = m_unk0xc83b4.m_unk0x00[0];
+					command->m_vertexIndex0 = static_cast<LegoU16>(m_nextVertexIndex + i + winding);
+					command->m_vertexIndex1 = static_cast<LegoU16>(m_nextVertexIndex + i);
+					command->m_vertexIndex2 = static_cast<LegoU16>(m_nextVertexIndex + i - winding);
+					command->m_rasterizer = m_rasterizerPipelines.m_pipelines[0];
 					winding = -winding;
 					command++;
 				}
 
-				m_unk0xc3848 += p_count;
+				m_nextVertexIndex += p_count;
 				if (m_flags & c_flagZBufferActive) {
 					m_softwareRenderer.FUN_100417c0(cmd, triangleCount);
 				}
@@ -1967,18 +1967,18 @@ void GolD3DRenderDevice::ApplyMaterialHw(GolMaterial* p_material)
 	m_drawCommand.m_material = p_material;
 	if (m_unk0xc8568 != 0) {
 		GolMaterialColor c = p_material->GetAmbient();
-		m_unk0xc8570 = static_cast<LegoU32>(m_unk0xc856c.m_red * c.m_red) >> 8;
-		m_unk0xc8574 = static_cast<LegoU32>(m_unk0xc856c.m_grn * c.m_grn) >> 8;
-		m_unk0xc8578 = static_cast<LegoU32>(m_unk0xc856c.m_blu * c.m_blu) >> 8;
-		m_unk0xc857c = c.m_alp & 0xff;
+		m_ambientProductRed = static_cast<LegoU32>(m_ambientLightColor.m_red * c.m_red) >> 8;
+		m_ambientProductGrn = static_cast<LegoU32>(m_ambientLightColor.m_grn * c.m_grn) >> 8;
+		m_ambientProductBlu = static_cast<LegoU32>(m_ambientLightColor.m_blu * c.m_blu) >> 8;
+		m_ambientProductAlp = c.m_alp & 0xff;
 		c = p_material->GetDiffuse();
 		for (LegoU32 i = 0; i < m_lightCount; i++) {
-			m_unk0xc859c[i].m_red =
-				static_cast<LegoFloat>(m_unk0xc8580[i].m_red) * static_cast<LegoFloat>(c.m_red & 0xff) / 256.0f;
-			m_unk0xc859c[i].m_grn =
-				static_cast<LegoFloat>(m_unk0xc8580[i].m_grn) * static_cast<LegoFloat>(c.m_grn & 0xff) / 256.0f;
-			m_unk0xc859c[i].m_blu =
-				static_cast<LegoFloat>(m_unk0xc8580[i].m_blu) * static_cast<LegoFloat>(c.m_blu & 0xff) / 256.0f;
+			m_lightColorProducts[i].m_red =
+				static_cast<LegoFloat>(m_lightColors[i].m_red) * static_cast<LegoFloat>(c.m_red & 0xff) / 256.0f;
+			m_lightColorProducts[i].m_grn =
+				static_cast<LegoFloat>(m_lightColors[i].m_grn) * static_cast<LegoFloat>(c.m_grn & 0xff) / 256.0f;
+			m_lightColorProducts[i].m_blu =
+				static_cast<LegoFloat>(m_lightColors[i].m_blu) * static_cast<LegoFloat>(c.m_blu & 0xff) / 256.0f;
 		}
 	}
 
@@ -2202,26 +2202,29 @@ void GolD3DRenderDevice::ApplyMaterialSw(GolMaterial* p_material)
 	else {
 		textureCount = p_material->GetTexture()->GetMipmapCount();
 	}
-	m_unk0xc83ac = textureCount - 1;
+	m_maxRasterizerIndex = textureCount - 1;
 
 	if (textureCount > 0) {
 		for (LegoU32 i = 0; i < textureCount; i++) {
-			m_unk0xc83b4.m_unk0x00[i] = static_cast<GolSoftwareMaterial*>(p_material)->GetPipelines() + i;
+			m_rasterizerPipelines.m_pipelines[i] = static_cast<GolSoftwareMaterial*>(p_material)->GetPipelines() + i;
 		}
 	}
 
 	if (m_unk0xc8568 != 0) {
 		GolMaterialColor color = p_material->GetAmbient();
-		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_red & 0xff)) >> 8;
-		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_grn & 0xff)) >> 8;
-		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_blu & 0xff)) >> 8;
-		m_unk0xc857c = color.m_alp & 0xff;
+		m_ambientProductRed =
+			(static_cast<LegoU32>(m_ambientLightColor.m_red) * static_cast<LegoU32>(color.m_red & 0xff)) >> 8;
+		m_ambientProductGrn =
+			(static_cast<LegoU32>(m_ambientLightColor.m_grn) * static_cast<LegoU32>(color.m_grn & 0xff)) >> 8;
+		m_ambientProductBlu =
+			(static_cast<LegoU32>(m_ambientLightColor.m_blu) * static_cast<LegoU32>(color.m_blu & 0xff)) >> 8;
+		m_ambientProductAlp = color.m_alp & 0xff;
 
 		color = p_material->GetDiffuse();
 		for (LegoU32 i = 0; i < m_lightCount; i++) {
-			m_unk0xc859c[i].m_red = ScaleColorChannel(m_unk0xc8580[i].m_red, color.m_red & 0xff);
-			m_unk0xc859c[i].m_grn = ScaleColorChannel(m_unk0xc8580[i].m_grn, color.m_grn & 0xff);
-			m_unk0xc859c[i].m_blu = ScaleColorChannel(m_unk0xc8580[i].m_blu, color.m_blu & 0xff);
+			m_lightColorProducts[i].m_red = ScaleColorChannel(m_lightColors[i].m_red, color.m_red & 0xff);
+			m_lightColorProducts[i].m_grn = ScaleColorChannel(m_lightColors[i].m_grn, color.m_grn & 0xff);
+			m_lightColorProducts[i].m_blu = ScaleColorChannel(m_lightColors[i].m_blu, color.m_blu & 0xff);
 		}
 	}
 
@@ -2297,7 +2300,7 @@ void GolD3DRenderDevice::SetCurrentTexture(GolTexture* p_texture)
 	m_currentTexture = p_texture;
 	if (m_unk0xc83c4) {
 		if (p_texture != NULL) {
-			m_unk0xc83b0 = ~((p_texture->GetHeight() * p_texture->GetWidth() * 2) - 1);
+			m_rasterizerMaskBase = ~((p_texture->GetHeight() * p_texture->GetWidth() * 2) - 1);
 		}
 		return;
 	}
@@ -2323,7 +2326,7 @@ void GolD3DRenderDevice::SetCurrentTexture(GolTexture* p_texture)
 }
 
 // FUNCTION: GOLDP 0x1000acf0
-void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
+void GolD3DRenderDevice::SetCurrentMatrixIndex(LegoU32 p_index)
 {
 	GolMatrix4* matrix;
 	if (m_renderState != NULL) {
@@ -2338,31 +2341,31 @@ void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 	if (m_unk0xc8568 != 0) {
 		GolMatrix4* lightMatrix = &(*orbits)[p_index].m_worldMatrix;
 		for (LegoU32 i = 0; i < m_lightCount; i++) {
-			LegoFloat product = m_unk0xc85f0[i].m_x;
+			LegoFloat product = m_lightDirections[i].m_x;
 			product *= lightMatrix->m_m[0][0];
-			m_unk0xc8644[i].m_x = product;
-			product = m_unk0xc85f0[i].m_x;
+			m_transformedLightDirections[i].m_x = product;
+			product = m_lightDirections[i].m_x;
 			product *= lightMatrix->m_m[1][0];
-			m_unk0xc8644[i].m_y = product;
-			product = m_unk0xc85f0[i].m_x;
+			m_transformedLightDirections[i].m_y = product;
+			product = m_lightDirections[i].m_x;
 			product *= lightMatrix->m_m[2][0];
-			m_unk0xc8644[i].m_z = product;
+			m_transformedLightDirections[i].m_z = product;
 
 			product = lightMatrix->m_m[0][1];
-			product *= m_unk0xc85f0[i].m_y;
-			m_unk0xc8644[i].m_x += product;
+			product *= m_lightDirections[i].m_y;
+			m_transformedLightDirections[i].m_x += product;
 			product = lightMatrix->m_m[1][1];
-			product *= m_unk0xc85f0[i].m_y;
-			m_unk0xc8644[i].m_y += product;
+			product *= m_lightDirections[i].m_y;
+			m_transformedLightDirections[i].m_y += product;
 			product = lightMatrix->m_m[2][1];
-			product *= m_unk0xc85f0[i].m_y;
-			m_unk0xc8644[i].m_z += product;
+			product *= m_lightDirections[i].m_y;
+			m_transformedLightDirections[i].m_z += product;
 
-			m_unk0xc8644[i].m_x += m_unk0xc85f0[i].m_z * lightMatrix->m_m[0][2];
-			product = m_unk0xc85f0[i].m_z;
+			m_transformedLightDirections[i].m_x += m_lightDirections[i].m_z * lightMatrix->m_m[0][2];
+			product = m_lightDirections[i].m_z;
 			product *= lightMatrix->m_m[1][2];
-			m_unk0xc8644[i].m_y += product;
-			m_unk0xc8644[i].m_z += m_unk0xc85f0[i].m_z * lightMatrix->m_m[2][2];
+			m_transformedLightDirections[i].m_y += product;
+			m_transformedLightDirections[i].m_z += m_lightDirections[i].m_z * lightMatrix->m_m[2][2];
 		}
 	}
 }
@@ -2383,35 +2386,35 @@ void GolD3DRenderDevice::FUN_1000add0(GolWorldEntity* p_model, GolModel* p_model
 	m_sourceNormals = vertexArray->GetNormals();
 
 	for (LegoU32 i = 0; i < m_lightCount; i++) {
-		LegoFloat product = m_unk0xc85f0[i].m_x;
+		LegoFloat product = m_lightDirections[i].m_x;
 		product *= m_unk0xc8450.m_m[0][0];
-		m_unk0xc8644[i].m_x = product;
-		product = m_unk0xc85f0[i].m_x;
+		m_transformedLightDirections[i].m_x = product;
+		product = m_lightDirections[i].m_x;
 		product *= m_unk0xc8450.m_m[1][0];
-		m_unk0xc8644[i].m_y = product;
-		product = m_unk0xc85f0[i].m_x;
+		m_transformedLightDirections[i].m_y = product;
+		product = m_lightDirections[i].m_x;
 		product *= m_unk0xc8450.m_m[2][0];
-		m_unk0xc8644[i].m_z = product;
+		m_transformedLightDirections[i].m_z = product;
 
 		product = m_unk0xc8450.m_m[0][1];
-		product *= m_unk0xc85f0[i].m_y;
-		m_unk0xc8644[i].m_x += product;
+		product *= m_lightDirections[i].m_y;
+		m_transformedLightDirections[i].m_x += product;
 		product = m_unk0xc8450.m_m[1][1];
-		product *= m_unk0xc85f0[i].m_y;
-		m_unk0xc8644[i].m_y += product;
+		product *= m_lightDirections[i].m_y;
+		m_transformedLightDirections[i].m_y += product;
 		product = m_unk0xc8450.m_m[2][1];
-		product *= m_unk0xc85f0[i].m_y;
-		m_unk0xc8644[i].m_z += product;
+		product *= m_lightDirections[i].m_y;
+		m_transformedLightDirections[i].m_z += product;
 
-		product = m_unk0xc85f0[i].m_z;
+		product = m_lightDirections[i].m_z;
 		product *= m_unk0xc8450.m_m[0][2];
-		m_unk0xc8644[i].m_x += product;
-		product = m_unk0xc85f0[i].m_z;
+		m_transformedLightDirections[i].m_x += product;
+		product = m_lightDirections[i].m_z;
 		product *= m_unk0xc8450.m_m[1][2];
-		m_unk0xc8644[i].m_y += product;
+		m_transformedLightDirections[i].m_y += product;
 		product = m_unk0xc8450.m_m[2][2];
-		product *= m_unk0xc85f0[i].m_z;
-		m_unk0xc8644[i].m_z += product;
+		product *= m_lightDirections[i].m_z;
+		m_transformedLightDirections[i].m_z += product;
 	}
 }
 
@@ -2450,17 +2453,17 @@ void GolD3DRenderDevice::ClearColorOverride()
 void GolD3DRenderDevice::ClearLights()
 {
 	GolRenderDevice::ClearLights();
-	m_unk0xc856c.m_red = 0xff;
-	m_unk0xc856c.m_grn = 0xff;
-	m_unk0xc856c.m_blu = 0xff;
-	m_unk0xc856c.m_alp = 0xff;
+	m_ambientLightColor.m_red = 0xff;
+	m_ambientLightColor.m_grn = 0xff;
+	m_ambientLightColor.m_blu = 0xff;
+	m_ambientLightColor.m_alp = 0xff;
 
 	if (m_drawCommand.m_material != NULL) {
 		GolMaterialColor color = m_drawCommand.m_material->GetAmbient();
-		m_unk0xc8570 = color.m_red & 0xff;
-		m_unk0xc8574 = color.m_grn & 0xff;
-		m_unk0xc8578 = color.m_blu & 0xff;
-		m_unk0xc857c = color.m_alp & 0xff;
+		m_ambientProductRed = color.m_red & 0xff;
+		m_ambientProductGrn = color.m_grn & 0xff;
+		m_ambientProductBlu = color.m_blu & 0xff;
+		m_ambientProductAlp = color.m_alp & 0xff;
 	}
 }
 
@@ -2468,20 +2471,23 @@ void GolD3DRenderDevice::ClearLights()
 void GolD3DRenderDevice::SetAmbient(const MaterialColor* p_param)
 {
 	GolRenderDevice::SetAmbient(p_param);
-	m_unk0xc856c = p_param->m_color;
+	m_ambientLightColor = p_param->m_color;
 
 	if (m_drawCommand.m_material != NULL) {
 		GolMaterialColor color = m_drawCommand.m_material->GetAmbient();
-		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_red & 0xff)) >> 8;
-		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_grn & 0xff)) >> 8;
-		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_blu & 0xff)) >> 8;
-		m_unk0xc857c = color.m_alp & 0xff;
+		m_ambientProductRed =
+			(static_cast<LegoU32>(m_ambientLightColor.m_red) * static_cast<LegoU32>(color.m_red & 0xff)) >> 8;
+		m_ambientProductGrn =
+			(static_cast<LegoU32>(m_ambientLightColor.m_grn) * static_cast<LegoU32>(color.m_grn & 0xff)) >> 8;
+		m_ambientProductBlu =
+			(static_cast<LegoU32>(m_ambientLightColor.m_blu) * static_cast<LegoU32>(color.m_blu & 0xff)) >> 8;
+		m_ambientProductAlp = color.m_alp & 0xff;
 	}
 	else {
-		m_unk0xc8570 = 0;
-		m_unk0xc8574 = 0;
-		m_unk0xc8578 = 0;
-		m_unk0xc857c = 0xff;
+		m_ambientProductRed = 0;
+		m_ambientProductGrn = 0;
+		m_ambientProductBlu = 0;
+		m_ambientProductAlp = 0xff;
 	}
 }
 
@@ -2498,8 +2504,8 @@ void GolD3DRenderDevice::AddLight(const Light* p_param)
 // FUNCTION: GOLDP 0x1000b0f0
 void GolD3DRenderDevice::SetLight(LegoU32 p_index, const Light* p_param)
 {
-	m_unk0xc8580[p_index] = p_param->m_color;
-	m_unk0xc85f0[p_index] = p_param->m_direction;
+	m_lightColors[p_index] = p_param->m_color;
+	m_lightDirections[p_index] = p_param->m_direction;
 
 	GolMaterialColor color;
 	if (m_drawCommand.m_material != NULL) {
@@ -2511,9 +2517,9 @@ void GolD3DRenderDevice::SetLight(LegoU32 p_index, const Light* p_param)
 		color.m_blu = 0;
 	}
 
-	m_unk0xc859c[p_index].m_red = ScaleColorChannel(color.m_red & 0xff, m_unk0xc8580[p_index].m_red);
-	m_unk0xc859c[p_index].m_grn = ScaleColorChannel(m_unk0xc8580[p_index].m_grn, color.m_grn & 0xff);
-	m_unk0xc859c[p_index].m_blu = ScaleColorChannel(m_unk0xc8580[p_index].m_blu, color.m_blu & 0xff);
+	m_lightColorProducts[p_index].m_red = ScaleColorChannel(color.m_red & 0xff, m_lightColors[p_index].m_red);
+	m_lightColorProducts[p_index].m_grn = ScaleColorChannel(m_lightColors[p_index].m_grn, color.m_grn & 0xff);
+	m_lightColorProducts[p_index].m_blu = ScaleColorChannel(m_lightColors[p_index].m_blu, color.m_blu & 0xff);
 }
 
 // FUNCTION: GOLDP 0x1000b1f0
@@ -2821,12 +2827,12 @@ void GolD3DRenderDevice::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	for (; position < positionEnd; position++) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
@@ -2866,12 +2872,12 @@ void GolD3DRenderDevice::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	for (; position < positionEnd; position++) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
@@ -2913,12 +2919,12 @@ void GolD3DRenderDevice::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	for (; position < positionEnd; position++) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * position->m_x;
@@ -2959,12 +2965,12 @@ void GolD3DRenderDevice::FUN_1000be20(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 
@@ -3064,12 +3070,12 @@ void GolD3DRenderDevice::FUN_1000bfb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat textureOffsetX = m_uvOffsetU;
@@ -3174,12 +3180,12 @@ void GolD3DRenderDevice::FUN_1000c160(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 
@@ -3272,12 +3278,12 @@ void GolD3DRenderDevice::FUN_1000c2d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	LegoU32 alpha = m_alpha << 24;
 	const GolMatrix4* matrix = m_currentMatrix;
@@ -3380,12 +3386,12 @@ void GolD3DRenderDevice::FUN_1000c470(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	LegoU32 alpha = m_alpha << 24;
 	const GolMatrix4* matrix = m_currentMatrix;
@@ -3492,15 +3498,15 @@ void GolD3DRenderDevice::FUN_1000c630(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
@@ -3659,15 +3665,15 @@ void GolD3DRenderDevice::FUN_1000c880(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
@@ -3832,14 +3838,14 @@ void GolD3DRenderDevice::FUN_1000caf0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32* color = m_sourceColors + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
@@ -3991,15 +3997,15 @@ void GolD3DRenderDevice::FUN_1000cd20(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
@@ -4161,15 +4167,15 @@ void GolD3DRenderDevice::FUN_1000cf90(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
@@ -4338,7 +4344,7 @@ void GolD3DRenderDevice::FUN_1000d210(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec3* normal = m_sourceNormals + p_firstVertex;
-	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
+	CommandVertex* vertex = m_commandVertices + p_outputFirst;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 
 	for (; position < positionEnd; position++, normal++, uv++, vertex++) {
@@ -4385,7 +4391,7 @@ void GolD3DRenderDevice::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
+	CommandVertex* vertex = m_commandVertices + p_outputFirst;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 
@@ -4432,7 +4438,7 @@ void GolD3DRenderDevice::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
+	CommandVertex* vertex = m_commandVertices + p_outputFirst;
 	LegoU32* color = m_sourceColors + p_firstVertex;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 
@@ -4480,7 +4486,7 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	{
 		const GolVec3* position = m_sourcePositions + p_firstVertex;
 		const GolVec3* positionEnd = position + p_vertexCount;
-		CommandVertex* commandVertex = m_unk0xc428c + p_outputFirst;
+		CommandVertex* commandVertex = m_commandVertices + p_outputFirst;
 		LegoU32* color = m_sourceColors + p_firstVertex;
 		const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 
@@ -4522,12 +4528,12 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_drawCommand.m_vertexCount = p_vertexCount;
 	m_renderState->ProcessVerticesPrelit(&m_drawCommand);
 
-	LegoU32 cacheIndex = m_unk0xc3848;
-	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	m_unk0xc3848 = cacheIndex + p_vertexCount;
-	CommandVertex* source = m_unk0xc428c + p_outputFirst;
+	LegoU32 cacheIndex = m_nextVertexIndex;
+	LegoU32 outputIndex = (cacheIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	m_nextVertexIndex = cacheIndex + p_vertexCount;
+	CommandVertex* source = m_commandVertices + p_outputFirst;
 	CommandVertex* sourceEnd = source + p_vertexCount;
 
 	for (; source < sourceEnd; source++, cache++, vertex++) {
@@ -4582,7 +4588,7 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	{
 		const GolVec3* position = m_sourcePositions + p_firstVertex;
 		const GolVec3* positionEnd = position + p_vertexCount;
-		CommandVertex* commandVertex = m_unk0xc428c + p_outputFirst;
+		CommandVertex* commandVertex = m_commandVertices + p_outputFirst;
 		const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 		LegoU32* color = m_sourceColors + p_firstVertex;
 
@@ -4624,12 +4630,12 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	m_drawCommand.m_vertexCount = p_vertexCount;
 	m_renderState->ProcessVerticesPrelit(&m_drawCommand);
 
-	LegoU32 cacheIndex = m_unk0xc3848;
-	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	m_unk0xc3848 = cacheIndex + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
-	CommandVertex* source = m_unk0xc428c + p_outputFirst;
+	LegoU32 cacheIndex = m_nextVertexIndex;
+	LegoU32 outputIndex = (cacheIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	m_nextVertexIndex = cacheIndex + p_vertexCount;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
+	CommandVertex* source = m_commandVertices + p_outputFirst;
 	CommandVertex* sourceEnd = source + p_vertexCount;
 
 	for (; source < sourceEnd; source++, cache++, vertex++, cacheIndex++) {
@@ -4683,12 +4689,12 @@ void GolD3DRenderDevice::FUN_1000e010(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
 	LegoU32 color = m_unk0xc83fc;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	const GolMatrix4* matrix = m_currentMatrix;
 
@@ -4779,13 +4785,13 @@ void GolD3DRenderDevice::FUN_1000e180(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32 color = m_unk0xc83fc;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertices = m_tlVertices + outputIndex;
 	D3DTLVERTEX* vertex = vertices;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 	const GolMatrix4* matrix = m_currentMatrix;
 
 	__asm {
@@ -4880,14 +4886,14 @@ void GolD3DRenderDevice::FUN_1000e310(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32 color = m_unk0xc83fc;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
 	LegoFloat scaleY = m_viewportMetrics[1];
@@ -5035,15 +5041,15 @@ void GolD3DRenderDevice::FUN_1000e540(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32 color = m_unk0xc83fc;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
 	LegoFloat scaleY = m_viewportMetrics[1];
@@ -5200,13 +5206,13 @@ void GolD3DRenderDevice::FUN_1000e790(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	const GolVec3* positionEnd = position + p_vertexCount;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
 	LegoU32 color = m_unk0xc83fc;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertices = m_tlVertices + outputIndex;
 	D3DTLVERTEX* vertex = vertices;
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat textureOffsetX = m_uvOffsetU;
 	LegoFloat textureOffsetY = m_uvOffsetV;
@@ -5307,15 +5313,15 @@ void GolD3DRenderDevice::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* position = m_sourcePositions + p_firstVertex;
 	const GolVec3* positionEnd = position + p_vertexCount;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
 	LegoU32 color = m_unk0xc83fc;
 	const GolVec2* uv = m_sourceTexCoords + p_firstVertex;
-	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
-	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	LegoU32 outputIndex = (m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask);
+	D3DTLVERTEX* vertex = m_tlVertices + outputIndex;
 	VertexCacheEntry* cacheEnd = cache + p_vertexCount;
-	cache->m_unk0x10 = m_unk0xc3848;
+	cache->m_unk0x10 = m_nextVertexIndex;
 	LegoU32 savedCacheIndex = cacheEnd->m_unk0x10;
-	m_unk0xc3848 += p_vertexCount;
+	m_nextVertexIndex += p_vertexCount;
 	const GolMatrix4* matrix = m_currentMatrix;
 	LegoFloat scaleX = m_viewportMetrics[0];
 	LegoFloat scaleY = m_viewportMetrics[1];
@@ -5491,9 +5497,9 @@ void GolD3DRenderDevice::FUN_1000ebd0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		LegoU32 index2 = triangle[2];
 		LegoU32 index0 = triangle[0];
 		LegoU32 index1 = triangle[1];
-		D3DTLVERTEX* vertex2 = &m_unk0x348[index2];
-		D3DTLVERTEX* vertex1 = &m_unk0x348[index1];
-		D3DTLVERTEX* vertex0 = &m_unk0x348[index0];
+		D3DTLVERTEX* vertex2 = &m_tlVertices[index2];
+		D3DTLVERTEX* vertex1 = &m_tlVertices[index1];
+		D3DTLVERTEX* vertex0 = &m_tlVertices[index0];
 
 		if (((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx)) -
 				((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) <
@@ -5508,7 +5514,7 @@ void GolD3DRenderDevice::FUN_1000ebd0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_d3dDevice->DrawIndexedPrimitive(
 			D3DPT_TRIANGLELIST,
 			D3DFVF_TLVERTEX,
-			m_unk0x348,
+			m_tlVertices,
 			p_lastVertex + 1,
 			m_unk0xc4c20,
 			indices - m_unk0xc4c20,
@@ -5528,9 +5534,9 @@ void GolD3DRenderDevice::FUN_1000ece0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		LegoU32 index2 = triangle[2];
 		LegoU32 index0 = triangle[0];
 		LegoU32 index1 = triangle[1];
-		D3DTLVERTEX* vertex2 = &m_unk0x348[index2];
-		D3DTLVERTEX* vertex1 = &m_unk0x348[index1];
-		D3DTLVERTEX* vertex0 = &m_unk0x348[index0];
+		D3DTLVERTEX* vertex2 = &m_tlVertices[index2];
+		D3DTLVERTEX* vertex1 = &m_tlVertices[index1];
+		D3DTLVERTEX* vertex0 = &m_tlVertices[index0];
 
 		if (((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx)) -
 				((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) >
@@ -5545,7 +5551,7 @@ void GolD3DRenderDevice::FUN_1000ece0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_d3dDevice->DrawIndexedPrimitive(
 			D3DPT_TRIANGLELIST,
 			D3DFVF_TLVERTEX,
-			m_unk0x348,
+			m_tlVertices,
 			p_lastVertex + 1,
 			m_unk0xc4c20,
 			indices - m_unk0xc4c20,
@@ -5603,18 +5609,18 @@ void GolD3DRenderDevice::FUN_1000edf0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		LegoU32 index1 = triangle[1];
 		*lastIndex = triangle[2];
 
-		cacheA[0] = &m_unk0xc38ec[index0];
-		cacheA[1] = &m_unk0xc38ec[index1];
-		cacheA[2] = &m_unk0xc38ec[index2];
+		cacheA[0] = &m_vertexCache[index0];
+		cacheA[1] = &m_vertexCache[index1];
+		cacheA[2] = &m_vertexCache[index2];
 
 		if (cacheA[0]->m_clipFlags & cacheA[1]->m_clipFlags & cacheA[2]->m_clipFlags) {
 			continue;
 		}
 
-		vertexA[0] = &m_unk0x348[index0];
+		vertexA[0] = &m_tlVertices[index0];
 		LegoU32 clipFlags = cacheA[0]->m_clipFlags | cacheA[1]->m_clipFlags | cacheA[2]->m_clipFlags;
-		vertexA[1] = &m_unk0x348[index1];
-		vertexA[2] = &m_unk0x348[index2];
+		vertexA[1] = &m_tlVertices[index1];
+		vertexA[2] = &m_tlVertices[index2];
 
 		if (!clipFlags) {
 			if ((vertexA[2]->sy - vertexA[1]->sy) * (vertexA[0]->sx - vertexA[1]->sx) -
@@ -5632,8 +5638,8 @@ void GolD3DRenderDevice::FUN_1000edf0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		VertexCacheEntry** cacheIn = cacheA;
 		D3DTLVERTEX** vertexOut = vertexB;
 		VertexCacheEntry** cacheOut = cacheB;
-		VertexCacheEntry* clipCache = &m_unk0xc38ec[c_firstClipVertex];
-		D3DTLVERTEX* clipVertex = &m_unk0x348[c_firstClipVertex];
+		VertexCacheEntry* clipCache = &m_vertexCache[c_firstClipVertex];
+		D3DTLVERTEX* clipVertex = &m_tlVertices[c_firstClipVertex];
 		LegoU32 vertexCount = 3;
 		LegoU32 outputCount = 0;
 
@@ -6025,7 +6031,7 @@ void GolD3DRenderDevice::FUN_1000edf0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_d3dDevice->DrawIndexedPrimitive(
 			D3DPT_TRIANGLELIST,
 			D3DFVF_TLVERTEX,
-			m_unk0x348,
+			m_tlVertices,
 			p_lastVertex + 1,
 			m_unk0xc4c20,
 			directIndices - m_unk0xc4c20,
@@ -6049,7 +6055,7 @@ void GolD3DRenderDevice::FUN_1000edf0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 // FUNCTION: GOLDP 0x10010330
 void GolD3DRenderDevice::FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32)
 {
-	LegoU32 commandIndex = m_unk0xc86f4;
+	LegoU32 commandIndex = m_triangleCommandCount;
 	if (commandIndex + p_triangleCount >= static_cast<LegoU32>(m_unk0xc86f8)) {
 		return;
 	}
@@ -6057,19 +6063,19 @@ void GolD3DRenderDevice::FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangl
 	LegoU8* triangle = m_sourceIndices + (p_firstTriangle * 4);
 	LegoU8* triangleEnd = m_sourceIndices + ((p_firstTriangle + p_triangleCount) * 4);
 	p_triangleCount = 0;
-	GolSoftwareRenderer::TriangleCommand* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::TriangleCommand* command = m_triangleCommands + commandIndex;
 	GolSoftwareRenderer::TriangleCommand* commandStart = command;
-	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
-	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
+	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_maxRasterizerIndex);
+	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_rasterizerMaskBase);
 
 	while (triangle < triangleEnd) {
-		command->m_vertexIndex0 = m_unk0xc3850[triangle[2]];
-		command->m_vertexIndex1 = m_unk0xc3850[triangle[1]];
-		command->m_vertexIndex2 = m_unk0xc3850[triangle[0]];
+		command->m_vertexIndex0 = m_vertexMap[triangle[2]];
+		command->m_vertexIndex1 = m_vertexMap[triangle[1]];
+		command->m_vertexIndex2 = m_vertexMap[triangle[0]];
 
-		D3DTLVERTEX* vertex0 = &m_unk0x348[command->m_vertexIndex0];
-		D3DTLVERTEX* vertex1 = &m_unk0x348[command->m_vertexIndex1];
-		D3DTLVERTEX* vertex2 = &m_unk0x348[command->m_vertexIndex2];
+		D3DTLVERTEX* vertex0 = &m_tlVertices[command->m_vertexIndex0];
+		D3DTLVERTEX* vertex1 = &m_tlVertices[command->m_vertexIndex1];
+		D3DTLVERTEX* vertex2 = &m_tlVertices[command->m_vertexIndex2];
 		LegoFloat area = ((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) -
 						 ((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx));
 
@@ -6089,7 +6095,7 @@ void GolD3DRenderDevice::FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangl
 
 		triangle += 4;
 		p_triangleCount++;
-		command->m_rasterizer = m_unk0xc83b4.m_unk0x00[p_firstTriangle];
+		command->m_rasterizer = m_rasterizerPipelines.m_pipelines[p_firstTriangle];
 		command++;
 	}
 
@@ -6104,13 +6110,13 @@ void GolD3DRenderDevice::FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_flatDepth);
 	}
 
-	m_unk0xc86f4 += p_triangleCount;
+	m_triangleCommandCount += p_triangleCount;
 }
 
 // FUNCTION: GOLDP 0x10010500
 void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32)
 {
-	LegoU32 commandIndex = m_unk0xc86f4;
+	LegoU32 commandIndex = m_triangleCommandCount;
 	if (commandIndex + p_triangleCount >= static_cast<LegoU32>(m_unk0xc86f8)) {
 		return;
 	}
@@ -6118,19 +6124,19 @@ void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangl
 	LegoU8* triangle = m_sourceIndices + (p_firstTriangle * 4);
 	LegoU8* triangleEnd = m_sourceIndices + ((p_firstTriangle + p_triangleCount) * 4);
 	p_triangleCount = 0;
-	GolSoftwareRenderer::TriangleCommand* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::TriangleCommand* command = m_triangleCommands + commandIndex;
 	GolSoftwareRenderer::TriangleCommand* commandStart = command;
-	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
-	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
+	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_maxRasterizerIndex);
+	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_rasterizerMaskBase);
 
 	while (triangle < triangleEnd) {
-		command->m_vertexIndex0 = m_unk0xc3850[triangle[0]];
-		command->m_vertexIndex1 = m_unk0xc3850[triangle[1]];
-		command->m_vertexIndex2 = m_unk0xc3850[triangle[2]];
+		command->m_vertexIndex0 = m_vertexMap[triangle[0]];
+		command->m_vertexIndex1 = m_vertexMap[triangle[1]];
+		command->m_vertexIndex2 = m_vertexMap[triangle[2]];
 
-		D3DTLVERTEX* vertex0 = &m_unk0x348[command->m_vertexIndex0];
-		D3DTLVERTEX* vertex1 = &m_unk0x348[command->m_vertexIndex1];
-		D3DTLVERTEX* vertex2 = &m_unk0x348[command->m_vertexIndex2];
+		D3DTLVERTEX* vertex0 = &m_tlVertices[command->m_vertexIndex0];
+		D3DTLVERTEX* vertex1 = &m_tlVertices[command->m_vertexIndex1];
+		D3DTLVERTEX* vertex2 = &m_tlVertices[command->m_vertexIndex2];
 		LegoFloat area = ((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) -
 						 ((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx));
 
@@ -6150,7 +6156,7 @@ void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangl
 
 		triangle += 4;
 		p_triangleCount++;
-		command->m_rasterizer = m_unk0xc83b4.m_unk0x00[p_firstTriangle];
+		command->m_rasterizer = m_rasterizerPipelines.m_pipelines[p_firstTriangle];
 		command++;
 	}
 
@@ -6165,7 +6171,7 @@ void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_flatDepth);
 	}
 
-	m_unk0xc86f4 += p_triangleCount;
+	m_triangleCommandCount += p_triangleCount;
 }
 
 // FUNCTION: GOLDP 0x100106d0
@@ -6200,10 +6206,10 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		lastIndex = &indexA[2];
 	}
 
-	GolSoftwareRenderer::TriangleCommand* commandStart = &m_unk0xc86f0[m_unk0xc86f4];
+	GolSoftwareRenderer::TriangleCommand* commandStart = &m_triangleCommands[m_triangleCommandCount];
 	GolSoftwareRenderer::TriangleCommand* command = commandStart;
-	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
-	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
+	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_maxRasterizerIndex);
+	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_rasterizerMaskBase);
 	LegoU8* triangle = &m_sourceIndices[p_firstTriangle * 4];
 	LegoU8* triangleEnd = &m_sourceIndices[(p_firstTriangle + p_triangleCount) * 4];
 	p_triangleCount = 0;
@@ -6213,9 +6219,9 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		indexA[1] = triangle[1];
 		*lastIndex = triangle[2];
 
-		flagsA[0] = m_unk0xc38ec[indexA[0]].m_clipFlags;
-		flagsA[1] = m_unk0xc38ec[indexA[1]].m_clipFlags;
-		flagsA[2] = m_unk0xc38ec[indexA[2]].m_clipFlags;
+		flagsA[0] = m_vertexCache[indexA[0]].m_clipFlags;
+		flagsA[1] = m_vertexCache[indexA[1]].m_clipFlags;
+		flagsA[2] = m_vertexCache[indexA[2]].m_clipFlags;
 
 		if (flagsA[0] & flagsA[1] & flagsA[2]) {
 			continue;
@@ -6224,13 +6230,13 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		LegoU32 clipFlags = flagsA[0] | flagsA[1] | flagsA[2];
 
 		if (!clipFlags) {
-			VertexCacheEntry& cache0 = m_unk0xc38ec[indexA[0]];
-			VertexCacheEntry& cache1 = m_unk0xc38ec[indexA[1]];
-			VertexCacheEntry& cache2 = m_unk0xc38ec[indexA[2]];
+			VertexCacheEntry& cache0 = m_vertexCache[indexA[0]];
+			VertexCacheEntry& cache1 = m_vertexCache[indexA[1]];
+			VertexCacheEntry& cache2 = m_vertexCache[indexA[2]];
 			LegoFloat area = ComputeScreenArea(
-				m_unk0x348[cache0.m_unk0x10],
-				m_unk0x348[cache1.m_unk0x10],
-				m_unk0x348[cache2.m_unk0x10]
+				m_tlVertices[cache0.m_unk0x10],
+				m_tlVertices[cache1.m_unk0x10],
+				m_tlVertices[cache2.m_unk0x10]
 			);
 
 			if (area <= 0.0f) {
@@ -6251,7 +6257,7 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 			}
 
 			p_triangleCount++;
-			command->m_rasterizer = m_unk0xc83b4.m_unk0x00[rasterizerIndex];
+			command->m_rasterizer = m_rasterizerPipelines.m_pipelines[rasterizerIndex];
 			command++;
 			continue;
 		}
@@ -6273,15 +6279,15 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 
 				if (outside ^ previousOutside) {
 					indicesOut[outputCount] = nextClip;
-					VertexCacheEntry& previousCache = m_unk0xc38ec[indicesIn[previous]];
-					D3DTLVERTEX& previousVertex = m_unk0x348[previousCache.m_unk0x10];
-					VertexCacheEntry& cache = m_unk0xc38ec[indicesIn[i]];
+					VertexCacheEntry& previousCache = m_vertexCache[indicesIn[previous]];
+					D3DTLVERTEX& previousVertex = m_tlVertices[previousCache.m_unk0x10];
+					VertexCacheEntry& cache = m_vertexCache[indicesIn[i]];
 					LegoFloat t = (previousCache.m_z - 0.0f) / (previousCache.m_z - cache.m_z);
-					D3DTLVERTEX& vertex = m_unk0x348[cache.m_unk0x10];
-					VertexCacheEntry& newCache = m_unk0xc38ec[nextClip++];
-					newCache.m_unk0x10 = m_unk0xc3848;
-					D3DTLVERTEX& newVertex = m_unk0x348[m_unk0xc3848];
-					m_unk0xc3848++;
+					D3DTLVERTEX& vertex = m_tlVertices[cache.m_unk0x10];
+					VertexCacheEntry& newCache = m_vertexCache[nextClip++];
+					newCache.m_unk0x10 = m_nextVertexIndex;
+					D3DTLVERTEX& newVertex = m_tlVertices[m_nextVertexIndex];
+					m_nextVertexIndex++;
 					newCache.m_z = 0.0f;
 					newCache.m_w = nearClip;
 					newCache.m_x = (cache.m_x - previousCache.m_x) * t + previousCache.m_x;
@@ -6328,16 +6334,16 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 				LegoU32 outside = flagsIn[i] & c_clipFar;
 
 				if (outside ^ previousOutside) {
-					VertexCacheEntry& previousCache = m_unk0xc38ec[indicesIn[previous]];
+					VertexCacheEntry& previousCache = m_vertexCache[indicesIn[previous]];
 					indicesOut[outputCount] = nextClip;
-					VertexCacheEntry& cache = m_unk0xc38ec[indicesIn[i]];
+					VertexCacheEntry& cache = m_vertexCache[indicesIn[i]];
 					LegoFloat t = (previousCache.m_z - farClip) / (previousCache.m_z - cache.m_z);
-					D3DTLVERTEX& previousVertex = m_unk0x348[previousCache.m_unk0x10];
-					D3DTLVERTEX& vertex = m_unk0x348[cache.m_unk0x10];
-					VertexCacheEntry& newCache = m_unk0xc38ec[nextClip++];
-					newCache.m_unk0x10 = m_unk0xc3848;
-					D3DTLVERTEX& newVertex = m_unk0x348[m_unk0xc3848];
-					m_unk0xc3848++;
+					D3DTLVERTEX& previousVertex = m_tlVertices[previousCache.m_unk0x10];
+					D3DTLVERTEX& vertex = m_tlVertices[cache.m_unk0x10];
+					VertexCacheEntry& newCache = m_vertexCache[nextClip++];
+					newCache.m_unk0x10 = m_nextVertexIndex;
+					D3DTLVERTEX& newVertex = m_tlVertices[m_nextVertexIndex];
+					m_nextVertexIndex++;
 					newCache.m_z = farClip;
 					newCache.m_w = farClip;
 					newCache.m_x = (cache.m_x - previousCache.m_x) * t + previousCache.m_x;
@@ -6384,16 +6390,16 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 
 				if (outside ^ previousOutside) {
 					indicesOut[outputCount] = nextClip;
-					VertexCacheEntry& previousCache = m_unk0xc38ec[indicesIn[previous]];
-					VertexCacheEntry& cache = m_unk0xc38ec[indicesIn[i]];
+					VertexCacheEntry& previousCache = m_vertexCache[indicesIn[previous]];
+					VertexCacheEntry& cache = m_vertexCache[indicesIn[i]];
 					LegoFloat distance = previousCache.m_x;
 					LegoFloat t = distance / (distance - cache.m_x);
-					D3DTLVERTEX& previousVertex = m_unk0x348[previousCache.m_unk0x10];
-					D3DTLVERTEX& vertex = m_unk0x348[cache.m_unk0x10];
-					VertexCacheEntry& newCache = m_unk0xc38ec[nextClip++];
-					newCache.m_unk0x10 = m_unk0xc3848;
-					D3DTLVERTEX& newVertex = m_unk0x348[m_unk0xc3848];
-					m_unk0xc3848++;
+					D3DTLVERTEX& previousVertex = m_tlVertices[previousCache.m_unk0x10];
+					D3DTLVERTEX& vertex = m_tlVertices[cache.m_unk0x10];
+					VertexCacheEntry& newCache = m_vertexCache[nextClip++];
+					newCache.m_unk0x10 = m_nextVertexIndex;
+					D3DTLVERTEX& newVertex = m_tlVertices[m_nextVertexIndex];
+					m_nextVertexIndex++;
 					newCache.m_x = 0.0f;
 					newCache.m_y = (cache.m_y - previousCache.m_y) * t + previousCache.m_y;
 					newCache.m_z = (cache.m_z - previousCache.m_z) * t + previousCache.m_z;
@@ -6439,16 +6445,16 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 
 				if (outside ^ previousOutside) {
 					indicesOut[outputCount] = nextClip;
-					VertexCacheEntry& previousCache = m_unk0xc38ec[indicesIn[previous]];
-					VertexCacheEntry& cache = m_unk0xc38ec[indicesIn[i]];
+					VertexCacheEntry& previousCache = m_vertexCache[indicesIn[previous]];
+					VertexCacheEntry& cache = m_vertexCache[indicesIn[i]];
 					LegoFloat t = (previousCache.m_x - previousCache.m_w) /
 								  ((cache.m_w - previousCache.m_w) - (cache.m_x - previousCache.m_x));
-					D3DTLVERTEX& previousVertex = m_unk0x348[previousCache.m_unk0x10];
-					D3DTLVERTEX& vertex = m_unk0x348[cache.m_unk0x10];
-					VertexCacheEntry& newCache = m_unk0xc38ec[nextClip++];
-					newCache.m_unk0x10 = m_unk0xc3848;
-					D3DTLVERTEX& newVertex = m_unk0x348[m_unk0xc3848];
-					m_unk0xc3848++;
+					D3DTLVERTEX& previousVertex = m_tlVertices[previousCache.m_unk0x10];
+					D3DTLVERTEX& vertex = m_tlVertices[cache.m_unk0x10];
+					VertexCacheEntry& newCache = m_vertexCache[nextClip++];
+					newCache.m_unk0x10 = m_nextVertexIndex;
+					D3DTLVERTEX& newVertex = m_tlVertices[m_nextVertexIndex];
+					m_nextVertexIndex++;
 
 					newCache.m_y = (cache.m_y - previousCache.m_y) * t + previousCache.m_y;
 					newCache.m_z = (cache.m_z - previousCache.m_z) * t + previousCache.m_z;
@@ -6495,15 +6501,15 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 
 				if (outside ^ previousOutside) {
 					indicesOut[outputCount] = nextClip;
-					VertexCacheEntry& previousCache = m_unk0xc38ec[indicesIn[previous]];
-					VertexCacheEntry& cache = m_unk0xc38ec[indicesIn[i]];
+					VertexCacheEntry& previousCache = m_vertexCache[indicesIn[previous]];
+					VertexCacheEntry& cache = m_vertexCache[indicesIn[i]];
 					LegoFloat t = (previousCache.m_y - 0.0f) / (previousCache.m_y - cache.m_y);
-					D3DTLVERTEX& previousVertex = m_unk0x348[previousCache.m_unk0x10];
-					D3DTLVERTEX& vertex = m_unk0x348[cache.m_unk0x10];
-					VertexCacheEntry& newCache = m_unk0xc38ec[nextClip++];
-					newCache.m_unk0x10 = m_unk0xc3848;
-					D3DTLVERTEX& newVertex = m_unk0x348[m_unk0xc3848];
-					m_unk0xc3848++;
+					D3DTLVERTEX& previousVertex = m_tlVertices[previousCache.m_unk0x10];
+					D3DTLVERTEX& vertex = m_tlVertices[cache.m_unk0x10];
+					VertexCacheEntry& newCache = m_vertexCache[nextClip++];
+					newCache.m_unk0x10 = m_nextVertexIndex;
+					D3DTLVERTEX& newVertex = m_tlVertices[m_nextVertexIndex];
+					m_nextVertexIndex++;
 					newCache.m_y = 0.0f;
 					newCache.m_x = (cache.m_x - previousCache.m_x) * t + previousCache.m_x;
 					newCache.m_z = (cache.m_z - previousCache.m_z) * t + previousCache.m_z;
@@ -6549,16 +6555,16 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 
 				if (outside ^ previousOutside) {
 					indicesOut[outputCount] = nextClip;
-					VertexCacheEntry& previousCache = m_unk0xc38ec[indicesIn[previous]];
-					VertexCacheEntry& cache = m_unk0xc38ec[indicesIn[i]];
+					VertexCacheEntry& previousCache = m_vertexCache[indicesIn[previous]];
+					VertexCacheEntry& cache = m_vertexCache[indicesIn[i]];
 					LegoFloat t = (previousCache.m_y - previousCache.m_w) /
 								  ((cache.m_w - previousCache.m_w) - (cache.m_y - previousCache.m_y));
-					D3DTLVERTEX& previousVertex = m_unk0x348[previousCache.m_unk0x10];
-					D3DTLVERTEX& vertex = m_unk0x348[cache.m_unk0x10];
-					VertexCacheEntry& newCache = m_unk0xc38ec[nextClip++];
-					newCache.m_unk0x10 = m_unk0xc3848;
-					D3DTLVERTEX& newVertex = m_unk0x348[m_unk0xc3848];
-					m_unk0xc3848++;
+					D3DTLVERTEX& previousVertex = m_tlVertices[previousCache.m_unk0x10];
+					D3DTLVERTEX& vertex = m_tlVertices[cache.m_unk0x10];
+					VertexCacheEntry& newCache = m_vertexCache[nextClip++];
+					newCache.m_unk0x10 = m_nextVertexIndex;
+					D3DTLVERTEX& newVertex = m_tlVertices[m_nextVertexIndex];
+					m_nextVertexIndex++;
 
 					newCache.m_x = (cache.m_x - previousCache.m_x) * t + previousCache.m_x;
 					newCache.m_z = (cache.m_z - previousCache.m_z) * t + previousCache.m_z;
@@ -6597,20 +6603,20 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		}
 
 		if (vertexCount >= 3) {
-			VertexCacheEntry& cache0 = m_unk0xc38ec[indicesIn[0]];
+			VertexCacheEntry& cache0 = m_vertexCache[indicesIn[0]];
 			LegoFloat area = ComputeScreenArea(
-				m_unk0x348[cache0.m_unk0x10],
-				m_unk0x348[m_unk0xc38ec[indicesIn[1]].m_unk0x10],
-				m_unk0x348[m_unk0xc38ec[indicesIn[2]].m_unk0x10]
+				m_tlVertices[cache0.m_unk0x10],
+				m_tlVertices[m_vertexCache[indicesIn[1]].m_unk0x10],
+				m_tlVertices[m_vertexCache[indicesIn[2]].m_unk0x10]
 			);
 
 			if (area > 0.0f) {
 				for (LegoS32 i = 1; i < vertexCount - 1; i++) {
 					command->m_vertexIndex0 = cache0.m_unk0x10;
-					command->m_vertexIndex1 = m_unk0xc38ec[indicesIn[i + 1]].m_unk0x10;
-					command->m_vertexIndex2 = m_unk0xc38ec[indicesIn[i]].m_unk0x10;
+					command->m_vertexIndex1 = m_vertexCache[indicesIn[i + 1]].m_unk0x10;
+					command->m_vertexIndex2 = m_vertexCache[indicesIn[i]].m_unk0x10;
 					p_triangleCount++;
-					command->m_rasterizer = m_unk0xc83b4.m_unk0x00[0];
+					command->m_rasterizer = m_rasterizerPipelines.m_pipelines[0];
 					command++;
 				}
 			}
@@ -6624,20 +6630,20 @@ void GolD3DRenderDevice::FUN_100106d0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_flatDepth);
 	}
 
-	m_unk0xc86f4 += p_triangleCount;
+	m_triangleCommandCount += p_triangleCount;
 }
 
 // FUNCTION: GOLDP 0x10011e60
 void GolD3DRenderDevice::FUN_10011e60(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 vertexCount = p_vertexCount;
-	LegoU32 color = m_unk0xc857c;
-	LegoU32 red = m_unk0xc8570;
+	LegoU32 color = m_ambientProductAlp;
+	LegoU32 red = m_ambientProductRed;
 	color <<= 8;
-	LegoU32 blue = m_unk0xc8578;
+	LegoU32 blue = m_ambientProductBlu;
 	LegoU32 firstVertex = p_firstVertex;
 	color |= red;
-	LegoU32 green = m_unk0xc8574;
+	LegoU32 green = m_ambientProductGrn;
 	color <<= 8;
 	color |= green;
 	LegoU32 endIndex = firstVertex + vertexCount;
@@ -6662,25 +6668,25 @@ void GolD3DRenderDevice::FUN_10011ed0(undefined4 p_outputFirst, undefined4 p_fir
 	LegoU32* color = m_sourceColors + firstVertex;
 	LegoU32* colorEnd = m_sourceColors + endIndex;
 	const GolVec3* normal = m_sourceNormals + firstVertex;
-	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
-	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
-	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
-	LegoU32 alpha = m_unk0xc857c;
+	LegoS32 baseRed = static_cast<LegoS32>(m_ambientProductRed);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_ambientProductGrn);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_ambientProductBlu);
+	LegoU32 alpha = m_ambientProductAlp;
 
 	for (; color < colorEnd; color++, normal++) {
-		LegoFloat intensity = normal->m_z * m_unk0xc8644[0].m_z;
-		intensity += normal->m_y * m_unk0xc8644[0].m_y;
-		intensity += normal->m_x * m_unk0xc8644[0].m_x;
+		LegoFloat intensity = normal->m_z * m_transformedLightDirections[0].m_z;
+		intensity += normal->m_y * m_transformedLightDirections[0].m_y;
+		intensity += normal->m_x * m_transformedLightDirections[0].m_x;
 
-		LegoFloat redProduct = m_unk0xc859c[0].m_red;
+		LegoFloat redProduct = m_lightColorProducts[0].m_red;
 		redProduct *= intensity;
 		LegoS32 red = baseRed - static_cast<LegoS32>(redProduct);
 
-		LegoFloat greenProduct = m_unk0xc859c[0].m_grn;
+		LegoFloat greenProduct = m_lightColorProducts[0].m_grn;
 		greenProduct *= intensity;
 		LegoS32 green = baseGreen - static_cast<LegoS32>(greenProduct);
 
-		LegoFloat blueProduct = m_unk0xc859c[0].m_blu;
+		LegoFloat blueProduct = m_lightColorProducts[0].m_blu;
 		blueProduct *= intensity;
 		LegoS32 blue = baseBlue - static_cast<LegoS32>(blueProduct);
 
@@ -6725,45 +6731,45 @@ void GolD3DRenderDevice::FUN_10012030(undefined4 p_outputFirst, undefined4 p_fir
 	LegoU32* color = m_sourceColors + firstVertex;
 	LegoU32* colorEnd = m_sourceColors + endIndex;
 	const GolVec3* normal = m_sourceNormals + firstVertex;
-	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
-	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
-	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
-	LegoU32 alpha = m_unk0xc857c;
+	LegoS32 baseRed = static_cast<LegoS32>(m_ambientProductRed);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_ambientProductGrn);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_ambientProductBlu);
+	LegoU32 alpha = m_ambientProductAlp;
 
 	for (; color < colorEnd; color++, normal++) {
 		LegoS32 red = baseRed;
 		LegoS32 green = baseGreen;
 		LegoS32 blue = baseBlue;
 
-		LegoFloat intensity = normal->m_z * m_unk0xc8644[0].m_z;
-		intensity += normal->m_y * m_unk0xc8644[0].m_y;
-		intensity += normal->m_x * m_unk0xc8644[0].m_x;
+		LegoFloat intensity = normal->m_z * m_transformedLightDirections[0].m_z;
+		intensity += normal->m_y * m_transformedLightDirections[0].m_y;
+		intensity += normal->m_x * m_transformedLightDirections[0].m_x;
 
-		LegoFloat redProduct = m_unk0xc859c[0].m_red;
+		LegoFloat redProduct = m_lightColorProducts[0].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		LegoFloat greenProduct = m_unk0xc859c[0].m_grn;
+		LegoFloat greenProduct = m_lightColorProducts[0].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		LegoFloat blueProduct = m_unk0xc859c[0].m_blu;
+		LegoFloat blueProduct = m_lightColorProducts[0].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[1].m_y;
-		intensity += normal->m_z * m_unk0xc8644[1].m_z;
-		intensity += normal->m_x * m_unk0xc8644[1].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[1].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[1].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[1].m_x;
 
-		redProduct = m_unk0xc859c[1].m_red;
+		redProduct = m_lightColorProducts[1].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[1].m_grn;
+		greenProduct = m_lightColorProducts[1].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[1].m_blu;
+		blueProduct = m_lightColorProducts[1].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
@@ -6808,66 +6814,66 @@ void GolD3DRenderDevice::FUN_100121e0(undefined4 p_outputFirst, undefined4 p_fir
 	LegoU32* color = m_sourceColors + firstVertex;
 	LegoU32* colorEnd = m_sourceColors + endIndex;
 	const GolVec3* normal = m_sourceNormals + firstVertex;
-	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
-	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
-	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
-	LegoU32 alpha = m_unk0xc857c;
+	LegoS32 baseRed = static_cast<LegoS32>(m_ambientProductRed);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_ambientProductGrn);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_ambientProductBlu);
+	LegoU32 alpha = m_ambientProductAlp;
 
 	for (; color < colorEnd; color++, normal++) {
 		LegoS32 red = baseRed;
 		LegoS32 green = baseGreen;
 		LegoS32 blue = baseBlue;
 
-		LegoFloat intensity = normal->m_z * m_unk0xc8644[0].m_z;
-		intensity += normal->m_y * m_unk0xc8644[0].m_y;
-		intensity += normal->m_x * m_unk0xc8644[0].m_x;
+		LegoFloat intensity = normal->m_z * m_transformedLightDirections[0].m_z;
+		intensity += normal->m_y * m_transformedLightDirections[0].m_y;
+		intensity += normal->m_x * m_transformedLightDirections[0].m_x;
 
-		LegoFloat redProduct = m_unk0xc859c[0].m_red;
+		LegoFloat redProduct = m_lightColorProducts[0].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		LegoFloat greenProduct = m_unk0xc859c[0].m_grn;
+		LegoFloat greenProduct = m_lightColorProducts[0].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		LegoFloat blueProduct = m_unk0xc859c[0].m_blu;
+		LegoFloat blueProduct = m_lightColorProducts[0].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[1].m_y;
-		intensity += normal->m_z * m_unk0xc8644[1].m_z;
-		intensity += normal->m_x * m_unk0xc8644[1].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[1].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[1].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[1].m_x;
 
-		redProduct = m_unk0xc859c[1].m_red;
+		redProduct = m_lightColorProducts[1].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[1].m_grn;
+		greenProduct = m_lightColorProducts[1].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[1].m_blu;
+		blueProduct = m_lightColorProducts[1].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[2].m_z;
+		intensity = m_transformedLightDirections[2].m_z;
 		intensity *= normal->m_z;
-		LegoFloat normalProduct = m_unk0xc8644[2].m_y;
+		LegoFloat normalProduct = m_transformedLightDirections[2].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[2].m_x;
+		normalProduct = m_transformedLightDirections[2].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[2].m_red;
+		redProduct = m_lightColorProducts[2].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[2].m_grn;
+		greenProduct = m_lightColorProducts[2].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[2].m_blu;
+		blueProduct = m_lightColorProducts[2].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
@@ -6912,87 +6918,87 @@ void GolD3DRenderDevice::FUN_100123e0(undefined4 p_outputFirst, undefined4 p_fir
 	LegoU32* color = m_sourceColors + firstVertex;
 	LegoU32* colorEnd = m_sourceColors + endIndex;
 	const GolVec3* normal = m_sourceNormals + firstVertex;
-	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
-	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
-	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
-	LegoU32 alpha = m_unk0xc857c;
+	LegoS32 baseRed = static_cast<LegoS32>(m_ambientProductRed);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_ambientProductGrn);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_ambientProductBlu);
+	LegoU32 alpha = m_ambientProductAlp;
 
 	for (; color < colorEnd; color++, normal++) {
 		LegoS32 red = baseRed;
 		LegoS32 green = baseGreen;
 		LegoS32 blue = baseBlue;
 
-		LegoFloat intensity = normal->m_z * m_unk0xc8644[0].m_z;
-		intensity += normal->m_y * m_unk0xc8644[0].m_y;
-		intensity += normal->m_x * m_unk0xc8644[0].m_x;
+		LegoFloat intensity = normal->m_z * m_transformedLightDirections[0].m_z;
+		intensity += normal->m_y * m_transformedLightDirections[0].m_y;
+		intensity += normal->m_x * m_transformedLightDirections[0].m_x;
 
-		LegoFloat redProduct = m_unk0xc859c[0].m_red;
+		LegoFloat redProduct = m_lightColorProducts[0].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		LegoFloat greenProduct = m_unk0xc859c[0].m_grn;
+		LegoFloat greenProduct = m_lightColorProducts[0].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		LegoFloat blueProduct = m_unk0xc859c[0].m_blu;
+		LegoFloat blueProduct = m_lightColorProducts[0].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[1].m_y;
-		intensity += normal->m_z * m_unk0xc8644[1].m_z;
-		intensity += normal->m_x * m_unk0xc8644[1].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[1].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[1].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[1].m_x;
 
-		redProduct = m_unk0xc859c[1].m_red;
+		redProduct = m_lightColorProducts[1].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[1].m_grn;
+		greenProduct = m_lightColorProducts[1].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[1].m_blu;
+		blueProduct = m_lightColorProducts[1].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[2].m_z;
+		intensity = m_transformedLightDirections[2].m_z;
 		intensity *= normal->m_z;
-		LegoFloat normalProduct = m_unk0xc8644[2].m_y;
+		LegoFloat normalProduct = m_transformedLightDirections[2].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[2].m_x;
+		normalProduct = m_transformedLightDirections[2].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[2].m_red;
+		redProduct = m_lightColorProducts[2].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[2].m_grn;
+		greenProduct = m_lightColorProducts[2].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[2].m_blu;
+		blueProduct = m_lightColorProducts[2].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[3].m_z;
+		intensity = m_transformedLightDirections[3].m_z;
 		intensity *= normal->m_z;
-		normalProduct = m_unk0xc8644[3].m_y;
+		normalProduct = m_transformedLightDirections[3].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[3].m_x;
+		normalProduct = m_transformedLightDirections[3].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[3].m_red;
+		redProduct = m_lightColorProducts[3].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[3].m_grn;
+		greenProduct = m_lightColorProducts[3].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[3].m_blu;
+		blueProduct = m_lightColorProducts[3].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
@@ -7037,108 +7043,108 @@ void GolD3DRenderDevice::FUN_10012640(undefined4 p_outputFirst, undefined4 p_fir
 	LegoU32* color = m_sourceColors + firstVertex;
 	LegoU32* colorEnd = m_sourceColors + endIndex;
 	const GolVec3* normal = m_sourceNormals + firstVertex;
-	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
-	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
-	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
-	LegoU32 alpha = m_unk0xc857c;
+	LegoS32 baseRed = static_cast<LegoS32>(m_ambientProductRed);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_ambientProductGrn);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_ambientProductBlu);
+	LegoU32 alpha = m_ambientProductAlp;
 
 	for (; color < colorEnd; color++, normal++) {
 		LegoS32 red = baseRed;
 		LegoS32 green = baseGreen;
 		LegoS32 blue = baseBlue;
 
-		LegoFloat intensity = normal->m_z * m_unk0xc8644[0].m_z;
-		intensity += normal->m_y * m_unk0xc8644[0].m_y;
-		intensity += normal->m_x * m_unk0xc8644[0].m_x;
+		LegoFloat intensity = normal->m_z * m_transformedLightDirections[0].m_z;
+		intensity += normal->m_y * m_transformedLightDirections[0].m_y;
+		intensity += normal->m_x * m_transformedLightDirections[0].m_x;
 
-		LegoFloat redProduct = m_unk0xc859c[0].m_red;
+		LegoFloat redProduct = m_lightColorProducts[0].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		LegoFloat greenProduct = m_unk0xc859c[0].m_grn;
+		LegoFloat greenProduct = m_lightColorProducts[0].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		LegoFloat blueProduct = m_unk0xc859c[0].m_blu;
+		LegoFloat blueProduct = m_lightColorProducts[0].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[1].m_y;
-		intensity += normal->m_z * m_unk0xc8644[1].m_z;
-		intensity += normal->m_x * m_unk0xc8644[1].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[1].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[1].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[1].m_x;
 
-		redProduct = m_unk0xc859c[1].m_red;
+		redProduct = m_lightColorProducts[1].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[1].m_grn;
+		greenProduct = m_lightColorProducts[1].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[1].m_blu;
+		blueProduct = m_lightColorProducts[1].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[2].m_z;
+		intensity = m_transformedLightDirections[2].m_z;
 		intensity *= normal->m_z;
-		LegoFloat normalProduct = m_unk0xc8644[2].m_y;
+		LegoFloat normalProduct = m_transformedLightDirections[2].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[2].m_x;
+		normalProduct = m_transformedLightDirections[2].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[2].m_red;
+		redProduct = m_lightColorProducts[2].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[2].m_grn;
+		greenProduct = m_lightColorProducts[2].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[2].m_blu;
+		blueProduct = m_lightColorProducts[2].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[3].m_z;
+		intensity = m_transformedLightDirections[3].m_z;
 		intensity *= normal->m_z;
-		normalProduct = m_unk0xc8644[3].m_y;
+		normalProduct = m_transformedLightDirections[3].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[3].m_x;
+		normalProduct = m_transformedLightDirections[3].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[3].m_red;
+		redProduct = m_lightColorProducts[3].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[3].m_grn;
+		greenProduct = m_lightColorProducts[3].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[3].m_blu;
+		blueProduct = m_lightColorProducts[3].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
 		intensity = normal->m_z;
-		intensity *= m_unk0xc8644[4].m_z;
-		normalProduct = m_unk0xc8644[4].m_y;
+		intensity *= m_transformedLightDirections[4].m_z;
+		normalProduct = m_transformedLightDirections[4].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[4].m_x;
+		normalProduct = m_transformedLightDirections[4].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[4].m_red;
+		redProduct = m_lightColorProducts[4].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[4].m_grn;
+		greenProduct = m_lightColorProducts[4].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[4].m_blu;
+		blueProduct = m_lightColorProducts[4].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
@@ -7183,124 +7189,124 @@ void GolD3DRenderDevice::FUN_100128f0(undefined4 p_outputFirst, undefined4 p_fir
 	LegoU32* color = m_sourceColors + firstVertex;
 	LegoU32* colorEnd = m_sourceColors + endIndex;
 	const GolVec3* normal = m_sourceNormals + firstVertex;
-	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
-	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
-	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
-	LegoU32 alpha = m_unk0xc857c;
+	LegoS32 baseRed = static_cast<LegoS32>(m_ambientProductRed);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_ambientProductGrn);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_ambientProductBlu);
+	LegoU32 alpha = m_ambientProductAlp;
 
 	for (; color < colorEnd; color++, normal++) {
 		LegoS32 red = baseRed;
 		LegoS32 green = baseGreen;
 		LegoS32 blue = baseBlue;
 
-		LegoFloat intensity = normal->m_z * m_unk0xc8644[0].m_z;
-		intensity += normal->m_y * m_unk0xc8644[0].m_y;
-		intensity += normal->m_x * m_unk0xc8644[0].m_x;
+		LegoFloat intensity = normal->m_z * m_transformedLightDirections[0].m_z;
+		intensity += normal->m_y * m_transformedLightDirections[0].m_y;
+		intensity += normal->m_x * m_transformedLightDirections[0].m_x;
 
-		LegoFloat redProduct = m_unk0xc859c[0].m_red;
+		LegoFloat redProduct = m_lightColorProducts[0].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		LegoFloat greenProduct = m_unk0xc859c[0].m_grn;
+		LegoFloat greenProduct = m_lightColorProducts[0].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		LegoFloat blueProduct = m_unk0xc859c[0].m_blu;
+		LegoFloat blueProduct = m_lightColorProducts[0].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[1].m_y;
-		intensity += normal->m_z * m_unk0xc8644[1].m_z;
-		intensity += normal->m_x * m_unk0xc8644[1].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[1].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[1].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[1].m_x;
 
-		redProduct = m_unk0xc859c[1].m_red;
+		redProduct = m_lightColorProducts[1].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[1].m_grn;
+		greenProduct = m_lightColorProducts[1].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[1].m_blu;
+		blueProduct = m_lightColorProducts[1].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[2].m_z;
+		intensity = m_transformedLightDirections[2].m_z;
 		intensity *= normal->m_z;
-		LegoFloat normalProduct = m_unk0xc8644[2].m_y;
+		LegoFloat normalProduct = m_transformedLightDirections[2].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[2].m_x;
+		normalProduct = m_transformedLightDirections[2].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[2].m_red;
+		redProduct = m_lightColorProducts[2].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[2].m_grn;
+		greenProduct = m_lightColorProducts[2].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[2].m_blu;
+		blueProduct = m_lightColorProducts[2].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[3].m_z;
+		intensity = m_transformedLightDirections[3].m_z;
 		intensity *= normal->m_z;
-		normalProduct = m_unk0xc8644[3].m_y;
+		normalProduct = m_transformedLightDirections[3].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[3].m_x;
+		normalProduct = m_transformedLightDirections[3].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[3].m_red;
+		redProduct = m_lightColorProducts[3].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[3].m_grn;
+		greenProduct = m_lightColorProducts[3].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[3].m_blu;
+		blueProduct = m_lightColorProducts[3].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
 		intensity = normal->m_z;
-		intensity *= m_unk0xc8644[4].m_z;
-		normalProduct = m_unk0xc8644[4].m_y;
+		intensity *= m_transformedLightDirections[4].m_z;
+		normalProduct = m_transformedLightDirections[4].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[4].m_x;
+		normalProduct = m_transformedLightDirections[4].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[4].m_red;
+		redProduct = m_lightColorProducts[4].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[4].m_grn;
+		greenProduct = m_lightColorProducts[4].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[4].m_blu;
+		blueProduct = m_lightColorProducts[4].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[5].m_y;
-		intensity += normal->m_z * m_unk0xc8644[5].m_z;
-		intensity += normal->m_x * m_unk0xc8644[5].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[5].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[5].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[5].m_x;
 
-		redProduct = m_unk0xc859c[5].m_red;
+		redProduct = m_lightColorProducts[5].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[5].m_grn;
+		greenProduct = m_lightColorProducts[5].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[5].m_blu;
+		blueProduct = m_lightColorProducts[5].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
@@ -7345,145 +7351,145 @@ void GolD3DRenderDevice::FUN_10012bf0(undefined4 p_outputFirst, undefined4 p_fir
 	LegoU32* color = m_sourceColors + firstVertex;
 	LegoU32* colorEnd = m_sourceColors + endIndex;
 	const GolVec3* normal = m_sourceNormals + firstVertex;
-	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
-	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
-	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
-	LegoU32 alpha = m_unk0xc857c;
+	LegoS32 baseRed = static_cast<LegoS32>(m_ambientProductRed);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_ambientProductGrn);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_ambientProductBlu);
+	LegoU32 alpha = m_ambientProductAlp;
 
 	for (; color < colorEnd; color++, normal++) {
 		LegoS32 red = baseRed;
 		LegoS32 green = baseGreen;
 		LegoS32 blue = baseBlue;
 
-		LegoFloat intensity = normal->m_z * m_unk0xc8644[0].m_z;
-		intensity += normal->m_y * m_unk0xc8644[0].m_y;
-		intensity += normal->m_x * m_unk0xc8644[0].m_x;
+		LegoFloat intensity = normal->m_z * m_transformedLightDirections[0].m_z;
+		intensity += normal->m_y * m_transformedLightDirections[0].m_y;
+		intensity += normal->m_x * m_transformedLightDirections[0].m_x;
 
-		LegoFloat redProduct = m_unk0xc859c[0].m_red;
+		LegoFloat redProduct = m_lightColorProducts[0].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		LegoFloat greenProduct = m_unk0xc859c[0].m_grn;
+		LegoFloat greenProduct = m_lightColorProducts[0].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		LegoFloat blueProduct = m_unk0xc859c[0].m_blu;
+		LegoFloat blueProduct = m_lightColorProducts[0].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[1].m_y;
-		intensity += normal->m_z * m_unk0xc8644[1].m_z;
-		intensity += normal->m_x * m_unk0xc8644[1].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[1].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[1].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[1].m_x;
 
-		redProduct = m_unk0xc859c[1].m_red;
+		redProduct = m_lightColorProducts[1].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[1].m_grn;
+		greenProduct = m_lightColorProducts[1].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[1].m_blu;
+		blueProduct = m_lightColorProducts[1].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[2].m_z;
+		intensity = m_transformedLightDirections[2].m_z;
 		intensity *= normal->m_z;
-		LegoFloat normalProduct = m_unk0xc8644[2].m_y;
+		LegoFloat normalProduct = m_transformedLightDirections[2].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[2].m_x;
+		normalProduct = m_transformedLightDirections[2].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[2].m_red;
+		redProduct = m_lightColorProducts[2].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[2].m_grn;
+		greenProduct = m_lightColorProducts[2].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[2].m_blu;
+		blueProduct = m_lightColorProducts[2].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[3].m_z;
+		intensity = m_transformedLightDirections[3].m_z;
 		intensity *= normal->m_z;
-		normalProduct = m_unk0xc8644[3].m_y;
+		normalProduct = m_transformedLightDirections[3].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[3].m_x;
+		normalProduct = m_transformedLightDirections[3].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[3].m_red;
+		redProduct = m_lightColorProducts[3].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[3].m_grn;
+		greenProduct = m_lightColorProducts[3].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[3].m_blu;
+		blueProduct = m_lightColorProducts[3].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
 		intensity = normal->m_z;
-		intensity *= m_unk0xc8644[4].m_z;
-		normalProduct = m_unk0xc8644[4].m_y;
+		intensity *= m_transformedLightDirections[4].m_z;
+		normalProduct = m_transformedLightDirections[4].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[4].m_x;
+		normalProduct = m_transformedLightDirections[4].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[4].m_red;
+		redProduct = m_lightColorProducts[4].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[4].m_grn;
+		greenProduct = m_lightColorProducts[4].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[4].m_blu;
+		blueProduct = m_lightColorProducts[4].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = normal->m_y * m_unk0xc8644[5].m_y;
-		intensity += normal->m_z * m_unk0xc8644[5].m_z;
-		intensity += normal->m_x * m_unk0xc8644[5].m_x;
+		intensity = normal->m_y * m_transformedLightDirections[5].m_y;
+		intensity += normal->m_z * m_transformedLightDirections[5].m_z;
+		intensity += normal->m_x * m_transformedLightDirections[5].m_x;
 
-		redProduct = m_unk0xc859c[5].m_red;
+		redProduct = m_lightColorProducts[5].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[5].m_grn;
+		greenProduct = m_lightColorProducts[5].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[5].m_blu;
+		blueProduct = m_lightColorProducts[5].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
-		intensity = m_unk0xc8644[6].m_z;
+		intensity = m_transformedLightDirections[6].m_z;
 		intensity *= normal->m_z;
-		normalProduct = m_unk0xc8644[6].m_y;
+		normalProduct = m_transformedLightDirections[6].m_y;
 		normalProduct *= normal->m_y;
 		intensity += normalProduct;
-		normalProduct = m_unk0xc8644[6].m_x;
+		normalProduct = m_transformedLightDirections[6].m_x;
 		normalProduct *= normal->m_x;
 		intensity += normalProduct;
 
-		redProduct = m_unk0xc859c[6].m_red;
+		redProduct = m_lightColorProducts[6].m_red;
 		redProduct *= intensity;
 		red -= static_cast<LegoS32>(redProduct);
 
-		greenProduct = m_unk0xc859c[6].m_grn;
+		greenProduct = m_lightColorProducts[6].m_grn;
 		greenProduct *= intensity;
 		green -= static_cast<LegoS32>(greenProduct);
 
-		blueProduct = m_unk0xc859c[6].m_blu;
+		blueProduct = m_lightColorProducts[6].m_blu;
 		blueProduct *= intensity;
 		blue -= static_cast<LegoS32>(blueProduct);
 
@@ -7613,11 +7619,12 @@ void GolD3DRenderDevice::FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* source = m_sourcePositions + p_firstVertex;
 	const GolVec3* sourceEnd = source + p_vertexCount;
-	D3DTLVERTEX* vertex = m_unk0x348 + ((m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c));
-	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	D3DTLVERTEX* vertex =
+		m_tlVertices + ((m_nextVertexIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask));
+	LegoU16* vertexMap = m_vertexMap + p_outputFirst;
 	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
-	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
-	m_unk0xc3848 += p_vertexCount;
+	vertexMap[0] = static_cast<LegoU16>(m_nextVertexIndex);
+	m_nextVertexIndex += p_vertexCount;
 
 	for (; source < sourceEnd;) {
 		vertex->sx = m_currentMatrix->m_m[0][0] * source->m_x;
@@ -7657,10 +7664,10 @@ void GolD3DRenderDevice::FUN_100132f0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 {
 	const GolVec3* source = m_sourcePositions + p_firstVertex;
 	const GolVec3* sourceEnd = source + p_vertexCount;
-	LegoU32 cacheIndex = m_unk0xc3848;
-	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
-	D3DTLVERTEX* vertex = m_unk0x348 + ((cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c));
-	m_unk0xc3848 = cacheIndex + p_vertexCount;
+	LegoU32 cacheIndex = m_nextVertexIndex;
+	VertexCacheEntry* cache = m_vertexCache + p_outputFirst;
+	D3DTLVERTEX* vertex = m_tlVertices + ((cacheIndex & m_vertexIndexMask) + (p_outputFirst & ~m_vertexIndexMask));
+	m_nextVertexIndex = cacheIndex + p_vertexCount;
 
 	for (; source < sourceEnd; source++, cache++, vertex++, cacheIndex++) {
 		cache->m_x = m_currentMatrix->m_m[0][0] * source->m_x;

@@ -32,7 +32,7 @@ public:
 
 	// SIZE 0x10
 	struct RasterizerPipelineSet {
-		GolSoftwareRenderer::RasterizerPipeline* m_unk0x00[4]; // 0x00
+		GolSoftwareRenderer::RasterizerPipeline* m_pipelines[4]; // 0x00
 	};
 
 	// SIZE 0x20
@@ -212,7 +212,7 @@ private:
 	void ApplyMaterialHw(GolMaterial*);
 	void ApplyMaterialSw(GolMaterial*);
 	void SetCurrentTexture(GolTexture*);
-	void FUN_1000acf0(LegoU32 p_index);
+	void SetCurrentMatrixIndex(LegoU32 p_index);
 	void FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData);
 	void SetLight(LegoU32 p_index, const Light* p_param);
 	void FUN_1000b4a0();
@@ -265,94 +265,94 @@ private:
 	static DrawTriangleFunction g_drawTriangleLitTable[8];
 	static DrawTriangleFunction g_drawTriangleTable[64];
 
-	GolDrawDPState* m_drawState;                                                   // 0x140
-	LPDIRECT3DDEVICE3 m_d3dDevice;                                                 // 0x144
-	D3DDEVICEDESC m_d3dDeviceDesc;                                                 // 0x148
-	LPDIRECT3DVIEWPORT3 m_d3dViewport;                                             // 0x244
-	D3DVIEWPORT2 m_viewportParams;                                                 // 0x248
-	D3DMATERIAL m_materialParams;                                                  // 0x274
-	LPDIRECT3DMATERIAL3 m_backgroundMaterial;                                      // 0x2c4
-	D3DMATERIALHANDLE m_backgroundMaterialHandle;                                  // 0x2c8
-	ColorRGBA m_clearColor;                                                        // 0x2cc
-	LegoU32 m_clearPixelValue;                                                     // 0x2d0
-	GolSoftwareMaterial m_unk0x2d4;                                                // 0x2d4
-	GolRenderTarget* m_primaryRenderTarget;                                        // 0x304
-	GolRenderTarget* m_renderTargetInfo;                                           // 0x308
-	GolD3DRenderSurface* m_renderSurfaces;                                         // 0x30c
-	GolDepthBuffer m_depthBuffer;                                                  // 0x310
-	D3DTLVERTEX m_unk0x348[25000];                                                 // 0x348
-	LegoU32 m_unk0xc3848;                                                          // 0xc3848
-	LegoU32 m_unk0xc384c;                                                          // 0xc384c
-	LegoU16 m_unk0xc3850[(0xc38ec - 0xc3850) / sizeof(LegoU16)];                   // 0xc3850
-	VertexCacheEntry m_unk0xc38ec[(0xc426c - 0xc38ec) / sizeof(VertexCacheEntry)]; // 0xc38ec
-	undefined m_unk0xc426c[0xc428c - 0xc426c];                                     // 0xc426c
-	CommandVertex m_unk0xc428c[(0xc4c0c - 0xc428c) / sizeof(CommandVertex)];       // 0xc428c
-	GolVec3* m_sourcePositions;                                                    // 0xc4c0c
-	GolVec2* m_sourceTexCoords;                                                    // 0xc4c10
-	LegoU32* m_sourceColors;                                                       // 0xc4c14
-	LegoU8* m_sourceIndices;                                                       // 0xc4c18
-	GolVec3* m_sourceNormals;                                                      // 0xc4c1c
-	LegoU16 m_unk0xc4c20[(0xc53a0 - 0xc4c20) / sizeof(LegoU16)];                   // 0xc4c20
-	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)];           // 0xc53a0
-	LegoFloat m_uvOffsetU;                                                         // 0xc83a0
-	LegoFloat m_uvOffsetV;                                                         // 0xc83a4
-	GolTexture* m_currentTexture;                                                  // 0xc83a8
-	undefined4 m_unk0xc83ac;                                                       // 0xc83ac
-	undefined4 m_unk0xc83b0;                                                       // 0xc83b0
-	RasterizerPipelineSet m_unk0xc83b4;                                            // 0xc83b4
-	undefined4 m_unk0xc83c4;                                                       // 0xc83c4
-	undefined4 m_activeMaterialFlags;                                              // 0xc83c8
-	undefined4 m_forcedMaterialFlags;                                              // 0xc83cc
-	undefined4 m_activeAlphaFunc;                                                  // 0xc83d0
-	undefined4 m_activeAlphaRef;                                                   // 0xc83d4
-	undefined4 m_activeSrcBlend;                                                   // 0xc83d8
-	undefined4 m_activeDestBlend;                                                  // 0xc83dc
-	LegoU32 m_alpha;                                                               // 0xc83e0
-	LegoBool32 m_unk0xc83e4;                                                       // 0xc83e4
-	LegoBool32 m_unk0xc83e8;                                                       // 0xc83e8
-	undefined4 m_unk0xc83ec;                                                       // 0xc83ec
-	undefined4 m_colorKeyEnabled;                                                  // 0xc83f0
-	undefined4 m_uvOffsetEnabled;                                                  // 0xc83f4
-	LegoBool32 m_unk0xc83f8;                                                       // 0xc83f8
-	LegoU32 m_unk0xc83fc;                                                          // 0xc83fc
-	LegoFloat m_viewportMetrics[4];                                                // 0xc8400
-	GolMatrix4 m_modelMatrix;                                                      // 0xc8410
-	GolMatrix4 m_unk0xc8450;                                                       // 0xc8450
-	GolMatrix4* m_viewProjectionMatrix;                                            // 0xc8490
-	GolMatrix4* m_viewScreenProjectionMatrix;                                      // 0xc8494
-	GolMatrix4 m_unk0xc8498[1];                                                    // 0xc8498
-	GolMatrix4 m_unk0xc84d8;                                                       // 0xc84d8
-	GolMatrix4* m_currentMatrix;                                                   // 0xc8518
-	undefined4 m_unk0xc851c;                                                       // 0xc851c
-	GolSceneNode* m_currentSceneNode;                                              // 0xc8520
-	GolD3DRenderState* m_renderState;                                              // 0xc8524
-	undefined4 m_stateBeginPending;                                                // 0xc8528
-	LegoFloat m_currentScale;                                                      // 0xc852c
-	GolD3DRenderState::DrawCommand m_drawCommand;                                  // 0xc8530
-	GolD3DRenderState::MaterialCommand m_materialCommand;                          // 0xc854c
-	LegoBool32 m_unk0xc8568;                                                       // 0xc8568
-	ColorRGBA m_unk0xc856c;                                                        // 0xc856c
-	undefined4 m_unk0xc8570;                                                       // 0xc8570
-	undefined4 m_unk0xc8574;                                                       // 0xc8574
-	undefined4 m_unk0xc8578;                                                       // 0xc8578
-	undefined4 m_unk0xc857c;                                                       // 0xc857c
-	ColorRGBA m_unk0xc8580[7];                                                     // 0xc8580
-	FColorRGB m_unk0xc859c[7];                                                     // 0xc859c
-	GolVec3 m_unk0xc85f0[7];                                                       // 0xc85f0
-	GolVec3 m_unk0xc8644[7];                                                       // 0xc8644
-	GolSoftwareRenderer m_softwareRenderer;                                        // 0xc8698
-	GolSoftwareRenderer::TriangleCommand* m_unk0xc86f0;                            // 0xc86f0
-	LegoS32 m_unk0xc86f4;                                                          // 0xc86f4
-	LegoS32 m_unk0xc86f8;                                                          // 0xc86f8
-	LegoFloat m_flatDepth;                                                         // 0xc86fc
-	undefined4 m_paletteMode;                                                      // 0xc8700
-	undefined4 m_defaultMipmapCount;                                               // 0xc8704
-	D3DBLEND m_srcBlendOps[11];                                                    // 0xc8708
-	D3DBLEND m_destBlendOps[11];                                                   // 0xc8734
-	DrawTriangleFunction m_drawTriangleFn0;                                        // 0xc8760
-	DrawTriangleFunction m_drawTriangleFn1;                                        // 0xc8764
-	DrawTriangleFunction m_drawTriangleFn2;                                        // 0xc8768
-	void (GolD3DRenderDevice::*m_applyMaterialFn)(GolMaterial*);                   // 0xc876c
+	GolDrawDPState* m_drawState;                                                    // 0x140
+	LPDIRECT3DDEVICE3 m_d3dDevice;                                                  // 0x144
+	D3DDEVICEDESC m_d3dDeviceDesc;                                                  // 0x148
+	LPDIRECT3DVIEWPORT3 m_d3dViewport;                                              // 0x244
+	D3DVIEWPORT2 m_viewportParams;                                                  // 0x248
+	D3DMATERIAL m_materialParams;                                                   // 0x274
+	LPDIRECT3DMATERIAL3 m_backgroundMaterial;                                       // 0x2c4
+	D3DMATERIALHANDLE m_backgroundMaterialHandle;                                   // 0x2c8
+	ColorRGBA m_clearColor;                                                         // 0x2cc
+	LegoU32 m_clearPixelValue;                                                      // 0x2d0
+	GolSoftwareMaterial m_unk0x2d4;                                                 // 0x2d4
+	GolRenderTarget* m_primaryRenderTarget;                                         // 0x304
+	GolRenderTarget* m_renderTargetInfo;                                            // 0x308
+	GolD3DRenderSurface* m_renderSurfaces;                                          // 0x30c
+	GolDepthBuffer m_depthBuffer;                                                   // 0x310
+	D3DTLVERTEX m_tlVertices[25000];                                                // 0x348
+	LegoU32 m_nextVertexIndex;                                                      // 0xc3848
+	LegoU32 m_vertexIndexMask;                                                      // 0xc384c
+	LegoU16 m_vertexMap[(0xc38ec - 0xc3850) / sizeof(LegoU16)];                     // 0xc3850
+	VertexCacheEntry m_vertexCache[(0xc426c - 0xc38ec) / sizeof(VertexCacheEntry)]; // 0xc38ec
+	undefined m_unk0xc426c[0xc428c - 0xc426c];                                      // 0xc426c
+	CommandVertex m_commandVertices[(0xc4c0c - 0xc428c) / sizeof(CommandVertex)];   // 0xc428c
+	GolVec3* m_sourcePositions;                                                     // 0xc4c0c
+	GolVec2* m_sourceTexCoords;                                                     // 0xc4c10
+	LegoU32* m_sourceColors;                                                        // 0xc4c14
+	LegoU8* m_sourceIndices;                                                        // 0xc4c18
+	GolVec3* m_sourceNormals;                                                       // 0xc4c1c
+	LegoU16 m_unk0xc4c20[(0xc53a0 - 0xc4c20) / sizeof(LegoU16)];                    // 0xc4c20
+	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)];            // 0xc53a0
+	LegoFloat m_uvOffsetU;                                                          // 0xc83a0
+	LegoFloat m_uvOffsetV;                                                          // 0xc83a4
+	GolTexture* m_currentTexture;                                                   // 0xc83a8
+	undefined4 m_maxRasterizerIndex;                                                // 0xc83ac
+	undefined4 m_rasterizerMaskBase;                                                // 0xc83b0
+	RasterizerPipelineSet m_rasterizerPipelines;                                    // 0xc83b4
+	undefined4 m_unk0xc83c4;                                                        // 0xc83c4
+	undefined4 m_activeMaterialFlags;                                               // 0xc83c8
+	undefined4 m_forcedMaterialFlags;                                               // 0xc83cc
+	undefined4 m_activeAlphaFunc;                                                   // 0xc83d0
+	undefined4 m_activeAlphaRef;                                                    // 0xc83d4
+	undefined4 m_activeSrcBlend;                                                    // 0xc83d8
+	undefined4 m_activeDestBlend;                                                   // 0xc83dc
+	LegoU32 m_alpha;                                                                // 0xc83e0
+	LegoBool32 m_unk0xc83e4;                                                        // 0xc83e4
+	LegoBool32 m_unk0xc83e8;                                                        // 0xc83e8
+	undefined4 m_unk0xc83ec;                                                        // 0xc83ec
+	undefined4 m_colorKeyEnabled;                                                   // 0xc83f0
+	undefined4 m_uvOffsetEnabled;                                                   // 0xc83f4
+	LegoBool32 m_unk0xc83f8;                                                        // 0xc83f8
+	LegoU32 m_unk0xc83fc;                                                           // 0xc83fc
+	LegoFloat m_viewportMetrics[4];                                                 // 0xc8400
+	GolMatrix4 m_modelMatrix;                                                       // 0xc8410
+	GolMatrix4 m_unk0xc8450;                                                        // 0xc8450
+	GolMatrix4* m_viewProjectionMatrix;                                             // 0xc8490
+	GolMatrix4* m_viewScreenProjectionMatrix;                                       // 0xc8494
+	GolMatrix4 m_unk0xc8498[1];                                                     // 0xc8498
+	GolMatrix4 m_unk0xc84d8;                                                        // 0xc84d8
+	GolMatrix4* m_currentMatrix;                                                    // 0xc8518
+	undefined4 m_unk0xc851c;                                                        // 0xc851c
+	GolSceneNode* m_currentSceneNode;                                               // 0xc8520
+	GolD3DRenderState* m_renderState;                                               // 0xc8524
+	undefined4 m_stateBeginPending;                                                 // 0xc8528
+	LegoFloat m_currentScale;                                                       // 0xc852c
+	GolD3DRenderState::DrawCommand m_drawCommand;                                   // 0xc8530
+	GolD3DRenderState::MaterialCommand m_materialCommand;                           // 0xc854c
+	LegoBool32 m_unk0xc8568;                                                        // 0xc8568
+	ColorRGBA m_ambientLightColor;                                                  // 0xc856c
+	undefined4 m_ambientProductRed;                                                 // 0xc8570
+	undefined4 m_ambientProductGrn;                                                 // 0xc8574
+	undefined4 m_ambientProductBlu;                                                 // 0xc8578
+	undefined4 m_ambientProductAlp;                                                 // 0xc857c
+	ColorRGBA m_lightColors[7];                                                     // 0xc8580
+	FColorRGB m_lightColorProducts[7];                                              // 0xc859c
+	GolVec3 m_lightDirections[7];                                                   // 0xc85f0
+	GolVec3 m_transformedLightDirections[7];                                        // 0xc8644
+	GolSoftwareRenderer m_softwareRenderer;                                         // 0xc8698
+	GolSoftwareRenderer::TriangleCommand* m_triangleCommands;                       // 0xc86f0
+	LegoS32 m_triangleCommandCount;                                                 // 0xc86f4
+	LegoS32 m_unk0xc86f8;                                                           // 0xc86f8
+	LegoFloat m_flatDepth;                                                          // 0xc86fc
+	undefined4 m_paletteMode;                                                       // 0xc8700
+	undefined4 m_defaultMipmapCount;                                                // 0xc8704
+	D3DBLEND m_srcBlendOps[11];                                                     // 0xc8708
+	D3DBLEND m_destBlendOps[11];                                                    // 0xc8734
+	DrawTriangleFunction m_drawTriangleFn0;                                         // 0xc8760
+	DrawTriangleFunction m_drawTriangleFn1;                                         // 0xc8764
+	DrawTriangleFunction m_drawTriangleFn2;                                         // 0xc8768
+	void (GolD3DRenderDevice::*m_applyMaterialFn)(GolMaterial*);                    // 0xc876c
 };
 
 #endif // GOLD3DRENDERDEVICE_H

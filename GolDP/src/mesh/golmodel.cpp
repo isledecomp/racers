@@ -219,7 +219,7 @@ void GolModel::Draw(GolD3DRenderDevice* p_renderer, MaterialTable* p_materialTab
 			break;
 		}
 		case static_cast<LegoU32>(c_groupTypeMatrix):
-			p_renderer->FUN_1000acf0(groupData & c_materialMatrixIndexMask);
+			p_renderer->SetCurrentMatrixIndex(groupData & c_materialMatrixIndexMask);
 			break;
 		case static_cast<LegoU32>(c_groupTypeEnd):
 			return;

@@ -369,10 +369,9 @@ void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_model)
 
 	model = m_model;
 	m_indexBytes = destIndexBytes;
-	LegoU32 one = 1;
-	model->SetDirty(one);
+	model->SetDirty(TRUE);
 	model->GetMutableGroups()[0] = c_commandModelFlags;
-	m_groupIndex = one;
+	m_groupIndex = 1;
 }
 
 // FUNCTION: LEGORACERS 0x00414b30
@@ -453,11 +452,10 @@ void RaceDecalManager::Trail::Decal::SetOrientation(GolVec3* p_normal, GolVec3* 
 	GolVec3* normalized = &m_normal;
 	GolMath::NormalizeVector3(*p_normal, normalized);
 
-	LegoFloat dot = normalized->m_z;
+	LegoFloat dot =
+		((GOL_MUL(normalized->m_z, p_lengthAxis->m_z) + GOL_MUL(normalized->m_y, p_lengthAxis->m_y) +
+		  GOL_MUL(normalized->m_x, p_lengthAxis->m_x)));
 	GolVec3* perpendicular = &m_lengthAxis;
-	dot *= p_lengthAxis->m_z;
-	dot += normalized->m_y * p_lengthAxis->m_y;
-	dot += normalized->m_x * p_lengthAxis->m_x;
 
 	GolVec3 scaled;
 	scaled.m_x = dot * normalized->m_x;
@@ -508,6 +506,8 @@ void RaceDecalManager::Trail::Decal::ComputeProjection()
 	g_decalVAxisX = value;
 
 	value = m_widthAxis.m_y;
+	if (value == 0) {
+	}
 	value *= scaleX;
 	g_decalUAxisY = value;
 

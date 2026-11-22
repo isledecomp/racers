@@ -389,7 +389,8 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 					m_scaledCameraForward.m_y = forwardY;
 					LegoFloat forwardZ = cameraForward.m_z;
 					forwardZ *= scale;
-					m_scaledCameraForward.m_z = forwardZ;
+					LegoFloat& tmpRef0 = m_scaledCameraForward.m_z;
+					tmpRef0 = forwardZ;
 
 					m_materialCount = 0;
 					m_groupCount = 0;
@@ -507,13 +508,13 @@ void ParticleSystem::EmitQuad(Particle* p_particle)
 	upX *= 0.5f;
 	LegoFloat forwardX = m_scaledCameraForward.m_x;
 	forwardX *= 0.5f;
-	position.m_x -= upX + forwardX;
+	position.m_x -= (upX + forwardX);
 
 	LegoFloat upY = m_scaledCameraUp.m_y;
 	upY *= 0.5f;
 	LegoFloat forwardY = m_scaledCameraForward.m_y;
 	forwardY *= 0.5f;
-	position.m_y -= upY + forwardY;
+	position.m_y -= (upY + forwardY);
 
 	LegoFloat forwardZ = m_scaledCameraForward.m_z;
 	forwardZ *= 0.5f;

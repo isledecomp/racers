@@ -203,9 +203,9 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 
 		SoundVector position;
 		transform->GetPosition(&position);
-		position.m_x *= scale;
-		position.m_y *= scale;
-		position.m_z *= scale;
+		position.m_x = GOL_MUL(position.m_x, scale);
+		position.m_y = GOL_MUL(position.m_y, scale);
+		position.m_z = GOL_MUL(position.m_z, scale);
 
 		GolVec3 worldPosition;
 		m_ghostEntity->LocalToWorld(position, &worldPosition);

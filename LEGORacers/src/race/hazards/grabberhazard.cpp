@@ -171,6 +171,7 @@ void GrabberHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048e050
 void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
+	GolVec3 force;
 	LegoFloat frame = m_entity->GetActiveValue();
 	if (m_grabState == c_stateTwo) {
 		return;
@@ -207,20 +208,13 @@ void GrabberHazard::OnEvent(LegoEventQueue::CallbackData* p_data)
 			GetGrabPosition(&position);
 
 			GolVec3 racerPosition;
-			CarVisuals* racerField = &m_racer->m_visuals;
-			racerField->m_carEntity->GetPosition(&racerPosition);
+			m_racer->m_visuals.GetPosition(&racerPosition);
 
-			GolVec3 force;
 			force.m_x = position.m_x - racerPosition.m_x;
 			force.m_y = position.m_y - racerPosition.m_y;
 			force.m_z = 0.0f;
 			GolMath::NormalizeVector3(force, &force);
-			LegoFloat scale = m_pullStrength;
-			force.m_x = scale * force.m_x;
-			LegoFloat y = force.m_y;
-			force.m_y = y * scale;
-			LegoFloat z = force.m_z;
-			force.m_z = z * scale;
+			GolMath::ScaleVector3(&force, m_pullStrength, &force);
 			physics->StartExternalForce1(&force);
 		}
 

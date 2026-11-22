@@ -217,13 +217,10 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 		return;
 	}
 
-	m_shadowDecal.m_width = 13.0f;
-	m_shadowDecal.m_length = 13.0f;
-	m_shadowDecal.m_depth = 15.0f;
-	RaceDecalManager::Trail::Decal* shadowDecal = &m_shadowDecal;
-	shadowDecal->m_center.m_x = position.m_x;
-	shadowDecal->m_center.m_y = position.m_y;
-	shadowDecal->m_center.m_z = position.m_z;
+	m_shadowDecal.SetWidth(13.0f);
+	m_shadowDecal.SetLength(13.0f);
+	m_shadowDecal.SetDepth(15.0f);
+	m_shadowDecal.SetCenter(position);
 	m_shadowDecal.GetEntity().SetPrimaryMaterialTable(&m_shadowMaterialTable);
 
 	GolVec3 up;
@@ -233,8 +230,8 @@ void MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 	forward.m_x = 0.0f;
 	forward.m_y = 0.0f;
 	forward.m_z = -1.0f;
-	shadowDecal->SetOrientation(&forward, &up);
-	shadowDecal->Project(m_trackCollidable);
+	m_shadowDecal.SetOrientation(&forward, &up);
+	m_shadowDecal.Project(m_trackCollidable);
 
 	m_flags |= c_flagShadowVisible;
 }

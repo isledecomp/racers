@@ -24,6 +24,8 @@ public:
 	void UpdateWorldInverseInertia();
 	void UpdateAngularVelocity();
 
+	void SetCenterOfMassWorld(const GolVec3& p_center) { m_centerOfMassWorld = p_center; }
+
 	GolOrientedEntity* m_body;         // 0x004
 	GolVec3 m_velocity;                // 0x008
 	GolVec3 m_centerOfMassLocal;       // 0x014

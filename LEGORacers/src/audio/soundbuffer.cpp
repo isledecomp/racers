@@ -191,31 +191,26 @@ LegoBool32 SoundBuffer::CreateDirectSoundBuffer(LegoU32 p_bufferSize)
 // FUNCTION: LEGORACERS 0x0041b8d0
 LegoBool32 SoundBuffer::LoadSoundData(SoundData* p_data)
 {
-	if (!p_data) {
-		ReleaseDirectSoundBuffer();
-		return FALSE;
-	}
-
-	if (!p_data->GetData()) {
+	if (!p_data || !p_data->m_data) {
 		ReleaseDirectSoundBuffer();
 		return FALSE;
 	}
 
 	if (m_directSoundBuffer) {
-		if (m_soundData == p_data && m_channelCount == p_data->GetChannelCount() &&
-			m_bitsPerSample == p_data->GetBitsPerSample() &&
-			m_directSoundBufferSize == (p_data->GetDecodedSize() << p_data->GetShift())) {
+		if (m_soundData == p_data && m_channelCount == p_data->m_channelCount &&
+			m_bitsPerSample == p_data->m_bitsPerSample &&
+			m_directSoundBufferSize == (p_data->m_decodedSize << p_data->m_shift)) {
 			return TRUE;
 		}
 	}
 
-	m_channelCount = p_data->GetChannelCount();
-	m_bitsPerSample = p_data->GetBitsPerSample();
+	m_channelCount = p_data->m_channelCount;
+	m_bitsPerSample = p_data->m_bitsPerSample;
 
-	LegoS32 sampleRate = p_data->GetSampleRate() << p_data->GetShift();
+	LegoS32 sampleRate = p_data->m_sampleRate << p_data->m_shift;
 	m_sampleRate = (LegoFloat) sampleRate;
 
-	if (!CreateDirectSoundBuffer(p_data->GetDecodedSize() << p_data->GetShift())) {
+	if (!CreateDirectSoundBuffer(p_data->m_decodedSize << p_data->m_shift)) {
 		return FALSE;
 	}
 

@@ -169,16 +169,16 @@ void SpatialSoundInstance::UpdateSpatialFromNode(SoundNode* p_node)
 			SoundVector orientation = p_node->m_orientation;
 			LegoFloat dot = (orientation.m_z * relativePosition.m_z) + (orientation.m_y * relativePosition.m_y) +
 							(orientation.m_x * relativePosition.m_x);
-			LegoFloat panScale;
+			LegoFloat pan;
 			if (dot > 0.0f) {
-				panScale = g_negativePanScale;
+				pan = dot * g_negativePanScale;
+				pan *= dot / distanceSquared;
 			}
 			else {
-				panScale = g_positivePanScale;
+				pan = dot * g_positivePanScale;
+				pan *= dot / distanceSquared;
 			}
 
-			LegoFloat pan = dot * panScale;
-			pan *= dot / distanceSquared;
 			m_spatialPan = g_defaultSpatialPan + pan;
 
 			LegoFloat distance = sqrt(distanceSquared);
@@ -189,7 +189,10 @@ void SpatialSoundInstance::UpdateSpatialFromNode(SoundNode* p_node)
 				inverseDistance = -1.0f / distance;
 				nodeVelocity.m_y = p_node->m_velocity.m_y;
 				nodeVelocity.m_z = p_node->m_velocity.m_z;
-				GolVec3 relativeVelocity = m_velocity - nodeVelocity;
+				GolVec3 relativeVelocity;
+				relativeVelocity.m_x = m_velocity.m_x - nodeVelocity.m_x;
+				relativeVelocity.m_y = m_velocity.m_y - nodeVelocity.m_y;
+				relativeVelocity.m_z = m_velocity.m_z - nodeVelocity.m_z;
 				GolVec3 direction;
 				direction.m_x = relativePosition.m_x;
 				direction.m_x *= inverseDistance;
@@ -199,7 +202,7 @@ void SpatialSoundInstance::UpdateSpatialFromNode(SoundNode* p_node)
 				direction.m_z *= inverseDistance;
 				LegoFloat velocity = DotVectors(relativeVelocity, direction);
 
-				velocity = velocity > p_node->m_maxVelocity ? p_node->m_maxVelocity : velocity;
+				velocity = velocity > (p_node->m_maxVelocity) ? p_node->m_maxVelocity : velocity;
 
 				m_spatialFrequencyScale = m_frequencyScale * p_node->m_soundSpeed / (p_node->m_soundSpeed - velocity);
 			}

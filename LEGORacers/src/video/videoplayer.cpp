@@ -421,18 +421,13 @@ void VideoPlayer::Graph::ProcessEvent()
 	case EC_COMPLETE:
 		if (m_autoRewind) {
 			ResetPosition();
-			mediaEvent->Release();
-			return;
+			break;
 		}
-		break;
+		// fall through
 	case EC_USERABORT:
 	case EC_ERRORABORT:
+		StopPlayback();
 		break;
-	default:
-		mediaEvent->Release();
-		return;
 	}
-
-	StopPlayback();
 	mediaEvent->Release();
 }

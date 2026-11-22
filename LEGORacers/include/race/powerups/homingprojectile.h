@@ -24,6 +24,8 @@ public:
 	);
 	void StartHoming();
 	void ApplySpiral(LegoFloat p_elapsedSeconds, GolVec3* p_direction, GolVec3* p_position);
+	void SetMaxSpiralAmplitude(LegoFloat p_amplitude) { m_maxSpiralAmplitude = p_amplitude; }
+	void SetSpiralRate(LegoFloat p_rate) { m_spiralRate = p_rate; }
 
 protected:
 	friend class HomingMissileAction;

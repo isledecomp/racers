@@ -39,8 +39,8 @@ public:
 	void SetDirty(LegoBool32 p_dirty) { m_dirty = p_dirty; }
 	void SetRacerCount(LegoU32 p_racerCount)
 	{
-		m_dirty = 1;
 		m_state.m_racerCount = static_cast<LegoU8>(p_racerCount);
+		m_dirty = 1;
 	}
 	void SetMusicVolume(LegoU8 p_musicVolume)
 	{
@@ -59,8 +59,8 @@ public:
 	}
 	void SetLapCount(LegoU8 p_lapCount)
 	{
-		m_dirty = 1;
 		m_state.m_lapCount = static_cast<LegoU8>(p_lapCount);
+		m_dirty = 1;
 	}
 	void SetPlayer0SelectedRecordId(undefined4 p_recordId)
 	{

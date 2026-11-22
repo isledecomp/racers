@@ -129,6 +129,7 @@ public:
 	~CarVisuals();
 
 	GolAnimatedEntity* GetCarEntity() const { return m_carEntity; }
+	void GetPosition(GolVec3* p_position) { m_carEntity->GetPosition(p_position); }
 	void SetReactionFlags(LegoU32 p_flags) { m_reactionFlags |= p_flags; }
 
 	LegoU32 m_flags;                              // 0x000

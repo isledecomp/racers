@@ -45,6 +45,8 @@ public:
 	LegoU8* GetData() { return m_data; }
 
 private:
+	friend class SoundBuffer;
+
 	LegoBool m_loaded;      // 0x00
 	LegoU8 m_bitsPerSample; // 0x01
 	LegoU8 m_channelCount;  // 0x02

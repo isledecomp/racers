@@ -198,7 +198,9 @@ void GolModelEntity::ComputeBoundsFromModel(LegoU32 p_index)
 	LegoFloat scale = m_scale;
 	GolVec3 center = model->GetCenter();
 	LegoFloat radius = model->GetRadius();
-	center *= scale;
+	center.m_x = GOL_MUL(center.m_x, scale);
+	center.m_y = GOL_MUL(center.m_y, scale);
+	center.m_z *= scale;
 	LocalToWorld(center, &position);
 	SetBoundsCenterAndSpan(position);
 
@@ -213,8 +215,9 @@ void GolModelEntity::Update(LegoS32 p_elapsed)
 {
 	GolVec3 v;
 	GetPosition(&v);
-	LegoFloat f = static_cast<LegoFloat>(p_elapsed);
-	v += m_velocity * f;
+	GolVec3 delta;
+	GolMath::ScaleVector3(&m_velocity, static_cast<LegoFloat>(p_elapsed), &delta);
+	v += delta;
 	SetPosition(v);
 	m_radius = -1.0f;
 	if (m_textureScrollSpeedU != 0 || m_textureScrollSpeedV != 0) {

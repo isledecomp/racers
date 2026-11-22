@@ -85,7 +85,7 @@ void GolWorldEntityGroup::UpdateBounds()
 	}
 
 	LegoFloat scale = m_inverseCount;
-	offset.m_x = scale * offset.m_x;
+	offset.m_x = GOL_MUL(scale, offset.m_x);
 	LegoFloat scaledY = offset.m_y;
 	scaledY *= scale;
 	offset.m_y = scaledY;

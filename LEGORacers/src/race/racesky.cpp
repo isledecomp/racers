@@ -29,9 +29,6 @@ extern const LegoFloat g_raceSkyMaxFloat = FLT_MAX;
 // GLOBAL: LEGORACERS 0x004afddc
 extern const LegoFloat g_raceSkyDomeDepth = 40.0f;
 
-extern const LegoFloat g_unk0x004afde0;
-extern const LegoFloat g_twoPi;
-
 // GLOBAL: LEGORACERS 0x004b4764
 const LegoFloat g_raceSkyNegativeHalfPi = -1.5707964f;
 
@@ -450,7 +447,7 @@ void RaceSkyState::ApplyColors(
 // FUNCTION: LEGORACERS 0x0041d040
 void RaceSkyState::SetPosition(GolVec3* p_position)
 {
-	p_position->m_z -= g_unk0x004afde0 - m_heightOffset;
+	p_position->m_z -= 10.0f - m_heightOffset;
 	m_domeEntity.SetPosition(*p_position);
 	p_position->m_z += g_raceSkyDomeDepth - m_heightOffset;
 
@@ -515,7 +512,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 {
 	LegoU32 vertexIndex = 0;
 	LegoU32 triangleIndex = 0;
-	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
+	LegoFloat angleStep = 6.2831855f / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
 	LegoU32 ringCount;
 	if (p_params->m_hemisphere) {
 		ringCount = 1 - static_cast<LegoS32>(g_raceSkyNegativeHalfPi / angleStep);
@@ -747,7 +744,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 LegoU32 RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 {
 	LegoU32 triangleIndex = 0;
-	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
+	LegoFloat angleStep = 6.2831855f / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
 	LegoU32 ringCount;
 	if (p_params->m_hemisphere) {
 		ringCount = 1 - static_cast<LegoS32>(g_raceSkyNegativeHalfPi / angleStep);

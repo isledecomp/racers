@@ -38,9 +38,6 @@ const RaceCameraController::Profile g_cameraProfiles[8] = {
 // GLOBAL: LEGORACERS 0x004b03e8
 extern const LegoFloat g_lagTimeScale = 250.0f;
 
-// GLOBAL: LEGORACERS 0x004b03ec
-extern const LegoFloat g_degreesToRadians = 0.017453292f;
-
 // GLOBAL: LEGORACERS 0x004b03f8
 extern const LegoFloat g_transitionTurnRate = 0.0015707964f;
 
@@ -87,7 +84,7 @@ void RaceCameraController::SetRotationLag(LegoFloat p_amount)
 void RaceCameraController::SetPitchAngle(LegoFloat p_degrees)
 {
 	LegoFloat radians = p_degrees;
-	radians *= g_degreesToRadians;
+	radians *= 0.017453292f;
 	GolMath::SinCos(radians, &m_pitchSine, &m_pitchCosine);
 }
 
@@ -95,7 +92,7 @@ void RaceCameraController::SetPitchAngle(LegoFloat p_degrees)
 void RaceCameraController::SetHeightAngle(LegoFloat p_degrees)
 {
 	LegoFloat radians = p_degrees;
-	radians *= g_degreesToRadians;
+	radians *= 0.017453292f;
 	m_heightSine = static_cast<LegoFloat>(sin(radians));
 }
 
@@ -215,11 +212,6 @@ void RaceCameraController::UpdateFollow()
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-extern const LegoFloat g_halfPi;
-extern const LegoFloat g_hazardPi;
-extern const LegoFloat g_hazardPi;
-extern const LegoFloat g_twoPi;
-extern const LegoFloat g_unk0x004afde0;
 
 // FUNCTION: LEGORACERS 0x00427e80
 void RaceCameraController::UpdateShake()
@@ -273,7 +265,7 @@ void RaceCameraController::UpdateShake()
 		LegoFloat phase = static_cast<LegoFloat>(remaining);
 		phase *= g_unk0x004b031c;
 		phase *= g_unk0x004b0320;
-		phase *= g_hazardPi;
+		phase *= 3.1415927f;
 		LegoFloat angle = static_cast<LegoFloat>(cos(phase));
 		LegoFloat fov = angle * m_shakeAmount + (m_baseFov - m_shakeAmount);
 		camera->m_flags |= GolCamera::c_flagProjectionDirty;
@@ -629,10 +621,10 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 				LegoFloat delta = currentAngle - desiredAngle;
 				if (delta < g_unk0x004b0410 || delta > g_viewAngleDeadband) {
 					while (delta < g_unk0x004b0408) {
-						delta += g_twoPi;
+						delta += 6.2831855f;
 					}
 					while (delta > -g_unk0x004b0408) {
-						delta -= g_twoPi;
+						delta -= 6.2831855f;
 					}
 
 					LegoFloat angleAmount = 1.0f / (m_viewAngleRate * m_elapsed + 1.0f);
@@ -795,7 +787,7 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 			return;
 		}
 
-		m_rawTransform.m_position.m_z += g_unk0x004afde0;
+		m_rawTransform.m_position.m_z += 10.0f;
 		ApplySmoothing();
 		return;
 	}
@@ -827,9 +819,9 @@ LegoFloat RaceCameraController::VectorToAngle(LegoFloat p_x, LegoFloat p_y)
 		if (p_x > 0.0f) {
 			LegoFloat angle = static_cast<LegoFloat>(acos(p_y));
 			angle = -angle;
-			return angle + g_halfPi;
+			return angle + 1.5707964f;
 		}
-		return static_cast<LegoFloat>(acos(p_y)) + g_halfPi;
+		return static_cast<LegoFloat>(acos(p_y)) + 1.5707964f;
 	}
 
 	if (p_y > 0.0f) {

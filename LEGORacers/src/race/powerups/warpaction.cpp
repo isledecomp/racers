@@ -19,13 +19,7 @@ extern const LegoFloat g_warpFovBoost;
 
 extern LegoFloat g_cosineTable[1024];
 
-extern const LegoFloat g_hazardPi;
-
-extern const LegoFloat g_negativeRadiansToTableIndex;
-
 extern const LegoFloat g_homingProjectileCollisionProbeDepth;
-
-extern const LegoFloat g_unk0x004b02fc;
 
 // GLOBAL: LEGORACERS 0x004b1a60
 const LegoFloat g_warpSoundMinDistance = 200.0f;
@@ -261,9 +255,9 @@ void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	m_racer->m_cameraController->Update(0.0f);
 
 	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
-	phase *= g_hazardPi;
+	phase *= 3.1415927f;
 	phase *= g_warpLerpScale;
-	phase *= g_negativeRadiansToTableIndex;
+	phase *= -162.97466f;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat tableValue = g_cosineTable[tableIndex];
 	LegoFloat fov = tableValue * g_warpFovRange + m_cameraFov;
@@ -313,9 +307,9 @@ void WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 
 	GolVec3 position;
 	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
-	phase *= g_unk0x004b02fc;
-	phase *= g_hazardPi;
-	phase *= g_negativeRadiansToTableIndex;
+	phase *= 0.002f;
+	phase *= 3.1415927f;
+	phase *= -162.97466f;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat scale = g_cosineTable[tableIndex];
 	m_modelEntity.SetScaleAndInvalidateRadius(scale);

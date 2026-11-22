@@ -4,7 +4,6 @@
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-extern LegoFloat g_carBuildPreviewMouseScale;
 
 inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
 {
@@ -67,9 +66,6 @@ extern const LegoFloat g_returnPathMaxAdvanceDistance = 80.0f;
 
 // GLOBAL: LEGORACERS 0x004b0094
 extern const LegoFloat g_returnPathThrust = 18.0f;
-
-// GLOBAL: LEGORACERS 0x004b009c
-extern const LegoFloat g_two = 2.0f;
 
 // GLOBAL: LEGORACERS 0x004c4810
 LegoFloat g_turboThrust = g_fullThrottleThrust * 8.0f;
@@ -142,11 +138,11 @@ void DriveController::Update(LegoU32 p_elapsedMs)
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 			LegoS32 random = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 400;
-			m_curseSteerOffset = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - g_two;
+			m_curseSteerOffset = static_cast<LegoFloat>(random) * 0.01f - 2.0f;
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 			random = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 200;
-			m_curseThrottleOffset = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - 1.0f;
+			m_curseThrottleOffset = static_cast<LegoFloat>(random) * 0.01f - 1.0f;
 		}
 	}
 	else {

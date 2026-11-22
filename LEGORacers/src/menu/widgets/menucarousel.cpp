@@ -20,8 +20,6 @@ DECOMP_SIZE_ASSERT(MenuModelCarousel::Item, 0xd0)
 DECOMP_SIZE_ASSERT(MenuScrollCarousel, 0x94)
 DECOMP_SIZE_ASSERT(MenuCarouselNavigator, 0x94)
 
-extern const LegoFloat g_two;
-
 // GLOBAL: LEGORACERS 0x004b244c
 const LegoFloat g_modelCarouselMaxFloat = FLT_MAX;
 
@@ -360,7 +358,7 @@ void MenuModelCarousel::GetItemPosition(Item* p_item, GolVec3* p_position)
 	}
 
 	LegoFloat minX = p_item->m_modelRadius;
-	minX += g_two;
+	minX += 2.0f;
 	minX = -minX;
 	if (x > minX) {
 		x = minX;

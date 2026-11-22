@@ -34,8 +34,6 @@ const LegoFloat g_raceDecalWeldThresholdScale = 0.25f;
 // GLOBAL: LEGORACERS 0x004b4784
 const LegoFloat g_raceDecalMinSampleDistance = 0.1f;
 
-extern LegoFloat g_inv255;
-
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void RaceDecalManager::Trail::DrawOpaque(GolD3DRenderDevice*)
 {
@@ -144,7 +142,7 @@ void RaceDecalManager::Trail::SetMaterialTable(MaterialTable* p_materialTable)
 
 	GolMaterial* material = static_cast<GolMaterial*>(p_materialTable->GetEntry(0));
 	if (material->GetFlags() & GolMaterial::c_flagTransparent) {
-		m_alphaScale = static_cast<LegoFloat>(material->GetDestBlend()) * g_inv255;
+		m_alphaScale = static_cast<LegoFloat>(material->GetDestBlend()) * 0.003921569f;
 	}
 	else {
 		m_alphaScale = 1.0f;

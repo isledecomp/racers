@@ -9,8 +9,6 @@
 
 DECOMP_SIZE_ASSERT(HomingProjectile, 0xf8)
 
-extern const LegoFloat g_unk0x004afde0;
-
 // GLOBAL: LEGORACERS 0x004b0224
 extern const LegoFloat g_homingProjectileTargetHeightOffset = 5.0f;
 
@@ -143,7 +141,7 @@ void HomingProjectile::UpdateTargeting(
 
 		for (;;) {
 			if (DotVectors(delta, m_direction) > 0.0f &&
-				DotVectors(m_position, m_pathEntry->m_planeNormal) + m_pathEntry->m_planeDistance >= g_unk0x004afde0) {
+				DotVectors(m_position, m_pathEntry->m_planeNormal) + m_pathEntry->m_planeDistance >= 10.0f) {
 				break;
 			}
 

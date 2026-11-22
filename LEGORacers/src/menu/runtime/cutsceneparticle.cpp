@@ -196,15 +196,15 @@ void CutsceneParticle::SetPosition(GolVec3* p_vec)
 void CutsceneParticle::SetVelocity(GolVec3* p_vec)
 {
 	LegoFloat x = p_vec->m_x;
-	x *= g_floatConst1000;
+	x *= 1000.0f;
 	m_velocity.m_x = x;
 
 	LegoFloat y = p_vec->m_y;
-	y *= g_floatConst1000;
+	y *= 1000.0f;
 	m_velocity.m_y = y;
 
 	LegoFloat z = p_vec->m_z;
-	z *= g_floatConst1000;
+	z *= 1000.0f;
 	m_velocity.m_z = z;
 }
 

@@ -24,12 +24,8 @@
 DECOMP_SIZE_ASSERT(GhostHazard, 0x220)
 
 extern LegoFloat g_cosineTable[1024];
-extern const LegoFloat g_unk0x004b02fc;
-extern const LegoFloat g_negativeRadiansToTableIndex;
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-extern LegoFloat g_carBuildPreviewMouseScale;
-extern const LegoFloat g_hazardPi;
 
 // GLOBAL: LEGORACERS 0x004b43c0
 extern const LegoFloat g_ghostLoopSoundMinDistance = 30.0f;
@@ -279,15 +275,15 @@ void GhostHazard::Update(undefined4 p_elapsedMs)
 				LegoS32 randomFrequency =
 					static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomFrequencyVariantCount;
 				LegoFloat frequencyScale = static_cast<LegoFloat>(randomFrequency);
-				frequencyScale *= g_carBuildPreviewMouseScale;
+				frequencyScale *= 0.01f;
 				frequencyScale *= g_ghostFrequencyScaleJitter;
 				m_frequencyJitter = frequencyScale;
 			}
 
 			LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_soundJitterMs));
-			phase *= g_unk0x004b02fc;
-			phase *= g_hazardPi;
-			phase *= g_negativeRadiansToTableIndex;
+			phase *= 0.002f;
+			phase *= 3.1415927f;
+			phase *= -162.97466f;
 			LegoS32 index = 0xffffff00 - static_cast<LegoS32>(phase);
 			index &= c_randomTableMask;
 			m_loopSound->SetFrequencyScale(1.0f - g_cosineTable[index] * m_frequencyJitter);

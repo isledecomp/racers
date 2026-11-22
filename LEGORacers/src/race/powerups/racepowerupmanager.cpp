@@ -37,7 +37,6 @@ DECOMP_SIZE_ASSERT(WarpAction, 0xe4)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_aimMinDistanceSquared;
 extern const LegoFloat g_aimMaxDistanceSquared;
 extern const LegoFloat g_aimRacerConeCosine;
@@ -1969,12 +1968,12 @@ void RacePowerupManager::SpawnBrickDebris(const GolVec3* p_position, const GolVe
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			position.m_z = 0.0f;
 			LegoS32 offsetX = g_randomTable[g_randomTableIndex] % c_randomOffsetRange;
-			position.m_x = p_direction->m_x + offsetX * 0.0040000002f - g_unk0x004b02e0;
+			position.m_x = p_direction->m_x + offsetX * 0.0040000002f - 0.2f;
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoS32 offsetY = g_randomTable[g_randomTableIndex] % c_randomOffsetRange;
 
-			position.m_y = p_direction->m_y + offsetY * 0.0040000002f - g_unk0x004b02e0;
+			position.m_y = p_direction->m_y + offsetY * 0.0040000002f - 0.2f;
 			brickDebris->Spawn(p_position, &position, p_racer);
 		} while (--remaining != 0);
 	}

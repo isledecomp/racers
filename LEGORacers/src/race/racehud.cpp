@@ -22,9 +22,6 @@ DECOMP_SIZE_ASSERT(RaceHud::TimeText, 0x09)
 // GLOBAL: LEGORACERS 0x004c4814
 undefined2 g_textConversionBuffer[42];
 
-// GLOBAL: LEGORACERS 0x004afde0
-extern const LegoFloat g_unk0x004afde0 = 10.0f;
-
 extern const LegoFloat g_ghostAnimationRateScale;
 
 // GLOBAL: LEGORACERS 0x004b02a0
@@ -57,11 +54,9 @@ extern const LegoFloat g_hudBaseScale = 0.0020833334f;
 // GLOBAL: LEGORACERS 0x004b02dc
 extern const LegoFloat g_unk0x004b02dc = 0.80000001f;
 
-extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_unk0x004b02e4;
 extern const LegoFloat g_unk0x004b02e8;
 extern const LegoFloat g_unk0x004b02ec;
-extern const LegoFloat g_two;
 
 // GLOBAL: LEGORACERS 0x004be8a8
 const LegoChar* g_hudFontName = "font_ths";
@@ -1224,7 +1219,7 @@ void RaceHud::SetLayout(LegoS32 p_mode)
 	m_powerupX = m_viewport.m_left + (width >> 5);
 
 	p_mode = static_cast<LegoS32>(
-		(static_cast<double>(static_cast<LegoS32>(resource->GetHeight())) * m_imageScale + g_unk0x004afde0) * m_scaleY
+		(static_cast<LegoFloat>(static_cast<LegoS32>(resource->GetHeight())) * m_imageScale + 10.0f) * m_scaleY
 	);
 	m_powerupY = m_viewport.m_bottom - p_mode;
 }
@@ -1639,7 +1634,7 @@ void RaceHud::Draw()
 				}
 				else if (m_positionPulseMs > 175) {
 					LegoU32 timer = m_positionPulseMs - 175;
-					positionScale = g_two - static_cast<LegoFloat>(static_cast<LegoS32>(timer)) * g_unk0x004b02e4;
+					positionScale = 2.0f - static_cast<LegoFloat>(static_cast<LegoS32>(timer)) * g_unk0x004b02e4;
 				}
 				else {
 					positionScale =
@@ -1802,7 +1797,7 @@ void RaceHud::Draw()
 	}
 
 	LegoFloat newSpeed = m_racer->m_physics.m_forwardSpeed;
-	newSpeed *= g_unk0x004b02e0;
+	newSpeed *= 0.2f;
 	LegoFloat retainedSpeed = m_speedValue;
 	retainedSpeed *= g_unk0x004b02dc;
 	m_speedValue = newSpeed + retainedSpeed;

@@ -394,7 +394,7 @@ void CutsceneAnimation::Emitter::Parse(
 	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneAnimation::EmbTxtParser::e_emitInterval:
-			m_emitIntervalMs = static_cast<LegoS32>(g_floatConst1000 / p_parser->ReadFloat());
+			m_emitIntervalMs = static_cast<LegoS32>(1000.0f / p_parser->ReadFloat());
 			break;
 		case CutsceneAnimation::EmbTxtParser::e_emitChance:
 			m_emitChance = static_cast<LegoS32>(p_parser->ReadFloat() * g_floatConst256);

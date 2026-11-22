@@ -9,8 +9,6 @@
 
 #include <float.h>
 
-extern LegoFloat g_inv255;
-
 // GLOBAL: LEGORACERS 0x004b4790
 const LegoFloat g_raceTrailManagerMaxFloat = FLT_MAX;
 
@@ -380,7 +378,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	LegoU32 alphaByte = m_color.m_alp;
 	color.m_alp = static_cast<LegoU8>(alphaByte);
 	LegoFloat alpha = static_cast<LegoFloat>(static_cast<LegoS32>(alphaByte));
-	alpha *= g_inv255;
+	alpha *= 0.003921569f;
 	alpha -= m_endAlpha;
 	LegoFloat alphaDivisor = static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
 	alpha /= alphaDivisor;

@@ -19,7 +19,6 @@ DECOMP_SIZE_ASSERT(CannonballRainHazard, 0x44)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-extern const LegoFloat g_two;
 
 // GLOBAL: LEGORACERS 0x004b43a0
 extern const LegoFloat g_cannonballRainTransformOffsetScale = 35.0f;
@@ -157,15 +156,15 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 	g_randomTableIndex++;
 	g_randomTableIndex &= c_randomTableMask;
 	LegoS32 random = g_randomTable[g_randomTableIndex] % 4;
-	m_dropPosition.m_x = static_cast<LegoFloat>(random) + m_emitterPosition.m_x - g_two;
+	m_dropPosition.m_x = static_cast<LegoFloat>(random) + m_emitterPosition.m_x - 2.0f;
 
 	g_randomTableIndex++;
 	g_randomTableIndex &= c_randomTableMask;
 	random = g_randomTable[g_randomTableIndex] % 4;
-	m_dropPosition.m_y = static_cast<LegoFloat>(random) + m_emitterPosition.m_y - g_two;
+	m_dropPosition.m_y = static_cast<LegoFloat>(random) + m_emitterPosition.m_y - 2.0f;
 	if (m_dropPosition.m_x == m_emitterPosition.m_x && m_dropPosition.m_y == m_emitterPosition.m_y) {
 		LegoFloat positionX = m_dropPosition.m_x;
-		positionX += g_two;
+		positionX += 2.0f;
 		m_dropPosition.m_x = positionX;
 	}
 

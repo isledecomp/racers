@@ -6,8 +6,6 @@
 
 DECOMP_SIZE_ASSERT(TetherProjectile, 0x238)
 
-extern const LegoFloat g_unk0x004b02e0;
-
 // GLOBAL: LEGORACERS 0x004b0c8c
 extern const LegoFloat g_tetherChaseSpeed = 300.0f;
 
@@ -133,7 +131,7 @@ LegoS32 TetherProjectile::Update(LegoU32 p_elapsedMs)
 void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapsedMs, LegoFloat p_amount)
 {
 	LegoFloat elapsedStep = p_elapsedMs;
-	elapsedStep *= g_unk0x004b02e0;
+	elapsedStep *= 0.2f;
 	elapsedStep *= 0.001f;
 
 	GolVec3 origin;
@@ -144,10 +142,10 @@ void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapse
 	GolVec3 delta;
 	delta.m_x = p_position->m_x - origin.m_x;
 	LegoFloat stepX = delta.m_x;
-	stepX *= g_unk0x004b02e0;
+	stepX *= 0.2f;
 	delta.m_y = p_position->m_y - origin.m_y;
 	LegoFloat stepY = delta.m_y;
-	stepY *= g_unk0x004b02e0;
+	stepY *= 0.2f;
 	delta.m_z = p_position->m_z - origin.m_z;
 	m_beam.Begin(&origin, &delta);
 
@@ -209,11 +207,11 @@ LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 
 	GolVec3 step;
 	step.m_x = delta.m_x;
-	step.m_x *= g_unk0x004b02e0;
+	step.m_x *= 0.2f;
 	step.m_y = delta.m_y;
-	step.m_y *= g_unk0x004b02e0;
+	step.m_y *= 0.2f;
 	step.m_z = delta.m_z;
-	step.m_z *= g_unk0x004b02e0;
+	step.m_z *= 0.2f;
 	m_beam.Begin(&position, &delta);
 
 	for (LegoU32 i = 0; i < 4; i++) {
@@ -283,15 +281,15 @@ LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 
 	LegoFloat remainingAmount = 1.0f - m_tension;
 	LegoFloat elapsedStep = static_cast<LegoFloat>(static_cast<LegoS32>(m_flightTimeMs));
-	elapsedStep *= g_unk0x004b02e0;
+	elapsedStep *= 0.2f;
 	elapsedStep *= 0.001f;
 	GolVec3 step;
 	step.m_x = delta.m_x;
-	step.m_x *= g_unk0x004b02e0;
+	step.m_x *= 0.2f;
 	step.m_y = delta.m_y;
-	step.m_y *= g_unk0x004b02e0;
+	step.m_y *= 0.2f;
 	step.m_z = delta.m_z;
-	step.m_z *= g_unk0x004b02e0;
+	step.m_z *= 0.2f;
 	m_beam.Begin(&origin, &delta);
 
 	elapsedSeconds = 0.0f;

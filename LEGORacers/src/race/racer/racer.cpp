@@ -26,7 +26,6 @@
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
-extern LegoFloat g_carBuildPreviewMouseScale;
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(Racer, 0xe34)
 DECOMP_SIZE_ASSERT(RaceEventRecord, 0x24)
@@ -45,8 +44,6 @@ DECOMP_SIZE_ASSERT(RaceSetup, 0x1c)
 
 extern const LegoFloat g_ghostAnimationRateScale;
 extern const LegoFloat g_ghostSampleFractionScale;
-extern const LegoFloat g_negativeRadiansToTableIndex;
-extern const LegoFloat g_two;
 extern LegoU32 g_silhouetteClearFlag;
 extern LegoU32 g_silhouetteFlattenFlag;
 extern LegoFloat g_cosineTable[1024];
@@ -75,9 +72,6 @@ inline GolVec3 CrossVectors(const GolVec3& p_left, const GolVec3& p_right)
 	return result;
 }
 
-// GLOBAL: LEGORACERS 0x004b02e0
-extern const LegoFloat g_unk0x004b02e0 = 0.2f;
-
 // GLOBAL: LEGORACERS 0x004b02e4
 extern const LegoFloat g_unk0x004b02e4 = 0.0057142857f;
 
@@ -86,9 +80,6 @@ extern const LegoFloat g_unk0x004b02e8 = -6.0f;
 
 // GLOBAL: LEGORACERS 0x004b02ec
 extern const LegoFloat g_unk0x004b02ec = -14.0f;
-
-// GLOBAL: LEGORACERS 0x004b0544
-extern const LegoFloat g_unk0x004b0544 = 0.050000001f;
 
 // GLOBAL: LEGORACERS 0x004b094c
 extern const LegoFloat g_enginePitchFloor = 0.40000001f;
@@ -267,13 +258,9 @@ extern const LegoFloat g_lookAtDotBehind = -0.60000002f;
 // GLOBAL: LEGORACERS 0x004b0b44
 extern const LegoFloat g_lookAtDotBeside = -0.2f;
 
-// GLOBAL: LEGORACERS 0x004b0b4c
-extern const LegoFloat g_fadeAlphaScale = 191.0f;
-
 // GLOBAL: LEGORACERS 0x004b0b50
 extern const LegoFloat g_carShadowScale = 1.15f;
 
-extern const LegoFloat g_twoPi;
 extern const LegoFloat g_pathMinSegmentLengthSquared;
 
 // GLOBAL: LEGORACERS 0x004c67a4
@@ -295,7 +282,7 @@ const LegoChar* g_racerDatabaseNames[3] = {"drivers", "champs", "chassis"};
 LegoU32 g_raceLapCount = 3;
 
 // GLOBAL: LEGORACERS 0x004c6b34
-LegoFloat g_cursePhaseScale = g_twoPi * g_pathMinSegmentLengthSquared;
+LegoFloat g_cursePhaseScale = 6.2831855f * g_pathMinSegmentLengthSquared;
 
 // FUNCTION: LEGORACERS 0x00436990
 Racer::Racer()
@@ -514,7 +501,7 @@ void Racer::Initialize(
 	LegoU32 colorValue = p_params->m_driverStats[0];
 	LegoFloat colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_statChanceScale;
-	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
@@ -524,7 +511,7 @@ void Racer::Initialize(
 	colorValue = p_params->m_driverStats[1];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_statChanceScale;
-	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
@@ -534,7 +521,7 @@ void Racer::Initialize(
 	colorValue = p_params->m_driverStats[2];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_statChanceScale;
-	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
@@ -544,7 +531,7 @@ void Racer::Initialize(
 	colorValue = p_params->m_driverStats[3];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_statChanceScale;
-	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
@@ -554,7 +541,7 @@ void Racer::Initialize(
 	colorValue = p_params->m_driverStats[4];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_statChanceScale;
-	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
@@ -564,7 +551,7 @@ void Racer::Initialize(
 	colorValue = p_params->m_driverStats[5];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_statChanceScale;
-	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
 		colorScale = 1.0f;
@@ -646,7 +633,7 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 		LegoFloat valueFloat = p_params->m_weight;
 		accelerationStat = p_params->m_accelerationStat;
 		memcpy(&vector, &p_params->m_anchorWheelPosition, sizeof(vector));
-		valueFloat *= g_unk0x004b0544;
+		valueFloat *= 0.050000001f;
 
 		LegoU32 value = static_cast<LegoU32>(valueFloat);
 		handlingStat = p_params->m_handlingStat + value;
@@ -1221,7 +1208,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		else {
 			LegoFloat volume = m_engineIdleVolume;
 			volume *= g_engineFadeVolumeScale;
-			volume *= g_negativeRadiansToTableIndex;
+			volume *= -162.97466f;
 			LegoS32 index = (c_volumeTableBase - static_cast<LegoS32>(volume)) & c_volumeTableMask;
 			volume = g_cosineTable[index];
 			volume *= targetVolume;
@@ -1237,7 +1224,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		else {
 			LegoFloat volume = m_engineDriveVolume;
 			volume *= g_engineFadeVolumeScale;
-			volume *= g_negativeRadiansToTableIndex;
+			volume *= -162.97466f;
 			LegoS32 index = (c_volumeTableBase - static_cast<LegoS32>(volume)) & c_volumeTableMask;
 			volume = g_cosineTable[index];
 			volume *= targetVolume;
@@ -1253,7 +1240,7 @@ void Racer::UpdateEngineSound(LegoU32 p_elapsedMs)
 		else {
 			LegoFloat volume = m_engineFastVolume;
 			volume *= g_engineFadeVolumeScale;
-			volume *= g_negativeRadiansToTableIndex;
+			volume *= -162.97466f;
 			LegoS32 index = (c_volumeTableBase - static_cast<LegoS32>(volume)) & c_volumeTableMask;
 			volume = g_cosineTable[index];
 			volume *= targetVolume;
@@ -2350,7 +2337,7 @@ void Racer::UpdateFacing(LegoU32 p_elapsedMs)
 				normal.m_y = checkpoint->m_planeNormal.m_y;
 				LegoFloat dot = direction.m_x * normal.m_x + direction.m_y * normal.m_y +
 								direction.m_z * checkpoint->m_planeNormal.m_z;
-				if (dot <= g_unk0x004b02e0) {
+				if (dot <= 0.2f) {
 					isBlocked = TRUE;
 				}
 			}

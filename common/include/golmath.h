@@ -28,6 +28,13 @@ struct GolVec3 {
 		m_z = 0.0f;
 	}
 
+	void Set(const GolVec3& p_other)
+	{
+		m_x = p_other.m_x;
+		m_y = p_other.m_y;
+		m_z = p_other.m_z;
+	}
+
 	GolVec3 operator+(const GolVec3& p_rhs) const
 	{
 		GolVec3 result;

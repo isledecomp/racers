@@ -243,8 +243,8 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 		topIndex = 1;
 	}
 
-	TransformedVertex* base0 = vertices[topIndex];
-	TransformedVertex* base1 = base0;
+	TransformedVertex* base1 = vertices[topIndex];
+	TransformedVertex* base0 = base1;
 	LegoU32 edge0Index = g_previousVertexIndex[topIndex];
 	LegoU32 edge1Index = g_nextVertexIndex[topIndex];
 	TransformedVertex* edge0 = vertices[edge0Index];
@@ -348,19 +348,17 @@ void CarShadowRenderState::DrawTriangles4Bpp(TransformedVertex** p_triangle)
 			dst++;
 		}
 		LegoU8* spanEnd = dst + (width >> 1);
-		if (dst < spanEnd) {
-			LegoS32 byteCount = spanEnd - dst;
-			::memset(dst, colorPacked, byteCount);
-			dst += byteCount;
+		while (dst < spanEnd) {
+			*dst++ = colorPacked;
 		}
 		if (width & 1) {
 			*dst |= color;
 		}
 
-		row += m_pitch;
 		y += 0x10000;
 		x0 += xStep0;
 		x1 += xStep1;
+		row += m_pitch;
 	}
 }
 
@@ -391,13 +389,13 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 		topIndex = 1;
 	}
 
-	TransformedVertex* base0 = vertices[topIndex];
-	TransformedVertex* base1 = base0;
+	TransformedVertex* base1 = vertices[topIndex];
+	TransformedVertex* base0 = base1;
 	LegoU32 edge0Index = g_previousVertexIndex[topIndex];
 	LegoU32 edge1Index = g_nextVertexIndex[topIndex];
 	TransformedVertex* edge0 = vertices[edge0Index];
-	LegoS32 x0 = static_cast<LegoS32>(65536.0f * base0->m_x);
 	TransformedVertex* edge1 = vertices[edge1Index];
+	LegoS32 x0 = static_cast<LegoS32>(65536.0f * base0->m_x);
 	LegoS32 x1 = x0;
 	LegoBool32 advancedEdge = FALSE;
 
@@ -484,16 +482,16 @@ void CarShadowRenderState::DrawTriangles8Bpp(TransformedVertex** p_triangle)
 			advancedEdge = TRUE;
 		}
 
-		LegoS32 endX = (x1 + 0xffff) >> 16;
-		LegoS32 startX = (x0 + 0xffff) >> 16;
-		if (startX < endX) {
-			::memset(row + startX, color, endX - startX);
+		LegoU8* dst = row + ((x0 + 0xffff) >> 16);
+		LegoU8* end = row + ((x1 + 0xffff) >> 16);
+		while (dst < end) {
+			*dst++ = color;
 		}
 
-		x1 += xStep1;
 		y += 0x10000;
 		row += m_pitch;
 		x0 += xStep0;
+		x1 += xStep1;
 	}
 }
 

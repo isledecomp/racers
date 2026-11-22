@@ -474,9 +474,8 @@ void CarBuildModel::ResolvePrimitiveIntersections()
 		primitive = m_buildPrimitiveOrder[lhsIndex];                                                                   \
 		ROTATE_BUILD_PRIMITIVE_TO_MIN(coordMember, minField);                                                          \
 		ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MIN();                                                                        \
-		rightScale = rhsBounds.minField - lhsBounds.minField;                                                          \
 		BuildVertex* firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                 \
-		rightScale = rightScale / (lhsBounds.maxField - lhsBounds.minField);                                           \
+		rightScale = ((((rhsBounds.minField - lhsBounds.minField))) / (((lhsBounds.maxField - lhsBounds.minField))));  \
 		BuildVertex* firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                \
 		setPosition(firstLowVertex, minField, rhsBounds.minField);                                                     \
 		leftScale = 1.0f - rightScale;                                                                                 \
@@ -501,9 +500,8 @@ void CarBuildModel::ResolvePrimitiveIntersections()
 		primitive = m_buildPrimitiveOrder[lhsIndex];                                                                   \
 		ROTATE_BUILD_PRIMITIVE_TO_MAX(coordMember, maxField);                                                          \
 		ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MAX();                                                                        \
-		rightScale = rhsBounds.maxField - lhsBounds.minField;                                                          \
 		BuildVertex* firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                 \
-		rightScale = rightScale / (lhsBounds.maxField - lhsBounds.minField);                                           \
+		rightScale = ((((rhsBounds.maxField - lhsBounds.minField))) / (((lhsBounds.maxField - lhsBounds.minField))));  \
 		BuildVertex* firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                \
 		setPosition(firstLowVertex, maxField, rhsBounds.maxField);                                                     \
 		leftScale = 1.0f - rightScale;                                                                                 \
@@ -689,17 +687,18 @@ void CarBuildModel::InterpolateBuildVertex(
 }
 
 // FUNCTION: LEGORACERS 0x00497360
-LegoS32 CarBuildModel::BuildBatches(LegoS8 p_buildFlags)
+void CarBuildModel::BuildBatches(LegoS8 p_buildFlags)
 {
+	LegoS32 accumulatedReferenceCount = 0;
 	::memset(g_carBuildModelVertexUses, 0, sizeof(g_carBuildModelVertexUses));
 
-	LegoS32 accumulatedReferenceCount = 0;
 	m_batchVertexCount = 0;
 	LegoS32 vertexCount = 2;
 	LegoS32 materialRunEnd = 0;
 	LegoS32 materialIndex = -1;
+	LegoS32 primitiveIndex = 0;
 
-	for (LegoS32 primitiveIndex = 0; primitiveIndex < m_buildPrimitiveCount - 1; primitiveIndex++) {
+	for (; primitiveIndex < m_buildPrimitiveCount - 1; primitiveIndex++) {
 		LegoS32 batchVertexCount = m_batchVertexCount;
 		LegoS32 bestAddedVertexCount = 0x42;
 		LegoS32 bestPrimitiveIndex = 0;
@@ -802,8 +801,6 @@ LegoS32 CarBuildModel::BuildBatches(LegoS8 p_buildFlags)
 			}
 		}
 	}
-
-	return m_buildPrimitiveCount - 1;
 }
 
 // FUNCTION: LEGORACERS 0x00497690

@@ -615,7 +615,7 @@ void RacerCarBody::AccumulateForces()
 
 	if (m_contactCount == 0) {
 		force.Clear();
-		force.m_z = m_gravityForce * 4.0f;
+		force.m_z = ((m_gravityForce * 4.0f));
 		AddForce(&force);
 
 		LegoFloat scale = m_thrust * m_massScale;

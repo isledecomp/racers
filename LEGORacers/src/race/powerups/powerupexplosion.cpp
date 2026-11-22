@@ -308,18 +308,13 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 					m_collisionEvent = NULL;
 				}
 
-				LegoU32 finishDuration = m_scarDurationMs;
 				m_state = c_stateScarFading;
-				LegoFloat width = m_flashWidth;
-				m_remainingMs = finishDuration;
+				m_remainingMs = m_scarDurationMs;
 				m_alpha = g_explosionScarAlpha;
-				RaceDecalManager::Trail::Decal& decal = m_scarDecal;
-				decal.m_width = width;
-				LegoFloat width2 = m_flashWidth;
-				decal.m_length = width2;
-				LegoFloat depth = g_explosionScarDepth;
-				decal.m_depth = depth;
-				decal.Project(m_collidable);
+				m_scarDecal.SetWidth(m_flashWidth);
+				m_scarDecal.SetLength(m_flashWidth);
+				m_scarDecal.SetDepth(g_explosionScarDepth);
+				m_scarDecal.Project(m_collidable);
 			}
 			else {
 				Deactivate();
@@ -341,12 +336,10 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 		LegoFloat width = (m_flashWidth - g_explosionFlashBaseWidth) * m_growth + g_explosionFlashBaseWidth;
 		if (m_scarMaterial != NULL && m_leavesScar != zero) {
 			m_materialTable.SetEntry(0, m_scarMaterial);
-			m_scarDecal.m_width = width;
-			m_scarDecal.m_length = width;
-			RaceDecalManager::Trail::Decal& decal = m_scarDecal;
-			LegoFloat depth = g_explosionScarDepth;
-			decal.m_depth = depth;
-			decal.Project(m_collidable);
+			m_scarDecal.SetWidth(width);
+			m_scarDecal.SetLength(width);
+			m_scarDecal.SetDepth(g_explosionScarDepth);
+			m_scarDecal.Project(m_collidable);
 		}
 
 		if (m_billboard != NULL) {
@@ -365,7 +358,7 @@ void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 			m_modelEntity.SetScaleThenInvalidateRadius(value);
 		}
 
-		m_alpha = (2.0f - (m_growth + m_growth)) * g_explosionMaxAlpha;
+		m_alpha = GOL_MUL(2.0f - (m_growth + m_growth), g_explosionMaxAlpha);
 		if (m_alpha < 0.0f) {
 			m_alpha = 0.0f;
 		}

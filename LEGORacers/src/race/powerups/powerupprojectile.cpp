@@ -254,9 +254,10 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 {
 	Initialize(p_params);
 
-	m_targetPosition.m_x = p_params->m_targetOffset.m_x + p_position->m_x;
+	m_targetPosition.m_x = ((((((((((((p_params->m_targetOffset.m_x + p_position->m_x))))))))))));
 	m_targetPosition.m_y = p_params->m_targetOffset.m_y + p_position->m_y;
-	m_targetPosition.m_z = p_params->m_targetOffset.m_z + p_position->m_z;
+	LegoFloat& tmpRef0 = m_targetPosition.m_z;
+	tmpRef0 = p_params->m_targetOffset.m_z + p_position->m_z;
 	m_ownerRacer = NULL;
 	m_targetRacer = NULL;
 	m_worldEntity->GetPosition(&m_startPosition);
@@ -278,12 +279,10 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 	m_velocityX = inverseDuration * delta.m_x;
 	m_velocityY = inverseDuration * delta.m_y;
 
-	LegoFloat zVelocity = delta.m_z;
-	zVelocity /= distance;
-	zVelocity *= p_params->m_speed;
+	LegoFloat zVelocity = delta.m_z / distance * p_params->m_speed;
 	m_velocityZ = zVelocity;
 	LegoFloat acceleration = m_gravity;
-	m_velocityZ = zVelocity - (acceleration * distance) / (p_params->m_speed + p_params->m_speed);
+	m_velocityZ = zVelocity - acceleration * distance / (p_params->m_speed + p_params->m_speed);
 	RegisterCollisionEvent(p_params->m_eventQueue);
 }
 

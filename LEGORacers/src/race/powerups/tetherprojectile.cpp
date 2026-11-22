@@ -130,13 +130,10 @@ LegoS32 TetherProjectile::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00444540
 void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapsedMs, LegoFloat p_amount)
 {
-	LegoFloat elapsedStep = p_elapsedMs;
-	elapsedStep *= 0.2f;
-	elapsedStep *= 0.001f;
+	LegoFloat elapsedStep = GOL_MUL(GOL_MUL(p_elapsedMs, 0.2f), 0.001f);
 
 	GolVec3 origin;
-	CarVisuals* visuals = &m_ownerRacer->m_visuals;
-	visuals->m_carEntity->GetPosition(&origin);
+	m_ownerRacer->m_visuals.GetPosition(&origin);
 	origin.m_z += m_attachHeight;
 
 	GolVec3 delta;
@@ -149,10 +146,10 @@ void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapse
 	delta.m_z = p_position->m_z - origin.m_z;
 	m_beam.Begin(&origin, &delta);
 
+	LegoFloat elapsed = 0.0f;
 	GolVec3 position;
 	position.m_x = origin.m_x;
 	position.m_y = origin.m_y;
-	LegoFloat elapsed = 0.0f;
 	for (LegoU32 i = 0; i < 4; i++) {
 		elapsed += elapsedStep;
 		position.m_x = position.m_x + stepX;
@@ -181,10 +178,9 @@ void TetherProjectile::Draw(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00444690
 LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 {
-	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.001f;
+	LegoFloat elapsedSeconds = (((static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)))) * (0.001f));
 	GolVec3 position;
-	CarVisuals* visuals = &m_ownerRacer->m_visuals;
-	visuals->m_carEntity->GetPosition(&position);
+	m_ownerRacer->m_visuals.GetPosition(&position);
 	position.m_z += m_attachHeight;
 
 	GolVec3* target = &m_endPosition;
@@ -198,8 +194,7 @@ LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 		m_tension = 0.0f;
 	}
 
-	LegoFloat amount = m_tension;
-	amount *= g_tetherWaveScale;
+	LegoFloat amount = GOL_MUL(m_tension, g_tetherWaveScale);
 	GolVec3 delta;
 	delta.m_x = target->m_x - position.m_x;
 	delta.m_y = target->m_y - position.m_y;
@@ -229,11 +224,9 @@ LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00444820
 LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 {
-	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
-	elapsedSeconds *= 0.001f;
+	LegoFloat elapsedSeconds = (((static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)))) * (0.001f));
 	GolVec3 targetPosition;
-	CarVisuals* visuals = &m_hitRacer->m_visuals;
-	visuals->m_carEntity->GetPosition(&targetPosition);
+	m_hitRacer->m_visuals.GetPosition(&targetPosition);
 	targetPosition.m_z += g_tetherTargetHeightOffset;
 
 	GolVec3 currentPosition;
@@ -258,8 +251,7 @@ LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 	m_worldEntity->SetPosition(currentPosition);
 
 	GolVec3 origin;
-	visuals = &m_ownerRacer->m_visuals;
-	visuals->m_carEntity->GetPosition(&origin);
+	m_ownerRacer->m_visuals.GetPosition(&origin);
 	origin.m_z += m_attachHeight;
 
 	GolVec3 delta;

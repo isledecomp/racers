@@ -519,7 +519,7 @@ void MagnetAction::Deploy()
 	m_sound->Play(TRUE);
 	m_sound->SetDistanceRange(g_magnetSoundMinDistance, g_magnetSoundMaxDistance);
 
-	m_sound->SetPosition(position);
+	m_sound->SetPosition(&position);
 	m_sound->ClearVelocity();
 
 	m_state = c_stateArmed;

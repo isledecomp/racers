@@ -228,11 +228,8 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	}
 
 	GolVec3 position;
-	CarVisuals* racerEntities = &m_racer->m_visuals;
-	racerEntities->m_carEntity->GetPosition(&position);
-	LegoFloat positionZ = position.m_z;
-	positionZ += 2.0f;
-	position.m_z = positionZ;
+	m_racer->m_visuals.GetPosition(&position);
+	position.m_z += 2.0f;
 	m_shieldEntity->SetPosition(position);
 
 	GolVec3 direction;

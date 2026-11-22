@@ -82,11 +82,16 @@ void HazardActionBase::ComputeDropPosition(
 	GolVec3 start;
 	p_racer->m_visuals.m_carEntity->GetPosition(&start);
 
+	GolVec3 up;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
 	GolVec3 verticalOffset;
-	verticalOffset.Clear();
-	verticalOffset.m_z = g_dropProbeDepth;
+	GolMath::ScaleVector3(&up, g_dropProbeDepth, &verticalOffset);
 	GolVec3 end;
-	end = start - verticalOffset;
+	end.m_x = start.m_x - verticalOffset.m_x;
+	end.m_y = start.m_y - verticalOffset.m_y;
+	end.m_z = start.m_z - verticalOffset.m_z;
 
 	GolBoundingVolume::HitTriangle record;
 	if (p_record == NULL) {
@@ -94,9 +99,9 @@ void HazardActionBase::ComputeDropPosition(
 	}
 
 	if (m_collisionWorld->IntersectSegment(&start, &end, p_record, p_position, NULL)) {
-		verticalOffset.Clear();
-		verticalOffset.m_z = g_dropGroundOffset;
-		*p_position += verticalOffset;
+		GolVec3 groundOffset;
+		GolMath::ScaleVector3(&up, g_dropGroundOffset, &groundOffset);
+		*p_position += groundOffset;
 	}
 	else {
 		*p_position = start;

@@ -64,26 +64,25 @@ void GolOrientedEntity::SetDirectionUp(const GolVec3& p_v1, const GolVec3& p_v2)
 	GolMath::NormalizeVector3(perp, &perp);
 
 	GolVec3 cross;
-	cross.m_x = perp.m_y * unit.m_z - perp.m_z * unit.m_y;
+	LegoFloat x = perp.m_y * unit.m_z;
+	x -= perp.m_z * unit.m_y;
+	cross.m_x = x;
 	cross.m_y = perp.m_z * unit.m_x;
-	LegoFloat unitZPerpX = unit.m_z;
-	unitZPerpX *= perp.m_x;
-	cross.m_y -= unitZPerpX;
+	LegoFloat ySub = unit.m_z;
+	ySub *= perp.m_x;
+	cross.m_y -= ySub;
 	cross.m_z = unit.m_y;
 	cross.m_z *= perp.m_x;
-	cross.m_z -= perp.m_y * unit.m_x;
-	LegoFloat* row0 = &m_orientation.m_m[0][0];
-	LegoFloat* row1 = &m_orientation.m_m[1][0];
-	LegoFloat* row2 = &m_orientation.m_m[2][0];
-	row0[0] = unit.m_x;
-	row0[1] = unit.m_y;
-	row1[0] = cross.m_x;
-	row0[2] = unit.m_z;
-	row1[1] = cross.m_y;
-	row1[2] = cross.m_z;
-	row2[0] = perp.m_x;
-	row2[1] = perp.m_y;
-	row2[2] = perp.m_z;
+	cross.m_z -= ((((((((((((((((perp.m_y * unit.m_x))))))))))))))));
+	m_orientation.m_m[0][0] = unit.m_x;
+	m_orientation.m_m[0][1] = unit.m_y;
+	m_orientation.m_m[0][2] = unit.m_z;
+	m_orientation.m_m[1][0] = cross.m_x;
+	m_orientation.m_m[1][1] = cross.m_y;
+	m_orientation.m_m[1][2] = cross.m_z;
+	m_orientation.m_m[2][0] = perp.m_x;
+	m_orientation.m_m[2][1] = perp.m_y;
+	m_orientation.m_m[2][2] = perp.m_z;
 }
 
 // FUNCTION: LEGORACERS 0x00410a00
@@ -104,26 +103,25 @@ void GolOrientedEntity::SetDirectionSide(const GolVec3& p_v1, const GolVec3& p_v
 	GolMath::NormalizeVector3(perp, &perp);
 
 	GolVec3 cross;
-	cross.m_x = unit.m_y * perp.m_z - unit.m_z * perp.m_y;
+	LegoFloat x = unit.m_y * perp.m_z;
+	x -= unit.m_z * perp.m_y;
+	cross.m_x = x;
 	cross.m_y = unit.m_z;
 	cross.m_y *= perp.m_x;
-	cross.m_y -= unit.m_x * perp.m_z;
+	cross.m_y -= ((((((((((((((((unit.m_x * perp.m_z))))))))))))))));
 	cross.m_z = unit.m_x * perp.m_y;
 	LegoFloat unitYPerpX = unit.m_y;
 	unitYPerpX *= perp.m_x;
 	cross.m_z -= unitYPerpX;
-	LegoFloat* row0 = &m_orientation.m_m[0][0];
-	LegoFloat* row1 = &m_orientation.m_m[1][0];
-	LegoFloat* row2 = &m_orientation.m_m[2][0];
-	row2[0] = cross.m_x;
-	row0[0] = unit.m_x;
-	row0[1] = unit.m_y;
-	row0[2] = unit.m_z;
-	row1[0] = perp.m_x;
-	row1[1] = perp.m_y;
-	row1[2] = perp.m_z;
-	row2[1] = cross.m_y;
-	row2[2] = cross.m_z;
+	m_orientation.m_m[0][0] = unit.m_x;
+	m_orientation.m_m[0][1] = unit.m_y;
+	m_orientation.m_m[0][2] = unit.m_z;
+	m_orientation.m_m[1][0] = perp.m_x;
+	m_orientation.m_m[1][1] = perp.m_y;
+	m_orientation.m_m[1][2] = perp.m_z;
+	m_orientation.m_m[2][0] = cross.m_x;
+	m_orientation.m_m[2][1] = cross.m_y;
+	m_orientation.m_m[2][2] = cross.m_z;
 }
 
 // FUNCTION: LEGORACERS 0x00410b00
@@ -144,30 +142,28 @@ void GolOrientedEntity::SetUpDirection(const GolVec3& p_v1, const GolVec3& p_v2)
 	GolMath::NormalizeVector3(perp, &perp);
 
 	GolVec3 cross;
-	cross.m_x = unit.m_y;
-	cross.m_x *= perp.m_z;
+	LegoFloat x = unit.m_y;
+	x *= perp.m_z;
 	LegoFloat unitZPerpY = unit.m_z;
 	unitZPerpY *= perp.m_y;
-	cross.m_x -= unitZPerpY;
+	x -= unitZPerpY;
+	cross.m_x = x;
 	cross.m_y = unit.m_z;
 	cross.m_y *= perp.m_x;
-	cross.m_y -= unit.m_x * perp.m_z;
+	cross.m_y -= (((((((((((((unit.m_x * perp.m_z)))))))))))));
 	cross.m_z = unit.m_x * perp.m_y;
 	LegoFloat unitYPerpX = unit.m_y;
 	unitYPerpX *= perp.m_x;
 	cross.m_z -= unitYPerpX;
-	LegoFloat* row0 = &m_orientation.m_m[0][0];
-	LegoFloat* row1 = &m_orientation.m_m[1][0];
-	LegoFloat* row2 = &m_orientation.m_m[2][0];
-	row0[0] = perp.m_x;
-	row0[1] = perp.m_y;
-	row1[0] = cross.m_x;
-	row0[2] = perp.m_z;
-	row1[1] = cross.m_y;
-	row1[2] = cross.m_z;
-	row2[0] = unit.m_x;
-	row2[1] = unit.m_y;
-	row2[2] = unit.m_z;
+	m_orientation.m_m[0][0] = perp.m_x;
+	m_orientation.m_m[0][1] = perp.m_y;
+	m_orientation.m_m[0][2] = perp.m_z;
+	m_orientation.m_m[1][0] = cross.m_x;
+	m_orientation.m_m[1][1] = cross.m_y;
+	m_orientation.m_m[1][2] = cross.m_z;
+	m_orientation.m_m[2][0] = unit.m_x;
+	m_orientation.m_m[2][1] = unit.m_y;
+	m_orientation.m_m[2][2] = unit.m_z;
 }
 
 // FUNCTION: GOLDP 0x10026c50
@@ -374,70 +370,33 @@ void GolOrientedEntity::TransformMatrixToLocal(const GolMatrix3& p_matrix, GolMa
 {
 	GolMatrix3 localMatrix;
 
-	{
-		LegoFloat value = m_orientation.m_m[1][0];
-		value *= p_matrix.m_m[1][0];
-		value += m_orientation.m_m[2][0] * p_matrix.m_m[2][0];
-		localMatrix.m_m[0][0] = value + m_orientation.m_m[0][0] * p_matrix.m_m[0][0];
-	}
-
-	{
-		LegoFloat value = p_matrix.m_m[2][1];
-		value *= m_orientation.m_m[2][0];
-		value += m_orientation.m_m[1][0] * p_matrix.m_m[1][1];
-		localMatrix.m_m[0][1] = value + p_matrix.m_m[0][1] * m_orientation.m_m[0][0];
-	}
-
-	{
-		LegoFloat value = p_matrix.m_m[2][2];
-		value *= m_orientation.m_m[2][0];
-		value += m_orientation.m_m[1][0] * p_matrix.m_m[1][2];
-		localMatrix.m_m[0][2] = value + p_matrix.m_m[0][2] * m_orientation.m_m[0][0];
-	}
-
-	{
-		LegoFloat value = m_orientation.m_m[2][1];
-		value *= p_matrix.m_m[2][0];
-		value += p_matrix.m_m[1][0] * m_orientation.m_m[1][1];
-		localMatrix.m_m[1][0] = value + m_orientation.m_m[0][1] * p_matrix.m_m[0][0];
-	}
-
-	{
-		LegoFloat value = m_orientation.m_m[2][1];
-		value *= p_matrix.m_m[2][1];
-		value += m_orientation.m_m[0][1] * p_matrix.m_m[0][1];
-		localMatrix.m_m[1][1] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][1];
-	}
-
-	{
-		LegoFloat value = m_orientation.m_m[2][1];
-		value *= p_matrix.m_m[2][2];
-		value += m_orientation.m_m[0][1] * p_matrix.m_m[0][2];
-		localMatrix.m_m[1][2] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][2];
-	}
-
-	{
-		LegoFloat value = m_orientation.m_m[2][2];
-		value *= p_matrix.m_m[2][0];
-		value += p_matrix.m_m[1][0] * m_orientation.m_m[1][2];
-		localMatrix.m_m[2][0] = value + m_orientation.m_m[0][2] * p_matrix.m_m[0][0];
-	}
-
-	{
-		LegoFloat value = m_orientation.m_m[2][2];
-		value *= p_matrix.m_m[2][1];
-		value += m_orientation.m_m[0][2] * p_matrix.m_m[0][1];
-		LegoFloat term5 = m_orientation.m_m[1][2];
-		term5 *= p_matrix.m_m[1][1];
-		localMatrix.m_m[2][1] = value + term5;
-	}
-
-	{
-		LegoFloat value = m_orientation.m_m[2][2];
-		value *= p_matrix.m_m[2][2];
-		value += m_orientation.m_m[0][2] * p_matrix.m_m[0][2];
-		localMatrix.m_m[2][2] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][2];
-	}
+	localMatrix.m_m[0][0] = GOL_MUL(m_orientation.m_m[1][0], p_matrix.m_m[1][0]) +
+							GOL_MUL(m_orientation.m_m[2][0], p_matrix.m_m[2][0]) +
+							GOL_MUL(m_orientation.m_m[0][0], p_matrix.m_m[0][0]);
+	localMatrix.m_m[0][1] = GOL_MUL(p_matrix.m_m[2][1], m_orientation.m_m[2][0]) +
+							GOL_MUL(m_orientation.m_m[1][0], p_matrix.m_m[1][1]) +
+							GOL_MUL(p_matrix.m_m[0][1], m_orientation.m_m[0][0]);
+	localMatrix.m_m[0][2] = GOL_MUL(p_matrix.m_m[2][2], m_orientation.m_m[2][0]) +
+							GOL_MUL(m_orientation.m_m[1][0], p_matrix.m_m[1][2]) +
+							GOL_MUL(p_matrix.m_m[0][2], m_orientation.m_m[0][0]);
+	localMatrix.m_m[1][0] = GOL_MUL(m_orientation.m_m[2][1], p_matrix.m_m[2][0]) +
+							GOL_MUL(p_matrix.m_m[1][0], m_orientation.m_m[1][1]) +
+							GOL_MUL(m_orientation.m_m[0][1], p_matrix.m_m[0][0]);
+	localMatrix.m_m[1][1] = GOL_MUL(m_orientation.m_m[2][1], p_matrix.m_m[2][1]) +
+							GOL_MUL(m_orientation.m_m[0][1], p_matrix.m_m[0][1]) +
+							GOL_MUL(m_orientation.m_m[1][1], p_matrix.m_m[1][1]);
+	localMatrix.m_m[1][2] = GOL_MUL(m_orientation.m_m[2][1], p_matrix.m_m[2][2]) +
+							GOL_MUL(m_orientation.m_m[0][1], p_matrix.m_m[0][2]) +
+							GOL_MUL(m_orientation.m_m[1][1], p_matrix.m_m[1][2]);
+	localMatrix.m_m[2][0] = GOL_MUL(m_orientation.m_m[2][2], p_matrix.m_m[2][0]) +
+							GOL_MUL(p_matrix.m_m[1][0], m_orientation.m_m[1][2]) +
+							GOL_MUL(m_orientation.m_m[0][2], p_matrix.m_m[0][0]);
+	localMatrix.m_m[2][1] = GOL_MUL(m_orientation.m_m[2][2], p_matrix.m_m[2][1]) +
+							GOL_MUL(m_orientation.m_m[0][2], p_matrix.m_m[0][1]) +
+							GOL_MUL(m_orientation.m_m[1][2], p_matrix.m_m[1][1]);
+	localMatrix.m_m[2][2] = GOL_MUL(m_orientation.m_m[2][2], p_matrix.m_m[2][2]) +
+							GOL_MUL(m_orientation.m_m[0][2], p_matrix.m_m[0][2]) +
+							GOL_MUL(m_orientation.m_m[1][2], p_matrix.m_m[1][2]);
 
 	GolMath::MultiplyMatrix3(&localMatrix.m_m[0][0], &m_orientation.m_m[0][0], &p_dest->m_m[0][0]);
 }

@@ -30,7 +30,7 @@ LegoS32 SaveGameFile::BufferedOpenSlotFile(
 {
 	m_mode = p_mode;
 	m_flags = 0;
-	m_unk0x10 = 0;
+	m_mappedOffset = 0;
 	m_bufferStart = 0;
 	m_bufferEnd = 0;
 	m_position = 0;

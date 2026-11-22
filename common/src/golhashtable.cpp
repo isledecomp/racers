@@ -188,7 +188,7 @@ GolHashTable::Entry* GolHashTable::AddEntry(Entry** p_bucket, const LegoChar* p_
 
 // FUNCTION: GOLDP 0x10031480
 // FUNCTION: LEGORACERS 0x0044c900
-const LegoChar* STDMETHODCALLTYPE GolHashTable::GetEntryPath(Entry* p_entry)
+const LegoChar* GolHashTable::GetEntryPath(Entry* p_entry)
 {
 	if (p_entry) {
 		return p_entry->m_data;

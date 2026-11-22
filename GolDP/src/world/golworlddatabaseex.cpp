@@ -186,10 +186,10 @@ void GolWorldDatabaseEx::AllocateResources()
 void GolWorldDatabaseEx::LoadResources()
 {
 	LegoU32 i;
+	LegoChar fileName[sizeof(GolName) + 5];
 
 	if (m_textureListCount) {
 		for (i = 0; i < m_textureListCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_textureListNames[i], ".tdf");
 			m_textureLists[i].Load(static_cast<GolD3DRenderDevice*>(m_renderer), fileName, m_binary);
 		}
@@ -197,7 +197,6 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_materialLibraryCount) {
 		for (i = 0; i < m_materialLibraryCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_materialLibraryNames[i], ".mdf");
 			m_materialLibraries[i].Load(m_renderer, fileName, m_binary);
 		}
@@ -205,7 +204,6 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_modelPartCount) {
 		for (i = 0; i < m_modelPartCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_modelPartNames[i], ".adf");
 			m_modelParts[i].Load(fileName, m_binary);
 		}
@@ -213,7 +211,6 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_modelCount) {
 		for (i = 0; i < m_modelCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_modelNames[i], ".gdf");
 			m_models[i].Load(m_renderer, fileName, m_binary);
 		}
@@ -221,7 +218,6 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_materialTableCount) {
 		for (i = 0; i < m_materialTableCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_materialTableNames[i], ".gdf");
 			m_materialTables[i].Load(m_renderer, fileName, m_binary);
 		}
@@ -229,7 +225,6 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_sceneNodeCount) {
 		for (i = 0; i < m_sceneNodeCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_sceneNodeNames[i], ".sdf");
 			m_sceneNodes[i].Load(fileName, m_binary);
 		}
@@ -237,7 +232,6 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_boundingShapeCount) {
 		for (i = 0; i < m_boundingShapeCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_boundingShapeNames[i], ".bdf");
 			m_boundingShapes[i].Deserialize(fileName, m_binary);
 		}
@@ -245,7 +239,6 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_materialAnimationCount) {
 		for (i = 0; i < m_materialAnimationCount; i++) {
-			LegoChar fileName[sizeof(GolName) + 5];
 			BuildResourceFileName(fileName, m_materialAnimationNames[i], ".maf");
 			m_materialAnimations[i].Load(m_renderer, fileName, m_binary);
 		}
@@ -253,7 +246,7 @@ void GolWorldDatabaseEx::LoadResources()
 
 	if (m_spriteCount) {
 		for (i = 0; i < m_spriteCount; i++) {
-			LegoFloat maxDistanceSquared = m_spriteRecords[i].m_maxDistance * m_spriteRecords[i].m_maxDistance;
+			LegoFloat maxDistanceSquared = GOL_MUL(m_spriteRecords[i].m_maxDistance, m_spriteRecords[i].m_maxDistance);
 
 			if (m_spriteRecords[i].m_flags & WdbBillboardSprite::c_flagMaterialAssignment) {
 				if (m_spriteRecords[i].m_materialTableIndex >= m_materialTableCount) {
@@ -289,8 +282,8 @@ void GolWorldDatabaseEx::LoadResources()
 			}
 
 			m_billboards[i].SetPosition(m_spriteRecords[i].m_position);
-			const GolVec3& axis = m_spriteRecords[i].m_axis;
 			if (m_spriteRecords[i].m_flags & WdbBillboardSprite::c_flagAxisLocked) {
+				const GolVec3& axis = m_spriteRecords[i].m_axis;
 				GolBillboardEx& billboard = m_billboards[i];
 				billboard.EnableAxisLock();
 				billboard.SetAxis(axis);

@@ -642,7 +642,6 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 	}
 	GdbModelIndexArrayBase* indexArrayBase;
 	p_params->m_model->GetIndexArrayInto(&indexArrayBase);
-	GdbModelIndexArray* indices = static_cast<GdbModelIndexArray*>(indexArrayBase);
 	LegoU8 triangle[3];
 	LegoU32 scratchStart = 0;
 
@@ -658,7 +657,8 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 				p_params->m_absoluteIndexArray
 					->SetTriangleIndices(triangleIndex, triangle[0], triangle[1], triangle[2]);
 			}
-			indices->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
+			static_cast<GdbModelIndexArray*>(indexArrayBase)
+				->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
 		}
 	}
 
@@ -686,7 +686,8 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 			triangle[0] += static_cast<LegoU8>(indexOffset);
 			triangle[second] += static_cast<LegoU8>(indexOffset);
 			triangle[third] += static_cast<LegoU8>(indexOffset);
-			indices->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
+			static_cast<GdbModelIndexArray*>(indexArrayBase)
+				->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
 		}
 		scratchStart += p_params->m_segmentCount + 1;
 	}
@@ -717,7 +718,8 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 			triangle[0] += static_cast<LegoU8>(indexOffset);
 			triangle[second] += static_cast<LegoU8>(indexOffset);
 			triangle[third] += static_cast<LegoU8>(indexOffset);
-			indices->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
+			static_cast<GdbModelIndexArray*>(indexArrayBase)
+				->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
 
 			triangle[0] = static_cast<LegoU8>(first + segment);
 			triangle[second] = static_cast<LegoU8>(
@@ -732,7 +734,8 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 			triangle[0] += static_cast<LegoU8>(indexOffset);
 			triangle[second] += static_cast<LegoU8>(indexOffset);
 			triangle[third] += static_cast<LegoU8>(indexOffset);
-			indices->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
+			static_cast<GdbModelIndexArray*>(indexArrayBase)
+				->SetTriangleIndices(triangleIndex++, triangle[0], triangle[1], triangle[2]);
 		}
 	}
 

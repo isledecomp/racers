@@ -88,7 +88,6 @@ void GolBmpFile::ReadHeader()
 
 	LegoU16 magic = BUF_U16LE(header, 0);
 	if (magic == 0) {
-		// Empty in the original: a second test of the magic that left no code (its condition is unknown).
 	}
 
 	if (magic != TWOCC('B', 'M')) {
@@ -161,8 +160,6 @@ void GolBmpFile::ReadHeader()
 			planes = BUF_U16LE(header2, 0x8);   // bcPlanes
 			bpp = BUF_U16LE(header2, 0xa);
 			if (planes != 1) {
-				// Empty in the original: the check left no code, but it keeps the full 16-bit read
-				// of planes in front of the palette test.
 			}
 			compression = 0;
 			m_paletteSize = 0;
@@ -212,7 +209,6 @@ void GolBmpFile::ReadHeader()
 			planes = BUF_U16LE(header2, 0xc);   // biPlanes
 			bpp = BUF_U16LE(header2, 0xe);      // biBitCount
 			if (planes != 1) {
-				// Empty in the original (see the bcPlanes check above).
 			}
 			compression = BUF_U32LE(header2, 0x10);     // biCompression
 			m_imageByteSize = BUF_U32LE(header2, 0x14); // biSizeImage
@@ -262,7 +258,6 @@ void GolBmpFile::ReadHeader()
 			planes = BUF_U16LE(header2, 0xc);
 			bpp = BUF_U16LE(header2, 0xe);
 			if (planes != 1) {
-				// Empty in the original (see the bcPlanes check above).
 			}
 			compression = BUF_U32LE(header2, 0x10);
 			m_imageByteSize = BUF_U32LE(header2, 0x14);

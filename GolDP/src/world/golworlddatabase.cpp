@@ -1350,7 +1350,6 @@ void GolWorldDatabase::InitializeEntities()
 	GolModelBase* addedModel;
 	LegoFloat maxDistances[3];
 	LegoChar name[sizeof(GolName) + 1];
-	// Never read: these sums only reproduce the expression numbering of the original (beautify later).
 	LegoU32 recordCount = m_modelEntityCount + m_animatedEntityCount + m_collidableEntityCount + m_boundedEntityCount +
 						  m_boundingVolumeCount + m_cameraCount + m_ambientLightCount + m_lightCount + m_spriteCount +
 						  m_materialAnimationCount;

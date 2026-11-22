@@ -328,18 +328,22 @@ void GolDirectDrawPalette::Set332PaletteEntries()
 				LegoU8* entry = greenEntries;
 				greenEntries += c_332GreenStride;
 				do {
-					entry[-1] = redValue;
 					LegoU8 blueValue = blue;
 					blueValue <<= 2;
 					blueValue |= blue;
-					entry[0] = greenValue;
 					blueValue <<= 2;
 					blueValue |= blue;
+					blueValue <<= 2;
+					blueValue |= blue;
+					LegoU8& entryRed = entry[-1];
+					LegoU8& entryGreen = entry[0];
+					LegoU8& entryBlue = entry[1];
+					LegoU8& entryFlags = entry[2];
+					entryRed = redValue;
+					entryGreen = greenValue;
+					entryBlue = blueValue;
+					entryFlags = PC_NOCOLLAPSE;
 					entry += sizeof(ColorRGBA);
-					blueValue <<= 2;
-					blueValue |= blue;
-					entry[-3] = blueValue;
-					entry[-2] = PC_NOCOLLAPSE;
 					blue++;
 				} while (blue < c_332BlueLevels);
 

@@ -41,7 +41,7 @@ void GolPalettedTexture::Allocate(
 	m_textureFormat = p_textureFormat;
 
 	if (p_textureFormat.m_paletteMask) {
-		m_unk0x40.Initialize(p_textureFormat);
+		m_palette.Initialize(p_textureFormat);
 	}
 
 	LegoU16 pitch = (p_textureFormat.m_bitsPerPixel * p_width + 8 - 1) / 8U;
@@ -56,7 +56,7 @@ void GolPalettedTexture::Allocate(
 // FUNCTION: LEGORACERS 0x00413750
 void GolPalettedTexture::Destroy()
 {
-	m_unk0x40.Shutdown();
+	m_palette.Shutdown();
 	if (m_pixels != NULL) {
 		delete[] m_pixels;
 		m_pixels = NULL;
@@ -69,5 +69,5 @@ void GolPalettedTexture::Destroy()
 // FUNCTION: LEGORACERS 0x00413780
 GolPaletteBase* GolPalettedTexture::GetPalette()
 {
-	return &m_unk0x40;
+	return &m_palette;
 }

@@ -29,12 +29,14 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00408bb0
 	// GolPalettedTexture::`scalar deleting destructor'
 
-	ColorRGBA* GetPaletteEntries() { return m_unk0x40.GetEntries(); }
-	LegoU32 GetPaletteSize() { return m_unk0x40.GetPaletteSize(); }
+	ColorRGBA* GetPaletteEntries() { return m_palette.GetEntries(); }
+	LegoU32 GetPaletteSize() { return m_palette.GetPaletteSize(); }
 
 protected:
+	friend class GolImage;
+
 	undefined m_unk0x38[0x40 - 0x38]; // 0x38
-	GolTexturePalette m_unk0x40;      // 0x40
+	GolTexturePalette m_palette;      // 0x40
 };
 
 #endif // GOLPALETTEDTEXTURE_H

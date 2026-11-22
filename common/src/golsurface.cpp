@@ -110,6 +110,7 @@ void GolSurface::Fill(LegoU32 p_color)
 	LegoU32 height = m_height;
 	LegoU32 width = m_width;
 
+	LegoU32 y;
 	switch (m_textureFormat.m_bitsPerPixel) {
 	case 4:
 		p_color &= 0x0f;
@@ -117,39 +118,32 @@ void GolSurface::Fill(LegoU32 p_color)
 		p_color |= p_color << 4;
 		// fall through
 	case 8:
-		if (height > 0) {
-			LegoU32 rows = height;
-			do {
-				LegoU8* rowEnd = pixels + width;
-				LegoU8* row = pixels;
-				while (row < rowEnd) {
-					*row++ = (LegoU8) p_color;
-				}
-				pixels += pitch;
-			} while (--rows);
+		for (y = 0; y < height; y++) {
+			LegoU8* rowEnd = pixels + width;
+			LegoU8* row = pixels;
+			while (row < rowEnd) {
+				*row++ = (LegoU8) p_color;
+			}
+			pixels += pitch;
 		}
 		break;
 	case 16:
-		if (height > 0) {
-			LegoU32 rows = height;
-			do {
-				LegoU16* row = (LegoU16*) pixels;
-				LegoU16* rowEnd = row + width;
-				while (row < rowEnd) {
-					*row++ = (LegoU16) p_color;
-				}
-				pixels += pitch;
-			} while (--rows);
+		for (y = 0; y < height; y++) {
+			LegoU16* row = (LegoU16*) pixels;
+			LegoU16* rowEnd = row + width;
+			while (row < rowEnd) {
+				*row++ = (LegoU16) p_color;
+			}
+			pixels += pitch;
 		}
 		break;
 	case 24: {
 		LegoU8 color0 = p_color;
 		LegoU8 color1 = p_color >> 8;
 		LegoU8 color2 = p_color >> 16;
-		width *= 3;
 		if (height > 0) {
-			LegoU32 rows = height;
-			do {
+			width *= 3;
+			for (y = 0; y < height; y++) {
 				LegoU8* rowEnd = pixels + width;
 				LegoU8* row = pixels;
 				while (row < rowEnd) {
@@ -158,21 +152,18 @@ void GolSurface::Fill(LegoU32 p_color)
 					*row++ = color2;
 				}
 				pixels += pitch;
-			} while (--rows);
+			}
 		}
 		break;
 	}
 	case 32:
-		if (height > 0) {
-			LegoU32 rows = height;
-			do {
-				LegoU32* row = (LegoU32*) pixels;
-				LegoU32* rowEnd = row + width;
-				while (row < rowEnd) {
-					*row++ = p_color;
-				}
-				pixels += pitch;
-			} while (--rows);
+		for (y = 0; y < height; y++) {
+			LegoU32* row = (LegoU32*) pixels;
+			LegoU32* rowEnd = row + width;
+			while (row < rowEnd) {
+				*row++ = p_color;
+			}
+			pixels += pitch;
 		}
 		break;
 	}
@@ -180,6 +171,12 @@ void GolSurface::Fill(LegoU32 p_color)
 	if (unlockPixels) {
 		UnlockPixels();
 	}
+}
+
+inline static void PutNibble(LegoU8* p_dest, LegoU32 p_mask, LegoU8 p_color)
+{
+	p_color |= p_mask & *p_dest;
+	*p_dest = p_color;
 }
 
 // FUNCTION: GOLDP 0x1001d240
@@ -190,13 +187,12 @@ void GolSurface::Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_so
 	LegoU32 destPitch;
 	LegoU32 copyWidth;
 	LegoU32 sourcePitch;
-	GolSurface* destSurface = this;
 	LegoU32 copyHeight;
 	LegoBool32 unlockSource;
 	LegoBool32 unlockDest;
 	LegoU8* sourcePixels;
 
-	if (destSurface->m_textureFormat.m_bitsPerPixel != p_source->m_textureFormat.m_bitsPerPixel) {
+	if (m_textureFormat.m_bitsPerPixel != p_source->m_textureFormat.m_bitsPerPixel) {
 		return;
 	}
 
@@ -213,37 +209,35 @@ void GolSurface::Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_so
 		return;
 	}
 
-	copyHeight = p_sourceRect->m_bottom - p_sourceRect->m_top;
-	LegoU32 destWidth = destSurface->m_width;
 	copyWidth = p_sourceRect->m_right - p_sourceRect->m_left;
+	copyHeight = p_sourceRect->m_bottom - p_sourceRect->m_top;
 
-	if (p_x >= destWidth) {
+	if (p_x >= m_width) {
 		return;
 	}
 
-	LegoU32 destHeight = destSurface->m_height;
-	if (p_y >= destHeight) {
+	if (p_y >= m_height) {
 		return;
 	}
-	if (p_x + copyWidth > destWidth) {
-		copyWidth = destWidth - p_x;
+	if (p_x + copyWidth > m_width) {
+		copyWidth = m_width - p_x;
 	}
-	if (p_y + copyHeight > destHeight) {
-		copyHeight = destHeight - p_y;
+	if (p_y + copyHeight > m_height) {
+		copyHeight = m_height - p_y;
 	}
 
-	if (destSurface->m_textureFormat.m_paletteMask) {
-		GolPaletteBase* palette = destSurface->GetPalette();
+	if (m_textureFormat.m_paletteMask) {
+		GolPaletteBase* palette = GetPalette();
 		palette->CopyEntriesFrom(p_source->GetPalette());
 	}
 
-	if (destSurface->m_pixelFlags & c_lockFlagLocked) {
-		destPixels = destSurface->m_pixels;
+	if (m_pixelFlags & c_lockFlagLocked) {
+		destPixels = m_pixels;
 		unlockDest = FALSE;
-		destPitch = destSurface->m_pitch;
+		destPitch = m_pitch;
 	}
 	else {
-		destSurface->LockPixels(&destPixels, &destPitch, c_lockRequestWrite);
+		LockPixels(&destPixels, &destPitch, c_lockRequestWrite);
 		unlockDest = TRUE;
 	}
 
@@ -257,7 +251,7 @@ void GolSurface::Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_so
 		unlockSource = TRUE;
 	}
 
-	if (destSurface->m_textureFormat.m_bitsPerPixel == 4) {
+	if (m_textureFormat.m_bitsPerPixel == 4) {
 		sourcePixels += sourcePitch * p_sourceRect->m_top;
 		destPixels += p_y * destPitch;
 
@@ -283,35 +277,33 @@ void GolSurface::Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_so
 			sourceShift = 4;
 		}
 
-		if (copyHeight > 0) {
-			LegoU32 rows = copyHeight;
-			do {
-				LegoU32 rowDestMask = destMask;
-				LegoU32 rowSourceMask = sourceMask;
-				LegoU32 rowSourceShift = sourceShift;
-				LegoU32 rowDestShift = destShift;
-				for (LegoU32 x = 0; x < copyWidth; x++) {
-					LegoU8 color = (sourcePixels[(p_sourceRect->m_left + x) >> 1] & rowSourceMask) >> rowSourceShift;
-					LegoU32 shift = rowDestShift;
-					rowDestShift ^= 4;
-					color <<= shift;
-					rowSourceMask = ~rowSourceMask;
-					destPixels[(x + p_x) >> 1] = (rowDestMask & destPixels[(x + p_x) >> 1]) | color;
-					rowDestMask = ~rowDestMask;
-					rowSourceShift ^= 4;
-				}
-				destPixels += destPitch;
-				sourcePixels += sourcePitch;
-			} while (--rows);
+		for (LegoU32 y = 0; y < copyHeight; y++) {
+			LegoU32 rowDestMask = destMask;
+			LegoU32 rowDestShift = destShift;
+			LegoU32 rowSourceMask = sourceMask;
+			LegoU32 rowSourceShift = sourceShift;
+			for (LegoU32 x = 0; x < copyWidth; x++) {
+				PutNibble(
+					&destPixels[(x + p_x) >> 1],
+					rowDestMask,
+					((sourcePixels[(p_sourceRect->m_left + x) >> 1] & rowSourceMask) >> rowSourceShift) << rowDestShift
+				);
+				rowDestShift ^= 4;
+				rowSourceMask = ~rowSourceMask;
+				rowDestMask = ~rowDestMask;
+				rowSourceShift ^= 4;
+			}
+			destPixels += destPitch;
+			sourcePixels += sourcePitch;
 		}
 	}
 	else {
-		LegoU32 bytesPerPixel = destSurface->m_textureFormat.m_bitsPerPixel >> 3;
+		LegoU32 bytesPerPixel = m_textureFormat.m_bitsPerPixel >> 3;
 		sourcePixels += (sourcePitch * p_sourceRect->m_top) + (bytesPerPixel * p_sourceRect->m_left);
 		destPixels += (p_y * destPitch) + (p_x * bytesPerPixel);
 
 		LegoU32 rowBytes = copyWidth * bytesPerPixel;
-		for (LegoU32 rows = copyHeight; rows; --rows) {
+		for (LegoU32 y = 0; y < copyHeight; y++) {
 			LegoU8* source = sourcePixels;
 			LegoU8* destEnd = destPixels + rowBytes;
 			LegoU8* dest = destPixels;
@@ -327,7 +319,7 @@ void GolSurface::Blit(LegoU32 p_x, LegoU32 p_y, GolSurface* p_source, Rect* p_so
 		p_source->UnlockPixels();
 	}
 	if (unlockDest) {
-		destSurface->UnlockPixels();
+		UnlockPixels();
 	}
 }
 

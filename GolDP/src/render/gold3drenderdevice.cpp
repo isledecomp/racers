@@ -2518,7 +2518,6 @@ void GolD3DRenderDevice::SetLight(LegoU32 p_index, const Light* p_param)
 		color.m_blu = 0;
 	}
 
-	// Ghost form: the two extra paren pairs keep the fild of the material colour ahead of the light colour load.
 	m_lightColorProducts[p_index].m_red =
 		ScaleColorChannel((((double) (color.m_red & 0xff))), m_lightColors[p_index].m_red);
 	m_lightColorProducts[p_index].m_grn = ScaleColorChannel(m_lightColors[p_index].m_grn, color.m_grn & 0xff);

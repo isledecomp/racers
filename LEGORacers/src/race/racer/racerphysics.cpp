@@ -471,7 +471,7 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 			value = m_routeCursor.m_playbackSpeed;
 			value += scaled;
 		}
-		value += (1.0f - dot) * 0.050000001f;
+		value += (1.0f - dot) * 0.05f;
 
 		if (value > g_routeMaxPlaybackSpeed) {
 			value = g_routeMaxPlaybackSpeed;

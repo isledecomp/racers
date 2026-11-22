@@ -920,7 +920,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (m_lastSpeed > 0.050000001f && speed < 0.01f && activePart != c_animationPart0) {
+	if (m_lastSpeed > 0.05f && speed < 0.01f && activePart != c_animationPart0) {
 		m_racer->PlayReaction(FALSE);
 		m_driverEntity->PlayPart(c_animationPart0);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
@@ -1281,7 +1281,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		GolVec3 movement;
 		GolMath::NormalizeVector3(right, &movement);
 
-		LegoFloat dot = DotVectors(movement, up);
+		LegoFloat dot = (((((((DotVectors(movement, up))))))));
 		GolVec3 projection = movement * dot;
 		up -= projection;
 		GolMath::NormalizeVector3(up, &up);
@@ -1324,12 +1324,9 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		if (scale < g_curseMinScale) {
 			scale = g_curseMinScale;
 		}
-		entity->SetScaleThenInvalidateRadius(scale);
-		entity->Update(p_elapsedMs);
+		m_curseEntity.SetScaleThenInvalidateRadius(scale);
 	}
-	else {
-		entity->Update(p_elapsedMs);
-	}
+	entity->Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x0043fa50

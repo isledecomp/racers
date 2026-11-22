@@ -271,35 +271,34 @@ void DriveController::ApplySteering()
 	if (flags & c_flagSliding) {
 		if (!m_physics->CanSteer(m_turnRadius) || magnitude <= 0.0f) {
 			m_physics->StopSteering();
-			m_physics->SetTurnRadius(m_turnRadius);
-			return;
-		}
-
-		LegoFloat limit = m_physics->ComputeMinTurnRadius();
-		LegoFloat value = 1.0f - (magnitude / limit);
-		if (value < g_slideSteerAssistMin) {
-			value = g_slideSteerAssistMin;
-		}
-
-		LegoFloat scale;
-		LegoFloat amount;
-		if (m_slideLeft == 1) {
-			scale = value + value + 1.0f;
-			amount = 0.25f;
 		}
 		else {
-			scale = value + 1.0f;
-			amount = 0.85f;
-		}
-
-		m_physics->StartSteering(scale, amount, 3.1415927f);
-
-		if (magnitude < limit) {
-			value = ((limit - magnitude) * 0.5f) * 0.5f + magnitude;
-			if (m_turnRadius < 0.0f) {
-				value = -value;
+			LegoFloat limit = m_physics->ComputeMinTurnRadius();
+			LegoFloat value = 1.0f - (magnitude / limit);
+			if (value < g_slideSteerAssistMin) {
+				value = g_slideSteerAssistMin;
 			}
-			m_turnRadius = value;
+
+			LegoFloat scale;
+			LegoFloat amount;
+			if (m_slideLeft == 1) {
+				scale = value + value + 1.0f;
+				amount = 0.25f;
+			}
+			else {
+				scale = value + 1.0f;
+				amount = 0.85f;
+			}
+
+			m_physics->StartSteering(scale, amount, 3.1415927f);
+
+			if (magnitude < limit) {
+				value = ((limit - magnitude) * 0.5f) * 0.5f + magnitude;
+				if (m_turnRadius < 0.0f) {
+					value = -value;
+				}
+				m_turnRadius = value;
+			}
 		}
 	}
 	else if (!(flags & c_flagBit1)) {

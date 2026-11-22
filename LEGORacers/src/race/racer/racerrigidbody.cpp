@@ -151,8 +151,7 @@ void RacerCarBody::AddAngularImpulse(GolVec3* p_impulse)
 	GolVec3 transformed;
 	transformed.m_x = m_inertiaTensor.m_m[0][0];
 	transformed.m_x *= local.m_x;
-	transformed.m_y = m_inertiaTensor.m_m[0][1];
-	transformed.m_y *= local.m_x;
+	transformed.m_y = GOL_MUL(m_inertiaTensor.m_m[0][1], local.m_x);
 	transformed.m_z = m_inertiaTensor.m_m[0][2];
 	transformed.m_z *= local.m_x;
 
@@ -238,9 +237,8 @@ void RacerCarBody::CancelAngularMomentum(GolVec3* p_direction, GolVec3* p_point)
 // FUNCTION: LEGORACERS 0x00440da0
 void RacerCarBody::CancelAngularMomentumAlong(GolVec3* p_axis)
 {
-	LegoFloat dot = m_angularMomentum.m_z;
-	dot *= p_axis->m_z;
-	dot += m_angularMomentum.m_y * p_axis->m_y;
+	LegoFloat dot = GOL_MUL(m_angularMomentum.m_z, p_axis->m_z);
+	dot += GOL_MUL(m_angularMomentum.m_y, p_axis->m_y);
 	dot += m_angularMomentum.m_x * p_axis->m_x;
 	GolVec3 scaled;
 	scaled.m_x = dot * p_axis->m_x;
@@ -260,17 +258,14 @@ void RacerRigidBody::Update(LegoS32 p_elapsedMs)
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
 	{
 		GolVec3 linearDelta;
-		linearDelta.m_x = m_force.m_x;
-		linearDelta.m_x *= elapsed;
+		linearDelta.m_x = GOL_MUL(m_force.m_x, elapsed);
 		linearDelta.m_x *= m_inverseMass;
-		linearDelta.m_y = m_force.m_y;
-		linearDelta.m_y *= elapsed;
+		linearDelta.m_y = GOL_MUL(m_force.m_y, elapsed);
 		linearDelta.m_y *= m_inverseMass;
-		linearDelta.m_z = m_force.m_z;
-		linearDelta.m_z *= elapsed;
+		linearDelta.m_z = GOL_MUL(m_force.m_z, elapsed);
 		linearDelta.m_z *= m_inverseMass;
 
-		LegoFloat halfElapsed = elapsed * 0.5f;
+		LegoFloat halfElapsed = (((((elapsed * 0.5f)))));
 
 		GolVec3 position;
 		m_body->GetPosition(&position);

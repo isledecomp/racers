@@ -65,29 +65,25 @@ void GolTgaFile::ReadHeader()
 		GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 	}
 
-	m_imageType = header[0x2]; // 1: type1 color-mapped image, 2: unmapped rgb, 9: RLE color-mapped, 10: RLE rgb
+	m_identificationFieldSize = header[0];
+	m_colorMapType = header[1];
+	m_imageType = header[0x2];
 	m_colorMapFirstEntry = BUF_U16LE(header, 0x3);
-	LegoU32 colorMapLength = BUF_U16LE(header, 0x5);
-	m_colorMapLength = colorMapLength;
+	m_colorMapLength = BUF_U16LE(header, 0x5);
+	m_colorMapEntrySize = header[7];
 	m_xOrigin = BUF_U16LE(header, 0x8);
 	m_yOrigin = BUF_U16LE(header, 0xa);
-	m_identificationFieldSize = header[0];
-	m_posImageData = m_identificationFieldSize + 0x12;
 	m_width = BUF_U16LE(header, 0xc);
-	LegoU32 height = BUF_U16LE(header, 0xe);
-
+	m_height = BUF_U16LE(header, 0xe);
 	LegoU32 bpp = header[0x10];
-	m_rowByteStride = ((m_width * bpp + 31) >> 3) & 0x1ffffffc;
-	m_colorMapType = header[1]; // 1: data type 1, 2: data type 2, 9: date type 9, 10: data type 10
-	LegoS32 colorMapEntrySize = header[7];
-	m_colorMapEntrySize = colorMapEntrySize;
-	m_height = height;
 	m_imageDescriptorByte = header[0x11];
+	m_posImageData = m_identificationFieldSize + 0x12;
+	m_rowByteStride = ((m_width * bpp + 31) >> 3) & 0x1ffffffc;
 	m_paletteSize = 0;
-	m_imageByteSize = m_rowByteStride * height;
+	m_imageByteSize = m_rowByteStride * m_height;
 
 	if (m_colorMapType != 0 && bpp <= 8) {
-		LegoU32 rawPaletteByteSize = ((colorMapEntrySize + 7) >> 3) * colorMapLength;
+		LegoU32 rawPaletteByteSize = ((static_cast<LegoS32>(m_colorMapEntrySize) + 7) >> 3) * m_colorMapLength;
 		LegoU8* buf = new LegoU8[rawPaletteByteSize];
 		if (buf == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -108,7 +104,7 @@ void GolTgaFile::ReadHeader()
 		switch (m_colorMapEntrySize) {
 		case 0xf:
 			// xrgb1555
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+			for (bufPtr = buf, i = 0; i < m_paletteSize; i++) {
 				LegoU16 col16 = *bufPtr++;
 				col16 |= *bufPtr++ << 8;
 				m_palette[i].m_blu = static_cast<LegoU8>(col16 << 3);
@@ -119,7 +115,7 @@ void GolTgaFile::ReadHeader()
 			break;
 		case 0x10:
 			// argb1555
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+			for (bufPtr = buf, i = 0; i < m_paletteSize; i++) {
 				LegoU16 col16 = *bufPtr++;
 				col16 |= *bufPtr++ << 8;
 				m_palette[i].m_blu = static_cast<LegoU8>(col16 << 3);
@@ -130,7 +126,7 @@ void GolTgaFile::ReadHeader()
 			break;
 		case 0x18:
 			// bgr888
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+			for (bufPtr = buf, i = 0; i < m_paletteSize; i++) {
 				m_palette[i].m_blu = *bufPtr++;
 				m_palette[i].m_grn = *bufPtr++;
 				m_palette[i].m_red = *bufPtr++;
@@ -139,7 +135,7 @@ void GolTgaFile::ReadHeader()
 			break;
 		case 0x20:
 			// bgr888
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+			for (bufPtr = buf, i = 0; i < m_paletteSize; i++) {
 				m_palette[i].m_blu = *bufPtr++;
 				m_palette[i].m_grn = *bufPtr++;
 				m_palette[i].m_red = *bufPtr++;
@@ -340,7 +336,8 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 	LegoS32 tileHeight;
 	LegoS32 amount;
 
-	if (m_height != p_image->GetHeight() || m_width != p_image->GetWidth()) {
+	LegoBool32 sizeMismatch = m_height != p_image->GetHeight() || m_width != p_image->GetWidth();
+	if (sizeMismatch) {
 		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
 	}
 
@@ -374,7 +371,7 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 				&pitch,
 				GolSurface::c_lockRequestRead | GolSurface::c_lockRequestWrite
 			);
-			tilePitches[row + column * p_image->m_tileRowCount] = pitch;
+			tilePitches[row + column * p_image->GetTileRowCount()] = pitch;
 		}
 	}
 
@@ -405,7 +402,8 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		rowStep = -1;
 		tileRow = p_image->GetTileRowCount() - 1;
 		LegoS32 totalTileHeight = 0;
-		LegoS32 lastTileHeight = 0;
+		// Not initialised in the original: with no tile rows the stale stack value is used.
+		LegoS32 lastTileHeight;
 		for (row = 0; row < p_image->GetTileRowCount(); row++) {
 			lastTileHeight = p_image->GetTileHeight(row);
 			totalTileHeight += lastTileHeight;
@@ -433,8 +431,8 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		tileHeight = 0;
 		LegoU32 sourceOffset = 0;
 		for (LegoU32 i = 0; i < p_image->GetTileColumnCount(); i++) {
-			tileHeight = p_image->GetTileHeight(tileRow);
 			LegoS32 tileWidth = p_image->GetTileWidth(i);
+			tileHeight = p_image->GetTileHeight(tileRow);
 			if (rowInTile == 0x7fffffff) {
 				rowInTile = tileHeight - 1;
 			}
@@ -445,8 +443,12 @@ void GolTgaFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 				rowBytes = totalRowBytes - sourceOffset;
 			}
 
-			LegoU32 index = tileRow + i * p_image->m_tileRowCount;
-			::memcpy(tilePixels[index] + rowInTile * tilePitches[index], convertedRow + sourceOffset, rowBytes);
+			::memcpy(
+				tilePixels[tileRow + i * p_image->GetTileRowCount()] +
+					rowInTile * tilePitches[tileRow + i * p_image->GetTileRowCount()],
+				convertedRow + sourceOffset,
+				rowBytes
+			);
 			sourceOffset += rowBytes;
 		}
 

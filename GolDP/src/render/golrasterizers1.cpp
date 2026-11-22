@@ -117,38 +117,10 @@ LegoU8 g_unk0x10057c58[1088] = {
 	0xAA, 0x0,  0xB9, 0x33, 0x56
 };
 
-inline void SelectMipmapRasterizers(GolSoftwareRenderer* p_renderer)
-{
-	if (p_renderer->GetCurrentMipmap()->m_paletteData) {
-		if (p_renderer->GetRasterizerFlags() & 0x200) {
-			p_renderer->SetTriangleRasterizer(FUN_1003e590);
-			p_renderer->SetSpanRasterizer(FUN_10033890);
-			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-		}
-		else {
-			p_renderer->SetTriangleRasterizer(FUN_1003c780);
-			p_renderer->SetSpanRasterizer(FUN_10033890);
-			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-		}
-	}
-	else {
-		if (p_renderer->GetRasterizerFlags() & 0x200) {
-			p_renderer->SetTriangleRasterizer(FUN_1003ee90);
-			p_renderer->SetSpanRasterizer(FUN_100336d0);
-			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-		}
-		else {
-			p_renderer->SetTriangleRasterizer(FUN_1003cf40);
-			p_renderer->SetSpanRasterizer(FUN_100336d0);
-			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-		}
-	}
-}
-
 // FUNCTION: GOLDP 0x10032c80
 void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 {
-	LegoU32 sizeLog2;
+	LegoS32 sizeLog2;
 
 	p_renderer->SetRasterizerFlags(p_renderer->GetRasterizerFlags() & ~0x80000000);
 	switch (p_renderer->GetPixelFormat()) {
@@ -157,48 +129,57 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 			if (p_renderer->GetRasterizerFlags() & 1) {
 				p_renderer->SetTriangleRasterizer(FUN_1003fce0);
 				p_renderer->SetSpanRasterizer(FUN_100332d0);
-				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 			}
 			else {
 				p_renderer->SetTriangleRasterizer(FUN_1003f790);
 				p_renderer->SetSpanRasterizer(FUN_10033270);
-				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 			}
 		}
-		else if (sizeLog2 = p_renderer->GetCurrentMipmap()->m_sizeLog2, sizeLog2 != 0) {
-			if (p_renderer->GetCurrentMipmap()->m_paletteData) {
-				if (p_renderer->GetRasterizerFlags() & 4) {
-					if (p_renderer->GetRasterizerFlags() & 0x200) {
-						p_renderer->SetTriangleRasterizer(FUN_1003d700);
+		else {
+			sizeLog2 = p_renderer->GetCurrentMipmap()->m_sizeLog2;
+			if (sizeLog2 != MipmapLevel::c_sizeGeneric) {
+				if (p_renderer->GetCurrentMipmap()->m_paletteData) {
+					if (p_renderer->GetRasterizerFlags() & 4) {
+						if (p_renderer->GetRasterizerFlags() & 0x200) {
+							p_renderer->SetTriangleRasterizer(FUN_1003d700);
+						}
+						else {
+							p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+						}
+						if (p_renderer->GetRasterizerFlags() & 2) {
+							p_renderer->SetSpanRasterizer(g_spanRasterizers[86 - sizeLog2]);
+						}
+						else {
+							p_renderer->SetSpanRasterizer(g_spanRasterizers[74 - sizeLog2]);
+						}
+					}
+					else if (p_renderer->GetRasterizerFlags() & 8) {
+						if (p_renderer->GetRasterizerFlags() & 0x200) {
+							p_renderer->SetTriangleRasterizer(FUN_1003d700);
+						}
+						else {
+							p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+						}
+						if (g_cpuSupportsMMX) {
+							p_renderer->SetSpanRasterizer(g_spanRasterizers[50 - sizeLog2]);
+						}
+						else {
+							p_renderer->SetSpanRasterizer(g_spanRasterizers[38 - sizeLog2]);
+						}
 					}
 					else {
-						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
-					}
-					if (p_renderer->GetRasterizerFlags() & 2) {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[84 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					}
-					else {
-						// LINE: GOLDP 0x10032f55
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[74 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					}
-				}
-				else if (p_renderer->GetRasterizerFlags() & 8) {
-					if (p_renderer->GetRasterizerFlags() & 0x200) {
-						p_renderer->SetTriangleRasterizer(FUN_1003d700);
-					}
-					else {
-						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
-					}
-					if (g_cpuSupportsMMX) {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[50 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					}
-					else {
-						// LINE: GOLDP 0x10032fad
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[38 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+						if (p_renderer->GetRasterizerFlags() & 0x200) {
+							p_renderer->SetTriangleRasterizer(FUN_1003e590);
+						}
+						else {
+							p_renderer->SetTriangleRasterizer(FUN_1003c780);
+						}
+						if (p_renderer->GetRasterizerFlags() & 2) {
+							p_renderer->SetSpanRasterizer(g_spanRasterizers[26 - sizeLog2]);
+						}
+						else {
+							p_renderer->SetSpanRasterizer(g_spanRasterizers[20 - sizeLog2]);
+						}
 					}
 				}
 				else {
@@ -208,43 +189,40 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					else {
 						p_renderer->SetTriangleRasterizer(FUN_1003c780);
 					}
-					if (p_renderer->GetRasterizerFlags() & 2) {
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[26 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					if ((p_renderer->GetRasterizerFlags() & 4) &&
+						(p_renderer->GetCurrentMipmap()->m_bytesPerPixel == 4)) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[62 - sizeLog2]);
+					}
+					else if (p_renderer->GetRasterizerFlags() & 2) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[14 - sizeLog2]);
 					}
 					else {
-						// LINE: GOLDP 0x10032ffb
-						p_renderer->SetSpanRasterizer(g_spanRasterizers[20 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[8 - sizeLog2]);
 					}
 				}
 			}
 			else {
-				if (p_renderer->GetRasterizerFlags() & 0x200) {
-					p_renderer->SetTriangleRasterizer(FUN_1003e590);
+				if (p_renderer->GetCurrentMipmap()->m_paletteData) {
+					if (p_renderer->GetRasterizerFlags() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003e590);
+						p_renderer->SetSpanRasterizer(FUN_10033890);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003c780);
+						p_renderer->SetSpanRasterizer(FUN_10033890);
+					}
 				}
 				else {
-					p_renderer->SetTriangleRasterizer(FUN_1003c780);
-				}
-				if ((p_renderer->GetRasterizerFlags() & 4) && (p_renderer->GetCurrentMipmap()->m_bytesPerPixel == 4)) {
-					// LINE: GOLDP 0x10033030
-					p_renderer->SetSpanRasterizer(g_spanRasterizers[62 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-				}
-				// LINE: GOLDP 0x10033048
-				else if (p_renderer->GetRasterizerFlags() & 2) {
-					p_renderer->SetSpanRasterizer(g_spanRasterizers[14 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-				}
-				else {
-					// LINE: GOLDP 0x1003306c
-					p_renderer->SetSpanRasterizer(g_spanRasterizers[8 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					if (p_renderer->GetRasterizerFlags() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003ee90);
+						p_renderer->SetSpanRasterizer(FUN_100336d0);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003cf40);
+						p_renderer->SetSpanRasterizer(FUN_100336d0);
+					}
 				}
 			}
-		}
-		else {
-			SelectMipmapRasterizers(p_renderer);
 		}
 		break;
 	case 1:
@@ -252,15 +230,16 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 			if (p_renderer->GetRasterizerFlags() & 1) {
 				p_renderer->SetTriangleRasterizer(FUN_10040670);
 				p_renderer->SetSpanRasterizer(FUN_100334d0);
-				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 			}
 			else {
 				p_renderer->SetTriangleRasterizer(FUN_1003f790);
 				p_renderer->SetSpanRasterizer(FUN_100332a0);
-				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 			}
+			break;
 		}
-		else if (sizeLog2 = p_renderer->GetCurrentMipmap()->m_sizeLog2, sizeLog2 != 0) {
+
+		sizeLog2 = p_renderer->GetCurrentMipmap()->m_sizeLog2;
+		if (sizeLog2 != MipmapLevel::c_sizeGeneric) {
 			if (p_renderer->GetCurrentMipmap()->m_paletteData) {
 				if (p_renderer->GetRasterizerFlags() & 4) {
 					if (p_renderer->GetRasterizerFlags() & 0x200) {
@@ -271,11 +250,9 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					}
 					if (p_renderer->GetRasterizerFlags() & 2) {
 						p_renderer->SetSpanRasterizer(g_spanRasterizers[80 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 					}
 					else {
 						p_renderer->SetSpanRasterizer(g_spanRasterizers[68 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 					}
 				}
 				else if (p_renderer->GetRasterizerFlags() & 8) {
@@ -285,13 +262,11 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					else {
 						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
 					}
-					if (g_cpuSupportsMMX != 0) {
+					if (g_cpuSupportsMMX) {
 						p_renderer->SetSpanRasterizer(g_spanRasterizers[44 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 					}
 					else {
 						p_renderer->SetSpanRasterizer(g_spanRasterizers[32 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 					}
 				}
 				else {
@@ -303,13 +278,9 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					}
 					if (p_renderer->GetRasterizerFlags() & 2) {
 						p_renderer->SetSpanRasterizer(g_spanRasterizers[26 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-						STUB(0x01); // FIXME: to prevent mismatching code folding
 					}
 					else {
 						p_renderer->SetSpanRasterizer(g_spanRasterizers[20 - sizeLog2]);
-						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-						STUB(0x02); // FIXME: to prevent mismatching code folding
 					}
 				}
 			}
@@ -320,35 +291,47 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 				else {
 					p_renderer->SetTriangleRasterizer(FUN_1003c780);
 				}
-
 				if ((p_renderer->GetRasterizerFlags() & 4) && (p_renderer->GetCurrentMipmap()->m_bytesPerPixel == 4)) {
 					p_renderer->SetSpanRasterizer(g_spanRasterizers[56 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 				}
 				else if (p_renderer->GetRasterizerFlags() & 2) {
 					p_renderer->SetSpanRasterizer(g_spanRasterizers[14 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					STUB(0x03); // FIXME: to prevent mismatching code folding
 				}
 				else {
-					// LINE: GOLDP 0x10032e37
 					p_renderer->SetSpanRasterizer(g_spanRasterizers[8 - sizeLog2]);
-					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
-					STUB(0x04); // FIXME: to prevent mismatching code folding
 				}
 			}
 		}
 		else {
-			SelectMipmapRasterizers(p_renderer);
+			if (p_renderer->GetCurrentMipmap()->m_paletteData) {
+				if (p_renderer->GetRasterizerFlags() & 0x200) {
+					p_renderer->SetTriangleRasterizer(FUN_1003e590);
+					p_renderer->SetSpanRasterizer(FUN_10033890);
+				}
+				else {
+					p_renderer->SetTriangleRasterizer(FUN_1003c780);
+					p_renderer->SetSpanRasterizer(FUN_10033890);
+				}
+			}
+			else {
+				if (p_renderer->GetRasterizerFlags() & 0x200) {
+					p_renderer->SetTriangleRasterizer(FUN_1003ee90);
+					p_renderer->SetSpanRasterizer(FUN_100336d0);
+				}
+				else {
+					p_renderer->SetTriangleRasterizer(FUN_1003cf40);
+					p_renderer->SetSpanRasterizer(FUN_100336d0);
+				}
+			}
 		}
 		break;
 	default:
 		p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
 		p_renderer->SetTriangleRasterizer(NoopTriangleRasterizer);
-		// The original stores the rasterizer twice.
-		p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
 		break;
 	}
+
+	p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
 }
 
 // FUNCTION: GOLDP 0x100330d0

@@ -102,7 +102,7 @@ LegoBool32 GolBillboard::BuildModelMatrix(const GolVec3* p_right, const GolVec3*
 
 	LegoFloat halfWidth = m_width / 2.0f;
 	LegoFloat halfHeight = m_height / 2.0f;
-	p_matrix->m_m[3][0] = position.m_x - halfWidth * row1.m_x - halfHeight * row2->m_x;
+	p_matrix->m_m[3][0] = position.m_x - ((((((((((halfWidth * row1.m_x)))))))))) - halfHeight * row2->m_x;
 	LegoFloat offset = row2->m_y;
 	offset *= halfHeight;
 	p_matrix->m_m[3][1] = position.m_y - halfWidth * row1.m_y - offset;

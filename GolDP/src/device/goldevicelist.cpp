@@ -386,12 +386,12 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 
 	if (p_guid == NULL) {
 		driver->m_unk0x00 = TRUE;
-		driver->m_unk0x08 = FALSE;
+		driver->m_hasGuid = FALSE;
 		::memset(&driver->m_guid, 0, sizeof(driver->m_guid));
 	}
 	else {
 		driver->m_unk0x00 = FALSE;
-		driver->m_unk0x08 = TRUE;
+		driver->m_hasGuid = TRUE;
 		::memcpy(&driver->m_guid, p_guid, sizeof(*p_guid));
 	}
 
@@ -412,6 +412,7 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 	::strcpy(driver->m_name, p_name);
 
 	LPDIRECTDRAW ddraw;
+	LPDIRECT3D3 d3d;
 	if (DirectDrawCreate(p_guid, &ddraw, NULL) == DD_OK) {
 		DDCAPS hwCaps;
 		::memset(&hwCaps, 0, sizeof(hwCaps));
@@ -433,30 +434,33 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 			driver->m_accelerated = FALSE;
 		}
 
-		LPDIRECT3D3 d3d;
-		if (ddraw->QueryInterface(IID_IDirect3D3, reinterpret_cast<LPVOID*>(&d3d)) == DD_OK) {
-			LegoU32 countDevices = 0;
-
-			if (d3d->EnumDevices(CountDirect3DDevicesCallback, &countDevices) == D3D_OK) {
-				driver->m_devices = new GolD3DDeviceInfo[countDevices];
-				if (driver->m_devices == NULL) {
-					d3d->Release();
-					ddraw->Release();
-					GOL_FATALERROR(c_golErrorOutOfMemory);
-				}
-				driver->m_countDevices = 0;
-				d3d->EnumDevices(EnumerateDirect3DDevicesCallback, driver);
-			}
-
-			d3d->Release();
+		if (ddraw->QueryInterface(IID_IDirect3D3, reinterpret_cast<LPVOID*>(&d3d)) != DD_OK) {
+			ddraw->Release();
+			return TRUE;
 		}
 
+		LegoU32 countDevices = 0;
+
+		if (d3d->EnumDevices(CountDirect3DDevicesCallback, &countDevices) != D3D_OK) {
+			d3d->Release();
+			ddraw->Release();
+			return TRUE;
+		}
+
+		driver->m_devices = new GolD3DDeviceInfo[countDevices];
+		if (driver->m_devices == NULL) {
+			d3d->Release();
+			ddraw->Release();
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+		driver->m_countDevices = 0;
+		d3d->EnumDevices(EnumerateDirect3DDevicesCallback, driver);
+		d3d->Release();
 		ddraw->Release();
 	}
 
 	return TRUE;
 }
-
 // FUNCTION: GOLDP 0x10014370
 HRESULT GolDeviceList::CountDirect3DDevicesCallback(
 	GUID* p_guid,

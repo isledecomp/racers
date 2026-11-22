@@ -267,23 +267,11 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 			racerEntity->CopyOrientation(m_smokeParticle->m_particle->GetBasis());
 		}
 
-		if (m_smokeParticle->m_particle != NULL) {
-			m_smokeParticle->m_particle->SetPosition(&position);
-		}
+		m_smokeParticle->SetPosition(&position);
 
-		CutsceneParticleRef* particleRef = m_smokeParticle;
 		GolVec3 velocity = m_racer->m_physics.m_velocity;
-		LegoFloat velocityY = velocity.m_y;
-		LegoFloat velocityZ = velocity.m_z;
-		velocity.m_x = g_turboSmokeVelocityScale * velocity.m_x;
-		velocityY *= g_turboSmokeVelocityScale;
-		velocity.m_y = velocityY;
-		velocityZ *= g_turboSmokeVelocityScale;
-		velocity.m_z = velocityZ;
-
-		if (particleRef->m_particle != NULL) {
-			particleRef->m_particle->SetVelocity(&velocity);
-		}
+		GolMath::ScaleVector3(&velocity, g_turboSmokeVelocityScale, &velocity);
+		m_smokeParticle->SetVelocity(&velocity);
 	}
 
 	if ((m_racer->m_flags & c_flagHalted) && m_state == c_stateBoosting && m_stateTimerMs < c_earlyEndWindowMs &&

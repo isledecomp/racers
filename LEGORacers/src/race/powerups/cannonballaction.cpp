@@ -208,7 +208,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 			if (!skipBurst) {
 				hitNormal = m_projectile.GetHitNormal();
 				LegoBool32 upwardHit;
-				if (projectileState == PowerupProjectile::c_stateHitWorld && hitNormal.m_z > 0.70709997f) {
+				if (projectileState == PowerupProjectile::c_stateHitWorld && hitNormal.m_z > 0.7071f) {
 					upwardHit = TRUE;
 				}
 				else {

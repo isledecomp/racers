@@ -204,13 +204,11 @@ void OilSlickAction::AdvanceState()
 	}
 
 	position.m_z += 5.0f;
-	m_slickDecal.m_width = 15.0f;
-	m_slickDecal.m_length = 15.0f;
-	m_slickDecal.m_depth = 15.0f;
+	m_slickDecal.SetWidth(15.0f);
+	m_slickDecal.SetLength(15.0f);
+	m_slickDecal.SetDepth(15.0f);
+	m_slickDecal.SetCenter(position);
 	RaceDecalManager::Trail::Decal* slickDecal = &m_slickDecal;
-	slickDecal->m_center.m_x = position.m_x;
-	slickDecal->m_center.m_y = position.m_y;
-	slickDecal->m_center.m_z = position.m_z;
 	position.m_z -= 5.0f;
 	m_slickDecal.GetEntity().SetPrimaryMaterialTable(&m_materialTable);
 

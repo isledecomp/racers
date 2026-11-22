@@ -480,7 +480,7 @@ void LightningAction::UpdateBoltPath()
 			direction.m_z = end.m_z - position.m_z;
 			GolMath::NormalizeVector3(direction, &direction);
 
-			distance = static_cast<LegoFloat>(::sqrt(end.DistanceSquaredTo(position)));
+			distance = sqrtf(end.DistanceSquaredTo(position));
 			LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.GetBoundsRadius();
 			if (distance > radius) {
 				distance -= radius;
@@ -497,9 +497,14 @@ void LightningAction::UpdateBoltPath()
 		m_boltLength = distance * 0.25f;
 	} while (FALSE);
 
-	direction *= m_boltLength;
+	scale = m_boltLength;
+	direction *= scale;
 	for (LegoS32 i = 0; i < sizeOfArray(m_boltPoints); i++) {
-		position += direction;
+		LegoFloat x = direction.m_x;
+		x += position.m_x;
+		position.m_x = x;
+		position.m_y += direction.m_y;
+		position.m_z += direction.m_z;
 		m_boltPoints[i] = position;
 	}
 }

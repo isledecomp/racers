@@ -121,9 +121,7 @@ void WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarget*
 		GolAnimatedEntity* racerEntity = p_racer->m_visuals.m_carEntity;
 		GolVec3 position;
 		racerEntity->GetPosition(&position);
-		LegoFloat positionZ = position.m_z;
-		positionZ += 6.0f;
-		position.m_z = positionZ;
+		position.m_z += 6.0f;
 		m_modelEntity.SetPosition(position);
 		position.m_z -= 6.0f;
 		m_modelEntity.CopyOrientationFrom(*racerEntity);

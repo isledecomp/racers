@@ -11,9 +11,6 @@
 
 DECOMP_SIZE_ASSERT(CarBuildScreen, 0x3c34)
 
-// GLOBAL: LEGORACERS 0x004af668
-LegoFloat g_carBuildPreviewMouseScale = 0.01f;
-
 // GLOBAL: LEGORACERS 0x004c1d12
 const LegoU16 g_carBuildTextIds[] = {0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0};
 
@@ -856,11 +853,11 @@ void CarBuildScreen::HandleViewDrag(LegoS32 p_deltaX, LegoS32 p_deltaY)
 	}
 
 	if (p_deltaX) {
-		m_partPlacement.RotateViewAnalog(-(static_cast<LegoFloat>(p_deltaX) * g_carBuildPreviewMouseScale));
+		m_partPlacement.RotateViewAnalog(-(static_cast<LegoFloat>(p_deltaX) * 0.01f));
 	}
 
 	if (p_deltaY) {
-		m_partPlacement.PitchViewAnalog(static_cast<LegoFloat>(p_deltaY) * g_carBuildPreviewMouseScale);
+		m_partPlacement.PitchViewAnalog(static_cast<LegoFloat>(p_deltaY) * 0.01f);
 	}
 }
 

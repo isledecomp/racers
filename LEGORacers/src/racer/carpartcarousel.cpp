@@ -16,9 +16,6 @@
 DECOMP_SIZE_ASSERT(CarPartCarousel, 0x154)
 DECOMP_SIZE_ASSERT(CarPartCarousel::CreateParams, 0x84)
 
-// GLOBAL: LEGORACERS 0x004b02f8
-extern const LegoFloat g_twoPi = 6.2831855f;
-
 // GLOBAL: LEGORACERS 0x004b3c0c
 static const LegoFloat g_maxFloat = FLT_MAX;
 
@@ -281,8 +278,8 @@ undefined4 CarPartCarousel::OnEvent(undefined4 p_elapsed)
 {
 	LegoFloat step = m_scrollStep;
 	LegoFloat scaled = (LegoFloat) (LegoS32) p_elapsed;
-	if ((m_rotationAngle += step * scaled) > g_twoPi) {
-		m_rotationAngle -= g_twoPi;
+	if ((m_rotationAngle += step * scaled) > 6.2831855f) {
+		m_rotationAngle -= 6.2831855f;
 	}
 
 	return MenuModelCarousel::OnEvent(p_elapsed);

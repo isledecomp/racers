@@ -20,7 +20,6 @@ extern const LegoFloat g_maxTurnRadius;
 extern const LegoFloat g_minTurnRadius;
 extern const LegoFloat g_physicsSoundMaxDistance;
 extern const LegoFloat g_physicsSoundMinDistance;
-extern const LegoFloat g_twoPi;
 extern const LegoFloat g_wallMaxRiseSpeed;
 extern const LegoS32 g_wheelDiagonalIndices[];
 extern const LegoS32 g_wheelLengthwiseIndices[];
@@ -523,7 +522,7 @@ void RacerCarBody::UpdateVisualBank(LegoS32 p_elapsedMs)
 			targetAngle *= m_powerslideFactor;
 
 			LegoFloat speedScale = m_speed;
-			speedScale *= g_floatConst1000;
+			speedScale *= 1000.0f;
 			speedScale /= m_maxSpeed;
 			targetAngle *= speedScale;
 
@@ -2217,7 +2216,7 @@ void RacerCarBody::StartSpin(LegoFloat p_turns, LegoFloat p_rate, LegoFloat p_al
 	direction.m_z = transform.m_m[2][2];
 	CancelAngularMomentumAlong(&direction);
 
-	LegoS32 speed = static_cast<LegoS32>(g_twoPi / p_rate);
+	LegoS32 speed = static_cast<LegoS32>(6.2831855f / p_rate);
 	m_spinPeriodMs = speed;
 	ApplyYawImpulse(p_rate, static_cast<LegoS32>(static_cast<LegoFloat>(speed) * p_turns));
 	m_flags = (m_flags & ~(c_flagSpinning | c_flagSpinFresh | 1)) | (c_flagSpinning | c_flagSpinFresh);

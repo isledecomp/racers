@@ -4,9 +4,6 @@
 DECOMP_SIZE_ASSERT(MenuDialog::DialogScreen, 0x74c)
 DECOMP_SIZE_ASSERT(MenuDialog::DialogScreen::CreateParams, 0x18)
 
-// GLOBAL: LEGORACERS 0x004b2160
-extern const LegoFloat g_dialogAnimRate = 0.0033333334f;
-
 // FUNCTION: LEGORACERS 0x00468140
 MenuDialog::DialogScreen::DialogScreen()
 {
@@ -310,7 +307,7 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 
 	if (m_state == 1 || m_state == 3) {
 		m_animMs += p_elapsedMs;
-		scale = (LegoFloat) m_animMs * g_dialogAnimRate;
+		scale = (LegoFloat) m_animMs * 0.0033333334f;
 
 		if ((LegoU32) m_animMs > 300) {
 			if (m_state == 1) {

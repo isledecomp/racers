@@ -57,9 +57,6 @@ const LegoFloat g_cannonballSmokeHeightOffset = 4.0f;
 // GLOBAL: LEGORACERS 0x004b13b4
 const LegoFloat g_cannonballLaunchHeight = 5.0f;
 
-// GLOBAL: LEGORACERS 0x004b13e4
-extern const LegoFloat g_scarNormalThreshold = 0.70709997f;
-
 // GLOBAL: LEGORACERS 0x004c1c4c
 ColorRGBA g_cannonballTrailColor = {0x32, 0x32, 0x32, 0xc8};
 
@@ -211,7 +208,7 @@ void CannonballAction::Update(LegoU32 p_elapsedMs)
 			if (!skipBurst) {
 				hitNormal = m_projectile.GetHitNormal();
 				LegoBool32 upwardHit;
-				if (projectileState == PowerupProjectile::c_stateHitWorld && hitNormal.m_z > g_scarNormalThreshold) {
+				if (projectileState == PowerupProjectile::c_stateHitWorld && hitNormal.m_z > 0.7071f) {
 					upwardHit = TRUE;
 				}
 				else {

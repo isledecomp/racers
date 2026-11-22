@@ -129,7 +129,7 @@ void PowerupProjectile::LaunchAtRacer(
 		dot = -dot;
 	}
 	LegoFloat speedDelta = dot * p_racer->m_physics.m_speed;
-	speedDelta *= g_floatConst1000;
+	speedDelta *= 1000.0f;
 	speed += speedDelta;
 	if (!(speed > g_projectileMinSpeed)) {
 		speed = g_projectileMinSpeed;
@@ -137,7 +137,7 @@ void PowerupProjectile::LaunchAtRacer(
 
 	speed = distance / speed;
 	LegoFloat durationMs = speed;
-	durationMs *= g_floatConst1000;
+	durationMs *= 1000.0f;
 	m_flightTimeMs = static_cast<LegoS32>(durationMs);
 	if (p_predictiveLead) {
 		delta = *target;
@@ -227,13 +227,13 @@ void PowerupProjectile::LaunchAtPoint(
 	LegoFloat dot = racerDirection.m_z * delta.m_z + racerDirection.m_y * delta.m_y + racerDirection.m_x * delta.m_x;
 	if (dot > 0.0f) {
 		LegoFloat speedDelta = dot * racer->m_physics.m_speed;
-		speedDelta *= g_floatConst1000;
+		speedDelta *= 1000.0f;
 		speed += speedDelta;
 	}
 
 	LegoFloat durationSeconds = distance / speed;
 	LegoFloat scaledDuration = durationSeconds;
-	scaledDuration *= g_floatConst1000;
+	scaledDuration *= 1000.0f;
 	m_flightTimeMs = static_cast<LegoS32>(scaledDuration);
 	GolVec3 scaledDelta;
 	scaledDelta.m_x = p_targetVelocity->m_x * durationSeconds;
@@ -254,9 +254,10 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 {
 	Initialize(p_params);
 
-	m_targetPosition.m_x = p_params->m_targetOffset.m_x + p_position->m_x;
+	m_targetPosition.m_x = ((((((((((((p_params->m_targetOffset.m_x + p_position->m_x))))))))))));
 	m_targetPosition.m_y = p_params->m_targetOffset.m_y + p_position->m_y;
-	m_targetPosition.m_z = p_params->m_targetOffset.m_z + p_position->m_z;
+	LegoFloat& tmpRef0 = m_targetPosition.m_z;
+	tmpRef0 = p_params->m_targetOffset.m_z + p_position->m_z;
 	m_ownerRacer = NULL;
 	m_targetRacer = NULL;
 	m_worldEntity->GetPosition(&m_startPosition);
@@ -270,7 +271,7 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 	LegoFloat durationSeconds = p_params->m_speed;
 	durationSeconds = distance / durationSeconds;
 	LegoFloat scaledDuration = durationSeconds;
-	scaledDuration *= g_floatConst1000;
+	scaledDuration *= 1000.0f;
 	m_flightTimeMs = static_cast<LegoS32>(scaledDuration);
 
 	LegoFloat inverseDuration = 1.0f;
@@ -278,12 +279,10 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 	m_velocityX = inverseDuration * delta.m_x;
 	m_velocityY = inverseDuration * delta.m_y;
 
-	LegoFloat zVelocity = delta.m_z;
-	zVelocity /= distance;
-	zVelocity *= p_params->m_speed;
+	LegoFloat zVelocity = delta.m_z / distance * p_params->m_speed;
 	m_velocityZ = zVelocity;
 	LegoFloat acceleration = m_gravity;
-	m_velocityZ = zVelocity - (((((((((((acceleration * distance))))))))))) / (p_params->m_speed + p_params->m_speed);
+	m_velocityZ = zVelocity - acceleration * distance / (p_params->m_speed + p_params->m_speed);
 	RegisterCollisionEvent(p_params->m_eventQueue);
 }
 
@@ -325,7 +324,7 @@ void PowerupProjectile::Deflect(Racer* p_racer)
 	LegoFloat durationSeconds = m_speed;
 	durationSeconds = distance / durationSeconds;
 	LegoFloat durationMs = durationSeconds;
-	durationMs *= g_floatConst1000;
+	durationMs *= 1000.0f;
 	m_flightTimeMs = static_cast<LegoS32>(durationMs);
 
 	GolVec3 scaledVelocity;

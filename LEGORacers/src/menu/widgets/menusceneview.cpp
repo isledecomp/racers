@@ -261,21 +261,9 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 	m_camera->GetTransform()->GetDirectionUp(right, forward);
 
 	GolVec3* axis = &m_up;
-	LegoFloat axisX = right->m_y;
-	axisX *= forward->m_z;
-	axisX -= forward->m_y * right->m_z;
-	axis->m_x = axisX;
-
-	LegoFloat axisY = right->m_z;
-	axisY *= forward->m_x;
-	axisY -= right->m_x * forward->m_z;
-	axis->m_y = axisY;
-
-	LegoFloat axisZ = forward->m_y * right->m_x;
-	LegoFloat side = right->m_y;
-	side *= forward->m_x;
-	axisZ -= side;
-	axis->m_z = axisZ;
+	axis->m_x = GOL_MUL(right->m_y, forward->m_z) - GOL_MUL(forward->m_y, right->m_z);
+	axis->m_y = GOL_MUL(right->m_z, forward->m_x) - GOL_MUL(right->m_x, forward->m_z);
+	axis->m_z = GOL_MUL(forward->m_y, right->m_x) - GOL_MUL(right->m_y, forward->m_x);
 	m_forward.m_x = 0.0f;
 	m_forward.m_y = 0.0f;
 	m_forward.m_z = -1.0f;

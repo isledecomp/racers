@@ -375,7 +375,7 @@ private:
 		LegoFloat p_leftScale,
 		LegoFloat p_rightScale
 	);
-	LegoS32 BuildBatches(LegoS8 p_buildFlags);
+	void BuildBatches(LegoS8 p_buildFlags);
 	static void AddHighBasePieceCallback(
 		LegoS32 p_x,
 		LegoS32 p_y,

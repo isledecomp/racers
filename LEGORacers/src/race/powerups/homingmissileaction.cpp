@@ -30,8 +30,6 @@ const LegoFloat g_missileTargetMinDistanceSquared = 100.0f;
 // GLOBAL: LEGORACERS 0x004b1688
 const LegoFloat g_missileTargetMaxDistanceSquared = 160000.0f;
 
-extern const LegoFloat g_scarNormalThreshold;
-
 // GLOBAL: LEGORACERS 0x004b1664
 const LegoFloat g_missileExplodeSoundMinDistance = 200.0f;
 
@@ -194,7 +192,7 @@ void HomingMissileAction::LaunchProjectile()
 
 		GolVec3 scaledDirection;
 		scaledDirection.m_x = direction.m_x * g_missileAimAheadDistance;
-		scaledDirection.m_y = direction.m_y * g_missileAimAheadDistance;
+		scaledDirection.m_y = GOL_MUL(direction.m_y, g_missileAimAheadDistance);
 		scaledDirection.m_z = direction.m_z * g_missileAimAheadDistance;
 
 		GolVec3 target;
@@ -219,8 +217,8 @@ void HomingMissileAction::LaunchProjectile()
 		projectile->LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, FALSE, FALSE);
 	}
 
-	m_projectile.m_maxSpiralAmplitude = 4.0f;
-	m_projectile.m_spiralRate = 10.0f;
+	m_projectile.SetMaxSpiralAmplitude(4.0f);
+	m_projectile.SetSpiralRate(10.0f);
 	m_projectile.StartHoming();
 }
 
@@ -306,8 +304,7 @@ void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 			if (!skipBurst) {
 				up = m_projectile.GetHitNormal();
 				LegoBool32 upwardHit =
-					(projectileState == PowerupProjectile::c_stateHitWorld && up.m_z > g_scarNormalThreshold) ? TRUE
-																											  : FALSE;
+					(projectileState == PowerupProjectile::c_stateHitWorld && up.m_z > 0.7071f) ? TRUE : FALSE;
 
 				m_owner->FUN_0045b4d0(&hitPosition, upwardHit, m_ownerRacer);
 				if (projectileState == PowerupProjectile::c_stateHitRacer &&

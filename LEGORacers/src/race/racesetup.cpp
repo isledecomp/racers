@@ -101,12 +101,12 @@ LegoU32 RaceSetup::Update(LegoU32 p_elapsedMs)
 			if (result > 0) {
 				LegoU32 pushedMask = RacerPhysics::c_flagRoutePushed;
 				do {
-					Racer* racer = &m_racers[index];
-					if (!(racer->m_flags & c_rubberBandFlags)) {
-						LegoU32 physicsFlags = racer->m_physics.m_flags;
-						racer->m_physics.m_routeBaseSpeed = 1.0f;
+					if (!(m_racers[index].m_flags & c_rubberBandFlags)) {
+						RacerPhysics* physics = &m_racers[index].m_physics;
+						LegoU32 physicsFlags = physics->m_flags;
+						physics->m_routeBaseSpeed = 1.0f;
 						if (!(pushedMask & physicsFlags)) {
-							racer->m_physics.m_routeTargetSpeed = 1.0f;
+							physics->m_routeTargetSpeed = 1.0f;
 						}
 					}
 

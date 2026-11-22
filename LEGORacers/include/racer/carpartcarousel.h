@@ -14,8 +14,6 @@ class MenuIcon;
 class CarBuildModel;
 class LegoColorTable;
 
-extern const LegoFloat g_twoPi;
-
 // VTABLE: LEGORACERS 0x004b3c10
 // SIZE 0x154
 class CarPartCarousel : public MenuModelCarousel {

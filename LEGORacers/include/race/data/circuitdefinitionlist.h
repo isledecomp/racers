@@ -75,10 +75,13 @@ public:
 		return &m_entries[p_index];
 	}
 	CircuitDefinition* GetEntries() const { return m_entries; }
+	CircuitDefinition* FindCircuit(const LegoChar* p_name) { return static_cast<CircuitDefinition*>(GetName(p_name)); }
 	LegoU32 GetEntryCount() const { return m_entryCount; }
 	LegoU32 GetEntryIndex(CircuitDefinition* p_entry) const;
 
 private:
+	friend class RaceModeSetupScreen;
+
 	enum {
 		c_tokenCircuitDefinition = 0x27
 	};

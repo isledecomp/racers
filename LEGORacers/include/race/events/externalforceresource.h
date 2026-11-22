@@ -10,8 +10,8 @@ public:
 	// .evb external-force field tokens
 	enum {
 		e_force = 0x3e,
-		e_channel = 0x4c,
-		e_armEventId = 0x5a,
+		e_armEventId = 0x4c,
+		e_channel = 0x5a,
 	};
 
 	// SIZE 0x30

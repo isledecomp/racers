@@ -4,9 +4,6 @@
 DECOMP_SIZE_ASSERT(MenuDialog::DialogScreen, 0x74c)
 DECOMP_SIZE_ASSERT(MenuDialog::DialogScreen::CreateParams, 0x18)
 
-// GLOBAL: LEGORACERS 0x004b2160
-extern const LegoFloat g_dialogAnimRate = 0.0033333334f;
-
 // FUNCTION: LEGORACERS 0x00468140
 MenuDialog::DialogScreen::DialogScreen()
 {
@@ -136,10 +133,9 @@ void MenuDialog::DialogScreen::AttachNoIcon()
 	rect.m_top = m_yesIcon->GetRect()->m_bottom + 0x14;
 	rect.m_bottom = m_noIcon->GetRect()->m_bottom;
 	rect.m_bottom += rect.m_top;
-	LegoS32 rectRight = m_noIcon->GetRect()->m_right;
-	rectRight += 0x19;
 	rect.m_left = 0x19;
-	rect.m_right = rectRight;
+	rect.m_right = m_noIcon->GetRect()->m_right;
+	rect.m_right += rect.m_left;
 
 	m_noIcon->SetRect(&rect);
 	m_noIcon->SetParent(&m_frame);
@@ -310,7 +306,7 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 
 	if (m_state == 1 || m_state == 3) {
 		m_animMs += p_elapsedMs;
-		scale = (LegoFloat) m_animMs * g_dialogAnimRate;
+		scale = (LegoFloat) m_animMs * 0.0033333334f;
 
 		if ((LegoU32) m_animMs > 300) {
 			if (m_state == 1) {

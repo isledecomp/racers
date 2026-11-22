@@ -196,15 +196,15 @@ void CutsceneParticle::SetPosition(GolVec3* p_vec)
 void CutsceneParticle::SetVelocity(GolVec3* p_vec)
 {
 	LegoFloat x = p_vec->m_x;
-	x *= g_floatConst1000;
+	x *= 1000.0f;
 	m_velocity.m_x = x;
 
 	LegoFloat y = p_vec->m_y;
-	y *= g_floatConst1000;
+	y *= 1000.0f;
 	m_velocity.m_y = y;
 
 	LegoFloat z = p_vec->m_z;
-	z *= g_floatConst1000;
+	z *= 1000.0f;
 	m_velocity.m_z = z;
 }
 
@@ -270,12 +270,8 @@ void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 
 	GolVec3 local18;
 	GolVec3 localc;
-	LegoU32 elapsedSinceSpawn = m_emitTimerMs;
-	LegoU32 age = m_ageMs;
-	elapsedSinceSpawn += p_elapsedMs;
-	age += p_elapsedMs;
-	m_emitTimerMs = elapsedSinceSpawn;
-	m_ageMs = age;
+	m_emitTimerMs += p_elapsedMs;
+	m_ageMs += p_elapsedMs;
 
 	CutsceneAnimation::Emitter* emitter = m_emitter;
 	if (emitter) {
@@ -285,7 +281,7 @@ void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		if (elapsedSinceSpawn >= static_cast<LegoU32>(emitter->GetEmitIntervalMs())) {
+		if (m_emitTimerMs >= static_cast<LegoU32>(emitter->GetEmitIntervalMs())) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
 			LegoU16 randomValue = g_randomTable[g_randomTableIndex] & 0xff;
@@ -295,34 +291,12 @@ void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 
 				m_emitter->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_emitter->GetPointCount());
 
-				LegoFloat other = m_basis.m_m[1][0];
-				other *= local18.m_y;
-				LegoFloat term = m_basis.m_m[2][0];
-				term *= local18.m_z;
-				term += other;
-				other = m_basis.m_m[0][0];
-				other *= local18.m_x;
-				localc.m_x = term + other;
-
-				term = m_basis.m_m[2][1];
-				term *= local18.m_z;
-				localc.m_y = term;
-				term = m_basis.m_m[1][1];
-				term *= local18.m_y;
-				localc.m_y += term;
-				term = m_basis.m_m[0][1];
-				term *= local18.m_x;
-				localc.m_y += term;
-
-				term = m_basis.m_m[2][2];
-				term *= local18.m_z;
-				localc.m_z = term;
-				term = m_basis.m_m[1][2];
-				term *= local18.m_y;
-				localc.m_z += term;
-				term = m_basis.m_m[0][2];
-				term *= local18.m_x;
-				localc.m_z += term;
+				localc.m_x = GOL_MUL(m_basis.m_m[0][0], local18.m_x) + GOL_MUL(m_basis.m_m[1][0], local18.m_y) +
+							 GOL_MUL(m_basis.m_m[2][0], local18.m_z);
+				localc.m_y = GOL_MUL(m_basis.m_m[0][1], local18.m_x) + GOL_MUL(m_basis.m_m[1][1], local18.m_y) +
+							 GOL_MUL(m_basis.m_m[2][1], local18.m_z);
+				localc.m_z = GOL_MUL(m_basis.m_m[0][2], local18.m_x) + GOL_MUL(m_basis.m_m[1][2], local18.m_y) +
+							 GOL_MUL(m_basis.m_m[2][2], local18.m_z);
 
 				localc.m_x += m_velocity.m_x;
 				localc.m_y += m_velocity.m_y;

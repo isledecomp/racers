@@ -17,13 +17,9 @@ extern const LegoFloat g_shieldSoundMinDistance;
 
 extern const LegoFloat g_shieldSoundMaxDistance;
 
-extern const LegoFloat g_fadeAlphaScale;
-
 extern const LegoFloat g_shieldExpireSoundMinDistance;
 
 extern const LegoFloat g_shieldExpireSoundMaxDistance;
-
-extern const LegoFloat g_two;
 
 // FUNCTION: LEGORACERS 0x0045bc50
 ShieldAction::ShieldAction()
@@ -232,11 +228,8 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	}
 
 	GolVec3 position;
-	CarVisuals* racerEntities = &m_racer->m_visuals;
-	racerEntities->m_carEntity->GetPosition(&position);
-	LegoFloat positionZ = position.m_z;
-	positionZ += g_two;
-	position.m_z = positionZ;
+	m_racer->m_visuals.GetPosition(&position);
+	position.m_z += 2.0f;
 	m_shieldEntity->SetPosition(position);
 
 	GolVec3 direction;
@@ -252,7 +245,7 @@ void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 	if (m_state == c_stateFade) {
 		LegoFloat alphaValue = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
 		alphaValue *= 0.001f;
-		alphaValue *= g_fadeAlphaScale;
+		alphaValue *= 191.0f;
 		LegoS32 alpha = static_cast<LegoS32>(alphaValue);
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}

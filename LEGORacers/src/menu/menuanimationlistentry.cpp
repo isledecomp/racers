@@ -110,13 +110,13 @@ void MenuAnimationList::Entry::Draw(GolD3DRenderDevice* p_renderer)
 
 	if (!(m_flags & c_flagFadeOut)) {
 		LegoFloat duration = (LegoFloat) (LegoS32) m_durationMs;
-		LegoFloat progress = (LegoFloat) (LegoS32) m_remainingMs / duration;
+		LegoFloat progress = (((LegoFloat) (LegoS32) m_remainingMs)) / duration;
 		progress = 1.0f - progress;
 		scratch.m_alpha = progress * 255.0f;
 	}
 	else {
 		LegoFloat duration = (LegoFloat) (LegoS32) m_durationMs;
-		LegoFloat progress = (LegoFloat) (LegoS32) m_remainingMs / duration;
+		LegoFloat progress = (((LegoFloat) (LegoS32) m_remainingMs)) / duration;
 		scratch.m_alpha = progress * 255.0f;
 	}
 

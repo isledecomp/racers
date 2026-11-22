@@ -166,7 +166,7 @@ void RollingRockHazard::Update(undefined4 p_elapsedMs)
 		scaledZ *= scale;
 		localPosition.m_z = scaledZ;
 		m_entity->LocalToWorld(localPosition, &origin);
-		m_body.m_centerOfMassWorld = origin;
+		m_body.SetCenterOfMassWorld(origin);
 
 		if (m_isRock) {
 			m_entity->RotateToWorld(right, &transformedRight);

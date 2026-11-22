@@ -23,10 +23,7 @@
 #include <math.h>
 #include <string.h>
 
-extern LegoFloat g_carBuildPreviewMouseScale;
 extern LegoFloat g_cosineTable[1024];
-extern const LegoFloat g_fadeAlphaScale;
-extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_carShadowScale;
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
@@ -38,8 +35,6 @@ extern const LegoFloat g_curseHoverHeight;
 extern const LegoFloat g_unk0x004b0b18;
 extern const LegoFloat g_curseShrinkRate;
 extern const LegoFloat g_curseMinScale;
-extern const LegoFloat g_unk0x004b02e0;
-extern const LegoFloat g_unk0x004b0544;
 extern const LegoFloat g_hiddenModelDistance;
 extern const LegoFloat g_unk0x004b0af0;
 extern const LegoFloat g_shadowProbeHeight;
@@ -56,7 +51,6 @@ extern LegoU32 g_silhouetteClearFlag;
 extern LegoU32 g_silhouetteFlattenFlag;
 extern LegoU32 g_raceLapCount;
 extern LegoFloat g_cursePhaseScale;
-extern const LegoFloat g_two;
 
 // FUNCTION: LEGORACERS 0x0043d5a0
 CarVisuals::CarVisuals()
@@ -470,7 +464,7 @@ void CarVisuals::StartCarSmoke()
 
 	position.m_x = (position.m_x + other.m_x) * 0.5f;
 	position.m_y = (position.m_y + other.m_y) * 0.5f;
-	position.m_z = (position.m_z + other.m_z) * 0.5f + g_two;
+	position.m_z = (position.m_z + other.m_z) * 0.5f + 2.0f;
 
 	CutsceneParticle* particle = ref->m_particle;
 	if (particle) {
@@ -647,7 +641,7 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 				GolVec3 other = m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
 				position.m_x = (position.m_x + other.m_x) * 0.5f;
 				position.m_y = (position.m_y + other.m_y) * 0.5f;
-				position.m_z = (position.m_z + other.m_z) * 0.5f + g_two;
+				position.m_z = (position.m_z + other.m_z) * 0.5f + 2.0f;
 
 				CopyParticleOrientation(m_carEntity, m_carSmokeParticle);
 
@@ -926,7 +920,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (m_lastSpeed > g_unk0x004b0544 && speed < g_carBuildPreviewMouseScale && activePart != c_animationPart0) {
+	if (m_lastSpeed > 0.05f && speed < 0.01f && activePart != c_animationPart0) {
 		m_racer->PlayReaction(FALSE);
 		m_driverEntity->PlayPart(c_animationPart0);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
@@ -1010,7 +1004,7 @@ void CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 
 			LegoFloat forwardDot = row0.m_z * direction.m_z + row0.m_y * direction.m_y + row0.m_x * direction.m_x;
 			LegoU32 animationPart = 0;
-			if (forwardDot < g_unk0x004b02e0 && forwardDot > g_lookAtDotBeside) {
+			if (forwardDot < 0.2f && forwardDot > g_lookAtDotBeside) {
 				LegoFloat sideDot = row1.m_z * direction.m_z + row1.m_y * direction.m_y + row1.m_x * direction.m_x;
 				animationPart = sideDot < 0.0f ? c_animationPart7 : c_animationPart16;
 			}
@@ -1220,7 +1214,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 
 	LegoFloat phase = static_cast<LegoFloat>(m_cursePhaseMs) * g_cursePhaseScale;
 	LegoFloat indexPhase = phase;
-	indexPhase *= g_negativeRadiansToTableIndex;
+	indexPhase *= -162.97466f;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(indexPhase)) & c_randomTableMask;
 	LegoFloat offsetX = g_cosineTable[tableIndex];
 	tableIndex = static_cast<LegoS32>(phase * 162.974655f) & c_randomTableMask;
@@ -1287,7 +1281,7 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		GolVec3 movement;
 		GolMath::NormalizeVector3(right, &movement);
 
-		LegoFloat dot = DotVectors(movement, up);
+		LegoFloat dot = (((((((DotVectors(movement, up))))))));
 		GolVec3 projection = movement * dot;
 		up -= projection;
 		GolMath::NormalizeVector3(up, &up);
@@ -1330,12 +1324,9 @@ void CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 		if (scale < g_curseMinScale) {
 			scale = g_curseMinScale;
 		}
-		entity->SetScaleThenInvalidateRadius(scale);
-		entity->Update(p_elapsedMs);
+		m_curseEntity.SetScaleThenInvalidateRadius(scale);
 	}
-	else {
-		entity->Update(p_elapsedMs);
-	}
+	entity->Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x0043fa50
@@ -1445,7 +1436,7 @@ void CarVisuals::DrawTransparent(GolD3DRenderDevice* p_renderer)
 			!(alpha = c_fadeAlphaMax - static_cast<LegoS32>(
 										   ((distanceSquared - g_shadowFadeNearSquared) /
 											(g_shadowFadeFarSquared - g_shadowFadeNearSquared)) *
-										   g_fadeAlphaScale
+										   191.0f
 									   ))
 		) {
 			alpha = 0;

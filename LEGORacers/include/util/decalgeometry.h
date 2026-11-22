@@ -27,6 +27,12 @@ public:
 	void SetWidth(LegoFloat p_width) { m_width = p_width; }
 	void SetLength(LegoFloat p_length) { m_length = p_length; }
 	void SetDepth(LegoFloat p_depth) { m_depth = p_depth; }
+	void SetCenter(const GolVec3& p_center)
+	{
+		m_center.m_x = p_center.m_x;
+		m_center.m_y = p_center.m_y;
+		m_center.m_z = p_center.m_z;
+	}
 
 public:
 	enum {

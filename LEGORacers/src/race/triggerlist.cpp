@@ -142,13 +142,13 @@ void TriggerList::Load(
 			parser->ReadLeftCurly();
 
 			EntryParams params;
-			params.m_eventTable = m_eventTable;
 			params.m_position.m_x = 0.0f;
 			params.m_position.m_y = 0.0f;
 			params.m_position.m_z = 0.0f;
 			params.m_radius = 0.0f;
 			params.m_eventId = 0;
 			params.m_mirror = FALSE;
+			params.m_eventTable = m_eventTable;
 
 			GolFileParser::ParserTokenType token = parser->GetNextToken();
 			while (token != GolFileParser::e_rightCurly) {

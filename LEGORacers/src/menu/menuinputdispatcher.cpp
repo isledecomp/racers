@@ -62,13 +62,11 @@ LegoS32 MenuInputDispatcher::InitializeCursor(InitStruct* p_initStruct)
 	bounds.m_left = 0;
 	bounds.m_top = 0;
 	bounds.m_right = m_screenWidth - p_initStruct->m_cursorImage->m_width;
-	LegoS32 bottom = m_screenHeight;
-	bottom -= p_initStruct->m_cursorImage->m_height;
-	bounds.m_bottom = bottom;
+	bounds.m_bottom = m_screenHeight - p_initStruct->m_cursorImage->m_height;
 
-	cursorInit.m_cursorImage = p_initStruct->m_cursorImage;
 	cursorInit.m_golExport = p_initStruct->m_golExport;
 	cursorInit.m_renderer = p_initStruct->m_renderer;
+	cursorInit.m_cursorImage = p_initStruct->m_cursorImage;
 	cursorInit.m_inputManager = p_initStruct->m_inputManager;
 	cursorInit.m_bounds = &bounds;
 	cursorInit.m_initialCursorX = 0;

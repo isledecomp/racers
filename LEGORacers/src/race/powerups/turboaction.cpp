@@ -15,10 +15,6 @@
 #include <float.h>
 #include <math.h>
 
-extern const LegoFloat g_unk0x004b02e0;
-
-extern const LegoFloat g_fadeAlphaScale;
-
 // GLOBAL: LEGORACERS 0x004b19d4
 const LegoFloat g_turboSoundMinDistance = 30.0f;
 
@@ -271,23 +267,11 @@ void TurboAction::Update(LegoU32 p_elapsedMs)
 			racerEntity->CopyOrientation(m_smokeParticle->m_particle->GetBasis());
 		}
 
-		if (m_smokeParticle->m_particle != NULL) {
-			m_smokeParticle->m_particle->SetPosition(&position);
-		}
+		m_smokeParticle->SetPosition(&position);
 
-		CutsceneParticleRef* particleRef = m_smokeParticle;
 		GolVec3 velocity = m_racer->m_physics.m_velocity;
-		LegoFloat velocityY = velocity.m_y;
-		LegoFloat velocityZ = velocity.m_z;
-		velocity.m_x = g_turboSmokeVelocityScale * velocity.m_x;
-		velocityY *= g_turboSmokeVelocityScale;
-		velocity.m_y = velocityY;
-		velocityZ *= g_turboSmokeVelocityScale;
-		velocity.m_z = velocityZ;
-
-		if (particleRef->m_particle != NULL) {
-			particleRef->m_particle->SetVelocity(&velocity);
-		}
+		GolMath::ScaleVector3(&velocity, g_turboSmokeVelocityScale, &velocity);
+		m_smokeParticle->SetVelocity(&velocity);
 	}
 
 	if ((m_racer->m_flags & c_flagHalted) && m_state == c_stateBoosting && m_stateTimerMs < c_earlyEndWindowMs &&
@@ -367,7 +351,7 @@ void TurboAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		}
 
 		LegoFloat amount = static_cast<LegoFloat>(elapsed) * g_turboFadeAlphaScale;
-		LegoS32 alpha = static_cast<LegoS32>(amount * g_fadeAlphaScale);
+		LegoS32 alpha = static_cast<LegoS32>(amount * 191.0f);
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
@@ -400,7 +384,7 @@ void TurboAction::AdvanceState()
 			);
 		}
 		else {
-			LegoFloat volume = static_cast<LegoFloat>(state) * g_unk0x004b02e0 + g_turboEndVolumeBase;
+			LegoFloat volume = static_cast<LegoFloat>(state) * 0.2f + g_turboEndVolumeBase;
 			m_soundSource->PlaySpatialSoundById(
 				c_soundEnd,
 				&position,

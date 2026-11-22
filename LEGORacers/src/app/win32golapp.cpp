@@ -414,7 +414,7 @@ void Win32GolApp::UpdateMousePosition()
 		}
 		else {
 			LegoFloat width = (LegoFloat) m_golDrawState->m_width;
-			LegoFloat xScale = (LegoFloat) (bottomRight.x - topLeft.x) / width;
+			LegoFloat xScale = (((LegoFloat) (bottomRight.x - topLeft.x))) / width;
 			LegoFloat height = (LegoFloat) m_golDrawState->m_height;
 			LegoFloat yScale = (LegoFloat) (bottomRight.y - topLeft.y) / height;
 			cursorPos.x -= topLeft.x;

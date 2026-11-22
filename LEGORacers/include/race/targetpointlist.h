@@ -20,6 +20,9 @@ public:
 		~Entry();
 		void Set(GolVec3* p_position, LegoS32 p_index);
 
+		LegoU32 IsEnabled() const { return m_flags & c_flagEnabled; }
+		void Disable() { m_flags &= ~c_flagEnabled; }
+
 		GolVec3 m_position;               // 0x00
 		LegoS32 m_index;                  // 0x0c
 		LegoU8 m_flags;                   // 0x10

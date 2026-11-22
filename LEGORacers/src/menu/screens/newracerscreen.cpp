@@ -66,7 +66,7 @@ void NewRacerScreen::CreateWidgets()
 
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowLoadRacer) {
 		SaveRecordList::Record* record =
-			records->AllocateRecordCopy(m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord());
+			records->AllocateRecordCopy(m_context->m_saveSystem.GetActiveRecord().m_selectedRecords[0]);
 		m_nextMenuId = c_menuGarage;
 
 		SaveRecordList::Record* oldRecord = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();

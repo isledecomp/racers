@@ -13,7 +13,6 @@
 #include <math.h>
 #include <string.h>
 
-extern const LegoFloat g_two;
 extern const LegoFloat g_carBuildModelHeightScale;
 
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement, 0x2d0)
@@ -56,12 +55,6 @@ LegoFloat g_viewAngleStep = g_twoPiPlacement * 0.125f;
 
 // GLOBAL: LEGORACERS 0x004b02f0
 extern const LegoFloat g_selectedPulseAmplitude = -64.0f;
-
-// GLOBAL: LEGORACERS 0x004b02f4
-extern const LegoFloat g_negativeRadiansToTableIndex = -162.97466f;
-
-// GLOBAL: LEGORACERS 0x004b0428
-extern const LegoFloat g_halfPi = 1.5707964f;
 
 // GLOBAL: LEGORACERS 0x004bf7ec
 LegoFloat g_cosineTable[1024] = {
@@ -389,8 +382,6 @@ LegoFloat g_arcCosineTable[1024] = {
 	0.06254073232f, 0.0f,
 };
 
-extern const LegoFloat g_dialogAnimRate;
-
 // FUNCTION: LEGORACERS 0x004778f0
 CarModelScreenBase::CarPartPlacement::CarPartPlacement()
 {
@@ -399,8 +390,8 @@ CarModelScreenBase::CarPartPlacement::CarPartPlacement()
 	for (LegoS32 i = 0; i < 8; i++) {
 		m_viewAngles[i] = angle;
 		angle += g_viewAngleStep;
-		if (angle >= g_twoPi) {
-			angle -= g_twoPi;
+		if (angle >= 6.2831855f) {
+			angle -= 6.2831855f;
 		}
 	}
 
@@ -681,7 +672,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::PitchViewAnalog(LegoFloat p_del
 	}
 
 	if (p_delta > 0.0f) {
-		if (m_viewPitch >= g_two) {
+		if (m_viewPitch >= 2.0f) {
 			return FALSE;
 		}
 	}
@@ -693,7 +684,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::PitchViewAnalog(LegoFloat p_del
 	if (m_viewPitch < 0.0f) {
 		m_viewPitch = 0.0f;
 	}
-	else if (m_viewPitch > g_two) {
+	else if (m_viewPitch > 2.0f) {
 		m_viewPitch = 2.0f;
 	}
 
@@ -949,15 +940,15 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 {
 	ColorRGBA originalColor;
 	ColorRGBA highlightColor;
-	originalColor.m_alp = 0xff;
-	highlightColor.m_alp = 0xff;
 	GolRenderDevice::MaterialColor* material = m_renderer->GetCurrentMaterialColor();
 	originalColor.m_red = 0x78;
 	originalColor.m_grn = 0x78;
 	originalColor.m_blu = 0x78;
+	originalColor.m_alp = 0xff;
 	highlightColor.m_red = 0xb4;
 	highlightColor.m_grn = 0xb4;
 	highlightColor.m_blu = 0xb4;
+	highlightColor.m_alp = 0xff;
 
 	if (material == NULL) {
 		material = &m_pieceMaterial;
@@ -1023,8 +1014,8 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 		else {
 			LegoFloat scaledTime = static_cast<LegoFloat>(static_cast<LegoS32>(m_bobMs));
 			scaledTime *= 0.001f;
-			scaledTime *= g_twoPi;
-			scaledTime *= g_negativeRadiansToTableIndex;
+			scaledTime *= 6.2831855f;
+			scaledTime *= -162.97466f;
 			LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
 			LegoFloat interpolation = g_cosineTable[index];
 			LegoFloat scaledAlpha;
@@ -1219,19 +1210,19 @@ void CarModelScreenBase::CarPartPlacement::UpdateViewRotation(LegoU32 p_elapsed)
 	LegoFloat scaledTime = static_cast<LegoFloat>(m_viewAnimMs);
 	LegoFloat totalTime = static_cast<LegoFloat>(m_viewAnimRemainingMs);
 	scaledTime /= totalTime;
-	scaledTime *= g_halfPi;
-	scaledTime *= g_negativeRadiansToTableIndex;
+	scaledTime *= 1.5707964f;
+	scaledTime *= -162.97466f;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
 	LegoFloat interpolation = g_cosineTable[index];
 	LegoFloat targetAngle = m_viewAngles[m_viewSlot];
 
 	LegoFloat upperLimit = m_viewAngle;
-	upperLimit += g_halfPi;
+	upperLimit += 1.5707964f;
 	if (targetAngle > upperLimit) {
-		targetAngle -= g_twoPi;
+		targetAngle -= 6.2831855f;
 	}
-	else if (targetAngle < m_viewAngle - g_halfPi) {
-		targetAngle += g_twoPi;
+	else if (targetAngle < m_viewAngle - 1.5707964f) {
+		targetAngle += 6.2831855f;
 	}
 
 	ApplyViewAngle(targetAngle + ((m_viewAngle - targetAngle) * interpolation));
@@ -1253,9 +1244,9 @@ void CarModelScreenBase::CarPartPlacement::UpdateViewPitch(LegoU32 p_elapsed)
 	}
 
 	LegoFloat scaledTime = static_cast<LegoFloat>(m_viewResetDelayMs);
-	scaledTime *= g_dialogAnimRate;
-	scaledTime *= g_halfPi;
-	scaledTime *= g_negativeRadiansToTableIndex;
+	scaledTime *= 0.0033333334f;
+	scaledTime *= 1.5707964f;
+	scaledTime *= -162.97466f;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
 	LegoFloat interpolation = g_cosineTable[index];
 

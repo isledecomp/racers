@@ -19,9 +19,6 @@ extern const LegoFloat g_lightningRange;
 // GLOBAL: LEGORACERS 0x004c7600
 LegoFloat g_lightningReach = g_lightningRange * 4.0f;
 
-// GLOBAL: LEGORACERS 0x004b02fc
-extern const LegoFloat g_unk0x004b02fc = 0.002f;
-
 // GLOBAL: LEGORACERS 0x004b1544
 const LegoFloat g_lightningSourceHeightOffset = 3.0f;
 
@@ -342,8 +339,8 @@ void LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 		switch (m_state) {
 		case c_stateRampIn:
 			m_sound->SetFrequencyScale(
-				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b02fc *
-						   g_lightningFrequencyRampScale
+				1.0f -
+				static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * 0.002f * g_lightningFrequencyRampScale
 			);
 			break;
 		case c_stateSustain:
@@ -351,8 +348,8 @@ void LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 			break;
 		case c_stateFade:
 			m_sound->SetFrequencyScale(
-				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(c_fadeDurationMs - m_stateTimerMs)) *
-						   g_unk0x004b02fc * g_lightningFrequencyRampScale
+				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(c_fadeDurationMs - m_stateTimerMs)) * 0.002f *
+						   g_lightningFrequencyRampScale
 			);
 			break;
 		}
@@ -452,10 +449,10 @@ void LightningAction::UpdateBoltPath()
 	GolVec3 direction = m_source->m_forward;
 	if (m_state == c_stateRampIn) {
 		m_boltLength =
-			(1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b02fc) * g_lightningRange;
+			(1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * 0.002f) * g_lightningRange;
 	}
 	else if (m_state == c_stateFade) {
-		LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b02fc;
+		LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * 0.002f;
 		m_boltLength = amount * g_lightningRange;
 	}
 	else {
@@ -483,7 +480,7 @@ void LightningAction::UpdateBoltPath()
 			direction.m_z = end.m_z - position.m_z;
 			GolMath::NormalizeVector3(direction, &direction);
 
-			distance = static_cast<LegoFloat>(::sqrt(end.DistanceSquaredTo(position)));
+			distance = sqrtf(end.DistanceSquaredTo(position));
 			LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.GetBoundsRadius();
 			if (distance > radius) {
 				distance -= radius;
@@ -500,9 +497,14 @@ void LightningAction::UpdateBoltPath()
 		m_boltLength = distance * 0.25f;
 	} while (FALSE);
 
-	direction *= m_boltLength;
+	scale = m_boltLength;
+	direction *= scale;
 	for (LegoS32 i = 0; i < sizeOfArray(m_boltPoints); i++) {
-		position += direction;
+		LegoFloat x = direction.m_x;
+		x += position.m_x;
+		position.m_x = x;
+		position.m_y += direction.m_y;
+		position.m_z += direction.m_z;
 		m_boltPoints[i] = position;
 	}
 }

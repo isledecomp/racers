@@ -78,6 +78,7 @@ public:
 	void SetSaveSlot(LegoS32 p_saveSlot) { m_saveSlot = p_saveSlot; }
 
 private:
+	friend class DriverLicenseScreen;
 	friend class MenuManager;
 
 	void CreateMenuResources();

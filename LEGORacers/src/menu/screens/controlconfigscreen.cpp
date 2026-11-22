@@ -203,12 +203,12 @@ void ControlConfigScreen::OnIconUnfocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x0047ac90
 LegoBool32 ControlConfigScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event* p_item, undefined4, undefined4)
 {
-	LegoU32 keyCode = p_item->m_keyCode;
-	LegoU32 source = keyCode & InputDevice::c_sourceMask;
 	GameState& state = m_context->m_saveSystem.GetGameState();
 	LegoS32 selectedDeviceIndex = m_selectedDevice;
 	InputDevice* device = m_devices[selectedDeviceIndex];
 	LegoS32 entryIndex = m_bindingIndices[selectedDeviceIndex];
+	LegoU32 keyCode = p_item->m_keyCode;
+	LegoU32 source = keyCode & InputDevice::c_sourceMask;
 
 	if (!m_navPending) {
 		if (!m_awaitingButton) {

@@ -48,34 +48,24 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 		GolVec3 axisZ;
 		if (!shapeIndex) {
 			axisX.m_x = m_body->m_orientation.m_m[0][0];
-			LegoFloat halfX = m_boxSizeX * 0.5f;
 			axisX.m_y = m_body->m_orientation.m_m[0][1];
 			axisX.m_z = m_body->m_orientation.m_m[0][2];
-			axisX.m_x *= halfX;
-			axisX.m_y *= halfX;
-			axisX.m_z *= halfX;
-
+			GolMath::ScaleVector3(&axisX, m_boxSizeX * 0.5f, &axisX);
 			axisY.m_x = m_body->m_orientation.m_m[1][0];
-			LegoFloat halfY = m_boxSizeY * 0.5f;
 			axisY.m_y = m_body->m_orientation.m_m[1][1];
 			axisY.m_z = m_body->m_orientation.m_m[1][2];
-			axisY.m_x *= halfY;
-			axisY.m_y *= halfY;
-			axisY.m_z *= halfY;
-
-			axisZ.m_x = m_body->m_orientation.m_m[2][0];
-			axisZ.m_y = m_body->m_orientation.m_m[2][1];
-			axisZ.m_z = m_body->m_orientation.m_m[2][2];
-			axisZ *= m_boxSizeZ * 0.5f;
+			GolMath::ScaleVector3(&axisY, m_boxSizeY * 0.5f, &axisY);
+			axisZ = m_body->m_orientation.m_rows[2];
+			GolMath::ScaleVector3(&axisZ, m_boxSizeZ * 0.5f, &axisZ);
 
 			if (m_boxScale != 1.0f) {
 				if (m_boxScale == 0.0f) {
 					return FALSE;
 				}
 
-				axisX *= m_boxScale;
-				axisY *= m_boxScale;
-				axisZ *= m_boxScale;
+				GolMath::ScaleVector3(&axisX, m_boxScale, &axisX);
+				GolMath::ScaleVector3(&axisY, m_boxScale, &axisY);
+				GolMath::ScaleVector3(&axisZ, m_boxScale, &axisZ);
 			}
 
 			position = &m_centerOfMassWorld;
@@ -85,32 +75,22 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 			axisX.m_x = p_other->m_body->m_orientation.m_m[0][0];
 			axisX.m_y = p_other->m_body->m_orientation.m_m[0][1];
 			axisX.m_z = p_other->m_body->m_orientation.m_m[0][2];
-			LegoFloat halfX = p_other->m_boxSizeX * 0.5f;
-			axisX.m_x *= halfX;
-			axisX.m_y *= halfX;
-			axisX.m_z *= halfX;
-
+			GolMath::ScaleVector3(&axisX, p_other->m_boxSizeX * 0.5f, &axisX);
 			axisY.m_x = p_other->m_body->m_orientation.m_m[1][0];
 			axisY.m_y = p_other->m_body->m_orientation.m_m[1][1];
 			axisY.m_z = p_other->m_body->m_orientation.m_m[1][2];
-			LegoFloat halfY = p_other->m_boxSizeY * 0.5f;
-			axisY.m_x *= halfY;
-			axisY.m_y *= halfY;
-			axisY.m_z *= halfY;
-
-			axisZ.m_x = p_other->m_body->m_orientation.m_m[2][0];
-			axisZ.m_y = p_other->m_body->m_orientation.m_m[2][1];
-			axisZ.m_z = p_other->m_body->m_orientation.m_m[2][2];
-			axisZ *= p_other->m_boxSizeZ * 0.5f;
+			GolMath::ScaleVector3(&axisY, p_other->m_boxSizeY * 0.5f, &axisY);
+			axisZ = p_other->m_body->m_orientation.m_rows[2];
+			GolMath::ScaleVector3(&axisZ, p_other->m_boxSizeZ * 0.5f, &axisZ);
 
 			if (p_other->m_boxScale != 1.0f) {
 				if (p_other->m_boxScale == 0.0f) {
 					return FALSE;
 				}
 
-				axisX *= p_other->m_boxScale;
-				axisY *= p_other->m_boxScale;
-				axisZ *= p_other->m_boxScale;
+				GolMath::ScaleVector3(&axisX, p_other->m_boxScale, &axisX);
+				GolMath::ScaleVector3(&axisY, p_other->m_boxScale, &axisY);
+				GolMath::ScaleVector3(&axisZ, p_other->m_boxScale, &axisZ);
 			}
 
 			position = &p_other->m_centerOfMassWorld;
@@ -119,37 +99,29 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
 
 		do {
 			GolVec3 corner;
-			if (cornerIndex >= 4) {
-				corner.m_x = -axisX.m_x;
-				corner.m_y = -axisX.m_y;
-				corner.m_z = -axisX.m_z;
-			}
-			else {
+			if (cornerIndex < 4) {
 				corner.m_x = axisX.m_x;
 				corner.m_y = axisX.m_y;
 				corner.m_z = axisX.m_z;
 			}
+			else {
+				corner.m_x = -axisX.m_x;
+				corner.m_y = -axisX.m_y;
+				corner.m_z = -axisX.m_z;
+			}
 
 			if (cornerIndex >= 2 && (cornerIndex < 4 || cornerIndex >= 6)) {
-				corner.m_x -= axisY.m_x;
-				corner.m_y -= axisY.m_y;
-				corner.m_z -= axisY.m_z;
+				corner -= axisY;
 			}
 			else {
-				corner.m_x += axisY.m_x;
-				corner.m_y += axisY.m_y;
-				corner.m_z += axisY.m_z;
+				corner += axisY;
 			}
 
 			if (!cornerIndex || cornerIndex == 2 || cornerIndex == 4 || cornerIndex == 6) {
-				corner.m_x += axisZ.m_x;
-				corner.m_y += axisZ.m_y;
-				corner.m_z += axisZ.m_z;
+				corner += axisZ;
 			}
 			else {
-				corner.m_x -= axisZ.m_x;
-				corner.m_y -= axisZ.m_y;
-				corner.m_z -= axisZ.m_z;
+				corner -= axisZ;
 			}
 
 			LegoFloat projected = DotContactVectors(*p_normal, corner);
@@ -206,7 +178,10 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 	m_body->CopyOrientation(&orientation0);
 	p_other->m_body->CopyOrientation(&absOrientation);
 
-	GolMath::TransformVector(p_other->m_centerOfMassWorld - m_centerOfMassWorld, &orientation0.m_m[0][0], &delta);
+	delta.m_x = p_other->m_centerOfMassWorld.m_x - m_centerOfMassWorld.m_x;
+	delta.m_y = p_other->m_centerOfMassWorld.m_y - m_centerOfMassWorld.m_y;
+	delta.m_z = p_other->m_centerOfMassWorld.m_z - m_centerOfMassWorld.m_z;
+	GolMath::TransformVector(delta, &orientation0.m_m[0][0], &delta);
 
 	GolMath::MultiplyMatrixByTranspose(
 		&absOrientation.m_m[0][0],
@@ -222,9 +197,9 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 			return FALSE;
 		}
 
-		half0x = m_boxScale * half0x;
-		half0y = m_boxScale * half0y;
-		half0z = m_boxScale * half0z;
+		half0x = GOL_MUL(m_boxScale, half0x);
+		half0y = GOL_MUL(m_boxScale, half0y);
+		half0z = GOL_MUL(m_boxScale, half0z);
 	}
 
 	half1x = p_other->m_boxSizeX * 0.5f;
@@ -235,9 +210,9 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 			return FALSE;
 		}
 
-		half1x = p_other->m_boxScale * half1x;
-		half1y = p_other->m_boxScale * half1y;
-		half1z = p_other->m_boxScale * half1z;
+		half1x = GOL_MUL(p_other->m_boxScale, half1x);
+		half1y = GOL_MUL(p_other->m_boxScale, half1y);
+		half1z = GOL_MUL(p_other->m_boxScale, half1z);
 	}
 
 	absOrientation.m_m[0][0] = static_cast<LegoFloat>(fabs(relativeOrientation.m_m[0][0]));
@@ -253,9 +228,9 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 	*p_penetration = FLT_MAX;
 	p_normal->Clear();
 
-	LegoFloat distance = static_cast<LegoFloat>(fabs(delta.m_x));
-	projection =
-		absOrientation.m_m[2][0] * half1z + absOrientation.m_m[1][0] * half1y + absOrientation.m_m[0][0] * half1x;
+	LegoFloat distance = (static_cast<LegoFloat>(fabs(delta.m_x)));
+	projection = GOL_MUL(absOrientation.m_m[2][0], half1z) + absOrientation.m_m[1][0] * half1y +
+				 absOrientation.m_m[0][0] * half1x;
 	LegoFloat total = projection + half0x;
 	if (distance > total) {
 		return FALSE;
@@ -497,57 +472,39 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 		*p_normal = otherRow2;
 		break;
 	case 6:
-		p_normal->m_x = otherRow0.m_z * thisRow0.m_y - otherRow0.m_y * thisRow0.m_z;
-		p_normal->m_y = thisRow0.m_z * otherRow0.m_x - otherRow0.m_z * thisRow0.m_x;
-		p_normal->m_z = otherRow0.m_y * thisRow0.m_x - thisRow0.m_y * otherRow0.m_x;
+		GolMath::CrossVector3(&thisRow0, &otherRow0, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 7:
-		p_normal->m_x = otherRow1.m_z * thisRow0.m_y - otherRow1.m_y * thisRow0.m_z;
-		p_normal->m_y = thisRow0.m_z * otherRow1.m_x - otherRow1.m_z * thisRow0.m_x;
-		p_normal->m_z = otherRow1.m_y * thisRow0.m_x - thisRow0.m_y * otherRow1.m_x;
+		GolMath::CrossVector3(&thisRow0, &otherRow1, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 8:
-		p_normal->m_x = otherRow2.m_z * thisRow0.m_y - otherRow2.m_y * thisRow0.m_z;
-		p_normal->m_y = thisRow0.m_z * otherRow2.m_x - otherRow2.m_z * thisRow0.m_x;
-		p_normal->m_z = otherRow2.m_y * thisRow0.m_x - thisRow0.m_y * otherRow2.m_x;
+		GolMath::CrossVector3(&thisRow0, &otherRow2, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 9:
-		p_normal->m_x = otherRow0.m_z * thisRow1.m_y - otherRow0.m_y * thisRow1.m_z;
-		p_normal->m_y = thisRow1.m_z * otherRow0.m_x - otherRow0.m_z * thisRow1.m_x;
-		p_normal->m_z = otherRow0.m_y * thisRow1.m_x - thisRow1.m_y * otherRow0.m_x;
+		GolMath::CrossVector3(&thisRow1, &otherRow0, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 10:
-		p_normal->m_x = otherRow1.m_z * thisRow1.m_y - otherRow1.m_y * thisRow1.m_z;
-		p_normal->m_y = thisRow1.m_z * otherRow1.m_x - otherRow1.m_z * thisRow1.m_x;
-		p_normal->m_z = otherRow1.m_y * thisRow1.m_x - thisRow1.m_y * otherRow1.m_x;
+		GolMath::CrossVector3(&thisRow1, &otherRow1, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 11:
-		p_normal->m_x = otherRow2.m_z * thisRow1.m_y - otherRow2.m_y * thisRow1.m_z;
-		p_normal->m_y = thisRow1.m_z * otherRow2.m_x - otherRow2.m_z * thisRow1.m_x;
-		p_normal->m_z = otherRow2.m_y * thisRow1.m_x - thisRow1.m_y * otherRow2.m_x;
+		GolMath::CrossVector3(&thisRow1, &otherRow2, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 12:
-		p_normal->m_x = otherRow0.m_z * thisRow2.m_y - otherRow0.m_y * thisRow2.m_z;
-		p_normal->m_y = thisRow2.m_z * otherRow0.m_x - otherRow0.m_z * thisRow2.m_x;
-		p_normal->m_z = otherRow0.m_y * thisRow2.m_x - thisRow2.m_y * otherRow0.m_x;
+		GolMath::CrossVector3(&thisRow2, &otherRow0, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 13:
-		p_normal->m_x = otherRow1.m_z * thisRow2.m_y - otherRow1.m_y * thisRow2.m_z;
-		p_normal->m_y = thisRow2.m_z * otherRow1.m_x - otherRow1.m_z * thisRow2.m_x;
-		p_normal->m_z = otherRow1.m_y * thisRow2.m_x - thisRow2.m_y * otherRow1.m_x;
+		GolMath::CrossVector3(&thisRow2, &otherRow1, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	case 14:
-		p_normal->m_x = otherRow2.m_z * thisRow2.m_y - otherRow2.m_y * thisRow2.m_z;
-		p_normal->m_y = thisRow2.m_z * otherRow2.m_x - otherRow2.m_z * thisRow2.m_x;
-		p_normal->m_z = otherRow2.m_y * thisRow2.m_x - thisRow2.m_y * otherRow2.m_x;
+		GolMath::CrossVector3(&thisRow2, &otherRow2, p_normal);
 		GolMath::NormalizeVector3(*p_normal, p_normal);
 		break;
 	default:
@@ -555,9 +512,7 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 	}
 
 	GolVec3 direction = m_centerOfMassWorld - p_other->m_centerOfMassWorld;
-	LegoFloat dot = p_normal->m_y * direction.m_y;
-	dot += direction.m_z * p_normal->m_z;
-	dot += direction.m_x * p_normal->m_x;
+	LegoFloat dot = direction.m_y * p_normal->m_y + direction.m_z * p_normal->m_z + direction.m_x * p_normal->m_x;
 	if (dot < 0.0f) {
 		p_normal->m_x = -p_normal->m_x;
 		p_normal->m_y = -p_normal->m_y;

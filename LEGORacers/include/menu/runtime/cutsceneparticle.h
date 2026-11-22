@@ -47,4 +47,18 @@ private:
 	LegoU32 m_ageMs;                       // 0x188
 };
 
+inline void CutsceneParticleRef::SetPosition(GolVec3* p_position)
+{
+	if (m_particle != NULL) {
+		m_particle->SetPosition(p_position);
+	}
+}
+
+inline void CutsceneParticleRef::SetVelocity(GolVec3* p_velocity)
+{
+	if (m_particle != NULL) {
+		m_particle->SetVelocity(p_velocity);
+	}
+}
+
 #endif // CUTSCENEPARTICLE_H

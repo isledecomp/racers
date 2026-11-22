@@ -342,42 +342,35 @@ void MenuStyleTable::ParseMultiStateStyle(MultiStateStyle* p_entry)
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 	}
 
-	if (m_parser->GetNextToken() == GolFileParser::e_rightCurly) {
-		m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
-		return;
+	if (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
+		do {
+			LegoS32 i;
+
+			switch (m_parser->GetCurrentToken()) {
+			case c_styleIcon:
+				ParseIconStyle(p_entry);
+				break;
+			case MultiStateStyle::e_rect:
+				ReadRect(&p_entry->m_rect.m_left);
+				break;
+			case c_styleFont:
+				for (i = 0; i < 6; i++) {
+					p_entry->m_stateFonts[i] = m_renderer->FindFontByName(m_parser->ReadString());
+				}
+				break;
+			case c_styleImage: {
+				for (i = 0; i < 6; i++) {
+					p_entry->m_stateImages[i][imageTripletCount] = m_renderer->FindImageByName(m_parser->ReadString());
+				}
+				imageTripletCount++;
+				break;
+			}
+			default:
+				m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+				break;
+			}
+		} while (m_parser->GetNextToken() != GolFileParser::e_rightCurly);
 	}
-
-	GolImage** image = &p_entry->m_stateImages[0][0];
-	do {
-		LegoS32 i;
-
-		switch (m_parser->GetCurrentToken()) {
-		case c_styleIcon:
-			ParseIconStyle(p_entry);
-			break;
-		case MultiStateStyle::e_rect:
-			ReadRect(&p_entry->m_rect.m_left);
-			break;
-		case c_styleFont:
-			for (i = 0; i < 6; i++) {
-				p_entry->m_stateFonts[i] = m_renderer->FindFontByName(m_parser->ReadString());
-			}
-			break;
-		case c_styleImage: {
-			GolImage** imageCursor = image;
-			for (i = 0; i < 6; i++) {
-				*imageCursor = m_renderer->FindImageByName(m_parser->ReadString());
-				imageCursor += 3;
-			}
-			imageTripletCount++;
-			image++;
-			break;
-		}
-		default:
-			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
-			break;
-		}
-	} while (m_parser->GetNextToken() != GolFileParser::e_rightCurly);
 
 	if (imageTripletCount != 3) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);

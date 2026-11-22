@@ -39,8 +39,6 @@ const LegoFloat g_dynamiteThrowDistance = -90.0f;
 
 extern LegoFloat g_cosineTable[1024];
 
-extern const LegoFloat g_negativeRadiansToTableIndex;
-
 extern LegoU16 g_randomTable[1024];
 
 extern LegoU32 g_randomTableIndex;
@@ -180,7 +178,7 @@ void DynamiteAction::Update(LegoU32 p_elapsedMs)
 
 	m_tumbleAngle += static_cast<LegoFloat>(p_elapsedMs) * g_dynamiteTumbleRate;
 
-	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(m_tumbleAngle * g_negativeRadiansToTableIndex)) & 0x3ff;
+	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(m_tumbleAngle * -162.97466f)) & 0x3ff;
 	GolVec3 up;
 	up.m_x = g_cosineTable[tableIndex];
 	up.m_y = 0.0f;
@@ -293,8 +291,9 @@ void DynamiteAction::AdvanceState()
 		break;
 	case c_stateSecondBlast:
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-		position.m_x +=
-			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter;
+		position.m_x += (static_cast<LegoFloat>(
+			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter
+		));
 
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		position.m_y +=
@@ -305,8 +304,9 @@ void DynamiteAction::AdvanceState()
 		break;
 	case c_stateThirdBlast:
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-		position.m_x +=
-			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter;
+		position.m_x += (static_cast<LegoFloat>(
+			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter
+		));
 
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		position.m_y +=

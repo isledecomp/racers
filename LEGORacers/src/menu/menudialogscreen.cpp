@@ -133,10 +133,9 @@ void MenuDialog::DialogScreen::AttachNoIcon()
 	rect.m_top = m_yesIcon->GetRect()->m_bottom + 0x14;
 	rect.m_bottom = m_noIcon->GetRect()->m_bottom;
 	rect.m_bottom += rect.m_top;
-	LegoS32 rectRight = m_noIcon->GetRect()->m_right;
-	rectRight += 0x19;
 	rect.m_left = 0x19;
-	rect.m_right = rectRight;
+	rect.m_right = m_noIcon->GetRect()->m_right;
+	rect.m_right += rect.m_left;
 
 	m_noIcon->SetRect(&rect);
 	m_noIcon->SetParent(&m_frame);

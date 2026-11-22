@@ -1080,7 +1080,7 @@ void MenuManager::ApplySettings()
 			m_gameContext.m_modelBuilder.m_musicInstance->SetVolume(musicVolume);
 		}
 		m_gameContext.m_context->GetSoundManager()->SetMusicVolumeScale(musicVolume);
-		m_gameContext.m_context->GetSoundManager()->SetVolumeScale(state.GetSoundVolume() * 0.003921569f);
+		m_gameContext.m_context->GetSoundManager()->SetVolumeScale(((((state.GetSoundVolume() * 0.003921569f)))));
 
 		if (state.GetStereo()) {
 			m_gameContext.m_context->GetSoundManager()->ClearMonoFlag();

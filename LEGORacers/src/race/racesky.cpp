@@ -640,7 +640,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 	GdbModelIndexArrayBase* indexArrayBase;
 	p_params->m_model->GetIndexArrayInto(&indexArrayBase);
 	LegoU8 triangle[3];
-	LegoU32 scratchStart = 0;
+	LegoU32 scratchStart = vertexIndex;
 
 	if (p_params->m_hasTopCap) {
 		scratchStart = p_params->m_segmentCount + 1;

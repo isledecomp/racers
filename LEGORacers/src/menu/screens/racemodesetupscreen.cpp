@@ -20,9 +20,9 @@ void RaceModeSetupScreen::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 	LegoU32 millisecondsPerHour = 3600000;
 	LegoS32 divisor = 10;
 	LegoS32 digitOffset;
-	LegoU32 time = p_time % millisecondsPerHour;
 
 	p_buffer[8] = '\0';
+	LegoU32 time = p_time % millisecondsPerHour;
 	if (time >= 600000) {
 		digitOffset = 7;
 		p_buffer[5] = ':';
@@ -195,7 +195,12 @@ void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 
 	if (p_source == &m_trackSelector) {
 		LegoU32 circuitIndex = m_trackCarousel.GetSelectedIndex();
-		m_circuitEntry = m_context->m_circuitList.GetEntry(circuitIndex);
+		if (circuitIndex >= m_context->m_circuitList.GetEntryCount()) {
+			m_circuitEntry = NULL;
+		}
+		else {
+			m_circuitEntry = &m_context->m_circuitList.m_entries[circuitIndex];
+		}
 
 		if (m_circuitEntry) {
 			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(m_circuitEntry));

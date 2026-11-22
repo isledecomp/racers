@@ -93,7 +93,7 @@ void MenuSceneScreen::SceneWidget::LoadCutscene(SceneRefBinding* p_createParams,
 	m_definition.SetEventSink(&m_player);
 
 	LegoFloat scale =
-		(LegoFloat) ((double) (m_viewportRect.m_right - m_viewportRect.m_left) /
+		(LegoFloat) ((((double) (m_viewportRect.m_right - m_viewportRect.m_left))) /
 					 (double) (m_viewportRect.m_bottom - m_viewportRect.m_top) * p_createParams->m_aspectScale);
 	m_definition.SetCameraAspectRatios(scale);
 

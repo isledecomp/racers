@@ -940,15 +940,15 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 {
 	ColorRGBA originalColor;
 	ColorRGBA highlightColor;
-	originalColor.m_alp = 0xff;
-	highlightColor.m_alp = 0xff;
 	GolRenderDevice::MaterialColor* material = m_renderer->GetCurrentMaterialColor();
 	originalColor.m_red = 0x78;
 	originalColor.m_grn = 0x78;
 	originalColor.m_blu = 0x78;
+	originalColor.m_alp = 0xff;
 	highlightColor.m_red = 0xb4;
 	highlightColor.m_grn = 0xb4;
 	highlightColor.m_blu = 0xb4;
+	highlightColor.m_alp = 0xff;
 
 	if (material == NULL) {
 		material = &m_pieceMaterial;

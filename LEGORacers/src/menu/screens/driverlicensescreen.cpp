@@ -188,16 +188,16 @@ LegoBool32 DriverLicenseScreen::Destroy()
 LegoBool32 DriverLicenseScreen::HasUnsavedChanges()
 {
 	GolString name;
-	GolString* nameString = &m_nameString;
 	DriverCosmetics cosmetics;
 	undefined2 buffer[24];
 
-	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
+	if (m_context->m_modelBuilder.m_menuFlowFlags & DriverModelBuilder::c_menuFlowNewRacer) {
 		return TRUE;
 	}
 
 	::memset(buffer, 0, sizeof(buffer));
 	name.CopyFromBufSelection(buffer, 0x17);
+	GolString* nameString = &m_nameString;
 	nameString->CopyFromBufSelection(m_nameEntry.GetBuffer(), 0);
 
 	ActiveRecordBuffer& record = m_context->m_saveSystem.GetActiveRecord();

@@ -190,11 +190,8 @@ void PartAnimationResource::OnStartAt(GolVec3*)
 // FUNCTION: LEGORACERS 0x004635c0
 void PartAnimationResource::OnEnd()
 {
-	LegoU32 state = m_state;
-	LegoU32 nextState = state;
-	LegoU32 resetState = c_stateIdle;
-	if (state != resetState) {
-		nextState = resetState;
+
+	if (m_state != c_stateIdle) {
 		GolAnimatedEntity* entity = m_animatedEntity;
 		LegoS32 targetPart = m_idlePart;
 		LegoS32 currentPart = entity->GetCurrentPartIndex();
@@ -208,18 +205,17 @@ void PartAnimationResource::OnEnd()
 					flags &= ~c_entityFlags0x4e0000;
 					flags |= GolAnimatedEntity::c_flagRestartQueuedPart;
 					entity->SetFlags(flags);
-					SetState(nextState);
-					return;
 				}
-
-				entity->SetQueuedPartIndex(static_cast<LegoU16>(targetPart));
-				LegoU32 flags = entity->GetFlags();
-				flags &= ~c_entityFlags0x0e0000;
-				flags |= GolAnimatedEntity::c_flagRestartQueuedPart | GolAnimatedEntity::c_flagLoopQueuedPart;
-				entity->SetFlags(flags);
+				else {
+					entity->SetQueuedPartIndex(static_cast<LegoU16>(targetPart));
+					LegoU32 flags = entity->GetFlags();
+					flags &= ~c_entityFlags0x0e0000;
+					flags |= GolAnimatedEntity::c_flagRestartQueuedPart | GolAnimatedEntity::c_flagLoopQueuedPart;
+					entity->SetFlags(flags);
+				}
 			}
 		}
 	}
 
-	SetState(nextState);
+	SetState(c_stateIdle);
 }

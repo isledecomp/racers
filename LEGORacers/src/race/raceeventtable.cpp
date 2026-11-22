@@ -627,8 +627,8 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 			flagValue = 1;
 		}
 
-		params.m_particleAnimation = m_particleAnimation;
 		memset(params.m_stateEventIds, 0xff, sizeof(params.m_stateEventIds));
+		params.m_particleAnimation = m_particleAnimation;
 		params.m_eventTable = this;
 		params.m_sharedParticleAnimation = m_sharedParticleAnimation;
 		params.m_particleName[0] = '\0';
@@ -1628,8 +1628,10 @@ void RaceEventTable::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00461ef0
 LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 {
+	LegoU32 i;
+
 	if (m_sounds) {
-		for (LegoU32 i = 0; i < m_soundCount; i++) {
+		for (i = 0; i < m_soundCount; i++) {
 			if (m_sounds[i].m_eventId == p_eventId) {
 				m_sounds[i].OnEventStart(p_position);
 			}
@@ -1637,7 +1639,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_partAnimations) {
-		for (LegoU32 i = 0; i < m_partAnimationCount; i++) {
+		for (i = 0; i < m_partAnimationCount; i++) {
 			if (m_partAnimations[i].m_eventId == p_eventId) {
 				m_partAnimations[i].OnEventStart(p_position);
 			}
@@ -1645,7 +1647,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_materialAnimations) {
-		for (LegoU32 i = 0; i < m_materialAnimationCount; i++) {
+		for (i = 0; i < m_materialAnimationCount; i++) {
 			if (m_materialAnimations[i].m_eventId == p_eventId) {
 				m_materialAnimations[i].OnEventStart(p_position);
 			}
@@ -1653,7 +1655,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_particles) {
-		for (LegoU32 i = 0; i < m_particleCount; i++) {
+		for (i = 0; i < m_particleCount; i++) {
 			if (m_particles[i].m_eventId == p_eventId) {
 				m_particles[i].OnEventStart(p_position);
 			}
@@ -1661,7 +1663,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_skyStates) {
-		for (LegoU32 i = 0; i < m_skyStateCount; i++) {
+		for (i = 0; i < m_skyStateCount; i++) {
 			if (m_skyStates[i].m_eventId == p_eventId) {
 				m_skyStates[i].OnEventStart(p_position);
 			}
@@ -1669,7 +1671,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_timers) {
-		for (LegoU32 i = 0; i < m_timerCount; i++) {
+		for (i = 0; i < m_timerCount; i++) {
 			if (m_timers[i].m_eventId == p_eventId) {
 				m_timers[i].OnEventStart(p_position);
 			}
@@ -1681,7 +1683,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_nodeTransforms) {
-		for (LegoU32 i = 0; i < m_nodeTransformCount; i++) {
+		for (i = 0; i < m_nodeTransformCount; i++) {
 			if (m_nodeTransforms[i].m_eventId == p_eventId) {
 				m_nodeTransforms[i].OnEventStart(p_position);
 			}
@@ -1689,7 +1691,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_modelDistances) {
-		for (LegoU32 i = 0; i < m_modelDistanceCount; i++) {
+		for (i = 0; i < m_modelDistanceCount; i++) {
 			if (m_modelDistances[i].m_eventId == p_eventId) {
 				m_modelDistances[i].OnEventStart(p_position);
 			}
@@ -1697,7 +1699,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_eventLinks) {
-		for (LegoU32 i = 0; i < m_eventLinkCount; i++) {
+		for (i = 0; i < m_eventLinkCount; i++) {
 			if (m_eventLinks[i].m_eventId == p_eventId) {
 				ForceEvents(m_eventLinks[i].m_forcedEventId);
 			}
@@ -1705,7 +1707,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_externalForces) {
-		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
+		for (i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_armEventId == p_eventId) {
 				m_externalForces[i].m_forceFlags |= 1;
 			}
@@ -1719,8 +1721,10 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_eventId, GolVec3* p_position)
 // FUNCTION: LEGORACERS 0x00462140
 void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 {
+	LegoU32 i;
+
 	if (m_sounds) {
-		for (LegoU32 i = 0; i < m_soundCount; i++) {
+		for (i = 0; i < m_soundCount; i++) {
 			if (m_sounds[i].m_eventId == p_eventId) {
 				m_sounds[i].OnEventEnd(p_position);
 			}
@@ -1728,7 +1732,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_partAnimations) {
-		for (LegoU32 i = 0; i < m_partAnimationCount; i++) {
+		for (i = 0; i < m_partAnimationCount; i++) {
 			if (m_partAnimations[i].m_eventId == p_eventId) {
 				m_partAnimations[i].OnEventEnd(p_position);
 			}
@@ -1736,7 +1740,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_materialAnimations) {
-		for (LegoU32 i = 0; i < m_materialAnimationCount; i++) {
+		for (i = 0; i < m_materialAnimationCount; i++) {
 			if (m_materialAnimations[i].m_eventId == p_eventId) {
 				m_materialAnimations[i].OnEventEnd(p_position);
 			}
@@ -1744,7 +1748,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_particles) {
-		for (LegoU32 i = 0; i < m_particleCount; i++) {
+		for (i = 0; i < m_particleCount; i++) {
 			if (m_particles[i].m_eventId == p_eventId) {
 				m_particles[i].OnEventEnd(p_position);
 			}
@@ -1752,7 +1756,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_skyStates) {
-		for (LegoU32 i = 0; i < m_skyStateCount; i++) {
+		for (i = 0; i < m_skyStateCount; i++) {
 			if (m_skyStates[i].m_eventId == p_eventId) {
 				m_skyStates[i].OnEventEnd(p_position);
 			}
@@ -1760,7 +1764,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_timers) {
-		for (LegoU32 i = 0; i < m_timerCount; i++) {
+		for (i = 0; i < m_timerCount; i++) {
 			if (m_timers[i].m_eventId == p_eventId) {
 				m_timers[i].OnEventEnd(p_position);
 			}
@@ -1772,7 +1776,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_nodeTransforms) {
-		for (LegoU32 i = 0; i < m_nodeTransformCount; i++) {
+		for (i = 0; i < m_nodeTransformCount; i++) {
 			if (m_nodeTransforms[i].m_eventId == p_eventId) {
 				m_nodeTransforms[i].OnEventEnd(p_position);
 			}
@@ -1780,7 +1784,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_modelDistances) {
-		for (LegoU32 i = 0; i < m_modelDistanceCount; i++) {
+		for (i = 0; i < m_modelDistanceCount; i++) {
 			if (m_modelDistances[i].m_eventId == p_eventId) {
 				m_modelDistances[i].OnEventEnd(p_position);
 			}
@@ -1788,7 +1792,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_eventId, GolVec3* p_position)
 	}
 
 	if (m_externalForces) {
-		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
+		for (i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_armEventId == p_eventId) {
 				m_externalForces[i].m_forceFlags &= ~1;
 			}
@@ -2033,8 +2037,10 @@ void RaceEventTable::FireEventsAt(undefined4 p_startId, undefined4 p_endId, GolV
 // FUNCTION: LEGORACERS 0x004628c0
 void RaceEventTable::StartEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 {
+	LegoU32 i;
+
 	if (m_colorTransforms) {
-		for (LegoU32 i = 0; i < m_colorTransformCount; i++) {
+		for (i = 0; i < m_colorTransformCount; i++) {
 			if (m_colorTransforms[i].m_eventId == p_eventId) {
 				m_colorTransforms[i].ForceEventStart(p_racer);
 			}
@@ -2042,7 +2048,7 @@ void RaceEventTable::StartEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 	}
 
 	if (m_lapZones) {
-		for (LegoU32 i = 0; i < m_lapZoneCount; i++) {
+		for (i = 0; i < m_lapZoneCount; i++) {
 			if (m_lapZones[i].m_eventId == p_eventId) {
 				m_lapZones[i].ForceEventStart(p_racer);
 			}
@@ -2050,7 +2056,7 @@ void RaceEventTable::StartEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 	}
 
 	if (m_lookTargets) {
-		for (LegoU32 i = 0; i < m_lookTargetCount; i++) {
+		for (i = 0; i < m_lookTargetCount; i++) {
 			if (m_lookTargets[i].m_eventId == p_eventId) {
 				m_lookTargets[i].ForceEventStart(p_racer);
 			}
@@ -2058,7 +2064,7 @@ void RaceEventTable::StartEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 	}
 
 	if (m_externalForces) {
-		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
+		for (i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_eventId == p_eventId) {
 				m_externalForces[i].ForceEventStart(p_racer);
 			}
@@ -2073,8 +2079,10 @@ void RaceEventTable::StartEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 // FUNCTION: LEGORACERS 0x004629d0
 void RaceEventTable::EndEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 {
+	LegoU32 i;
+
 	if (m_colorTransforms) {
-		for (LegoU32 i = 0; i < m_colorTransformCount; i++) {
+		for (i = 0; i < m_colorTransformCount; i++) {
 			if (m_colorTransforms[i].m_eventId == p_eventId) {
 				m_colorTransforms[i].ForceEventEnd(p_racer);
 			}
@@ -2082,7 +2090,7 @@ void RaceEventTable::EndEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 	}
 
 	if (m_lapZones) {
-		for (LegoU32 i = 0; i < m_lapZoneCount; i++) {
+		for (i = 0; i < m_lapZoneCount; i++) {
 			if (m_lapZones[i].m_eventId == p_eventId) {
 				m_lapZones[i].ForceEventEnd(p_racer);
 			}
@@ -2090,7 +2098,7 @@ void RaceEventTable::EndEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 	}
 
 	if (m_lookTargets) {
-		for (LegoU32 i = 0; i < m_lookTargetCount; i++) {
+		for (i = 0; i < m_lookTargetCount; i++) {
 			if (m_lookTargets[i].m_eventId == p_eventId) {
 				m_lookTargets[i].ForceEventEnd(p_racer);
 			}
@@ -2098,7 +2106,7 @@ void RaceEventTable::EndEventsForRacer(undefined4 p_eventId, Racer* p_racer)
 	}
 
 	if (m_externalForces) {
-		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
+		for (i = 0; i < m_externalForceCount; i++) {
 			if (m_externalForces[i].m_eventId == p_eventId) {
 				m_externalForces[i].ForceEventEnd(p_racer);
 			}

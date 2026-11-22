@@ -120,8 +120,7 @@ void RacerCollisionWorlds::ActivateWorld(Racer* p_racer, LegoU32 p_worldIndex)
 	LegoU32 result;
 	for (result = 0; result < sizeOfArray(m_racers); result++) {
 		if (m_racers[result] == p_racer) {
-			m_ttl[result][p_worldIndex] = c_activationTtl;
-			return;
+			break;
 		}
 	}
 

@@ -154,26 +154,26 @@ CheckpointGraph::Entry* CheckpointGraph::GetCheckpoint(LegoU32 p_index)
 void CheckpointGraph::ComputeLapFractions()
 {
 	LegoU32 distance = CountLapCheckpoints();
-	LegoU32 lapIndex = 0;
+	LegoU32 index = 0;
 	LegoFloat step = 1.0f / static_cast<LegoS32>(distance);
 	LegoFloat progress = 0.0f;
 
 	do {
-		m_entries[lapIndex].m_lapFraction = progress;
+		m_entries[index].m_lapFraction = progress;
 		progress += step;
-		lapIndex = m_entries[lapIndex].m_next.m_items[0];
-	} while (&m_entries[lapIndex] != m_entries && progress < 1.0f);
+		index = m_entries[index].m_next.m_items[0];
+	} while (&m_entries[index] != m_entries && progress < 1.0f);
 
-	LegoU32 entryIndex = 0;
+	index = 0;
 	do {
-		for (LegoU32 i = 1; i < sizeOfArray(m_entries[entryIndex].m_next.m_items); i++) {
-			if (m_entries[entryIndex].m_next.m_items[i] != 0xff) {
-				LegoU8 next = m_entries[entryIndex].m_next.m_items[i];
+		for (LegoU32 i = 1; i < sizeOfArray(m_entries[index].m_next.m_items); i++) {
+			if (m_entries[index].m_next.m_items[i] != 0xff) {
+				LegoU8 next = m_entries[index].m_next.m_items[i];
 				LegoU32 targetIndex = FindNextFractionedCheckpoint(next, &distance);
 				LegoFloat step = static_cast<LegoFloat>(static_cast<LegoS32>(distance + 1));
-				step = (m_entries[targetIndex].m_lapFraction - m_entries[entryIndex].m_lapFraction) / step;
-				LegoU32 cursorIndex = m_entries[entryIndex].m_next.m_items[i];
-				LegoFloat progress = m_entries[entryIndex].m_lapFraction;
+				step = (m_entries[targetIndex].m_lapFraction - m_entries[index].m_lapFraction) / step;
+				LegoU32 cursorIndex = m_entries[index].m_next.m_items[i];
+				LegoFloat progress = m_entries[index].m_lapFraction;
 				progress += step;
 
 				do {
@@ -184,8 +184,8 @@ void CheckpointGraph::ComputeLapFractions()
 			}
 		}
 
-		entryIndex = m_entries[entryIndex].m_next.m_items[0];
-	} while (&m_entries[entryIndex] != m_entries);
+		index = m_entries[index].m_next.m_items[0];
+	} while (&m_entries[index] != m_entries);
 }
 
 // FUNCTION: LEGORACERS 0x0041ea60

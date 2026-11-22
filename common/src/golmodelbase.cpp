@@ -159,7 +159,6 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 {
 	m_groupCount = p_parser.ReadBracketedCountAndLeftCurly();
 
-	LegoU32 count = 0;
 	if (m_groupCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
@@ -179,8 +178,9 @@ void GolModelBase::ParseGroups(GolFileParser& p_parser)
 	LegoU32* colorStackPointer;
 
 	stackSize = 0;
-	i = 0;
 	seen = FALSE;
+	i = 0;
+	LegoU32 count = 0;
 
 	if (i < m_groupCount) {
 		colorStackPointer = colorStack;

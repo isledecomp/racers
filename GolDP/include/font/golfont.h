@@ -30,6 +30,8 @@ public:
 	void ReleaseSurfaces();
 	void RefreshSurfaces(GolD3DRenderDevice* p_renderer);
 
+	LegoFloat GetInverseTextureWidth() const { return m_inverseTextureWidth; }
+
 private:
 	enum {
 		c_fontMaterialFlags = 0x92aaa

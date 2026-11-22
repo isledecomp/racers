@@ -29,7 +29,6 @@ struct GolMaterialColor {
 // SIZE 0x14
 struct GolMaterialParams {
 	GolMaterialParams() {}
-	GolMaterialParams(LegoU8 p_fullIntensity);
 
 	LegoU32 m_flags;            // 0x00
 	GolTexture* m_texture;      // 0x04
@@ -114,25 +113,5 @@ protected:
 	undefined m_srcBlend;                 // 0x22
 	undefined m_destBlend;                // 0x23
 };
-
-inline GolMaterialParams::GolMaterialParams(LegoU8 p_fullIntensity)
-{
-	m_diffuse.m_red = p_fullIntensity;
-	m_diffuse.m_grn = p_fullIntensity;
-	m_diffuse.m_blu = p_fullIntensity;
-	m_diffuse.m_alp = p_fullIntensity;
-	m_ambient.m_red = p_fullIntensity;
-	m_ambient.m_grn = p_fullIntensity;
-	m_ambient.m_blu = p_fullIntensity;
-	m_ambient.m_alp = p_fullIntensity;
-	m_flags = GolMaterial::c_flagGouraudShading | GolMaterial::c_flagDecal | GolMaterial::c_flagNoAlphaTest |
-			  GolMaterial::c_flagNoAlphaBlend | GolMaterial::c_flagLinearFilter | GolMaterial::c_flagNoTransparency |
-			  GolMaterial::c_flagWrap | GolMaterial::c_flagBit20 | GolMaterial::c_flagBit22;
-	m_texture = NULL;
-	m_alphaFunc = 2;
-	m_alphaRef = 0;
-	m_srcBlend = 1;
-	m_destBlend = 0;
-}
 
 #endif // GOLMATERIAL_H

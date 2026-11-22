@@ -167,28 +167,30 @@ void GolFont::CreateSurfaces(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 	}
 
 	m_textures[m_surfaceCount - 1].AllocateDeviceOnly(*p_renderer, *p_textureFormat, m_textureWidth, m_textureHeight);
-	GolMaterialParams params;
-	params.m_flags = c_fontMaterialFlags;
-	params.m_ambient.m_red = 0xff;
-	params.m_ambient.m_grn = 0xff;
-	params.m_ambient.m_blu = 0xff;
-	params.m_ambient.m_alp = 0xff;
-	params.m_diffuse.m_red = 0xff;
-	params.m_diffuse.m_grn = 0xff;
-	params.m_diffuse.m_blu = 0xff;
-	params.m_diffuse.m_alp = 0xff;
-	params.m_alphaFunc = 2;
-	params.m_alphaRef = 0;
-	params.m_srcBlend = 1;
-	params.m_destBlend = 0;
-
 	m_textures[m_surfaceCount - 1].SetName(m_name);
 
-	GolSoftwareMaterial* material = &m_materials[m_surfaceCount - 1];
-	params.m_texture = &m_textures[m_surfaceCount - 1];
+	{
+		GolMaterialParams params;
+		params.m_flags = c_fontMaterialFlags;
+		params.m_ambient.m_red = 0xff;
+		params.m_ambient.m_grn = 0xff;
+		params.m_ambient.m_blu = 0xff;
+		params.m_ambient.m_alp = 0xff;
+		params.m_diffuse.m_red = 0xff;
+		params.m_diffuse.m_grn = 0xff;
+		params.m_diffuse.m_blu = 0xff;
+		params.m_diffuse.m_alp = 0xff;
+		params.m_alphaFunc = 2;
+		params.m_alphaRef = 0;
+		params.m_srcBlend = 1;
+		params.m_destBlend = 0;
 
-	material->SetParams(p_renderer, params);
-	material->Create(*p_renderer);
+		GolSoftwareMaterial* material = &m_materials[m_surfaceCount - 1];
+		params.m_texture = &m_textures[m_surfaceCount - 1];
+
+		material->SetParams(p_renderer, params);
+		material->Create(*p_renderer);
+	}
 }
 
 // FUNCTION: GOLDP 0x10004b60
@@ -226,24 +228,27 @@ void GolFont::DrawGlyph(Rect* p_sourceRect, Rect* p_destRect)
 	vertices[1].sz = 0.0f;
 	vertices[2].sz = 0.0f;
 
-	vertices[1].sx = vertices[0].sx = static_cast<LegoFloat>(p_destRect->m_left);
+	vertices[0].sx = (static_cast<LegoFloat>(p_destRect->m_left));
 	vertices[3].sz = 0.0f;
 	vertices[0].rhw = 1.0f;
-	vertices[0].sy = static_cast<LegoFloat>(p_destRect->m_top);
+	vertices[0].sy = (static_cast<LegoFloat>(p_destRect->m_top));
 	vertices[1].rhw = 1.0f;
 	vertices[2].rhw = 1.0f;
-	vertices[3].sy = vertices[1].sy = static_cast<LegoFloat>(p_destRect->m_bottom);
-	vertices[3].sx = vertices[2].sx = static_cast<LegoFloat>(p_destRect->m_right);
+	vertices[1].sx = vertices[0].sx;
+	vertices[1].sy = (static_cast<LegoFloat>(p_destRect->m_bottom));
+	vertices[2].sx = (static_cast<LegoFloat>(p_destRect->m_right));
+	vertices[3].sx = vertices[2].sx;
 	vertices[2].sy = vertices[0].sy;
 	vertices[3].rhw = 1.0f;
+	vertices[3].sy = vertices[1].sy;
 
-	vertices[0].tu =
-		static_cast<LegoFloat>(p_sourceRect->m_left) * m_inverseTextureWidth + (m_inverseTextureWidth * 0.25f);
-	vertices[0].tv = static_cast<LegoFloat>(p_sourceRect->m_top) * m_inverseTextureHeight;
+	LegoFloat quarter = m_inverseTextureWidth;
+	quarter = (quarter * 0.25f);
+	vertices[0].tu = (((static_cast<LegoFloat>(p_sourceRect->m_left))) * m_inverseTextureWidth) + quarter;
+	vertices[0].tv = (((((static_cast<LegoFloat>(p_sourceRect->m_top))) * m_inverseTextureHeight)));
 	vertices[1].tu = vertices[0].tu;
-	vertices[1].tv = static_cast<LegoFloat>(sourceBottom) * m_inverseTextureHeight;
-	vertices[2].tu =
-		static_cast<LegoFloat>(p_sourceRect->m_right) * m_inverseTextureWidth + (m_inverseTextureWidth * 0.25f);
+	vertices[1].tv = ((((static_cast<LegoFloat>(sourceBottom))) * m_inverseTextureHeight));
+	vertices[2].tu = (((static_cast<LegoFloat>(p_sourceRect->m_right))) * GetInverseTextureWidth()) + quarter;
 	vertices[2].tv = vertices[0].tv;
 	vertices[3].tu = vertices[2].tu;
 	vertices[3].tv = vertices[1].tv;

@@ -186,8 +186,8 @@ void CutsceneVisual::Draw(GolD3DRenderDevice* p_renderer)
 						y,
 						drawWidth,
 						drawHeight,
-						static_cast<LegoFloat>(drawWidth) / divisorX,
-						static_cast<LegoFloat>(drawHeight) / divisorY
+						((static_cast<LegoFloat>(drawWidth))) / divisorX,
+						((static_cast<LegoFloat>(drawHeight))) / divisorY
 					);
 				}
 			}

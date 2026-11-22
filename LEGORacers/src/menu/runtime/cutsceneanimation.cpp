@@ -238,7 +238,8 @@ CutsceneParticleRef* CutsceneAnimation::SpawnParticle(
 
 	if (runtime->IsPersistent()) {
 		CutsceneParticleRef* ref = &m_refs[refIndex];
-		ref->m_flags |= CutsceneParticleRef::c_flagInUse;
+		LegoU8& refFlags = ref->m_flags;
+		refFlags |= CutsceneParticleRef::c_flagInUse;
 		ref->m_particle = particle;
 		particle->SetRef(ref);
 		return ref;

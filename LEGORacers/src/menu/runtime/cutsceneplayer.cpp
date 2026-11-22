@@ -1591,7 +1591,7 @@ void CutscenePlayer::OnDirectionalLightEnded(void*, void* p_name, void* p_payloa
 void CutscenePlayer::Update(LegoU32 p_elapsedMs)
 {
 	if (m_golExport != NULL) {
-		LegoFloat elapsedSeconds = static_cast<LegoS32>(p_elapsedMs) * 0.001f;
+		LegoFloat elapsedSeconds = (((static_cast<LegoS32>(p_elapsedMs) * 0.001f)));
 		LegoU32 i;
 
 		for (i = 0; i < m_moveEventCount; i++) {
@@ -1659,6 +1659,12 @@ inline void CrossVectors(const GolVec3& p_left, const GolVec3& p_right, GolVec3*
 	p_dest->m_z = z;
 }
 
+inline void SetNodePosition(SoundNode* p_node, const SoundVector& p_position)
+{
+	p_node->m_position = p_position;
+	p_node->m_unk0x44 = 1;
+}
+
 // FUNCTION: LEGORACERS 0x004a2f80
 void CutscenePlayer::UpdateListener(GolCamera* p_lens)
 {
@@ -1672,8 +1678,7 @@ void CutscenePlayer::UpdateListener(GolCamera* p_lens)
 
 	SoundNode* node = &m_listener;
 
-	node->m_position = position;
-	node->m_unk0x44 = 1;
+	SetNodePosition(&m_listener, position);
 
 	forward.m_x = -forward.m_x;
 	forward.m_y = -forward.m_y;

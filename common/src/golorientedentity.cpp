@@ -427,7 +427,9 @@ void GolOrientedEntity::TransformMatrixToLocal(const GolMatrix3& p_matrix, GolMa
 		LegoFloat value = m_orientation.m_m[2][2];
 		value *= p_matrix.m_m[2][1];
 		value += m_orientation.m_m[0][2] * p_matrix.m_m[0][1];
-		localMatrix.m_m[2][1] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][1];
+		LegoFloat term5 = m_orientation.m_m[1][2];
+		term5 *= p_matrix.m_m[1][1];
+		localMatrix.m_m[2][1] = value + term5;
 	}
 
 	{

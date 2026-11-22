@@ -79,13 +79,19 @@ void GolBmpFile::ReadHeader()
 	LegoU32 bpp = 0;
 	LegoU32 imageOffset;
 	LegoU8* paletteBuffer;
+	LegoU32 planes;
 
 	LegoS32 result = m_file.BufferedRead(0, header, sizeof(header), &amountRead);
 	if (result != GolStream::e_ioSuccess) {
 		GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 	}
 
-	if (BUF_U16LE(header, 0) != TWOCC('B', 'M')) {
+	LegoU16 magic = BUF_U16LE(header, 0);
+	if (magic == 0) {
+		// Empty in the original: a second test of the magic that left no code (its condition is unknown).
+	}
+
+	if (magic != TWOCC('B', 'M')) {
 		bpp = header[0] & 0x3c;
 		if (bpp != 4 && bpp != 8 && bpp != 24 && bpp != 32) {
 			GOL_FATALERROR_MESSAGE("Invalid BMP file");
@@ -152,11 +158,17 @@ void GolBmpFile::ReadHeader()
 		if (result == 0xc) {
 			m_width = BUF_U16LE(header2, 0x4);  // bcWidth
 			m_height = BUF_U16LE(header2, 0x6); // bcHeight
+			planes = BUF_U16LE(header2, 0x8);   // bcPlanes
 			bpp = BUF_U16LE(header2, 0xa);
+			if (planes != 1) {
+				// Empty in the original: the check left no code, but it keeps the full 16-bit read
+				// of planes in front of the palette test.
+			}
+			compression = 0;
 			m_paletteSize = 0;
 
 			if (bpp <= 8) {
-				m_paletteSize = 1 << (header2[0x8] * bpp); // bcPlanes
+				m_paletteSize = 1 << (planes * bpp);
 				if (m_paletteSize > 256) {
 					GOL_FATALERROR_MESSAGE("Palettes larger than 256 colors not supported");
 				}
@@ -195,16 +207,20 @@ void GolBmpFile::ReadHeader()
 			m_imageByteSize = m_height * m_rowByteStride;
 		}
 		else if (result == 0x28) {
-			m_width = BUF_U32LE(header2, 0x4);          // biWidth
-			m_height = BUF_U32LE(header2, 0x8);         // biHeight
-			bpp = BUF_U16LE(header2, 0xe);              // biBitCount
+			m_width = BUF_U32LE(header2, 0x4);  // biWidth
+			m_height = BUF_U32LE(header2, 0x8); // biHeight
+			planes = BUF_U16LE(header2, 0xc);   // biPlanes
+			bpp = BUF_U16LE(header2, 0xe);      // biBitCount
+			if (planes != 1) {
+				// Empty in the original (see the bcPlanes check above).
+			}
 			compression = BUF_U32LE(header2, 0x10);     // biCompression
 			m_imageByteSize = BUF_U32LE(header2, 0x14); // biSizeImage
 			m_paletteSize = BUF_U32LE(header2, 0x20);   // biClrUsed
 
 			if (bpp <= 8) {
 				if (m_paletteSize == 0) {
-					m_paletteSize = 1 << (header2[0xc] * bpp); // biPlanes
+					m_paletteSize = 1 << (planes * bpp);
 				}
 				if (m_paletteSize * 4 > sizeof(m_paletteBuffer)) {
 					paletteBuffer = new LegoU8[m_paletteSize * 4];
@@ -243,14 +259,18 @@ void GolBmpFile::ReadHeader()
 		else if (result == 0x40) {
 			m_width = BUF_U32LE(header2, 0x4);
 			m_height = BUF_U32LE(header2, 0x8);
+			planes = BUF_U16LE(header2, 0xc);
 			bpp = BUF_U16LE(header2, 0xe);
+			if (planes != 1) {
+				// Empty in the original (see the bcPlanes check above).
+			}
 			compression = BUF_U32LE(header2, 0x10);
 			m_imageByteSize = BUF_U32LE(header2, 0x14);
 			m_paletteSize = BUF_U32LE(header2, 0x20);
 
 			if (bpp <= 8) {
 				if (m_paletteSize == 0) {
-					m_paletteSize = 1 << (header2[0xc] * bpp);
+					m_paletteSize = 1 << (planes * bpp);
 				}
 				if (3 * m_paletteSize > sizeof(m_paletteBuffer)) {
 					paletteBuffer = new LegoU8[3 * m_paletteSize];
@@ -606,10 +626,9 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 	LegoU32 fileOffset = m_bitmapOffset;
 
 	if (m_compression == 0x80) {
-		LegoS32 availableDecompressedSize = 0;
 		LegoU8* availableDecompressedPtr = NULL;
 		LegoU8* decompBuffer = m_decompressBuffer;
-		LegoU8* writePtr = p_buffer + m_rowByteStride * m_height;
+		LegoU8* writePtr = p_buffer + m_rowByteStride * GetHeight();
 		if (decompBuffer == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -621,10 +640,11 @@ void GolBmpFile::ReadPixels(LegoU8* p_buffer)
 			rowByteCount = width * 4 + 4;
 		}
 		else {
-			rowByteCount = width;
-			rowByteCount *= bitsPerPixel;
+			rowByteCount = width * bitsPerPixel;
 		}
 		rowByteCount >>= 3;
+
+		LegoS32 availableDecompressedSize = 0;
 
 		for (y = 0; y < m_height; y++) {
 			writePtr -= m_rowByteStride;
@@ -731,7 +751,6 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 	LegoS32 rowByteCount;
 	LegoU8* availableDecompressedPtr;
 	LegoS32 amount;
-	LegoS32 tileHeight;
 
 	if (m_height != p_image->GetHeight() || m_width != p_image->GetWidth()) {
 		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
@@ -775,7 +794,8 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		rowStep = -1;
 		tileRow = p_image->GetTileRowCount() - 1;
 		LegoS32 totalHeight = 0;
-		LegoS32 lastHeight = fileOffset;
+		// Not initialised in the original: with no tile rows the stale stack value is used.
+		LegoS32 lastHeight;
 		for (row = 0; row < p_image->GetTileRowCount(); row++) {
 			lastHeight = p_image->GetTileHeight(row);
 			totalHeight += lastHeight;
@@ -802,18 +822,22 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 		}
 		LegoS32 bitsPerPixel = m_format.m_bitsPerPixel;
 		if (bitsPerPixel == 4) {
-			rowByteCount = static_cast<LegoS32>(m_width * 4 + 4) >> 3;
+			rowByteCount = m_width * 4 + 4;
 		}
 		else {
-			rowByteCount = static_cast<LegoS32>(m_width * bitsPerPixel) >> 3;
+			rowByteCount = m_width * bitsPerPixel;
 		}
+		rowByteCount >>= 3;
 		availableDecompressedSize = 0;
 		for (y = 0; y < m_height; y++) {
-			if (rowByteCount > availableDecompressedSize) {
+			if (availableDecompressedSize < rowByteCount) {
 				if (availableDecompressedSize != 0) {
 					::memcpy(rowBuffer, availableDecompressedPtr, availableDecompressedSize);
+					rowAmount = availableDecompressedSize;
 				}
-				rowAmount = availableDecompressedSize;
+				else {
+					rowAmount = 0;
+				}
 				while (rowAmount < rowByteCount) {
 					result = m_file.BufferedRead(fileOffset, readBuffer, 4, &amount);
 					if (result != GolStream::e_ioSuccess) {
@@ -869,11 +893,11 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 			}
 			ConvertRow(rowBuffer, convertedRow, format);
 
-			tileHeight = 0;
+			LegoS32 tileHeight = 0;
 			LegoU32 sourceOffset = 0;
 			for (column = 0; column < p_image->GetTileColumnCount(); column++) {
-				tileHeight = p_image->GetTileHeight(tileRow);
 				LegoS32 tileWidth = p_image->GetTileWidth(column);
+				tileHeight = p_image->GetTileHeight(tileRow);
 				if (rowInTile == 0x7fffffff) {
 					rowInTile = tileHeight - 1;
 				}
@@ -882,8 +906,9 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 				if (rowBytes + sourceOffset > totalRowBytes) {
 					rowBytes = totalRowBytes - sourceOffset;
 				}
-				LegoU32 index = tileRow + column * p_image->GetTileRowCount();
-				::memcpy(tilePixels[index] + rowInTile * tilePitches[index], convertedRow + sourceOffset, rowBytes);
+				LegoU32* tilePitch = &tilePitches[tileRow + column * p_image->GetTileRowCount()];
+				LegoU8** tilePixel = &tilePixels[tileRow + column * p_image->GetTileRowCount()];
+				::memcpy(*tilePixel + rowInTile * *tilePitch, convertedRow + sourceOffset, rowBytes);
 				sourceOffset += rowBytes;
 			}
 			rowInTile += rowStep;
@@ -923,11 +948,11 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 				GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 			}
 			ConvertRow(rowBuffer, convertedRow, format);
-			tileHeight = 0;
+			LegoS32 tileHeight = 0;
 			LegoU32 sourceOffset = 0;
 			for (column = 0; column < p_image->GetTileColumnCount(); column++) {
-				tileHeight = p_image->GetTileHeight(tileRow);
 				LegoS32 tileWidth = p_image->GetTileWidth(column);
+				tileHeight = p_image->GetTileHeight(tileRow);
 				if (rowInTile == 0x7fffffff) {
 					rowInTile = tileHeight - 1;
 				}
@@ -936,8 +961,9 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 				if (rowBytes + sourceOffset > totalRowBytes) {
 					rowBytes = totalRowBytes - sourceOffset;
 				}
-				LegoU32 index = tileRow + column * p_image->GetTileRowCount();
-				::memcpy(tilePixels[index] + rowInTile * tilePitches[index], convertedRow + sourceOffset, rowBytes);
+				LegoU32* tilePitch = &tilePitches[tileRow + column * p_image->GetTileRowCount()];
+				LegoU8** tilePixel = &tilePixels[tileRow + column * p_image->GetTileRowCount()];
+				::memcpy(*tilePixel + rowInTile * *tilePitch, convertedRow + sourceOffset, rowBytes);
 				sourceOffset += rowBytes;
 			}
 
@@ -959,8 +985,8 @@ void GolBmpFile::LoadTiledTexture(GolTiledTexture* p_image, LegoU32 p_flags, Col
 	if (readBuffer != NULL && readBuffer != m_decompressBuffer) {
 		delete[] readBuffer;
 	}
-	delete[] tilePitches;
 	delete[] tilePixels;
+	delete[] tilePitches;
 	delete[] convertedRow;
 	for (column = 0; column < p_image->GetTileColumnCount(); column++) {
 		for (row = 0; row < p_image->GetTileRowCount(); row++) {

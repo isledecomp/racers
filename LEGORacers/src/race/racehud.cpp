@@ -278,7 +278,7 @@ void RaceHud::ClipTriangleBottom(
 {
 	const GolRenderDevice::TexturedVertex* temporaryVertex;
 
-	if (p_v1->m_y > m_clipBottom) {
+	if ((p_v1->m_y) > m_clipBottom) {
 		if (p_v0->m_y > m_clipBottom) {
 			if (p_v2->m_y > m_clipBottom) {
 				return;
@@ -340,9 +340,9 @@ void RaceHud::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 	LegoU32 millisecondsPerHour = 3600000;
 	LegoS32 divisor = 10;
 	LegoS32 digitOffset;
-	LegoU32 time = p_time % millisecondsPerHour;
 
 	p_buffer[8] = '\0';
+	LegoU32 time = p_time % millisecondsPerHour;
 	if (time >= 600000) {
 		digitOffset = 7;
 		p_buffer[5] = ':';
@@ -404,16 +404,12 @@ void RaceHud::DrawMapArrow(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, Leg
 
 	vertices[3].m_x = p_directionX * tailEndLength;
 	vertices[3].m_y = p_directionY * tailEndLength;
-	LegoFloat tailSide = p_directionY;
-	tailSide *= 4.0f;
-	LegoFloat tailForward = p_directionX;
-	tailForward *= 5.0f;
+	LegoFloat tailSide = p_directionY * 4.0f;
+	LegoFloat tailForward = p_directionX * 5.0f;
 	vertices[4].m_x = tailSide - tailForward;
 
-	LegoFloat tailForwardY = p_directionY;
-	tailForwardY *= 5.0f;
-	LegoFloat tailSideX = p_directionX;
-	tailSideX *= 4.0f;
+	LegoFloat tailForwardY = p_directionY * 5.0f;
+	LegoFloat tailSideX = p_directionX * 4.0f;
 	vertices[4].m_y = -tailForwardY - tailSideX;
 	vertices[5].m_x = -tailForward - tailSide;
 	vertices[5].m_y = tailSideX - tailForwardY;
@@ -454,9 +450,6 @@ void RaceHud::DrawFixedMap()
 	LegoFloat markerHeightScale = m_scaleY;
 	markerHeightScale *= g_hudMarkerSize;
 	LegoS32 markerHeight = static_cast<LegoS32>(markerHeightScale);
-	LegoS32 mapOriginY = m_viewport.m_bottom;
-	LegoS32 mapOriginX = m_viewport.m_right;
-
 	m_clipTop = static_cast<LegoFloat>(m_viewport.m_top);
 	m_clipLeft = static_cast<LegoFloat>(m_viewport.m_left);
 	m_clipBottom = static_cast<LegoFloat>(m_viewport.m_bottom);
@@ -472,10 +465,8 @@ void RaceHud::DrawFixedMap()
 	}
 
 	double inset = static_cast<double>(m_screenHeight) * g_hudMapInsetScale;
-	LegoS32 verticalOffset = static_cast<LegoS32>(m_scaleY * inset);
-	mapOriginY -= verticalOffset;
-	LegoS32 horizontalOffset = static_cast<LegoS32>(m_scaleX * inset);
-	mapOriginX -= horizontalOffset;
+	LegoS32 mapOriginY = m_viewport.m_bottom - static_cast<LegoS32>(m_scaleY * inset);
+	LegoS32 mapOriginX = m_viewport.m_right - static_cast<LegoS32>(m_scaleX * inset);
 	LegoBool mirror = m_mirror;
 	LegoFloat referenceX = m_mapMaxX;
 
@@ -489,27 +480,22 @@ void RaceHud::DrawFixedMap()
 
 	LegoFloat rangeX = m_mapMaxX - m_mapMinX;
 	LegoFloat rangeY = m_mapMaxY - m_mapMinY;
-	double scale = rangeX > rangeY ? g_hudMapSize / rangeX : g_hudMapSize / rangeY;
-	scale *= m_mapScale;
+	double scale = GOL_MUL(rangeX > rangeY ? g_hudMapSize / rangeX : g_hudMapSize / rangeY, m_mapScale);
 	LegoFloat scaleX = static_cast<LegoFloat>(m_scaleX * scale);
 	LegoFloat scaleY = static_cast<LegoFloat>(m_scaleY * scale);
 
 	if (m_mapMaterial) {
 		if (mirror) {
-			vertices[0].m_v = 0.0f;
-			vertices[1].m_v = 0.0f;
-			vertices[2].m_v = maxTextureCoordinate;
-			vertices[3].m_v = maxTextureCoordinate;
+			vertices[0].m_v = vertices[1].m_v = 0.0f;
+			vertices[2].m_v = vertices[3].m_v = maxTextureCoordinate;
 		}
 		else {
-			vertices[0].m_v = maxTextureCoordinate;
-			vertices[1].m_v = maxTextureCoordinate;
-			vertices[2].m_v = 0.0f;
-			vertices[3].m_v = 0.0f;
+			vertices[0].m_v = vertices[1].m_v = maxTextureCoordinate;
+			vertices[2].m_v = vertices[3].m_v = 0.0f;
 		}
 
 		vertices[1].m_x = vertices[2].m_x = static_cast<LegoFloat>(mapOriginX);
-		vertices[3].m_y = vertices[2].m_y = static_cast<LegoFloat>(mapOriginY);
+		vertices[2].m_y = vertices[3].m_y = static_cast<LegoFloat>(mapOriginY);
 		vertices[3].m_u = 0.0f;
 		vertices[0].m_u = 0.0f;
 		vertices[2].m_u = maxTextureCoordinate;
@@ -517,8 +503,8 @@ void RaceHud::DrawFixedMap()
 		vertices[0].m_x = vertices[3].m_x = static_cast<LegoFloat>(mapOriginX) + (m_mapMinX - m_mapMaxX) * scaleX;
 		vertices[0].m_y = vertices[1].m_y = static_cast<LegoFloat>(mapOriginY) + (m_mapMinY - m_mapMaxY) * scaleY;
 
-		ClipTriangleTop(&vertices[0], &vertices[1], &vertices[2]);
-		ClipTriangleTop(&vertices[3], &vertices[0], &vertices[2]);
+		ClipTriangleTop(&vertices[0], &vertices[1], &vertices[3]);
+		ClipTriangleTop(&vertices[3], &vertices[1], &vertices[2]);
 	}
 
 	GolImage* markerResource = m_images->GetItem(10);
@@ -609,7 +595,7 @@ void RaceHud::DrawFixedMap()
 	GolVec3 direction;
 	m_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 	LegoFloat directionScale =
-		1.0f / static_cast<LegoFloat>(sqrt(direction.m_y * direction.m_y + direction.m_x * direction.m_x));
+		1.0f / static_cast<LegoFloat>(sqrt(direction.m_x * direction.m_x + direction.m_y * direction.m_y));
 	direction.m_x *= directionScale;
 	direction.m_y *= directionScale;
 	direction.m_y = -direction.m_y;
@@ -681,9 +667,10 @@ void RaceHud::DrawRotatingMap()
 	m_racer->m_cameraController->GetViewDirection(&cameraDirection);
 
 	LegoFloat directionScale =
-		directionLengthScale / static_cast<LegoFloat>(sqrt(
-								   cameraDirection.m_y * cameraDirection.m_y + cameraDirection.m_x * cameraDirection.m_x
-							   ));
+		directionLengthScale /
+		static_cast<LegoFloat>(sqrt(
+			(GOL_MUL(cameraDirection.m_y, cameraDirection.m_y)) + (GOL_MUL(cameraDirection.m_x, cameraDirection.m_x))
+		));
 	cameraDirection.m_x *= directionScale;
 	cameraDirection.m_y *= directionScale;
 
@@ -723,14 +710,17 @@ void RaceHud::DrawRotatingMap()
 		vertices[2].m_y = baseY1 - offsetY1;
 		vertices[3].m_y = baseY0 - offsetY1;
 
-		LegoFloat scaledDirectionX = m_aspectScale * cameraDirection.m_x;
-		LegoFloat scaledDirectionY = m_aspectScale * cameraDirection.m_y;
-		LegoFloat baseX0 = deltaX0 * scaledDirectionY + static_cast<LegoFloat>(mapCenterX);
-		LegoFloat offsetX0 = deltaY0 * scaledDirectionX;
-		LegoFloat baseX1 = deltaX1 * scaledDirectionY + static_cast<LegoFloat>(mapCenterX);
+		GolVec3 scaledDirection;
+		scaledDirection.m_x = m_aspectScale;
+		scaledDirection.m_x *= cameraDirection.m_x;
+		scaledDirection.m_y = m_aspectScale;
+		scaledDirection.m_y *= cameraDirection.m_y;
+		LegoFloat baseX0 = scaledDirection.m_y * deltaX0 + static_cast<LegoFloat>(mapCenterX);
+		LegoFloat offsetX0 = deltaY0 * scaledDirection.m_x;
 		vertices[0].m_x = baseX0 - offsetX0;
+		LegoFloat baseX1 = scaledDirection.m_y * deltaX1 + static_cast<LegoFloat>(mapCenterX);
 		vertices[1].m_x = baseX1 - offsetX0;
-		LegoFloat offsetX1 = deltaY1 * scaledDirectionX;
+		LegoFloat offsetX1 = scaledDirection.m_x * deltaY1;
 		vertices[2].m_x = baseX1 - offsetX1;
 		vertices[3].m_x = baseX0 - offsetX1;
 
@@ -851,12 +841,14 @@ void RaceHud::DrawRotatingMap()
 
 	vertices[0].m_x = static_cast<LegoFloat>(mapRect.m_left);
 	vertices[0].m_y = static_cast<LegoFloat>(mapRect.m_top);
-	vertices[1].m_x = static_cast<LegoFloat>(mapRect.m_right);
+	LegoFloat value = static_cast<LegoFloat>(mapRect.m_right);
+	vertices[1].m_x = value;
 	vertices[1].m_y = static_cast<LegoFloat>(mapRect.m_top);
-	vertices[2].m_x = vertices[1].m_x;
-	vertices[2].m_y = static_cast<LegoFloat>(mapRect.m_bottom);
+	vertices[2].m_x = value;
+	value = static_cast<LegoFloat>(mapRect.m_bottom);
+	vertices[2].m_y = value;
 	vertices[3].m_x = static_cast<LegoFloat>(mapRect.m_left);
-	vertices[3].m_y = vertices[2].m_y;
+	vertices[3].m_y = value;
 	vertices[4].m_x = vertices[0].m_x + 1.0f;
 	vertices[4].m_y = vertices[0].m_y + 1.0f;
 	vertices[5].m_x = vertices[1].m_x - 1.0f;
@@ -1132,16 +1124,16 @@ void RaceHud::Initialize(
 // FUNCTION: LEGORACERS 0x00425e90
 void RaceHud::SetLayout(LegoS32 p_mode)
 {
-	LegoS32 v25;
-	LegoS32 v26;
-	LegoS32 v27;
+	LegoS32 textHeight;
+	LegoS32 timeX;
+	LegoS32 rowOffsetSteps;
 
 	m_layout = static_cast<LegoU8>(p_mode);
 	m_viewport.m_left = 0;
+	m_viewport.m_right = m_screenWidth;
 	m_mapScale = 0.8f;
-	LegoU32 width = m_screenWidth;
 	m_bannerScale = 0.8f;
-	m_viewport.m_right = width;
+	LegoU32 width = m_viewport.m_right;
 	m_textScale = 0.9f;
 	m_imageScale = 1.0f;
 
@@ -1170,48 +1162,48 @@ void RaceHud::SetLayout(LegoS32 p_mode)
 
 	FormatTime(m_lapTimeText.m_text, 0);
 	CopyToGolString(m_lapTimeText.m_text, m_scratchString);
-	m_font->MeasureString(m_scratchString, &p_mode, &v25);
+	m_font->MeasureString(m_scratchString, &p_mode, &textHeight);
 	p_mode = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScale);
 	m_shortTimeWidth = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScaleX);
 
 	FormatTime(m_lapTimeText.m_text, 0x36ee08);
 	CopyToGolString(m_lapTimeText.m_text, m_scratchString);
-	m_font->MeasureString(m_scratchString, &p_mode, &v25);
+	m_font->MeasureString(m_scratchString, &p_mode, &textHeight);
 	p_mode = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScale);
-	LegoS32 scaledTextHeight = static_cast<LegoS32>(static_cast<LegoFloat>(v25) * m_textScale);
-	v25 = scaledTextHeight;
+	LegoS32 scaledTextHeight = static_cast<LegoS32>(static_cast<LegoFloat>(textHeight) * m_textScale);
+	textHeight = scaledTextHeight;
 	m_longTimeWidth = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScaleX);
 
-	v26 = m_viewport.m_right - ((11 * m_longTimeWidth) >> 3);
+	timeX = m_viewport.m_right - ((11 * m_longTimeWidth) >> 3);
 	LegoFloat topTextOffset = m_scaleY;
 	topTextOffset *= g_hudTopTextOffset;
-	m_lapTimeX = v26;
+	m_lapTimeX = timeX;
 	LegoS32 topTextY = m_viewport.m_top;
 	topTextY -= static_cast<LegoS32>(topTextOffset);
 	LegoS32 positionX = m_viewport.m_left + (width / 10);
-	v27 = (static_cast<LegoU32>(7 * scaledTextHeight)) >> 3;
-	LegoFloat rowOffset = static_cast<LegoFloat>(v27);
+	rowOffsetSteps = (static_cast<LegoU32>(7 * scaledTextHeight)) >> 3;
+	LegoFloat rowOffset = static_cast<LegoFloat>(rowOffsetSteps);
 	m_lapTimeY = topTextY;
 	m_positionY = topTextY;
 	m_positionX = positionX;
-	m_bestLapX = v26;
+	m_bestLapX = timeX;
 
 	rowOffset *= m_scaleY;
 	m_bestLapY = topTextY + static_cast<LegoS32>(rowOffset);
-	m_totalTimeX = v26;
+	m_totalTimeX = timeX;
 
-	v27 = (static_cast<LegoU32>(14 * scaledTextHeight)) >> 3;
-	m_totalTimeY = topTextY + static_cast<LegoS32>(static_cast<double>(v27) * m_scaleY);
-	m_timeBehindX = v26;
+	rowOffsetSteps = (static_cast<LegoU32>(14 * scaledTextHeight)) >> 3;
+	m_totalTimeY = topTextY + static_cast<LegoS32>(static_cast<double>(rowOffsetSteps) * m_scaleY);
+	m_timeBehindX = timeX;
 
-	v27 = (static_cast<LegoU32>(21 * scaledTextHeight)) >> 3;
-	LegoS32 bottomTextY = topTextY + static_cast<LegoS32>(static_cast<double>(v27) * m_scaleY);
+	rowOffsetSteps = (static_cast<LegoU32>(21 * scaledTextHeight)) >> 3;
+	LegoS32 bottomTextY = topTextY + static_cast<LegoS32>(static_cast<double>(rowOffsetSteps) * m_scaleY);
 	m_timeBehindY = bottomTextY;
 	m_bannerY = bottomTextY;
 	m_centerX = (m_viewport.m_right + m_viewport.m_left) >> 1;
 
 	m_stringTable->CopyStringByIndex(&m_labelString, 0x24);
-	m_font->MeasureString(&m_labelString, &p_mode, &v25);
+	m_font->MeasureString(&m_labelString, &p_mode, &textHeight);
 	m_wrongWayX = m_centerX - (static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScaleX) >> 1);
 	m_wrongWayY = m_viewport.m_top + ((m_viewport.m_bottom - m_viewport.m_top) / 5);
 
@@ -1235,13 +1227,13 @@ void RaceHud::SetResolution(LegoS32 p_width, LegoS32 p_height)
 	m_aspectRatio = ratio;
 
 	LegoS32 scaledHeight = p_height << 2;
-	LegoFloat scale = static_cast<LegoFloat>(p_height) * g_hudBaseScale;
+	LegoFloat scale = GOL_MUL(static_cast<LegoFloat>(p_height), g_hudBaseScale);
 	m_scaleY = scale;
-	m_textScaleX = scale * ratio;
+	m_textScaleX = GOL_MUL(scale, ratio);
 
 	LegoFloat aspect = static_cast<LegoFloat>(scaledWidth / static_cast<double>(scaledHeight));
 	m_aspectScale = aspect;
-	m_scaleX = aspect * scale;
+	m_scaleX = GOL_MUL(aspect, scale);
 
 	SetLayout(m_layout);
 }
@@ -1316,7 +1308,7 @@ void RaceHud::Draw()
 	LegoBool32 drawLapTime = TRUE;
 	LegoU32 elapsedMs = m_elapsedMs;
 	LegoS32 textWidth;
-	ColorRGBA fontColor;
+	FourBytes color;
 	LegoS32 textHeight;
 	LegoFloat scaleX;
 	LegoFloat scaleY;
@@ -1338,20 +1330,17 @@ void RaceHud::Draw()
 
 			m_numberFont->MeasureString(m_scratchString, &textWidth, &textHeight);
 
-			LegoFloat scale = m_bannerScale;
-			scale *= pulseScale;
-			scaleX = m_textScaleX;
-			scaleX *= scale;
-			scaleY = m_scaleY;
-			scaleY *= scale;
-			textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * scaleX);
-			textHeight = static_cast<LegoS32>(static_cast<LegoFloat>(textHeight) * scaleY);
+			LegoFloat scale = GOL_MUL(m_bannerScale, pulseScale);
+			scaleX = GOL_MUL(m_textScaleX, scale);
+			scaleY = GOL_MUL(m_scaleY, scale);
+			textWidth = static_cast<LegoS32>(GOL_MUL(static_cast<LegoFloat>(textWidth), scaleX));
+			textHeight = static_cast<LegoS32>(GOL_MUL(static_cast<LegoFloat>(textHeight), scaleY));
 
-			fontColor.m_red = 0xff;
-			fontColor.m_grn = 0xff;
-			fontColor.m_blu = 0;
-			fontColor.m_alp = 0xff;
-			m_numberFont->SetColor(fontColor);
+			color.m_uBytes[1] = 0xff;
+			color.m_uBytes[0] = 0xff;
+			color.m_uBytes[3] = 0xff;
+			color.m_uBytes[2] = 0;
+			m_numberFont->SetColor(color.m_u32);
 			if (m_visible) {
 				m_renderer->DrawString(
 					m_scratchString,
@@ -1364,11 +1353,8 @@ void RaceHud::Draw()
 					0
 				);
 			}
-			fontColor.m_red = 0xff;
-			fontColor.m_grn = 0xff;
-			fontColor.m_blu = 0xff;
-			fontColor.m_alp = 0xff;
-			m_numberFont->SetColor(fontColor);
+			color.m_uBytes[2] = 0xff;
+			m_numberFont->SetColor(color.m_u32);
 
 			if ((previousState == 1 || previousState / 1000 != countdownState) && m_soundSource) {
 				m_soundSource->PlaySoundById(0);
@@ -1392,11 +1378,11 @@ void RaceHud::Draw()
 			textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * scaleX);
 			textHeight = static_cast<LegoS32>(static_cast<LegoFloat>(textHeight) * scaleY);
 
-			fontColor.m_red = 0xff;
-			fontColor.m_grn = 0xff;
-			fontColor.m_blu = 0;
-			fontColor.m_alp = 0xff;
-			m_numberFont->SetColor(fontColor);
+			color.m_uBytes[1] = 0xff;
+			color.m_uBytes[0] = 0xff;
+			color.m_uBytes[3] = 0xff;
+			color.m_uBytes[2] = 0;
+			m_numberFont->SetColor(color.m_u32);
 			if (m_visible) {
 				m_renderer->DrawString(
 					&m_labelString,
@@ -1409,11 +1395,8 @@ void RaceHud::Draw()
 					0
 				);
 			}
-			fontColor.m_red = 0xff;
-			fontColor.m_grn = 0xff;
-			fontColor.m_blu = 0xff;
-			fontColor.m_alp = 0xff;
-			m_numberFont->SetColor(fontColor);
+			color.m_uBytes[2] = 0xff;
+			m_numberFont->SetColor(color.m_u32);
 
 			if (m_soundSource && countdownState == 3 && previousState / 1000 != 3) {
 				m_soundSource->PlaySoundById(c_soundCountdown);
@@ -1545,21 +1528,21 @@ void RaceHud::Draw()
 
 		m_font->MeasureString(m_scratchString, &textWidth, &textHeight);
 
-		textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
+		textWidth = static_cast<LegoS32>(GOL_MUL((static_cast<LegoFloat>(textWidth)), m_textScale));
 		LegoFloat paddingScale = m_textScale;
 		paddingScale *= g_unk0x004b02ec;
 		LegoS32 labelPadding = static_cast<LegoS32>(paddingScale);
-		LegoS32 labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth - labelPadding) * m_textScaleX);
+		LegoS32 labelOffset =
+			static_cast<LegoS32>(GOL_MUL(static_cast<LegoFloat>(textWidth - labelPadding), m_textScaleX));
 		LegoS32 lapLabelX = m_lapTimeX - labelOffset;
-		scaleY = m_scaleY;
+		scaleY = (m_scaleY);
 		scaleY *= m_textScale;
-		scaleX = m_textScale;
-		scaleX *= m_textScaleX;
+		scaleX = GOL_MUL((m_textScale), m_textScaleX);
 		m_renderer->DrawString(m_scratchString, m_font, lapLabelX, m_lapTimeY, scaleX, scaleY, NULL, 0);
 
 		m_stringTable->CopyStringByIndex(&m_labelString, 0x27);
 		m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
-		textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScale);
+		textWidth = static_cast<LegoS32>(GOL_MUL(static_cast<LegoFloat>(textWidth), m_textScale));
 		paddingScale = m_textScale;
 		paddingScale *= g_unk0x004b02e8;
 		labelPadding = static_cast<LegoS32>(paddingScale);
@@ -1567,8 +1550,7 @@ void RaceHud::Draw()
 		lapLabelX -= labelOffset;
 		scaleY = m_scaleY;
 		scaleY *= m_textScale;
-		scaleX = m_textScale;
-		scaleX *= m_textScaleX;
+		scaleX = GOL_MUL(m_textScale, m_textScaleX);
 		m_renderer->DrawString(&m_labelString, m_font, lapLabelX, m_lapTimeY, scaleX, scaleY, NULL, 0);
 
 		if (drawLapTime) {
@@ -1595,7 +1577,7 @@ void RaceHud::Draw()
 		if (m_isTimeRace) {
 			m_stringTable->CopyStringByIndex(&m_labelString, 0x26);
 			m_font->MeasureString(&m_labelString, &textWidth, &textHeight);
-			labelOffset = static_cast<LegoS32>(static_cast<double>(textWidth + 14) * m_textScaleX);
+			labelOffset = static_cast<LegoS32>(GOL_MUL((static_cast<double>(textWidth + 14)), m_textScaleX));
 			m_renderer->DrawString(
 				&m_labelString,
 				m_font,
@@ -1620,7 +1602,7 @@ void RaceHud::Draw()
 
 			CopyToGolString(g_positionDigits[positionIndex], m_scratchString);
 			m_numberFont->MeasureString(m_scratchString, &textWidth, &textHeight);
-			textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_textScaleX);
+			textWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_textScaleX);
 			textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_textScale);
 
 			if (m_positionPulseMs) {
@@ -1642,13 +1624,17 @@ void RaceHud::Draw()
 				}
 				positionScale *= m_textScale;
 
+				scaleY = m_scaleY;
+				scaleY *= positionScale;
+				scaleX = m_textScaleX;
+				scaleX *= positionScale;
 				m_renderer->DrawString(
 					m_scratchString,
 					m_numberFont,
 					m_positionX - textWidth,
 					m_positionY,
-					m_textScaleX * positionScale,
-					m_scaleY * positionScale,
+					scaleX,
+					scaleY,
 					NULL,
 					0
 				);
@@ -1682,7 +1668,7 @@ void RaceHud::Draw()
 				m_renderer->DrawString(
 					&m_labelString,
 					m_font,
-					medalX - static_cast<LegoS32>(static_cast<double>(textWidth + 4) * m_textScaleX),
+					medalX - static_cast<LegoS32>(GOL_MUL((static_cast<double>(textWidth + 4)), m_textScaleX)),
 					m_timeBehindY,
 					m_textScaleX,
 					m_scaleY,
@@ -1704,38 +1690,37 @@ void RaceHud::Draw()
 	LegoS32 itemLevel = m_racer->m_whiteBrickCount;
 	LegoS32 itemType = m_racer->m_heldPowerupColor - 1;
 	GolImage* itemResource;
-	FourBytes itemColor;
-	itemColor.m_uBytes[3] = 0xff;
+	color.m_uBytes[3] = 0xff;
 
 	switch (itemType) {
 	case 0:
-		itemColor.m_uBytes[0] = 0xff;
-		itemColor.m_uBytes[1] = 0;
-		itemColor.m_uBytes[2] = 0;
+		color.m_uBytes[0] = 0xff;
+		color.m_uBytes[1] = 0;
+		color.m_uBytes[2] = 0;
 		itemResource = m_images->GetItem(itemLevel + 2);
 		break;
 	case 3:
-		itemColor.m_uBytes[0] = 0xff;
-		itemColor.m_uBytes[1] = 0xff;
-		itemColor.m_uBytes[2] = 0;
+		color.m_uBytes[0] = 0xff;
+		color.m_uBytes[1] = 0xff;
+		color.m_uBytes[2] = 0;
 		itemResource = m_images->GetItem(itemLevel + 6);
 		break;
 	case 1:
-		itemColor.m_uBytes[0] = 0x50;
-		itemColor.m_uBytes[1] = 0x50;
-		itemColor.m_uBytes[2] = 0xff;
+		color.m_uBytes[0] = 0x50;
+		color.m_uBytes[1] = 0x50;
+		color.m_uBytes[2] = 0xff;
 		itemResource = m_images->GetItem(itemLevel + 16);
 		break;
 	case 2:
-		itemColor.m_uBytes[0] = 0;
-		itemColor.m_uBytes[1] = 0xff;
-		itemColor.m_uBytes[2] = 0;
+		color.m_uBytes[0] = 0;
+		color.m_uBytes[1] = 0xff;
+		color.m_uBytes[2] = 0;
 		itemResource = m_images->GetItem(itemLevel + 20);
 		break;
 	default:
-		itemColor.m_uBytes[0] = 0xff;
-		itemColor.m_uBytes[1] = 0xff;
-		itemColor.m_uBytes[2] = 0xff;
+		color.m_uBytes[0] = 0xff;
+		color.m_uBytes[1] = 0xff;
+		color.m_uBytes[2] = 0xff;
 		itemResource = NULL;
 		break;
 	}
@@ -1747,13 +1732,13 @@ void RaceHud::Draw()
 		backgroundWidthPixels *= m_textScaleX;
 		LegoS32 width = static_cast<LegoS32>(backgroundWidthPixels);
 		double backgroundHeightPixels = static_cast<LegoS32>(background->GetHeight());
-		backgroundHeightPixels *= m_imageScale;
+		backgroundHeightPixels = GOL_MUL(backgroundHeightPixels, m_imageScale);
 		backgroundHeightPixels *= m_scaleY;
 		LegoS32 height = static_cast<LegoS32>(backgroundHeightPixels);
 		m_renderer->DrawImage(background, 0, m_powerupX, m_powerupY, width, height);
 
 		GolImage* colorResource = m_images->GetItem(12);
-		colorResource->m_tintColor = itemColor;
+		colorResource->m_tintColor = color;
 		m_renderer->DrawImage(colorResource, 0, m_powerupX, m_powerupY, width, height);
 
 		if (itemResource) {

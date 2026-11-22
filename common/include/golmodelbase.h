@@ -82,6 +82,7 @@ public:
 	LegoU32 GetGroupCount() const { return m_groupCount; }
 	const LegoU32* GetGroups() const { return m_groups; }
 	LegoU32* GetMutableGroups() { return m_groups; }
+	void SetGroup(LegoU32 p_index, LegoU32 p_group) { m_groups[p_index] = p_group; }
 
 	// SYNTHETIC: GOLDP 0x10027070
 	// GolModelBase::`scalar deleting destructor'

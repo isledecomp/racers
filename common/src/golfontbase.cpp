@@ -133,6 +133,49 @@ void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 	g_fontSourceImage->Destroy();
 }
 
+inline LegoU32 GolFontBase::SkipSeparatorColumns(
+	LegoU32* p_rowSignature,
+	LegoU8* p_pixels,
+	LegoU32 p_pitch,
+	LegoS32 p_x
+)
+{
+	LegoU32 step = g_fontSourceImage->GetTextureFormat().m_bitsPerPixel >> 2;
+	LegoU32 pixelOffset = p_x * step;
+	LegoU32 x = p_x;
+	LegoU8* column = p_pixels + (pixelOffset >> 1);
+	while (x < g_fontSourceImage->GetWidth()) {
+		if (!IsSeparatorColumn(p_rowSignature, column, p_pitch, pixelOffset & 1)) {
+			break;
+		}
+
+		pixelOffset += step;
+		column = p_pixels + (pixelOffset >> 1);
+		x++;
+	}
+
+	return x;
+}
+
+inline LegoU32 GolFontBase::SkipGlyphColumns(LegoU32* p_rowSignature, LegoU8* p_pixels, LegoU32 p_pitch, LegoS32 p_x)
+{
+	LegoU32 step = g_fontSourceImage->GetTextureFormat().m_bitsPerPixel >> 2;
+	LegoU32 pixelOffset = p_x * step;
+	LegoU32 x = p_x;
+	LegoU8* column = p_pixels + (pixelOffset >> 1);
+	while (x < g_fontSourceImage->GetWidth()) {
+		if (IsSeparatorColumn(p_rowSignature, column, p_pitch, pixelOffset & 1)) {
+			break;
+		}
+
+		pixelOffset += step;
+		column = p_pixels + (pixelOffset >> 1);
+		x++;
+	}
+
+	return x;
+}
+
 // FUNCTION: GOLDP 0x1001e190
 void GolFontBase::ScanGlyphs(const LegoChar* p_name)
 {
@@ -146,24 +189,7 @@ void GolFontBase::ScanGlyphs(const LegoChar* p_name)
 	g_fontSourceImage->LockPixels(&pixels, &pitch, GolSurface::c_lockRequestRead);
 	ReadSeparatorSignature(rowSignature, pixels, pitch);
 
-	LegoU32 sourcePitch = pitch;
-	LegoU8* sourcePixels = pixels;
-	LegoU32 spaceWidth;
-	LegoU32 pixelOffset;
-	LegoU32 step = g_fontSourceImage->GetTextureFormat().m_bitsPerPixel >> 2;
-	pixelOffset = 0;
-	spaceWidth = 0;
-	LegoU8* column = sourcePixels;
-	while (spaceWidth < g_fontSourceImage->GetWidth()) {
-		if (!IsSeparatorColumn(rowSignature, column, sourcePitch, pixelOffset & 1)) {
-			break;
-		}
-
-		pixelOffset += step;
-		column = sourcePixels + (pixelOffset >> 1);
-		spaceWidth++;
-	}
-
+	LegoU32 spaceWidth = SkipSeparatorColumns(rowSignature, pixels, pitch, 0);
 	m_spaceWidth = spaceWidth;
 	m_glyphs[0].m_sourceX = 0;
 	m_glyphs[0].m_width = static_cast<LegoU16>(m_spaceWidth);
@@ -171,48 +197,12 @@ void GolFontBase::ScanGlyphs(const LegoChar* p_name)
 	LegoU32 x = spaceWidth + 1;
 	for (LegoU32 i = 1; i < m_glyphCount; i++) {
 		if (i != 1) {
-			LegoU32 separatorX = x;
-			LegoU32 sourcePitch = pitch;
-			LegoU8* sourcePixels = pixels;
-			LegoU32 step = g_fontSourceImage->GetTextureFormat().m_bitsPerPixel >> 2;
-			LegoU32 pixelOffset = separatorX * step;
-			LegoU8* column = sourcePixels + (pixelOffset >> 1);
-			while (separatorX < g_fontSourceImage->GetWidth()) {
-				if (!IsSeparatorColumn(rowSignature, column, sourcePitch, pixelOffset & 1)) {
-					break;
-				}
-
-				pixelOffset += step;
-				column = sourcePixels + (pixelOffset >> 1);
-				separatorX++;
-			}
-
-			x = separatorX;
+			x = SkipSeparatorColumns(rowSignature, pixels, pitch, x);
 		}
 
-		LegoU32 start = x;
-		m_glyphs[i].m_sourceX = static_cast<undefined2>(start);
-
-		LegoU32 end = start;
-		{
-			LegoU32 sourcePitch = pitch;
-			LegoU8* sourcePixels = pixels;
-			LegoU32 step = g_fontSourceImage->GetTextureFormat().m_bitsPerPixel >> 2;
-			LegoU32 pixelOffset = end * step;
-			LegoU8* column = sourcePixels + (pixelOffset >> 1);
-			while (end < g_fontSourceImage->GetWidth()) {
-				if (IsSeparatorColumn(rowSignature, column, sourcePitch, pixelOffset & 1)) {
-					break;
-				}
-
-				pixelOffset += step;
-				column = sourcePixels + (pixelOffset >> 1);
-				end++;
-			}
-		}
-
-		LegoU32 glyphWidth = end - start;
-		m_glyphs[i].m_width = static_cast<LegoU16>(glyphWidth);
+		m_glyphs[i].m_sourceX = static_cast<undefined2>(x);
+		LegoU32 end = SkipGlyphColumns(rowSignature, pixels, pitch, x);
+		m_glyphs[i].m_width = static_cast<LegoU16>(end - x);
 		if (!m_glyphs[i].m_width) {
 			LegoChar message[256];
 			::sprintf(message, "Incomplete font image: %s\nmissing character %x\n", p_name, m_glyphs[i].m_char);
@@ -692,7 +682,8 @@ void GolFontBase::DrawString(
 
 	if (p_string->SelectionLength()) {
 		p_wrapWidth = static_cast<LegoS32>(::floor(static_cast<LegoFloat>(p_wrapWidth) / p_scaleX));
-		p_lineSpacing += font->m_fontHeight;
+		LegoS32 fontHeight = font->m_fontHeight;
+		p_lineSpacing += fontHeight;
 		p_lineSpacing = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(p_lineSpacing) * p_scaleY));
 		LegoU32 length = p_string->SelectionLength();
 
@@ -1051,16 +1042,17 @@ LegoS32 GolFontBase::DrawGlyphRun(
 		result = p_x;
 
 		for (LegoU32 i = 0; i < p_count; i++) {
-			LegoU8 glyphIndex = g_glyphIndexBuffer[i];
+			LegoU32 glyphIndex = g_glyphIndexBuffer[i];
 			Rect destRect;
+			Rect sourceRect;
 			destRect.m_left = result;
 
 			if (result >= clipRect.m_right) {
 				break;
 			}
 
+			LegoS32 glyphWidth = font->m_glyphs[glyphIndex].m_width;
 			Glyph* glyph = &font->m_glyphs[glyphIndex];
-			LegoS32 glyphWidth = glyph->m_width;
 			LegoFloat scaledWidth = static_cast<LegoFloat>(glyphWidth) * p_scaleX;
 			LegoS32 right = result + static_cast<LegoS32>(scaledWidth);
 			destRect.m_right = right;
@@ -1073,11 +1065,10 @@ LegoS32 GolFontBase::DrawGlyphRun(
 				destRect.m_top = p_y;
 				destRect.m_bottom = bottom;
 
-				Rect sourceRect;
 				sourceRect.m_left = glyph->m_textureX;
 				sourceRect.m_top = glyph->m_textureY;
-				sourceRect.m_right = glyph->m_textureX + glyph->m_width;
-				sourceRect.m_bottom = glyph->m_textureY + font->m_fontHeight;
+				sourceRect.m_right = sourceRect.m_left + glyph->m_width;
+				sourceRect.m_bottom = sourceRect.m_top + font->m_fontHeight;
 
 				font->ClipRects(&clipRect, &sourceRect, &destRect, inverseScaleX, inverseScaleY);
 

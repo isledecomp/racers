@@ -123,6 +123,8 @@ void GolSceneTransformNode::UpdateWorldMatricesAffine(const GolMatrix34* p_m)
 void GolSceneTransformNode::UpdateWorldMatrices(const GolMatrix4& p_m)
 {
 	LegoU32 i = 0;
+	GolQuat rotation;
+	GolVec3 position;
 
 	if (m_composer == NULL) {
 		GolTransform* obj = m_transforms;
@@ -145,10 +147,7 @@ void GolSceneTransformNode::UpdateWorldMatrices(const GolMatrix4& p_m)
 		GolTransform* obj = &m_transforms[i];
 
 		if (m_composer->HasOverride(i)) {
-			GolQuat rotation;
 			GolMath::Matrix4ToQuat(obj->m_matrix, &rotation);
-
-			GolVec3 position;
 			position.m_x = obj->m_matrix.m_m[3][0];
 			position.m_y = obj->m_matrix.m_m[3][1];
 			position.m_z = obj->m_matrix.m_m[3][2];

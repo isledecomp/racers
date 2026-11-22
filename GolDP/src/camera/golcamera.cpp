@@ -96,31 +96,28 @@ void GolCamera::UpdateViewMatrix()
 	m_cameraMatrices.m_transform.GetBasis(&direction, &up, &right);
 	m_cameraMatrices.m_transform.GetPosition(&position);
 
-	GolMatrix4& viewMatrix = m_cameraMatrices.m_view;
-	viewMatrix.m_m[0][0] = right.m_x;
-	viewMatrix.m_m[0][1] = up.m_x;
-	viewMatrix.m_m[0][2] = direction.m_x;
-	viewMatrix.m_m[0][3] = 0.0f;
-	viewMatrix.m_m[1][0] = right.m_y;
-	viewMatrix.m_m[1][1] = up.m_y;
-	viewMatrix.m_m[1][2] = direction.m_y;
-	viewMatrix.m_m[1][3] = 0.0f;
-	viewMatrix.m_m[2][0] = right.m_z;
-	viewMatrix.m_m[2][1] = up.m_z;
-	viewMatrix.m_m[2][2] = direction.m_z;
-	viewMatrix.m_m[2][3] = 0.0f;
-	LegoFloat rightDot = position.m_z * right.m_z + position.m_y * right.m_y;
-	rightDot += position.m_x * right.m_x;
-	viewMatrix.m_m[3][0] = -rightDot;
-
-	LegoFloat upDot = position.m_z * up.m_z + position.m_y * up.m_y;
-	upDot += position.m_x * up.m_x;
-	viewMatrix.m_m[3][1] = -upDot;
-
-	viewMatrix.m_m[3][3] = 1.0f;
+	m_cameraMatrices.m_view.m_m[0][0] = right.m_x;
+	m_cameraMatrices.m_view.m_m[0][1] = up.m_x;
+	m_cameraMatrices.m_view.m_m[0][2] = direction.m_x;
+	m_cameraMatrices.m_view.m_m[0][3] = 0.0f;
+	m_cameraMatrices.m_view.m_m[1][0] = right.m_y;
+	m_cameraMatrices.m_view.m_m[1][1] = up.m_y;
+	m_cameraMatrices.m_view.m_m[1][2] = direction.m_y;
+	m_cameraMatrices.m_view.m_m[1][3] = 0.0f;
+	m_cameraMatrices.m_view.m_m[2][0] = right.m_z;
+	m_cameraMatrices.m_view.m_m[2][1] = up.m_z;
+	m_cameraMatrices.m_view.m_m[2][2] = direction.m_z;
+	m_cameraMatrices.m_view.m_m[2][3] = 0.0f;
+	m_cameraMatrices.m_view.m_m[3][0] = (((((
+		(((-(GOL_MUL(position.m_z, right.m_z) + GOL_MUL(position.m_y, right.m_y) + GOL_MUL(position.m_x, right.m_x)))))
+	)))));
+	m_cameraMatrices.m_view.m_m[3][1] =
+		-(GOL_MUL(position.m_z, up.m_z) + GOL_MUL(position.m_y, up.m_y) + GOL_MUL(position.m_x, up.m_x));
+	m_cameraMatrices.m_view.m_m[3][2] =
+		-(GOL_MUL(position.m_z, direction.m_z) + GOL_MUL(position.m_y, direction.m_y) +
+		  GOL_MUL(position.m_x, direction.m_x));
+	m_cameraMatrices.m_view.m_m[3][3] = 1.0f;
 	m_flags &= ~c_flagViewDirty;
-	viewMatrix.m_m[3][2] =
-		-(position.m_x * direction.m_x + position.m_y * direction.m_y + position.m_z * direction.m_z);
 	if (m_flags & c_flagCustomViewBounds) {
 		ComputeFrustumFromBounds(&m_viewFrustum);
 	}

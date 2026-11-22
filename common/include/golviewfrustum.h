@@ -13,12 +13,11 @@ public:
 		GolVec3 m_normal;     // 0x00
 		LegoFloat m_distance; // 0x0c
 
-		void Set(const GolVec3& p_normal, const GolVec3& p_point)
+		void SetNormal(const GolVec3& p_normal)
 		{
 			m_normal.m_x = p_normal.m_x;
 			m_normal.m_y = p_normal.m_y;
 			m_normal.m_z = p_normal.m_z;
-			m_distance = -(m_normal.m_z * p_point.m_z + m_normal.m_y * p_point.m_y + m_normal.m_x * p_point.m_x);
 		}
 	};
 

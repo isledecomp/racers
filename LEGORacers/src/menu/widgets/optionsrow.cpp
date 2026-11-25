@@ -330,8 +330,7 @@ MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p
 	}
 
 	if (!(m_prevButton.GetStateFlags() & c_flagFocused) && !(m_nextButton.GetStateFlags() & c_flagFocused)) {
-		MenuInputDispatcher::Cursor* cursor = static_cast<MenuInputDispatcher::Cursor*>(p_item);
-		cursor->m_bounds = m_trackRect;
+		static_cast<MenuInputDispatcher::Cursor*>(p_item)->m_bounds = m_trackRect;
 
 		Rect rect = *m_thumb.GetRect();
 		LegoS32 width = rect.m_right;

@@ -358,7 +358,7 @@ void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_model)
 	model->GetVertexArray(&m_vertices);
 
 	m_model->GetIndexArrayInto(&indexArrayBase);
-	LegoU8* destIndexBytes = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetIndexBytes();
+	m_indexBytes = static_cast<GdbModelIndexArray*>(indexArrayBase)->GetIndexBytes();
 
 	m_vertexCount = 0;
 	m_batchFirstVertex = 0;
@@ -368,7 +368,6 @@ void RaceDecalManager::Trail::Decal::BeginGeometry(GolModelBase* p_model)
 	m_batchTriangleCount = 0;
 
 	model = m_model;
-	m_indexBytes = destIndexBytes;
 	model->SetDirty(TRUE);
 	model->GetMutableGroups()[0] = c_commandModelFlags;
 	m_groupIndex = 1;

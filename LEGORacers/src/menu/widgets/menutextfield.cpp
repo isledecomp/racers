@@ -191,8 +191,7 @@ MenuWidget* MenuTextField::HandleCharacterInput(InputEventQueue::Event* p_event)
 		}
 		else {
 			LegoS32 charsetLength = m_charset.SelectionLength();
-			LegoS32 i = 0;
-			for (;;) {
+			for (LegoS32 i = 0;;) {
 				if (i >= charsetLength) {
 					m_soundGroupBinding->PlaySoundByIndex(m_editSoundIds.m_ids[3]);
 					return NULL;

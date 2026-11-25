@@ -639,7 +639,7 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 		LegoFloat valueFloat = p_params->m_weight;
 		accelerationStat = p_params->m_accelerationStat;
 		memcpy(&vector, &p_params->m_anchorWheelPosition, sizeof(vector));
-		valueFloat *= 0.05f;
+		valueFloat = ((valueFloat * 0.05f));
 
 		LegoU32 value = static_cast<LegoU32>(valueFloat);
 		handlingStat = p_params->m_handlingStat + value;
@@ -696,9 +696,9 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 	physics->SetTopSpeedStat(topSpeedStat);
 
 	LegoFloat halfHeight = m_visuals.m_shadowWidth;
-	halfHeight *= 0.5f;
+	halfHeight = ((halfHeight * 0.5f));
 	LegoFloat halfWidth = m_visuals.m_shadowLength;
-	halfWidth *= 0.5f;
+	halfWidth = ((halfWidth * 0.5f));
 	physics->SetCenterOfMass(&position);
 	physics->SetWheelGeometry(&vector, deltaY, deltaX);
 

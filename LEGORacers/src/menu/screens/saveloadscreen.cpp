@@ -156,44 +156,42 @@ void SaveLoadScreen::CreateWidgets()
 		);
 	}
 
-	if (!m_status) {
-		return;
-	}
-
-	if (m_skipFirstStatus == TRUE) {
-		m_status = 8;
-		m_skipFirstStatus = FALSE;
-	}
-
-	CreateImage(&m_statusPanelImage, 0x53, 0x53);
-	CreateImage(&m_statusIconImage, 0x54, 0x54);
-
-	switch (m_status) {
-	case 8:
-	case 0x12:
-		return;
-	case 0x18:
-		CreateTextLabel(&m_statusLine1, 0x142, 0x37, 0x89);
-		CreateTextLabel(&m_statusLine2, 0x143, 0x37, 0x87);
-		CreateTextLabel(&m_statusLine3, 0x144, 0x37, 0x37);
-		CreateTextButton(&m_okButton, 0x40, 0x46, 0x72);
-		m_okButton.Select(0);
-		return;
-	default:
-		if (m_requestMenuId != c_menuSaveAll && m_requestMenuId != c_menuSaveCard) {
-			CreateTextLabel(&m_statusLine1, 0x145, 0x37, 0xa9);
+	if (m_status) {
+		if (m_skipFirstStatus == TRUE) {
+			m_status = 8;
+			m_skipFirstStatus = FALSE;
 		}
 
-	case 0x13:
-		CreateTextLabel(&m_statusLine2, 0x143, 0x37, 0x37);
+		CreateImage(&m_statusPanelImage, 0x53, 0x53);
+		CreateImage(&m_statusIconImage, 0x54, 0x54);
 
-	case 0x14:
-	case 0x16:
-	case 0x17:
-		CreateTextLabel(&m_statusLine3, 0x144, 0x37, 0x37);
-		CreateTextButton(&m_okButton, 0x40, 0x46, 0x72);
-		m_okButton.Select(0);
-		return;
+		switch (m_status) {
+		case 8:
+		case 0x12:
+			return;
+		case 0x18:
+			CreateTextLabel(&m_statusLine1, 0x142, 0x37, 0x89);
+			CreateTextLabel(&m_statusLine2, 0x143, 0x37, 0x87);
+			CreateTextLabel(&m_statusLine3, 0x144, 0x37, 0x37);
+			CreateTextButton(&m_okButton, 0x40, 0x46, 0x72);
+			m_okButton.Select(0);
+			return;
+		default:
+			if (m_requestMenuId != c_menuSaveAll && m_requestMenuId != c_menuSaveCard) {
+				CreateTextLabel(&m_statusLine1, 0x145, 0x37, 0xa9);
+			}
+
+		case 0x13:
+			CreateTextLabel(&m_statusLine2, 0x143, 0x37, 0x37);
+
+		case 0x14:
+		case 0x16:
+		case 0x17:
+			CreateTextLabel(&m_statusLine3, 0x144, 0x37, 0x37);
+			CreateTextButton(&m_okButton, 0x40, 0x46, 0x72);
+			m_okButton.Select(0);
+			return;
+		}
 	}
 }
 

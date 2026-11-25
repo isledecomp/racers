@@ -360,7 +360,7 @@ LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
 		return FALSE;
 	}
 
-	total = (absOrientation.m_m[2][0] * half1x + absOrientation.m_m[0][0] * half1z) +
+	total = (((absOrientation.m_m[2][0] * half1x)) + absOrientation.m_m[0][0] * half1z) +
 			(absOrientation.m_m[1][2] * half0y + absOrientation.m_m[1][1] * half0z);
 	if ((total >= 0.001f || total <= -0.001f) &&
 		static_cast<LegoFloat>(

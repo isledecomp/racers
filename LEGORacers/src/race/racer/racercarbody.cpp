@@ -1771,32 +1771,31 @@ void RacerCarBody::UpdateVelocityStats()
 // FUNCTION: LEGORACERS 0x004474c0
 void RacerCarBody::SaveState()
 {
-	RacerCarBody* self = this;
-	GolOrientedEntity* entity = &self->m_physicsEntity;
-	entity->GetPosition(&self->m_savedPosition);
+	GolOrientedEntity* entity = &m_physicsEntity;
+	entity->GetPosition(&m_savedPosition);
 
-	self->m_savedVelocity = self->m_velocity;
+	m_savedVelocity = m_velocity;
 
-	entity->CopyOrientation(&self->m_savedOrientation);
+	entity->CopyOrientation(&m_savedOrientation);
 
-	g_carBodySavedInverseInertia.m_m[0][0] = self->m_worldInverseInertia.m_m[0][0];
-	g_carBodySavedInverseInertia.m_m[0][1] = self->m_worldInverseInertia.m_m[0][1];
-	g_carBodySavedInverseInertia.m_m[0][2] = self->m_worldInverseInertia.m_m[0][2];
-	g_carBodySavedInverseInertia.m_m[1][0] = self->m_worldInverseInertia.m_m[1][0];
-	g_carBodySavedInverseInertia.m_m[1][1] = self->m_worldInverseInertia.m_m[1][1];
-	g_carBodySavedInverseInertia.m_m[1][2] = self->m_worldInverseInertia.m_m[1][2];
-	g_carBodySavedInverseInertia.m_m[2][0] = self->m_worldInverseInertia.m_m[2][0];
-	g_carBodySavedInverseInertia.m_m[2][1] = self->m_worldInverseInertia.m_m[2][1];
-	g_carBodySavedInverseInertia.m_m[2][2] = self->m_worldInverseInertia.m_m[2][2];
-	g_carBodySavedAngularVelocity = self->m_angularVelocity;
-	g_carBodySavedAngularMomentum = self->m_angularMomentum;
-	g_carBodySavedSlideLift = self->m_slideLift;
-	g_carBodySavedSlideBankAngle = self->m_slideBankAngle;
-	g_carBodySavedPoints.m_facingDirection = self->m_facingDirection;
+	g_carBodySavedInverseInertia.m_m[0][0] = m_worldInverseInertia.m_m[0][0];
+	g_carBodySavedInverseInertia.m_m[0][1] = m_worldInverseInertia.m_m[0][1];
+	g_carBodySavedInverseInertia.m_m[0][2] = m_worldInverseInertia.m_m[0][2];
+	g_carBodySavedInverseInertia.m_m[1][0] = m_worldInverseInertia.m_m[1][0];
+	g_carBodySavedInverseInertia.m_m[1][1] = m_worldInverseInertia.m_m[1][1];
+	g_carBodySavedInverseInertia.m_m[1][2] = m_worldInverseInertia.m_m[1][2];
+	g_carBodySavedInverseInertia.m_m[2][0] = m_worldInverseInertia.m_m[2][0];
+	g_carBodySavedInverseInertia.m_m[2][1] = m_worldInverseInertia.m_m[2][1];
+	g_carBodySavedInverseInertia.m_m[2][2] = m_worldInverseInertia.m_m[2][2];
+	g_carBodySavedAngularVelocity = m_angularVelocity;
+	g_carBodySavedAngularMomentum = m_angularMomentum;
+	g_carBodySavedSlideLift = m_slideLift;
+	g_carBodySavedSlideBankAngle = m_slideBankAngle;
+	g_carBodySavedPoints.m_facingDirection = m_facingDirection;
 
-	WheelProbe* entry = self->m_wheelProbes;
+	WheelProbe* entry = m_wheelProbes;
 	SavedWheelState* snapshotEntry = g_carBodySavedWheels;
-	while (entry < self->m_wheelProbes + sizeOfArray(self->m_wheelProbes)) {
+	while (entry < m_wheelProbes + sizeOfArray(m_wheelProbes)) {
 		snapshotEntry->m_wheelPosition = entry->m_wheelPosition;
 
 		RaceEventRecord* record = entry->m_hitRecord;
@@ -1815,8 +1814,8 @@ void RacerCarBody::SaveState()
 		snapshotEntry++;
 	}
 
-	for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(self->m_bodyPointsWorld); pointIndex++) {
-		g_carBodySavedPoints.m_bodyPointsWorld[pointIndex] = self->m_bodyPointsWorld[pointIndex];
+	for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_bodyPointsWorld); pointIndex++) {
+		g_carBodySavedPoints.m_bodyPointsWorld[pointIndex] = m_bodyPointsWorld[pointIndex];
 	}
 }
 

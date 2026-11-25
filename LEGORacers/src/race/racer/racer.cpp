@@ -506,7 +506,7 @@ void Racer::Initialize(
 
 	LegoU32 colorValue = p_params->m_driverStats[0];
 	LegoFloat colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_statChanceScale;
+	colorScale = ((colorScale * g_statChanceScale));
 	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {

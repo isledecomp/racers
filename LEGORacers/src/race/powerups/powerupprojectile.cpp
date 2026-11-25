@@ -143,7 +143,7 @@ void PowerupProjectile::LaunchAtRacer(
 		delta = *target;
 		scaledVelocity.m_x = targetVelocity.m_x * durationMs;
 		scaledVelocity.m_y = targetVelocity.m_y * durationMs;
-		scaledVelocity.m_z = targetVelocity.m_z * durationMs;
+		scaledVelocity.m_z = ((targetVelocity.m_z * durationMs));
 		delta += scaledVelocity;
 		racerDirection = p_racer->m_physics.m_facingDirection;
 		GolVec3 predictedDelta;
@@ -151,7 +151,7 @@ void PowerupProjectile::LaunchAtRacer(
 		predictedDelta.m_y = delta.m_y - startPosition->m_y;
 		predictedDelta.m_z = delta.m_z - startPosition->m_z;
 		LegoFloat predictedDot = racerDirection.m_z * predictedDelta.m_z;
-		predictedDot += racerDirection.m_y * predictedDelta.m_y;
+		predictedDot += ((racerDirection.m_y * predictedDelta.m_y));
 		predictedDot += racerDirection.m_x * predictedDelta.m_x;
 		if (predictedDot < 0.0f) {
 			*target = delta;

@@ -693,8 +693,8 @@ void RaceState::UpdateStandings()
 					if (checkpointIndex != 0xff) {
 						LegoU32 checkpointNumber = checkpointIndex;
 						CheckpointGraph::Entry* plane = m_roster.m_checkpointGraph->GetCheckpoint(checkpointNumber);
-						LegoFloat distance = plane->m_planeNormal.m_z * position.m_z;
-						distance += plane->m_planeNormal.m_y * position.m_y;
+						LegoFloat distance = ((plane->m_planeNormal.m_z) * (position.m_z));
+						distance += ((plane->m_planeNormal.m_y) * (position.m_y));
 						distance += position.m_x * plane->m_planeNormal.m_x;
 						distance += plane->m_planeDistance;
 						if (distance < nearestPlaneDistance) {

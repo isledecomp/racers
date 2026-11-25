@@ -228,9 +228,8 @@ void HomingProjectile::StartHoming()
 // FUNCTION: LEGORACERS 0x00423a20
 LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 {
-	LegoU32 state = m_state;
-	if (state != c_stateFlying) {
-		return state;
+	if (m_state != c_stateFlying) {
+		return m_state;
 	}
 
 	m_ageMs += p_elapsedMs;

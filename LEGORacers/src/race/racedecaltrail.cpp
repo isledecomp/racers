@@ -561,11 +561,9 @@ LegoU32 RaceDecalManager::Trail::Decal::TransformVertices(
 	while (vertexIndex < end) {
 		m_sourceVertices->GetPosition(vertexIndex, &projected->m_position);
 
-		LegoFloat value = g_decalUAxisX;
-		value *= projected->m_position.m_x;
-		projected->m_projected.m_x.m_float = value;
+		projected->m_projected.m_x.m_float = g_decalUAxisX * projected->m_position.m_x;
 		projected->m_projected.m_y.m_float = g_decalVAxisX * projected->m_position.m_x;
-		value = projected->m_position.m_y;
+		LegoFloat value = projected->m_position.m_y;
 		value *= g_decalUAxisY;
 		projected->m_projected.m_x.m_float += value;
 		value = projected->m_position.m_y;

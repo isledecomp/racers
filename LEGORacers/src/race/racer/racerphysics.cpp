@@ -955,7 +955,7 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 		}
 
 		LegoBool32 wasNonNegative = m_routeTiltAngle >= 0.0f;
-		LegoFloat tiltIncrement = m_routeTiltRate * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+		LegoFloat tiltIncrement = ((m_routeTiltRate) * (static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs))));
 		orientation.m_rows[0].m_x = m_carEntity->GetOrientation().m_rows[0].m_x;
 		orientation.m_rows[0].m_y = m_carEntity->GetOrientation().m_rows[0].m_y;
 		orientation.m_rows[0].m_z = m_carEntity->GetOrientation().m_rows[0].m_z;
@@ -1002,7 +1002,7 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 
 	m_carEntity->GetAxes(&orientation.m_rows[0], &orientation.m_rows[2]);
 
-	m_routeSpinAngle += m_routeSpinRate * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+	m_routeSpinAngle += ((m_routeSpinRate) * (static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs))));
 
 	GolMath::RotateAboutAxis(&orientation.m_rows[0], &rotatedForward, &orientation.m_rows[2], m_routeSpinAngle);
 	m_carEntity->SetDirectionUp(rotatedForward, orientation.m_rows[2]);

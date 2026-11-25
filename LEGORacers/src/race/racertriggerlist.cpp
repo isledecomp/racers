@@ -166,8 +166,8 @@ void RacerTriggerList::Load(
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		EntryParams params;
 		for (LegoU32 i = 0; i < m_count; i++) {
+			EntryParams params;
 			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(RacerTriggerList::e_triggers));
 			parser->ReadLeftCurly();
 

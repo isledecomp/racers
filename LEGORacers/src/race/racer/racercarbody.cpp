@@ -616,13 +616,8 @@ void RacerCarBody::AccumulateForces()
 		GolVec2 right;
 		right.m_x = m_physicsEntity.GetOrientation().m_rows[0].m_x;
 		right.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
-		steeringAmount = right.m_x;
-		LegoFloat steeringY = right.m_y;
-		LegoFloat steeringZ = m_velocityDirection.m_z * m_physicsEntity.GetOrientation().m_rows[0].m_z;
-		steeringY *= m_velocityDirection.m_y;
-		steeringY += steeringZ;
-		steeringAmount *= m_velocityDirection.m_x;
-		steeringAmount += steeringY;
+		steeringAmount = m_velocityDirection.m_z * m_physicsEntity.GetOrientation().m_rows[0].m_z +
+						 right.m_y * m_velocityDirection.m_y + right.m_x * m_velocityDirection.m_x;
 		if (steeringAmount <= 0.0f) {
 			StopSteering();
 		}

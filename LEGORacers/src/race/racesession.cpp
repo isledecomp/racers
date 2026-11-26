@@ -1958,9 +1958,7 @@ void RaceSession::UpdateFinishedState()
 
 			if (racer->m_controlMode != Racer::c_controlAi) {
 				LegoU32 playerIndex = 0;
-				Racer** playerRacer = m_raceState.m_playerRacers;
-				while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
-					playerRacer++;
+				while (m_raceState.m_playerRacers[playerIndex] != racer && playerIndex < m_context->m_playerCount) {
 					playerIndex++;
 				}
 

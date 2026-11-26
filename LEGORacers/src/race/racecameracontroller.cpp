@@ -479,6 +479,10 @@ inline static void LerpVector3(const GolVec3& p_from, const GolVec3& p_to, LegoF
 // FUNCTION: LEGORACERS 0x00428540
 void RaceCameraController::Update(LegoFloat p_elapsedMs)
 {
+	GolVec3 desiredDirection;
+	GolVec3 targetPosition;
+	GolVec3 up;
+
 	if (m_racer == NULL) {
 		m_dirty = TRUE;
 		return;
@@ -545,10 +549,8 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		Racer* racer = m_racer;
 		LegoFloat first;
 		LegoFloat second;
-		GolVec3 targetPosition;
 		racer->m_visuals.m_carEntity->GetPosition(&targetPosition);
 
-		GolVec3 desiredDirection;
 		GolAnimatedEntity* entity = m_racer->m_visuals.m_carEntity;
 		desiredDirection.m_x = entity->GetOrientation().m_rows[0].m_x;
 		desiredDirection.m_y = entity->GetOrientation().m_rows[0].m_y;
@@ -687,7 +689,6 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 			m_viewDirection = desiredDirection;
 		}
 
-		GolVec3 up;
 		up.m_x = 0.0f;
 		up.m_y = 0.0f;
 		up.m_z = -1.0f;
@@ -770,18 +771,16 @@ void RaceCameraController::Update(LegoFloat p_elapsedMs)
 		racerVisuals->m_carEntity->GetPosition(&m_lastRacerPosition);
 		GolAnimatedEntity* entity = m_racer->m_visuals.m_carEntity;
 
-		GolVec3 right;
-		right.m_x = entity->GetOrientation().m_rows[0].m_x;
-		right.m_y = entity->GetOrientation().m_rows[0].m_y;
-		right.m_z = entity->GetOrientation().m_rows[0].m_z;
-		GolVec3 up;
+		desiredDirection.m_x = entity->GetOrientation().m_rows[0].m_x;
+		desiredDirection.m_y = entity->GetOrientation().m_rows[0].m_y;
+		desiredDirection.m_z = entity->GetOrientation().m_rows[0].m_z;
 		up.m_x = entity->GetOrientation().m_rows[2].m_x;
 		up.m_y = entity->GetOrientation().m_rows[2].m_y;
 		up.m_z = entity->GetOrientation().m_rows[2].m_z;
 		up.m_x = -up.m_x;
 		up.m_y = -up.m_y;
 		up.m_z = -up.m_z;
-		BuildOrientation(&right, &up, &m_rawTransform.m_orientation);
+		BuildOrientation(&desiredDirection, &up, &m_rawTransform.m_orientation);
 
 		entity->GetPosition(&m_rawTransform.m_position);
 		if (m_alternate) {

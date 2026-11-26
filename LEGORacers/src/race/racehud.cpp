@@ -635,9 +635,9 @@ void RaceHud::DrawRotatingMap()
 	directionLengthScale *= g_hudMapDirectionScale;
 	directionLengthScale *= m_scaleY;
 	double inset = static_cast<double>(m_screenHeight) * g_hudMapInsetScale;
-	LegoS32 verticalInset = static_cast<LegoS32>(m_scaleY * inset);
+	LegoS32 verticalInset = static_cast<LegoS32>(((((((((((m_scaleY * inset)))))))))));
 	mapRect.m_bottom = m_viewport.m_bottom - verticalInset;
-	LegoS32 horizontalInset = static_cast<LegoS32>(m_scaleX * inset);
+	LegoS32 horizontalInset = static_cast<LegoS32>(((((((((((m_scaleX * inset)))))))))));
 	mapRect.m_right = m_viewport.m_right - horizontalInset;
 
 	LegoFloat mapSize = m_mapScale;
@@ -701,7 +701,7 @@ void RaceHud::DrawRotatingMap()
 		vertices[2].m_u = maxTextureCoordinate;
 		vertices[1].m_u = maxTextureCoordinate;
 
-		LegoFloat baseY0 = static_cast<LegoFloat>(mapCenterY) - deltaX0 * cameraDirection.m_x;
+		LegoFloat baseY0 = static_cast<LegoFloat>(mapCenterY) - ((((((deltaX0 * cameraDirection.m_x))))));
 		LegoFloat offsetY0 = deltaY0 * cameraDirection.m_y;
 		vertices[0].m_y = baseY0 - offsetY0;
 		LegoFloat baseY1 = static_cast<LegoFloat>(mapCenterY) - deltaX1 * cameraDirection.m_x;
@@ -1163,16 +1163,18 @@ void RaceHud::SetLayout(LegoS32 p_mode)
 	FormatTime(m_lapTimeText.m_text, 0);
 	CopyToGolString(m_lapTimeText.m_text, m_scratchString);
 	m_font->MeasureString(m_scratchString, &p_mode, &textHeight);
-	p_mode = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScale);
+	p_mode = static_cast<LegoS32>(((((((((((((((((((static_cast<LegoFloat>(p_mode) * m_textScale)))))))))))))))))));
 	m_shortTimeWidth = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScaleX);
 
 	FormatTime(m_lapTimeText.m_text, 0x36ee08);
 	CopyToGolString(m_lapTimeText.m_text, m_scratchString);
 	m_font->MeasureString(m_scratchString, &p_mode, &textHeight);
 	p_mode = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScale);
-	LegoS32 scaledTextHeight = static_cast<LegoS32>(static_cast<LegoFloat>(textHeight) * m_textScale);
+	LegoS32 scaledTextHeight =
+		static_cast<LegoS32>(((((((((((((((((((static_cast<LegoFloat>(textHeight) * m_textScale)))))))))))))))))));
 	textHeight = scaledTextHeight;
-	m_longTimeWidth = static_cast<LegoS32>(static_cast<LegoFloat>(p_mode) * m_textScaleX);
+	m_longTimeWidth =
+		static_cast<LegoS32>(((((((((((((((((((static_cast<LegoFloat>(p_mode) * m_textScaleX)))))))))))))))))));
 
 	timeX = m_viewport.m_right - ((11 * m_longTimeWidth) >> 3);
 	LegoFloat topTextOffset = m_scaleY;

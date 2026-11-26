@@ -506,7 +506,7 @@ void Racer::Initialize(
 
 	LegoU32 colorValue = p_params->m_driverStats[0];
 	LegoFloat colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale *= g_statChanceScale;
+	colorScale = ((colorScale * g_statChanceScale));
 	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
@@ -639,7 +639,7 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 		LegoFloat valueFloat = p_params->m_weight;
 		accelerationStat = p_params->m_accelerationStat;
 		memcpy(&vector, &p_params->m_anchorWheelPosition, sizeof(vector));
-		valueFloat *= 0.05f;
+		valueFloat = ((valueFloat * 0.05f));
 
 		LegoU32 value = static_cast<LegoU32>(valueFloat);
 		handlingStat = p_params->m_handlingStat + value;
@@ -696,9 +696,9 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 	physics->SetTopSpeedStat(topSpeedStat);
 
 	LegoFloat halfHeight = m_visuals.m_shadowWidth;
-	halfHeight *= 0.5f;
+	halfHeight = ((halfHeight * 0.5f));
 	LegoFloat halfWidth = m_visuals.m_shadowLength;
-	halfWidth *= 0.5f;
+	halfWidth = ((halfWidth * 0.5f));
 	physics->SetCenterOfMass(&position);
 	physics->SetWheelGeometry(&vector, deltaY, deltaX);
 
@@ -1426,7 +1426,7 @@ void Racer::OnEvent(LegoEventQueue::CallbackData* p_data)
 	relativeVelocity.m_y = firstVelocity.m_y - secondVelocity.m_y;
 	relativeVelocity.m_z = firstVelocity.m_z - secondVelocity.m_z;
 
-	LegoFloat impulseNumerator = -DotVectors(relativeVelocity, collisionNormal) * (g_collisionRestitution + 1.0f);
+	LegoFloat impulseNumerator = ((-DotVectors(relativeVelocity, collisionNormal)) * ((g_collisionRestitution + 1.0f)));
 
 	LegoFloat collisionNormalLengthSquared = GOLVECTOR3_DOT(collisionNormal, collisionNormal);
 	LegoFloat inverseMassTerm =

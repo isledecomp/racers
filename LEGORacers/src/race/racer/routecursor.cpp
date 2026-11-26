@@ -317,7 +317,8 @@ void RacerPhysics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 		segment.m_y = segment.m_y * inverseLength;
 		segment.m_z = segment.m_z * inverseLength;
 
-		LegoFloat projectedDelta = segment.m_y * p_delta->m_y + p_delta->m_z * segment.m_z + segment.m_x * p_delta->m_x;
+		LegoFloat projectedDelta = ((((((((((((((((segment.m_y * p_delta->m_y)))))))))))))))) +
+								   p_delta->m_z * segment.m_z + segment.m_x * p_delta->m_x;
 
 		if (projectedDelta < 0.0f) {
 			LegoFloat backwardDelta = -projectedDelta;
@@ -367,7 +368,8 @@ void RacerPhysics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 				segment.m_x = segment.m_x * inverseLength;
 				segment.m_y = segment.m_y * inverseLength;
 				segment.m_z = segment.m_z * inverseLength;
-				projectedDelta = segment.m_y * p_delta->m_y + p_delta->m_z * segment.m_z + segment.m_x * p_delta->m_x;
+				projectedDelta =
+					((segment.m_y * p_delta->m_y)) + p_delta->m_z * segment.m_z + segment.m_x * p_delta->m_x;
 
 				if (projectedDelta > 0.0f) {
 					backwardDelta = 0.0f;
@@ -433,7 +435,8 @@ void RacerPhysics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 				segment.m_x = segment.m_x * inverseLength;
 				segment.m_y = segment.m_y * inverseLength;
 				segment.m_z = segment.m_z * inverseLength;
-				projectedDelta = segment.m_y * p_delta->m_y + p_delta->m_z * segment.m_z + segment.m_x * p_delta->m_x;
+				projectedDelta =
+					((segment.m_y * p_delta->m_y)) + p_delta->m_z * segment.m_z + segment.m_x * p_delta->m_x;
 
 				if (projectedDelta < 0.0f) {
 					projectedDelta = 0.0f;

@@ -349,14 +349,10 @@ void GolAnimatedEntity::TransitionToPart(
 {
 	ResetPartIndices();
 	if (p_transitionTime == 0) {
-		LegoS32 timeScale;
-		if (p_time != 0.0f) {
-			const CmbModelPartData& activePart = m_modelParts[0]->GetPartData()[m_currentPartIndex];
-			timeScale = static_cast<LegoS32>(p_time / activePart.GetMsPerFrame());
-		}
-		else {
-			timeScale = 0;
-		}
+		LegoS32 timeScale =
+			p_time != 0.0f
+				? static_cast<LegoS32>(p_time / m_modelParts[0]->GetPartData()[m_currentPartIndex].GetMsPerFrame())
+				: 0;
 
 		PlayPartScaled(p_partIndex, timeScale);
 		if (!p_loop) {
@@ -366,8 +362,7 @@ void GolAnimatedEntity::TransitionToPart(
 	}
 
 	LegoU32 flags = m_flags;
-	LegoU32 currentPartIndex = (flags & c_flagPartTransition) ? m_queuedPartIndex : m_currentPartIndex;
-	if (p_partIndex == currentPartIndex) {
+	if (p_partIndex == ((flags & c_flagPartTransition) ? m_queuedPartIndex : m_currentPartIndex)) {
 		return;
 	}
 
@@ -387,27 +382,21 @@ void GolAnimatedEntity::TransitionToPart(
 		m_flags = flags;
 	}
 
-	flags = m_flags;
-	flags &= ~0x00580000;
-	flags |= c_flagPartTransition;
+	m_flags = (m_flags & ~0x00580000) | c_flagPartTransition;
 	m_queuedPartIndex = static_cast<LegoU16>(p_partIndex);
-	m_flags = flags;
 	if (p_loop) {
-		flags |= c_flagLoopQueuedPart;
-		m_flags = flags;
+		m_flags |= c_flagLoopQueuedPart;
 	}
 
 	p_partIndex &= 0xffff;
-	LegoBool32 updateQueued = p_updateQueued;
 	m_queuedMsPerFrame = GetModelPart()->GetPartData()[p_partIndex].GetMsPerFrame();
 	CmbModelPart* modelPart = GetModelPart();
 	m_transitionProgress = 0.0f;
-	LegoBool32 updateCurrent = p_updateCurrent;
-	m_advanceCurrent = updateCurrent;
+	m_advanceCurrent = p_updateCurrent;
 	m_queuedPartTimeMs = p_time;
-	m_advanceQueued = updateQueued;
+	m_advanceQueued = p_updateQueued;
 	m_transitionRate = 1.0f / static_cast<LegoFloat>(p_transitionTime);
-	if (!updateCurrent) {
+	if (!p_updateCurrent) {
 		m_currentPartVelocity.m_x = 0.0f;
 		m_currentPartVelocity.m_y = 0.0f;
 		m_currentPartVelocity.m_z = 0.0f;

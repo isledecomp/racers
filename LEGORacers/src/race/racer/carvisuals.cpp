@@ -1062,17 +1062,15 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 					flags |= c_wheelSkidGrounded;
 					m_wheelSkidFlags[i] = flags;
 				}
-				else if (m_racerPhysics->m_wheelProbes[i].m_flags & RacerPhysics::WheelProbe::c_flagContact) {
-					flags &= ~c_wheelSkidGrounded;
-					m_wheelSkidFlags[i] = flags;
-				}
-				else {
-					LegoU32 elapsed = m_wheelAirTimers[i] + p_elapsedMs;
-					m_wheelAirTimers[i] = elapsed;
-					if (elapsed > 150) {
+				else if (!(m_racerPhysics->m_wheelProbes[i].m_flags & RacerPhysics::WheelProbe::c_flagContact)) {
+					m_wheelAirTimers[i] += p_elapsedMs;
+					if (m_wheelAirTimers[i] > 150) {
 						m_wheelSkidFlags[i] &= ~c_wheelSkidGrounded;
 						m_wheelAirTimers[i] = 0;
 					}
+				}
+				else {
+					m_wheelAirTimers[i] = 0;
 				}
 			}
 			else {
@@ -1118,49 +1116,43 @@ void CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 	}
 
 	{
-		LegoU32 i = 0;
-		RaceDecalManager::Trail** itemSlot = m_skidMarks;
-		LegoU8 colorByte = 0xff;
-		do {
-			RaceDecalManager::Trail* item;
-			if (((m_flags & c_flagSliding) && (item = *itemSlot) && item->GetDurationMs() == 1000) ||
-				(!(m_flags & c_flagSliding) && (item = *itemSlot) && item->GetDurationMs() == 250)) {
-				m_skidMarkManager->ReleaseTrail(item, 0);
-				*itemSlot = NULL;
+		for (LegoU32 i = 0; i < sizeOfArray(m_skidMarks); i++) {
+			if (((m_flags & c_flagSliding) && m_skidMarks[i] && m_skidMarks[i]->GetDurationMs() == 1000) ||
+				(!(m_flags & c_flagSliding) && m_skidMarks[i] && m_skidMarks[i]->GetDurationMs() == 250)) {
+				m_skidMarkManager->ReleaseTrail(m_skidMarks[i], 0);
+				m_skidMarks[i] = NULL;
 			}
 
-			if ((m_wheelSkidFlags[i] & c_wheelSkidActive) && !*itemSlot) {
+			if ((m_wheelSkidFlags[i] & c_wheelSkidActive) && !m_skidMarks[i]) {
 				if (m_flags & c_flagSliding) {
-					*itemSlot = m_skidMarkManager->AcquireTrail(250);
+					m_skidMarks[i] = m_skidMarkManager->AcquireTrail(250);
 				}
 				else {
-					*itemSlot = m_skidMarkManager->AcquireTrail(1000);
+					m_skidMarks[i] = m_skidMarkManager->AcquireTrail(1000);
 				}
 
-				if (*itemSlot) {
+				if (m_skidMarks[i]) {
 					ColorRGBA color;
-					color.m_red = colorByte;
-					color.m_grn = colorByte;
-					color.m_blu = colorByte;
-					color.m_alp = colorByte;
-					(*itemSlot)->SetColor(&color);
-					(*itemSlot)->SetMaterialTable(&m_skidMaterialTable);
+					color.m_red = 0xff;
+					color.m_grn = 0xff;
+					color.m_blu = 0xff;
+					color.m_alp = 0xff;
+					m_skidMarks[i]->SetColor(&color);
+					m_skidMarks[i]->SetMaterialTable(&m_skidMaterialTable);
 
 					if (i == 0 || i == 1) {
-						(*itemSlot)->SetWidth(m_frontSkidWidth);
+						m_skidMarks[i]->SetWidth(m_frontSkidWidth);
 					}
 					else {
-						(*itemSlot)->SetWidth(m_rearSkidWidth);
+						m_skidMarks[i]->SetWidth(m_rearSkidWidth);
 					}
 				}
 			}
-			else if (!(m_wheelSkidFlags[i] & c_wheelSkidActive) && *itemSlot) {
-				m_skidMarkManager->ReleaseTrail(*itemSlot, 0);
-				*itemSlot = NULL;
+			else if (!(m_wheelSkidFlags[i] & c_wheelSkidActive) && m_skidMarks[i]) {
+				m_skidMarkManager->ReleaseTrail(m_skidMarks[i], 0);
+				m_skidMarks[i] = NULL;
 			}
-			i++;
-			itemSlot++;
-		} while (i < sizeOfArray(m_skidMarks));
+		}
 	}
 }
 

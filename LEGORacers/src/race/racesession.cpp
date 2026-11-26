@@ -1470,40 +1470,33 @@ void RaceSession::StartIntroCamera()
 void RaceSession::InitializeInput()
 {
 	PlayerControls::InputState* inputSink = NULL;
-	InputEventQueue* inputEvents = &m_inputEvents;
-	inputEvents->Allocate(32);
+	m_inputEvents.Allocate(32);
 
 	MouseDevice* mouse = m_inputManager->GetMouse();
 	if (mouse) {
-		mouse->SetCallback(inputEvents);
+		mouse->SetCallback(&m_inputEvents);
 		mouse->SetExclusiveMode();
 		mouse->Acquire();
 	}
 
 	KeyboardDevice* keyboard = m_inputManager->GetKeyboard();
 	if (keyboard) {
-		m_inputRouter.Initialize(keyboard, inputEvents);
+		m_inputRouter.Initialize(keyboard, &m_inputEvents);
 		m_inputRouter.AcquireDevice();
 	}
 
-	LegoU32 playerCount;
-	if (m_demoMode) {
-		playerCount = 2;
-	}
-	else {
-		playerCount = m_context->m_playerCount;
-	}
+	LegoU32 playerCount = m_demoMode ? 2 : m_context->m_playerCount;
 
-	if (playerCount > 0) {
+	if (playerCount) {
 		PlayerControls* controls = m_playerControls;
 		Racer** racer = m_raceState.m_playerRacers;
 		LegoU32 playerIndex = 0;
 
-		do {
+		for (; playerCount; racer++, playerIndex++, controls++, playerCount--) {
 			LegoBool32 bindingAcquired = FALSE;
 
 			if (!m_demoMode) {
-				controls->Initialize(*racer, inputEvents);
+				controls->Initialize(*racer, &m_inputEvents);
 				inputSink = &controls->m_input;
 			}
 
@@ -1513,7 +1506,7 @@ void RaceSession::InitializeInput()
 					m_inputManager->FindJoystickByDeviceId(m_context->m_inputBindings[playerIndex].m_deviceId);
 				if (joystick &&
 					joystick->GetDeviceSubType() == m_context->m_inputBindings[playerIndex].m_deviceSubType) {
-					joystick->SetCallback(inputEvents);
+					joystick->SetCallback(&m_inputEvents);
 					bindingAcquired = TRUE;
 					joystick->Acquire();
 
@@ -1597,6 +1590,9 @@ void RaceSession::InitializeInput()
 						inputSink->AcquireDevices();
 					}
 				}
+				else {
+					inputSink->AcquireDevices();
+				}
 			}
 
 			if (!m_demoMode) {
@@ -1623,16 +1619,11 @@ void RaceSession::InitializeInput()
 				(*racer)->m_forceFeedback = &m_forceFeedback[playerIndex];
 				controls->DetectAnalogDevice();
 			}
-
-			racer++;
-			playerIndex++;
-			controls++;
-			playerCount--;
-		} while (playerCount);
+		}
 	}
 
 	m_inputManager->PollDevices(0);
-	inputEvents->ClearQueue();
+	m_inputEvents.ClearQueue();
 }
 
 // FUNCTION: LEGORACERS 0x004348a0

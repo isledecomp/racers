@@ -432,27 +432,26 @@ void AwardCinematicScreen::CreateWidgets()
 LegoBool32 AwardCinematicScreen::GrantAwards()
 {
 	GameState* gameState = &m_context->m_saveSystem.GetGameState();
-	LegoU16 menuId = m_resourceMenuId;
 
-	if (menuId != c_menuChampAward1 && menuId != c_menuChampAward2 && menuId != c_menuChampAward3) {
+	if (m_resourceMenuId != c_menuChampAward1 && m_resourceMenuId != c_menuChampAward2 &&
+		m_resourceMenuId != c_menuChampAward3) {
 		return FALSE;
 	}
 
-	LegoRacers::Context* context = m_context->m_context;
-
-	if (context->m_playerRecordStates[0].m_recordSource == 0) {
+	if (m_context->m_context->m_playerRecordStates[0].m_recordSource == 0) {
 		return FALSE;
 	}
 
-	SaveRecordList* records = NULL;
+	SaveRecordList* records;
 
-	switch (context->m_playerRecordStates[0].m_recordSource) {
+	switch (m_context->m_context->m_playerRecordStates[0].m_recordSource) {
 	case 1:
 	case 3:
 		records = &m_context->m_saveSystem.GetSessionSave();
 		break;
 	case 2:
-		records = &m_context->m_saveSystem.GetMemoryCardSaves()[context->m_playerRecordStates[0].m_saveIndex];
+		records =
+			&m_context->m_saveSystem.GetMemoryCardSaves()[m_context->m_context->m_playerRecordStates[0].m_saveIndex];
 		break;
 	default:
 		return FALSE;
@@ -464,7 +463,7 @@ LegoBool32 AwardCinematicScreen::GrantAwards()
 
 	CircuitDefinitionList::CircuitDefinition* circuitDefinition =
 		static_cast<CircuitDefinitionList::CircuitDefinition*>(
-			m_context->m_circuitList.GetName(context->m_circuitName)
+			m_context->m_circuitList.GetName(m_context->m_context->m_circuitName)
 		);
 	m_trophyAwarded = GrantTrophy(records, circuitDefinition);
 

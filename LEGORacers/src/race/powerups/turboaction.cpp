@@ -315,8 +315,7 @@ void TurboAction::AnchorToRacer()
 
 	m_turboEntity->SetPosition(position);
 	m_turboEntity->SetDirectionUp(direction, up);
-	GolAnimatedEntity* turbo = m_turboEntity;
-	turbo->CopyOrientationAndPositionTo(m_flameEntity);
+	m_turboEntity->CopyOrientationAndPositionTo(m_flameEntity);
 	m_turboEntity->CopyOrientationAndPositionTo(m_flame2Entity);
 }
 

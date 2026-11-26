@@ -102,15 +102,10 @@ void BeamMesh::Initialize(const SetupParams* p_params)
 	LegoU32 segmentCount = m_segmentCount;
 	m_textureColumnCount = params->m_textureColumnCount;
 
-	LegoU32 extra;
 	if (m_material->GetFlags() & GolMaterial::c_flagTextured) {
-		if (m_textureColumnCount > segmentCount) {
-			extra = 0;
-		}
-		else {
-			extra = segmentCount - m_textureColumnCount;
-		}
-		m_vertexCapacity = (segmentCount + extra + 1) * m_sectionCount * m_ringVertexCount;
+		m_vertexCapacity =
+			(segmentCount + (m_textureColumnCount > segmentCount ? 0 : segmentCount - m_textureColumnCount) + 1) *
+			m_sectionCount * m_ringVertexCount;
 	}
 	else {
 		m_vertexCapacity = (segmentCount + 1) * m_sectionCount * m_ringVertexCount;

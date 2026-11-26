@@ -237,10 +237,7 @@ LegoBool32 SaveRecordList::Record::SetTrophy(LegoU32 p_raceIndex, LegoU32 p_trop
 		return FALSE;
 	}
 
-	LegoU16 value = m_data[0x22c];
-	LegoU16 low = m_data[0x22b];
-	value <<= 8;
-	value += low;
+	LegoU16 value = static_cast<LegoU16>((m_data[0x22c] << 8) + m_data[0x22b]);
 
 	LegoU16 existing = value;
 	LegoU16 shift = static_cast<LegoU16>(p_raceIndex);

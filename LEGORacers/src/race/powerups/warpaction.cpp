@@ -160,7 +160,7 @@ void WarpAction::Update(LegoU32 p_elapsedMs)
 		!animationList->HasActive()) {
 		MenuAnimationList::Entry* entry =
 			animationList->Activate(c_menuAnimationDurationMs, FALSE, NULL, m_racer->m_cameraController->m_camera);
-		if (entry != NULL) {
+		if (entry) {
 			ColorRGBA color;
 			color.m_red = 0;
 			color.m_grn = 0;

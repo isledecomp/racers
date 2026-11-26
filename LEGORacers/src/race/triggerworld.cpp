@@ -129,8 +129,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 		}
 	}
 
-	entity = m_boundsEntity;
-	if (entity->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
+	if (m_boundsEntity->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
 		if (p_hitTarget) {
 			*p_hitTarget = hitRecord->GetTarget();
 		}

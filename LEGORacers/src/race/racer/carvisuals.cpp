@@ -760,8 +760,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	}
 
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
-	LegoFloat scale = g_pitchLeanRate;
-	scale = -scale;
+	LegoFloat scale = -g_pitchLeanRate;
 	m_pitchLean += (scale * pitchLength) * elapsed / m_racerPhysics->m_mass;
 	LegoFloat decay = elapsed;
 	decay *= g_pitchLeanDamping;
@@ -799,8 +798,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		rollLength = -rollLength;
 	}
 
-	scale = g_rollLeanRate;
-	scale = -scale;
+	scale = -g_rollLeanRate;
 	m_rollLean += (scale * rollLength) * elapsed / m_racerPhysics->m_mass;
 	decay = elapsed;
 	decay *= g_rollLeanDamping;
@@ -1508,10 +1506,11 @@ LegoBool32 CarVisuals::IntersectSegment(const GolVec3* p_start, const GolVec3* p
 
 	LegoFloat centerDeltaX = center.m_x - p_start->m_x;
 	LegoFloat centerDeltaY = center.m_y - p_start->m_y;
-	LegoFloat centerDeltaZ = center.m_z - p_start->m_z;
-	LegoFloat projection = centerDeltaZ * direction.m_z + centerDeltaY * direction.m_y + centerDeltaX * direction.m_x;
+	LegoFloat projection =
+		(center.m_z - p_start->m_z) * direction.m_z + centerDeltaY * direction.m_y + centerDeltaX * direction.m_x;
 	LegoFloat discriminant =
-		radiusSquared - ((centerDeltaY * centerDeltaY + centerDeltaZ * centerDeltaZ + centerDeltaX * centerDeltaX) -
+		radiusSquared - ((centerDeltaY * centerDeltaY + (center.m_z - p_start->m_z) * (center.m_z - p_start->m_z) +
+						  centerDeltaX * centerDeltaX) -
 						 projection * projection);
 	if (discriminant <= 0.0f) {
 		return FALSE;

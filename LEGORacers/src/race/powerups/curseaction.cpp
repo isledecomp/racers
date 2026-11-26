@@ -21,14 +21,11 @@ const LegoFloat g_curseSoundMaxDistanceSquared = 300.0f;
 // GLOBAL: LEGORACERS 0x004b13f8
 const LegoFloat g_curseTriggerRadius = 10.0f;
 
-inline GolVec3 CrossVectors(const GolVec3& p_left, const GolVec3& p_right)
+inline void CrossVectors(const GolVec3& p_left, const GolVec3& p_right, GolVec3* p_dest)
 {
-	GolVec3 result;
-	result.m_x = p_left.m_y * p_right.m_z - p_left.m_z * p_right.m_y;
-	result.m_y = p_left.m_z * p_right.m_x - p_left.m_x * p_right.m_z;
-	result.m_z = p_left.m_x * p_right.m_y - p_left.m_y * p_right.m_x;
-
-	return result;
+	p_dest->m_x = p_left.m_y * p_right.m_z - p_left.m_z * p_right.m_y;
+	p_dest->m_y = p_left.m_z * p_right.m_x - ((((((((((((((((((p_right.m_z)))))))))))))))))) * p_left.m_x;
+	p_dest->m_z = p_right.m_y * p_left.m_x - p_left.m_y * p_right.m_x;
 }
 
 // FUNCTION: LEGORACERS 0x00452440
@@ -332,7 +329,9 @@ void CurseAction::AdvanceState()
 		position.m_z += up.m_z * 13.0f;
 		m_curseEntity->SetPosition(position);
 
-		m_curseEntity->SetDirectionUp(CrossVectors(up, direction), up);
+		GolVec3 side;
+		CrossVectors(up, direction, &side);
+		m_curseEntity->SetDirectionUp(side, up);
 
 		m_auraEntity->CopyOrientationFrom(*m_curseEntity);
 		m_innerAuraEntity->CopyOrientationFrom(*m_curseEntity);

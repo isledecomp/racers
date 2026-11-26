@@ -649,9 +649,8 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 
 		if (slash > p_path) {
 			directoryEnd += slash - p_path;
-			LegoChar* entryPath = g_pathBuffer + prefixLength;
 			g_pathBuffer[directoryEnd] = '\0';
-			g_hashTable->AddString(entryPath);
+			g_hashTable->AddString(g_pathBuffer + prefixLength);
 			g_pathBuffer[directoryEnd] = '\\';
 		}
 	}

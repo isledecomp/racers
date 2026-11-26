@@ -109,7 +109,7 @@ void GrapplingHookAction::Initialize(
 	params.m_baseColor = g_hookRopeBaseColor;
 	params.m_secondaryColor = g_hookRopeSecondaryColor;
 	params.m_tertiaryColor = g_hookRopeTertiaryColor;
-	params.m_material = p_manager->GetRenderer()->FindMaterialByName("tether");
+	params.m_material = m_owner->GetRenderer()->FindMaterialByName("tether");
 	m_projectile.Initialize(&params);
 
 	m_state = c_stateReady;
@@ -203,7 +203,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 
 	if (p_elapsedMs >= m_stateTimerMs) {
 		p_elapsedMs -= m_stateTimerMs;
-		m_stateTimerMs = projectileState;
+		m_stateTimerMs = 0;
 		AdvanceState();
 	}
 	else {
@@ -222,8 +222,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	switch (m_state) {
 	case c_stateFlying: {
 		if (projectileState == PowerupProjectile::c_stateHitWorld) {
-			GolVec3& projectilePositionCopyBase = projectilePositionCopy;
-			projectilePositionCopyBase = m_projectile.GetHitPosition();
+			static_cast<GolVec3&>(projectilePositionCopy) = m_projectile.GetHitPosition();
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
@@ -233,9 +232,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			up.m_y = 0.0f;
 			up.m_z = 1.0f;
 
-			const GolVec3* target = &m_projectile.GetTargetPosition();
-			GolVec3& targetPositionBase = targetPosition;
-			targetPositionBase = *target;
+			static_cast<GolVec3&>(targetPosition) = m_projectile.GetTargetPosition();
 			forward.m_x = targetPosition.m_x - position.m_x;
 			forward.m_y = targetPosition.m_y - position.m_y;
 			forward.m_z = targetPosition.m_z - position.m_z;
@@ -246,8 +243,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	}
 	case c_statePulling:
 		if (projectileState == PowerupProjectile::c_stateHitWorld) {
-			GolVec3& projectilePositionCopyBase = projectilePositionCopy;
-			projectilePositionCopyBase = m_projectile.GetHitPosition();
+			static_cast<GolVec3&>(projectilePositionCopy) = m_projectile.GetHitPosition();
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {

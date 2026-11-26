@@ -276,8 +276,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 
 				LegoU32 deltaIndex = 0;
 				Racer* selectedRacer = &m_raceState->GetRacers()[selectedIndex];
-				while (deltaEntries[deltaIndex].m_racer != selectedRacer && deltaIndex < c_racerCount) {
-					deltaIndex++;
+				for (; deltaEntries[deltaIndex].m_racer != selectedRacer && deltaIndex < c_racerCount; deltaIndex++) {
 				}
 
 				if (deltaEntries[deltaIndex].m_racer != leaderRacer) {

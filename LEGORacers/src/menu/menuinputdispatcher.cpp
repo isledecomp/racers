@@ -196,24 +196,23 @@ void MenuInputDispatcher::DispatchMouseMove(MouseDevice* p_mouse)
 // FUNCTION: LEGORACERS 0x004692b0
 LegoS32 MenuInputDispatcher::ProcessInputEvents(MenuIcon*)
 {
-	InputEventQueue::Event* item;
 	undefined4 x = m_cursor.m_originX + m_cursor.m_cursorX;
 	undefined4 y = m_cursor.m_originY + m_cursor.m_cursorY;
 
 	while (m_inputEvents->GetSize()) {
-		item = m_inputEvents->Dequeue();
+		InputEventQueue::Event* item = m_inputEvents->Dequeue();
 		if (DispatchMouseButtonEvent(item)) {
-			break;
+			return TRUE;
 		}
 
 		switch (item->m_keyCode) {
 		case c_keyboardLeftShift:
 		case c_keyboardRightShift:
-			g_shiftPressed = item->m_isPressed != FALSE;
+			g_shiftPressed = !!item->m_isPressed;
 			break;
 		case c_keyboardLeftControl:
 		case c_keyboardRightControl:
-			g_controlPressed = item->m_isPressed != FALSE;
+			g_controlPressed = !!item->m_isPressed;
 			break;
 		case c_keyboardTab:
 			if (item->m_isPressed) {

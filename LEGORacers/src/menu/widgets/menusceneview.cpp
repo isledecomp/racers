@@ -240,8 +240,8 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 		return;
 	}
 
-	m_strafeSpeed = (m_targetStrafeSpeed - m_strafeSpeed) * 0.03f + m_strafeSpeed;
-	m_forwardSpeed = (m_targetForwardSpeed - m_forwardSpeed) * 0.02f + m_forwardSpeed;
+	m_strafeSpeed += (m_targetStrafeSpeed - m_strafeSpeed) * 0.03f;
+	m_forwardSpeed += (m_targetForwardSpeed - m_forwardSpeed) * 0.02f;
 	m_yawRate = m_targetYawRate * 0.1f + m_yawRate * 0.9f;
 	m_pitchRate = m_targetPitchRate * 0.1f + m_pitchRate * 0.9f;
 	LegoFloat turn = m_targetZoomRate * 0.3f + m_zoomRate * 0.7f;

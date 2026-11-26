@@ -111,27 +111,27 @@ MusicInstance* DirectMusicGroup::CreateMusicInstance(LegoU32 p_index)
 	LegoChar source[c_musicPathLength];
 	JoinAudioPath(source, c_musicPathLength, m_basePath, GetMusicName(p_index));
 
-	if (strstr(GetMusicName(p_index), g_musicTunExtension) || strstr(GetMusicName(p_index), g_musicPcmExtension)) {
-		DirectMusicInstance* instance = new DirectMusicInstance();
-
-		if (instance) {
-			instance->SetMusicGroup(this);
-
-			if (instance->Initialize()) {
-				instance->SetPath(source);
-				m_musicInstances.Append(instance);
-			}
-			else {
-				instance->SetMusicGroup(NULL);
-				delete instance;
-				return NULL;
-			}
-		}
-
-		return instance;
+	if (!strstr(GetMusicName(p_index), g_musicTunExtension) && !strstr(GetMusicName(p_index), g_musicPcmExtension)) {
+		return NULL;
 	}
 
-	return NULL;
+	DirectMusicInstance* instance = new DirectMusicInstance();
+
+	if (instance) {
+		instance->SetMusicGroup(this);
+
+		if (instance->Initialize()) {
+			instance->SetPath(source);
+			m_musicInstances.Append(instance);
+		}
+		else {
+			instance->SetMusicGroup(NULL);
+			delete instance;
+			return NULL;
+		}
+	}
+
+	return instance;
 }
 
 // FUNCTION: LEGORACERS 0x0041a9d0 FOLDED

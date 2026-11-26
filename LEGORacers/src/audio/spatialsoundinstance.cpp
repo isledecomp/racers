@@ -204,7 +204,8 @@ void SpatialSoundInstance::UpdateSpatialFromNode(SoundNode* p_node)
 
 				velocity = velocity > (p_node->m_maxVelocity) ? p_node->m_maxVelocity : velocity;
 
-				m_spatialFrequencyScale = m_frequencyScale * p_node->m_soundSpeed / (p_node->m_soundSpeed - velocity);
+				m_spatialFrequencyScale =
+					((m_frequencyScale * p_node->m_soundSpeed)) / (p_node->m_soundSpeed - velocity);
 			}
 			else {
 				m_spatialFrequencyScale = m_frequencyScale;

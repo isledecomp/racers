@@ -760,8 +760,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	}
 
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
-	LegoFloat scale = g_pitchLeanRate;
-	scale = -scale;
+	LegoFloat scale = -g_pitchLeanRate;
 	m_pitchLean += (scale * pitchLength) * elapsed / m_racerPhysics->m_mass;
 	LegoFloat decay = elapsed;
 	decay *= g_pitchLeanDamping;
@@ -799,8 +798,7 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		rollLength = -rollLength;
 	}
 
-	scale = g_rollLeanRate;
-	scale = -scale;
+	scale = -g_rollLeanRate;
 	m_rollLean += (scale * rollLength) * elapsed / m_racerPhysics->m_mass;
 	decay = elapsed;
 	decay *= g_rollLeanDamping;

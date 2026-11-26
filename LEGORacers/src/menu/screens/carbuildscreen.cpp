@@ -302,7 +302,6 @@ LegoBool32 CarBuildScreen::HandleBuildKey(MenuWidget*, InputEventQueue::Event* p
 	LegoS32 categoryIndex = m_partPlacement.GetViewSlot();
 	undefined4 nextMode = result;
 	LegoBool32 moved;
-	SoundVector position;
 
 	switch (keyCode) {
 	case c_carBuildKeyboardLeft:
@@ -397,6 +396,7 @@ LegoBool32 CarBuildScreen::HandleBuildKey(MenuWidget*, InputEventQueue::Event* p
 			volume = 0.7f;
 		}
 
+		SoundVector position;
 		position.m_x = 0.0f;
 		position.m_y = 0.0f;
 		position.m_z = 0.0f;

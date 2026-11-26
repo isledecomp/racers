@@ -415,28 +415,23 @@ undefined4 DriveController::ReleaseSlide()
 // FUNCTION: LEGORACERS 0x004202f0
 GolQuat* DriveController::StartReturnToPath(RaceRouteRecord* p_record)
 {
-	LegoU32 flags = m_flags;
 	m_returnPreviewMs = 1000;
-	flags |= 0x40;
 	m_returnRecord = p_record;
-	m_flags = flags;
+	m_flags |= c_flagReturnToPath;
 	ReleaseSlide();
 
-	RaceRouteRecord* value = m_returnRecord;
 	m_turnRadius = 0;
-	m_previewCursor->AttachAtLoop(value);
+	m_previewCursor->AttachAtLoop(m_returnRecord);
 
 	m_previewCursor->m_playbackSpeed = 1.0f;
 	m_previewCursor->Advance(static_cast<LegoFloat>(m_returnPreviewMs));
 
-	GolQuat* basis = &m_returnRotation;
-	RacerPhysics::RouteCursorInstance* previewCursor = m_previewCursor;
-	m_returnPosition = previewCursor->m_position;
-	GolQuat* result = &previewCursor->m_rotation;
-	basis->m_x = result->m_x;
-	basis->m_y = result->m_y;
-	basis->m_z = result->m_z;
-	basis->m_w = result->m_w;
+	m_returnPosition = m_previewCursor->m_position;
+	GolQuat* result = &m_previewCursor->m_rotation;
+	m_returnRotation.m_x = result->m_x;
+	m_returnRotation.m_y = result->m_y;
+	m_returnRotation.m_z = result->m_z;
+	m_returnRotation.m_w = result->m_w;
 	return result;
 }
 

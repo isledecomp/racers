@@ -743,11 +743,7 @@ void RacerPhysics::ApplyPitchImpulse(LegoFloat p_rate, LegoU32 p_durationMs)
 // FUNCTION: LEGORACERS 0x00429d40
 void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 {
-	if (p_elapsedMs == 0) {
-		return;
-	}
-
-	if (m_routePaused != 0) {
+	if (p_elapsedMs == 0 || m_routePaused) {
 		return;
 	}
 
@@ -757,10 +753,7 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 
 	if (m_flags & c_flagBoost) {
 		if (m_routeCursor.m_currentTime < g_routeBoostRampMs) {
-			LegoFloat speedScale = m_routeCursor.m_currentTime;
-			speedScale -= g_routeBoostRampMs;
-			speedScale /= g_routeBoostRampMs;
-			speedScale = -speedScale;
+			LegoFloat speedScale = -((m_routeCursor.m_currentTime - g_routeBoostRampMs) / g_routeBoostRampMs);
 			m_routeTargetSpeed = speedScale * (g_routeMaxPlaybackSpeed - g_routeBoostSpeed) + g_routeBoostSpeed;
 		}
 	}
@@ -777,7 +770,7 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 			LegoU32 suspendedMask = flags & c_flagRoutePushed;
 			if (suspendedMask || !(flags & (c_flagSpinning | c_flagBoost | c_flagCurseSlow)) || m_contactCount == 0) {
 				LegoFloat currentSpeed = m_routeCursor.m_playbackSpeed;
-				if (currentSpeed < m_routeTargetSpeed) {
+				if (currentSpeed < ((m_routeTargetSpeed))) {
 					LegoFloat rate;
 					if (suspendedMask) {
 						rate = g_routePlaybackAccelPushed;

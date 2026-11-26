@@ -97,16 +97,11 @@ void GhostHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_ghostEntity = context->GetTrackDatabase()->FindAnimatedEntity("ghostly");
 	m_trailModel = context->GetTrackDatabase()->FindModelEntity("gtrail");
 
-	{
-		GolModelEntity* modelEntity = m_trailModels;
-		LegoS32 i = sizeOfArray(m_trailModels);
-		do {
-			modelEntity->SetPrimaryModel(m_trailModel->GetModel(0), m_trailModel->GetModelDistance(0));
-			modelEntity++;
-		} while (--i);
+	LegoS32 i;
+	for (i = 0; i < sizeOfArray(m_trailModels); i++) {
+		m_trailModels[i].SetPrimaryModel(m_trailModel->GetModel(0), m_trailModel->GetModelDistance(0));
 	}
 
-	LegoS32 i;
 	for (i = 0; i < sizeOfArray(m_trailModels); i++) {
 		m_trailModel->SetModelDistance(i, 0.0f);
 	}

@@ -888,13 +888,12 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 		LegoS32 remaining = p_pieceRecord->m_indexCommandCount;
 		const LegoU16* cursor = library->GetIndexCursor(p_pieceRecord->m_indexOffset);
 
-		while (remaining != 0) {
-			LegoS32 primitiveCount = m_buildPrimitiveCount;
+		for (; remaining; remaining--) {
 			LegoU32 command = *cursor++;
 			LegoS32 mode = command & c_indexCommandModeMask;
 
 			if (mode == c_indexCommandQuad) {
-				m_buildPrimitiveCount = primitiveCount - 1;
+				m_buildPrimitiveCount--;
 				primitive->m_vertexCount = 4;
 
 				LegoS32 coordinateIndex = *cursor++;
@@ -1007,16 +1006,15 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 				}
 				primitive->m_vertexIndices[3] = AddBuildVertex(&vertex);
 
-				LegoS32 newPrimitiveCount = m_buildPrimitiveCount + 1;
-				m_buildPrimitiveCount = newPrimitiveCount;
+				m_buildPrimitiveCount++;
 				if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {
 					m_buildStatus |= c_buildStatusOverflow;
-					return static_cast<LegoS16>(newPrimitiveCount);
+					return static_cast<LegoS16>(m_buildPrimitiveCount);
 				}
 			}
 			else {
-				primitive = &m_buildPrimitives[primitiveCount];
-				m_buildPrimitiveOrder[primitiveCount] = primitive;
+				primitive = &m_buildPrimitives[m_buildPrimitiveCount];
+				m_buildPrimitiveOrder[m_buildPrimitiveCount] = primitive;
 
 				hasTextureIndex = mode == c_indexCommandTextured;
 				hasNormalIndex = (command >> 14) & 1;
@@ -1131,19 +1129,15 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 						vertex.m_textureCoordinate.m_y = 0.0f;
 					}
 
-					*vertexIndex = AddBuildVertex(&vertex);
-					vertexIndex++;
+					*vertexIndex++ = AddBuildVertex(&vertex);
 				}
 
-				LegoS32 newPrimitiveCount = m_buildPrimitiveCount + 1;
-				m_buildPrimitiveCount = newPrimitiveCount;
+				m_buildPrimitiveCount++;
 				if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {
 					m_buildStatus |= c_buildStatusOverflow;
-					return static_cast<LegoS16>(newPrimitiveCount);
+					return static_cast<LegoS16>(m_buildPrimitiveCount);
 				}
 			}
-
-			remaining--;
 		}
 
 		return static_cast<LegoS16>(remaining);

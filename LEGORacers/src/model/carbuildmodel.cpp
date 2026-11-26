@@ -2089,7 +2089,6 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 	const LegoColorTable::MaterialUsage* materialUsage = m_colorTable->GetMaterialUsage();
 	ColorRGBA color;
 	MaterialTable* materialTable = m_colorTable->GetMaterialTable();
-	GolModelBase* outputModel = p_model;
 	GdbModelIndexArrayBase* sourceIndexArray;
 	GdbModelIndexArrayBase* destIndexArray;
 	GolVec2 texCoord;
@@ -2121,7 +2120,7 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 			}
 
 			outputMaterial->SetParams(m_renderer, params);
-			outputModel->GetMaterialTable()->SetEntry(outputMaterialIndex, outputMaterial);
+			p_model->GetMaterialTable()->SetEntry(outputMaterialIndex, outputMaterial);
 			outputMaterialIndex++;
 		}
 	}
@@ -2130,12 +2129,12 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 		LegoU32 group = m_model->GetGroups()[i];
 		if ((group & 0xe0000000) == 0x80000000) {
 			LegoU32 materialOrder = materialUsage[group & 0xffff].m_order;
-			outputModel->GetMutableGroups()[i] = 0x80000000;
-			outputModel->GetMutableGroups()[i] |= materialOrder & 0xffffff;
-			outputModel->SetDirty(TRUE);
+			p_model->GetMutableGroups()[i] = 0x80000000;
+			p_model->GetMutableGroups()[i] |= materialOrder & 0xffffff;
+			p_model->SetDirty(TRUE);
 		}
 		else {
-			outputModel->GetMutableGroups()[i] = group;
+			p_model->GetMutableGroups()[i] = group;
 		}
 	}
 
@@ -2143,8 +2142,8 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 	m_model->GetIndexArrayInto(&sourceIndexArray);
 	const GdbModelIndexArray::Indices* sourceIndices = static_cast<GdbModelIndexArray*>(sourceIndexArray)->GetIndices();
 
-	outputModel->GetVertexArray(&destVertices);
-	outputModel->GetIndexArrayInto(&destIndexArray);
+	p_model->GetVertexArray(&destVertices);
+	p_model->GetIndexArrayInto(&destIndexArray);
 	GdbModelIndexArray::Indices* destIndices = static_cast<GdbModelIndexArray*>(destIndexArray)->GetMutableIndices();
 	::memcpy(destIndices, sourceIndices, sizeof(*destIndices) * m_finalTriangleCount);
 
@@ -2161,6 +2160,6 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 
 	m_model->AddFlags(FALSE);
 	m_model->AddFlagsWithBounds(FALSE, FALSE);
-	outputModel->AddFlags(TRUE);
-	outputModel->AddFlagsWithBounds(TRUE, TRUE);
+	p_model->AddFlags(TRUE);
+	p_model->AddFlagsWithBounds(TRUE, TRUE);
 }

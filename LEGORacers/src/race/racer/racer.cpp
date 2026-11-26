@@ -2298,67 +2298,65 @@ void Racer::PlayTaunt()
 void Racer::UpdateFacing(LegoU32 p_elapsedMs)
 {
 	CheckpointGraph::Entry* checkpoint = m_checkpoint;
-	if (checkpoint) {
-		LegoU32 flags = m_flags;
-		LegoBool32 isBlocked = FALSE;
+	if (!checkpoint) {
+		return;
+	}
 
-		if (flags & c_flagGhost) {
+	LegoU32 flags = m_flags;
+	LegoBool32 isBlocked = FALSE;
+
+	if (flags & c_flagGhost) {
+		m_facingForwardMs = 0;
+		m_flags = flags & ~(c_flagFacingForwardPending | c_flagFacingForward);
+		return;
+	}
+
+	LegoU32 countdown = m_facingForwardMs;
+	if (countdown) {
+		if (p_elapsedMs >= countdown) {
 			m_facingForwardMs = 0;
-			m_flags = flags & ~(c_flagFacingForwardPending | c_flagFacingForward);
-			return;
-		}
-
-		LegoU32 countdown = m_facingForwardMs;
-		if (countdown) {
-			if (p_elapsedMs >= countdown) {
-				m_facingForwardMs = 0;
-				m_flags = flags & ~c_flagFacingForward;
-			}
-			else {
-				m_facingForwardMs = countdown - p_elapsedMs;
-			}
-		}
-
-		GolVec3 direction = m_physics.m_facingDirection;
-		for (LegoU32 i = 0; i < sizeOfArray(checkpoint->m_next.m_items); i++) {
-			if (isBlocked) {
-				break;
-			}
-
-			if (m_checkpoint->m_next.m_items[i] != 0xff) {
-				m_checkpointGraph->GetCheckpoint(m_checkpoint->m_next.m_items[i]);
-				checkpoint = m_checkpoint;
-				GolVec2 normal;
-				normal.m_x = checkpoint->m_planeNormal.m_x;
-				normal.m_y = checkpoint->m_planeNormal.m_y;
-				LegoFloat dot = direction.m_x * normal.m_x + direction.m_y * normal.m_y +
-								direction.m_z * checkpoint->m_planeNormal.m_z;
-				if (dot <= 0.2f) {
-					isBlocked = TRUE;
-				}
-			}
-		}
-
-		flags = m_flags;
-		if (flags & c_flagFacingForwardPending) {
-			if (isBlocked) {
-				m_facingForwardMs = 0;
-				m_flags = flags & ~c_flagFacingForwardPending;
-			}
-			else if (!m_facingForwardMs) {
-				m_flags = (flags & ~(c_flagFacingForwardPending | c_flagFacingForward)) | c_flagFacingForward;
-			}
+			m_flags = flags & ~c_flagFacingForward;
 		}
 		else {
-			if (!(flags & c_flagFacingForward)) {
-				if (!isBlocked) {
-					m_facingForwardMs = 500;
-					m_flags = flags | c_flagFacingForwardPending;
-				}
+			m_facingForwardMs = countdown - p_elapsedMs;
+		}
+	}
+
+	GolVec3 direction = m_physics.m_facingDirection;
+	for (LegoU32 i = 0; i < sizeOfArray(checkpoint->m_next.m_items) && !isBlocked; i++) {
+		if (m_checkpoint->m_next.m_items[i] != 0xff) {
+			m_checkpointGraph->GetCheckpoint(m_checkpoint->m_next.m_items[i]);
+			checkpoint = m_checkpoint;
+			GolVec2 normal;
+			normal.m_x = checkpoint->m_planeNormal.m_x;
+			normal.m_y = checkpoint->m_planeNormal.m_y;
+			LegoFloat dot =
+				direction.m_x * normal.m_x + direction.m_y * normal.m_y + direction.m_z * checkpoint->m_planeNormal.m_z;
+			if (dot <= 0.2f) {
+				isBlocked = TRUE;
 			}
-			else if (!isBlocked) {
+		}
+	}
+
+	flags = m_flags;
+	if (flags & c_flagFacingForwardPending) {
+		if (isBlocked) {
+			m_facingForwardMs = 0;
+			m_flags = flags & ~c_flagFacingForwardPending;
+		}
+		else if (!m_facingForwardMs) {
+			m_flags = (flags & ~c_flagFacingForwardPending) | c_flagFacingForward;
+		}
+	}
+	else {
+		if (!(flags & c_flagFacingForward)) {
+			if (!isBlocked) {
 				m_facingForwardMs = 500;
+				m_flags = flags | c_flagFacingForwardPending;
 			}
+		}
+		else if (!isBlocked) {
+			m_facingForwardMs = 500;
 		}
 	}
 }

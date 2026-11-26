@@ -489,15 +489,14 @@ LegoS32 LegoPieceLibrary::Load(const LegoChar* p_filename, undefined4 p_binary)
 		}
 	}
 
-	LegoS32 result = lowPieceOffset;
 	if (m_maxHighPieceOffset < highPieceOffset) {
 		m_maxHighPieceOffset = highPieceOffset;
 	}
-	if (m_maxLowPieceOffset < result) {
-		m_maxLowPieceOffset = result;
+	if (m_maxLowPieceOffset < lowPieceOffset) {
+		m_maxLowPieceOffset = lowPieceOffset;
 	}
 
-	return result;
+	return lowPieceOffset;
 }
 
 // FUNCTION: LEGORACERS 0x0049f410

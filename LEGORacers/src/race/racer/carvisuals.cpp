@@ -1506,10 +1506,11 @@ LegoBool32 CarVisuals::IntersectSegment(const GolVec3* p_start, const GolVec3* p
 
 	LegoFloat centerDeltaX = center.m_x - p_start->m_x;
 	LegoFloat centerDeltaY = center.m_y - p_start->m_y;
-	LegoFloat centerDeltaZ = center.m_z - p_start->m_z;
-	LegoFloat projection = centerDeltaZ * direction.m_z + centerDeltaY * direction.m_y + centerDeltaX * direction.m_x;
+	LegoFloat projection =
+		(center.m_z - p_start->m_z) * direction.m_z + centerDeltaY * direction.m_y + centerDeltaX * direction.m_x;
 	LegoFloat discriminant =
-		radiusSquared - ((centerDeltaY * centerDeltaY + centerDeltaZ * centerDeltaZ + centerDeltaX * centerDeltaX) -
+		radiusSquared - ((centerDeltaY * centerDeltaY + (center.m_z - p_start->m_z) * (center.m_z - p_start->m_z) +
+						  centerDeltaX * centerDeltaX) -
 						 projection * projection);
 	if (discriminant <= 0.0f) {
 		return FALSE;

@@ -381,41 +381,41 @@ void RaceDecalManager::Trail::Decal::ProcessGroups(
 )
 {
 	LegoU32 start = p_firstCommand;
-	GolModelBase* model = p_model;
 	LegoU32 count = p_commandCount;
 	if (count == 0) {
-		count = model->GetGroupCount();
+		count = p_model->GetGroupCount();
 	}
 
 	LegoU32 enabled = 1;
 	LegoU32 end = start + count;
 	if (start < end) {
 		do {
-			LegoU32 command = model->GetMutableGroups()[start];
+			LegoU32 command = p_model->GetMutableGroups()[start];
 			start++;
 			LegoU32 commandType = command & c_commandMask;
-			if (commandType <= c_commandModelFlags) {
-				if (commandType != c_commandModelFlags) {
-					if (commandType != c_commandVertices) {
-						if (commandType == c_commandPolygon && enabled) {
-							EmitPolygon(command & c_commandVertexMask, (command >> 16) & 0x7f);
-						}
-					}
-					else if (enabled) {
-						TransformVertices(
-							(command >> 22) & 0x3f,
-							command & c_commandVertexMask,
-							((command >> 16) & 0x3f) + 1
-						);
-					}
+			switch (commandType) {
+			case static_cast<LegoU32>(c_commandModelFlags):
+				enabled = p_model->GetMaterialTable()->GetMaterial(command & c_commandVertexMask)->GetFlags() &
+						  c_commandModelFlagBit17;
+				break;
+			case c_commandVertices:
+				if (enabled) {
+					TransformVertices(
+						(command >> 22) & 0x3f,
+						command & c_commandVertexMask,
+						((command >> 16) & 0x3f) + 1
+					);
 				}
-				else {
-					enabled = model->GetMaterialTable()->GetMaterial(command & c_commandVertexMask)->GetFlags() &
-							  c_commandModelFlagBit17;
+				break;
+			case c_commandPolygon:
+				if (enabled) {
+					EmitPolygon(command & c_commandVertexMask, (command >> 16) & 0x7f);
 				}
-			}
-			else if (commandType == c_commandEnd) {
+				break;
+			case static_cast<LegoU32>(c_commandEnd):
 				return;
+			default:
+				break;
 			}
 		} while (start < end);
 	}

@@ -187,10 +187,9 @@ void PowerupProjectile::LaunchAtPoint(
 	LegoBool32 p_fromRacerPosition
 )
 {
-	Params* params = p_params;
-	Initialize(params);
+	Initialize(p_params);
 
-	LegoFloat speed = params->m_speed;
+	LegoFloat speed = p_params->m_speed;
 	m_targetPosition = *p_targetPosition;
 	m_targetRacer = NULL;
 	m_ownerRacer = p_racer;
@@ -209,8 +208,7 @@ void PowerupProjectile::LaunchAtPoint(
 	delta.m_x = target->m_x - startPosition->m_x;
 	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
 	delta.m_z = 0.0f;
-	LegoFloat deltaY = delta.m_y;
-	LegoFloat distance = static_cast<LegoFloat>(sqrt(deltaY * deltaY + delta.m_x * delta.m_x));
+	LegoFloat distance = static_cast<LegoFloat>(sqrt(delta.m_y * delta.m_y + delta.m_x * delta.m_x));
 	LegoFloat inverseDistance;
 	if (distance == 0.0f) {
 		distance = 1.0f;
@@ -221,32 +219,27 @@ void PowerupProjectile::LaunchAtPoint(
 	}
 
 	delta.m_x *= inverseDistance;
-	Racer* racer = p_racer;
-	GolVec3 racerDirection = racer->m_physics.m_velocityDirection;
+	GolVec3 racerDirection = p_racer->m_physics.m_velocityDirection;
 	delta.m_y *= inverseDistance;
 	LegoFloat dot = racerDirection.m_z * delta.m_z + racerDirection.m_y * delta.m_y + racerDirection.m_x * delta.m_x;
 	if (dot > 0.0f) {
-		LegoFloat speedDelta = dot * racer->m_physics.m_speed;
+		LegoFloat speedDelta = dot * p_racer->m_physics.m_speed;
 		speedDelta *= 1000.0f;
 		speed += speedDelta;
 	}
 
 	LegoFloat durationSeconds = distance / speed;
-	LegoFloat scaledDuration = durationSeconds;
-	scaledDuration *= 1000.0f;
-	m_flightTimeMs = static_cast<LegoS32>(scaledDuration);
+	m_flightTimeMs = static_cast<LegoS32>(durationSeconds * 1000.0f);
 	GolVec3 scaledDelta;
 	scaledDelta.m_x = p_targetVelocity->m_x * durationSeconds;
 	scaledDelta.m_y = p_targetVelocity->m_y;
 	scaledDelta.m_y *= durationSeconds;
 	scaledDelta.m_z = p_targetVelocity->m_z;
 	scaledDelta.m_z *= durationSeconds;
-	target->m_x += scaledDelta.m_x;
-	target->m_y += scaledDelta.m_y;
-	target->m_z += scaledDelta.m_z;
-	*target += params->m_targetOffset;
+	*target += scaledDelta;
+	*target += p_params->m_targetOffset;
 	ComputeTrajectory(durationSeconds);
-	RegisterCollisionEvent(params->m_eventQueue);
+	RegisterCollisionEvent(p_params->m_eventQueue);
 }
 
 // FUNCTION: LEGORACERS 0x00431220

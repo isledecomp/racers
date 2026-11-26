@@ -109,7 +109,7 @@ void GrapplingHookAction::Initialize(
 	params.m_baseColor = g_hookRopeBaseColor;
 	params.m_secondaryColor = g_hookRopeSecondaryColor;
 	params.m_tertiaryColor = g_hookRopeTertiaryColor;
-	params.m_material = p_manager->GetRenderer()->FindMaterialByName("tether");
+	params.m_material = m_owner->GetRenderer()->FindMaterialByName("tether");
 	m_projectile.Initialize(&params);
 
 	m_state = c_stateReady;

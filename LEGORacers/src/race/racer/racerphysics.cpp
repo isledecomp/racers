@@ -464,8 +464,7 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 	if (dot >= 0.0f) {
 		LegoFloat value;
 		if (m_flags & c_flagSpinning) {
-			value = g_routeSpinSpeed;
-			value += 0.1f;
+			value = g_routeSpinSpeed + 0.1f;
 		}
 		else {
 			value = m_routeCursor.m_playbackSpeed;

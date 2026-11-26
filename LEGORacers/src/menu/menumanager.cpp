@@ -477,7 +477,6 @@ void MenuManager::InitializeSaveSystem()
 	m_gameContext.m_saveSystem.Initialize(m_gameContext.m_context->m_golApp->GetInputManager(), FALSE);
 
 	if (m_gameContext.m_context->m_flags & LegoRacers::Context::c_flagSaveStateValid) {
-		SaveGame* saveGame = &m_gameContext.m_saveSystem.GetSessionSave();
 		::memcpy(
 			m_gameContext.m_saveSystem.GetSessionSave().GetFileImage(),
 			&m_gameContext.m_context->m_saveState,
@@ -485,7 +484,7 @@ void MenuManager::InitializeSaveSystem()
 		);
 		m_gameContext.m_context->m_flags &= ~LegoRacers::Context::c_flagSaveStateValid;
 		m_gameContext.m_saveSystem.GetGameState().LoadFromSaveGame(
-			saveGame,
+			&m_gameContext.m_saveSystem.GetSessionSave(),
 			m_gameContext.m_saveSystem.GetGameState().GetActiveSaveIndex()
 		);
 	}

@@ -137,17 +137,15 @@ LegoS32 LegoPieceLibrary::PieceRecord::GetMaxCellValue() const
 LegoS32 LegoPieceLibrary::PieceRecord::SetName(LegoChar* p_name)
 {
 	LegoS32 length = 0;
-	LegoChar value = *p_name;
 
-	while (value) {
+	while (*p_name) {
 		if (length >= 8) {
 			break;
 		}
 
-		m_name[length] = value;
+		m_name[length] = *p_name;
 		p_name++;
 		length++;
-		value = *p_name;
 	}
 
 	if (length < 8) {

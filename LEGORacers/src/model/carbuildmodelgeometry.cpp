@@ -66,16 +66,16 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 	p_vertex->m_right = NULL;
 
 	BuildVertex* node = *p_root;
-	if (node) {
+	if (node != NULL) {
 		LegoS32 compare = CompareBuildVertex(p_vertex, node);
-		if (compare) {
+		if (compare != 0) {
 			do {
 				if (compare > 0) {
 					if (node->m_right == NULL) {
 						p_vertex->m_parent = node;
 						node->m_right = p_vertex;
-						node = NULL;
-						break;
+						RebalanceBuildVertexInsert(p_root, p_vertex);
+						return NULL;
 					}
 
 					node = node->m_right;
@@ -84,21 +84,27 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 					if (node->m_left == NULL) {
 						p_vertex->m_parent = node;
 						node->m_left = p_vertex;
-						node = NULL;
 						break;
 					}
 
 					node = node->m_left;
 				}
-			} while (node && (compare = CompareBuildVertex(p_vertex, node)) != 0);
+
+				if (node == NULL) {
+					break;
+				}
+
+				compare = CompareBuildVertex(p_vertex, node);
+				if (compare == 0) {
+					return node;
+				}
+			} while (TRUE);
+
+			RebalanceBuildVertexInsert(p_root, p_vertex);
+			return NULL;
 		}
 
-		if (node) {
-			return node;
-		}
-
-		RebalanceBuildVertexInsert(p_root, p_vertex);
-		return NULL;
+		return node;
 	}
 
 	p_vertex->m_parent = NULL;

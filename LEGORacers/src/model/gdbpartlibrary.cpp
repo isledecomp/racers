@@ -223,8 +223,10 @@ void GdbPartLibrary::CopyPartGroupStart(
 	g_copyModel->GetMaterialTable()->SetEntry(p_groupIndex, material);
 
 	LegoU32 groupWrite = g_copyGroupWrite++;
-	GolModelBase* model = g_copyModel;
-	model->GetMutableGroups()[groupWrite] = (p_groupIndex & 0x00ffffff) | 0x80000000;
+	GolModelBase*& modelRef = g_copyModel;
+	GolModelBase* model = modelRef;
+	model->GetMutableGroups()[groupWrite] = 0x80000000;
+	model->GetMutableGroups()[groupWrite] |= p_groupIndex & 0x00ffffff;
 	model->SetDirty(TRUE);
 }
 
@@ -326,19 +328,29 @@ void GdbPartLibrary::FlushCopyBatch()
 		return;
 	}
 
-	LegoU32 groupWrite = g_copyGroupWrite++;
-	LegoU32 batchVertexStart = g_copyBatchVertexStart;
-	LegoU32* groups = g_copyModel->GetMutableGroups();
-	groups[groupWrite] = 0;
-	groups[groupWrite] |= ((g_copyBatchVertexCount + 0xffff) << 16) & 0x003f0000;
-	groups[groupWrite] |= batchVertexStart & 0xffff;
-	g_copyModel->SetDirty(TRUE);
+	{
+		LegoU32 batchVertexStart = g_copyBatchVertexStart;
+		LegoU32 batchVertexCount = g_copyBatchVertexCount;
+		LegoU32 groupWrite = g_copyGroupWrite++;
+		GolModelBase*& modelRef = g_copyModel;
+		GolModelBase* model = modelRef;
+		model->GetMutableGroups()[groupWrite] = 0;
+		model->GetMutableGroups()[groupWrite] |= ((batchVertexCount + 0xffff) << 16) & 0x003f0000;
+		model->GetMutableGroups()[groupWrite] |= batchVertexStart & 0xffff;
+		model->SetDirty(TRUE);
+	}
 
-	groupWrite = g_copyGroupWrite++;
-	groups[groupWrite] = 0x20000000;
-	groups[groupWrite] |= (g_copyBatchIndexCount & 0x7f) << 16;
-	groups[groupWrite] |= g_copyIndexStart & 0xffff;
-	g_copyModel->SetDirty(TRUE);
+	{
+		LegoU32 batchIndexCount = g_copyBatchIndexCount;
+		LegoU32 indexStart = g_copyIndexStart;
+		LegoU32 groupWrite = g_copyGroupWrite++;
+		GolModelBase*& modelRef = g_copyModel;
+		GolModelBase* model = modelRef;
+		model->GetMutableGroups()[groupWrite] = 0x20000000;
+		model->GetMutableGroups()[groupWrite] |= (batchIndexCount & 0x7f) << 16;
+		model->GetMutableGroups()[groupWrite] |= indexStart & 0xffff;
+		model->SetDirty(TRUE);
+	}
 
 	g_copyBatchVertexStart += g_copyBatchVertexCount;
 	g_copyIndexStart += g_copyBatchIndexCount;

@@ -1154,11 +1154,9 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntr
 			LegoU32 remaining = m_setup.m_lapCount;
 
 			if (remaining > 0) {
-				LegoU32* lapTime = m_roster.m_racers[racerIndex].m_lapTimes;
-
-				do {
-					otherTime += *lapTime++;
-				} while (--remaining);
+				for (LegoU32 lapIndex = 0; lapIndex < remaining; lapIndex++) {
+					otherTime += m_roster.m_racers[racerIndex].m_lapTimes[lapIndex];
+				}
 			}
 
 			p_entries[racerIndex].m_delta = otherTime - racerTime;

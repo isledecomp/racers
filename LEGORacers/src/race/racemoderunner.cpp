@@ -18,8 +18,10 @@ void RaceModeRunner::Run(LegoRacers::Context* p_context)
 	g_raceModeRunner->Run();
 	g_raceModeRunner->Shutdown();
 
+	RaceModeRunner* runner = g_raceModeRunner;
 	if (g_raceModeRunner) {
-		delete g_raceModeRunner;
+		g_raceModeRunner->~RaceModeRunner();
+		::operator delete(runner);
 	}
 }
 

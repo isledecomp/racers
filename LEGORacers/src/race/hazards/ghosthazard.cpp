@@ -97,21 +97,25 @@ void GhostHazard::Load(HazardContext* p_context, GolFileParser*)
 	m_ghostEntity = context->GetTrackDatabase()->FindAnimatedEntity("ghostly");
 	m_trailModel = context->GetTrackDatabase()->FindModelEntity("gtrail");
 
-	LegoS32 i;
-	for (i = 0; i < sizeOfArray(m_trailModels); i++) {
-		m_trailModels[i].SetPrimaryModel(m_trailModel->GetModel(0), m_trailModel->GetModelDistance(0));
+	{
+		GolModelEntity* modelEntity = m_trailModels;
+		LegoS32 i = sizeOfArray(m_trailModels);
+		do {
+			modelEntity->SetPrimaryModel(m_trailModel->GetModel(0), m_trailModel->GetModelDistance(0));
+			modelEntity++;
+		} while (--i);
 	}
 
+	LegoS32 i;
 	for (i = 0; i < sizeOfArray(m_trailModels); i++) {
 		m_trailModel->SetModelDistance(i, 0.0f);
 	}
 
 	m_trigger.SetBoundsRadius(m_ghostEntity->GetModel(0)->GetRadius() + g_ghostTriggerRadiusPadding);
 
-	LegoU32 frameCount = 0;
-	CmbModelPartData* partData = m_ghostEntity->GetModelPart()->GetPartData();
-	LegoFloat inverseDuration = 1.0f / partData->GetMsPerFrame();
-	frameCount = partData->GetFrameCount();
+	CmbModelPart* part = m_ghostEntity->GetModelPart();
+	LegoFloat inverseDuration = (1.0f / part->GetPartData()->GetMsPerFrame());
+	LegoU32 frameCount = part->GetPartData()->GetFrameCount();
 	LegoFloat frameCountFloat = static_cast<LegoFloat>(frameCount);
 	m_animationFrameCount = static_cast<LegoS32>(inverseDuration * frameCountFloat);
 	m_racerSearchMs = 0;

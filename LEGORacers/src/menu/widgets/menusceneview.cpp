@@ -240,8 +240,8 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 		return;
 	}
 
-	m_strafeSpeed += (m_targetStrafeSpeed - m_strafeSpeed) * 0.03f;
-	m_forwardSpeed += (m_targetForwardSpeed - m_forwardSpeed) * 0.02f;
+	m_strafeSpeed = (m_targetStrafeSpeed - m_strafeSpeed) * 0.03f + m_strafeSpeed;
+	m_forwardSpeed = (m_targetForwardSpeed - m_forwardSpeed) * 0.02f + m_forwardSpeed;
 	m_yawRate = m_targetYawRate * 0.1f + m_yawRate * 0.9f;
 	m_pitchRate = m_targetPitchRate * 0.1f + m_pitchRate * 0.9f;
 	LegoFloat turn = m_targetZoomRate * 0.3f + m_zoomRate * 0.7f;
@@ -252,13 +252,15 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 		LegoFloat value = lens->m_fov;
 		LegoU32 flags = lens->m_flags;
 		value += turn;
-		lens->m_flags = flags | GolCamera::c_flagProjectionDirty;
 		lens->m_fov = value;
+		lens->m_flags = flags | GolCamera::c_flagProjectionDirty;
 	}
 
 	GolVec3* forward = &m_forward;
 	GolVec3* right = &m_right;
-	m_camera->GetTransform()->GetDirectionUp(right, forward);
+	GolCamera* camera = m_camera;
+	camera->m_flags |= 0;
+	camera->GetTransform()->GetDirectionUp(right, forward);
 
 	GolVec3* axis = &m_up;
 	axis->m_x = GOL_MUL(right->m_y, forward->m_z) - GOL_MUL(forward->m_y, right->m_z);
@@ -278,7 +280,9 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 	GolMath::RotateAboutAxis(&rotatedRight, right, forward, angle);
 
 	GolVec3 position;
-	m_camera->GetTransform()->GetPosition(&position);
+	GolCamera* camera3 = m_camera;
+	camera3->m_flags |= 0;
+	camera3->GetTransform()->GetPosition(&position);
 	LegoFloat forwardDelta = -forward->m_x;
 	forwardDelta *= m_forwardSpeed;
 	LegoFloat rightDelta = -right->m_x;

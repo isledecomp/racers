@@ -225,23 +225,21 @@ void CutsceneStreamingSoundEvent::Update()
 
 		GolVec3 position;
 		GolVec3 velocity;
-		GolWorldEntity* entity;
 
 		if (m_flags & c_flagTrackJoint) {
 			GetJointPosition(m_jointIndex, &position);
 			m_streamInstance->SetPosition(&position);
-			entity = m_animatedEntity;
+			m_animatedEntity->GetVelocity(&velocity);
+			m_streamInstance->SetVelocity(velocity);
 		}
 		else if (m_flags & c_flagTrackEntity) {
 			m_parsedEntity->GetPosition(&position);
 			m_streamInstance->SetPosition(&position);
-			entity = m_parsedEntity;
+			m_parsedEntity->GetVelocity(&velocity);
+			m_streamInstance->SetVelocity(velocity);
 		}
 		else {
 			return;
 		}
-
-		entity->GetVelocity(&velocity);
-		m_streamInstance->SetVelocity(velocity);
 	}
 }

@@ -352,8 +352,8 @@ void RaceState::CreateRacer(
 	}
 
 	initParams.m_driverMountOffset = chassisItem->m_driverMountOffset;
-	LegoU32 racerOff = p_racerIndex * sizeof(Racer);
-	initParams.m_racer = &m_roster.m_racers[p_racerIndex];
+	LegoU32 racerIndex = p_racerIndex;
+	initParams.m_racer = &m_roster.m_racers[racerIndex];
 	initParams.m_shadowWidth = chassisItem->m_shadowSize.m_x;
 	initParams.m_shadowLength = chassisItem->m_shadowSize.m_y;
 	initParams.m_frontSkidWidth = chassisItem->m_skidWidths.m_x;
@@ -429,9 +429,8 @@ void RaceState::CreateRacer(
 	descriptor.m_type = LegoEventQueue::Descriptor::c_typeCollision;
 	descriptor.m_flags = 5;
 	descriptor.m_hitThreshold = 0;
-	descriptor.m_data = &((Racer*) ((char*) m_roster.m_racers + racerOff))->m_physics;
-	m_roster.m_racerEvents[p_racerIndex] =
-		m_roster.AllocateEvent((Racer*) ((char*) m_roster.m_racers + racerOff), &descriptor);
+	descriptor.m_data = &m_roster.m_racers[racerIndex].m_physics;
+	m_roster.m_racerEvents[p_racerIndex] = m_roster.AllocateEvent(&m_roster.m_racers[racerIndex], &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x0043bc10

@@ -540,7 +540,6 @@ void GolFontBase::MeasureString(
 {
 	*p_height = 0;
 	*p_width = 0;
-
 	LegoU8 lineBreak = TRUE;
 
 	if (p_string == NULL) {
@@ -557,7 +556,8 @@ void GolFontBase::MeasureString(
 	}
 
 	p_wrapWidth = static_cast<LegoS32>(::floor(static_cast<LegoFloat>(p_wrapWidth) / p_scaleX));
-	p_lineSpacing += m_fontHeight;
+	LegoS32 fontHeight = m_fontHeight;
+	p_lineSpacing += fontHeight;
 	p_lineSpacing = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(p_lineSpacing) * p_scaleY));
 	*p_height += p_lineSpacing;
 
@@ -616,17 +616,14 @@ void GolFontBase::MeasureString(
 				while (lineWidth > static_cast<LegoU32>(p_wrapWidth) && i > breakIndex) {
 					i--;
 					LegoU16 textChar = *p_string->FromCursor(i);
-					LegoU32 charWidth;
 
 					if (textChar == ' ') {
-						charWidth = m_charSpacing + m_spaceWidth;
+						lineWidth -= m_charSpacing + m_spaceWidth;
 					}
 					else {
 						LegoU32 glyphIndex = FindGlyphIndex(textChar);
-						charWidth = m_glyphs[glyphIndex].m_width + m_charSpacing;
+						lineWidth -= m_glyphs[glyphIndex].m_width + m_charSpacing;
 					}
-
-					lineWidth -= charWidth;
 				}
 			}
 			else {

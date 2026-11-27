@@ -126,7 +126,7 @@ void LegoEventQueue::Update(LegoU32 p_elapsedMs)
 			LegoU32 durationMs = descriptor->m_intervalMs;
 
 			if (elapsedMs >= durationMs) {
-				m_callbackData.m_intervalMs = durationMs;
+				m_callbackData.m_intervalMs = event->m_descriptor.m_intervalMs;
 				m_callbackData.m_elapsedMs = elapsedMs;
 				event->Fire(this, &m_callbackData);
 				event->m_descriptor.m_elapsedMs = 0;

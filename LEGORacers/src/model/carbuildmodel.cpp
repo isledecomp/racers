@@ -1917,7 +1917,7 @@ void CarBuildModel::RefreshOverlay(Placement* p_placement, GolModelEntity* p_ent
 	LegoS32 entryHeight;
 	LegoPieceLibrary::PieceRecord* pieceRecord = p_placement->GetPieceRecord();
 	LegoS32 rotation;
-	if (pieceRecord != NULL) {
+	if (pieceRecord) {
 		LegoS32 y;
 		p_placement->GetPlacement(&x, &y, &rotation);
 

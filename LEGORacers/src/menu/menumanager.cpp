@@ -817,15 +817,11 @@ void MenuManager::PrepareRaceContext()
 
 		ColorRGBA color;
 		color.m_alp = 0xff;
-		color.m_red = 0x80;
-		color.m_grn = 0x80;
-		color.m_blu = 0x80;
+		color.m_blu = color.m_grn = color.m_red = 0x80;
 		materialColor.SetColor(color);
 		rendererState.SetAmbientColor(&materialColor);
 
-		color.m_red = 0xff;
-		color.m_grn = 0xff;
-		color.m_blu = 0xff;
+		color.m_blu = color.m_grn = color.m_red = 0xff;
 		light.SetColor(color);
 
 		GolVec3 direction;

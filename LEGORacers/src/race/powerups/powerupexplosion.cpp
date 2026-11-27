@@ -419,6 +419,7 @@ void PowerupExplosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00421c00
 void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 {
+	GolVec3 impulse;
 	LegoU32 mode = m_blastMode;
 	if (!mode) {
 		return;
@@ -444,11 +445,12 @@ void PowerupExplosion::OnEvent(LegoEventQueue::CallbackData* p_data)
 		GolVec3 direction = physics->m_facingDirection;
 		racer->StartSpinOut();
 
-		GolVec3 impulse;
 		impulse.m_x = 0.0f;
 		impulse.m_y = 0.0f;
 		impulse.m_z = 0.0f;
-		physics->m_velocity = impulse;
+		physics->m_velocity.m_x = impulse.m_x;
+		physics->m_velocity.m_y = impulse.m_y;
+		physics->m_velocity.m_z = impulse.m_z;
 
 		LegoFloat amount;
 		LegoS32 duration = static_cast<LegoS32>(m_flashDurationMs);

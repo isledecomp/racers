@@ -760,7 +760,8 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	}
 
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
-	LegoFloat scale = -g_pitchLeanRate;
+	LegoFloat scale = g_pitchLeanRate;
+	scale = -scale;
 	m_pitchLean += (scale * pitchLength) * elapsed / m_racerPhysics->m_mass;
 	LegoFloat decay = elapsed;
 	decay *= g_pitchLeanDamping;
@@ -798,7 +799,8 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		rollLength = -rollLength;
 	}
 
-	scale = -g_rollLeanRate;
+	scale = g_rollLeanRate;
+	scale = -scale;
 	m_rollLean += (scale * rollLength) * elapsed / m_racerPhysics->m_mass;
 	decay = elapsed;
 	decay *= g_rollLeanDamping;
@@ -815,17 +817,18 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		row0 = oldRow0;
 	}
 	else {
+		GolVec3 lean0;
 		LegoFloat value = m_pitchLean;
 		LegoFloat x = value;
 		x *= oldRow2.m_x;
-		oldRow0.m_x = x;
+		lean0.m_x = x;
 		LegoFloat y = oldRow2.m_y;
 		y *= value;
-		oldRow0.m_y = y;
+		lean0.m_y = y;
 		LegoFloat z = oldRow2.m_z;
 		z *= value;
-		oldRow0.m_z = z;
-		GolCameraBase::Add(&targetRow0, &oldRow0, &row0);
+		lean0.m_z = z;
+		GolCameraBase::Add(&targetRow0, &lean0, &row0);
 	}
 
 	GolVec3 row1;
@@ -833,17 +836,18 @@ void CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 		row1 = oldRow1;
 	}
 	else {
+		GolVec3 lean1;
 		LegoFloat value = m_rollLean;
 		LegoFloat x = value;
 		x *= oldRow2.m_x;
-		oldRow1.m_x = x;
+		lean1.m_x = x;
 		LegoFloat y = oldRow2.m_y;
 		y *= value;
-		oldRow1.m_y = y;
+		lean1.m_y = y;
 		LegoFloat z = oldRow2.m_z;
 		z *= value;
-		oldRow1.m_z = z;
-		GolCameraBase::Add(&targetRow1, &oldRow1, &row1);
+		lean1.m_z = z;
+		GolCameraBase::Add(&targetRow1, &lean1, &row1);
 	}
 
 	m_bodyModelEntity->SetPosition(position);
@@ -1504,14 +1508,15 @@ LegoBool32 CarVisuals::IntersectSegment(const GolVec3* p_start, const GolVec3* p
 	direction.m_z = p_end->m_z - p_start->m_z;
 	GolMath::NormalizeVector3(direction, &direction);
 
+	LegoFloat centerDeltaZ = center.m_z - p_start->m_z;
 	LegoFloat centerDeltaX = center.m_x - p_start->m_x;
-	LegoFloat centerDeltaY = center.m_y - p_start->m_y;
-	LegoFloat projection =
-		(center.m_z - p_start->m_z) * direction.m_z + centerDeltaY * direction.m_y + centerDeltaX * direction.m_x;
+	LegoFloat projection = (center.m_z - p_start->m_z) * direction.m_z + (center.m_y - p_start->m_y) * direction.m_y +
+						   centerDeltaX * direction.m_x;
+	LegoFloat sqZ = center.m_z - p_start->m_z;
 	LegoFloat discriminant =
-		radiusSquared - ((centerDeltaY * centerDeltaY + (center.m_z - p_start->m_z) * (center.m_z - p_start->m_z) +
-						  centerDeltaX * centerDeltaX) -
-						 projection * projection);
+		radiusSquared -
+		((centerDeltaX * centerDeltaX + (center.m_y - p_start->m_y) * (center.m_y - p_start->m_y) + sqZ * sqZ) -
+		 projection * projection);
 	if (discriminant <= 0.0f) {
 		return FALSE;
 	}

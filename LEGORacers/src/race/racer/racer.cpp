@@ -508,7 +508,7 @@ void Racer::Initialize(
 
 	LegoU32 colorValue = p_params->m_driverStats[0];
 	LegoFloat colorScale = static_cast<LegoFloat>(colorValue);
-	colorScale = ((colorScale * g_statChanceScale));
+	colorScale = GOL_MUL(colorScale, g_statChanceScale);
 	colorScale *= 0.01f;
 	colorScale += g_statChanceBase;
 	if (colorScale > 1.0f) {
@@ -636,12 +636,12 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 		mass = p_params->m_mass;
 		memcpy(&position, &p_params->m_centerOfMass, sizeof(position));
 
+		vector = p_params->m_anchorWheelPosition;
 		deltaX = p_params->m_anchorWheelPosition.m_x - p_params->m_rearWheelX;
-		topSpeedStat = p_params->m_topSpeedStat;
 		LegoFloat valueFloat = p_params->m_weight;
 		accelerationStat = p_params->m_accelerationStat;
-		memcpy(&vector, &p_params->m_anchorWheelPosition, sizeof(vector));
-		valueFloat = ((valueFloat * 0.05f));
+		topSpeedStat = p_params->m_topSpeedStat;
+		valueFloat *= 0.05f;
 
 		LegoU32 value = static_cast<LegoU32>(valueFloat);
 		handlingStat = p_params->m_handlingStat + value;
@@ -654,11 +654,11 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 			topSpeedStat = 100;
 		}
 
-		if (value > p_params->m_accelerationStat) {
+		if (value > accelerationStat) {
 			accelerationStat = 0;
 		}
 		else {
-			accelerationStat = p_params->m_accelerationStat - value;
+			accelerationStat -= value;
 		}
 	}
 	else {
@@ -697,10 +697,10 @@ void Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 	physics->SetAccelerationStat(accelerationStat);
 	physics->SetTopSpeedStat(topSpeedStat);
 
-	LegoFloat halfHeight = m_visuals.m_shadowWidth;
-	halfHeight = ((halfHeight * 0.5f));
+	LegoFloat halfHeight = ((((m_visuals.m_shadowWidth))));
+	halfHeight *= 0.5f;
 	LegoFloat halfWidth = m_visuals.m_shadowLength;
-	halfWidth = ((halfWidth * 0.5f));
+	halfWidth *= 0.5f;
 	physics->SetCenterOfMass(&position);
 	physics->SetWheelGeometry(&vector, deltaY, deltaX);
 
@@ -2303,65 +2303,71 @@ void Racer::PlayTaunt()
 void Racer::UpdateFacing(LegoU32 p_elapsedMs)
 {
 	CheckpointGraph::Entry* checkpoint = m_checkpoint;
-	if (!checkpoint) {
-		return;
-	}
+	if (checkpoint) {
+		LegoU32 flags = m_flags;
+		LegoBool32 isBlocked = FALSE;
 
-	LegoU32 flags = m_flags;
-	LegoBool32 isBlocked = FALSE;
-
-	if (flags & c_flagGhost) {
-		m_facingForwardMs = 0;
-		m_flags = flags & ~(c_flagFacingForwardPending | c_flagFacingForward);
-		return;
-	}
-
-	LegoU32 countdown = m_facingForwardMs;
-	if (countdown) {
-		if (p_elapsedMs >= countdown) {
+		if (flags & c_flagGhost) {
 			m_facingForwardMs = 0;
-			m_flags = flags & ~c_flagFacingForward;
+			m_flags = flags & ~(c_flagFacingForwardPending | c_flagFacingForward);
+			return;
+		}
+
+		LegoU32 countdown = m_facingForwardMs;
+		if (countdown) {
+			if (p_elapsedMs >= countdown) {
+				m_facingForwardMs = 0;
+				m_flags = flags & ~c_flagFacingForward;
+			}
+			else {
+				m_facingForwardMs = countdown - p_elapsedMs;
+			}
+		}
+
+		GolVec3 direction = m_physics.m_facingDirection;
+		for (LegoU32 i = 0; i < sizeOfArray(checkpoint->m_next.m_items); i++) {
+			if (isBlocked) {
+				break;
+			}
+
+			if (m_checkpoint->m_next.m_items[i] != 0xff) {
+				m_checkpointGraph->GetCheckpoint(m_checkpoint->m_next.m_items[i]);
+				checkpoint = m_checkpoint;
+				GolVec2 normal;
+				normal.m_x = checkpoint->m_planeNormal.m_x;
+				normal.m_y = checkpoint->m_planeNormal.m_y;
+				double dotY = direction.m_y;
+				dotY *= normal.m_y;
+				LegoFloat dotZ = direction.m_z;
+				dotZ *= checkpoint->m_planeNormal.m_z;
+				LegoFloat dot = dotZ + dotY;
+				dot += direction.m_x * normal.m_x;
+				if (dot <= 0.2f) {
+					isBlocked = TRUE;
+				}
+			}
+		}
+
+		flags = m_flags;
+		if (flags & c_flagFacingForwardPending) {
+			if (isBlocked) {
+				m_facingForwardMs = 0;
+				m_flags = flags & ~c_flagFacingForwardPending;
+			}
+			else if (!m_facingForwardMs) {
+				m_flags = (flags & ~(c_flagFacingForwardPending | c_flagFacingForward)) | c_flagFacingForward;
+			}
 		}
 		else {
-			m_facingForwardMs = countdown - p_elapsedMs;
-		}
-	}
-
-	GolVec3 direction = m_physics.m_facingDirection;
-	for (LegoU32 i = 0; i < sizeOfArray(checkpoint->m_next.m_items) && !isBlocked; i++) {
-		if (m_checkpoint->m_next.m_items[i] != 0xff) {
-			m_checkpointGraph->GetCheckpoint(m_checkpoint->m_next.m_items[i]);
-			checkpoint = m_checkpoint;
-			GolVec2 normal;
-			normal.m_x = checkpoint->m_planeNormal.m_x;
-			normal.m_y = checkpoint->m_planeNormal.m_y;
-			LegoFloat dot =
-				direction.m_x * normal.m_x + direction.m_y * normal.m_y + direction.m_z * checkpoint->m_planeNormal.m_z;
-			if (dot <= 0.2f) {
-				isBlocked = TRUE;
+			if (!(flags & c_flagFacingForward)) {
+				if (!isBlocked) {
+					m_facingForwardMs = 500;
+					m_flags = flags | c_flagFacingForwardPending;
+				}
 			}
-		}
-	}
-
-	flags = m_flags;
-	if (flags & c_flagFacingForwardPending) {
-		if (isBlocked) {
-			m_facingForwardMs = 0;
-			m_flags = flags & ~c_flagFacingForwardPending;
-		}
-		else if (!m_facingForwardMs) {
-			m_flags = (flags & ~c_flagFacingForwardPending) | c_flagFacingForward;
-		}
-	}
-	else {
-		if (!(flags & c_flagFacingForward)) {
-			if (!isBlocked) {
+			else if (!isBlocked) {
 				m_facingForwardMs = 500;
-				m_flags = flags | c_flagFacingForwardPending;
 			}
-		}
-		else if (!isBlocked) {
-			m_facingForwardMs = 500;
 		}
 	}
 }
@@ -2432,25 +2438,21 @@ void Racer::OnCheckpointCrossed(CheckpointGraph::Entry* p_entry, GolBoundingVolu
 		LegoS32 checkpointCount;
 
 		if (p_entry->m_lapFraction == 0.0f) {
-			if (isForward == TRUE) {
+			if (isForward) {
 				if (!(m_flags & c_flagCrossedBackward)) {
 					checkpointCount = m_checkpointCount;
 					checkpointCount++;
 					m_checkpointCount = checkpointCount;
 				}
+
+				m_flags &= ~c_flagCrossedBackward;
 			}
 			else {
 				m_flags |= c_flagCrossedBackward;
-				m_checkpointForward = isForward;
 				m_currentZone = 0;
 				m_previousZone = 2;
 				m_zoneBeforePrevious = 2;
-				m_checkpoint = p_entry;
-
-				return;
 			}
-
-			m_flags &= ~c_flagCrossedBackward;
 		}
 		else if (m_flags & c_flagCrossedBackward) {
 			checkpointCount = m_checkpointCount;

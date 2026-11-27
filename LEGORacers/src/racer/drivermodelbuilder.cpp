@@ -536,8 +536,10 @@ void DriverModelBuilder::CopyGroupsUntilFace()
 		group = m_headSummary.m_model->GetGroups()[headIndex];
 		switch (group & GolModel::c_groupTypeMask) {
 		case GolModel::c_groupTypeTriangles: {
-			LegoU32 groupVertexCount = (group >> GolModel::c_groupDataUpperWordShift) & GolModel::c_vertexCountMask;
-			group = (group & 0x0fc00000) | (groupVertexCount << GolModel::c_groupDataUpperWordShift) |
+			LegoU32 groupVertexCount =
+				((group >> GolModel::c_groupDataUpperWordShift) & GolModel::c_vertexCountMask) + 1;
+			group = (group & 0x0fc00000) |
+					(((groupVertexCount + 0xffff) << GolModel::c_groupDataUpperWordShift) & 0x003f0000) |
 					((group + m_bodySummary.m_vertexCount) & 0x0000ffff);
 			break;
 		}
@@ -560,9 +562,10 @@ void DriverModelBuilder::CopyGroupsUntilFace()
 		m_outputSummary.m_model->GetMutableGroups()[writeIndex] = group;
 	}
 
-	while (bodyCopyIndex < m_bodySummary.m_groupCount) {
+	LegoS32 tailIndex = bodyCopyIndex;
+	while (tailIndex < m_bodySummary.m_groupCount) {
 		LegoS32 writeIndex = outputIndex++;
-		m_outputSummary.m_model->GetMutableGroups()[writeIndex] = m_bodySummary.m_model->GetGroups()[bodyCopyIndex++];
+		m_outputSummary.m_model->GetMutableGroups()[writeIndex] = m_bodySummary.m_model->GetGroups()[tailIndex++];
 	}
 
 	GolModelBase* outputModel = m_outputSummary.m_model;

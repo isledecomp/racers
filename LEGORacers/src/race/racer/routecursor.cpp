@@ -180,7 +180,7 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 				GolVec3* currentPosition = &m_startPosition;
 				segmentEndTime = m_segmentStartTime;
 				m_endIndex = m_startIndex;
-				m_endPosition = *currentPosition;
+				m_endPosition = m_startPosition;
 				m_endRotation = m_startRotation;
 				endWidthRight = startWidthRight;
 				endWidthLeft = startWidthLeft;
@@ -204,7 +204,7 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 			GolVec3* endPosition = &m_endPosition;
 			do {
 				m_startIndex = m_endIndex;
-				m_startPosition = *endPosition;
+				m_startPosition = m_endPosition;
 				m_segmentStartTime = segmentEndTime;
 				m_startRotation = m_endRotation;
 				startWidthRight = endWidthRight;
@@ -238,7 +238,8 @@ void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 
 		LegoFloat elapsed = static_cast<LegoFloat>(targetTime - m_segmentStartTime);
 		LegoFloat duration = static_cast<LegoFloat>(segmentEndTime - m_segmentStartTime);
-		LegoFloat amount = elapsed / duration;
+		LegoFloat amount = elapsed;
+		amount /= duration;
 		m_widthLeft = (endWidthLeft - startWidthLeft) * amount + startWidthLeft;
 		m_widthRight = (endWidthRight - startWidthRight) * amount + startWidthRight;
 

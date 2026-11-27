@@ -605,12 +605,14 @@ LegoBool32 AwardCinematicScreen::CreateWinnerCar(undefined4)
 
 	do {
 		if (m_resourceMenuId == c_menuWinCar && m_context->m_context->m_playerSetupSlots[1].m_driverName[0]) {
-			DriverCosmeticTable::Entry* driverEntry = static_cast<DriverCosmeticTable::Entry*>(
-				m_context->m_cosmeticTable.GetName(m_context->m_context->m_playerSetupSlots[1].m_driverName)
-			);
+			const LegoChar* driverName = m_context->m_context->m_playerSetupSlots[1].m_driverName;
+			DriverCosmeticTable* cosmetics = &m_context->m_cosmeticTable;
+			DriverCosmeticTable::Entry* driverEntry =
+				static_cast<DriverCosmeticTable::Entry*>(cosmetics->GetName(driverName));
+			ChampionDefinitionList* championList = &m_context->m_championDefinitions;
 			ChampionDefinitionList::ChampionDefinition* championDefinition =
 				static_cast<ChampionDefinitionList::ChampionDefinition*>(
-					m_context->m_championDefinitions.GetName(driverEntry->m_championName)
+					championList->GetName(driverEntry->m_championName)
 				);
 
 			SaveGame* quickBuildSave = &m_context->m_saveSystem.GetQuickBuildSave();

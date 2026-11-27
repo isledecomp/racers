@@ -203,7 +203,7 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 
 	if (p_elapsedMs >= m_stateTimerMs) {
 		p_elapsedMs -= m_stateTimerMs;
-		m_stateTimerMs = 0;
+		m_stateTimerMs = projectileState;
 		AdvanceState();
 	}
 	else {
@@ -222,7 +222,8 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	switch (m_state) {
 	case c_stateFlying: {
 		if (projectileState == PowerupProjectile::c_stateHitWorld) {
-			static_cast<GolVec3&>(projectilePositionCopy) = m_projectile.GetHitPosition();
+			GolVec3& projectilePositionCopyBase = projectilePositionCopy;
+			projectilePositionCopyBase = m_projectile.GetHitPosition();
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
@@ -232,7 +233,9 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			up.m_y = 0.0f;
 			up.m_z = 1.0f;
 
-			static_cast<GolVec3&>(targetPosition) = m_projectile.GetTargetPosition();
+			const GolVec3* target = &m_projectile.GetTargetPosition();
+			GolVec3& targetPositionBase = targetPosition;
+			targetPositionBase = *target;
 			forward.m_x = targetPosition.m_x - position.m_x;
 			forward.m_y = targetPosition.m_y - position.m_y;
 			forward.m_z = targetPosition.m_z - position.m_z;
@@ -243,7 +246,8 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	}
 	case c_statePulling:
 		if (projectileState == PowerupProjectile::c_stateHitWorld) {
-			static_cast<GolVec3&>(projectilePositionCopy) = m_projectile.GetHitPosition();
+			GolVec3& projectilePositionCopyBase = projectilePositionCopy;
+			projectilePositionCopyBase = m_projectile.GetHitPosition();
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
@@ -309,7 +313,11 @@ void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_smokeParticleRef != NULL) {
 		CutsceneParticle* particle = m_smokeParticleRef->m_particle;
-		if (particle == NULL || particle->GetSpawnedCount() >= 3) {
+		if (particle == NULL) {
+			goto finish;
+		}
+		if (particle->GetSpawnedCount() >= 3) {
+		finish:
 			m_owner->m_cutsceneAnimation->FinishRef(m_smokeParticleRef);
 			m_smokeParticleRef = NULL;
 			return;

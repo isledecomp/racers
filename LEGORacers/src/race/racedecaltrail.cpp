@@ -94,29 +94,26 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_points, LegoU32 p_pointC
 		dot += dotX;
 		dot += node->m_data.m_plane.m_distance;
 
-		LegoU32 nodeIndex;
 		if (dot < 0.0f && node->m_data.m_plane.m_backChild != TreeNode::c_invalidIndex) {
 			node->m_data.m_plane.m_backStamp = m_visitStamp;
-			nodeIndex = node->m_data.m_plane.m_backChild;
+			node = &m_nodes[node->m_data.m_plane.m_backChild];
 		}
 		else if (node->m_data.m_plane.m_frontChild == TreeNode::c_invalidIndex) {
 			node->m_data.m_plane.m_backStamp = m_visitStamp;
-			nodeIndex = node->m_data.m_plane.m_backChild;
+			node = &m_nodes[node->m_data.m_plane.m_backChild];
 		}
 		else {
 			node->m_data.m_plane.m_frontStamp = m_visitStamp;
-			nodeIndex = node->m_data.m_plane.m_frontChild;
+			node = &m_nodes[node->m_data.m_plane.m_frontChild];
 		}
-
-		node = &m_nodes[nodeIndex];
 	}
 
 	node->m_data.m_node.m_previous = NULL;
 	node->m_data.m_node.m_next = NULL;
 	if (node->m_nextLeafIndex == TreeNode::c_invalidIndex) {
-		TreeNode::Node* entry = &node->m_data.m_node;
-		m_lastVisibleLeaf = entry;
-		m_firstVisibleLeaf = entry;
+
+		m_lastVisibleLeaf = (&node->m_data.m_node);
+		m_firstVisibleLeaf = (&node->m_data.m_node);
 		return;
 	}
 
@@ -159,7 +156,7 @@ void GolBoundingShape::CollectLeavesAtPoints(GolVec3* p_points, LegoU32 p_pointC
 					continue;
 				}
 				LegoU32 i = 1;
-				if (count <= i) {
+				if (i >= count) {
 					continue;
 				}
 

@@ -302,21 +302,18 @@ void TimeRaceManager::Draw(GolD3DRenderDevice* p_renderer)
 		}
 
 		if (!(flags & c_flagRunning)) {
-			GolVec3* initialPosition = &ghostRun->m_initialPosition;
-			GolQuat* rotation = &ghostRun->m_initialRotation;
-
-			animatedEntity->SetPosition(*initialPosition);
-			animatedEntity->SetOrientationFromQuaternion(*rotation);
-			modelEntity->SetPosition(*initialPosition);
-			modelEntity->SetOrientationFromQuaternion(*rotation);
+			animatedEntity->SetPosition(ghostRun->m_initialPosition);
+			animatedEntity->SetOrientationFromQuaternion(ghostRun->m_initialRotation);
+			modelEntity->SetPosition(ghostRun->m_initialPosition);
+			modelEntity->SetOrientationFromQuaternion(ghostRun->m_initialRotation);
 			if (optionalEntity) {
-				optionalEntity->SetPosition(*initialPosition);
-				optionalEntity->SetOrientationFromQuaternion(*rotation);
+				optionalEntity->SetPosition(ghostRun->m_initialPosition);
+				optionalEntity->SetOrientationFromQuaternion(ghostRun->m_initialRotation);
 			}
 
 			animatedEntity->LocalToWorld(*attachedOffset, &position);
 			attachedEntity->SetPosition(position);
-			attachedEntity->SetOrientationFromQuaternion(*rotation);
+			attachedEntity->SetOrientationFromQuaternion(ghostRun->m_initialRotation);
 		}
 		else {
 			LegoU32 sampleIndex = m_elapsedTotalMs / c_ghostSampleIntervalMs;

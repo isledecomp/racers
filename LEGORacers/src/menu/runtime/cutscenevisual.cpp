@@ -198,11 +198,11 @@ void CutsceneVisual::Draw(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x004a36e0
 void CutsceneVisual::ComputeLayout(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height)
 {
-	const Rect* viewport = &p_renderer->GetCurrentCamera()->m_viewport;
-	LegoS32 viewportX = viewport->m_left;
-	LegoS32 viewportY = viewport->m_top;
-	LegoS32 viewportWidth = viewport->m_right - viewportX;
-	LegoS32 viewportHeight = viewport->m_bottom - viewportY;
+	Rect viewport = p_renderer->GetCurrentCamera()->m_viewport;
+	LegoS32 viewportX = viewport.m_left;
+	LegoS32 viewportWidth = viewport.m_right - viewportX;
+	LegoS32 viewportY = viewport.m_top;
+	LegoS32 viewportHeight = viewport.m_bottom - viewportY;
 
 	LegoS32 imageWidth;
 	LegoS32 imageHeight;
@@ -219,14 +219,14 @@ void CutsceneVisual::ComputeLayout(GolD3DRenderDevice* p_renderer, LegoFloat p_w
 		imageHeight = static_cast<LegoS32>(height * p_height);
 	}
 
-	viewportHeight = viewportY + (viewportHeight - imageHeight) / 2;
+	LegoS32 centeredY = viewportY + (viewportHeight - imageHeight) / 2;
 	if (!(flags & c_flagPositionX)) {
 		viewportWidth = viewportX + (viewportWidth - imageWidth) / 2;
 		m_x = static_cast<LegoFloat>(viewportWidth) / p_width;
 	}
 
 	if (!(flags & c_flagPositionY)) {
-		m_y = static_cast<LegoFloat>(viewportHeight) / p_height;
+		m_y = static_cast<LegoFloat>(centeredY) / p_height;
 	}
 
 	if (!(flags & c_flagWidth)) {

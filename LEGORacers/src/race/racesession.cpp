@@ -1175,9 +1175,9 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	DrawLoadProgress(0.88f);
 
 	GolMaterial* material = NULL;
-	if (m_materialAnimationDatabase != NULL && m_materialAnimationDatabase->GetMaterialLibraryCount() >= 2) {
+	if (m_materialAnimationDatabase && m_materialAnimationDatabase->GetMaterialLibraryCount() >= 2) {
 		GolMaterialLibrary* materialLibrary = m_materialAnimationDatabase->GetMaterialLibrary(1);
-		if (materialLibrary != NULL) {
+		if (materialLibrary) {
 			material = materialLibrary->GetItem(0);
 		}
 	}
@@ -1261,7 +1261,8 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	powerupParams.m_animationList = &m_animationList;
 	powerupParams.m_trackDatabase = m_powerupTrackDatabase;
 	powerupParams.m_targetPoints = &m_targetPoints;
-	powerupParams.m_cameraFov = m_splitScreen ? m_context->m_cameraFov - g_splitScreenFovDelta : m_context->m_cameraFov;
+	powerupParams.m_cameraFov =
+		m_splitScreen ? ((m_context->m_cameraFov - g_splitScreenFovDelta)) : ((m_context->m_cameraFov));
 	powerupParams.m_cheatFlags = m_context->m_cheatFlags;
 	m_powerupManager.Initialize(&powerupParams);
 

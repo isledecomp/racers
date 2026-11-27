@@ -772,8 +772,16 @@ void GolFontBase::DrawString(
 						lineStart++;
 					}
 
-					drawX =
-						DrawGlyphRun(count, p_renderer, drawX, p_y, p_scaleX, p_scaleY, p_rect, (undefined4) p_color);
+					drawX = DrawGlyphRun(
+						count,
+						p_renderer,
+						drawX,
+						p_y,
+						p_scaleX,
+						p_scaleY,
+						p_rect,
+						reinterpret_cast<undefined4>(p_color)
+					);
 				}
 
 				p_y += p_lineSpacing;

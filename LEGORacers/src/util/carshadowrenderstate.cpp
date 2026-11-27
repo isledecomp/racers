@@ -609,8 +609,8 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 			advancedEdge = TRUE;
 		}
 
-		LegoU16* dst = (LegoU16*) row + ((x0 + 0xffff) >> 16);
-		LegoU16* end = (LegoU16*) row + ((x1 + 0xffff) >> 16);
+		LegoU16* dst = reinterpret_cast<LegoU16*>(row) + ((x0 + 0xffff) >> 16);
+		LegoU16* end = reinterpret_cast<LegoU16*>(row) + ((x1 + 0xffff) >> 16);
 		while (dst < end) {
 			*dst++ = color;
 		}

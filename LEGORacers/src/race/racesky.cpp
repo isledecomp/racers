@@ -521,8 +521,8 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		ringCount = (p_params->m_segmentCount >> 1) - 1;
 	}
 
-	LegoU32 vertexCount = static_cast<LegoU32>(ringCount) * p_params->m_segmentCount + 2;
-	LegoU32 triangleBudget = static_cast<LegoU32>(ringCount) * p_params->m_segmentCount * 2;
+	LegoU32 vertexCount = ringCount * p_params->m_segmentCount + 2;
+	LegoU32 triangleBudget = ringCount * p_params->m_segmentCount * 2;
 	if (!p_params->m_hasTopCap) {
 		vertexCount--;
 		triangleBudget -= p_params->m_segmentCount;
@@ -532,7 +532,7 @@ void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 		triangleBudget -= p_params->m_segmentCount;
 	}
 
-	LegoU32 groupCount = static_cast<LegoU32>(ringCount) * 2 + 6;
+	LegoU32 groupCount = ringCount * 2 + 6;
 	p_params->m_model
 		->Allocate(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleBudget, groupCount, 1);
 	LegoU32 second;

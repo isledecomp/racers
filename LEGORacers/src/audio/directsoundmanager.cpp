@@ -194,11 +194,10 @@ void DirectSoundManager::Update(undefined4)
 	if (!m_paused) {
 		while (TRUE) {
 			SoundBuffer* queuedSound;
-			LegoBool32 haveSound = FALSE;
 			link = m_queuedSounds.LastLink();
-			if (m_queuedSounds.IsValidLastLink(link)) {
+			LegoBool32 haveSound = m_queuedSounds.IsValidLastLink(link);
+			if (haveSound) {
 				queuedSound = &m_queuedSounds.GetItem(*link);
-				haveSound = TRUE;
 			}
 			link = m_queuedSpatialSounds.LastLink();
 			if (m_queuedSpatialSounds.IsValidLastLink(link)) {

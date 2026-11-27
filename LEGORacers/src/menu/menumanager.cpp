@@ -477,7 +477,6 @@ void MenuManager::InitializeSaveSystem()
 	m_gameContext.m_saveSystem.Initialize(m_gameContext.m_context->m_golApp->GetInputManager(), FALSE);
 
 	if (m_gameContext.m_context->m_flags & LegoRacers::Context::c_flagSaveStateValid) {
-		SaveGame* saveGame = &m_gameContext.m_saveSystem.GetSessionSave();
 		::memcpy(
 			m_gameContext.m_saveSystem.GetSessionSave().GetFileImage(),
 			&m_gameContext.m_context->m_saveState,
@@ -485,7 +484,7 @@ void MenuManager::InitializeSaveSystem()
 		);
 		m_gameContext.m_context->m_flags &= ~LegoRacers::Context::c_flagSaveStateValid;
 		m_gameContext.m_saveSystem.GetGameState().LoadFromSaveGame(
-			saveGame,
+			&m_gameContext.m_saveSystem.GetSessionSave(),
 			m_gameContext.m_saveSystem.GetGameState().GetActiveSaveIndex()
 		);
 	}
@@ -818,15 +817,11 @@ void MenuManager::PrepareRaceContext()
 
 		ColorRGBA color;
 		color.m_alp = 0xff;
-		color.m_red = 0x80;
-		color.m_grn = 0x80;
-		color.m_blu = 0x80;
+		color.m_blu = color.m_grn = color.m_red = 0x80;
 		materialColor.SetColor(color);
 		rendererState.SetAmbientColor(&materialColor);
 
-		color.m_red = 0xff;
-		color.m_grn = 0xff;
-		color.m_blu = 0xff;
+		color.m_blu = color.m_grn = color.m_red = 0xff;
 		light.SetColor(color);
 
 		GolVec3 direction;
@@ -993,10 +988,7 @@ void MenuManager::BuildPlayerDriverModel(
 {
 	GolAnimatedEntity entity;
 	CmbModelPart modelParts;
-	LegoU32 textureCount;
 	DriverCosmetics cosmetics;
-	GolModelMaterialTable* materialTable;
-	LegoU32 materialCount;
 	GolMaterialParams params;
 
 	p_record->GetCosmetics(&cosmetics);
@@ -1004,15 +996,14 @@ void MenuManager::BuildPlayerDriverModel(
 	DriverModelBuilder* modelBuilder = &m_gameContext.m_modelBuilder;
 	GolModelBase* model = modelBuilder->BuildDriverModel(&cosmetics, NULL, 3);
 	p_slot->m_previewFaceIndex = cosmetics.m_faceIndex;
-	materialTable = model->GetMaterialTable();
+	GolModelMaterialTable* materialTable = model->GetMaterialTable();
 	p_slot->m_altModel = model;
-	textureCount = 0;
+	LegoU32 textureCount = 0;
 
-	for (materialCount = 0; materialCount < materialTable->GetCount(); materialCount++) {
-		GolMaterial* material = materialTable->GetMaterial(materialCount);
-		if (material == NULL) {
-			break;
-		}
+	LegoU32 materialCount = 0;
+	GolMaterial* material;
+	for (; materialCount < materialTable->GetCount() && (material = materialTable->GetMaterial(materialCount));
+		 materialCount++) {
 
 		if (material->GetFlags() & GolMaterial::c_flagTextured) {
 			textureCount++;

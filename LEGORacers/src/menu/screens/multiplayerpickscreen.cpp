@@ -183,7 +183,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			switch (p_event->m_keyCode) {
 			case 0x10000001:
 			case 0x30000005:
-				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) != NULL) {
+				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i)) {
 					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, NULL);
 					RestoreSlotLighting(i);
 				}
@@ -195,7 +195,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x10000039:
 			case 0x1000009c:
 			case 0x30000004:
-				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
+				if (!m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i)) {
 					SaveRecordList::Record* record = m_recordCursors[i].GetSelectedRecord();
 					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, record);
 					DimSlotLighting(i);
@@ -207,7 +207,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x30000009:
 			case 0x3000000b:
 			case 0x40000001:
-				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
+				if (!m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i)) {
 					m_context->m_modelBuilder.RefreshMenuResources();
 					SelectPreviousRecord(i);
 					UpdateNameLabel(i);
@@ -223,7 +223,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x30000007:
 			case 0x3000000a:
 			case 0x40000000:
-				if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
+				if (!m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i)) {
 					m_context->m_modelBuilder.RefreshMenuResources();
 					SelectNextRecord(i);
 					UpdateNameLabel(i);
@@ -247,7 +247,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 
 	if (m_nextMenuId == 0x41) {
 		for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
-			if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
+			if (!m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i)) {
 				m_nextMenuId = 0xffff;
 				break;
 			}

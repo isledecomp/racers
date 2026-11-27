@@ -462,20 +462,23 @@ void RacerPhysics::ApplyDirectionalImpulse(GolVec3* p_direction, LegoFloat p_mag
 	LegoFloat scaled = p_magnitude / g_directionalImpulseMax;
 
 	if (dot >= 0.0f) {
+		LegoFloat amount = (1.0f - dot) * 0.05f;
 		LegoFloat value;
 		if (m_flags & c_flagSpinning) {
-			value = g_routeSpinSpeed + 0.1f;
+			value = g_routeSpinSpeed;
+			value += 0.1f;
 		}
 		else {
 			value = m_routeCursor.m_playbackSpeed;
 			value += scaled;
 		}
-		value += (1.0f - dot) * 0.05f;
+		LegoFloat total = amount;
+		total += value;
 
-		if (value > g_routeMaxPlaybackSpeed) {
-			value = g_routeMaxPlaybackSpeed;
+		if (total > g_routeMaxPlaybackSpeed) {
+			total = g_routeMaxPlaybackSpeed;
 		}
-		m_routeCursor.m_playbackSpeed = value;
+		m_routeCursor.m_playbackSpeed = total;
 	}
 	else {
 		LegoFloat amount = (dot + 1.0f) * 0.25f;
@@ -743,7 +746,11 @@ void RacerPhysics::ApplyPitchImpulse(LegoFloat p_rate, LegoU32 p_durationMs)
 // FUNCTION: LEGORACERS 0x00429d40
 void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 {
-	if (p_elapsedMs == 0 || m_routePaused) {
+	if (p_elapsedMs == 0) {
+		return;
+	}
+
+	if (m_routePaused != 0) {
 		return;
 	}
 
@@ -753,7 +760,10 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 
 	if (m_flags & c_flagBoost) {
 		if (m_routeCursor.m_currentTime < g_routeBoostRampMs) {
-			LegoFloat speedScale = -((m_routeCursor.m_currentTime - g_routeBoostRampMs) / g_routeBoostRampMs);
+			LegoFloat speedScale = m_routeCursor.m_currentTime;
+			speedScale -= g_routeBoostRampMs;
+			speedScale /= g_routeBoostRampMs;
+			speedScale = -speedScale;
 			m_routeTargetSpeed = speedScale * (g_routeMaxPlaybackSpeed - g_routeBoostSpeed) + g_routeBoostSpeed;
 		}
 	}
@@ -765,17 +775,17 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 			GolVec3 previousPosition;
 			m_carEntity->GetPosition(&previousPosition);
 
-			LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
-			LegoU32 flags = m_flags;
-			LegoU32 suspendedMask = flags & c_flagRoutePushed;
-			if (suspendedMask || !(flags & (c_flagSpinning | c_flagBoost | c_flagCurseSlow)) || m_contactCount == 0) {
+			LegoFloat elapsedF = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+			LegoFloat elapsed = elapsedF;
+			if ((m_flags & c_flagRoutePushed) || !(m_flags & (c_flagSpinning | c_flagBoost | c_flagCurseSlow)) ||
+				m_contactCount == 0) {
 				LegoFloat currentSpeed = m_routeCursor.m_playbackSpeed;
-				if (currentSpeed < ((m_routeTargetSpeed))) {
+				if (currentSpeed < m_routeTargetSpeed) {
 					LegoFloat rate;
-					if (suspendedMask) {
+					if (m_flags & c_flagRoutePushed) {
 						rate = g_routePlaybackAccelPushed;
 					}
-					else if (flags & c_flagBoost) {
+					else if (m_flags & c_flagBoost) {
 						rate = g_routePlaybackAccelBoost;
 					}
 					else {
@@ -790,7 +800,7 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 				}
 				else if (currentSpeed > m_routeTargetSpeed) {
 					LegoFloat rate;
-					if (suspendedMask) {
+					if (m_flags & c_flagRoutePushed) {
 						rate = g_routePlaybackDecelPushed;
 					}
 					else {
@@ -826,8 +836,7 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 
 			if (m_routeMotion.m_jumpVelocity != 0.0f || m_routeMotion.m_jumpHeight != 0.0f) {
 				LegoFloat time = elapsed * 0.001f;
-				m_routeMotion.m_jumpVelocity += g_routeJumpGravity * time;
-				m_routeMotion.m_jumpHeight += time * m_routeMotion.m_jumpVelocity;
+				m_routeMotion.m_jumpHeight += time * (m_routeMotion.m_jumpVelocity += g_routeJumpGravity * time);
 				if (m_routeMotion.m_jumpHeight <= 0.0f) {
 					m_routeMotion.m_jumpHeight = 0.0f;
 					m_routeMotion.m_jumpVelocity = 0.0f;
@@ -845,7 +854,7 @@ void RacerPhysics::UpdateRouteMotion(LegoU32 p_elapsedMs)
 			m_velocity.m_x = currentPosition.m_x - previousPosition.m_x;
 			m_velocity.m_y = currentPosition.m_y - previousPosition.m_y;
 			m_velocity.m_z = currentPosition.m_z - previousPosition.m_z;
-			m_velocity *= invElapsed;
+			GolMath::ScaleVector3(&m_velocity, invElapsed, &m_velocity);
 
 			UpdateVelocityStats();
 			m_physicsEntity.CopyTransformFrom(*m_carEntity);
@@ -914,23 +923,25 @@ void RacerPhysics::SaveRouteState()
 void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 {
 	GolQuat rotation = m_routeCursor.m_rotation;
-	GolMatrix3 orientation;
+	GolVec3 right;
+	GolVec3 direction;
+	GolVec3 up;
 	GolVec3 rotatedForward;
 	GolVec3 transformed;
 	GolMath::QuatToMatrix3(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
 
 	if ((m_flags & c_flagSliding) || m_slideBankAngle != 0.0f) {
-		orientation.m_rows[0].m_x = m_carEntity->GetOrientation().m_rows[0].m_x;
-		orientation.m_rows[0].m_y = m_carEntity->GetOrientation().m_rows[0].m_y;
-		orientation.m_rows[0].m_z = m_carEntity->GetOrientation().m_rows[0].m_z;
-		orientation.m_rows[1].m_x = m_carEntity->GetOrientation().m_rows[1].m_x;
-		orientation.m_rows[1].m_y = m_carEntity->GetOrientation().m_rows[1].m_y;
-		orientation.m_rows[1].m_z = m_carEntity->GetOrientation().m_rows[1].m_z;
-		orientation.m_rows[2].m_x = m_carEntity->GetOrientation().m_rows[2].m_x;
-		orientation.m_rows[2].m_y = m_carEntity->GetOrientation().m_rows[2].m_y;
-		orientation.m_rows[2].m_z = m_carEntity->GetOrientation().m_rows[2].m_z;
-		GolMath::RotateAboutAxis(&orientation.m_rows[2], &rotatedForward, &orientation.m_rows[0], m_slideBankAngle);
-		m_carEntity->SetDirectionUp(orientation.m_rows[0], rotatedForward);
+		right.m_x = m_carEntity->GetOrientation().m_rows[0].m_x;
+		right.m_y = m_carEntity->GetOrientation().m_rows[0].m_y;
+		right.m_z = m_carEntity->GetOrientation().m_rows[0].m_z;
+		direction.m_x = m_carEntity->GetOrientation().m_rows[1].m_x;
+		direction.m_y = m_carEntity->GetOrientation().m_rows[1].m_y;
+		direction.m_z = m_carEntity->GetOrientation().m_rows[1].m_z;
+		up.m_x = m_carEntity->GetOrientation().m_rows[2].m_x;
+		up.m_y = m_carEntity->GetOrientation().m_rows[2].m_y;
+		up.m_z = m_carEntity->GetOrientation().m_rows[2].m_z;
+		GolMath::RotateAboutAxis(&up, &rotatedForward, &right, m_slideBankAngle);
+		m_carEntity->SetDirectionUp(right, rotatedForward);
 	}
 
 	if (m_pitchImpulseMs != 0 || m_routeTiltAngle != 0.0f) {
@@ -947,16 +958,17 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 		}
 
 		LegoBool32 wasNonNegative = m_routeTiltAngle >= 0.0f;
-		LegoFloat tiltIncrement = ((m_routeTiltRate) * (static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs))));
-		orientation.m_rows[0].m_x = m_carEntity->GetOrientation().m_rows[0].m_x;
-		orientation.m_rows[0].m_y = m_carEntity->GetOrientation().m_rows[0].m_y;
-		orientation.m_rows[0].m_z = m_carEntity->GetOrientation().m_rows[0].m_z;
-		orientation.m_rows[1].m_x = m_carEntity->GetOrientation().m_rows[1].m_x;
-		orientation.m_rows[1].m_y = m_carEntity->GetOrientation().m_rows[1].m_y;
-		orientation.m_rows[1].m_z = m_carEntity->GetOrientation().m_rows[1].m_z;
-		orientation.m_rows[2].m_x = m_carEntity->GetOrientation().m_rows[2].m_x;
-		orientation.m_rows[2].m_y = m_carEntity->GetOrientation().m_rows[2].m_y;
-		orientation.m_rows[2].m_z = m_carEntity->GetOrientation().m_rows[2].m_z;
+		double tiltIncrement = m_routeTiltRate;
+		tiltIncrement = GOL_MUL(tiltIncrement, static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)));
+		right.m_x = m_carEntity->GetOrientation().m_rows[0].m_x;
+		right.m_y = m_carEntity->GetOrientation().m_rows[0].m_y;
+		right.m_z = m_carEntity->GetOrientation().m_rows[0].m_z;
+		direction.m_x = m_carEntity->GetOrientation().m_rows[1].m_x;
+		direction.m_y = m_carEntity->GetOrientation().m_rows[1].m_y;
+		direction.m_z = m_carEntity->GetOrientation().m_rows[1].m_z;
+		up.m_x = m_carEntity->GetOrientation().m_rows[2].m_x;
+		up.m_y = m_carEntity->GetOrientation().m_rows[2].m_y;
+		up.m_z = m_carEntity->GetOrientation().m_rows[2].m_z;
 
 		m_routeTiltAngle += tiltIncrement;
 		LegoBool32 applyTiltRotation = TRUE;
@@ -972,8 +984,8 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 		if (applyTiltRotation) {
 			m_carEntity->LocalToWorld(m_anchorWheelOffset, &m_wheelProbes[1].m_wheelPosition);
 
-			GolMath::RotateAboutAxis(&orientation.m_rows[2], &rotatedForward, &orientation.m_rows[0], m_routeTiltAngle);
-			m_carEntity->SetDirectionUp(orientation.m_rows[0], rotatedForward);
+			GolMath::RotateAboutAxis(&right, &rotatedForward, &direction, m_routeTiltAngle);
+			m_carEntity->SetDirectionUp(rotatedForward, up);
 
 			m_carEntity->LocalToWorld(m_anchorWheelOffset, &transformed);
 			m_routeTiltHeight = transformed.m_z - m_wheelProbes[1].m_wheelPosition.m_z;
@@ -992,12 +1004,14 @@ void RacerPhysics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 
 	m_yawImpulseMs -= p_elapsedMs;
 
-	m_carEntity->GetAxes(&orientation.m_rows[0], &orientation.m_rows[2]);
+	m_carEntity->GetAxes(&right, &up);
 
-	m_routeSpinAngle += ((m_routeSpinRate) * (static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs))));
+	double spinIncrement = m_routeSpinRate;
+	spinIncrement = GOL_MUL(spinIncrement, static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)));
+	m_routeSpinAngle += spinIncrement;
 
-	GolMath::RotateAboutAxis(&orientation.m_rows[0], &rotatedForward, &orientation.m_rows[2], m_routeSpinAngle);
-	m_carEntity->SetDirectionUp(rotatedForward, orientation.m_rows[2]);
+	GolMath::RotateAboutAxis(&right, &rotatedForward, &up, m_routeSpinAngle);
+	m_carEntity->SetDirectionUp(rotatedForward, up);
 }
 
 // FUNCTION: LEGORACERS 0x0042a570

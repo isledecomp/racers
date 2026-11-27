@@ -512,9 +512,8 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 		for (LegoU8* skidFlags = m_wheelSkidFlags; skidFlags < m_wheelSkidFlags + sizeOfArray(m_wheelSkidFlags);
 			 skidFlags++, fadeTimer++) {
 			if (*skidFlags & c_wheelSkidFading) {
-				LegoU32 elapsed = *fadeTimer + p_elapsedMs;
-				*fadeTimer = elapsed;
-				if (elapsed > 1000) {
+				*fadeTimer += p_elapsedMs;
+				if (*fadeTimer > 1000) {
 					*skidFlags &= ~c_wheelSkidFading;
 					*fadeTimer = 0;
 				}
@@ -662,8 +661,9 @@ void CarVisuals::Update(LegoU32 p_elapsedMs)
 			LegoBool32 chooseSecond = (g_randomTable[g_randomTableIndex] >> 1) & 1;
 			LegoBool32 found = FALSE;
 
-			for (LegoS32 tireIndex = 0; tireIndex < 4; tireIndex++) {
-				if (m_wheelSkidFlags[tireIndex] & c_wheelSkidActive) {
+			LegoU8* tireFlags = m_wheelSkidFlags;
+			for (LegoS32 tireIndex = 0; tireIndex < sizeOfArray(m_wheelSkidFlags); tireIndex++, tireFlags++) {
+				if (*tireFlags & c_wheelSkidActive) {
 					if ((chooseSecond && !found) || (!chooseSecond && found)) {
 						static_cast<GolVec3&>(position) = m_racerPhysics->m_wheelProbes[tireIndex].m_wheelPosition;
 					}

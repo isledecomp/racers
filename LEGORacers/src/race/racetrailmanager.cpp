@@ -377,7 +377,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	color.m_blu = m_color.m_blu;
 	color.m_alp = m_color.m_alp;
 	LegoFloat alpha = static_cast<LegoFloat>(m_color.m_alp);
-	alpha *= 0.003921569f;
+	alpha = GOL_MUL(alpha, 0.003921569f);
 	alpha -= m_endAlpha;
 	LegoFloat alphaDivisor = static_cast<LegoFloat>(static_cast<LegoS32>(m_sampleCount + 1));
 	alpha /= alphaDivisor;
@@ -458,7 +458,7 @@ void RaceTrailManager::Trail::RebuildGeometry()
 	GdbModelIndexArrayBase* indexArrayBase;
 	m_model->GetIndexArrayInto(&indexArrayBase);
 
-	LegoU8 triangle[3];
+	LegoU8 triangle[4];
 	for (frameOffset = 0; frameOffset < rowsPerGroup - 1; frameOffset++) {
 		LegoU32 rowBase = m_pointCount * frameOffset;
 		for (pointIndex = 0; pointIndex < m_pointCount; pointIndex++) {

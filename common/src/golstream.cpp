@@ -583,13 +583,18 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 		return;
 	}
 
-	LegoChar* slash = strrchr((LegoChar*) p_path, '\\');
+#ifdef BUILDING_GOL
+	const LegoChar*& path = p_path;
+#else
+	const LegoChar* path = p_path;
+#endif
+	LegoChar* slash = strrchr((LegoChar*) path, '\\');
 	if (isAbsolutePath) {
-		strcpy(g_pathBuffer, p_path);
+		strcpy(g_pathBuffer, path);
 		TransformToUpper(g_pathBuffer);
 
 		if (slash) {
-			LegoU32 slashOffset = slash - p_path;
+			LegoU32 slashOffset = slash - path;
 			g_pathBuffer[slashOffset] = '\0';
 			g_hashTable->AddString(g_pathBuffer);
 			g_pathBuffer[slashOffset] = '\\';
@@ -607,12 +612,12 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 	}
 
 	if (slash) {
-#ifdef BUILDING_GOL
 		LegoU32 directoryEnd;
+#ifdef BUILDING_GOL
+		if (path[0] != '\\' && currentEntryPath) {
 #else
-		LegoU32 directoryEnd = prefixLength;
+		if (path[0] != '\\' && currentEntryPath) {
 #endif
-		if (p_path[0] != '\\' && currentEntryPath) {
 			LegoU32 currentEntryLength = strlen(currentEntryPath);
 			if (pathLength + currentEntryLength + prefixLength + 1 >= sizeOfArray(g_pathBuffer)) {
 				GOL_FATALERROR_MESSAGE("Unable to build pathname, too many chars");
@@ -634,23 +639,27 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 #ifdef BUILDING_GOL
 		{
 			directoryEnd = prefixLength;
-			if (p_path[0] == '\\') {
-				p_path++;
+			if (path[0] == '\\') {
+				path++;
 			}
 		}
 #else
-			if (p_path[0] == '\\') {
-			p_path++;
+		{
+			directoryEnd = prefixLength;
+			if (path[0] == '\\') {
+				path++;
+			}
 		}
 #endif
 
-		strcat(g_pathBuffer, p_path);
+		strcat(g_pathBuffer, path);
 		TransformToUpper(g_pathBuffer);
 
-		if (slash > p_path) {
-			directoryEnd += slash - p_path;
+		if (slash > path) {
+			directoryEnd += slash - path;
+			LegoChar* entryPath = g_pathBuffer + prefixLength;
 			g_pathBuffer[directoryEnd] = '\0';
-			g_hashTable->AddString(g_pathBuffer + prefixLength);
+			g_hashTable->AddString(entryPath);
 			g_pathBuffer[directoryEnd] = '\\';
 		}
 	}
@@ -660,7 +669,7 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 			strcat(g_pathBuffer, "\\");
 		}
 
-		strcat(g_pathBuffer, p_path);
+		strcat(g_pathBuffer, path);
 		TransformToUpper(g_pathBuffer);
 	}
 }

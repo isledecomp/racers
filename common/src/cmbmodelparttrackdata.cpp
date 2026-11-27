@@ -221,8 +221,9 @@ LegoBool32 CmbModelPartTrackData::InterpolateRotation(
 		LegoS32 previousKey = m_keys[keyIndex - 1];
 		duration = key - previousKey;
 		elapsed = p_time - static_cast<LegoFloat>(previousKey);
-		GetRotationFrame(p_track.m_rotationFrameIndex + i - 1, &from);
-		GetRotationFrame(p_track.m_rotationFrameIndex + i, &to);
+		LegoU32 frame = p_track.m_rotationFrameIndex + i;
+		GetRotationFrame(frame - 1, &from);
+		GetRotationFrame(frame, &to);
 	}
 	p_frameCount = duration;
 

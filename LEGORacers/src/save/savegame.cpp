@@ -234,44 +234,40 @@ void SaveGame::ReadPersistentGameState(PersistentGameState* p_state)
 	p_state->m_unlockedCircuits = m_fileImage[c_unlockStateOffset + 1];
 	p_state->m_unlockedRaces = ReadLittleEndianU16(&m_fileImage[c_unlockStateOffset + 2]);
 
-	const LegoU8* source = &m_fileImage[c_scoreRecordsOffset + c_scoreRecordCursorOffset];
 	for (i = 0; i < c_scoreRecordCount; i++) {
-		LegoU32 time = source[c_scoreRecordLapTimeOffset + 3 - c_scoreRecordCursorOffset];
+		LegoU32 time = m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset + 3];
 		time <<= 8;
-		time += source[c_scoreRecordLapTimeOffset + 2 - c_scoreRecordCursorOffset];
+		time += m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset + 2];
 		time <<= 8;
-		time += source[c_scoreRecordLapTimeOffset + 1 - c_scoreRecordCursorOffset];
+		time += m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset + 1];
 		time <<= 8;
-		time += source[c_scoreRecordLapTimeOffset - c_scoreRecordCursorOffset];
+		time += m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset];
 		p_state->m_bestLapTimes[i] = time;
 
 		for (j = 0; j < c_scoreHolderNameSize; j++) {
 			p_state->m_bestLapHolderNames[i][j] =
-				source[c_scoreRecordLapHolderNameOffset - c_scoreRecordCursorOffset + j];
+				m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordLapHolderNameOffset + j];
 		}
 
-		time = source[c_scoreRecordRaceTimeOffset + 3 - c_scoreRecordCursorOffset];
+		time = m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset + 3];
 		time <<= 8;
-		time += source[c_scoreRecordRaceTimeOffset + 2 - c_scoreRecordCursorOffset];
+		time += m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset + 2];
 		time <<= 8;
-		time += source[c_scoreRecordRaceTimeOffset + 1 - c_scoreRecordCursorOffset];
+		time += m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset + 1];
 		time <<= 8;
-		time += source[c_scoreRecordRaceTimeOffset - c_scoreRecordCursorOffset];
+		time += m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset];
 		p_state->m_bestRaceTimes[i] = time;
 
 		for (j = 0; j < c_scoreHolderNameSize; j++) {
 			p_state->m_bestRaceHolderNames[i][j] =
-				source[c_scoreRecordRaceHolderNameOffset - c_scoreRecordCursorOffset + j];
+				m_fileImage[c_scoreRecordsOffset + i * c_scoreRecordSize + c_scoreRecordRaceHolderNameOffset + j];
 		}
-
-		source += c_scoreRecordSize;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00442c20
 void SaveGame::WritePersistentGameState(PersistentGameState* p_state)
 {
-	LegoU8* dest;
 	LegoU32 i;
 	LegoU32 j;
 
@@ -318,33 +314,48 @@ void SaveGame::WritePersistentGameState(PersistentGameState* p_state)
 	m_fileImage[c_unlockStateOffset + 2] = static_cast<LegoU8>(p_state->m_unlockedRaces);
 	m_fileImage[c_unlockStateOffset + 3] = static_cast<LegoU8>(p_state->m_unlockedRaces >> 8);
 
-	dest = &m_fileImage[c_scoreRecordsOffset + c_scoreRecordCursorOffset];
-	for (i = 0; i < c_scoreRecordCount; i++, dest += c_scoreRecordSize) {
-		dest[c_scoreRecordLapTimeOffset - c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestLapTimes[i]);
-		dest[c_scoreRecordLapTimeOffset + 1 - c_scoreRecordCursorOffset] =
-			static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 8);
-		dest[c_scoreRecordLapTimeOffset + 2 - c_scoreRecordCursorOffset] =
-			static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 16);
-		dest[c_scoreRecordLapTimeOffset + 3 - c_scoreRecordCursorOffset] =
-			static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 24);
+	for (i = 0; i < c_scoreRecordCount; i++) {
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset + 2 -
+			 c_scoreRecordCursorOffset] |= 0;
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset -
+			 c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestLapTimes[i]);
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset + 1 -
+			 c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 8);
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset + 2 -
+			 c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 16);
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordLapTimeOffset + 3 -
+			 c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 24);
 
 		for (j = 0; j < c_scoreHolderNameSize; j++) {
-			dest[c_scoreRecordLapHolderNameOffset - c_scoreRecordCursorOffset + j] =
-				p_state->m_bestLapHolderNames[i][j];
+			m_fileImage
+				[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize +
+				 c_scoreRecordLapHolderNameOffset - c_scoreRecordCursorOffset + j] =
+					p_state->m_bestLapHolderNames[i][j];
 		}
 
-		dest[c_scoreRecordRaceTimeOffset - c_scoreRecordCursorOffset] =
-			static_cast<LegoU8>(p_state->m_bestRaceTimes[i]);
-		dest[c_scoreRecordRaceTimeOffset + 1 - c_scoreRecordCursorOffset] =
-			static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 8);
-		dest[c_scoreRecordRaceTimeOffset + 2 - c_scoreRecordCursorOffset] =
-			static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 16);
-		dest[c_scoreRecordRaceTimeOffset + 3 - c_scoreRecordCursorOffset] =
-			static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 24);
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset -
+			 c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestRaceTimes[i]);
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset +
+			 1 - c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 8);
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset +
+			 2 - c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 16);
+		m_fileImage
+			[c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize + c_scoreRecordRaceTimeOffset +
+			 3 - c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 24);
 
+		LegoU8* dstRace = &m_fileImage
+							  [c_scoreRecordsOffset + c_scoreRecordCursorOffset + i * c_scoreRecordSize +
+							   c_scoreRecordRaceHolderNameOffset - c_scoreRecordCursorOffset];
 		for (j = 0; j < c_scoreHolderNameSize; j++) {
-			dest[c_scoreRecordRaceHolderNameOffset - c_scoreRecordCursorOffset + j] =
-				p_state->m_bestRaceHolderNames[i][j];
+			dstRace[j] = p_state->m_bestRaceHolderNames[i][j];
 		}
 	}
 }

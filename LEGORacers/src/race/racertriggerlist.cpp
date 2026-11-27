@@ -159,6 +159,7 @@ void RacerTriggerList::Load(
 	m_eventQueue = p_raceState->GetEventQueue();
 	m_eventTable = p_eventTable;
 
+	EntryParams params;
 	GolFileParser* parser = CreateParser(p_name, p_binary);
 	if (parser) {
 		m_racerEntries = new Entry[m_count];
@@ -167,7 +168,6 @@ void RacerTriggerList::Load(
 		}
 
 		for (LegoU32 i = 0; i < m_count; i++) {
-			EntryParams params;
 			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(RacerTriggerList::e_triggers));
 			parser->ReadLeftCurly();
 

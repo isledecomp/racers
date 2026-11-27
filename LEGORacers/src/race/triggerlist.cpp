@@ -130,6 +130,7 @@ void TriggerList::Load(
 	m_eventQueue = p_eventQueue;
 	m_eventTable = p_eventTable;
 
+	EntryParams params;
 	GolFileParser* parser = CreateParser(p_name, p_binary);
 	if (parser) {
 		m_entries = new Entry[m_count];
@@ -141,14 +142,13 @@ void TriggerList::Load(
 			parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TrbTxtParser::e_triggers));
 			parser->ReadLeftCurly();
 
-			EntryParams params;
+			params.m_eventTable = m_eventTable;
 			params.m_position.m_x = 0.0f;
 			params.m_position.m_y = 0.0f;
 			params.m_position.m_z = 0.0f;
 			params.m_radius = 0.0f;
 			params.m_eventId = 0;
 			params.m_mirror = FALSE;
-			params.m_eventTable = m_eventTable;
 
 			GolFileParser::ParserTokenType token = parser->GetNextToken();
 			while (token != GolFileParser::e_rightCurly) {

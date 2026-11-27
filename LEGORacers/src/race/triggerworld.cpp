@@ -95,11 +95,13 @@ LegoBool32 TriggerWorld::IntersectSegment(
 			entity->GetBoundsCenter(&center);
 
 			LegoFloat radius = entity->GetBoundsRadius();
+			LegoFloat z = center.m_z - p_start->m_z;
 			LegoFloat x = center.m_x - p_start->m_x;
 			LegoFloat y = center.m_y - p_start->m_y;
-			LegoFloat z = center.m_z - p_start->m_z;
 			LegoFloat dot = z * direction.m_z + y * direction.m_y + x * direction.m_x;
-			LegoFloat discriminant = radius * radius - (y * y + z * z + x * x - dot * dot);
+			LegoFloat sqZ = center.m_z - p_start->m_z;
+			LegoFloat discriminant = radius * radius - ((center.m_y - p_start->m_y) * (center.m_y - p_start->m_y) +
+														sqZ * sqZ + x * x - dot * dot);
 			if (discriminant > 0.0f) {
 				LegoFloat distance = dot - static_cast<LegoFloat>(sqrt(discriminant));
 				if (distance * distance <= 0.0f) {
@@ -129,7 +131,8 @@ LegoBool32 TriggerWorld::IntersectSegment(
 		}
 	}
 
-	if (m_boundsEntity->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
+	entity = m_boundsEntity;
+	if (entity->IntersectSegment(p_start, p_end, record, p_hitPosition, &hitRecord, 0)) {
 		if (p_hitTarget) {
 			*p_hitTarget = hitRecord->GetTarget();
 		}

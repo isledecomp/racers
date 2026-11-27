@@ -178,9 +178,10 @@ void SphinxHazard::ResetState()
 
 	if (animation != NULL) {
 		MabMaterialTrack* items = animation->GetTracks();
-		MabMaterialTrack* item3 = &items[3];
-		MabMaterialTrack* item2 = item3 - 1;
 		MabMaterialTrack* item1 = &items[1];
+		MabMaterialTrack* item2 = &items[2];
+		MabMaterialTrack* item3 = &items[3];
+		MabMaterialTrack** slot = &item3;
 		item2->Unassign();
 		item3->Unassign();
 		items[0].Assign(items[0].GetMaterialTable(), items[0].GetMaterialIndex(), TRUE);

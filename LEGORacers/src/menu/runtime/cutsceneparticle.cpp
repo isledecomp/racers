@@ -266,47 +266,48 @@ void CutsceneParticle::Finish()
 // FUNCTION: LEGORACERS 0x004897e0
 void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 {
-	// Matches up to allocation permutations and commutative multiplication
-
 	GolVec3 local18;
 	GolVec3 localc;
 	m_emitTimerMs += p_elapsedMs;
 	m_ageMs += p_elapsedMs;
 
 	CutsceneAnimation::Emitter* emitter = m_emitter;
-	if (emitter) {
-		// LINE: LEGORACERS 0x00489816
-		if (0 <= emitter->GetDurationMs() && m_ageMs >= static_cast<LegoU32>(emitter->GetDurationMs())) {
-			Finish();
-			return;
-		}
+	if (!emitter) {
+		m_particleSystem.Update(p_elapsedMs);
+		return;
+	}
 
-		if (m_emitTimerMs >= static_cast<LegoU32>(emitter->GetEmitIntervalMs())) {
+	// LINE: LEGORACERS 0x00489816
+	if (0 <= emitter->GetDurationMs() && m_ageMs >= static_cast<LegoU32>(emitter->GetDurationMs())) {
+		Finish();
+		return;
+	}
+
+	if (m_emitTimerMs >= static_cast<LegoU32>(emitter->GetEmitIntervalMs())) {
+		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+
+		LegoU16 randomValue = g_randomTable[g_randomTableIndex] & 0xff;
+		LegoU16 emitChance = emitter->GetEmitChance();
+		if (randomValue >= emitChance) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
-			LegoU16 randomValue = g_randomTable[g_randomTableIndex] & 0xff;
-			LegoU16 emitChance = emitter->GetEmitChance();
-			if (randomValue >= emitChance) {
-				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+			m_emitter->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_emitter->GetPointCount());
 
-				m_emitter->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_emitter->GetPointCount());
+			localc.m_x = GOL_MUL(m_basis.m_m[0][0], local18.m_x) + GOL_MUL(m_basis.m_m[1][0], local18.m_y) +
+						 GOL_MUL(m_basis.m_m[2][0], local18.m_z);
+			localc.m_y = GOL_MUL(m_basis.m_m[0][1], local18.m_x) + GOL_MUL(m_basis.m_m[1][1], local18.m_y) +
+						 GOL_MUL(m_basis.m_m[2][1], local18.m_z);
+			localc.m_z = GOL_MUL(m_basis.m_m[0][2], local18.m_x) + GOL_MUL(m_basis.m_m[1][2], local18.m_y) +
+						 GOL_MUL(m_basis.m_m[2][2], local18.m_z);
 
-				localc.m_x = GOL_MUL(m_basis.m_m[0][0], local18.m_x) + GOL_MUL(m_basis.m_m[1][0], local18.m_y) +
-							 GOL_MUL(m_basis.m_m[2][0], local18.m_z);
-				localc.m_y = GOL_MUL(m_basis.m_m[0][1], local18.m_x) + GOL_MUL(m_basis.m_m[1][1], local18.m_y) +
-							 GOL_MUL(m_basis.m_m[2][1], local18.m_z);
-				localc.m_z = GOL_MUL(m_basis.m_m[0][2], local18.m_x) + GOL_MUL(m_basis.m_m[1][2], local18.m_y) +
-							 GOL_MUL(m_basis.m_m[2][2], local18.m_z);
+			localc.m_x += m_velocity.m_x;
+			localc.m_y += m_velocity.m_y;
+			localc.m_z += m_velocity.m_z;
 
-				localc.m_x += m_velocity.m_x;
-				localc.m_y += m_velocity.m_y;
-				localc.m_z += m_velocity.m_z;
-
-				m_particleSystem.SpawnParticle(&m_position, &localc, m_emitter->GetParticleLifeMs());
-			}
-
-			m_emitTimerMs = 0;
+			m_particleSystem.SpawnParticle(&m_position, &localc, m_emitter->GetParticleLifeMs());
 		}
+
+		m_emitTimerMs = 0;
 	}
 
 	m_particleSystem.Update(p_elapsedMs);

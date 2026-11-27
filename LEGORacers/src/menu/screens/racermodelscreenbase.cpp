@@ -99,20 +99,20 @@ void RacerModelScreenBase::OpenRecordCursors(MenuGameContext* p_context, LegoU32
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		LegoU32* count = &m_recordCounts[i];
 		InputBindingState::PlayerState* player = &players[i];
-		SaveRecordCursor* modelState = &m_recordCursors[i];
 
-		modelState->SetSaveSystem(&p_context->m_saveSystem);
-		modelState->Begin(p_mask);
-		*count = modelState->CountRecords(p_mask);
+		m_recordCursors[i].SetSaveSystem(&p_context->m_saveSystem);
+		m_recordCursors[i].Begin(p_mask);
+		*count = m_recordCursors[i].CountRecords(p_mask);
 
 		if (*count) {
-			SaveRecordList::Record* firstRecord = modelState->GetSelectedRecord();
+			SaveRecordList::Record* firstRecord = m_recordCursors[i].GetSelectedRecord();
 			LegoU32 selectedRecordId = player->m_selectedRecordId;
-			LegoU32 selectedRecordSource = player->m_selectedRecordSource;
 			LegoU32 selectedSaveIndex = player->m_selectedSaveIndex;
+			LegoU32 selectedRecordSource = player->m_selectedRecordSource;
+			player->m_selectedSaveIndex |= 0;
 
 			while (TRUE) {
-				SaveRecordList::Record* record = modelState->SelectNext();
+				SaveRecordList::Record* record = m_recordCursors[i].SelectNext();
 
 				if (record->m_recordSource == selectedRecordSource && record->m_saveIndex == selectedSaveIndex &&
 					record->m_recordId == selectedRecordId) {
@@ -124,9 +124,9 @@ void RacerModelScreenBase::OpenRecordCursors(MenuGameContext* p_context, LegoU32
 					continue;
 				}
 
-				record = modelState->SelectNext();
+				record = m_recordCursors[i].SelectNext();
 				while (record->m_recordSource == 3 && firstRecord != record) {
-					record = modelState->SelectNext();
+					record = m_recordCursors[i].SelectNext();
 				}
 
 				break;

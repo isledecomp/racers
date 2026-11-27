@@ -690,6 +690,7 @@ void GolFontBase::DrawString(
 		if (length) {
 			LegoU32 i = 0;
 			while (i < length) {
+				LegoU32 lineWidth = 0;
 				if (!lineBreak) {
 					while (*p_string->FromCursor(i) == ' ') {
 						i++;
@@ -699,10 +700,8 @@ void GolFontBase::DrawString(
 				lineBreak = FALSE;
 				LegoU32 lineStart = i;
 				LegoU32 breakIndex = i;
-				LegoU32 lineWidth = 0;
 				LegoU32 wordWidth = 0;
 				LegoU32 lastIndex = i - 1;
-
 				while (lineWidth <= static_cast<LegoU32>(p_wrapWidth)) {
 					if (i >= length) {
 						break;
@@ -744,18 +743,14 @@ void GolFontBase::DrawString(
 						while (lineWidth > static_cast<LegoU32>(p_wrapWidth) && i > breakIndex) {
 							i--;
 							LegoU16 textChar = *p_string->FromCursor(i);
-							LegoU32 charWidth;
 
 							if (textChar == ' ') {
-								charWidth = font->m_spaceWidth;
+								lineWidth -= font->m_charSpacing + font->m_spaceWidth;
 							}
 							else {
 								LegoU32 glyphIndex = font->FindGlyphIndex(textChar);
-								charWidth = font->m_glyphs[glyphIndex].m_width;
+								lineWidth -= font->m_glyphs[glyphIndex].m_width + font->m_charSpacing;
 							}
-
-							charWidth += font->m_charSpacing;
-							lineWidth -= charWidth;
 						}
 					}
 					else {
@@ -780,16 +775,8 @@ void GolFontBase::DrawString(
 						lineStart++;
 					}
 
-					drawX = DrawGlyphRun(
-						count,
-						p_renderer,
-						drawX,
-						p_y,
-						p_scaleX,
-						p_scaleY,
-						p_rect,
-						reinterpret_cast<undefined4>(p_color)
-					);
+					drawX =
+						DrawGlyphRun(count, p_renderer, drawX, p_y, p_scaleX, p_scaleY, p_rect, (undefined4) p_color);
 				}
 
 				p_y += p_lineSpacing;

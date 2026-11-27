@@ -522,8 +522,8 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 		topIndex = 1;
 	}
 
-	TransformedVertex* base0 = vertices[topIndex];
-	TransformedVertex* base1 = base0;
+	TransformedVertex* base1 = vertices[topIndex];
+	TransformedVertex* base0 = base1;
 	LegoU32 edge0Index = g_previousVertexIndex[topIndex];
 	LegoU32 edge1Index = g_nextVertexIndex[topIndex];
 	TransformedVertex* edge0 = vertices[edge0Index];
@@ -567,13 +567,13 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 
 	LegoBool32 edge1EndsFirst;
 	LegoS32 yEnd;
-	if (edge0->m_y <= edge1->m_y) {
-		yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge0->m_y)) & 0xffff0000;
-		edge1EndsFirst = FALSE;
-	}
-	else {
+	if (edge0->m_y > edge1->m_y) {
 		yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge1->m_y)) & 0xffff0000;
 		edge1EndsFirst = TRUE;
+	}
+	else {
+		yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge0->m_y)) & 0xffff0000;
+		edge1EndsFirst = FALSE;
 	}
 
 	for (;;) {
@@ -582,7 +582,6 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 				return;
 			}
 
-			LegoFloat yEndValue;
 			if (edge1EndsFirst) {
 				base1 = edge1;
 				edge1Index = g_nextVertexIndex[edge1Index];
@@ -593,7 +592,7 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 				}
 				x1 = static_cast<LegoS32>(65536.0f * base1->m_x);
 				xStep1 = static_cast<LegoS32>(((edge1->m_x - base1->m_x) / deltaY1) * 65536.0f);
-				yEndValue = edge1->m_y;
+				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge1->m_y)) & 0xffff0000;
 			}
 			else {
 				base0 = edge0;
@@ -605,20 +604,17 @@ void CarShadowRenderState::DrawTriangles16Bpp(TransformedVertex** p_triangle)
 				}
 				x0 = static_cast<LegoS32>(65536.0f * base0->m_x);
 				xStep0 = static_cast<LegoS32>(((edge0->m_x - base0->m_x) / deltaY0) * 65536.0f);
-				yEndValue = edge0->m_y;
+				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge0->m_y)) & 0xffff0000;
 			}
 
-			yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * yEndValue)) & 0xffff0000;
 			if (y >= yEnd) {
 				return;
 			}
 			advancedEdge = TRUE;
 		}
 
-		LegoS32 startX = (x0 + 0xffff) >> 16;
-		LegoS32 endX = (x1 + 0xffff) >> 16;
-		LegoU16* dst = reinterpret_cast<LegoU16*>(row) + startX;
-		LegoU16* end = reinterpret_cast<LegoU16*>(row) + endX;
+		LegoU16* dst = (LegoU16*) row + ((x0 + 0xffff) >> 16);
+		LegoU16* end = (LegoU16*) row + ((x1 + 0xffff) >> 16);
 		while (dst < end) {
 			*dst++ = color;
 		}

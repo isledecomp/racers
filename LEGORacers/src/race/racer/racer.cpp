@@ -368,10 +368,11 @@ void Racer::Reset()
 	m_raceState = NULL;
 
 	m_lapsCompleted = 0;
+	LegoU32 lapTime = 0;
 	m_lapTransitionCount = 0xffffffff;
 	LegoS32 i;
 	for (i = 0; i < sizeOfArray(m_lapTimes); i++) {
-		m_lapTimes[i] = 0;
+		m_lapTimes[i] = lapTime;
 	}
 	m_heldPowerupColor = 0;
 	m_flags = 0;
@@ -406,16 +407,20 @@ void Racer::Reset()
 	m_timeBehindDisplayMs = 0;
 	m_timeBehind = 0;
 
+	LegoU8 invalidIndex = 0xff;
 	m_facingForwardMs = 0;
 	m_lookTargetPosition.m_x = 0;
-	m_aiRedUseChance = 0xff;
-	m_aiYellowUseChance = 0xff;
-	m_aiGreenUseChance = 0xff;
-	m_aiBlueUseChance = 0xff;
-	m_driverStat4 = 0xff;
-	m_driverStat5 = 0xff;
-	m_lookTargetPosition.m_y = 0;
+	m_aiRedUseChance = invalidIndex;
+	m_aiYellowUseChance = invalidIndex;
+	m_aiGreenUseChance = invalidIndex;
+	m_aiBlueUseChance = invalidIndex;
+	m_driverStat4 = invalidIndex;
+	LegoU8& driverStat5Ref = m_driverStat5;
+	driverStat5Ref = invalidIndex;
+	LegoFloat& lookTargetPosY = m_lookTargetPosition.m_y;
+	lookTargetPosY = 0;
 
+	DroppableBrick* brick = NULL;
 	m_lookTargetPosition.m_z = 0;
 	m_aiAggression = 0;
 	m_actionSource.m_x = 0;
@@ -435,7 +440,7 @@ void Racer::Reset()
 	m_unk0xdb0 = 0;
 	m_whiteBrickCount = 0;
 	for (i = 0; i < sizeOfArray(m_whiteBricks); i++) {
-		m_whiteBricks[i] = NULL;
+		m_whiteBricks[i] = brick;
 	}
 	m_cameraController = NULL;
 	m_cameraViewIndex = 0;

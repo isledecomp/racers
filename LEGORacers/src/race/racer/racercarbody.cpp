@@ -210,7 +210,6 @@ void RacerCarBody::Reset()
 	m_externalForce1.m_z = 0;
 	m_contactOffsetX = 0;
 	m_contactOffsetY = 0;
-	m_unk0x654 = -10.95f;
 	m_rideHeight = g_defaultRideHeight;
 	m_forwardVelocity.m_x = 0.0f;
 	m_forwardVelocity.m_y = 0.0f;
@@ -227,6 +226,7 @@ void RacerCarBody::Reset()
 	m_centripetalForce = 0;
 	m_turnRadius = 0;
 	m_yawRate = 0;
+	m_unk0x654 = -10.95f;
 	m_savedPosition.m_x = 0.0f;
 	m_savedPosition.m_y = 0.0f;
 	m_savedPosition.m_z = 0.0f;
@@ -1955,23 +1955,24 @@ LegoU32 RacerCarBody::ResolveWallCollisions(LegoU32 p_elapsedMs, LegoBool32 p_qu
 					worldNormal = g_carBodyHitTriangle.m_normal;
 
 					if (DotVectors(hitPoint - m_bodyPointsWorld[pointIndex], g_carBodyHitTriangle.m_normal) >= 0.0f) {
+						GolVec3& point = m_bodyPointsWorld[pointIndex];
 						if (hitRecord && !OnCollisionRecord(&hitPoint, hitRecord, resource, &g_carBodyHitTriangle)) {
 							continue;
 						}
 
-						LegoFloat deltaX = m_bodyPointsWorld[pointIndex].m_x - hitPoint.m_x;
-						LegoFloat deltaY = m_bodyPointsWorld[pointIndex].m_y - hitPoint.m_y;
-						LegoFloat deltaZ = m_bodyPointsWorld[pointIndex].m_z - hitPoint.m_z;
-						LegoFloat distance = deltaX * deltaX + ((deltaY * deltaY)) + deltaZ * deltaZ;
+						LegoFloat deltaX = point.m_x - hitPoint.m_x;
+						LegoFloat deltaY = point.m_y - hitPoint.m_y;
+						LegoFloat deltaZ = point.m_z - hitPoint.m_z;
+						LegoFloat distance = deltaZ * deltaZ + (deltaX * deltaX + deltaY * deltaY);
 
 						if (distance > bestDistance) {
 							bestDistance = distance;
 							m_wallNormal = worldNormal;
 							m_bodyPointHit[pointIndex] = 1;
-							selectedHitAmount = hitAmount;
 							LegoU32 collisionCount = m_wallContact;
 							collisionCount++;
 							m_wallContact = collisionCount;
+							selectedHitAmount = hitAmount;
 						}
 					}
 				}

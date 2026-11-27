@@ -228,8 +228,9 @@ void HomingProjectile::StartHoming()
 // FUNCTION: LEGORACERS 0x00423a20
 LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state != c_stateFlying) {
-		return m_state;
+	LegoU32 state = m_state;
+	if (state != c_stateFlying) {
+		return state;
 	}
 
 	m_ageMs += p_elapsedMs;
@@ -307,7 +308,14 @@ LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 
 		GolVec3* direction = &m_direction;
 		GolMath::NormalizeVector3(*direction, direction);
-		GolMath::ScaleVector3(direction, m_speed, &m_velocity);
+		LegoFloat speed = m_speed;
+		m_velocity.m_x = GOL_MUL(speed, direction->m_x);
+		LegoFloat y = direction->m_y;
+		y *= speed;
+		m_velocity.m_y = y;
+		LegoFloat z = direction->m_z;
+		z *= speed;
+		m_velocity.m_z = z;
 		GolVec3 step;
 		GolMath::ScaleVector3(&m_velocity, elapsedSeconds, &step);
 		nextPosition.m_x = step.m_x + m_position.m_x;

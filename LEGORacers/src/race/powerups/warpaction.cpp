@@ -158,9 +158,9 @@ void WarpAction::Update(LegoU32 p_elapsedMs)
 	MenuAnimationList* animationList = m_manager->m_animationList;
 	if (m_stateTimerMs < c_menuAnimationDurationMs && m_state == c_stateStarting && !m_isDemoRacer &&
 		!animationList->HasActive()) {
-		MenuAnimationList::Entry* entry =
-			animationList->Activate(c_menuAnimationDurationMs, FALSE, NULL, m_racer->m_cameraController->m_camera);
-		if (entry) {
+		GolCamera* cam = m_racer->m_cameraController->m_camera;
+		MenuAnimationList::Entry* entry = animationList->Activate(c_menuAnimationDurationMs, FALSE, NULL, cam);
+		if (entry != NULL) {
 			ColorRGBA color;
 			color.m_red = 0;
 			color.m_grn = 0;
@@ -171,33 +171,29 @@ void WarpAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_state == c_stateActive) {
 		GolVec3 position;
-		do {
-			if (m_hasTarget) {
-				LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_warpLerpScale;
-				position.m_x = m_targetPosition.m_x - ((m_targetPosition.m_x - m_startPosition.m_x) * amount);
-				position.m_y = m_targetPosition.m_y - ((m_targetPosition.m_y - m_startPosition.m_y) * amount);
-				position.m_z = m_targetPosition.m_x - ((m_targetPosition.m_z - m_startPosition.m_z) * amount);
+		if (m_hasTarget) {
+			LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_warpLerpScale;
+			position.m_x = m_targetPosition.m_x - ((m_targetPosition.m_x - m_startPosition.m_x) * amount);
+			position.m_y = m_targetPosition.m_y - ((m_targetPosition.m_y - m_startPosition.m_y) * amount);
+			position.m_z = m_targetPosition.m_x - ((m_targetPosition.m_z - m_startPosition.m_z) * amount);
+			m_racer->m_visuals.m_carEntity->SetPosition(position);
+			m_racer->m_physics.m_physicsEntity.SetPosition(position);
+		}
+		else if (m_followingPath && m_racer->m_checkpointGraph != NULL) {
+			LegoFloat distance = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_warpPathSpeed;
+			CheckpointGraph::Entry* pathEntry = m_racer->m_checkpoint;
+			if (pathEntry != NULL) {
+				LegoU8 pathIndex = pathEntry->m_next.m_items[0];
+				pathEntry = m_racer->m_checkpointGraph->GetCheckpoint(pathIndex);
 			}
-			else {
-				if (!m_followingPath || m_racer->m_checkpointGraph == NULL) {
-					break;
-				}
 
-				LegoFloat distance = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_warpPathSpeed;
-				CheckpointGraph::Entry* pathEntry = m_racer->m_checkpoint;
-				if (pathEntry != NULL) {
-					LegoU8 pathIndex = pathEntry->m_next.m_items[0];
-					pathEntry = m_racer->m_checkpointGraph->GetCheckpoint(pathIndex);
-				}
-
-				CarVisuals* racerCarVisuals = &m_racer->m_visuals;
-				racerCarVisuals->m_carEntity->GetPosition(&position);
-				m_racer->m_checkpointGraph->AdvanceAlongGraph(&position, distance, pathEntry);
-			}
+			CarVisuals* racerCarVisuals = &m_racer->m_visuals;
+			racerCarVisuals->m_carEntity->GetPosition(&position);
+			m_racer->m_checkpointGraph->AdvanceAlongGraph(&position, distance, pathEntry);
 
 			m_racer->m_visuals.m_carEntity->SetPosition(position);
 			m_racer->m_physics.m_physicsEntity.SetPosition(position);
-		} while (0);
+		}
 	}
 
 	m_modelEntity.Update(p_elapsedMs);

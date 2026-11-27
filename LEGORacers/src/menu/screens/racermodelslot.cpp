@@ -26,17 +26,11 @@ void RacerModelSlot::Reset()
 	::memset(&m_createParams, 0, sizeof(m_createParams));
 
 	::memset(m_unk0x88, 0, sizeof(m_unk0x88));
-	m_entity = NULL;
-	m_entityB = NULL;
-	m_entityA = NULL;
-	m_spinAxis.m_y = 0.0f;
-	m_spinAxis.m_x = 0.0f;
+	m_entityA = m_entityB = m_entity = NULL;
+	m_spinAxis.m_x = m_spinAxis.m_y = 0.0f;
 	m_spinAxis.m_z = 1.0f;
-	m_unk0x84 = 0;
-	m_unk0x80 = 0;
-	m_unk0x7c = 0;
-	m_timerBMs = 0;
-	m_timerAMs = 0;
+	m_unk0x7c = m_unk0x80 = m_unk0x84 = 0;
+	m_timerAMs = m_timerBMs = 0;
 	m_promoteA = TRUE;
 }
 

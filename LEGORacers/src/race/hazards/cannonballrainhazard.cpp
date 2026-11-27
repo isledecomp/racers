@@ -131,7 +131,7 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 	GolVec3 right;
 	transform->GetRight(&right);
 
-	LegoFloat scale = m_emitterEntity->GetModel(0)->GetScale();
+	LegoFloat scale = (((m_emitterEntity->GetModel(0)->GetScale())));
 	scale *= m_emitterEntity->GetScale();
 	position.m_x *= scale;
 	position.m_y *= scale;
@@ -163,7 +163,9 @@ void CannonballRainHazard::Update(undefined4 p_elapsedMs)
 	random = g_randomTable[g_randomTableIndex] % 4;
 	m_dropPosition.m_y = static_cast<LegoFloat>(random) + m_emitterPosition.m_y - 2.0f;
 	if (m_dropPosition.m_x == m_emitterPosition.m_x && m_dropPosition.m_y == m_emitterPosition.m_y) {
-		m_dropPosition.m_x += 2.0f;
+		LegoFloat positionX = m_dropPosition.m_x;
+		positionX += 2.0f;
+		m_dropPosition.m_x = positionX;
 	}
 
 	m_dropPosition.m_z = m_emitterPosition.m_z + 1.0f;

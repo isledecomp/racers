@@ -1416,16 +1416,21 @@ void CarVisuals::Draw(GolD3DRenderDevice* p_renderer)
 void CarVisuals::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & c_flagShadowVisible) {
+		GolCamera* camera = p_renderer->GetCurrentCamera();
 		GolVec3 cameraPosition;
-		p_renderer->GetCurrentCamera()->GetTransform()->GetPosition(&cameraPosition);
+		camera->m_transform->GetPosition(&cameraPosition);
 
 		RaceDecalManager::Trail::Decal* field = &m_shadowDecal;
 		GolVec3 position;
 		LegoFloat deltaX = field->m_center.m_x;
-		deltaX = cameraPosition.m_x - deltaX;
+		if (deltaX == 0) {
+		}
 		position.m_y = field->m_center.m_y;
 		position.m_z = field->m_center.m_z;
-		LegoFloat deltaY = cameraPosition.m_y - position.m_y;
+		LegoFloat cameraPosX = cameraPosition.m_x;
+		deltaX = cameraPosX - deltaX;
+		LegoFloat deltaY = cameraPosition.m_y;
+		deltaY -= position.m_y;
 		LegoFloat deltaZ = cameraPosition.m_z - position.m_z;
 		LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
 

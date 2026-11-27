@@ -386,14 +386,11 @@ void GrapplingHookAction::AdvanceState()
 	GolVec3 scaledDirection;
 	GolVec3 targetVelocity;
 	PowerupProjectile::Params projectileParams;
-	CarVisuals* racerField = &m_ownerRacer->m_visuals;
-	LegoU32 durationMs = 3000;
 
 	m_state = c_stateFlying;
-	m_stateTimerMs = durationMs;
+	m_stateTimerMs = 3000;
 
-	racerField->m_carEntity->GetPosition(&position);
-
+	m_ownerRacer->m_visuals.GetPosition(&position);
 	m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 
 	projectileParams.m_worldEntity = m_hookEntity;
@@ -404,7 +401,7 @@ void GrapplingHookAction::AdvanceState()
 	projectileParams.m_targetOffset.m_y = 0.0f;
 	projectileParams.m_targetOffset.m_z = 0.0f;
 	projectileParams.m_speed = g_hookSpeed;
-	projectileParams.m_lifetimeMs = durationMs;
+	projectileParams.m_lifetimeMs = 3000;
 	projectileParams.m_launchHeight = g_hookLaunchHeight;
 
 	if (m_targetRacer == NULL) {
@@ -414,7 +411,7 @@ void GrapplingHookAction::AdvanceState()
 			targetPosition.m_z = m_targetPoint->m_position.m_z;
 		}
 		else {
-			scaledDirection.m_x = ((direction.m_x * 500.0f));
+			scaledDirection.m_x = GOL_MUL(direction.m_x, 500.0f);
 			scaledDirection.m_y = direction.m_y * 500.0f;
 			scaledDirection.m_z = direction.m_z * 500.0f;
 			GolCameraBase::Add(&position, &scaledDirection, &targetPosition);
@@ -426,27 +423,30 @@ void GrapplingHookAction::AdvanceState()
 		targetVelocity.m_z = 0.0f;
 		m_projectile
 			.PowerupProjectile::LaunchAtPoint(&projectileParams, m_ownerRacer, &targetPosition, &targetVelocity, TRUE);
+		m_projectile.ResetRope();
 	}
 	else {
 		m_projectile.PowerupProjectile::LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, TRUE, FALSE);
+		m_projectile.ResetRope();
 	}
-
-	m_projectile.ResetRope();
 
 	m_smokeParticleRef = m_owner->m_cutsceneAnimation->SpawnParticle("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticleRef != NULL) {
 		m_ownerRacer->m_physics.m_carEntity->GetPosition(&position);
 		position.m_z += g_hookSmokeHeightOffset;
 
-		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_physics.m_carEntity->CopyOrientation(m_smokeParticleRef->m_particle->GetBasis());
+		GolOrientedEntity* carEntity = m_ownerRacer->m_physics.m_carEntity;
+		CutsceneParticleRef* ref1 = m_smokeParticleRef;
+		if (ref1->m_particle != NULL) {
+			carEntity->CopyOrientation(ref1->m_particle->GetBasis());
 		}
-		if (m_smokeParticleRef->m_particle != NULL) {
-			m_smokeParticleRef->m_particle->SetPosition(&position);
+		CutsceneParticleRef* ref2 = m_smokeParticleRef;
+		if (ref2->m_particle != NULL) {
+			ref2->m_particle->SetPosition(&position);
 		}
 	}
 
-	racerField->m_carEntity->GetPosition(&position);
+	m_ownerRacer->m_visuals.GetPosition(&position);
 	m_soundSource
 		->PlaySpatialSoundById(c_soundFire, &position, g_hookSoundMinDistance, g_hookSoundMaxDistance, 1.0f, 1.0f);
 }

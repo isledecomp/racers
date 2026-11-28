@@ -8,6 +8,20 @@
 
 DECOMP_SIZE_ASSERT(PowerupProjectile, 0xa8)
 
+inline LegoFloat DotVectors(const GolVec3& p_left, const GolVec3& p_right)
+{
+	LegoFloat result = p_left.m_z;
+	LegoFloat z = p_right.m_z;
+	result *= z;
+	LegoFloat y = p_left.m_y;
+	LegoFloat rightY = p_right.m_y;
+	y *= rightY;
+	result += y;
+	result += p_left.m_x * p_right.m_x;
+
+	return result;
+}
+
 // GLOBAL: LEGORACERS 0x004b076c
 extern const LegoFloat g_projectileTargetHeightOffset = 5.0f;
 
@@ -187,9 +201,10 @@ void PowerupProjectile::LaunchAtPoint(
 	LegoBool32 p_fromRacerPosition
 )
 {
-	Initialize(p_params);
+	Params* params = p_params;
+	Initialize(params);
 
-	LegoFloat speed = p_params->m_speed;
+	LegoFloat speed = params->m_speed;
 	m_targetPosition = *p_targetPosition;
 	m_targetRacer = NULL;
 	m_ownerRacer = p_racer;
@@ -207,8 +222,11 @@ void PowerupProjectile::LaunchAtPoint(
 	GolVec3 delta;
 	delta.m_x = target->m_x - startPosition->m_x;
 	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
-	delta.m_z = 0.0f;
-	LegoFloat distance = static_cast<LegoFloat>(sqrt(delta.m_y * delta.m_y + delta.m_x * delta.m_x));
+	// SCRATCH: see LaunchAtRacer
+	static const LegoFloat zeroB = 0.0f;
+	delta.m_z = zeroB;
+	LegoFloat deltaY = delta.m_y;
+	LegoFloat distance = static_cast<LegoFloat>(sqrt(deltaY * deltaY + delta.m_x * delta.m_x));
 	LegoFloat inverseDistance;
 	if (distance == 0.0f) {
 		distance = 1.0f;
@@ -218,28 +236,45 @@ void PowerupProjectile::LaunchAtPoint(
 		inverseDistance = 1.0f / distance;
 	}
 
-	delta.m_x *= inverseDistance;
-	GolVec3 racerDirection = p_racer->m_physics.m_velocityDirection;
-	delta.m_y *= inverseDistance;
-	LegoFloat dot = racerDirection.m_z * delta.m_z + racerDirection.m_y * delta.m_y + racerDirection.m_x * delta.m_x;
+	LegoFloat dx = delta.m_x * inverseDistance;
+	delta.m_x = dx;
+	LegoFloat dy = delta.m_y;
+	dy *= inverseDistance;
+	delta.m_y = dy;
+	Racer* racer = p_racer;
+	GolVec3 racerDirection = racer->m_physics.m_velocityDirection;
+	LegoFloat dot = DotVectors(racerDirection, delta);
 	if (dot > 0.0f) {
-		LegoFloat speedDelta = dot * p_racer->m_physics.m_speed;
+		LegoFloat speedDelta = dot * racer->m_physics.m_speed;
 		speedDelta *= 1000.0f;
 		speed += speedDelta;
 	}
 
 	LegoFloat durationSeconds = distance / speed;
-	m_flightTimeMs = static_cast<LegoS32>(durationSeconds * 1000.0f);
+	LegoFloat scaledDuration = durationSeconds;
+	scaledDuration *= 1000.0f;
+	m_flightTimeMs = static_cast<LegoS32>(scaledDuration);
 	GolVec3 scaledDelta;
 	scaledDelta.m_x = p_targetVelocity->m_x * durationSeconds;
 	scaledDelta.m_y = p_targetVelocity->m_y;
 	scaledDelta.m_y *= durationSeconds;
 	scaledDelta.m_z = p_targetVelocity->m_z;
 	scaledDelta.m_z *= durationSeconds;
-	*target += scaledDelta;
-	*target += p_params->m_targetOffset;
+	target->m_x += scaledDelta.m_x;
+	target->m_y += scaledDelta.m_y;
+	LegoFloat& rz = target->m_z;
+	rz += scaledDelta.m_z;
+	LegoFloat offset = target->m_x;
+	offset += params->m_targetOffset.m_x;
+	target->m_x = offset;
+	offset = target->m_y;
+	offset += params->m_targetOffset.m_y;
+	target->m_y = offset;
+	offset = target->m_z;
+	offset += params->m_targetOffset.m_z;
+	target->m_z = offset;
 	ComputeTrajectory(durationSeconds);
-	RegisterCollisionEvent(p_params->m_eventQueue);
+	RegisterCollisionEvent(params->m_eventQueue);
 }
 
 // FUNCTION: LEGORACERS 0x00431220

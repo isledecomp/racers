@@ -349,10 +349,14 @@ void GolAnimatedEntity::TransitionToPart(
 {
 	ResetPartIndices();
 	if (p_transitionTime == 0) {
-		LegoS32 timeScale =
-			p_time != 0.0f
-				? static_cast<LegoS32>(p_time / m_modelParts[0]->GetPartData()[m_currentPartIndex].GetMsPerFrame())
-				: 0;
+		LegoS32 timeScale;
+		if (p_time != 0.0f) {
+			const CmbModelPartData& activePart = m_modelParts[0]->GetPartData()[m_currentPartIndex];
+			timeScale = static_cast<LegoS32>(p_time / activePart.GetMsPerFrame());
+		}
+		else {
+			timeScale = 0;
+		}
 
 		PlayPartScaled(p_partIndex, timeScale);
 		if (!p_loop) {
@@ -362,7 +366,8 @@ void GolAnimatedEntity::TransitionToPart(
 	}
 
 	LegoU32 flags = m_flags;
-	if (p_partIndex == ((flags & c_flagPartTransition) ? m_queuedPartIndex : m_currentPartIndex)) {
+	LegoU32 currentPartIndex = (flags & c_flagPartTransition) ? m_queuedPartIndex : m_currentPartIndex;
+	if (p_partIndex == currentPartIndex) {
 		return;
 	}
 
@@ -382,27 +387,36 @@ void GolAnimatedEntity::TransitionToPart(
 		m_flags = flags;
 	}
 
-	m_flags = (m_flags & ~0x00580000) | c_flagPartTransition;
+	flags = m_flags;
+	flags &= ~0x00580000;
+	flags |= c_flagPartTransition;
 	m_queuedPartIndex = static_cast<LegoU16>(p_partIndex);
+	m_flags = flags;
 	if (p_loop) {
-		m_flags |= c_flagLoopQueuedPart;
+		flags |= c_flagLoopQueuedPart;
+		m_flags = flags;
 	}
 
 	p_partIndex &= 0xffff;
-	m_queuedMsPerFrame = GetModelPart()->GetPartData()[p_partIndex].GetMsPerFrame();
+	LegoU32 offset = p_partIndex * sizeof(CmbModelPartData);
 	CmbModelPart* modelPart = GetModelPart();
+	m_queuedMsPerFrame =
+		(*reinterpret_cast<const CmbModelPartData*>(reinterpret_cast<const LegoU8*>(modelPart->GetPartData()) + offset))
+			.GetMsPerFrame();
 	m_transitionProgress = 0.0f;
-	m_advanceCurrent = p_updateCurrent;
 	m_queuedPartTimeMs = p_time;
-	m_advanceQueued = p_updateQueued;
 	m_transitionRate = 1.0f / static_cast<LegoFloat>(p_transitionTime);
+	m_advanceCurrent = p_updateCurrent;
+	m_advanceQueued = p_updateQueued;
 	if (!p_updateCurrent) {
 		m_currentPartVelocity.m_x = 0.0f;
 		m_currentPartVelocity.m_y = 0.0f;
 		m_currentPartVelocity.m_z = 0.0f;
 	}
 
-	m_queuedPartVelocity = modelPart->GetPartData()[p_partIndex].GetVelocity();
+	m_queuedPartVelocity =
+		(*reinterpret_cast<const CmbModelPartData*>(reinterpret_cast<const LegoU8*>(modelPart->GetPartData()) + offset))
+			.GetVelocity();
 }
 
 // FUNCTION: GOLDP 0x10023b10
@@ -460,7 +474,8 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 					m_queuedPartTimeMs += queuedRate * elapsed;
 					LegoFloat queuedTime = m_queuedPartTimeMs;
 					const CmbModelPartData& queuedPart = m_modelParts[0]->GetPartData()[m_queuedPartIndex];
-					LegoFloat queuedEndFrame = static_cast<LegoFloat>(queuedPart.GetFrameCount() - 1);
+					LegoS32 queuedEndFrameIndex = queuedPart.GetFrameCount() - 1;
+					LegoFloat queuedEndFrame = static_cast<LegoFloat>(queuedEndFrameIndex);
 					if (m_queuedPartTimeMs > queuedEndFrame) {
 						if (m_flags & c_flagLoopQueuedPart) {
 							m_queuedPartTimeMs = queuedPart.WrapTime(queuedTime);
@@ -501,7 +516,8 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 #endif
 			currentTime = m_partTimeMs;
 			const CmbModelPartData& activePart = modelPart->GetPartData()[currentPartIndex];
-			endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
+			LegoS32 endFrameIndex = activePart.GetFrameCount() - 1;
+			endFrame = static_cast<LegoFloat>(endFrameIndex);
 			if (m_partTimeMs >= endFrame) {
 				if (m_flags & c_flagLoopCurrentPart) {
 					LegoFloat wrappedTime = activePart.WrapTime(currentTime);
@@ -510,10 +526,6 @@ void GolAnimatedEntity::Update(LegoS32 p_elapsed)
 					}
 
 					m_partTimeMs = wrappedTime;
-#ifndef BUILDING_GOL
-					GolModelEntity::Update(p_elapsed);
-					return;
-#endif
 				}
 				else {
 					if (m_flags & c_flagRestartQueuedPart) {
@@ -651,16 +663,16 @@ LegoBool32 GolAnimatedEntity::SamplePartPosition(
 {
 	LegoFloat timeScale = m_msPerFrame;
 	LegoFloat frame = static_cast<LegoFloat>(p_frame);
-	LegoFloat time = ((timeScale * frame));
+	LegoFloat time = GOL_MUL(timeScale, frame);
 	CmbModelPart* modelPart = m_modelParts[p_modelIndex];
+	CmbModelPartTrackData& animationData = modelPart->GetAnimationData();
 	CmbModelPartData* partData = modelPart->GetPartData();
 	const CmbModelPartData& part = partData[p_partDataIndex];
 	LegoU32 trackIndex = part.GetTrackIndex();
 	trackIndex += p_trackOffset;
 	const CmbModelPartTrack& track = modelPart->GetTrack(trackIndex);
-	LegoS32 frameCount = part.GetFrameCount();
 
-	return modelPart->GetAnimationData().InterpolatePosition(p_dest, track, time, frameCount);
+	return animationData.InterpolatePosition(p_dest, track, time, part.GetFrameCountWide());
 }
 
 // FUNCTION: LEGORACERS 0x0040e420
@@ -674,13 +686,16 @@ LegoBool32 GolAnimatedEntity::SamplePartRotation(
 {
 	LegoFloat timeScale = m_msPerFrame;
 	LegoFloat frame = static_cast<LegoFloat>(p_frame);
-	LegoFloat time = ((timeScale * frame));
+	LegoFloat time = GOL_MUL(timeScale, frame);
 	CmbModelPart* modelPart = m_modelParts[p_modelIndex];
-	const CmbModelPartData& part = modelPart->GetPartData()[p_partDataIndex];
-	LegoU32 trackIndex = part.GetTrackIndex() + p_trackOffset;
+	CmbModelPartTrackData& animationData = modelPart->GetAnimationData();
+	CmbModelPartData* partData = modelPart->GetPartData();
+	const CmbModelPartData& part = partData[p_partDataIndex];
+	LegoU32 trackIndex = part.GetTrackIndex();
+	trackIndex += p_trackOffset;
 	const CmbModelPartTrack& track = modelPart->GetTrack(trackIndex);
 
-	return modelPart->GetAnimationData().InterpolateRotation(p_dest, track, time, part.GetFrameCount());
+	return animationData.InterpolateRotation(p_dest, track, time, part.GetFrameCountWide());
 }
 
 // FUNCTION: GOLDP 0x100241a0

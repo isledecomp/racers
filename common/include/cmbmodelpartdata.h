@@ -35,6 +35,7 @@ public:
 	}
 	LegoU32 GetTrackIndex() const { return m_trackIndex; }
 	LegoU16 GetFrameCount() const { return m_frameCount; }
+	LegoU32 GetFrameCountWide() const { return m_frameCount; }
 	LegoU16 GetLoopFrameCount() const { return m_loopFrameCount; }
 	LegoFloat WrapTime(LegoFloat p_time) const;
 

@@ -34,7 +34,7 @@ public:
 	void ApplyThrust();
 	void EngageSlide(LegoBool32 p_left);
 	undefined4 ReleaseSlide();
-	GolQuat* StartReturnToPath(RaceRouteRecord* p_record);
+	void StartReturnToPath(RaceRouteRecord* p_record);
 	void EndReturnToPath();
 	void UpdateReturnToPath(LegoU32 p_elapsedMs);
 	void SetFlags(LegoU32 p_flags) { m_flags |= p_flags; }

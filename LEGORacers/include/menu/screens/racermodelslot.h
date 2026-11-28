@@ -47,10 +47,15 @@ private:
 	GolWorldEntity* m_entity;    // 0x68
 	GolWorldEntity* m_entityB;   // 0x6c
 	GolVec3 m_spinAxis;          // 0x70
-	undefined4 m_unk0x7c;        // 0x7c
-	undefined4 m_unk0x80;        // 0x80
-	undefined4 m_unk0x84;        // 0x84
-	undefined4 m_unk0x88[3];     // 0x88
+	// SIZE 0x0c
+	struct Triple {
+		undefined4 m_unk0x00; // 0x00
+		undefined4 m_unk0x04; // 0x04
+		undefined4 m_unk0x08; // 0x08
+	};
+
+	Triple m_unk0x7c;            // 0x7c
+	Triple m_unk0x88;            // 0x88
 	LegoU32 m_timerAMs;          // 0x94
 	LegoU32 m_timerBMs;          // 0x98
 	LegoBool32 m_promoteA;       // 0x9c
